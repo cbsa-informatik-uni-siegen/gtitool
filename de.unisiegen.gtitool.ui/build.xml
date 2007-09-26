@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!--
+	$Id: build.xml 2223 2007-08-08 09:56:55Z fehler $
+	
+	Copyright (c) 2007 Christian Fehler
+-->
+<project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
+	<description>
+		Buildfile for the de.unisiegen.gtitool.ui subproject.
+	</description>
+
+	<property file="${basedir}/build.properties" />
+	
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.distdir" value="${core.basedir}/dist" />
+	<property file="${core.basedir}/build.properties" />
+	
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	
+	<target name="dist" depends="generate,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${distdir}" includes="*.jar" />
+			<fileset dir="${basedir}/doc" includes="LICENSE" />
+		</copy>
+		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+			</tarfileset>
+		</tar>
+		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" update="yes">
+			<fileset dir="${distdir}">
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+			</fileset>
+		</zip>
+		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includeemptydirs="true" />
+		<echo message="Distribution ready in ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2 and ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" />
+	</target>
+	
+	<target name="dist-preclean">
+		<delete dir="${distdir}" includeemptydirs="true" />
+		<mkdir dir="${distdir}" />
+	</target>
+		
+	<target name="dist-compile">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5" >
+			<src path="${basedir}/source" />
+			<src path="${basedir}/source-generated" />
+			<classpath>
+				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="dist-jar" depends="dist-compile">
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+			<section name="de.unisiegen.gtitool.ui">
+				<attribute name="Specification-Title" value="GTITool UI" />
+				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.ui.version}" />
+				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+				<attribute name="Implementation-Title" value="de.unisiegen.gtitool.ui" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.ui.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+			</section>
+		</manifest>
+		<mkdir dir="${classesdir}/META-INF" />
+		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source">
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</jar>
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+	
+	<property name="generateddir" value="${basedir}/source-generated" />
+	
+	<target name="generate" description="Generate the Versions interface">
+		<mkdir dir="${generateddir}/de/unisiegen/gtitool/ui" />
+		<echo file="${generateddir}/de/unisiegen/gtitool/ui/Versions.java" append="false">package de.unisiegen.gtitool.ui ;
+
+
+/**
+ * Automatically generated interface for the project versions.
+ * 
+ * @author Christian Fehler
+ */
+public interface Versions
+{
+  /** 
+   * The version of the de.unisiegen.gtitool.core subproject.
+   */
+  public static final String CORE = "${de.unisiegen.gtitool.core.version}" ; //$NON-NLS-1$
+
+
+  /** 
+   * The version of the de.unisiegen.gtitool.ui subproject.
+   */
+  public static final String UI = "${de.unisiegen.gtitool.ui.version}" ; //$NON-NLS-1$
+}
+</echo>
+	</target>
+</project>

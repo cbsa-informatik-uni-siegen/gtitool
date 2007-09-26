@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+	$Id: build.xml 2128 2007-08-06 13:46:40Z fehler $
+	
+	Copyright (c) 2007 Christian Fehler
+-->
+<project name="de.unisiegen.gtitool.core" default="dist" basedir=".">
+	<description>
+		Buildfile for the de.unisiegen.gtitool.core subproject.
+    </description>
+	
+	<property file="${basedir}/build.properties" />
+	
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="classesdir" value="${distdir}/classes" />
+	
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<echo message="Distribution ready in ${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+	</target>
+	
+	<target name="dist-preclean">
+		<delete dir="${distdir}" />
+		<mkdir dir="${distdir}" />
+	</target>
+		
+	<target name="dist-compile">
+		<delete dir="${classesdir}" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<src path="${basedir}/source" />
+			<src path="${basedir}/source-impl" />
+		</javac>
+	</target>
+	
+	<target name="dist-jar" depends="dist-compile">
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<section name="de.unisiegen.gtitool.core">
+				<attribute name="Specification-Title" value="GTITool Core" />
+				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.core.version}" />
+				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+				<attribute name="Implementation-Title" value="de.unisiegen.gtitool.core" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.core.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
+			</section>
+		</manifest>
+		<mkdir dir="${classesdir}/META-INF" />
+		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source-impl">
+				<include name="**/*.properties"/>
+			</fileset>
+		</jar>
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+	
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+	
+</project>

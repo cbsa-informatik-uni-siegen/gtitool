@@ -25,9 +25,23 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${basedir}/doc" includes="LICENSE" />
 		</copy>
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/linux/gtitool.sh">
+			<filterset>
+				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
+			</filterset>
+		</copy>
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/win32/gtitool.exe">
+			<filterset>
+				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
+			</filterset>
+		</copy>
 		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
 				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
 			</tarfileset>
 		</tar>
 		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" update="yes">

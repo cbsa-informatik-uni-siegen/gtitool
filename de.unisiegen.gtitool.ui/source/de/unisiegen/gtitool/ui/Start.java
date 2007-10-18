@@ -10,6 +10,7 @@ import javax.swing.UIManager;
  * The main starter class for the GTITool project.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 
 public class Start

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
  * The class to get the messages.
  * 
  * @author Christian Fehler
+ * @version $Id$
  */
 public class Messages
 {

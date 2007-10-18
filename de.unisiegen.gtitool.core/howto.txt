@@ -1,0 +1,2 @@
+# SVN Keywords
+svn propset svn:keywords 'Author Date Id Rev' `find . -name '*.java'`

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui;
 
 
 import java.awt.EventQueue;
+
 import javax.swing.UIManager;
 
 
@@ -10,6 +11,7 @@ import javax.swing.UIManager;
  * 
  * @author Christian Fehler
  */
+
 public class Start
 {
 

@@ -91,7 +91,7 @@
 	
 	<target name="generate" description="Generate the Versions interface">
 		<mkdir dir="${generateddir}/de/unisiegen/gtitool/ui" />
-		<echo file="${generateddir}/de/unisiegen/gtitool/ui/Versions.java" append="false">package de.unisiegen.gtitool.ui ;
+		<echo file="${generateddir}/de/unisiegen/gtitool/ui/Versions.java" append="false">package de.unisiegen.gtitool.ui;
 
 
 /**
@@ -101,16 +101,17 @@
  */
 public interface Versions
 {
+
   /** 
    * The version of the de.unisiegen.gtitool.core subproject.
    */
-  public static final String CORE = "${de.unisiegen.gtitool.core.version}" ; //$NON-NLS-1$
+  public static final String CORE = "${de.unisiegen.gtitool.core.version}"; //$NON-NLS-1$
 
 
   /** 
    * The version of the de.unisiegen.gtitool.ui subproject.
    */
-  public static final String UI = "${de.unisiegen.gtitool.ui.version}" ; //$NON-NLS-1$
+  public static final String UI = "${de.unisiegen.gtitool.ui.version}"; //$NON-NLS-1$
 }
 </echo>
 	</target>

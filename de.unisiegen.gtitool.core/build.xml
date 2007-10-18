@@ -48,6 +48,9 @@
 		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
+			<fileset dir="${basedir}/source">
+				<include name="**/*.properties"/>
+			</fileset>
 			<fileset dir="${basedir}/source-impl">
 				<include name="**/*.properties"/>
 			</fileset>

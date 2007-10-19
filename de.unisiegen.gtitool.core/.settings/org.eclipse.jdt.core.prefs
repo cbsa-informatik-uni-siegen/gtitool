@@ -1,4 +1,4 @@
-#Thu Oct 18 11:32:25 CEST 2007
+#Thu Oct 18 17:08:52 CEST 2007
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
@@ -74,7 +74,7 @@ org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast=warning
 org.eclipse.jdt.core.compiler.source=1.5
 org.eclipse.jdt.core.compiler.taskCaseSensitive=enabled
 org.eclipse.jdt.core.compiler.taskPriorities=NORMAL,HIGH,NORMAL,NORMAL,LOW
-org.eclipse.jdt.core.compiler.taskTags=TODO,FIXME,TODO Christian,TODO Benny,NOTICE
+org.eclipse.jdt.core.compiler.taskTags=TODO,FIXME,TODOChristian,TODOBenny,NOTICE
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=false
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant=16

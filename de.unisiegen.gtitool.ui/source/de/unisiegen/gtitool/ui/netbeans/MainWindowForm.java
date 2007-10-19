@@ -84,8 +84,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         aboutItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        setName(bundle.getString("MainWindowForm.name")); // NOI18N
+        setName("mainframe");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tabChange(evt);
@@ -250,6 +249,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         fileMenu.setText(bundle.getString("MainWindow.File")); // NOI18N
         fileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,6 +259,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
+        newItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.NewMnemonic").charAt(0));
         newItem.setText(bundle.getString("MainWindow.New")); // NOI18N
         newItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,6 +271,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         openItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png")));
+        openItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.OpenMnemonic").charAt(0));
         openItem.setText(bundle.getString("MainWindow.Open")); // NOI18N
         openItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -281,6 +283,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         closeItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        closeItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseMnemonic").charAt(0));
         closeItem.setText(bundle.getString("MainWindow.Close")); // NOI18N
         closeItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -294,6 +297,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         saveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
+        saveItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveMnemonic").charAt(0));
         saveItem.setText(bundle.getString("MainWindow.Save")); // NOI18N
         saveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,7 +308,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         fileMenu.add(saveItem);
 
         saveAsItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
-        saveAsItem.setText(bundle.getString("MainWindow.Save_As...")); // NOI18N
+        saveAsItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
+        saveAsItem.setText(bundle.getString("MainWindow.Save_As")); // NOI18N
         saveAsItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsItemActionPerformed(evt);
@@ -327,6 +332,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         fileMenu.add(fileMenuSerpator2);
 
         recentFilesMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        recentFilesMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
+        recentFilesMenu.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
         fileMenu.add(recentFilesMenu);
 
         fileMenuSeperator3.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -343,6 +350,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        quitItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.QuitMnemonic").charAt(0));
         quitItem.setText(bundle.getString("MainWindow.Quit")); // NOI18N
         quitItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,6 +365,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         editMenu.setText(bundle.getString("MainWindow.Edit")); // NOI18N
         undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
+        undoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
+        undoItem.setText(bundle.getString("MainWindow.Undo")); // NOI18N
         undoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 undoItemActionPerformed(evt);
@@ -367,6 +377,8 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         redoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo16.gif")));
+        redoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
+        redoItem.setText(bundle.getString("MainWindow.Redo")); // NOI18N
         redoItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 redoItemActionPerformed(evt);
@@ -379,6 +391,8 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         cutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut16.gif")));
+        cutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CutMnemonic").charAt(0));
+        cutItem.setText(bundle.getString("MainWindow.Cut")); // NOI18N
         cutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cutItemActionPerformed(evt);
@@ -389,6 +403,8 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy16.gif")));
+        copyItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CopyMnemonic").charAt(0));
+        copyItem.setText(bundle.getString("MainWindow.Copy")); // NOI18N
         copyItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyItemActionPerformed(evt);
@@ -399,6 +415,8 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         pasteItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste16.gif")));
+        pasteItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PasteMnemonic").charAt(0));
+        pasteItem.setText(bundle.getString("MainWindow.Paste")); // NOI18N
         pasteItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteItemActionPerformed(evt);
@@ -410,6 +428,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         editMenu.add(editMenuSeperator);
 
         preferencesItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
+        preferencesItem.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
         preferencesItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 preferencesItemActionPerformed(evt);
@@ -420,8 +440,11 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         MainMenuBar.add(editMenu);
 
+        helpMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
         helpMenu.setText(bundle.getString("MainWindow.Help")); // NOI18N
         aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
+        aboutItem.setText(bundle.getString("MainWindow.About...")); // NOI18N
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutItemActionPerformed(evt);
@@ -463,6 +486,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
 // TODO add your handling code here:
+        
     }//GEN-LAST:event_aboutItemActionPerformed
 
     private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed

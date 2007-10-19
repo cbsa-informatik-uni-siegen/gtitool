@@ -84,7 +84,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         aboutItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setName("mainframe");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        setName(bundle.getString("MainWindowForm.name")); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tabChange(evt);
@@ -249,8 +250,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/netbeans/Bundle"); // NOI18N
-        fileMenu.setText(bundle.getString("File")); // NOI18N
+        fileMenu.setText(bundle.getString("MainWindow.File")); // NOI18N
         fileMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileMenuActionPerformed(evt);
@@ -259,6 +259,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
+        newItem.setText(bundle.getString("MainWindow.New")); // NOI18N
         newItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newItemActionPerformed(evt);
@@ -269,6 +270,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         openItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png")));
+        openItem.setText(bundle.getString("MainWindow.Open")); // NOI18N
         openItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openItemActionPerformed(evt);
@@ -279,6 +281,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         closeItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        closeItem.setText(bundle.getString("MainWindow.Close")); // NOI18N
         closeItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeItemActionPerformed(evt);
@@ -291,6 +294,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         saveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
+        saveItem.setText(bundle.getString("MainWindow.Save")); // NOI18N
         saveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveItemActionPerformed(evt);
@@ -300,6 +304,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         fileMenu.add(saveItem);
 
         saveAsItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
+        saveAsItem.setText(bundle.getString("MainWindow.Save_As...")); // NOI18N
         saveAsItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAsItemActionPerformed(evt);
@@ -310,6 +315,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         saveAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         saveAllItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
+        saveAllItem.setText(bundle.getString("MainWindow.Save_All")); // NOI18N
         saveAllItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveAllItemActionPerformed(evt);
@@ -337,6 +343,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        quitItem.setText(bundle.getString("MainWindow.Quit")); // NOI18N
         quitItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitItemActionPerformed(evt);
@@ -347,7 +354,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         MainMenuBar.add(fileMenu);
 
-        editMenu.setText(bundle.getString("Edit")); // NOI18N
+        editMenu.setText(bundle.getString("MainWindow.Edit")); // NOI18N
         undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
         undoItem.addActionListener(new java.awt.event.ActionListener() {
@@ -413,7 +420,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         MainMenuBar.add(editMenu);
 
-        helpMenu.setText(bundle.getString("Help")); // NOI18N
+        helpMenu.setText(bundle.getString("MainWindow.Help")); // NOI18N
         aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

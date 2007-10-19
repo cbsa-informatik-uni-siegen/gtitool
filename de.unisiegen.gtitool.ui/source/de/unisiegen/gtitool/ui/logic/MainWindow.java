@@ -7,6 +7,8 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JFileChooser;
+
 import de.unisiegen.gtitool.ui.PreferenceManager;
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -805,5 +807,17 @@ public class MainWindow
   {
     AboutDialog aboutDialog = new AboutDialog ( this.window );
     aboutDialog.show ();
+  }
+  
+  public void handleOpen ( )
+  {
+    PreferenceManager prefmanager = PreferenceManager.getInstance () ;
+    //TODOChristian implemenent prefmanager.getWorkingPath()
+    JFileChooser chooser = new JFileChooser ( "." ) ;
+    chooser.setMultiSelectionEnabled ( true ) ;
+    int returnVal = chooser.showOpenDialog ( window ) ;
+    
+    //prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( )
+     //   .getAbsolutePath ( ) ) ;
   }
 }

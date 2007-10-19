@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
 
 /**
  *
- * @author  Christoph Fehling
+ * @author  Benjamin Mies
+ * @version $Id$
  */
 public class MainWindowForm extends javax.swing.JFrame {
     
@@ -540,6 +541,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
     private void openItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openItemActionPerformed
 // TODO add your handling code here:
+        logic.handleOpen();
     }//GEN-LAST:event_openItemActionPerformed
 
     private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
@@ -572,6 +574,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
 // TODO add your handling code here:
+        logic.handleOpen(); 
     }//GEN-LAST:event_openButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed

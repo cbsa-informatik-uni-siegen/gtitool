@@ -1,167 +1,139 @@
 package de.unisiegen.gtitool.ui;
 
+
+import java.awt.Frame;
 import java.awt.Rectangle;
-import java.io.File;
-import java.util.LinkedList;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 
+
 /**
  * Manages the preferences for the user interface.
  * 
- * @author Christoph Fehling
- * @version $Rev$
- * 
- * @see java.util.prefs.Preferences
+ * @author Christian Fehler
+ * @version $Id: Messages.java 28 2007-10-18 14:29:54Z fehler $
  */
-public class PreferenceManager {
-	//
-	// Attributes
-	//
-	
-	private static PreferenceManager preferenceManager;
-	
-	private static int defaultWidth = 640;
-	
-	private static int defaultHeight = 480;
-	
-	private static int defaultPosition = 0;
-	/**
-	 * The {@link Preferences} object for the node where the settings are stored and loaded.
-	 * 
-	 * @see Preferences
-	 */
-	private Preferences prefs;
+public class PreferenceManager
+{
 
-	
-	
-	//
-	// Constructor
-	//
-	
-	/**
-	 * Allocates a new <code>PreferencesManager</code>.
-	 */
-	private PreferenceManager() {
-		this.prefs = Preferences.userNodeForPackage(this.getClass());
-	}
+  /**
+   * The single instance of the <code>PreferenceManager<code>
+   */
+  private static PreferenceManager singlePreferenceManager;
 
-	
-	
-	//
-	// Primitives
-	//
-	
-	/**
-	 * TODO Add documentation here.
-	 *
-	public void setRecentlyUsed(LinkedList<HistoryItem> list) {
-		int length = list.size();
-		for (int i = 0; i < length; i++) {
-			this.prefs.put("historyitem" + i, list.get(i).getFile().getAbsolutePath());
-		}
 
-	}*/
+  /**
+   * The default width of the {@link MainWindow}.
+   */
+  private static int DEFAULT_WIDTH = 640;
 
-	/**
-	 * TODO Add documentation here.
-	 *
-	public LinkedList<HistoryItem> getRecentlyUsed() {
-		int count = 0;
-		String result = "";
-		LinkedList<HistoryItem> list = new LinkedList<HistoryItem>();
-		while (true) {
-			result = this.prefs.get("historyitem" + count, "end");
-			if (result.equals("end")) break;
-			
-			list.add(new HistoryItem(new File(result)));
-			count++;
-		}
-		return list;
-	}*/
-	
-	public void setOpenFiles(LinkedList<File> list){
-		//delete all openitems
-		int delete = 0;
-		while (! prefs.get("openitem"+delete, "end").equals("end")){
-			prefs.remove("openitem"+delete);
-			delete++;
-		}
-		//insert new items
-		int length = list.size();
-		for (int i = 0; i < length; i++) {
-			this.prefs.put("openitem" + i, list.get(i).getAbsolutePath());
-		}
-	}
-	
-	public LinkedList<File> getOpenFiles() {
-		int count = 0;
-		String result = "";
-		LinkedList<File> list = new LinkedList<File>();
-		while (true) {
-			result = this.prefs.get("openitem" + count, "end");
-			if (result.equals("end")) break;
-			
-			list.add(new File(result));
-			count++;
-		}
-		return list;
-	}
-	
-	/**
-	 * TODO Add documentation here.
-	 */
-	public void setAdvanced (boolean status){
-		this.prefs.putBoolean("advanced", status);
-	}
-	
-	/**
-	 * TODO Add documentation here.
-	 */
-	public boolean getAdvanced (){
-		return this.prefs.getBoolean("advanced", false);
-	}
-	
-	public void setWorkingPath(String path){
-		this.prefs.put("openPath", path);
-	}
-	
-	public String getWorkingPath(){
-		return this.prefs.get("openPath", null);
-	}
-	
-	public void setWindowPreferences(JFrame frame){
 
-		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0){
-			prefs.putBoolean("maximized", true);
-		}
-		else {
-			prefs.putBoolean("maximized", false);
-			Rectangle bounds = frame.getBounds();
-			prefs.putInt("xPosition", bounds.x);
-			prefs.putInt("yPosition", bounds.y);
-			prefs.putInt("width", bounds.width);
-			prefs.putInt("height", bounds.height);
-		}
-	}
-	
-	public Rectangle getWindowBounds(){
-		int x = prefs.getInt("xPosition", PreferenceManager.defaultPosition);
-		int y = prefs.getInt("yPosition", PreferenceManager.defaultPosition);
-		int width = prefs.getInt("width", PreferenceManager.defaultWidth);
-		int height = prefs.getInt("height", PreferenceManager.defaultHeight);
-		return new Rectangle (x, y, width, height);
-	}
-	
-	public boolean getWindowMaximized(){
-		return prefs.getBoolean("maximized", false);
-	}
-	
-	public static PreferenceManager get (){
-		if (PreferenceManager.preferenceManager == null) {
-			PreferenceManager.preferenceManager = new PreferenceManager();
-		}
-		return PreferenceManager.preferenceManager;
-	}
+  /**
+   * The default hight of the {@link MainWindow}.
+   */
+  private static int DEFAULT_HEIGHT = 480;
+
+
+  /**
+   * The default x position of the {@link MainWindow}.
+   */
+  private static int DEFAULT_POSTION_X = 0;
+
+
+  /**
+   * The default y position of the {@link MainWindow}.
+   */
+  private static int DEFAULT_POSTION_Y = 0;
+
+
+  /**
+   * The default maximized state of the {@link MainWindow}.
+   */
+  private static boolean DEFAULT_MAXIMIZED = false;
+
+
+  /**
+   * Returns the single instance of the <code>PreferenceManager</code>.
+   * 
+   * @return The single instance of the <code>PreferenceManager</code>.
+   */
+  public static PreferenceManager getInstance ()
+  {
+    if ( singlePreferenceManager == null )
+    {
+      singlePreferenceManager = new PreferenceManager ();
+    }
+    return singlePreferenceManager;
+  }
+
+
+  /**
+   * The {@link Preferences} object for the node where the settings are stored
+   * and loaded.
+   * 
+   * @see Preferences
+   */
+  private Preferences preferences;
+
+
+  /**
+   * Allocates a new <code>PreferencesManager</code>.
+   */
+  private PreferenceManager ()
+  {
+    this.preferences = Preferences.userNodeForPackage ( this.getClass () );
+  }
+
+
+  /**
+   * Returns the {@link MainWindow} bounds.
+   * 
+   * @return The {@link MainWindow} bounds.
+   */
+  public Rectangle getMainWindowBounds ()
+  {
+    int x = this.preferences
+        .getInt ( "mainWindow.xPosition", DEFAULT_POSTION_X ); //$NON-NLS-1$
+    int y = this.preferences
+        .getInt ( "mainWindow.yPosition", DEFAULT_POSTION_Y ); //$NON-NLS-1$
+    int width = this.preferences.getInt ( "mainWindow.width", DEFAULT_WIDTH ); //$NON-NLS-1$
+    int height = this.preferences.getInt ( "mainWindow.height", DEFAULT_HEIGHT ); //$NON-NLS-1$
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
+   * Returns the maximized state of the {@link MainWindow}.
+   * 
+   * @return The maximized state of the {@link MainWindow}.
+   */
+  public boolean getMainWindowMaximized ()
+  {
+    return this.preferences.getBoolean ( "mainWindow.maximized", //$NON-NLS-1$
+        DEFAULT_MAXIMIZED );
+  }
+
+
+  /**
+   * Sets the {@link MainWindow} preferences.
+   * 
+   * @param pJFrame The {@link JFrame} of the {@link MainWindow}.
+   */
+  public void setMainWindowPreferences ( JFrame pJFrame )
+  {
+    if ( ( pJFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
+    {
+      this.preferences.putBoolean ( "mainWindow.maximized", false ); //$NON-NLS-1$
+      Rectangle bounds = pJFrame.getBounds ();
+      this.preferences.putInt ( "mainWindow.xPosition", bounds.x ); //$NON-NLS-1$
+      this.preferences.putInt ( "mainWindow.yPosition", bounds.y ); //$NON-NLS-1$
+      this.preferences.putInt ( "mainWindow.width", bounds.width ); //$NON-NLS-1$
+      this.preferences.putInt ( "mainWindow.height", bounds.height ); //$NON-NLS-1$
+    }
+    else
+    {
+      this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
+    }
+  }
 }

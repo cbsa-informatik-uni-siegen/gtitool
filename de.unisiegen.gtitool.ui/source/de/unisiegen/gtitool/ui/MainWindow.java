@@ -77,8 +77,8 @@ public class MainWindow
     //initComponents ( ) ;
     window.setTitle ( "GTI Tool " + Versions.UI ) ;
     // position the window
-    PreferenceManager prefmanager = PreferenceManager.get ( ) ;
-    window.setBounds ( prefmanager.getWindowBounds ( ) ) ;
+    PreferenceManager prefmanager = PreferenceManager.getInstance ( ) ;
+    window.setBounds ( prefmanager.getMainWindowBounds ( ) ) ;
     window.setVisible ( true ) ;
     // Setting the default states
 //    setGeneralStates ( false ) ;

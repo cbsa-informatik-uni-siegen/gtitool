@@ -4,7 +4,7 @@ package de.unisiegen.gtitool.ui.netbeans;
  * The <code>AboutDialogForm</code>.
  * 
  * @author Christian Fehler
- * @version $Id: AboutDialogForm.java 28 2007-10-18 14:29:54Z fehler $
+ * @version $Id$
  */
 public class AboutDialogForm extends javax.swing.JDialog {
     

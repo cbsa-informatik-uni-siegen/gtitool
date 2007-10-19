@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
  * The <code>AboutDialog</code>.
  * 
  * @author Christian Fehler
- * @version $Id: AboutDialog.java 28 2007-10-18 14:29:54Z fehler $
+ * @version $Id$
  */
 public class AboutDialog
 {

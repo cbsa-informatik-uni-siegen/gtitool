@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui;
 
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
@@ -14,7 +16,7 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
  * Manages the preferences for the user interface.
  * 
  * @author Christian Fehler
- * @version $Id: Messages.java 28 2007-10-18 14:29:54Z fehler $
+ * @version $Id$
  */
 public class PreferenceManager
 {
@@ -118,6 +120,43 @@ public class PreferenceManager
 
 
   /**
+   * Returns the recently used files and the index of the last active file.
+   * 
+   * @return The recently used files and the index of the last active file.
+   */
+  public RecentlyUsed getRecentlyUsed ()
+  {
+    ArrayList < File > files = new ArrayList < File > ();
+    int i = 0;
+    String end = "no item found"; //$NON-NLS-1$
+    while ( true )
+    {
+      String file = this.preferences.get ( "mainWindow.recentlyUsedFiles" + i, //$NON-NLS-1$
+          end );
+      if ( file.equals ( end ) )
+      {
+        break;
+      }
+      files.add ( new File ( file ) );
+    }
+    int activeIndex = this.preferences.getInt (
+        "mainWindow.recentlyUsedActiveIndex", -1 ); //$NON-NLS-1$
+    return new RecentlyUsed ( files, activeIndex );
+  }
+
+
+  /**
+   * Returns the working path.
+   * 
+   * @return the working path.
+   */
+  public String getWorkingPath ()
+  {
+    return this.preferences.get ( "workingPath", "." ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
    * Sets the {@link MainWindow} preferences.
    * 
    * @param pJFrame The {@link JFrame} of the {@link MainWindow}.
@@ -137,5 +176,33 @@ public class PreferenceManager
     {
       this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Sets the recently used files and the index of the last active file.
+   * 
+   * @param pRecentlyUsed The {@link RecentlyUsed}.
+   */
+  public void setRecentlyUsed ( RecentlyUsed pRecentlyUsed )
+  {
+    for ( int i = 0 ; i < pRecentlyUsed.getFiles ().size () ; i++ )
+    {
+      this.preferences.put ( "mainWindow.recentlyUsedFiles" + i, pRecentlyUsed //$NON-NLS-1$
+          .getFiles ().get ( i ).getAbsolutePath () );
+    }
+    this.preferences.putInt ( "mainWindow.recentlyUsedActiveIndex", //$NON-NLS-1$
+        pRecentlyUsed.getActiveIndex () );
+  }
+
+
+  /**
+   * Sets the working path.
+   * 
+   * @param pPath The working path.
+   */
+  public void setWorkingPath ( String pPath )
+  {
+    this.preferences.put ( "workingPath", pPath ); //$NON-NLS-1$
   }
 }

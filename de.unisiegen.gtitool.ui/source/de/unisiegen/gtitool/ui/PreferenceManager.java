@@ -7,6 +7,8 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.ui.logic.MainWindow;
+
 
 /**
  * Manages the preferences for the user interface.

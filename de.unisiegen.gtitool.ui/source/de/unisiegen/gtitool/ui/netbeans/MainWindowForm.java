@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 
 
-import de.unisiegen.gtitool.ui.MainWindow;
+import de.unisiegen.gtitool.ui.logic.MainWindow;
 
 /**
  *
@@ -486,7 +486,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
 // TODO add your handling code here:
-        
+       logic.handleAbout(); 
     }//GEN-LAST:event_aboutItemActionPerformed
 
     private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
@@ -515,6 +515,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
     private void quitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitItemActionPerformed
 // TODO add your handling code here:
+        logic.handleQuit();
     }//GEN-LAST:event_quitItemActionPerformed
 
     private void fileMenuSeperator3AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fileMenuSeperator3AncestorAdded

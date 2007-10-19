@@ -39,6 +39,6 @@ public class AboutDialog
    */
   public void show ()
   {
-    this.aboutDialogForm.setEnabled ( true );
+    this.aboutDialogForm.setVisible ( true );
   }
 }

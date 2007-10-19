@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 
 import javax.swing.UIManager;
 
+import de.unisiegen.gtitool.ui.logic.MainWindow;
+
 
 /**
  * The main starter class for the GTITool project.

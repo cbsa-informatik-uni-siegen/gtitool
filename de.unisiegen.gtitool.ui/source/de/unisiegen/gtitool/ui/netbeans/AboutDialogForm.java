@@ -150,8 +150,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jPanelMain, gridBagConstraints);
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-400)/2, (screenSize.height-240)/2, 400, 240);
+        setSize(new java.awt.Dimension(400, 240));
     }// </editor-fold>//GEN-END:initComponents
     
     /**

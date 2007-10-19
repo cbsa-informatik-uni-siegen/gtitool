@@ -23,12 +23,19 @@ public class AboutDialog
 
 
   /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+
+
+  /**
    * Creates a new <code>AboutDialog</code>.
    * 
-   * @param pParent The parent window.
+   * @param pParent The parent {@link JFrame}.
    */
   public AboutDialog ( JFrame pParent )
   {
+    this.parent = pParent;
     this.aboutDialogForm = new AboutDialogForm ( pParent, true );
     this.aboutDialogForm.jLabelName.setText ( "GTITool " + Versions.UI ); //$NON-NLS-1$
   }
@@ -39,6 +46,12 @@ public class AboutDialog
    */
   public void show ()
   {
+    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+        - ( this.aboutDialogForm.getWidth () / 2 );
+    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+        - ( this.aboutDialogForm.getHeight () / 2 );
+    this.aboutDialogForm.setBounds ( x, y, this.aboutDialogForm.getWidth (),
+        this.aboutDialogForm.getHeight () );
     this.aboutDialogForm.setVisible ( true );
   }
 }

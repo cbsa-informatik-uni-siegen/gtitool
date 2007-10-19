@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 
 import javax.swing.UIManager;
 
-import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-
 
 /**
  * The main starter class for the GTITool project.
@@ -52,7 +50,7 @@ public class Start
 
       public void run ()
       {
-        MainWindow mainWindow = new MainWindow();
+        new MainWindow ();
       }
     } );
   }

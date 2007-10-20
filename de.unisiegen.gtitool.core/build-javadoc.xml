@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007 Christian Fehler
+-->
 <project default="javadoc">
 	<target name="javadoc">
 		<javadoc access="package" author="true"	version="true" destdir="doc/javadoc" source="1.5" windowtitle="GTITool Core Reference Manual" encoding="UTF-8" overview="doc/overview.html">

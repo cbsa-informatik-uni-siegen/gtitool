@@ -1,16 +1,25 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
+
 /**
  * The <code>AboutDialogForm</code>.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
+@SuppressWarnings({"all"})
 public class AboutDialogForm extends javax.swing.JDialog {
     
+    /*
+     * The {@link AboutDialog}.
+     */
+    private AboutDialog aboutDialog ;
+    
     /** Creates new form AboutDialog */
-    public AboutDialogForm(java.awt.Frame parent, boolean modal) {
+    public AboutDialogForm(java.awt.Frame parent, boolean modal, AboutDialog pAboutDialog) {
         super(parent, modal);
+        this.aboutDialog = pAboutDialog ;
         initComponents();
     }
     
@@ -35,6 +44,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jLabelDeveloper = new javax.swing.JLabel();
         jLabelDeveloper2 = new javax.swing.JLabel();
         jLabelDeveloper1 = new javax.swing.JLabel();
+        jButtonClose = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -142,6 +152,20 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanelMain.add(jPanelSouth, gridBagConstraints);
 
+        jButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
+        jButtonClose.setFocusable(false);
+        jButtonClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        jPanelMain.add(jButtonClose, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -150,21 +174,15 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jPanelMain, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(400, 240));
+        setSize(new java.awt.Dimension(400, 260));
     }// </editor-fold>//GEN-END:initComponents
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AboutDialogForm(new javax.swing.JFrame(), true).setVisible(true);
-            }
-        });
-    }
-    
+
+    private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
+      this.aboutDialog.close();
+    }//GEN-LAST:event_jButtonCloseActionPerformed
+  
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonClose;
     private javax.swing.JLabel jLabelCopyright;
     private javax.swing.JLabel jLabelDeveloper;
     private javax.swing.JLabel jLabelDeveloper1;

@@ -36,8 +36,18 @@ public class AboutDialog
   public AboutDialog ( JFrame pParent )
   {
     this.parent = pParent;
-    this.aboutDialogForm = new AboutDialogForm ( pParent, true );
+    this.aboutDialogForm = new AboutDialogForm ( pParent, true, this );
     this.aboutDialogForm.jLabelName.setText ( "GTITool " + Versions.UI ); //$NON-NLS-1$
+
+  }
+
+
+  /**
+   * Closes the {@link AboutDialogForm}.
+   */
+  public void close ()
+  {
+    this.aboutDialogForm.dispose ();
   }
 
 

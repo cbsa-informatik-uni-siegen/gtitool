@@ -1,11 +1,14 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -13,6 +16,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 import de.unisiegen.gtitool.ui.ColorItem;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.PreferenceManager;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
@@ -53,9 +57,10 @@ public class PreferencesDialog
     {
       JLabel label = ( JLabel ) super.getListCellRendererComponent ( list,
           value, index, isSelected, cellHasFocus );
-      ColorItem item = ( ColorItem ) value;
-      label.setIcon ( item.getIcon () );
-      label.setText ( item.getCaption () );
+      ColorItem colorItem = ( ColorItem ) value;
+      label.setIcon ( colorItem.getIcon () );
+      label.setText ( colorItem.getCaption () );
+      label.setToolTipText ( colorItem.getDescription () );
       return label;
     }
   }
@@ -169,7 +174,9 @@ public class PreferencesDialog
         .setCellRenderer ( this.colorItemCellRenderer );
     this.colorListModel = new ColorListModel ();
     this.colorListModel.add ( PreferenceManager.getInstance ()
-        .getPreferencesDialogColorState () );
+        .getPreferencesDialogColor ( "State", Color.GREEN ) ); //$NON-NLS-1$
+    this.colorListModel.add ( PreferenceManager.getInstance ()
+        .getPreferencesDialogColor ( "SelectedState", Color.RED ) ); //$NON-NLS-1$   
     this.preferencesDialogForm.jListColor.setModel ( this.colorListModel );
     this.preferencesDialogForm.jTabbedPane.setSelectedIndex ( PreferenceManager
         .getInstance ().getPreferencesDialogLastActiveTab () );
@@ -185,6 +192,34 @@ public class PreferencesDialog
     PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
         this.preferencesDialogForm.jTabbedPane.getSelectedIndex () );
     this.preferencesDialogForm.dispose ();
+  }
+
+
+  /**
+   * Handles the {@link MouseEvent} on the color list.
+   * 
+   * @param pEvent The {@link MouseEvent}.
+   */
+  public void handleColorListMouseClicked ( MouseEvent pEvent )
+  {
+    if ( pEvent.getClickCount () == 2 )
+    {
+      ColorItem colorItem = ( ColorItem ) this.preferencesDialogForm.jListColor
+          .getSelectedValue ();
+      if ( colorItem != null )
+      {
+        Color color = JColorChooser.showDialog ( this.preferencesDialogForm,
+            Messages.getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
+            colorItem.getColor () );
+        if ( color != null )
+        {
+          colorItem.setColor ( color );
+          PreferenceManager.getInstance ().setPreferencesDialogColor (
+              colorItem );
+          this.preferencesDialogForm.jListColor.repaint ();
+        }
+      }
+    }
   }
 
 

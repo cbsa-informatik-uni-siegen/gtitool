@@ -59,6 +59,12 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jPanelColors.setLayout(new java.awt.GridBagLayout());
 
         jListColor.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListColor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListColorMouseClicked(evt);
+            }
+        });
+
         jScrollPaneColor.setViewportView(jListColor);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -97,6 +103,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-300)/2, 400, 300);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jListColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseClicked
+        this.preferencesDialog.handleColorListMouseClicked(evt);
+    }//GEN-LAST:event_jListColorMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.preferencesDialog.close();

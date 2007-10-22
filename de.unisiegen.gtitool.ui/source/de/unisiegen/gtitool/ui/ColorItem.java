@@ -18,6 +18,12 @@ public class ColorItem
 {
 
   /**
+   * The name of this item.
+   */
+  private String name;
+
+
+  /**
    * The {@link Color} of this item.
    */
   private Color color;
@@ -38,12 +44,20 @@ public class ColorItem
   /**
    * Allocates a new <code>ColorItem</code>.
    * 
+   * @param pName The name of this item.
    * @param pColor The {@link Color} of this item.
    * @param pCaption The caption of this item.
    * @param pDescription The description of this item.
    */
-  public ColorItem ( Color pColor, String pCaption, String pDescription )
+  public ColorItem ( String pName, Color pColor, String pCaption,
+      String pDescription )
   {
+    // Name
+    if ( pName == null )
+    {
+      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
+    }
+    this.name = pName;
     // Color
     if ( pColor == null )
     {
@@ -116,6 +130,63 @@ public class ColorItem
     graphics.setColor ( this.color.darker () );
     graphics.drawRect ( 0, 0, 15, 9 );
     return new ImageIcon ( image );
+  }
+
+
+  /**
+   * Returns the name.
+   * 
+   * @return The name.
+   * @see #name
+   */
+  public String getName ()
+  {
+    return this.name;
+  }
+
+
+  /**
+   * Sets the caption.
+   * 
+   * @param pCaption The caption to set.
+   */
+  public void setCaption ( String pCaption )
+  {
+    if ( pCaption == null )
+    {
+      throw new NullPointerException ( "caption is null" ); //$NON-NLS-1$
+    }
+    this.caption = pCaption;
+  }
+
+
+  /**
+   * Sets the color.
+   * 
+   * @param pColor The color to set.
+   */
+  public void setColor ( Color pColor )
+  {
+    if ( pColor == null )
+    {
+      throw new NullPointerException ( "color is null" ); //$NON-NLS-1$
+    }
+    this.color = pColor;
+  }
+
+
+  /**
+   * Sets the description.
+   * 
+   * @param pDescription The description to set.
+   */
+  public void setDescription ( String pDescription )
+  {
+    if ( pDescription == null )
+    {
+      throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
+    }
+    this.description = pDescription;
   }
 
 

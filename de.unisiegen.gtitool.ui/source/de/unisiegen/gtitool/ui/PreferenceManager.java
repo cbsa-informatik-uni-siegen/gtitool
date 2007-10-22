@@ -122,20 +122,25 @@ public class PreferenceManager
 
 
   /**
-   * Returns the {@link ColorItem} of the state.
+   * Returns the {@link ColorItem} of the <code>pItem</code>.
    * 
-   * @return The {@link ColorItem} of the state.
+   * @param pName The name of the {@link ColorItem}.
+   * @param pDefault The default {@link Color} of the {@link ColorItem}.
+   * @return The {@link ColorItem} of the <code>pItem</code>.
    */
-  public ColorItem getPreferencesDialogColorState ()
+  public ColorItem getPreferencesDialogColor ( String pName, Color pDefault )
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", 0 ); //$NON-NLS-1$
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", 255 ); //$NON-NLS-1$ 
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", 0 ); //$NON-NLS-1$ 
+    int r = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "R", pDefault.getRed () ); //$NON-NLS-1$ //$NON-NLS-2$
+    int g = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "G", pDefault.getGreen () ); //$NON-NLS-1$ //$NON-NLS-2$ 
+    int b = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "B", pDefault.getBlue () ); //$NON-NLS-1$ //$NON-NLS-2$ 
     String caption = Messages
-        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$ 
+        .getString ( "PreferencesDialog.Color" + pName + "Caption" );//$NON-NLS-1$ //$NON-NLS-2$ 
     String description = Messages
-        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description );
+        .getString ( "PreferencesDialog.Color" + pName + "Description" );//$NON-NLS-1$ //$NON-NLS-2$
+    return new ColorItem ( pName, new Color ( r, g, b ), caption, description );
   }
 
 
@@ -207,6 +212,26 @@ public class PreferenceManager
     {
       this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Sets the {@link ColorItem}.
+   * 
+   * @param pColorItem The {@link ColorItem}.
+   */
+  public void setPreferencesDialogColor ( ColorItem pColorItem )
+  {
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "R", pColorItem.getColor ().getRed () ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "G", pColorItem.getColor ().getGreen () ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "B", pColorItem.getColor ().getBlue () ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "Caption", pColorItem.getCaption () ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "Description", pColorItem.getDescription () ); //$NON-NLS-1$
   }
 
 

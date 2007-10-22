@@ -12,8 +12,10 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
 /**
  *
  * @author  Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
+@SuppressWarnings({"all"})
 public class MainWindowForm extends javax.swing.JFrame {
     
     /** Creates new form MainWindowForm */
@@ -486,12 +488,11 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
-// TODO add your handling code here:
-       logic.handleAbout(); 
+       logic.handleAboutDialog(); 
     }//GEN-LAST:event_aboutItemActionPerformed
 
     private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
-// TODO add your handling code here:
+       logic.handlePreferencesDialog();
     }//GEN-LAST:event_preferencesItemActionPerformed
 
     private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed

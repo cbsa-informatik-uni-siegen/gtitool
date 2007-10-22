@@ -17,8 +17,8 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private AboutDialog aboutDialog ;
     
     /** Creates new form AboutDialog */
-    public AboutDialogForm(java.awt.Frame parent, boolean modal, AboutDialog pAboutDialog) {
-        super(parent, modal);
+    public AboutDialogForm(AboutDialog pAboutDialog, java.awt.Frame parent) {
+        super(parent, true);
         this.aboutDialog = pAboutDialog ;
         initComponents();
     }
@@ -163,7 +163,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanelMain.add(jButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

@@ -36,9 +36,8 @@ public class AboutDialog
   public AboutDialog ( JFrame pParent )
   {
     this.parent = pParent;
-    this.aboutDialogForm = new AboutDialogForm ( pParent, true, this );
+    this.aboutDialogForm = new AboutDialogForm ( this, pParent );
     this.aboutDialogForm.jLabelName.setText ( "GTITool " + Versions.UI ); //$NON-NLS-1$
-
   }
 
 

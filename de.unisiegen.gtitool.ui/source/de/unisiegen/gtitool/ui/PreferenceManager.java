@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui;
 
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.File;
@@ -87,6 +88,24 @@ public class PreferenceManager
   private PreferenceManager ()
   {
     this.preferences = Preferences.userNodeForPackage ( this.getClass () );
+  }
+
+
+  /**
+   * Returns the working path.
+   * 
+   * @return the working path.
+   */
+  public ColorItem getColorState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", 0 ); //$NON-NLS-1$
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", 255 ); //$NON-NLS-1$ 
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", 0 ); //$NON-NLS-1$ 
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$ 
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description );
   }
 
 

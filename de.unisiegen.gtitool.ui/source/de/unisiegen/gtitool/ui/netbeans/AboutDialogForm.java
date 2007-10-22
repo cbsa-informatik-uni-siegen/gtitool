@@ -53,6 +53,12 @@ public class AboutDialogForm extends javax.swing.JDialog {
         setTitle(bundle.getString("AboutDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
         jPanelMain.setLayout(new java.awt.GridBagLayout());
 
         jPanelNorth.setLayout(new java.awt.GridBagLayout());
@@ -176,6 +182,10 @@ public class AboutDialogForm extends javax.swing.JDialog {
 
         setSize(new java.awt.Dimension(400, 260));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      this.aboutDialog.close();
+    }//GEN-LAST:event_formWindowClosing
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
       this.aboutDialog.close();

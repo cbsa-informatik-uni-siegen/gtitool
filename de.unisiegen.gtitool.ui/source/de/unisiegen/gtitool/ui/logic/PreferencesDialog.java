@@ -65,9 +65,8 @@ public class PreferencesDialog
    * The color {@link ListModel}.
    * 
    * @author Christian Fehler
-   * @param <E> The item.
    */
-  protected class ColorListModel < E > extends AbstractListModel
+  protected class ColorListModel extends AbstractListModel
   {
 
     /**
@@ -79,7 +78,7 @@ public class PreferencesDialog
     /**
      * The item list.
      */
-    private ArrayList < E > list;
+    private ArrayList < ColorItem > list;
 
 
     /**
@@ -87,7 +86,7 @@ public class PreferencesDialog
      */
     public ColorListModel ()
     {
-      this.list = new ArrayList < E > ();
+      this.list = new ArrayList < ColorItem > ();
     }
 
 
@@ -96,11 +95,9 @@ public class PreferencesDialog
      * 
      * @param pItem The item to add.
      */
-    public void add ( E pItem )
+    public void add ( ColorItem pItem )
     {
       this.list.add ( pItem );
-      int index = this.list.size () - 1;
-      fireIntervalAdded ( this, index, index );
     }
 
 
@@ -131,19 +128,6 @@ public class PreferencesDialog
     {
       return this.list.size ();
     }
-
-
-    /**
-     * Removes the given item.
-     * 
-     * @param pItem The item to remove.
-     */
-    public void remove ( E pItem )
-    {
-      int index = this.list.indexOf ( pItem );
-      this.list.remove ( index );
-      fireIntervalRemoved ( this, index, index );
-    }
   }
 
 
@@ -162,7 +146,7 @@ public class PreferencesDialog
   /**
    * The {@link ColorListModel}.
    */
-  private ColorListModel < ColorItem > colorListModel;
+  private ColorListModel colorListModel;
 
 
   /**
@@ -183,10 +167,12 @@ public class PreferencesDialog
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
     this.preferencesDialogForm.jListColor
         .setCellRenderer ( this.colorItemCellRenderer );
-    this.colorListModel = new ColorListModel < ColorItem > ();
-    this.colorListModel
-        .add ( PreferenceManager.getInstance ().getColorState () );
+    this.colorListModel = new ColorListModel ();
+    this.colorListModel.add ( PreferenceManager.getInstance ()
+        .getPreferencesDialogColorState () );
     this.preferencesDialogForm.jListColor.setModel ( this.colorListModel );
+    this.preferencesDialogForm.jTabbedPane.setSelectedIndex ( PreferenceManager
+        .getInstance ().getPreferencesDialogLastActiveTab () );
   }
 
 
@@ -195,6 +181,9 @@ public class PreferencesDialog
    */
   public void close ()
   {
+    this.preferencesDialogForm.setVisible ( false );
+    PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
+        this.preferencesDialogForm.jTabbedPane.getSelectedIndex () );
     this.preferencesDialogForm.dispose ();
   }
 

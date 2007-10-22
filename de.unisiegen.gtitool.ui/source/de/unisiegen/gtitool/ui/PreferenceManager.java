@@ -11,6 +11,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 
 
 /**
@@ -92,24 +93,6 @@ public class PreferenceManager
 
 
   /**
-   * Returns the working path.
-   * 
-   * @return the working path.
-   */
-  public ColorItem getColorState ()
-  {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", 0 ); //$NON-NLS-1$
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", 255 ); //$NON-NLS-1$ 
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", 0 ); //$NON-NLS-1$ 
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$ 
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description );
-  }
-
-
-  /**
    * Returns the {@link MainWindow} bounds.
    * 
    * @return The {@link MainWindow} bounds.
@@ -135,6 +118,35 @@ public class PreferenceManager
   {
     return this.preferences.getBoolean ( "mainWindow.maximized", //$NON-NLS-1$
         DEFAULT_MAXIMIZED );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the state.
+   * 
+   * @return The {@link ColorItem} of the state.
+   */
+  public ColorItem getPreferencesDialogColorState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", 0 ); //$NON-NLS-1$
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", 255 ); //$NON-NLS-1$ 
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", 0 ); //$NON-NLS-1$ 
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$ 
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description );
+  }
+
+
+  /**
+   * Returns the last active tab of the {@link PreferencesDialog}.
+   * 
+   * @return The last active tab of the {@link PreferencesDialog}.
+   */
+  public int getPreferencesDialogLastActiveTab ()
+  {
+    return this.preferences.getInt ( "PreferencesDialog.LastActiveTab", 0 ); //$NON-NLS-1$
   }
 
 
@@ -195,6 +207,17 @@ public class PreferenceManager
     {
       this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Sets the last active tab of the {@link PreferencesDialog}.
+   * 
+   * @param pIndex The index of the last active {@link PreferencesDialog}.
+   */
+  public void setPreferencesDialogLastActiveTab ( int pIndex )
+  {
+    this.preferences.putInt ( "PreferencesDialog.LastActiveTab", pIndex ); //$NON-NLS-1$
   }
 
 

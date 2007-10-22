@@ -41,10 +41,16 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         setTitle(bundle.getString("PreferencesDialog.Title")); // NOI18N
         setModal(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
         jTabbedPane.setFocusable(false);
         jPanelGeneral.setLayout(new java.awt.GridBagLayout());
 
@@ -92,6 +98,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         setBounds((screenSize.width-400)/2, (screenSize.height-300)/2, 400, 300);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.preferencesDialog.close();
+    }//GEN-LAST:event_formWindowClosing
+
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
         this.preferencesDialog.close();
     }//GEN-LAST:event_jButtonCloseActionPerformed
@@ -102,7 +112,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelColors;
     private javax.swing.JPanel jPanelGeneral;
     private javax.swing.JScrollPane jScrollPaneColor;
-    private javax.swing.JTabbedPane jTabbedPane;
+    public javax.swing.JTabbedPane jTabbedPane;
     // Ende der Variablendeklaration//GEN-END:variables
     
 }

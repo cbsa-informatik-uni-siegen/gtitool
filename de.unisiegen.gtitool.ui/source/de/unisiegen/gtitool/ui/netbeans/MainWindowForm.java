@@ -445,7 +445,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         helpMenu.setText(bundle.getString("MainWindow.Help")); // NOI18N
         aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
-        aboutItem.setText(bundle.getString("MainWindow.About...")); // NOI18N
+        aboutItem.setText(bundle.getString("MainWindow.About")); // NOI18N
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutItemActionPerformed(evt);

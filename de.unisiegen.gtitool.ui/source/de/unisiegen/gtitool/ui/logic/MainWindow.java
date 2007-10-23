@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * The main programm window.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public class MainWindow
@@ -618,6 +619,16 @@ public class MainWindow
   }
 
 
+  /**
+   * Handle the action event of the preferences item
+   */
+  public void handlePreferences ()
+  {
+    PreferencesDialog preferencesDialog = new PreferencesDialog ( this.window );
+    preferencesDialog.show ();
+  }
+  
+  
   /**
    * Handle the open event
    */public void handleNew ()

@@ -12,10 +12,8 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
 /**
  *
  * @author  Benjamin Mies
- * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings({"all"})
 public class MainWindowForm extends javax.swing.JFrame {
     
     /** Creates new form MainWindowForm */
@@ -447,7 +445,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         helpMenu.setText(bundle.getString("MainWindow.Help")); // NOI18N
         aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
-        aboutItem.setText(bundle.getString("MainWindow.About")); // NOI18N
+        aboutItem.setText(bundle.getString("MainWindow.About...")); // NOI18N
         aboutItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutItemActionPerformed(evt);
@@ -464,122 +462,125 @@ public class MainWindowForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_fileMenuActionPerformed
 
     private void tabChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabChange
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_tabChange
 
     private void tabbedPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabbedPaneKeyPressed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_tabbedPaneKeyPressed
 
     private void saveButtonAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_saveButtonAncestorAdded
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveButtonAncestorAdded
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
-       logic.handleAboutDialog(); 
+// NOTICE add your handling code here:
+       logic.handleAbout(); 
     }//GEN-LAST:event_aboutItemActionPerformed
 
     private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
-       logic.handlePreferencesDialog();
+// NOTICE add your handling code here:
     }//GEN-LAST:event_preferencesItemActionPerformed
 
     private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_pasteItemActionPerformed
 
     private void copyItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_copyItemActionPerformed
 
     private void cutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_cutItemActionPerformed
 
     private void redoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_redoItemActionPerformed
 
     private void undoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_undoItemActionPerformed
 
     private void quitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
         logic.handleQuit();
     }//GEN-LAST:event_quitItemActionPerformed
 
     private void fileMenuSeperator3AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fileMenuSeperator3AncestorAdded
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_fileMenuSeperator3AncestorAdded
 
     private void saveAllItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveAllItemActionPerformed
 
     private void saveAsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveAsItemActionPerformed
 
     private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveItemActionPerformed
 
     private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_closeItemActionPerformed
 
     private void openItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
         logic.handleOpen();
     }//GEN-LAST:event_openItemActionPerformed
 
     private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
+        logic.handleNew();
     }//GEN-LAST:event_newItemActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_redoButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_pasteButtonActionPerformed
 
     private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_copyButtonActionPerformed
 
     private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_cutButtonActionPerformed
 
     private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
     }//GEN-LAST:event_saveAsButtonActionPerformed
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
         logic.handleOpen(); 
     }//GEN-LAST:event_openButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-// TODO add your handling code here:
+// NOTICE add your handling code here:
+         logic.handleNew();
     }//GEN-LAST:event_newButtonActionPerformed
     
     /**
@@ -624,5 +625,9 @@ public class MainWindowForm extends javax.swing.JFrame {
     
     public void setMainWindow (MainWindow window){
         logic = window;
+    }
+    
+    public void handleNew(){
+      logic.handleNew();
     }
 }

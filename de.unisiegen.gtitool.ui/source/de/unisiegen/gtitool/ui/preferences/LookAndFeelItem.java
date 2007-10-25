@@ -7,7 +7,8 @@ package de.unisiegen.gtitool.ui.preferences;
  * @author Christian Fehler
  * @version $Id$
  */
-public class LookAndFeelItem
+public class LookAndFeelItem implements Cloneable,
+    Comparable < LookAndFeelItem >
 {
 
   /**
@@ -42,6 +43,29 @@ public class LookAndFeelItem
       throw new NullPointerException ( "class name is null" ); //$NON-NLS-1$
     }
     this.className = pClassName;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
+   */
+  @Override
+  public LookAndFeelItem clone ()
+  {
+    return new LookAndFeelItem ( this.name, this.className );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public int compareTo ( LookAndFeelItem pOther )
+  {
+    return this.name.compareTo ( pOther.name );
   }
 
 

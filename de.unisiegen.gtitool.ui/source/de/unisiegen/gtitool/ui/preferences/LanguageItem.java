@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.ui.preferences;
  * @author Christian Fehler
  * @version $Id$
  */
-public class LanguageItem
+public class LanguageItem implements Cloneable, Comparable < LanguageItem >
 {
 
   /**
@@ -38,6 +38,29 @@ public class LanguageItem
     this.title = pTitle;
     // Language
     this.language = pLanguage;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
+   */
+  @Override
+  public LanguageItem clone ()
+  {
+    return new LanguageItem ( this.title, this.language );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public int compareTo ( LanguageItem pOther )
+  {
+    return this.title.compareTo ( pOther.title );
   }
 
 

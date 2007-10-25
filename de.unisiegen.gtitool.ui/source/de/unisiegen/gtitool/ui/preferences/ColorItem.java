@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
  * @author Christian Fehler
  * @version $Id$
  */
-public class ColorItem
+public class ColorItem implements Cloneable, Comparable < ColorItem >
 {
 
   /**
@@ -76,6 +76,30 @@ public class ColorItem
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
     }
     this.description = pDescription;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
+   */
+  @Override
+  public ColorItem clone ()
+  {
+    return new ColorItem ( this.name, this.color, this.caption,
+        this.description );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public int compareTo ( ColorItem pOther )
+  {
+    return this.caption.compareTo ( pOther.caption );
   }
 
 

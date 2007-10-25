@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-	$Id$
+	$Id:build.xml 52 2007-10-22 22:01:58Z fehler $
 	
 	Copyright (c) 2007 Christian Fehler
 -->
@@ -13,6 +13,7 @@
 	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
+	<property name="docdir" value="${basedir}/doc" />
 	
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
@@ -45,7 +46,7 @@
 			</section>
 		</manifest>
 		<mkdir dir="${classesdir}/META-INF" />
-		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
+		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">

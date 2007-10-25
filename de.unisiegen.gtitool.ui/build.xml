@@ -17,13 +17,16 @@
 	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
+	<property name="libdir" value="${basedir}/lib" />
+	<property name="docdir" value="${basedir}/doc" />
 	
-	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset dir="${basedir}/doc" includes="LICENSE" />
+			<fileset dir="${libdir}" includes="*.jar" />
+			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/linux/gtitool.sh">
 			<filterset>
@@ -70,6 +73,7 @@
 			<src path="${basedir}/source-generated" />
 			<classpath>
 				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+				<pathelement location="${libdir}/jgraph.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -78,7 +82,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar jgraph.jar" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />
 				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.ui.version}" />
@@ -89,7 +93,7 @@
 			</section>
 		</manifest>
 		<mkdir dir="${classesdir}/META-INF" />
-		<copy todir="${classesdir}/META-INF" file="${basedir}/doc/LICENSE" />
+		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
@@ -101,6 +105,10 @@
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
+	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+		<copy file="${libdir}/jgraph.jar" todir="${distdir}" />
+	</target>
+	
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>

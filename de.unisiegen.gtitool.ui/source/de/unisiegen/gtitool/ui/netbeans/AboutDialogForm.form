@@ -74,7 +74,7 @@
                   </FontInfo>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="GTITool x.y.z"/>
+                <Property name="text" type="java.lang.String" value="GTI Tool x.y.z"/>
                 <Property name="verticalAlignment" type="int" value="3"/>
               </Properties>
               <AuxValues>

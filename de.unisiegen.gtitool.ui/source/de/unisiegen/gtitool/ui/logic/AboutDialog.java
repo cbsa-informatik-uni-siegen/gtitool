@@ -37,7 +37,7 @@ public class AboutDialog
   {
     this.parent = pParent;
     this.aboutDialogForm = new AboutDialogForm ( this, pParent );
-    this.aboutDialogForm.jLabelName.setText ( "GTITool " + Versions.UI ); //$NON-NLS-1$
+    this.aboutDialogForm.jLabelName.setText ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
   }
 
 

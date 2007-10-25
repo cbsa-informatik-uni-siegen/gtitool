@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import java.awt.Frame;
+
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
+
 
 /**
  * The <code>PreferencesDialogForm</code>.
@@ -12,11 +15,21 @@ import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 public class PreferencesDialogForm extends javax.swing.JDialog {
     
     /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -8194161182214638312L;
+    
+    /**
      * The {@link PreferencesDialog}.
      */
     private PreferencesDialog preferencesDialog ;
     
-    /** Creates new form PreferenceDialog */
+    /**
+     * Creates new form PreferenceDialog
+     * 
+     * @param pPreferencesDialog The {@link PreferencesDialog}.
+     * @param parent The parent {@link Frame}.
+     */
     public PreferencesDialogForm(PreferencesDialog pPreferencesDialog, java.awt.Frame parent) {
         super(parent, true);
         this.preferencesDialog = pPreferencesDialog;
@@ -41,7 +54,9 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jPanelColors = new javax.swing.JPanel();
         jScrollPaneColor = new javax.swing.JScrollPane();
         jListColor = new javax.swing.JList();
-        jButtonClose = new javax.swing.JButton();
+        jButtonAccept = new javax.swing.JButton();
+        jButtonOk = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -66,6 +81,12 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelGeneral.add(jLabelLanguage, gridBagConstraints);
 
+        jComboBoxLanguage.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxLanguageItemStateChanged(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -81,6 +102,12 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelGeneral.add(jLabelLookAndFeel, gridBagConstraints);
+
+        jComboBoxLookAndFeel.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxLookAndFeelItemStateChanged(evt);
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -117,43 +144,94 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jTabbedPane, gridBagConstraints);
 
-        jButtonClose.setText(bundle.getString("PreferencesDialog.Close")); // NOI18N
-        jButtonClose.setFocusable(false);
-        jButtonClose.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
+        jButtonAccept.setFocusable(false);
+        jButtonAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCloseActionPerformed(evt);
+                jButtonAcceptActionPerformed(evt);
             }
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
-        getContentPane().add(jButtonClose, gridBagConstraints);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 5);
+        getContentPane().add(jButtonAccept, gridBagConstraints);
+
+        jButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
+        jButtonOk.setFocusable(false);
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOkActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 5);
+        getContentPane().add(jButtonOk, gridBagConstraints);
+
+        jButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
+        jButtonCancel.setFocusable(false);
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
+        getContentPane().add(jButtonCancel, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-300)/2, 400, 300);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        this.preferencesDialog.handleCancel();
+    }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
+        this.preferencesDialog.handleOk();
+    }//GEN-LAST:event_jButtonOkActionPerformed
+
+    private void jComboBoxLanguageItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxLanguageItemStateChanged
+        this.preferencesDialog.handleLanguageItemStateChanged(evt);
+    }//GEN-LAST:event_jComboBoxLanguageItemStateChanged
+
+    private void jComboBoxLookAndFeelItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxLookAndFeelItemStateChanged
+        this.preferencesDialog.handleLookAndFeelItemStateChanged(evt);
+    }//GEN-LAST:event_jComboBoxLookAndFeelItemStateChanged
 
     private void jListColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseClicked
         this.preferencesDialog.handleColorListMouseClicked(evt);
     }//GEN-LAST:event_jListColorMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.preferencesDialog.close();
+        this.preferencesDialog.handleCancel();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
-        this.preferencesDialog.close();
-    }//GEN-LAST:event_jButtonCloseActionPerformed
+    private void jButtonAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAcceptActionPerformed
+        this.preferencesDialog.handleAccept();
+    }//GEN-LAST:event_jButtonAcceptActionPerformed
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonClose;
+    private javax.swing.JButton jButtonAccept;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonOk;
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
     private javax.swing.JLabel jLabelLanguage;

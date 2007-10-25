@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.AboutDialog;
 
+
 /**
  * The <code>AboutDialogForm</code>.
  * 
@@ -12,11 +13,21 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
 public class AboutDialogForm extends javax.swing.JDialog {
     
     /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 8264731535784921404L;
+    
+    /**
      * The {@link AboutDialog}.
      */
     private AboutDialog aboutDialog ;
     
-    /** Creates new form AboutDialog */
+    /**
+     * Creates new form AboutDialog
+     * 
+     * @param pAboutDialog The {@link AboutDialog}.
+     * @param parent The parent {@link AboutDialog}.
+     */
     public AboutDialogForm(AboutDialog pAboutDialog, java.awt.Frame parent) {
         super(parent, true);
         this.aboutDialog = pAboutDialog ;
@@ -73,7 +84,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
 
         jLabelName.setFont(new java.awt.Font("Dialog", 1, 24));
         jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelName.setText("GTITool x.y.z");
+        jLabelName.setText("GTI Tool x.y.z");
         jLabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;

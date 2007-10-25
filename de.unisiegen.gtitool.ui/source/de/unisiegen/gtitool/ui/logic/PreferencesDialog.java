@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -11,11 +12,14 @@ import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
@@ -141,7 +145,7 @@ public class PreferencesDialog
   /**
    * The {@link AboutDialogForm}.
    */
-  private PreferencesDialogForm preferencesDialogForm;
+  private PreferencesDialogForm gui;
 
 
   /**
@@ -151,15 +155,21 @@ public class PreferencesDialog
 
 
   /**
-   * The {@link ColorListModel}.
+   * The {@link DefaultComboBoxModel} of the languages.
    */
-  private ColorListModel colorListModel;
+  private DefaultComboBoxModel languageComboBoxModel;
+
+
+  /**
+   * The {@link DefaultComboBoxModel} of the languages.
+   */
+  private DefaultComboBoxModel lookAndFeelComboBoxModel;
 
 
   /**
    * The {@link ColorListModel}.
    */
-  private DefaultComboBoxModel languageComboBoxModel;
+  private ColorListModel colorListModel;
 
 
   /**
@@ -176,18 +186,17 @@ public class PreferencesDialog
   public PreferencesDialog ( JFrame pParent )
   {
     this.parent = pParent;
-    this.preferencesDialogForm = new PreferencesDialogForm ( this, pParent );
+    this.gui = new PreferencesDialogForm ( this, pParent );
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
-    this.preferencesDialogForm.jListColor
-        .setCellRenderer ( this.colorItemCellRenderer );
+    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
     this.colorListModel = new ColorListModel ();
     this.colorListModel.add ( PreferenceManager.getInstance ()
         .getPreferencesDialogColor ( "State", Color.GREEN ) ); //$NON-NLS-1$
     this.colorListModel.add ( PreferenceManager.getInstance ()
         .getPreferencesDialogColor ( "SelectedState", Color.RED ) ); //$NON-NLS-1$   
-    this.preferencesDialogForm.jListColor.setModel ( this.colorListModel );
-    this.preferencesDialogForm.jTabbedPane.setSelectedIndex ( PreferenceManager
-        .getInstance ().getPreferencesDialogLastActiveTab () );
+    this.gui.jListColor.setModel ( this.colorListModel );
+    this.gui.jTabbedPane.setSelectedIndex ( PreferenceManager.getInstance ()
+        .getPreferencesDialogLastActiveTab () );
     // Languages
     this.languageComboBoxModel = new DefaultComboBoxModel ();
     ResourceBundle languageBundle = ResourceBundle
@@ -211,24 +220,42 @@ public class PreferencesDialog
     {
       // Do nothing
     }
-    this.preferencesDialogForm.jComboBoxLanguage
-        .setModel ( this.languageComboBoxModel );
-    
+    this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
+
     // Look and feel
-    
-    
+    this.lookAndFeelComboBoxModel = new DefaultComboBoxModel ();
+    this.lookAndFeelComboBoxModel.addElement ( "System" ); //$NON-NLS-1$
+    UIManager.getSystemLookAndFeelClassName ();
+    LookAndFeelInfo [] lookAndFeels = UIManager.getInstalledLookAndFeels ();
+    for ( LookAndFeelInfo current : lookAndFeels )
+    {
+      this.lookAndFeelComboBoxModel.addElement ( current.getName () );
+    }
+    this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
   }
 
 
   /**
-   * Closes the {@link AboutDialogForm}.
+   * Handles the action on the <code>Accept</code> button.
    */
-  public void close ()
+  public void handleAccept ()
   {
-    this.preferencesDialogForm.setVisible ( false );
+    this.gui.setVisible ( false );
     PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
-        this.preferencesDialogForm.jTabbedPane.getSelectedIndex () );
-    this.preferencesDialogForm.dispose ();
+        this.gui.jTabbedPane.getSelectedIndex () );
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the action on the <code>Cancel</code> button.
+   */
+  public void handleCancel ()
+  {
+    this.gui.setVisible ( false );
+    PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
+        this.gui.jTabbedPane.getSelectedIndex () );
+    this.gui.dispose ();
   }
 
 
@@ -239,24 +266,64 @@ public class PreferencesDialog
    */
   public void handleColorListMouseClicked ( MouseEvent pEvent )
   {
-    if ( pEvent.getClickCount () == 2 )
+    if ( pEvent.getClickCount () >= 2 )
     {
-      ColorItem colorItem = ( ColorItem ) this.preferencesDialogForm.jListColor
+      ColorItem colorItem = ( ColorItem ) this.gui.jListColor
           .getSelectedValue ();
       if ( colorItem != null )
       {
-        Color color = JColorChooser.showDialog ( this.preferencesDialogForm,
-            Messages.getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
+        Color color = JColorChooser.showDialog ( this.gui, Messages
+            .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
             colorItem.getColor () );
         if ( color != null )
         {
           colorItem.setColor ( color );
           PreferenceManager.getInstance ().setPreferencesDialogColor (
               colorItem );
-          this.preferencesDialogForm.jListColor.repaint ();
+          this.gui.jListColor.repaint ();
         }
       }
     }
+  }
+
+
+  /**
+   * Handles the item state changed event on the language {@link JComboBox}.
+   * 
+   * @param pEvent The {@link ItemEvent}.
+   */
+  public void handleLanguageItemStateChanged ( ItemEvent pEvent )
+  {
+    if ( pEvent.getStateChange () == ItemEvent.SELECTED )
+    {
+      // TODOChristian Implement this
+    }
+  }
+
+
+  /**
+   * Handles the item state changed event on the look and feel {@link JComboBox}.
+   * 
+   * @param pEvent The {@link ItemEvent}.
+   */
+  public void handleLookAndFeelItemStateChanged ( ItemEvent pEvent )
+  {
+    if ( pEvent.getStateChange () == ItemEvent.SELECTED )
+    {
+      // TODOChristian Implement this
+    }
+  }
+
+
+  /**
+   * Handles the action on the <code>OK</code> button.
+   */
+  public void handleOk ()
+  {
+    this.gui.setVisible ( false );
+    PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
+        this.gui.jTabbedPane.getSelectedIndex () );
+    this.gui.dispose ();
   }
 
 
@@ -266,11 +333,10 @@ public class PreferencesDialog
   public void show ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.preferencesDialogForm.getWidth () / 2 );
+        - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.preferencesDialogForm.getHeight () / 2 );
-    this.preferencesDialogForm.setBounds ( x, y, this.preferencesDialogForm
-        .getWidth (), this.preferencesDialogForm.getHeight () );
-    this.preferencesDialogForm.setVisible ( true );
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+    this.gui.setVisible ( true );
   }
 }

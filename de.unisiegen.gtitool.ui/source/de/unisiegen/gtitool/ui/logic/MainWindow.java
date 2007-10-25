@@ -11,9 +11,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFileChooser;
 
 import de.unisiegen.gtitool.ui.EditorPanel;
-import de.unisiegen.gtitool.ui.PreferenceManager;
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**

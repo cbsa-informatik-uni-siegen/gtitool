@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
 @SuppressWarnings({"all"})
 public class AboutDialogForm extends javax.swing.JDialog {
     
-    /*
+    /**
      * The {@link AboutDialog}.
      */
     private AboutDialog aboutDialog ;

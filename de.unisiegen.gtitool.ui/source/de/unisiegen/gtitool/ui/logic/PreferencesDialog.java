@@ -4,9 +4,13 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -14,12 +18,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.MutableComboBoxModel;
 
-import de.unisiegen.gtitool.ui.ColorItem;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.PreferenceManager;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
+import de.unisiegen.gtitool.ui.preferences.ColorItem;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -136,6 +141,84 @@ public class PreferencesDialog
   }
 
 
+  protected class LanguageComboBoxModel extends AbstractListModel implements
+      MutableComboBoxModel, Serializable
+  {
+
+    /**
+     * The item list.
+     */
+    private ArrayList < String > list;
+
+
+    private int selectedItem = 0;
+
+
+    public LanguageComboBoxModel ()
+    {
+      this.list = new ArrayList <String>();
+    }
+    
+    /**
+     * TODO
+     * 
+     * @param pObject
+     * @see MutableComboBoxModel#addElement(Object)
+     */
+    public void addElement ( Object pObject )
+    {
+      this.list.add ( ( String ) pObject );
+    }
+
+
+    public void insertElementAt ( Object obj, int index )
+    {
+      this.list.add ( index, ( String ) obj );
+
+    }
+
+
+    public void removeElement ( Object obj )
+    {
+      this.list.remove ( obj );
+
+    }
+
+
+    public void removeElementAt ( int index )
+    {
+      this.list.remove ( index );
+
+    }
+
+
+    public Object getSelectedItem ()
+    {
+      return this.list.get ( selectedItem );
+    }
+
+
+    public void setSelectedItem ( Object anItem )
+    {
+      this.list.set ( selectedItem, ( String ) anItem );
+
+    }
+
+
+    public Object getElementAt ( int index )
+    {
+      return this.list.get ( index );
+    }
+
+
+    public int getSize ()
+    {
+      return this.list.size ();
+    }
+
+  }
+
+
   /**
    * The {@link AboutDialogForm}.
    */
@@ -152,6 +235,12 @@ public class PreferencesDialog
    * The {@link ColorListModel}.
    */
   private ColorListModel colorListModel;
+
+
+  /**
+   * The {@link ColorListModel}.
+   */
+  private DefaultComboBoxModel languageComboBoxModel;
 
 
   /**
@@ -180,6 +269,26 @@ public class PreferencesDialog
     this.preferencesDialogForm.jListColor.setModel ( this.colorListModel );
     this.preferencesDialogForm.jTabbedPane.setSelectedIndex ( PreferenceManager
         .getInstance ().getPreferencesDialogLastActiveTab () );
+
+    this.languageComboBoxModel = new DefaultComboBoxModel ();
+    this.languageComboBoxModel.addElement ( "Default" );
+    this.languageComboBoxModel.addElement ( "de" );
+    this.languageComboBoxModel.addElement ( "en" );
+
+    /* ResourceBundle bundle;
+    Locale [] locales = Locale.getAvailableLocales ();
+    for ( int i = 0 ; i < locales.length ; i++ )
+    {
+      bundle = ResourceBundle.getBundle ( "de.unisiegen.gtitool.ui.messages", //$NON-NLS-1$
+          locales [ i ] );
+      if ( locales [ i ].equals ( bundle.getLocale () ) )
+      {
+        this.languageComboBoxModel
+            .addElement ( bundle.getLocale ().toString () );
+      }
+    }*/
+    this.preferencesDialogForm.jComboBoxLanguage
+        .setModel ( this.languageComboBoxModel );
   }
 
 

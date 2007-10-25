@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 @SuppressWarnings({"all"})
 public class PreferencesDialogForm extends javax.swing.JDialog {
     
-    /*
+    /**
      * The {@link PreferencesDialog}.
      */
     private PreferencesDialog preferencesDialog ;
@@ -34,12 +34,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jTabbedPane = new javax.swing.JTabbedPane();
         jPanelGeneral = new javax.swing.JPanel();
-        jPanelLanguage = new javax.swing.JPanel();
-        jScrollPaneLanguage = new javax.swing.JScrollPane();
-        jListLanguage = new javax.swing.JList();
-        jPanelLookAndFeel = new javax.swing.JPanel();
-        jScrollPaneLookAndFeel = new javax.swing.JScrollPane();
-        jListLookAndFeel = new javax.swing.JList();
+        jLabelLanguage = new javax.swing.JLabel();
+        jComboBoxLanguage = new javax.swing.JComboBox();
+        jLabelLookAndFeel = new javax.swing.JLabel();
+        jComboBoxLookAndFeel = new javax.swing.JComboBox();
         jPanelColors = new javax.swing.JPanel();
         jScrollPaneColor = new javax.swing.JScrollPane();
         jListColor = new javax.swing.JList();
@@ -60,49 +58,37 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jTabbedPane.setFocusable(false);
         jPanelGeneral.setLayout(new java.awt.GridBagLayout());
 
-        jPanelLanguage.setLayout(new java.awt.GridBagLayout());
-
-        jPanelLanguage.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("PreferencesDialog.Language"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
-        jScrollPaneLanguage.setViewportView(jListLanguage);
-
+        jLabelLanguage.setText(bundle.getString("PreferencesDialog.Language")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 7, 7, 7);
-        jPanelLanguage.add(jScrollPaneLanguage, gridBagConstraints);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanelGeneral.add(jLabelLanguage, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanelGeneral.add(jPanelLanguage, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanelGeneral.add(jComboBoxLanguage, gridBagConstraints);
 
-        jPanelLookAndFeel.setLayout(new java.awt.GridBagLayout());
-
-        jPanelLookAndFeel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, bundle.getString("PreferencesDialog.LookAndFeel"), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
-        jScrollPaneLookAndFeel.setViewportView(jListLookAndFeel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 7, 7, 7);
-        jPanelLookAndFeel.add(jScrollPaneLookAndFeel, gridBagConstraints);
-
+        jLabelLookAndFeel.setText(bundle.getString("PreferencesDialog.LookAndFeel")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanelGeneral.add(jLabelLookAndFeel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanelGeneral.add(jPanelLookAndFeel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanelGeneral.add(jComboBoxLookAndFeel, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), jPanelGeneral); // NOI18N
 
@@ -123,7 +109,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelColors.add(jScrollPaneColor, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabColors"), jPanelColors); // NOI18N
@@ -168,16 +154,14 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     private javax.swing.JButton jButtonClose;
+    public javax.swing.JComboBox jComboBoxLanguage;
+    public javax.swing.JComboBox jComboBoxLookAndFeel;
+    private javax.swing.JLabel jLabelLanguage;
+    private javax.swing.JLabel jLabelLookAndFeel;
     public javax.swing.JList jListColor;
-    private javax.swing.JList jListLanguage;
-    private javax.swing.JList jListLookAndFeel;
     private javax.swing.JPanel jPanelColors;
     private javax.swing.JPanel jPanelGeneral;
-    private javax.swing.JPanel jPanelLanguage;
-    private javax.swing.JPanel jPanelLookAndFeel;
     private javax.swing.JScrollPane jScrollPaneColor;
-    private javax.swing.JScrollPane jScrollPaneLanguage;
-    private javax.swing.JScrollPane jScrollPaneLookAndFeel;
     public javax.swing.JTabbedPane jTabbedPane;
     // Ende der Variablendeklaration//GEN-END:variables
     

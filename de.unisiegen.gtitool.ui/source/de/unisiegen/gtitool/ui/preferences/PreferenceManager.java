@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui;
+package de.unisiegen.gtitool.ui.preferences;
 
 
 import java.awt.Color;
@@ -10,6 +10,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 

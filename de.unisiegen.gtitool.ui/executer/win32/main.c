@@ -20,7 +20,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   proc = _spawnvp (_P_NOWAIT, args [0],  args);
   if (proc == -1) 
   {  
-    MessageBox (0, "No suitable JRE found.\nPlease download ande install a JRE amd make sure the Java binary is in the PATH.", "Error", MB_OK);
+    MessageBox (0, "No suitable JRE found.\nPlease download and install a JRE and make sure the java binary is in the PATH.", "Error", MB_OK);
   }
   return 0;
 }

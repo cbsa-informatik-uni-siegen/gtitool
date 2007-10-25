@@ -1,8 +1,5 @@
 *** Benny ***
-- Die Datei "source/de/unisiegen/gtitool/ui/netbeans/Bundle.properties"
-  entfernen und die Keys in die normale messages.properties übernehmen.
-  Wenn möglich normale Keys ohne "..." verwenden, nicht dass es wieder
-  Probleme gibt.
+
 
 
 *** Christian ***

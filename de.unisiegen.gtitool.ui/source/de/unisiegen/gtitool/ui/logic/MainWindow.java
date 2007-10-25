@@ -795,7 +795,7 @@ public class MainWindow
     this.window.saveAllItem.setEnabled ( state );
     this.window.closeItem.setEnabled ( state );
 //    this.window.cutItem.setEnabled ( state );
-    this.window.cutButton.setVisible ( false );
+    this.window.cutItem.setVisible ( false );
 //    this.window.cutButton.setEnabled ( state );
     this.window.cutButton.setVisible(false);
 //    this.window.copyItem.setEnabled ( state );

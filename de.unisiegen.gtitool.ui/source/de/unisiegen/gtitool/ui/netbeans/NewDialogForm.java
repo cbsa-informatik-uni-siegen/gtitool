@@ -66,11 +66,11 @@ public class NewDialogForm extends javax.swing.JDialog {
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         grammarsPanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
         buttonGrammarsPanel = new javax.swing.JPanel();
         jRadioButton5 = new javax.swing.JRadioButton();
         jRadioButton6 = new javax.swing.JRadioButton();
         jRadioButton7 = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
         bodyPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         alphabetPanel = new javax.swing.JPanel();
@@ -202,9 +202,12 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         machinesPanel.setLayout(new java.awt.GridBagLayout());
 
+        machinesPanel.setPreferredSize(new java.awt.Dimension(329, 100));
         jLabel1.setText("Bitte w\u00e4hlen Sie den entsprechenden Automaten aus");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 10, 0);
         machinesPanel.add(jLabel1, gridBagConstraints);
 
@@ -252,20 +255,15 @@ public class NewDialogForm extends javax.swing.JDialog {
         buttonMachinesPanel.add(jRadioButton4, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
         machinesPanel.add(buttonMachinesPanel, gridBagConstraints);
 
         tabbedPane.addTab("Machines", machinesPanel);
 
         grammarsPanel.setLayout(new java.awt.GridBagLayout());
-
-        jLabel3.setText("Bitte w\u00e4hlen Sie den entsprechenden Automaten aus");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(25, 0, 10, 0);
-        grammarsPanel.add(jLabel3, gridBagConstraints);
 
         buttonGrammarsPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -287,6 +285,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         buttonGrammarsPanel.add(jRadioButton6, gridBagConstraints);
 
@@ -302,15 +301,25 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 10, 0);
         grammarsPanel.add(buttonGrammarsPanel, gridBagConstraints);
+
+        jLabel3.setText("Bitte w\u00e4hlen Sie den entsprechenden Automaten aus");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(25, 0, 10, 0);
+        grammarsPanel.add(jLabel3, gridBagConstraints);
 
         tabbedPane.addTab("Grammars", grammarsPanel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 2.0;
         gridBagConstraints.weighty = 2.0;
         tabbedPanel.add(tabbedPane, gridBagConstraints);
@@ -325,6 +334,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         bodyPanel.setLayout(new java.awt.GridBagLayout());
 
+        bodyPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 255), 2)));
         jLabel2.setText("Bitte w\u00e4hlen Sie die Elemente des Alphabets aus");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;

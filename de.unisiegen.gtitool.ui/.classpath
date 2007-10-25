@@ -5,6 +5,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.gtitool.core"/>
-	<classpathentry kind="lib" path="lib/jgraph.jar"/>
+	<classpathentry kind="lib" path="lib/jgraph.jar" sourcepath="jgraph/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

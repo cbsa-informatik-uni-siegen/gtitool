@@ -81,12 +81,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelGeneral.add(jLabelLanguage, gridBagConstraints);
 
-        jComboBoxLanguage.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxLanguageItemStateChanged(evt);
-            }
-        });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -102,12 +96,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelGeneral.add(jLabelLookAndFeel, gridBagConstraints);
-
-        jComboBoxLookAndFeel.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxLookAndFeelItemStateChanged(evt);
-            }
-        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -207,14 +195,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
         this.preferencesDialog.handleOk();
     }//GEN-LAST:event_jButtonOkActionPerformed
-
-    private void jComboBoxLanguageItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxLanguageItemStateChanged
-        this.preferencesDialog.handleLanguageItemStateChanged(evt);
-    }//GEN-LAST:event_jComboBoxLanguageItemStateChanged
-
-    private void jComboBoxLookAndFeelItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxLookAndFeelItemStateChanged
-        this.preferencesDialog.handleLookAndFeelItemStateChanged(evt);
-    }//GEN-LAST:event_jComboBoxLookAndFeelItemStateChanged
 
     private void jListColorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseClicked
         this.preferencesDialog.handleColorListMouseClicked(evt);

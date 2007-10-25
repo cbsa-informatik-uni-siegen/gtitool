@@ -80,6 +80,26 @@ public class ColorItem
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public boolean equals ( Object pOther )
+  {
+    if ( pOther instanceof ColorItem )
+    {
+      ColorItem other = ( ColorItem ) pOther;
+      return ( this.name.equals ( other.name ) )
+          && ( this.color.equals ( other.color ) )
+          && ( this.caption.equals ( other.caption ) )
+          && ( this.description.equals ( other.description ) );
+    }
+    return false;
+  }
+
+
+  /**
    * Returns the caption.
    * 
    * @return The caption.
@@ -142,6 +162,19 @@ public class ColorItem
   public String getName ()
   {
     return this.name;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @Override
+  public int hashCode ()
+  {
+    return this.name.hashCode () + this.color.hashCode ()
+        + this.caption.hashCode () + this.description.hashCode ();
   }
 
 

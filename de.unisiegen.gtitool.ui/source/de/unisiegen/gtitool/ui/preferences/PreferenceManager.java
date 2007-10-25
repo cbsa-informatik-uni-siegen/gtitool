@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
@@ -94,6 +95,60 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the <code>pItem</code>.
+   * 
+   * @param pName The name of the {@link ColorItem}.
+   * @param pDefault The default {@link Color} of the {@link ColorItem}.
+   * @return The {@link ColorItem} of the <code>pItem</code>.
+   */
+  public ColorItem getColorItem ( String pName, Color pDefault )
+  {
+    int r = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "R", pDefault.getRed () ); //$NON-NLS-1$ //$NON-NLS-2$
+    int g = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "G", pDefault.getGreen () ); //$NON-NLS-1$ //$NON-NLS-2$ 
+    int b = this.preferences.getInt (
+        "PreferencesDialog.Color" + pName + "B", pDefault.getBlue () ); //$NON-NLS-1$ //$NON-NLS-2$ 
+    String caption = Messages
+        .getString ( "PreferencesDialog.Color" + pName + "Caption" );//$NON-NLS-1$ //$NON-NLS-2$ 
+    String description = Messages
+        .getString ( "PreferencesDialog.Color" + pName + "Description" );//$NON-NLS-1$ //$NON-NLS-2$
+    return new ColorItem ( pName, new Color ( r, g, b ), caption, description );
+  }
+
+
+  /**
+   * Returns the {@link LanguageItem}.
+   * 
+   * @return The {@link LanguageItem}.
+   */
+  public LanguageItem getLanguageItem ()
+  {
+    String title = this.preferences.get ( "PreferencesDialog.Language.Title", //$NON-NLS-1$
+        "Default" ); //$NON-NLS-1$
+    String language = this.preferences.get (
+        "PreferencesDialog.Language.Language", null ); //$NON-NLS-1$
+    return new LanguageItem ( title, "".equals ( language ) ? null : language ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the {@link LookAndFeelItem}.
+   * 
+   * @return The {@link LookAndFeelItem}.
+   */
+  public LookAndFeelItem getLookAndFeelItem ()
+  {
+    String name = this.preferences.get ( "PreferencesDialog.LookAndFeel.Name", //$NON-NLS-1$
+        "System" ); //$NON-NLS-1$
+    String className = this.preferences.get (
+        "PreferencesDialog.LookAndFeel.ClassName", UIManager //$NON-NLS-1$
+            .getSystemLookAndFeelClassName () );
+    return new LookAndFeelItem ( name, className );
+  }
+
+
+  /**
    * Returns the {@link MainWindow} bounds.
    * 
    * @return The {@link MainWindow} bounds.
@@ -119,29 +174,6 @@ public class PreferenceManager
   {
     return this.preferences.getBoolean ( "mainWindow.maximized", //$NON-NLS-1$
         DEFAULT_MAXIMIZED );
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the <code>pItem</code>.
-   * 
-   * @param pName The name of the {@link ColorItem}.
-   * @param pDefault The default {@link Color} of the {@link ColorItem}.
-   * @return The {@link ColorItem} of the <code>pItem</code>.
-   */
-  public ColorItem getPreferencesDialogColor ( String pName, Color pDefault )
-  {
-    int r = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "R", pDefault.getRed () ); //$NON-NLS-1$ //$NON-NLS-2$
-    int g = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "G", pDefault.getGreen () ); //$NON-NLS-1$ //$NON-NLS-2$ 
-    int b = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "B", pDefault.getBlue () ); //$NON-NLS-1$ //$NON-NLS-2$ 
-    String caption = Messages
-        .getString ( "PreferencesDialog.Color" + pName + "Caption" );//$NON-NLS-1$ //$NON-NLS-2$ 
-    String description = Messages
-        .getString ( "PreferencesDialog.Color" + pName + "Description" );//$NON-NLS-1$ //$NON-NLS-2$
-    return new ColorItem ( pName, new Color ( r, g, b ), caption, description );
   }
 
 
@@ -185,11 +217,60 @@ public class PreferenceManager
   /**
    * Returns the working path.
    * 
-   * @return the working path.
+   * @return The working path.
    */
   public String getWorkingPath ()
   {
     return this.preferences.get ( "workingPath", "." ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Sets the {@link ColorItem}.
+   * 
+   * @param pColorItem The {@link ColorItem}.
+   */
+  public void setColorItem ( ColorItem pColorItem )
+  {
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "R", pColorItem.getColor ().getRed () ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "G", pColorItem.getColor ().getGreen () ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "B", pColorItem.getColor ().getBlue () ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "Caption", pColorItem.getCaption () ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
+        + "Description", pColorItem.getDescription () ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link LanguageItem}.
+   * 
+   * @param pLanguageItem The {@link LanguageItem}.
+   */
+  public void setLanguageItem ( LanguageItem pLanguageItem )
+  {
+    this.preferences.put ( "PreferencesDialog.Language.Title", pLanguageItem //$NON-NLS-1$
+        .getTitle () );
+    this.preferences.put ( "PreferencesDialog.Language.Language", pLanguageItem //$NON-NLS-1$
+        .getLanguage () == null ? "" : pLanguageItem.getLanguage () ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link LookAndFeelItem}.
+   * 
+   * @param pLookAndFeelItem The {@link LookAndFeelItem}.
+   */
+  public void setLookAndFeelItem ( LookAndFeelItem pLookAndFeelItem )
+  {
+    this.preferences.put (
+        "PreferencesDialog.LookAndFeel.Name", pLookAndFeelItem.getName () ); //$NON-NLS-1$
+    this.preferences
+        .put (
+            "PreferencesDialog.LookAndFeel.ClassName", pLookAndFeelItem.getClassName () ); //$NON-NLS-1$
   }
 
 
@@ -213,26 +294,6 @@ public class PreferenceManager
     {
       this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Sets the {@link ColorItem}.
-   * 
-   * @param pColorItem The {@link ColorItem}.
-   */
-  public void setPreferencesDialogColor ( ColorItem pColorItem )
-  {
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "R", pColorItem.getColor ().getRed () ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "G", pColorItem.getColor ().getGreen () ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "B", pColorItem.getColor ().getBlue () ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "Caption", pColorItem.getCaption () ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "Description", pColorItem.getDescription () ); //$NON-NLS-1$
   }
 
 
@@ -273,4 +334,5 @@ public class PreferenceManager
   {
     this.preferences.put ( "workingPath", pPath ); //$NON-NLS-1$
   }
+
 }

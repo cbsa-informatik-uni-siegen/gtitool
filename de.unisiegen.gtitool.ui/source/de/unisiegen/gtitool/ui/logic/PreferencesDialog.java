@@ -3,28 +3,34 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ItemEvent;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.ColorItem;
+import de.unisiegen.gtitool.ui.preferences.LanguageItem;
+import de.unisiegen.gtitool.ui.preferences.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -143,6 +149,132 @@ public class PreferencesDialog
 
 
   /**
+   * The language {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected class LanguageComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 2992377445617042603L;
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param pLanguageItem The {@link LanguageItem} to add.
+     */
+    public void addElement ( LanguageItem pLanguageItem )
+    {
+      super.addElement ( pLanguageItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public void addElement ( @SuppressWarnings ( "unused" )
+    Object pObject )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public LanguageItem getElementAt ( int pIndex )
+    {
+      return ( LanguageItem ) super.getElementAt ( pIndex );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public LanguageItem getSelectedItem ()
+    {
+      return ( LanguageItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
+   * The look and feel {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected class LookAndFeelComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 5754474473687367844L;
+
+
+    /**
+     * Adds the given {@link LookAndFeelItem}.
+     * 
+     * @param pLookAndFeelItem The {@link LookAndFeelItem} to add.
+     */
+    public void addElement ( LookAndFeelItem pLookAndFeelItem )
+    {
+      super.addElement ( pLookAndFeelItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public void addElement ( @SuppressWarnings ( "unused" )
+    Object pObject )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public LookAndFeelItem getElementAt ( int pIndex )
+    {
+      return ( LookAndFeelItem ) super.getElementAt ( pIndex );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public LookAndFeelItem getSelectedItem ()
+    {
+      return ( LookAndFeelItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
    * The {@link AboutDialogForm}.
    */
   private PreferencesDialogForm gui;
@@ -155,15 +287,15 @@ public class PreferencesDialog
 
 
   /**
-   * The {@link DefaultComboBoxModel} of the languages.
+   * The {@link LanguageComboBoxModel}.
    */
-  private DefaultComboBoxModel languageComboBoxModel;
+  private LanguageComboBoxModel languageComboBoxModel;
 
 
   /**
    * The {@link DefaultComboBoxModel} of the languages.
    */
-  private DefaultComboBoxModel lookAndFeelComboBoxModel;
+  private LookAndFeelComboBoxModel lookAndFeelComboBoxModel;
 
 
   /**
@@ -179,7 +311,7 @@ public class PreferencesDialog
 
 
   /**
-   * Creates a new <code>AboutDialog</code>.
+   * Creates a new <code>PreferencesDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
    */
@@ -187,22 +319,15 @@ public class PreferencesDialog
   {
     this.parent = pParent;
     this.gui = new PreferencesDialogForm ( this, pParent );
-    this.colorItemCellRenderer = new ColorItemCellRenderer ();
-    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
-    this.colorListModel = new ColorListModel ();
-    this.colorListModel.add ( PreferenceManager.getInstance ()
-        .getPreferencesDialogColor ( "State", Color.GREEN ) ); //$NON-NLS-1$
-    this.colorListModel.add ( PreferenceManager.getInstance ()
-        .getPreferencesDialogColor ( "SelectedState", Color.RED ) ); //$NON-NLS-1$   
-    this.gui.jListColor.setModel ( this.colorListModel );
-    this.gui.jTabbedPane.setSelectedIndex ( PreferenceManager.getInstance ()
-        .getPreferencesDialogLastActiveTab () );
-    // Languages
-    this.languageComboBoxModel = new DefaultComboBoxModel ();
+
+    /*
+     * Languages
+     */
+    this.languageComboBoxModel = new LanguageComboBoxModel ();
     ResourceBundle languageBundle = ResourceBundle
         .getBundle ( "de.unisiegen.gtitool.ui.languages" ); //$NON-NLS-1$
-    this.languageComboBoxModel.addElement ( languageBundle
-        .getString ( "DefaultLanguage" ) ); //$NON-NLS-1$
+    this.languageComboBoxModel
+        .addElement ( new LanguageItem ( "Default", null ) ); //$NON-NLS-1$
     try
     {
       int index = 0;
@@ -212,27 +337,63 @@ public class PreferencesDialog
             .getString ( "Language" + index + ".Title" ); //$NON-NLS-1$ //$NON-NLS-2$
         String language = languageBundle
             .getString ( "Language" + index + ".Language" ); //$NON-NLS-1$//$NON-NLS-2$
-        this.languageComboBoxModel.addElement ( title + " (" + language + ")" ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.languageComboBoxModel.addElement ( new LanguageItem ( title,
+            language ) );
         index++ ;
       }
     }
-    catch ( Exception e )
+    catch ( MissingResourceException e )
     {
       // Do nothing
     }
     this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
+    this.gui.jComboBoxLanguage.setSelectedItem ( PreferenceManager
+        .getInstance ().getLanguageItem () );
 
-    // Look and feel
-    this.lookAndFeelComboBoxModel = new DefaultComboBoxModel ();
-    this.lookAndFeelComboBoxModel.addElement ( "System" ); //$NON-NLS-1$
-    UIManager.getSystemLookAndFeelClassName ();
+    /*
+     * Look and feel
+     */
+    this.lookAndFeelComboBoxModel = new LookAndFeelComboBoxModel ();
+
+    this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( "System", //$NON-NLS-1$
+        UIManager.getSystemLookAndFeelClassName () ) );
+
     LookAndFeelInfo [] lookAndFeels = UIManager.getInstalledLookAndFeels ();
     for ( LookAndFeelInfo current : lookAndFeels )
     {
-      this.lookAndFeelComboBoxModel.addElement ( current.getName () );
+      this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( current
+          .getName (), current.getClassName () ) );
     }
     this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
+    this.gui.jComboBoxLookAndFeel.setSelectedItem ( PreferenceManager
+        .getInstance ().getLookAndFeelItem () );
+
+    /*
+     * Color
+     */
+    this.colorItemCellRenderer = new ColorItemCellRenderer ();
+    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
+    this.colorListModel = new ColorListModel ();
+    this.colorListModel.add ( this.colorItemState );
+    this.colorListModel.add ( this.colorItemSelectedState );
+    this.gui.jListColor.setModel ( this.colorListModel );
+    this.gui.jTabbedPane.setSelectedIndex ( PreferenceManager.getInstance ()
+        .getPreferencesDialogLastActiveTab () );
   }
+
+
+  /**
+   * The {@link ColorItem} state.
+   */
+  private ColorItem colorItemState = PreferenceManager.getInstance ()
+      .getColorItem ( "State", Color.GREEN ); //$NON-NLS-1$
+
+
+  /**
+   * The {@link ColorItem} selected state.
+   */
+  private ColorItem colorItemSelectedState = PreferenceManager.getInstance ()
+      .getColorItem ( "SelectedState", Color.RED ); //$NON-NLS-1$
 
 
   /**
@@ -240,10 +401,7 @@ public class PreferencesDialog
    */
   public void handleAccept ()
   {
-    this.gui.setVisible ( false );
-    PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
-        this.gui.jTabbedPane.getSelectedIndex () );
-    this.gui.dispose ();
+    saveData ();
   }
 
 
@@ -272,45 +430,26 @@ public class PreferencesDialog
           .getSelectedValue ();
       if ( colorItem != null )
       {
+
         Color color = JColorChooser.showDialog ( this.gui, Messages
             .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
             colorItem.getColor () );
+
         if ( color != null )
         {
-          colorItem.setColor ( color );
-          PreferenceManager.getInstance ().setPreferencesDialogColor (
-              colorItem );
+          if ( colorItem.equals ( this.colorItemState ) )
+          {
+            this.colorItemState.setColor ( color );
+          }
+          if ( colorItem.equals ( this.colorItemSelectedState ) )
+          {
+            this.colorItemSelectedState.setColor ( color );
+          }
+          // PreferenceManager.getInstance ().setPreferencesDialogColor (
+          // colorItem );
           this.gui.jListColor.repaint ();
         }
       }
-    }
-  }
-
-
-  /**
-   * Handles the item state changed event on the language {@link JComboBox}.
-   * 
-   * @param pEvent The {@link ItemEvent}.
-   */
-  public void handleLanguageItemStateChanged ( ItemEvent pEvent )
-  {
-    if ( pEvent.getStateChange () == ItemEvent.SELECTED )
-    {
-      // TODOChristian Implement this
-    }
-  }
-
-
-  /**
-   * Handles the item state changed event on the look and feel {@link JComboBox}.
-   * 
-   * @param pEvent The {@link ItemEvent}.
-   */
-  public void handleLookAndFeelItemStateChanged ( ItemEvent pEvent )
-  {
-    if ( pEvent.getStateChange () == ItemEvent.SELECTED )
-    {
-      // TODOChristian Implement this
     }
   }
 
@@ -321,9 +460,72 @@ public class PreferencesDialog
   public void handleOk ()
   {
     this.gui.setVisible ( false );
+    saveData ();
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Saves the data
+   */
+  private void saveData ()
+  {
+    /*
+     * Last active tab
+     */
     PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
         this.gui.jTabbedPane.getSelectedIndex () );
-    this.gui.dispose ();
+
+    /*
+     * Languages
+     */
+    PreferenceManager.getInstance ().setLanguageItem (
+        this.languageComboBoxModel.getSelectedItem () );
+    // TODOChristian Implement the language listener
+
+    /*
+     * Look and feel
+     */
+    LookAndFeelItem lookAndFeelItem = this.lookAndFeelComboBoxModel
+        .getSelectedItem ();
+
+    PreferenceManager.getInstance ().setLookAndFeelItem (
+        this.lookAndFeelComboBoxModel.getSelectedItem () );
+    try
+    {
+      UIManager.setLookAndFeel ( lookAndFeelItem.getClassName () );
+      SwingUtilities.updateComponentTreeUI ( this.parent );
+      for ( Frame current : Frame.getFrames () )
+      {
+        SwingUtilities.updateComponentTreeUI ( current );
+        for ( Window w : current.getOwnedWindows () )
+          SwingUtilities.updateComponentTreeUI ( w );
+      }
+    }
+    catch ( ClassNotFoundException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( InstantiationException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( IllegalAccessException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( UnsupportedLookAndFeelException e )
+    {
+      e.printStackTrace ();
+    }
+
+    /*
+     * Color
+     */
+    PreferenceManager.getInstance ().setColorItem ( this.colorItemState );
+    PreferenceManager.getInstance ()
+        .setColorItem ( this.colorItemSelectedState );
+    // TODOChristian Implement the color item listener
   }
 
 

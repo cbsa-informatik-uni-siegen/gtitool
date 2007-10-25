@@ -1,11 +1,12 @@
 package de.unisiegen.gtitool.ui;
 
 
-import java.awt.EventQueue;
-
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -14,13 +15,12 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
  * @author Christian Fehler
  * @version $Id$
  */
-
 public class Start
 {
 
   /**
-   * The main entry point for the GTITool project. This method also sets up
-   * native look and feel for the platform if possible.
+   * The main entry point for the GTI Tool project. This method also sets up
+   * look and feel for the platform if possible.
    * 
    * @param pArguments The command line arguments.
    */
@@ -28,26 +28,26 @@ public class Start
   {
     try
     {
-      /*
-       * Try to setup native look and feel for the platform, if the native look
-       * and feel is not GTKLookAndFeel, because of different problems with this
-       * look abd feel.
-       */
-      String nativeLAF = UIManager.getSystemLookAndFeelClassName ();
-      if ( nativeLAF.contains ( "GTK" ) ) //$NON-NLS-1$
-      {
-        UIManager.setLookAndFeel ( "javax.swing.plaf.metal.MetalLookAndFeel" ); //$NON-NLS-1$
-      }
-      else
-      {
-        UIManager.setLookAndFeel ( UIManager.getSystemLookAndFeelClassName () );
-      }
+      UIManager.setLookAndFeel ( PreferenceManager.getInstance ()
+          .getLookAndFeelItem ().getClassName () );
     }
-    catch ( Exception e )
+    catch ( ClassNotFoundException e )
     {
-      // Do nothing
+      e.printStackTrace ();
     }
-    EventQueue.invokeLater ( new Runnable ()
+    catch ( InstantiationException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( IllegalAccessException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( UnsupportedLookAndFeelException e )
+    {
+      e.printStackTrace ();
+    }
+    SwingUtilities.invokeLater ( new Runnable ()
     {
 
       public void run ()

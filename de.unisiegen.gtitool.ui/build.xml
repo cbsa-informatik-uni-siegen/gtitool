@@ -18,7 +18,7 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	
-	<target name="dist" depends="generate,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
@@ -51,6 +51,10 @@
 		</zip>
 		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2 and ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" />
+	</target>
+	
+	<target name="dist-core">
+		<ant dir="${core.basedir}" target="dist" inheritall="false" />
 	</target>
 	
 	<target name="dist-preclean">

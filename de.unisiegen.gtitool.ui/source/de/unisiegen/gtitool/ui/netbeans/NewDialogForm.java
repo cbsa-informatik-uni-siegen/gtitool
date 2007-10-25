@@ -154,8 +154,8 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         headerPanel.setBackground(new java.awt.Color(255, 255, 255));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/netbeans/Bundle"); // NOI18N
-        headerTitleLabel.setText(bundle.getString("New_File...")); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        headerTitleLabel.setText(bundle.getString("MainWindow.New")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
@@ -163,7 +163,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         headerPanel.add(headerTitleLabel, gridBagConstraints);
 
-        headerSubTitleLabel.setText(bundle.getString("FileWizardSubtitle")); // NOI18N
+        headerSubTitleLabel.setText(bundle.getString("MainWindow.NewSubtitle")); // NOI18N
         headerSubTitleLabel.setAlignmentY(0.0F);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -809,8 +809,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
-        java.util.ResourceBundle bundle1 = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        cancelButton.setText(bundle1.getString("Cancel")); // NOI18N
+        cancelButton.setText(bundle.getString("Cancel")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);

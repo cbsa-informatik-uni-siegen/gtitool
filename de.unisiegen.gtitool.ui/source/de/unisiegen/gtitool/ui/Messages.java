@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui;
 
 
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
@@ -15,13 +14,6 @@ public class Messages
 {
 
   /**
-   * The resource bundle.
-   */
-  private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-      .getBundle ( "de.unisiegen.gtitool.ui.messages" ); //$NON-NLS-1$
-
-
-  /**
    * Gets a string for the given key from the resource bundle.
    * 
    * @param pKey The key for the desired string.
@@ -29,14 +21,7 @@ public class Messages
    */
   public static String getString ( String pKey )
   {
-    try
-    {
-      return RESOURCE_BUNDLE.getString ( pKey );
-    }
-    catch ( MissingResourceException e )
-    {
-      e.printStackTrace ();
-      return '!' + pKey + '!';
-    }
+    return ResourceBundle.getBundle ( "de.unisiegen.gtitool.ui.messages" ) //$NON-NLS-1$
+        .getString ( pKey );
   }
 }

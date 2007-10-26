@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui;
 
 
+import java.util.Locale;
+
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -26,6 +28,9 @@ public class Start
    */
   public static void main ( String [] pArguments )
   {
+    /*
+     * Set the last active look and feel
+     */
     try
     {
       UIManager.setLookAndFeel ( PreferenceManager.getInstance ()
@@ -47,6 +52,15 @@ public class Start
     {
       e.printStackTrace ();
     }
+    /*
+     * Set the last active language
+     */
+    PreferenceManager.getInstance ().setSystemLocale ( Locale.getDefault () );
+    Locale.setDefault ( PreferenceManager.getInstance ().getLanguageItem ()
+        .getLocale () );
+    /*
+     * Start the GTI Tool
+     */
     SwingUtilities.invokeLater ( new Runnable ()
     {
 

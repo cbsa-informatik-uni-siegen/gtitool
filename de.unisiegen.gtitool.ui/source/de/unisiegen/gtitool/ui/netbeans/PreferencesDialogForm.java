@@ -209,13 +209,13 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonAcceptActionPerformed
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAccept;
-    private javax.swing.JButton jButtonCancel;
-    private javax.swing.JButton jButtonOk;
+    public javax.swing.JButton jButtonAccept;
+    public javax.swing.JButton jButtonCancel;
+    public javax.swing.JButton jButtonOk;
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
-    private javax.swing.JLabel jLabelLanguage;
-    private javax.swing.JLabel jLabelLookAndFeel;
+    public javax.swing.JLabel jLabelLanguage;
+    public javax.swing.JLabel jLabelLookAndFeel;
     public javax.swing.JList jListColor;
     private javax.swing.JPanel jPanelColors;
     private javax.swing.JPanel jPanelGeneral;

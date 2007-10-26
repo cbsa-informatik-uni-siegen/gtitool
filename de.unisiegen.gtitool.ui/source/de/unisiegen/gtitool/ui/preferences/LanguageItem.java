@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.ui.preferences;
 
 
+import java.util.Locale;
+
+
 /**
- * The language item class.
+ * The locale item class.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -17,18 +20,18 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
 
 
   /**
-   * The language of this item.
+   * The {@link Locale} of this item.
    */
-  private String language;
+  private Locale locale;
 
 
   /**
    * Allocates a new <code>LanguageItem</code>.
    * 
    * @param pTitle The title of this item.
-   * @param pLanguage The language of this item.
+   * @param pLocale The {@link Locale} of this item.
    */
-  public LanguageItem ( String pTitle, String pLanguage )
+  public LanguageItem ( String pTitle, Locale pLocale )
   {
     // Title
     if ( pTitle == null )
@@ -36,8 +39,12 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
       throw new NullPointerException ( "title is null" ); //$NON-NLS-1$
     }
     this.title = pTitle;
-    // Language
-    this.language = pLanguage;
+    // Locale
+    if ( pLocale == null )
+    {
+      throw new NullPointerException ( "locale is null" ); //$NON-NLS-1$
+    }
+    this.locale = pLocale;
   }
 
 
@@ -49,7 +56,7 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
   @Override
   public LanguageItem clone ()
   {
-    return new LanguageItem ( this.title, this.language );
+    return new LanguageItem ( this.title, this.locale );
   }
 
 
@@ -76,22 +83,21 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
     {
       LanguageItem other = ( LanguageItem ) pOther;
       return ( this.title.equals ( other.title ) )
-          && ( this.language == null ? other.language == null : this.language
-              .equals ( other.language ) );
+          && ( this.locale.equals ( other.locale ) );
     }
     return false;
   }
 
 
   /**
-   * Returns the language.
+   * Returns the {@link Locale}.
    * 
-   * @return The language.
-   * @see #language
+   * @return The {@link Locale}.
+   * @see #locale
    */
-  public String getLanguage ()
+  public Locale getLocale ()
   {
-    return this.language;
+    return this.locale;
   }
 
 
@@ -115,19 +121,23 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
   @Override
   public int hashCode ()
   {
-    return this.title.hashCode () + this.language == null ? 0 : this.language
-        .hashCode ();
+    return this.title.hashCode () + this.locale.hashCode ();
   }
 
 
   /**
-   * Sets the language.
+   * Sets the {@link Locale}.
    * 
-   * @param pLanguage The language to set.
+   * @param pLocale The {@link Locale} to set.
    */
-  public void setLanguage ( String pLanguage )
+  public void setLocale ( Locale pLocale )
   {
-    this.language = pLanguage;
+    // Locale
+    if ( pLocale == null )
+    {
+      throw new NullPointerException ( "locale is null" ); //$NON-NLS-1$
+    }
+    this.locale = pLocale;
   }
 
 
@@ -155,6 +165,6 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
   public String toString ()
   {
     return this.title
-        + ( this.language == null ? "" : ( " (" + this.language + ")" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        + ( this.locale == null ? "" : ( " (" + this.locale.toString () + ")" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
   }
 }

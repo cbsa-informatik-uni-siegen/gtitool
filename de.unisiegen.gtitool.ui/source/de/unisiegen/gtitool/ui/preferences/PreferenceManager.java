@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
@@ -86,11 +87,49 @@ public class PreferenceManager
 
 
   /**
+   * The list of {@link LanguageChangedListener}.
+   */
+  private ArrayList < LanguageChangedListener > languageChangedListenerList = new ArrayList < LanguageChangedListener > ();
+
+
+  /**
+   * The system {@link Locale}.
+   */
+  private Locale systemLocale;
+
+
+  /**
    * Allocates a new <code>PreferencesManager</code>.
    */
   private PreferenceManager ()
   {
     this.preferences = Preferences.userNodeForPackage ( this.getClass () );
+  }
+
+
+  /**
+   * Adds the given {@link LanguageChangedListener}.
+   * 
+   * @param pListener The {@link LanguageChangedListener}.
+   */
+  public void addLanguageChangedListener ( LanguageChangedListener pListener )
+  {
+    this.languageChangedListenerList.add ( pListener );
+  }
+
+
+  /**
+   * Let the listeners know that the language has changed.
+   * 
+   * @param pNewLocale The new {@link Locale}.
+   */
+  public void fireLanguageChanged ( Locale pNewLocale )
+  {
+    Locale.setDefault ( pNewLocale );
+    for ( LanguageChangedListener current : this.languageChangedListenerList )
+    {
+      current.languageChanged ();
+    }
   }
 
 
@@ -128,7 +167,7 @@ public class PreferenceManager
         "Default" ); //$NON-NLS-1$
     String language = this.preferences.get (
         "PreferencesDialog.Language.Language", null ); //$NON-NLS-1$
-    return new LanguageItem ( title, "".equals ( language ) ? null : language ); //$NON-NLS-1$
+    return new LanguageItem ( title, new Locale ( language ) );
   }
 
 
@@ -215,6 +254,17 @@ public class PreferenceManager
 
 
   /**
+   * Returns the system {@link Locale}.
+   * 
+   * @return The system {@link Locale}.
+   */
+  public Locale getSystemLocale ()
+  {
+    return this.systemLocale;
+  }
+
+
+  /**
    * Returns the working path.
    * 
    * @return The working path.
@@ -222,6 +272,17 @@ public class PreferenceManager
   public String getWorkingPath ()
   {
     return this.preferences.get ( "workingPath", "." ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Removes the given {@link LanguageChangedListener}.
+   * 
+   * @param pListener The {@link LanguageChangedListener}.
+   */
+  public void removeLanguageChangedListener ( LanguageChangedListener pListener )
+  {
+    this.languageChangedListenerList.remove ( pListener );
   }
 
 
@@ -255,7 +316,7 @@ public class PreferenceManager
     this.preferences.put ( "PreferencesDialog.Language.Title", pLanguageItem //$NON-NLS-1$
         .getTitle () );
     this.preferences.put ( "PreferencesDialog.Language.Language", pLanguageItem //$NON-NLS-1$
-        .getLanguage () == null ? "" : pLanguageItem.getLanguage () ); //$NON-NLS-1$
+        .getLocale ().getLanguage () );
   }
 
 
@@ -322,6 +383,17 @@ public class PreferenceManager
     }
     this.preferences.putInt ( "mainWindow.recentlyUsedActiveIndex", //$NON-NLS-1$
         pRecentlyUsed.getActiveIndex () );
+  }
+
+
+  /**
+   * Sets the system {@link Locale}.
+   * 
+   * @param pLocale The system {@link Locale}.
+   */
+  public void setSystemLocale ( Locale pLocale )
+  {
+    this.systemLocale = pLocale;
   }
 
 

@@ -1,10 +1,14 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.util.ResourceBundle;
+
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
+import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -19,7 +23,7 @@ public class AboutDialog
   /**
    * The {@link AboutDialogForm}.
    */
-  private AboutDialogForm aboutDialogForm;
+  private AboutDialogForm gui;
 
 
   /**
@@ -36,17 +40,40 @@ public class AboutDialog
   public AboutDialog ( JFrame pParent )
   {
     this.parent = pParent;
-    this.aboutDialogForm = new AboutDialogForm ( this, pParent );
-    this.aboutDialogForm.jLabelName.setText ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
+    this.gui = new AboutDialogForm ( this, pParent );
+    this.gui.jLabelName.setText ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
+
+    /*
+     * Language changed listener
+     */
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            ResourceBundle bundle = ResourceBundle
+                .getBundle ( "de/unisiegen/gtitool/ui/messages" ); //$NON-NLS-1$
+            AboutDialog.this.gui.setTitle ( bundle
+                .getString ( "AboutDialog.Title" ) ); //$NON-NLS-1$
+            AboutDialog.this.gui.jLabelCopyright
+                .setText ( "AboutDialog.Copyright" ); //$NON-NLS-1$
+            AboutDialog.this.gui.jLabelWebpage.setText ( "AboutDialog.Webpage" ); //$NON-NLS-1$
+            AboutDialog.this.gui.jLabelDeveloper
+                .setText ( "AboutDialog.Developer" ); //$NON-NLS-1$
+            AboutDialog.this.gui.jButtonClose.setText ( "AboutDialog.Close" ); //$NON-NLS-1$
+          }
+        } );
   }
 
 
   /**
    * Closes the {@link AboutDialogForm}.
    */
-  public void close ()
+  public void handleClose ()
   {
-    this.aboutDialogForm.dispose ();
+    this.gui.dispose ();
   }
 
 
@@ -56,11 +83,10 @@ public class AboutDialog
   public void show ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.aboutDialogForm.getWidth () / 2 );
+        - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.aboutDialogForm.getHeight () / 2 );
-    this.aboutDialogForm.setBounds ( x, y, this.aboutDialogForm.getWidth (),
-        this.aboutDialogForm.getHeight () );
-    this.aboutDialogForm.setVisible ( true );
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+    this.gui.setVisible ( true );
   }
 }

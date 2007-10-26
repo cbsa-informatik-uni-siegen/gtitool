@@ -195,22 +195,22 @@ public class AboutDialogForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-      this.aboutDialog.close();
+      this.aboutDialog.handleClose();
     }//GEN-LAST:event_formWindowClosing
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
-      this.aboutDialog.close();
+      this.aboutDialog.handleClose();
     }//GEN-LAST:event_jButtonCloseActionPerformed
   
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonClose;
-    private javax.swing.JLabel jLabelCopyright;
-    private javax.swing.JLabel jLabelDeveloper;
+    public javax.swing.JButton jButtonClose;
+    public javax.swing.JLabel jLabelCopyright;
+    public javax.swing.JLabel jLabelDeveloper;
     private javax.swing.JLabel jLabelDeveloper1;
     private javax.swing.JLabel jLabelDeveloper2;
     private javax.swing.JLabel jLabelIcon;
     public javax.swing.JLabel jLabelName;
-    private javax.swing.JLabel jLabelWebpage;
+    public javax.swing.JLabel jLabelWebpage;
     private javax.swing.JLabel jLabelWebpageEntry;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelNorth;

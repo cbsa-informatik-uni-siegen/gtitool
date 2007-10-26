@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -29,6 +30,7 @@ import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.ColorItem;
+import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -311,6 +313,26 @@ public class PreferencesDialog
 
 
   /**
+   * The {@link ColorItem} state.
+   */
+  private ColorItem colorItemState = PreferenceManager.getInstance ()
+      .getColorItem ( "State", Color.GREEN ); //$NON-NLS-1$
+
+
+  /**
+   * The {@link ColorItem} selected state.
+   */
+  private ColorItem colorItemSelectedState = PreferenceManager.getInstance ()
+      .getColorItem ( "SelectedState", Color.RED ); //$NON-NLS-1$
+
+
+  /**
+   * The initial {@link LanguageItem}.
+   */
+  private LanguageItem initialLanguageItem;
+
+
+  /**
    * Creates a new <code>PreferencesDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
@@ -326,8 +348,8 @@ public class PreferencesDialog
     this.languageComboBoxModel = new LanguageComboBoxModel ();
     ResourceBundle languageBundle = ResourceBundle
         .getBundle ( "de.unisiegen.gtitool.ui.languages" ); //$NON-NLS-1$
-    this.languageComboBoxModel
-        .addElement ( new LanguageItem ( "Default", null ) ); //$NON-NLS-1$
+    this.languageComboBoxModel.addElement ( new LanguageItem (
+        "Default", PreferenceManager.getInstance ().getSystemLocale () ) ); //$NON-NLS-1$
     try
     {
       int index = 0;
@@ -338,7 +360,7 @@ public class PreferencesDialog
         String language = languageBundle
             .getString ( "Language" + index + ".Language" ); //$NON-NLS-1$//$NON-NLS-2$
         this.languageComboBoxModel.addElement ( new LanguageItem ( title,
-            language ) );
+            new Locale ( language ) ) );
         index++ ;
       }
     }
@@ -347,8 +369,9 @@ public class PreferencesDialog
       // Do nothing
     }
     this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
-    this.gui.jComboBoxLanguage.setSelectedItem ( PreferenceManager
-        .getInstance ().getLanguageItem () );
+    this.initialLanguageItem = PreferenceManager.getInstance ()
+        .getLanguageItem ();
+    this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
 
     /*
      * Look and feel
@@ -379,21 +402,42 @@ public class PreferencesDialog
     this.gui.jListColor.setModel ( this.colorListModel );
     this.gui.jTabbedPane.setSelectedIndex ( PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab () );
+
+    /*
+     * Language changed listener
+     */
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            ResourceBundle bundle = ResourceBundle
+                .getBundle ( "de/unisiegen/gtitool/ui/messages" ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.setTitle ( bundle
+                .getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 0, bundle
+                .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 1, bundle
+                .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jButtonAccept.setText ( bundle
+                .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jButtonOk.setText ( bundle
+                .getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jButtonCancel.setText ( bundle
+                .getString ( "PreferencesDialog.Cancel" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jLabelLanguage.setText ( bundle
+                .getString ( "PreferencesDialog.Language" ) ); //$NON-NLS-1$            
+            PreferencesDialog.this.gui.jLabelLookAndFeel.setText ( bundle
+                .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$           
+            PreferencesDialog.this.colorItemState = PreferenceManager
+                .getInstance ().getColorItem ( "State", Color.GREEN ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemSelectedState = PreferenceManager
+                .getInstance ().getColorItem ( "SelectedState", Color.RED ); //$NON-NLS-1$
+          }
+        } );
   }
-
-
-  /**
-   * The {@link ColorItem} state.
-   */
-  private ColorItem colorItemState = PreferenceManager.getInstance ()
-      .getColorItem ( "State", Color.GREEN ); //$NON-NLS-1$
-
-
-  /**
-   * The {@link ColorItem} selected state.
-   */
-  private ColorItem colorItemSelectedState = PreferenceManager.getInstance ()
-      .getColorItem ( "SelectedState", Color.RED ); //$NON-NLS-1$
 
 
   /**
@@ -479,10 +523,16 @@ public class PreferencesDialog
     /*
      * Languages
      */
-    PreferenceManager.getInstance ().setLanguageItem (
-        this.languageComboBoxModel.getSelectedItem () );
-    // TODOChristian Implement the language listener
-
+    LanguageItem selectedLanguageItem = this.languageComboBoxModel
+        .getSelectedItem ();
+    if ( !this.initialLanguageItem.getLocale ().equals (
+        selectedLanguageItem.getLocale () ) )
+    {
+      PreferenceManager.getInstance ().setLanguageItem ( selectedLanguageItem );
+      this.initialLanguageItem = selectedLanguageItem;
+      PreferenceManager.getInstance ().fireLanguageChanged (
+          selectedLanguageItem.getLocale () );
+    }
     /*
      * Look and feel
      */

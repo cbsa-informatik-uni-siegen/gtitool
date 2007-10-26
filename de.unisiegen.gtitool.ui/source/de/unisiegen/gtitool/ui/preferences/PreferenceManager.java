@@ -166,7 +166,7 @@ public class PreferenceManager
     String title = this.preferences.get ( "PreferencesDialog.Language.Title", //$NON-NLS-1$
         "Default" ); //$NON-NLS-1$
     String language = this.preferences.get (
-        "PreferencesDialog.Language.Language", null ); //$NON-NLS-1$
+        "PreferencesDialog.Language.Language", getSystemLocale ().getLanguage () ); //$NON-NLS-1$
     return new LanguageItem ( title, new Locale ( language ) );
   }
 

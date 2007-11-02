@@ -59,7 +59,7 @@ public class NewDialog
     if (this.newDialogForm.isCanceled ())
       return null;
     if (this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel)
-      return new MachinePanel(newDialogForm.alphabetPanel);
+      return new MachinePanel(this.parent, newDialogForm.alphabetPanel);
     return new GrammarPanel(newDialogForm.alphabetPanel);
   }
 }

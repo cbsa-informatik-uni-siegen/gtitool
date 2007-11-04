@@ -7,11 +7,11 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ResourceBundle;
 
 import javax.swing.JFileChooser;
 
 import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
@@ -102,11 +102,9 @@ public class MainWindow
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            ResourceBundle bundle = ResourceBundle
-                .getBundle ( "de/unisiegen/gtitool/ui/messages" ); //$NON-NLS-1$
-            MainWindow.this.window.aboutItem.setText ( bundle
+            MainWindow.this.window.aboutItem.setText ( Messages
                 .getString ( "MainWindow.About" ) ); //$NON-NLS-1$
-            MainWindow.this.window.preferencesItem.setText ( bundle
+            MainWindow.this.window.preferencesItem.setText ( Messages
                 .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
             
             /*

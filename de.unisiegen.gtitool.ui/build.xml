@@ -73,6 +73,7 @@
 			<src path="${basedir}/source-generated" />
 			<classpath>
 				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
 				<pathelement location="${libdir}/jgraph.jar" />
 			</classpath>
 		</javac>
@@ -82,7 +83,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar jgraph.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar jgraph.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />
 				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.ui.version}" />
@@ -100,6 +101,9 @@
 				<include name="**/*.gif"/>
 				<include name="**/*.png"/>
 				<include name="**/*.properties"/>
+			</fileset>
+			<fileset dir="${basedir}/log4j">
+				<include name="log4j.xml" />
 			</fileset>
 		</jar>
 		<delete file="${distdir}/MANIFEST.MF" />

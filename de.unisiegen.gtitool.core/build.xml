@@ -13,9 +13,10 @@
 	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
+	<property name="libdir" value="${basedir}/lib" />
 	<property name="docdir" value="${basedir}/doc" />
 	
-	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
 	</target>
 	
@@ -30,6 +31,9 @@
 		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-impl" />
+			<classpath>
+				<pathelement location="${libdir}/log4j-1.2.14.jar" />
+			</classpath>
 		</javac>
 	</target>
 	
@@ -58,7 +62,11 @@
 		</jar>
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
-	
+
+	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
+	</target>
+
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>

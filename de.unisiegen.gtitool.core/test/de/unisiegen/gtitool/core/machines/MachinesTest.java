@@ -1,0 +1,71 @@
+package de.unisiegen.gtitool.core.machines;
+
+
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.MachineException;
+import de.unisiegen.gtitool.core.exceptions.MachineValidationException;
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
+
+
+/**
+ * The test class of the machines.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+@SuppressWarnings (
+{ "all" } )
+public class MachinesTest
+{
+
+  public static void main ( String [] pArguments )
+  {
+    Symbol a = new Symbol ( "a" );
+    Symbol b = new Symbol ( "b" );
+    Symbol c = new Symbol ( "c" );
+
+    Alphabet alphabet = new Alphabet ();
+    alphabet.addSymbol ( a );
+    alphabet.addSymbol ( b );
+    alphabet.addSymbol ( c );
+
+    State z0 = new State ( alphabet, "z0", true, false );
+    State z1 = new State ( alphabet, "z1", false, false );
+    State z2 = new State ( alphabet, "z2", false, true );
+
+    Transition t0 = new Transition ( alphabet, z0, z0, a, b );
+    Transition t1 = new Transition ( alphabet, z0, z1, c );
+    Transition t2 = new Transition ( alphabet, z1, z1, a, b );
+    Transition t3 = new Transition ( alphabet, z1, z2, c );
+    Transition t4 = new Transition ( alphabet, z2, z2, a, b, c );
+
+    DFA dfa = new DFA ( alphabet );
+
+    dfa.addState ( z0 );
+    dfa.addState ( z1 );
+    dfa.addState ( z2 );
+
+    dfa.addTransition ( t0 );
+    dfa.addTransition ( t1 );
+    dfa.addTransition ( t2 );
+    dfa.addTransition ( t3 );
+    dfa.addTransition ( t4 );
+
+    try
+    {
+      dfa.validate ();
+    }
+    catch ( MachineValidationException e )
+    {
+      for ( MachineException currentException : e.getMachineExceptionList () )
+      {
+        System.out.println ( currentException.getClass ().getSimpleName () );
+        System.out.println ( currentException.toString () );
+        System.out.println ();
+      }
+    }
+  }
+}

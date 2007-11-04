@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.ui.preferences;
  * @author Christian Fehler
  * @version $Id$
  */
-public class LookAndFeelItem implements Cloneable,
+public final class LookAndFeelItem implements Cloneable,
     Comparable < LookAndFeelItem >
 {
 
@@ -52,7 +52,7 @@ public class LookAndFeelItem implements Cloneable,
    * @see Object#clone()
    */
   @Override
-  public LookAndFeelItem clone ()
+  public final LookAndFeelItem clone ()
   {
     return new LookAndFeelItem ( this.name, this.className );
   }
@@ -63,7 +63,7 @@ public class LookAndFeelItem implements Cloneable,
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( LookAndFeelItem pOther )
+  public final int compareTo ( LookAndFeelItem pOther )
   {
     return this.name.compareTo ( pOther.name );
   }
@@ -75,7 +75,7 @@ public class LookAndFeelItem implements Cloneable,
    * @see Object#equals(Object)
    */
   @Override
-  public boolean equals ( Object pOther )
+  public final boolean equals ( Object pOther )
   {
     if ( pOther instanceof LookAndFeelItem )
     {
@@ -93,7 +93,7 @@ public class LookAndFeelItem implements Cloneable,
    * @return The className.
    * @see #className
    */
-  public String getClassName ()
+  public final String getClassName ()
   {
     return this.className;
   }
@@ -105,7 +105,7 @@ public class LookAndFeelItem implements Cloneable,
    * @return The name.
    * @see #name
    */
-  public String getName ()
+  public final String getName ()
   {
     return this.name;
   }
@@ -117,39 +117,9 @@ public class LookAndFeelItem implements Cloneable,
    * @see Object#hashCode()
    */
   @Override
-  public int hashCode ()
+  public final int hashCode ()
   {
     return this.name.hashCode () + this.className.hashCode ();
-  }
-
-
-  /**
-   * Sets the className.
-   * 
-   * @param pClassName The className to set.
-   */
-  public void setClassName ( String pClassName )
-  {
-    if ( pClassName == null )
-    {
-      throw new NullPointerException ( "class name is null" ); //$NON-NLS-1$
-    }
-    this.className = pClassName;
-  }
-
-
-  /**
-   * Sets the name.
-   * 
-   * @param pName The name to set.
-   */
-  public void setName ( String pName )
-  {
-    if ( pName == null )
-    {
-      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
-    this.name = pName;
   }
 
 
@@ -159,7 +129,7 @@ public class LookAndFeelItem implements Cloneable,
    * @see Object#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     return this.name;
   }

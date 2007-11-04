@@ -7,6 +7,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -17,8 +19,14 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public class Start
+public final class Start
 {
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( Start.class );
+
 
   /**
    * The main entry point for the GTI Tool project. This method also sets up
@@ -26,7 +34,7 @@ public class Start
    * 
    * @param pArguments The command line arguments.
    */
-  public static void main ( String [] pArguments )
+  public final static void main ( String [] pArguments )
   {
     /*
      * Set the last active look and feel
@@ -38,19 +46,19 @@ public class Start
     }
     catch ( ClassNotFoundException e )
     {
-      e.printStackTrace ();
+      logger.error ( "class not found exception", e ); //$NON-NLS-1$
     }
     catch ( InstantiationException e )
     {
-      e.printStackTrace ();
+      logger.error ( "instantiation exception", e ); //$NON-NLS-1$
     }
     catch ( IllegalAccessException e )
     {
-      e.printStackTrace ();
+      logger.error ( "illegal access exception", e ); //$NON-NLS-1$
     }
     catch ( UnsupportedLookAndFeelException e )
     {
-      e.printStackTrace ();
+      logger.error ( "unsupported look and feel exception", e ); //$NON-NLS-1$
     }
     /*
      * Set the last active language

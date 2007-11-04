@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings({"all"})
+@SuppressWarnings({ "nls","unqualified-field-access","synthetic-access", "all"})
 public class AboutDialogForm extends javax.swing.JDialog {
     
     /**
@@ -20,17 +20,17 @@ public class AboutDialogForm extends javax.swing.JDialog {
     /**
      * The {@link AboutDialog}.
      */
-    private AboutDialog aboutDialog ;
+    private AboutDialog logic ;
     
     /**
      * Creates new form AboutDialog
      * 
-     * @param pAboutDialog The {@link AboutDialog}.
-     * @param parent The parent {@link AboutDialog}.
+     * @param pLogic The {@link AboutDialog}.
+     * @param pParent The parent {@link AboutDialog}.
      */
-    public AboutDialogForm(AboutDialog pAboutDialog, java.awt.Frame parent) {
-        super(parent, true);
-        this.aboutDialog = pAboutDialog ;
+    public AboutDialogForm(AboutDialog pLogic, java.awt.Frame pParent) {
+        super(pParent, true);
+        this.logic = pLogic ;
         initComponents();
     }
     
@@ -53,8 +53,8 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jLabelWebpage = new javax.swing.JLabel();
         jLabelWebpageEntry = new javax.swing.JLabel();
         jLabelDeveloper = new javax.swing.JLabel();
-        jLabelDeveloper2 = new javax.swing.JLabel();
         jLabelDeveloper1 = new javax.swing.JLabel();
+        jLabelDeveloper2 = new javax.swing.JLabel();
         jButtonClose = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -129,7 +129,15 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanelSouth.add(jLabelWebpage, gridBagConstraints);
 
+        jLabelWebpageEntry.setForeground(java.awt.Color.blue);
         jLabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
+        jLabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
+        jLabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelWebpageEntryMouseClicked(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -145,14 +153,6 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         jPanelSouth.add(jLabelDeveloper, gridBagConstraints);
 
-        jLabelDeveloper2.setText("Benjamin Mies");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 0, 0);
-        jPanelSouth.add(jLabelDeveloper2, gridBagConstraints);
-
         jLabelDeveloper1.setText("Christian Fehler");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -160,6 +160,14 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 20, 0, 0);
         jPanelSouth.add(jLabelDeveloper1, gridBagConstraints);
+
+        jLabelDeveloper2.setText("Benjamin Mies");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 20, 0, 0);
+        jPanelSouth.add(jLabelDeveloper2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -169,6 +177,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanelMain.add(jPanelSouth, gridBagConstraints);
 
+        jButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
         jButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
         jButtonClose.setFocusable(false);
         jButtonClose.addActionListener(new java.awt.event.ActionListener() {
@@ -194,12 +203,16 @@ public class AboutDialogForm extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(400, 260));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jLabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebpageEntryMouseClicked
+      this.logic.handleWebpageEntry();
+    }//GEN-LAST:event_jLabelWebpageEntryMouseClicked
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-      this.aboutDialog.handleClose();
+      this.logic.handleClose();
     }//GEN-LAST:event_formWindowClosing
 
     private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
-      this.aboutDialog.handleClose();
+      this.logic.handleClose();
     }//GEN-LAST:event_jButtonCloseActionPerformed
   
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
@@ -211,7 +224,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelIcon;
     public javax.swing.JLabel jLabelName;
     public javax.swing.JLabel jLabelWebpage;
-    private javax.swing.JLabel jLabelWebpageEntry;
+    public javax.swing.JLabel jLabelWebpageEntry;
     private javax.swing.JPanel jPanelMain;
     private javax.swing.JPanel jPanelNorth;
     private javax.swing.JPanel jPanelSouth;

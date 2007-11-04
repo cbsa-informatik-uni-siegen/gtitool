@@ -14,14 +14,8 @@ import javax.swing.ImageIcon;
  * @author Christian Fehler
  * @version $Id$
  */
-public class ColorItem implements Cloneable, Comparable < ColorItem >
+public final class ColorItem implements Cloneable, Comparable < ColorItem >
 {
-
-  /**
-   * The name of this item.
-   */
-  private String name;
-
 
   /**
    * The {@link Color} of this item.
@@ -42,40 +36,30 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
 
 
   /**
+   * The standard {@link Color} of this item.
+   */
+  private Color standardColor;
+
+
+  /**
    * Allocates a new <code>ColorItem</code>.
    * 
-   * @param pName The name of this item.
    * @param pColor The {@link Color} of this item.
    * @param pCaption The caption of this item.
    * @param pDescription The description of this item.
+   * @param pStandardColor The standard {@link Color} of this item.
    */
-  public ColorItem ( String pName, Color pColor, String pCaption,
-      String pDescription )
+  public ColorItem ( Color pColor, String pCaption, String pDescription,
+      Color pStandardColor )
   {
-    // Name
-    if ( pName == null )
-    {
-      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
-    this.name = pName;
     // Color
-    if ( pColor == null )
-    {
-      throw new NullPointerException ( "color is null" ); //$NON-NLS-1$
-    }
-    this.color = pColor;
+    setColor ( pColor );
     // Caption
-    if ( pCaption == null )
-    {
-      throw new NullPointerException ( "caption is null" ); //$NON-NLS-1$
-    }
-    this.caption = pCaption;
+    setCaption ( pCaption );
     // Description
-    if ( pDescription == null )
-    {
-      throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
-    }
-    this.description = pDescription;
+    setDescription ( pDescription );
+    // StandardColor
+    setStandardColor ( pStandardColor );
   }
 
 
@@ -85,10 +69,10 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @see Object#clone()
    */
   @Override
-  public ColorItem clone ()
+  public final ColorItem clone ()
   {
-    return new ColorItem ( this.name, this.color, this.caption,
-        this.description );
+    return new ColorItem ( this.color, this.caption, this.description,
+        this.standardColor );
   }
 
 
@@ -97,7 +81,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( ColorItem pOther )
+  public final int compareTo ( ColorItem pOther )
   {
     return this.caption.compareTo ( pOther.caption );
   }
@@ -109,15 +93,13 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @see Object#equals(Object)
    */
   @Override
-  public boolean equals ( Object pOther )
+  public final boolean equals ( Object pOther )
   {
     if ( pOther instanceof ColorItem )
     {
       ColorItem other = ( ColorItem ) pOther;
-      return ( this.name.equals ( other.name ) )
-          && ( this.color.equals ( other.color ) )
-          && ( this.caption.equals ( other.caption ) )
-          && ( this.description.equals ( other.description ) );
+      return ( ( this.color.equals ( other.color ) ) && ( this.standardColor
+          .equals ( other.standardColor ) ) );
     }
     return false;
   }
@@ -129,7 +111,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @return The caption.
    * @see #caption
    */
-  public String getCaption ()
+  public final String getCaption ()
   {
     return this.caption;
   }
@@ -141,7 +123,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @return The color.
    * @see #color
    */
-  public Color getColor ()
+  public final Color getColor ()
   {
     return this.color;
   }
@@ -153,7 +135,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @return The description.
    * @see #description
    */
-  public String getDescription ()
+  public final String getDescription ()
   {
     return this.description;
   }
@@ -164,7 +146,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @return The icon of this item.
    */
-  public ImageIcon getIcon ()
+  public final ImageIcon getIcon ()
   {
     BufferedImage image = new BufferedImage ( 16, 10,
         BufferedImage.TYPE_INT_RGB );
@@ -178,14 +160,14 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
 
 
   /**
-   * Returns the name.
+   * Returns the standard color.
    * 
-   * @return The name.
-   * @see #name
+   * @return The standard color.
+   * @see #standardColor
    */
-  public String getName ()
+  public final Color getStandardColor ()
   {
-    return this.name;
+    return this.standardColor;
   }
 
 
@@ -195,10 +177,18 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @see Object#hashCode()
    */
   @Override
-  public int hashCode ()
+  public final int hashCode ()
   {
-    return this.name.hashCode () + this.color.hashCode ()
-        + this.caption.hashCode () + this.description.hashCode ();
+    return this.color.hashCode () + this.standardColor.hashCode ();
+  }
+
+
+  /**
+   * Restores the default {@link Color} of this item.
+   */
+  public final void restore ()
+  {
+    this.color = this.standardColor;
   }
 
 
@@ -207,11 +197,15 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @param pCaption The caption to set.
    */
-  public void setCaption ( String pCaption )
+  public final void setCaption ( String pCaption )
   {
     if ( pCaption == null )
     {
       throw new NullPointerException ( "caption is null" ); //$NON-NLS-1$
+    }
+    if ( pCaption.equals ( "" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "caption is empty" ); //$NON-NLS-1$
     }
     this.caption = pCaption;
   }
@@ -222,7 +216,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @param pColor The color to set.
    */
-  public void setColor ( Color pColor )
+  public final void setColor ( Color pColor )
   {
     if ( pColor == null )
     {
@@ -237,13 +231,32 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @param pDescription The description to set.
    */
-  public void setDescription ( String pDescription )
+  public final void setDescription ( String pDescription )
   {
     if ( pDescription == null )
     {
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
     }
+    if ( pDescription.equals ( "" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "description is empty" ); //$NON-NLS-1$
+    }
     this.description = pDescription;
+  }
+
+
+  /**
+   * Sets the standard color.
+   * 
+   * @param pStandardColor The standard color to set.
+   */
+  public final void setStandardColor ( Color pStandardColor )
+  {
+    if ( pStandardColor == null )
+    {
+      throw new NullPointerException ( "standard color is null" ); //$NON-NLS-1$
+    }
+    this.standardColor = pStandardColor;
   }
 
 
@@ -253,7 +266,7 @@ public class ColorItem implements Cloneable, Comparable < ColorItem >
    * @see Object#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     return this.caption;
   }

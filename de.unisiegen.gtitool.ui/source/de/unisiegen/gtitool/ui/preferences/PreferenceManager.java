@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.preferences;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -12,6 +13,11 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
@@ -23,8 +29,15 @@ import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
  * @author Christian Fehler
  * @version $Id$
  */
-public class PreferenceManager
+public final class PreferenceManager
 {
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( PreferenceManager.class );
+
 
   /**
    * The single instance of the <code>PreferenceManager<code>
@@ -35,25 +48,97 @@ public class PreferenceManager
   /**
    * The default width of the {@link MainWindow}.
    */
-  private static int DEFAULT_WIDTH = 640;
+  private static int DEFAULT_WIDTH = 800;
 
 
   /**
    * The default hight of the {@link MainWindow}.
    */
-  private static int DEFAULT_HEIGHT = 480;
+  private static int DEFAULT_HEIGHT = 600;
+
+
+  /**
+   * The default {@link Color} of the active {@link State}.
+   */
+  private static final Color DEFAULT_ACTIVE_STATE_COLOR = new Color ( 0, 0, 255 );
+
+
+  /**
+   * The default {@link Color} of the final {@link State}.
+   */
+  private static final Color DEFAULT_FINAL_STATE_COLOR = new Color ( 0, 255, 0 );
+
+
+  /**
+   * The default {@link Color} of the selected {@link State}.
+   */
+  private static final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255, 0,
+      0 );
+
+
+  /**
+   * The default {@link Color} of the start {@link State}.
+   */
+  private static final Color DEFAULT_START_STATE_COLOR = new Color ( 255, 127,
+      0 );
+
+
+  /**
+   * The default {@link Color} of a {@link State}.
+   */
+  private static final Color DEFAULT_STATE_COLOR = new Color ( 0, 255, 0 );
+
+
+  /**
+   * The default {@link Color} of a {@link Symbol}.
+   */
+  private static final Color DEFAULT_SYMBOL_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of a {@link Transition}.
+   */
+  private static final Color DEFAULT_TRANSITION_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default language title.
+   */
+  private static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
+
+
+  /**
+   * The default language language.
+   */
+  private static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
+      .getLanguage ();
+
+
+  /**
+   * The default look and feel name.
+   */
+  private static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
+
+
+  /**
+   * The default look and feel class name.
+   */
+  private static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = UIManager
+      .getSystemLookAndFeelClassName ();
 
 
   /**
    * The default x position of the {@link MainWindow}.
    */
-  private static int DEFAULT_POSTION_X = 0;
+  private static int DEFAULT_POSITION_X = ( Toolkit.getDefaultToolkit ()
+      .getScreenSize ().width - DEFAULT_WIDTH ) / 2;
 
 
   /**
    * The default y position of the {@link MainWindow}.
    */
-  private static int DEFAULT_POSTION_Y = 0;
+  private static int DEFAULT_POSITION_Y = ( Toolkit.getDefaultToolkit ()
+      .getScreenSize ().height - DEFAULT_HEIGHT ) / 2;
 
 
   /**
@@ -63,11 +148,23 @@ public class PreferenceManager
 
 
   /**
+   * The default preference dialog last active tab.
+   */
+  private static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
+
+
+  /**
+   * The default working path.
+   */
+  private static String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
+
+
+  /**
    * Returns the single instance of the <code>PreferenceManager</code>.
    * 
    * @return The single instance of the <code>PreferenceManager</code>.
    */
-  public static PreferenceManager getInstance ()
+  public final static PreferenceManager getInstance ()
   {
     if ( singlePreferenceManager == null )
     {
@@ -93,6 +190,12 @@ public class PreferenceManager
 
 
   /**
+   * The list of {@link ColorChangedListener}.
+   */
+  private ArrayList < ColorChangedListener > colorChangedListenerList = new ArrayList < ColorChangedListener > ();
+
+
+  /**
    * The system {@link Locale}.
    */
   private Locale systemLocale;
@@ -108,13 +211,129 @@ public class PreferenceManager
 
 
   /**
+   * Adds the given {@link ColorChangedListener}.
+   * 
+   * @param pListener The {@link ColorChangedListener}.
+   */
+  public final synchronized void addColorChangedListener (
+      ColorChangedListener pListener )
+  {
+    this.colorChangedListenerList.add ( pListener );
+  }
+
+
+  /**
    * Adds the given {@link LanguageChangedListener}.
    * 
    * @param pListener The {@link LanguageChangedListener}.
    */
-  public void addLanguageChangedListener ( LanguageChangedListener pListener )
+  public final synchronized void addLanguageChangedListener (
+      LanguageChangedListener pListener )
   {
     this.languageChangedListenerList.add ( pListener );
+  }
+
+
+  /**
+   * Let the listeners know that the color of the active {@link State} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the active {@link State}.
+   */
+  public final void fireColorChangedActiveState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedActiveState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the final {@link State} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the final {@link State}.
+   */
+  public final void fireColorChangedFinalState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedFinalState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the selected {@link State} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the selected {@link State}.
+   */
+  public final void fireColorChangedSelectedState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedSelectedState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the start {@link State} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the start {@link State}.
+   */
+  public final void fireColorChangedStartState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedStartState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the {@link State} has changed.
+   * 
+   * @param pNewColor The new color of the {@link State}.
+   */
+  public final void fireColorChangedState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the {@link Symbol} has changed.
+   * 
+   * @param pNewColor The new color of the {@link Symbol}.
+   */
+  public final void fireColorChangedSymbol ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedSymbol ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the {@link Transition} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the {@link Transition}.
+   */
+  public final void fireColorChangedTransition ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedTransition ( pNewColor );
+    }
   }
 
 
@@ -123,7 +342,7 @@ public class PreferenceManager
    * 
    * @param pNewLocale The new {@link Locale}.
    */
-  public void fireLanguageChanged ( Locale pNewLocale )
+  public final void fireLanguageChanged ( Locale pNewLocale )
   {
     Locale.setDefault ( pNewLocale );
     for ( LanguageChangedListener current : this.languageChangedListenerList )
@@ -134,25 +353,156 @@ public class PreferenceManager
 
 
   /**
-   * Returns the {@link ColorItem} of the <code>pItem</code>.
+   * Returns the {@link ColorItem} of the active {@link State}.
    * 
-   * @param pName The name of the {@link ColorItem}.
-   * @param pDefault The default {@link Color} of the {@link ColorItem}.
-   * @return The {@link ColorItem} of the <code>pItem</code>.
+   * @return The {@link ColorItem} of the active {@link State}.
    */
-  public ColorItem getColorItem ( String pName, Color pDefault )
+  public final ColorItem getColorItemActiveState ()
   {
-    int r = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "R", pDefault.getRed () ); //$NON-NLS-1$ //$NON-NLS-2$
-    int g = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "G", pDefault.getGreen () ); //$NON-NLS-1$ //$NON-NLS-2$ 
-    int b = this.preferences.getInt (
-        "PreferencesDialog.Color" + pName + "B", pDefault.getBlue () ); //$NON-NLS-1$ //$NON-NLS-2$ 
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
+        DEFAULT_ACTIVE_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
+        DEFAULT_ACTIVE_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
+        DEFAULT_ACTIVE_STATE_COLOR.getBlue () );
     String caption = Messages
-        .getString ( "PreferencesDialog.Color" + pName + "Caption" );//$NON-NLS-1$ //$NON-NLS-2$ 
+        .getString ( "PreferencesDialog.ColorActiveStateCaption" );//$NON-NLS-1$
     String description = Messages
-        .getString ( "PreferencesDialog.Color" + pName + "Description" );//$NON-NLS-1$ //$NON-NLS-2$
-    return new ColorItem ( pName, new Color ( r, g, b ), caption, description );
+        .getString ( "PreferencesDialog.ColorActiveStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_ACTIVE_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the final {@link State}.
+   * 
+   * @return The {@link ColorItem} of the final {@link State}.
+   */
+  public final ColorItem getColorItemFinalState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateR", //$NON-NLS-1$
+        DEFAULT_FINAL_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateG", //$NON-NLS-1$
+        DEFAULT_FINAL_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateB", //$NON-NLS-1$
+        DEFAULT_FINAL_STATE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorFinalStateCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorFinalStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_FINAL_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the selected {@link State}.
+   * 
+   * @return The {@link ColorItem} of the selected {@link State}.
+   */
+  public final ColorItem getColorItemSelectedState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
+        DEFAULT_SELECTED_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
+        DEFAULT_SELECTED_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
+        DEFAULT_SELECTED_STATE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorSelectedStateCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorSelectedStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_SELECTED_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the start {@link State}.
+   * 
+   * @return The {@link ColorItem} of the start {@link State}.
+   */
+  public final ColorItem getColorItemStartState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
+        DEFAULT_START_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
+        DEFAULT_START_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
+        DEFAULT_START_STATE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorStartStateCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorStartStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_START_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link State}.
+   * 
+   * @return The {@link ColorItem} of the {@link State}.
+   */
+  public final ColorItem getColorItemState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", //$NON-NLS-1$
+        DEFAULT_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", //$NON-NLS-1$
+        DEFAULT_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", //$NON-NLS-1$
+        DEFAULT_STATE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link Symbol}.
+   * 
+   * @return The {@link ColorItem} of the {@link Symbol}.
+   */
+  public final ColorItem getColorItemSymbol ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorSymbolR", //$NON-NLS-1$
+        DEFAULT_SYMBOL_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorSymbolG", //$NON-NLS-1$
+        DEFAULT_SYMBOL_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorSymbolB", //$NON-NLS-1$
+        DEFAULT_SYMBOL_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link Transition}.
+   * 
+   * @return The {@link ColorItem} of the {@link Transition}.
+   */
+  public final ColorItem getColorItemTransition ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorTransitionR", //$NON-NLS-1$
+        DEFAULT_TRANSITION_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorTransitionG", //$NON-NLS-1$
+        DEFAULT_TRANSITION_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorTransitionB", //$NON-NLS-1$
+        DEFAULT_TRANSITION_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorTransitionCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorTransitionDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_TRANSITION_COLOR );
   }
 
 
@@ -161,12 +511,12 @@ public class PreferenceManager
    * 
    * @return The {@link LanguageItem}.
    */
-  public LanguageItem getLanguageItem ()
+  public final LanguageItem getLanguageItem ()
   {
     String title = this.preferences.get ( "PreferencesDialog.Language.Title", //$NON-NLS-1$
-        "Default" ); //$NON-NLS-1$
+        DEFAULT_LANGUAGE_TITLE );
     String language = this.preferences.get (
-        "PreferencesDialog.Language.Language", getSystemLocale ().getLanguage () ); //$NON-NLS-1$
+        "PreferencesDialog.Language.Language", DEFAULT_LANGUAGE_LANGUAGE ); //$NON-NLS-1$
     return new LanguageItem ( title, new Locale ( language ) );
   }
 
@@ -176,13 +526,13 @@ public class PreferenceManager
    * 
    * @return The {@link LookAndFeelItem}.
    */
-  public LookAndFeelItem getLookAndFeelItem ()
+  public final LookAndFeelItem getLookAndFeelItem ()
   {
     String name = this.preferences.get ( "PreferencesDialog.LookAndFeel.Name", //$NON-NLS-1$
-        "System" ); //$NON-NLS-1$
+        DEFAULT_LOOK_AND_FEEL_NAME );
     String className = this.preferences.get (
-        "PreferencesDialog.LookAndFeel.ClassName", UIManager //$NON-NLS-1$
-            .getSystemLookAndFeelClassName () );
+        "PreferencesDialog.LookAndFeel.ClassName", //$NON-NLS-1$
+        DEFAULT_LOOK_AND_FEEL_CLASS_NAME );
     return new LookAndFeelItem ( name, className );
   }
 
@@ -192,12 +542,12 @@ public class PreferenceManager
    * 
    * @return The {@link MainWindow} bounds.
    */
-  public Rectangle getMainWindowBounds ()
+  public final Rectangle getMainWindowBounds ()
   {
-    int x = this.preferences
-        .getInt ( "mainWindow.xPosition", DEFAULT_POSTION_X ); //$NON-NLS-1$
-    int y = this.preferences
-        .getInt ( "mainWindow.yPosition", DEFAULT_POSTION_Y ); //$NON-NLS-1$
+    int x = this.preferences.getInt ( "mainWindow.xPosition", //$NON-NLS-1$
+        DEFAULT_POSITION_X );
+    int y = this.preferences.getInt ( "mainWindow.yPosition", //$NON-NLS-1$
+        DEFAULT_POSITION_Y );
     int width = this.preferences.getInt ( "mainWindow.width", DEFAULT_WIDTH ); //$NON-NLS-1$
     int height = this.preferences.getInt ( "mainWindow.height", DEFAULT_HEIGHT ); //$NON-NLS-1$
     return new Rectangle ( x, y, width, height );
@@ -209,7 +559,7 @@ public class PreferenceManager
    * 
    * @return The maximized state of the {@link MainWindow}.
    */
-  public boolean getMainWindowMaximized ()
+  public final boolean getMainWindowMaximized ()
   {
     return this.preferences.getBoolean ( "mainWindow.maximized", //$NON-NLS-1$
         DEFAULT_MAXIMIZED );
@@ -221,9 +571,10 @@ public class PreferenceManager
    * 
    * @return The last active tab of the {@link PreferencesDialog}.
    */
-  public int getPreferencesDialogLastActiveTab ()
+  public final int getPreferencesDialogLastActiveTab ()
   {
-    return this.preferences.getInt ( "PreferencesDialog.LastActiveTab", 0 ); //$NON-NLS-1$
+    return this.preferences.getInt ( "PreferencesDialog.LastActiveTab", //$NON-NLS-1$
+        DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB );
   }
 
 
@@ -232,7 +583,7 @@ public class PreferenceManager
    * 
    * @return The recently used files and the index of the last active file.
    */
-  public RecentlyUsed getRecentlyUsed ()
+  public final RecentlyUsed getRecentlyUsed ()
   {
     ArrayList < File > files = new ArrayList < File > ();
     int i = 0;
@@ -258,7 +609,7 @@ public class PreferenceManager
    * 
    * @return The system {@link Locale}.
    */
-  public Locale getSystemLocale ()
+  public final Locale getSystemLocale ()
   {
     return this.systemLocale;
   }
@@ -269,9 +620,22 @@ public class PreferenceManager
    * 
    * @return The working path.
    */
-  public String getWorkingPath ()
+  public final String getWorkingPath ()
   {
-    return this.preferences.get ( "workingPath", "." ); //$NON-NLS-1$ //$NON-NLS-2$
+    return this.preferences.get ( "workingPath", DEFAULT_WORKING_PATH ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Removes the given {@link ColorChangedListener}.
+   * 
+   * @param pListener The {@link ColorChangedListener}.
+   * @return <tt>true</tt> if the list contained the specified element.
+   */
+  public final synchronized boolean removeColorChangedListener (
+      ColorChangedListener pListener )
+  {
+    return this.colorChangedListenerList.remove ( pListener );
   }
 
 
@@ -279,30 +643,152 @@ public class PreferenceManager
    * Removes the given {@link LanguageChangedListener}.
    * 
    * @param pListener The {@link LanguageChangedListener}.
+   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public void removeLanguageChangedListener ( LanguageChangedListener pListener )
+  public final synchronized boolean removeLanguageChangedListener (
+      LanguageChangedListener pListener )
   {
-    this.languageChangedListenerList.remove ( pListener );
+    return this.languageChangedListenerList.remove ( pListener );
   }
 
 
   /**
-   * Sets the {@link ColorItem}.
+   * Sets the {@link ColorItem} of the active {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem}.
+   * @param pColorItem The {@link ColorItem} of the active {@link State}.
    */
-  public void setColorItem ( ColorItem pColorItem )
+  public final void setColorItemActiveState ( ColorItem pColorItem )
   {
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "R", pColorItem.getColor ().getRed () ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "G", pColorItem.getColor ().getGreen () ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "B", pColorItem.getColor ().getBlue () ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "Caption", pColorItem.getCaption () ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Color" + pColorItem.getName () //$NON-NLS-1$
-        + "Description", pColorItem.getDescription () ); //$NON-NLS-1$
+    logger.debug ( "set color of the avtive state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
+        pColorItem.getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
+        pColorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
+        pColorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the final {@link State}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the final {@link State}.
+   */
+  public final void setColorItemFinalState ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the final state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateR", //$NON-NLS-1$
+        pColorItem.getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateG", //$NON-NLS-1$
+        pColorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateB", //$NON-NLS-1$
+        pColorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the selected {@link State}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the selected {@link State}.
+   */
+  public final void setColorItemSelectedState ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the selected state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
+        pColorItem.getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
+        pColorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
+        pColorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the start {@link State}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the start {@link State}.
+   */
+  public final void setColorItemStartState ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the start state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
+        pColorItem.getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
+        pColorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
+        pColorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link State}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the {@link State}.
+   */
+  public final void setColorItemState ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorStateR", pColorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorStateG", pColorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorStateB", pColorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link Symbol}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the {@link Symbol}.
+   */
+  public final void setColorItemSymbol ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the symbol to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolR", pColorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolG", pColorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolB", pColorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link Transition}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the {@link Transition}.
+   */
+  public final void setColorItemTransition ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the transition to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionR", pColorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionG", pColorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionB", pColorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
   }
 
 
@@ -311,8 +797,10 @@ public class PreferenceManager
    * 
    * @param pLanguageItem The {@link LanguageItem}.
    */
-  public void setLanguageItem ( LanguageItem pLanguageItem )
+  public final void setLanguageItem ( LanguageItem pLanguageItem )
   {
+    logger.debug ( "set language to \"" //$NON-NLS-1$
+        + pLanguageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
     this.preferences.put ( "PreferencesDialog.Language.Title", pLanguageItem //$NON-NLS-1$
         .getTitle () );
     this.preferences.put ( "PreferencesDialog.Language.Language", pLanguageItem //$NON-NLS-1$
@@ -325,8 +813,10 @@ public class PreferenceManager
    * 
    * @param pLookAndFeelItem The {@link LookAndFeelItem}.
    */
-  public void setLookAndFeelItem ( LookAndFeelItem pLookAndFeelItem )
+  public final void setLookAndFeelItem ( LookAndFeelItem pLookAndFeelItem )
   {
+    logger.debug ( "set look and feel to \"" //$NON-NLS-1$
+        + pLookAndFeelItem.getName () + "\"" ); //$NON-NLS-1$
     this.preferences.put (
         "PreferencesDialog.LookAndFeel.Name", pLookAndFeelItem.getName () ); //$NON-NLS-1$
     this.preferences
@@ -340,12 +830,16 @@ public class PreferenceManager
    * 
    * @param pJFrame The {@link JFrame} of the {@link MainWindow}.
    */
-  public void setMainWindowPreferences ( JFrame pJFrame )
+  public final void setMainWindowPreferences ( JFrame pJFrame )
   {
     if ( ( pJFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
     {
+      logger.debug ( "set main window maximized to \"false\"" ); //$NON-NLS-1$
       this.preferences.putBoolean ( "mainWindow.maximized", false ); //$NON-NLS-1$
       Rectangle bounds = pJFrame.getBounds ();
+      logger.debug ( "set main window bounds to \"" + "x=" + bounds.x + ", " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          + "y=" + bounds.y + ", " + "width=" + bounds.width + ", " + "height=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+          + bounds.height + "\"" ); //$NON-NLS-1$
       this.preferences.putInt ( "mainWindow.xPosition", bounds.x ); //$NON-NLS-1$
       this.preferences.putInt ( "mainWindow.yPosition", bounds.y ); //$NON-NLS-1$
       this.preferences.putInt ( "mainWindow.width", bounds.width ); //$NON-NLS-1$
@@ -353,6 +847,7 @@ public class PreferenceManager
     }
     else
     {
+      logger.debug ( "set main window maximized to \"true\"" ); //$NON-NLS-1$
       this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
     }
   }
@@ -363,8 +858,9 @@ public class PreferenceManager
    * 
    * @param pIndex The index of the last active {@link PreferencesDialog}.
    */
-  public void setPreferencesDialogLastActiveTab ( int pIndex )
+  public final void setPreferencesDialogLastActiveTab ( int pIndex )
   {
+    logger.debug ( "set last active tab to \"" + pIndex + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.LastActiveTab", pIndex ); //$NON-NLS-1$
   }
 
@@ -374,10 +870,12 @@ public class PreferenceManager
    * 
    * @param pRecentlyUsed The {@link RecentlyUsed}.
    */
-  public void setRecentlyUsed ( RecentlyUsed pRecentlyUsed )
+  public final void setRecentlyUsed ( RecentlyUsed pRecentlyUsed )
   {
     for ( int i = 0 ; i < pRecentlyUsed.getFiles ().size () ; i++ )
     {
+      logger.debug ( "set recently used file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
+          + pRecentlyUsed.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
       this.preferences.put ( "mainWindow.recentlyUsedFiles" + i, pRecentlyUsed //$NON-NLS-1$
           .getFiles ().get ( i ).getAbsolutePath () );
     }
@@ -391,7 +889,7 @@ public class PreferenceManager
    * 
    * @param pLocale The system {@link Locale}.
    */
-  public void setSystemLocale ( Locale pLocale )
+  public final void setSystemLocale ( Locale pLocale )
   {
     this.systemLocale = pLocale;
   }
@@ -402,8 +900,9 @@ public class PreferenceManager
    * 
    * @param pPath The working path.
    */
-  public void setWorkingPath ( String pPath )
+  public final void setWorkingPath ( String pPath )
   {
+    logger.debug ( "set the working path to \"" + pPath + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.put ( "workingPath", pPath ); //$NON-NLS-1$
   }
 

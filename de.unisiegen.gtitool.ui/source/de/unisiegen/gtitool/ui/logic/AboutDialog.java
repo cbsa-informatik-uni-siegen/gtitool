@@ -1,14 +1,19 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.util.ResourceBundle;
+import java.awt.Cursor;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
+
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.utils.Clipboard;
 
 
 /**
@@ -17,8 +22,14 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public class AboutDialog
+public final class AboutDialog
 {
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( AboutDialog.class );
+
 
   /**
    * The {@link AboutDialogForm}.
@@ -33,15 +44,17 @@ public class AboutDialog
 
 
   /**
-   * Creates a new <code>AboutDialog</code>.
+   * Allocates a new <code>AboutDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
    */
   public AboutDialog ( JFrame pParent )
   {
+    logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new AboutDialogForm ( this, pParent );
     this.gui.jLabelName.setText ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
+    this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
     /*
      * Language changed listener
@@ -53,16 +66,26 @@ public class AboutDialog
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            ResourceBundle bundle = ResourceBundle
-                .getBundle ( "de/unisiegen/gtitool/ui/messages" ); //$NON-NLS-1$
-            AboutDialog.this.gui.setTitle ( bundle
+            logger.debug ( "language changed listener" ); //$NON-NLS-1$
+            AboutDialog.this.gui.setTitle ( Messages
                 .getString ( "AboutDialog.Title" ) ); //$NON-NLS-1$
-            AboutDialog.this.gui.jLabelCopyright
-                .setText ( "AboutDialog.Copyright" ); //$NON-NLS-1$
-            AboutDialog.this.gui.jLabelWebpage.setText ( "AboutDialog.Webpage" ); //$NON-NLS-1$
-            AboutDialog.this.gui.jLabelDeveloper
-                .setText ( "AboutDialog.Developer" ); //$NON-NLS-1$
-            AboutDialog.this.gui.jButtonClose.setText ( "AboutDialog.Close" ); //$NON-NLS-1$
+
+            AboutDialog.this.gui.jLabelCopyright.setText ( Messages
+                .getString ( "AboutDialog.Copyright" ) ); //$NON-NLS-1$
+
+            AboutDialog.this.gui.jLabelWebpage.setText ( Messages
+                .getString ( "AboutDialog.Webpage" ) ); //$NON-NLS-1$
+
+            AboutDialog.this.gui.jLabelWebpageEntry.setToolTipText ( Messages
+                .getString ( "AboutDialog.WebpageEntryToolTip" ) ); //$NON-NLS-1$
+
+            AboutDialog.this.gui.jLabelDeveloper.setText ( Messages
+                .getString ( "AboutDialog.Developer" ) ); //$NON-NLS-1$
+
+            AboutDialog.this.gui.jButtonClose.setText ( Messages
+                .getString ( "AboutDialog.Close" ) ); //$NON-NLS-1$
+            AboutDialog.this.gui.jButtonClose.setMnemonic ( Messages.getString (
+                "AboutDialog.Close" ).charAt ( 0 ) ); //$NON-NLS-1$
           }
         } );
   }
@@ -71,17 +94,29 @@ public class AboutDialog
   /**
    * Closes the {@link AboutDialogForm}.
    */
-  public void handleClose ()
+  public final void handleClose ()
   {
+    logger.debug ( "handle close" ); //$NON-NLS-1$
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the {@link MouseEvent} on the webpage entry.
+   */
+  public final void handleWebpageEntry ()
+  {
+    logger.debug ( "handle web page entry" ); //$NON-NLS-1$
+    Clipboard.getInstance ().copy ( this.gui.jLabelWebpageEntry.getText () );
   }
 
 
   /**
    * Shows the {@link AboutDialogForm}.
    */
-  public void show ()
+  public final void show ()
   {
+    logger.debug ( "show the about dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

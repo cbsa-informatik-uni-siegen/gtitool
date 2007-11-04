@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public class RecentlyUsed
+public final class RecentlyUsed
 {
 
   /**
@@ -35,7 +35,13 @@ public class RecentlyUsed
    */
   public RecentlyUsed ( ArrayList < File > pFiles, int pActiveIndex )
   {
+    // Files
+    if ( pFiles == null )
+    {
+      throw new NullPointerException ( "files is null" ); //$NON-NLS-1$
+    }
     this.files = pFiles;
+    // ActiveIndex
     this.activeIndex = pActiveIndex;
   }
 
@@ -46,7 +52,7 @@ public class RecentlyUsed
    * @return The activeIndex.
    * @see #activeIndex
    */
-  public int getActiveIndex ()
+  public final int getActiveIndex ()
   {
     return this.activeIndex;
   }
@@ -58,7 +64,7 @@ public class RecentlyUsed
    * @return The recently used files.
    * @see #files
    */
-  public ArrayList < File > getFiles ()
+  public final ArrayList < File > getFiles ()
   {
     return this.files;
   }

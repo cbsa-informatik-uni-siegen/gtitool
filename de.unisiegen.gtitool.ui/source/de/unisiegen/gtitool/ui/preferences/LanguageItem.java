@@ -10,7 +10,8 @@ import java.util.Locale;
  * @author Christian Fehler
  * @version $Id$
  */
-public class LanguageItem implements Cloneable, Comparable < LanguageItem >
+public final class LanguageItem implements Cloneable,
+    Comparable < LanguageItem >
 {
 
   /**
@@ -54,7 +55,7 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @see Object#clone()
    */
   @Override
-  public LanguageItem clone ()
+  public final LanguageItem clone ()
   {
     return new LanguageItem ( this.title, this.locale );
   }
@@ -65,7 +66,7 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( LanguageItem pOther )
+  public final int compareTo ( LanguageItem pOther )
   {
     return this.title.compareTo ( pOther.title );
   }
@@ -77,13 +78,13 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @see Object#equals(Object)
    */
   @Override
-  public boolean equals ( Object pOther )
+  public final boolean equals ( Object pOther )
   {
     if ( pOther instanceof LanguageItem )
     {
       LanguageItem other = ( LanguageItem ) pOther;
       return ( this.title.equals ( other.title ) )
-          && ( this.locale.equals ( other.locale ) );
+          && ( this.locale.getLanguage ().equals ( other.locale.getLanguage () ) );
     }
     return false;
   }
@@ -95,7 +96,7 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @return The {@link Locale}.
    * @see #locale
    */
-  public Locale getLocale ()
+  public final Locale getLocale ()
   {
     return this.locale;
   }
@@ -107,7 +108,7 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @return The title.
    * @see #title
    */
-  public String getTitle ()
+  public final String getTitle ()
   {
     return this.title;
   }
@@ -119,40 +120,9 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @see Object#hashCode()
    */
   @Override
-  public int hashCode ()
+  public final int hashCode ()
   {
-    return this.title.hashCode () + this.locale.hashCode ();
-  }
-
-
-  /**
-   * Sets the {@link Locale}.
-   * 
-   * @param pLocale The {@link Locale} to set.
-   */
-  public void setLocale ( Locale pLocale )
-  {
-    // Locale
-    if ( pLocale == null )
-    {
-      throw new NullPointerException ( "locale is null" ); //$NON-NLS-1$
-    }
-    this.locale = pLocale;
-  }
-
-
-  /**
-   * Sets the title.
-   * 
-   * @param pTitle The title to set.
-   */
-  public void setTitle ( String pTitle )
-  {
-    if ( pTitle == null )
-    {
-      throw new NullPointerException ( "title is null" ); //$NON-NLS-1$
-    }
-    this.title = pTitle;
+    return this.title.hashCode () + this.locale.getLanguage ().hashCode ();
   }
 
 
@@ -162,9 +132,9 @@ public class LanguageItem implements Cloneable, Comparable < LanguageItem >
    * @see Object#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     return this.title
-        + ( this.locale == null ? "" : ( " (" + this.locale.toString () + ")" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+        + ( this.locale == null ? "" : ( " (" + this.locale.getLanguage () + ")" ) ); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
   }
 }

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.exceptions;
 
 
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 
@@ -11,7 +12,8 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * {@link Transition} without a {@link Symbol}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineEpsilonTransitionException.java 90 2007-11-04 16:20:27Z
+ *          fehler $
  */
 public final class MachineEpsilonTransitionException extends MachineException
 {
@@ -48,6 +50,28 @@ public final class MachineEpsilonTransitionException extends MachineException
         "MachineEpsilonTransitionException.Description", this.transition //$NON-NLS-1$
             .getStateBegin ().getName (), this.transition.getStateEnd ()
             .getName () ) );
+  }
+
+
+  /**
+   * Returns the {@link State} where the {@link Transition} begins.
+   * 
+   * @return The {@link State} where the {@link Transition} begins.
+   */
+  public final State getStateBegin ()
+  {
+    return this.transition.getStateBegin ();
+  }
+
+
+  /**
+   * Returns the {@link State} where the {@link Transition} ends.
+   * 
+   * @return The {@link State} where the {@link Transition} ends.
+   */
+  public final State getStateEnd ()
+  {
+    return this.transition.getStateEnd ();
   }
 
 

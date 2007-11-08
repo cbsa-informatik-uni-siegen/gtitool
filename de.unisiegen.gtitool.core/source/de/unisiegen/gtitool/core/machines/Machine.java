@@ -83,6 +83,28 @@ public abstract class Machine < E > implements Serializable
    * 
    * @param pStates The {@link State}s to add.
    */
+  public final void addStates ( Iterable < State > pStates )
+  {
+    if ( pStates == null )
+    {
+      throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
+    }
+    if ( !pStates.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
+    }
+    for ( State current : pStates )
+    {
+      addState ( current );
+    }
+  }
+
+
+  /**
+   * Adds the {@link State}s to this <code>Machine</code>.
+   * 
+   * @param pStates The {@link State}s to add.
+   */
   public final void addStates ( State ... pStates )
   {
     if ( pStates == null )
@@ -91,7 +113,7 @@ public abstract class Machine < E > implements Serializable
     }
     if ( pStates.length == 0 )
     {
-      throw new NullPointerException ( "states is empty" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
     }
     for ( State current : pStates )
     {
@@ -129,6 +151,28 @@ public abstract class Machine < E > implements Serializable
    * 
    * @param pTransitions The {@link Transition}s to add.
    */
+  public final void addTransitions ( Iterable < Transition > pTransitions )
+  {
+    if ( pTransitions == null )
+    {
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
+    }
+    if ( !pTransitions.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
+    }
+    for ( Transition current : pTransitions )
+    {
+      addTransition ( current );
+    }
+  }
+
+
+  /**
+   * Adds the {@link Transition}s to this <code>Machine</code>.
+   * 
+   * @param pTransitions The {@link Transition}s to add.
+   */
   public final void addTransitions ( Transition ... pTransitions )
   {
     if ( pTransitions == null )
@@ -137,7 +181,7 @@ public abstract class Machine < E > implements Serializable
     }
     if ( pTransitions.length == 0 )
     {
-      throw new NullPointerException ( "transitions is empty" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
     for ( Transition current : pTransitions )
     {

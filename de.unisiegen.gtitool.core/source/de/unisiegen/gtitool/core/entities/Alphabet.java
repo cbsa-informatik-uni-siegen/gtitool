@@ -43,6 +43,26 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbols The array of {@link Symbol}s.
    */
+  public Alphabet ( Iterable < Symbol > pSymbols )
+  {
+    this ();
+    // Symbols
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
+   * Allocates a new <code>Alphabet</code>.
+   * 
+   * @param pSymbols The array of {@link Symbol}s.
+   */
   public Alphabet ( Symbol ... pSymbols )
   {
     this ();
@@ -62,15 +82,68 @@ public final class Alphabet implements Serializable, Cloneable,
    * Appends the specified {@link Symbol} to the end of this
    * <code>Alphabet</code>.
    * 
-   * @param pSymbol {@link Symbol} to be appended to this <code>Alphabet</code>.
+   * @param pSymbol The {@link Symbol} to be appended to this
+   *          <code>Alphabet</code>.
    */
   public final void addSymbol ( Symbol pSymbol )
   {
+    if ( pSymbol == null )
+    {
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+    }
     if ( this.symbolSet.contains ( pSymbol ) )
     {
       throw new IllegalArgumentException ( "symbol is already in this alphabet" ); //$NON-NLS-1$
     }
     this.symbolSet.add ( pSymbol );
+  }
+
+
+  /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Alphabet</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Alphabet</code>.
+   */
+  public final void addSymbols ( Iterable < Symbol > pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    if ( !pSymbols.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Alphabet</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Alphabet</code>.
+   */
+  public final void addSymbols ( Symbol ... pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    if ( pSymbols.length == 0 )
+    {
+      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
   }
 
 

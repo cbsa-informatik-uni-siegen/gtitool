@@ -81,7 +81,7 @@ public final class Transition implements Serializable, Cloneable
    * Appends the specified {@link Symbol} to the end of this
    * <code>Transition</code>.
    * 
-   * @param pSymbol {@link Symbol} to be appended to this
+   * @param pSymbol The {@link Symbol} to be appended to this
    *          <code>Transition</code>.
    */
   public final void addSymbol ( Symbol pSymbol )
@@ -91,6 +91,54 @@ public final class Transition implements Serializable, Cloneable
       throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
     }
     this.symbolSet.add ( pSymbol );
+  }
+
+
+  /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Transition</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Transition</code>.
+   */
+  public final void addSymbols ( Iterable < Symbol > pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    if ( !pSymbols.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Transition</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Transition</code>.
+   */
+  public final void addSymbols ( Symbol ... pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    if ( pSymbols.length == 0 )
+    {
+      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
   }
 
 

@@ -460,9 +460,9 @@ public final class PreferencesDialog
 
 
   /**
-   * The {@link ColorItem} of the final {@link State}.
+   * The {@link ColorItem} of the error {@link State}.
    */
-  private ColorItem colorItemFinalState;
+  private ColorItem colorItemErrorState;
 
 
   /**
@@ -472,9 +472,21 @@ public final class PreferencesDialog
 
 
   /**
+   * The {@link ColorItem} of the error {@link Symbol}.
+   */
+  private ColorItem colorItemErrorSymbol;
+
+
+  /**
    * The {@link ColorItem} of the {@link Transition}.
    */
   private ColorItem colorItemTransition;
+
+
+  /**
+   * The {@link ColorItem} of the error{@link Transition}.
+   */
+  private ColorItem colorItemErrorTransition;
 
 
   /**
@@ -520,9 +532,9 @@ public final class PreferencesDialog
 
 
   /**
-   * The initial {@link ColorItem} of the final {@link State}.
+   * The initial {@link ColorItem} of the error {@link State}.
    */
-  private ColorItem initialColorItemFinalState;
+  private ColorItem initialColorItemErrorState;
 
 
   /**
@@ -532,9 +544,21 @@ public final class PreferencesDialog
 
 
   /**
+   * The initial {@link ColorItem} of the error {@link Symbol}.
+   */
+  private ColorItem initialColorItemErrorSymbol;
+
+
+  /**
    * The initial {@link ColorItem} of the {@link Transition}.
    */
   private ColorItem initialColorItemTransition;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link Transition}.
+   */
+  private ColorItem initialColorItemErrorTransition;
 
 
   /**
@@ -633,18 +657,27 @@ public final class PreferencesDialog
     this.colorItemStartState = PreferenceManager.getInstance ()
         .getColorItemStartState ();
     this.initialColorItemStartState = this.colorItemStartState.clone ();
-    // Final state
-    this.colorItemFinalState = PreferenceManager.getInstance ()
-        .getColorItemFinalState ();
-    this.initialColorItemFinalState = this.colorItemFinalState.clone ();
+    // Error state
+    this.colorItemErrorState = PreferenceManager.getInstance ()
+        .getColorItemErrorState ();
+    this.initialColorItemErrorState = this.colorItemErrorState.clone ();
     // Symbol
     this.colorItemSymbol = PreferenceManager.getInstance ()
         .getColorItemSymbol ();
     this.initialColorItemSymbol = this.colorItemSymbol.clone ();
+    // Error symbol
+    this.colorItemErrorSymbol = PreferenceManager.getInstance ()
+        .getColorItemErrorSymbol ();
+    this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ();
     this.initialColorItemTransition = this.colorItemTransition.clone ();
+    // Error transition
+    this.colorItemErrorTransition = PreferenceManager.getInstance ()
+        .getColorItemErrorTransition ();
+    this.initialColorItemErrorTransition = this.colorItemErrorTransition
+        .clone ();
     // Renderer
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
     this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
@@ -655,9 +688,11 @@ public final class PreferencesDialog
     this.colorListModel.add ( this.colorItemSelectedState );
     this.colorListModel.add ( this.colorItemActiveState );
     this.colorListModel.add ( this.colorItemStartState );
-    this.colorListModel.add ( this.colorItemFinalState );
+    this.colorListModel.add ( this.colorItemErrorState );
     this.colorListModel.add ( this.colorItemSymbol );
+    this.colorListModel.add ( this.colorItemErrorSymbol );
     this.colorListModel.add ( this.colorItemTransition );
+    this.colorListModel.add ( this.colorItemErrorTransition );
     this.gui.jListColor.setModel ( this.colorListModel );
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
@@ -764,23 +799,36 @@ public final class PreferencesDialog
             PreferencesDialog.this.colorItemStartState
                 .setDescription ( Messages
                     .getString ( "PreferencesDialog.ColorStartStateDescription" ) ); //$NON-NLS-1$
-            // Final state
-            PreferencesDialog.this.colorItemFinalState.setCaption ( Messages
-                .getString ( "PreferencesDialog.ColorFinalStateCaption" ) ); //$NON-NLS-1$
-            PreferencesDialog.this.colorItemFinalState
+            // Error state
+            PreferencesDialog.this.colorItemErrorState.setCaption ( Messages
+                .getString ( "PreferencesDialog.ColorErrorStateCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemErrorState
                 .setDescription ( Messages
-                    .getString ( "PreferencesDialog.ColorFinalStateDescription" ) ); //$NON-NLS-1$
+                    .getString ( "PreferencesDialog.ColorErrorStateDescription" ) ); //$NON-NLS-1$
             // Symbol
             PreferencesDialog.this.colorItemSymbol.setCaption ( Messages
                 .getString ( "PreferencesDialog.ColorSymbolCaption" ) ); //$NON-NLS-1$
             PreferencesDialog.this.colorItemSymbol.setDescription ( Messages
                 .getString ( "PreferencesDialog.ColorSymbolDescription" ) ); //$NON-NLS-1$
+            // Error symbol
+            PreferencesDialog.this.colorItemErrorSymbol.setCaption ( Messages
+                .getString ( "PreferencesDialog.ColorErrorSymbolCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemErrorSymbol
+                .setDescription ( Messages
+                    .getString ( "PreferencesDialog.ColorErrorSymbolDescription" ) ); //$NON-NLS-1$
             // Transition
             PreferencesDialog.this.colorItemTransition.setCaption ( Messages
                 .getString ( "PreferencesDialog.ColorTransitionCaption" ) ); //$NON-NLS-1$
             PreferencesDialog.this.colorItemTransition
                 .setDescription ( Messages
                     .getString ( "PreferencesDialog.ColorTransitionDescription" ) ); //$NON-NLS-1$
+            // Error transition
+            PreferencesDialog.this.colorItemErrorTransition
+                .setCaption ( Messages
+                    .getString ( "PreferencesDialog.ColorErrorTransitionCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemErrorTransition
+                .setDescription ( Messages
+                    .getString ( "PreferencesDialog.ColorErrorTransitionDescription" ) ); //$NON-NLS-1$
           }
         } );
   }
@@ -941,9 +989,11 @@ public final class PreferencesDialog
     this.colorItemSelectedState.restore ();
     this.colorItemActiveState.restore ();
     this.colorItemStartState.restore ();
-    this.colorItemActiveState.restore ();
+    this.colorItemErrorState.restore ();
     this.colorItemSymbol.restore ();
+    this.colorItemErrorSymbol.restore ();
     this.colorItemTransition.restore ();
+    this.colorItemErrorTransition.restore ();
   }
 
 
@@ -1023,18 +1073,18 @@ public final class PreferencesDialog
       PreferenceManager.getInstance ().fireColorChangedStartState (
           this.colorItemStartState.getColor () );
     }
-    // Final state
-    if ( !this.initialColorItemFinalState.equals ( this.colorItemFinalState ) )
+    // Error state
+    if ( !this.initialColorItemErrorState.equals ( this.colorItemErrorState ) )
     {
-      logger.debug ( "color of the final state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemFinalState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemFinalState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemFinalState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemFinalState = this.colorItemFinalState.clone ();
-      PreferenceManager.getInstance ().setColorItemFinalState (
-          this.colorItemFinalState );
-      PreferenceManager.getInstance ().fireColorChangedFinalState (
-          this.colorItemFinalState.getColor () );
+      logger.debug ( "color of the error state changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemErrorState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemErrorState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemErrorState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemErrorState = this.colorItemErrorState.clone ();
+      PreferenceManager.getInstance ().setColorItemErrorState (
+          this.colorItemErrorState );
+      PreferenceManager.getInstance ().fireColorChangedErrorState (
+          this.colorItemErrorState.getColor () );
     }
     // Symbol
     if ( !this.initialColorItemSymbol.equals ( this.colorItemSymbol ) )
@@ -1049,6 +1099,19 @@ public final class PreferencesDialog
       PreferenceManager.getInstance ().fireColorChangedSymbol (
           this.colorItemSymbol.getColor () );
     }
+    // Error symbol
+    if ( !this.initialColorItemErrorSymbol.equals ( this.colorItemErrorSymbol ) )
+    {
+      logger.debug ( "color of the error symbol changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemErrorSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemErrorSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemErrorSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
+      PreferenceManager.getInstance ().setColorItemErrorSymbol (
+          this.colorItemErrorSymbol );
+      PreferenceManager.getInstance ().fireColorChangedErrorSymbol (
+          this.colorItemErrorSymbol.getColor () );
+    }
     // Transition
     if ( !this.initialColorItemTransition.equals ( this.colorItemTransition ) )
     {
@@ -1061,6 +1124,21 @@ public final class PreferencesDialog
           this.colorItemTransition );
       PreferenceManager.getInstance ().fireColorChangedTransition (
           this.colorItemTransition.getColor () );
+    }
+    // Error transition
+    if ( !this.initialColorItemErrorTransition
+        .equals ( this.colorItemErrorTransition ) )
+    {
+      logger.debug ( "color of the error transition changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemErrorTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemErrorTransition.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemErrorTransition.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemErrorTransition = this.colorItemErrorTransition
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemErrorTransition (
+          this.colorItemErrorTransition );
+      PreferenceManager.getInstance ().fireColorChangedErrorTransition (
+          this.colorItemErrorTransition.getColor () );
     }
   }
 

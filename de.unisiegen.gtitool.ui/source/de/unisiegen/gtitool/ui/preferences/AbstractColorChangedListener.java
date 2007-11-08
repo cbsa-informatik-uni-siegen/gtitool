@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * The abstract listener class for receiving color changes.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: AbstractColorChangedListener.java 90 2007-11-04 16:20:27Z
+ *          fehler $
  */
 public abstract class AbstractColorChangedListener implements
     ColorChangedListener
@@ -31,11 +32,35 @@ public abstract class AbstractColorChangedListener implements
 
 
   /**
-   * Invoked when the color of the final {@link State} changed.
+   * Invoked when the color of the error {@link State} changed.
    * 
-   * @param pNewColor The new color of the final {@link State}.
+   * @param pNewColor The new color of the error {@link State}.
    */
-  public void colorChangedFinalState ( @SuppressWarnings ( "unused" )
+  public void colorChangedErrorState ( @SuppressWarnings ( "unused" )
+  Color pNewColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * Invoked when the color of the error {@link Symbol} changed.
+   * 
+   * @param pNewColor The new color of the error {@link Symbol}.
+   */
+  public void colorChangedErrorSymbol ( @SuppressWarnings ( "unused" )
+  Color pNewColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * Invoked when the color of the error {@link Transition} changed.
+   * 
+   * @param pNewColor The new color of the error {@link Transition}.
+   */
+  public void colorChangedErrorTransition ( @SuppressWarnings ( "unused" )
   Color pNewColor )
   {
     // Override this method if needed.

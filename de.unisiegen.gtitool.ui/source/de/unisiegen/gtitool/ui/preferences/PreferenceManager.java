@@ -64,29 +64,28 @@ public final class PreferenceManager
 
 
   /**
-   * The default {@link Color} of the final {@link State}.
+   * The default {@link Color} of the error {@link State}.
    */
-  private static final Color DEFAULT_FINAL_STATE_COLOR = new Color ( 0, 255, 0 );
+  private static final Color DEFAULT_ERROR_STATE_COLOR = new Color ( 255, 0, 0 );
 
 
   /**
    * The default {@link Color} of the selected {@link State}.
    */
-  private static final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255, 0,
-      0 );
+  private static final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255,
+      255, 0 );
 
 
   /**
    * The default {@link Color} of the start {@link State}.
    */
-  private static final Color DEFAULT_START_STATE_COLOR = new Color ( 255, 127,
-      0 );
+  private static final Color DEFAULT_START_STATE_COLOR = new Color ( 0, 255, 0 );
 
 
   /**
    * The default {@link Color} of a {@link State}.
    */
-  private static final Color DEFAULT_STATE_COLOR = new Color ( 0, 255, 0 );
+  private static final Color DEFAULT_STATE_COLOR = new Color ( 255, 255, 255 );
 
 
   /**
@@ -96,9 +95,22 @@ public final class PreferenceManager
 
 
   /**
+   * The default {@link Color} of a error {@link Symbol}.
+   */
+  private static final Color DEFAULT_ERROR_SYMBOL_COLOR = new Color ( 255, 0, 0 );
+
+
+  /**
    * The default {@link Color} of a {@link Transition}.
    */
   private static final Color DEFAULT_TRANSITION_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of a error {@link Transition}.
+   */
+  private static final Color DEFAULT_ERROR_TRANSITION_COLOR = new Color ( 255,
+      0, 0 );
 
 
   /**
@@ -274,16 +286,46 @@ public final class PreferenceManager
 
 
   /**
-   * Let the listeners know that the color of the final {@link State} has
+   * Let the listeners know that the color of the error {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the final {@link State}.
+   * @param pNewColor The new color of the error {@link State}.
    */
-  public final void fireColorChangedFinalState ( Color pNewColor )
+  public final void fireColorChangedErrorState ( Color pNewColor )
   {
     for ( ColorChangedListener current : this.colorChangedListenerList )
     {
-      current.colorChangedFinalState ( pNewColor );
+      current.colorChangedErrorState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error {@link Symbol} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the error {@link Symbol}.
+   */
+  public final void fireColorChangedErrorSymbol ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedErrorSymbol ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error {@link Transition} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the error {@link Transition}.
+   */
+  public final void fireColorChangedErrorTransition ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedErrorTransition ( pNewColor );
     }
   }
 
@@ -413,24 +455,71 @@ public final class PreferenceManager
 
 
   /**
-   * Returns the {@link ColorItem} of the final {@link State}.
+   * Returns the {@link ColorItem} of the error {@link State}.
    * 
-   * @return The {@link ColorItem} of the final {@link State}.
+   * @return The {@link ColorItem} of the error {@link State}.
    */
-  public final ColorItem getColorItemFinalState ()
+  public final ColorItem getColorItemErrorState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateR", //$NON-NLS-1$
-        DEFAULT_FINAL_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateG", //$NON-NLS-1$
-        DEFAULT_FINAL_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorFinalStateB", //$NON-NLS-1$
-        DEFAULT_FINAL_STATE_COLOR.getBlue () );
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
+        DEFAULT_ERROR_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
+        DEFAULT_ERROR_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
+        DEFAULT_ERROR_STATE_COLOR.getBlue () );
     String caption = Messages
-        .getString ( "PreferencesDialog.ColorFinalStateCaption" );//$NON-NLS-1$
+        .getString ( "PreferencesDialog.ColorErrorStateCaption" );//$NON-NLS-1$
     String description = Messages
-        .getString ( "PreferencesDialog.ColorFinalStateDescription" );//$NON-NLS-1$
+        .getString ( "PreferencesDialog.ColorErrorStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_FINAL_STATE_COLOR );
+        DEFAULT_ERROR_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link Symbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link Symbol}.
+   */
+  public final ColorItem getColorItemErrorSymbol ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolR", //$NON-NLS-1$
+        DEFAULT_ERROR_SYMBOL_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolG", //$NON-NLS-1$
+        DEFAULT_ERROR_SYMBOL_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolB", //$NON-NLS-1$
+        DEFAULT_ERROR_SYMBOL_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorErrorSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorErrorSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_ERROR_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link Transition}.
+   * 
+   * @return The {@link ColorItem} of the error {@link Transition}.
+   */
+  public final ColorItem getColorItemErrorTransition ()
+  {
+    int r = this.preferences.getInt (
+        "PreferencesDialog.ColorErrorTransitionR", //$NON-NLS-1$
+        DEFAULT_ERROR_TRANSITION_COLOR.getRed () );
+    int g = this.preferences.getInt (
+        "PreferencesDialog.ColorErrorTransitionG", //$NON-NLS-1$
+        DEFAULT_ERROR_TRANSITION_COLOR.getGreen () );
+    int b = this.preferences.getInt (
+        "PreferencesDialog.ColorErrorTransitionB", //$NON-NLS-1$
+        DEFAULT_ERROR_TRANSITION_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorErrorTransitionCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_ERROR_TRANSITION_COLOR );
   }
 
 
@@ -736,22 +825,65 @@ public final class PreferenceManager
 
 
   /**
-   * Sets the {@link ColorItem} of the final {@link State}.
+   * Sets the {@link ColorItem} of the error {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the final {@link State}.
+   * @param pColorItem The {@link ColorItem} of the error {@link State}.
    */
-  public final void setColorItemFinalState ( ColorItem pColorItem )
+  public final void setColorItemErrorState ( ColorItem pColorItem )
   {
-    logger.debug ( "set color of the final state to \"" //$NON-NLS-1$
+    logger.debug ( "set color of the error state to \"" //$NON-NLS-1$
         + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateR", //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
         pColorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateG", //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
         pColorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorFinalStateB", //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
         pColorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link Symbol}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the error {@link Symbol}.
+   */
+  public final void setColorItemErrorSymbol ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the error symbol to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolR", pColorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolG", pColorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolB", pColorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link Transition}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the error {@link Transition}.
+   */
+  public final void setColorItemErrorTransition ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the error transition to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt (
+        "PreferencesDialog.ColorErrorTransitionR", pColorItem //$NON-NLS-1$
+            .getColor ().getRed () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorErrorTransitionG", pColorItem //$NON-NLS-1$
+            .getColor ().getGreen () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorErrorTransitionB", pColorItem //$NON-NLS-1$
+            .getColor ().getBlue () );
   }
 
 

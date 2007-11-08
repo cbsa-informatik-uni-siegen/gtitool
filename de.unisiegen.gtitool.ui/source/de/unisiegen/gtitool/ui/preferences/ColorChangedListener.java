@@ -27,11 +27,27 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
-   * Invoked when the color of the final {@link State} changed.
+   * Invoked when the color of the error {@link State} changed.
    * 
-   * @param pNewColor The new color of the final {@link State}.
+   * @param pNewColor The new color of the error {@link State}.
    */
-  public void colorChangedFinalState ( Color pNewColor );
+  public void colorChangedErrorState ( Color pNewColor );
+
+
+  /**
+   * Invoked when the color of the error {@link Symbol} changed.
+   * 
+   * @param pNewColor The new color of the error {@link Symbol}.
+   */
+  public void colorChangedErrorSymbol ( Color pNewColor );
+
+
+  /**
+   * Invoked when the color of the error {@link Transition} changed.
+   * 
+   * @param pNewColor The new color of the error {@link Transition}.
+   */
+  public void colorChangedErrorTransition ( Color pNewColor );
 
 
   /**

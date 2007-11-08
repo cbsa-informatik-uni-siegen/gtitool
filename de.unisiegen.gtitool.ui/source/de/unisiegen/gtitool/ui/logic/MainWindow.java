@@ -58,8 +58,7 @@ public class MainWindow
    */
   public MainWindow ()
   {
-    this.window = new MainWindowForm ();
-    this.window.setMainWindow ( this );
+    this.window = new MainWindowForm (this);
 
     // TODOBenny clean up code
 
@@ -80,6 +79,7 @@ public class MainWindow
     this.window.cutButton.setEnabled ( false );
     this.window.copyButton.setEnabled ( false );
     this.window.pasteButton.setEnabled ( false );
+    
     // Finished setting the states.
     this.window.addWindowListener ( new WindowAdapter ()
     {
@@ -836,6 +836,8 @@ public class MainWindow
     this.window.undoItem.setVisible ( false );
     this.window.redoButton.setVisible ( false );
     this.window.redoItem.setVisible ( false );
+    this.window.editMenuSeperator.setVisible ( false );
+    this.window.editMenuSeparator1.setVisible ( false );
     setUndoState ( state );
     setRedoState ( state );
   }

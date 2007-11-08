@@ -31,6 +31,30 @@ public final class Symbol implements Serializable, Cloneable,
    * 
    * @param pName The name of this symbol.
    */
+  public Symbol ( char pName )
+  {
+    // Name
+    setName ( String.valueOf ( pName ) );
+  }
+
+
+  /**
+   * Allocates a new <code>Symbol</code>.
+   * 
+   * @param pName The name of this symbol.
+   */
+  public Symbol ( Character pName )
+  {
+    // Name
+    setName ( String.valueOf ( pName.charValue () ) );
+  }
+
+
+  /**
+   * Allocates a new <code>Symbol</code>.
+   * 
+   * @param pName The name of this symbol.
+   */
   public Symbol ( String pName )
   {
     // Name

@@ -59,8 +59,8 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jScrollPaneColor = new javax.swing.JScrollPane();
         jListColor = new javax.swing.JList();
         jTextPaneDescription = new javax.swing.JTextPane();
-        jButtonAccept = new javax.swing.JButton();
         jButtonOk = new javax.swing.JButton();
+        jButtonAccept = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -233,24 +233,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jTabbedPane, gridBagConstraints);
 
-        jButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
-        jButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
-        jButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
-        jButtonAccept.setFocusPainted(false);
-        jButtonAccept.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAcceptActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 5);
-        getContentPane().add(jButtonAccept, gridBagConstraints);
-
         jButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
         jButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
         jButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
@@ -262,11 +244,29 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 5);
+        getContentPane().add(jButtonOk, gridBagConstraints);
+
+        jButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
+        jButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
+        jButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
+        jButtonAccept.setFocusPainted(false);
+        jButtonAccept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAcceptActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 5);
-        getContentPane().add(jButtonOk, gridBagConstraints);
+        getContentPane().add(jButtonAccept, gridBagConstraints);
 
         jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
         jButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N

@@ -140,7 +140,7 @@ public final class PreferenceManager
    * The default {@link Alphabet}.
    */
   private static final Alphabet DEFAULT_ALPHABET = new Alphabet ( new Symbol (
-      "a" ), new Symbol ( "b" ) ); //$NON-NLS-1$//$NON-NLS-2$
+      "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$//$NON-NLS-2$
 
 
   /**

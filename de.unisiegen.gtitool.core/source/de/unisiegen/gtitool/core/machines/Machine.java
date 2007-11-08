@@ -79,6 +79,28 @@ public abstract class Machine < E > implements Serializable
 
 
   /**
+   * Adds the {@link State}s to this <code>Machine</code>.
+   * 
+   * @param pStates The {@link State}s to add.
+   */
+  public final void addStates ( State ... pStates )
+  {
+    if ( pStates == null )
+    {
+      throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
+    }
+    if ( pStates.length == 0 )
+    {
+      throw new NullPointerException ( "states is empty" ); //$NON-NLS-1$
+    }
+    for ( State current : pStates )
+    {
+      addState ( current );
+    }
+  }
+
+
+  /**
    * Adds the {@link Transition} to this <code>Machine</code>.
    * 
    * @param pTransition The {@link Transition} to add.
@@ -99,6 +121,28 @@ public abstract class Machine < E > implements Serializable
     }
     this.transitionList.add ( pTransition );
     addTransitionsToStates ( pTransition );
+  }
+
+
+  /**
+   * Adds the {@link Transition}s to this <code>Machine</code>.
+   * 
+   * @param pTransitions The {@link Transition}s to add.
+   */
+  public final void addTransitions ( Transition ... pTransitions )
+  {
+    if ( pTransitions == null )
+    {
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
+    }
+    if ( pTransitions.length == 0 )
+    {
+      throw new NullPointerException ( "transitions is empty" ); //$NON-NLS-1$
+    }
+    for ( Transition current : pTransitions )
+    {
+      addTransition ( current );
+    }
   }
 
 

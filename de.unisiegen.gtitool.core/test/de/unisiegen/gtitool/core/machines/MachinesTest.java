@@ -27,10 +27,7 @@ public class MachinesTest
     Symbol b = new Symbol ( "b" );
     Symbol c = new Symbol ( "c" );
 
-    Alphabet alphabet = new Alphabet ();
-    alphabet.addSymbol ( a );
-    alphabet.addSymbol ( b );
-    alphabet.addSymbol ( c );
+    Alphabet alphabet = new Alphabet ( a, b, c );
 
     State z0 = new State ( alphabet, "z0", true, false );
     State z1 = new State ( alphabet, "z1", false, false );
@@ -44,15 +41,9 @@ public class MachinesTest
 
     DFA dfa = new DFA ( alphabet );
 
-    dfa.addState ( z0 );
-    dfa.addState ( z1 );
-    dfa.addState ( z2 );
+    dfa.addStates ( z0, z1, z2 );
 
-    dfa.addTransition ( t0 );
-    dfa.addTransition ( t1 );
-    dfa.addTransition ( t2 );
-    dfa.addTransition ( t3 );
-    dfa.addTransition ( t4 );
+    dfa.addTransitions ( t0, t1, t2, t3, t4 );
 
     try
     {

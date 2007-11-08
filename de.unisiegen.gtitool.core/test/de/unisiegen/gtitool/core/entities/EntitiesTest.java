@@ -18,10 +18,7 @@ public class EntitiesTest
     Symbol b = new Symbol ( "b" );
     Symbol c = new Symbol ( "c" );
 
-    Alphabet alphabet = new Alphabet ();
-    alphabet.addSymbol ( a );
-    alphabet.addSymbol ( b );
-    alphabet.addSymbol ( c );
+    Alphabet alphabet = new Alphabet ( a, b, c );
 
     State z0 = new State ( alphabet, "z0", true, false );
     State z1 = new State ( alphabet, "z1", false, false );

@@ -47,6 +47,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
 
         toolbar.setLayout(new java.awt.GridBagLayout());
 
+        toolbar.setToolTipText("Mouse");
+        toolbar.setMinimumSize(new java.awt.Dimension(60, 309));
+        toolbar.setPreferredSize(new java.awt.Dimension(60, 309));
         jLabel1.setText("Toolbar");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -55,8 +58,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(jLabel1, gridBagConstraints);
 
         toolbarButton.add(mouse);
+        mouse.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_mouse.png"));
         mouse.setSelected(true);
-        mouse.setText("mouse");
         mouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarMouse(evt);
@@ -66,12 +69,11 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
         toolbar.add(mouse, gridBagConstraints);
 
         toolbarButton.add(addState);
-        addState.setText("addState");
+        addState.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_add.png"));
+        addState.setToolTipText("Add State");
         addState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarAddState(evt);
@@ -86,7 +88,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(addState, gridBagConstraints);
 
         toolbarButton.add(transition);
-        transition.setText("transition");
+        transition.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_transition.png"));
+        transition.setToolTipText("Add Transition");
         transition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolBarTransition(evt);
@@ -101,7 +104,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(transition, gridBagConstraints);
 
         toolbarButton.add(deleteState);
-        deleteState.setText("delState");
+        deleteState.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_delete.png"));
+        deleteState.setToolTipText("Delete");
         deleteState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarDelState(evt);
@@ -115,7 +119,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(deleteState, gridBagConstraints);
 
         toolbarButton.add(start);
-        start.setText("start");
+        start.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_start.png"));
+        start.setToolTipText("Start State");
         start.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarStart(evt);
@@ -129,7 +134,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(start, gridBagConstraints);
 
         toolbarButton.add(end);
-        end.setText("end");
+        end.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_stop.png"));
+        end.setToolTipText("Accepting State");
         end.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarEnd(evt);
@@ -142,7 +148,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         toolbar.add(end, gridBagConstraints);
 
-        jButton1.setText("alphabet");
+        jButton1.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_alphabet.png"));
+        jButton1.setToolTipText("Edit Alphabet");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleToolbarAlphabet(evt);
@@ -217,7 +224,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     private javax.swing.JToggleButton addState;
     private javax.swing.JToggleButton deleteState;
-    private javax.swing.JPanel diagramm;
+    public javax.swing.JPanel diagramm;
     public javax.swing.JScrollPane diagrammContentPanel;
     private javax.swing.JToggleButton end;
     private javax.swing.JButton jButton1;

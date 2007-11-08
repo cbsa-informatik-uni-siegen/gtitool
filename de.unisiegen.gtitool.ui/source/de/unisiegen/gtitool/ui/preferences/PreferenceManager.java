@@ -160,6 +160,12 @@ public final class PreferenceManager
 
 
   /**
+   * The default zoom factor value.
+   */
+  private static int DEFAULT_ZOOM_FACTOR = 100;
+
+
+  /**
    * Returns the single instance of the <code>PreferenceManager</code>.
    * 
    * @return The single instance of the <code>PreferenceManager</code>.
@@ -193,6 +199,12 @@ public final class PreferenceManager
    * The list of {@link ColorChangedListener}.
    */
   private ArrayList < ColorChangedListener > colorChangedListenerList = new ArrayList < ColorChangedListener > ();
+
+
+  /**
+   * The list of {@link ZoomFactorChangedListener}.
+   */
+  private ArrayList < ZoomFactorChangedListener > zoomFactorChangedListenerList = new ArrayList < ZoomFactorChangedListener > ();
 
 
   /**
@@ -231,6 +243,18 @@ public final class PreferenceManager
       LanguageChangedListener pListener )
   {
     this.languageChangedListenerList.add ( pListener );
+  }
+
+
+  /**
+   * Adds the given {@link ZoomFactorChangedListener}.
+   * 
+   * @param pListener The {@link ZoomFactorChangedListener}.
+   */
+  public final synchronized void addZoomFactorChangedListener (
+      ZoomFactorChangedListener pListener )
+  {
+    this.zoomFactorChangedListenerList.add ( pListener );
   }
 
 
@@ -348,6 +372,20 @@ public final class PreferenceManager
     for ( LanguageChangedListener current : this.languageChangedListenerList )
     {
       current.languageChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the zoom factor has changed.
+   * 
+   * @param pZoomFactor The new {@link ZoomFactor}.
+   */
+  public final void fireZoomFactorChanged ( ZoomFactor pZoomFactor )
+  {
+    for ( ZoomFactorChangedListener current : this.zoomFactorChangedListenerList )
+    {
+      current.zoomFactorChanged ( pZoomFactor );
     }
   }
 
@@ -627,6 +665,18 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the {@link ZoomFactor}.
+   * 
+   * @return The {@link ZoomFactor}.
+   */
+  public final ZoomFactor getZoomFactor ()
+  {
+    return ZoomFactor.createFactor ( this.preferences.getInt (
+        "zoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Removes the given {@link ColorChangedListener}.
    * 
    * @param pListener The {@link ColorChangedListener}.
@@ -649,6 +699,19 @@ public final class PreferenceManager
       LanguageChangedListener pListener )
   {
     return this.languageChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
+   * Removes the given {@link ZoomFactorChangedListener}.
+   * 
+   * @param pListener The {@link ZoomFactorChangedListener}.
+   * @return <tt>true</tt> if the list contained the specified element.
+   */
+  public final synchronized boolean removeZoomFactorChangedListener (
+      ZoomFactorChangedListener pListener )
+  {
+    return this.zoomFactorChangedListenerList.remove ( pListener );
   }
 
 
@@ -904,6 +967,19 @@ public final class PreferenceManager
   {
     logger.debug ( "set the working path to \"" + pPath + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.put ( "workingPath", pPath ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link ZoomFactor}.
+   * 
+   * @param pZoomFactor The {@link ZoomFactor}.
+   */
+  public final void setZoomFactor ( ZoomFactor pZoomFactor )
+  {
+    logger.debug ( "set zoom factor to \"" //$NON-NLS-1$
+        + pZoomFactor.getFactor () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "zoomFactor", pZoomFactor.getFactor () ); //$NON-NLS-1$
   }
 
 }

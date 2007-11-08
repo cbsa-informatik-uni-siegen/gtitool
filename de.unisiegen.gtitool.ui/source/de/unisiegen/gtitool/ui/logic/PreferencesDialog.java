@@ -41,6 +41,7 @@ import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.ZoomFactor;
 
 
 /**
@@ -537,6 +538,12 @@ public final class PreferencesDialog
 
 
   /**
+   * The initial {@link ZoomFactor}.
+   */
+  private ZoomFactor initialZoomFactor;
+
+
+  /**
    * The {@link Timer} of the color list.
    */
   private Timer colorTimer = null;
@@ -601,6 +608,12 @@ public final class PreferencesDialog
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();
     this.gui.jComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
+
+    /*
+     * Zoom factor
+     */
+    this.initialZoomFactor = PreferenceManager.getInstance ().getZoomFactor ();
+    this.gui.jSliderZoom.setValue ( this.initialZoomFactor.getFactor () );
 
     /*
      * Color
@@ -711,7 +724,15 @@ public final class PreferencesDialog
                     "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
             PreferencesDialog.this.gui.jComboBoxLookAndFeel
                 .setToolTipText ( Messages
-                    .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$           
+                    .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
+            // Zoom factor
+            PreferencesDialog.this.gui.jLabelZoom.setText ( Messages
+                .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
+            PreferencesDialog.this.gui.jLabelZoom
+                .setDisplayedMnemonic ( Messages.getString (
+                    "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+            PreferencesDialog.this.gui.jSliderZoom.setToolTipText ( Messages
+                .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
             // Restore
             PreferencesDialog.this.gui.jButtonRestore.setText ( Messages
                 .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
@@ -938,6 +959,8 @@ public final class PreferencesDialog
     saveDataLanguage ();
     // Look and feel
     saveDataLookAndFeel ();
+    // Zoom factor
+    saveDataZoomFactor ();
     // Color
     saveDataColor ();
   }
@@ -1124,6 +1147,25 @@ public final class PreferencesDialog
         }
       }
       this.initialLookAndFeel = selectedLookAndFeelItem;
+    }
+  }
+
+
+  /**
+   * Saves the data of the zoom factor.
+   */
+  private final void saveDataZoomFactor ()
+  {
+    if ( this.initialZoomFactor.getFactor () != this.gui.jSliderZoom
+        .getValue () )
+    {
+      logger.debug ( "zoom factor changed to \"" //$NON-NLS-1$
+          + this.gui.jSliderZoom.getValue () + "\"" ); //$NON-NLS-1$
+      this.initialZoomFactor = ZoomFactor.createFactor ( this.gui.jSliderZoom
+          .getValue () );
+      PreferenceManager.getInstance ().setZoomFactor ( this.initialZoomFactor );
+      PreferenceManager.getInstance ().fireZoomFactorChanged (
+          this.initialZoomFactor );
     }
   }
 

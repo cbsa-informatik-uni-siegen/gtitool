@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.preferences;
+package de.unisiegen.gtitool.ui.preferences.item;
 
 
 import java.io.File;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
  * active file.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: RecentlyUsedItem.java 90 2007-11-04 16:20:27Z fehler $
  */
-public final class RecentlyUsed
+public final class RecentlyUsedItem
 {
 
   /**
@@ -28,12 +28,12 @@ public final class RecentlyUsed
 
 
   /**
-   * Allocates a new <code>RecentlyUsed</code>.
+   * Allocates a new <code>RecentlyUsedItem</code>.
    * 
    * @param pFiles The recently used files.
    * @param pActiveIndex The index of the last active file.
    */
-  public RecentlyUsed ( ArrayList < File > pFiles, int pActiveIndex )
+  public RecentlyUsedItem ( ArrayList < File > pFiles, int pActiveIndex )
   {
     // Files
     if ( pFiles == null )

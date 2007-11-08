@@ -52,13 +52,17 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jLabelLookAndFeel = new javax.swing.JLabel();
         jComboBoxLookAndFeel = new javax.swing.JComboBox();
         jButtonRestore = new javax.swing.JButton();
-        jPanelEmpty = new javax.swing.JPanel();
+        jPanelGeneralSpace = new javax.swing.JPanel();
         jLabelZoom = new javax.swing.JLabel();
         jSliderZoom = new javax.swing.JSlider();
         jPanelColors = new javax.swing.JPanel();
         jScrollPaneColor = new javax.swing.JScrollPane();
         jListColor = new javax.swing.JList();
         jTextPaneDescription = new javax.swing.JTextPane();
+        jPanelAlphabet = new javax.swing.JPanel();
+        jScrollPaneAlphabet = new javax.swing.JScrollPane();
+        jTextAreaAlphabet = new javax.swing.JTextArea();
+        jButtonAlphabetEdit = new javax.swing.JButton();
         jButtonOk = new javax.swing.JButton();
         jButtonAccept = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -143,7 +147,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelGeneral.add(jPanelEmpty, gridBagConstraints);
+        jPanelGeneral.add(jPanelGeneralSpace, gridBagConstraints);
 
         jLabelZoom.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.ZoomMnemonic").charAt(0));
         jLabelZoom.setLabelFor(jSliderZoom);
@@ -224,6 +228,46 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabColors"), null, jPanelColors, bundle.getString("PreferencesDialog.TabColorsToolTip")); // NOI18N
 
+        jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextAreaAlphabet.setColumns(20);
+        jTextAreaAlphabet.setLineWrap(true);
+        jTextAreaAlphabet.setRows(5);
+        jTextAreaAlphabet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextAreaAlphabetKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextAreaAlphabetKeyTyped(evt);
+            }
+        });
+
+        jScrollPaneAlphabet.setViewportView(jTextAreaAlphabet);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
+        jPanelAlphabet.add(jScrollPaneAlphabet, gridBagConstraints);
+
+        jButtonAlphabetEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AlphabetEditMnemonic").charAt(0));
+        jButtonAlphabetEdit.setText(bundle.getString("PreferencesDialog.AlphabetEdit")); // NOI18N
+        jButtonAlphabetEdit.setToolTipText(bundle.getString("PreferencesDialog.AlphabetEditToolTip")); // NOI18N
+        jButtonAlphabetEdit.setFocusPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 10, 10);
+        jPanelAlphabet.add(jButtonAlphabetEdit, gridBagConstraints);
+
+        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -285,8 +329,16 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
         getContentPane().add(jButtonCancel, gridBagConstraints);
 
-        setBounds(0, 0, 400, 312);
+        setBounds(0, 0, 400, 315);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextAreaAlphabetKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextAreaAlphabetKeyReleased
+       this.logic.handleAlphabetTextAreaKeyReleased(evt);
+    }//GEN-LAST:event_jTextAreaAlphabetKeyReleased
+
+    private void jTextAreaAlphabetKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextAreaAlphabetKeyTyped
+       this.logic.handleAlphabetTextAreaKeyTyped(evt);
+    }//GEN-LAST:event_jTextAreaAlphabetKeyTyped
 
     private void jListColorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseExited
        this.logic.handleColorListMouseExited(evt);
@@ -326,6 +378,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jButtonAccept;
+    public javax.swing.JButton jButtonAlphabetEdit;
     public javax.swing.JButton jButtonCancel;
     public javax.swing.JButton jButtonOk;
     public javax.swing.JButton jButtonRestore;
@@ -335,12 +388,15 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JLabel jLabelLookAndFeel;
     public javax.swing.JLabel jLabelZoom;
     public javax.swing.JList jListColor;
+    private javax.swing.JPanel jPanelAlphabet;
     private javax.swing.JPanel jPanelColors;
-    private javax.swing.JPanel jPanelEmpty;
     private javax.swing.JPanel jPanelGeneral;
+    private javax.swing.JPanel jPanelGeneralSpace;
+    private javax.swing.JScrollPane jScrollPaneAlphabet;
     private javax.swing.JScrollPane jScrollPaneColor;
     public javax.swing.JSlider jSliderZoom;
     public javax.swing.JTabbedPane jTabbedPane;
+    public javax.swing.JTextArea jTextAreaAlphabet;
     public javax.swing.JTextPane jTextPaneDescription;
     // End of variables declaration//GEN-END:variables
     

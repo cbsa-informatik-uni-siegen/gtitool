@@ -14,8 +14,8 @@ import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Versions;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**

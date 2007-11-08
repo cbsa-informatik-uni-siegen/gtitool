@@ -15,12 +15,22 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
+import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
+import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
+import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedItem;
+import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
+import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 
 
 /**
@@ -124,6 +134,13 @@ public final class PreferenceManager
    */
   private static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
       .getLanguage ();
+
+
+  /**
+   * The default {@link Alphabet}.
+   */
+  private static final Alphabet DEFAULT_ALPHABET = new Alphabet ( new Symbol (
+      "a" ), new Symbol ( "b" ) ); //$NON-NLS-1$//$NON-NLS-2$
 
 
   /**
@@ -421,14 +438,44 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the zoom factor has changed.
    * 
-   * @param pZoomFactor The new {@link ZoomFactor}.
+   * @param pZoomFactor The new {@link ZoomFactorItem}.
    */
-  public final void fireZoomFactorChanged ( ZoomFactor pZoomFactor )
+  public final void fireZoomFactorChanged ( ZoomFactorItem pZoomFactor )
   {
     for ( ZoomFactorChangedListener current : this.zoomFactorChangedListenerList )
     {
       current.zoomFactorChanged ( pZoomFactor );
     }
+  }
+
+
+  /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The {@link AlphabetItem}.
+   */
+  public final AlphabetItem getAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    int count = this.preferences.getInt ( "defaultAlphabetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      String symbol = this.preferences.get ( "defaultAlphabet" + i, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break;
+      }
+      symbols.add ( new Symbol ( symbol ) );
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
+    }
+    return new AlphabetItem ( new Alphabet ( symbols ), DEFAULT_ALPHABET );
   }
 
 
@@ -710,12 +757,13 @@ public final class PreferenceManager
    * 
    * @return The recently used files and the index of the last active file.
    */
-  public final RecentlyUsed getRecentlyUsed ()
+  public final RecentlyUsedItem getRecentlyUsedItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
-    int i = 0;
+    int count = this.preferences.getInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    while ( true )
+    for ( int i = 0 ; i < count ; i++ )
     {
       String file = this.preferences.get ( "mainWindow.recentlyUsedFiles" + i, //$NON-NLS-1$
           end );
@@ -727,7 +775,7 @@ public final class PreferenceManager
     }
     int activeIndex = this.preferences.getInt (
         "mainWindow.recentlyUsedActiveIndex", -1 ); //$NON-NLS-1$
-    return new RecentlyUsed ( files, activeIndex );
+    return new RecentlyUsedItem ( files, activeIndex );
   }
 
 
@@ -754,13 +802,13 @@ public final class PreferenceManager
 
 
   /**
-   * Returns the {@link ZoomFactor}.
+   * Returns the {@link ZoomFactorItem}.
    * 
-   * @return The {@link ZoomFactor}.
+   * @return The {@link ZoomFactorItem}.
    */
-  public final ZoomFactor getZoomFactor ()
+  public final ZoomFactorItem getZoomFactorItem ()
   {
-    return ZoomFactor.createFactor ( this.preferences.getInt (
+    return ZoomFactorItem.createFactor ( this.preferences.getInt (
         "zoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
   }
 
@@ -801,6 +849,26 @@ public final class PreferenceManager
       ZoomFactorChangedListener pListener )
   {
     return this.zoomFactorChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
+   * Sets the {@link AlphabetItem}.
+   * 
+   * @param pAlphabetItem The {@link AlphabetItem}.
+   */
+  public final void setAlphabetItem ( AlphabetItem pAlphabetItem )
+  {
+    logger
+        .debug ( "set the alphabet to \"" + pAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$//$NON-NLS-2$
+    for ( int i = 0 ; i < pAlphabetItem.getAlphabet ().symbolSize () ; i++ )
+    {
+      this.preferences.put (
+          "defaultAlphabet" + i, pAlphabetItem.getAlphabet ().getSymbol ( i ) //$NON-NLS-1$
+              .getName () );
+    }
+    this.preferences.putInt ( "defaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
+        .getAlphabet ().symbolSize () );
   }
 
 
@@ -1063,9 +1131,9 @@ public final class PreferenceManager
   /**
    * Sets the recently used files and the index of the last active file.
    * 
-   * @param pRecentlyUsed The {@link RecentlyUsed}.
+   * @param pRecentlyUsed The {@link RecentlyUsedItem}.
    */
-  public final void setRecentlyUsed ( RecentlyUsed pRecentlyUsed )
+  public final void setRecentlyUsedItem ( RecentlyUsedItem pRecentlyUsed )
   {
     for ( int i = 0 ; i < pRecentlyUsed.getFiles ().size () ; i++ )
     {
@@ -1076,6 +1144,8 @@ public final class PreferenceManager
     }
     this.preferences.putInt ( "mainWindow.recentlyUsedActiveIndex", //$NON-NLS-1$
         pRecentlyUsed.getActiveIndex () );
+    this.preferences.putInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
+        pRecentlyUsed.getFiles ().size () );
   }
 
 
@@ -1103,11 +1173,11 @@ public final class PreferenceManager
 
 
   /**
-   * Sets the {@link ZoomFactor}.
+   * Sets the {@link ZoomFactorItem}.
    * 
-   * @param pZoomFactor The {@link ZoomFactor}.
+   * @param pZoomFactor The {@link ZoomFactorItem}.
    */
-  public final void setZoomFactor ( ZoomFactor pZoomFactor )
+  public final void setZoomFactorItem ( ZoomFactorItem pZoomFactor )
   {
     logger.debug ( "set zoom factor to \"" //$NON-NLS-1$
         + pZoomFactor.getFactor () + "\"" ); //$NON-NLS-1$

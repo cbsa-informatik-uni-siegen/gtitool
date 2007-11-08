@@ -7,6 +7,7 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -31,17 +32,20 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
-import de.unisiegen.gtitool.ui.preferences.ColorItem;
-import de.unisiegen.gtitool.ui.preferences.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.preferences.LanguageItem;
-import de.unisiegen.gtitool.ui.preferences.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.preferences.ZoomFactor;
+import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
+import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
+import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.utils.AlphabetParser;
 
 
 /**
@@ -484,9 +488,15 @@ public final class PreferencesDialog
 
 
   /**
-   * The {@link ColorItem} of the error{@link Transition}.
+   * The {@link ColorItem} of the error {@link Transition}.
    */
   private ColorItem colorItemErrorTransition;
+
+
+  /**
+   * The {@link AlphabetItem}.
+   */
+  private AlphabetItem alphabetItem;
 
 
   /**
@@ -562,9 +572,15 @@ public final class PreferencesDialog
 
 
   /**
-   * The initial {@link ZoomFactor}.
+   * The initial {@link ZoomFactorItem}.
    */
-  private ZoomFactor initialZoomFactor;
+  private ZoomFactorItem initialZoomFactorItem;
+
+
+  /**
+   * The initial {@link AlphabetItem}.
+   */
+  private AlphabetItem initialAlphabetItem;
 
 
   /**
@@ -636,8 +652,9 @@ public final class PreferencesDialog
     /*
      * Zoom factor
      */
-    this.initialZoomFactor = PreferenceManager.getInstance ().getZoomFactor ();
-    this.gui.jSliderZoom.setValue ( this.initialZoomFactor.getFactor () );
+    this.initialZoomFactorItem = PreferenceManager.getInstance ()
+        .getZoomFactorItem ();
+    this.gui.jSliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
 
     /*
      * Color
@@ -699,6 +716,14 @@ public final class PreferencesDialog
     this.gui.jTabbedPane.setSelectedIndex ( this.initialLastActiveTab );
 
     /*
+     * Alphabet
+     */
+    this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
+    this.initialAlphabetItem = this.alphabetItem.clone ();
+    this.gui.jTextAreaAlphabet.setText ( AlphabetParser
+        .createString ( this.alphabetItem.getAlphabet () ) );
+
+    /*
      * Language changed listener
      */
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -721,6 +746,11 @@ public final class PreferencesDialog
                 .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
             PreferencesDialog.this.gui.jTabbedPane.setToolTipTextAt ( 1,
                 Messages.getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
+            // Alphabet
+            PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 2, Messages
+                .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jTabbedPane.setToolTipTextAt ( 1,
+                Messages.getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
             // Accept
             PreferencesDialog.this.gui.jButtonAccept.setText ( Messages
                 .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
@@ -829,6 +859,15 @@ public final class PreferencesDialog
             PreferencesDialog.this.colorItemErrorTransition
                 .setDescription ( Messages
                     .getString ( "PreferencesDialog.ColorErrorTransitionDescription" ) ); //$NON-NLS-1$
+            // AlphabetEdit
+            PreferencesDialog.this.gui.jButtonAlphabetEdit.setText ( Messages
+                .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jButtonAlphabetEdit
+                .setMnemonic ( Messages.getString (
+                    "PreferencesDialog.AlphabetEditMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            PreferencesDialog.this.gui.jButtonAlphabetEdit
+                .setToolTipText ( Messages
+                    .getString ( "PreferencesDialog.AlphabetEditToolTip" ) ); //$NON-NLS-1$
           }
         } );
   }
@@ -841,6 +880,44 @@ public final class PreferencesDialog
   {
     logger.debug ( "handle accept" ); //$NON-NLS-1$
     saveData ();
+  }
+
+
+  /**
+   * Handles key released events on the alphabet text area.
+   * 
+   * @param pKeyEvent The {@link KeyEvent}.
+   */
+  public final void handleAlphabetTextAreaKeyReleased (
+      @SuppressWarnings ( "unused" )
+      KeyEvent pKeyEvent )
+  {
+    String text = this.gui.jTextAreaAlphabet.getText ();
+    text = text.replaceAll ( " ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    text = text.replaceAll ( ",", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    text = text.replaceAll ( "\r", "" ); //$NON-NLS-1$//$NON-NLS-2$
+    text = text.replaceAll ( "\n", "" ); //$NON-NLS-1$//$NON-NLS-2$
+    text = text.replaceAll ( "\t", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    Alphabet newAlphabet = new Alphabet ();
+    for ( int i = 0 ; i < text.length () ; i++ )
+    {
+      newAlphabet.addSymbol ( new Symbol ( text.charAt ( i ) ) );
+    }
+    this.alphabetItem.setAlphabet ( newAlphabet );
+  }
+
+
+  /**
+   * Handles key typed events on the alphabet text area.
+   * 
+   * @param pKeyEvent The {@link KeyEvent}.
+   */
+  public final void handleAlphabetTextAreaKeyTyped ( KeyEvent pKeyEvent )
+  {
+    if ( !AlphabetParser.checkInput ( pKeyEvent.getKeyChar () ) )
+    {
+      pKeyEvent.setKeyChar ( '\u0000' );
+    }
   }
 
 
@@ -984,6 +1061,8 @@ public final class PreferencesDialog
     this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
     // Look and feel
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
+    // Zoom factor
+    this.gui.jSliderZoom.setValue ( 100 );
     // Color
     this.colorItemState.restore ();
     this.colorItemSelectedState.restore ();
@@ -994,6 +1073,10 @@ public final class PreferencesDialog
     this.colorItemErrorSymbol.restore ();
     this.colorItemTransition.restore ();
     this.colorItemErrorTransition.restore ();
+    // Alphabet
+    this.alphabetItem.restore ();
+    this.gui.jTextAreaAlphabet.setText ( AlphabetParser
+        .createString ( this.alphabetItem.getAlphabet () ) );
   }
 
 
@@ -1013,6 +1096,24 @@ public final class PreferencesDialog
     saveDataZoomFactor ();
     // Color
     saveDataColor ();
+    // Alphabet
+    saveDataAlphabet ();
+  }
+
+
+  /**
+   * Saves the data of the {@link AlphabetItem}.
+   */
+  private final void saveDataAlphabet ()
+  {
+    // Alphabet
+    if ( !this.initialAlphabetItem.equals ( this.alphabetItem ) )
+    {
+      logger.debug ( "alphabet changed to \"" //$NON-NLS-1$
+          + this.alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+      this.initialAlphabetItem = this.alphabetItem.clone ();
+      PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
+    }
   }
 
 
@@ -1234,16 +1335,17 @@ public final class PreferencesDialog
    */
   private final void saveDataZoomFactor ()
   {
-    if ( this.initialZoomFactor.getFactor () != this.gui.jSliderZoom
+    if ( this.initialZoomFactorItem.getFactor () != this.gui.jSliderZoom
         .getValue () )
     {
       logger.debug ( "zoom factor changed to \"" //$NON-NLS-1$
           + this.gui.jSliderZoom.getValue () + "\"" ); //$NON-NLS-1$
-      this.initialZoomFactor = ZoomFactor.createFactor ( this.gui.jSliderZoom
-          .getValue () );
-      PreferenceManager.getInstance ().setZoomFactor ( this.initialZoomFactor );
+      this.initialZoomFactorItem = ZoomFactorItem
+          .createFactor ( this.gui.jSliderZoom.getValue () );
+      PreferenceManager.getInstance ().setZoomFactorItem (
+          this.initialZoomFactorItem );
       PreferenceManager.getInstance ().fireZoomFactorChanged (
-          this.initialZoomFactor );
+          this.initialZoomFactorItem );
     }
   }
 

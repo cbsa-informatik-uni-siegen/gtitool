@@ -1,7 +1,9 @@
-package de.unisiegen.gtitool.ui.preferences;
+package de.unisiegen.gtitool.ui.preferences.listener;
 
 
 import java.util.EventListener;
+
+import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 
 
 /**
@@ -16,8 +18,8 @@ public interface ZoomFactorChangedListener extends EventListener
   /**
    * Invoked when the zoom factor changed.
    * 
-   * @param pNewValue The new {@link ZoomFactor}.
+   * @param pNewValue The new {@link ZoomFactorItem}.
    */
-  public void zoomFactorChanged ( ZoomFactor pNewValue );
+  public void zoomFactorChanged ( ZoomFactorItem pNewValue );
 
 }

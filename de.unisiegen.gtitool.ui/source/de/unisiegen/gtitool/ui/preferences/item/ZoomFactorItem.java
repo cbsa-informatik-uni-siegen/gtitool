@@ -1,12 +1,13 @@
-package de.unisiegen.gtitool.ui.preferences;
+package de.unisiegen.gtitool.ui.preferences.item;
 
 
 /**
  * Indicates which zoom factor is choosen.
  * 
  * @author Christian Fehler
+ * @version $Id: ZoomFactorChangedListener.java 96 2007-11-08 14:48:04Z fehler $
  */
-public enum ZoomFactor
+public enum ZoomFactorItem
 {
   /**
    * The zoom factor for 50 percent.
@@ -44,13 +45,13 @@ public enum ZoomFactor
   ZOOM_200 ( 200 );
 
   /**
-   * Creates a new {@link ZoomFactor} of the given zoom factor value, or throws
+   * Creates a new {@link ZoomFactorItem} of the given zoom factor value, or throws
    * an exception if the zoom factor is not supported.
    * 
    * @param pZoomFactor The zoom factor value.
-   * @return A new {@link ZoomFactor}.
+   * @return A new {@link ZoomFactorItem}.
    */
-  public static ZoomFactor createFactor ( int pZoomFactor )
+  public static ZoomFactorItem createFactor ( int pZoomFactor )
   {
     switch ( pZoomFactor )
     {
@@ -81,11 +82,11 @@ public enum ZoomFactor
 
 
   /**
-   * Creates a new <code>ZoomFactor</code>.
+   * Creates a new <code>ZoomFactorItem</code>.
    * 
    * @param pFactor The zoom factor.
    */
-  private ZoomFactor ( int pFactor )
+  private ZoomFactorItem ( int pFactor )
   {
     this.factor = pFactor;
   }

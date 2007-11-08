@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.preferences;
+package de.unisiegen.gtitool.ui.preferences.listener;
 
 
 import java.awt.Color;
@@ -9,14 +9,12 @@ import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
- * The abstract listener class for receiving color changes.
+ * An abstract adapter class for receiving color changes.
  * 
  * @author Christian Fehler
- * @version $Id: AbstractColorChangedListener.java 90 2007-11-04 16:20:27Z
- *          fehler $
+ * @version $Id: ColorChangedAdapter.java 90 2007-11-04 16:20:27Z fehler $
  */
-public abstract class AbstractColorChangedListener implements
-    ColorChangedListener
+public abstract class ColorChangedAdapter implements ColorChangedListener
 {
 
   /**

@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings({ "nls","unqualified-field-access","synthetic-access", "all"})
+@SuppressWarnings({ "all" })
 public class AboutDialogForm extends javax.swing.JDialog {
     
     /**

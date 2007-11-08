@@ -54,12 +54,18 @@ public class NewDialog
     this.newDialogForm.setVisible ( true );
   }
   
+  /**
+   * 
+   * Return a new EditorPanel
+   *
+   * @return a new EditorPanel or null
+   */
   public EditorPanel getEditorPanel ()
   {
     if (this.newDialogForm.isCanceled ())
       return null;
     if (this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel)
-      return new MachinePanel(this.parent, newDialogForm.alphabetPanel);
-    return new GrammarPanel(newDialogForm.alphabetPanel);
+      return new MachinePanel(this.parent);
+    return new GrammarPanel();
   }
 }

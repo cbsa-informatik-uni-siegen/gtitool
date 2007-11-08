@@ -14,11 +14,10 @@ public class GrammarPanel implements EditorPanel
   GrammarPanelForm grammarPanel;
 
 
-  public GrammarPanel (JPanel alphabetPanel)
+  public GrammarPanel ()
   {
     this.grammarPanel = new GrammarPanelForm ();
     
-    this.grammarPanel.alphabetPanel.add ( alphabetPanel );
 
   }
 

@@ -15,6 +15,9 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import sun.java2d.SunGraphics2D;
+import sun.java2d.loops.MaskFill;
+
 public class JGraphEllipseView extends VertexView {
 
 	/**

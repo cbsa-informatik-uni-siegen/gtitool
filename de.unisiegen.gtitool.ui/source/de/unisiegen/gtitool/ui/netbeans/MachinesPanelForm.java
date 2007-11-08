@@ -9,6 +9,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 /**
+ * The Forms file for the {@link MachinePanel}
  *
  * @author  Benjamin Mies
  */
@@ -34,14 +35,16 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         mouse = new javax.swing.JToggleButton();
         addState = new javax.swing.JToggleButton();
         transition = new javax.swing.JToggleButton();
-        deleteState = new javax.swing.JToggleButton();
         start = new javax.swing.JToggleButton();
         end = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        top = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         diagramm = new javax.swing.JPanel();
         diagrammContentPanel = new javax.swing.JScrollPane();
         tablePanel = new javax.swing.JPanel();
+        bottom = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -58,8 +61,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(jLabel1, gridBagConstraints);
 
         toolbarButton.add(mouse);
-        mouse.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_mouse.png"));
+        mouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_mouse.png")));
         mouse.setSelected(true);
+        mouse.setFocusable(false);
         mouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarMouse(evt);
@@ -72,8 +76,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(mouse, gridBagConstraints);
 
         toolbarButton.add(addState);
-        addState.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_add.png"));
+        addState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_add.png")));
         addState.setToolTipText("Add State");
+        addState.setFocusable(false);
         addState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarAddState(evt);
@@ -88,8 +93,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(addState, gridBagConstraints);
 
         toolbarButton.add(transition);
-        transition.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_transition.png"));
+        transition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_transition.png")));
         transition.setToolTipText("Add Transition");
+        transition.setFocusable(false);
         transition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolBarTransition(evt);
@@ -103,24 +109,10 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         toolbar.add(transition, gridBagConstraints);
 
-        toolbarButton.add(deleteState);
-        deleteState.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_delete.png"));
-        deleteState.setToolTipText("Delete");
-        deleteState.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                handleToolbarDelState(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        toolbar.add(deleteState, gridBagConstraints);
-
         toolbarButton.add(start);
-        start.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_start.png"));
+        start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_start.png")));
         start.setToolTipText("Start State");
+        start.setFocusable(false);
         start.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarStart(evt);
@@ -134,8 +126,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         toolbar.add(start, gridBagConstraints);
 
         toolbarButton.add(end);
-        end.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_stop.png"));
+        end.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_stop.png")));
         end.setToolTipText("Accepting State");
+        end.setFocusable(false);
         end.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleToolbarEnd(evt);
@@ -148,8 +141,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         toolbar.add(end, gridBagConstraints);
 
-        jButton1.setIcon(new javax.swing.ImageIcon("/home/benny/.workspace/de.unisiegen.gtitool.ui/source/de/unisiegen/gtitool/ui/icon/toolbar_alphabet.png"));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar_alphabet.png")));
         jButton1.setToolTipText("Edit Alphabet");
+        jButton1.setFocusable(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleToolbarAlphabet(evt);
@@ -167,7 +161,13 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         add(toolbar, gridBagConstraints);
 
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane2.setDividerLocation(400);
+        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane2.setOneTouchExpandable(true);
+        top.setLayout(new java.awt.GridBagLayout());
+
+        jSplitPane1.setDividerLocation(700);
+        jSplitPane1.setOneTouchExpandable(true);
         diagramm.setLayout(new java.awt.GridBagLayout());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -188,7 +188,19 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jSplitPane1, gridBagConstraints);
+        top.add(jSplitPane1, gridBagConstraints);
+
+        jSplitPane2.setLeftComponent(top);
+
+        jSplitPane2.setRightComponent(bottom);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jSplitPane2, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -203,10 +215,6 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     private void handleToolBarTransition(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolBarTransition
         this.logic.handleToolbarTransition(this.transition.isSelected());
     }//GEN-LAST:event_handleToolBarTransition
-
-    private void handleToolbarDelState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarDelState
-        this.logic.handleToolbarDelState(this.deleteState.isSelected());
-    }//GEN-LAST:event_handleToolbarDelState
 
     private void handleToolbarStart(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarStart
         this.logic.handleToolbarStart(this.start.isSelected());
@@ -223,18 +231,20 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     private javax.swing.JToggleButton addState;
-    private javax.swing.JToggleButton deleteState;
+    private javax.swing.JPanel bottom;
     public javax.swing.JPanel diagramm;
     public javax.swing.JScrollPane diagrammContentPanel;
     private javax.swing.JToggleButton end;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JToggleButton mouse;
     private javax.swing.JToggleButton start;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JPanel toolbar;
     private javax.swing.ButtonGroup toolbarButton;
+    public javax.swing.JPanel top;
     private javax.swing.JToggleButton transition;
     // Ende der Variablendeklaration//GEN-END:variables
     

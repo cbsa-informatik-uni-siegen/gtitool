@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
@@ -134,13 +135,6 @@ public final class PreferenceManager
    */
   private static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
       .getLanguage ();
-
-
-  /**
-   * The default {@link Alphabet}.
-   */
-  private static final Alphabet DEFAULT_ALPHABET = new Alphabet ( new Symbol (
-      "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$//$NON-NLS-2$
 
 
   /**
@@ -470,12 +464,28 @@ public final class PreferenceManager
       }
       symbols.add ( new Symbol ( symbol ) );
     }
+    Alphabet defaultAlphabet;
+    try
+    {
+      defaultAlphabet = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) );  //$NON-NLS-1$//$NON-NLS-2$
+    }
+    catch ( AlphabetException e1 )
+    {
+      throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+    }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
     {
-      return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
+      return new AlphabetItem ( defaultAlphabet, defaultAlphabet );
     }
-    return new AlphabetItem ( new Alphabet ( symbols ), DEFAULT_ALPHABET );
+    try
+    {
+      return new AlphabetItem ( new Alphabet ( symbols ), defaultAlphabet );
+    }
+    catch ( AlphabetException e )
+    {
+      throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+    }
   }
 
 

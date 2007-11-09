@@ -32,9 +32,11 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -891,8 +893,18 @@ public final class PreferencesDialog
       @SuppressWarnings ( "unused" )
       KeyEvent pKeyEvent )
   {
-    this.alphabetItem.setAlphabet ( AlphabetParser
-        .createAlphabet ( this.gui.jTextAreaAlphabet.getText () ) );
+    Alphabet newAlphabet;
+    try
+    {
+      newAlphabet = AlphabetParser.createAlphabet ( this.gui.jTextAreaAlphabet
+          .getText () );
+      this.alphabetItem.setAlphabet ( newAlphabet );
+    }
+    catch ( AlphabetException e )
+    {
+      // TODOChristian Handle error
+      System.out.println (e);
+    }
   }
 
 

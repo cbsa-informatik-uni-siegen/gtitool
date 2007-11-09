@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
@@ -85,9 +86,18 @@ public class NewDialog
   {
     if ( this.newDialogForm.isCanceled () )
       return null;
-    if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
-      return new MachinePanel ( this.parent, this.alphabet );
-    return new GrammarPanel ( this.parent, this.alphabet );
+    try
+    {
+      this.alphabet = AlphabetParser.createAlphabet ( this.newDialogForm.jTextPaneMachineAlphabet.getText () );
+      if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
+        return new MachinePanel ( this.parent, this.alphabet );
+      return new GrammarPanel ( this.parent, this.alphabet );
+    }
+    catch ( AlphabetException e )
+    {
+      // TODOBenny Handle the error. Happens if the user wants to add a symbol more than one time.     
+      return null ;
+    }
   }
 
   /**

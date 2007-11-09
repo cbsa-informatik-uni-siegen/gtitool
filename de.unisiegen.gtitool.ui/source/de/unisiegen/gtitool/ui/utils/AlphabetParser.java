@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.utils;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
 
 
 /**
@@ -45,13 +46,17 @@ public abstract class AlphabetParser
     return true;
   }
 
+
   /**
    * Creates the {@link Alphabet} of the given string.
-   *
+   * 
    * @param pText The input string.
    * @return The {@link Alphabet} of the given string.
+   * @throws AlphabetException If something in the {@link Alphabet} is not
+   *           correct.
    */
-  public static final Alphabet createAlphabet ( String pText)
+  public static final Alphabet createAlphabet ( String pText )
+      throws AlphabetException
   {
     String text = pText;
     text = text.replaceAll ( " ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -64,9 +69,9 @@ public abstract class AlphabetParser
     {
       newAlphabet.addSymbol ( new Symbol ( text.charAt ( i ) ) );
     }
-    return newAlphabet ;
+    return newAlphabet;
   }
-  
+
 
   /**
    * Creates the output string of the given {@link Alphabet}.

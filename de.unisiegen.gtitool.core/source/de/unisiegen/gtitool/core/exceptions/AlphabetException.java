@@ -1,15 +1,24 @@
 package de.unisiegen.gtitool.core.exceptions;
 
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+
+
 /**
- * The <code>MachineException</code> is used to be collected in a
- * {@link MachineValidationException}
+ * The <code>AlphabetException</code> is used if the {@link Alphabet} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class MachineException extends Exception
+public final class AlphabetException extends Exception
 {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 8267857615201989774L;
+
 
   /**
    * The detail message
@@ -24,26 +33,25 @@ public abstract class MachineException extends Exception
 
 
   /**
-   * Allocates a new <code>MachineException</code>.
-   */
-  public MachineException ()
-  {
-    super ();
-  }
-
-
-  /**
-   * Allocates a new <code>MachineException</code>.
+   * Allocates a new <code>AlphabetException</code>.
    * 
    * @param pMessage The detail message.
    * @param pDescription The detail description.
    */
-  public MachineException ( String pMessage, String pDescription )
+  public AlphabetException ( String pMessage, String pDescription )
   {
     // Message
-    setMessage ( pMessage );
+    if ( pMessage == null )
+    {
+      throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
+    }
+    this.message = pMessage;
     // Description
-    setDescription ( pDescription );
+    if ( pDescription == null )
+    {
+      throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
+    }
+    this.description = pDescription;
   }
 
 
@@ -84,42 +92,12 @@ public abstract class MachineException extends Exception
 
 
   /**
-   * Sets the detail description.
-   * 
-   * @param pDescription The description to set.
-   */
-  public final void setDescription ( String pDescription )
-  {
-    if ( pDescription == null )
-    {
-      throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
-    }
-    this.description = pDescription;
-  }
-
-
-  /**
-   * Sets the detail message.
-   * 
-   * @param pMessage The message to set.
-   */
-  public final void setMessage ( String pMessage )
-  {
-    if ( pMessage == null )
-    {
-      throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
-    }
-    this.message = pMessage;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Throwable#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();

@@ -82,4 +82,29 @@ public final class MachineValidationException extends Exception
   {
     return this.machineExceptionList.size ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ();
+    for ( int i = 0 ; i < this.machineExceptionList.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( lineBreak );
+      }
+      result.append ( this.machineExceptionList.get ( i ).getClass ()
+          .getSimpleName ()
+          + lineBreak );
+      result.append ( this.machineExceptionList.get ( i ).toString () );
+    }
+    return result.toString ();
+  }
 }

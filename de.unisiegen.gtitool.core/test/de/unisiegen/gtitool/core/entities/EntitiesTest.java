@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
+
+
 /**
  * The test class of the entities.
  * 
@@ -18,7 +21,16 @@ public class EntitiesTest
     Symbol b = new Symbol ( "b" );
     Symbol c = new Symbol ( "c" );
 
-    Alphabet alphabet = new Alphabet ( a, b, c );
+    Alphabet alphabet = null;
+    try
+    {
+      alphabet = new Alphabet ( a, b, c );
+    }
+    catch ( AlphabetException e )
+    {
+      System.err.println ( "AlphabetException" );
+      System.exit ( 1 );
+    }
 
     State z0 = new State ( alphabet, "z0", true, false );
     State z1 = new State ( alphabet, "z1", false, false );

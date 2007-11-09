@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.exceptions.AlphabetException;
+
 
 /**
  * The <code>Alphabet</code> entity.
@@ -42,8 +45,10 @@ public final class Alphabet implements Serializable, Cloneable,
    * Allocates a new <code>Alphabet</code>.
    * 
    * @param pSymbols The array of {@link Symbol}s.
+   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   *           not correct.
    */
-  public Alphabet ( Iterable < Symbol > pSymbols )
+  public Alphabet ( Iterable < Symbol > pSymbols ) throws AlphabetException
   {
     this ();
     // Symbols
@@ -62,8 +67,10 @@ public final class Alphabet implements Serializable, Cloneable,
    * Allocates a new <code>Alphabet</code>.
    * 
    * @param pSymbols The array of {@link Symbol}s.
+   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   *           not correct.
    */
-  public Alphabet ( Symbol ... pSymbols )
+  public Alphabet ( Symbol ... pSymbols ) throws AlphabetException
   {
     this ();
     // Symbols
@@ -84,8 +91,10 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbol The {@link Symbol} to be appended to this
    *          <code>Alphabet</code>.
+   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   *           not correct.
    */
-  public final void addSymbol ( Symbol pSymbol )
+  public final void addSymbol ( Symbol pSymbol ) throws AlphabetException
   {
     if ( pSymbol == null )
     {
@@ -93,7 +102,10 @@ public final class Alphabet implements Serializable, Cloneable,
     }
     if ( this.symbolSet.contains ( pSymbol ) )
     {
-      throw new IllegalArgumentException ( "symbol is already in this alphabet" ); //$NON-NLS-1$
+      throw new AlphabetException ( Messages
+          .getString ( "AlphabetException.MoreThanOneSymbolMessage" ), Messages //$NON-NLS-1$
+          .getString ( "AlphabetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
+              pSymbol.getName () ) );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -105,8 +117,11 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
+   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   *           not correct.
    */
   public final void addSymbols ( Iterable < Symbol > pSymbols )
+      throws AlphabetException
   {
     if ( pSymbols == null )
     {
@@ -129,8 +144,10 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
+   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   *           not correct.
    */
-  public final void addSymbols ( Symbol ... pSymbols )
+  public final void addSymbols ( Symbol ... pSymbols ) throws AlphabetException
   {
     if ( pSymbols == null )
     {
@@ -158,7 +175,14 @@ public final class Alphabet implements Serializable, Cloneable,
     Alphabet newAlphabet = new Alphabet ();
     for ( Symbol current : this.symbolSet )
     {
-      newAlphabet.addSymbol ( current.clone () );
+      try
+      {
+        newAlphabet.addSymbol ( current.clone () );
+      }
+      catch ( AlphabetException e )
+      {
+        throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+      }
     }
     return newAlphabet;
   }

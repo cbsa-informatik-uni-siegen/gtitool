@@ -6,6 +6,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -15,10 +16,9 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import sun.java2d.SunGraphics2D;
-import sun.java2d.loops.MaskFill;
+import de.unisiegen.gtitool.core.entities.State;
 
-public class JGraphEllipseView extends VertexView {
+public class FinalStateView extends VertexView {
 
 	/**
 	 */
@@ -26,13 +26,13 @@ public class JGraphEllipseView extends VertexView {
 
 	/**
 	 */
-	public JGraphEllipseView() {
+	public FinalStateView() {
 		super();
 	}
 
 	/**
 	 */
-	public JGraphEllipseView(Object cell) {
+	public FinalStateView(Object cell) {
 		super(cell);
 	}
 
@@ -120,8 +120,7 @@ public class JGraphEllipseView extends VertexView {
 			return d;
 		}
 
-		/**
-		 */
+	
 		public void paint(Graphics g) {
 			int b = borderWidth;
 			Graphics2D g2 = (Graphics2D) g;
@@ -134,7 +133,7 @@ public class JGraphEllipseView extends VertexView {
 					g2.setPaint(new GradientPaint(0, 0, getBackground(),
 							getWidth(), getHeight(), gradientColor, true));
 				}
-				g.fillOval(b - 1, b - 1, d.width - b, d.height - b);
+				g.fillOval(b + 3, b + 3, d.width - b - 8 , d.height - b - 8);
 			}
 			try {
 				setBorder(null);
@@ -148,9 +147,10 @@ public class JGraphEllipseView extends VertexView {
 				g.setColor(bordercolor);
 				g2.setStroke(new BasicStroke(b));
 				g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
+        g.drawOval(b + 3, b + 3, d.width - b - 8 , d.height - b - 8);
 			}
 			if (selected) {
-				g2.setStroke(GraphConstants.SELECTION_STROKE);
+
 				g.setColor(highlightColor);
 				g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
 			}

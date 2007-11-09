@@ -68,7 +68,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         jPanelMachinesSpace = new javax.swing.JPanel();
         bodyPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jTextPane = new javax.swing.JTextPane();
+        jTextPaneMachineAlphabet = new javax.swing.JTextPane();
         grammarsPanel = new javax.swing.JPanel();
         jLabelGrammarsCaption = new javax.swing.JLabel();
         buttonGrammarsPanel = new javax.swing.JPanel();
@@ -78,7 +78,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         jPanelGrammarsSpace = new javax.swing.JPanel();
         bodyPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTextPaneGrammarAlphabet = new javax.swing.JTextPane();
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
@@ -167,7 +167,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         jRadioButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         buttonMachinesPanel.add(jRadioButton1, gridBagConstraints);
 
@@ -187,17 +187,17 @@ public class NewDialogForm extends javax.swing.JDialog {
         jRadioButton3.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         buttonMachinesPanel.add(jRadioButton3, gridBagConstraints);
 
         machines.add(jRadioButton4);
-        jRadioButton4.setText("e-NDA");
+        jRadioButton4.setText("e-NDEA");
         jRadioButton4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jRadioButton4.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         buttonMachinesPanel.add(jRadioButton4, gridBagConstraints);
 
@@ -224,16 +224,22 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         bodyPanel.add(jLabel5, gridBagConstraints);
 
-        jTextPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextPane.setMaximumSize(new java.awt.Dimension(6, 46));
-        jTextPane.setMinimumSize(new java.awt.Dimension(6, 46));
-        jTextPane.setPreferredSize(new java.awt.Dimension(6, 46));
+        jTextPaneMachineAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextPaneMachineAlphabet.setMaximumSize(new java.awt.Dimension(6, 46));
+        jTextPaneMachineAlphabet.setMinimumSize(new java.awt.Dimension(6, 46));
+        jTextPaneMachineAlphabet.setPreferredSize(new java.awt.Dimension(6, 46));
+        jTextPaneMachineAlphabet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                handleKeyTypedEvent(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 40, 20, 40);
-        bodyPanel.add(jTextPane, gridBagConstraints);
+        bodyPanel.add(jTextPaneMachineAlphabet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -309,16 +315,22 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         bodyPanel1.add(jLabel4, gridBagConstraints);
 
-        jTextPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextPane1.setMaximumSize(new java.awt.Dimension(6, 46));
-        jTextPane1.setMinimumSize(new java.awt.Dimension(6, 46));
-        jTextPane1.setPreferredSize(new java.awt.Dimension(6, 46));
+        jTextPaneGrammarAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextPaneGrammarAlphabet.setMaximumSize(new java.awt.Dimension(6, 46));
+        jTextPaneGrammarAlphabet.setMinimumSize(new java.awt.Dimension(6, 46));
+        jTextPaneGrammarAlphabet.setPreferredSize(new java.awt.Dimension(6, 46));
+        jTextPaneGrammarAlphabet.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                handleKeyTypedEvent(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 40, 20, 40);
-        bodyPanel1.add(jTextPane1, gridBagConstraints);
+        bodyPanel1.add(jTextPaneGrammarAlphabet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -383,6 +395,10 @@ public class NewDialogForm extends javax.swing.JDialog {
         setBounds((screenSize.width-515)/2, (screenSize.height-400)/2, 515, 400);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleKeyTypedEvent(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_handleKeyTypedEvent
+        this.logic.handleKeyTypedEvent( evt ) ;
+    }//GEN-LAST:event_handleKeyTypedEvent
+
     private void tabbedPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabbedPaneKeyPressed
 // NOTICE Ihre Ereignisbehandlung hier einfügen:
     }//GEN-LAST:event_tabbedPaneKeyPressed
@@ -427,8 +443,8 @@ public class NewDialogForm extends javax.swing.JDialog {
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JTextPane jTextPane;
-    private javax.swing.JTextPane jTextPane1;
+    public javax.swing.JTextPane jTextPaneGrammarAlphabet;
+    public javax.swing.JTextPane jTextPaneMachineAlphabet;
     private javax.swing.ButtonGroup machines;
     public javax.swing.JPanel machinesPanel;
     public javax.swing.JButton okButton;

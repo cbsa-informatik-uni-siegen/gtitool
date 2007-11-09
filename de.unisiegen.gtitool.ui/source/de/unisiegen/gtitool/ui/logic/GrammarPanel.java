@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
@@ -14,7 +16,7 @@ public class GrammarPanel implements EditorPanel
   GrammarPanelForm grammarPanel;
 
 
-  public GrammarPanel ()
+  public GrammarPanel ( JFrame pParent, Alphabet pAlphabet )
   {
     this.grammarPanel = new GrammarPanelForm ();
     

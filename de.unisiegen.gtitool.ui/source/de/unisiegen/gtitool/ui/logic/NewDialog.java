@@ -1,9 +1,17 @@
 package de.unisiegen.gtitool.ui.logic;
-import javax.swing.JFrame;
 
+
+import java.awt.event.KeyEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JTextPane;
+
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.utils.AlphabetParser;
 
 
 /**
@@ -28,6 +36,12 @@ public class NewDialog
 
 
   /**
+   * The {@link Alphabet} for the new file
+   */
+  Alphabet alphabet;
+
+
+  /**
    * Creates a new <code>NewDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
@@ -37,6 +51,13 @@ public class NewDialog
     this.parent = pParent;
     this.newDialogForm = new NewDialogForm ( pParent, true );
     this.newDialogForm.setLogic ( this );
+    this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
+        .getAlphabet ().clone ();
+    this.newDialogForm.jTextPaneMachineAlphabet.setText ( AlphabetParser
+        .createString ( this.alphabet ) );
+    this.newDialogForm.jTextPaneGrammarAlphabet.setText ( AlphabetParser
+        .createString ( this.alphabet ) );
+
   }
 
 
@@ -53,19 +74,49 @@ public class NewDialog
         this.newDialogForm.getHeight () );
     this.newDialogForm.setVisible ( true );
   }
-  
+
+
   /**
-   * 
    * Return a new EditorPanel
-   *
+   * 
    * @return a new EditorPanel or null
    */
   public EditorPanel getEditorPanel ()
   {
-    if (this.newDialogForm.isCanceled ())
+    if ( this.newDialogForm.isCanceled () )
       return null;
-    if (this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel)
-      return new MachinePanel(this.parent);
-    return new GrammarPanel();
+    if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
+      return new MachinePanel ( this.parent, this.alphabet );
+    return new GrammarPanel ( this.parent, this.alphabet );
+  }
+
+  /**
+   * 
+   * Handle the Key Typed Event for the Text Panes
+   *
+   * @param pKeyEvent The fired {@link KeyEvent}
+   */
+  public void handleKeyTypedEvent ( KeyEvent pKeyEvent )
+  {
+    if ( !AlphabetParser.checkInput ( pKeyEvent.getKeyChar () ) )
+    {
+      pKeyEvent.setKeyChar ( '\u0000' );
+    }
+    if (this.newDialogForm.jTextPaneMachineAlphabet.equals ( pKeyEvent.getSource () ))
+      this.newDialogForm.jTextPaneGrammarAlphabet.setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText () + pKeyEvent.getKeyChar () );
+    else 
+      this.newDialogForm.jTextPaneMachineAlphabet.setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText () + pKeyEvent.getKeyChar () );
+  }
+
+
+  /**
+   * 
+   * Get the alphabet for the new file
+   *
+   * @return the {@link Alphabet} for the new file
+   */
+  public Alphabet getAlphabet ()
+  {
+    return this.alphabet;
   }
 }

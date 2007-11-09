@@ -46,6 +46,10 @@ public final class Symbol implements Serializable, Cloneable,
   public Symbol ( Character pName )
   {
     // Name
+    if ( pName == null )
+    {
+      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
+    }
     setName ( String.valueOf ( pName.charValue () ) );
   }
 
@@ -140,6 +144,7 @@ public final class Symbol implements Serializable, Cloneable,
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
+      // TODO Implement exception
       throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
     this.name = pName;

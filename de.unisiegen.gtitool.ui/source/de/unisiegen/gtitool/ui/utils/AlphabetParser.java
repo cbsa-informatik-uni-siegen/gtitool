@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.ui.utils;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
 /**

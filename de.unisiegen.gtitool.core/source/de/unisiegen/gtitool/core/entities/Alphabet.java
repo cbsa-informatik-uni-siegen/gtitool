@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.Messages;
-import de.unisiegen.gtitool.core.exceptions.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
 /**

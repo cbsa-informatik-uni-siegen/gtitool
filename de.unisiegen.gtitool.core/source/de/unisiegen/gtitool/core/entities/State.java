@@ -365,6 +365,7 @@ public final class State implements Serializable, Cloneable
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
+      // TODO Implement an exception
       throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
     this.name = pName;

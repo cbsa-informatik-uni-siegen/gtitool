@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import de.unisiegen.gtitool.core.exceptions.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
 /**

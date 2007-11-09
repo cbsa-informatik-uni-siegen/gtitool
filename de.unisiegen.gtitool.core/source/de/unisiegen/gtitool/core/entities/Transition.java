@@ -88,6 +88,7 @@ public final class Transition implements Serializable, Cloneable
   {
     if ( !this.alphabet.containsSymbol ( pSymbol ) )
     {
+      // TODO Implement exception
       throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
     }
     this.symbolSet.add ( pSymbol );
@@ -297,6 +298,8 @@ public final class Transition implements Serializable, Cloneable
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
+    // TODO Check the symbols
+
     this.alphabet = pAlphabet;
   }
 
@@ -312,6 +315,7 @@ public final class Transition implements Serializable, Cloneable
     {
       throw new NullPointerException ( "state begin is null" ); //$NON-NLS-1$
     }
+    // TODO Check old state begin
     this.stateBegin = pStateBegin;
   }
 
@@ -327,6 +331,7 @@ public final class Transition implements Serializable, Cloneable
     {
       throw new NullPointerException ( "state end is null" ); //$NON-NLS-1$
     }
+    // TODO Check old state end
     this.stateEnd = pStateEnd;
   }
 

@@ -1,7 +1,4 @@
 *** Benny ***
-- Den neuen LanguageChangedListener implementieren. In der Klasse
-  "MainWindow" ist ein Beispiel. Vergiss nicht die Mnemonics und
-  die ToolTips zu übersetzen, führte bei mir zu witzigen Effekten.
 
 
 *** Christian ***

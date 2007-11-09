@@ -43,580 +43,363 @@ public class MainWindowForm extends javax.swing.JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        javax.swing.JMenuBar MainMenuBar;
-        javax.swing.JMenu editMenu;
-        javax.swing.JToolBar editToolBar;
-        javax.swing.JMenu fileMenu;
-        javax.swing.JSeparator fileMenuSeperator1;
-        javax.swing.JSeparator fileMenuSerpator2;
-        javax.swing.JMenu helpMenu;
-        javax.swing.JToolBar mainToolbar;
-        javax.swing.JButton newButton;
-        javax.swing.JMenuItem newItem;
-        javax.swing.JButton openButton;
-        javax.swing.JMenuItem openItem;
-        javax.swing.JMenuItem quitItem;
-
         modeSettingsGroup = new javax.swing.ButtonGroup();
-        mainToolbar = new javax.swing.JToolBar();
-        jToolBar1 = new javax.swing.JToolBar();
-        newButton = new javax.swing.JButton();
-        openButton = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
-        saveAsButton = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        editToolBar = new javax.swing.JToolBar();
-        cutButton = new javax.swing.JButton();
-        copyButton = new javax.swing.JButton();
-        pasteButton = new javax.swing.JButton();
-        undoButton = new javax.swing.JButton();
-        redoButton = new javax.swing.JButton();
-        tabbedPane = new javax.swing.JTabbedPane();
-        MainMenuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        newItem = new javax.swing.JMenuItem();
-        openItem = new javax.swing.JMenuItem();
-        closeItem = new javax.swing.JMenuItem();
-        fileMenuSeperator1 = new javax.swing.JSeparator();
-        saveItem = new javax.swing.JMenuItem();
-        saveAsItem = new javax.swing.JMenuItem();
-        saveAllItem = new javax.swing.JMenuItem();
-        fileMenuSerpator2 = new javax.swing.JSeparator();
-        recentFilesMenu = new javax.swing.JMenu();
-        fileMenuSeperator3 = new javax.swing.JSeparator();
-        quitItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        undoItem = new javax.swing.JMenuItem();
-        redoItem = new javax.swing.JMenuItem();
-        editMenuSeparator1 = new javax.swing.JSeparator();
-        cutItem = new javax.swing.JMenuItem();
-        copyItem = new javax.swing.JMenuItem();
-        pasteItem = new javax.swing.JMenuItem();
-        editMenuSeperator = new javax.swing.JSeparator();
-        preferencesItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        aboutItem = new javax.swing.JMenuItem();
+        jToolBarMain = new javax.swing.JToolBar();
+        jToolBarFile = new javax.swing.JToolBar();
+        jButtonNew = new javax.swing.JButton();
+        jButtonOpen = new javax.swing.JButton();
+        jButtonSave = new javax.swing.JButton();
+        jButtonSaveAs = new javax.swing.JButton();
+        jSeparatorMain = new javax.swing.JSeparator();
+        jToolBarEdit = new javax.swing.JToolBar();
+        jButtonCut = new javax.swing.JButton();
+        jButtonCopy = new javax.swing.JButton();
+        jButtonPaste = new javax.swing.JButton();
+        jButtonUndo = new javax.swing.JButton();
+        jButtonRedo = new javax.swing.JButton();
+        jTabbedPaneMain = new javax.swing.JTabbedPane();
+        jMenuBarMain = new javax.swing.JMenuBar();
+        jMenuFile = new javax.swing.JMenu();
+        jMenuItemNew = new javax.swing.JMenuItem();
+        jMenuItemOpen = new javax.swing.JMenuItem();
+        jMenuItemClose = new javax.swing.JMenuItem();
+        jSeparatorFile1 = new javax.swing.JSeparator();
+        jMenuItemSave = new javax.swing.JMenuItem();
+        jMenuItemSaveAs = new javax.swing.JMenuItem();
+        jMenuItemSaveAll = new javax.swing.JMenuItem();
+        jSeparatorFile2 = new javax.swing.JSeparator();
+        jMenuRecentlyUsedFiles = new javax.swing.JMenu();
+        jSeparatorFile3 = new javax.swing.JSeparator();
+        jMenuItemQuit = new javax.swing.JMenuItem();
+        jMenuEdit = new javax.swing.JMenu();
+        jMenuItemUndo = new javax.swing.JMenuItem();
+        jMenuItemRedo = new javax.swing.JMenuItem();
+        jSeparatorEdit1 = new javax.swing.JSeparator();
+        jMenuItemCut = new javax.swing.JMenuItem();
+        jMenuItemCopy = new javax.swing.JMenuItem();
+        jMenuItemPaste = new javax.swing.JMenuItem();
+        jSeparatorEdit2 = new javax.swing.JSeparator();
+        jMenuItemPreferences = new javax.swing.JMenuItem();
+        jMenuHelp = new javax.swing.JMenu();
+        jMenuItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setName("mainframe");
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tabChange(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
-        mainToolbar.setFloatable(false);
-        mainToolbar.setBorderPainted(false);
-        jToolBar1.setBorder(null);
-        jToolBar1.setFloatable(false);
-        jToolBar1.setBorderPainted(false);
-        jToolBar1.setOpaque(false);
-        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
-        newButton.setBorderPainted(false);
-        newButton.setFocusPainted(false);
-        newButton.setFocusable(false);
-        newButton.setOpaque(false);
-        newButton.addActionListener(new java.awt.event.ActionListener() {
+        jToolBarMain.setFloatable(false);
+        jToolBarMain.setBorderPainted(false);
+        jToolBarFile.setBorder(null);
+        jToolBarFile.setFloatable(false);
+        jToolBarFile.setBorderPainted(false);
+        jToolBarFile.setOpaque(false);
+        jButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        jButtonNew.setBorderPainted(false);
+        jButtonNew.setFocusPainted(false);
+        jButtonNew.setFocusable(false);
+        jButtonNew.setOpaque(false);
+        jButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newButtonActionPerformed(evt);
+                jButtonNewActionPerformed(evt);
             }
         });
 
-        jToolBar1.add(newButton);
+        jToolBarFile.add(jButtonNew);
 
-        openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open24.png")));
-        openButton.setBorderPainted(false);
-        openButton.setFocusPainted(false);
-        openButton.setFocusable(false);
-        openButton.setOpaque(false);
-        openButton.addActionListener(new java.awt.event.ActionListener() {
+        jButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open24.png")));
+        jButtonOpen.setBorderPainted(false);
+        jButtonOpen.setFocusPainted(false);
+        jButtonOpen.setFocusable(false);
+        jButtonOpen.setOpaque(false);
+        jButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openButtonActionPerformed(evt);
+                jButtonOpenActionPerformed(evt);
             }
         });
 
-        jToolBar1.add(openButton);
+        jToolBarFile.add(jButtonOpen);
 
-        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save24.png")));
-        saveButton.setBorderPainted(false);
-        saveButton.setFocusPainted(false);
-        saveButton.setFocusable(false);
-        saveButton.setOpaque(false);
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
-        saveButton.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                saveButtonAncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
+        jButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save24.png")));
+        jButtonSave.setBorderPainted(false);
+        jButtonSave.setFocusPainted(false);
+        jButtonSave.setFocusable(false);
+        jButtonSave.setOpaque(false);
+        jToolBarFile.add(jButtonSave);
 
-        jToolBar1.add(saveButton);
+        jButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas24.png")));
+        jButtonSaveAs.setBorderPainted(false);
+        jButtonSaveAs.setFocusPainted(false);
+        jButtonSaveAs.setFocusable(false);
+        jButtonSaveAs.setOpaque(false);
+        jToolBarFile.add(jButtonSaveAs);
 
-        saveAsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas24.png")));
-        saveAsButton.setBorderPainted(false);
-        saveAsButton.setFocusPainted(false);
-        saveAsButton.setFocusable(false);
-        saveAsButton.setOpaque(false);
-        saveAsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAsButtonActionPerformed(evt);
-            }
-        });
+        jToolBarMain.add(jToolBarFile);
 
-        jToolBar1.add(saveAsButton);
+        jSeparatorMain.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparatorMain.setMaximumSize(new java.awt.Dimension(5, 32));
+        jToolBarMain.add(jSeparatorMain);
 
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator1.setMaximumSize(new java.awt.Dimension(5, 32));
-        jToolBar1.add(jSeparator1);
+        jToolBarEdit.setFloatable(false);
+        jToolBarEdit.setBorderPainted(false);
+        jToolBarEdit.setOpaque(false);
+        jButtonCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut24.gif")));
+        jButtonCut.setBorderPainted(false);
+        jButtonCut.setFocusPainted(false);
+        jButtonCut.setFocusable(false);
+        jButtonCut.setOpaque(false);
+        jToolBarEdit.add(jButtonCut);
 
-        mainToolbar.add(jToolBar1);
+        jButtonCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy24.gif")));
+        jButtonCopy.setBorderPainted(false);
+        jButtonCopy.setFocusPainted(false);
+        jButtonCopy.setFocusable(false);
+        jButtonCopy.setOpaque(false);
+        jToolBarEdit.add(jButtonCopy);
 
-        editToolBar.setFloatable(false);
-        editToolBar.setBorderPainted(false);
-        editToolBar.setOpaque(false);
-        cutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut24.gif")));
-        cutButton.setBorderPainted(false);
-        cutButton.setFocusPainted(false);
-        cutButton.setFocusable(false);
-        cutButton.setOpaque(false);
-        cutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cutButtonActionPerformed(evt);
-            }
-        });
+        jButtonPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste24.gif")));
+        jButtonPaste.setBorderPainted(false);
+        jButtonPaste.setFocusPainted(false);
+        jButtonPaste.setFocusable(false);
+        jButtonPaste.setOpaque(false);
+        jToolBarEdit.add(jButtonPaste);
 
-        editToolBar.add(cutButton);
+        jButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo24.gif")));
+        jButtonUndo.setBorderPainted(false);
+        jButtonUndo.setFocusPainted(false);
+        jButtonUndo.setFocusable(false);
+        jButtonUndo.setOpaque(false);
+        jToolBarEdit.add(jButtonUndo);
 
-        copyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy24.gif")));
-        copyButton.setBorderPainted(false);
-        copyButton.setFocusPainted(false);
-        copyButton.setFocusable(false);
-        copyButton.setOpaque(false);
-        copyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copyButtonActionPerformed(evt);
-            }
-        });
+        jButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo24.gif")));
+        jButtonRedo.setBorderPainted(false);
+        jButtonRedo.setFocusPainted(false);
+        jButtonRedo.setFocusable(false);
+        jButtonRedo.setOpaque(false);
+        jToolBarEdit.add(jButtonRedo);
 
-        editToolBar.add(copyButton);
+        jToolBarMain.add(jToolBarEdit);
 
-        pasteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste24.gif")));
-        pasteButton.setBorderPainted(false);
-        pasteButton.setFocusPainted(false);
-        pasteButton.setFocusable(false);
-        pasteButton.setOpaque(false);
-        pasteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pasteButtonActionPerformed(evt);
-            }
-        });
+        getContentPane().add(jToolBarMain, java.awt.BorderLayout.NORTH);
 
-        editToolBar.add(pasteButton);
-
-        undoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo24.gif")));
-        undoButton.setBorderPainted(false);
-        undoButton.setFocusPainted(false);
-        undoButton.setFocusable(false);
-        undoButton.setOpaque(false);
-        undoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoButtonActionPerformed(evt);
-            }
-        });
-
-        editToolBar.add(undoButton);
-
-        redoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo24.gif")));
-        redoButton.setBorderPainted(false);
-        redoButton.setFocusPainted(false);
-        redoButton.setFocusable(false);
-        redoButton.setOpaque(false);
-        redoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                redoButtonActionPerformed(evt);
-            }
-        });
-
-        editToolBar.add(redoButton);
-
-        mainToolbar.add(editToolBar);
-
-        getContentPane().add(mainToolbar, java.awt.BorderLayout.NORTH);
-
-        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tabbedPaneStateChanged(evt);
-            }
-        });
-        tabbedPane.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tabbedPaneKeyPressed(evt);
-            }
-        });
-
-        getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jTabbedPaneMain, java.awt.BorderLayout.CENTER);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        fileMenu.setText(bundle.getString("MainWindow.File")); // NOI18N
-        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+        jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
+        jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
+        jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.NewMnemonic").charAt(0));
+        jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
+        jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileMenuActionPerformed(evt);
+                jMenuItemNewActionPerformed(evt);
             }
         });
 
-        newItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        newItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
-        newItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.NewMnemonic").charAt(0));
-        newItem.setText(bundle.getString("MainWindow.New")); // NOI18N
-        newItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuFile.add(jMenuItemNew);
+
+        jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png")));
+        jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.OpenMnemonic").charAt(0));
+        jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
+        jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newItemActionPerformed(evt);
+                jMenuItemOpenActionPerformed(evt);
             }
         });
 
-        fileMenu.add(newItem);
+        jMenuFile.add(jMenuItemOpen);
 
-        openItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        openItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png")));
-        openItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.OpenMnemonic").charAt(0));
-        openItem.setText(bundle.getString("MainWindow.Open")); // NOI18N
-        openItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseMnemonic").charAt(0));
+        jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
+        jMenuFile.add(jMenuItemClose);
+
+        jMenuFile.add(jSeparatorFile1);
+
+        jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
+        jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveMnemonic").charAt(0));
+        jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
+        jMenuFile.add(jMenuItemSave);
+
+        jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
+        jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
+        jMenuItemSaveAs.setText(bundle.getString("MainWindow.Save_As")); // NOI18N
+        jMenuFile.add(jMenuItemSaveAs);
+
+        jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
+        jMenuItemSaveAll.setText(bundle.getString("MainWindow.Save_All")); // NOI18N
+        jMenuFile.add(jMenuItemSaveAll);
+
+        jMenuFile.add(jSeparatorFile2);
+
+        jMenuRecentlyUsedFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuRecentlyUsedFiles.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
+        jMenuRecentlyUsedFiles.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
+        jMenuFile.add(jMenuRecentlyUsedFiles);
+
+        jMenuFile.add(jSeparatorFile3);
+
+        jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.QuitMnemonic").charAt(0));
+        jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
+        jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openItemActionPerformed(evt);
+                jMenuItemQuitActionPerformed(evt);
             }
         });
 
-        fileMenu.add(openItem);
+        jMenuFile.add(jMenuItemQuit);
 
-        closeItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        closeItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        closeItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseMnemonic").charAt(0));
-        closeItem.setText(bundle.getString("MainWindow.Close")); // NOI18N
-        closeItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBarMain.add(jMenuFile);
+
+        jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
+        jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
+        jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
+        jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
+        jMenuEdit.add(jMenuItemUndo);
+
+        jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo16.gif")));
+        jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
+        jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
+        jMenuEdit.add(jMenuItemRedo);
+
+        jMenuEdit.add(jSeparatorEdit1);
+
+        jMenuItemCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut16.gif")));
+        jMenuItemCut.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CutMnemonic").charAt(0));
+        jMenuItemCut.setText(bundle.getString("MainWindow.Cut")); // NOI18N
+        jMenuEdit.add(jMenuItemCut);
+
+        jMenuItemCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy16.gif")));
+        jMenuItemCopy.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CopyMnemonic").charAt(0));
+        jMenuItemCopy.setText(bundle.getString("MainWindow.Copy")); // NOI18N
+        jMenuEdit.add(jMenuItemCopy);
+
+        jMenuItemPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste16.gif")));
+        jMenuItemPaste.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PasteMnemonic").charAt(0));
+        jMenuItemPaste.setText(bundle.getString("MainWindow.Paste")); // NOI18N
+        jMenuEdit.add(jMenuItemPaste);
+
+        jMenuEdit.add(jSeparatorEdit2);
+
+        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
+        jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
+        jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeItemActionPerformed(evt);
+                jMenuItemPreferencesActionPerformed(evt);
             }
         });
 
-        fileMenu.add(closeItem);
+        jMenuEdit.add(jMenuItemPreferences);
 
-        fileMenu.add(fileMenuSeperator1);
+        jMenuBarMain.add(jMenuEdit);
 
-        saveItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
-        saveItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveMnemonic").charAt(0));
-        saveItem.setText(bundle.getString("MainWindow.Save")); // NOI18N
-        saveItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
+        jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
+        jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
+        jMenuItemAbout.setText(bundle.getString("MainWindow.About")); // NOI18N
+        jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveItemActionPerformed(evt);
+                jMenuItemAboutActionPerformed(evt);
             }
         });
 
-        fileMenu.add(saveItem);
+        jMenuHelp.add(jMenuItemAbout);
 
-        saveAsItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
-        saveAsItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
-        saveAsItem.setText(bundle.getString("MainWindow.Save_As")); // NOI18N
-        saveAsItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAsItemActionPerformed(evt);
-            }
-        });
+        jMenuBarMain.add(jMenuHelp);
 
-        fileMenu.add(saveAsItem);
-
-        saveAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        saveAllItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
-        saveAllItem.setText(bundle.getString("MainWindow.Save_All")); // NOI18N
-        saveAllItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAllItemActionPerformed(evt);
-            }
-        });
-
-        fileMenu.add(saveAllItem);
-
-        fileMenu.add(fileMenuSerpator2);
-
-        recentFilesMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        recentFilesMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
-        recentFilesMenu.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
-        fileMenu.add(recentFilesMenu);
-
-        fileMenuSeperator3.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                fileMenuSeperator3AncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-
-        fileMenu.add(fileMenuSeperator3);
-
-        quitItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        quitItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        quitItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.QuitMnemonic").charAt(0));
-        quitItem.setText(bundle.getString("MainWindow.Quit")); // NOI18N
-        quitItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quitItemActionPerformed(evt);
-            }
-        });
-
-        fileMenu.add(quitItem);
-
-        MainMenuBar.add(fileMenu);
-
-        editMenu.setText(bundle.getString("MainWindow.Edit")); // NOI18N
-        undoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        undoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
-        undoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
-        undoItem.setText(bundle.getString("MainWindow.Undo")); // NOI18N
-        undoItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(undoItem);
-
-        redoItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        redoItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo16.gif")));
-        redoItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
-        redoItem.setText(bundle.getString("MainWindow.Redo")); // NOI18N
-        redoItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                redoItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(redoItem);
-
-        editMenu.add(editMenuSeparator1);
-
-        cutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        cutItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut16.gif")));
-        cutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CutMnemonic").charAt(0));
-        cutItem.setText(bundle.getString("MainWindow.Cut")); // NOI18N
-        cutItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cutItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(cutItem);
-
-        copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        copyItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy16.gif")));
-        copyItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CopyMnemonic").charAt(0));
-        copyItem.setText(bundle.getString("MainWindow.Copy")); // NOI18N
-        copyItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copyItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(copyItem);
-
-        pasteItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        pasteItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste16.gif")));
-        pasteItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PasteMnemonic").charAt(0));
-        pasteItem.setText(bundle.getString("MainWindow.Paste")); // NOI18N
-        pasteItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pasteItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(pasteItem);
-
-        editMenu.add(editMenuSeperator);
-
-        preferencesItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        preferencesItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
-        preferencesItem.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
-        preferencesItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                preferencesItemActionPerformed(evt);
-            }
-        });
-
-        editMenu.add(preferencesItem);
-
-        MainMenuBar.add(editMenu);
-
-        helpMenu.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
-        helpMenu.setText(bundle.getString("MainWindow.Help")); // NOI18N
-        aboutItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        aboutItem.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
-        aboutItem.setText(bundle.getString("MainWindow.About")); // NOI18N
-        aboutItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutItemActionPerformed(evt);
-            }
-        });
-
-        helpMenu.add(aboutItem);
-
-        MainMenuBar.add(helpMenu);
-
-        setJMenuBar(MainMenuBar);
+        setJMenuBar(jMenuBarMain);
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_fileMenuActionPerformed
-
-    private void tabChange(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabChange
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_tabChange
-
-    private void tabbedPaneKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabbedPaneKeyPressed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_tabbedPaneKeyPressed
-
-    private void saveButtonAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_saveButtonAncestorAdded
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveButtonAncestorAdded
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveButtonActionPerformed
-
-    private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_tabbedPaneStateChanged
-
-    private void aboutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutItemActionPerformed
-      this.logic.handleAbout(); 
-    }//GEN-LAST:event_aboutItemActionPerformed
-
-    private void preferencesItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_preferencesItemActionPerformed
-      this.logic.handlePreferences();
-    }//GEN-LAST:event_preferencesItemActionPerformed
-
-    private void pasteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_pasteItemActionPerformed
-
-    private void copyItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_copyItemActionPerformed
-
-    private void cutItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_cutItemActionPerformed
-
-    private void redoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_redoItemActionPerformed
-
-    private void undoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_undoItemActionPerformed
-
-    private void quitItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitItemActionPerformed
-      logic.handleQuit();
-    }//GEN-LAST:event_quitItemActionPerformed
-
-    private void fileMenuSeperator3AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_fileMenuSeperator3AncestorAdded
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_fileMenuSeperator3AncestorAdded
-
-    private void saveAllItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAllItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveAllItemActionPerformed
-
-    private void saveAsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveAsItemActionPerformed
-
-    private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveItemActionPerformed
-
-    private void closeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeItemActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_closeItemActionPerformed
-
-    private void openItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openItemActionPerformed
-      logic.handleOpen();
-    }//GEN-LAST:event_openItemActionPerformed
-
-    private void newItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newItemActionPerformed
-      logic.handleNew();
-    }//GEN-LAST:event_newItemActionPerformed
-
-    private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_redoButtonActionPerformed
-
-    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_undoButtonActionPerformed
-
-    private void pasteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_pasteButtonActionPerformed
-
-    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_copyButtonActionPerformed
-
-    private void cutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_cutButtonActionPerformed
-
-    private void saveAsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsButtonActionPerformed
-// NOTICE add your handling code here:
-    }//GEN-LAST:event_saveAsButtonActionPerformed
-
-    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
-      this.logic.handleOpen(); 
-    }//GEN-LAST:event_openButtonActionPerformed
-
-    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
+    private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
       this.logic.handleNew();
-    }//GEN-LAST:event_newButtonActionPerformed
+    }//GEN-LAST:event_jButtonNewActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+      this.logic.handleQuit();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
+      this.logic.handleAbout(); 
+    }//GEN-LAST:event_jMenuItemAboutActionPerformed
+
+    private void jMenuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPreferencesActionPerformed
+      this.logic.handlePreferences();
+    }//GEN-LAST:event_jMenuItemPreferencesActionPerformed
+
+    private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
+      this.logic.handleQuit();
+    }//GEN-LAST:event_jMenuItemQuitActionPerformed
+
+    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
+      this.logic.handleOpen();
+    }//GEN-LAST:event_jMenuItemOpenActionPerformed
+
+    private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewActionPerformed
+     this.logic.handleNew();
+    }//GEN-LAST:event_jMenuItemNewActionPerformed
+
+    private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenActionPerformed
+      this.logic.handleOpen(); 
+    }//GEN-LAST:event_jButtonOpenActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JMenuItem aboutItem;
-    public javax.swing.JMenuItem closeItem;
-    public javax.swing.JButton copyButton;
-    public javax.swing.JMenuItem copyItem;
-    public javax.swing.JButton cutButton;
-    public javax.swing.JMenuItem cutItem;
-    public javax.swing.JSeparator editMenuSeparator1;
-    public javax.swing.JSeparator editMenuSeperator;
-    public javax.swing.JSeparator fileMenuSeperator3;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JToolBar jToolBar1;
+    public javax.swing.JButton jButtonCopy;
+    public javax.swing.JButton jButtonCut;
+    public javax.swing.JButton jButtonNew;
+    public javax.swing.JButton jButtonOpen;
+    public javax.swing.JButton jButtonPaste;
+    public javax.swing.JButton jButtonRedo;
+    public javax.swing.JButton jButtonSave;
+    public javax.swing.JButton jButtonSaveAs;
+    public javax.swing.JButton jButtonUndo;
+    private javax.swing.JMenuBar jMenuBarMain;
+    public javax.swing.JMenu jMenuEdit;
+    public javax.swing.JMenu jMenuFile;
+    public javax.swing.JMenu jMenuHelp;
+    public javax.swing.JMenuItem jMenuItemAbout;
+    public javax.swing.JMenuItem jMenuItemClose;
+    public javax.swing.JMenuItem jMenuItemCopy;
+    public javax.swing.JMenuItem jMenuItemCut;
+    public javax.swing.JMenuItem jMenuItemNew;
+    public javax.swing.JMenuItem jMenuItemOpen;
+    public javax.swing.JMenuItem jMenuItemPaste;
+    public javax.swing.JMenuItem jMenuItemPreferences;
+    public javax.swing.JMenuItem jMenuItemQuit;
+    public javax.swing.JMenuItem jMenuItemRedo;
+    public javax.swing.JMenuItem jMenuItemSave;
+    public javax.swing.JMenuItem jMenuItemSaveAll;
+    public javax.swing.JMenuItem jMenuItemSaveAs;
+    public javax.swing.JMenuItem jMenuItemUndo;
+    public javax.swing.JMenu jMenuRecentlyUsedFiles;
+    public javax.swing.JSeparator jSeparatorEdit1;
+    public javax.swing.JSeparator jSeparatorEdit2;
+    private javax.swing.JSeparator jSeparatorFile1;
+    private javax.swing.JSeparator jSeparatorFile2;
+    private javax.swing.JSeparator jSeparatorFile3;
+    private javax.swing.JSeparator jSeparatorMain;
+    public javax.swing.JTabbedPane jTabbedPaneMain;
+    private javax.swing.JToolBar jToolBarEdit;
+    private javax.swing.JToolBar jToolBarFile;
+    private javax.swing.JToolBar jToolBarMain;
     private javax.swing.ButtonGroup modeSettingsGroup;
-    public javax.swing.JButton pasteButton;
-    public javax.swing.JMenuItem pasteItem;
-    public javax.swing.JMenuItem preferencesItem;
-    public javax.swing.JMenu recentFilesMenu;
-    public javax.swing.JButton redoButton;
-    public javax.swing.JMenuItem redoItem;
-    public javax.swing.JMenuItem saveAllItem;
-    public javax.swing.JButton saveAsButton;
-    public javax.swing.JMenuItem saveAsItem;
-    public javax.swing.JButton saveButton;
-    public javax.swing.JMenuItem saveItem;
-    public javax.swing.JTabbedPane tabbedPane;
-    public javax.swing.JButton undoButton;
-    public javax.swing.JMenuItem undoItem;
     // End of variables declaration//GEN-END:variables
 
 }

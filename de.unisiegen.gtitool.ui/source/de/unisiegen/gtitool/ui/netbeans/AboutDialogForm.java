@@ -129,6 +129,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanelSouth.add(jLabelWebpage, gridBagConstraints);
 
+        jLabelWebpageEntry.setForeground(java.awt.Color.blue);
         jLabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
         jLabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
         jLabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {

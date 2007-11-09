@@ -139,7 +139,7 @@
             <Component class="javax.swing.JLabel" name="jLabelWebpageEntry">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="0" id="Blau" palette="1" red="0" type="palette"/>
+                  <Color blue="ff" green="0" id="blue" palette="1" red="0" type="palette"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="http://theoinf.math.uni-siegen.de/gtitool"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">

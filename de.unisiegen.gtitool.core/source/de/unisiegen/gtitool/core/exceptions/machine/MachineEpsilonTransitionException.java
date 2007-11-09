@@ -44,6 +44,7 @@ public final class MachineEpsilonTransitionException extends MachineException
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
     this.transition = pTransition;
+    // Message and Description
     setMessage ( Messages
         .getString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (

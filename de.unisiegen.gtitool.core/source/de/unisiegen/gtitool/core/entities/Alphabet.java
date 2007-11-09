@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
@@ -96,16 +95,18 @@ public final class Alphabet implements Serializable, Cloneable,
    */
   public final void addSymbol ( Symbol pSymbol ) throws AlphabetException
   {
+    // Symbol
     if ( pSymbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
+    /*
+     * Throws an AlphabetException if the symbol which should be added is
+     * already in this Alphabet.
+     */
     if ( this.symbolSet.contains ( pSymbol ) )
     {
-      throw new AlphabetException ( Messages
-          .getString ( "AlphabetException.MoreThanOneSymbolMessage" ), Messages //$NON-NLS-1$
-          .getString ( "AlphabetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
-              pSymbol.getName () ) );
+      throw new AlphabetException ( this, pSymbol );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -239,18 +240,6 @@ public final class Alphabet implements Serializable, Cloneable,
 
 
   /**
-   * Returns the symbolSet.
-   * 
-   * @return The symbolSet.
-   * @see #symbolSet
-   */
-  public final TreeSet < Symbol > getSymbolSet ()
-  {
-    return this.symbolSet;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -270,25 +259,6 @@ public final class Alphabet implements Serializable, Cloneable,
   public final Iterator < Symbol > iterator ()
   {
     return this.symbolSet.iterator ();
-  }
-
-
-  /**
-   * Removes the {@link Symbol} from this <code>Alphabet</code>.
-   * 
-   * @param pSymbol The {@link Symbol} to remove.
-   */
-  public final void removeSymbol ( Symbol pSymbol )
-  {
-    if ( pSymbol == null )
-    {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
-    }
-    if ( !this.symbolSet.contains ( pSymbol ) )
-    {
-      throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
-    }
-    this.symbolSet.remove ( pSymbol );
   }
 
 

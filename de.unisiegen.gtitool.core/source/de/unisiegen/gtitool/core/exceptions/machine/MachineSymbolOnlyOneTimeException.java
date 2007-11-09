@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * {@link State} with {@link Transition}s with the same {@link Symbol}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineSymbolOnlyOneTimeException.java 115 2007-11-09 15:29:26Z
+ *          fehler $
  */
 public final class MachineSymbolOnlyOneTimeException extends MachineException
 {
@@ -76,7 +77,7 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
       throw new IllegalArgumentException ( "transition list size is too small" ); //$NON-NLS-1$
     }
     this.transitionList = pTransitionList;
-
+    // Message and Description
     setMessage ( Messages
         .getString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (

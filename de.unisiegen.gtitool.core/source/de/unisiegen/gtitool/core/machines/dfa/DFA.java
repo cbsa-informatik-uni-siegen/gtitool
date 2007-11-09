@@ -109,7 +109,7 @@ public final class DFA extends Machine < DFA >
         currentSymbolSet.addAll ( currentTransition.getSymbolSet () );
       }
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
-      for ( Symbol currentSymbol : this.alphabet.getSymbolSet () )
+      for ( Symbol currentSymbol : this.alphabet )
       {
         notUsedSymbolSet.add ( currentSymbol );
       }

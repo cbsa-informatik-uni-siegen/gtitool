@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.exceptions.machine;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.exceptions.CoreException;
+
 
 /**
  * The <code>MachineValidationException</code> is thrown, if the validation of
@@ -11,7 +13,7 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class MachineValidationException extends Exception
+public final class MachineValidationException extends CoreException
 {
 
   /**

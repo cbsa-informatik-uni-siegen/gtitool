@@ -137,6 +137,8 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanelGeneral.add(jButtonRestore, gridBagConstraints);
 
@@ -281,6 +283,9 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
         jButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
         jButtonOk.setFocusPainted(false);
+        jButtonOk.setMaximumSize(new java.awt.Dimension(160, 25));
+        jButtonOk.setMinimumSize(new java.awt.Dimension(80, 25));
+        jButtonOk.setPreferredSize(new java.awt.Dimension(80, 25));
         jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOkActionPerformed(evt);
@@ -299,6 +304,9 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
         jButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
         jButtonAccept.setFocusPainted(false);
+        jButtonAccept.setMaximumSize(new java.awt.Dimension(160, 25));
+        jButtonAccept.setMinimumSize(new java.awt.Dimension(80, 25));
+        jButtonAccept.setPreferredSize(new java.awt.Dimension(80, 25));
         jButtonAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAcceptActionPerformed(evt);
@@ -316,6 +324,9 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
         jButtonCancel.setToolTipText(bundle.getString("PreferencesDialog.CancelToolTip")); // NOI18N
         jButtonCancel.setFocusPainted(false);
+        jButtonCancel.setMaximumSize(new java.awt.Dimension(160, 25));
+        jButtonCancel.setMinimumSize(new java.awt.Dimension(80, 25));
+        jButtonCancel.setPreferredSize(new java.awt.Dimension(80, 25));
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);

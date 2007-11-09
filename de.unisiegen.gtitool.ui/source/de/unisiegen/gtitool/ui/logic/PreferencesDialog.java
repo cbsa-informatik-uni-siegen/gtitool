@@ -32,7 +32,6 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -892,18 +891,8 @@ public final class PreferencesDialog
       @SuppressWarnings ( "unused" )
       KeyEvent pKeyEvent )
   {
-    String text = this.gui.jTextAreaAlphabet.getText ();
-    text = text.replaceAll ( " ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-    text = text.replaceAll ( ",", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-    text = text.replaceAll ( "\r", "" ); //$NON-NLS-1$//$NON-NLS-2$
-    text = text.replaceAll ( "\n", "" ); //$NON-NLS-1$//$NON-NLS-2$
-    text = text.replaceAll ( "\t", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-    Alphabet newAlphabet = new Alphabet ();
-    for ( int i = 0 ; i < text.length () ; i++ )
-    {
-      newAlphabet.addSymbol ( new Symbol ( text.charAt ( i ) ) );
-    }
-    this.alphabetItem.setAlphabet ( newAlphabet );
+    this.alphabetItem.setAlphabet ( AlphabetParser
+        .createAlphabet ( this.gui.jTextAreaAlphabet.getText () ) );
   }
 
 

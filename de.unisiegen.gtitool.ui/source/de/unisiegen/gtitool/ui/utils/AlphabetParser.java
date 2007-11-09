@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.utils;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 
 
 /**
@@ -44,6 +45,28 @@ public abstract class AlphabetParser
     return true;
   }
 
+  /**
+   * Creates the {@link Alphabet} of the given string.
+   *
+   * @param pText The input string.
+   * @return The {@link Alphabet} of the given string.
+   */
+  public static final Alphabet createAlphabet ( String pText)
+  {
+    String text = pText;
+    text = text.replaceAll ( " ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    text = text.replaceAll ( ",", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    text = text.replaceAll ( "\r", "" ); //$NON-NLS-1$//$NON-NLS-2$
+    text = text.replaceAll ( "\n", "" ); //$NON-NLS-1$//$NON-NLS-2$
+    text = text.replaceAll ( "\t", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    Alphabet newAlphabet = new Alphabet ();
+    for ( int i = 0 ; i < text.length () ; i++ )
+    {
+      newAlphabet.addSymbol ( new Symbol ( text.charAt ( i ) ) );
+    }
+    return newAlphabet ;
+  }
+  
 
   /**
    * Creates the output string of the given {@link Alphabet}.
@@ -51,7 +74,7 @@ public abstract class AlphabetParser
    * @param pAlphabet The input {@link Alphabet}.
    * @return The output string of the given {@link Alphabet}.
    */
-  public static String createString ( Alphabet pAlphabet )
+  public static final String createString ( Alphabet pAlphabet )
   {
     StringBuilder alphabetText = new StringBuilder ();
     for ( int i = 0 ; i < pAlphabet.symbolSize () ; i++ )

@@ -68,7 +68,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSaveAs = new javax.swing.JMenuItem();
         jMenuItemSaveAll = new javax.swing.JMenuItem();
         jSeparatorFile2 = new javax.swing.JSeparator();
-        jMenuRecentlyUsedFiles = new javax.swing.JMenu();
+        jMenuRecentlyUsed = new javax.swing.JMenu();
         jSeparatorFile3 = new javax.swing.JSeparator();
         jMenuItemQuit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
@@ -250,10 +250,10 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuFile.add(jSeparatorFile2);
 
-        jMenuRecentlyUsedFiles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuRecentlyUsedFiles.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
-        jMenuRecentlyUsedFiles.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
-        jMenuFile.add(jMenuRecentlyUsedFiles);
+        jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
+        jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
+        jMenuFile.add(jMenuRecentlyUsed);
 
         jMenuFile.add(jSeparatorFile3);
 
@@ -400,7 +400,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemSaveAll;
     public javax.swing.JMenuItem jMenuItemSaveAs;
     public javax.swing.JMenuItem jMenuItemUndo;
-    public javax.swing.JMenu jMenuRecentlyUsedFiles;
+    public javax.swing.JMenu jMenuRecentlyUsed;
     public javax.swing.JSeparator jSeparatorEdit1;
     public javax.swing.JSeparator jSeparatorEdit2;
     private javax.swing.JSeparator jSeparatorFile1;

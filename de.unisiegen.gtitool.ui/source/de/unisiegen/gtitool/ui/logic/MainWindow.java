@@ -59,8 +59,8 @@ public class MainWindow
     this.gui.jMenuItemCut.setEnabled ( false );
     // Preferences
     this.gui.jMenuItemPreferences.setEnabled ( true );
-    // RecentlyUsedFiles
-    this.gui.jMenuRecentlyUsedFiles.setEnabled ( false );
+    // RecentlyUsed
+    this.gui.jMenuRecentlyUsed.setEnabled ( false );
 
     /*
      * Language changed listener
@@ -75,13 +75,111 @@ public class MainWindow
             // File
             MainWindow.this.gui.jMenuFile.setText ( Messages
                 .getString ( "MainWindow.File" ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jMenuFile.setMnemonic ( Messages
-                .getString ( "MainWindow.FileMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuFile.setMnemonic ( Messages.getString (
+                "MainWindow.FileMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
             // New
             MainWindow.this.gui.jMenuItemNew.setText ( Messages
                 .getString ( "MainWindow.New" ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jMenuItemNew.setMnemonic ( Messages
-                .getString ( "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemNew.setMnemonic ( Messages.getString (
+                "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonNew.setToolTipText ( Messages
+                .getString ( "MainWindow.NewToolTip" ) ); //$NON-NLS-1$
+            // Open
+            MainWindow.this.gui.jMenuItemOpen.setText ( Messages
+                .getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemOpen.setMnemonic ( Messages.getString (
+                "MainWindow.OpenMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonOpen.setToolTipText ( Messages
+                .getString ( "MainWindow.OpenToolTip" ) ); //$NON-NLS-1$
+            // Close
+            MainWindow.this.gui.jMenuItemClose.setText ( Messages
+                .getString ( "MainWindow.Close" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemClose.setMnemonic ( Messages
+                .getString ( "MainWindow.CloseMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Save
+            MainWindow.this.gui.jMenuItemSave.setText ( Messages
+                .getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemSave.setMnemonic ( Messages.getString (
+                "MainWindow.SaveMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonSave.setToolTipText ( Messages
+                .getString ( "MainWindow.SaveToolTip" ) ); //$NON-NLS-1$
+            // SaveAs
+            MainWindow.this.gui.jMenuItemSaveAs.setText ( Messages
+                .getString ( "MainWindow.SaveAs" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemSaveAs.setMnemonic ( Messages
+                .getString ( "MainWindow.SaveAsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonSaveAs.setToolTipText ( Messages
+                .getString ( "MainWindow.SaveAsToolTip" ) ); //$NON-NLS-1$
+            // SaveAll
+            MainWindow.this.gui.jMenuItemSaveAll.setText ( Messages
+                .getString ( "MainWindow.SaveAll" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemSaveAll.setMnemonic ( Messages
+                .getString ( "MainWindow.SaveAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // RecentlyUsed
+            MainWindow.this.gui.jMenuRecentlyUsed.setText ( Messages
+                .getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuRecentlyUsed.setMnemonic ( Messages
+                .getString ( "MainWindow.RecentlyUsedMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Quit
+            MainWindow.this.gui.jMenuItemQuit.setText ( Messages
+                .getString ( "MainWindow.Quit" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemQuit.setMnemonic ( Messages
+                .getString ( "MainWindow.QuitMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Edit
+            MainWindow.this.gui.jMenuEdit.setText ( Messages
+                .getString ( "MainWindow.Edit" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuEdit.setMnemonic ( Messages.getString (
+                "MainWindow.EditMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Cut
+            MainWindow.this.gui.jMenuItemCut.setText ( Messages
+                .getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemCut.setMnemonic ( Messages.getString (
+                "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonCut.setToolTipText ( Messages
+                .getString ( "MainWindow.CutToolTip" ) ); //$NON-NLS-1$
+            // Copy
+            MainWindow.this.gui.jMenuItemCopy.setText ( Messages
+                .getString ( "MainWindow.Copy" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemCopy.setMnemonic ( Messages.getString (
+                "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonCopy.setToolTipText ( Messages
+                .getString ( "MainWindow.CopyToolTip" ) ); //$NON-NLS-1$           
+            // Paste
+            MainWindow.this.gui.jMenuItemPaste.setText ( Messages
+                .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemPaste.setMnemonic ( Messages.getString (
+                "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonPaste.setToolTipText ( Messages
+                .getString ( "MainWindow.PasteToolTip" ) ); //$NON-NLS-1$
+            // Undo
+            MainWindow.this.gui.jMenuItemUndo.setText ( Messages
+                .getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemUndo.setMnemonic ( Messages.getString (
+                "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonUndo.setToolTipText ( Messages
+                .getString ( "MainWindow.UndoToolTip" ) ); //$NON-NLS-1$           
+            // Redo
+            MainWindow.this.gui.jMenuItemRedo.setText ( Messages
+                .getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemRedo.setMnemonic ( Messages.getString (
+                "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonRedo.setToolTipText ( Messages
+                .getString ( "MainWindow.RedoToolTip" ) ); //$NON-NLS-1$              
+            // Preferences
+            MainWindow.this.gui.jMenuItemPreferences.setText ( Messages
+                .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemPreferences.setMnemonic ( Messages
+                .getString ( "MainWindow.PreferencesMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Help
+            MainWindow.this.gui.jMenuHelp.setText ( Messages
+                .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuHelp.setMnemonic ( Messages.getString (
+                "MainWindow.HelpMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // About
+            MainWindow.this.gui.jMenuItemAbout.setText ( Messages
+                .getString ( "MainWindow.About" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemAbout.setMnemonic ( Messages
+                .getString ( "MainWindow.AboutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
           }
         } );
   }

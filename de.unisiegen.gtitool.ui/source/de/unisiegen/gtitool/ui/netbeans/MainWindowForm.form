@@ -141,7 +141,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparatorFile2">
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="jMenuRecentlyUsedFiles">
+            <Menu class="javax.swing.JMenu" name="jMenuRecentlyUsed">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/empty16.gif"/>

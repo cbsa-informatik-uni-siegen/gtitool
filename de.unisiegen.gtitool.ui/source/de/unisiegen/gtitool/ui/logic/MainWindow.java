@@ -72,9 +72,16 @@ public class MainWindow
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            MainWindow.this.gui.jMenuItemAbout.setText ( Messages
-                .getString ( "MainWindow.About" ) ); //$NON-NLS-1$
-            // TODOChristian Complete this list
+            // File
+            MainWindow.this.gui.jMenuFile.setText ( Messages
+                .getString ( "MainWindow.File" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuFile.setMnemonic ( Messages
+                .getString ( "MainWindow.FileMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // New
+            MainWindow.this.gui.jMenuItemNew.setText ( Messages
+                .getString ( "MainWindow.New" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemNew.setMnemonic ( Messages
+                .getString ( "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
           }
         } );
   }

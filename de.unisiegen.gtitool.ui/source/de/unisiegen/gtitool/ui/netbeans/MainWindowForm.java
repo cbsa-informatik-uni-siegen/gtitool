@@ -98,6 +98,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarFile.setBorderPainted(false);
         jToolBarFile.setOpaque(false);
         jButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
         jButtonNew.setBorderPainted(false);
         jButtonNew.setFocusPainted(false);
         jButtonNew.setFocusable(false);
@@ -111,6 +113,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarFile.add(jButtonNew);
 
         jButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open24.png")));
+        jButtonOpen.setToolTipText(bundle.getString("MainWindow.OpenToolTip")); // NOI18N
         jButtonOpen.setBorderPainted(false);
         jButtonOpen.setFocusPainted(false);
         jButtonOpen.setFocusable(false);
@@ -124,6 +127,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarFile.add(jButtonOpen);
 
         jButtonSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save24.png")));
+        jButtonSave.setToolTipText(bundle.getString("MainWindow.SaveToolTip")); // NOI18N
         jButtonSave.setBorderPainted(false);
         jButtonSave.setFocusPainted(false);
         jButtonSave.setFocusable(false);
@@ -131,6 +135,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarFile.add(jButtonSave);
 
         jButtonSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas24.png")));
+        jButtonSaveAs.setToolTipText(bundle.getString("MainWindow.SaveAsToolTip")); // NOI18N
         jButtonSaveAs.setBorderPainted(false);
         jButtonSaveAs.setFocusPainted(false);
         jButtonSaveAs.setFocusable(false);
@@ -147,6 +152,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.setBorderPainted(false);
         jToolBarEdit.setOpaque(false);
         jButtonCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut24.gif")));
+        jButtonCut.setToolTipText(bundle.getString("MainWindow.CutToolTip")); // NOI18N
         jButtonCut.setBorderPainted(false);
         jButtonCut.setFocusPainted(false);
         jButtonCut.setFocusable(false);
@@ -154,6 +160,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonCut);
 
         jButtonCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy24.gif")));
+        jButtonCopy.setToolTipText(bundle.getString("MainWindow.CopyToolTip")); // NOI18N
         jButtonCopy.setBorderPainted(false);
         jButtonCopy.setFocusPainted(false);
         jButtonCopy.setFocusable(false);
@@ -161,6 +168,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonCopy);
 
         jButtonPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste24.gif")));
+        jButtonPaste.setToolTipText(bundle.getString("MainWindow.PasteToolTip")); // NOI18N
         jButtonPaste.setBorderPainted(false);
         jButtonPaste.setFocusPainted(false);
         jButtonPaste.setFocusable(false);
@@ -168,6 +176,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonPaste);
 
         jButtonUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo24.gif")));
+        jButtonUndo.setToolTipText(bundle.getString("MainWindow.UndoToolTip")); // NOI18N
         jButtonUndo.setBorderPainted(false);
         jButtonUndo.setFocusPainted(false);
         jButtonUndo.setFocusable(false);
@@ -175,6 +184,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonUndo);
 
         jButtonRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo24.gif")));
+        jButtonRedo.setToolTipText(bundle.getString("MainWindow.RedoToolTip")); // NOI18N
         jButtonRedo.setBorderPainted(false);
         jButtonRedo.setFocusPainted(false);
         jButtonRedo.setFocusable(false);
@@ -187,7 +197,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPaneMain, java.awt.BorderLayout.CENTER);
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.FileMnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
         jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
@@ -229,12 +239,13 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
         jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
-        jMenuItemSaveAs.setText(bundle.getString("MainWindow.Save_As")); // NOI18N
+        jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
         jMenuFile.add(jMenuItemSaveAs);
 
         jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
-        jMenuItemSaveAll.setText(bundle.getString("MainWindow.Save_All")); // NOI18N
+        jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
+        jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
         jMenuFile.add(jMenuItemSaveAll);
 
         jMenuFile.add(jSeparatorFile2);
@@ -260,6 +271,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuBarMain.add(jMenuFile);
 
+        jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMnemonic").charAt(0));
         jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
         jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));

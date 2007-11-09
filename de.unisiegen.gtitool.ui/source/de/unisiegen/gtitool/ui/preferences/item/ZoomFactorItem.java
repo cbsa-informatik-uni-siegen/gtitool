@@ -5,7 +5,7 @@ package de.unisiegen.gtitool.ui.preferences.item;
  * Indicates which zoom factor is choosen.
  * 
  * @author Christian Fehler
- * @version $Id: ZoomFactorChangedListener.java 96 2007-11-08 14:48:04Z fehler $
+ * @version $Id$
  */
 public enum ZoomFactorItem
 {

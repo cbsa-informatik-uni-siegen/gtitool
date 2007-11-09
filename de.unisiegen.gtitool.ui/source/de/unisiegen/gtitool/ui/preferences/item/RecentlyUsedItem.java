@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * active file.
  * 
  * @author Christian Fehler
- * @version $Id: RecentlyUsedItem.java 90 2007-11-04 16:20:27Z fehler $
+ * @version $Id$
  */
 public final class RecentlyUsedItem
 {

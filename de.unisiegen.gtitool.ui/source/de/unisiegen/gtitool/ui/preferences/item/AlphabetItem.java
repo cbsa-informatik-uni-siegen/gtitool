@@ -8,7 +8,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
  * The {@link Alphabet} item class.
  * 
  * @author Christian Fehler
- * @version $Id: ColorItem.java 90 2007-11-04 16:20:27Z fehler $
+ * @version $Id$
  */
 public final class AlphabetItem implements Cloneable
 {

@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * An abstract adapter class for receiving color changes.
  * 
  * @author Christian Fehler
- * @version $Id: ColorChangedAdapter.java 90 2007-11-04 16:20:27Z fehler $
+ * @version $Id$
  */
 public abstract class ColorChangedAdapter implements ColorChangedListener
 {

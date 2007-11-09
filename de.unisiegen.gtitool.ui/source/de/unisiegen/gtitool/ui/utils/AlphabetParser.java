@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
  * This class checks the input of an {@link Alphabet}.
  * 
  * @author Christian Fehler
- * @version $Id: ColorItem.java 90 2007-11-04 16:20:27Z fehler $
+ * @version $Id$
  */
 public abstract class AlphabetParser
 {

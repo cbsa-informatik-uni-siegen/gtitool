@@ -8,13 +8,13 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.MachineAllSymbolsException;
-import de.unisiegen.gtitool.core.exceptions.MachineEpsilonTransitionException;
-import de.unisiegen.gtitool.core.exceptions.MachineException;
-import de.unisiegen.gtitool.core.exceptions.MachineStateNameException;
-import de.unisiegen.gtitool.core.exceptions.MachineStateStartException;
-import de.unisiegen.gtitool.core.exceptions.MachineSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.exceptions.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
 
 

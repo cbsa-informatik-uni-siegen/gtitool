@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 
 
 /**

@@ -69,7 +69,7 @@ public class MachinesTest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, a, b );
+      t0 = new Transition ( alphabet, z0, z0, a ,b);
       t1 = new Transition ( alphabet, z0, z1, c );
       t2 = new Transition ( alphabet, z1, z1, a, b );
       t3 = new Transition ( alphabet, z1, z2, c );

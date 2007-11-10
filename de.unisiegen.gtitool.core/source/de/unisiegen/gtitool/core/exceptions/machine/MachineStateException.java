@@ -83,10 +83,9 @@ public abstract class MachineStateException extends MachineException
   public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Description: " + getDescription () + lineBreak ); //$NON-NLS-1$
-    result.append ( "State:       " ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "States:      " ); //$NON-NLS-1$
     for ( int i = 0 ; i < this.stateList.size () ; i++ )
     {
       if ( i > 0 )

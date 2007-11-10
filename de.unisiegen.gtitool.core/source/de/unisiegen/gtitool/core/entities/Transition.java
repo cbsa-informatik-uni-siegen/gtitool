@@ -129,10 +129,6 @@ public final class Transition implements Serializable, Cloneable
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    if ( !pSymbols.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
-    }
     for ( Symbol current : pSymbols )
     {
       addSymbol ( current );
@@ -158,10 +154,6 @@ public final class Transition implements Serializable, Cloneable
     if ( pSymbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    if ( pSymbols.length == 0 )
-    {
-      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
     }
     for ( Symbol current : pSymbols )
     {

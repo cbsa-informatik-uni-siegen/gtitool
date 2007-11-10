@@ -76,4 +76,26 @@ public abstract class TransitionException extends CoreException
   {
     return this.transition;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "Transition:  " ); //$NON-NLS-1$
+    result.append ( this.transition.getStateBegin ().getName () );
+    result.append ( " -> " ); //$NON-NLS-1$
+    result.append ( this.transition.getStateEnd ().getName () );
+    result.append ( lineBreak );
+    result.append ( "Symbol:      " ); //$NON-NLS-1$
+    result.append ( this.symbol );
+    return result.toString ();
+  }
 }

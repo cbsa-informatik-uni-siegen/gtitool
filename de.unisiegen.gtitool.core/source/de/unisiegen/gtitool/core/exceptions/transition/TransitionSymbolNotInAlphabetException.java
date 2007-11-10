@@ -68,4 +68,21 @@ public final class TransitionSymbolNotInAlphabetException extends
   {
     return this.alphabet;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
+  @Override
+  public String toString ()
+  {
+    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "Alphabet:    " ); //$NON-NLS-1$
+    result.append ( this.alphabet );
+    return result.toString ();
+  }
 }

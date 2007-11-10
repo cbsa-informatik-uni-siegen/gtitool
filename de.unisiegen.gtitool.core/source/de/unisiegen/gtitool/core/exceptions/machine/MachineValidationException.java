@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.exceptions.machine;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 
@@ -13,7 +14,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class MachineValidationException extends CoreException
+public final class MachineValidationException extends CoreException implements
+    Iterable < MachineException >
 {
 
   /**
@@ -70,6 +72,17 @@ public final class MachineValidationException extends CoreException
   public final ArrayList < MachineException > getMachineExceptionList ()
   {
     return this.machineExceptionList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Iterable#iterator()
+   */
+  public Iterator < MachineException > iterator ()
+  {
+    return this.machineExceptionList.iterator ();
   }
 
 

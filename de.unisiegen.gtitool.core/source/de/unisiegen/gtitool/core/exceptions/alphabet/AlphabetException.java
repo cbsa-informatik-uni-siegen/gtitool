@@ -87,4 +87,24 @@ public final class AlphabetException extends CoreException
   {
     return this.symbol;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "Alphabet:    " ); //$NON-NLS-1$
+    result.append ( this.alphabet );
+    result.append ( lineBreak );
+    result.append ( "Symbol:      " ); //$NON-NLS-1$
+    result.append ( this.symbol );
+    return result.toString ();
+  }
 }

@@ -97,12 +97,12 @@ public final class MachineEpsilonTransitionException extends MachineException
   public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Description: " + getDescription () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Transition:  " //$NON-NLS-1$
-        + this.transition.getStateBegin ().getName () + " -> " //$NON-NLS-1$
-        + this.transition.getStateEnd ().getName () );
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "Transition:  " ); //$NON-NLS-1$
+    result.append ( this.transition.getStateBegin ().getName () );
+    result.append ( " -> " ); //$NON-NLS-1$
+    result.append ( this.transition.getStateEnd ().getName () );
     return result.toString ();
   }
 }

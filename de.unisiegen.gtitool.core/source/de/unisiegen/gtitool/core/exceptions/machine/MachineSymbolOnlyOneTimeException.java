@@ -144,11 +144,14 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
   public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Description: " + getDescription () + lineBreak ); //$NON-NLS-1$
-    result.append ( "State:       " + this.state.getName () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Symbol:      " + this.symbol.getName () + lineBreak ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "State:       " ); //$NON-NLS-1$
+    result.append ( this.state.getName () );
+    result.append ( lineBreak );
+    result.append ( "Symbol:      " ); //$NON-NLS-1$
+    result.append ( this.symbol.getName () );
+    result.append ( lineBreak );
     result.append ( "Transition:  " ); //$NON-NLS-1$
     for ( int i = 0 ; i < this.transitionList.size () ; i++ )
     {

@@ -156,10 +156,11 @@ public final class MachineAllSymbolsException extends MachineException
   public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Description: " + getDescription () + lineBreak ); //$NON-NLS-1$
-    result.append ( "State:       " + getState ().getName () + lineBreak ); //$NON-NLS-1$
+    StringBuilder result = new StringBuilder ( super.toString () );
+    result.append ( lineBreak );
+    result.append ( "State:       " ); //$NON-NLS-1$
+    result.append ( getState ().getName () );
+    result.append ( lineBreak );
     result.append ( "Symbol:      " ); //$NON-NLS-1$
     for ( int i = 0 ; i < this.symbolSet.size () ; i++ )
     {

@@ -96,7 +96,7 @@ public abstract class CoreException extends Exception
    * 
    * @param pDescription The description to set.
    */
-  public final void setDescription ( String pDescription )
+  protected final void setDescription ( String pDescription )
   {
     if ( pDescription == null )
     {
@@ -111,7 +111,7 @@ public abstract class CoreException extends Exception
    * 
    * @param pMessage The message to set.
    */
-  public final void setMessage ( String pMessage )
+  protected final void setMessage ( String pMessage )
   {
     if ( pMessage == null )
     {

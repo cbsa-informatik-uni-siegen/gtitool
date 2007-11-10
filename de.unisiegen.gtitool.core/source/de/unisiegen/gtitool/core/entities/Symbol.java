@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.io.Serializable;
 
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+
 
 /**
  * The <code>Symbol</code> entity.
@@ -30,8 +32,10 @@ public final class Symbol implements Serializable, Cloneable,
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pName The name of this symbol.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
    */
-  public Symbol ( char pName )
+  public Symbol ( char pName ) throws SymbolException
   {
     // Name
     setName ( String.valueOf ( pName ) );
@@ -42,8 +46,10 @@ public final class Symbol implements Serializable, Cloneable,
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pName The name of this symbol.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
    */
-  public Symbol ( Character pName )
+  public Symbol ( Character pName ) throws SymbolException
   {
     // Name
     if ( pName == null )
@@ -58,8 +64,10 @@ public final class Symbol implements Serializable, Cloneable,
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pName The name of this symbol.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
    */
-  public Symbol ( String pName )
+  public Symbol ( String pName ) throws SymbolException
   {
     // Name
     setName ( pName );
@@ -74,7 +82,16 @@ public final class Symbol implements Serializable, Cloneable,
   @Override
   public final Symbol clone ()
   {
-    return new Symbol ( this.name );
+    try
+    {
+      return new Symbol ( this.name );
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
   }
 
 
@@ -134,8 +151,10 @@ public final class Symbol implements Serializable, Cloneable,
    * Sets the name of this symbol.
    * 
    * @param pName The name to set.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
    */
-  public final void setName ( String pName )
+  public final void setName ( String pName ) throws SymbolException
   {
     // Name
     if ( pName == null )
@@ -144,8 +163,7 @@ public final class Symbol implements Serializable, Cloneable,
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
-      // TODO Implement exception
-      throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
+      throw new SymbolException ();
     }
     this.name = pName;
   }

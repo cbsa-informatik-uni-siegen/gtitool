@@ -8,6 +8,7 @@ import javax.swing.JTextPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
@@ -88,22 +89,36 @@ public class NewDialog
       return null;
     try
     {
-      this.alphabet = AlphabetParser.createAlphabet ( this.newDialogForm.jTextPaneMachineAlphabet.getText () );
+      this.alphabet = AlphabetParser
+          .createAlphabet ( this.newDialogForm.jTextPaneMachineAlphabet
+              .getText () );
       if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
         return new MachinePanel ( this.parent, this.alphabet );
       return new GrammarPanel ( this.parent, this.alphabet );
     }
     catch ( AlphabetException e )
     {
-      // TODOBenny Handle the error. Happens if the user wants to add a symbol more than one time.     
-      return null ;
+      /*
+       * TODOBenny Handle the error. Happens if the user wants to add a symbol
+       * more than one time.
+       */
+      return null;
+    }
+    catch ( SymbolException e )
+    {
+      /*
+       * This should not happen. The SymbolException is thrown if a symbol with
+       * an empty name should be created.
+       */
+      e.printStackTrace ();
+      return null;
     }
   }
 
+
   /**
-   * 
    * Handle the Key Typed Event for the Text Panes
-   *
+   * 
    * @param pKeyEvent The fired {@link KeyEvent}
    */
   public void handleKeyTypedEvent ( KeyEvent pKeyEvent )
@@ -112,17 +127,21 @@ public class NewDialog
     {
       pKeyEvent.setKeyChar ( '\u0000' );
     }
-    if (this.newDialogForm.jTextPaneMachineAlphabet.equals ( pKeyEvent.getSource () ))
-      this.newDialogForm.jTextPaneGrammarAlphabet.setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText () + pKeyEvent.getKeyChar () );
-    else 
-      this.newDialogForm.jTextPaneMachineAlphabet.setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText () + pKeyEvent.getKeyChar () );
+    if ( this.newDialogForm.jTextPaneMachineAlphabet.equals ( pKeyEvent
+        .getSource () ) )
+      this.newDialogForm.jTextPaneGrammarAlphabet
+          .setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText ()
+              + pKeyEvent.getKeyChar () );
+    else
+      this.newDialogForm.jTextPaneMachineAlphabet
+          .setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText ()
+              + pKeyEvent.getKeyChar () );
   }
 
 
   /**
-   * 
    * Get the alphabet for the new file
-   *
+   * 
    * @return the {@link Alphabet} for the new file
    */
   public Alphabet getAlphabet ()

@@ -37,6 +37,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -903,7 +904,15 @@ public final class PreferencesDialog
     catch ( AlphabetException e )
     {
       // TODOChristian Handle error
-      System.out.println (e);
+      e.printStackTrace ();
+    }
+    catch ( SymbolException e )
+    {
+      /*
+       * This should not happen. The SymbolException is thrown if a symbol with
+       * an empty name should be created.
+       */
+      e.printStackTrace ();
     }
   }
 

@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.utils;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 
 
 /**
@@ -52,11 +53,13 @@ public abstract class AlphabetParser
    * 
    * @param pText The input string.
    * @return The {@link Alphabet} of the given string.
-   * @throws AlphabetException If something in the {@link Alphabet} is not
+   * @throws AlphabetException If something with the {@link Alphabet} is not
+   *           correct.
+   * @throws SymbolException If something with the {@link Symbol} is not
    *           correct.
    */
   public static final Alphabet createAlphabet ( String pText )
-      throws AlphabetException
+      throws AlphabetException, SymbolException
   {
     String text = pText;
     text = text.replaceAll ( " ", "" ); //$NON-NLS-1$ //$NON-NLS-2$

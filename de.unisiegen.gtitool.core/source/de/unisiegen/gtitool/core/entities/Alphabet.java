@@ -44,7 +44,7 @@ public final class Alphabet implements Serializable, Cloneable,
    * Allocates a new <code>Alphabet</code>.
    * 
    * @param pSymbols The array of {@link Symbol}s.
-   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
   public Alphabet ( Iterable < Symbol > pSymbols ) throws AlphabetException
@@ -66,7 +66,7 @@ public final class Alphabet implements Serializable, Cloneable,
    * Allocates a new <code>Alphabet</code>.
    * 
    * @param pSymbols The array of {@link Symbol}s.
-   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
   public Alphabet ( Symbol ... pSymbols ) throws AlphabetException
@@ -90,7 +90,7 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbol The {@link Symbol} to be appended to this
    *          <code>Alphabet</code>.
-   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
   public final void addSymbol ( Symbol pSymbol ) throws AlphabetException
@@ -118,7 +118,7 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
-   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
   public final void addSymbols ( Iterable < Symbol > pSymbols )
@@ -145,7 +145,7 @@ public final class Alphabet implements Serializable, Cloneable,
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
-   * @throws AlphabetException If something in the <code>Alphabet</code> is
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
   public final void addSymbols ( Symbol ... pSymbols ) throws AlphabetException
@@ -182,7 +182,8 @@ public final class Alphabet implements Serializable, Cloneable,
       }
       catch ( AlphabetException e )
       {
-        throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+        e.printStackTrace ();
+        System.exit ( 1 );
       }
     }
     return newAlphabet;

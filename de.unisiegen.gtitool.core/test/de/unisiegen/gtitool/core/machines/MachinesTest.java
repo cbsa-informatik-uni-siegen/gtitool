@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 
 
@@ -23,9 +24,20 @@ public class MachinesTest
 
   public static void main ( String [] pArguments )
   {
-    Symbol a = new Symbol ( "a" );
-    Symbol b = new Symbol ( "b" );
-    Symbol c = new Symbol ( "c" );
+    Symbol a = null;
+    Symbol b = null;
+    Symbol c = null;
+    try
+    {
+      a = new Symbol ( "a" );
+      b = new Symbol ( "b" );
+      c = new Symbol ( "c" );
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
 
     Alphabet alphabet = null;
     try
@@ -34,8 +46,8 @@ public class MachinesTest
     }
     catch ( AlphabetException e )
     {
-      System.err.println ( "AlphabetException" );
-      System.exit ( 1 );
+      e.printStackTrace ();
+      System.exit ( 2 );
     }
 
     State z0 = new State ( alphabet, "z0", true, false );

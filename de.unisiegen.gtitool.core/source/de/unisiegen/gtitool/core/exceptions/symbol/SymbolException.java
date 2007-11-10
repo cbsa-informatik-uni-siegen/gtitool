@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.exceptions.symbol;
 
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 
@@ -23,12 +24,13 @@ public final class SymbolException extends CoreException
 
   /**
    * Allocates a new <code>SymbolException</code>.
-   * 
-   * @param pMessage The detail message.
-   * @param pDescription The detail description.
    */
-  public SymbolException ( String pMessage, String pDescription )
+  public SymbolException ()
   {
-    super ( pMessage, pDescription );
+    super ();
+    // Message and Description
+    setMessage ( Messages.getString ( "SymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setDescription ( Messages
+        .getString ( "SymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 }

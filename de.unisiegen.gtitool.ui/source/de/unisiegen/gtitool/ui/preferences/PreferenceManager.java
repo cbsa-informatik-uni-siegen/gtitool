@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
@@ -454,24 +455,38 @@ public final class PreferenceManager
     int count = this.preferences.getInt ( "defaultAlphabetCount", //$NON-NLS-1$
         Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    for ( int i = 0 ; i < count ; i++ )
+    loop : for ( int i = 0 ; i < count ; i++ )
     {
       String symbol = this.preferences.get ( "defaultAlphabet" + i, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
       {
-        break;
+        break loop;
       }
-      symbols.add ( new Symbol ( symbol ) );
+      try
+      {
+        symbols.add ( new Symbol ( symbol ) );
+      }
+      catch ( SymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
     }
-    Alphabet defaultAlphabet;
+    Alphabet defaultAlphabet = null;
     try
     {
-      defaultAlphabet = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) );  //$NON-NLS-1$//$NON-NLS-2$
+      defaultAlphabet = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$//$NON-NLS-2$
     }
-    catch ( AlphabetException e1 )
+    catch ( AlphabetException e )
     {
-      throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
@@ -484,7 +499,9 @@ public final class PreferenceManager
     }
     catch ( AlphabetException e )
     {
-      throw new IllegalArgumentException ( "this should not happen" ); //$NON-NLS-1$
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
     }
   }
 

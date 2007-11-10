@@ -13,7 +13,8 @@ import de.unisiegen.gtitool.core.entities.Transition;
  * {@link Alphabet} of the {@link Transition}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: TransitionSymbolNotInAlphabetException.java 120 2007-11-10
+ *          13:01:38Z fehler $
  */
 public final class TransitionSymbolNotInAlphabetException extends
     TransitionException
@@ -26,7 +27,13 @@ public final class TransitionSymbolNotInAlphabetException extends
 
 
   /**
-   * Allocates a new <code>MachineStateStartException</code>.
+   * The {@link Alphabet}.
+   */
+  private Alphabet alphabet;
+
+
+  /**
+   * Allocates a new <code>TransitionSymbolNotInAlphabetException</code>.
    * 
    * @param pTransition The {@link Transition}.
    * @param pAlphabet The {@link Alphabet}.
@@ -35,12 +42,30 @@ public final class TransitionSymbolNotInAlphabetException extends
   public TransitionSymbolNotInAlphabetException ( Transition pTransition,
       Alphabet pAlphabet, Symbol pSymbol )
   {
-    super ( pTransition, pAlphabet, pSymbol );
+    super ( pTransition, pSymbol );
+    // Alphabet
+    if ( pAlphabet == null )
+    {
+      throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
+    }
+    this.alphabet = pAlphabet;
     // Message and Description
     setMessage ( Messages
         .getString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
         "TransitionSymbolNotInAlphabetException.Description", pSymbol //$NON-NLS-1$
             .getName (), pAlphabet.toString () ) );
+  }
+
+
+  /**
+   * Returns the {@link Alphabet}.
+   * 
+   * @return The {@link Alphabet}.
+   * @see #alphabet
+   */
+  public final Alphabet getAlphabet ()
+  {
+    return this.alphabet;
   }
 }

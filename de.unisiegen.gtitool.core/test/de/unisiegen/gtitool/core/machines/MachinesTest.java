@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 
 
@@ -54,7 +55,7 @@ public class MachinesTest
     catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
-      System.exit ( 2 );
+      System.exit ( 1 );
     }
 
     State z0 = new State ( alphabet, "z0", true, false );
@@ -77,13 +78,16 @@ public class MachinesTest
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
       exc.printStackTrace ();
-      System.exit ( 4 );
+      System.exit ( 1 );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
 
     DFA dfa = new DFA ( alphabet );
-
     dfa.addStates ( z0, z1, z2 );
-
     dfa.addTransitions ( t0, t1, t2, t3, t4 );
 
     try

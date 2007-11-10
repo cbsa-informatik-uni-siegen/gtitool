@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
@@ -347,6 +348,15 @@ public class MachinePanel implements EditorPanel
           exc.printStackTrace ();
           System.exit ( 1 );
         }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          /*
+           * NOTICE This exception is thrown if a symbol should
+           * be added to a transition, but is already in the transition.
+           */
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
       }
 
 
@@ -416,6 +426,15 @@ public class MachinePanel implements EditorPanel
          */
         exc.printStackTrace ();
         System.exit ( 1 );
+      }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+          /*
+           * NOTICE This exception is thrown if a symbol should
+           * be added to a transition, but is already in the transition.
+           */
+          exc.printStackTrace ();
+          System.exit ( 1 );
       }
       }
 

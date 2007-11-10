@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 
 
 /**
@@ -58,9 +59,12 @@ public final class Transition implements Serializable, Cloneable
    * @param pSymbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException
+      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
     setAlphabet ( pAlphabet );
@@ -86,9 +90,12 @@ public final class Transition implements Serializable, Cloneable
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbol ( Symbol pSymbol )
-      throws TransitionSymbolNotInAlphabetException
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
   {
     if ( !this.alphabet.containsSymbol ( pSymbol ) )
     {
@@ -97,8 +104,7 @@ public final class Transition implements Serializable, Cloneable
     }
     if ( this.symbolSet.contains ( pSymbol ) )
     {
-      // TODO Implement exception
-      throw new IllegalArgumentException ( "symbol duplicated" ); //$NON-NLS-1$
+      throw new TransitionSymbolOnlyOneTimeException ( this, pSymbol );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -112,9 +118,12 @@ public final class Transition implements Serializable, Cloneable
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbols ( Iterable < Symbol > pSymbols )
-      throws TransitionSymbolNotInAlphabetException
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
   {
     if ( pSymbols == null )
     {
@@ -139,9 +148,12 @@ public final class Transition implements Serializable, Cloneable
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbols ( Symbol ... pSymbols )
-      throws TransitionSymbolNotInAlphabetException
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
   {
     if ( pSymbols == null )
     {
@@ -176,6 +188,11 @@ public final class Transition implements Serializable, Cloneable
         newTransition.addSymbol ( current.clone () );
       }
       catch ( TransitionSymbolNotInAlphabetException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+      catch ( TransitionSymbolOnlyOneTimeException e )
       {
         e.printStackTrace ();
         System.exit ( 1 );

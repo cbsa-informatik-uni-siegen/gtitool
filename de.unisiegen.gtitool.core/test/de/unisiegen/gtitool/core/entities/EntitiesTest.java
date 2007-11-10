@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 
 
 /**
@@ -42,7 +43,7 @@ public class EntitiesTest
     catch ( AlphabetException e )
     {
       e.printStackTrace ();
-      System.exit ( 2 );
+      System.exit ( 1 );
     }
 
     State z0 = new State ( alphabet, "z0", true, false );
@@ -65,7 +66,12 @@ public class EntitiesTest
     catch ( TransitionSymbolNotInAlphabetException e )
     {
       e.printStackTrace ();
-      System.exit ( 4 );
+      System.exit ( 1 );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 }

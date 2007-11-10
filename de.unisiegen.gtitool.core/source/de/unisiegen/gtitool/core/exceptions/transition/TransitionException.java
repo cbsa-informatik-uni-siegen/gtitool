@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.exceptions.transition;
 
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -24,12 +23,6 @@ public abstract class TransitionException extends CoreException
 
 
   /**
-   * The {@link Alphabet}.
-   */
-  private Alphabet alphabet;
-
-
-  /**
    * The {@link Symbol}.
    */
   private Symbol symbol;
@@ -39,11 +32,9 @@ public abstract class TransitionException extends CoreException
    * Allocates a new <code>TransitionException</code>.
    * 
    * @param pTransition The {@link Transition}.
-   * @param pAlphabet The {@link Alphabet}.
    * @param pSymbol The {@link Symbol}.
    */
-  public TransitionException ( Transition pTransition, Alphabet pAlphabet,
-      Symbol pSymbol )
+  public TransitionException ( Transition pTransition, Symbol pSymbol )
   {
     super ();
     // Transition
@@ -52,12 +43,7 @@ public abstract class TransitionException extends CoreException
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
     this.transition = pTransition;
-    // Alphabet
-    if ( pAlphabet == null )
-    {
-      throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
-    }
-    this.alphabet = pAlphabet;
+
     // Symbol
     if ( pSymbol == null )
     {
@@ -65,18 +51,6 @@ public abstract class TransitionException extends CoreException
     }
     this.symbol = pSymbol;
     // Message and Description
-  }
-
-
-  /**
-   * Returns the {@link Alphabet}.
-   * 
-   * @return The {@link Alphabet}.
-   * @see #alphabet
-   */
-  public final Alphabet getAlphabet ()
-  {
-    return this.alphabet;
   }
 
 

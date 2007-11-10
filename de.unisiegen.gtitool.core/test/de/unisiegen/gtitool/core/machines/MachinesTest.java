@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 
 
@@ -27,15 +28,21 @@ public class MachinesTest
     Symbol a = null;
     Symbol b = null;
     Symbol c = null;
+    Symbol d = null;
+    Symbol e = null;
+    Symbol f = null;
     try
     {
       a = new Symbol ( "a" );
       b = new Symbol ( "b" );
       c = new Symbol ( "c" );
+      d = new Symbol ( "d" );
+      e = new Symbol ( "e" );
+      f = new Symbol ( "f" );
     }
-    catch ( SymbolException e )
+    catch ( SymbolException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
 
@@ -44,9 +51,9 @@ public class MachinesTest
     {
       alphabet = new Alphabet ( a, b, c );
     }
-    catch ( AlphabetException e )
+    catch ( AlphabetException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 2 );
     }
 
@@ -54,11 +61,24 @@ public class MachinesTest
     State z1 = new State ( alphabet, "z1", false, false );
     State z2 = new State ( alphabet, "z2", false, true );
 
-    Transition t0 = new Transition ( alphabet, z0, z0, a, b );
-    Transition t1 = new Transition ( alphabet, z0, z1, c );
-    Transition t2 = new Transition ( alphabet, z1, z1, a, b );
-    Transition t3 = new Transition ( alphabet, z1, z2, c );
-    Transition t4 = new Transition ( alphabet, z2, z2, a, b, c );
+    Transition t0 = null;
+    Transition t1 = null;
+    Transition t2 = null;
+    Transition t3 = null;
+    Transition t4 = null;
+    try
+    {
+      t0 = new Transition ( alphabet, z0, z0, a, b );
+      t1 = new Transition ( alphabet, z0, z1, c );
+      t2 = new Transition ( alphabet, z1, z1, a, b );
+      t3 = new Transition ( alphabet, z1, z2, c );
+      t4 = new Transition ( alphabet, z2, z2, a, b, c );
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 4 );
+    }
 
     DFA dfa = new DFA ( alphabet );
 
@@ -70,9 +90,9 @@ public class MachinesTest
     {
       dfa.validate ();
     }
-    catch ( MachineValidationException e )
+    catch ( MachineValidationException exc )
     {
-      System.out.println ( e );
+      exc.printStackTrace ();
     }
   }
 }

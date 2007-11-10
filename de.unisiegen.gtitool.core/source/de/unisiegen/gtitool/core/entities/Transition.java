@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+
 
 /**
  * The <code>Transition</code> entity.
@@ -54,9 +56,11 @@ public final class Transition implements Serializable, Cloneable
    * @param pStateEnd The {@link State} where the <code>Transition</code>
    *          ends.
    * @param pSymbols The array of {@link Symbol}s.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      Symbol ... pSymbols )
+      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException
   {
     // Alphabet
     setAlphabet ( pAlphabet );
@@ -70,10 +74,7 @@ public final class Transition implements Serializable, Cloneable
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    for ( Symbol current : pSymbols )
-    {
-      addSymbol ( current );
-    }
+    addSymbols ( pSymbols );
   }
 
 
@@ -83,13 +84,21 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pSymbol The {@link Symbol} to be appended to this
    *          <code>Transition</code>.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbol ( Symbol pSymbol )
+      throws TransitionSymbolNotInAlphabetException
   {
     if ( !this.alphabet.containsSymbol ( pSymbol ) )
     {
+      throw new TransitionSymbolNotInAlphabetException ( this, this.alphabet,
+          pSymbol );
+    }
+    if ( this.symbolSet.contains ( pSymbol ) )
+    {
       // TODO Implement exception
-      throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "symbol duplicated" ); //$NON-NLS-1$
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -101,8 +110,11 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Transition</code>.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbols ( Iterable < Symbol > pSymbols )
+      throws TransitionSymbolNotInAlphabetException
   {
     if ( pSymbols == null )
     {
@@ -125,8 +137,11 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Transition</code>.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
    */
   public final void addSymbols ( Symbol ... pSymbols )
+      throws TransitionSymbolNotInAlphabetException
   {
     if ( pSymbols == null )
     {
@@ -151,11 +166,20 @@ public final class Transition implements Serializable, Cloneable
   @Override
   public final Transition clone ()
   {
-    Transition newTransition = new Transition ( this.alphabet.clone (),
-        this.stateBegin.clone (), this.stateEnd.clone () );
+    Transition newTransition = null;
     for ( Symbol current : this.symbolSet )
     {
-      newTransition.addSymbol ( current.clone () );
+      try
+      {
+        newTransition = new Transition ( this.alphabet.clone (),
+            this.stateBegin.clone (), this.stateEnd.clone () );
+        newTransition.addSymbol ( current.clone () );
+      }
+      catch ( TransitionSymbolNotInAlphabetException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
     }
     return newTransition;
   }
@@ -292,14 +316,12 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pAlphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  private final void setAlphabet ( Alphabet pAlphabet )
   {
     if ( pAlphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    // TODO Check the symbols
-
     this.alphabet = pAlphabet;
   }
 
@@ -309,13 +331,12 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pStateBegin The {@link State} to set.
    */
-  public final void setStateBegin ( State pStateBegin )
+  private final void setStateBegin ( State pStateBegin )
   {
     if ( pStateBegin == null )
     {
       throw new NullPointerException ( "state begin is null" ); //$NON-NLS-1$
     }
-    // TODO Check old state begin
     this.stateBegin = pStateBegin;
   }
 
@@ -325,13 +346,12 @@ public final class Transition implements Serializable, Cloneable
    * 
    * @param pStateEnd The {@link State} to set.
    */
-  public final void setStateEnd ( State pStateEnd )
+  private final void setStateEnd ( State pStateEnd )
   {
     if ( pStateEnd == null )
     {
       throw new NullPointerException ( "state end is null" ); //$NON-NLS-1$
     }
-    // TODO Check old state end
     this.stateEnd = pStateEnd;
   }
 

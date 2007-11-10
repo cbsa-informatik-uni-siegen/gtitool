@@ -1,34 +1,105 @@
 package de.unisiegen.gtitool.core.exceptions.transition;
 
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>TransitionException</code> is used if the {@link Symbol} is not
- * correct.
+ * The <code>TransitionException</code> is used if the {@link Transition} is
+ * not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class TransitionException extends CoreException
+public abstract class TransitionException extends CoreException
 {
 
   /**
-   * The serial version uid.
+   * The {@link Transition}.
    */
-  private static final long serialVersionUID = -7654554788622031787L;
+  private Transition transition;
+
+
+  /**
+   * The {@link Alphabet}.
+   */
+  private Alphabet alphabet;
+
+
+  /**
+   * The {@link Symbol}.
+   */
+  private Symbol symbol;
 
 
   /**
    * Allocates a new <code>TransitionException</code>.
    * 
-   * @param pMessage The detail message.
-   * @param pDescription The detail description.
+   * @param pTransition The {@link Transition}.
+   * @param pAlphabet The {@link Alphabet}.
+   * @param pSymbol The {@link Symbol}.
    */
-  public TransitionException ( String pMessage, String pDescription )
+  public TransitionException ( Transition pTransition, Alphabet pAlphabet,
+      Symbol pSymbol )
   {
-    super ( pMessage, pDescription );
+    super ();
+    // Transition
+    if ( pTransition == null )
+    {
+      throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
+    }
+    this.transition = pTransition;
+    // Alphabet
+    if ( pAlphabet == null )
+    {
+      throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
+    }
+    this.alphabet = pAlphabet;
+    // Symbol
+    if ( pSymbol == null )
+    {
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+    }
+    this.symbol = pSymbol;
+    // Message and Description
+  }
+
+
+  /**
+   * Returns the {@link Alphabet}.
+   * 
+   * @return The {@link Alphabet}.
+   * @see #alphabet
+   */
+  public final Alphabet getAlphabet ()
+  {
+    return this.alphabet;
+  }
+
+
+  /**
+   * Returns the {@link Symbol}.
+   * 
+   * @return The {@link Symbol}.
+   * @see #symbol
+   */
+  public final Symbol getSymbol ()
+  {
+    return this.symbol;
+  }
+
+
+  /**
+   * Returns the {@link Transition}.
+   * 
+   * @return The {@link Transition}.
+   * @see #transition
+   */
+  public final Transition getTransition ()
+  {
+    return this.transition;
   }
 }

@@ -23,6 +23,7 @@ import org.jgraph.graph.GraphModel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
@@ -289,6 +290,8 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseReleased ( MouseEvent e )
       {
+        try
+        {
         if ( !MachinePanel.this.dragged )
           return;
         DefaultStateView target = ( DefaultStateView ) MachinePanel.this.graph
@@ -333,12 +336,25 @@ public class MachinePanel implements EditorPanel
         MachinePanel.this.tmpTransition = null;
         MachinePanel.this.tmpState = null;
         MachinePanel.this.dragged = false;
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc)
+        {
+          /*
+           * NOTICE This exception is thrown if a symbol should
+           * be added to a transition, but is not in the alphabet
+           * of the transition.
+           */
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
       }
 
 
       @Override
       public void mouseClicked ( MouseEvent e )
       {
+        try
+        {
         if ( MachinePanel.this.dragged )
           return;
 
@@ -390,6 +406,17 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
         }
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc)
+      {
+        /*
+         * NOTICE This exception is thrown if a symbol should
+         * be added to a transition, but is not in the alphabet
+         * of the transition.
+         */
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
       }
 
     };

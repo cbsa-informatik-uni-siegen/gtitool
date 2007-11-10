@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.entities;
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 
 
 /**
@@ -48,10 +49,23 @@ public class EntitiesTest
     State z1 = new State ( alphabet, "z1", false, false );
     State z2 = new State ( alphabet, "z2", false, true );
 
-    Transition t0 = new Transition ( alphabet, z0, z0, a, b );
-    Transition t1 = new Transition ( alphabet, z0, z1, c );
-    Transition t2 = new Transition ( alphabet, z1, z1, a, b );
-    Transition t3 = new Transition ( alphabet, z1, z2, c );
-    Transition t4 = new Transition ( alphabet, z2, z2, a, b, c );
+    Transition t0 = null;
+    Transition t1 = null;
+    Transition t2 = null;
+    Transition t3 = null;
+    Transition t4 = null;
+    try
+    {
+      t0 = new Transition ( alphabet, z0, z0, a, b );
+      t1 = new Transition ( alphabet, z0, z1, c );
+      t2 = new Transition ( alphabet, z1, z1, a, b );
+      t3 = new Transition ( alphabet, z1, z2, c );
+      t4 = new Transition ( alphabet, z2, z2, a, b, c );
+    }
+    catch ( TransitionSymbolNotInAlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 4 );
+    }
   }
 }

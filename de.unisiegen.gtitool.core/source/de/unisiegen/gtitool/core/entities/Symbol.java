@@ -154,7 +154,7 @@ public final class Symbol implements Serializable, Cloneable,
    * @throws SymbolException If something with the <code>Symbol</code> is not
    *           correct.
    */
-  public final void setName ( String pName ) throws SymbolException
+  private final void setName ( String pName ) throws SymbolException
   {
     // Name
     if ( pName == null )

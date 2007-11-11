@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -15,7 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Transition implements Serializable, Cloneable
+public final class Transition implements Entity
 {
 
   /**

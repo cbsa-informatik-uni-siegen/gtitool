@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
@@ -55,6 +56,77 @@ public abstract class Machine < E > implements Serializable
     this.stateList = new ArrayList < State > ();
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
+  }
+
+
+  /**
+   * Adds the {@link Entity}s to this <code>Machine</code>.
+   * 
+   * @param pEntities The {@link Entity}s to add.
+   */
+  public final void addEntities ( Entity ... pEntities )
+  {
+    if ( pEntities == null )
+    {
+      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
+    }
+    if ( pEntities.length == 0 )
+    {
+      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
+    }
+    for ( Entity current : pEntities )
+    {
+      addEntity ( current );
+    }
+  }
+
+
+  /**
+   * Adds the {@link Entity}s to this <code>Machine</code>.
+   * 
+   * @param pEntities The {@link Entity}s to add.
+   */
+  public final void addEntities ( Iterable < Entity > pEntities )
+  {
+    if ( pEntities == null )
+    {
+      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
+    }
+    if ( !pEntities.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
+    }
+    for ( Entity current : pEntities )
+    {
+      addEntity ( current );
+    }
+  }
+
+
+  /**
+   * Adds the {@link Entity} to this <code>Machine</code>.
+   * 
+   * @param pEntity The {@link Entity} to add.
+   */
+  public final void addEntity ( Entity pEntity )
+  {
+    if ( pEntity == null )
+    {
+      throw new NullPointerException ( "entity is null" ); //$NON-NLS-1$
+    }
+    if ( pEntity instanceof State )
+    {
+      addState ( ( State ) pEntity );
+    }
+    else if ( pEntity instanceof Transition )
+    {
+      addTransition ( ( Transition ) pEntity );
+    }
+    else
+    {
+      throw new IllegalArgumentException (
+          "entity is not a state and not a transition" ); //$NON-NLS-1$
+    }
   }
 
 

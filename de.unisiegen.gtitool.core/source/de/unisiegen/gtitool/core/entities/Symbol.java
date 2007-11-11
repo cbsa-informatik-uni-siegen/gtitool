@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.io.Serializable;
-
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 
 
@@ -12,8 +10,7 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Symbol implements Serializable, Cloneable,
-    Comparable < Symbol >
+public final class Symbol implements Entity, Comparable < Symbol >
 {
 
   /**

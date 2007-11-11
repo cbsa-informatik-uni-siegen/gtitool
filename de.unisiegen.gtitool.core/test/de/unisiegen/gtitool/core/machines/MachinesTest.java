@@ -69,7 +69,7 @@ public class MachinesTest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, a ,b);
+      t0 = new Transition ( alphabet, z0, z0, a, b );
       t1 = new Transition ( alphabet, z0, z1, c );
       t2 = new Transition ( alphabet, z1, z1, a, b );
       t3 = new Transition ( alphabet, z1, z2, c );
@@ -87,8 +87,7 @@ public class MachinesTest
     }
 
     DFA dfa = new DFA ( alphabet );
-    dfa.addStates ( z0, z1, z2 );
-    dfa.addTransitions ( t0, t1, t2, t3, t4 );
+    dfa.addEntities ( z0, z1, z2, t0, t1, t2, t3, t4 );
 
     try
     {

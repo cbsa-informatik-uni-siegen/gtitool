@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class State implements Serializable, Cloneable
+public final class State implements Entity
 {
 
   /**

@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -14,8 +13,7 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Alphabet implements Serializable, Cloneable,
-    Iterable < Symbol >
+public final class Alphabet implements Entity, Iterable < Symbol >
 {
 
   /**

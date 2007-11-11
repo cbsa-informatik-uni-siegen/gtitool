@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
@@ -46,9 +47,20 @@ public class EntitiesTest
       System.exit ( 1 );
     }
 
-    State z0 = new State ( alphabet, "z0", true, false );
-    State z1 = new State ( alphabet, "z1", false, false );
-    State z2 = new State ( alphabet, "z2", false, true );
+    State z0 = null;
+    State z1 = null;
+    State z2 = null;
+    try
+    {
+      z0 = new State ( alphabet, "z0", true, false );
+      z1 = new State ( alphabet, "z1", false, false );
+      z2 = new State ( alphabet, "z2", false, true );
+    }
+    catch ( StateException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
 
     Transition t0 = null;
     Transition t1 = null;

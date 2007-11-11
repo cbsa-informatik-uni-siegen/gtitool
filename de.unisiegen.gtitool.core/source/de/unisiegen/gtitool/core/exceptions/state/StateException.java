@@ -1,12 +1,13 @@
 package de.unisiegen.gtitool.core.exceptions.state;
 
 
-import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>StateException</code> is used if the {@link State} is not
+ * The <code>StateException</code> is used if the {@link Symbol} is not
  * correct.
  * 
  * @author Christian Fehler
@@ -18,17 +19,18 @@ public final class StateException extends CoreException
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -7209512277199327343L;
+  private static final long serialVersionUID = 1439251511317477443L;
 
 
   /**
    * Allocates a new <code>StateException</code>.
-   * 
-   * @param pMessage The detail message.
-   * @param pDescription The detail description.
    */
-  public StateException ( String pMessage, String pDescription )
+  public StateException ()
   {
-    super ( pMessage, pDescription );
+    super ();
+    // Message and Description
+    setMessage ( Messages.getString ( "StateException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setDescription ( Messages
+        .getString ( "StateException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 }

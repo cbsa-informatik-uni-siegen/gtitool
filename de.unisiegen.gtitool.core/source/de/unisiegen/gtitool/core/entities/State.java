@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+
 
 /**
  * The <code>State</code> entity.
@@ -62,9 +64,11 @@ public final class State implements Entity
    * @param pName The name of this <code>State</code>.
    * @param pStartState This <code>State</code> is a start <code>State</code>.
    * @param pFinalState This <code>State</code> is a final <code>State</code>.
+   * @throws StateException If something with the <code>State</code> is not
+   *           correct.
    */
   public State ( Alphabet pAlphabet, String pName, boolean pStartState,
-      boolean pFinalState )
+      boolean pFinalState ) throws StateException
   {
     // Alphabet
     setAlphabet ( pAlphabet );
@@ -140,17 +144,26 @@ public final class State implements Entity
   @Override
   public final State clone ()
   {
-    State newState = new State ( this.alphabet.clone (), this.name,
-        this.startState, this.finalState );
-    for ( Transition current : this.transitionBeginList )
+    try
     {
-      newState.addTransitionBegin ( current );
+      State newState = new State ( this.alphabet.clone (), this.name,
+          this.startState, this.finalState );
+      for ( Transition current : this.transitionBeginList )
+      {
+        newState.addTransitionBegin ( current );
+      }
+      for ( Transition current : this.transitionEndList )
+      {
+        newState.addTransitionEnd ( current );
+      }
+      return newState;
     }
-    for ( Transition current : this.transitionEndList )
+    catch ( StateException e )
     {
-      newState.addTransitionEnd ( current );
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
     }
-    return newState;
   }
 
 
@@ -330,7 +343,7 @@ public final class State implements Entity
    * 
    * @param pAlphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  private final void setAlphabet ( Alphabet pAlphabet )
   {
     if ( pAlphabet == null )
     {
@@ -355,8 +368,10 @@ public final class State implements Entity
    * Sets the name of this <code>State</code>.
    * 
    * @param pName The name to set.
+   * @throws StateException If something with the <code>State</code> is not
+   *           correct.
    */
-  public final void setName ( String pName )
+  public final void setName ( String pName ) throws StateException
   {
     if ( pName == null )
     {
@@ -364,8 +379,7 @@ public final class State implements Entity
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
-      // TODO Implement an exception
-      throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
+      throw new StateException ();
     }
     this.name = pName;
   }

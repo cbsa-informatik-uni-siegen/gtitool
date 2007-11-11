@@ -23,6 +23,7 @@ import org.jgraph.graph.GraphModel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -218,8 +219,21 @@ public class MachinePanel implements EditorPanel
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
     if ( finalState )
       viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.FinalStateView"; //$NON-NLS-1$
-    State state = name == null ? null : new State ( new Alphabet (), name,
-        false, finalState );
+    State state=null;
+    try
+    {
+      state = name == null ? null : new State ( new Alphabet (), name,
+          false, finalState );
+    }
+    catch ( StateException exc )
+    {
+      /*
+       * NOTICE This exception is thrown if a state should be created
+       * with an empty name.
+       */
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
     DefaultStateView cell = new DefaultStateView ( state, name );
 
     // set the view class (indirection for the renderer and the editor)

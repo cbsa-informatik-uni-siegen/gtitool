@@ -51,7 +51,7 @@
 
   <target name="compile" depends="jflex">
     <copy todir="${java}"><fileset dir="${src}"></fileset></copy>
-    <javac srcdir="${java}" destdir="${classes}" verbose="off" listfiles="off" debug="on" source="1.2" target="1.2">
+    <javac srcdir="${java}" destdir="${classes}" verbose="off" listfiles="off" debug="on" source="1.5" target="1.5">
       <classpath refid="libraries"/>
     </javac>
   </target>

@@ -5,7 +5,7 @@ package de.unisiegen.gtitool.core.parser.exceptions;
  * The parser exception class.
  * 
  * @author Christian Fehler
- * @version $Id: Machine.java 124 2007-11-11 19:54:18Z fehler $
+ * @version $Id$
  */
 public class ParserException extends ScannerException
 {

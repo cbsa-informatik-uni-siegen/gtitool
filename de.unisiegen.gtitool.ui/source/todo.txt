@@ -1,7 +1,0 @@
-- Dialog zum ändern des Alphabets
-- Toolbar events mit core verknüpfen
-- KontextMenü für Transitionen und States
-- Abfragedialog bei neuer Transition
-- zoom des jgraph
-- Notizen im Graph hinzufügen
-

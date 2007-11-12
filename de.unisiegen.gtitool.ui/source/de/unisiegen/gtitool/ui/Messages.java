@@ -65,14 +65,14 @@ public final class Messages
    * @param pArguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String pKey, String ... pArguments )
+  public final static String getString ( String pKey, Object ... pArguments )
   {
     try
     {
-      ResourceBundle bundle = ResourceBundle
+      ResourceBundle resourceBundle = ResourceBundle
           .getBundle ( "de.unisiegen.gtitool.ui.messages" ); //$NON-NLS-1$
-      return MessageFormat.format ( bundle.getString ( pKey ),
-          ( Object [] ) pArguments );
+      return MessageFormat.format ( resourceBundle.getString ( pKey ),
+          pArguments );
     }
     catch ( MissingResourceException e )
     {

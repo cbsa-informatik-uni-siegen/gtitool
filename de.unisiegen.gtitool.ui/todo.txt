@@ -7,3 +7,4 @@
 - Notizen im Graph hinzufügen
 
 *** Christian ***
+- Button Größe im PreferenceDialog bei Sprachänderungen aktualisieren

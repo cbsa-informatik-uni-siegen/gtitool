@@ -15,7 +15,9 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />
 	<property name="docdir" value="${basedir}/doc" />
-	
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="generateddir" value="${basedir}/source-generated" />
+
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
 	</target>
@@ -25,14 +27,16 @@
 		<mkdir dir="${distdir}" />
 	</target>
 		
-	<target name="dist-compile">
+	<target name="dist-compile" depends="parser">
 		<delete dir="${classesdir}" />
 		<mkdir dir="${classesdir}" />
 		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-impl" />
+			<src path="${basedir}/source-generated" />
 			<classpath>
 				<pathelement location="${libdir}/log4j-1.2.14.jar" />
+				<pathelement location="${libdir}/java-cup-11a-gtitool-runtime.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -64,6 +68,7 @@
 	</target>
 
 	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+		<copy file="${libdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
 		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
 	</target>
 
@@ -71,4 +76,32 @@
 		<delete dir="${classesdir}" />
 	</target>
 	
+	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
+
+	<target name="parser" depends="parser-alphabet" description="Generate parsers and lexers" />
+	
+	<target name="parser-clean">
+		<delete dir="${generateddir}/de/unisiegen/gtitool/core/parser" />
+	</target>
+			
+	<target name="parser-alphabet" description="Generates lexer and parser for an alphabet">
+		<jflex 
+	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex"
+	   		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup"
+			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/alphabet"
+			package="de.unisiegen.gtitool.core.parser.alphabet"
+			parser="AlphabetAbstractParser"
+			symbols="AlphabetTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
 </project>

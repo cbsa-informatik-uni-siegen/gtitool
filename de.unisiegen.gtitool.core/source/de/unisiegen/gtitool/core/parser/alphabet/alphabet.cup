@@ -1,0 +1,44 @@
+import de.unisiegen.gtitool.core.entities.Alphabet ;
+import de.unisiegen.gtitool.core.entities.Symbol ;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+terminal					COMMA;
+terminal					LCBRACE;
+terminal					RCBRACE;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Alphabet		alphabet;
+non terminal Symbol			symbol;
+non terminal Symbol[]		symbol_list;
+
+
+/************
+ * Alphabet *
+ ************/
+
+alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
+									{: RESULT = new Alphabet(sl); :}
+								;
+
+symbol							::= SYMBOL:s
+									{: RESULT = new Symbol(s); :}
+								;
+								
+symbol_list						::= symbol:s COMMA:c symbol_list:sl
+								    {:
+								       RESULT = new Symbol[sl.length + 1];
+									   System.arraycopy(sl, 0, RESULT, 1, sl.length);
+									   RESULT[0] = s;
+								    :}
+								|	symbol:s
+									{: RESULT = new Symbol[] { s }; :}
+								;

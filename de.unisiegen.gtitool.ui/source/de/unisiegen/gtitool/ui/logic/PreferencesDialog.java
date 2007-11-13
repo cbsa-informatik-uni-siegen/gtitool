@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
@@ -32,12 +34,10 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.style.StyledParserPanel;
 import de.unisiegen.gtitool.ui.utils.AlphabetParser;
 
 
@@ -606,6 +607,19 @@ public final class PreferencesDialog
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
     /*
+     * StyledPanel
+     */
+    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    gridBagConstraints.insets = new Insets ( 10, 5, 5, 10 );
+    this.gui.jPanelAlphabet.add ( new StyledParserPanel ( new AlphabetParseable () ),
+        gridBagConstraints );
+
+    /*
      * Language
      */
     this.languageComboBoxModel = new LanguageComboBoxModel ();
@@ -722,8 +736,11 @@ public final class PreferencesDialog
      */
     this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
     this.initialAlphabetItem = this.alphabetItem.clone ();
-    this.gui.jTextAreaAlphabet.setText ( AlphabetParser
-        .createString ( this.alphabetItem.getAlphabet () ) );
+    // TODOChristian
+    /*
+     * this.gui.jTextAreaAlphabet.setText ( AlphabetParser .createString (
+     * this.alphabetItem.getAlphabet () ) );
+     */
 
     /*
      * Language changed listener
@@ -894,26 +911,20 @@ public final class PreferencesDialog
       @SuppressWarnings ( "unused" )
       KeyEvent pKeyEvent )
   {
-    Alphabet newAlphabet;
-    try
-    {
-      newAlphabet = AlphabetParser.createAlphabet ( this.gui.jTextAreaAlphabet
-          .getText () );
-      this.alphabetItem.setAlphabet ( newAlphabet );
-    }
-    catch ( AlphabetException e )
-    {
-      // TODOChristian Handle error
-      e.printStackTrace ();
-    }
-    catch ( SymbolException e )
-    {
-      /*
-       * This should not happen. The SymbolException is thrown if a symbol with
-       * an empty name should be created.
-       */
-      e.printStackTrace ();
-    }
+    /*
+     * Alphabet newAlphabet; try { // TODOChristian newAlphabet =
+     * AlphabetParser.createAlphabet ( this.gui.jTextAreaAlphabet .getText () );
+     * this.alphabetItem.setAlphabet ( newAlphabet ); } catch (
+     * AlphabetException e ) { // TODOChristian Handle error e.printStackTrace
+     * (); } catch ( SymbolException e ) {
+     */
+    /*
+     * This should not happen. The SymbolException is thrown if a symbol with an
+     * empty name should be created.
+     */
+    /*
+     * e.printStackTrace (); }
+     */
   }
 
 
@@ -1085,8 +1096,12 @@ public final class PreferencesDialog
     this.colorItemErrorTransition.restore ();
     // Alphabet
     this.alphabetItem.restore ();
-    this.gui.jTextAreaAlphabet.setText ( AlphabetParser
-        .createString ( this.alphabetItem.getAlphabet () ) );
+    // TODOChristian
+
+    /*
+     * this.gui.jTextAreaAlphabet.setText ( AlphabetParser .createString (
+     * this.alphabetItem.getAlphabet () ) );
+     */
   }
 
 

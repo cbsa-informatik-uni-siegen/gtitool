@@ -14,22 +14,20 @@
     </layout> 
   </appender> 
 
-  <!-- de.unisiegen.gtitool.core -->
+  <!-- core project -->
 
   <logger name="de.unisiegen.gtitool.core.Messages">
     <level value="all" />
     <appender-ref ref="console" />
   </logger>
   
-  <!-- de.unisiegen.gtitool.ui -->
+  <!-- ui project -->
 
   <logger name="de.unisiegen.gtitool.ui.Start">
     <level value="all" />
     <appender-ref ref="console" />
   </logger>
   
-  <!-- de.unisiegen.gtitool.ui.logic -->
-
   <logger name="de.unisiegen.gtitool.ui.logic.AboutDialog">
     <level value="all" />
     <appender-ref ref="console" />
@@ -40,24 +38,29 @@
     <appender-ref ref="console" />
   </logger>
   
-  <!-- de.unisiegen.gtitool.ui.preferences -->
-
   <logger name="de.unisiegen.gtitool.ui.preferences.PreferenceManager">
     <level value="all" />
     <appender-ref ref="console" />
   </logger>
-
-  <!-- de.unisiegen.gtitool.ui.utils -->
+  
+  <logger name="de.unisiegen.gtitool.ui.style.StyledParserDocument">
+    <level value="all" />
+    <appender-ref ref="console" />
+  </logger>
 
   <logger name="de.unisiegen.gtitool.ui.utils.Clipboard">
     <level value="all" />
     <appender-ref ref="console" />
   </logger>
   
-  <!-- all -->
-
   <logger name="de.unisiegen.gtitool.ui.Messages">
     <level value="all" />
     <appender-ref ref="console" />
   </logger>
+  
+  <!-- all -->
+
+  <root> 
+    <priority value ="off" />
+  </root>
 </log4j:configuration>

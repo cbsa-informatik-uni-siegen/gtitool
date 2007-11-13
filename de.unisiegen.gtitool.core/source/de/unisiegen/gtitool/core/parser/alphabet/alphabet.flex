@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.core.parser.alphabet;
 
 import java.io.Reader;
-import java.text.MessageFormat;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.parser.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.ParserSymbol;
@@ -65,7 +64,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-Symbol			= [a-zA-Z] [a-zA-Z0-9]*
+Symbol			= [a-zA-Z0-9]+
 
 %%
 
@@ -78,4 +77,4 @@ Symbol			= [a-zA-Z] [a-zA-Z0-9]*
 	{WhiteSpace}		{ /* Ignore */ }
 }
 
-.|\n					{ throw new ScannerException(yychar, yychar + yylength(), MessageFormat.format ( Messages.getString ( "Parser.1" ), yytext() ) ); }
+.|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

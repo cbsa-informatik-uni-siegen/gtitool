@@ -2,9 +2,11 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.gtitool.core.parser.Parseable;
@@ -16,13 +18,19 @@ import de.unisiegen.gtitool.core.parser.Parseable;
  * @author Christian Fehler
  * @version $Id$
  */
-public class StyledParserPanel extends JPanel
+public abstract class StyledParserPanel extends JPanel
 {
 
   /**
-   * The serial version uid.
+   * The normal {@link Color}.
    */
-  private static final long serialVersionUID = 8647430131132449298L;
+  private static final Color NORMAL_COLOR = Color.BLACK;
+
+
+  /**
+   * The error {@link Color}.
+   */
+  private static final Color ERROR_COLOR = Color.RED;
 
 
   /**
@@ -40,7 +48,7 @@ public class StyledParserPanel extends JPanel
   /**
    * The {@link JScrollPane}.
    */
-  private JScrollPane scrollpane;
+  private JScrollPane jScrollPane;
 
 
   /**
@@ -59,9 +67,10 @@ public class StyledParserPanel extends JPanel
     this.editor = new StyledParserEditor ();
     this.document = new StyledParserDocument ( pParseable );
     setLayout ( new BorderLayout () );
-    this.scrollpane = new JScrollPane ();
-    add ( this.scrollpane, BorderLayout.CENTER );
-    this.sideBar = new SideBar ( this.scrollpane, this.document, this.editor );
+    this.jScrollPane = new JScrollPane ();
+    this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+    add ( this.jScrollPane, BorderLayout.CENTER );
+    this.sideBar = new SideBar ( this.jScrollPane, this.document, this.editor );
     this.sideBar.addSideBarListener ( new SideBarListener ()
     {
 
@@ -134,9 +143,46 @@ public class StyledParserPanel extends JPanel
       }
     } );
     add ( this.sideBar, BorderLayout.WEST );
-    this.scrollpane.setViewportView ( this.editor );
+    this.jScrollPane.setViewportView ( this.editor );
     this.editor.setDocument ( this.document );
     this.editor.setAutoscrolls ( false );
+  }
+
+
+  /**
+   * Returns the document.
+   * 
+   * @return The document.
+   * @see #document
+   */
+  protected StyledParserDocument getDocument ()
+  {
+    return this.document;
+  }
+
+
+  /**
+   * Returns the editor.
+   * 
+   * @return The editor.
+   * @see #editor
+   */
+  protected StyledParserEditor getEditor ()
+  {
+    return this.editor;
+  }
+
+
+  /**
+   * Returns the {@link Object} for the program text within the document. Throws
+   * an exception if a parsing error occurred.
+   * 
+   * @return The {@link Object} for the program text.
+   * @throws Exception If a parsing error occurred.
+   */
+  protected Object getParsedObject () throws Exception
+  {
+    return this.document.getParsedObject ();
   }
 
 
@@ -174,5 +220,23 @@ public class StyledParserPanel extends JPanel
   private void selectErrorText ( int pLeft, int pRight )
   {
     this.editor.select ( pLeft, pRight );
+  }
+
+
+  /**
+   * Sets the error state or resets it.
+   * 
+   * @param pState True, if the error state should be set, otherwise false.
+   */
+  public void setErrorState ( boolean pState )
+  {
+    if ( pState )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+    }
+    else
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+    }
   }
 }

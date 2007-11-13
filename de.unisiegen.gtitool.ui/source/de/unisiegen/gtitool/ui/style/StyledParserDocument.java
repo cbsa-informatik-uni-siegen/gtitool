@@ -20,6 +20,7 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.parser.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.ParserInterface;
@@ -31,6 +32,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.ExceptionsChangedListener;
 
 
@@ -63,6 +65,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private static final Logger logger = Logger
       .getLogger ( StyledParserDocument.class );
+
+
+  /**
+   * The {@link StyledAlphabetParserPanel}.
+   */
+  private StyledAlphabetParserPanel styledAlphabetParserPanel = null;
 
 
   /**
@@ -114,15 +122,41 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
     this.parseable = pParseable;
+
     // NormalSet
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
     // SymbolSet
     SimpleAttributeSet symbolSet = new SimpleAttributeSet ();
     StyleConstants.setBold ( symbolSet, true );
-    StyleConstants.setForeground ( symbolSet, PreferenceManager.getInstance ()
-        .getColorItemSymbol ().getColor () );
     this.attributes.put ( PrettyStyle.SYMBOL, symbolSet );
+    // InitAttributes
+    initAttributes ();
+
+    // ColorChangedListener
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+          Color pNewColor )
+          {
+            initAttributes ();
+            try
+            {
+              processChanged ();
+            }
+            catch ( BadLocationException e )
+            {
+              e.printStackTrace ();
+            }
+          }
+        } );
   }
 
 
@@ -163,6 +197,30 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Returns the {@link Object} for the program text within this document.
+   * Throws an exception if a parsing error occurred.
+   * 
+   * @return The {@link Object} for the program text.
+   * @throws Exception If a parsing error occurred.
+   */
+  public final Object getParsedObject () throws Exception
+  {
+    return this.parseable.newParser (
+        new StringReader ( getText ( 0, getLength () ) ) ).parse ();
+  }
+
+
+  /**
+   * Initializes the attributes.
+   */
+  private final void initAttributes ()
+  {
+    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.SYMBOL ),
+        PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see AbstractDocument#insertString(int, String, AttributeSet)
@@ -173,6 +231,28 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     super.insertString ( pOffset, pString, pAttributeSet );
     processChanged ();
+    fireAlphabetChanged ();
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Alphabet} has changed.
+   */
+  private void fireAlphabetChanged ()
+  {
+    if ( this.styledAlphabetParserPanel != null )
+    {
+      Alphabet newAlphabet;
+      try
+      {
+        newAlphabet = ( Alphabet ) getParsedObject ();
+      }
+      catch ( Exception e )
+      {
+        newAlphabet = null;
+      }
+      this.styledAlphabetParserPanel.fireAlphabetChanged ( newAlphabet );
+    }
   }
 
 
@@ -378,6 +458,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     super.remove ( pOffset, pLength );
     processChanged ();
+    fireAlphabetChanged ();
   }
 
 
@@ -391,5 +472,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ExceptionsChangedListener pListener )
   {
     return this.exceptionsChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
+   * Sets the {@link StyledAlphabetParserPanel}.
+   * 
+   * @param pStyledAlphabetParserPanel The {@link StyledAlphabetParserPanel} to
+   *          set.
+   */
+  public final void setStyledAlphabetParserPanel (
+      StyledAlphabetParserPanel pStyledAlphabetParserPanel )
+  {
+    this.styledAlphabetParserPanel = pStyledAlphabetParserPanel;
   }
 }

@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel;
 
 
 /**
@@ -12,7 +13,9 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @deprecated Use the new parser: {@link StyledAlphabetParserPanel}
  */
+@Deprecated
 public abstract class AlphabetParser
 {
 
@@ -22,7 +25,9 @@ public abstract class AlphabetParser
    * 
    * @param pKey The key which should be checked.
    * @return True if everything is correct, otherwise false.
+   * @deprecated Use the new parser: {@link StyledAlphabetParserPanel}
    */
+  @Deprecated
   public static final boolean checkInput ( char pKey )
   {
     char [] allowedKeys = new char []
@@ -57,7 +62,9 @@ public abstract class AlphabetParser
    *           correct.
    * @throws SymbolException If something with the {@link Symbol} is not
    *           correct.
+   * @deprecated Use the new parser: {@link StyledAlphabetParserPanel}
    */
+  @Deprecated
   public static final Alphabet createAlphabet ( String pText )
       throws AlphabetException, SymbolException
   {
@@ -81,7 +88,9 @@ public abstract class AlphabetParser
    * 
    * @param pAlphabet The input {@link Alphabet}.
    * @return The output string of the given {@link Alphabet}.
+   * @deprecated Use the new parser: {@link StyledAlphabetParserPanel}
    */
+  @Deprecated
   public static final String createString ( Alphabet pAlphabet )
   {
     StringBuilder alphabetText = new StringBuilder ();

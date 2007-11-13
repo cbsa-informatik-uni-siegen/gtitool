@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -34,6 +33,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -46,9 +46,9 @@ import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
+import de.unisiegen.gtitool.ui.preferences.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.style.StyledParserPanel;
-import de.unisiegen.gtitool.ui.utils.AlphabetParser;
+import de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel;
 
 
 /**
@@ -593,6 +593,12 @@ public final class PreferencesDialog
 
 
   /**
+   * The {@link StyledAlphabetParserPanel}.
+   */
+  private StyledAlphabetParserPanel styledAlphabetParserPanel;
+
+
+  /**
    * Allocates a new <code>PreferencesDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
@@ -609,6 +615,8 @@ public final class PreferencesDialog
     /*
      * StyledPanel
      */
+    this.styledAlphabetParserPanel = new StyledAlphabetParserPanel (
+        new AlphabetParseable () );
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 0;
@@ -616,7 +624,7 @@ public final class PreferencesDialog
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
     gridBagConstraints.insets = new Insets ( 10, 5, 5, 10 );
-    this.gui.jPanelAlphabet.add ( new StyledParserPanel ( new AlphabetParseable () ),
+    this.gui.jPanelAlphabet.add ( this.styledAlphabetParserPanel,
         gridBagConstraints );
 
     /*
@@ -736,11 +744,36 @@ public final class PreferencesDialog
      */
     this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
     this.initialAlphabetItem = this.alphabetItem.clone ();
-    // TODOChristian
+    this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+        .getAlphabet () );
+
     /*
-     * this.gui.jTextAreaAlphabet.setText ( AlphabetParser .createString (
-     * this.alphabetItem.getAlphabet () ) );
+     * Alphabet changed listener
      */
+    this.styledAlphabetParserPanel
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( Alphabet pNewAlphabet )
+          {
+            if ( pNewAlphabet == null )
+            {
+              PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
+              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
+              PreferencesDialog.this.styledAlphabetParserPanel
+                  .setErrorState ( true );
+            }
+            else
+            {
+              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
+              PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
+              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
+              PreferencesDialog.this.styledAlphabetParserPanel
+                  .setErrorState ( false );
+            }
+          }
+        } );
 
     /*
      * Language changed listener
@@ -903,46 +936,6 @@ public final class PreferencesDialog
 
 
   /**
-   * Handles key released events on the alphabet text area.
-   * 
-   * @param pKeyEvent The {@link KeyEvent}.
-   */
-  public final void handleAlphabetTextAreaKeyReleased (
-      @SuppressWarnings ( "unused" )
-      KeyEvent pKeyEvent )
-  {
-    /*
-     * Alphabet newAlphabet; try { // TODOChristian newAlphabet =
-     * AlphabetParser.createAlphabet ( this.gui.jTextAreaAlphabet .getText () );
-     * this.alphabetItem.setAlphabet ( newAlphabet ); } catch (
-     * AlphabetException e ) { // TODOChristian Handle error e.printStackTrace
-     * (); } catch ( SymbolException e ) {
-     */
-    /*
-     * This should not happen. The SymbolException is thrown if a symbol with an
-     * empty name should be created.
-     */
-    /*
-     * e.printStackTrace (); }
-     */
-  }
-
-
-  /**
-   * Handles key typed events on the alphabet text area.
-   * 
-   * @param pKeyEvent The {@link KeyEvent}.
-   */
-  public final void handleAlphabetTextAreaKeyTyped ( KeyEvent pKeyEvent )
-  {
-    if ( !AlphabetParser.checkInput ( pKeyEvent.getKeyChar () ) )
-    {
-      pKeyEvent.setKeyChar ( '\u0000' );
-    }
-  }
-
-
-  /**
    * Handles the action on the <code>Cancel</code> button.
    */
   public final void handleCancel ()
@@ -1096,12 +1089,8 @@ public final class PreferencesDialog
     this.colorItemErrorTransition.restore ();
     // Alphabet
     this.alphabetItem.restore ();
-    // TODOChristian
-
-    /*
-     * this.gui.jTextAreaAlphabet.setText ( AlphabetParser .createString (
-     * this.alphabetItem.getAlphabet () ) );
-     */
+    this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+        .getAlphabet () );
   }
 
 

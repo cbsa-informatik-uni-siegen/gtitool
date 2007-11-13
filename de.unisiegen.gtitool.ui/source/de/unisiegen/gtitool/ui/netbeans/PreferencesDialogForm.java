@@ -233,6 +233,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jButtonAlphabetEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AlphabetEditMnemonic").charAt(0));
         jButtonAlphabetEdit.setText(bundle.getString("PreferencesDialog.AlphabetEdit")); // NOI18N
         jButtonAlphabetEdit.setToolTipText(bundle.getString("PreferencesDialog.AlphabetEditToolTip")); // NOI18N
+        jButtonAlphabetEdit.setEnabled(false);
         jButtonAlphabetEdit.setFocusPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

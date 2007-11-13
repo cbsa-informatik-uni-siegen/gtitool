@@ -103,7 +103,7 @@ public final class PreferenceManager
   /**
    * The default {@link Color} of a {@link Symbol}.
    */
-  private static final Color DEFAULT_SYMBOL_COLOR = new Color ( 0, 0, 0 );
+  private static final Color DEFAULT_SYMBOL_COLOR = new Color ( 255, 127, 0 );
 
 
   /**

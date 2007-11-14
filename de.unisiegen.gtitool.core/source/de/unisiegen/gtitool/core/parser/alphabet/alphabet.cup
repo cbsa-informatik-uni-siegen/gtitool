@@ -1,5 +1,6 @@
 import de.unisiegen.gtitool.core.entities.Alphabet ;
 import de.unisiegen.gtitool.core.entities.Symbol ;
+import de.unisiegen.gtitool.core.parser.Error ;
 
 
 /************
@@ -21,24 +22,51 @@ non terminal Symbol			symbol;
 non terminal Symbol[]		symbol_list;
 
 
+/*********
+ * Error *
+ *********/
+
+non terminal 				epsilon;
+non terminal				alphabet_error;
+non terminal				symbol_list_error;
+
+
 /************
  * Alphabet *
  ************/
 
 alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									{: RESULT = new Alphabet(sl); :}
+								|	alphabet_error
+									{: :}
+								;
+
+alphabet_error					::= LCBRACE:l epsilon
+									{: Error.expect ( "Alphabet", "a}", lleft, lright, "a_1" , "," , " " , "..." , " " , "," , " " , "a_n" , "}" ); :}
+								|	LCBRACE:l symbol_list:sl epsilon
+									{: Error.expect ( "Alphabet", "}", lleft, slright, "}" ); :}
 								;
 
 symbol							::= SYMBOL:s
 									{: RESULT = new Symbol(s); :}
 								;
 								
-symbol_list						::= symbol:s COMMA:c symbol_list:sl
+symbol_list						::= symbol_list:sl COMMA:c symbol:s
 								    {:
 								       RESULT = new Symbol[sl.length + 1];
-									   System.arraycopy(sl, 0, RESULT, 1, sl.length);
-									   RESULT[0] = s;
+									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
+									   RESULT[sl.length] = s;
 								    :}
 								|	symbol:s
 									{: RESULT = new Symbol[] { s }; :}
+								|	symbol_list_error
+									{: :}
+								;
+
+symbol_list_error				::= symbol_list:sl COMMA:c epsilon
+									{: Error.expect ( "Alphabet", "a}", slleft, cright, "a_i" , "," , " " , "..." , " " , "," , " " , "a_n" , "}" ); :}
+								;
+								
+epsilon							::= /* epsilon */
+									{: :}	
 								;

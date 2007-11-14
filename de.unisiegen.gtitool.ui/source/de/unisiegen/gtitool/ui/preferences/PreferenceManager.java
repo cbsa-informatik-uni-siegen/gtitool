@@ -242,7 +242,7 @@ public final class PreferenceManager
    */
   private PreferenceManager ()
   {
-    this.preferences = Preferences.userNodeForPackage ( this.getClass () );
+    this.preferences = Preferences.userNodeForPackage ( de.unisiegen.gtitool.core.Messages.class );
   }
 
 

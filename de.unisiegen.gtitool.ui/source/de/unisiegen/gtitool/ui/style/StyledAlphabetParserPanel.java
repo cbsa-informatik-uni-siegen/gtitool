@@ -31,12 +31,10 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
   /**
    * Allocates a new <code>StyledAlphabetParserPanel</code>.
-   * 
-   * @param pAlphabetParseable The input {@link AlphabetParseable}.
    */
-  public StyledAlphabetParserPanel ( AlphabetParseable pAlphabetParseable )
+  public StyledAlphabetParserPanel ()
   {
-    super ( pAlphabetParseable );
+    super ( new AlphabetParseable () );
     getDocument ().setStyledAlphabetParserPanel ( this );
   }
 

@@ -37,7 +37,6 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -615,8 +614,7 @@ public final class PreferencesDialog
     /*
      * StyledPanel
      */
-    this.styledAlphabetParserPanel = new StyledAlphabetParserPanel (
-        new AlphabetParseable () );
+    this.styledAlphabetParserPanel = new StyledAlphabetParserPanel ();
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 0;

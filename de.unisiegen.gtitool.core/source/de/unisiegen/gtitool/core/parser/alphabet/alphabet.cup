@@ -1,6 +1,8 @@
-import de.unisiegen.gtitool.core.entities.Alphabet ;
-import de.unisiegen.gtitool.core.entities.Symbol ;
-import de.unisiegen.gtitool.core.parser.Error ;
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.parser.Error;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 
 
 /************
@@ -28,7 +30,6 @@ non terminal Symbol[]		symbol_list;
 
 non terminal 				epsilon;
 non terminal				alphabet_error;
-non terminal				symbol_list_error;
 
 
 /************
@@ -36,19 +37,54 @@ non terminal				symbol_list_error;
  ************/
 
 alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
-									{: RESULT = new Alphabet(sl); :}
+									{: 
+									   try
+									   {
+									     RESULT = new Alphabet(sl);
+									   }
+									   catch (AlphabetException ecx)
+									   {
+									     ParserMultiException.throwAlphabetException(ecx.getSymbolList());
+									   }
+									   RESULT.setParserStartOffset(lleft);
+									   RESULT.setParserEndOffset(rright);
+									:}
 								|	alphabet_error
 									{: :}
 								;
 
 alphabet_error					::= LCBRACE:l epsilon
-									{: Error.expect ( "Alphabet", "a}", lleft, lright, "a_1" , "," , " " , "..." , " " , "," , " " , "a_n" , "}" ); :}
+									{:
+									   Error.expect ( "Alphabet", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
 								|	LCBRACE:l symbol_list:sl epsilon
-									{: Error.expect ( "Alphabet", "}", lleft, slright, "}" ); :}
+									{:
+									   Error.expect ( "Alphabet", "}", lleft, slright, "}" );
+									:}
+								|	LCBRACE:l symbol_list:sl COMMA:c epsilon
+									{:
+									   Error.expect ( "Alphabet", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l symbol_list:sl SYMBOL:s
+									{:
+									   Error.expect ( "Alphabet", ", ", lleft, slright, "," );
+									:}
+								|	LCBRACE:l COMMA:c
+									{:
+									   Error.expect ( "Alphabet", "s", lleft, lright, "s" );
+									:}
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   Error.expect ( "Alphabet", "s", lleft, lright, "s" );
+									:}
 								;
 
 symbol							::= SYMBOL:s
-									{: RESULT = new Symbol(s); :}
+									{: 
+									   RESULT = new Symbol(s);
+									   RESULT.setParserStartOffset(sleft);
+									   RESULT.setParserEndOffset(sright);
+									:}
 								;
 								
 symbol_list						::= symbol_list:sl COMMA:c symbol:s
@@ -58,13 +94,9 @@ symbol_list						::= symbol_list:sl COMMA:c symbol:s
 									   RESULT[sl.length] = s;
 								    :}
 								|	symbol:s
-									{: RESULT = new Symbol[] { s }; :}
-								|	symbol_list_error
-									{: :}
-								;
-
-symbol_list_error				::= symbol_list:sl COMMA:c epsilon
-									{: Error.expect ( "Alphabet", "a}", slleft, cright, "a_i" , "," , " " , "..." , " " , "," , " " , "a_n" , "}" ); :}
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
 								;
 								
 epsilon							::= /* epsilon */

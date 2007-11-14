@@ -1,6 +1,13 @@
 package de.unisiegen.gtitool.core.parser.exceptions;
 
 
+import java.util.ArrayList;
+
+import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
+
+
 /**
  * The parser multi exception class.
  * 
@@ -14,6 +21,29 @@ public class ParserMultiException extends ParserException
    * The serial version uid.
    */
   private static final long serialVersionUID = -3411147227563168312L;
+
+
+  /**
+   * Throws a <code>ParserMultiException</code> if the {@link Alphabet}
+   * consist of {@link Symbol}s with the same name.
+   * 
+   * @param pNegativeSymbols The input list of {@link Symbol}s.
+   */
+  public static void throwAlphabetException (
+      ArrayList < Symbol > pNegativeSymbols )
+  {
+    String [] message = new String [ pNegativeSymbols.size () ];
+    int [] startOffset = new int [ pNegativeSymbols.size () ];
+    int [] endOffset = new int [ pNegativeSymbols.size () ];
+    for ( int j = 0 ; j < pNegativeSymbols.size () ; j++ )
+    {
+      message [ j ] = Messages.getString ( "Parser.4", pNegativeSymbols //$NON-NLS-1$
+          .get ( j ) );
+      startOffset [ j ] = pNegativeSymbols.get ( j ).getParserStartOffset ();
+      endOffset [ j ] = pNegativeSymbols.get ( j ).getParserEndOffset ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
 
 
   /**

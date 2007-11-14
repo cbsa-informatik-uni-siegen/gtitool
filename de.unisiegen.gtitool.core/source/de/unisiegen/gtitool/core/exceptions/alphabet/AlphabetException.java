@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.alphabet;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -32,16 +34,17 @@ public final class AlphabetException extends CoreException
   /**
    * The {@link Symbol}.
    */
-  private Symbol symbol;
+  private ArrayList < Symbol > symbolList;
 
 
   /**
    * Allocates a new <code>AlphabetException</code>.
    * 
    * @param pAlphabet The {@link Alphabet}.
-   * @param pSymbol The {@link Symbol}.
+   * @param pSymbolList The {@link Symbol}s.
    */
-  public AlphabetException ( Alphabet pAlphabet, Symbol pSymbol )
+  public AlphabetException ( Alphabet pAlphabet,
+      ArrayList < Symbol > pSymbolList )
   {
     super ();
     // Alphabet
@@ -50,18 +53,23 @@ public final class AlphabetException extends CoreException
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
-    // Symbol
-    if ( pSymbol == null )
+    // SymbolList
+    if ( pSymbolList == null )
     {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "symbol list is null" ); //$NON-NLS-1$
     }
-    this.symbol = pSymbol;
+    if ( pSymbolList.size () < 2 )
+    {
+      throw new IllegalArgumentException (
+          "symbol list must contain at least two elements" ); //$NON-NLS-1$
+    }
+    this.symbolList = pSymbolList;
     // Message and Description
     setMessage ( Messages
         .getString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "AlphabetException.MoreThanOneSymbolDescription", this.symbol //$NON-NLS-1$
-            .getName (), this.alphabet.toString () ) );
+        "AlphabetException.MoreThanOneSymbolDescription", this.symbolList.get ( //$NON-NLS-1$
+            0 ).getName (), this.alphabet.toString () ) );
   }
 
 
@@ -78,14 +86,14 @@ public final class AlphabetException extends CoreException
 
 
   /**
-   * Returns the {@link Symbol}.
+   * Returns the {@link Symbol}s.
    * 
-   * @return The {@link Symbol}.
-   * @see #symbol
+   * @return The {@link Symbol}s.
+   * @see #symbolList
    */
-  public final Symbol getSymbol ()
+  public final ArrayList < Symbol > getSymbolList ()
   {
-    return this.symbol;
+    return this.symbolList;
   }
 
 
@@ -103,8 +111,15 @@ public final class AlphabetException extends CoreException
     result.append ( "Alphabet:    " ); //$NON-NLS-1$
     result.append ( this.alphabet );
     result.append ( lineBreak );
-    result.append ( "Symbol:      " ); //$NON-NLS-1$
-    result.append ( this.symbol );
+    result.append ( "Symbols:     " ); //$NON-NLS-1$
+    for ( int i = 0 ; i < this.symbolList.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      result.append ( this.symbolList.get ( i ) );
+    }
     return result.toString ();
   }
 }

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -20,6 +21,24 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * The serial version uid.
    */
   private static final long serialVersionUID = -4488353013296552669L;
+
+
+  /**
+   * The start offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  protected int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  protected int parserEndOffset = -1;
 
 
   /**
@@ -98,7 +117,16 @@ public final class Alphabet implements Entity, Iterable < Symbol >
      */
     if ( this.symbolSet.contains ( pSymbol ) )
     {
-      throw new AlphabetException ( this, pSymbol );
+      ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
+      for ( Symbol current : this.symbolSet )
+      {
+        if ( pSymbol.equals ( current ) )
+        {
+          negativeSymbols.add ( current );
+        }
+      }
+      negativeSymbols.add ( pSymbol );
+      throw new AlphabetException ( this, negativeSymbols );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -124,12 +152,42 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     {
       throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
     }
+    ArrayList < Symbol > list = new ArrayList < Symbol > ();
+    for ( Symbol current : pSymbols )
+    {
+      list.add ( current );
+    }
+    Symbol duplicated = null;
+    loop : for ( int i = 0 ; i < list.size () ; i++ )
+    {
+      for ( int j = i + 1 ; j < list.size () ; j++ )
+      {
+        if ( list.get ( i ).equals ( list.get ( j ) ) )
+        {
+          duplicated = list.get ( i );
+          break loop;
+        }
+      }
+    }
+    if ( duplicated != null )
+    {
+      ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
+      for ( Symbol current : list )
+      {
+        if ( duplicated.equals ( current ) )
+        {
+          negativeSymbols.add ( current );
+        }
+      }
+      throw new AlphabetException ( this, negativeSymbols );
+    }
     for ( Symbol current : pSymbols )
     {
       addSymbol ( current );
     }
   }
 
+  // TODO Optimize code
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
@@ -149,6 +207,35 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     if ( pSymbols.length == 0 )
     {
       throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
+    }
+    ArrayList < Symbol > list = new ArrayList < Symbol > ();
+    for ( Symbol current : pSymbols )
+    {
+      list.add ( current );
+    }
+    Symbol duplicated = null;
+    loop : for ( int i = 0 ; i < list.size () ; i++ )
+    {
+      for ( int j = i + 1 ; j < list.size () ; j++ )
+      {
+        if ( list.get ( i ).equals ( list.get ( j ) ) )
+        {
+          duplicated = list.get ( i );
+          break loop;
+        }
+      }
+    }
+    if ( duplicated != null )
+    {
+      ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
+      for ( Symbol current : list )
+      {
+        if ( duplicated.equals ( current ) )
+        {
+          negativeSymbols.add ( current );
+        }
+      }
+      throw new AlphabetException ( this, negativeSymbols );
     }
     for ( Symbol current : pSymbols )
     {
@@ -215,6 +302,32 @@ public final class Alphabet implements Entity, Iterable < Symbol >
 
 
   /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+
+  /**
    * Returns the {@link Symbol} with the given index.
    * 
    * @param pIndex The index.
@@ -252,6 +365,32 @@ public final class Alphabet implements Entity, Iterable < Symbol >
   public final Iterator < Symbol > iterator ()
   {
     return this.symbolSet.iterator ();
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

@@ -26,6 +26,24 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
+   * The start offset of this <code>Symbol</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  protected int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this <code>Symbol</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  protected int parserEndOffset = -1;
+
+
+  /**
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pName The name of this symbol.
@@ -133,6 +151,32 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -163,6 +207,32 @@ public final class Symbol implements Entity, Comparable < Symbol >
       throw new SymbolException ();
     }
     this.name = pName;
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

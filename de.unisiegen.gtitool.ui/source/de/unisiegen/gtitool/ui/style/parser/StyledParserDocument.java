@@ -53,12 +53,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Empty array of {@link ScannerException}s.
-   */
-  private static final ScannerException [] EMPTY_ARRAY = new ScannerException [ 0 ];
-
-
-  /**
    * The {@link Logger} for this class.
    * 
    * @see Logger
@@ -80,11 +74,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The current exceptions from the {@link #parseable}s scanner.
+   * The current exceptions from the scanner and parser.
    * 
-   * @see #getExceptions()
+   * @see #getExceptionList()
    */
-  private ScannerException exceptions[];
+  private ArrayList < ScannerException > exceptionList;
 
 
   /**
@@ -211,14 +205,43 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Returns the error set.
+   * 
+   * @return The error set.
+   */
+  private SimpleAttributeSet getAttributeSetError ()
+  {
+    SimpleAttributeSet errorSet = new SimpleAttributeSet ();
+    StyleConstants.setForeground ( errorSet, Color.RED );
+    StyleConstants.setBold ( errorSet, true );
+    StyleConstants.setUnderline ( errorSet, true );
+    return errorSet;
+  }
+
+
+  /**
+   * Returns the warning set.
+   * 
+   * @return The warning set.
+   */
+  private SimpleAttributeSet getAttributeSetWarning ()
+  {
+    SimpleAttributeSet warningSet = new SimpleAttributeSet ();
+    // TODOChristian Register color
+    StyleConstants.setBackground ( warningSet, new Color ( 232, 242, 254 ) );
+    return warningSet;
+  }
+
+
+  /**
    * Returns the current {@link ScannerException}s that were detected while
    * trying to interpret the token stream.
    * 
    * @return The exceptions.
    */
-  public final ScannerException [] getExceptions ()
+  public final ArrayList < ScannerException > getExceptionList ()
   {
-    return ( this.exceptions != null ) ? this.exceptions : EMPTY_ARRAY;
+    return this.exceptionList;
   }
 
 
@@ -280,9 +303,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
   public final void processChanged () throws BadLocationException
   {
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
-    ScannerException [] tmpExceptions = null;
+    ArrayList < ScannerException > collectedExceptions = new ArrayList < ScannerException > ();
     try
     {
+      /*
+       * Start scanner
+       */
       int offset = 0;
       String content = getText ( offset, getLength () );
       final ScannerInterface scanner = this.parseable
@@ -308,36 +334,25 @@ public final class StyledParserDocument extends DefaultStyledDocument
               .getRight ()
               - symbol.getLeft (), set, true );
         }
-        catch ( ScannerException e )
+        catch ( ScannerException ecx )
         {
-          int newOffset = offset + e.getRight ();
-          content = content.substring ( e.getRight () );
-          e = new ScannerException ( offset + e.getLeft (), offset
-              + e.getRight (), e.getMessage (), e.getCause () );
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-          StyleConstants.setForeground ( errorSet, Color.RED );
-          StyleConstants.setUnderline ( errorSet, true );
-          errorSet.addAttribute ( "exception", e ); //$NON-NLS-1$
-          setCharacterAttributes ( e.getLeft (), e.getRight () - e.getLeft (),
-              errorSet, false );
+          int newOffset = offset + ecx.getRight ();
+          content = content.substring ( ecx.getRight () );
+          ecx = new ScannerException ( offset + ecx.getLeft (), offset
+              + ecx.getRight (), ecx.getMessage (), ecx.getCause () );
+          SimpleAttributeSet errorSet = getAttributeSetError ();
+          errorSet.addAttribute ( "exception", ecx ); //$NON-NLS-1$
+          setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
+              - ecx.getLeft (), errorSet, false );
           offset = newOffset;
           scanner.restart ( new StringReader ( content ) );
-          if ( tmpExceptions == null )
-          {
-            tmpExceptions = new ScannerException []
-            { e };
-          }
-          else
-          {
-            ScannerException [] newExceptions = new ScannerException [ tmpExceptions.length + 1 ];
-            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
-                tmpExceptions.length );
-            newExceptions [ tmpExceptions.length ] = e;
-            tmpExceptions = newExceptions;
-          }
+          collectedExceptions.add ( ecx );
         }
       }
-      if ( tmpExceptions == null )
+      /*
+       * Start parser only if the scanner has no exceptions
+       */
+      if ( collectedExceptions.size () == 0 )
       {
         ParserInterface parser = this.parseable
             .newParser ( new AbstractScanner ()
@@ -366,86 +381,55 @@ public final class StyledParserDocument extends DefaultStyledDocument
         {
           parser.parse ();
         }
-        catch ( ParserMultiException e )
+        catch ( ParserMultiException ecx )
         {
-          String [] message = e.getMessages ();
-          int [] startOffset = e.getParserStartOffset ();
-          int [] endOffset = e.getParserEndOffset ();
-          tmpExceptions = new ParserException [ startOffset.length ];
+          String [] message = ecx.getMessages ();
+          int [] startOffset = ecx.getParserStartOffset ();
+          int [] endOffset = ecx.getParserEndOffset ();
           for ( int i = 0 ; i < startOffset.length ; i++ )
           {
-            tmpExceptions [ i ] = new ParserException ( startOffset [ i ],
-                endOffset [ i ], message [ i ] );
-            SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-            StyleConstants.setForeground ( errorSet, Color.RED );
-            StyleConstants.setUnderline ( errorSet, true );
-            errorSet.addAttribute ( "exception", tmpExceptions [ i ] ); //$NON-NLS-1$
+            ParserException newException = new ParserException (
+                startOffset [ i ], endOffset [ i ], message [ i ] );
+            SimpleAttributeSet errorSet = getAttributeSetError ();
+            errorSet.addAttribute ( "exception", newException ); //$NON-NLS-1$
             setCharacterAttributes ( startOffset [ i ], endOffset [ i ]
                 - startOffset [ i ], errorSet, false );
+            collectedExceptions.add ( newException );
           }
         }
-        catch ( ParserWarningException e )
+        catch ( ParserWarningException ecx )
         {
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-          // TODOChristian Register color
-          StyleConstants.setBackground ( errorSet, new Color ( 232, 242, 254 ) );
-          errorSet.addAttribute ( "warning", e ); //$NON-NLS-1$
-          if ( e.getLeft () < 0 && e.getRight () < 0 )
+          SimpleAttributeSet warningSet = getAttributeSetWarning ();
+          warningSet.addAttribute ( "warning", ecx ); //$NON-NLS-1$
+          if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
+          {
+            setCharacterAttributes ( getLength (), getLength (), warningSet,
+                false );
+          }
+          else
+          {
+            setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
+                - ecx.getLeft (), warningSet, false );
+          }
+          collectedExceptions.add ( new ParserWarningException ( ecx
+              .getRight (), ecx.getRight (), ecx.getMessage (), ecx
+              .getInsertText () ) );
+        }
+        catch ( ParserException ecx )
+        {
+          SimpleAttributeSet errorSet = getAttributeSetError ();
+          errorSet.addAttribute ( "exception", ecx ); //$NON-NLS-1$
+          if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
           {
             setCharacterAttributes ( getLength (), getLength (), errorSet,
                 false );
           }
           else
           {
-            setCharacterAttributes ( e.getLeft (),
-                e.getRight () - e.getLeft (), errorSet, false );
+            setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
+                - ecx.getLeft (), errorSet, false );
           }
-          if ( tmpExceptions == null )
-          {
-            tmpExceptions = new ScannerException []
-            { new ParserWarningException ( e.getRight (), e.getRight (), e
-                .getMessage (), e.getInsertText () ) };
-          }
-          else
-          {
-            ScannerException [] newExceptions = new ScannerException [ tmpExceptions.length + 1 ];
-            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
-                tmpExceptions.length );
-            newExceptions [ tmpExceptions.length ] = new ParserWarningException (
-                e.getRight (), e.getRight (), e.getMessage (), e
-                    .getInsertText () );
-            tmpExceptions = newExceptions;
-          }
-        }
-        catch ( ParserException e )
-        {
-          SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-          StyleConstants.setForeground ( errorSet, Color.RED );
-          StyleConstants.setUnderline ( errorSet, true );
-          errorSet.addAttribute ( "exception", e ); //$NON-NLS-1$
-          if ( e.getLeft () < 0 && e.getRight () < 0 )
-          {
-            setCharacterAttributes ( getLength (), getLength (), errorSet,
-                false );
-          }
-          else
-          {
-            setCharacterAttributes ( e.getLeft (),
-                e.getRight () - e.getLeft (), errorSet, false );
-          }
-          if ( tmpExceptions == null )
-          {
-            tmpExceptions = new ScannerException []
-            { e };
-          }
-          else
-          {
-            ScannerException [] newExceptions = new ScannerException [ tmpExceptions.length + 1 ];
-            System.arraycopy ( tmpExceptions, 0, newExceptions, 0,
-                tmpExceptions.length );
-            newExceptions [ tmpExceptions.length ] = e;
-            tmpExceptions = newExceptions;
-          }
+          collectedExceptions.add ( ecx );
         }
       }
     }
@@ -453,10 +437,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
     {
       logger.error ( "failed to process changes", exc ); //$NON-NLS-1$
     }
-    if ( this.exceptions != tmpExceptions )
+    if ( !collectedExceptions.equals ( this.exceptionList ) )
     {
-      ScannerException [] oldExceptions = this.exceptions;
-      this.exceptions = tmpExceptions;
+      this.exceptionList = collectedExceptions;
       fireExceptionsChanged ();
     }
   }

@@ -13,6 +13,7 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -78,9 +79,9 @@ public class SideBar extends JComponent
 
 
   /**
-   * The array of {@link ScannerException}.
+   * The list of {@link ScannerException}.
    */
-  private ScannerException [] exceptions;
+  private ArrayList < ScannerException > exceptionList;
 
 
   /**
@@ -196,15 +197,15 @@ public class SideBar extends JComponent
    */
   private void buildMarks ()
   {
-    this.exceptions = this.document.getExceptions ();
-    this.verticalPositions = new int [ this.exceptions.length ];
-    for ( int i = 0 ; i < this.exceptions.length ; i++ )
+    this.exceptionList = this.document.getExceptionList ();
+    this.verticalPositions = new int [ this.exceptionList.size () ];
+    for ( int i = 0 ; i < this.exceptionList.size () ; i++ )
     {
       try
       {
         this.verticalPositions [ i ] = -1;
-        Rectangle rect = this.textComponent.modelToView ( this.exceptions [ i ]
-            .getLeft () );
+        Rectangle rect = this.textComponent.modelToView ( this.exceptionList
+            .get ( i ).getLeft () );
         if ( rect == null )
         {
           return;
@@ -284,12 +285,13 @@ public class SideBar extends JComponent
       if ( y > this.verticalPositions [ i ] - hh
           && y <= this.verticalPositions [ i ] + hh )
       {
-        if ( this.exceptions [ i ] instanceof ParserWarningException )
+        if ( this.exceptionList.get ( i ) instanceof ParserWarningException )
         {
-          ParserWarningException e = ( ParserWarningException ) this.exceptions [ i ];
-          this.currentLeft = this.exceptions [ i ].getLeft ();
-          this.currentRight = this.exceptions [ i ].getRight ();
-          fireInsertText ( e.getInsertText () );
+          ParserWarningException ecx = ( ParserWarningException ) this.exceptionList
+              .get ( i );
+          this.currentLeft = this.exceptionList.get ( i ).getLeft ();
+          this.currentRight = this.exceptionList.get ( i ).getRight ();
+          fireInsertText ( ecx.getInsertText () );
           return;
         }
       }
@@ -316,9 +318,9 @@ public class SideBar extends JComponent
       if ( y > this.verticalPositions [ i ] - hh
           && y <= this.verticalPositions [ i ] + hh )
       {
-        this.currentLeft = this.exceptions [ i ].getLeft ();
-        this.currentRight = this.exceptions [ i ].getRight ();
-        setToolTipText ( this.exceptions [ i ].getMessage () );
+        this.currentLeft = this.exceptionList.get ( i ).getLeft ();
+        this.currentRight = this.exceptionList.get ( i ).getRight ();
+        setToolTipText ( this.exceptionList.get ( i ).getMessage () );
         setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
         return;
       }
@@ -359,7 +361,7 @@ public class SideBar extends JComponent
       {
         continue;
       }
-      if ( this.exceptions [ i ] instanceof ParserWarningException )
+      if ( this.exceptionList.get ( i ) instanceof ParserWarningException )
       {
         pGraphics.drawImage ( this.warningIcon.getImage (), 0, y0, this );
       }

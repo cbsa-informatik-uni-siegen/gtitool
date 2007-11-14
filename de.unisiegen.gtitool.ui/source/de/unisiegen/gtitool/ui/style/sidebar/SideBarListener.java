@@ -1,7 +1,8 @@
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.ui.style.sidebar;
 
 
 import java.util.EventListener;
+
 
 
 /**

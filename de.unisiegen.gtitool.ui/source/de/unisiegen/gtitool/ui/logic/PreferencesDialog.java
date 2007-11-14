@@ -45,9 +45,9 @@ import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
-import de.unisiegen.gtitool.ui.preferences.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel;
+import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 
 
 /**
@@ -759,16 +759,12 @@ public final class PreferencesDialog
             {
               PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
               PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
-              PreferencesDialog.this.styledAlphabetParserPanel
-                  .setErrorState ( true );
             }
             else
             {
-              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
               PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
               PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
-              PreferencesDialog.this.styledAlphabetParserPanel
-                  .setErrorState ( false );
+              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
             }
           }
         } );

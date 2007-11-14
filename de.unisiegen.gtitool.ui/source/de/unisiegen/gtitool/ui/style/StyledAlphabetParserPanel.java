@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
-import de.unisiegen.gtitool.ui.preferences.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
 /**
@@ -35,7 +37,15 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public StyledAlphabetParserPanel ()
   {
     super ( new AlphabetParseable () );
-    getDocument ().setStyledAlphabetParserPanel ( this );
+    super.addParseableChangedListener ( new ParseableChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void parseableChanged ( Object pNewObject )
+      {
+        fireAlphabetChanged ( ( Alphabet ) pNewObject );
+      }
+    } );
   }
 
 
@@ -56,7 +66,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    * 
    * @param pNewAlphabet The new {@link Alphabet}.
    */
-  public final void fireAlphabetChanged ( Alphabet pNewAlphabet )
+  private final void fireAlphabetChanged ( Alphabet pNewAlphabet )
   {
     for ( AlphabetChangedListener current : this.alphabetChangedListenerList )
     {

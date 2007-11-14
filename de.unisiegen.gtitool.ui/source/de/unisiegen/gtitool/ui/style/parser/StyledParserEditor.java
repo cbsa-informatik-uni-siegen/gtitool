@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.ui.style.parser;
 
 
 import java.awt.event.MouseEvent;
@@ -8,6 +8,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
+
 
 
 /**

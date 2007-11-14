@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.ui.style.sidebar;
 
 
 import java.awt.Cursor;
@@ -23,6 +23,7 @@ import javax.swing.text.JTextComponent;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.preferences.listener.ExceptionsChangedListener;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserDocument;
 
 
 /**

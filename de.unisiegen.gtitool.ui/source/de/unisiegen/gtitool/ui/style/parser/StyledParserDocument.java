@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.ui.style.parser;
 
 
 import java.awt.Color;
@@ -20,7 +20,6 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.parser.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.ParserInterface;
@@ -34,6 +33,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.ExceptionsChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -68,9 +68,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The {@link StyledAlphabetParserPanel}.
+   * The list of {@link ParseableChangedListener}.
    */
-  private StyledAlphabetParserPanel styledAlphabetParserPanel = null;
+  private ArrayList < ParseableChangedListener > parseableChangedListenerList = new ArrayList < ParseableChangedListener > ();
 
 
   /**
@@ -173,6 +173,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Adds the given {@link ParseableChangedListener}.
+   * 
+   * @param pListener The {@link ParseableChangedListener}.
+   */
+  public final synchronized void addParseableChangedListener (
+      ParseableChangedListener pListener )
+  {
+    this.parseableChangedListenerList.add ( pListener );
+  }
+
+
+  /**
    * Let the listeners know that the exceptions has changed.
    */
   public final void fireExceptionsChanged ()
@@ -180,6 +192,20 @@ public final class StyledParserDocument extends DefaultStyledDocument
     for ( ExceptionsChangedListener current : this.exceptionsChangedListenerList )
     {
       current.exceptionsChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Object} has changed.
+   * 
+   * @param pNewObject The new {@link Object}.
+   */
+  public final void fireParseableChanged ( Object pNewObject )
+  {
+    for ( ParseableChangedListener current : this.parseableChangedListenerList )
+    {
+      current.parseableChanged ( pNewObject );
     }
   }
 
@@ -231,28 +257,16 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     super.insertString ( pOffset, pString, pAttributeSet );
     processChanged ();
-    fireAlphabetChanged ();
-  }
-
-
-  /**
-   * Let the listeners know that the {@link Alphabet} has changed.
-   */
-  private void fireAlphabetChanged ()
-  {
-    if ( this.styledAlphabetParserPanel != null )
+    Object newObject;
+    try
     {
-      Alphabet newAlphabet;
-      try
-      {
-        newAlphabet = ( Alphabet ) getParsedObject ();
-      }
-      catch ( Exception e )
-      {
-        newAlphabet = null;
-      }
-      this.styledAlphabetParserPanel.fireAlphabetChanged ( newAlphabet );
+      newObject = getParsedObject ();
     }
+    catch ( Exception e )
+    {
+      newObject = null;
+    }
+    fireParseableChanged ( newObject );
   }
 
 
@@ -459,7 +473,16 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     super.remove ( pOffset, pLength );
     processChanged ();
-    fireAlphabetChanged ();
+    Object newObject;
+    try
+    {
+      newObject = getParsedObject ();
+    }
+    catch ( Exception e )
+    {
+      newObject = null;
+    }
+    fireParseableChanged ( newObject );
   }
 
 
@@ -477,14 +500,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the {@link StyledAlphabetParserPanel}.
+   * Removes the given {@link ParseableChangedListener}.
    * 
-   * @param pStyledAlphabetParserPanel The {@link StyledAlphabetParserPanel} to
-   *          set.
+   * @param pListener The {@link ParseableChangedListener}.
+   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final void setStyledAlphabetParserPanel (
-      StyledAlphabetParserPanel pStyledAlphabetParserPanel )
+  public final synchronized boolean removeParseableChangedListener (
+      ParseableChangedListener pListener )
   {
-    this.styledAlphabetParserPanel = pStyledAlphabetParserPanel;
+    return this.parseableChangedListenerList.remove ( pListener );
   }
 }

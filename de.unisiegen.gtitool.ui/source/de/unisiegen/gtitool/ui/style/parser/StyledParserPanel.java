@@ -1,8 +1,9 @@
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.ui.style.parser;
 
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -10,6 +11,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.gtitool.core.parser.Parseable;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
+import de.unisiegen.gtitool.ui.style.sidebar.SideBar;
+import de.unisiegen.gtitool.ui.style.sidebar.SideBarListener;
 
 
 /**
@@ -58,6 +62,12 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * The list of {@link ParseableChangedListener}.
+   */
+  private ArrayList < ParseableChangedListener > parseableChangedListenerList = new ArrayList < ParseableChangedListener > ();
+
+
+  /**
    * Allocates a new <code>StyledPanel</code>.
    * 
    * @param pParseable The input {@link Parseable}.
@@ -66,6 +76,15 @@ public abstract class StyledParserPanel extends JPanel
   {
     this.editor = new StyledParserEditor ();
     this.document = new StyledParserDocument ( pParseable );
+    this.document.addParseableChangedListener ( new ParseableChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void parseableChanged ( Object pNewObject )
+      {
+        fireParseableChanged ( pNewObject );
+      }
+    } );
     setLayout ( new BorderLayout () );
     this.jScrollPane = new JScrollPane ();
     this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
@@ -150,6 +169,40 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Adds the given {@link ParseableChangedListener}.
+   * 
+   * @param pListener The {@link ParseableChangedListener}.
+   */
+  protected final synchronized void addParseableChangedListener (
+      ParseableChangedListener pListener )
+  {
+    this.parseableChangedListenerList.add ( pListener );
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Object} has changed.
+   * 
+   * @param pNewObject The new {@link Object}.
+   */
+  private final void fireParseableChanged ( Object pNewObject )
+  {
+    if ( pNewObject == null )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+    }
+    else
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+    }
+    for ( ParseableChangedListener current : this.parseableChangedListenerList )
+    {
+      current.parseableChanged ( pNewObject );
+    }
+  }
+
+
+  /**
    * Returns the document.
    * 
    * @return The document.
@@ -187,6 +240,19 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Removes the given {@link ParseableChangedListener}.
+   * 
+   * @param pListener The {@link ParseableChangedListener}.
+   * @return <tt>true</tt> if the list contained the specified element.
+   */
+  protected final synchronized boolean removeParseableChangedListener (
+      ParseableChangedListener pListener )
+  {
+    return this.parseableChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
    * Removes the selectedText.
    */
   private void removeSelectedText ()
@@ -220,23 +286,5 @@ public abstract class StyledParserPanel extends JPanel
   private void selectErrorText ( int pLeft, int pRight )
   {
     this.editor.select ( pLeft, pRight );
-  }
-
-
-  /**
-   * Sets the error state or resets it.
-   * 
-   * @param pState True, if the error state should be set, otherwise false.
-   */
-  public void setErrorState ( boolean pState )
-  {
-    if ( pState )
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-    }
-    else
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
-    }
   }
 }

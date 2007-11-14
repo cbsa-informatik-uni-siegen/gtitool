@@ -6,5 +6,13 @@
 - Zoom des jgraph
 - Notizen im Graph hinzufügen
 
+- Netbeans anpassen, damit der Compile klappt:
+  core: - ./source-generated
+        - ./lib/log4j-1.2.14.jar
+        - ./lib/java-cup-11a-gtitool-runtime.jar
+  ui:   - ./lib/jgraph.jar
+        - ./../de.unisiegen.gtitool.core/lib/log4j-1.2.14.jar
+        - ./../de.unisiegen.gtitool.core/lib/java-cup-11a-gtitool-runtime.jar
+
 *** Christian ***
 - Button Größe im PreferenceDialog bei Sprachänderungen aktualisieren

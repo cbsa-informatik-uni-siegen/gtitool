@@ -598,6 +598,12 @@ public final class PreferencesDialog
 
 
   /**
+   * The index of the alphabet tab.
+   */
+  private static final int ALPHABET_TAB_INDEX = 2;
+
+
+  /**
    * Allocates a new <code>PreferencesDialog</code>.
    * 
    * @param pParent The parent {@link JFrame}.
@@ -759,11 +765,15 @@ public final class PreferencesDialog
             {
               PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
               PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
+              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
+                  ALPHABET_TAB_INDEX, Color.RED );
             }
             else
             {
               PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
               PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
+              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
+                  ALPHABET_TAB_INDEX, null );
               PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
             }
           }

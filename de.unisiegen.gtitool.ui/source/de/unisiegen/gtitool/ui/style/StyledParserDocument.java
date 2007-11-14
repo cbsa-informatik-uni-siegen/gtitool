@@ -373,7 +373,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
         catch ( ParserWarningException e )
         {
           SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-          StyleConstants.setBackground ( errorSet, Color.YELLOW );
+          // TODOChristian Register color
+          StyleConstants.setBackground ( errorSet, new Color ( 232, 242, 254 ) );
           errorSet.addAttribute ( "warning", e ); //$NON-NLS-1$
           if ( e.getLeft () < 0 && e.getRight () < 0 )
           {

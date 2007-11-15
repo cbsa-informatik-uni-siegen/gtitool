@@ -101,6 +101,21 @@ public class MachinesTest
     DFA dfa = new DFA ( alphabet );
     dfa.addEntities ( z0, z1, z2, t0, t1, t2, t3, t4 );
 
+    System.out.println ( "States:" );
+    for ( State current : dfa.getStateList () )
+    {
+      System.out.println ( current.getName () );
+    }
+    System.out.println ();
+
+    System.out.println ( "Transitions:" );
+    for ( Transition current : dfa.getTransitionList () )
+    {
+      System.out.println ( current.getStateBegin ().getName () + " -> "
+          + current.getStateEnd ().getName () );
+    }
+    System.out.println ();
+
     try
     {
       dfa.validate ();

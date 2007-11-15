@@ -157,7 +157,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #parserEndOffset
    * @see #setParserEndOffset(int)
    */
-  public int getParserEndOffset ()
+  public final int getParserEndOffset ()
   {
     return this.parserEndOffset;
   }
@@ -170,7 +170,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #parserStartOffset
    * @see #setParserStartOffset(int)
    */
-  public int getParserStartOffset ()
+  public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
   }
@@ -217,7 +217,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #getParserEndOffset()
    * @see #parserEndOffset
    */
-  public void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int pParserEndOffset )
   {
     this.parserEndOffset = pParserEndOffset;
   }
@@ -230,7 +230,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #getParserStartOffset()
    * @see #parserStartOffset
    */
-  public void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int pParserStartOffset )
   {
     this.parserStartOffset = pParserStartOffset;
   }

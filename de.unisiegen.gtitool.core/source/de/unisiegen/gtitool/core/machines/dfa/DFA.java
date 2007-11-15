@@ -24,7 +24,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DFA extends Machine < DFA >
+public final class DFA extends Machine
 {
 
   /**
@@ -56,7 +56,7 @@ public final class DFA extends Machine < DFA >
 
     // Start state
     ArrayList < State > startStateList = new ArrayList < State > ();
-    for ( State current : this.stateList )
+    for ( State current : this.getStateList () )
     {
       if ( current.isStartState () )
 
@@ -72,24 +72,24 @@ public final class DFA extends Machine < DFA >
 
     // State name
     ArrayList < State > duplicatedListAll = new ArrayList < State > ();
-    firstLoop : for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    firstLoop : for ( int i = 0 ; i < this.getStateList ().size () ; i++ )
     {
-      if ( duplicatedListAll.contains ( this.stateList.get ( i ) ) )
+      if ( duplicatedListAll.contains ( this.getStateList ().get ( i ) ) )
       {
         continue firstLoop;
       }
       ArrayList < State > duplicatedListOne = new ArrayList < State > ();
-      for ( int j = i + 1 ; j < this.stateList.size () ; j++ )
+      for ( int j = i + 1 ; j < this.getStateList ().size () ; j++ )
       {
-        if ( this.stateList.get ( i ).getName ().equals (
-            this.stateList.get ( j ).getName () ) )
+        if ( this.getStateList ().get ( i ).getName ().equals (
+            this.getStateList ().get ( j ).getName () ) )
         {
-          duplicatedListOne.add ( this.stateList.get ( j ) );
+          duplicatedListOne.add ( this.getStateList ().get ( j ) );
         }
       }
       if ( duplicatedListOne.size () > 0 )
       {
-        duplicatedListOne.add ( this.stateList.get ( i ) );
+        duplicatedListOne.add ( this.getStateList ().get ( i ) );
         for ( State current : duplicatedListOne )
         {
           duplicatedListAll.add ( current );
@@ -100,7 +100,7 @@ public final class DFA extends Machine < DFA >
     }
 
     // All symbols
-    for ( State currentState : this.stateList )
+    for ( State currentState : this.getStateList () )
     {
       TreeSet < Symbol > currentSymbolSet = new TreeSet < Symbol > ();
       for ( Transition currentTransition : currentState
@@ -109,7 +109,7 @@ public final class DFA extends Machine < DFA >
         currentSymbolSet.addAll ( currentTransition.getSymbolSet () );
       }
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
-      for ( Symbol currentSymbol : this.alphabet )
+      for ( Symbol currentSymbol : this.getAlphabet () )
       {
         notUsedSymbolSet.add ( currentSymbol );
       }
@@ -125,7 +125,7 @@ public final class DFA extends Machine < DFA >
     }
 
     // Epsilon transition
-    for ( Transition currentTransition : this.transitionList )
+    for ( Transition currentTransition : this.getTransitionList () )
     {
       if ( currentTransition.getSymbolSet ().size () == 0 )
       {
@@ -135,9 +135,9 @@ public final class DFA extends Machine < DFA >
     }
 
     // Symbol only one time
-    for ( State currentState : this.stateList )
+    for ( State currentState : this.getStateList () )
     {
-      for ( Symbol currentSymbol : this.alphabet )
+      for ( Symbol currentSymbol : this.getAlphabet () )
       {
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
         for ( Transition currentTransition : currentState

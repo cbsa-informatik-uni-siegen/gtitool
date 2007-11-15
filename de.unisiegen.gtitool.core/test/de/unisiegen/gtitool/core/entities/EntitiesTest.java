@@ -26,7 +26,7 @@ public class EntitiesTest
     Symbol c = null;
     try
     {
-      a = new Symbol ( "" );
+      a = new Symbol ( "a" );
       b = new Symbol ( "b" );
       c = new Symbol ( "c" );
     }

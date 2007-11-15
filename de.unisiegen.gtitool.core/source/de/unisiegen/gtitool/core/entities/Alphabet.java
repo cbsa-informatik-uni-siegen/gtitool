@@ -203,7 +203,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @param pSymbolList The {@link Symbol} list.
    * @throws AlphabetException If a {@link Symbol} is duplicated.
    */
-  private void checkDuplicatedSymbols ( ArrayList < Symbol > pSymbolList )
+  private final void checkDuplicatedSymbols ( ArrayList < Symbol > pSymbolList )
       throws AlphabetException
   {
     Symbol duplicated = null;
@@ -297,7 +297,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @see #parserEndOffset
    * @see #setParserEndOffset(int)
    */
-  public int getParserEndOffset ()
+  public final int getParserEndOffset ()
   {
     return this.parserEndOffset;
   }
@@ -310,7 +310,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @see #parserStartOffset
    * @see #setParserStartOffset(int)
    */
-  public int getParserStartOffset ()
+  public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
   }
@@ -364,7 +364,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @see #getParserEndOffset()
    * @see #parserEndOffset
    */
-  public void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int pParserEndOffset )
   {
     this.parserEndOffset = pParserEndOffset;
   }
@@ -377,7 +377,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @see #getParserStartOffset()
    * @see #parserStartOffset
    */
-  public void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int pParserStartOffset )
   {
     this.parserStartOffset = pParserStartOffset;
   }

@@ -1,7 +1,9 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
 
 
 /**
@@ -204,7 +206,11 @@ public final class Symbol implements Entity, Comparable < Symbol >
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
-      throw new SymbolException ();
+      throw new SymbolEmptyNameException ();
+    }
+    if ( !pName.matches ( "[a-zA-Z0-9]+" ) ) //$NON-NLS-1$
+    {
+      throw new SymbolIllegalNameException ( pName );
     }
     this.name = pName;
   }

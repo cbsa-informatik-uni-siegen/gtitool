@@ -3,7 +3,9 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
 
 
 /**
@@ -379,7 +381,11 @@ public final class State implements Entity
     }
     if ( pName.equals ( "" ) ) //$NON-NLS-1$
     {
-      throw new StateException ();
+      throw new StateEmptyNameException ();
+    }
+    if ( !pName.matches ( "[a-zA-Z0-9]+" ) ) //$NON-NLS-1$
+    {
+      throw new StateIllegalNameException ( pName );
     }
     this.name = pName;
   }

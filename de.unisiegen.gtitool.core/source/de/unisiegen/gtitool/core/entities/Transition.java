@@ -62,7 +62,8 @@ public final class Transition implements Entity
    *           <code>Transition</code> is not correct.
    */
   public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException,
+      Iterable < Symbol > pSymbols )
+      throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
@@ -79,8 +80,8 @@ public final class Transition implements Entity
     this.symbolSet = new TreeSet < Symbol > ();
     addSymbols ( pSymbols );
   }
-  
-  //TODOChristian check this please
+
+
   /**
    * Allocates a new <code>Transition</code>.
    * 
@@ -96,7 +97,7 @@ public final class Transition implements Entity
    *           <code>Transition</code> is not correct.
    */
   public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      TreeSet < Symbol > pSymbols ) throws TransitionSymbolNotInAlphabetException,
+      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet

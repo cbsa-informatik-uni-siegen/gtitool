@@ -5,12 +5,14 @@
 	Copyright (c) 2007 Christian Fehler
 -->
 <project name="de.unisiegen.gtitool.core" default="dist" basedir=".">
+
+	<!-- description -->
 	<description>
 		Buildfile for the de.unisiegen.gtitool.core subproject.
     </description>
-	
+
+	<!-- property -->
 	<property file="${basedir}/build.properties" />
-	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -18,15 +20,22 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="generateddir" value="${basedir}/source-generated" />
 
+	<!-- taskdef -->
+	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
+	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
+
+	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
-		<echo message="Distribution ready in ${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+		<echo message="Distribution ready in ${distdir}" />
 	</target>
-	
+
+	<!-- dist preclean -->
 	<target name="dist-preclean">
 		<delete dir="${distdir}" />
 		<mkdir dir="${distdir}" />
 	</target>
-		
+
+	<!-- dist compile -->
 	<target name="dist-compile" depends="parser">
 		<delete dir="${classesdir}" />
 		<mkdir dir="${classesdir}" />
@@ -40,8 +49,10 @@
 			</classpath>
 		</javac>
 	</target>
-	
+
+	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<section name="de.unisiegen.gtitool.core">
@@ -53,8 +64,11 @@
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
+		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
+		<!-- jar file -->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
@@ -64,27 +78,41 @@
 				<include name="**/*.properties"/>
 			</fileset>
 		</jar>
+		<!-- jar file source-->
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${basedir}/source">
+				<include name="**/*.java"/>
+				<include name="**/*.properties"/>
+			</fileset>
+			<fileset dir="${basedir}/source-impl">
+				<include name="**/*.java"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
+	<!-- dist 3rdparty -->
 	<target name="dist-3rdparty" description="Copy 3rd party jar files">
 		<copy file="${libdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
 		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
 	</target>
 
+	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
-	
-	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
-	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 
+	<!-- parser -->
 	<target name="parser" depends="parser-alphabet, parser-symbol" description="Generate parsers and lexers" />
-	
+
+	<!-- parser clean -->
 	<target name="parser-clean">
 		<delete dir="${generateddir}/de/unisiegen/gtitool/core/parser" />
 	</target>
 			
+	<!-- parser alphabet -->
 	<target name="parser-alphabet" description="Generates lexer and parser for an alphabet">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex"
@@ -104,7 +132,8 @@
 			compact_red="yes"
 			dump_grammar="no" />
 	</target>
-	
+
+	<!-- parser symbol -->
 	<target name="parser-symbol" description="Generates lexer and parser for a symbol">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex"
@@ -124,4 +153,5 @@
 			compact_red="yes"
 			dump_grammar="no" />
 	</target>
+	
 </project>

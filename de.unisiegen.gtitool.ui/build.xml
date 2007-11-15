@@ -5,16 +5,17 @@
 	Copyright (c) 2007 Christian Fehler
 -->
 <project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
+
+	<!-- description -->
 	<description>
 		Buildfile for the de.unisiegen.gtitool.ui subproject.
 	</description>
 
+	<!-- property -->
 	<property file="${basedir}/build.properties" />
-	
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property file="${core.basedir}/build.properties" />
-	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -22,23 +23,39 @@
 	
 	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
+		<!-- copy files -->
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${libdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
+		<!-- copy sh file -->
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/linux/gtitool.sh">
 			<filterset>
 				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
 			</filterset>
 		</copy>
+		<!-- copy exe file -->
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/win32/gtitool.exe">
 			<filterset>
 				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
 			</filterset>
 		</copy>
+		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.ui.version}-src.jar" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" />
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
+			</tarfileset>
+		</tar>
+		<!-- tar file source -->
+		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}-src.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
 				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
 				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
@@ -47,24 +64,37 @@
 				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
 			</tarfileset>
 		</tar>
+		<!-- zip file -->
 		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" update="yes">
+			<fileset dir="${distdir}">
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.ui.version}-src.jar" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" />
+				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+			</fileset>
+		</zip>
+		<!-- zip file source -->
+		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}-src.zip" update="yes">
 			<fileset dir="${distdir}">
 				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
 			</fileset>
 		</zip>
+		<!-- delete file -->
 		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includeemptydirs="true" />
-		<echo message="Distribution ready in ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2 and ${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" />
+		<echo message="Distribution ready in ${distdir}" />
 	</target>
-	
+
+	<!-- dist core -->
 	<target name="dist-core">
 		<ant dir="${core.basedir}" target="dist" inheritall="false" />
 	</target>
-	
+
+	<!-- dist preclean -->
 	<target name="dist-preclean">
 		<delete dir="${distdir}" includeemptydirs="true" />
 		<mkdir dir="${distdir}" />
 	</target>
-		
+
+	<!-- dist compile -->
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
@@ -79,8 +109,10 @@
 			</classpath>
 		</javac>
 	</target>
-	
+
+	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
@@ -94,8 +126,11 @@
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
+		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
+		<!-- jar file -->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
@@ -107,22 +142,36 @@
 				<include name="log4j.xml" />
 			</fileset>
 		</jar>
+		<!-- jar file source-->
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${basedir}/source">
+				<include name="**/*.java"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.properties"/>
+			</fileset>
+			<fileset dir="${basedir}/log4j">
+				<include name="log4j.xml" />
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
+	<!-- dist 3rdparty -->
 	<target name="dist-3rdparty" description="Copy 3rd party jar files">
 		<copy file="${libdir}/jgraph.jar" todir="${distdir}" />
 	</target>
-	
+
+	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
 	
-	<property name="generateddir" value="${basedir}/source-generated" />
-	
-	<target name="generate" description="Generate the Versions interface">
-		<mkdir dir="${generateddir}/de/unisiegen/gtitool/ui" />
-		<echo file="${generateddir}/de/unisiegen/gtitool/ui/Versions.java" append="false">package de.unisiegen.gtitool.ui;
+	<!-- generate -->
+	<target name="generate" description="Generate the versions interface">
+		<mkdir dir="${basedir}/source-generated/de/unisiegen/gtitool/ui" />
+		<echo file="${basedir}/source-generated/de/unisiegen/gtitool/ui/Versions.java" append="false">package de.unisiegen.gtitool.ui;
 
 
 /**

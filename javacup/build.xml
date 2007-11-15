@@ -1,4 +1,5 @@
-<project name="emugen" default ="dist" basedir=".">
+<project name="gtitool.javacup" default ="dist" basedir=".">
+  
   <property name="etc"       location="etc"       />
   <property name="bin"       location="bin"       />
   <property name="lib"       location="lib"       />
@@ -60,11 +61,20 @@
    <jar jarfile="${dist}/java-cup-11a-gtitool.jar" basedir="${classes}">
       <manifest>
         <attribute name="Main-Class" value="java_cup/Main" />
-	<attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
+	    <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
       </manifest>
     </jar>
     <jar jarfile="${dist}/java-cup-11a-gtitool-runtime.jar" basedir="${classes}" includes="java_cup/runtime/*">
     </jar>
+    <jar jarfile="${dist}/java-cup-11a-gtitool-src.jar">
+       <manifest>
+         <attribute name="Main-Class" value="java_cup/Main" />
+ 	     <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
+       </manifest>
+	   <fileset dir="${basedir}/source">
+		 <include name="**/*.java"/>
+	   </fileset>
+     </jar>	
     <delete dir="${java}" />
     <delete dir="${classes}" />
   </target>
@@ -75,4 +85,5 @@
         <arg value="${cup}/parser.cup" />
     </java>
   </target>
+	
 </project>

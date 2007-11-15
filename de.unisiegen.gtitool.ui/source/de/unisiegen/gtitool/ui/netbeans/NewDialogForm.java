@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.ui.logic.NewDialog;
 
 /**
  *
- * @author  Benjamin Mies
+ * @author Benjamin Mies
+ * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
  */
 public class NewDialogForm extends javax.swing.JDialog {
 

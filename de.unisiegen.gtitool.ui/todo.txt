@@ -5,6 +5,7 @@
 - Abfragedialog bei neuer Transition
 - Zoom des jgraph
 - Notizen im Graph hinzufügen
+- DND bei Transitionsdialog einbauen
 
 - Netbeans anpassen, damit der Compile klappt:
   core: - ./source-generated

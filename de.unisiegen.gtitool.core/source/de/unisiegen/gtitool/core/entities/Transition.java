@@ -79,6 +79,40 @@ public final class Transition implements Entity
     this.symbolSet = new TreeSet < Symbol > ();
     addSymbols ( pSymbols );
   }
+  
+  //TODOChristian check this please
+  /**
+   * Allocates a new <code>Transition</code>.
+   * 
+   * @param pAlphabet The {@link Alphabet} of this <code>Transition</code>.
+   * @param pStateBegin The {@link State} where the <code>Transition</code>
+   *          begins.
+   * @param pStateEnd The {@link State} where the <code>Transition</code>
+   *          ends.
+   * @param pSymbols The array of {@link Symbol}s.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
+   */
+  public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
+      TreeSet < Symbol > pSymbols ) throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    // Alphabet
+    setAlphabet ( pAlphabet );
+    // StateBegin
+    setStateBegin ( pStateBegin );
+    // StateEnd
+    setStateEnd ( pStateEnd );
+    // Symbols
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    this.symbolSet = new TreeSet < Symbol > ();
+    addSymbols ( pSymbols );
+  }
 
 
   /**

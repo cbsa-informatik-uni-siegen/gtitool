@@ -6,42 +6,59 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.EdgeView;
-import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
-import de.unisiegen.gtitool.core.entities.State;
-
+/**
+ * 
+ * TODO
+ *
+ * @author Benjamin Mies
+ * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
+ *
+ */
 public class FinalStateView extends VertexView {
 
-	/**
-	 */
-	public static transient JGraphEllipseRenderer renderer = new JGraphEllipseRenderer();
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -3995632702374274017L;
 
-	/**
-	 */
+  /** 
+   * The renderer for this view 
+   */
+	public static transient JGraphEllipseRenderer ellipseRenderer = new JGraphEllipseRenderer();
+
+  /**
+   * Create a new {@link FinalStateView}
+   */
 	public FinalStateView() {
 		super();
 	}
 
-	/**
-	 */
-	public FinalStateView(Object cell) {
-		super(cell);
+  /**
+   * Create a new {@link StateView}
+   * 
+   * @param pCell the Cell Object for this view
+   */
+	public FinalStateView(Object pCell) {
+		super(pCell);
 	}
 
-	/**
-	 * Returns the intersection of the bounding rectangle and the
-	 * straight line between the source and the specified point p.
-	 * The specified point is expected not to intersect the bounds.
-	 */
-	public Point2D getPerimeterPoint(EdgeView edge, Point2D source, Point2D p) {
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.jgraph.graph.VertexView#getPerimeterPoint(org.jgraph.graph.EdgeView,
+   *      java.awt.geom.Point2D, java.awt.geom.Point2D)
+   */
+  @Override
+  @SuppressWarnings("unused")
+	public Point2D getPerimeterPoint( EdgeView edge, Point2D source, Point2D p ) {
 		Rectangle2D r = getBounds();
 
 		double x = r.getX();
@@ -100,19 +117,35 @@ public class FinalStateView extends VertexView {
 		return getAttributes().createPoint(xout, yout);
 	}
 
-	/**
-	 */
+  /**
+   * {@inheritDoc}
+   * 
+   * @see org.jgraph.graph.VertexView#getRenderer()
+   */
+  @Override
 	public CellViewRenderer getRenderer() {
 		return renderer;
 	}
 
-	/**
-	 */
+  /**
+   * TODO
+   * 
+   * @author Benjamin Mies
+   */
 	public static class JGraphEllipseRenderer extends VertexRenderer {
 
-		/**
-		 * Return a slightly larger preferred size than for a rectangle.
-		 */
+     /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -4888839713196291989L;
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see javax.swing.JComponent#getPreferredSize()
+     */
+    @Override
 		public Dimension getPreferredSize() {
 			Dimension d = super.getPreferredSize();
 			d.width += d.width / 8;
@@ -120,38 +153,43 @@ public class FinalStateView extends VertexView {
 			return d;
 		}
 
-	
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.jgraph.graph.VertexRenderer#paint(java.awt.Graphics)
+     */
+    @Override
 		public void paint(Graphics g) {
-			int b = borderWidth;
+			int b = this.borderWidth;
 			Graphics2D g2 = (Graphics2D) g;
 			Dimension d = getSize();
-			boolean tmp = selected;
+			boolean tmp = this.selected;
 			if (super.isOpaque()) {
 				g.setColor(super.getBackground());
-				if (gradientColor != null && !preview) {
+				if (this.gradientColor != null && !this.preview) {
 					setOpaque(false);
 					g2.setPaint(new GradientPaint(0, 0, getBackground(),
-							getWidth(), getHeight(), gradientColor, true));
+							getWidth(), getHeight(), this.gradientColor, true));
 				}
 				g.fillOval(b + 3, b + 3, d.width - b - 8 , d.height - b - 8);
 			}
 			try {
 				setBorder(null);
 				setOpaque(false);
-				selected = false;
+				this.selected = false;
 				super.paint(g);
 			} finally {
-				selected = tmp;
+				this.selected = tmp;
 			}
-			if (bordercolor != null) {
-				g.setColor(bordercolor);
+			if (this.bordercolor != null) {
+				g.setColor(this.bordercolor);
 				g2.setStroke(new BasicStroke(b));
 				g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
         g.drawOval(b + 3, b + 3, d.width - b - 8 , d.height - b - 8);
 			}
-			if (selected) {
+			if (this.selected) {
 
-				g.setColor(highlightColor);
+				g.setColor(this.highlightColor);
 				g.drawOval(b - 1, b - 1, d.width - b, d.height - b);
 			}
 		}

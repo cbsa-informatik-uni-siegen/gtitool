@@ -418,4 +418,15 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
+  
+  /**
+   * 
+   * Get the TreeSet containing all {@link Symbol}s of this Alphabet
+   *
+   * @return all Symbols of this Alphabet
+   */
+  public TreeSet < Symbol > getSymbols ()
+  {
+    return this.symbolSet;
+  }
 }

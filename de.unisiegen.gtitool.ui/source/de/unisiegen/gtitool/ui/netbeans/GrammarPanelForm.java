@@ -8,7 +8,8 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 /**
  *
- * @author  Benjamin Mies
+ * @author Benjamin Mies
+ * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
  */
 public class GrammarPanelForm extends javax.swing.JPanel {
     

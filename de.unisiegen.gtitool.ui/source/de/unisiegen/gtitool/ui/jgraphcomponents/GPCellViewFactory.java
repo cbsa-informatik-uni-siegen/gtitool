@@ -17,12 +17,29 @@ import org.jgraph.graph.VertexView;
  */
 public class GPCellViewFactory extends DefaultCellViewFactory {
 	
-	public static final String VIEW_CLASS_KEY = "viewClassKey";
-	
-	public static final void setViewClass(Map map, String viewClass) {
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -2222911017108871188L;
+  
+  public static final String VIEW_CLASS_KEY = "viewClassKey";
+
+  /**
+	 * TODO
+	 *
+	 * @param map
+	 * @param viewClass
+	 */
+	public static final void setViewClass(Map < String, String > map, String viewClass) {
 		map.put(VIEW_CLASS_KEY, viewClass);
 	}
 
+  /**
+   * {@inheritDoc}
+   *
+   * @see org.jgraph.graph.DefaultCellViewFactory#createVertexView(java.lang.Object)
+   */
+  @Override
 	protected VertexView createVertexView(Object v) {
 		try {
 			DefaultGraphCell cell = (DefaultGraphCell) v;
@@ -32,7 +49,8 @@ public class GPCellViewFactory extends DefaultCellViewFactory {
 					.getContextClassLoader().loadClass(viewClass).newInstance();
 			view.setCell(v);
 			return view;
-		} catch (Exception ex) {
+		} catch (Exception e) {
+      // Nothing to do here
 		}
 		return super.createVertexView(v);
 	}

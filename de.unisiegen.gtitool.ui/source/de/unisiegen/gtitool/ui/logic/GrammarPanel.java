@@ -7,9 +7,15 @@ import javax.swing.JPanel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
-import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 
-
+/**
+ * 
+ * TODO
+ *
+ * @author Benjamin Mies
+ * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
+ *
+ */
 public class GrammarPanel implements EditorPanel
 {
 

@@ -180,9 +180,6 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
         jButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
         jButtonClose.setFocusable(false);
-        jButtonClose.setMaximumSize(new java.awt.Dimension(160, 25));
-        jButtonClose.setMinimumSize(new java.awt.Dimension(80, 25));
-        jButtonClose.setPreferredSize(new java.awt.Dimension(80, 25));
         jButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCloseActionPerformed(evt);

@@ -100,6 +100,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * The parser warning color.
+   */
+  private Color parserWarningColor;
+
+
+  /**
    * Allocates a new <code>StyledParserDocument</code> for the given
    * <code>pParseable</code>, where the <code>pParseable</code> is used to
    * determine the scanner for the documents content and thereby dictates the
@@ -116,21 +122,41 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
     this.parseable = pParseable;
-
-    // NormalSet
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
-    // SymbolSet
     SimpleAttributeSet symbolSet = new SimpleAttributeSet ();
     StyleConstants.setBold ( symbolSet, true );
     this.attributes.put ( PrettyStyle.SYMBOL, symbolSet );
-    // InitAttributes
     initAttributes ();
+    this.parserWarningColor = PreferenceManager.getInstance ()
+        .getColorItemParserWarning ().getColor ();
 
-    // ColorChangedListener
+    /*
+     * ColorChangedListener
+     */
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
+          Color pNewColor )
+          {
+            StyledParserDocument.this.parserWarningColor = pNewColor;
+            try
+            {
+              processChanged ();
+            }
+            catch ( BadLocationException e )
+            {
+              e.printStackTrace ();
+            }
+          }
+
 
           /**
            * {@inheritDoc}
@@ -227,8 +253,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private SimpleAttributeSet getAttributeSetWarning ()
   {
     SimpleAttributeSet warningSet = new SimpleAttributeSet ();
-    // TODOChristian Register color
-    StyleConstants.setBackground ( warningSet, new Color ( 232, 242, 254 ) );
+    StyleConstants.setBackground ( warningSet, this.parserWarningColor );
     return warningSet;
   }
 

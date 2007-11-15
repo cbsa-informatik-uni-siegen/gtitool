@@ -496,6 +496,12 @@ public final class PreferencesDialog
 
 
   /**
+   * The {@link ColorItem} of the parser warning.
+   */
+  private ColorItem colorItemParserWarning;
+
+
+  /**
    * The {@link AlphabetItem}.
    */
   private AlphabetItem alphabetItem;
@@ -571,6 +577,12 @@ public final class PreferencesDialog
    * The initial {@link ColorItem} of the error {@link Transition}.
    */
   private ColorItem initialColorItemErrorTransition;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser warning.
+   */
+  private ColorItem initialColorItemParserWarning;
 
 
   /**
@@ -723,6 +735,10 @@ public final class PreferencesDialog
         .getColorItemErrorTransition ();
     this.initialColorItemErrorTransition = this.colorItemErrorTransition
         .clone ();
+    // Parser warning
+    this.colorItemParserWarning = PreferenceManager.getInstance ()
+        .getColorItemParserWarning ();
+    this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
     // Renderer
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
     this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
@@ -738,6 +754,7 @@ public final class PreferencesDialog
     this.colorListModel.add ( this.colorItemErrorSymbol );
     this.colorListModel.add ( this.colorItemTransition );
     this.colorListModel.add ( this.colorItemErrorTransition );
+    this.colorListModel.add ( this.colorItemParserWarning );
     this.gui.jListColor.setModel ( this.colorListModel );
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
@@ -915,6 +932,12 @@ public final class PreferencesDialog
             PreferencesDialog.this.colorItemErrorTransition
                 .setDescription ( Messages
                     .getString ( "PreferencesDialog.ColorErrorTransitionDescription" ) ); //$NON-NLS-1$
+            // Parser warning
+            PreferencesDialog.this.colorItemParserWarning.setCaption ( Messages
+                .getString ( "PreferencesDialog.ColorParserWarningCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemParserWarning
+                .setDescription ( Messages
+                    .getString ( "PreferencesDialog.ColorParserWarningDescription" ) ); //$NON-NLS-1$
             // AlphabetEdit
             PreferencesDialog.this.gui.jButtonAlphabetEdit.setText ( Messages
                 .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
@@ -1091,6 +1114,7 @@ public final class PreferencesDialog
     this.colorItemErrorSymbol.restore ();
     this.colorItemTransition.restore ();
     this.colorItemErrorTransition.restore ();
+    this.colorItemParserWarning.restore ();
     // Alphabet
     this.alphabetItem.restore ();
     this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
@@ -1258,6 +1282,20 @@ public final class PreferencesDialog
           this.colorItemErrorTransition );
       PreferenceManager.getInstance ().fireColorChangedErrorTransition (
           this.colorItemErrorTransition.getColor () );
+    }
+    // Parser warning
+    if ( !this.initialColorItemParserWarning
+        .equals ( this.colorItemParserWarning ) )
+    {
+      logger.debug ( "color of the parser warning changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemParserWarning.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemParserWarning.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemParserWarning.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
+      PreferenceManager.getInstance ().setColorItemParserWarning (
+          this.colorItemParserWarning );
+      PreferenceManager.getInstance ().fireColorChangedParserWarning (
+          this.colorItemParserWarning.getColor () );
     }
   }
 

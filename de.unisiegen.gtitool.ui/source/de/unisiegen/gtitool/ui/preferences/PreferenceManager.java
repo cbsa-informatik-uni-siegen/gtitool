@@ -126,6 +126,13 @@ public final class PreferenceManager
 
 
   /**
+   * The default {@link Color} of a parser warning.
+   */
+  private static final Color DEFAULT_PARSER_WARNING_COLOR = new Color ( 232,
+      242, 254 );
+
+
+  /**
    * The default language title.
    */
   private static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
@@ -242,7 +249,8 @@ public final class PreferenceManager
    */
   private PreferenceManager ()
   {
-    this.preferences = Preferences.userNodeForPackage ( de.unisiegen.gtitool.core.Messages.class );
+    this.preferences = Preferences
+        .userNodeForPackage ( de.unisiegen.gtitool.core.Messages.class );
   }
 
 
@@ -338,6 +346,20 @@ public final class PreferenceManager
     for ( ColorChangedListener current : this.colorChangedListenerList )
     {
       current.colorChangedErrorTransition ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the parser warning has changed.
+   * 
+   * @param pNewColor The new color of the parser warning.
+   */
+  public final void fireColorChangedParserWarning ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedParserWarning ( pNewColor );
     }
   }
 
@@ -594,6 +616,28 @@ public final class PreferenceManager
         .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_ERROR_TRANSITION_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the parser warning.
+   * 
+   * @return The {@link ColorItem} of the parser warning.
+   */
+  public final ColorItem getColorItemParserWarning ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningR", //$NON-NLS-1$
+        DEFAULT_PARSER_WARNING_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningG", //$NON-NLS-1$
+        DEFAULT_PARSER_WARNING_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningB", //$NON-NLS-1$
+        DEFAULT_PARSER_WARNING_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorParserWarningCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorParserWarningDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_PARSER_WARNING_COLOR );
   }
 
 
@@ -978,6 +1022,29 @@ public final class PreferenceManager
             .getColor ().getGreen () );
     this.preferences.putInt (
         "PreferencesDialog.ColorErrorTransitionB", pColorItem //$NON-NLS-1$
+            .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser warning.
+   * 
+   * @param pColorItem The {@link ColorItem} of the parser warning.
+   */
+  public final void setColorItemParserWarning ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the parser warning to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserWarningR", pColorItem //$NON-NLS-1$
+            .getColor ().getRed () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserWarningG", pColorItem //$NON-NLS-1$
+            .getColor ().getGreen () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserWarningB", pColorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 

@@ -1,22 +1,22 @@
-package de.unisiegen.gtitool.core.parser.alphabet;
+package de.unisiegen.gtitool.core.parser.symbol;
 
 
 import java.io.Reader;
 
 import java_cup.runtime.lr_parser;
-import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 
 
 /**
- * The {@link Alphabet} {@link Parseable} class.
+ * The {@link Symbol} {@link Parseable} class.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class AlphabetParseable implements Parseable
+public final class SymbolParseable implements Parseable
 {
 
   /**
@@ -45,13 +45,13 @@ public final class AlphabetParseable implements Parseable
     {
       throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new AlphabetParser ( pGTIScanner );
+    final lr_parser parser = new SymbolParser ( pGTIScanner );
     return new GTIParser ()
     {
 
-      public Alphabet parse () throws Exception
+      public Symbol parse () throws Exception
       {
-        return ( Alphabet ) parser.parse ().value;
+        return ( Symbol ) parser.parse ().value;
       }
     };
   }
@@ -70,6 +70,6 @@ public final class AlphabetParseable implements Parseable
     {
       throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
     }
-    return new AlphabetScanner ( pReader );
+    return new SymbolScanner ( pReader );
   }
 }

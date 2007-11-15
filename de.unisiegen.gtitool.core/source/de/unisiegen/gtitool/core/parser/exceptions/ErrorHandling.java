@@ -1,21 +1,20 @@
-package de.unisiegen.gtitool.core.parser;
+package de.unisiegen.gtitool.core.parser.exceptions;
 
 
 import java.awt.Color;
-import java.text.MessageFormat;
 import java.util.prefs.Preferences;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 
 
 /**
  * A helper class for the parser.
  * 
  * @author Christian Fehler
+ * @version $Id: ParserException.java 136 2007-11-12 21:38:49Z fehler $
  */
-public abstract class Error
+public abstract class ErrorHandling
 {
 
   /**
@@ -73,10 +72,10 @@ public abstract class Error
       result.append ( syntaxHighlighting ( token ) );
     }
     result.append ( "\"" ); //$NON-NLS-1$
-    throw new ParserWarningException ( pLeft, pRight, MessageFormat.format (
-        "<html>" + Messages.getString ( "Parser.2" ) + "<br>" + "(" //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            + Messages.getString ( "Parser.3" ) + ")" + "</html>", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        result.toString (), "<b>" + pSymbol + "</b>" ), pInsertText ); //$NON-NLS-1$//$NON-NLS-2$
+    throw new ParserWarningException ( pLeft, pRight, "<html>" //$NON-NLS-1$
+        + Messages.getString ( "Parser.2", result.toString (), "<b>" + pSymbol //$NON-NLS-1$//$NON-NLS-2$
+            + "</b>" ) + "<br>" + "(" + Messages.getString ( "Parser.3" ) + ")" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        + "</html>", pInsertText ); //$NON-NLS-1$
   }
 
 

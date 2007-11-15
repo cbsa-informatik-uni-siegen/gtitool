@@ -1,0 +1,34 @@
+/**
+ * The cup file of the symbol parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.Symbol;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Symbol			symbol;
+
+
+/**********
+ * Symbol *
+ **********/
+
+symbol							::= SYMBOL:s
+									{:
+									   RESULT = new Symbol(s);
+									   RESULT.setParserStartOffset(sleft);
+									   RESULT.setParserEndOffset(sright);
+									:}
+								;

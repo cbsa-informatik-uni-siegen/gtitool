@@ -79,7 +79,7 @@
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
 	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1.jar" />
 
-	<target name="parser" depends="parser-alphabet" description="Generate parsers and lexers" />
+	<target name="parser" depends="parser-alphabet, parser-symbol" description="Generate parsers and lexers" />
 	
 	<target name="parser-clean">
 		<delete dir="${generateddir}/de/unisiegen/gtitool/core/parser" />
@@ -96,6 +96,26 @@
 			package="de.unisiegen.gtitool.core.parser.alphabet"
 			parser="AlphabetAbstractParser"
 			symbols="AlphabetTerminals"
+			interface="yes"
+			debug="no"
+			expect="1000000"
+			nonterms="no"
+			nopositions="no"
+			compact_red="yes"
+			dump_grammar="no" />
+	</target>
+	
+	<target name="parser-symbol" description="Generates lexer and parser for a symbol">
+		<jflex 
+	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex"
+	   		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.cup"
+			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/symbol"
+			package="de.unisiegen.gtitool.core.parser.symbol"
+			parser="SymbolAbstractParser"
+			symbols="SymbolTerminals"
 			interface="yes"
 			debug="no"
 			expect="1000000"

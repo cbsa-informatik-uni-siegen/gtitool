@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.core.parser;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface ParserInterface
+public interface GTIParser
 {
 
   /**

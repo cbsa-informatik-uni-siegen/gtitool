@@ -1,10 +1,10 @@
 /**
- * The lexer file of the alphabet scanner.
+ * The lexer file of the symbol scanner.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-package de.unisiegen.gtitool.core.parser.alphabet;
+package de.unisiegen.gtitool.core.parser.symbol;
 
 import java.io.Reader;
 import java_cup.runtime.Symbol;
@@ -13,11 +13,14 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
+/**
+ * This is the lexer class for an alphabet.
+ */
 %%
 
-%class AlphabetScanner
+%class SymbolScanner
 %extends AbstractScanner
-%implements AlphabetTerminals
+%implements SymbolTerminals
 
 %function nextSymbol
 %type Symbol
@@ -73,9 +76,6 @@ Symbol			= [a-zA-Z0-9]+
 
 <YYINITIAL>
 {
-	","					{ return symbol(COMMA); }
-	"{"					{ return symbol(LCBRACE); }
-	"}"					{ return symbol(RCBRACE); }
 	{Symbol}			{ return symbol(SYMBOL, yytext()); }
 	{WhiteSpace}		{ }
 }

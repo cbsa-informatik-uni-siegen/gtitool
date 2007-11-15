@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import java_cup.runtime.Symbol;
+
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -20,16 +22,15 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.parser.AbstractScanner;
+import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
-import de.unisiegen.gtitool.core.parser.ParserInterface;
-import de.unisiegen.gtitool.core.parser.ParserSymbol;
-import de.unisiegen.gtitool.core.parser.PrettyStyle;
-import de.unisiegen.gtitool.core.parser.ScannerInterface;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
+import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
+import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.ExceptionsChangedListener;
@@ -88,9 +89,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The attributes for the various {@link PrettyStyle}s.
+   * The attributes for the various {@link Style}s.
    */
-  private HashMap < PrettyStyle, SimpleAttributeSet > attributes = new HashMap < PrettyStyle, SimpleAttributeSet > ();
+  private HashMap < Style, SimpleAttributeSet > attributes = new HashMap < Style, SimpleAttributeSet > ();
 
 
   /**
@@ -126,7 +127,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
     StyleConstants.setBold ( this.normalSet, false );
     SimpleAttributeSet symbolSet = new SimpleAttributeSet ();
     StyleConstants.setBold ( symbolSet, true );
-    this.attributes.put ( PrettyStyle.SYMBOL, symbolSet );
+    this.attributes.put ( Style.SYMBOL, symbolSet );
     initAttributes ();
     this.parserWarningColor = PreferenceManager.getInstance ()
         .getColorItemParserWarning ().getColor ();
@@ -289,7 +290,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private final void initAttributes ()
   {
-    StyleConstants.setForeground ( this.attributes.get ( PrettyStyle.SYMBOL ),
+    StyleConstants.setForeground ( this.attributes.get ( Style.SYMBOL ),
         PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
   }
 
@@ -336,14 +337,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
        */
       int offset = 0;
       String content = getText ( offset, getLength () );
-      final ScannerInterface scanner = this.parseable
-          .newScanner ( new StringReader ( content ) );
-      final LinkedList < ParserSymbol > symbols = new LinkedList < ParserSymbol > ();
+      final GTIScanner scanner = this.parseable.newScanner ( new StringReader (
+          content ) );
+      final LinkedList < Symbol > symbols = new LinkedList < Symbol > ();
       while ( true )
       {
         try
         {
-          ParserSymbol symbol = scanner.nextSymbol ();
+          Symbol symbol = scanner.nextSymbol ();
           if ( symbol == null )
           {
             break;
@@ -355,9 +356,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
           {
             set = this.normalSet;
           }
-          setCharacterAttributes ( offset + symbol.getLeft (), symbol
-              .getRight ()
-              - symbol.getLeft (), set, true );
+          setCharacterAttributes ( offset + symbol.left, symbol.right
+              - symbol.left, set, true );
         }
         catch ( ScannerException ecx )
         {
@@ -379,29 +379,27 @@ public final class StyledParserDocument extends DefaultStyledDocument
        */
       if ( collectedExceptions.size () == 0 )
       {
-        ParserInterface parser = this.parseable
-            .newParser ( new AbstractScanner ()
-            {
+        GTIParser parser = this.parseable.newParser ( new AbstractScanner ()
+        {
 
-              @Override
-              public PrettyStyle getStyleBySymbolId ( int id )
-              {
-                return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( id );
-              }
-
-
-              public ParserSymbol nextSymbol () throws IOException,
-                  ScannerException
-              {
-                return ( !symbols.isEmpty () ) ? symbols.poll () : null;
-              }
+          @Override
+          public Style getStyleBySymbolId ( int id )
+          {
+            return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( id );
+          }
 
 
-              public void restart ( Reader reader )
-              {
-                throw new UnsupportedOperationException ();
-              }
-            } );
+          public Symbol nextSymbol () throws IOException, ScannerException
+          {
+            return ( !symbols.isEmpty () ) ? symbols.poll () : null;
+          }
+
+
+          public void restart ( Reader reader )
+          {
+            throw new UnsupportedOperationException ();
+          }
+        } );
         try
         {
           parser.parse ();

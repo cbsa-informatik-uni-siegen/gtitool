@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.alphabet;
+package de.unisiegen.gtitool.core.parser.symbol;
 
 
 import java_cup.runtime.Symbol;
@@ -8,20 +8,20 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 
 
 /**
- * The {@link de.unisiegen.gtitool.core.entities.Alphabet} parser class.
+ * The {@link de.unisiegen.gtitool.core.entities.Symbol} parser class.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class AlphabetParser extends AlphabetAbstractParser
+public final class SymbolParser extends SymbolAbstractParser
 {
 
   /**
-   * Allocates a new <code>AlphabetParser</code>.
+   * Allocates a new <code>SymbolParser</code>.
    * 
    * @param pGTIScanner The {@link GTIScanner}.
    */
-  public AlphabetParser ( GTIScanner pGTIScanner )
+  public SymbolParser ( GTIScanner pGTIScanner )
   {
     super ( pGTIScanner );
   }

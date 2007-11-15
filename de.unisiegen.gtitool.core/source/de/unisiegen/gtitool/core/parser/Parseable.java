@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.parser;
 
 import java.io.Reader;
 
+import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
+
 
 /**
  * The interface of all parseable objects.
@@ -14,32 +16,31 @@ public interface Parseable
 {
 
   /**
-   * Returns a new {@link ParserInterface}.
+   * Returns a new {@link GTIParser}.
    * 
    * @param pReader The input {@link Reader}.
-   * @return A new {@link ParserInterface}.
+   * @return A new {@link GTIParser}.
    * @see Parseable#newParser(Reader)
    */
-  public ParserInterface newParser ( Reader pReader );
-
+  public GTIParser newParser ( Reader pReader );
 
 
   /**
-   * Returns a new {@link ParserInterface}.
+   * Returns a new {@link GTIParser}.
    * 
-   * @param pScanner The input {@link ScannerInterface}.
-   * @return A new {@link ParserInterface}.
-   * @see Parseable#newParser(ScannerInterface)
+   * @param pGTIScanner The input {@link GTIScanner}.
+   * @return A new {@link GTIParser}.
+   * @see Parseable#newParser(GTIScanner)
    */
-  public ParserInterface newParser ( ScannerInterface pScanner );
+  public GTIParser newParser ( GTIScanner pGTIScanner );
 
 
   /**
-   * Returns a new {@link ScannerInterface}.
+   * Returns a new {@link GTIScanner}.
    * 
    * @param pReader The input {@link Reader}.
-   * @return A new {@link ScannerInterface}.
+   * @return A new {@link GTIScanner}.
    * @see Parseable#newScanner(Reader)
    */
-  public ScannerInterface newScanner ( Reader pReader );
+  public GTIScanner newScanner ( Reader pReader );
 }

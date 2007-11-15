@@ -152,42 +152,18 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     {
       throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
     }
-    ArrayList < Symbol > list = new ArrayList < Symbol > ();
+    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( Symbol current : pSymbols )
     {
-      list.add ( current );
+      symbolList.add ( current );
     }
-    Symbol duplicated = null;
-    loop : for ( int i = 0 ; i < list.size () ; i++ )
-    {
-      for ( int j = i + 1 ; j < list.size () ; j++ )
-      {
-        if ( list.get ( i ).equals ( list.get ( j ) ) )
-        {
-          duplicated = list.get ( i );
-          break loop;
-        }
-      }
-    }
-    if ( duplicated != null )
-    {
-      ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
-      for ( Symbol current : list )
-      {
-        if ( duplicated.equals ( current ) )
-        {
-          negativeSymbols.add ( current );
-        }
-      }
-      throw new AlphabetException ( this, negativeSymbols );
-    }
+    checkDuplicatedSymbols ( symbolList );
     for ( Symbol current : pSymbols )
     {
       addSymbol ( current );
     }
   }
 
-  // TODO Optimize code
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
@@ -208,19 +184,36 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     {
       throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
     }
-    ArrayList < Symbol > list = new ArrayList < Symbol > ();
+    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( Symbol current : pSymbols )
     {
-      list.add ( current );
+      symbolList.add ( current );
     }
-    Symbol duplicated = null;
-    loop : for ( int i = 0 ; i < list.size () ; i++ )
+    checkDuplicatedSymbols ( symbolList );
+    for ( Symbol current : pSymbols )
     {
-      for ( int j = i + 1 ; j < list.size () ; j++ )
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
+   * Checks the {@link Symbol} list for {@link Symbol}s with the same name.
+   * 
+   * @param pSymbolList The {@link Symbol} list.
+   * @throws AlphabetException If a {@link Symbol} is duplicated.
+   */
+  private void checkDuplicatedSymbols ( ArrayList < Symbol > pSymbolList )
+      throws AlphabetException
+  {
+    Symbol duplicated = null;
+    loop : for ( int i = 0 ; i < pSymbolList.size () ; i++ )
+    {
+      for ( int j = i + 1 ; j < pSymbolList.size () ; j++ )
       {
-        if ( list.get ( i ).equals ( list.get ( j ) ) )
+        if ( pSymbolList.get ( i ).equals ( pSymbolList.get ( j ) ) )
         {
-          duplicated = list.get ( i );
+          duplicated = pSymbolList.get ( i );
           break loop;
         }
       }
@@ -228,7 +221,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     if ( duplicated != null )
     {
       ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
-      for ( Symbol current : list )
+      for ( Symbol current : pSymbolList )
       {
         if ( duplicated.equals ( current ) )
         {
@@ -236,10 +229,6 @@ public final class Alphabet implements Entity, Iterable < Symbol >
         }
       }
       throw new AlphabetException ( this, negativeSymbols );
-    }
-    for ( Symbol current : pSymbols )
-    {
-      addSymbol ( current );
     }
   }
 

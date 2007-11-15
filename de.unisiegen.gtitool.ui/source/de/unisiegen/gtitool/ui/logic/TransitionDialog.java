@@ -154,7 +154,7 @@ public class TransitionDialog
 
 
   /** The epsilon {@link Symbol} */
-  private Symbol epsilon;
+  public Symbol epsilon;
 
 
   /**
@@ -256,7 +256,10 @@ public class TransitionDialog
     this.transitionDialog.setVisible ( false );
     try
     {
-      this.alphabet = new Alphabet ( this.modelChangeOverSet.getList () );
+      if ( this.modelChangeOverSet.getList().contains ( this.epsilon ) )
+        this.alphabet = null ;
+      else
+        this.alphabet = new Alphabet ( this.modelChangeOverSet.getList () );
     }
     catch ( AlphabetException e )
     {

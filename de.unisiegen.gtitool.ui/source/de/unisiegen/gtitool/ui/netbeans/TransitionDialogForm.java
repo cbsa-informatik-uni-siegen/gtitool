@@ -41,6 +41,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jButtonMoveRight = new javax.swing.JButton();
         JLabelSubHeadline1 = new javax.swing.JLabel();
         jTextPane1 = new javax.swing.JTextPane();
+        jLabelErrorMessage = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButtonOk = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -162,6 +163,12 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 20, 10);
         jPanel1.add(jTextPane1, gridBagConstraints);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanel1.add(jLabelErrorMessage, gridBagConstraints);
+
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         jButtonOk.setText("Ok");
@@ -195,7 +202,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jPanel2.add(jButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         jPanel1.add(jPanel2, gridBagConstraints);
@@ -245,6 +252,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private javax.swing.JButton jButtonOk;
     private javax.swing.JLabel jLabelAlphabet;
     private javax.swing.JLabel jLabelChangeOverSet;
+    public javax.swing.JLabel jLabelErrorMessage;
     public javax.swing.JList jListAlphabet;
     public javax.swing.JList jListChangeOverSet;
     private javax.swing.JPanel jPanel1;

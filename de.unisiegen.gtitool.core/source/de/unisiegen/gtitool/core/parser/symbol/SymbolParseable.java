@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.parser.symbol;
 
 
-import java.io.Reader;
+import java.io.StringReader;
 
 import java_cup.runtime.lr_parser;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -22,13 +22,13 @@ public final class SymbolParseable implements Parseable
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param pReader The input {@link Reader}.
+   * @param pText The input {@link String}.
    * @return A new {@link GTIParser}.
-   * @see Parseable#newParser(Reader)
+   * @see Parseable#newParser(String)
    */
-  public final GTIParser newParser ( Reader pReader )
+  public final GTIParser newParser ( String pText )
   {
-    return newParser ( newScanner ( pReader ) );
+    return newParser ( newScanner ( pText ) );
   }
 
 
@@ -60,16 +60,16 @@ public final class SymbolParseable implements Parseable
   /**
    * Returns a new {@link GTIScanner}.
    * 
-   * @param pReader The input {@link Reader}.
+   * @param pText The input {@link String}.
    * @return A new {@link GTIScanner}.
-   * @see Parseable#newScanner(Reader)
+   * @see Parseable#newScanner(String)
    */
-  public final GTIScanner newScanner ( Reader pReader )
+  public final GTIScanner newScanner ( String pText )
   {
-    if ( pReader == null )
+    if ( pText == null )
     {
-      throw new NullPointerException ( "reader is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "text is null" ); //$NON-NLS-1$
     }
-    return new SymbolScanner ( pReader );
+    return new SymbolScanner ( new StringReader ( pText ) );
   }
 }

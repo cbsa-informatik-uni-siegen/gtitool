@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.core.parser.scanner;
 
 
 import java.io.IOException;
-import java.io.Reader;
 
 import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;
@@ -40,9 +39,9 @@ public interface GTIScanner extends Scanner
 
 
   /**
-   * Restarts the scanner with the given reader.
+   * Restarts the scanner with the given {@link String}.
    * 
-   * @param pReader The input reader.
+   * @param pText The input {@link String}.
    */
-  public void restart ( Reader pReader );
+  public void restart ( String pText );
 }

@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.parser;
 
 
-import java.io.Reader;
-
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 
 
@@ -18,11 +16,11 @@ public interface Parseable
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param pReader The input {@link Reader}.
+   * @param pText The input {@link String}.
    * @return A new {@link GTIParser}.
-   * @see Parseable#newParser(Reader)
+   * @see Parseable#newParser(String)
    */
-  public GTIParser newParser ( Reader pReader );
+  public GTIParser newParser ( String pText );
 
 
   /**
@@ -38,9 +36,9 @@ public interface Parseable
   /**
    * Returns a new {@link GTIScanner}.
    * 
-   * @param pReader The input {@link Reader}.
+   * @param pText The input {@link String}.
    * @return A new {@link GTIScanner}.
-   * @see Parseable#newScanner(Reader)
+   * @see Parseable#newScanner(String)
    */
-  public GTIScanner newScanner ( Reader pReader );
+  public GTIScanner newScanner ( String pText );
 }

@@ -6,7 +6,7 @@
  */
 package de.unisiegen.gtitool.core.parser.alphabet;
 
-import java.io.Reader;
+import java.io.StringReader;
 import java_cup.runtime.Symbol;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
@@ -55,13 +55,13 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  }
 	}
 	
-	public void restart(Reader pReader)
+	public void restart(String pText)
 	{
-	  if (pReader == null)
+	  if (pText == null)
 	  {
-		throw new NullPointerException("reader is null");
+		throw new NullPointerException("text is null");
 	  }
-	  yyreset(pReader);
+	  yyreset(new StringReader(pText));
 	}
 %}
 

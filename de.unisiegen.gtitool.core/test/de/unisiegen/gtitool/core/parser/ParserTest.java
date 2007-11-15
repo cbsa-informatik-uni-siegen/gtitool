@@ -1,10 +1,10 @@
 package de.unisiegen.gtitool.core.parser;
 
 
-import java.io.StringReader;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
+import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 
 
 /**
@@ -20,13 +20,31 @@ public class ParserTest
 
   public static void main ( String [] args )
   {
-    AlphabetParseable parseable = new AlphabetParseable ();
-    String text = "{a,b,c}";
+    /*
+     * Alphabet
+     */
+    AlphabetParseable alphabetParseable = new AlphabetParseable ();
+    String alphabetText = "{a,b,c}";
     try
     {
-      Alphabet alphabet = ( Alphabet ) parseable.newParser (
-          new StringReader ( text.toString () ) ).parse ();
+      Alphabet alphabet = ( Alphabet ) alphabetParseable.newParser (
+          alphabetText ).parse ();
       System.out.println ( alphabet );
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ();
+    }
+    /*
+     * Symbol
+     */
+    SymbolParseable symbolParseable = new SymbolParseable ();
+    String symbolText = "{a,b,c}";
+    try
+    {
+      Symbol symbol = ( Symbol ) alphabetParseable.newParser ( symbolText )
+          .parse ();
+      System.out.println ( symbol );
     }
     catch ( Exception e )
     {

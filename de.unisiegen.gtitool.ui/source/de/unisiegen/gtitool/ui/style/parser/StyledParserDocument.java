@@ -3,8 +3,6 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -144,8 +142,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
-          Color pNewColor )
+          public void colorChangedParserWarning ( Color pNewColor )
           {
             StyledParserDocument.this.parserWarningColor = pNewColor;
             try
@@ -280,8 +277,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final Object getParsedObject () throws Exception
   {
-    return this.parseable.newParser (
-        new StringReader ( getText ( 0, getLength () ) ) ).parse ();
+    return this.parseable.newParser ( getText ( 0, getLength () ) ).parse ();
   }
 
 
@@ -337,8 +333,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
        */
       int offset = 0;
       String content = getText ( offset, getLength () );
-      final GTIScanner scanner = this.parseable.newScanner ( new StringReader (
-          content ) );
+      final GTIScanner scanner = this.parseable.newScanner ( content );
       final LinkedList < Symbol > symbols = new LinkedList < Symbol > ();
       while ( true )
       {
@@ -370,7 +365,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
               - ecx.getLeft (), errorSet, false );
           offset = newOffset;
-          scanner.restart ( new StringReader ( content ) );
+          scanner.restart ( content );
           collectedExceptions.add ( ecx );
         }
       }
@@ -383,9 +378,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
         {
 
           @Override
-          public Style getStyleBySymbolId ( int id )
+          public Style getStyleBySymbolId ( int pId )
           {
-            return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( id );
+            return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( pId );
           }
 
 
@@ -395,7 +390,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           }
 
 
-          public void restart ( Reader reader )
+          public void restart ( String pText )
           {
             throw new UnsupportedOperationException ();
           }

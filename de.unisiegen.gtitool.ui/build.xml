@@ -37,11 +37,7 @@
 			</filterset>
 		</copy>
 		<!-- copy exe file -->
-		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/win32/gtitool.exe">
-			<filterset>
-				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
-			</filterset>
-		</copy>
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/win32/gtitool.exe"/>
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">

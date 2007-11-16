@@ -4,8 +4,9 @@
 	Copyright (c) 2007 Christian Fehler
 -->
 <launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
   <headerType>0</headerType>
-  <jar>../../dist/de.unisiegen.gtitool.ui-0.1.0.jar</jar>
+  <jar>de.unisiegen.gtitool.ui-0.1.0.jar</jar>
   <outfile>gtitool.exe</outfile>
   <errTitle>GTI Tool</errTitle>
   <chdir>.</chdir>

@@ -21,7 +21,7 @@
 	<property name="libdir" value="${basedir}/lib" />
 	<property name="docdir" value="${basedir}/doc" />
 	
-	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,exe,dist-3rdparty,dist-clean" description="Build distribution">
 		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
 		<!-- copy files -->
 		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
@@ -36,8 +36,8 @@
 				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
 			</filterset>
 		</copy>
-		<!-- copy exe file -->
-		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/win32/gtitool.exe"/>
+		<!-- move exe file -->
+		<move todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/windows/gtitool.exe"/>
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
@@ -74,6 +74,12 @@
 				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
 			</fileset>
 		</zip>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includes="*"/>
+		</move>
+		<!-- chmod gtitool.sh -->
+		<chmod file="${distdir}/gtitool.sh" perm="755"/>
 		<!-- delete file -->
 		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}" />
@@ -158,7 +164,13 @@
 	<target name="dist-3rdparty" description="Copy 3rd party jar files">
 		<copy file="${libdir}/jgraph.jar" todir="${distdir}" />
 	</target>
-
+	
+	<!-- exe -->
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/launch4j/launch4j.jar:${basedir}/launch4j/lib/xstream.jar" />
+	<target name="exe">
+		<launch4j configFile="${basedir}/executer/windows/launch4j.xml" />
+	</target>
+	
 	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />

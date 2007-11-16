@@ -168,7 +168,16 @@
 	<!-- exe -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/launch4j/launch4j.jar:${basedir}/launch4j/lib/xstream.jar" />
 	<target name="exe">
-		<launch4j configFile="${basedir}/executer/windows/launch4j.xml" />
+		<!-- update config file -->
+		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
+			<filterset>
+				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
+			</filterset>
+		</copy>
+		<!-- launch4j -->
+		<launch4j configFile="${basedir}/executer/windows/tmp_launch4j.xml" />
+		<!-- delete config file -->
+		<delete file="${basedir}/executer/windows/tmp_launch4j.xml" />
 	</target>
 	
 	<!-- dist clean -->

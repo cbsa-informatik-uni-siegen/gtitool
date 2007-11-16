@@ -47,7 +47,7 @@ public class MainWindow
     }
     catch ( Exception e )
     {
-      // Do nothing
+      e.printStackTrace ();
     }
     this.gui.setTitle ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();

@@ -53,16 +53,6 @@ public final class AboutDialog
     logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new AboutDialogForm ( this, pParent );
-    try
-    {
-      // TODO Find a way for java 1.5
-      // this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
-      // "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
-    }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
     this.gui.jLabelName.setText ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 

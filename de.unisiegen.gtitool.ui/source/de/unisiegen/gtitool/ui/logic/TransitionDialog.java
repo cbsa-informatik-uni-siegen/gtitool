@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -170,16 +169,6 @@ public class TransitionDialog
     this.parent = pParent;
     this.alphabet = pAlphabet;
     this.transitionDialog = new TransitionDialogForm ( pParent, true );
-    try
-    {
-      // TODO Find a way for java 1.5
-      // this.transitionDialog.setIconImage ( ImageIO.read ( getClass ().getResource (
-      //    "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
-    }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
     this.transitionDialog.setLogic ( this );
 
     try

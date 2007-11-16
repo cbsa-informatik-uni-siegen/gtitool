@@ -52,16 +52,6 @@ public class NewDialog
   {
     this.parent = pParent;
     this.newDialogForm = new NewDialogForm ( pParent, true );
-    try
-    {
-      // TODO Find a way for java 1.5
-      //this.newDialogForm.setIconImage ( ImageIO.read ( getClass ().getResource (
-      //    "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
-    }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
     this.newDialogForm.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();

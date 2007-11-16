@@ -625,16 +625,6 @@ public final class PreferencesDialog
     logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new PreferencesDialogForm ( this, pParent );
-    try
-    {
-      // TODO Find a way for java 1.5
-      // this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
-      // "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
-    }
-    catch ( Exception e )
-    {
-      // Do nothing
-    }
     this.gui.jComboBoxLanguage.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.gui.jComboBoxLookAndFeel
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );

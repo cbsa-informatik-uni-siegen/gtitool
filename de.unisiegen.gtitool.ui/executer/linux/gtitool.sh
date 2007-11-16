@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $Id$
+# $Id:gtitool.sh 57 2007-10-22 23:43:33Z fehler $
 #
 # Startscript for the GTITool application on Linux/Unix.
 #
@@ -33,7 +33,7 @@ cat > "$XDG_DATA_HOME/mime/packages/gtitool.xml" <<EOF
     <sub-class-of type="text/plain" />
     <comment>GTITool source code</comment>
     <comment xml:lang="de">GTITool Quelltext</comment>
-    <glob pattern="*.[Dd][Ee][Aa]" />
+    <glob pattern="*.[Dd][Ff][Aa]" />
   </mime-type>
 </mime-info>
 EOF
@@ -59,4 +59,4 @@ EOF
 update-desktop-database "$XDG_DATA_HOME/applications" > /dev/null
 
 # execute the application
-exec java -jar "$REALPATH/de.unisiegen.gtitool.ui-@de.unisiegen.gtitool.ui.version@.jar" "$@"
+exec java -jar "$REALPATH/de.unisiegen.gtitool.ui-@de.unisiegen.gtitool.version@.jar" "$@"

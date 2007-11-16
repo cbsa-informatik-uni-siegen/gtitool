@@ -39,7 +39,7 @@ public class MainWindow
   public MainWindow ()
   {
     this.gui = new MainWindowForm ( this );
-    this.gui.setTitle ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
+    this.gui.setTitle ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     this.gui.setBounds ( preferenceManager.getMainWindowBounds () );
     this.gui.setVisible ( true );

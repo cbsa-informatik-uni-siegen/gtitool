@@ -53,7 +53,7 @@ public final class AboutDialog
     logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new AboutDialogForm ( this, pParent );
-    this.gui.jLabelName.setText ( "GTI Tool " + Versions.UI ); //$NON-NLS-1$
+    this.gui.jLabelName.setText ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
     /*

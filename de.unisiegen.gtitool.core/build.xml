@@ -57,10 +57,10 @@
 			<attribute name="Built-By" value="${user.name}" />
 			<section name="de.unisiegen.gtitool.core">
 				<attribute name="Specification-Title" value="GTITool Core" />
-				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.core.version}" />
+				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.version}" />
 				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 				<attribute name="Implementation-Title" value="de.unisiegen.gtitool.core" />
-				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.core.version} ${TODAY}" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.version} ${TODAY}" />
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
@@ -69,7 +69,7 @@
 		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
 		<!-- jar file -->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
 				<include name="**/*.properties"/>
@@ -79,7 +79,7 @@
 			</fileset>
 		</jar>
 		<!-- jar file source-->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${basedir}/source">
 				<include name="**/*.java"/>
 				<include name="**/*.properties"/>

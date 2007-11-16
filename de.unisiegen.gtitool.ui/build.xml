@@ -12,7 +12,6 @@
 	</description>
 
 	<!-- property -->
-	<property file="${basedir}/build.properties" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property file="${core.basedir}/build.properties" />
@@ -22,66 +21,66 @@
 	<property name="docdir" value="${basedir}/doc" />
 	
 	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,exe,dist-3rdparty,dist-clean" description="Build distribution">
-		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" />
+		<mkdir dir="${distdir}/gtitool-${de.unisiegen.gtitool.version}" />
 		<!-- copy files -->
-		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}">
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.version}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${libdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
 		<!-- copy sh file -->
-		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/linux/gtitool.sh">
+		<copy todir="${distdir}/gtitool-${de.unisiegen.gtitool.version}" file="${basedir}/executer/linux/gtitool.sh">
 			<filterset>
-				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
+				<filter token="de.unisiegen.gtitool.version" value="${de.unisiegen.gtitool.version}" />
 			</filterset>
 		</copy>
 		<!-- move exe file -->
-		<move todir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" file="${basedir}/executer/windows/gtitool.exe"/>
+		<move todir="${distdir}/gtitool-${de.unisiegen.gtitool.version}" file="${basedir}/executer/windows/gtitool.exe"/>
 		<!-- tar file -->
-		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.tar.bz2" compression="bzip2" longfile="gnu">
+		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.ui.version}-src.jar" />
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" />
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/gtitool.sh" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}-src.jar" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.version}-src.jar" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/*" />
 			</tarfileset>
 			<tarfileset dir="${distdir}" mode="755">
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/gtitool.sh" />
 			</tarfileset>
 		</tar>
 		<!-- tar file source -->
-		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}-src.tar.bz2" compression="bzip2" longfile="gnu">
+		<tar destfile="${distdir}/gtitool-${de.unisiegen.gtitool.version}-src.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/gtitool.sh" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/*" />
 			</tarfileset>
 			<tarfileset dir="${distdir}" mode="755">
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/gtitool.sh" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/gtitool.sh" />
 			</tarfileset>
 		</tar>
 		<!-- zip file -->
-		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}.zip" update="yes">
+		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.version}.zip" update="yes">
 			<fileset dir="${distdir}">
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.ui.version}-src.jar" />
-				<exclude name="gtitool-${de.unisiegen.gtitool.ui.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" />
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}-src.jar" />
+				<exclude name="gtitool-${de.unisiegen.gtitool.version}**/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.version}-src.jar" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/*" />
 			</fileset>
 		</zip>
 		<!-- zip file source -->
-		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}-src.zip" update="yes">
+		<zip destfile="${distdir}/gtitool-${de.unisiegen.gtitool.version}-src.zip" update="yes">
 			<fileset dir="${distdir}">
-				<include name="gtitool-${de.unisiegen.gtitool.ui.version}**/*" />
+				<include name="gtitool-${de.unisiegen.gtitool.version}**/*" />
 			</fileset>
 		</zip>
 		<!-- move files -->
 		<move todir="${distdir}">
-			<fileset dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includes="*"/>
+			<fileset dir="${distdir}/gtitool-${de.unisiegen.gtitool.version}" includes="*"/>
 		</move>
 		<!-- chmod gtitool.sh -->
 		<chmod file="${distdir}/gtitool.sh" perm="755"/>
 		<!-- delete file -->
-		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.ui.version}" includeemptydirs="true" />
+		<delete dir="${distdir}/gtitool-${de.unisiegen.gtitool.version}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
@@ -104,7 +103,7 @@
 			<src path="${basedir}/source" />
 			<src path="${basedir}/source-generated" />
 			<classpath>
-				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar" />
+				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}.jar" />
 				<pathelement location="${core.distdir}/java-cup-11a-gtitool-runtime.jar" />
 				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
 				<pathelement location="${libdir}/jgraph.jar" />
@@ -118,13 +117,13 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.core.version}.jar java-cup-11a-gtitool-runtime.jar jgraph.jar log4j-1.2.14.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}.jar java-cup-11a-gtitool-runtime.jar jgraph.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />
-				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.ui.version}" />
+				<attribute name="Specification-Version" value="${de.unisiegen.gtitool.version}" />
 				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 				<attribute name="Implementation-Title" value="de.unisiegen.gtitool.ui" />
-				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.ui.version} ${TODAY}" />
+				<attribute name="Implementation-Version" value="${de.unisiegen.gtitool.version} ${TODAY}" />
 				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
 			</section>
 		</manifest>
@@ -133,7 +132,7 @@
 		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
 		<!-- jar file -->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${basedir}/source">
 				<include name="**/*.gif"/>
@@ -145,7 +144,7 @@
 			</fileset>
 		</jar>
 		<!-- jar file source-->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.ui.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${basedir}/source">
 				<include name="**/*.java"/>
 				<include name="**/*.gif"/>
@@ -171,7 +170,7 @@
 		<!-- update config file -->
 		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
 			<filterset>
-				<filter token="de.unisiegen.gtitool.ui.version" value="${de.unisiegen.gtitool.ui.version}" />
+				<filter token="de.unisiegen.gtitool.version" value="${de.unisiegen.gtitool.version}" />
 			</filterset>
 		</copy>
 		<!-- launch4j -->
@@ -192,7 +191,7 @@
 
 
 /**
- * Automatically generated interface for the project versions.
+ * Automatically generated interface for the project version.
  * 
  * @author Christian Fehler
  */
@@ -200,15 +199,9 @@ public interface Versions
 {
 
   /** 
-   * The version of the de.unisiegen.gtitool.core subproject.
+   * The version of the project.
    */
-  public static final String CORE = "${de.unisiegen.gtitool.core.version}"; //$NON-NLS-1$
-
-
-  /** 
-   * The version of the de.unisiegen.gtitool.ui subproject.
-   */
-  public static final String UI = "${de.unisiegen.gtitool.ui.version}"; //$NON-NLS-1$
+  public static final String VERSION = "${de.unisiegen.gtitool.version}"; //$NON-NLS-1$
 }
 </echo>
 	</target>

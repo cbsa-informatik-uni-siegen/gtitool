@@ -28,12 +28,15 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -227,6 +230,25 @@ public class MachinePanel implements EditorPanel
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
+    
+    /*
+     * Language changed listener
+     */
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            MachinePanel.this.machinePanel.jButtonMouse.setToolTipText ( Messages.getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
+            MachinePanel.this.machinePanel.jButtonAddState.setToolTipText ( Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
+            MachinePanel.this.machinePanel.jButtonAddTransition.setToolTipText ( Messages.getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
+            MachinePanel.this.machinePanel.jButtonStartState.setToolTipText ( Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+            MachinePanel.this.machinePanel.jButtonFinalState.setToolTipText ( Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+            MachinePanel.this.machinePanel.jButtonEditAlphabet.setToolTipText ( Messages.getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
+          }
+        });
   }
 
 

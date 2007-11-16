@@ -97,6 +97,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jPanel1.add(jScrollPaneAlphabet, gridBagConstraints);
 
         jButtonMoveLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/moveLeft.png")));
+        jButtonMoveLeft.setEnabled(false);
         jButtonMoveLeft.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleActionPerformedMoveLeft(evt);
@@ -131,6 +132,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jPanel1.add(jScrollChangeOverSet, gridBagConstraints);
 
         jButtonMoveRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/moveRight.png")));
+        jButtonMoveRight.setEnabled(false);
         jButtonMoveRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleActionPerformedMoveRight(evt);

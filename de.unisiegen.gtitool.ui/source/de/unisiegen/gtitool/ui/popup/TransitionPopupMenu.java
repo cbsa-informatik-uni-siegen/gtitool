@@ -12,7 +12,11 @@ import javax.swing.JPopupMenu;
 import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -54,6 +58,20 @@ public class TransitionPopupMenu extends JPopupMenu
     this.model = pModel;
     this.transition = pTransition;
     populateMenues ();
+    
+    /*
+     * Language changed listener
+     */
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            delete.setText ( Messages.getString ( "MachinePanel.Delete" ) );
+          }
+        });
   }
 
 

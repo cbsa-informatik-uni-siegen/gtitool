@@ -109,7 +109,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         headerPanel.add(headerTitleLabel, gridBagConstraints);
 
-        headerSubTitleLabel.setText(bundle.getString("MainWindow.NewSubtitle")); // NOI18N
+        headerSubTitleLabel.setText(bundle.getString("NewDialog.NewSubtitle")); // NOI18N
         headerSubTitleLabel.setAlignmentY(0.0F);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -150,7 +150,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         machinesPanel.setPreferredSize(new java.awt.Dimension(329, 100));
         jLabelMachinesCaption.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelMachinesCaption.setText("Bitte w\u00e4hlen Sie den entsprechenden Automaten aus");
+        jLabelMachinesCaption.setText(bundle.getString("NewDialog.ChooseMachine")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -219,7 +219,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         bodyPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel5.setText("Bitte w\u00e4hlen Sie die Elemente des Alphabets aus");
+        jLabel5.setText(bundle.getString("NewDialog.ChooseAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
@@ -247,12 +247,12 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         machinesPanel.add(bodyPanel, gridBagConstraints);
 
-        tabbedPane.addTab("Machines", machinesPanel);
+        tabbedPane.addTab(bundle.getString("NewDialog.Machine"), machinesPanel); // NOI18N
 
         grammarsPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabelGrammarsCaption.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelGrammarsCaption.setText("Bitte w\u00e4hlen Sie den entsprechenden Automaten aus");
+        jLabelGrammarsCaption.setText(bundle.getString("NewDialog.ChooseGrammar")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -310,7 +310,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         bodyPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jLabel4.setText("Bitte w\u00e4hlen Sie die Elemente des Alphabets aus");
+        jLabel4.setText(bundle.getString("NewDialog.ChooseAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
@@ -338,7 +338,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         grammarsPanel.add(bodyPanel1, gridBagConstraints);
 
-        tabbedPane.addTab("Grammars", grammarsPanel);
+        tabbedPane.addTab(bundle.getString("NewDialog.Grammar"), grammarsPanel); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -359,6 +359,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setText(bundle.getString("Cancel")); // NOI18N
+        cancelButton.setLabel(bundle.getString("Cancel")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);

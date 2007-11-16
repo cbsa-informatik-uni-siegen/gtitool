@@ -16,8 +16,11 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.AttributeMap.SerializableRectangle2D;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -80,6 +83,7 @@ public class StatePopupMenu extends JPopupMenu
     this.model = pModel;
     this.state = pState;
     populateMenues ();
+    
   }
 
 
@@ -89,7 +93,8 @@ public class StatePopupMenu extends JPopupMenu
   protected void populateMenues ()
   {
 
-    this.delete = new JMenuItem ( "Löschen" ); //$NON-NLS-1$
+    this.delete = new JMenuItem (  Messages
+        .getString ("MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
@@ -116,7 +121,7 @@ public class StatePopupMenu extends JPopupMenu
     } );
     add ( this.delete );
 
-    this.startState = new JCheckBoxMenuItem ( "Startzustand " ); //$NON-NLS-1$
+    this.startState = new JCheckBoxMenuItem ( Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
     this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
     this.startState.addActionListener ( new ActionListener ()
@@ -143,7 +148,7 @@ public class StatePopupMenu extends JPopupMenu
     this.startState.setSelected ( this.state.getState ().isStartState () );
     add ( this.startState );
 
-    this.finalState = new JCheckBoxMenuItem ( "Endzustand" ); //$NON-NLS-1$
+    this.finalState = new JCheckBoxMenuItem ( Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
     this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
     this.finalState.addActionListener ( new ActionListener ()

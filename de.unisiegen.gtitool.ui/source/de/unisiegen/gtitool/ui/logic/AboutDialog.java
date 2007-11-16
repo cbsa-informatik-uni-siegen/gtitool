@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
@@ -53,6 +54,15 @@ public final class AboutDialog
     logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new AboutDialogForm ( this, pParent );
+    try
+    {
+      this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
+          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+    }
+    catch ( Exception e )
+    {
+      // Do nothing
+    }
     this.gui.jLabelName.setText ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 

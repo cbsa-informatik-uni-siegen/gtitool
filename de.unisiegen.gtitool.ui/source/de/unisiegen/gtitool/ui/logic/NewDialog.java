@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.KeyEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
@@ -52,6 +53,15 @@ public class NewDialog
   {
     this.parent = pParent;
     this.newDialogForm = new NewDialogForm ( pParent, true );
+    try
+    {
+      this.newDialogForm.setIconImage ( ImageIO.read ( getClass ().getResource (
+          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+    }
+    catch ( Exception e )
+    {
+      // Do nothing
+    }
     this.newDialogForm.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();

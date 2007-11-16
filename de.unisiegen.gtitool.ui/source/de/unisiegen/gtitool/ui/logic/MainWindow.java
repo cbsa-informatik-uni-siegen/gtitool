@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -39,6 +40,15 @@ public class MainWindow
   public MainWindow ()
   {
     this.gui = new MainWindowForm ( this );
+    try
+    {
+      this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
+          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+    }
+    catch ( Exception e )
+    {
+      // Do nothing
+    }
     this.gui.setTitle ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     this.gui.setBounds ( preferenceManager.getMainWindowBounds () );
@@ -123,8 +133,8 @@ public class MainWindow
             // Quit
             MainWindow.this.gui.jMenuItemQuit.setText ( Messages
                 .getString ( "MainWindow.Quit" ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jMenuItemQuit.setMnemonic ( Messages
-                .getString ( "MainWindow.QuitMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemQuit.setMnemonic ( Messages.getString (
+                "MainWindow.QuitMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
             // Edit
             MainWindow.this.gui.jMenuEdit.setText ( Messages
                 .getString ( "MainWindow.Edit" ) ); //$NON-NLS-1$
@@ -147,8 +157,8 @@ public class MainWindow
             // Paste
             MainWindow.this.gui.jMenuItemPaste.setText ( Messages
                 .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jMenuItemPaste.setMnemonic ( Messages.getString (
-                "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemPaste.setMnemonic ( Messages
+                .getString ( "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
             MainWindow.this.gui.jButtonPaste.setToolTipText ( Messages
                 .getString ( "MainWindow.PasteToolTip" ) ); //$NON-NLS-1$
             // Undo

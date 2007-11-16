@@ -124,7 +124,7 @@ public class FinalStateView extends VertexView {
    */
   @Override
 	public CellViewRenderer getRenderer() {
-		return renderer;
+		return ellipseRenderer;
 	}
 
   /**

@@ -51,7 +51,7 @@
               <ComponentRef name="toolbarButton"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_mouse.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.png"/>
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -71,7 +71,7 @@
               <ComponentRef name="toolbarButton"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_add.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_add.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Add State"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -91,7 +91,7 @@
               <ComponentRef name="toolbarButton"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_transition.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_transition.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Add Transition"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -111,7 +111,7 @@
               <ComponentRef name="toolbarButton"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_start.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_start.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Start State"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -131,7 +131,7 @@
               <ComponentRef name="toolbarButton"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_stop.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_stop.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Accepting State"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -148,7 +148,7 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar_alphabet.png"/>
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_alphabet.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Edit Alphabet"/>
             <Property name="focusable" type="boolean" value="false"/>

@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
@@ -31,6 +32,8 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
+import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
+import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 
 
 /**
@@ -98,7 +101,7 @@ public class MachinePanel implements EditorPanel
 
 
   /** The tmp state for a new Transition */
-  private DefaultStateView tmpState;
+  private DefaultGraphCell tmpState;
 
 
   /** The tmp transition */
@@ -122,15 +125,32 @@ public class MachinePanel implements EditorPanel
    * 
    * @param x the x position of the new state view
    * @param y the y position of the new state view
-   * @param name the name of the new state view
-   * @param bg the background color of the new state view
-   * @param finalState signals if state is a final state
-   * @return {@link DefaultStateView} the new created state view
+   * @return {@link DefaultGraphCell} the new created cell
    */
-  public static DefaultStateView createStateView ( double x, double y,
-      String name, Color bg, boolean finalState )
+  public static DefaultGraphCell createStateView ( double x, double y )
   {
-    return createStateView ( x, y, name, bg, false, 70, 70, finalState );
+    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
+    
+    DefaultGraphCell cell = new DefaultGraphCell (  );
+
+    // set the view class (indirection for the renderer and the editor)
+    GPCellViewFactory.setViewClass ( cell.getAttributes (), viewClass );
+
+    // Set bounds
+    GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
+        x  , y , 1, 1 ) );
+
+      GraphConstants.setBorder ( cell.getAttributes (), BorderFactory
+          .createRaisedBevelBorder () );
+
+
+    // Set the line width
+    GraphConstants.setLineWidth ( cell.getAttributes (), 2 );
+
+    // Add a Floating Port
+    cell.addPort ();
+
+    return cell;
 
   }
 
@@ -143,14 +163,12 @@ public class MachinePanel implements EditorPanel
    * @param name the name of the new state view
    * @param bg the background color of the new state view
    * @param raised signals if border is raised
-   * @param w the width of this state view
-   * @param h the hight of thsi state view
    * @param finalState signals if state is a final state
    * @return {@link DefaultStateView} the new created state view
    */
   public static DefaultStateView createStateView ( double x, double y,
-      String name, Color bg, boolean raised, double w, double h,
-      boolean finalState )
+      State pState, String name, Color bg, 
+      boolean startState, boolean finalState )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
     if ( finalState )
@@ -158,7 +176,7 @@ public class MachinePanel implements EditorPanel
     State state = null;
     try
     {
-      state = name == null ? null : new State ( new Alphabet (), name, false,
+      state = pState != null ? pState : new State ( new Alphabet (), name, startState,
           finalState );
     }
     catch ( StateException exc )
@@ -173,25 +191,15 @@ public class MachinePanel implements EditorPanel
 
     // Set bounds
     GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
-        x, y, w, h ) );
+        x - 35 , y - 35, 70, 70 ) );
 
     // Set fill color
     if ( bg != null )
       GraphConstants.setGradientColor ( cell.getAttributes (), bg );
     GraphConstants.setOpaque ( cell.getAttributes (), true );
 
-    // Set raised border
-    if ( raised )
-    {
-      GraphConstants.setBorder ( cell.getAttributes (), BorderFactory
-          .createRaisedBevelBorder () );
-
-    }
-    else
-    {
       // Set black border
       GraphConstants.setBorderColor ( cell.getAttributes (), Color.black );
-    }
 
     // Set the line width
     GraphConstants.setLineWidth ( cell.getAttributes (), 2 );
@@ -362,7 +370,6 @@ public class MachinePanel implements EditorPanel
 
     // Set states to not editable
     this.graph.setEditable ( false );
-    
 
   }
 
@@ -379,18 +386,21 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () == MouseEvent.BUTTON3 )
-        {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
-          if ( object == null )
-            createPopupMenu ();
-          else if ( object instanceof DefaultTransitionView )
-            createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-          else
-            createStatePopupMenu ( ( DefaultStateView ) object );
-        }
+        if ( e.getButton () != MouseEvent.BUTTON3 )
+          return;
+        JPopupMenu popup = null;
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                .getY () );
+        if ( object == null )
+          createPopupMenu ();
+        else if ( object instanceof DefaultTransitionView )
+          popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        else
+          popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          
+        if ( popup != null )
+          popup.show ( MachinePanel.this.machinePanel.diagrammContentPanel, e.getX (), e.getY () );
       }
     };
 
@@ -405,9 +415,11 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
+        if ( e.getButton () != MouseEvent.BUTTON1 )
+          return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, "Z" //$NON-NLS-1$
-                + MachinePanel.statecount, null, false ) );
+            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+                + MachinePanel.statecount, null, false, false ) );
         MachinePanel.statecount++ ;
       }
     };
@@ -418,11 +430,14 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
+        if ( e.getButton () != MouseEvent.BUTTON1 )
+          return;
+        
+        // if drag in progress return
+        if ( MachinePanel.this.dragged )
+          return;
         try
         {
-          if ( MachinePanel.this.dragged )
-            return;
-
           if ( MachinePanel.this.firstState == null )
           {
             MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
@@ -438,44 +453,14 @@ public class MachinePanel implements EditorPanel
                 .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
                     .getY () );
 
-            if ( target != null )
+            if ( target == null )
             {
-              TransitionDialog dialog = new TransitionDialog (
-                  MachinePanel.this.parent, MachinePanel.this.alphabet );
-              dialog.show ();
-              if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
-              {
-                // TODO
-                Transition newTransition;
-                if ( dialog.getAlphabet () == null )
-                  newTransition = new Transition ( MachinePanel.this.alphabet,
-                      MachinePanel.this.firstState.getState (), target
-                      .getState () );
-                else 
-                  newTransition = new Transition ( MachinePanel.this.alphabet,
-                      MachinePanel.this.firstState.getState (), target
-                          .getState (), dialog.getAlphabet ().getSymbols () );
-                DefaultEdge newEdge = new DefaultTransitionView (
-                    newTransition,
-                    dialog.getAlphabet () != null ? dialog.getAlphabet ().toString () :
-                      dialog.epsilon.toString ());
-                
-                
-                GraphConstants.setLineEnd ( newEdge.getAttributes (),
-                    GraphConstants.ARROW_CLASSIC );
-                GraphConstants.setEndFill ( newEdge.getAttributes (), true );
-
-                MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
-                    newEdge, MachinePanel.this.firstState.getChildAt ( 0 ),
-                    target.getChildAt ( 0 ) );
-                dialog.dispose ();
-              }
-            }
-            else
-            {
-              target = createStateView ( e.getPoint ().x, e.getPoint ().y, "Z" //$NON-NLS-1$
-                  + MachinePanel.statecount, null, false );
+              target = createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+                  + MachinePanel.statecount, null, false, false );
+              MachinePanel.statecount++ ;
               MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
+            }
+              
               TransitionDialog dialog = new TransitionDialog (
                   MachinePanel.this.parent, MachinePanel.this.alphabet );
               dialog.show ();
@@ -486,17 +471,16 @@ public class MachinePanel implements EditorPanel
                 if ( dialog.getAlphabet () == null )
                   newTransition = new Transition ( MachinePanel.this.alphabet,
                       MachinePanel.this.firstState.getState (), target
-                      .getState () );
-                else 
+                          .getState () );
+                else
                   newTransition = new Transition ( MachinePanel.this.alphabet,
                       MachinePanel.this.firstState.getState (), target
                           .getState (), dialog.getAlphabet ().getSymbols () );
                 DefaultEdge newEdge = new DefaultTransitionView (
-                    newTransition,
-                    dialog.getAlphabet () != null ? dialog.getAlphabet ().toString () :
-                      dialog.epsilon.toString ());
-                
-                
+                    newTransition, dialog.getAlphabet () != null ? dialog
+                        .getAlphabet ().toString () : dialog.epsilon
+                        .toString () );
+
                 GraphConstants.setLineEnd ( newEdge.getAttributes (),
                     GraphConstants.ARROW_CLASSIC );
                 GraphConstants.setEndFill ( newEdge.getAttributes (), true );
@@ -505,12 +489,13 @@ public class MachinePanel implements EditorPanel
                     newEdge, MachinePanel.this.firstState.getChildAt ( 0 ),
                     target.getChildAt ( 0 ) );
                 dialog.dispose ();
+                
+                MachinePanel.this.firstState = null;
+                MachinePanel.this.tmpTransition = null;
+                MachinePanel.this.tmpState = null;
               }
             }
-            MachinePanel.this.firstState = null;
-            MachinePanel.this.tmpTransition = null;
-            MachinePanel.this.tmpState = null;
-          }
+         
         }
         catch ( TransitionSymbolNotInAlphabetException exc )
         {
@@ -540,6 +525,8 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseReleased ( MouseEvent e )
       {
+        if ( e.getButton () != MouseEvent.BUTTON1 )
+          return;
         try
         {
           if ( !MachinePanel.this.dragged )
@@ -564,16 +551,15 @@ public class MachinePanel implements EditorPanel
               if ( dialog.getAlphabet () == null )
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
-                    .getState () );
-              else 
+                        .getState () );
+              else
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
                         .getState (), dialog.getAlphabet ().getSymbols () );
-              DefaultEdge newEdge = new DefaultTransitionView (
-                  newTransition,
-                  dialog.getAlphabet () != null ? dialog.getAlphabet ().toString () :
-                    dialog.epsilon.toString ());
-              
+              DefaultEdge newEdge = new DefaultTransitionView ( newTransition,
+                  dialog.getAlphabet () != null ? dialog.getAlphabet ()
+                      .toString () : dialog.epsilon.toString () );
+
               GraphConstants.setLineEnd ( newEdge.getAttributes (),
                   GraphConstants.ARROW_CLASSIC );
               GraphConstants.setEndFill ( newEdge.getAttributes (), true );
@@ -587,8 +573,9 @@ public class MachinePanel implements EditorPanel
           }
           else
           {
-            target = createStateView ( e.getPoint ().x, e.getPoint ().y, "Z" //$NON-NLS-1$
-                + MachinePanel.statecount, null, false );
+            target = createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+                + MachinePanel.statecount, null, false, false );
+            MachinePanel.statecount++ ;
             MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
             TransitionDialog dialog = new TransitionDialog (
                 MachinePanel.this.parent, MachinePanel.this.alphabet );
@@ -600,16 +587,15 @@ public class MachinePanel implements EditorPanel
               if ( dialog.getAlphabet () == null )
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
-                    .getState () );
-              else 
+                        .getState () );
+              else
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
                         .getState (), dialog.getAlphabet ().getSymbols () );
-              DefaultEdge newEdge = new DefaultTransitionView (
-                  newTransition,
-                  dialog.getAlphabet () != null ? dialog.getAlphabet ().toString () :
-                    dialog.epsilon.toString ());
-              
+              DefaultEdge newEdge = new DefaultTransitionView ( newTransition,
+                  dialog.getAlphabet () != null ? dialog.getAlphabet ()
+                      .toString () : dialog.epsilon.toString () );
+
               GraphConstants.setLineEnd ( newEdge.getAttributes (),
                   GraphConstants.ARROW_CLASSIC );
               GraphConstants.setEndFill ( newEdge.getAttributes (), true );
@@ -678,8 +664,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createStateView ( x, y, null, null,
-              true, 1, 1, false );
+          MachinePanel.this.tmpState = createStateView ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -715,8 +700,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createStateView ( x, y, null, null,
-              true, 1, 1, false );
+          MachinePanel.this.tmpState = createStateView ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -744,9 +728,11 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
+        if ( e.getButton () != MouseEvent.BUTTON1 )
+          return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, "Z" //$NON-NLS-1$
-                + MachinePanel.statecount, Color.green, false ) );
+            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+                + MachinePanel.statecount, Color.green, true, false ) );
         MachinePanel.statecount++ ;
       }
     };
@@ -761,9 +747,11 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
+        if ( e.getButton () != MouseEvent.BUTTON1 )
+          return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, "Z" //$NON-NLS-1$
-                + MachinePanel.statecount, null, true ) );
+            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+                + MachinePanel.statecount, null, false, true ) );
         MachinePanel.statecount++ ;
       }
     };
@@ -772,18 +760,19 @@ public class MachinePanel implements EditorPanel
 
   private void createPopupMenu ()
   {
-    System.err.println("standard");
+    System.err.println ( "standard" );
   }
 
 
-  private void createTransitionPopupMenu ( DefaultTransitionView transition )
+  private TransitionPopupMenu createTransitionPopupMenu (
+      DefaultTransitionView pTransition )
   {
-    System.err.println("transition");
+    return new TransitionPopupMenu ( this.model, pTransition );
   }
 
 
-  private void createStatePopupMenu ( DefaultStateView state )
+  private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
-    System.err.println("state");
+    return new StatePopupMenu ( this.graph, this.model, pState );
   }
 }

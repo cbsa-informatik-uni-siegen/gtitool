@@ -42,7 +42,7 @@ public class TransitionDialog
     /**
      * The item list.
      */
-    private ArrayList < Symbol > list;
+    private ArrayList < String > list;
 
 
     /**
@@ -50,7 +50,7 @@ public class TransitionDialog
      */
     public SymbolListModel ()
     {
-      this.list = new ArrayList < Symbol > ();
+      this.list = new ArrayList < String > ();
     }
 
 
@@ -59,7 +59,7 @@ public class TransitionDialog
      * 
      * @param pItem The item to add.
      */
-    public final void add ( Symbol pItem )
+    public final void add ( String pItem )
     {
       this.list.add ( pItem );
       fireIntervalAdded ( this, this.list.size () - 1, this.list.size () - 1 );
@@ -84,17 +84,6 @@ public class TransitionDialog
 
 
     /**
-     * Get the List containing all {@link Symbol}s
-     * 
-     * @return List with all Symbols
-     */
-    public ArrayList < Symbol > getList ()
-    {
-      return this.list;
-    }
-
-
-    /**
      * Returns the length of the list.
      * 
      * @return The length of the list.
@@ -111,7 +100,7 @@ public class TransitionDialog
      * 
      * @param pItem The item to add.
      */
-    public final void remove ( Symbol pItem )
+    public final void remove ( String pItem )
     {
       int index = this.list.indexOf ( pItem );
       this.list.remove ( pItem );
@@ -154,7 +143,7 @@ public class TransitionDialog
 
 
   /** The epsilon {@link Symbol} */
-  public Symbol epsilon;
+  public String epsilon;
 
 
   /**
@@ -171,15 +160,7 @@ public class TransitionDialog
     this.transitionDialog = new TransitionDialogForm ( pParent, true );
     this.transitionDialog.setLogic ( this );
 
-    try
-    {
-      this.epsilon = new Symbol ( "\u03B5" ); //$NON-NLS-1$
-    }
-    catch ( SymbolException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+      this.epsilon =  "\u03B5" ; //$NON-NLS-1$
     initialize ();
   }
 
@@ -218,7 +199,7 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveLeft ()
   {
-    Symbol symbol = ( Symbol ) this.transitionDialog.jListChangeOverSet
+    String symbol = ( String ) this.transitionDialog.jListChangeOverSet
         .getSelectedValue ();
     this.modelAlphabet.add ( symbol );
     this.modelChangeOverSet.remove ( symbol );
@@ -237,7 +218,7 @@ public class TransitionDialog
   public void handleActionPerformedMoveRight ()
   {
     this.modelChangeOverSet.remove ( this.epsilon );
-    Symbol symbol = ( Symbol ) this.transitionDialog.jListAlphabet
+    String symbol = ( String ) this.transitionDialog.jListAlphabet
         .getSelectedValue ();
     this.modelChangeOverSet.add ( symbol );
     this.modelAlphabet.remove ( symbol );
@@ -256,10 +237,21 @@ public class TransitionDialog
     this.transitionDialog.setVisible ( false );
     try
     {
-      if ( this.modelChangeOverSet.getList().contains ( this.epsilon ) )
+      if ( this.modelChangeOverSet.list.contains ( this.epsilon ) )
         this.alphabet = null ;
-      else
-        this.alphabet = new Alphabet ( this.modelChangeOverSet.getList () );
+      else{
+        try {
+        ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+        for ( String symbol : this.modelChangeOverSet.list )
+          symbols.add ( new Symbol ( symbol ) );
+        this.alphabet = new Alphabet ( symbols );
+        }
+        catch ( SymbolException e ) {
+          e.printStackTrace ();
+          System.exit ( 1 );
+        }
+      }
+        
     }
     catch ( AlphabetException e )
     {
@@ -304,7 +296,7 @@ public class TransitionDialog
     this.modelAlphabet = new SymbolListModel ();
 
     for ( Symbol symbol : this.alphabet )
-      this.modelAlphabet.add ( symbol );
+      this.modelAlphabet.add ( symbol.getName () );
     this.transitionDialog.jListAlphabet.setModel ( this.modelAlphabet );
 
     this.modelChangeOverSet = new SymbolListModel ();

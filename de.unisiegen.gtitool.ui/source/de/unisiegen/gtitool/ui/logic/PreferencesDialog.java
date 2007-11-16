@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -628,8 +627,9 @@ public final class PreferencesDialog
     this.gui = new PreferencesDialogForm ( this, pParent );
     try
     {
-      this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
-          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+      // TODO Find a way for java 1.5
+      // this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
+      // "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
     }
     catch ( Exception e )
     {

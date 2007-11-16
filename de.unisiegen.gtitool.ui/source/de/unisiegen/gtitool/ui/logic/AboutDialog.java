@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
@@ -56,8 +55,9 @@ public final class AboutDialog
     this.gui = new AboutDialogForm ( this, pParent );
     try
     {
-      this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
-          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+      // TODO Find a way for java 1.5
+      // this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
+      // "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
     }
     catch ( Exception e )
     {

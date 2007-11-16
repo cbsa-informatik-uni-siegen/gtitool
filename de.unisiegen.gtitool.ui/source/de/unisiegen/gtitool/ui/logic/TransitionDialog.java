@@ -172,8 +172,9 @@ public class TransitionDialog
     this.transitionDialog = new TransitionDialogForm ( pParent, true );
     try
     {
-      this.transitionDialog.setIconImage ( ImageIO.read ( getClass ().getResource (
-          "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
+      // TODO Find a way for java 1.5
+      // this.transitionDialog.setIconImage ( ImageIO.read ( getClass ().getResource (
+      //    "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
     }
     catch ( Exception e )
     {

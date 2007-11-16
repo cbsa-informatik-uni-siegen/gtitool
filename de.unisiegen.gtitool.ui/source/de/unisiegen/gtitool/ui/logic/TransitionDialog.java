@@ -220,6 +220,8 @@ public class TransitionDialog
     this.modelChangeOverSet.remove ( this.epsilon );
     String symbol = ( String ) this.transitionDialog.jListAlphabet
         .getSelectedValue ();
+    if (symbol == null)
+      return;
     this.modelChangeOverSet.add ( symbol );
     this.modelAlphabet.remove ( symbol );
     this.transitionDialog.jListAlphabet.repaint ();

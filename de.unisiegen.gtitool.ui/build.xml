@@ -187,7 +187,59 @@
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
-	
+
+	<!-- update htdocs -->
+	<target name="update-htdocs">
+		<!-- files -->
+		<delete>
+			<fileset dir="${basedir}/../gtitool.htdocs/files">
+				<include name="gtitool-*-src.tar.bz2"/>
+				<include name="gtitool-*-src.zip"/>
+				<include name="gtitool-*.tar.bz2"/>
+				<include name="gtitool-*.zip"/>
+		 	</fileset>
+		</delete>
+		<copy todir="${basedir}/../gtitool.htdocs/files">
+			<fileset dir="${distdir}">
+				<include name="gtitool-${de.unisiegen.gtitool.version}-src.tar.bz2"/>
+				<include name="gtitool-${de.unisiegen.gtitool.version}-src.zip"/>
+				<include name="gtitool-${de.unisiegen.gtitool.version}.tar.bz2"/>
+				<include name="gtitool-${de.unisiegen.gtitool.version}.zip"/>
+			</fileset>
+		</copy>
+		<!-- webstart -->
+		<delete>
+			<fileset dir="${basedir}/../gtitool.htdocs/webstart">
+				<include name="de.unisiegen.gtitool.ui-*.jar"/>
+				<include name="de.unisiegen.gtitool.core-*.jar"/>
+				<include name="java-cup-11a-gtitool-runtime.jar"/>
+				<include name="jgraph.jar"/>
+				<include name="log4j-1.2.14.jar"/>
+			</fileset>
+		</delete>
+		<copy todir="${basedir}/../gtitool.htdocs/webstart">
+			<fileset dir="${distdir}">
+				<include name="de.unisiegen.gtitool.ui-${de.unisiegen.gtitool.version}.jar"/>
+				<include name="de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}.jar"/>
+				<include name="java-cup-11a-gtitool-runtime.jar"/>
+				<include name="jgraph.jar"/>
+				<include name="log4j-1.2.14.jar"/>
+			</fileset>
+		</copy>
+		<!-- update webstart.jnlp -->
+		<copy tofile="${basedir}/../gtitool.htdocs/webstart/webstart.jnlp" file="${basedir}/../gtitool.htdocs/webstart/webstart_version.jnlp" overwrite="true">
+			<filterset>
+				<filter token="de.unisiegen.gtitool.version" value="${de.unisiegen.gtitool.version}" />
+			</filterset>
+		</copy>
+		<!-- update index.html -->
+		<copy tofile="${basedir}/../gtitool.htdocs/index.html" file="${basedir}/../gtitool.htdocs/index_version.html" overwrite="true">
+			<filterset>
+				<filter token="de.unisiegen.gtitool.version" value="${de.unisiegen.gtitool.version}" />
+			</filterset>
+		</copy>
+	</target>
+
 	<!-- generate -->
 	<target name="generate" description="Generate the versions interface">
 		<mkdir dir="${basedir}/source-generated/de/unisiegen/gtitool/ui" />

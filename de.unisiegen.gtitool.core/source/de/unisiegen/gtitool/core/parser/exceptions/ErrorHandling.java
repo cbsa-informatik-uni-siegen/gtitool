@@ -54,8 +54,7 @@ public abstract class ErrorHandling
   public static final void expect ( String pSymbol, String pInsertText,
       int pLeft, int pRight, String ... pTokenSequence )
   {
-    Preferences preferences = Preferences
-        .userNodeForPackage ( de.unisiegen.gtitool.core.Messages.class );
+    Preferences preferences = Preferences.userRoot ();
     int r = preferences.getInt ( "PreferencesDialog.ColorSymbolR", 255 ); //$NON-NLS-1$
     int g = preferences.getInt ( "PreferencesDialog.ColorSymbolG", 127 ); //$NON-NLS-1$
     int b = preferences.getInt ( "PreferencesDialog.ColorSymbolB", 0 ); //$NON-NLS-1$

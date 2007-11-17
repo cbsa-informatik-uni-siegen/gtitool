@@ -16,11 +16,10 @@ import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.AttributeMap.SerializableRectangle2D;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -37,25 +36,30 @@ public class StatePopupMenu extends JPopupMenu
    */
   private static final long serialVersionUID = -9006449214284785143L;
 
+
   /**
    * The {@link DefaultStateView}
    */
   private DefaultStateView state;
+
 
   /**
    * The {@link JGraph}
    */
   private JGraph graph;
 
+
   /**
    * {@link GraphModel}
    */
   private GraphModel model;
 
+
   /**
    * The delete item
    */
   private JMenuItem delete;
+
 
   /**
    * The start state checkbox item
@@ -67,6 +71,12 @@ public class StatePopupMenu extends JPopupMenu
    * The final state checkbox item
    */
   private JCheckBoxMenuItem finalState;
+
+
+  /**
+   * The rename checkbox item
+   */
+  private JMenuItem rename;
 
 
   /**
@@ -83,7 +93,7 @@ public class StatePopupMenu extends JPopupMenu
     this.model = pModel;
     this.state = pState;
     populateMenues ();
-    
+
   }
 
 
@@ -93,8 +103,7 @@ public class StatePopupMenu extends JPopupMenu
   protected void populateMenues ()
   {
 
-    this.delete = new JMenuItem (  Messages
-        .getString ("MachinePanel.Delete" ) ); //$NON-NLS-1$
+    this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
@@ -121,7 +130,8 @@ public class StatePopupMenu extends JPopupMenu
     } );
     add ( this.delete );
 
-    this.startState = new JCheckBoxMenuItem ( Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+    this.startState = new JCheckBoxMenuItem ( Messages
+        .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
     this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
     this.startState.addActionListener ( new ActionListener ()
@@ -135,11 +145,19 @@ public class StatePopupMenu extends JPopupMenu
             !StatePopupMenu.this.state.getState ().isStartState () );
         SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
             .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
-        StatePopupMenu.this.graph.getGraphLayoutCache ().insert (
-            MachinePanel.createStateView ( r.x + 35, r.y + 35, StatePopupMenu.this.state
-                .getState (), StatePopupMenu.this.state.getState ().getName (), StatePopupMenu.this.state.getState ()
-                .isStartState () ? Color.green : null, StatePopupMenu.this.state.getState ()
-                .isStartState (), StatePopupMenu.this.state.getState ().isFinalState () ) );
+        StatePopupMenu.this.graph
+            .getGraphLayoutCache ()
+            .insert (
+                MachinePanel
+                    .createStateView (
+                        r.x + 35,
+                        r.y + 35,
+                        StatePopupMenu.this.state.getState (),
+                        StatePopupMenu.this.state.getState ().getName (),
+                        StatePopupMenu.this.state.getState ().isStartState () ? Color.green
+                            : null, StatePopupMenu.this.state.getState ()
+                            .isStartState (), StatePopupMenu.this.state
+                            .getState ().isFinalState () ) );
 
         StatePopupMenu.this.model.remove ( new Object []
         { StatePopupMenu.this.state } );
@@ -148,7 +166,8 @@ public class StatePopupMenu extends JPopupMenu
     this.startState.setSelected ( this.state.getState ().isStartState () );
     add ( this.startState );
 
-    this.finalState = new JCheckBoxMenuItem ( Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+    this.finalState = new JCheckBoxMenuItem ( Messages
+        .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
     this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
     this.finalState.addActionListener ( new ActionListener ()
@@ -162,11 +181,19 @@ public class StatePopupMenu extends JPopupMenu
             !StatePopupMenu.this.state.getState ().isFinalState () );
         SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
             .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
-        StatePopupMenu.this.graph.getGraphLayoutCache ().insert (
-            MachinePanel.createStateView ( r.x + 35, r.y + 35, StatePopupMenu.this.state
-                .getState (), StatePopupMenu.this.state.getState ().getName (), StatePopupMenu.this.state.getState ()
-                .isStartState () ? Color.green : null, StatePopupMenu.this.state.getState ()
-                .isStartState (), StatePopupMenu.this.state.getState ().isFinalState () ) );
+        StatePopupMenu.this.graph
+            .getGraphLayoutCache ()
+            .insert (
+                MachinePanel
+                    .createStateView (
+                        r.x + 35,
+                        r.y + 35,
+                        StatePopupMenu.this.state.getState (),
+                        StatePopupMenu.this.state.getState ().getName (),
+                        StatePopupMenu.this.state.getState ().isStartState () ? Color.green
+                            : null, StatePopupMenu.this.state.getState ()
+                            .isStartState (), StatePopupMenu.this.state
+                            .getState ().isFinalState () ) );
 
         StatePopupMenu.this.model.remove ( new Object []
         { StatePopupMenu.this.state } );
@@ -174,5 +201,55 @@ public class StatePopupMenu extends JPopupMenu
     } );
     this.finalState.setSelected ( this.state.getState ().isFinalState () );
     add ( this.finalState );
+
+    this.rename = new JMenuItem ( Messages
+        .getString ( "MachinePanel.Rename" ) ); //$NON-NLS-1$
+//    this.rename.setIcon ( new ImageIcon ( getClass ().getResource (
+//        "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
+    this.rename.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
+      {
+        while ( true )
+        {
+          String name = JOptionPane.showInputDialog ( Messages.getString (
+              "MachinePanel.RenameText", state.getState ().getName () ) );
+          try
+          {
+            if ( name != null )
+            {
+              state.getState ().setName ( name );
+              SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
+              .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
+              StatePopupMenu.this.graph
+              .getGraphLayoutCache ()
+              .insert (
+                  MachinePanel
+                      .createStateView (
+                          r.x + 35,
+                          r.y + 35,
+                          StatePopupMenu.this.state.getState (),
+                          StatePopupMenu.this.state.getState ().getName (),
+                          StatePopupMenu.this.state.getState ().isStartState () ? Color.green
+                              : null, StatePopupMenu.this.state.getState ()
+                              .isStartState (), StatePopupMenu.this.state
+                              .getState ().isFinalState () ) );
+
+          StatePopupMenu.this.model.remove ( new Object []
+          { StatePopupMenu.this.state } );
+            }
+            break;
+          }
+          catch ( StateException e1 )
+          {
+            // Nothing to do
+          }
+        }
+      }
+    } );
+    add ( this.rename );
   }
 }

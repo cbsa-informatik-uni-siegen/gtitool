@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.exceptions.alphabet;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -16,14 +15,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class AlphabetException extends CoreException
+public abstract class AlphabetException extends CoreException
 {
-
-  /**
-   * The serial version uid.
-   */
-  private static final long serialVersionUID = 8267857615201989774L;
-
 
   /**
    * The {@link Alphabet}.
@@ -64,12 +57,6 @@ public final class AlphabetException extends CoreException
           "symbol list must contain at least two elements" ); //$NON-NLS-1$
     }
     this.symbolList = pSymbolList;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
-        "AlphabetException.MoreThanOneSymbolDescription", this.symbolList.get ( //$NON-NLS-1$
-            0 ).getName (), this.alphabet.toString () ) );
   }
 
 
@@ -103,7 +90,7 @@ public final class AlphabetException extends CoreException
    * @see Throwable#toString()
    */
   @Override
-  public final String toString ()
+  public String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ( super.toString () );

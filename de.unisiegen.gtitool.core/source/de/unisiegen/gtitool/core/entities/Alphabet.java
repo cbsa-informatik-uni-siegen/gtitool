@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 
 
 /**
@@ -126,7 +127,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
         }
       }
       negativeSymbols.add ( pSymbol );
-      throw new AlphabetException ( this, negativeSymbols );
+      throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -228,7 +229,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
           negativeSymbols.add ( current );
         }
       }
-      throw new AlphabetException ( this, negativeSymbols );
+      throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
   }
 

@@ -203,8 +203,8 @@ public class StatePopupMenu extends JPopupMenu
 
     this.rename = new JMenuItem ( Messages
         .getString ( "MachinePanel.Rename" ) ); //$NON-NLS-1$
-//    this.rename.setIcon ( new ImageIcon ( getClass ().getResource (
-//        "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
+    this.rename.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
     this.rename.addActionListener ( new ActionListener ()
     {
 

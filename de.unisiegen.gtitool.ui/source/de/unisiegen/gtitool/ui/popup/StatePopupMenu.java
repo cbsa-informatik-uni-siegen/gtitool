@@ -122,8 +122,7 @@ public class StatePopupMenu extends JPopupMenu
             "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.remove ( new Object []
-          { StatePopupMenu.this.state } );
+          StatePopupMenu.this.model.remove ( state.getRemoveObjects () );
         }
 
       }

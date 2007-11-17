@@ -124,13 +124,13 @@ public class MachinePanel implements EditorPanel
 
 
   /**
-   * Create a new State view
+   * Create a temporary Object to paint the Transiton on Mouse move
    * 
    * @param x the x position of the new state view
    * @param y the y position of the new state view
-   * @return {@link DefaultGraphCell} the new created cell
+   * @return {@link DefaultGraphCell} the new created tmp Object
    */
-  public static DefaultGraphCell createStateView ( double x, double y )
+  public static DefaultGraphCell createTmpObject ( double x, double y )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
 
@@ -164,7 +164,6 @@ public class MachinePanel implements EditorPanel
    * @param y the y position of the new state view
    * @param name the name of the new state view
    * @param bg the background color of the new state view
-   * @param raised signals if border is raised
    * @param finalState signals if state is a final state
    * @return {@link DefaultStateView} the new created state view
    */
@@ -210,6 +209,53 @@ public class MachinePanel implements EditorPanel
     cell.addPort ();
 
     return cell;
+  }
+  
+  private void createTransitionView ( DefaultStateView target, Alphabet pAlphabet){
+    try
+    {
+    Transition newTransition;
+    if ( pAlphabet == null )
+      newTransition = new Transition ( MachinePanel.this.alphabet,
+          MachinePanel.this.firstState.getState (), target
+              .getState () );
+    else
+      newTransition = new Transition ( MachinePanel.this.alphabet,
+          MachinePanel.this.firstState.getState (), target
+              .getState (), pAlphabet.getSymbols () );
+    DefaultTransitionView newEdge = new DefaultTransitionView ( newTransition,
+        pAlphabet != null ? pAlphabet
+            .toString () : TransitionDialog.epsilon );
+
+    GraphConstants.setLineEnd ( newEdge.getAttributes (),
+        GraphConstants.ARROW_CLASSIC );
+    GraphConstants.setEndFill ( newEdge.getAttributes (), true );
+
+    MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
+        newEdge, this.firstState.getChildAt ( 0 ),
+        target.getChildAt ( 0 ) );
+    target.addTransition ( newEdge );
+    this.firstState.addTransition ( newEdge );
+    
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      /*
+       * NOTICE This exception is thrown if a symbol should be added to a
+       * transition, but is not in the alphabet of the transition.
+       */
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      /*
+       * NOTICE This exception is thrown if a symbol should be added to a
+       * transition, but is already in the transition.
+       */
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -499,26 +545,7 @@ public class MachinePanel implements EditorPanel
                 MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
               }
 
-              Transition newTransition;
-              if ( dialog.getAlphabet () == null )
-                newTransition = new Transition ( MachinePanel.this.alphabet,
-                    MachinePanel.this.firstState.getState (), target
-                        .getState () );
-              else
-                newTransition = new Transition ( MachinePanel.this.alphabet,
-                    MachinePanel.this.firstState.getState (), target
-                        .getState (), dialog.getAlphabet ().getSymbols () );
-              DefaultEdge newEdge = new DefaultTransitionView ( newTransition,
-                  dialog.getAlphabet () != null ? dialog.getAlphabet ()
-                      .toString () : dialog.epsilon.toString () );
-
-              GraphConstants.setLineEnd ( newEdge.getAttributes (),
-                  GraphConstants.ARROW_CLASSIC );
-              GraphConstants.setEndFill ( newEdge.getAttributes (), true );
-
-              MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
-                  newEdge, MachinePanel.this.firstState.getChildAt ( 0 ),
-                  target.getChildAt ( 0 ) );
+              createTransitionView (target, dialog.getAlphabet ());
               dialog.dispose ();
             }
             MachinePanel.this.firstState = null;
@@ -527,24 +554,7 @@ public class MachinePanel implements EditorPanel
           }
 
         }
-        catch ( TransitionSymbolNotInAlphabetException exc )
-        {
-          /*
-           * NOTICE This exception is thrown if a symbol should be added to a
-           * transition, but is not in the alphabet of the transition.
-           */
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
-        catch ( TransitionSymbolOnlyOneTimeException exc )
-        {
-          /*
-           * NOTICE This exception is thrown if a symbol should be added to a
-           * transition, but is already in the transition.
-           */
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
+        
         catch ( ClassCastException exc )
         {
           // Nothing to do here
@@ -583,49 +593,13 @@ public class MachinePanel implements EditorPanel
               MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
             }
 
-            Transition newTransition;
-            if ( dialog.getAlphabet () == null )
-              newTransition = new Transition ( MachinePanel.this.alphabet,
-                  MachinePanel.this.firstState.getState (), target.getState () );
-            else
-              newTransition = new Transition ( MachinePanel.this.alphabet,
-                  MachinePanel.this.firstState.getState (), target.getState (),
-                  dialog.getAlphabet ().getSymbols () );
-            DefaultEdge newEdge = new DefaultTransitionView ( newTransition,
-                dialog.getAlphabet () != null ? dialog.getAlphabet ()
-                    .toString () : dialog.epsilon.toString () );
-
-            GraphConstants.setLineEnd ( newEdge.getAttributes (),
-                GraphConstants.ARROW_CLASSIC );
-            GraphConstants.setEndFill ( newEdge.getAttributes (), true );
-
-            MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
-                newEdge, MachinePanel.this.firstState.getChildAt ( 0 ),
-                target.getChildAt ( 0 ) );
+            createTransitionView ( target, dialog.getAlphabet () );
             dialog.dispose ();
           }
           MachinePanel.this.firstState = null;
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
           MachinePanel.this.dragged = false;
-        }
-        catch ( TransitionSymbolNotInAlphabetException exc )
-        {
-          /*
-           * NOTICE This exception is thrown if a symbol should be added to a
-           * transition, but is not in the alphabet of the transition.
-           */
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
-        catch ( TransitionSymbolOnlyOneTimeException exc )
-        {
-          /*
-           * NOTICE This exception is thrown if a symbol should be added to a
-           * transition, but is already in the transition.
-           */
-          exc.printStackTrace ();
-          System.exit ( 1 );
         }
         catch ( ClassCastException exc )
         {
@@ -660,7 +634,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createStateView ( x, y );
+          MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -696,7 +670,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createStateView ( x, y );
+          MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 

@@ -143,7 +143,7 @@ public class TransitionDialog
 
 
   /** The epsilon {@link Symbol} */
-  public String epsilon;
+  public static String epsilon;
 
 
   /**

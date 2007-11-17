@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 
+import java.util.ArrayList;
+
 import org.jgraph.graph.DefaultGraphCell;
 
 import de.unisiegen.gtitool.core.entities.State;
@@ -25,6 +27,10 @@ public class DefaultStateView extends DefaultGraphCell
   State state;
 
 
+  /** List with all objects which should be removed if this view is deleted */
+  private ArrayList < DefaultGraphCell > removeList;
+
+
   /**
    * Create a new {@link DefaultStateView}
    * 
@@ -35,6 +41,8 @@ public class DefaultStateView extends DefaultGraphCell
   {
     super ( pUserObject );
     this.state = pState;
+    this.removeList = new ArrayList < DefaultGraphCell > ();
+    this.removeList.add ( this );
   }
 
 
@@ -46,6 +54,28 @@ public class DefaultStateView extends DefaultGraphCell
   public State getState ()
   {
     return this.state;
+  }
+
+
+  /**
+   * Add a new Transition to this state view
+   * 
+   * @param transition
+   */
+  public void addTransition ( DefaultTransitionView transition )
+  {
+    this.removeList.add ( transition );
+  }
+
+
+  /**
+   * Get the Objects to remove if this view is deleted
+   * 
+   * @return Array containing all Objects to remove if this view is deleted
+   */
+  public Object [] getRemoveObjects ()
+  {
+    return this.removeList.toArray ();
   }
 
 }

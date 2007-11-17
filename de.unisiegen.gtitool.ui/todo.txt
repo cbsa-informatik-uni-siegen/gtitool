@@ -1,8 +1,6 @@
 *** Benny ***
-- Dialog zum ändern des Alphabets
-- Toolbar events mit core verknüpfen
-- KontextMenü für Transitionen und States
-- Abfragedialog bei neuer Transition
+
+
 - Zoom des jgraph
 - Notizen im Graph hinzufügen
 - DND bei Transitionsdialog einbauen

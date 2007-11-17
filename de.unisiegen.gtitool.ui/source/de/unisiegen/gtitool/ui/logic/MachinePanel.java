@@ -121,6 +121,7 @@ public class MachinePanel implements EditorPanel
 
   /** The alphabet of this Machine */
   private Alphabet alphabet;
+  
 
 
   /**
@@ -338,8 +339,12 @@ public class MachinePanel implements EditorPanel
   public void handleToolbarAlphabet ()
   {
     JDialog changeAlphabetDialog = new JDialog ( this.parent, true );
-    // alphabet.setContentPane ( this.alphabetButtons );
-    changeAlphabetDialog.setTitle ( "Edit Alphabet" ); //$NON-NLS-1$
+    
+    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel ();
+    editAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
+    changeAlphabetDialog.add ( editAlphabetPanel.getPanel () );
+    
+    changeAlphabetDialog.setTitle ( Messages.getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
     changeAlphabetDialog.pack ();
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( changeAlphabetDialog.getWidth () / 2 );

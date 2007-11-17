@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -40,7 +42,11 @@ public class NewDialog
   /**
    * The {@link Alphabet} for the new file
    */
-  Alphabet alphabet;
+  private Alphabet alphabet;
+  
+  private EditAlphabetPanel editMachineAlphabetPanel;
+  
+  private EditAlphabetPanel editGrammarAlphabetPanel;
 
 
   /**
@@ -55,10 +61,20 @@ public class NewDialog
     this.newDialogForm.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();
-    this.newDialogForm.jTextPaneMachineAlphabet.setText ( AlphabetParser
-        .createString ( this.alphabet ) );
-    this.newDialogForm.jTextPaneGrammarAlphabet.setText ( AlphabetParser
-        .createString ( this.alphabet ) );
+    this.editMachineAlphabetPanel = new EditAlphabetPanel ();
+    this.editMachineAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
+    this.editGrammarAlphabetPanel = new EditAlphabetPanel ();
+    this.editGrammarAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
+    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    gridBagConstraints.insets = new Insets ( 0, 5, 0, 5 );
+    this.newDialogForm.bodyPanelGrammar.add ( this.editGrammarAlphabetPanel.getPanel (), gridBagConstraints );
+    this.newDialogForm.bodyPanelMachine.add ( this.editMachineAlphabetPanel.getPanel (), gridBagConstraints );
+    
 
   }
 
@@ -87,55 +103,10 @@ public class NewDialog
   {
     if ( this.newDialogForm.isCanceled () )
       return null;
-    try
-    {
-      this.alphabet = AlphabetParser
-          .createAlphabet ( this.newDialogForm.jTextPaneMachineAlphabet
-              .getText () );
+      this.alphabet = this.editMachineAlphabetPanel.styledAlphabetParserPanel.getAlphabet ();
       if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
         return new MachinePanel ( this.parent, this.alphabet );
       return new GrammarPanel ( this.parent, this.alphabet );
-    }
-    catch ( AlphabetException e )
-    {
-      /*
-       * TODOBenny Handle the error. Happens if the user wants to add a symbol
-       * more than one time.
-       */
-      return null;
-    }
-    catch ( SymbolException e )
-    {
-      /*
-       * This should not happen. The SymbolException is thrown if a symbol with
-       * an empty name should be created.
-       */
-      e.printStackTrace ();
-      return null;
-    }
-  }
-
-
-  /**
-   * Handle the Key Typed Event for the Text Panes
-   * 
-   * @param pKeyEvent The fired {@link KeyEvent}
-   */
-  public void handleKeyTypedEvent ( KeyEvent pKeyEvent )
-  {
-    if ( !AlphabetParser.checkInput ( pKeyEvent.getKeyChar () ) )
-    {
-      pKeyEvent.setKeyChar ( '\u0000' );
-    }
-    if ( this.newDialogForm.jTextPaneMachineAlphabet.equals ( pKeyEvent
-        .getSource () ) )
-      this.newDialogForm.jTextPaneGrammarAlphabet
-          .setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText ()
-              + pKeyEvent.getKeyChar () );
-    else
-      this.newDialogForm.jTextPaneMachineAlphabet
-          .setText ( ( ( JTextPane ) pKeyEvent.getSource () ).getText ()
-              + pKeyEvent.getKeyChar () );
   }
 
 

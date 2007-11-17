@@ -14,7 +14,6 @@ import org.jgraph.graph.GraphModel;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
@@ -69,7 +68,8 @@ public class TransitionPopupMenu extends JPopupMenu
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            delete.setText ( Messages.getString ( "MachinePanel.Delete" ) );
+            TransitionPopupMenu.this.delete.setText ( Messages
+                .getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
           }
         });
   }

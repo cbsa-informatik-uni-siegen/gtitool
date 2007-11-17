@@ -22,7 +22,7 @@ public class GPCellViewFactory extends DefaultCellViewFactory {
    */
   private static final long serialVersionUID = -2222911017108871188L;
   
-  public static final String VIEW_CLASS_KEY = "viewClassKey";
+  public static final String VIEW_CLASS_KEY = "viewClassKey"; //$NON-NLS-1$
 
   /**
 	 * TODO

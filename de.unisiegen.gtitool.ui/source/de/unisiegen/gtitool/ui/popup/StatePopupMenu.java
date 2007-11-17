@@ -122,7 +122,7 @@ public class StatePopupMenu extends JPopupMenu
             "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.remove ( state.getRemoveObjects () );
+          StatePopupMenu.this.model.remove ( StatePopupMenu.this.state.getRemoveObjects () );
         }
 
       }
@@ -215,12 +215,12 @@ public class StatePopupMenu extends JPopupMenu
         while ( true )
         {
           String name = JOptionPane.showInputDialog ( Messages.getString (
-              "MachinePanel.RenameText", state.getState ().getName () ) );
+              "MachinePanel.RenameText", StatePopupMenu.this.state.getState ().getName () ) ); //$NON-NLS-1$
           try
           {
             if ( name != null )
             {
-              state.getState ().setName ( name );
+              StatePopupMenu.this.state.getState ().setName ( name );
               SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
               .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
               StatePopupMenu.this.graph

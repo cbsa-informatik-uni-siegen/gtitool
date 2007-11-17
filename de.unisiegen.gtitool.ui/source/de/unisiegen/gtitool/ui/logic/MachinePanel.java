@@ -122,6 +122,10 @@ public class MachinePanel implements EditorPanel
   /** The alphabet of this Machine */
   private Alphabet alphabet;
   
+  /** The zoom factor for this graph */
+  private double zoomFactor;
+  
+  
 
 
   /**
@@ -163,8 +167,10 @@ public class MachinePanel implements EditorPanel
    * 
    * @param x the x position of the new state view
    * @param y the y position of the new state view
+   * @param pState the state represented via this view
    * @param name the name of the new state view
    * @param bg the background color of the new state view
+   * @param startState signals if this state is a start state
    * @param finalState signals if state is a final state
    * @return {@link DefaultStateView} the new created state view
    */
@@ -193,7 +199,7 @@ public class MachinePanel implements EditorPanel
 
     // Set bounds
     GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
-        x - 35, y - 35, 70, 70 ) );
+        x - 35 , y - 35, 70, 70 ) );
 
     // Set fill color
     if ( bg != null )
@@ -272,10 +278,12 @@ public class MachinePanel implements EditorPanel
     this.alphabet = pAlphabet;
     this.machinePanel = new MachinesPanelForm ();
     this.machinePanel.setMachinePanel ( this );
+    this.zoomFactor = ( ( double )PreferenceManager.getInstance ().getZoomFactorItem ().getFactor () ) / 100;
     initializeGraph ();
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
+    
 
     /*
      * Language changed listener
@@ -452,7 +460,9 @@ public class MachinePanel implements EditorPanel
 
     // Set states to not editable
     this.graph.setEditable ( false );
-
+    System.err.println(this.graph.getScale ());
+    // Set the zoom factor of this graph
+    this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
   }
 
 
@@ -501,7 +511,7 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, null, false, false ) );
         MachinePanel.statecount++ ;
       }
@@ -543,7 +553,7 @@ public class MachinePanel implements EditorPanel
             {
               if ( target == null )
               {
-                target = createStateView ( e.getPoint ().x, e.getPoint ().y,
+                target = createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor,
                     null, "Z" //$NON-NLS-1$
                         + MachinePanel.statecount, null, false, false );
                 MachinePanel.statecount++ ;
@@ -591,7 +601,7 @@ public class MachinePanel implements EditorPanel
           {
             if ( target == null )
             {
-              target = createStateView ( e.getPoint ().x, e.getPoint ().y,
+              target = createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor,
                   null, "Z" //$NON-NLS-1$
                       + MachinePanel.statecount, null, false, false );
               MachinePanel.statecount++ ;
@@ -706,7 +716,7 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / zoomFactor, e.getPoint ().y / zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, Color.green, true, false ) );
         MachinePanel.statecount++ ;
       }
@@ -725,27 +735,43 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x, e.getPoint ().y, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, null, false, true ) );
         MachinePanel.statecount++ ;
       }
     };
   }
 
-
+  /**
+   * 
+   * Create a standard Popup Menu
+   *
+   */
   private void createPopupMenu ()
   {
     System.err.println ( "standard" );
   }
 
-
+  /**
+   * 
+   * Create a new Popup Menu for the given Transition
+   *
+   * @param pTransition the Transition for to create a popup menu
+   * @return the new created Popup Menu
+   */
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
     return new TransitionPopupMenu ( this.model, pTransition );
   }
 
-
+  /**
+   * 
+   * Create a new Popup Menu for the given State
+   *
+   * @param pState the State for to create a popup menu
+   * @return the new created Popup Menu
+   */
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
     return new StatePopupMenu ( this.graph, this.model, pState );

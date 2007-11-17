@@ -122,7 +122,8 @@ public class StatePopupMenu extends JPopupMenu
             "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.remove ( StatePopupMenu.this.state.getRemoveObjects () );
+          StatePopupMenu.this.model.remove ( StatePopupMenu.this.state
+              .getRemoveObjects () );
         }
 
       }
@@ -201,8 +202,7 @@ public class StatePopupMenu extends JPopupMenu
     this.finalState.setSelected ( this.state.getState ().isFinalState () );
     add ( this.finalState );
 
-    this.rename = new JMenuItem ( Messages
-        .getString ( "MachinePanel.Rename" ) ); //$NON-NLS-1$
+    this.rename = new JMenuItem ( Messages.getString ( "MachinePanel.Rename" ) ); //$NON-NLS-1$
     this.rename.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
     this.rename.addActionListener ( new ActionListener ()
@@ -214,31 +214,31 @@ public class StatePopupMenu extends JPopupMenu
       {
         while ( true )
         {
-          String name = JOptionPane.showInputDialog ( Messages.getString (
-              "MachinePanel.RenameText", StatePopupMenu.this.state.getState ().getName () ) ); //$NON-NLS-1$
+          String name = JOptionPane
+              .showInputDialog ( Messages
+                  .getString (
+                      "MachinePanel.RenameText", StatePopupMenu.this.state.getState ().getName () ) ); //$NON-NLS-1$
           try
           {
             if ( name != null )
             {
               StatePopupMenu.this.state.getState ().setName ( name );
               SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
-              .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
-              StatePopupMenu.this.graph
-              .getGraphLayoutCache ()
-              .insert (
-                  MachinePanel
-                      .createStateView (
-                          r.x + 35,
-                          r.y + 35,
-                          StatePopupMenu.this.state.getState (),
-                          StatePopupMenu.this.state.getState ().getName (),
-                          StatePopupMenu.this.state.getState ().isStartState () ? Color.green
-                              : null, StatePopupMenu.this.state.getState ()
-                              .isStartState (), StatePopupMenu.this.state
-                              .getState ().isFinalState () ) );
+                  .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
+              StatePopupMenu.this.graph.getGraphLayoutCache ()
+                  .insert (
+                      MachinePanel
+                          .createStateView ( r.x + 35, r.y + 35,
+                              StatePopupMenu.this.state.getState (),
+                              StatePopupMenu.this.state.getState ().getName (),
+                              StatePopupMenu.this.state.getState ()
+                                  .isStartState () ? Color.green : null,
+                              StatePopupMenu.this.state.getState ()
+                                  .isStartState (), StatePopupMenu.this.state
+                                  .getState ().isFinalState () ) );
 
-          StatePopupMenu.this.model.remove ( new Object []
-          { StatePopupMenu.this.state } );
+              StatePopupMenu.this.model.remove ( new Object []
+              { StatePopupMenu.this.state } );
             }
             break;
           }

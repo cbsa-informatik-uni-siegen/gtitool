@@ -201,10 +201,14 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveLeft ()
   {
-    String symbol = ( String ) this.transitionDialog.jListChangeOverSet
-        .getSelectedValue ();
-    this.modelAlphabet.add ( symbol );
-    this.modelChangeOverSet.remove ( symbol );
+    Object [] symbols =  this.transitionDialog.jListChangeOverSet
+        .getSelectedValues ();
+    for ( Object object : symbols )
+    {
+      String symbol = ( String ) object;
+      this.modelAlphabet.add ( symbol );
+      this.modelChangeOverSet.remove ( symbol );
+    }
     this.transitionDialog.jListChangeOverSet.repaint ();
     if ( this.modelChangeOverSet.getSize () == 0 )
       this.modelChangeOverSet.add ( TransitionDialog.epsilon );
@@ -231,12 +235,16 @@ public class TransitionDialog
   public void handleActionPerformedMoveRight ()
   {
     this.modelChangeOverSet.remove ( TransitionDialog.epsilon );
-    String symbol = ( String ) this.transitionDialog.jListAlphabet
-        .getSelectedValue ();
-    if ( symbol == null )
+    Object [] symbols =  this.transitionDialog.jListAlphabet
+        .getSelectedValues ();
+    if ( symbols == null )
       return;
-    this.modelChangeOverSet.add ( symbol );
-    this.modelAlphabet.remove ( symbol );
+    for ( Object object : symbols )
+    {
+      String symbol = ( String ) object;
+      this.modelChangeOverSet.add ( symbol );
+      this.modelAlphabet.remove ( symbol );
+    }
     this.transitionDialog.jListAlphabet.repaint ();
     this.transitionDialog.jListAlphabet.clearSelection ();
     this.transitionDialog.jButtonMoveRight.setEnabled ( false );
@@ -323,6 +331,8 @@ public class TransitionDialog
    */
   private void initialize ()
   {
+    this.transitionDialog.jListChangeOverSet.setDragEnabled ( true );
+    this.transitionDialog.jListAlphabet.setDragEnabled ( true );
     this.modelAlphabet = new SymbolListModel ();
 
     for ( Symbol symbol : this.alphabet )

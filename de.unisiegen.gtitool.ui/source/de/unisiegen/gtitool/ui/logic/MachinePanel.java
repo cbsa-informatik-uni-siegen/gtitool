@@ -219,31 +219,31 @@ public class MachinePanel implements EditorPanel
   }
 
 
-  private void createTransitionView ( DefaultStateView target,
-      Alphabet pAlphabet )
+  public static void createTransitionView ( JGraph graph,
+      DefaultStateView source, DefaultStateView target, Alphabet alphabet,
+      Alphabet symbols )
   {
     try
     {
       Transition newTransition;
-      if ( pAlphabet == null )
-        newTransition = new Transition ( MachinePanel.this.alphabet,
-            MachinePanel.this.firstState.getState (), target.getState () );
+      if ( symbols == null )
+        newTransition = new Transition ( alphabet, source.getState (), target
+            .getState () );
       else
-        newTransition = new Transition ( MachinePanel.this.alphabet,
-            MachinePanel.this.firstState.getState (), target.getState (),
-            pAlphabet.getSymbols () );
+        newTransition = new Transition ( alphabet, source.getState (), target
+            .getState (), symbols.getSymbols () );
       DefaultTransitionView newEdge = new DefaultTransitionView (
-          newTransition, pAlphabet != null ? pAlphabet.toString ()
+          newTransition, source, target, symbols != null ? symbols.toString ()
               : TransitionDialog.epsilon );
 
       GraphConstants.setLineEnd ( newEdge.getAttributes (),
           GraphConstants.ARROW_CLASSIC );
       GraphConstants.setEndFill ( newEdge.getAttributes (), true );
 
-      MachinePanel.this.graph.getGraphLayoutCache ().insertEdge ( newEdge,
-          this.firstState.getChildAt ( 0 ), target.getChildAt ( 0 ) );
+      graph.getGraphLayoutCache ().insertEdge ( newEdge,
+          source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
       target.addTransition ( newEdge );
-      this.firstState.addTransition ( newEdge );
+      source.addTransition ( newEdge );
 
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
@@ -462,9 +462,10 @@ public class MachinePanel implements EditorPanel
 
     // Set states to not editable
     this.graph.setEditable ( false );
+
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
-    
+
   }
 
 
@@ -565,7 +566,9 @@ public class MachinePanel implements EditorPanel
                 MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
               }
 
-              createTransitionView ( target, dialog.getAlphabet () );
+              createTransitionView ( MachinePanel.this.graph,
+                  MachinePanel.this.firstState, target,
+                  MachinePanel.this.alphabet, dialog.getAlphabet () );
               dialog.dispose ();
             }
             MachinePanel.this.firstState = null;
@@ -614,7 +617,9 @@ public class MachinePanel implements EditorPanel
               MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
             }
 
-            createTransitionView ( target, dialog.getAlphabet () );
+            createTransitionView ( MachinePanel.this.graph,
+                MachinePanel.this.firstState, target,
+                MachinePanel.this.alphabet, dialog.getAlphabet () );
             dialog.dispose ();
           }
           MachinePanel.this.firstState = null;
@@ -756,6 +761,8 @@ public class MachinePanel implements EditorPanel
 
   /**
    * Create a standard Popup Menu
+   * 
+   * @return the new created Popup Menu
    */
   private DefaultPopupMenu createPopupMenu ()
   {
@@ -773,7 +780,8 @@ public class MachinePanel implements EditorPanel
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
-    return new TransitionPopupMenu ( this.model, pTransition );
+    return new TransitionPopupMenu ( this.graph, this.machinePanel, this.model,
+        pTransition, this.alphabet );
   }
 
 
@@ -789,6 +797,11 @@ public class MachinePanel implements EditorPanel
   }
 
 
+  /**
+   * Set the zoom factor for this panel
+   * 
+   * @param pFactor the new zoom factor
+   */
   public void setZoomFactor ( double pFactor )
   {
     this.zoomFactor = pFactor;

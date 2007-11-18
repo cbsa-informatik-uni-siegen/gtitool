@@ -89,10 +89,14 @@ public class DefaultPopupMenu extends JPopupMenu
   {
     this.factor = pFactor;
     this.panel = pPanel;
-    populateMenu();
+    populateMenues ();
   }
   
-  private void populateMenu(){
+  /**
+   * Populates the menues of this popup menu.
+   */
+  protected void populateMenues ()
+  {
     this.zoom = new JMenu ( "Zoom" ); //$NON-NLS-1$
     this.zoom.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/zoom.png" ) ) ); //$NON-NLS-1$

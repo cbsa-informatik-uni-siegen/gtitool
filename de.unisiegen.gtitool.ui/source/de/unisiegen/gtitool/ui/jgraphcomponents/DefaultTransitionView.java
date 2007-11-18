@@ -25,6 +25,10 @@ public class DefaultTransitionView extends DefaultEdge
    * The {@link Transition} represented by this view
    */
   private Transition transition;
+  
+  private DefaultStateView sourceView;
+  
+  private DefaultStateView targetView;
 
 
   /**
@@ -33,10 +37,12 @@ public class DefaultTransitionView extends DefaultEdge
    * @param pTransition The {@link Transition} represented by this view
    * @param pUserObject The name of this Transition
    */
-  public DefaultTransitionView ( Transition pTransition, Object pUserObject )
+  public DefaultTransitionView ( Transition pTransition, DefaultStateView pSourceView, DefaultStateView pTargetView, Object pUserObject )
   {
     super ( pUserObject );
     this.transition = pTransition;
+    this.sourceView = pSourceView;
+    this.targetView = pTargetView;
   }
 
 
@@ -48,6 +54,14 @@ public class DefaultTransitionView extends DefaultEdge
   public Transition getTransition ()
   {
     return this.transition;
+  }
+  
+  public DefaultStateView getSourceView(){
+    return this.sourceView;
+  }
+  
+  public DefaultStateView getTargetView(){
+    return this.targetView;
   }
 
 }

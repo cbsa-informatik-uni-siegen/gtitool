@@ -5,15 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
+import org.jgraph.JGraph;
 import org.jgraph.graph.GraphModel;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
@@ -33,6 +40,18 @@ public class TransitionPopupMenu extends JPopupMenu
   private static final long serialVersionUID = 3541518527653662496L;
 
 
+  /** The {@link JGraph} */
+  private JGraph graph;
+
+
+  /** The {@link MachinesPanelForm} */
+  private MachinesPanelForm parent;
+
+
+  /** The {@link Alphabet} */
+  private Alphabet alphabet;
+
+
   /** The {@link DefaultTransitionView} */
   private DefaultTransitionView transition;
 
@@ -45,19 +64,29 @@ public class TransitionPopupMenu extends JPopupMenu
   private JMenuItem delete;
 
 
+  /** The configure item */
+  private JMenuItem config;
+
+
   /**
    * Allocates a new <code>StatePopupMenu</code>.
    * 
+   * @param pGraph The {@link JGraph}
+   * @param pParent The parent panel
    * @param pModel the model containing the state
    * @param pTransition the transition to open the popup menu
+   * @param pAlphabet The {@link Alphabet}
    */
-  public TransitionPopupMenu ( GraphModel pModel,
-      DefaultTransitionView pTransition )
+  public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
+      GraphModel pModel, DefaultTransitionView pTransition, Alphabet pAlphabet )
   {
+    this.graph = pGraph;
+    this.parent = pParent;
+    this.alphabet = pAlphabet;
     this.model = pModel;
     this.transition = pTransition;
     populateMenues ();
-    
+
     /*
      * Language changed listener
      */
@@ -71,7 +100,7 @@ public class TransitionPopupMenu extends JPopupMenu
             TransitionPopupMenu.this.delete.setText ( Messages
                 .getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
           }
-        });
+        } );
   }
 
 
@@ -81,7 +110,7 @@ public class TransitionPopupMenu extends JPopupMenu
   protected void populateMenues ()
   {
 
-    this.delete = new JMenuItem ( "Löschen" ); //$NON-NLS-1$
+    this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
@@ -107,6 +136,35 @@ public class TransitionPopupMenu extends JPopupMenu
       }
     } );
     add ( this.delete );
+
+    this.config = new JMenuItem ( Messages
+        .getString ( "MachinePanel.Properties" ) ); //$NON-NLS-1$
+    this.config.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/properties.png" ) ) ); //$NON-NLS-1$
+    this.config.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
+      {
+
+        JFrame window = ( JFrame ) SwingUtilities
+            .getWindowAncestor ( TransitionPopupMenu.this.parent );
+        TransitionDialog dialog = new TransitionDialog ( window,
+            TransitionPopupMenu.this.alphabet );
+        dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
+            .getTransition ().getSymbolSet () );
+        dialog.show ();
+        TransitionPopupMenu.this.model.remove ( new Object []
+        { TransitionPopupMenu.this.transition } );
+        MachinePanel.createTransitionView ( TransitionPopupMenu.this.graph,
+            TransitionPopupMenu.this.transition.getSourceView (),
+            TransitionPopupMenu.this.transition.getTargetView (),
+            TransitionPopupMenu.this.alphabet, dialog.getAlphabet () );
+      }
+    } );
+    add ( this.config );
 
   }
 }

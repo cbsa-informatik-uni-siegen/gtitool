@@ -1,5 +1,4 @@
 *** Benny ***
-- Konfiguration der Transitionen über KontextMenü
 - Farben aus Preferences verwenden
 - Notizen im Graph hinzufügen
 - DND bei Transitionsdialog einbauen

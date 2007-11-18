@@ -18,7 +18,8 @@
 	<property name="libdir" value="${basedir}/lib" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="sourcedir" value="${basedir}/source" />
-	<property name="generateddir" value="${basedir}/source-generated" />
+	<property name="sourceimpldir" value="${basedir}/source-impl" />
+	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
 	<!-- taskdef -->
 	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
@@ -40,9 +41,9 @@
 		<delete dir="${classesdir}" />
 		<mkdir dir="${classesdir}" />
 		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
-			<src path="${basedir}/source" />
-			<src path="${basedir}/source-impl" />
-			<src path="${basedir}/source-generated" />
+			<src path="${sourcedir}" />
+			<src path="${sourceimpldir}" />
+			<src path="${sourcegenerateddir}" />
 			<classpath>
 				<pathelement location="${libdir}/log4j-1.2.14.jar" />
 				<pathelement location="${libdir}/java-cup-11a-gtitool-runtime.jar" />
@@ -71,20 +72,20 @@
 		<!-- jar file -->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
-			<fileset dir="${basedir}/source">
+			<fileset dir="${sourcedir}">
 				<include name="**/*.properties"/>
 			</fileset>
-			<fileset dir="${basedir}/source-impl">
+			<fileset dir="${sourceimpldir}">
 				<include name="**/*.properties"/>
 			</fileset>
 		</jar>
 		<!-- jar file source-->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${de.unisiegen.gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
-			<fileset dir="${basedir}/source">
+			<fileset dir="${sourcedir}">
 				<include name="**/*.java"/>
 				<include name="**/*.properties"/>
 			</fileset>
-			<fileset dir="${basedir}/source-impl">
+			<fileset dir="${sourceimpldir}">
 				<include name="**/*.java"/>
 				<include name="**/*.properties"/>
 			</fileset>
@@ -109,18 +110,18 @@
 
 	<!-- parser clean -->
 	<target name="parser-clean">
-		<delete dir="${generateddir}/de/unisiegen/gtitool/core/parser" />
+		<delete dir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser" />
 	</target>
 			
 	<!-- parser alphabet -->
 	<target name="parser-alphabet" description="Generates lexer and parser for an alphabet">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex"
-	   		destdir="${generateddir}"
+	   		destdir="${sourcegenerateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup"
-			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/alphabet"
+			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/alphabet"
 			package="de.unisiegen.gtitool.core.parser.alphabet"
 			parser="AlphabetAbstractParser"
 			symbols="AlphabetTerminals"
@@ -137,11 +138,11 @@
 	<target name="parser-state" description="Generates lexer and parser for a state">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex"
-	   		destdir="${generateddir}"
+	   		destdir="${sourcegenerateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.cup"
-			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/state"
+			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/state"
 			package="de.unisiegen.gtitool.core.parser.state"
 			parser="StateAbstractParser"
 			symbols="StateTerminals"
@@ -158,11 +159,11 @@
 	<target name="parser-symbol" description="Generates lexer and parser for a symbol">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex"
-	   		destdir="${generateddir}"
+	   		destdir="${sourcegenerateddir}"
 			nobak="yes" />
 		<cup
 			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.cup"
-			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/symbol"
+			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/symbol"
 			package="de.unisiegen.gtitool.core.parser.symbol"
 			parser="SymbolAbstractParser"
 			symbols="SymbolTerminals"

@@ -3,19 +3,14 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JTextPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.utils.AlphabetParser;
 
 
 /**
@@ -44,8 +39,10 @@ public class NewDialog
    */
   private Alphabet alphabet;
   
+  /** The edit alphabet panel for the machine tab */
   private EditAlphabetPanel editMachineAlphabetPanel;
   
+  /** The edit alphabet panel for the grammar tab */
   private EditAlphabetPanel editGrammarAlphabetPanel;
 
 

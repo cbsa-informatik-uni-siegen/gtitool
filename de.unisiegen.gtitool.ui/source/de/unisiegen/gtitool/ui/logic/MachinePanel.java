@@ -33,6 +33,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
+import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -135,7 +136,7 @@ public class MachinePanel implements EditorPanel
    * @param y the y position of the new state view
    * @return {@link DefaultGraphCell} the new created tmp Object
    */
-  public static DefaultGraphCell createTmpObject ( double x, double y )
+  private DefaultGraphCell createTmpObject ( double x, double y )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
 
@@ -460,7 +461,6 @@ public class MachinePanel implements EditorPanel
 
     // Set states to not editable
     this.graph.setEditable ( false );
-    System.err.println(this.graph.getScale ());
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
   }
@@ -485,7 +485,7 @@ public class MachinePanel implements EditorPanel
             .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
                 .getY () );
         if ( object == null )
-          createPopupMenu ();
+          popup = createPopupMenu ();
         else if ( object instanceof DefaultTransitionView )
           popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
         else
@@ -649,7 +649,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createTmpObject ( x, y );
+          MachinePanel.this.tmpState = createTmpObject ( x , y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -685,7 +685,7 @@ public class MachinePanel implements EditorPanel
               : e.getX () + 5;
           y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
               : e.getY () + 10;
-          MachinePanel.this.tmpState = createTmpObject ( x, y );
+          MachinePanel.this.tmpState = createTmpObject ( x , y  );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -716,7 +716,9 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x / zoomFactor, e.getPoint ().y / zoomFactor, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e
+                .getPoint ().y
+                / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, Color.green, true, false ) );
         MachinePanel.statecount++ ;
       }
@@ -747,9 +749,10 @@ public class MachinePanel implements EditorPanel
    * Create a standard Popup Menu
    *
    */
-  private void createPopupMenu ()
+  private DefaultPopupMenu createPopupMenu ()
   {
-    System.err.println ( "standard" );
+    int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
+    return new DefaultPopupMenu ( this, factor );
   }
 
   /**
@@ -775,5 +778,10 @@ public class MachinePanel implements EditorPanel
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
     return new StatePopupMenu ( this.graph, this.model, pState );
+  }
+  
+  public void setZoomFactor ( double pFactor ){
+    this.zoomFactor = pFactor;
+    this.graph.setScale ( pFactor );
   }
 }

@@ -1,0 +1,34 @@
+/**
+ * The cup file of the state parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.State;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				STATE;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal State			state;
+
+
+/*********
+ * State *
+ *********/
+
+state							::= STATE:s
+									{:
+									   RESULT = new State(s);
+									   RESULT.setParserStartOffset(sleft);
+									   RESULT.setParserEndOffset(sright);
+									:}
+								;

@@ -105,7 +105,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="parser-alphabet, parser-symbol" description="Generate parsers and lexers" />
+	<target name="parser" depends="parser-alphabet, parser-state, parser-symbol" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -126,13 +126,34 @@
 			symbols="AlphabetTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="0"
 			nonterms="no"
 			nopositions="no"
-			compact_red="yes"
+			compact_red="no"
 			dump_grammar="no" />
 	</target>
 
+	<!-- parser state -->
+	<target name="parser-state" description="Generates lexer and parser for a state">
+		<jflex 
+	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex"
+	   		destdir="${generateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.cup"
+			destdir="${generateddir}/de/unisiegen/gtitool/core/parser/state"
+			package="de.unisiegen.gtitool.core.parser.state"
+			parser="StateAbstractParser"
+			symbols="StateTerminals"
+			interface="yes"
+			debug="no"
+			expect="0"
+			nonterms="no"
+			nopositions="no"
+			compact_red="no"
+			dump_grammar="no" />
+	</target>
+	
 	<!-- parser symbol -->
 	<target name="parser-symbol" description="Generates lexer and parser for a symbol">
 		<jflex 
@@ -147,10 +168,10 @@
 			symbols="SymbolTerminals"
 			interface="yes"
 			debug="no"
-			expect="1000000"
+			expect="0"
 			nonterms="no"
 			nopositions="no"
-			compact_red="yes"
+			compact_red="no"
 			dump_grammar="no" />
 	</target>
 	

@@ -128,6 +128,19 @@ public final class PreferenceManager
   /**
    * The default {@link Color} of a parser warning.
    */
+  private static final Color DEFAULT_PARSER_STATE_COLOR = new Color ( 0, 0, 127 );
+
+
+  /**
+   * The default {@link Color} of a parser warning.
+   */
+  private static final Color DEFAULT_PARSER_SYMBOL_COLOR = new Color ( 0, 0,
+      127 );
+
+
+  /**
+   * The default {@link Color} of a parser warning.
+   */
   private static final Color DEFAULT_PARSER_WARNING_COLOR = new Color ( 232,
       242, 254 );
 
@@ -345,6 +358,36 @@ public final class PreferenceManager
     for ( ColorChangedListener current : this.colorChangedListenerList )
     {
       current.colorChangedErrorTransition ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the parser {@link State} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the parser {@link State}.
+   */
+  public final void fireColorChangedParserState ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedParserState ( pNewColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the parser {@link Symbol} has
+   * changed.
+   * 
+   * @param pNewColor The new color of the parser {@link Symbol}.
+   */
+  public final void fireColorChangedParserSymbol ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedParserSymbol ( pNewColor );
     }
   }
 
@@ -615,6 +658,50 @@ public final class PreferenceManager
         .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_ERROR_TRANSITION_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the parser {State}.
+   * 
+   * @return The {@link ColorItem} of the parser {State}.
+   */
+  public final ColorItem getColorItemParserState ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserStateR", //$NON-NLS-1$
+        DEFAULT_PARSER_STATE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserStateG", //$NON-NLS-1$
+        DEFAULT_PARSER_STATE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserStateB", //$NON-NLS-1$
+        DEFAULT_PARSER_STATE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorParserStateCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorParserStateDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_PARSER_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the parser {Symbol}.
+   * 
+   * @return The {@link ColorItem} of the parser {Symbol}.
+   */
+  public final ColorItem getColorItemParserSymbol ()
+  {
+    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
+        DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
+    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
+        DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
+        DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorParserSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorParserSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_PARSER_SYMBOL_COLOR );
   }
 
 
@@ -1021,6 +1108,49 @@ public final class PreferenceManager
             .getColor ().getGreen () );
     this.preferences.putInt (
         "PreferencesDialog.ColorErrorTransitionB", pColorItem //$NON-NLS-1$
+            .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser {@link State}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the parser {@link State}.
+   */
+  public final void setColorItemParserState ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the parser state to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateR", pColorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateG", pColorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateB", pColorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser {@link Symbol}.
+   * 
+   * @param pColorItem The {@link ColorItem} of the parser {@link Symbol}.
+   */
+  public final void setColorItemParserSymbol ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the parser symbol to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserSymbolR", pColorItem //$NON-NLS-1$
+            .getColor ().getRed () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserSymbolG", pColorItem //$NON-NLS-1$
+            .getColor ().getGreen () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserSymbolB", pColorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 

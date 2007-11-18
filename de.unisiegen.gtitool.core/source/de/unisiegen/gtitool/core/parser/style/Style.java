@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.parser.style;
 
 
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 
 
@@ -16,6 +17,11 @@ public enum Style
    * No style.
    */
   NONE,
+
+  /**
+   * Style of {@link State}s.
+   */
+  STATE,
 
   /**
    * Style of {@link Symbol}s.

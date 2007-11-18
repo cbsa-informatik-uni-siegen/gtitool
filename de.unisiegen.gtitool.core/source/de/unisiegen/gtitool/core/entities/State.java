@@ -24,9 +24,27 @@ public final class State implements Entity
 
 
   /**
+   * The start offset of this <code>Symbol</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  protected int parserStartOffset = -1;
+
+
+  /**
+   * The end offset of this <code>Symbol</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  protected int parserEndOffset = -1;
+
+
+  /**
    * The {@link Alphabet} of this <code>State</code>.
    */
-  private Alphabet alphabet;
+  private Alphabet alphabet = null;
 
 
   /**
@@ -38,13 +56,13 @@ public final class State implements Entity
   /**
    * This <code>State</code> is a start <code>State</code>.
    */
-  private boolean startState;
+  private boolean startState = false;
 
 
   /**
    * This <code>State</code> is a final <code>State</code>.
    */
-  private boolean finalState;
+  private boolean finalState = false;
 
 
   /**
@@ -72,14 +90,27 @@ public final class State implements Entity
   public State ( Alphabet pAlphabet, String pName, boolean pStartState,
       boolean pFinalState ) throws StateException
   {
+    this ( pName );
     // Alphabet
     setAlphabet ( pAlphabet );
-    // Name
-    setName ( pName );
     // StartState
     setStartState ( pStartState );
     // FinalState
     setFinalState ( pFinalState );
+  }
+
+
+  /**
+   * Allocates a new <code>State</code>.
+   * 
+   * @param pName The name of this <code>State</code>.
+   * @throws StateException If something with the <code>State</code> is not
+   *           correct.
+   */
+  public State ( String pName ) throws StateException
+  {
+    // Name
+    setName ( pName );
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     // TransitionEnd
@@ -209,6 +240,32 @@ public final class State implements Entity
   public final String getName ()
   {
     return this.name;
+  }
+
+
+  /**
+   * Returns the parserEndOffset.
+   * 
+   * @return The parserEndOffset.
+   * @see #parserEndOffset
+   * @see #setParserEndOffset(int)
+   */
+  public final int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * Returns the parserStartOffset.
+   * 
+   * @return The parserStartOffset.
+   * @see #parserStartOffset
+   * @see #setParserStartOffset(int)
+   */
+  public final int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
   }
 
 
@@ -345,7 +402,7 @@ public final class State implements Entity
    * 
    * @param pAlphabet The {@link Alphabet} to set.
    */
-  private final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet pAlphabet )
   {
     if ( pAlphabet == null )
     {
@@ -388,6 +445,32 @@ public final class State implements Entity
       throw new StateIllegalNameException ( pName );
     }
     this.name = pName;
+  }
+
+
+  /**
+   * Sets the parser end offset.
+   * 
+   * @param pParserEndOffset The new parser end offset.
+   * @see #getParserEndOffset()
+   * @see #parserEndOffset
+   */
+  public final void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the parser start offset.
+   * 
+   * @param pParserStartOffset The new parser start offset.
+   * @see #getParserStartOffset()
+   * @see #parserStartOffset
+   */
+  public final void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

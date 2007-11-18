@@ -502,6 +502,18 @@ public final class PreferencesDialog
 
 
   /**
+   * The {@link ColorItem} of the parser {@link State}.
+   */
+  private ColorItem colorItemParserState;
+
+
+  /**
+   * The {@link ColorItem} of the parser {@link Symbol}.
+   */
+  private ColorItem colorItemParserSymbol;
+
+
+  /**
    * The {@link AlphabetItem}.
    */
   private AlphabetItem alphabetItem;
@@ -586,6 +598,18 @@ public final class PreferencesDialog
 
 
   /**
+   * The initial {@link ColorItem} of the parser {@link State}.
+   */
+  private ColorItem initialColorItemParserState;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link Symbol}.
+   */
+  private ColorItem initialColorItemParserSymbol;
+
+
+  /**
    * The initial {@link ZoomFactorItem}.
    */
   private ZoomFactorItem initialZoomFactorItem;
@@ -630,7 +654,7 @@ public final class PreferencesDialog
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
     /*
-     * StyledPanel
+     * StyledAlphabetParserPanel
      */
     this.styledAlphabetParserPanel = new StyledAlphabetParserPanel ();
     GridBagConstraints gridBagConstraints = new GridBagConstraints ();
@@ -739,6 +763,14 @@ public final class PreferencesDialog
     this.colorItemParserWarning = PreferenceManager.getInstance ()
         .getColorItemParserWarning ();
     this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
+    // Parser state
+    this.colorItemParserState = PreferenceManager.getInstance ()
+        .getColorItemParserState ();
+    this.initialColorItemParserState = this.colorItemParserState.clone ();
+    // Parser symbol
+    this.colorItemParserSymbol = PreferenceManager.getInstance ()
+        .getColorItemParserSymbol ();
+    this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
     // Renderer
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
     this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
@@ -755,6 +787,8 @@ public final class PreferencesDialog
     this.colorListModel.add ( this.colorItemTransition );
     this.colorListModel.add ( this.colorItemErrorTransition );
     this.colorListModel.add ( this.colorItemParserWarning );
+    this.colorListModel.add ( this.colorItemParserState );
+    this.colorListModel.add ( this.colorItemParserSymbol );
     this.gui.jListColor.setModel ( this.colorListModel );
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
@@ -938,6 +972,26 @@ public final class PreferencesDialog
             PreferencesDialog.this.colorItemParserWarning
                 .setDescription ( Messages
                     .getString ( "PreferencesDialog.ColorParserWarningDescription" ) ); //$NON-NLS-1$
+            // Parser state
+            PreferencesDialog.this.colorItemParserState.setCaption ( Messages
+                .getString ( "PreferencesDialog.ColorParserStateCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemParserState
+                .setDescription ( Messages
+                    .getString ( "PreferencesDialog.ColorParserStateDescription" ) ); //$NON-NLS-1$
+            // Parser symbol
+            PreferencesDialog.this.colorItemParserSymbol.setCaption ( Messages
+                .getString ( "PreferencesDialog.ColorParserSymbolCaption" ) ); //$NON-NLS-1$
+            PreferencesDialog.this.colorItemParserSymbol
+                .setDescription ( Messages
+                    .getString ( "PreferencesDialog.ColorParserSymbolDescription" ) ); //$NON-NLS-1$
+            // Update description
+            ColorItem colorItem = ( ColorItem ) PreferencesDialog.this.gui.jListColor
+                .getSelectedValue ();
+            if ( colorItem != null )
+            {
+              PreferencesDialog.this.gui.jTextPaneDescription
+                  .setText ( colorItem.getDescription () );
+            }
             // AlphabetEdit
             PreferencesDialog.this.gui.jButtonAlphabetEdit.setText ( Messages
                 .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
@@ -1115,6 +1169,8 @@ public final class PreferencesDialog
     this.colorItemTransition.restore ();
     this.colorItemErrorTransition.restore ();
     this.colorItemParserWarning.restore ();
+    this.colorItemParserState.restore ();
+    this.colorItemParserSymbol.restore ();
     // Alphabet
     this.alphabetItem.restore ();
     this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
@@ -1296,6 +1352,33 @@ public final class PreferencesDialog
           this.colorItemParserWarning );
       PreferenceManager.getInstance ().fireColorChangedParserWarning (
           this.colorItemParserWarning.getColor () );
+    }
+    // Parser state
+    if ( !this.initialColorItemParserState.equals ( this.colorItemParserState ) )
+    {
+      logger.debug ( "color of the parser state changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemParserState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemParserState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemParserState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserState = this.colorItemParserState.clone ();
+      PreferenceManager.getInstance ().setColorItemParserState (
+          this.colorItemParserState );
+      PreferenceManager.getInstance ().fireColorChangedParserState (
+          this.colorItemParserState.getColor () );
+    }
+    // Parser symbol
+    if ( !this.initialColorItemParserSymbol
+        .equals ( this.colorItemParserSymbol ) )
+    {
+      logger.debug ( "color of the parser symbol changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemParserSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemParserSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemParserSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
+      PreferenceManager.getInstance ().setColorItemParserSymbol (
+          this.colorItemParserSymbol );
+      PreferenceManager.getInstance ().fireColorChangedParserSymbol (
+          this.colorItemParserSymbol.getColor () );
     }
   }
 

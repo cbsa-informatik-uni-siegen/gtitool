@@ -1,10 +1,10 @@
 /**
- * The lexer file of the symbol scanner.
+ * The lexer file of the state scanner.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-package de.unisiegen.gtitool.core.parser.symbol;
+package de.unisiegen.gtitool.core.parser.state;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
@@ -14,13 +14,13 @@ import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
 /**
- * This is the lexer class for a symbol.
+ * This is the lexer class for a state.
  */
 %%
 
-%class SymbolScanner
+%class StateScanner
 %extends AbstractScanner
-%implements SymbolTerminals
+%implements StateTerminals
 
 %function nextSymbol
 %type Symbol
@@ -51,8 +51,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (pId)
 	  {
-		case SYMBOL:
-		  return Style.SYMBOL;
+		case STATE:
+		  return Style.STATE;
 		default:
 		  return Style.NONE;
 	  }
@@ -70,13 +70,13 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-Symbol			= [a-zA-Z0-9]+
+State			= [a-zA-Z0-9]+
 
 %%
 
 <YYINITIAL>
 {
-	{Symbol}			{ return symbol(SYMBOL, yytext()); }
+	{State}				{ return symbol(STATE, yytext()); }
 	{WhiteSpace}		{ }
 }
 

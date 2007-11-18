@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
@@ -42,7 +43,7 @@ public class TransitionDialog
     /**
      * The item list.
      */
-    private ArrayList < String > list;
+    ArrayList < String > list;
 
 
     /**
@@ -160,7 +161,7 @@ public class TransitionDialog
     this.transitionDialog = new TransitionDialogForm ( pParent, true );
     this.transitionDialog.setLogic ( this );
 
-      this.epsilon =  "\u03B5" ; //$NON-NLS-1$
+      TransitionDialog.epsilon =  "\u03B5" ; //$NON-NLS-1$
     initialize ();
   }
 
@@ -205,10 +206,20 @@ public class TransitionDialog
     this.modelChangeOverSet.remove ( symbol );
     this.transitionDialog.jListChangeOverSet.repaint ();
     if ( this.modelChangeOverSet.getSize () == 0 )
-      this.modelChangeOverSet.add ( this.epsilon );
+      this.modelChangeOverSet.add ( TransitionDialog.epsilon );
     this.transitionDialog.jListChangeOverSet.clearSelection ();
+    Collections.sort ( this.modelChangeOverSet.list ) ;
+    Collections.sort ( this.modelAlphabet.list ) ;
     this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
-
+    String text = "{ "; //$NON-NLS-1$
+    for ( int i = 0; i < this.modelChangeOverSet.list.size (); i++ ){
+      text += " " + this.modelChangeOverSet.list.get ( i ) ; //$NON-NLS-1$
+      if ( i < this.modelChangeOverSet.list.size () - 1 )
+        text += ","; //$NON-NLS-1$
+    }
+    text += " }"; //$NON-NLS-1$
+    
+    this.transitionDialog.jTextPaneAlphabet.setText ( text );
   }
 
 
@@ -217,7 +228,7 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveRight ()
   {
-    this.modelChangeOverSet.remove ( this.epsilon );
+    this.modelChangeOverSet.remove ( TransitionDialog.epsilon );
     String symbol = ( String ) this.transitionDialog.jListAlphabet
         .getSelectedValue ();
     if (symbol == null)
@@ -227,6 +238,17 @@ public class TransitionDialog
     this.transitionDialog.jListAlphabet.repaint ();
     this.transitionDialog.jListAlphabet.clearSelection ();
     this.transitionDialog.jButtonMoveRight.setEnabled ( false );
+    Collections.sort ( this.modelChangeOverSet.list ) ;
+    Collections.sort ( this.modelAlphabet.list ) ;
+    String text = "{"; //$NON-NLS-1$
+    for ( int i = 0; i < this.modelChangeOverSet.list.size (); i++ ){
+      text += " " + this.modelChangeOverSet.list.get ( i ) ; //$NON-NLS-1$
+      if ( i < this.modelChangeOverSet.list.size () - 1 )
+        text += ","; //$NON-NLS-1$
+    }
+    text += " }"; //$NON-NLS-1$
+    
+    this.transitionDialog.jTextPaneAlphabet.setText ( text );
   }
 
 
@@ -239,7 +261,7 @@ public class TransitionDialog
     this.transitionDialog.setVisible ( false );
     try
     {
-      if ( this.modelChangeOverSet.list.contains ( this.epsilon ) )
+      if ( this.modelChangeOverSet.list.contains ( TransitionDialog.epsilon ) )
         this.alphabet = null ;
       else{
         try {
@@ -284,7 +306,7 @@ public class TransitionDialog
     }
 
     if ( selectedList.getSelectedValue () != null
-        && this.epsilon.equals ( selectedList.getSelectedValue () ) )
+        && TransitionDialog.epsilon.equals ( selectedList.getSelectedValue () ) )
       this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
 
   }
@@ -302,9 +324,12 @@ public class TransitionDialog
     this.transitionDialog.jListAlphabet.setModel ( this.modelAlphabet );
 
     this.modelChangeOverSet = new SymbolListModel ();
-    this.modelChangeOverSet.add ( this.epsilon );
+    this.modelChangeOverSet.add ( TransitionDialog.epsilon );
     this.transitionDialog.jListChangeOverSet
         .setModel ( this.modelChangeOverSet );
+    
+    this.transitionDialog.jTextPaneAlphabet
+        .setText ( "{ " + TransitionDialog.epsilon + " }" );  //$NON-NLS-1$//$NON-NLS-2$
   }
 
 

@@ -464,6 +464,7 @@ public class MachinePanel implements EditorPanel
     this.graph.setEditable ( false );
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
+    
   }
 
 

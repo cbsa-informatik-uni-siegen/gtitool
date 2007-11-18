@@ -40,7 +40,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jListChangeOverSet = new javax.swing.JList();
         jButtonMoveRight = new javax.swing.JButton();
         JLabelSubHeadline1 = new javax.swing.JLabel();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTextPaneAlphabet = new javax.swing.JTextPane();
         jLabelErrorMessage = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButtonOk = new javax.swing.JButton();
@@ -155,15 +155,16 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel1.add(JLabelSubHeadline1, gridBagConstraints);
 
-        jTextPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextPane1.setMinimumSize(new java.awt.Dimension(2, 63));
-        jTextPane1.setPreferredSize(new java.awt.Dimension(2, 63));
+        jTextPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextPaneAlphabet.setEditable(false);
+        jTextPaneAlphabet.setMinimumSize(new java.awt.Dimension(2, 63));
+        jTextPaneAlphabet.setPreferredSize(new java.awt.Dimension(2, 63));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 20, 10);
-        jPanel1.add(jTextPane1, gridBagConstraints);
+        jPanel1.add(jTextPaneAlphabet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 8;
@@ -261,7 +262,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollChangeOverSet;
     private javax.swing.JScrollPane jScrollPaneAlphabet;
-    public javax.swing.JTextPane jTextPane1;
+    public javax.swing.JTextPane jTextPaneAlphabet;
     // Ende der Variablendeklaration//GEN-END:variables
    
     private TransitionDialog logic;

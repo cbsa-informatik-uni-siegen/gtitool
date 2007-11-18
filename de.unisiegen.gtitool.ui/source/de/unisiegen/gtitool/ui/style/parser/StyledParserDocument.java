@@ -123,6 +123,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
     this.parseable = pParseable;
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
+    SimpleAttributeSet stateSet = new SimpleAttributeSet ();
+    StyleConstants.setBold ( stateSet, true );
+    this.attributes.put ( Style.STATE, stateSet );
     SimpleAttributeSet symbolSet = new SimpleAttributeSet ();
     StyleConstants.setBold ( symbolSet, true );
     this.attributes.put ( Style.SYMBOL, symbolSet );
@@ -286,8 +289,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private final void initAttributes ()
   {
+    StyleConstants
+        .setForeground ( this.attributes.get ( Style.STATE ), PreferenceManager
+            .getInstance ().getColorItemParserState ().getColor () );
     StyleConstants.setForeground ( this.attributes.get ( Style.SYMBOL ),
-        PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
+        PreferenceManager.getInstance ().getColorItemParserSymbol ()
+            .getColor () );
   }
 
 

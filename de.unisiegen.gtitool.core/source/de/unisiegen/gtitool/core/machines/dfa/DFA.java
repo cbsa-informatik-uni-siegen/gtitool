@@ -45,7 +45,67 @@ public final class DFA extends Machine
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
+   * 
+   * @see Machine#enterNextSymbol(Symbol)
+   */
+  @Override
+  public final Transition enterNextSymbol ( Symbol pSymbol )
+  {
+    if ( getActiveStateList ().size () == 0 )
+    {
+      throw new IllegalArgumentException (
+          "no active state: machine must be started first" ); //$NON-NLS-1$
+    }
+    State activeState = getActiveState ( 0 );
+    for ( Transition current : activeState.getTransitionBeginList () )
+    {
+      if ( current.containsSymbol ( pSymbol ) )
+      {
+        clearActiveStateList ();
+        setActiveStates ( current.getStateEnd () );
+        return current;
+      }
+    }
+    throw new IllegalArgumentException ( "symbol not found" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the active {@link State}.
+   * 
+   * @return The active {@link State}.
+   */
+  public final State getActiveState ()
+  {
+    return getActiveState ( 0 );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#start()
+   */
+  @Override
+  public final void start () throws MachineValidationException
+  {
+    validate ();
+    // Set active start
+    clearActiveStateList ();
+    loop : for ( State current : this.getStateList () )
+    {
+      if ( current.isStartState () )
+      {
+        setActiveStates ( current );
+        break loop;
+      }
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
    * 
    * @see Machine#validate()
    */

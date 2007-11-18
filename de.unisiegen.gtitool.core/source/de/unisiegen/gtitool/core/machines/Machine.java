@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 
@@ -39,6 +40,12 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * The active {@link State}s.
+   */
+  private ArrayList < State > activeStateList;
+
+
+  /**
    * Allocates a new <code>Machine</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>Machine</code>.
@@ -55,6 +62,8 @@ public abstract class Machine implements Serializable
     this.stateList = new ArrayList < State > ();
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
+    // ActiveStateList
+    this.activeStateList = new ArrayList < State > ();
   }
 
 
@@ -305,6 +314,49 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Clears the active {@link State} list.
+   */
+  protected final void clearActiveStateList ()
+  {
+    this.activeStateList.clear ();
+  }
+
+
+  /**
+   * Enters the next {@link Symbol} and returns the {@link Transition}, which
+   * contains the {@link Symbol}.
+   * 
+   * @param pSymbol The next {@link Symbol}.
+   * @return The next {@link Symbol} and returns the {@link Transition}, which
+   *         contains the {@link Symbol}.
+   */
+  public abstract Transition enterNextSymbol ( Symbol pSymbol );
+
+
+  /**
+   * Returns the active {@link State} with the given index.
+   * 
+   * @param pIndex The index.
+   * @return The active {@link State} with the given index.
+   */
+  protected final State getActiveState ( int pIndex )
+  {
+    return this.activeStateList.get ( pIndex );
+  }
+
+
+  /**
+   * Returns the active {@link State}s.
+   * 
+   * @return The active {@link State}s.
+   */
+  protected final ArrayList < State > getActiveStateList ()
+  {
+    return this.activeStateList;
+  }
+
+
+  /**
    * Returns the {@link Alphabet}.
    * 
    * @return The {@link Alphabet}.
@@ -337,6 +389,26 @@ public abstract class Machine implements Serializable
   public final ArrayList < Transition > getTransitionList ()
   {
     return this.transitionList;
+  }
+
+
+  /**
+   * Returns true if one of the active {@link State}s is a final {@link State},
+   * otherwise false.
+   * 
+   * @return True if one of the active {@link State}s is a final {@link State},
+   *         otherwise false.
+   */
+  public final boolean isActiveStateFinal ()
+  {
+    for ( State current : this.activeStateList )
+    {
+      if ( current.isFinalState () )
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -532,6 +604,37 @@ public abstract class Machine implements Serializable
       removeTransition ( current );
     }
   }
+
+
+  /**
+   * Sets the active {@link State}s.
+   * 
+   * @param pActiveStates The active {@link State}s.
+   */
+  protected final void setActiveStates ( State ... pActiveStates )
+  {
+    if ( pActiveStates == null )
+    {
+      throw new NullPointerException ( "active states is null" ); //$NON-NLS-1$
+    }
+    for ( State current : pActiveStates )
+    {
+      if ( !this.stateList.contains ( current ) )
+      {
+        throw new IllegalArgumentException (
+            "active state is not in this machine" ); //$NON-NLS-1$
+      }
+      this.activeStateList.add ( current );
+    }
+  }
+
+
+  /**
+   * Starts the <code>Machine</code> after a validation.
+   * 
+   * @throws MachineValidationException If the validation fails.
+   */
+  public abstract void start () throws MachineValidationException;
 
 
   /**

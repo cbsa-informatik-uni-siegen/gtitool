@@ -122,11 +122,10 @@ public class MachinePanel implements EditorPanel
 
   /** The alphabet of this Machine */
   private Alphabet alphabet;
-  
+
+
   /** The zoom factor for this graph */
   private double zoomFactor;
-  
-  
 
 
   /**
@@ -200,7 +199,7 @@ public class MachinePanel implements EditorPanel
 
     // Set bounds
     GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
-        x - 35 , y - 35, 70, 70 ) );
+        x - 35, y - 35, 70, 70 ) );
 
     // Set fill color
     if ( bg != null )
@@ -218,33 +217,34 @@ public class MachinePanel implements EditorPanel
 
     return cell;
   }
-  
-  private void createTransitionView ( DefaultStateView target, Alphabet pAlphabet){
+
+
+  private void createTransitionView ( DefaultStateView target,
+      Alphabet pAlphabet )
+  {
     try
     {
-    Transition newTransition;
-    if ( pAlphabet == null )
-      newTransition = new Transition ( MachinePanel.this.alphabet,
-          MachinePanel.this.firstState.getState (), target
-              .getState () );
-    else
-      newTransition = new Transition ( MachinePanel.this.alphabet,
-          MachinePanel.this.firstState.getState (), target
-              .getState (), pAlphabet.getSymbols () );
-    DefaultTransitionView newEdge = new DefaultTransitionView ( newTransition,
-        pAlphabet != null ? pAlphabet
-            .toString () : TransitionDialog.epsilon );
+      Transition newTransition;
+      if ( pAlphabet == null )
+        newTransition = new Transition ( MachinePanel.this.alphabet,
+            MachinePanel.this.firstState.getState (), target.getState () );
+      else
+        newTransition = new Transition ( MachinePanel.this.alphabet,
+            MachinePanel.this.firstState.getState (), target.getState (),
+            pAlphabet.getSymbols () );
+      DefaultTransitionView newEdge = new DefaultTransitionView (
+          newTransition, pAlphabet != null ? pAlphabet.toString ()
+              : TransitionDialog.epsilon );
 
-    GraphConstants.setLineEnd ( newEdge.getAttributes (),
-        GraphConstants.ARROW_CLASSIC );
-    GraphConstants.setEndFill ( newEdge.getAttributes (), true );
+      GraphConstants.setLineEnd ( newEdge.getAttributes (),
+          GraphConstants.ARROW_CLASSIC );
+      GraphConstants.setEndFill ( newEdge.getAttributes (), true );
 
-    MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
-        newEdge, this.firstState.getChildAt ( 0 ),
-        target.getChildAt ( 0 ) );
-    target.addTransition ( newEdge );
-    this.firstState.addTransition ( newEdge );
-    
+      MachinePanel.this.graph.getGraphLayoutCache ().insertEdge ( newEdge,
+          this.firstState.getChildAt ( 0 ), target.getChildAt ( 0 ) );
+      target.addTransition ( newEdge );
+      this.firstState.addTransition ( newEdge );
+
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
@@ -279,12 +279,12 @@ public class MachinePanel implements EditorPanel
     this.alphabet = pAlphabet;
     this.machinePanel = new MachinesPanelForm ();
     this.machinePanel.setMachinePanel ( this );
-    this.zoomFactor = ( ( double )PreferenceManager.getInstance ().getZoomFactorItem ().getFactor () ) / 100;
+    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
+        .getZoomFactorItem ().getFactor () ) / 100;
     initializeGraph ();
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
-    
 
     /*
      * Language changed listener
@@ -348,12 +348,13 @@ public class MachinePanel implements EditorPanel
   public void handleToolbarAlphabet ()
   {
     JDialog changeAlphabetDialog = new JDialog ( this.parent, true );
-    
+
     EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel ();
     editAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
     changeAlphabetDialog.add ( editAlphabetPanel.getPanel () );
-    
-    changeAlphabetDialog.setTitle ( Messages.getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
+
+    changeAlphabetDialog.setTitle ( Messages
+        .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
     changeAlphabetDialog.pack ();
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( changeAlphabetDialog.getWidth () / 2 );
@@ -511,7 +512,9 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e
+                .getPoint ().y
+                / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, null, false, false ) );
         MachinePanel.statecount++ ;
       }
@@ -553,14 +556,15 @@ public class MachinePanel implements EditorPanel
             {
               if ( target == null )
               {
-                target = createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor,
-                    null, "Z" //$NON-NLS-1$
-                        + MachinePanel.statecount, null, false, false );
+                target = createStateView ( e.getPoint ().x
+                    / MachinePanel.this.zoomFactor, e.getPoint ().y
+                    / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
+                    + MachinePanel.statecount, null, false, false );
                 MachinePanel.statecount++ ;
                 MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
               }
 
-              createTransitionView (target, dialog.getAlphabet ());
+              createTransitionView ( target, dialog.getAlphabet () );
               dialog.dispose ();
             }
             MachinePanel.this.firstState = null;
@@ -569,7 +573,7 @@ public class MachinePanel implements EditorPanel
           }
 
         }
-        
+
         catch ( ClassCastException exc )
         {
           // Nothing to do here
@@ -601,9 +605,10 @@ public class MachinePanel implements EditorPanel
           {
             if ( target == null )
             {
-              target = createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor,
-                  null, "Z" //$NON-NLS-1$
-                      + MachinePanel.statecount, null, false, false );
+              target = createStateView ( e.getPoint ().x
+                  / MachinePanel.this.zoomFactor, e.getPoint ().y
+                  / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
+                  + MachinePanel.statecount, null, false, false );
               MachinePanel.statecount++ ;
               MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
             }
@@ -630,7 +635,7 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseDragged ( MouseEvent e )
       {
-        int x, y;
+        double x, y;
         if ( MachinePanel.this.firstState == null )
         {
           MachinePanel.this.dragged = true;
@@ -645,11 +650,11 @@ public class MachinePanel implements EditorPanel
           // Remove old tmp state and transition
           MachinePanel.this.model.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-          x = MachinePanel.this.firstStatePosition.x < e.getX () ? e.getX () - 5
-              : e.getX () + 5;
-          y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
-              : e.getY () + 10;
-          MachinePanel.this.tmpState = createTmpObject ( x , y );
+          x = e.getX () / MachinePanel.this.zoomFactor;
+          y = e.getY () / MachinePanel.this.zoomFactor;
+          x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
+          y = MachinePanel.this.firstStatePosition.y < y ? y - 3 : y + 10;
+          MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -674,18 +679,19 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseMoved ( MouseEvent e )
       {
-        int x, y;
+        double x, y;
 
         if ( MachinePanel.this.firstState != null )
         {
           // Remove old tmp state and transition
           MachinePanel.this.model.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-          x = MachinePanel.this.firstStatePosition.x < e.getX () ? e.getX () - 5
-              : e.getX () + 5;
-          y = MachinePanel.this.firstStatePosition.y < e.getY () ? e.getY () - 3
-              : e.getY () + 10;
-          MachinePanel.this.tmpState = createTmpObject ( x , y  );
+
+          x = e.getX () / MachinePanel.this.zoomFactor;
+          y = e.getY () / MachinePanel.this.zoomFactor;
+          x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
+          y = MachinePanel.this.firstStatePosition.y < x ? y - 3 : y + 10;
+          MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
@@ -737,17 +743,18 @@ public class MachinePanel implements EditorPanel
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
         MachinePanel.this.graph.getGraphLayoutCache ().insert (
-            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e.getPoint ().y / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
+            createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor, e
+                .getPoint ().y
+                / MachinePanel.this.zoomFactor, null, "Z" //$NON-NLS-1$
                 + MachinePanel.statecount, null, false, true ) );
         MachinePanel.statecount++ ;
       }
     };
   }
 
+
   /**
-   * 
    * Create a standard Popup Menu
-   *
    */
   private DefaultPopupMenu createPopupMenu ()
   {
@@ -755,10 +762,10 @@ public class MachinePanel implements EditorPanel
     return new DefaultPopupMenu ( this, factor );
   }
 
+
   /**
-   * 
    * Create a new Popup Menu for the given Transition
-   *
+   * 
    * @param pTransition the Transition for to create a popup menu
    * @return the new created Popup Menu
    */
@@ -768,10 +775,10 @@ public class MachinePanel implements EditorPanel
     return new TransitionPopupMenu ( this.model, pTransition );
   }
 
+
   /**
-   * 
    * Create a new Popup Menu for the given State
-   *
+   * 
    * @param pState the State for to create a popup menu
    * @return the new created Popup Menu
    */
@@ -779,8 +786,10 @@ public class MachinePanel implements EditorPanel
   {
     return new StatePopupMenu ( this.graph, this.model, pState );
   }
-  
-  public void setZoomFactor ( double pFactor ){
+
+
+  public void setZoomFactor ( double pFactor )
+  {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
   }

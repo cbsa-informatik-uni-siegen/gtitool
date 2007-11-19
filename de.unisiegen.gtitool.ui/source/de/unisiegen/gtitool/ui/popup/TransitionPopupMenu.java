@@ -29,7 +29,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  * A Popup Menu for {@link Transition}s
  * 
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler
+ * @version $Id$
  */
 public class TransitionPopupMenu extends JPopupMenu
 {

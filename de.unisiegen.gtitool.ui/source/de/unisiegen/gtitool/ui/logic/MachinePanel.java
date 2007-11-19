@@ -44,7 +44,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  * The Panel containing the diagramm and table representing a machine
  * 
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler
+ * @version $Id$
  */
 public class MachinePanel implements EditorPanel
 {

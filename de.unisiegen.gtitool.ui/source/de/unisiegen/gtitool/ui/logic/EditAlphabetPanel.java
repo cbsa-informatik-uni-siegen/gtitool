@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel;
  * Panel to edit the {@link Alphabet}
  *
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler
+ * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler $
  *
  */
 public class EditAlphabetPanel

@@ -19,7 +19,7 @@ import org.jgraph.graph.VertexView;
  * TODO
  *
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
+ * @version $Id$
  *
  */
 public class FinalStateView extends VertexView {

@@ -26,7 +26,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
  * A Popup Menu for {@link State}s
  * 
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler
+ * @version $Id$
  */
 public class StatePopupMenu extends JPopupMenu
 {

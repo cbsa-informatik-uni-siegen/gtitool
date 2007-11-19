@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
  * The Forms file for the {@link MachinePanel}
  *
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
+ * @version $Id$
  */
 public class MachinesPanelForm extends javax.swing.JPanel {
     

@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
  * TODO
  *
  * @author Benjamin Mies
- * @version $Id: NewDialog.java 119 2007-11-10 12:07:30Z fehler 
+ * @version $Id$
  *
  */
 public class GrammarPanel implements EditorPanel

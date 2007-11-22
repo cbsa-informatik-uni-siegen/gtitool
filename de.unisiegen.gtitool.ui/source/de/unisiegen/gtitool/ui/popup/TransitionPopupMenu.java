@@ -158,7 +158,7 @@ public class TransitionPopupMenu extends JPopupMenu
         dialog.show ();
         TransitionPopupMenu.this.model.remove ( new Object []
         { TransitionPopupMenu.this.transition } );
-        MachinePanel.createTransitionView ( TransitionPopupMenu.this.graph,
+        MachinePanel.createTransitionView ( TransitionPopupMenu.this.graph, TransitionPopupMenu.this.transition.getTransition (),
             TransitionPopupMenu.this.transition.getSourceView (),
             TransitionPopupMenu.this.transition.getTargetView (),
             TransitionPopupMenu.this.alphabet, dialog.getAlphabet () );

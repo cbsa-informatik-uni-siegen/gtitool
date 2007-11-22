@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.popup;
 
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,6 +16,7 @@ import org.jgraph.graph.AttributeMap.SerializableRectangle2D;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
@@ -54,6 +54,11 @@ public class StatePopupMenu extends JPopupMenu
    */
   private GraphModel model;
 
+  /**
+   * The {@link Machine}
+   */
+  private Machine machine;
+
 
   /**
    * The delete item
@@ -87,8 +92,9 @@ public class StatePopupMenu extends JPopupMenu
    * @param pState the state to open the popup menu
    */
   public StatePopupMenu ( JGraph pGraph, GraphModel pModel,
-      DefaultStateView pState )
+      DefaultStateView pState, Machine pMachine )
   {
+    this.machine = pMachine;
     this.graph = pGraph;
     this.model = pModel;
     this.state = pState;
@@ -124,6 +130,7 @@ public class StatePopupMenu extends JPopupMenu
         {
           StatePopupMenu.this.model.remove ( StatePopupMenu.this.state
               .getRemoveObjects () );
+          machine.removeState ( StatePopupMenu.this.state.getState () );
         }
 
       }
@@ -154,10 +161,10 @@ public class StatePopupMenu extends JPopupMenu
                         r.y + 35,
                         StatePopupMenu.this.state.getState (),
                         StatePopupMenu.this.state.getState ().getName (),
-                        StatePopupMenu.this.state.getState ().isStartState () ? Color.green
-                            : null, StatePopupMenu.this.state.getState ()
+                        StatePopupMenu.this.state.getState ()
                             .isStartState (), StatePopupMenu.this.state
                             .getState ().isFinalState () ) );
+        
 
         StatePopupMenu.this.model.remove ( new Object []
         { StatePopupMenu.this.state } );
@@ -190,8 +197,7 @@ public class StatePopupMenu extends JPopupMenu
                         r.y + 35,
                         StatePopupMenu.this.state.getState (),
                         StatePopupMenu.this.state.getState ().getName (),
-                        StatePopupMenu.this.state.getState ().isStartState () ? Color.green
-                            : null, StatePopupMenu.this.state.getState ()
+                        StatePopupMenu.this.state.getState ()
                             .isStartState (), StatePopupMenu.this.state
                             .getState ().isFinalState () ) );
 
@@ -231,8 +237,6 @@ public class StatePopupMenu extends JPopupMenu
                           .createStateView ( r.x + 35, r.y + 35,
                               StatePopupMenu.this.state.getState (),
                               StatePopupMenu.this.state.getState ().getName (),
-                              StatePopupMenu.this.state.getState ()
-                                  .isStartState () ? Color.green : null,
                               StatePopupMenu.this.state.getState ()
                                   .isStartState (), StatePopupMenu.this.state
                                   .getState ().isFinalState () ) );

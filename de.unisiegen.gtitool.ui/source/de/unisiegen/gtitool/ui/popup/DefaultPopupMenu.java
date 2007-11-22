@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
@@ -25,6 +28,8 @@ public class DefaultPopupMenu extends JPopupMenu
    */
   private static final long serialVersionUID = 627345294367905600L;
 
+  /** The {@link Machine} */
+  private Machine machine;
 
   /**
    * The zoom item
@@ -70,6 +75,11 @@ public class DefaultPopupMenu extends JPopupMenu
   private JCheckBoxMenuItem zoom200;
   
   /**
+   * The validate item
+   */
+  private JMenuItem validate;
+  
+  /**
    * The actual zoom factor
    */
   private int factor;
@@ -85,8 +95,9 @@ public class DefaultPopupMenu extends JPopupMenu
    * @param pPanel the machine panel
    * @param pFactor the actual zoom factor
    */
-  public DefaultPopupMenu ( MachinePanel pPanel, int pFactor )
+  public DefaultPopupMenu ( MachinePanel pPanel, Machine pMachine, int pFactor )
   {
+    this.machine = pMachine;
     this.factor = pFactor;
     this.panel = pPanel;
     populateMenues ();
@@ -189,6 +200,27 @@ public class DefaultPopupMenu extends JPopupMenu
     this.zoom.add ( this.zoom200 );
     
     add ( this.zoom );
+    
+    
+    this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
+    this.validate.addActionListener ( new ActionListener ()
+    {
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent e )
+      {
+        try
+        {
+          DefaultPopupMenu.this.machine.validate ();
+        }
+        catch ( MachineValidationException e1 )
+        {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+      }
+    } );
+    add ( this.validate );
     
     switch ( this.factor )
     {

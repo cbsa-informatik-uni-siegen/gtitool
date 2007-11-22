@@ -62,22 +62,24 @@ public class NewDialogForm extends javax.swing.JDialog {
         machinesPanel = new javax.swing.JPanel();
         jLabelMachinesCaption = new javax.swing.JLabel();
         buttonMachinesPanel = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButtonStackMachine = new javax.swing.JRadioButton();
+        jRadioButtonNFA = new javax.swing.JRadioButton();
+        jRadioButtonDFA = new javax.swing.JRadioButton();
+        jRadioButtonEDFA = new javax.swing.JRadioButton();
         jPanelMachinesSpace = new javax.swing.JPanel();
         bodyPanelMachine = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        styledAlphabetParserPanel1 = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         grammarsPanel = new javax.swing.JPanel();
         jLabelGrammarsCaption = new javax.swing.JLabel();
         buttonGrammarsPanel = new javax.swing.JPanel();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
+        jRadioButtonRegularGrammar = new javax.swing.JRadioButton();
+        jRadioButtonContextFreeGrammar = new javax.swing.JRadioButton();
+        jRadioButtonContextSensitivGrammar = new javax.swing.JRadioButton();
         jPanelGrammarsSpace = new javax.swing.JPanel();
         bodyPanelGrammar = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        styledAlphabetParserPanel2 = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
@@ -159,46 +161,50 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         buttonMachinesPanel.setLayout(new java.awt.GridBagLayout());
 
-        machines.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Kellerautomat");
-        jRadioButton1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        machines.add(jRadioButtonStackMachine);
+        jRadioButtonStackMachine.setSelected(true);
+        jRadioButtonStackMachine.setText(bundle.getString("NewDialog.Stackmachine")); // NOI18N
+        jRadioButtonStackMachine.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonStackMachine.setEnabled(false);
+        jRadioButtonStackMachine.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonMachinesPanel.add(jRadioButton1, gridBagConstraints);
+        buttonMachinesPanel.add(jRadioButtonStackMachine, gridBagConstraints);
 
-        machines.add(jRadioButton2);
-        jRadioButton2.setText("NDEA");
-        jRadioButton2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        machines.add(jRadioButtonNFA);
+        jRadioButtonNFA.setText(bundle.getString("NewDialog.NFA")); // NOI18N
+        jRadioButtonNFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonNFA.setEnabled(false);
+        jRadioButtonNFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonMachinesPanel.add(jRadioButton2, gridBagConstraints);
+        buttonMachinesPanel.add(jRadioButtonNFA, gridBagConstraints);
 
-        machines.add(jRadioButton3);
-        jRadioButton3.setText("DEA");
-        jRadioButton3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton3.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        machines.add(jRadioButtonDFA);
+        jRadioButtonDFA.setSelected(true);
+        jRadioButtonDFA.setText(bundle.getString("NewDialog.DFA")); // NOI18N
+        jRadioButtonDFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonDFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonMachinesPanel.add(jRadioButton3, gridBagConstraints);
+        buttonMachinesPanel.add(jRadioButtonDFA, gridBagConstraints);
 
-        machines.add(jRadioButton4);
-        jRadioButton4.setText("e-NDEA");
-        jRadioButton4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton4.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        machines.add(jRadioButtonEDFA);
+        jRadioButtonEDFA.setText(bundle.getString("NewDialog.ENFA")); // NOI18N
+        jRadioButtonEDFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonEDFA.setEnabled(false);
+        jRadioButtonEDFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonMachinesPanel.add(jRadioButton4, gridBagConstraints);
+        buttonMachinesPanel.add(jRadioButtonEDFA, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -226,6 +232,14 @@ public class NewDialogForm extends javax.swing.JDialog {
         bodyPanelMachine.add(jLabel5, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 16);
+        bodyPanelMachine.add(styledAlphabetParserPanel1, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         machinesPanel.add(bodyPanelMachine, gridBagConstraints);
@@ -245,37 +259,40 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         buttonGrammarsPanel.setLayout(new java.awt.GridBagLayout());
 
-        grammars.add(jRadioButton5);
-        jRadioButton5.setSelected(true);
-        jRadioButton5.setText("regul\u00e4re Grammatik");
-        jRadioButton5.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton5.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        grammars.add(jRadioButtonRegularGrammar);
+        jRadioButtonRegularGrammar.setSelected(true);
+        jRadioButtonRegularGrammar.setText(bundle.getString("NewDialog.regularGrammar")); // NOI18N
+        jRadioButtonRegularGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonRegularGrammar.setEnabled(false);
+        jRadioButtonRegularGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButton5, gridBagConstraints);
+        buttonGrammarsPanel.add(jRadioButtonRegularGrammar, gridBagConstraints);
 
-        grammars.add(jRadioButton6);
-        jRadioButton6.setText("kontextfreie Grammatik");
-        jRadioButton6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton6.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        grammars.add(jRadioButtonContextFreeGrammar);
+        jRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.contextFreeGrammar")); // NOI18N
+        jRadioButtonContextFreeGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonContextFreeGrammar.setEnabled(false);
+        jRadioButtonContextFreeGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButton6, gridBagConstraints);
+        buttonGrammarsPanel.add(jRadioButtonContextFreeGrammar, gridBagConstraints);
 
-        grammars.add(jRadioButton7);
-        jRadioButton7.setText("kontextsensitive Grammatik");
-        jRadioButton7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButton7.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        grammars.add(jRadioButtonContextSensitivGrammar);
+        jRadioButtonContextSensitivGrammar.setText(bundle.getString("NewDialog.contextSensitivGrammar")); // NOI18N
+        jRadioButtonContextSensitivGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonContextSensitivGrammar.setEnabled(false);
+        jRadioButtonContextSensitivGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButton7, gridBagConstraints);
+        buttonGrammarsPanel.add(jRadioButtonContextSensitivGrammar, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
@@ -300,6 +317,14 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         bodyPanelGrammar.add(jLabel4, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 16);
+        bodyPanelGrammar.add(styledAlphabetParserPanel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -337,6 +362,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         buttonsPanel.add(cancelButton, gridBagConstraints);
 
@@ -359,6 +385,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         getContentPane().add(buttonsPanel, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -394,7 +421,7 @@ public class NewDialogForm extends javax.swing.JDialog {
     public javax.swing.JPanel bodyPanelMachine;
     private javax.swing.JPanel buttonGrammarsPanel;
     private javax.swing.JPanel buttonMachinesPanel;
-    private javax.swing.ButtonGroup grammars;
+    public javax.swing.ButtonGroup grammars;
     private javax.swing.JPanel grammarsPanel;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -402,16 +429,18 @@ public class NewDialogForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelMachinesCaption;
     private javax.swing.JPanel jPanelGrammarsSpace;
     private javax.swing.JPanel jPanelMachinesSpace;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.ButtonGroup machines;
+    public javax.swing.JRadioButton jRadioButtonContextFreeGrammar;
+    public javax.swing.JRadioButton jRadioButtonContextSensitivGrammar;
+    public javax.swing.JRadioButton jRadioButtonDFA;
+    public javax.swing.JRadioButton jRadioButtonEDFA;
+    public javax.swing.JRadioButton jRadioButtonNFA;
+    public javax.swing.JRadioButton jRadioButtonRegularGrammar;
+    public javax.swing.JRadioButton jRadioButtonStackMachine;
+    public javax.swing.ButtonGroup machines;
     public javax.swing.JPanel machinesPanel;
     public javax.swing.JButton okButton;
+    private de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel1;
+    private de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel2;
     public javax.swing.JTabbedPane tabbedPane;
     // Ende der Variablendeklaration//GEN-END:variables
     

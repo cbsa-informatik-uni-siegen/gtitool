@@ -7,6 +7,7 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
@@ -38,12 +39,6 @@ public class NewDialog
    * The {@link Alphabet} for the new file
    */
   private Alphabet alphabet;
-  
-  /** The edit alphabet panel for the machine tab */
-  private EditAlphabetPanel editMachineAlphabetPanel;
-  
-  /** The edit alphabet panel for the grammar tab */
-  private EditAlphabetPanel editGrammarAlphabetPanel;
 
 
   /**
@@ -58,21 +53,6 @@ public class NewDialog
     this.newDialogForm.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();
-    this.editMachineAlphabetPanel = new EditAlphabetPanel ();
-    this.editMachineAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
-    this.editGrammarAlphabetPanel = new EditAlphabetPanel ();
-    this.editGrammarAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
-    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 1;
-    gridBagConstraints.fill = GridBagConstraints.BOTH;
-    gridBagConstraints.weightx = 1.0;
-    gridBagConstraints.weighty = 1.0;
-    gridBagConstraints.insets = new Insets ( 0, 5, 0, 5 );
-    this.newDialogForm.bodyPanelGrammar.add ( this.editGrammarAlphabetPanel.getPanel (), gridBagConstraints );
-    this.newDialogForm.bodyPanelMachine.add ( this.editMachineAlphabetPanel.getPanel (), gridBagConstraints );
-    
-
   }
 
 
@@ -100,10 +80,12 @@ public class NewDialog
   {
     if ( this.newDialogForm.isCanceled () )
       return null;
-      this.alphabet = this.editMachineAlphabetPanel.styledAlphabetParserPanel.getAlphabet ();
-      if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
-        return new MachinePanel ( this.parent, this.alphabet );
-      return new GrammarPanel ( this.parent, this.alphabet );
+    if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
+    {
+      if ( this.newDialogForm.jRadioButtonDFA.isSelected ()  )
+        return new MachinePanel ( this.parent, new DFA( this.alphabet ) );
+    }
+    return new GrammarPanel ( this.parent, this.alphabet );
   }
 
 

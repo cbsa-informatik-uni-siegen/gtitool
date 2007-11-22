@@ -15,6 +15,8 @@ import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+
 
 /**
  * TODO
@@ -212,7 +214,7 @@ public class StateView extends VertexView
       if ( this.selected )
       {
 
-        g.setColor ( this.highlightColor );
+        g.setColor( PreferenceManager.getInstance ().getColorItemSelectedState ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
       }
     }

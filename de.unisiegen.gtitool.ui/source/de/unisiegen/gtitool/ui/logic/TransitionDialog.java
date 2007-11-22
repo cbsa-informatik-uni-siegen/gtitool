@@ -10,6 +10,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.ListModel;
+import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -201,6 +202,7 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveLeft ()
   {
+    this.modelAlphabet.remove ( " " ); //$NON-NLS-1$
     Object [] symbols =  this.transitionDialog.jListChangeOverSet
         .getSelectedValues ();
     for ( Object object : symbols )
@@ -246,6 +248,8 @@ public class TransitionDialog
       this.modelAlphabet.remove ( symbol );
     }
     this.transitionDialog.jListAlphabet.repaint ();
+    if ( this.modelAlphabet.getSize () == 0 )
+      this.modelAlphabet.add ( " " ); //$NON-NLS-1$
     this.transitionDialog.jListAlphabet.clearSelection ();
     this.transitionDialog.jButtonMoveRight.setEnabled ( false );
     Collections.sort ( this.modelChangeOverSet.list );
@@ -303,26 +307,27 @@ public class TransitionDialog
    * 
    * @param evt the {@link FocusEvent}
    */
-  public void handleFocusGained ( FocusEvent evt )
+  public void handleFocusGained ( ListSelectionEvent evt )
   {
+    
     JList selectedList = ( JList ) evt.getSource ();
+    String selected = ( String )selectedList.getSelectedValue ();
+    if ( selected == null || selected.equals ( TransitionDialog.epsilon ) || selected.equals ( " " )) //$NON-NLS-1$
+      return;
     if ( selectedList.equals ( this.transitionDialog.jListAlphabet ) )
     {
       this.transitionDialog.jListChangeOverSet.clearSelection ();
       this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
+      if ( selectedList.getSelectedValues ().length > 0 )
       this.transitionDialog.jButtonMoveRight.setEnabled ( true );
     }
     else
     {
       this.transitionDialog.jListAlphabet.clearSelection ();
+      if ( selectedList.getSelectedValues ().length > 0 )
       this.transitionDialog.jButtonMoveLeft.setEnabled ( true );
       this.transitionDialog.jButtonMoveRight.setEnabled ( false );
     }
-
-    if ( selectedList.getSelectedValue () != null
-        && TransitionDialog.epsilon.equals ( selectedList.getSelectedValue () ) )
-      this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
-
   }
 
 

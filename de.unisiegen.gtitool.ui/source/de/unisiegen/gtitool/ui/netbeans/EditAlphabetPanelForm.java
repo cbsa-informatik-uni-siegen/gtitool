@@ -26,22 +26,10 @@ public class EditAlphabetPanelForm extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanelTextArea = new javax.swing.JPanel();
         jButtonAlphabetEdit = new javax.swing.JButton();
+        styledAlphabetParserPanel1 = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
 
         setLayout(new java.awt.GridBagLayout());
-
-        jPanelTextArea.setLayout(new java.awt.GridBagLayout());
-
-        jPanelTextArea.setPreferredSize(new java.awt.Dimension(300, 180));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(25, 10, 10, 21);
-        add(jPanelTextArea, gridBagConstraints);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jButtonAlphabetEdit.setText(bundle.getString("PreferencesDialog.AlphabetEdit")); // NOI18N
@@ -55,12 +43,20 @@ public class EditAlphabetPanelForm extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 20, 21);
         add(jButtonAlphabetEdit, gridBagConstraints);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(30, 0, 30, 16);
+        add(styledAlphabetParserPanel1, gridBagConstraints);
+
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     public javax.swing.JButton jButtonAlphabetEdit;
-    public javax.swing.JPanel jPanelTextArea;
+    private de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel1;
     // Ende der Variablendeklaration//GEN-END:variables
     
 }

@@ -32,6 +32,20 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
 
 
   /**
+   * The {@link SymbolChangedListener} for the other
+   * <code>StyledSymbolParserPanel</code>.
+   */
+  private SymbolChangedListener symbolChangedListenerOther;
+
+
+  /**
+   * The {@link SymbolChangedListener} for this
+   * <code>StyledSymbolParserPanel</code>.
+   */
+  private SymbolChangedListener symbolChangedListenerThis;
+
+
+  /**
    * Allocates a new <code>StyledSymbolParserPanel</code>.
    */
   public StyledSymbolParserPanel ()
@@ -115,5 +129,50 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
   public final void setSymbol ( Symbol pSymbol )
   {
     getEditor ().setText ( pSymbol.toString () );
+  }
+
+
+  /**
+   * Synchronizes this <code>StyledSymbolParserPanel</code> with the given
+   * <code>StyledSymbolParserPanel</code>.
+   * 
+   * @param pStyledSymbolParserPanel The other
+   *          <code>StyledSymbolParserPanel</code> which should be
+   *          synchronized.
+   */
+  public final void synchronize (
+      final StyledSymbolParserPanel pStyledSymbolParserPanel )
+  {
+    this.symbolChangedListenerOther = new SymbolChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void symbolChanged ( @SuppressWarnings ( "unused" )
+      Symbol pNewSymbol )
+      {
+        removeSymbolChangedListener ( StyledSymbolParserPanel.this.symbolChangedListenerThis );
+        getEditor ()
+            .setText ( pStyledSymbolParserPanel.getEditor ().getText () );
+        addSymbolChangedListener ( StyledSymbolParserPanel.this.symbolChangedListenerThis );
+      }
+    };
+    this.symbolChangedListenerThis = new SymbolChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void symbolChanged ( @SuppressWarnings ( "unused" )
+      Symbol pNewSymbol )
+      {
+        pStyledSymbolParserPanel
+            .removeSymbolChangedListener ( StyledSymbolParserPanel.this.symbolChangedListenerOther );
+        pStyledSymbolParserPanel.getEditor ()
+            .setText ( getEditor ().getText () );
+        pStyledSymbolParserPanel
+            .addSymbolChangedListener ( StyledSymbolParserPanel.this.symbolChangedListenerOther );
+      }
+    };
+    pStyledSymbolParserPanel
+        .addSymbolChangedListener ( this.symbolChangedListenerOther );
+    addSymbolChangedListener ( this.symbolChangedListenerThis );
   }
 }

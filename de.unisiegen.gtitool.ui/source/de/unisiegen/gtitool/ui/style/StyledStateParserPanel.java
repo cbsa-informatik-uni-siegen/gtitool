@@ -32,6 +32,20 @@ public final class StyledStateParserPanel extends StyledParserPanel
 
 
   /**
+   * The {@link StateChangedListener} for the other
+   * <code>StyledStateParserPanel</code>.
+   */
+  private StateChangedListener stateChangedListenerOther;
+
+
+  /**
+   * The {@link StateChangedListener} for this
+   * <code>StyledStateParserPanel</code>.
+   */
+  private StateChangedListener stateChangedListenerThis;
+
+
+  /**
    * Allocates a new <code>StyledStateParserPanel</code>.
    */
   public StyledStateParserPanel ()
@@ -115,5 +129,48 @@ public final class StyledStateParserPanel extends StyledParserPanel
   public final void setState ( State pState )
   {
     getEditor ().setText ( pState.toString () );
+  }
+
+
+  /**
+   * Synchronizes this <code>StyledStateParserPanel</code> with the given
+   * <code>StyledStateParserPanel</code>.
+   * 
+   * @param pStyledStateParserPanel The other
+   *          <code>StyledStateParserPanel</code> which should be
+   *          synchronized.
+   */
+  public final void synchronize (
+      final StyledStateParserPanel pStyledStateParserPanel )
+  {
+    this.stateChangedListenerOther = new StateChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void stateChanged ( @SuppressWarnings ( "unused" )
+      State pNewState )
+      {
+        removeStateChangedListener ( StyledStateParserPanel.this.stateChangedListenerThis );
+        getEditor ().setText ( pStyledStateParserPanel.getEditor ().getText () );
+        addStateChangedListener ( StyledStateParserPanel.this.stateChangedListenerThis );
+      }
+    };
+    this.stateChangedListenerThis = new StateChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void stateChanged ( @SuppressWarnings ( "unused" )
+      State pNewState )
+      {
+        pStyledStateParserPanel
+            .removeStateChangedListener ( StyledStateParserPanel.this.stateChangedListenerOther );
+        pStyledStateParserPanel.getEditor ().setText ( getEditor ().getText () );
+        pStyledStateParserPanel
+            .addStateChangedListener ( StyledStateParserPanel.this.stateChangedListenerOther );
+      }
+    };
+    pStyledStateParserPanel
+        .addStateChangedListener ( this.stateChangedListenerOther );
+    addStateChangedListener ( this.stateChangedListenerThis );
   }
 }

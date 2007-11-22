@@ -1,9 +1,3 @@
-/*
- * StyledParserPanelBeanInfo.java
- *
- * Created on 22. November 2007, 14:42
- */
-
 package de.unisiegen.gtitool.ui.style.parser;
 
 import java.beans.*;

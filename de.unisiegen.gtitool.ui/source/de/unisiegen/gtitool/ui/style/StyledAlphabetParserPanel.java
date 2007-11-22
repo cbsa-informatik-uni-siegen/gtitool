@@ -32,6 +32,20 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
 
   /**
+   * The {@link AlphabetChangedListener} for the other
+   * <code>StyledAlphabetParserPanel</code>.
+   */
+  private AlphabetChangedListener alphabetChangedListenerOther;
+
+
+  /**
+   * The {@link AlphabetChangedListener} for this
+   * <code>StyledAlphabetParserPanel</code>.
+   */
+  private AlphabetChangedListener alphabetChangedListenerThis;
+
+
+  /**
    * Allocates a new <code>StyledAlphabetParserPanel</code>.
    */
   public StyledAlphabetParserPanel ()
@@ -115,5 +129,50 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public final void setAlphabet ( Alphabet pAlphabet )
   {
     getEditor ().setText ( pAlphabet.toString () );
+  }
+
+
+  /**
+   * Synchronizes this <code>StyledAlphabetParserPanel</code> with the given
+   * <code>StyledAlphabetParserPanel</code>.
+   * 
+   * @param pStyledAlphabetParserPanel The other
+   *          <code>StyledAlphabetParserPanel</code> which should be
+   *          synchronized.
+   */
+  public final void synchronize (
+      final StyledAlphabetParserPanel pStyledAlphabetParserPanel )
+  {
+    this.alphabetChangedListenerOther = new AlphabetChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void alphabetChanged ( @SuppressWarnings ( "unused" )
+      Alphabet pNewAlphabet )
+      {
+        removeAlphabetChangedListener ( StyledAlphabetParserPanel.this.alphabetChangedListenerThis );
+        getEditor ().setText (
+            pStyledAlphabetParserPanel.getEditor ().getText () );
+        addAlphabetChangedListener ( StyledAlphabetParserPanel.this.alphabetChangedListenerThis );
+      }
+    };
+    this.alphabetChangedListenerThis = new AlphabetChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void alphabetChanged ( @SuppressWarnings ( "unused" )
+      Alphabet pNewAlphabet )
+      {
+        pStyledAlphabetParserPanel
+            .removeAlphabetChangedListener ( StyledAlphabetParserPanel.this.alphabetChangedListenerOther );
+        pStyledAlphabetParserPanel.getEditor ().setText (
+            getEditor ().getText () );
+        pStyledAlphabetParserPanel
+            .addAlphabetChangedListener ( StyledAlphabetParserPanel.this.alphabetChangedListenerOther );
+      }
+    };
+    pStyledAlphabetParserPanel
+        .addAlphabetChangedListener ( this.alphabetChangedListenerOther );
+    addAlphabetChangedListener ( this.alphabetChangedListenerThis );
   }
 }

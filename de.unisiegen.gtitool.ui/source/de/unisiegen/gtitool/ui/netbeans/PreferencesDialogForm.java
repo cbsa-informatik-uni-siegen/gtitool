@@ -239,7 +239,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 21, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 10, 16);
         jPanelAlphabet.add(jButtonAlphabetEdit, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N

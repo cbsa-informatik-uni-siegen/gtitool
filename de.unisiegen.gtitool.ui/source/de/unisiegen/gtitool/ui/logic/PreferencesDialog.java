@@ -663,7 +663,7 @@ public final class PreferencesDialog
     gridBagConstraints.fill = GridBagConstraints.BOTH;
     gridBagConstraints.weightx = 1.0;
     gridBagConstraints.weighty = 1.0;
-    gridBagConstraints.insets = new Insets ( 10, 5, 5, 10 );
+    gridBagConstraints.insets = new Insets ( 10, 0, 5, 16 );
     this.gui.jPanelAlphabet.add ( this.styledAlphabetParserPanel,
         gridBagConstraints );
 

@@ -68,12 +68,20 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Flag that indicates if the panel is read only.
+   */
+  private boolean readOnly = false;
+
+
+  /**
    * Allocates a new <code>StyledPanel</code>.
    * 
+   * @param pReadOnly The read only value.
    * @param pParseable The input {@link Parseable}.
    */
-  public StyledParserPanel ( Parseable pParseable )
+  public StyledParserPanel ( boolean pReadOnly, Parseable pParseable )
   {
+    this.readOnly = pReadOnly;
     this.editor = new StyledParserEditor ();
     this.document = new StyledParserDocument ( pParseable );
     this.document.addParseableChangedListener ( new ParseableChangedListener ()
@@ -165,6 +173,7 @@ public abstract class StyledParserPanel extends JPanel
     this.jScrollPane.setViewportView ( this.editor );
     this.editor.setDocument ( this.document );
     this.editor.setAutoscrolls ( false );
+    setReadOnlyIntern ();
   }
 
 
@@ -208,7 +217,7 @@ public abstract class StyledParserPanel extends JPanel
    * @return The document.
    * @see #document
    */
-  protected StyledParserDocument getDocument ()
+  protected final StyledParserDocument getDocument ()
   {
     return this.document;
   }
@@ -220,7 +229,7 @@ public abstract class StyledParserPanel extends JPanel
    * @return The editor.
    * @see #editor
    */
-  protected StyledParserEditor getEditor ()
+  protected final StyledParserEditor getEditor ()
   {
     return this.editor;
   }
@@ -233,7 +242,7 @@ public abstract class StyledParserPanel extends JPanel
    * @return The {@link Object} for the program text.
    * @throws Exception If a parsing error occurred.
    */
-  protected Object getParsedObject () throws Exception
+  protected final Object getParsedObject () throws Exception
   {
     return this.document.getParsedObject ();
   }
@@ -255,7 +264,7 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * Removes the selectedText.
    */
-  private void removeSelectedText ()
+  private final void removeSelectedText ()
   {
     int start = this.editor.getSelectionStart ();
     int end = this.editor.getSelectionEnd ();
@@ -283,8 +292,35 @@ public abstract class StyledParserPanel extends JPanel
    * @param pLeft The left index.
    * @param pRight The right index.
    */
-  private void selectErrorText ( int pLeft, int pRight )
+  private final void selectErrorText ( int pLeft, int pRight )
   {
     this.editor.select ( pLeft, pRight );
+  }
+
+
+  /**
+   * Sets or resets the read only value.
+   * 
+   * @param pReadOnly The read only value.
+   */
+  public final void setReadOnly ( boolean pReadOnly )
+  {
+    boolean change = this.readOnly != pReadOnly;
+    this.readOnly = pReadOnly;
+    if ( change )
+    {
+      setReadOnlyIntern ();
+    }
+  }
+
+
+  /**
+   * Enables or disables the {@link SideBar} and the {@link StyledParserEditor}.
+   */
+  private final void setReadOnlyIntern ()
+  {
+    this.sideBar.setVisible ( !this.readOnly );
+    this.editor.setEditable ( !this.readOnly );
+    this.editor.setFocusable ( !this.readOnly );
   }
 }

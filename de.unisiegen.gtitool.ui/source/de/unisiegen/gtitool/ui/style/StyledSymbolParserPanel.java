@@ -36,7 +36,7 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
    */
   public StyledSymbolParserPanel ()
   {
-    super ( new SymbolParseable () );
+    super ( false, new SymbolParseable () );
     super.addParseableChangedListener ( new ParseableChangedListener ()
     {
 
@@ -46,6 +46,18 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
         fireSymbolChanged ( ( Symbol ) pNewObject );
       }
     } );
+  }
+
+
+  /**
+   * Allocates a new <code>StyledSymbolParserPanel</code>.
+   * 
+   * @param pReadOnly The read only value.
+   */
+  public StyledSymbolParserPanel ( boolean pReadOnly )
+  {
+    this ();
+    setReadOnly ( pReadOnly );
   }
 
 

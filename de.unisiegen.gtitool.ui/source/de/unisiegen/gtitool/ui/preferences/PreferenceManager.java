@@ -70,6 +70,12 @@ public final class PreferenceManager
 
 
   /**
+   * The default hight of the {@link MainWindow}.
+   */
+  private static Alphabet DEFAULT_ALPHABET;
+
+
+  /**
    * The default {@link Color} of the active {@link State}.
    */
   private static final Color DEFAULT_ACTIVE_STATE_COLOR = new Color ( 0, 0, 255 );
@@ -207,6 +213,22 @@ public final class PreferenceManager
    * The default zoom factor value.
    */
   private static int DEFAULT_ZOOM_FACTOR = 100;
+
+  static
+  {
+    try
+    {
+      DEFAULT_ALPHABET = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+    }
+  }
 
 
   /**
@@ -537,29 +559,14 @@ public final class PreferenceManager
         System.exit ( 1 );
       }
     }
-    Alphabet defaultAlphabet = null;
-    try
-    {
-      defaultAlphabet = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$//$NON-NLS-2$
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( SymbolException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
     {
-      return new AlphabetItem ( defaultAlphabet, defaultAlphabet );
+      return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
     }
     try
     {
-      return new AlphabetItem ( new Alphabet ( symbols ), defaultAlphabet );
+      return new AlphabetItem ( new Alphabet ( symbols ), DEFAULT_ALPHABET );
     }
     catch ( AlphabetException e )
     {

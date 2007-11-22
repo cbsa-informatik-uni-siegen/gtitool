@@ -36,7 +36,7 @@ public final class StyledStateParserPanel extends StyledParserPanel
    */
   public StyledStateParserPanel ()
   {
-    super ( false, new StateParseable () );
+    super ( new StateParseable () );
     super.addParseableChangedListener ( new ParseableChangedListener ()
     {
 
@@ -46,18 +46,6 @@ public final class StyledStateParserPanel extends StyledParserPanel
         fireStateChanged ( ( State ) pNewObject );
       }
     } );
-  }
-
-
-  /**
-   * Allocates a new <code>StyledStateParserPanel</code>.
-   * 
-   * @param pReadOnly The read only value.
-   */
-  public StyledStateParserPanel ( boolean pReadOnly )
-  {
-    this ();
-    setReadOnly ( pReadOnly );
   }
 
 

@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.ui.style.sidebar.SideBarListener;
 
 
 /**
- * The styled panel class.
+ * The styled parser panel class.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -70,18 +70,16 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * Flag that indicates if the panel is read only.
    */
-  private boolean readOnly = false;
+  private boolean editable = true;
 
 
   /**
    * Allocates a new <code>StyledPanel</code>.
    * 
-   * @param pReadOnly The read only value.
    * @param pParseable The input {@link Parseable}.
    */
-  public StyledParserPanel ( boolean pReadOnly, Parseable pParseable )
+  public StyledParserPanel ( Parseable pParseable )
   {
-    this.readOnly = pReadOnly;
     this.editor = new StyledParserEditor ();
     this.document = new StyledParserDocument ( pParseable );
     this.document.addParseableChangedListener ( new ParseableChangedListener ()
@@ -173,7 +171,6 @@ public abstract class StyledParserPanel extends JPanel
     this.jScrollPane.setViewportView ( this.editor );
     this.editor.setDocument ( this.document );
     this.editor.setAutoscrolls ( false );
-    setReadOnlyIntern ();
   }
 
 
@@ -249,6 +246,17 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Return the editable value.
+   * 
+   * @return The editable value.
+   */
+  public final boolean isEditable ()
+  {
+    return this.editable;
+  }
+
+
+  /**
    * Removes the given {@link ParseableChangedListener}.
    * 
    * @param pListener The {@link ParseableChangedListener}.
@@ -299,33 +307,20 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Sets or resets the read only value.
+   * Sets the specified boolean to indicate whether or not this
+   * <code>StyledParserPanel</code> should be editable.
    * 
-   * @param pReadOnly The read only value.
+   * @param pEditable The boolean to be set.
    */
-  public final void setReadOnly ( boolean pReadOnly )
+  public final void setEditable ( boolean pEditable )
   {
-    boolean change = this.readOnly != pReadOnly;
-    this.readOnly = pReadOnly;
+    boolean change = this.editable != pEditable;
+    this.editable = pEditable;
     if ( change )
     {
-      setReadOnlyIntern ();
+      this.sideBar.setVisible ( this.editable );
+      this.editor.setEditable ( this.editable );
+      this.editor.setFocusable ( this.editable );
     }
-  }
-  
-  public boolean isReadOnly ()
-  {
-      return this.readOnly;
-  }
-
-
-  /**
-   * Enables or disables the {@link SideBar} and the {@link StyledParserEditor}.
-   */
-  private final void setReadOnlyIntern ()
-  {
-    this.sideBar.setVisible ( !this.readOnly );
-    this.editor.setEditable ( !this.readOnly );
-    this.editor.setFocusable ( !this.readOnly );
   }
 }

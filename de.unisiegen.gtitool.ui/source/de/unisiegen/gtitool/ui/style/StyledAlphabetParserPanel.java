@@ -36,7 +36,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    */
   public StyledAlphabetParserPanel ()
   {
-    super ( false, new AlphabetParseable () );
+    super ( new AlphabetParseable () );
     super.addParseableChangedListener ( new ParseableChangedListener ()
     {
 
@@ -46,18 +46,6 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
         fireAlphabetChanged ( ( Alphabet ) pNewObject );
       }
     } );
-  }
-
-
-  /**
-   * Allocates a new <code>StyledAlphabetParserPanel</code>.
-   * 
-   * @param pReadOnly The read only value.
-   */
-  public StyledAlphabetParserPanel ( boolean pReadOnly )
-  {
-    this ();
-    setReadOnly ( pReadOnly );
   }
 
 

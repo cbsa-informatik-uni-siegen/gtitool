@@ -1,7 +1,7 @@
 /*
  * StyledParserPanelBeanInfo.java
  *
- * Created on 22. November 2007, 14:17
+ * Created on 22. November 2007, 14:42
  */
 
 package de.unisiegen.gtitool.ui.style.parser;
@@ -9,8 +9,12 @@ package de.unisiegen.gtitool.ui.style.parser;
 import java.beans.*;
 
 /**
- * @author christian
+ * The styled parser panel bean info class.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
     
     // Bean descriptor//GEN-FIRST:BeanDescriptor
@@ -48,61 +52,61 @@ public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
     private static final int PROPERTY_displayable = 21;
     private static final int PROPERTY_doubleBuffered = 22;
     private static final int PROPERTY_dropTarget = 23;
-    private static final int PROPERTY_enabled = 24;
-    private static final int PROPERTY_focusable = 25;
-    private static final int PROPERTY_focusCycleRoot = 26;
-    private static final int PROPERTY_focusCycleRootAncestor = 27;
-    private static final int PROPERTY_focusListeners = 28;
-    private static final int PROPERTY_focusOwner = 29;
-    private static final int PROPERTY_focusTraversable = 30;
-    private static final int PROPERTY_focusTraversalKeys = 31;
-    private static final int PROPERTY_focusTraversalKeysEnabled = 32;
-    private static final int PROPERTY_focusTraversalPolicy = 33;
-    private static final int PROPERTY_focusTraversalPolicyProvider = 34;
-    private static final int PROPERTY_focusTraversalPolicySet = 35;
-    private static final int PROPERTY_font = 36;
-    private static final int PROPERTY_fontSet = 37;
-    private static final int PROPERTY_foreground = 38;
-    private static final int PROPERTY_foregroundSet = 39;
-    private static final int PROPERTY_graphics = 40;
-    private static final int PROPERTY_graphicsConfiguration = 41;
-    private static final int PROPERTY_height = 42;
-    private static final int PROPERTY_hierarchyBoundsListeners = 43;
-    private static final int PROPERTY_hierarchyListeners = 44;
-    private static final int PROPERTY_ignoreRepaint = 45;
-    private static final int PROPERTY_inheritsPopupMenu = 46;
-    private static final int PROPERTY_inputContext = 47;
-    private static final int PROPERTY_inputMap = 48;
-    private static final int PROPERTY_inputMethodListeners = 49;
-    private static final int PROPERTY_inputMethodRequests = 50;
-    private static final int PROPERTY_inputVerifier = 51;
-    private static final int PROPERTY_insets = 52;
-    private static final int PROPERTY_keyListeners = 53;
-    private static final int PROPERTY_layout = 54;
-    private static final int PROPERTY_lightweight = 55;
-    private static final int PROPERTY_locale = 56;
-    private static final int PROPERTY_location = 57;
-    private static final int PROPERTY_locationOnScreen = 58;
-    private static final int PROPERTY_managingFocus = 59;
-    private static final int PROPERTY_maximumSize = 60;
-    private static final int PROPERTY_maximumSizeSet = 61;
-    private static final int PROPERTY_minimumSize = 62;
-    private static final int PROPERTY_minimumSizeSet = 63;
-    private static final int PROPERTY_mouseListeners = 64;
-    private static final int PROPERTY_mouseMotionListeners = 65;
-    private static final int PROPERTY_mousePosition = 66;
-    private static final int PROPERTY_mouseWheelListeners = 67;
-    private static final int PROPERTY_name = 68;
-    private static final int PROPERTY_nextFocusableComponent = 69;
-    private static final int PROPERTY_opaque = 70;
-    private static final int PROPERTY_optimizedDrawingEnabled = 71;
-    private static final int PROPERTY_paintingTile = 72;
-    private static final int PROPERTY_parent = 73;
-    private static final int PROPERTY_peer = 74;
-    private static final int PROPERTY_preferredSize = 75;
-    private static final int PROPERTY_preferredSizeSet = 76;
-    private static final int PROPERTY_propertyChangeListeners = 77;
-    private static final int PROPERTY_readOnly = 78;
+    private static final int PROPERTY_editable = 24;
+    private static final int PROPERTY_enabled = 25;
+    private static final int PROPERTY_focusable = 26;
+    private static final int PROPERTY_focusCycleRoot = 27;
+    private static final int PROPERTY_focusCycleRootAncestor = 28;
+    private static final int PROPERTY_focusListeners = 29;
+    private static final int PROPERTY_focusOwner = 30;
+    private static final int PROPERTY_focusTraversable = 31;
+    private static final int PROPERTY_focusTraversalKeys = 32;
+    private static final int PROPERTY_focusTraversalKeysEnabled = 33;
+    private static final int PROPERTY_focusTraversalPolicy = 34;
+    private static final int PROPERTY_focusTraversalPolicyProvider = 35;
+    private static final int PROPERTY_focusTraversalPolicySet = 36;
+    private static final int PROPERTY_font = 37;
+    private static final int PROPERTY_fontSet = 38;
+    private static final int PROPERTY_foreground = 39;
+    private static final int PROPERTY_foregroundSet = 40;
+    private static final int PROPERTY_graphics = 41;
+    private static final int PROPERTY_graphicsConfiguration = 42;
+    private static final int PROPERTY_height = 43;
+    private static final int PROPERTY_hierarchyBoundsListeners = 44;
+    private static final int PROPERTY_hierarchyListeners = 45;
+    private static final int PROPERTY_ignoreRepaint = 46;
+    private static final int PROPERTY_inheritsPopupMenu = 47;
+    private static final int PROPERTY_inputContext = 48;
+    private static final int PROPERTY_inputMap = 49;
+    private static final int PROPERTY_inputMethodListeners = 50;
+    private static final int PROPERTY_inputMethodRequests = 51;
+    private static final int PROPERTY_inputVerifier = 52;
+    private static final int PROPERTY_insets = 53;
+    private static final int PROPERTY_keyListeners = 54;
+    private static final int PROPERTY_layout = 55;
+    private static final int PROPERTY_lightweight = 56;
+    private static final int PROPERTY_locale = 57;
+    private static final int PROPERTY_location = 58;
+    private static final int PROPERTY_locationOnScreen = 59;
+    private static final int PROPERTY_managingFocus = 60;
+    private static final int PROPERTY_maximumSize = 61;
+    private static final int PROPERTY_maximumSizeSet = 62;
+    private static final int PROPERTY_minimumSize = 63;
+    private static final int PROPERTY_minimumSizeSet = 64;
+    private static final int PROPERTY_mouseListeners = 65;
+    private static final int PROPERTY_mouseMotionListeners = 66;
+    private static final int PROPERTY_mousePosition = 67;
+    private static final int PROPERTY_mouseWheelListeners = 68;
+    private static final int PROPERTY_name = 69;
+    private static final int PROPERTY_nextFocusableComponent = 70;
+    private static final int PROPERTY_opaque = 71;
+    private static final int PROPERTY_optimizedDrawingEnabled = 72;
+    private static final int PROPERTY_paintingTile = 73;
+    private static final int PROPERTY_parent = 74;
+    private static final int PROPERTY_peer = 75;
+    private static final int PROPERTY_preferredSize = 76;
+    private static final int PROPERTY_preferredSizeSet = 77;
+    private static final int PROPERTY_propertyChangeListeners = 78;
     private static final int PROPERTY_registeredKeyStrokes = 79;
     private static final int PROPERTY_requestFocusEnabled = 80;
     private static final int PROPERTY_rootPane = 81;
@@ -155,6 +159,9 @@ public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_displayable] = new PropertyDescriptor ( "displayable", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isDisplayable", null ); // NOI18N
             properties[PROPERTY_doubleBuffered] = new PropertyDescriptor ( "doubleBuffered", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isDoubleBuffered", "setDoubleBuffered" ); // NOI18N
             properties[PROPERTY_dropTarget] = new PropertyDescriptor ( "dropTarget", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getDropTarget", "setDropTarget" ); // NOI18N
+            properties[PROPERTY_editable] = new PropertyDescriptor ( "editable", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isEditable", "setEditable" ); // NOI18N
+            properties[PROPERTY_editable].setDisplayName ( "editable" );
+            properties[PROPERTY_editable].setShortDescription ( "the editable value" );
             properties[PROPERTY_enabled] = new PropertyDescriptor ( "enabled", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isEnabled", "setEnabled" ); // NOI18N
             properties[PROPERTY_focusable] = new PropertyDescriptor ( "focusable", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isFocusable", "setFocusable" ); // NOI18N
             properties[PROPERTY_focusCycleRoot] = new PropertyDescriptor ( "focusCycleRoot", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isFocusCycleRoot", "setFocusCycleRoot" ); // NOI18N
@@ -209,9 +216,6 @@ public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_preferredSize] = new PropertyDescriptor ( "preferredSize", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getPreferredSize", "setPreferredSize" ); // NOI18N
             properties[PROPERTY_preferredSizeSet] = new PropertyDescriptor ( "preferredSizeSet", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isPreferredSizeSet", null ); // NOI18N
             properties[PROPERTY_propertyChangeListeners] = new PropertyDescriptor ( "propertyChangeListeners", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getPropertyChangeListeners", null ); // NOI18N
-            properties[PROPERTY_readOnly] = new PropertyDescriptor ( "readOnly", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isReadOnly", "setReadOnly" ); // NOI18N
-            properties[PROPERTY_readOnly].setDisplayName ( "readOnly" );
-            properties[PROPERTY_readOnly].setShortDescription ( "the read only value" );
             properties[PROPERTY_registeredKeyStrokes] = new PropertyDescriptor ( "registeredKeyStrokes", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getRegisteredKeyStrokes", null ); // NOI18N
             properties[PROPERTY_requestFocusEnabled] = new PropertyDescriptor ( "requestFocusEnabled", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isRequestFocusEnabled", "setRequestFocusEnabled" ); // NOI18N
             properties[PROPERTY_rootPane] = new PropertyDescriptor ( "rootPane", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getRootPane", null ); // NOI18N

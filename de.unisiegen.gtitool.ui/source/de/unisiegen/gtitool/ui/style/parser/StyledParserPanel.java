@@ -312,6 +312,11 @@ public abstract class StyledParserPanel extends JPanel
       setReadOnlyIntern ();
     }
   }
+  
+  public boolean isReadOnly ()
+  {
+      return this.readOnly;
+  }
 
 
   /**

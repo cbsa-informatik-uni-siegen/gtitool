@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
@@ -46,7 +44,6 @@ import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel;
 import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 
 
@@ -628,12 +625,6 @@ public final class PreferencesDialog
 
 
   /**
-   * The {@link StyledAlphabetParserPanel}.
-   */
-  private StyledAlphabetParserPanel styledAlphabetParserPanel;
-
-
-  /**
    * The index of the alphabet tab.
    */
   private static final int ALPHABET_TAB_INDEX = 2;
@@ -652,20 +643,6 @@ public final class PreferencesDialog
     this.gui.jComboBoxLanguage.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.gui.jComboBoxLookAndFeel
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-
-    /*
-     * StyledAlphabetParserPanel
-     */
-    this.styledAlphabetParserPanel = new StyledAlphabetParserPanel ();
-    GridBagConstraints gridBagConstraints = new GridBagConstraints ();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 0;
-    gridBagConstraints.fill = GridBagConstraints.BOTH;
-    gridBagConstraints.weightx = 1.0;
-    gridBagConstraints.weighty = 1.0;
-    gridBagConstraints.insets = new Insets ( 10, 0, 5, 16 );
-    this.gui.jPanelAlphabet.add ( this.styledAlphabetParserPanel,
-        gridBagConstraints );
 
     /*
      * Language
@@ -799,13 +776,13 @@ public final class PreferencesDialog
      */
     this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
     this.initialAlphabetItem = this.alphabetItem.clone ();
-    this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
         .getAlphabet () );
 
     /*
      * Alphabet changed listener
      */
-    this.styledAlphabetParserPanel
+    this.gui.styledAlphabetParserPanel
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
@@ -1173,7 +1150,7 @@ public final class PreferencesDialog
     this.colorItemParserSymbol.restore ();
     // Alphabet
     this.alphabetItem.restore ();
-    this.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
         .getAlphabet () );
   }
 

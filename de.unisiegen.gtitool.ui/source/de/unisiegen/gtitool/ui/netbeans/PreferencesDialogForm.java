@@ -60,6 +60,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jListColor = new javax.swing.JList();
         jTextPaneDescription = new javax.swing.JTextPane();
         jPanelAlphabet = new javax.swing.JPanel();
+        styledAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jButtonAlphabetEdit = new javax.swing.JButton();
         jButtonOk = new javax.swing.JButton();
         jButtonAccept = new javax.swing.JButton();
@@ -229,6 +230,15 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 16);
+        jPanelAlphabet.add(styledAlphabetParserPanel, gridBagConstraints);
+
         jButtonAlphabetEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AlphabetEditMnemonic").charAt(0));
         jButtonAlphabetEdit.setText(bundle.getString("PreferencesDialog.AlphabetEdit")); // NOI18N
         jButtonAlphabetEdit.setToolTipText(bundle.getString("PreferencesDialog.AlphabetEditToolTip")); // NOI18N
@@ -364,6 +374,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JSlider jSliderZoom;
     public javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JTextPane jTextPaneDescription;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel;
     // End of variables declaration//GEN-END:variables
     
 }

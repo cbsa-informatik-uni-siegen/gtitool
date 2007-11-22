@@ -164,7 +164,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
           Color pNewColor )
           {
             initAttributes ();

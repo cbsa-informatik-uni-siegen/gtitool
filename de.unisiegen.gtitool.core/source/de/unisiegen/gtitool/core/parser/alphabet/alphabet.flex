@@ -67,7 +67,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-Symbol			= [a-zA-Z0-9]+
+Symbol			= \"[:jletterdigit:]+\" | [:jletterdigit:]
 
 %%
 

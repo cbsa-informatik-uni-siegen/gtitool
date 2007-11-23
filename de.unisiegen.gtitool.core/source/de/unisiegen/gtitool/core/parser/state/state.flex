@@ -70,7 +70,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 
 LineTerminator	= \r|\n|\r\n
 WhiteSpace		= {LineTerminator} | [ \t\f]
-State			= [a-zA-Z0-9]+
+State			= [:jletter:] [:jletterdigit:]*
 
 %%
 

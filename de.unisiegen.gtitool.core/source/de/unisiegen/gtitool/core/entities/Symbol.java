@@ -208,7 +208,33 @@ public final class Symbol implements Entity, Comparable < Symbol >
     {
       throw new SymbolEmptyNameException ();
     }
-    if ( !pName.matches ( "[a-zA-Z0-9]+" ) ) //$NON-NLS-1$
+    if ( pName.startsWith ( "\"" ) ) //$NON-NLS-1$
+    {
+      if ( !pName.endsWith ( "\"" ) ) //$NON-NLS-1$
+      {
+        throw new SymbolIllegalNameException ( pName );
+      }
+      if ( pName.length () <= 2 )
+      {
+        throw new SymbolIllegalNameException ( pName );
+      }
+      String tmpName = pName.substring ( 1, pName.length () - 1 );
+      for ( int i = 0 ; i < tmpName.length () ; i++ )
+      {
+        if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
+        {
+          throw new SymbolIllegalNameException ( pName );
+        }
+      }
+    }
+    else if ( pName.length () == 1 )
+    {
+      if ( !Character.isJavaIdentifierPart ( pName.charAt ( 0 ) ) )
+      {
+        throw new SymbolIllegalNameException ( pName );
+      }
+    }
+    else
     {
       throw new SymbolIllegalNameException ( pName );
     }

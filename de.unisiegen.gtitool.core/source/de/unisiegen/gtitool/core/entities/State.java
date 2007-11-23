@@ -440,9 +440,16 @@ public final class State implements Entity
     {
       throw new StateEmptyNameException ();
     }
-    if ( !pName.matches ( "[a-zA-Z0-9]+" ) ) //$NON-NLS-1$
+    if ( !Character.isJavaIdentifierStart ( pName.charAt ( 0 ) ) )
     {
       throw new StateIllegalNameException ( pName );
+    }
+    for ( int i = 1 ; i < pName.length () ; i++ )
+    {
+      if ( !Character.isJavaIdentifierPart ( pName.charAt ( i ) ) )
+      {
+        throw new StateIllegalNameException ( pName );
+      }
     }
     this.name = pName;
   }

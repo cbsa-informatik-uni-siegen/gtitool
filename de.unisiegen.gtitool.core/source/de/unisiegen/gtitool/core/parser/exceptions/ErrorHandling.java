@@ -6,6 +6,7 @@ import java.util.prefs.Preferences;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.preferences.DefaultValues;
 
 
 /**
@@ -55,9 +56,12 @@ public abstract class ErrorHandling
       int pLeft, int pRight, String ... pTokenSequence )
   {
     Preferences preferences = Preferences.userRoot ();
-    int r = preferences.getInt ( "PreferencesDialog.ColorSymbolR", 255 ); //$NON-NLS-1$
-    int g = preferences.getInt ( "PreferencesDialog.ColorSymbolG", 127 ); //$NON-NLS-1$
-    int b = preferences.getInt ( "PreferencesDialog.ColorSymbolB", 0 ); //$NON-NLS-1$
+    int r = preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
+    int g = preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
+    int b = preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
     symbolColor = getHexadecimalColor ( new Color ( r, g, b ) );
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();

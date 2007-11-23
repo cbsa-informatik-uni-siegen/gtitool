@@ -21,6 +21,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.preferences.DefaultValues;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
@@ -73,82 +74,6 @@ public final class PreferenceManager
    * The default hight of the {@link MainWindow}.
    */
   private static Alphabet DEFAULT_ALPHABET;
-
-
-  /**
-   * The default {@link Color} of the active {@link State}.
-   */
-  private static final Color DEFAULT_ACTIVE_STATE_COLOR = new Color ( 0, 0, 255 );
-
-
-  /**
-   * The default {@link Color} of the error {@link State}.
-   */
-  private static final Color DEFAULT_ERROR_STATE_COLOR = new Color ( 255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of the selected {@link State}.
-   */
-  private static final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255,
-      255, 0 );
-
-
-  /**
-   * The default {@link Color} of the start {@link State}.
-   */
-  private static final Color DEFAULT_START_STATE_COLOR = new Color ( 0, 255, 0 );
-
-
-  /**
-   * The default {@link Color} of a {@link State}.
-   */
-  private static final Color DEFAULT_STATE_COLOR = new Color ( 255, 255, 255 );
-
-
-  /**
-   * The default {@link Color} of a {@link Symbol}.
-   */
-  private static final Color DEFAULT_SYMBOL_COLOR = new Color ( 255, 127, 0 );
-
-
-  /**
-   * The default {@link Color} of a error {@link Symbol}.
-   */
-  private static final Color DEFAULT_ERROR_SYMBOL_COLOR = new Color ( 255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of a {@link Transition}.
-   */
-  private static final Color DEFAULT_TRANSITION_COLOR = new Color ( 0, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of a error {@link Transition}.
-   */
-  private static final Color DEFAULT_ERROR_TRANSITION_COLOR = new Color ( 255,
-      0, 0 );
-
-
-  /**
-   * The default {@link Color} of a parser warning.
-   */
-  private static final Color DEFAULT_PARSER_STATE_COLOR = new Color ( 0, 0, 127 );
-
-
-  /**
-   * The default {@link Color} of a parser warning.
-   */
-  private static final Color DEFAULT_PARSER_SYMBOL_COLOR = new Color ( 0, 0,
-      127 );
-
-
-  /**
-   * The default {@link Color} of a parser warning.
-   */
-  private static final Color DEFAULT_PARSER_WARNING_COLOR = new Color ( 232,
-      242, 254 );
 
 
   /**
@@ -585,17 +510,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemActiveState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
-        DEFAULT_ACTIVE_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
-        DEFAULT_ACTIVE_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
-        DEFAULT_ACTIVE_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorActiveStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorActiveStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_ACTIVE_STATE_COLOR );
+        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR );
   }
 
 
@@ -607,17 +532,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemErrorState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
-        DEFAULT_ERROR_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
-        DEFAULT_ERROR_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
-        DEFAULT_ERROR_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorErrorStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorErrorStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_ERROR_STATE_COLOR );
+        DefaultValues.DEFAULT_ERROR_STATE_COLOR );
   }
 
 
@@ -629,17 +554,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemErrorSymbol ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolR", //$NON-NLS-1$
-        DEFAULT_ERROR_SYMBOL_COLOR.getRed () );
+        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolG", //$NON-NLS-1$
-        DEFAULT_ERROR_SYMBOL_COLOR.getGreen () );
+        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolB", //$NON-NLS-1$
-        DEFAULT_ERROR_SYMBOL_COLOR.getBlue () );
+        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorErrorSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorErrorSymbolDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_ERROR_SYMBOL_COLOR );
+        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR );
   }
 
 
@@ -652,19 +577,19 @@ public final class PreferenceManager
   {
     int r = this.preferences.getInt (
         "PreferencesDialog.ColorErrorTransitionR", //$NON-NLS-1$
-        DEFAULT_ERROR_TRANSITION_COLOR.getRed () );
+        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getRed () );
     int g = this.preferences.getInt (
         "PreferencesDialog.ColorErrorTransitionG", //$NON-NLS-1$
-        DEFAULT_ERROR_TRANSITION_COLOR.getGreen () );
+        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getGreen () );
     int b = this.preferences.getInt (
         "PreferencesDialog.ColorErrorTransitionB", //$NON-NLS-1$
-        DEFAULT_ERROR_TRANSITION_COLOR.getBlue () );
+        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorErrorTransitionCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_ERROR_TRANSITION_COLOR );
+        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR );
   }
 
 
@@ -676,17 +601,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemParserState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorParserStateR", //$NON-NLS-1$
-        DEFAULT_PARSER_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorParserStateG", //$NON-NLS-1$
-        DEFAULT_PARSER_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorParserStateB", //$NON-NLS-1$
-        DEFAULT_PARSER_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorParserStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorParserStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_PARSER_STATE_COLOR );
+        DefaultValues.DEFAULT_PARSER_STATE_COLOR );
   }
 
 
@@ -698,17 +623,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemParserSymbol ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
-        DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
-        DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
-        DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorParserSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorParserSymbolDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_PARSER_SYMBOL_COLOR );
+        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR );
   }
 
 
@@ -720,17 +645,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemParserWarning ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningR", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getRed () );
+        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningG", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getGreen () );
+        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningB", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getBlue () );
+        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorParserWarningCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorParserWarningDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_PARSER_WARNING_COLOR );
+        DefaultValues.DEFAULT_PARSER_WARNING_COLOR );
   }
 
 
@@ -742,17 +667,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemSelectedState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
-        DEFAULT_SELECTED_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
-        DEFAULT_SELECTED_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
-        DEFAULT_SELECTED_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorSelectedStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorSelectedStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_SELECTED_STATE_COLOR );
+        DefaultValues.DEFAULT_SELECTED_STATE_COLOR );
   }
 
 
@@ -764,17 +689,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemStartState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
-        DEFAULT_START_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_START_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
-        DEFAULT_START_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_START_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
-        DEFAULT_START_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_START_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorStartStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorStartStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_START_STATE_COLOR );
+        DefaultValues.DEFAULT_START_STATE_COLOR );
   }
 
 
@@ -786,17 +711,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemState ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getRed () );
+        DefaultValues.DEFAULT_STATE_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getGreen () );
+        DefaultValues.DEFAULT_STATE_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getBlue () );
+        DefaultValues.DEFAULT_STATE_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_STATE_COLOR );
+        DefaultValues.DEFAULT_STATE_COLOR );
   }
 
 
@@ -808,17 +733,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemSymbol ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorSymbolR", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getRed () );
+        DefaultValues.DEFAULT_SYMBOL_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorSymbolG", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getGreen () );
+        DefaultValues.DEFAULT_SYMBOL_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorSymbolB", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getBlue () );
+        DefaultValues.DEFAULT_SYMBOL_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorSymbolDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_SYMBOL_COLOR );
+        DefaultValues.DEFAULT_SYMBOL_COLOR );
   }
 
 
@@ -830,17 +755,17 @@ public final class PreferenceManager
   public final ColorItem getColorItemTransition ()
   {
     int r = this.preferences.getInt ( "PreferencesDialog.ColorTransitionR", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getRed () );
+        DefaultValues.DEFAULT_TRANSITION_COLOR.getRed () );
     int g = this.preferences.getInt ( "PreferencesDialog.ColorTransitionG", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getGreen () );
+        DefaultValues.DEFAULT_TRANSITION_COLOR.getGreen () );
     int b = this.preferences.getInt ( "PreferencesDialog.ColorTransitionB", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getBlue () );
+        DefaultValues.DEFAULT_TRANSITION_COLOR.getBlue () );
     String caption = Messages
         .getString ( "PreferencesDialog.ColorTransitionCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "PreferencesDialog.ColorTransitionDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DEFAULT_TRANSITION_COLOR );
+        DefaultValues.DEFAULT_TRANSITION_COLOR );
   }
 
 

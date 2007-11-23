@@ -36,6 +36,7 @@ non terminal Symbol[]		symbol_list;
 
 non terminal 				epsilon;
 non terminal				alphabet_error;
+non terminal				symbol_list_error;
 
 
 /************
@@ -55,6 +56,19 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									   RESULT.setParserStartOffset(lleft);
 									   RESULT.setParserEndOffset(rright);
 									:}
+								|	symbol_list:sl
+									{:
+									   try
+									   {
+									     RESULT = new Alphabet(sl);
+									   }
+									   catch (AlphabetException ecx)
+									   {
+									     ParserMultiException.throwAlphabetException(ecx.getSymbolList());
+									   }
+									   RESULT.setParserStartOffset(slleft);
+									   RESULT.setParserEndOffset(slright);
+									:}
 								|	alphabet_error
 									{: :}
 								;
@@ -71,6 +85,7 @@ alphabet_error					::= LCBRACE:l epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
+								/* one missing token */
 								|	LCBRACE:l symbol_list:sl SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Alphabet", ", ", lleft, slright, "," );
@@ -102,6 +117,19 @@ symbol_list						::= symbol_list:sl COMMA:c symbol:s
 								|	symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
+									:}
+								|	symbol_list_error
+									{: :}
+								;
+
+symbol_list_error				::= symbol_list:sl COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Alphabet", " s", slleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	symbol_list:sl SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Alphabet", ", ", slleft, slright, "," );
 									:}
 								;
 

@@ -11,15 +11,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.jgraph.JGraph;
+import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
-import org.jgraph.graph.AttributeMap.SerializableRectangle2D;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -52,7 +53,8 @@ public class StatePopupMenu extends JPopupMenu
   /**
    * {@link GraphModel}
    */
-  private GraphModel model;
+  private DefaultGraphModel model;
+
 
   /**
    * The {@link Machine}
@@ -90,8 +92,9 @@ public class StatePopupMenu extends JPopupMenu
    * @param pGraph the JGraph containing the state
    * @param pModel the model containing the state
    * @param pState the state to open the popup menu
+   * @param pMachine The {@link Machine}
    */
-  public StatePopupMenu ( JGraph pGraph, GraphModel pModel,
+  public StatePopupMenu ( JGraph pGraph, DefaultGraphModel pModel,
       DefaultStateView pState, Machine pMachine )
   {
     this.machine = pMachine;
@@ -130,7 +133,8 @@ public class StatePopupMenu extends JPopupMenu
         {
           StatePopupMenu.this.model.remove ( StatePopupMenu.this.state
               .getRemoveObjects () );
-          machine.removeState ( StatePopupMenu.this.state.getState () );
+          StatePopupMenu.this.machine.removeState ( StatePopupMenu.this.state
+              .getState () );
         }
 
       }
@@ -150,23 +154,16 @@ public class StatePopupMenu extends JPopupMenu
       {
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
-        SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
-            .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
-        StatePopupMenu.this.graph
-            .getGraphLayoutCache ()
-            .insert (
-                MachinePanel
-                    .createStateView (
-                        r.x + 35,
-                        r.y + 35,
-                        StatePopupMenu.this.state.getState (),
-                        StatePopupMenu.this.state.getState ().getName (),
-                        StatePopupMenu.this.state.getState ()
-                            .isStartState (), StatePopupMenu.this.state
-                            .getState ().isFinalState () ) );
-        
+        if ( StatePopupMenu.this.state.getState ().isStartState () )
+          GraphConstants.setGradientColor ( StatePopupMenu.this.state
+              .getAttributes (), PreferenceManager.getInstance ()
+              .getColorItemStartState ().getColor () );
+        else
+          GraphConstants.setGradientColor ( StatePopupMenu.this.state
+              .getAttributes (), PreferenceManager.getInstance ()
+              .getColorItemState ().getColor () );
 
-        StatePopupMenu.this.model.remove ( new Object []
+        StatePopupMenu.this.model.cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
       }
     } );
@@ -186,22 +183,7 @@ public class StatePopupMenu extends JPopupMenu
       {
         StatePopupMenu.this.state.getState ().setFinalState (
             !StatePopupMenu.this.state.getState ().isFinalState () );
-        SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
-            .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
-        StatePopupMenu.this.graph
-            .getGraphLayoutCache ()
-            .insert (
-                MachinePanel
-                    .createStateView (
-                        r.x + 35,
-                        r.y + 35,
-                        StatePopupMenu.this.state.getState (),
-                        StatePopupMenu.this.state.getState ().getName (),
-                        StatePopupMenu.this.state.getState ()
-                            .isStartState (), StatePopupMenu.this.state
-                            .getState ().isFinalState () ) );
-
-        StatePopupMenu.this.model.remove ( new Object []
+        StatePopupMenu.this.model.cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
       }
     } );
@@ -229,20 +211,8 @@ public class StatePopupMenu extends JPopupMenu
             if ( name != null )
             {
               StatePopupMenu.this.state.getState ().setName ( name );
-              SerializableRectangle2D r = ( SerializableRectangle2D ) StatePopupMenu.this.state
-                  .getAttributes ().get ( "bounds" ); //$NON-NLS-1$
               StatePopupMenu.this.graph.getGraphLayoutCache ()
-                  .insert (
-                      MachinePanel
-                          .createStateView ( r.x + 35, r.y + 35,
-                              StatePopupMenu.this.state.getState (),
-                              StatePopupMenu.this.state.getState ().getName (),
-                              StatePopupMenu.this.state.getState ()
-                                  .isStartState (), StatePopupMenu.this.state
-                                  .getState ().isFinalState () ) );
-
-              StatePopupMenu.this.model.remove ( new Object []
-              { StatePopupMenu.this.state } );
+                  .valueForCellChanged ( StatePopupMenu.this.state, name );
             }
             break;
           }

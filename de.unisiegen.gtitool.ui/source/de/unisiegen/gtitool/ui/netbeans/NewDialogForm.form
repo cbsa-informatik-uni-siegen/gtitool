@@ -132,6 +132,7 @@
       <SubComponents>
         <Container class="javax.swing.JTabbedPane" name="tabbedPane">
           <Properties>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="machines"/>
           </Properties>
           <Events>
@@ -344,7 +345,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel" name="styledAlphabetParserPanel1">
+                    <Component class="de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel" name="styledAlphabetParserPanelMachine">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="-1" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="0" insetsBottom="30" insetsRight="16" anchor="10" weightX="1.0" weightY="1.0"/>
@@ -515,7 +519,10 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel" name="styledAlphabetParserPanel2">
+                    <Component class="de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel" name="styledAlphabetParserPanelGrammar">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                      </AuxValues>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                           <GridBagConstraints gridX="-1" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="0" insetsBottom="30" insetsRight="16" anchor="10" weightX="1.0" weightY="1.0"/>

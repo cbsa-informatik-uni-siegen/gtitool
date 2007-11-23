@@ -53,6 +53,9 @@ public class NewDialog
     this.newDialogForm.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();
+    this.newDialogForm.styledAlphabetParserPanelGrammar.setAlphabet ( this.alphabet );
+    this.newDialogForm.styledAlphabetParserPanelMachine.setAlphabet ( this.alphabet );
+    this.newDialogForm.styledAlphabetParserPanelGrammar.synchronize ( this.newDialogForm.styledAlphabetParserPanelMachine );
   }
 
 

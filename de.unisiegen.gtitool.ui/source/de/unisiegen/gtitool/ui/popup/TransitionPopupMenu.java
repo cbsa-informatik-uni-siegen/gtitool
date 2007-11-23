@@ -16,6 +16,7 @@ import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
@@ -46,6 +47,9 @@ public class TransitionPopupMenu extends JPopupMenu
 
   /** The {@link MachinesPanelForm} */
   private MachinesPanelForm parent;
+  
+  /** The link {@link Machine} */
+  private Machine machine;
 
 
   /** The {@link Alphabet} */
@@ -75,13 +79,15 @@ public class TransitionPopupMenu extends JPopupMenu
    * @param pParent The parent panel
    * @param pModel the model containing the state
    * @param pTransition the transition to open the popup menu
+   * @param pMachine The {@link Machine}
    * @param pAlphabet The {@link Alphabet}
    */
   public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
-      GraphModel pModel, DefaultTransitionView pTransition, Alphabet pAlphabet )
+      GraphModel pModel, DefaultTransitionView pTransition, Machine pMachine, Alphabet pAlphabet )
   {
     this.graph = pGraph;
     this.parent = pParent;
+    this.machine = pMachine;
     this.alphabet = pAlphabet;
     this.model = pModel;
     this.transition = pTransition;
@@ -131,6 +137,7 @@ public class TransitionPopupMenu extends JPopupMenu
         {
           TransitionPopupMenu.this.model.remove ( new Object []
           { TransitionPopupMenu.this.transition } );
+          TransitionPopupMenu.this.machine.removeTransition ( TransitionPopupMenu.this.transition.getTransition () );
         }
 
       }

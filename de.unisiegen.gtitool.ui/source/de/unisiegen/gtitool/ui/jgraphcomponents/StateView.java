@@ -15,6 +15,7 @@ import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -33,10 +34,10 @@ public class StateView extends VertexView
   private static final long serialVersionUID = -8873631550630271091L;
 
 
-  /** 
-   * The renderer for this view 
+  /**
+   * The renderer for this view
    */
-  public static transient JGraphEllipseRenderer ellipseRenderer = new JGraphEllipseRenderer ();
+  public transient JGraphEllipseRenderer ellipseRenderer;
 
 
   /**
@@ -45,6 +46,8 @@ public class StateView extends VertexView
   public StateView ()
   {
     super ();
+    this.ellipseRenderer = new JGraphEllipseRenderer ( this );
+
   }
 
 
@@ -56,6 +59,7 @@ public class StateView extends VertexView
   public StateView ( Object pCell )
   {
     super ( pCell );
+    this.ellipseRenderer = new JGraphEllipseRenderer ( this );
   }
 
 
@@ -67,7 +71,7 @@ public class StateView extends VertexView
    */
   @Override
   @SuppressWarnings ( "unused" )
-  public Point2D getPerimeterPoint ( EdgeView edge,  Point2D source, Point2D p )
+  public Point2D getPerimeterPoint ( EdgeView edge, Point2D source, Point2D p )
   {
     Rectangle2D r = getBounds ();
 
@@ -139,7 +143,7 @@ public class StateView extends VertexView
   @Override
   public CellViewRenderer getRenderer ()
   {
-    return ellipseRenderer;
+    return this.ellipseRenderer;
   }
 
 
@@ -156,6 +160,21 @@ public class StateView extends VertexView
      */
     private static final long serialVersionUID = 264864659062743923L;
 
+    /** The {@link StateView} */
+    private StateView stateView;
+
+    /**
+     * 
+     * Allocate a new {@link JGraphEllipseRenderer}
+     *
+     * @param pStateView the  {@link StateView}
+     */
+    public JGraphEllipseRenderer ( StateView pStateView )
+    {
+      super ();
+      this.stateView = pStateView;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -171,14 +190,18 @@ public class StateView extends VertexView
       return d;
     }
 
+
     /**
      * {@inheritDoc}
-     *
+     * 
      * @see org.jgraph.graph.VertexRenderer#paint(java.awt.Graphics)
      */
     @Override
     public void paint ( Graphics g )
     {
+      State state = null;
+      if ( this.stateView.getCell () instanceof DefaultStateView )
+        state = ( ( DefaultStateView ) this.stateView.getCell () ).getState ();
       int b = this.borderWidth;
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
@@ -210,12 +233,19 @@ public class StateView extends VertexView
         g.setColor ( this.bordercolor );
         g2.setStroke ( new BasicStroke ( b ) );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+
+        if ( state != null && state.isFinalState () )
+        {
+          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+        }
       }
       if ( this.selected )
       {
 
-        g.setColor( PreferenceManager.getInstance ().getColorItemSelectedState ().getColor () );
+        g.setColor ( PreferenceManager.getInstance ()
+            .getColorItemSelectedState ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+
       }
     }
   }

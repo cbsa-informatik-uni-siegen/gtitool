@@ -69,7 +69,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         jPanelMachinesSpace = new javax.swing.JPanel();
         bodyPanelMachine = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        styledAlphabetParserPanel1 = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        styledAlphabetParserPanelMachine = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         grammarsPanel = new javax.swing.JPanel();
         jLabelGrammarsCaption = new javax.swing.JLabel();
         buttonGrammarsPanel = new javax.swing.JPanel();
@@ -79,7 +79,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         jPanelGrammarsSpace = new javax.swing.JPanel();
         bodyPanelGrammar = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        styledAlphabetParserPanel2 = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        styledAlphabetParserPanelGrammar = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
@@ -134,6 +134,7 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         tabbedPanel.setLayout(new java.awt.GridBagLayout());
 
+        tabbedPane.setFocusable(false);
         tabbedPane.setName("machines");
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -237,7 +238,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 16);
-        bodyPanelMachine.add(styledAlphabetParserPanel1, gridBagConstraints);
+        bodyPanelMachine.add(styledAlphabetParserPanelMachine, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -324,7 +325,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 16);
-        bodyPanelGrammar.add(styledAlphabetParserPanel2, gridBagConstraints);
+        bodyPanelGrammar.add(styledAlphabetParserPanelGrammar, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -439,8 +440,8 @@ public class NewDialogForm extends javax.swing.JDialog {
     public javax.swing.ButtonGroup machines;
     public javax.swing.JPanel machinesPanel;
     public javax.swing.JButton okButton;
-    private de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel1;
-    private de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel2;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelGrammar;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelMachine;
     public javax.swing.JTabbedPane tabbedPane;
     // Ende der Variablendeklaration//GEN-END:variables
     

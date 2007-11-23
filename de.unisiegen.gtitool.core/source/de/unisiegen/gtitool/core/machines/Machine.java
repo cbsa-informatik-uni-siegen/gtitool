@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 
 
@@ -43,6 +44,12 @@ public abstract class Machine implements Serializable
    * The active {@link State}s.
    */
   private ArrayList < State > activeStateList;
+
+
+  /**
+   * The current {@link Word}.
+   */
+  private Word word = null;
 
 
   /**
@@ -323,17 +330,6 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Enters the next {@link Symbol} and returns the {@link Transition}, which
-   * contains the {@link Symbol}.
-   * 
-   * @param pSymbol The next {@link Symbol}.
-   * @return The next {@link Symbol} and returns the {@link Transition}, which
-   *         contains the {@link Symbol}.
-   */
-  public abstract Transition enterNextSymbol ( Symbol pSymbol );
-
-
-  /**
    * Returns the active {@link State} with the given index.
    * 
    * @param pIndex The index.
@@ -369,6 +365,17 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Returns the current {@link Symbol}.
+   * 
+   * @return The current {@link Symbol}.
+   */
+  public final Symbol getCurrentSymbol ()
+  {
+    return this.word.getCurrentSymbol ();
+  }
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.
@@ -393,13 +400,25 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Returns the current {@link Word}.
+   * 
+   * @return The current {@link Word}.
+   * @see #word
+   */
+  protected final Word getWord ()
+  {
+    return this.word;
+  }
+
+
+  /**
    * Returns true if one of the active {@link State}s is a final {@link State},
    * otherwise false.
    * 
    * @return True if one of the active {@link State}s is a final {@link State},
    *         otherwise false.
    */
-  public final boolean isActiveStateFinal ()
+  public final boolean isWordAccepted ()
   {
     for ( State current : this.activeStateList )
     {
@@ -410,6 +429,15 @@ public abstract class Machine implements Serializable
     }
     return false;
   }
+
+
+  /**
+   * Performs the next step and returns the list of {@link Transition}s, which
+   * contains the {@link Symbol}.
+   * 
+   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
+   */
+  public abstract ArrayList < Transition > nextSymbol ();
 
 
   /**
@@ -630,11 +658,25 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Starts the <code>Machine</code> after a validation.
+   * Sets the current {@link Word}.
    * 
+   * @param pWord The current {@link Word} to set.
+   * @see #word
+   */
+  protected final void setWord ( Word pWord )
+  {
+    this.word = pWord;
+  }
+
+
+  /**
+   * Starts the <code>Machine</code> after a validation with the given
+   * {@link Word}.
+   * 
+   * @param pWord The {@link Word} to start with.
    * @throws MachineValidationException If the validation fails.
    */
-  public abstract void start () throws MachineValidationException;
+  public abstract void start ( Word pWord ) throws MachineValidationException;
 
 
   /**

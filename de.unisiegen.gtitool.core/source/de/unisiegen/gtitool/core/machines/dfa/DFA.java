@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -45,33 +46,6 @@ public final class DFA extends Machine
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#enterNextSymbol(Symbol)
-   */
-  @Override
-  public final Transition enterNextSymbol ( Symbol pSymbol )
-  {
-    if ( getActiveStateList ().size () == 0 )
-    {
-      throw new IllegalArgumentException (
-          "no active state: machine must be started first" ); //$NON-NLS-1$
-    }
-    State activeState = getActiveState ( 0 );
-    for ( Transition current : activeState.getTransitionBeginList () )
-    {
-      if ( current.containsSymbol ( pSymbol ) )
-      {
-        clearActiveStateList ();
-        setActiveStates ( current.getStateEnd () );
-        return current;
-      }
-    }
-    throw new IllegalArgumentException ( "symbol not found" ); //$NON-NLS-1$
-  }
-
-
-  /**
    * Returns the active {@link State}.
    * 
    * @return The active {@link State}.
@@ -85,12 +59,49 @@ public final class DFA extends Machine
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#start()
+   * @see Machine#nextSymbol()
    */
   @Override
-  public final void start () throws MachineValidationException
+  public final ArrayList < Transition > nextSymbol ()
   {
+    if ( getActiveStateList ().size () == 0 )
+    {
+      throw new IllegalArgumentException (
+          "no active state: machine must be started first" ); //$NON-NLS-1$
+    }
+    State activeState = getActiveState ( 0 );
+    Symbol symbol = getWord ().nextSymbol ();
+    for ( Transition current : activeState.getTransitionBeginList () )
+    {
+      if ( current.containsSymbol ( symbol ) )
+      {
+        clearActiveStateList ();
+        setActiveStates ( current.getStateEnd () );
+        ArrayList < Transition > result = new ArrayList < Transition > ();
+        result.add ( current );
+        return result;
+      }
+    }
+    throw new IllegalArgumentException ( "symbol not found" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#start(Word)
+   */
+  @Override
+  public final void start ( Word pWord ) throws MachineValidationException
+  {
+    // Word
+    if ( pWord == null )
+    {
+      throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
+    }
     validate ();
+    setWord ( pWord );
+    pWord.start ();
     // Set active start
     clearActiveStateList ();
     loop : for ( State current : this.getStateList () )

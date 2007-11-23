@@ -172,7 +172,7 @@ public final class State implements Entity
   /**
    * {@inheritDoc}
    * 
-   * @see Object#clone()
+   * @see Entity#clone()
    */
   @Override
   public final State clone ()
@@ -322,7 +322,7 @@ public final class State implements Entity
   /**
    * {@inheritDoc}
    * 
-   * @see Object#hashCode()
+   * @see Entity#hashCode()
    */
   @Override
   public final int hashCode ()

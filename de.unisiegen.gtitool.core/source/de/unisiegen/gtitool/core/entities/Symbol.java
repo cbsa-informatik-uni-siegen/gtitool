@@ -94,7 +94,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
   /**
    * {@inheritDoc}
    * 
-   * @see Object#clone()
+   * @see Entity#clone()
    */
   @Override
   public final Symbol clone ()
@@ -181,7 +181,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
   /**
    * {@inheritDoc}
    * 
-   * @see Object#hashCode()
+   * @see Entity#hashCode()
    */
   @Override
   public final int hashCode ()

@@ -53,7 +53,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    */
   public Alphabet ()
   {
-    // SymbolList
+    // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
   }
 
@@ -237,7 +237,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
   /**
    * {@inheritDoc}
    * 
-   * @see Object#clone()
+   * @see Entity#clone()
    */
   @Override
   public final Alphabet clone ()
@@ -349,7 +349,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
   /**
    * {@inheritDoc}
    * 
-   * @see Object#hashCode()
+   * @see Entity#hashCode()
    */
   @Override
   public final int hashCode ()

@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -101,54 +102,69 @@ public class MachinesTest
     DFA dfa = new DFA ( alphabet );
     dfa.addEntities ( z0, z1, z2, t0, t1, t2, t3, t4 );
 
+    Word word = new Word ( c, a, c, a, b, c );
+
     try
     {
-      dfa.start ();
+      dfa.start ( word );
     }
     catch ( MachineValidationException exc )
     {
       exc.printStackTrace ();
     }
-    Transition currentTransition;
-    Symbol currentSymbol;
 
-    currentSymbol = c;
-    System.out.println ( "State:      " + dfa.getActiveState ().getName () );
-    System.out.println ( "Symbol:     " + currentSymbol.getName () );
-    currentTransition = dfa.enterNextSymbol ( currentSymbol );
-    System.out.println ( "Transition: "
-        + currentTransition.getStateBegin ().getName () + " -> "
-        + currentTransition.getStateEnd ().getName () );
-    System.out.println ( "Final:      " + dfa.isActiveStateFinal () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
 
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
+
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
+
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
+
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
+
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+    out ( "Word:       " + dfa.getCurrentSymbol () );
+    out ( "State:      " + dfa.getActiveState ().getName () );
+    out ( "Accepted:   " + dfa.isWordAccepted () );
+    out ();
+  }
+
+
+  public static void out ()
+  {
     System.out.println ();
-    currentSymbol = a;
-    System.out.println ( "State:      " + dfa.getActiveState ().getName () );
-    System.out.println ( "Symbol:     " + currentSymbol.getName () );
-    currentTransition = dfa.enterNextSymbol ( currentSymbol );
-    System.out.println ( "Transition: "
-        + currentTransition.getStateBegin ().getName () + " -> "
-        + currentTransition.getStateEnd ().getName () );
-    System.out.println ( "Final:      " + dfa.isActiveStateFinal () );
+  }
 
-    System.out.println ();
-    currentSymbol = c;
-    System.out.println ( "State:      " + dfa.getActiveState ().getName () );
-    System.out.println ( "Symbol:     " + currentSymbol.getName () );
-    currentTransition = dfa.enterNextSymbol ( currentSymbol );
-    System.out.println ( "Transition: "
-        + currentTransition.getStateBegin ().getName () + " -> "
-        + currentTransition.getStateEnd ().getName () );
-    System.out.println ( "Final:      " + dfa.isActiveStateFinal () );
 
-    System.out.println ();
-    currentSymbol = b;
-    System.out.println ( "State:      " + dfa.getActiveState ().getName () );
-    System.out.println ( "Symbol:     " + currentSymbol.getName () );
-    currentTransition = dfa.enterNextSymbol ( currentSymbol );
-    System.out.println ( "Transition: "
-        + currentTransition.getStateBegin ().getName () + " -> "
-        + currentTransition.getStateEnd ().getName () );
-    System.out.println ( "Final:      " + dfa.isActiveStateFinal () );
+  public static void out ( Object pObject )
+  {
+    System.out.println ( pObject.toString () );
   }
 }

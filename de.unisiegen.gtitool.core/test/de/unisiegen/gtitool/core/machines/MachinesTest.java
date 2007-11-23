@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 
 
@@ -102,7 +103,7 @@ public class MachinesTest
     DFA dfa = new DFA ( alphabet );
     dfa.addEntities ( z0, z1, z2, t0, t1, t2, t3, t4 );
 
-    Word word = new Word ( c, a, c, a, b, c );
+    Word word = new Word ( c, a, c, a, b, c, a );
 
     try
     {
@@ -112,48 +113,22 @@ public class MachinesTest
     {
       exc.printStackTrace ();
     }
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
-
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-    out ( "Word:       " + dfa.getCurrentSymbol () );
-    out ( "State:      " + dfa.getActiveState ().getName () );
-    out ( "Accepted:   " + dfa.isWordAccepted () );
-    out ();
+    try
+    {
+      while (!word.isFinished () )
+      {
+        out ( "State:      " + dfa.getActiveState ().getName () );
+        out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
+        out ( "Word:       " + dfa.getCurrentSymbol () );
+        out ( "State:      " + dfa.getActiveState ().getName () );
+        out ( "Accepted:   " + dfa.isWordAccepted () );
+        out ();
+      }
+    }
+    catch ( WordException exc )
+    {
+      exc.printStackTrace ();
+    }
   }
 
 

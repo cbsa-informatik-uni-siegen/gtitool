@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.unisiegen.gtitool.core.exceptions.word.WordException;
+import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
+
 
 /**
  * The <code>Word</code> entity.
@@ -18,6 +21,12 @@ public class Word implements Entity, Iterable < Symbol >
    * The serial version uid.
    */
   private static final long serialVersionUID = 550317433435393215L;
+
+
+  /**
+   * The start index.
+   */
+  private static int START_INDEX = -1;
 
 
   /**
@@ -39,7 +48,7 @@ public class Word implements Entity, Iterable < Symbol >
   {
     // SymbolList
     this.symbolList = new ArrayList < Symbol > ();
-    this.currentPosition = -1;
+    this.currentPosition = START_INDEX;
   }
 
 
@@ -194,6 +203,10 @@ public class Word implements Entity, Iterable < Symbol >
    */
   public final Symbol getCurrentSymbol ()
   {
+    if ( this.currentPosition == START_INDEX )
+    {
+      throw new IllegalArgumentException ( "current symbol is not defined" ); //$NON-NLS-1$
+    }
     return this.symbolList.get ( this.currentPosition );
   }
 
@@ -235,6 +248,17 @@ public class Word implements Entity, Iterable < Symbol >
 
 
   /**
+   * Returns true if this word is finished, otherwise false.
+   * 
+   * @return True if this word is finished, otherwise false.
+   */
+  public final boolean isFinished ()
+  {
+    return this.currentPosition == this.symbolList.size () - 1;
+  }
+
+
+  /**
    * Returns an iterator over the {@link Symbol}s in this <code>Word</code>.
    * 
    * @return An iterator over the {@link Symbol}s in this <code>Word</code>.
@@ -249,22 +273,17 @@ public class Word implements Entity, Iterable < Symbol >
    * Returns the next {@link Symbol} and increments the current position.
    * 
    * @return The next {@link Symbol}.
+   * @throws WordException If something with the <code>Word</code> is not
+   *           correct.
    */
-  public final Symbol nextSymbol ()
+  public final Symbol nextSymbol () throws WordException
   {
+    if ( this.currentPosition == this.symbolList.size () - 1 )
+    {
+      throw new WordFinishedException ( this );
+    }
     this.currentPosition++ ;
     return getCurrentSymbol ();
-  }
-
-
-  /**
-   * Sets the current position.
-   * 
-   * @param pCurrentPosition the current position to set.
-   */
-  public final void setCurrentPosition ( int pCurrentPosition )
-  {
-    this.currentPosition = pCurrentPosition;
   }
 
 
@@ -273,7 +292,7 @@ public class Word implements Entity, Iterable < Symbol >
    */
   public final void start ()
   {
-    this.currentPosition = -1;
+    this.currentPosition = START_INDEX;
   }
 
 

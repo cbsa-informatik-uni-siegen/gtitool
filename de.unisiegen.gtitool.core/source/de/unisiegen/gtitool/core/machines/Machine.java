@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.word.WordException;
 
 
 /**
@@ -436,8 +437,11 @@ public abstract class Machine implements Serializable
    * contains the {@link Symbol}.
    * 
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
+   * @throws WordException If something with the {@link Word} is not
+   *           correct.
    */
-  public abstract ArrayList < Transition > nextSymbol ();
+  public abstract ArrayList < Transition > nextSymbol ()
+      throws WordException;
 
 
   /**

@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.machines.Machine;
 
 
@@ -62,7 +63,7 @@ public final class DFA extends Machine
    * @see Machine#nextSymbol()
    */
   @Override
-  public final ArrayList < Transition > nextSymbol ()
+  public final ArrayList < Transition > nextSymbol () throws WordException
   {
     if ( getActiveStateList ().size () == 0 )
     {

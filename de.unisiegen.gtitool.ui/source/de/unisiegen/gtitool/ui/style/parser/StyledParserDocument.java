@@ -323,6 +323,34 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Flag that indicates if the panel is read only.
+   */
+  private boolean editable = true;
+
+
+  /**
+   * Return the editable value.
+   * 
+   * @return The editable value.
+   */
+  public final boolean isEditable ()
+  {
+    return this.editable;
+  }
+
+
+  /**
+   * Sets the editable value.
+   * 
+   * @param pEditable The boolean to be set.
+   */
+  public final void setEditable ( boolean pEditable )
+  {
+    this.editable = pEditable;
+  }
+
+
+  /**
    * Processes the document content after a change.
    * 
    * @throws BadLocationException if the processing failed.
@@ -424,21 +452,24 @@ public final class StyledParserDocument extends DefaultStyledDocument
         }
         catch ( ParserWarningException ecx )
         {
-          SimpleAttributeSet warningSet = getAttributeSetWarning ();
-          warningSet.addAttribute ( "warning", ecx ); //$NON-NLS-1$
-          if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
+          if ( this.editable )
           {
-            setCharacterAttributes ( getLength (), getLength (), warningSet,
-                false );
+            SimpleAttributeSet warningSet = getAttributeSetWarning ();
+            warningSet.addAttribute ( "warning", ecx ); //$NON-NLS-1$
+            if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
+            {
+              setCharacterAttributes ( getLength (), getLength (), warningSet,
+                  false );
+            }
+            else
+            {
+              setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
+                  - ecx.getLeft (), warningSet, false );
+            }
+            collectedExceptions.add ( new ParserWarningException ( ecx
+                .getRight (), ecx.getRight (), ecx.getMessage (), ecx
+                .getInsertText () ) );
           }
-          else
-          {
-            setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
-                - ecx.getLeft (), warningSet, false );
-          }
-          collectedExceptions.add ( new ParserWarningException ( ecx
-              .getRight (), ecx.getRight (), ecx.getMessage (), ecx
-              .getInsertText () ) );
         }
         catch ( ParserException ecx )
         {

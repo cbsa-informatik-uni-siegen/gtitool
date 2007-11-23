@@ -19,7 +19,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -163,12 +162,8 @@ public class TransitionPopupMenu extends JPopupMenu
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
             .getTransition ().getSymbolSet () );
         dialog.show ();
-        TransitionPopupMenu.this.model.remove ( new Object []
-        { TransitionPopupMenu.this.transition } );
-        MachinePanel.createTransitionView ( TransitionPopupMenu.this.graph, TransitionPopupMenu.this.transition.getTransition (),
-            TransitionPopupMenu.this.transition.getSourceView (),
-            TransitionPopupMenu.this.transition.getTargetView (),
-            TransitionPopupMenu.this.alphabet, dialog.getAlphabet () );
+        TransitionPopupMenu.this.graph.getGraphLayoutCache ()
+        .valueForCellChanged ( TransitionPopupMenu.this.transition, dialog.getAlphabet ().toString () );
       }
     } );
     add ( this.config );

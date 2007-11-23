@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
- * TODO
+ * This class represents the {@link Transition} in the gui
  * 
  * @author Benjamin Mies
  * @version $Id$

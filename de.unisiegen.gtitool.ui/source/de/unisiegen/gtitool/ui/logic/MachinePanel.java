@@ -173,13 +173,10 @@ public class MachinePanel implements EditorPanel
    * @param x the x position of the new state view
    * @param y the y position of the new state view
    * @param pState the state represented via this view
-   * @param name the name of the new state view
-   * @param startState signals if this state is a start state
-   * @param finalState signals if state is a final state
    * @return {@link DefaultStateView} the new created state view
    */
   public static DefaultStateView createStateView ( double x, double y,
-      State pState, String name, boolean startState, boolean finalState )
+      State pState )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
     DefaultStateView cell = new DefaultStateView ( pState, pState.getName () );
@@ -192,7 +189,7 @@ public class MachinePanel implements EditorPanel
         x - 35, y - 35, 70, 70 ) );
 
     // Set fill color
-    if ( startState )
+    if ( pState.isStartState () )
       GraphConstants.setGradientColor ( cell.getAttributes (),
           PreferenceManager.getInstance ().getColorItemStartState ()
               .getColor () );
@@ -214,9 +211,17 @@ public class MachinePanel implements EditorPanel
   }
 
 
+  /**
+   * Create a new Transition
+   *
+   * @param graph The {@link JGraph}
+   * @param pTransition The {@link Transition} 
+   * @param source The source of the new Transition
+   * @param target The target of the new Transition
+   * @param symbols The Symbols for the new Transition
+   */
   public static void createTransitionView ( JGraph graph,
-      Transition pTransition, DefaultStateView source, DefaultStateView target,
-      Alphabet alphabet, Alphabet symbols )
+      Transition pTransition, DefaultStateView source, DefaultStateView target, Alphabet symbols )
   {
     DefaultTransitionView newEdge = new DefaultTransitionView ( pTransition,
         source, target, symbols != null ? symbols.toString ()
@@ -485,8 +490,7 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState,
-                  name, false, false ) );
+                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
@@ -542,8 +546,7 @@ public class MachinePanel implements EditorPanel
                   MachinePanel.this.machine.addState ( newState );
                   target = createStateView ( e.getPoint ().x
                       / MachinePanel.this.zoomFactor, e.getPoint ().y
-                      / MachinePanel.this.zoomFactor, newState, name, false,
-                      false );
+                      / MachinePanel.this.zoomFactor, newState );
 
                   MachinePanel.this.graph.getGraphLayoutCache ().insert (
                       target );
@@ -571,7 +574,7 @@ public class MachinePanel implements EditorPanel
 
                 createTransitionView ( MachinePanel.this.graph, newTransition,
                     MachinePanel.this.firstState, target,
-                    MachinePanel.this.alphabet, dialog.getAlphabet () );
+                    dialog.getAlphabet () );
                 dialog.dispose ();
               }
               catch ( TransitionSymbolNotInAlphabetException e1 )
@@ -634,8 +637,7 @@ public class MachinePanel implements EditorPanel
                 MachinePanel.this.machine.addState ( newState );
                 target = createStateView ( e.getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
-                    / MachinePanel.this.zoomFactor, newState, name, false,
-                    false );
+                    / MachinePanel.this.zoomFactor, newState );
 
                 MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
               }
@@ -661,7 +663,7 @@ public class MachinePanel implements EditorPanel
               MachinePanel.this.machine.addTransition ( newTransition );
               createTransitionView ( MachinePanel.this.graph, newTransition,
                   MachinePanel.this.firstState, target,
-                  MachinePanel.this.alphabet, dialog.getAlphabet () );
+                  dialog.getAlphabet () );
               dialog.dispose ();
             }
             catch ( TransitionSymbolNotInAlphabetException e1 )
@@ -790,8 +792,7 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState,
-                  name, true, false ) );
+                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
@@ -823,8 +824,7 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState, name,
-                  false, true ) );
+                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
@@ -886,7 +886,12 @@ public class MachinePanel implements EditorPanel
   }
 
 
-  
+  /**
+   * 
+   * Getter for the {@link Machine}
+   *
+   * @return the {@link Machine} of this panel
+   */
   public Machine getMachine ()
   {
     return this.machine;

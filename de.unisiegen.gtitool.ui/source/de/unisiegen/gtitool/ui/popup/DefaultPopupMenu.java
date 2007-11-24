@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
@@ -215,8 +216,12 @@ public class DefaultPopupMenu extends JPopupMenu
         }
         catch ( MachineValidationException e1 )
         {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+          String text = "";
+          for ( MachineException error : e1.getMachineExceptionList () ){
+            text += error.toString () ;
+            text += "\n\n";
+          }
+            panel.setErrorText ( text );
         }
       }
     } );

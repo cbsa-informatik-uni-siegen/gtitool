@@ -43,6 +43,7 @@ public class EditAlphabetPanelForm extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 20, 21);
         add(jButtonAlphabetEdit, gridBagConstraints);
 
+        styledAlphabetParserPanel1.setPreferredSize(new java.awt.Dimension(300, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;

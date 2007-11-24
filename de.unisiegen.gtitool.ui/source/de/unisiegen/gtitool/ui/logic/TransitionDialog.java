@@ -202,14 +202,27 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveLeft ()
   {
+    ArrayList < Symbol > sym = new ArrayList < Symbol > ();
     this.modelAlphabet.remove ( " " ); //$NON-NLS-1$
-    Object [] symbols =  this.transitionDialog.jListChangeOverSet
+    Object [] objects = this.transitionDialog.jListChangeOverSet
         .getSelectedValues ();
-    for ( Object object : symbols )
+    for ( Object object : objects )
     {
       String symbol = ( String ) object;
       this.modelAlphabet.add ( symbol );
       this.modelChangeOverSet.remove ( symbol );
+    }
+    try
+    {
+      for ( String symbol : this.modelChangeOverSet.list )
+      {
+        sym.add ( new Symbol ( symbol ) );
+      }
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
     this.transitionDialog.jListChangeOverSet.repaint ();
     if ( this.modelChangeOverSet.getSize () == 0 )
@@ -218,16 +231,18 @@ public class TransitionDialog
     Collections.sort ( this.modelChangeOverSet.list );
     Collections.sort ( this.modelAlphabet.list );
     this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
-    String text = "{"; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.modelChangeOverSet.list.size () ; i++ )
-    {
-      text += " " + this.modelChangeOverSet.list.get ( i ); //$NON-NLS-1$
-      if ( i < this.modelChangeOverSet.list.size () - 1 )
-        text += ","; //$NON-NLS-1$
-    }
-    text += " }"; //$NON-NLS-1$
 
-    this.transitionDialog.jTextPaneAlphabet.setText ( text );
+    try
+    {
+      
+      this.transitionDialog.styledAlphabetParserPanel
+          .setAlphabet ( sym.size () > 0 ? new Alphabet ( sym ) : new Alphabet() );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -236,8 +251,9 @@ public class TransitionDialog
    */
   public void handleActionPerformedMoveRight ()
   {
+    ArrayList < Symbol > sym = new ArrayList < Symbol > ();
     this.modelChangeOverSet.remove ( TransitionDialog.epsilon );
-    Object [] symbols =  this.transitionDialog.jListAlphabet
+    Object [] symbols = this.transitionDialog.jListAlphabet
         .getSelectedValues ();
     if ( symbols == null )
       return;
@@ -247,6 +263,18 @@ public class TransitionDialog
       this.modelChangeOverSet.add ( symbol );
       this.modelAlphabet.remove ( symbol );
     }
+    try
+    {
+      for ( String symbol : this.modelChangeOverSet.list )
+      {
+        sym.add ( new Symbol ( symbol ) );
+      }
+    }
+    catch ( SymbolException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
     this.transitionDialog.jListAlphabet.repaint ();
     if ( this.modelAlphabet.getSize () == 0 )
       this.modelAlphabet.add ( " " ); //$NON-NLS-1$
@@ -254,16 +282,16 @@ public class TransitionDialog
     this.transitionDialog.jButtonMoveRight.setEnabled ( false );
     Collections.sort ( this.modelChangeOverSet.list );
     Collections.sort ( this.modelAlphabet.list );
-    String text = "{"; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.modelChangeOverSet.list.size () ; i++ )
+    try
     {
-      text += " " + this.modelChangeOverSet.list.get ( i ); //$NON-NLS-1$
-      if ( i < this.modelChangeOverSet.list.size () - 1 )
-        text += ","; //$NON-NLS-1$
+      this.transitionDialog.styledAlphabetParserPanel
+          .setAlphabet ( new Alphabet ( sym ) );
     }
-    text += " }"; //$NON-NLS-1$
-
-    this.transitionDialog.jTextPaneAlphabet.setText ( text );
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -309,23 +337,24 @@ public class TransitionDialog
    */
   public void handleFocusGained ( ListSelectionEvent evt )
   {
-    
+
     JList selectedList = ( JList ) evt.getSource ();
-    String selected = ( String )selectedList.getSelectedValue ();
-    if ( selected == null || selected.equals ( TransitionDialog.epsilon ) || selected.equals ( " " )) //$NON-NLS-1$
+    String selected = ( String ) selectedList.getSelectedValue ();
+    if ( selected == null || selected.equals ( TransitionDialog.epsilon )
+        || selected.equals ( " " ) ) //$NON-NLS-1$
       return;
     if ( selectedList.equals ( this.transitionDialog.jListAlphabet ) )
     {
       this.transitionDialog.jListChangeOverSet.clearSelection ();
       this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
       if ( selectedList.getSelectedValues ().length > 0 )
-      this.transitionDialog.jButtonMoveRight.setEnabled ( true );
+        this.transitionDialog.jButtonMoveRight.setEnabled ( true );
     }
     else
     {
       this.transitionDialog.jListAlphabet.clearSelection ();
       if ( selectedList.getSelectedValues ().length > 0 )
-      this.transitionDialog.jButtonMoveLeft.setEnabled ( true );
+        this.transitionDialog.jButtonMoveLeft.setEnabled ( true );
       this.transitionDialog.jButtonMoveRight.setEnabled ( false );
     }
   }
@@ -349,8 +378,8 @@ public class TransitionDialog
     this.transitionDialog.jListChangeOverSet
         .setModel ( this.modelChangeOverSet );
 
-    this.transitionDialog.jTextPaneAlphabet
-        .setText ( "{ " + TransitionDialog.epsilon + " }" ); //$NON-NLS-1$//$NON-NLS-2$
+    this.transitionDialog.styledAlphabetParserPanel
+        .setAlphabet ( new Alphabet () );
   }
 
 
@@ -378,22 +407,22 @@ public class TransitionDialog
   {
     if ( symbols.size () > 0 )
       this.modelChangeOverSet.list.clear ();
-    for ( Symbol symbol : symbols )
-    {
-      this.modelAlphabet.remove ( symbol.toString () );
-      this.modelChangeOverSet.add ( symbol.toString () );
-    }
+      for ( Symbol symbol : symbols )
+      {
+        this.modelAlphabet.remove ( symbol.toString () );
+        this.modelChangeOverSet.add ( symbol.toString () );
 
-    String text = "{"; //$NON-NLS-1$
-    for ( int i = 0 ; i < this.modelChangeOverSet.list.size () ; i++ )
+      }
+    try
     {
-      text += " " + this.modelChangeOverSet.list.get ( i ); //$NON-NLS-1$
-      if ( i < this.modelChangeOverSet.list.size () - 1 )
-        text += ","; //$NON-NLS-1$
+      this.transitionDialog.styledAlphabetParserPanel
+          .setAlphabet ( new Alphabet ( symbols ) );
     }
-    text += " }"; //$NON-NLS-1$
-
-    this.transitionDialog.jTextPaneAlphabet.setText ( text );
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
 
   }
 

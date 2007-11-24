@@ -46,6 +46,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         diagrammContentPanel = new javax.swing.JScrollPane();
         tablePanel = new javax.swing.JPanel();
         bottom = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPaneConsole = new javax.swing.JTextPane();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -196,7 +198,19 @@ public class MachinesPanelForm extends javax.swing.JPanel {
 
         jSplitPane2.setLeftComponent(top);
 
+        bottom.setLayout(new java.awt.GridBagLayout());
+
         bottom.setName("Console");
+        jTextPaneConsole.setEditable(false);
+        jTextPaneConsole.setForeground(new java.awt.Color(255, 51, 51));
+        jScrollPane1.setViewportView(jTextPaneConsole);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        bottom.add(jScrollPane1, gridBagConstraints);
+
         jSplitPane2.setRightComponent(bottom);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -245,8 +259,10 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     public javax.swing.JToggleButton jButtonMouse;
     public javax.swing.JToggleButton jButtonStartState;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
+    public javax.swing.JTextPane jTextPaneConsole;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JPanel toolbar;
     private javax.swing.ButtonGroup toolbarButton;

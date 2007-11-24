@@ -38,6 +38,7 @@ import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
@@ -286,6 +287,108 @@ public class MachinePanel implements EditorPanel
                     .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
           }
         } );
+    
+    PreferenceManager.getInstance ().addColorChangedListener ( new ColorChangedListener() {
+
+      public void colorChangedActiveState ( Color pNewColor )
+      {
+        // Nothing to do here 
+        
+      }
+
+      public void colorChangedErrorState ( Color pNewColor )
+      {
+        // Nothing to do here 
+        
+      }
+
+      public void colorChangedErrorSymbol ( Color pNewColor )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void colorChangedErrorTransition ( Color pNewColor )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void colorChangedParserState ( Color pNewColor )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void colorChangedParserSymbol ( Color pNewColor )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void colorChangedParserWarning ( Color pNewColor )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void colorChangedSelectedState ( Color pNewColor )
+      {
+        // Nothing to do 
+        
+      }
+
+      public void colorChangedStartState ( Color pNewColor )
+      {
+        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
+          try {
+            DefaultStateView state = ( DefaultStateView ) object;
+            if ( state.getState ().isStartState () )
+              GraphConstants.setGradientColor ( state
+                  .getAttributes (), PreferenceManager.getInstance ()
+                  .getColorItemStartState ().getColor () );
+              
+          }
+          catch ( ClassCastException e){
+            // Do nothing
+          }
+        }
+        MachinePanel.this.model.cellsChanged ( DefaultGraphModel.getAll ( model ) );
+        
+      }
+
+      public void colorChangedState ( Color pNewColor )
+      {
+        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
+          try {
+            DefaultStateView state = ( DefaultStateView ) object;
+            if ( !state.getState ().isStartState () )
+              GraphConstants.setGradientColor ( state
+                  .getAttributes (), PreferenceManager.getInstance ()
+                  .getColorItemState ().getColor () );
+              
+          }
+          catch ( ClassCastException e){
+            // Do nothing
+          }
+        }
+        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
+        
+      }
+
+      public void colorChangedSymbol ( Color pNewColor )
+      {
+        // Nothing to do so far
+        
+      }
+
+      public void colorChangedTransition ( Color pNewColor )
+      {
+        // Nothing to do so far
+        
+      }
+      
+    });
   }
 
 
@@ -895,5 +998,12 @@ public class MachinePanel implements EditorPanel
   public Machine getMachine ()
   {
     return this.machine;
+  }
+
+
+  public void setErrorText ( String text )
+  {
+    machinePanel.jTextPaneConsole.setText ( text );
+    
   }
 }

@@ -42,7 +42,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jButtonMoveLeft = new javax.swing.JButton();
         jButtonMoveRight = new javax.swing.JButton();
         JLabelSubHeadline1 = new javax.swing.JLabel();
-        jTextPaneAlphabet = new javax.swing.JTextPane();
+        styledAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jLabelErrorMessage = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButtonOk = new javax.swing.JButton();
@@ -178,16 +178,16 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel1.add(JLabelSubHeadline1, gridBagConstraints);
 
-        jTextPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextPaneAlphabet.setEditable(false);
-        jTextPaneAlphabet.setMinimumSize(new java.awt.Dimension(2, 63));
-        jTextPaneAlphabet.setPreferredSize(new java.awt.Dimension(2, 63));
+        styledAlphabetParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 20, 10);
-        jPanel1.add(jTextPaneAlphabet, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 16, 10, 16);
+        jPanel1.add(styledAlphabetParserPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 8;
@@ -291,7 +291,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollChangeOverSet;
     private javax.swing.JScrollPane jScrollPaneAlphabet;
-    public javax.swing.JTextPane jTextPaneAlphabet;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel;
     // Ende der Variablendeklaration//GEN-END:variables
    
     private TransitionDialog logic;

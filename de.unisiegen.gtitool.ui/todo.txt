@@ -1,7 +1,4 @@
 *** Benny ***
-- Farben aus Preferences dynamisch über Model ändern
-- UI mit Machine verknüpfen
-- Internationalisierung Transition Dialog
 - Pfeil auf Startzustand
 - Notizen im Graph hinzufügen
 - DND bei Transitionsdialog einbauen

@@ -3,17 +3,31 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.gtitool.core.parser.Parseable;
+import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.sidebar.SideBar;
 import de.unisiegen.gtitool.ui.style.sidebar.SideBarListener;
+import de.unisiegen.gtitool.ui.utils.Clipboard;
 
 
 /**
@@ -74,6 +88,30 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * The {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenu;
+
+
+  /**
+   * The cut {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemCut;
+
+
+  /**
+   * The copy {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemCopy;
+
+
+  /**
+   * The paste {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemPaste;
+
+
+  /**
    * Allocates a new <code>StyledPanel</code>.
    * 
    * @param pParseable The input {@link Parseable}.
@@ -81,6 +119,140 @@ public abstract class StyledParserPanel extends JPanel
   public StyledParserPanel ( Parseable pParseable )
   {
     this.editor = new StyledParserEditor ();
+
+    // PopupMenu
+    this.jPopupMenu = new JPopupMenu ();
+
+    // Cut
+    this.jMenuItemCut = new JMenuItem ( Messages.getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
+    this.jMenuItemCut.setMnemonic ( Messages.getString (
+        "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.jMenuItemCut.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/cut16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemCut.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
+        InputEvent.CTRL_MASK ) );
+    this.jMenuItemCut.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        try
+        {
+          Clipboard.getInstance ().copy (
+              StyledParserPanel.this.editor.getSelectedText () );
+          StyledParserPanel.this.document
+              .remove (
+                  StyledParserPanel.this.editor.getSelectionStart (),
+                  ( StyledParserPanel.this.editor.getSelectionEnd () - StyledParserPanel.this.editor
+                      .getSelectionStart () ) );
+        }
+        catch ( BadLocationException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+      }
+    } );
+    this.jPopupMenu.add ( this.jMenuItemCut );
+
+    // Copy
+    this.jMenuItemCopy = new JMenuItem ( Messages
+        .getString ( "MainWindow.Copy" ) ); //$NON-NLS-1$
+    this.jMenuItemCopy.setMnemonic ( Messages.getString (
+        "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.jMenuItemCopy.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/copy16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemCopy.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_C,
+        InputEvent.CTRL_MASK ) );
+    this.jMenuItemCopy.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        Clipboard.getInstance ().copy (
+            StyledParserPanel.this.editor.getSelectedText () );
+      }
+    } );
+    this.jPopupMenu.add ( this.jMenuItemCopy );
+
+    // Paste
+    this.jMenuItemPaste = new JMenuItem ( Messages
+        .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
+    this.jMenuItemPaste.setMnemonic ( Messages.getString (
+        "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.jMenuItemPaste.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/paste16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemPaste.setAccelerator ( KeyStroke.getKeyStroke (
+        KeyEvent.VK_V, InputEvent.CTRL_MASK ) );
+    this.jMenuItemPaste.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        StyledParserPanel.this.editor.replaceSelection ( Clipboard
+            .getInstance ().paste () );
+      }
+    } );
+    this.jPopupMenu.add ( this.jMenuItemPaste );
+
+    // LanguageChangedListener
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            StyledParserPanel.this.jMenuItemCut.setText ( Messages
+                .getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemCut.setMnemonic ( Messages
+                .getString ( "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemCopy.setText ( Messages
+                .getString ( "MainWindow.Copy" ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemCopy.setMnemonic ( Messages
+                .getString ( "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemPaste.setText ( Messages
+                .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemPaste.setMnemonic ( Messages
+                .getString ( "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+
+    // Editor
+    this.editor.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
+        {
+          StyledParserPanel.this.jPopupMenu.show ( pEvent.getComponent (),
+              pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
+        {
+          StyledParserPanel.this.jPopupMenu.show ( pEvent.getComponent (),
+              pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+
+    // Document
     this.document = new StyledParserDocument ( pParseable );
     this.document.addParseableChangedListener ( new ParseableChangedListener ()
     {
@@ -229,6 +401,18 @@ public abstract class StyledParserPanel extends JPanel
   protected final StyledParserEditor getEditor ()
   {
     return this.editor;
+  }
+
+
+  /**
+   * Returns the {@link JPopupMenu}.
+   * 
+   * @return The {@link JPopupMenu}.
+   * @see #jPopupMenu
+   */
+  public final JPopupMenu getJPopupMenu ()
+  {
+    return this.jPopupMenu;
   }
 
 

@@ -7,6 +7,9 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -16,11 +19,14 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
@@ -370,8 +376,10 @@ public final class PreferencesDialog
         SwingUtilities.invokeLater ( new Runnable ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public void run ()
           {
+            PreferencesDialog.this.jPopupMenuColorList.setVisible ( false );
             SleepTimerTask.this.colorList.getSelectionModel ()
                 .clearSelection ();
             SleepTimerTask.this.colorList.repaint ();
@@ -383,8 +391,10 @@ public final class PreferencesDialog
         SwingUtilities.invokeLater ( new Runnable ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public void run ()
           {
+            PreferencesDialog.this.jPopupMenuColorList.setVisible ( false );
             SleepTimerTask.this.colorList
                 .setSelectedIndex ( SleepTimerTask.this.index );
             SleepTimerTask.this.colorList.repaint ();
@@ -625,6 +635,30 @@ public final class PreferencesDialog
 
 
   /**
+   * The language {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuLanguage;
+
+
+  /**
+   * The look and feel {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuLookAndFeel;
+
+
+  /**
+   * The zoom factor {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuZoomFactor;
+
+
+  /**
+   * The color list {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuColorList;
+
+
+  /**
    * The index of the alphabet tab.
    */
   private static final int ALPHABET_TAB_INDEX = 2;
@@ -660,6 +694,54 @@ public final class PreferencesDialog
         .getLanguageItem ();
     this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
 
+    // PopupMenu
+    this.jPopupMenuLanguage = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreLanguage = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+      }
+    } );
+    this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
+    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+
     /*
      * Look and feel
      */
@@ -690,12 +772,109 @@ public final class PreferencesDialog
         .getLookAndFeelItem ();
     this.gui.jComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
 
+    // PopupMenu
+    this.jPopupMenuLookAndFeel = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreLookAndFeel = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreLookAndFeel.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreLookAndFeel.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreLookAndFeel.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
+      }
+    } );
+    this.jPopupMenuLookAndFeel.add ( jMenuItemRestoreLookAndFeel );
+    this.gui.jComboBoxLookAndFeel.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+
     /*
      * Zoom factor
      */
     this.initialZoomFactorItem = PreferenceManager.getInstance ()
         .getZoomFactorItem ();
     this.gui.jSliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
+
+    // PopupMenu
+    this.jPopupMenuZoomFactor = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.gui.jSliderZoom
+            .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
+      }
+    } );
+    this.jPopupMenuZoomFactor.add ( jMenuItemRestoreZoomFactor );
+    this.gui.jSliderZoom.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
 
     /*
      * Color
@@ -753,6 +932,83 @@ public final class PreferencesDialog
     this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
     // Model
     this.colorListModel = new ColorListModel ();
+
+    // PopupMenu
+    this.jPopupMenuColorList = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        ( ( ColorItem ) PreferencesDialog.this.gui.jListColor
+            .getSelectedValue () ).restore ();
+      }
+    } );
+    this.jPopupMenuColorList.add ( jMenuItemRestoreColorList );
+    this.gui.jListColor.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          if ( PreferencesDialog.this.colorTimer != null )
+          {
+            PreferencesDialog.this.colorTimer.cancel ();
+          }
+          int index = PreferencesDialog.this.gui.jListColor
+              .locationToIndex ( pEvent.getPoint () );
+          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
+              index, index );
+          // Mouse is not over an item
+          if ( pEvent.getY () > rect.y + rect.height )
+          {
+            return;
+          }
+          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
+          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          if ( PreferencesDialog.this.colorTimer != null )
+          {
+            PreferencesDialog.this.colorTimer.cancel ();
+          }
+          int index = PreferencesDialog.this.gui.jListColor
+              .locationToIndex ( pEvent.getPoint () );
+          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
+              index, index );
+          // Mouse is not over an item
+          if ( pEvent.getY () > rect.y + rect.height )
+          {
+            return;
+          }
+          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
+          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+
     // Items
     this.colorListModel.add ( this.colorItemState );
     this.colorListModel.add ( this.colorItemSelectedState );
@@ -778,6 +1034,30 @@ public final class PreferencesDialog
     this.initialAlphabetItem = this.alphabetItem.clone ();
     this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
         .getAlphabet () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanel.getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    // RestoreAlphabet
+    JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.alphabetItem.restore ();
+        PreferencesDialog.this.gui.styledAlphabetParserPanel
+            .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
+      }
+    } );
+    jPopupMenu.add ( jMenuItemRestoreAlphabet );
 
     /*
      * Alphabet changed listener

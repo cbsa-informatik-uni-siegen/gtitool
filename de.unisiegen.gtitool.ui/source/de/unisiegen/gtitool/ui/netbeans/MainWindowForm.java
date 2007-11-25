@@ -307,7 +307,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuEdit.add(jSeparatorEdit2);
 
-        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/preferences16.png")));
         jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
         jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
         jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {

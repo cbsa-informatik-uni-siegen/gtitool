@@ -61,83 +61,83 @@ public final class PreferenceManager
   /**
    * The default width of the {@link MainWindow}.
    */
-  private static int DEFAULT_WIDTH = 800;
+  public static int DEFAULT_WIDTH = 800;
 
 
   /**
    * The default hight of the {@link MainWindow}.
    */
-  private static int DEFAULT_HEIGHT = 600;
+  public static int DEFAULT_HEIGHT = 600;
 
 
   /**
    * The default hight of the {@link MainWindow}.
    */
-  private static Alphabet DEFAULT_ALPHABET;
+  public static Alphabet DEFAULT_ALPHABET;
 
 
   /**
    * The default language title.
    */
-  private static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
+  public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
 
 
   /**
    * The default language language.
    */
-  private static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
+  public static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
       .getLanguage ();
 
 
   /**
    * The default look and feel name.
    */
-  private static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
+  public static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
 
 
   /**
    * The default look and feel class name.
    */
-  private static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = UIManager
+  public static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = UIManager
       .getSystemLookAndFeelClassName ();
 
 
   /**
    * The default x position of the {@link MainWindow}.
    */
-  private static int DEFAULT_POSITION_X = ( Toolkit.getDefaultToolkit ()
+  public static int DEFAULT_POSITION_X = ( Toolkit.getDefaultToolkit ()
       .getScreenSize ().width - DEFAULT_WIDTH ) / 2;
 
 
   /**
    * The default y position of the {@link MainWindow}.
    */
-  private static int DEFAULT_POSITION_Y = ( Toolkit.getDefaultToolkit ()
+  public static int DEFAULT_POSITION_Y = ( Toolkit.getDefaultToolkit ()
       .getScreenSize ().height - DEFAULT_HEIGHT ) / 2;
 
 
   /**
    * The default maximized state of the {@link MainWindow}.
    */
-  private static boolean DEFAULT_MAXIMIZED = false;
+  public static boolean DEFAULT_MAXIMIZED = false;
 
 
   /**
    * The default preference dialog last active tab.
    */
-  private static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
+  public static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
 
 
   /**
    * The default working path.
    */
-  private static String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
+  public static String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
 
 
   /**
    * The default zoom factor value.
    */
-  private static int DEFAULT_ZOOM_FACTOR = 100;
+  public static int DEFAULT_ZOOM_FACTOR = 100;
 
   static
   {

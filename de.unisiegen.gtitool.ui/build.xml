@@ -33,7 +33,7 @@
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
 		<!-- sign all jar files -->
-		<signjar alias="gtitool_key" keystore="gtitool.keystore" storepass="ao93iw2l">
+		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
 			<fileset dir="${gtitooldir}" includes="*.jar" />
 		</signjar>
 		<!-- copy sh file -->

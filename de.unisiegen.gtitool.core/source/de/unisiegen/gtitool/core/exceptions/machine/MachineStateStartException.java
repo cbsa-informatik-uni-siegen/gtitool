@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -67,5 +68,17 @@ public final class MachineStateStartException extends MachineStateException
           "MachineStateStartException.MoreThanOneStartStateDescription", states //$NON-NLS-1$
               .toString () ) );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

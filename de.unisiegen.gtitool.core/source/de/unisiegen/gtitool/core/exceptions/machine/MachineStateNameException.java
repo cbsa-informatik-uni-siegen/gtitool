@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -40,5 +41,17 @@ public final class MachineStateNameException extends MachineStateException
     setMessage ( Messages.getString ( "MachineStateNameException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
         "MachineStateNameException.Description", getState ( 0 ).getName () ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.transition;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
 
 
 /**
@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class TransitionException extends CoreException
+public abstract class TransitionException extends CoreErrorException
 {
 
   /**

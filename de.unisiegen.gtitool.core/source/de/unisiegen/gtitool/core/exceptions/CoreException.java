@@ -12,6 +12,25 @@ public abstract class CoreException extends Exception
 {
 
   /**
+   * The error type of the exception.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ErrorType
+  {
+    /**
+     * The error type.
+     */
+    ERROR,
+
+    /**
+     * The warning type.
+     */
+    WARNING
+  }
+
+
+  /**
    * The detail message
    */
   private String message;
@@ -89,6 +108,14 @@ public abstract class CoreException extends Exception
   {
     return this.message;
   }
+
+
+  /**
+   * Returns the {@link ErrorType} of the exception.
+   * 
+   * @return The {@link ErrorType} of the exception.
+   */
+  public abstract ErrorType getType ();
 
 
   /**

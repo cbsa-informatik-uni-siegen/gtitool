@@ -33,4 +33,13 @@ public abstract class MachineException extends CoreException
   {
     super ( pMessage, pDescription );
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public abstract ErrorType getType ();
 }

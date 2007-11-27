@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.exceptions.state;
 
 
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
 
 
 /**
@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class StateException extends CoreException
+public abstract class StateException extends CoreErrorException
 {
 
   /**

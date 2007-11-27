@@ -64,6 +64,15 @@ public abstract class MachineStateException extends MachineException
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see MachineException#getType()
+   */
+  @Override
+  public abstract ErrorType getType ();
+
+
+  /**
    * Returns the number of {@link State}s in the list of {@link State}s.
    * 
    * @return The number of {@link State}s in the list of {@link State}s.

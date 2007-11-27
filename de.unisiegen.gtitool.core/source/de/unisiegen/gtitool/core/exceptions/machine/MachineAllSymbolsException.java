@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -144,6 +145,18 @@ public final class MachineAllSymbolsException extends MachineException
   public final TreeSet < Symbol > getSymbolSet ()
   {
     return this.symbolSet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 
 

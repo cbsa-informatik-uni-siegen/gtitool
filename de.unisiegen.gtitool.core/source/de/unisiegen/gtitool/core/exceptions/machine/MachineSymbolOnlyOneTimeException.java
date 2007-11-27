@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -132,6 +133,18 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
   public final ArrayList < Transition > getTransitionList ()
   {
     return this.transitionList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 
 

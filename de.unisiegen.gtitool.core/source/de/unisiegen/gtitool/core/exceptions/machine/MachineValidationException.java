@@ -78,9 +78,21 @@ public final class MachineValidationException extends CoreException implements
   /**
    * {@inheritDoc}
    * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Iterable#iterator()
    */
-  public Iterator < MachineException > iterator ()
+  public final Iterator < MachineException > iterator ()
   {
     return this.machineExceptionList.iterator ();
   }

@@ -115,7 +115,7 @@ public class MachinesTest
     }
     try
     {
-      while (!word.isFinished () )
+      while ( !word.isFinished () )
       {
         out ( "State:      " + dfa.getActiveState ().getName () );
         out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );

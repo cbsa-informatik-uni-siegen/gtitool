@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -13,7 +14,8 @@ import de.unisiegen.gtitool.core.entities.Symbol;
  * {@link Alphabet} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: AlphabetMoreThanOneSymbolException.java 189 2007-11-17
+ *          15:55:30Z fehler $
  */
 public final class AlphabetMoreThanOneSymbolException extends AlphabetException
 {
@@ -40,5 +42,17 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
     setDescription ( Messages.getString (
         "AlphabetException.MoreThanOneSymbolDescription", pSymbolList.get ( //$NON-NLS-1$
             0 ).getName (), pAlphabet.toString () ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

@@ -21,7 +21,7 @@ public final class MachineValidationException extends CoreException implements
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -5114547200702807944L;
+  private static final long serialVersionUID = 3601157561422760883L;
 
 
   /**
@@ -78,18 +78,6 @@ public final class MachineValidationException extends CoreException implements
   /**
    * {@inheritDoc}
    * 
-   * @see CoreException#getType()
-   */
-  @Override
-  public final ErrorType getType ()
-  {
-    return ErrorType.ERROR;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Iterable#iterator()
    */
   public final Iterator < MachineException > iterator ()
@@ -108,6 +96,18 @@ public final class MachineValidationException extends CoreException implements
   public final int machineExceptionSize ()
   {
     return this.machineExceptionList.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.COLLECTION;
   }
 
 

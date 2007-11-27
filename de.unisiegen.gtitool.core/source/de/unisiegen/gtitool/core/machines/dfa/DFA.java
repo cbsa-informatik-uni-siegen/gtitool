@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateFinalException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
@@ -228,6 +229,22 @@ public final class DFA extends Machine
       }
     }
 
+    // Warning: final state
+    boolean found = false;
+    loop : for ( State currentState : this.getStateList () )
+    {
+      if ( currentState.isFinalState () )
+      {
+        found = true;
+        break loop;
+      }
+    }
+    if ( !found )
+    {
+      machineExceptionList.add ( new MachineStateFinalException () );
+    }
+
+    // Throw the exception if a warning or a error has occurred.
     if ( machineExceptionList.size () > 0 )
     {
       throw new MachineValidationException ( machineExceptionList );

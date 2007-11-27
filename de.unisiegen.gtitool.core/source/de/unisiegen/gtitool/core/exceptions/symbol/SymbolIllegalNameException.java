@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.symbol;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -54,9 +55,21 @@ public final class SymbolIllegalNameException extends SymbolException
    * @return The illegal name of the {@link Symbol}.
    * @see #illegalName
    */
-  public String getIllegalName ()
+  public final String getIllegalName ()
   {
     return this.illegalName;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 
 
@@ -66,7 +79,7 @@ public final class SymbolIllegalNameException extends SymbolException
    * @see Throwable#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ( super.toString () );

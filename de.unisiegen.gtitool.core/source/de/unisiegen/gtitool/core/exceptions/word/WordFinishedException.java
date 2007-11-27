@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.word;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -49,6 +50,18 @@ public final class WordFinishedException extends WordException
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
+  }
+
+
+  /**
    * Returns the {@link Word}.
    * 
    * @return The {@link Word}.
@@ -66,7 +79,7 @@ public final class WordFinishedException extends WordException
    * @see Throwable#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ( super.toString () );

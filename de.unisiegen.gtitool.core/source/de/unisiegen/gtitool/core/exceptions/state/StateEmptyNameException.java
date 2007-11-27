@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.state;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -31,5 +32,17 @@ public final class StateEmptyNameException extends StateException
     setMessage ( Messages.getString ( "StateException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages
         .getString ( "StateException.EmptyNameDescription" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

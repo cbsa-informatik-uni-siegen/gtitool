@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.symbol;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -31,5 +32,17 @@ public final class SymbolEmptyNameException extends SymbolException
     setMessage ( Messages.getString ( "SymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages
         .getString ( "SymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

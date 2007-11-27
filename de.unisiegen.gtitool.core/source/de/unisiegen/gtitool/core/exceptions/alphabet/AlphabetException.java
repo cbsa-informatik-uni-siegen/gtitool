@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class AlphabetException extends CoreErrorException
+public abstract class AlphabetException extends CoreException
 {
 
   /**

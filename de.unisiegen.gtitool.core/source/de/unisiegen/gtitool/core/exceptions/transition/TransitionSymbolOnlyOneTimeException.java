@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.exceptions.transition;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -42,5 +43,17 @@ public final class TransitionSymbolOnlyOneTimeException extends
         "TransitionSymbolOnlyOneTimeException.Description", pSymbol.getName (), //$NON-NLS-1$
         pTransition.getStateBegin ().getName (), pTransition.getStateEnd ()
             .getName () ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 }

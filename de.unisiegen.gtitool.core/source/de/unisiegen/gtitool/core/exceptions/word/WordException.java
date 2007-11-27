@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.exceptions.word;
 
 
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreErrorException;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class WordException extends CoreErrorException
+public abstract class WordException extends CoreException
 {
 
   /**

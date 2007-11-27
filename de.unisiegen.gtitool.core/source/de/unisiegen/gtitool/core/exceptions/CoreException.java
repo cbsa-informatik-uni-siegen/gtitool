@@ -26,7 +26,12 @@ public abstract class CoreException extends Exception
     /**
      * The warning type.
      */
-    WARNING
+    WARNING,
+
+    /**
+     * The collection type.
+     */
+    COLLECTION
   }
 
 

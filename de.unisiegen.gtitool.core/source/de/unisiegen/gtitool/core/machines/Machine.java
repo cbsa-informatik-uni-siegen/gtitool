@@ -437,11 +437,9 @@ public abstract class Machine implements Serializable
    * contains the {@link Symbol}.
    * 
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
-   * @throws WordException If something with the {@link Word} is not
-   *           correct.
+   * @throws WordException If something with the {@link Word} is not correct.
    */
-  public abstract ArrayList < Transition > nextSymbol ()
-      throws WordException;
+  public abstract ArrayList < Transition > nextSymbol () throws WordException;
 
 
   /**

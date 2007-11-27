@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.exceptions.state;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -54,9 +55,21 @@ public final class StateIllegalNameException extends StateException
    * @return The illegal name of the {@link State}.
    * @see #illegalName
    */
-  public String getIllegalName ()
+  public final String getIllegalName ()
   {
     return this.illegalName;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
   }
 
 

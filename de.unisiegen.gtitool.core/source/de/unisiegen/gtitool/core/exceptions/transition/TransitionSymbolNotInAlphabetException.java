@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
@@ -73,10 +74,22 @@ public final class TransitionSymbolNotInAlphabetException extends
   /**
    * {@inheritDoc}
    * 
+   * @see CoreException#getType()
+   */
+  @Override
+  public final ErrorType getType ()
+  {
+    return ErrorType.ERROR;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Throwable#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ( super.toString () );

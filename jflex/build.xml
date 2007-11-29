@@ -1,0 +1,66 @@
+<project name="JFlex" default="dist">
+
+  <property name="sourcedir" value="${basedir}/source" />
+  <property name="distdir" value="${basedir}/dist" />
+  <property name="libdir" value="${basedir}/lib"/>
+   	
+  <target name="declare" description="define tasks for jflex and cup">
+    <taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpath="${libdir}/JFlex.jar"/>
+    <taskdef classname="java_cup.AntTask" name="cup" classpath="${libdir}/java_cup.jar"/>
+  </target>
+
+  <target name="compile" depends="jflex,cup"
+          description="compile all classes">
+    <javac srcdir="." 
+           destdir="${distdir}" 
+           target="1.5"
+           classpath="."
+           debug="on" />
+  </target>
+
+  <target name="jflex" depends="declare" description="generate scanner">
+    <jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${libdir}/skeleton.nested"/>
+  </target>
+
+  <target name="cup" depends="declare" description="generate parser">
+    <cup file="${sourcedir}/JFlex/LexParse.cup" dir="${sourcedir}/JFlex" interface="true" parser="LexParse" />
+  </target>
+
+  <target name="copy" description="copy resources to build dir">
+    <copy file="${libdir}/skeleton.default" todir="${distdir}/JFlex" />
+    <copy file="${sourcedir}/JFlex/Messages.properties" todir="${distdir}/JFlex/" />
+  </target>
+	
+  <target name="dist" depends="dist-preclean,jar,dist-clean,update" description="Build distribution">
+  	<echo message="Distribution ready in ${distdir}" />
+  </target>
+
+  <target name="dist-preclean">
+	<delete dir="${distdir}" includeemptydirs="true" />
+	<mkdir dir="${distdir}" />
+  	<delete file="JFlex/LexScan.java" />
+    <delete file="JFlex/LexParse.java" />
+    <delete file="JFlex/sym.java" />
+  </target>
+
+  <target name="jar" depends="compile,copy" description="make JFlex.jar">
+	<manifest file="${distdir}/MANIFEST.MF">
+		<attribute name="Main-Class" value="JFlex.Main" />
+	</manifest>
+    <jar basedir="${distdir}" 
+    	 includes="JFlex/**,java_cup/**,skeleton" 
+    	 jarfile="${distdir}/JFlex-1.4.1-gtitool.jar" 
+    	 manifest="${distdir}/MANIFEST.MF">
+    </jar>
+  </target>
+	
+  <target name="dist-clean">
+    <delete dir="${distdir}/java_cup" />
+    <delete dir="${distdir}/JFlex" />
+  	<delete file="${distdir}/MANIFEST.MF" />
+  </target>
+	
+  <target name="update">
+  	<copy file="${distdir}/JFlex-1.4.1-gtitool.jar" todir="${basedir}/../de.unisiegen.gtitool.core/lib" />
+  </target>
+</project>

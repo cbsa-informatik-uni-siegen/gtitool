@@ -57,33 +57,35 @@
     </javac>
   </target>
 
-  <target name="dist" depends="compile">
-   <jar jarfile="${dist}/java-cup-11a-gtitool.jar" basedir="${classes}">
-      <manifest>
-        <attribute name="Main-Class" value="java_cup/Main" />
-	    <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
-      </manifest>
-    </jar>
-    <jar jarfile="${dist}/java-cup-11a-gtitool-runtime.jar" basedir="${classes}" includes="java_cup/runtime/*">
-    </jar>
-    <jar jarfile="${dist}/java-cup-11a-gtitool-src.jar">
-       <manifest>
-         <attribute name="Main-Class" value="java_cup/Main" />
- 	     <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
-       </manifest>
-	   <fileset dir="${basedir}/source">
-		 <include name="**/*.java"/>
-	   </fileset>
-     </jar>	
-    <delete dir="${java}" />
-    <delete dir="${classes}" />
-  </target>
-
-  <target name="test" depends="dist">
-    <java jar="${dist}/java-cup-11a-gtitool.jar" fork="true">
-        <arg value="-interface" />
-        <arg value="${cup}/parser.cup" />
-    </java>
+  <target name="dist" depends="jar,update">
+    <echo message="Distribution ready in ${distdir}" />
   </target>
 	
+  <target name="jar" depends="compile">
+	<jar jarfile="${dist}/java-cup-11a-gtitool.jar" basedir="${classes}">
+	  <manifest>
+	    <attribute name="Main-Class" value="java_cup/Main" />
+	    <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
+	  </manifest>
+	</jar>
+	<jar jarfile="${dist}/java-cup-11a-gtitool-runtime.jar" basedir="${classes}" includes="java_cup/runtime/*">
+	</jar>
+	<jar jarfile="${dist}/java-cup-11a-gtitool-src.jar">
+	    <manifest>
+	      <attribute name="Main-Class" value="java_cup/Main" />
+	      <attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
+	    </manifest>
+	    <fileset dir="${basedir}/source">
+		  <include name="**/*.java"/>
+		</fileset>
+	</jar>	
+	<delete dir="${java}" />
+	<delete dir="${classes}" />
+  </target>
+
+  <target name="update">
+  	<copy file="${dist}/java-cup-11a-gtitool-runtime.jar" todir="${basedir}/../de.unisiegen.gtitool.core/lib" />
+  	<copy file="${dist}/java-cup-11a-gtitool-src.jar" todir="${basedir}/../de.unisiegen.gtitool.core/lib" />
+  	<copy file="${dist}/java-cup-11a-gtitool.jar" todir="${basedir}/../de.unisiegen.gtitool.core/lib" />
+  </target>
 </project>

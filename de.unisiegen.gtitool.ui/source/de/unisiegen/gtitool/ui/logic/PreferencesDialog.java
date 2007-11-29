@@ -1249,15 +1249,6 @@ public final class PreferencesDialog
               PreferencesDialog.this.gui.jTextPaneDescription
                   .setText ( colorItem.getDescription () );
             }
-            // AlphabetEdit
-            PreferencesDialog.this.gui.jButtonAlphabetEdit.setText ( Messages
-                .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
-            PreferencesDialog.this.gui.jButtonAlphabetEdit
-                .setMnemonic ( Messages.getString (
-                    "PreferencesDialog.AlphabetEditMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            PreferencesDialog.this.gui.jButtonAlphabetEdit
-                .setToolTipText ( Messages
-                    .getString ( "PreferencesDialog.AlphabetEditToolTip" ) ); //$NON-NLS-1$
           }
         } );
   }

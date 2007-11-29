@@ -191,7 +191,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 16, 0);
         jPanelMain.add(jButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

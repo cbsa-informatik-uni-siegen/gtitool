@@ -316,6 +316,7 @@ public class emit
     /* class header */
     out.println ( "/** CUP generated " + class_or_interface
         + " containing symbol constants. */" );
+    out.println ( "@ SuppressWarnings ( value = { \"all\" } )" );
     out.println ( "public " + class_or_interface + " "
         + symbol_const_class_name + " {" );
     out.println ( "  /* terminals */" );

@@ -19,7 +19,7 @@ package JFlex;
  * HiLowEmitter
  * 
  * @author Gerwin Klein
- * @version $Revision: 1.5 $, $Date: 2004/04/12 10:07:48 $
+ * @version $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

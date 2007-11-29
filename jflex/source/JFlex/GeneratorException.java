@@ -19,7 +19,7 @@ package JFlex;
  * Thrown when code generation has to be aborted.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.2 $, $Date: 2004/11/06 23:03:32 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

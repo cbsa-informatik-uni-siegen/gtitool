@@ -23,7 +23,7 @@ import java.io.File;
  * taks, gui, etc.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.10 $, $Date: 2004/11/06 23:03:31 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

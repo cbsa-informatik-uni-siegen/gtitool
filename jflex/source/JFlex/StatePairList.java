@@ -19,7 +19,7 @@ package JFlex;
  * A list of pairs of states. Used in DFA minimization.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.4 $, $Date: 2004/11/06 23:03:30 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

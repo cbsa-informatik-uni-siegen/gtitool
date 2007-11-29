@@ -19,7 +19,7 @@ package JFlex;
  * Signals a silent exit (no statistics printout).
  * 
  * @author Gerwin Klein
- * @version $Revision: 2.3 $, $Date: 2004/11/06 23:03:32 $
+ * @version $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

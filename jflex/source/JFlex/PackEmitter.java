@@ -23,7 +23,7 @@ package JFlex;
  * <code>p.emitUnpack();</code>
  * 
  * @author Gerwin Klein
- * @version $Revision: 1.6 $, $Date: 2004/04/12 10:07:47 $
+ * @version $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

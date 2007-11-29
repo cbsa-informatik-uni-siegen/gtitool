@@ -20,7 +20,7 @@ package JFlex;
  * String together with a priority (line number in the specification).
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.6 $, $Date: 2004/11/06 23:03:30 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

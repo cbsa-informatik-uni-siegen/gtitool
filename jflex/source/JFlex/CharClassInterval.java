@@ -23,7 +23,7 @@ package JFlex;
  * must belong to the same character class.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.3 $, $Date: 2004/11/06 23:03:30 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

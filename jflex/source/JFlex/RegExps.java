@@ -22,7 +22,7 @@ import java.util.Vector;
  * Stores all rules of the specification for later access in RegExp -> NFA
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.4 $, $Date: 2004/11/06 23:03:31 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

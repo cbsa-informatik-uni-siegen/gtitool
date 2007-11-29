@@ -32,7 +32,7 @@ import java.util.Hashtable;
  * also done here.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.26 $, $Date: 2004/11/07 03:12:46 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

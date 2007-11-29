@@ -22,7 +22,7 @@ import java.util.Vector;
  * CharSet implemented with intervalls [fixme: optimizations possible]
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.9 $, $Date: 2004/11/07 00:12:48 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

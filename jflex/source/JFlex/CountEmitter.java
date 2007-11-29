@@ -19,7 +19,7 @@ package JFlex;
  * An emitter for an array encoded as count/value pairs in a string.
  * 
  * @author Gerwin Klein
- * @version $Revision: 1.6 $, $Date: 2004/04/12 10:07:48 $
+ * @version $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

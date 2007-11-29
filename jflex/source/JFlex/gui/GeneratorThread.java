@@ -29,7 +29,7 @@ import JFlex.Out;
  * screen updates)
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision: 2.6 $, $Date: 2004/11/06 23:03:33 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

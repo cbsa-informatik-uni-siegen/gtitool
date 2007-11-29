@@ -41,7 +41,7 @@ import JFlex.Skeleton;
  * A dialog for setting JFlex options
  * 
  * @author Gerwin Klein
- * @version $Revision: 1.7 $, $Date: 2004/11/06 23:03:33 $
+ * @version $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

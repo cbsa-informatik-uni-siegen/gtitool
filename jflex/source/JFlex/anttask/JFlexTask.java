@@ -32,7 +32,7 @@ import JFlex.Options;
  * JFlex task class
  * 
  * @author Rafal Mantiuk
- * @version JFlex 1.4.1, $Revision: 2.14 $, $Date: 2004/11/06 23:03:33 $
+ * @version JFlex 1.4.1, $Revision$, $Date$
  */
 @SuppressWarnings (
 { "all" } )

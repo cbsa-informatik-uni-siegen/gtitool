@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Symbol implements Entity, Comparable < Symbol >
+public final class Symbol implements ParseableEntity, Comparable < Symbol >
 {
 
   /**
@@ -33,7 +33,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = -1;
+  protected int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -42,7 +42,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = -1;
+  protected int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -153,11 +153,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
-   * Returns the parserEndOffset.
-   * 
-   * @return The parserEndOffset.
-   * @see #parserEndOffset
-   * @see #setParserEndOffset(int)
+   * {@inheritDoc}
    */
   public final int getParserEndOffset ()
   {
@@ -166,11 +162,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
-   * Returns the parserStartOffset.
-   * 
-   * @return The parserStartOffset.
-   * @see #parserStartOffset
-   * @see #setParserStartOffset(int)
+   * {@inheritDoc}
    */
   public final int getParserStartOffset ()
   {
@@ -243,11 +235,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
-   * Sets the parser end offset.
-   * 
-   * @param pParserEndOffset The new parser end offset.
-   * @see #getParserEndOffset()
-   * @see #parserEndOffset
+   * {@inheritDoc}
    */
   public final void setParserEndOffset ( int pParserEndOffset )
   {
@@ -256,11 +244,7 @@ public final class Symbol implements Entity, Comparable < Symbol >
 
 
   /**
-   * Sets the parser start offset.
-   * 
-   * @param pParserStartOffset The new parser start offset.
-   * @see #getParserStartOffset()
-   * @see #parserStartOffset
+   * {@inheritDoc}
    */
   public final void setParserStartOffset ( int pParserStartOffset )
   {

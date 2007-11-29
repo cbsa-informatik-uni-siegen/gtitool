@@ -55,7 +55,7 @@ public final class DFA extends Machine
   @Override
   public final ArrayList < Transition > nextSymbol () throws WordException
   {
-    if ( getActiveStateList ().size () == 0 )
+    if ( getActiveState ().size () == 0 )
     {
       throw new IllegalArgumentException (
           "no active state: machine must be started first" ); //$NON-NLS-1$
@@ -66,7 +66,7 @@ public final class DFA extends Machine
     {
       if ( current.containsSymbol ( symbol ) )
       {
-        setActiveStates ( current.getStateEnd () );
+        setActiveState ( current.getStateEnd () );
         ArrayList < Transition > result = new ArrayList < Transition > ();
         result.add ( current );
         addHistory ( current );
@@ -85,7 +85,7 @@ public final class DFA extends Machine
   @Override
   public final ArrayList < Transition > previousSymbol () throws WordException
   {
-    if ( getActiveStateList ().size () == 0 )
+    if ( getActiveState ().size () == 0 )
     {
       throw new IllegalArgumentException (
           "no active state: machine must be started first" ); //$NON-NLS-1$
@@ -93,7 +93,7 @@ public final class DFA extends Machine
     getWord ().previousSymbol ();
     ArrayList < Transition > result = removeHistory ();
     Transition transition = result.get ( 0 );
-    setActiveStates ( transition.getStateBegin () );
+    setActiveState ( transition.getStateBegin () );
     return result;
   }
 
@@ -116,11 +116,11 @@ public final class DFA extends Machine
     pWord.start ();
     clearHistory ();
     // Set active start
-    loop : for ( State current : this.getStateList () )
+    loop : for ( State current : this.getState () )
     {
       if ( current.isStartState () )
       {
-        setActiveStates ( current );
+        setActiveState ( current );
         break loop;
       }
     }
@@ -139,7 +139,7 @@ public final class DFA extends Machine
 
     // Start state
     ArrayList < State > startStateList = new ArrayList < State > ();
-    for ( State current : this.getStateList () )
+    for ( State current : this.getState () )
     {
       if ( current.isStartState () )
 
@@ -155,24 +155,24 @@ public final class DFA extends Machine
 
     // State name
     ArrayList < State > duplicatedListAll = new ArrayList < State > ();
-    firstLoop : for ( int i = 0 ; i < this.getStateList ().size () ; i++ )
+    firstLoop : for ( int i = 0 ; i < this.getState ().size () ; i++ )
     {
-      if ( duplicatedListAll.contains ( this.getStateList ().get ( i ) ) )
+      if ( duplicatedListAll.contains ( this.getState ().get ( i ) ) )
       {
         continue firstLoop;
       }
       ArrayList < State > duplicatedListOne = new ArrayList < State > ();
-      for ( int j = i + 1 ; j < this.getStateList ().size () ; j++ )
+      for ( int j = i + 1 ; j < this.getState ().size () ; j++ )
       {
-        if ( this.getStateList ().get ( i ).getName ().equals (
-            this.getStateList ().get ( j ).getName () ) )
+        if ( this.getState ().get ( i ).getName ().equals (
+            this.getState ().get ( j ).getName () ) )
         {
-          duplicatedListOne.add ( this.getStateList ().get ( j ) );
+          duplicatedListOne.add ( this.getState ().get ( j ) );
         }
       }
       if ( duplicatedListOne.size () > 0 )
       {
-        duplicatedListOne.add ( this.getStateList ().get ( i ) );
+        duplicatedListOne.add ( this.getState ().get ( i ) );
         for ( State current : duplicatedListOne )
         {
           duplicatedListAll.add ( current );
@@ -183,7 +183,7 @@ public final class DFA extends Machine
     }
 
     // All symbols
-    for ( State currentState : this.getStateList () )
+    for ( State currentState : this.getState () )
     {
       TreeSet < Symbol > currentSymbolSet = new TreeSet < Symbol > ();
       for ( Transition currentTransition : currentState.getTransitionBegin () )
@@ -207,7 +207,7 @@ public final class DFA extends Machine
     }
 
     // Epsilon transition
-    for ( Transition currentTransition : this.getTransitionList () )
+    for ( Transition currentTransition : this.getTransition () )
     {
       if ( currentTransition.getSymbol ().size () == 0 )
       {
@@ -217,7 +217,7 @@ public final class DFA extends Machine
     }
 
     // Symbol only one time
-    for ( State currentState : this.getStateList () )
+    for ( State currentState : this.getState () )
     {
       for ( Symbol currentSymbol : this.getAlphabet () )
       {
@@ -239,7 +239,7 @@ public final class DFA extends Machine
 
     // Warning: final state
     boolean found = false;
-    loop : for ( State currentState : this.getStateList () )
+    loop : for ( State currentState : this.getState () )
     {
       if ( currentState.isFinalState () )
       {

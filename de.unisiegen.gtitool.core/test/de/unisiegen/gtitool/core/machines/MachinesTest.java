@@ -66,9 +66,9 @@ public class MachinesTest
     State z2 = null;
     try
     {
-      z0 = new State ( alphabet, "z0", true, false );
-      z1 = new State ( alphabet, "z1", false, false );
-      z2 = new State ( alphabet, "z2", false, true );
+      z0 = new State ( alphabet, true, false );
+      z1 = new State ( alphabet, false, false );
+      z2 = new State ( alphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -101,9 +101,9 @@ public class MachinesTest
     }
 
     DFA dfa = new DFA ( alphabet );
-    dfa.addStates ( z0, z1, z2);
-    dfa.addTransitions ( t0, t1, t2, t3, t4 );
-    
+    dfa.addState ( z0, z1, z2 );
+    dfa.addTransition ( t0, t1, t2, t3, t4 );
+
     Word word = new Word ( b, c, a, c, b, a, b );
 
     try

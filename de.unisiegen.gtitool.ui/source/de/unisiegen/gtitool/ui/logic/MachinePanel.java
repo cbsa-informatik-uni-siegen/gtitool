@@ -50,15 +50,6 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  */
 public class MachinePanel implements EditorPanel
 {
-
-  //
-  // Static Attributes
-  //
-
-  /** Number of created states */
-  public int statecount = 0;
-
-
   //
   // Attributes
   //
@@ -587,8 +578,7 @@ public class MachinePanel implements EditorPanel
           return;
         try
         {
-          String name = "Z" + MachinePanel.this.statecount++; //$NON-NLS-1$
-          State newState = new State ( MachinePanel.this.alphabet, name, false,
+          State newState = new State ( MachinePanel.this.alphabet, false,
               false );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
@@ -643,9 +633,8 @@ public class MachinePanel implements EditorPanel
 
                 try
                 {
-                  String name = "Z" + MachinePanel.this.statecount++; //$NON-NLS-1$
                   State newState = new State ( MachinePanel.this.alphabet,
-                      name, false, false );
+                       false, false );
                   MachinePanel.this.machine.addState ( newState );
                   target = createStateView ( e.getPoint ().x
                       / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -733,9 +722,9 @@ public class MachinePanel implements EditorPanel
               try
               {
                 
-                String name = "Z" + MachinePanel.this.statecount++; //$NON-NLS-1$
+                
                 State newState;
-                newState = new State ( MachinePanel.this.alphabet, name, false,
+                newState = new State ( MachinePanel.this.alphabet, false, 
                     false );
                 MachinePanel.this.machine.addState ( newState );
                 target = createStateView ( e.getPoint ().x
@@ -889,8 +878,7 @@ public class MachinePanel implements EditorPanel
 
         try
         {
-          String name = "Z" + MachinePanel.this.statecount++; //$NON-NLS-1$
-          State newState = new State ( MachinePanel.this.alphabet, name, true,
+          State newState = new State ( MachinePanel.this.alphabet, true,
               false );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
@@ -921,8 +909,7 @@ public class MachinePanel implements EditorPanel
 
         try
         {
-          String name = "Z" + MachinePanel.this.statecount++; //$NON-NLS-1$
-          State newState = new State ( MachinePanel.this.alphabet, name, false,
+          State newState = new State ( MachinePanel.this.alphabet, false,
               true );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (

@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 
@@ -205,24 +206,20 @@ public final class Transition implements Entity
   public final Transition clone ()
   {
     Transition newTransition = null;
-    for ( Symbol current : this.symbolSet )
+    try
     {
-      try
+      newTransition = new Transition ( this.alphabet.clone (), this.stateBegin
+          .clone (), this.stateEnd.clone () );
+      for ( Symbol current : this.symbolSet )
       {
-        newTransition = new Transition ( this.alphabet.clone (),
-            this.stateBegin.clone (), this.stateEnd.clone () );
         newTransition.addSymbol ( current.clone () );
       }
-      catch ( TransitionSymbolNotInAlphabetException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
-      catch ( TransitionSymbolOnlyOneTimeException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return null;
     }
     return newTransition;
   }

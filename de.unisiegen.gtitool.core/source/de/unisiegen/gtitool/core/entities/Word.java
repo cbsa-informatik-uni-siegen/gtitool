@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
  * @author Christian Fehler
  * @version $Id$
  */
-public class Word implements Entity, Iterable < Symbol >
+public class Word implements ParseableEntity, Iterable < Symbol >
 {
 
   /**
@@ -28,6 +28,24 @@ public class Word implements Entity, Iterable < Symbol >
    * The start index.
    */
   private static int START_INDEX = -1;
+
+
+  /**
+   * The start offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  protected int parserStartOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * The end offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  protected int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -88,22 +106,6 @@ public class Word implements Entity, Iterable < Symbol >
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this <code>Word</code>.
-   * 
-   * @param pSymbol The {@link Symbol} to be appended to this <code>Word</code>.
-   */
-  public final void addSymbol ( Symbol pSymbol )
-  {
-    // Symbol
-    if ( pSymbol == null )
-    {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
-    }
-    this.symbolList.add ( pSymbol );
-  }
-
-
-  /**
    * Appends the specified {@link Symbol}s to the end of this <code>Word</code>.
    * 
    * @param pSymbols The {@link Symbol}s to be appended to this
@@ -123,6 +125,22 @@ public class Word implements Entity, Iterable < Symbol >
     {
       addSymbol ( current );
     }
+  }
+
+
+  /**
+   * Appends the specified {@link Symbol} to the end of this <code>Word</code>.
+   * 
+   * @param pSymbol The {@link Symbol} to be appended to this <code>Word</code>.
+   */
+  public final void addSymbol ( Symbol pSymbol )
+  {
+    // Symbol
+    if ( pSymbol == null )
+    {
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+    }
+    this.symbolList.add ( pSymbol );
   }
 
 
@@ -215,6 +233,24 @@ public class Word implements Entity, Iterable < Symbol >
       throw new WordFinishedException ( this );
     }
     return this.symbolList.get ( this.currentPosition );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
   }
 
 
@@ -321,6 +357,24 @@ public class Word implements Entity, Iterable < Symbol >
     Symbol symbol = getCurrentSymbol ();
     this.currentPosition-- ;
     return symbol;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

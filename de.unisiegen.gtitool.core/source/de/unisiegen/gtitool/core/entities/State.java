@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class State implements Entity
+public final class State implements ParseableEntity
 {
 
   /**
@@ -24,12 +24,18 @@ public final class State implements Entity
 
 
   /**
+   * The value if the id of it was not defined so far.
+   */
+  public static final int ID_NOT_DEFINED = -1;
+
+
+  /**
    * The start offset of this <code>Symbol</code> in the source code.
    * 
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = -1;
+  protected int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -38,7 +44,7 @@ public final class State implements Entity
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = -1;
+  protected int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -75,6 +81,35 @@ public final class State implements Entity
    * The list of {@link Transition}s, which end in this <code>State</code>.
    */
   private ArrayList < Transition > transitionEndList;
+
+
+  /**
+   * The id of this <code>State</code>.
+   */
+  private int id;
+
+
+  /**
+   * Flag that indicates if the default name can be set.
+   */
+  private boolean canSetDefaultName;
+
+
+  /**
+   * Allocates a new <code>State</code>.
+   * 
+   * @param pAlphabet The {@link Alphabet} of this <code>State</code>.
+   * @param pStartState This <code>State</code> is a start <code>State</code>.
+   * @param pFinalState This <code>State</code> is a final <code>State</code>.
+   * @throws StateException If something with the <code>State</code> is not
+   *           correct.
+   */
+  public State ( Alphabet pAlphabet, boolean pStartState, boolean pFinalState )
+      throws StateException
+  {
+    this ( pAlphabet, "DEFAULTNAME", pStartState, pFinalState ); //$NON-NLS-1$
+    this.canSetDefaultName = true;
+  }
 
 
   /**
@@ -115,6 +150,10 @@ public final class State implements Entity
     this.transitionBeginList = new ArrayList < Transition > ();
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
+    // Id
+    this.id = ID_NOT_DEFINED;
+    // DefaultName
+    this.canSetDefaultName = false;
   }
 
 
@@ -183,11 +222,11 @@ public final class State implements Entity
           this.startState, this.finalState );
       for ( Transition current : this.transitionBeginList )
       {
-        newState.addTransitionBegin ( current );
+        newState.addTransitionBegin ( current.clone () );
       }
       for ( Transition current : this.transitionEndList )
       {
-        newState.addTransitionEnd ( current );
+        newState.addTransitionEnd ( current.clone () );
       }
       return newState;
     }
@@ -211,9 +250,11 @@ public final class State implements Entity
     if ( pOther instanceof State )
     {
       State other = ( State ) pOther;
-      return ( ( this.name.equals ( other.name ) )
-          && ( this.alphabet.equals ( other.alphabet ) )
-          && ( this.startState == other.startState ) && ( this.finalState == other.finalState ) );
+      if ( ( this.id == ID_NOT_DEFINED ) || ( other.id == ID_NOT_DEFINED ) )
+      {
+        throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+      }
+      return this.id == other.id;
     }
     return false;
   }
@@ -232,6 +273,22 @@ public final class State implements Entity
 
 
   /**
+   * Returns the id.
+   * 
+   * @return The id.
+   * @see #id
+   */
+  public final int getId ()
+  {
+    if ( this.id == ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+    }
+    return this.id;
+  }
+
+
+  /**
    * Returns the name.
    * 
    * @return The name.
@@ -244,11 +301,7 @@ public final class State implements Entity
 
 
   /**
-   * Returns the parserEndOffset.
-   * 
-   * @return The parserEndOffset.
-   * @see #parserEndOffset
-   * @see #setParserEndOffset(int)
+   * {@inheritDoc}
    */
   public final int getParserEndOffset ()
   {
@@ -257,15 +310,22 @@ public final class State implements Entity
 
 
   /**
-   * Returns the parserStartOffset.
-   * 
-   * @return The parserStartOffset.
-   * @see #parserStartOffset
-   * @see #setParserStartOffset(int)
+   * {@inheritDoc}
    */
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
+  }
+
+
+  /**
+   * Returns the {@link Transition} begin list.
+   * 
+   * @return The {@link Transition} begin list.
+   */
+  public final ArrayList < Transition > getTransitionBegin ()
+  {
+    return this.transitionBeginList;
   }
 
 
@@ -284,13 +344,13 @@ public final class State implements Entity
 
 
   /**
-   * Returns the {@link Transition} begin list.
+   * Returns the {@link Transition} end list.
    * 
-   * @return The {@link Transition} begin list.
+   * @return The {@link Transition} end list.
    */
-  public final ArrayList < Transition > getTransitionBegin ()
+  public final ArrayList < Transition > getTransitionEnd ()
   {
-    return this.transitionBeginList;
+    return this.transitionEndList;
   }
 
 
@@ -309,17 +369,6 @@ public final class State implements Entity
 
 
   /**
-   * Returns the {@link Transition} end list.
-   * 
-   * @return The {@link Transition} end list.
-   */
-  public final ArrayList < Transition > getTransitionEnd ()
-  {
-    return this.transitionEndList;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Entity#hashCode()
@@ -327,8 +376,11 @@ public final class State implements Entity
   @Override
   public final int hashCode ()
   {
-    return this.name.hashCode () + this.alphabet.hashCode ()
-        + ( this.startState ? 1 : 0 ) + ( this.finalState ? 1 : 0 );
+    if ( this.id == ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+    }
+    return this.id;
   }
 
 
@@ -413,6 +465,30 @@ public final class State implements Entity
 
 
   /**
+   * Sets the default name of this <code>State</code>.
+   */
+  public final void setDefaultName ()
+  {
+    if ( this.canSetDefaultName )
+    {
+      if ( this.id == ID_NOT_DEFINED )
+      {
+        throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$ 
+      }
+      try
+      {
+        setName ( "z" + this.id ); //$NON-NLS-1$
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+  }
+
+
+  /**
    * Sets the finalState value.
    * 
    * @param pFinalState The finalState to set.
@@ -420,6 +496,22 @@ public final class State implements Entity
   public final void setFinalState ( boolean pFinalState )
   {
     this.finalState = pFinalState;
+  }
+
+
+  /**
+   * Sets the id.
+   * 
+   * @param pId The id to set.
+   * @see #id
+   */
+  public final void setId ( int pId )
+  {
+    if ( this.id != ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
+    }
+    this.id = pId;
   }
 
 
@@ -456,11 +548,7 @@ public final class State implements Entity
 
 
   /**
-   * Sets the parser end offset.
-   * 
-   * @param pParserEndOffset The new parser end offset.
-   * @see #getParserEndOffset()
-   * @see #parserEndOffset
+   * {@inheritDoc}
    */
   public final void setParserEndOffset ( int pParserEndOffset )
   {
@@ -469,11 +557,7 @@ public final class State implements Entity
 
 
   /**
-   * Sets the parser start offset.
-   * 
-   * @param pParserStartOffset The new parser start offset.
-   * @see #getParserStartOffset()
-   * @see #parserStartOffset
+   * {@inheritDoc}
    */
   public final void setParserStartOffset ( int pParserStartOffset )
   {
@@ -565,5 +649,4 @@ public final class State implements Entity
   {
     return this.transitionEndList.size ();
   }
-
 }

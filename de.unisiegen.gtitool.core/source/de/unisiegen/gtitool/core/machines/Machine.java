@@ -47,6 +47,12 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * The current {@link State} id.
+   */
+  private int currentId = State.ID_NOT_DEFINED;
+
+
+  /**
    * The current {@link Word}.
    */
   private Word word = null;
@@ -148,31 +154,11 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Adds the {@link State} to this <code>Machine</code>.
-   * 
-   * @param pState The {@link State} to add.
-   */
-  public final void addState ( State pState )
-  {
-    if ( pState == null )
-    {
-      throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
-    }
-    if ( !this.alphabet.equals ( pState.getAlphabet () ) )
-    {
-      throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
-    }
-    this.stateList.add ( pState );
-    addTransitionsToStates ( pState );
-  }
-
-
-  /**
    * Adds the {@link State}s to this <code>Machine</code>.
    * 
    * @param pStates The {@link State}s to add.
    */
-  public final void addStates ( Iterable < State > pStates )
+  public final void addState ( Iterable < State > pStates )
   {
     if ( pStates == null )
     {
@@ -190,11 +176,33 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Adds the {@link State} to this <code>Machine</code>.
+   * 
+   * @param pState The {@link State} to add.
+   */
+  public final void addState ( State pState )
+  {
+    if ( pState == null )
+    {
+      throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
+    }
+    if ( !this.alphabet.equals ( pState.getAlphabet () ) )
+    {
+      throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
+    }
+    pState.setId ( ++this.currentId );
+    pState.setDefaultName ();
+    this.stateList.add ( pState );
+    link ( pState );
+  }
+
+
+  /**
    * Adds the {@link State}s to this <code>Machine</code>.
    * 
    * @param pStates The {@link State}s to add.
    */
-  public final void addStates ( State ... pStates )
+  public final void addState ( State ... pStates )
   {
     if ( pStates == null )
     {
@@ -207,6 +215,28 @@ public abstract class Machine implements Serializable
     for ( State current : pStates )
     {
       addState ( current );
+    }
+  }
+
+
+  /**
+   * Adds the {@link Transition}s to this <code>Machine</code>.
+   * 
+   * @param pTransitions The {@link Transition}s to add.
+   */
+  public final void addTransition ( Iterable < Transition > pTransitions )
+  {
+    if ( pTransitions == null )
+    {
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
+    }
+    if ( !pTransitions.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
+    }
+    for ( Transition current : pTransitions )
+    {
+      addTransition ( current );
     }
   }
 
@@ -231,7 +261,7 @@ public abstract class Machine implements Serializable
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
     this.transitionList.add ( pTransition );
-    addTransitionsToStates ( pTransition );
+    link ( pTransition );
   }
 
 
@@ -240,29 +270,7 @@ public abstract class Machine implements Serializable
    * 
    * @param pTransitions The {@link Transition}s to add.
    */
-  public final void addTransitions ( Iterable < Transition > pTransitions )
-  {
-    if ( pTransitions == null )
-    {
-      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
-    if ( !pTransitions.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
-    for ( Transition current : pTransitions )
-    {
-      addTransition ( current );
-    }
-  }
-
-
-  /**
-   * Adds the {@link Transition}s to this <code>Machine</code>.
-   * 
-   * @param pTransitions The {@link Transition}s to add.
-   */
-  public final void addTransitions ( Transition ... pTransitions )
+  public final void addTransition ( Transition ... pTransitions )
   {
     if ( pTransitions == null )
     {
@@ -280,54 +288,22 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Adds the {@link Transition}s to the given {@link State}.
-   * 
-   * @param pState The {@link State} to which the {@link Transition}s should be
-   *          added.
-   */
-  private final void addTransitionsToStates ( State pState )
-  {
-    for ( Transition current : this.transitionList )
-    {
-      if ( current.getStateBegin ().equals ( pState ) )
-      {
-        pState.addTransitionBegin ( current );
-      }
-      if ( current.getStateEnd ().equals ( pState ) )
-      {
-        pState.addTransitionEnd ( current );
-      }
-    }
-  }
-
-
-  /**
-   * Adds the {@link Transition}s to the {@link State}s.
-   * 
-   * @param pTransition The {@link Transition} to add to the {@link State}s.
-   */
-  private final void addTransitionsToStates ( Transition pTransition )
-  {
-    for ( State current : this.stateList )
-    {
-      if ( pTransition.getStateBegin ().equals ( current ) )
-      {
-        current.addTransitionBegin ( pTransition );
-      }
-      if ( pTransition.getStateEnd ().equals ( current ) )
-      {
-        current.addTransitionEnd ( pTransition );
-      }
-    }
-  }
-
-
-  /**
    * Clears the history of this <code>Machine</code>.
    */
   protected final void clearHistory ()
   {
     this.history.clear ();
+  }
+
+
+  /**
+   * Returns the active {@link State}s.
+   * 
+   * @return The active {@link State}s.
+   */
+  public final ArrayList < State > getActiveState ()
+  {
+    return this.activeStateList;
   }
 
 
@@ -340,17 +316,6 @@ public abstract class Machine implements Serializable
   protected final State getActiveState ( int pIndex )
   {
     return this.activeStateList.get ( pIndex );
-  }
-
-
-  /**
-   * Returns the active {@link State}s.
-   * 
-   * @return The active {@link State}s.
-   */
-  public final ArrayList < State > getActiveStateList ()
-  {
-    return this.activeStateList;
   }
 
 
@@ -385,9 +350,22 @@ public abstract class Machine implements Serializable
    * @return The {@link State} list.
    * @see #stateList
    */
-  public final ArrayList < State > getStateList ()
+  public final ArrayList < State > getState ()
   {
     return this.stateList;
+  }
+
+
+  /**
+   * Returns the {@link State} with the given index.
+   * 
+   * @param pIndex The index to return.
+   * @return The {@link State} list.
+   * @see #stateList
+   */
+  public final State getState ( int pIndex )
+  {
+    return this.stateList.get ( pIndex );
   }
 
 
@@ -397,9 +375,22 @@ public abstract class Machine implements Serializable
    * @return The {@link Transition} list.
    * @see #transitionList
    */
-  public final ArrayList < Transition > getTransitionList ()
+  public final ArrayList < Transition > getTransition ()
   {
     return this.transitionList;
+  }
+
+
+  /**
+   * Returns the {@link Transition} with the given index.
+   * 
+   * @param pIndex pIndex The index to return.
+   * @return The {@link Transition} list.
+   * @see #transitionList
+   */
+  public final Transition getTransition ( int pIndex )
+  {
+    return this.transitionList.get ( pIndex );
   }
 
 
@@ -436,6 +427,49 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Links the {@link Transition}s with the given {@link State}.
+   * 
+   * @param pState The {@link State} to which the {@link Transition}s should be
+   *          linked.
+   */
+  private final void link ( State pState )
+  {
+    for ( Transition current : this.transitionList )
+    {
+      if ( current.getStateBegin ().equals ( pState ) )
+      {
+        pState.addTransitionBegin ( current );
+      }
+      if ( current.getStateEnd ().equals ( pState ) )
+      {
+        pState.addTransitionEnd ( current );
+      }
+    }
+  }
+
+
+  /**
+   * Links the given {@link Transition} with the {@link State}s.
+   * 
+   * @param pTransition The {@link Transition} to link with the {@link State}s.
+   */
+  private final void link ( Transition pTransition )
+  {
+    for ( State current : this.stateList )
+    {
+      if ( pTransition.getStateBegin ().equals ( current ) )
+      {
+        current.addTransitionBegin ( pTransition );
+      }
+      if ( pTransition.getStateEnd ().equals ( current ) )
+      {
+        current.addTransitionEnd ( pTransition );
+      }
+    }
+  }
+
+
+  /**
    * Performs the next step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
@@ -468,6 +502,28 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Removes the given {@link State}s from this <code>Machine</code>.
+   * 
+   * @param pStates The {@link State}s to remove.
+   */
+  public final void removeState ( Iterable < State > pStates )
+  {
+    if ( pStates == null )
+    {
+      throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
+    }
+    if ( !pStates.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
+    }
+    for ( State current : pStates )
+    {
+      removeState ( current );
+    }
+  }
+
+
+  /**
    * Removes the given {@link State} from this <code>Machine</code>.
    * 
    * @param pState The {@link State} to remove.
@@ -491,29 +547,7 @@ public abstract class Machine implements Serializable
    * 
    * @param pStates The {@link State}s to remove.
    */
-  public final void removeStates ( Iterable < State > pStates )
-  {
-    if ( pStates == null )
-    {
-      throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
-    }
-    if ( !pStates.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
-    }
-    for ( State current : pStates )
-    {
-      removeState ( current );
-    }
-  }
-
-
-  /**
-   * Removes the given {@link State}s from this <code>Machine</code>.
-   * 
-   * @param pStates The {@link State}s to remove.
-   */
-  public final void removeStates ( State ... pStates )
+  public final void removeState ( State ... pStates )
   {
     if ( pStates == null )
     {
@@ -526,6 +560,28 @@ public abstract class Machine implements Serializable
     for ( State current : pStates )
     {
       removeState ( current );
+    }
+  }
+
+
+  /**
+   * Removes the given {@link Transition}s from this <code>Machine</code>.
+   * 
+   * @param pTransitions The {@link Transition}s to remove.
+   */
+  public final void removeTransition ( Iterable < Transition > pTransitions )
+  {
+    if ( pTransitions == null )
+    {
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
+    }
+    if ( !pTransitions.iterator ().hasNext () )
+    {
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
+    }
+    for ( Transition current : pTransitions )
+    {
+      removeTransition ( current );
     }
   }
 
@@ -551,29 +607,7 @@ public abstract class Machine implements Serializable
    * 
    * @param pTransitions The {@link Transition}s to remove.
    */
-  public final void removeTransitions ( Iterable < Transition > pTransitions )
-  {
-    if ( pTransitions == null )
-    {
-      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
-    if ( !pTransitions.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
-    for ( Transition current : pTransitions )
-    {
-      removeTransition ( current );
-    }
-  }
-
-
-  /**
-   * Removes the given {@link Transition}s from this <code>Machine</code>.
-   * 
-   * @param pTransitions The {@link Transition}s to remove.
-   */
-  public final void removeTransitions ( Transition ... pTransitions )
+  public final void removeTransition ( Transition ... pTransitions )
   {
     if ( pTransitions == null )
     {
@@ -595,7 +629,7 @@ public abstract class Machine implements Serializable
    * 
    * @param pActiveStates The active {@link State}s.
    */
-  protected final void setActiveStates ( ArrayList < State > pActiveStates )
+  protected final void setActiveState ( ArrayList < State > pActiveStates )
   {
     if ( pActiveStates == null )
     {
@@ -615,11 +649,32 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Sets the active {@link State}.
+   * 
+   * @param pActiveState The active {@link State}.
+   */
+  protected final void setActiveState ( State pActiveState )
+  {
+    if ( pActiveState == null )
+    {
+      throw new NullPointerException ( "active state is null" ); //$NON-NLS-1$
+    }
+    this.activeStateList = new ArrayList < State > ();
+    if ( !this.stateList.contains ( pActiveState ) )
+    {
+      throw new IllegalArgumentException (
+          "active state is not in this machine" ); //$NON-NLS-1$
+    }
+    this.activeStateList.add ( pActiveState );
+  }
+
+
+  /**
    * Sets the active {@link State}s.
    * 
    * @param pActiveStates The active {@link State}s.
    */
-  protected final void setActiveStates ( State ... pActiveStates )
+  protected final void setActiveState ( State ... pActiveStates )
   {
     if ( pActiveStates == null )
     {

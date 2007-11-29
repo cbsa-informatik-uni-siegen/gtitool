@@ -288,7 +288,7 @@ public final class State implements Entity
    * 
    * @return The {@link Transition} begin list.
    */
-  public final ArrayList < Transition > getTransitionBeginList ()
+  public final ArrayList < Transition > getTransitionBegin ()
   {
     return this.transitionBeginList;
   }
@@ -313,7 +313,7 @@ public final class State implements Entity
    * 
    * @return The {@link Transition} end list.
    */
-  public final ArrayList < Transition > getTransitionEndList ()
+  public final ArrayList < Transition > getTransitionEnd ()
   {
     return this.transitionEndList;
   }
@@ -515,7 +515,7 @@ public final class State implements Entity
           + lineBreak );
       result.append ( "  End state:   " + current.getStateEnd ().getName () //$NON-NLS-1$
           + lineBreak );
-      result.append ( "  Symbols:     " + current.getSymbolSet ().toString () //$NON-NLS-1$
+      result.append ( "  Symbols:     " + current.getSymbol ().toString () //$NON-NLS-1$
           + lineBreak );
     }
     result.append ( "Transition end:" + lineBreak ); //$NON-NLS-1$
@@ -531,7 +531,7 @@ public final class State implements Entity
           + this.transitionEndList.get ( i ).getStateEnd ().getName ()
           + lineBreak );
       result.append ( "  Symbols:     " //$NON-NLS-1$
-          + this.transitionEndList.get ( i ).getSymbolSet ().toString () );
+          + this.transitionEndList.get ( i ).getSymbol ().toString () );
       if ( i < this.transitionEndList.size () - 1 )
       {
         result.append ( lineBreak );

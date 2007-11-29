@@ -7,19 +7,19 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>WordFinishedException</code> is used if the {@link Word} is not
+ * The <code>WordResetedException</code> is used if the {@link Word} is not
  * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class WordFinishedException extends WordException
+public final class WordResetedException extends WordException
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 8413119597869510363L;
+  private static final long serialVersionUID = 779984045742886102L;
 
 
   /**
@@ -27,12 +27,12 @@ public final class WordFinishedException extends WordException
    * 
    * @param pWord The {@link Word}.
    */
-  public WordFinishedException ( Word pWord )
+  public WordResetedException ( Word pWord )
   {
     super ( pWord );
     // Message and Description
-    setMessage ( Messages.getString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString ( "WordException.FinishedDescription", //$NON-NLS-1$
+    setMessage ( Messages.getString ( "WordException.ResetedMessage" ) ); //$NON-NLS-1$
+    setDescription ( Messages.getString ( "WordException.ResetedDescription", //$NON-NLS-1$
         pWord ) );
   }
 

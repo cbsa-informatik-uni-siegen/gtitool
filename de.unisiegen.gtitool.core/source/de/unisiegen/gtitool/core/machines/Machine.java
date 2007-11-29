@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -54,6 +53,12 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * The history of this <code>Machine</code>.
+   */
+  private ArrayList < ArrayList < Transition > > history;
+
+
+  /**
    * Allocates a new <code>Machine</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>Machine</code>.
@@ -72,77 +77,73 @@ public abstract class Machine implements Serializable
     this.transitionList = new ArrayList < Transition > ();
     // ActiveStateList
     this.activeStateList = new ArrayList < State > ();
+    // History
+    this.history = new ArrayList < ArrayList < Transition > > ();
   }
 
 
   /**
-   * Adds the {@link Entity}s to this <code>Machine</code>.
+   * Adds the {@link Transition}s to the history of this <code>Machine</code>.
    * 
-   * @param pEntities The {@link Entity}s to add.
+   * @param pTransitions The {@link Transition}s to add.
    */
-  public final void addEntities ( Entity ... pEntities )
+  protected final void addHistory ( Iterable < Transition > pTransitions )
   {
-    if ( pEntities == null )
+    if ( pTransitions == null )
     {
-      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( pEntities.length == 0 )
+    if ( !pTransitions.iterator ().hasNext () )
     {
-      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    for ( Entity current : pEntities )
+    ArrayList < Transition > list = new ArrayList < Transition > ();
+    for ( Transition current : pTransitions )
     {
-      addEntity ( current );
+      list.add ( current );
     }
+    this.history.add ( list );
   }
 
 
   /**
-   * Adds the {@link Entity}s to this <code>Machine</code>.
+   * Adds the {@link Transition} to the history of this <code>Machine</code>.
    * 
-   * @param pEntities The {@link Entity}s to add.
+   * @param pTransition The {@link Transition} to add.
    */
-  public final void addEntities ( Iterable < Entity > pEntities )
+  protected final void addHistory ( Transition pTransition )
   {
-    if ( pEntities == null )
+    if ( pTransition == null )
     {
-      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( !pEntities.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
-    }
-    for ( Entity current : pEntities )
-    {
-      addEntity ( current );
-    }
+    ArrayList < Transition > list = new ArrayList < Transition > ();
+    list.add ( pTransition );
+    this.history.add ( list );
   }
 
 
   /**
-   * Adds the {@link Entity} to this <code>Machine</code>.
+   * Adds the {@link Transition}s to the history of this <code>Machine</code>.
    * 
-   * @param pEntity The {@link Entity} to add.
+   * @param pTransitions The {@link Transition}s to add.
    */
-  public final void addEntity ( Entity pEntity )
+  protected final void addHistory ( Transition ... pTransitions )
   {
-    if ( pEntity == null )
+    if ( pTransitions == null )
     {
-      throw new NullPointerException ( "entity is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( pEntity instanceof State )
+    if ( pTransitions.length == 0 )
     {
-      addState ( ( State ) pEntity );
+      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    else if ( pEntity instanceof Transition )
+    ArrayList < Transition > list = new ArrayList < Transition > ();
+    for ( Transition current : pTransitions )
     {
-      addTransition ( ( Transition ) pEntity );
+      list.add ( current );
     }
-    else
-    {
-      throw new IllegalArgumentException (
-          "entity is not a state and not a transition" ); //$NON-NLS-1$
-    }
+    this.history.add ( list );
   }
 
 
@@ -322,11 +323,11 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Clears the active {@link State} list.
+   * Clears the history of this <code>Machine</code>.
    */
-  protected final void clearActiveStateList ()
+  protected final void clearHistory ()
   {
-    this.activeStateList.clear ();
+    this.history.clear ();
   }
 
 
@@ -347,7 +348,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The active {@link State}s.
    */
-  protected final ArrayList < State > getActiveStateList ()
+  public final ArrayList < State > getActiveStateList ()
   {
     return this.activeStateList;
   }
@@ -369,8 +370,10 @@ public abstract class Machine implements Serializable
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
+   * @throws WordException If something with the <code>Word</code> is not
+   *           correct.
    */
-  public final Symbol getCurrentSymbol ()
+  public final Symbol getCurrentSymbol () throws WordException
   {
     return this.word.getCurrentSymbol ();
   }
@@ -443,73 +446,24 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Removes the {@link Entity}s from this <code>Machine</code>.
+   * Removes the last step and returns the list of {@link Transition}s, which
+   * contains the {@link Symbol}.
    * 
-   * @param pEntities The {@link Entity}s to remove.
+   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
+   * @throws WordException If something with the {@link Word} is not correct.
    */
-  public final void removeEntities ( Entity ... pEntities )
-  {
-    if ( pEntities == null )
-    {
-      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
-    }
-    if ( pEntities.length == 0 )
-    {
-      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
-    }
-    for ( Entity current : pEntities )
-    {
-      removeEntity ( current );
-    }
-  }
+  public abstract ArrayList < Transition > previousSymbol ()
+      throws WordException;
 
 
   /**
-   * Removes the {@link Entity}s from this <code>Machine</code>.
+   * Removes and returns the last history element.
    * 
-   * @param pEntities The {@link Entity}s to remove.
+   * @return The last history element.
    */
-  public final void removeEntities ( Iterable < Entity > pEntities )
+  protected final ArrayList < Transition > removeHistory ()
   {
-    if ( pEntities == null )
-    {
-      throw new NullPointerException ( "entities is null" ); //$NON-NLS-1$
-    }
-    if ( !pEntities.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "entities is empty" ); //$NON-NLS-1$
-    }
-    for ( Entity current : pEntities )
-    {
-      removeEntity ( current );
-    }
-  }
-
-
-  /**
-   * Removes the {@link Entity} from this <code>Machine</code>.
-   * 
-   * @param pEntity The {@link Entity} to remove.
-   */
-  public final void removeEntity ( Entity pEntity )
-  {
-    if ( pEntity == null )
-    {
-      throw new NullPointerException ( "entity is null" ); //$NON-NLS-1$
-    }
-    if ( pEntity instanceof State )
-    {
-      removeState ( ( State ) pEntity );
-    }
-    else if ( pEntity instanceof Transition )
-    {
-      removeTransition ( ( Transition ) pEntity );
-    }
-    else
-    {
-      throw new IllegalArgumentException (
-          "entity is not a state and not a transition" ); //$NON-NLS-1$
-    }
+    return this.history.remove ( this.history.size () - 1 );
   }
 
 
@@ -521,11 +475,11 @@ public abstract class Machine implements Serializable
   public final void removeState ( State pState )
   {
     this.stateList.remove ( pState );
-    for ( Transition current : pState.getTransitionBeginList () )
+    for ( Transition current : pState.getTransitionBegin () )
     {
       removeTransition ( current );
     }
-    for ( Transition current : pState.getTransitionEndList () )
+    for ( Transition current : pState.getTransitionEnd () )
     {
       removeTransition ( current );
     }
@@ -586,8 +540,8 @@ public abstract class Machine implements Serializable
     this.transitionList.remove ( pTransition );
     for ( State current : this.stateList )
     {
-      current.getTransitionBeginList ().remove ( pTransition );
-      current.getTransitionEndList ().remove ( pTransition );
+      current.getTransitionBegin ().remove ( pTransition );
+      current.getTransitionEnd ().remove ( pTransition );
     }
   }
 
@@ -641,12 +595,37 @@ public abstract class Machine implements Serializable
    * 
    * @param pActiveStates The active {@link State}s.
    */
+  protected final void setActiveStates ( ArrayList < State > pActiveStates )
+  {
+    if ( pActiveStates == null )
+    {
+      throw new NullPointerException ( "active states is null" ); //$NON-NLS-1$
+    }
+    this.activeStateList = new ArrayList < State > ();
+    for ( State current : pActiveStates )
+    {
+      if ( !this.stateList.contains ( current ) )
+      {
+        throw new IllegalArgumentException (
+            "active state is not in this machine" ); //$NON-NLS-1$
+      }
+      this.activeStateList.add ( current );
+    }
+  }
+
+
+  /**
+   * Sets the active {@link State}s.
+   * 
+   * @param pActiveStates The active {@link State}s.
+   */
   protected final void setActiveStates ( State ... pActiveStates )
   {
     if ( pActiveStates == null )
     {
       throw new NullPointerException ( "active states is null" ); //$NON-NLS-1$
     }
+    this.activeStateList.clear ();
     for ( State current : pActiveStates )
     {
       if ( !this.stateList.contains ( current ) )

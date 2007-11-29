@@ -48,17 +48,6 @@ public final class DFA extends Machine
 
 
   /**
-   * Returns the active {@link State}.
-   * 
-   * @return The active {@link State}.
-   */
-  public final State getActiveState ()
-  {
-    return getActiveState ( 0 );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Machine#nextSymbol()
@@ -73,18 +62,39 @@ public final class DFA extends Machine
     }
     State activeState = getActiveState ( 0 );
     Symbol symbol = getWord ().nextSymbol ();
-    for ( Transition current : activeState.getTransitionBeginList () )
+    for ( Transition current : activeState.getTransitionBegin () )
     {
       if ( current.containsSymbol ( symbol ) )
       {
-        clearActiveStateList ();
         setActiveStates ( current.getStateEnd () );
         ArrayList < Transition > result = new ArrayList < Transition > ();
         result.add ( current );
+        addHistory ( current );
         return result;
       }
     }
     throw new IllegalArgumentException ( "symbol not found" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#previousSymbol()
+   */
+  @Override
+  public final ArrayList < Transition > previousSymbol () throws WordException
+  {
+    if ( getActiveStateList ().size () == 0 )
+    {
+      throw new IllegalArgumentException (
+          "no active state: machine must be started first" ); //$NON-NLS-1$
+    }
+    getWord ().previousSymbol ();
+    ArrayList < Transition > result = removeHistory ();
+    Transition transition = result.get ( 0 );
+    setActiveStates ( transition.getStateBegin () );
+    return result;
   }
 
 
@@ -104,8 +114,8 @@ public final class DFA extends Machine
     validate ();
     setWord ( pWord );
     pWord.start ();
+    clearHistory ();
     // Set active start
-    clearActiveStateList ();
     loop : for ( State current : this.getStateList () )
     {
       if ( current.isStartState () )
@@ -176,10 +186,9 @@ public final class DFA extends Machine
     for ( State currentState : this.getStateList () )
     {
       TreeSet < Symbol > currentSymbolSet = new TreeSet < Symbol > ();
-      for ( Transition currentTransition : currentState
-          .getTransitionBeginList () )
+      for ( Transition currentTransition : currentState.getTransitionBegin () )
       {
-        currentSymbolSet.addAll ( currentTransition.getSymbolSet () );
+        currentSymbolSet.addAll ( currentTransition.getSymbol () );
       }
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
       for ( Symbol currentSymbol : this.getAlphabet () )
@@ -200,7 +209,7 @@ public final class DFA extends Machine
     // Epsilon transition
     for ( Transition currentTransition : this.getTransitionList () )
     {
-      if ( currentTransition.getSymbolSet ().size () == 0 )
+      if ( currentTransition.getSymbol ().size () == 0 )
       {
         machineExceptionList.add ( new MachineEpsilonTransitionException (
             currentTransition ) );
@@ -213,8 +222,7 @@ public final class DFA extends Machine
       for ( Symbol currentSymbol : this.getAlphabet () )
       {
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
-        for ( Transition currentTransition : currentState
-            .getTransitionBeginList () )
+        for ( Transition currentTransition : currentState.getTransitionBegin () )
         {
           if ( currentTransition.containsSymbol ( currentSymbol ) )
           {

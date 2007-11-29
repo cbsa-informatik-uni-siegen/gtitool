@@ -78,7 +78,7 @@ public final class Transition implements Entity
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -112,7 +112,7 @@ public final class Transition implements Entity
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -155,7 +155,7 @@ public final class Transition implements Entity
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void addSymbols ( Iterable < Symbol > pSymbols )
+  public final void addSymbol ( Iterable < Symbol > pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -181,7 +181,7 @@ public final class Transition implements Entity
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void addSymbols ( Symbol ... pSymbols )
+  public final void addSymbol ( Symbol ... pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -322,7 +322,7 @@ public final class Transition implements Entity
    * @return The symbolSet.
    * @see #symbolSet
    */
-  public final TreeSet < Symbol > getSymbolSet ()
+  public final TreeSet < Symbol > getSymbol ()
   {
     return this.symbolSet;
   }

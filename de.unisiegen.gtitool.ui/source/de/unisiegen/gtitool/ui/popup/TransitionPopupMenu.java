@@ -160,7 +160,7 @@ public class TransitionPopupMenu extends JPopupMenu
         TransitionDialog dialog = new TransitionDialog ( window,
             TransitionPopupMenu.this.alphabet );
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
-            .getTransition ().getSymbolSet () );
+            .getTransition ().getSymbol () );
         dialog.show ();
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
         .valueForCellChanged ( TransitionPopupMenu.this.transition, dialog.getAlphabet ().toString () );

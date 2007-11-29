@@ -73,7 +73,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -92,7 +92,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -142,7 +142,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public final void addSymbols ( Iterable < Symbol > pSymbols )
+  public final void addSymbol ( Iterable < Symbol > pSymbols )
       throws AlphabetException
   {
     if ( pSymbols == null )
@@ -175,7 +175,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public final void addSymbols ( Symbol ... pSymbols ) throws AlphabetException
+  public final void addSymbol ( Symbol ... pSymbols ) throws AlphabetException
   {
     if ( pSymbols == null )
     {
@@ -340,7 +340,7 @@ public final class Alphabet implements Entity, Iterable < Symbol >
    * 
    * @return The {@link Symbol}s.
    */
-  public final TreeSet < Symbol > getSymbols ()
+  public final TreeSet < Symbol > getSymbol ()
   {
     return this.symbolSet;
   }

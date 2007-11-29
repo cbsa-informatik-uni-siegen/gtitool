@@ -83,10 +83,10 @@ public class MachinesTest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, a, b );
-      t1 = new Transition ( alphabet, z0, z1, c );
-      t2 = new Transition ( alphabet, z1, z1, a, b );
-      t3 = new Transition ( alphabet, z1, z2, c );
+      t0 = new Transition ( alphabet, z0, z0, b, c );
+      t1 = new Transition ( alphabet, z0, z1, a );
+      t2 = new Transition ( alphabet, z1, z1, a, c );
+      t3 = new Transition ( alphabet, z1, z2, b );
       t4 = new Transition ( alphabet, z2, z2, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
@@ -101,9 +101,10 @@ public class MachinesTest
     }
 
     DFA dfa = new DFA ( alphabet );
-    dfa.addEntities ( z0, z1, z2, t0, t1, t2, t3, t4 );
-
-    Word word = new Word ( c, a, c, a, b, c, a );
+    dfa.addStates ( z0, z1, z2);
+    dfa.addTransitions ( t0, t1, t2, t3, t4 );
+    
+    Word word = new Word ( b, c, a, c, b, a, b );
 
     try
     {
@@ -113,15 +114,34 @@ public class MachinesTest
     {
       exc.printStackTrace ();
     }
+    out ( "*** Next *** " );
+    out ();
     try
     {
       while ( !word.isFinished () )
       {
-        out ( "State:      " + dfa.getActiveState ().getName () );
-        out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbolSet () );
-        out ( "Word:       " + dfa.getCurrentSymbol () );
-        out ( "State:      " + dfa.getActiveState ().getName () );
+        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
+        out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbol () );
+        out ( "Symbol:     " + dfa.getCurrentSymbol () );
+        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
         out ( "Accepted:   " + dfa.isWordAccepted () );
+        out ();
+      }
+    }
+    catch ( WordException exc )
+    {
+      exc.printStackTrace ();
+    }
+    out ( "*** Previous *** " );
+    out ();
+    try
+    {
+      while ( !word.isReseted () )
+      {
+        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
+        out ( "Symbol:     " + dfa.getCurrentSymbol () );
+        out ( "Transition: " + dfa.previousSymbol ().get ( 0 ).getSymbol () );
+        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
         out ();
       }
     }

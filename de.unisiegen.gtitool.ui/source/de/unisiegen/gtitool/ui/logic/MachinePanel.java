@@ -672,7 +672,7 @@ public class MachinePanel implements EditorPanel
                 else
                   newTransition = new Transition ( MachinePanel.this.alphabet,
                       MachinePanel.this.firstState.getState (), target
-                          .getState (), dialog.getAlphabet ().getSymbols () );
+                          .getState (), dialog.getAlphabet ().getSymbol () );
                 MachinePanel.this.machine.addTransition ( newTransition );
 
                 createTransitionView ( MachinePanel.this.graph, newTransition,
@@ -762,7 +762,7 @@ public class MachinePanel implements EditorPanel
               else
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
-                        .getState (), dialog.getAlphabet ().getSymbols () );
+                        .getState (), dialog.getAlphabet ().getSymbol () );
               MachinePanel.this.machine.addTransition ( newTransition );
               createTransitionView ( MachinePanel.this.graph, newTransition,
                   MachinePanel.this.firstState, target,

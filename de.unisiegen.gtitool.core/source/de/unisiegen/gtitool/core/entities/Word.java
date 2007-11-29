@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 
 
 /**
@@ -65,7 +66,7 @@ public class Word implements Entity, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -82,7 +83,7 @@ public class Word implements Entity, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbols ( pSymbols );
+    addSymbol ( pSymbols );
   }
 
 
@@ -108,7 +109,7 @@ public class Word implements Entity, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public final void addSymbols ( Iterable < Symbol > pSymbols )
+  public final void addSymbol ( Iterable < Symbol > pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -131,7 +132,7 @@ public class Word implements Entity, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public final void addSymbols ( Symbol ... pSymbols )
+  public final void addSymbol ( Symbol ... pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -200,12 +201,18 @@ public class Word implements Entity, Iterable < Symbol >
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
+   * @throws WordException If something with the <code>Word</code> is not
+   *           correct.
    */
-  public final Symbol getCurrentSymbol ()
+  public final Symbol getCurrentSymbol () throws WordException
   {
     if ( this.currentPosition == START_INDEX )
     {
-      throw new IllegalArgumentException ( "current symbol is not defined" ); //$NON-NLS-1$
+      throw new WordResetedException ( this );
+    }
+    if ( this.currentPosition >= this.symbolList.size () )
+    {
+      throw new WordFinishedException ( this );
     }
     return this.symbolList.get ( this.currentPosition );
   }
@@ -259,6 +266,17 @@ public class Word implements Entity, Iterable < Symbol >
 
 
   /**
+   * Returns true if this word is reseted, otherwise false.
+   * 
+   * @return True if this word is reseted, otherwise false.
+   */
+  public final boolean isReseted ()
+  {
+    return this.currentPosition == START_INDEX;
+  }
+
+
+  /**
    * Returns an iterator over the {@link Symbol}s in this <code>Word</code>.
    * 
    * @return An iterator over the {@link Symbol}s in this <code>Word</code>.
@@ -284,6 +302,25 @@ public class Word implements Entity, Iterable < Symbol >
     }
     this.currentPosition++ ;
     return getCurrentSymbol ();
+  }
+
+
+  /**
+   * Returns the previous {@link Symbol} and decrements the current position.
+   * 
+   * @return The previous {@link Symbol}.
+   * @throws WordException If something with the <code>Word</code> is not
+   *           correct.
+   */
+  public final Symbol previousSymbol () throws WordException
+  {
+    if ( this.currentPosition == START_INDEX )
+    {
+      throw new WordResetedException ( this );
+    }
+    Symbol symbol = getCurrentSymbol ();
+    this.currentPosition-- ;
+    return symbol;
   }
 
 

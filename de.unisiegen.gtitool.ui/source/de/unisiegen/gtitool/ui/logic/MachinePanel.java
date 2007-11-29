@@ -226,7 +226,7 @@ public class MachinePanel implements EditorPanel
   {
     DefaultTransitionView newEdge = new DefaultTransitionView ( pTransition,
         source, target, symbols != null ? symbols.toString ()
-            : TransitionDialog.epsilon );
+            : TransitionDialog.EPSILON );
 
     GraphConstants.setLineEnd ( newEdge.getAttributes (),
         GraphConstants.ARROW_CLASSIC );

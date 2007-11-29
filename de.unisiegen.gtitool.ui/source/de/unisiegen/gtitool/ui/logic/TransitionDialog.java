@@ -146,7 +146,7 @@ public class TransitionDialog
 
 
   /** The epsilon {@link Symbol} */
-  public static String epsilon;
+  public final static String EPSILON = "\u03B5"; //$NON-NLS-1$
 
 
   /**
@@ -155,15 +155,11 @@ public class TransitionDialog
    * @param pParent the parent frame
    * @param pAlphabet the alphabet available for the new Transition
    */
-  @SuppressWarnings ( "nls" )
   public TransitionDialog ( JFrame pParent, Alphabet pAlphabet )
   {
     this.parent = pParent;
     this.alphabet = pAlphabet;
-    this.transitionDialog = new TransitionDialogForm ( pParent, true );
-    this.transitionDialog.setLogic ( this );
-
-    TransitionDialog.epsilon = "\u03B5"; //$NON-NLS-1$
+    this.transitionDialog = new TransitionDialogForm ( this, pParent );
     initialize ();
   }
 
@@ -203,7 +199,6 @@ public class TransitionDialog
   public void handleActionPerformedMoveLeft ()
   {
     ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    this.modelAlphabet.remove ( " " ); //$NON-NLS-1$
     Object [] objects = this.transitionDialog.jListChangeOverSet
         .getSelectedValues ();
     for ( Object object : objects )
@@ -226,7 +221,7 @@ public class TransitionDialog
     }
     this.transitionDialog.jListChangeOverSet.repaint ();
     if ( this.modelChangeOverSet.getSize () == 0 )
-      this.modelChangeOverSet.add ( TransitionDialog.epsilon );
+      this.modelChangeOverSet.add ( EPSILON );
     this.transitionDialog.jListChangeOverSet.clearSelection ();
     Collections.sort ( this.modelChangeOverSet.list );
     Collections.sort ( this.modelAlphabet.list );
@@ -234,9 +229,10 @@ public class TransitionDialog
 
     try
     {
-      
+
       this.transitionDialog.styledAlphabetParserPanel
-          .setAlphabet ( sym.size () > 0 ? new Alphabet ( sym ) : new Alphabet() );
+          .setAlphabet ( sym.size () > 0 ? new Alphabet ( sym )
+              : new Alphabet () );
     }
     catch ( AlphabetException e )
     {
@@ -252,7 +248,7 @@ public class TransitionDialog
   public void handleActionPerformedMoveRight ()
   {
     ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    this.modelChangeOverSet.remove ( TransitionDialog.epsilon );
+    this.modelChangeOverSet.remove ( EPSILON );
     Object [] symbols = this.transitionDialog.jListAlphabet
         .getSelectedValues ();
     if ( symbols == null )
@@ -276,8 +272,6 @@ public class TransitionDialog
       System.exit ( 1 );
     }
     this.transitionDialog.jListAlphabet.repaint ();
-    if ( this.modelAlphabet.getSize () == 0 )
-      this.modelAlphabet.add ( " " ); //$NON-NLS-1$
     this.transitionDialog.jListAlphabet.clearSelection ();
     this.transitionDialog.jButtonMoveRight.setEnabled ( false );
     Collections.sort ( this.modelChangeOverSet.list );
@@ -304,7 +298,7 @@ public class TransitionDialog
     this.transitionDialog.setVisible ( false );
     try
     {
-      if ( this.modelChangeOverSet.list.contains ( TransitionDialog.epsilon ) )
+      if ( this.modelChangeOverSet.list.contains ( EPSILON ) )
         this.alphabet = null;
       else
       {
@@ -340,7 +334,7 @@ public class TransitionDialog
 
     JList selectedList = ( JList ) evt.getSource ();
     String selected = ( String ) selectedList.getSelectedValue ();
-    if ( selected == null || selected.equals ( TransitionDialog.epsilon )
+    if ( selected == null || selected.equals ( EPSILON )
         || selected.equals ( " " ) ) //$NON-NLS-1$
       return;
     if ( selectedList.equals ( this.transitionDialog.jListAlphabet ) )
@@ -374,7 +368,7 @@ public class TransitionDialog
     this.transitionDialog.jListAlphabet.setModel ( this.modelAlphabet );
 
     this.modelChangeOverSet = new SymbolListModel ();
-    this.modelChangeOverSet.add ( TransitionDialog.epsilon );
+    this.modelChangeOverSet.add ( EPSILON );
     this.transitionDialog.jListChangeOverSet
         .setModel ( this.modelChangeOverSet );
 
@@ -407,12 +401,12 @@ public class TransitionDialog
   {
     if ( symbols.size () > 0 )
       this.modelChangeOverSet.list.clear ();
-      for ( Symbol symbol : symbols )
-      {
-        this.modelAlphabet.remove ( symbol.toString () );
-        this.modelChangeOverSet.add ( symbol.toString () );
+    for ( Symbol symbol : symbols )
+    {
+      this.modelAlphabet.remove ( symbol.toString () );
+      this.modelChangeOverSet.add ( symbol.toString () );
 
-      }
+    }
     try
     {
       this.transitionDialog.styledAlphabetParserPanel

@@ -1,5 +1,7 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import java.awt.Frame;
+
 import de.unisiegen.gtitool.ui.logic.AboutDialog;
 
 
@@ -26,7 +28,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
      * Creates new form AboutDialog
      * 
      * @param pLogic The {@link AboutDialog}.
-     * @param pParent The parent {@link AboutDialog}.
+     * @param pParent The parent {@link Frame}.
      */
     public AboutDialogForm(AboutDialog pLogic, java.awt.Frame pParent) {
         super(pParent, true);

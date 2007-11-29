@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.Versions;
+import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -53,7 +53,7 @@ public final class AboutDialog
     logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new AboutDialogForm ( this, pParent );
-    this.gui.jLabelName.setText ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
+    this.gui.jLabelName.setText ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
     /*

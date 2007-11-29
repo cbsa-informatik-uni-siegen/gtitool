@@ -6,7 +6,7 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>0</headerType>
-  <jar>de.unisiegen.gtitool.ui-@de.unisiegen.gtitool.version@.jar</jar>
+  <jar>de.unisiegen.gtitool.ui-@gtitool.version@.jar</jar>
   <outfile>gtitool.exe</outfile>
   <errTitle>GTI Tool: Error</errTitle>
   <customProcName>true</customProcName>
@@ -15,12 +15,12 @@
     <minVersion>1.5.0</minVersion>
   </jre>
   <versionInfo>
-    <fileVersion>@de.unisiegen.gtitool.version@.0</fileVersion>
-    <txtFileVersion>@de.unisiegen.gtitool.version@.0</txtFileVersion>
+    <fileVersion>@gtitool.version@.0</fileVersion>
+    <txtFileVersion>@gtitool.version@.0</txtFileVersion>
     <fileDescription>GTI Tool</fileDescription>
     <copyright>Copyright (c) 2007 C. Fehler, B. Mies</copyright>
-    <productVersion>@de.unisiegen.gtitool.version@.0</productVersion>
-    <txtProductVersion>@de.unisiegen.gtitool.version@.0</txtProductVersion>
+    <productVersion>@gtitool.version@.0</productVersion>
+    <txtProductVersion>@gtitool.version@.0</txtProductVersion>
     <productName>GTI Tool</productName>
     <companyName>University of Siegen, Department of Theoretical Computer Science</companyName>
     <internalName>GTI Tool</internalName>

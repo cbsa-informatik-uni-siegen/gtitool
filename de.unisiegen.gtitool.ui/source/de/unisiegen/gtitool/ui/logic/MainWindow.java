@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.Versions;
+import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -49,7 +49,7 @@ public class MainWindow
     {
       e.printStackTrace ();
     }
-    this.gui.setTitle ( "GTI Tool " + Versions.VERSION ); //$NON-NLS-1$
+    this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     this.gui.setBounds ( preferenceManager.getMainWindowBounds () );
     this.gui.setVisible ( true );

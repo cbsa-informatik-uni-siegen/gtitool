@@ -59,4 +59,4 @@ EOF
 update-desktop-database "$XDG_DATA_HOME/applications" > /dev/null
 
 # execute the application
-exec java -jar "$REALPATH/de.unisiegen.gtitool.ui-@de.unisiegen.gtitool.version@.jar" "$@"
+exec java -jar "$REALPATH/de.unisiegen.gtitool.ui-@gtitool.version@.jar" "$@"

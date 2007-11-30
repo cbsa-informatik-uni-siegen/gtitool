@@ -21,7 +21,6 @@
 	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
-	<property name="libdir" value="${basedir}/lib" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 	<property name="sourcedir" value="${basedir}/source" />
@@ -34,7 +33,6 @@
 			<fileset dir="${core.distdir}" includes="*.jar" />
 			<fileset dir="${jgraph.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset dir="${libdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
 		<!-- sign all jar files -->

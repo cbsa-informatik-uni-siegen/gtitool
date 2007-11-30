@@ -1,0 +1,57 @@
+/**
+ * The cup file of the word parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Word;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Symbol			symbol;
+non terminal Symbol[]		symbol_list;
+non terminal Word			word;
+
+
+/********
+ * Word *
+ ********/
+
+word							::= symbol_list:sl
+									{:
+									   RESULT = new Word(sl);
+									   RESULT.setParserStartOffset(slleft);
+									   RESULT.setParserEndOffset(slright);
+									:}
+								;
+
+symbol							::= SYMBOL:s
+									{:
+									   RESULT = new Symbol(s);
+									   RESULT.setParserStartOffset(sleft);
+									   RESULT.setParserEndOffset(sright);
+									:}
+								;
+
+symbol_list						::= symbol_list:sl symbol:s
+								    {:
+								       RESULT = new Symbol[sl.length + 1];
+									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
+									   RESULT[sl.length] = s;
+								    :}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								;

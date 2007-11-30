@@ -106,7 +106,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="parser-clean,parser-alphabet, parser-state, parser-symbol" description="Generate parsers and lexers" />
+	<target name="parser" depends="parser-clean,parser-alphabet,parser-state,parser-symbol,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -175,5 +175,25 @@
 			compact_red="no"
 			dump_grammar="no" />
 	</target>
-	
+
+	<!-- parser word -->
+	<target name="parser-word">
+		<jflex 
+	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.flex"
+	   		destdir="${sourcegenerateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.cup"
+			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/word"
+			package="de.unisiegen.gtitool.core.parser.word"
+			parser="WordAbstractParser"
+			symbols="WordTerminals"
+			interface="yes"
+			debug="no"
+			expect="100"
+			nonterms="no"
+			nopositions="no"
+			compact_red="no"
+			dump_grammar="no" />
+	</target>
 </project>

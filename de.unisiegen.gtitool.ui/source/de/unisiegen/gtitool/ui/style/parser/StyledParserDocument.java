@@ -105,6 +105,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Flag that indicates if the panel is read only.
+   */
+  private boolean editable = true;
+
+
+  /**
+   * The parsed object.
+   */
+  private Object parsedObject;
+
+
+  /**
    * Allocates a new <code>StyledParserDocument</code> for the given
    * <code>pParseable</code>, where the <code>pParseable</code> is used to
    * determine the scanner for the documents content and thereby dictates the
@@ -145,9 +157,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserWarning ( Color pNewColor )
+          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
+          Color pNewColor )
           {
-            StyledParserDocument.this.parserWarningColor = pNewColor;
+            initAttributes ();
             try
             {
               processChanged ();
@@ -164,10 +177,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
-          Color pNewColor )
+          public void colorChangedParserWarning ( Color pNewColor )
           {
-            initAttributes ();
+            StyledParserDocument.this.parserWarningColor = pNewColor;
             try
             {
               processChanged ();
@@ -280,7 +292,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final Object getParsedObject () throws Exception
   {
-    return this.parseable.newParser ( getText ( 0, getLength () ) ).parse ();
+    return this.parsedObject;
   }
 
 
@@ -308,24 +320,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
       AttributeSet pAttributeSet ) throws BadLocationException
   {
     super.insertString ( pOffset, pString, pAttributeSet );
-    processChanged ();
-    Object newObject;
-    try
-    {
-      newObject = getParsedObject ();
-    }
-    catch ( Exception e )
-    {
-      newObject = null;
-    }
-    fireParseableChanged ( newObject );
+    fireParseableChanged ( processChanged () );
   }
-
-
-  /**
-   * Flag that indicates if the panel is read only.
-   */
-  private boolean editable = true;
 
 
   /**
@@ -340,25 +336,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the editable value.
+   * Processes the document content after a change and returns the parsed object
+   * or null, if the text could not be parsed.
    * 
-   * @param pEditable The boolean to be set.
-   */
-  public final void setEditable ( boolean pEditable )
-  {
-    this.editable = pEditable;
-  }
-
-
-  /**
-   * Processes the document content after a change.
-   * 
+   * @return The parsed object or null, if the text could not be parsed.
    * @throws BadLocationException if the processing failed.
    */
   @SuppressWarnings (
   { "unused", "null" } )
-  public final void processChanged () throws BadLocationException
+  private final Object processChanged () throws BadLocationException
   {
+    this.parsedObject = null;
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
     ArrayList < ScannerException > collectedExceptions = new ArrayList < ScannerException > ();
     try
@@ -432,7 +420,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
         } );
         try
         {
-          parser.parse ();
+          this.parsedObject = parser.parse ();
         }
         catch ( ParserMultiException ecx )
         {
@@ -498,6 +486,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       this.exceptionList = collectedExceptions;
       fireExceptionsChanged ();
     }
+    return this.parsedObject;
   }
 
 
@@ -511,17 +500,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throws BadLocationException
   {
     super.remove ( pOffset, pLength );
-    processChanged ();
-    Object newObject;
-    try
-    {
-      newObject = getParsedObject ();
-    }
-    catch ( Exception e )
-    {
-      newObject = null;
-    }
-    fireParseableChanged ( newObject );
+    fireParseableChanged ( processChanged () );
   }
 
 
@@ -548,5 +527,16 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ParseableChangedListener pListener )
   {
     return this.parseableChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
+   * Sets the editable value.
+   * 
+   * @param pEditable The boolean to be set.
+   */
+  public final void setEditable ( boolean pEditable )
+  {
+    this.editable = pEditable;
   }
 }

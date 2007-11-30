@@ -1,10 +1,10 @@
 /**
- * The lexer file of the state scanner.
+ * The lexer file of the word scanner.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-package de.unisiegen.gtitool.core.parser.state;
+package de.unisiegen.gtitool.core.parser.word;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
@@ -14,13 +14,13 @@ import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
 /**
- * This is the lexer class for a state.
+ * This is the lexer class for a word.
  */
 %%
 
-%class StateScanner
+%class WordScanner
 %extends AbstractScanner
-%implements StateTerminals
+%implements WordTerminals
 
 %function nextSymbol
 %type Symbol
@@ -51,8 +51,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (pId)
 	  {
-		case STATE:
-		  return Style.STATE;
+		case SYMBOL:
+		  return Style.SYMBOL;
 		default:
 		  return Style.NONE;
 	  }
@@ -68,16 +68,13 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t\f]
-State			= [:jletter:][:jletterdigit:]*
+Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 %%
 
 <YYINITIAL>
 {
-	{State}				{ return symbol(STATE, yytext()); }
-	{WhiteSpace}		{ }
+	{Symbol}			{ return symbol(SYMBOL, yytext()); }
 }
 
 .|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

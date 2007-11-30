@@ -249,6 +249,12 @@ public class GraphConstants {
 	 * values for this key.
 	 */
 	public final static String LINECOLOR = "linecolor";
+	
+	/**
+	 * Key for the <code>labelcolor</code> attribute. Use instances of Color as
+	 * values for this key.
+	 */
+	public final static String LABELCOLOR = "labelcolor";
 
 	/**
 	 * Key for the <code>bordercolor</code> attribute. Use instances of Color
@@ -810,6 +816,20 @@ public class GraphConstants {
 	 */
 	public static final Color getLineColor(Map map) {
 		return (Color) map.get(LINECOLOR);
+	}
+	
+	/**
+	 * Sets the linecolor attribute in the specified map to the specified value.
+	 */
+	public static final void setLabelColor(Map map, Color value) {
+		map.put(LABELCOLOR, value);
+	}
+
+	/**
+	 * Returns the linecolor attribute from the specified map.
+	 */
+	public static final Color getLabelColor(Map map) {
+		return (Color) map.get(LABELCOLOR);
 	}
 
 	/**

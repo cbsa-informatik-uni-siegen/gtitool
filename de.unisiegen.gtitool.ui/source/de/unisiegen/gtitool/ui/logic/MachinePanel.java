@@ -19,10 +19,12 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
@@ -222,6 +224,9 @@ public class MachinePanel implements EditorPanel
     GraphConstants.setLineEnd ( newEdge.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
     GraphConstants.setEndFill ( newEdge.getAttributes (), true );
+    
+    GraphConstants.setLineColor ( newEdge.getAttributes (), PreferenceManager.getInstance ().getColorItemTransition ().getColor ());
+    GraphConstants.setLabelColor ( newEdge.getAttributes (), PreferenceManager.getInstance ().getColorItemSymbol ().getColor ());
 
     graph.getGraphLayoutCache ().insertEdge ( newEdge, source.getChildAt ( 0 ),
         target.getChildAt ( 0 ) );
@@ -325,6 +330,55 @@ public class MachinePanel implements EditorPanel
         model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
         
       }
+      
+      /**
+       * Invoked when the color of the {@link Transition} changed.
+       * 
+       * @param pNewColor The new color of the {@link Transition}.
+       */
+      public void colorChangedTransition ( @SuppressWarnings ( "unused" )
+      Color pNewColor )
+      {
+        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
+          try {
+            DefaultTransitionView t = ( DefaultTransitionView ) object;
+              GraphConstants.setLineColor ( t
+                  .getAttributes (), PreferenceManager.getInstance ().getColorItemTransition ().getColor () );
+              
+          }
+          catch ( ClassCastException e){
+            // Do nothing
+          }
+        }
+        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
+        
+        
+
+      }
+      
+      /**
+       * Invoked when the color of the {@link Symbol} changed.
+       * 
+       * @param pNewColor The new color of the {@link Symbol}.
+       */
+      public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+      Color pNewColor )
+      {
+        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
+          try {
+            DefaultTransitionView t = ( DefaultTransitionView ) object;
+              GraphConstants.setLabelColor ( t
+                  .getAttributes (), PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
+              
+          }
+          catch ( ClassCastException e){
+            // Do nothing
+          }
+        }
+        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
+        
+      }
+      
     });
   }
 
@@ -477,7 +531,8 @@ public class MachinePanel implements EditorPanel
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
 
-    this.graph.setMarqueeColor ( Color.MAGENTA );
+    
+    EdgeView.renderer.setForeground ( Color.magenta );
   }
 
 
@@ -938,7 +993,13 @@ public class MachinePanel implements EditorPanel
 
   public void setErrorText ( String text )
   {
-    machinePanel.jTextPaneConsole.setText ( text );
+    machinePanel.jTextPaneErrors.setText ( text );
+    
+  }
+  
+  public void setWarningText ( String text )
+  {
+    machinePanel.jTextPaneWarnings.setText ( text );
     
   }
 

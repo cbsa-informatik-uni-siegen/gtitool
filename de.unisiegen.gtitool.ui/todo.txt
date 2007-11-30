@@ -2,7 +2,6 @@
 - Pfeil auf Startzustand
 - Notizen im Graph hinzufügen
 - DND bei Transitionsdialog einbauen
-- Font Color und Position von Transition
 
 *** Christian ***
 - Button Größe im PreferenceDialog bei Sprachänderungen aktualisieren

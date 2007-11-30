@@ -42,7 +42,7 @@ import org.jgraph.util.Spline2D;
  * @version 1.0 1/1/02
  * @author Gaudenz Alder
  */
-
+@SuppressWarnings("all")
 public class EdgeRenderer extends JComponent implements CellViewRenderer,
 		Serializable {
 
@@ -116,6 +116,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 
 	/** The color of highlighted cells */
 	protected transient Color highlightColor = null;
+	
+	/** The color for a label of a transition */
+	private Color labelColor;
 
 	/* THIS CODE WAS ADDED BY MARTIN KRUEGER 10/20/2003 */
 
@@ -595,6 +598,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 		setForeground((foreground != null) ? foreground : defaultForeground);
 		Color background = GraphConstants.getBackground(map);
 		setBackground((background != null) ? background : defaultBackground);
+		this.labelColor = GraphConstants.getLabelColor(map);
 		Color gradientColor = GraphConstants.getGradientColor(map);
 		setGradientColor(gradientColor);
 		setOpaque(GraphConstants.isOpaque(map));
@@ -739,7 +743,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 			int offset = isMoveBelowZero || applyTransform ? 0 : Math
 					.min(0, (int) (dx + p.getX()));
 
-			g2.translate(p.getX() - offset, p.getY());
+			g2.translate(p.getX() - offset , p.getY() - 5);
 			if (applyTransform) {
 				angle = getLabelAngle(label);
 				g2.rotate(angle);
@@ -756,7 +760,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 			}
 
 			int dy = +sh / 4;
-			g.setColor(fontColor);
+			g.setColor( this.labelColor );
 			if (applyTransform && borderColor == null && !isOpaque()) {
 				// Shift label perpendicularly by the descent so it
 				// doesn't cross the line.

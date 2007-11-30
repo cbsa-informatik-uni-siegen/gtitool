@@ -56,7 +56,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jButtonMoveRight = new javax.swing.JButton();
         jScrollChangeOverSet = new javax.swing.JScrollPane();
         jListChangeOverSet = new javax.swing.JList();
-        JLabelSubHeadline1 = new javax.swing.JLabel();
+        JLabelTransitionSet = new javax.swing.JLabel();
         styledAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jPanelButtons = new javax.swing.JPanel();
         jButtonOk = new javax.swing.JButton();
@@ -198,15 +198,15 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 16);
         jPanel1.add(jPanelList, gridBagConstraints);
 
-        JLabelSubHeadline1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelSubHeadline1.setText(bundle.getString("TransitionDialog.ResultingTransitionSet")); // NOI18N
+        JLabelTransitionSet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabelTransitionSet.setText(bundle.getString("TransitionDialog.ResultingTransitionSet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 16, 10, 16);
-        jPanel1.add(JLabelSubHeadline1, gridBagConstraints);
+        jPanel1.add(JLabelTransitionSet, gridBagConstraints);
 
         styledAlphabetParserPanel.setEditable(false);
         styledAlphabetParserPanel.setMinimumSize(new java.awt.Dimension(39, 80));
@@ -292,7 +292,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLabelHeadline;
-    private javax.swing.JLabel JLabelSubHeadline1;
+    private javax.swing.JLabel JLabelTransitionSet;
     private javax.swing.JButton jButtonCancel;
     public javax.swing.JButton jButtonMoveLeft;
     public javax.swing.JButton jButtonMoveRight;

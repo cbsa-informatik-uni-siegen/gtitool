@@ -1,16 +1,15 @@
-<project name="JFlex" default="dist">
+<project name="gtitool.jflex" default="dist">
 
   <property name="sourcedir" value="${basedir}/source" />
   <property name="distdir" value="${basedir}/dist" />
   <property name="libdir" value="${basedir}/lib"/>
    	
-  <target name="declare" description="define tasks for jflex and cup">
+  <target name="declare">
     <taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpath="${libdir}/JFlex.jar"/>
     <taskdef classname="java_cup.AntTask" name="cup" classpath="${libdir}/java_cup.jar"/>
   </target>
 
-  <target name="compile" depends="jflex,cup"
-          description="compile all classes">
+  <target name="compile" depends="jflex,cup">
     <javac srcdir="." 
            destdir="${distdir}" 
            target="1.5"
@@ -18,15 +17,15 @@
            debug="on" />
   </target>
 
-  <target name="jflex" depends="declare" description="generate scanner">
+  <target name="jflex" depends="declare">
     <jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${libdir}/skeleton.nested"/>
   </target>
 
-  <target name="cup" depends="declare" description="generate parser">
+  <target name="cup" depends="declare">
     <cup file="${sourcedir}/JFlex/LexParse.cup" dir="${sourcedir}/JFlex" interface="true" parser="LexParse" />
   </target>
 
-  <target name="copy" description="copy resources to build dir">
+  <target name="copy">
     <copy file="${libdir}/skeleton.default" todir="${distdir}/JFlex" />
     <copy file="${sourcedir}/JFlex/Messages.properties" todir="${distdir}/JFlex/" />
   </target>
@@ -43,7 +42,7 @@
     <delete file="JFlex/sym.java" />
   </target>
 
-  <target name="jar" depends="compile,copy" description="make JFlex.jar">
+  <target name="jar" depends="compile,copy">
 	<manifest file="${distdir}/MANIFEST.MF">
 		<attribute name="Main-Class" value="JFlex.Main" />
 	</manifest>

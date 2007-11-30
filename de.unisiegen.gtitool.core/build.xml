@@ -95,7 +95,7 @@
 	</target>
 
 	<!-- dist 3rdparty -->
-	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+	<target name="dist-3rdparty">
 		<copy file="${libdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
 		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
 	</target>
@@ -106,7 +106,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="parser-alphabet, parser-state, parser-symbol" description="Generate parsers and lexers" />
+	<target name="parser" depends="parser-clean,parser-alphabet, parser-state, parser-symbol" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -114,7 +114,7 @@
 	</target>
 			
 	<!-- parser alphabet -->
-	<target name="parser-alphabet" description="Generates lexer and parser for an alphabet">
+	<target name="parser-alphabet">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex"
 	   		destdir="${sourcegenerateddir}"
@@ -135,7 +135,7 @@
 	</target>
 
 	<!-- parser state -->
-	<target name="parser-state" description="Generates lexer and parser for a state">
+	<target name="parser-state">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex"
 	   		destdir="${sourcegenerateddir}"
@@ -156,7 +156,7 @@
 	</target>
 	
 	<!-- parser symbol -->
-	<target name="parser-symbol" description="Generates lexer and parser for a symbol">
+	<target name="parser-symbol">
 		<jflex 
 	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex"
 	   		destdir="${sourcegenerateddir}"

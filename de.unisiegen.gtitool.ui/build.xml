@@ -167,7 +167,7 @@
 	</target>
 
 	<!-- dist 3rdparty -->
-	<target name="dist-3rdparty" description="Copy 3rd party jar files">
+	<target name="dist-3rdparty">
 		<copy file="${libdir}/jgraph.jar" todir="${distdir}" />
 	</target>
 	

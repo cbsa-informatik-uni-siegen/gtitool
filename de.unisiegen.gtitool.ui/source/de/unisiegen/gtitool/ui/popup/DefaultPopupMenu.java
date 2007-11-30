@@ -234,27 +234,23 @@ public class DefaultPopupMenu extends JPopupMenu
         }
         catch ( MachineValidationException e1 )
         {
-          String text = ""; //$NON-NLS-1$
+          String errorText = ""; //$NON-NLS-1$
+          String warningText = ""; //$NON-NLS-1$
           for ( MachineException error : e1.getMachineExceptionList () )
           {
             if ( error.getType ().equals ( ErrorType.ERROR ) )
             {
-              text += "Error:\n";
-              text += error.toString ();
-              text += "\n\n";
+              errorText += error.toString ();
+              errorText += "\n\n"; //$NON-NLS-1$
             }
             else if ( error.getType ().equals ( ErrorType.WARNING ) )
             {
-              /*
-               * TODOBenny Only one exception can be thrown, if we want to have
-               * errors and warnings at the same time, we have to do it this way
-               */
-              text += "Warning:\n";
-              text += error.toString ();
-              text += "\n\n";
+              warningText += error.toString ();
+              warningText += "\n\n"; //$NON-NLS-1$
             }
           }
-            DefaultPopupMenu.this.panel.setErrorText ( text );
+            DefaultPopupMenu.this.panel.setErrorText ( errorText );
+            DefaultPopupMenu.this.panel.setWarningText ( warningText );
         }
       }
     } );

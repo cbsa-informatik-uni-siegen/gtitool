@@ -268,7 +268,7 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public final boolean containsSymbol ( Symbol pSymbol )
+  public final boolean contains ( Symbol pSymbol )
   {
     return this.symbolSet.contains ( pSymbol );
   }

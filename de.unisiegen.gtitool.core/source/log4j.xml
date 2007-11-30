@@ -38,6 +38,11 @@
     <appender-ref ref="console" />
   </logger>
   
+  <logger name="de.unisiegen.gtitool.ui.logic.WordDialog">
+    <level value="all" />
+    <appender-ref ref="console" />
+  </logger>
+  
   <logger name="de.unisiegen.gtitool.ui.preferences.PreferenceManager">
     <level value="all" />
     <appender-ref ref="console" />

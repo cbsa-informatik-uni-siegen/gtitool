@@ -4,9 +4,11 @@ package de.unisiegen.gtitool.ui.logic;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
+import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -19,7 +21,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public class MainWindow
+public final class MainWindow
 {
 
   /**
@@ -67,6 +69,10 @@ public class MainWindow
     // Cut
     this.gui.jButtonCut.setEnabled ( false );
     this.gui.jMenuItemCut.setEnabled ( false );
+    // Validate
+    this.gui.jMenuItemValidate.setEnabled ( false );
+    // EnterWord
+    this.gui.jMenuItemEnterWord.setEnabled ( false );
     // Preferences
     this.gui.jMenuItemPreferences.setEnabled ( true );
     // RecentlyUsed
@@ -180,6 +186,21 @@ public class MainWindow
                 .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemPreferences.setMnemonic ( Messages
                 .getString ( "MainWindow.PreferencesMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Execute
+            MainWindow.this.gui.jMenuExecute.setText ( Messages
+                .getString ( "MainWindow.Execute" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuExecute.setMnemonic ( Messages.getString (
+                "MainWindow.ExecuteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // Validate
+            MainWindow.this.gui.jMenuItemValidate.setText ( Messages
+                .getString ( "MainWindow.Validate" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemValidate.setMnemonic ( Messages
+                .getString ( "MainWindow.ValidateMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            // EnterWord
+            MainWindow.this.gui.jMenuItemEnterWord.setText ( Messages
+                .getString ( "MainWindow.EnterWord" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jMenuItemEnterWord.setMnemonic ( Messages
+                .getString ( "MainWindow.EnterWordMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
             // Help
             MainWindow.this.gui.jMenuHelp.setText ( Messages
                 .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
@@ -196,9 +217,49 @@ public class MainWindow
 
 
   /**
+   * Returns the gui.
+   * 
+   * @return The gui.
+   * @see #gui
+   */
+  public final MainWindowForm getGui ()
+  {
+    return this.gui;
+  }
+
+
+  /**
+   * Returns the {@link Alphabet} of the selected {@link EditorPanel}.
+   * 
+   * @return The {@link Alphabet} of the selected {@link EditorPanel}.
+   */
+  public final Alphabet getSelectedAlphabet ()
+  {
+    EditorPanel editorPanel = getSelectedEditorPanel ();
+    if ( editorPanel == null )
+    {
+      return null;
+    }
+    return editorPanel.getAlphabet ();
+  }
+
+
+  /**
+   * Returns the selected {@link EditorPanel}.
+   * 
+   * @return The selected {@link EditorPanel}.
+   */
+  public final EditorPanel getSelectedEditorPanel ()
+  {
+    return ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ();
+  }
+
+
+  /**
    * Handle the action event of the about item.
    */
-  public void handleAbout ()
+  public final void handleAbout ()
   {
     AboutDialog aboutDialog = new AboutDialog ( this.gui );
     aboutDialog.show ();
@@ -206,9 +267,20 @@ public class MainWindow
 
 
   /**
+   * Handle the action event of the enter word item.
+   */
+  public final void handleEnterWord ()
+  {
+    WordDialog wordDialog = new WordDialog ( this );
+    wordDialog.show ();
+    // TODOChristian
+  }
+
+
+  /**
    * Handle the open event.
    */
-  public void handleNew ()
+  public final void handleNew ()
   {
     NewDialog newDialog = new NewDialog ( this.gui );
     // newDialog.setLocationRelativeTo ( window ) ;
@@ -230,7 +302,7 @@ public class MainWindow
   /**
    * Handles the open event.
    */
-  public void handleOpen ()
+  public final void handleOpen ()
   {
     PreferenceManager prefmanager = PreferenceManager.getInstance ();
     JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
@@ -244,7 +316,7 @@ public class MainWindow
   /**
    * Handle the action event of the preferences item.
    */
-  public void handlePreferences ()
+  public final void handlePreferences ()
   {
     PreferencesDialog preferencesDialog = new PreferencesDialog ( this.gui );
     preferencesDialog.show ();
@@ -254,7 +326,7 @@ public class MainWindow
   /**
    * Handles the quit event.
    */
-  public void handleQuit ()
+  public final void handleQuit ()
   {
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     preferenceManager.setMainWindowPreferences ( this.gui );
@@ -263,11 +335,20 @@ public class MainWindow
 
 
   /**
+   * Handle the action event of the enter word item.
+   */
+  public final void handleValidate ()
+  {
+    // TODOBenny
+  }
+
+
+  /**
    * Sets general states for items and buttons.
    * 
    * @param pState The new state.
    */
-  private void setGeneralStates ( boolean pState )
+  private final void setGeneralStates ( boolean pState )
   {
     // SaveAs
     this.gui.jButtonSaveAs.setEnabled ( pState );
@@ -278,6 +359,12 @@ public class MainWindow
 
     // Close
     this.gui.jMenuItemClose.setEnabled ( pState );
+
+    // Validate
+    this.gui.jMenuItemValidate.setEnabled ( pState );
+
+    // EnterWord
+    this.gui.jMenuItemEnterWord.setEnabled ( pState );
 
     // Cut
     // this.gui.jButtonCut.setEnabled ( pState );
@@ -318,7 +405,7 @@ public class MainWindow
    * 
    * @param pState The new state for redo.
    */
-  private void setRedoState ( boolean pState )
+  private final void setRedoState ( boolean pState )
   {
     this.gui.jButtonRedo.setEnabled ( pState );
     this.gui.jMenuItemRedo.setEnabled ( pState );
@@ -331,7 +418,7 @@ public class MainWindow
    * @param pState The new state for save.
    */
   @SuppressWarnings ( "unused" )
-  private void setSaveState ( boolean pState )
+  private final void setSaveState ( boolean pState )
   {
     this.gui.jButtonSave.setEnabled ( pState );
     this.gui.jMenuItemSave.setEnabled ( pState );
@@ -343,7 +430,7 @@ public class MainWindow
    * 
    * @param pState The new state for undo.
    */
-  private void setUndoState ( boolean pState )
+  private final void setUndoState ( boolean pState )
   {
     this.gui.jButtonUndo.setEnabled ( pState );
     this.gui.jMenuItemUndo.setEnabled ( pState );

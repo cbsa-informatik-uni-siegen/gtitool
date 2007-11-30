@@ -481,6 +481,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
     {
       logger.error ( "failed to process changes", exc ); //$NON-NLS-1$
     }
+
     if ( !collectedExceptions.equals ( this.exceptionList ) )
     {
       this.exceptionList = collectedExceptions;
@@ -538,5 +539,34 @@ public final class StyledParserDocument extends DefaultStyledDocument
   public final void setEditable ( boolean pEditable )
   {
     this.editable = pEditable;
+  }
+
+
+  /**
+   * Sets the exceptions.
+   * 
+   * @param pExceptions The exceptions to set.
+   */
+  public final void setException ( ArrayList < ScannerException > pExceptions )
+  {
+    if ( !pExceptions.equals ( this.exceptionList ) )
+    {
+      this.exceptionList = pExceptions;
+      for ( ScannerException current : this.exceptionList )
+      {
+        SimpleAttributeSet errorSet = getAttributeSetError ();
+        errorSet.addAttribute ( "exception", current ); //$NON-NLS-1$
+        if ( current.getLeft () < 0 && current.getRight () < 0 )
+        {
+          setCharacterAttributes ( getLength (), getLength (), errorSet, false );
+        }
+        else
+        {
+          setCharacterAttributes ( current.getLeft (), current.getRight ()
+              - current.getLeft (), errorSet, false );
+        }
+      }
+      fireExceptionsChanged ();
+    }
   }
 }

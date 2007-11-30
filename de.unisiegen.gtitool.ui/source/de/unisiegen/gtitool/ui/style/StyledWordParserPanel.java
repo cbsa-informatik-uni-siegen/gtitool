@@ -3,8 +3,13 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.word.WordParseable;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.WordChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
@@ -45,6 +50,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
+   * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet}.
+   */
+  private Alphabet alphabet = null;
+
+
+  /**
    * Allocates a new <code>StyledWordParserPanel</code>.
    */
   public StyledWordParserPanel ()
@@ -81,10 +92,44 @@ public final class StyledWordParserPanel extends StyledParserPanel
    */
   private final void fireWordChanged ( Word pNewWord )
   {
+    if ( ( pNewWord != null ) && ( this.alphabet != null ) )
+    {
+      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      for ( Symbol current : pNewWord )
+      {
+        if ( !this.alphabet.contains ( current ) )
+        {
+          exceptionList.add ( new ParserException ( current
+              .getParserStartOffset (), current.getParserEndOffset (), Messages
+              .getString ( "WordDialog.SymbolNotInAlphabet", //$NON-NLS-1$
+                  current.getName (), this.alphabet ) ) );
+        }
+      }
+      if ( exceptionList.size () > 0 )
+      {
+        getDocument ().setException ( exceptionList );
+        for ( WordChangedListener current : this.wordChangedListenerList )
+        {
+          current.wordChanged ( null );
+        }
+        return;
+      }
+    }
     for ( WordChangedListener current : this.wordChangedListenerList )
     {
       current.wordChanged ( pNewWord );
     }
+  }
+
+
+  /**
+   * Returns the {@link Alphabet}.
+   * 
+   * @return The {@link Alphabet}.
+   */
+  public final Alphabet getAlphabet ()
+  {
+    return this.alphabet;
   }
 
 
@@ -117,6 +162,18 @@ public final class StyledWordParserPanel extends StyledParserPanel
       WordChangedListener pListener )
   {
     return this.wordChangedListenerList.remove ( pListener );
+  }
+
+
+  /**
+   * Sets the {@link Alphabet}. Every {@link Symbol} in the {@link Word} has to
+   * be in the {@link Alphabet}.
+   * 
+   * @param pAlphabet The {@link Alphabet} to set.
+   */
+  public final void setAlphabet ( Alphabet pAlphabet )
+  {
+    this.alphabet = pAlphabet;
   }
 
 

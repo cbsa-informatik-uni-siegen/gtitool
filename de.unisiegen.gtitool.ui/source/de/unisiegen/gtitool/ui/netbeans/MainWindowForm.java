@@ -80,6 +80,9 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemPaste = new javax.swing.JMenuItem();
         jSeparatorEdit2 = new javax.swing.JSeparator();
         jMenuItemPreferences = new javax.swing.JMenuItem();
+        jMenuExecute = new javax.swing.JMenu();
+        jMenuItemValidate = new javax.swing.JMenuItem();
+        jMenuItemEnterWord = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -320,6 +323,30 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuBarMain.add(jMenuEdit);
 
+        jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
+        jMenuExecute.setText(bundle.getString("MainWindow.Execute")); // NOI18N
+        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
+        jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
+        jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemValidateActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemValidate);
+
+        jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
+        jMenuItemEnterWord.setText(bundle.getString("MainWindow.EnterWord")); // NOI18N
+        jMenuItemEnterWord.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEnterWordActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemEnterWord);
+
+        jMenuBarMain.add(jMenuExecute);
+
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
         jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
         jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
@@ -339,6 +366,14 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
+      this.logic.handleValidate();
+    }//GEN-LAST:event_jMenuItemValidateActionPerformed
+
+    private void jMenuItemEnterWordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEnterWordActionPerformed
+      this.logic.handleEnterWord();
+    }//GEN-LAST:event_jMenuItemEnterWordActionPerformed
 
     private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
       this.logic.handleNew();
@@ -384,12 +419,14 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JButton jButtonUndo;
     private javax.swing.JMenuBar jMenuBarMain;
     public javax.swing.JMenu jMenuEdit;
+    public javax.swing.JMenu jMenuExecute;
     public javax.swing.JMenu jMenuFile;
     public javax.swing.JMenu jMenuHelp;
     public javax.swing.JMenuItem jMenuItemAbout;
     public javax.swing.JMenuItem jMenuItemClose;
     public javax.swing.JMenuItem jMenuItemCopy;
     public javax.swing.JMenuItem jMenuItemCut;
+    public javax.swing.JMenuItem jMenuItemEnterWord;
     public javax.swing.JMenuItem jMenuItemNew;
     public javax.swing.JMenuItem jMenuItemOpen;
     public javax.swing.JMenuItem jMenuItemPaste;
@@ -400,6 +437,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemSaveAll;
     public javax.swing.JMenuItem jMenuItemSaveAs;
     public javax.swing.JMenuItem jMenuItemUndo;
+    public javax.swing.JMenuItem jMenuItemValidate;
     public javax.swing.JMenu jMenuRecentlyUsed;
     public javax.swing.JSeparator jSeparatorEdit1;
     public javax.swing.JSeparator jSeparatorEdit2;

@@ -132,7 +132,7 @@ public final class Transition implements Entity
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( !this.alphabet.containsSymbol ( pSymbol ) )
+    if ( !this.alphabet.contains ( pSymbol ) )
     {
       throw new TransitionSymbolNotInAlphabetException ( this, this.alphabet,
           pSymbol );

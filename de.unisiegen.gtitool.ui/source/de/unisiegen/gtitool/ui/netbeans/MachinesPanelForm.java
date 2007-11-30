@@ -293,7 +293,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         logic = window;
     }
     
-    public MachinePanel getLocgic(){
+    public MachinePanel getLogic(){
       return this.logic;
     }
 }

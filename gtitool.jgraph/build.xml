@@ -1,0 +1,35 @@
+<project name="gtitool.jgraph" default="dist" basedir=".">
+	<property name="sourcedir" value="${basedir}/source"/>
+	<property name="distdir" value="${basedir}/dist"/>
+	<property name="classesdir" value="${distdir}/classes" />
+
+	<target name="dist" depends="dist-preclean,jar,dist-postclean" description="Clean up and produce all distributions">
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
+	<target name="dist-preclean">
+		<delete dir="${distdir}/"/>
+		<mkdir dir="${distdir}"/>
+		<mkdir dir="${classesdir}"/>
+	</target>
+
+	<target name="dist-postclean">
+    	<delete dir="${classesdir}"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar jarfile="${distdir}/jgraph-gtitool.jar" basedir="${classesdir}"/>
+	</target>
+	
+	<target name="compile">
+		<javac srcdir="${sourcedir}"
+			debug="false"
+			deprecation="false"
+			optimize="true"
+			destdir="${classesdir}">
+			<classpath>
+				<pathelement path="${classesdir}"/>
+			</classpath>
+		</javac>
+	</target>
+</project>

@@ -15,6 +15,10 @@
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property file="${core.basedir}/build.properties" />
+	
+	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
+	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
+	
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -23,11 +27,12 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
-	<target name="dist" depends="dist-core,generate,dist-preclean,dist-compile,dist-jar,exe,dist-3rdparty,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-jgraph,generate,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
 			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${jgraph.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${libdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
@@ -95,6 +100,11 @@
 	<target name="dist-core">
 		<ant dir="${core.basedir}" target="dist" inheritall="false" />
 	</target>
+	
+	<!-- dist jgraph -->
+	<target name="dist-jgraph">
+		<ant dir="${jgraph.basedir}" target="dist" inheritall="false" />
+	</target>
 
 	<!-- dist preclean -->
 	<target name="dist-preclean">
@@ -113,7 +123,7 @@
 				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" />
 				<pathelement location="${core.distdir}/java-cup-11a-gtitool-runtime.jar" />
 				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
-				<pathelement location="${libdir}/jgraph.jar" />
+				<pathelement location="${jgraph.distdir}/jgraph-gtitool.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -124,7 +134,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar java-cup-11a-gtitool-runtime.jar jgraph.jar log4j-1.2.14.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar java-cup-11a-gtitool-runtime.jar jgraph-gtitool.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />
 				<attribute name="Specification-Version" value="${gtitool.version}" />
@@ -166,11 +176,6 @@
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
-	<!-- dist 3rdparty -->
-	<target name="dist-3rdparty">
-		<copy file="${libdir}/jgraph.jar" todir="${distdir}" />
-	</target>
-	
 	<!-- exe -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/launch4j/launch4j.jar:${basedir}/launch4j/lib/xstream.jar" />
 	<target name="exe">

@@ -47,8 +47,11 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         diagrammContentPanel = new javax.swing.JScrollPane();
         tablePanel = new javax.swing.JPanel();
         bottom = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPaneConsole = new javax.swing.JTextPane();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPaneErrors = new javax.swing.JScrollPane();
+        jTextPaneErrors = new javax.swing.JTextPane();
+        jScrollPaneWarnings = new javax.swing.JScrollPane();
+        jTextPaneWarnings = new javax.swing.JTextPane();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -202,15 +205,25 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         bottom.setLayout(new java.awt.GridBagLayout());
 
         bottom.setName("Console");
-        jTextPaneConsole.setEditable(false);
-        jTextPaneConsole.setForeground(new java.awt.Color(255, 51, 51));
-        jScrollPane1.setViewportView(jTextPaneConsole);
+        jTextPaneErrors.setEditable(false);
+        jTextPaneErrors.setForeground(new java.awt.Color(255, 51, 51));
+        jScrollPaneErrors.setViewportView(jTextPaneErrors);
+
+        jTabbedPane1.addTab("Errors", jScrollPaneErrors);
+
+        jTextPaneWarnings.setEditable(false);
+        jTextPaneWarnings.setForeground(new java.awt.Color(255, 255, 51));
+        jScrollPaneWarnings.setViewportView(jTextPaneWarnings);
+
+        jTabbedPane1.addTab("Warnings", jScrollPaneWarnings);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        bottom.add(jScrollPane1, gridBagConstraints);
+        bottom.add(jTabbedPane1, gridBagConstraints);
 
         jSplitPane2.setRightComponent(bottom);
 
@@ -260,10 +273,13 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     public javax.swing.JToggleButton jButtonMouse;
     public javax.swing.JToggleButton jButtonStartState;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPaneErrors;
+    private javax.swing.JScrollPane jScrollPaneWarnings;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
-    public javax.swing.JTextPane jTextPaneConsole;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTextPane jTextPaneErrors;
+    public javax.swing.JTextPane jTextPaneWarnings;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JPanel toolbar;
     private javax.swing.ButtonGroup toolbarButton;
@@ -275,6 +291,10 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     
     public void setMachinePanel (MachinePanel window){
         logic = window;
+    }
+    
+    public MachinePanel getLocgic(){
+      return this.logic;
     }
 }
 

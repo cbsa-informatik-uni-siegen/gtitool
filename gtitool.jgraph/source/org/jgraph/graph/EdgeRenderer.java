@@ -743,9 +743,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 			int offset = isMoveBelowZero || applyTransform ? 0 : Math
 					.min(0, (int) (dx + p.getX()));
 
-			g2.translate(p.getX() - offset , p.getY() - 5);
+			g2.translate(p.getX() - offset +3 , p.getY() + 5);
 			if (applyTransform) {
-				angle = getLabelAngle(label);
+				angle = angle + 10;
 				g2.rotate(angle);
 			}
 			if (isOpaque() && mainLabel) {

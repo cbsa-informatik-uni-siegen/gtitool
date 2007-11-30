@@ -409,8 +409,12 @@ public class TransitionDialog
     }
     try
     {
-      this.transitionDialog.styledAlphabetParserPanel
-          .setAlphabet ( new Alphabet ( symbols ) );
+      if ( symbols.size () > 0 )
+        this.transitionDialog.styledAlphabetParserPanel
+            .setAlphabet ( new Alphabet ( symbols ) );
+      else
+        this.transitionDialog.styledAlphabetParserPanel
+            .setAlphabet ( new Alphabet () );
     }
     catch ( AlphabetException e )
     {

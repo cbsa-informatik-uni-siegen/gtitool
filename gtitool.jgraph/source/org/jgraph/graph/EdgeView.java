@@ -967,7 +967,8 @@ public class EdgeView extends AbstractCellView {
 							index = i + 1;
 						}
 					}
-					edge.addPoint(index, point);
+					// Don't allow to set points on the edge
+					//edge.addPoint(index, point);
 					edgeModified = true;
 					currentPoint = point;
 					reloadPoints(edge);

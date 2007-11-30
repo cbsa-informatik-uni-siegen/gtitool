@@ -941,4 +941,10 @@ public class MachinePanel implements EditorPanel
     machinePanel.jTextPaneConsole.setText ( text );
     
   }
+
+
+  public Alphabet getAlphabet ()
+  {
+    return this.machine.getAlphabet ();
+  }
 }

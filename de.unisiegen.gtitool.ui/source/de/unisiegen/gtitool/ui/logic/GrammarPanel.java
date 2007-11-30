@@ -35,4 +35,12 @@ public class GrammarPanel implements EditorPanel
     return this.grammarPanel;
   }
 
+
+  public Alphabet getAlphabet ()
+  {
+    return new Alphabet();
+  }
+  
+  
+
 }

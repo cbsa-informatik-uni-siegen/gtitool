@@ -18,7 +18,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
 /**
- * TODO
+ * Create a new Default Popup Menu
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -106,6 +106,7 @@ public class DefaultPopupMenu extends JPopupMenu
    * Allocate a new {@link DefaultPopupMenu}
    * 
    * @param pPanel the machine panel
+   * @param pMachine The {@link Machine}
    * @param pFactor the actual zoom factor
    */
   public DefaultPopupMenu ( MachinePanel pPanel, Machine pMachine, int pFactor )
@@ -233,7 +234,7 @@ public class DefaultPopupMenu extends JPopupMenu
         }
         catch ( MachineValidationException e1 )
         {
-          String text = "";
+          String text = ""; //$NON-NLS-1$
           for ( MachineException error : e1.getMachineExceptionList () )
           {
             if ( error.getType ().equals ( ErrorType.ERROR ) )
@@ -253,7 +254,7 @@ public class DefaultPopupMenu extends JPopupMenu
               text += "\n\n";
             }
           }
-          panel.setErrorText ( text );
+            DefaultPopupMenu.this.panel.setErrorText ( text );
         }
       }
     } );

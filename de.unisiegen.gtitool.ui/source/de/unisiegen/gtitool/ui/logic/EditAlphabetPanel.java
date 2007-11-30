@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.netbeans.EditAlphabetPanelForm;
 
 /**
@@ -20,16 +21,23 @@ public class EditAlphabetPanel
    */
   private EditAlphabetPanelForm editAlphabetPanel;
   
+  /** The {@link Machine} */
+  private Machine machine;
 
   
   /**
    * 
    * Allocate a new {@link EditAlphabetPanel}
+   * 
+   * @param pMachine the {@link Machine}
    *
    */
-  public EditAlphabetPanel ()
+  public EditAlphabetPanel ( Machine pMachine )
   {
+    this.machine = pMachine;
     this.editAlphabetPanel = new EditAlphabetPanelForm ();
+    this.editAlphabetPanel.setLogic ( this );
+    this.editAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.machine.getAlphabet () );
   }
   
   /**
@@ -41,4 +49,5 @@ public class EditAlphabetPanel
   public JPanel getPanel (){
     return this.editAlphabetPanel;
   }
+  
 }

@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -86,9 +83,9 @@ public class NewDialog
     if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
     {
       if ( this.newDialogForm.jRadioButtonDFA.isSelected ()  )
-        return new MachinePanel ( this.parent, new DFA( this.alphabet ) );
+        return new MachinePanel ( this.parent, new DFA( this.newDialogForm.styledAlphabetParserPanelMachine.getAlphabet ()) );
     }
-    return new GrammarPanel ( this.parent, this.alphabet );
+    return new GrammarPanel ( this.parent, this.newDialogForm.styledAlphabetParserPanelGrammar.getAlphabet () );
   }
 
 

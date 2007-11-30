@@ -38,7 +38,7 @@ import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
+import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
@@ -279,56 +279,15 @@ public class MachinePanel implements EditorPanel
           }
         } );
     
-    PreferenceManager.getInstance ().addColorChangedListener ( new ColorChangedListener() {
+    PreferenceManager.getInstance ().addColorChangedListener ( new ColorChangedAdapter() {
 
-      public void colorChangedActiveState ( Color pNewColor )
-      {
-        // Nothing to do here 
-        
-      }
-
-      public void colorChangedErrorState ( Color pNewColor )
-      {
-        // Nothing to do here 
-        
-      }
-
-      public void colorChangedErrorSymbol ( Color pNewColor )
-      {
-        // Nothing to do here
-        
-      }
-
-      public void colorChangedErrorTransition ( Color pNewColor )
-      {
-        // Nothing to do here
-        
-      }
-
-      public void colorChangedParserState ( Color pNewColor )
-      {
-        // Nothing to do here
-        
-      }
-
-      public void colorChangedParserSymbol ( Color pNewColor )
-      {
-        // Nothing to do here
-        
-      }
-
-      public void colorChangedParserWarning ( Color pNewColor )
-      {
-        // Nothing to do here
-        
-      }
-
-      public void colorChangedSelectedState ( Color pNewColor )
-      {
-        // Nothing to do 
-        
-      }
-
+      /**
+       * 
+       * TODO
+       *
+       * @param pNewColor
+       */
+      @Override
       public void colorChangedStartState ( Color pNewColor )
       {
         for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
@@ -366,19 +325,6 @@ public class MachinePanel implements EditorPanel
         model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
         
       }
-
-      public void colorChangedSymbol ( Color pNewColor )
-      {
-        // Nothing to do so far
-        
-      }
-
-      public void colorChangedTransition ( Color pNewColor )
-      {
-        // Nothing to do so far
-        
-      }
-      
     });
   }
 
@@ -415,7 +361,7 @@ public class MachinePanel implements EditorPanel
   {
     JDialog changeAlphabetDialog = new JDialog ( this.parent, true );
 
-    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel ();
+    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel (this.machine);
     changeAlphabetDialog.add ( editAlphabetPanel.getPanel () );
 
     changeAlphabetDialog.setTitle ( Messages
@@ -530,6 +476,8 @@ public class MachinePanel implements EditorPanel
 
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
+
+    this.graph.setMarqueeColor ( Color.MAGENTA );
   }
 
 

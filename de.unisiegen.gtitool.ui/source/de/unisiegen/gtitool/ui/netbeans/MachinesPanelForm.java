@@ -19,6 +19,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     /** Creates new form MachinesPanelForm */
     public MachinesPanelForm() {
         initComponents();
+        this.jButtonEditAlphabet.setVisible(false);
     }
     
     /** This method is called from within the constructor to

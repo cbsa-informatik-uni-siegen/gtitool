@@ -160,14 +160,15 @@ public class StateView extends VertexView
      */
     private static final long serialVersionUID = 264864659062743923L;
 
+
     /** The {@link StateView} */
     private StateView stateView;
 
+
     /**
-     * 
      * Allocate a new {@link JGraphEllipseRenderer}
-     *
-     * @param pStateView the  {@link StateView}
+     * 
+     * @param pStateView the {@link StateView}
      */
     public JGraphEllipseRenderer ( StateView pStateView )
     {
@@ -215,7 +216,12 @@ public class StateView extends VertexView
           g2.setPaint ( new GradientPaint ( 0, 0, getBackground (),
               getWidth (), getHeight (), this.gradientColor, true ) );
         }
-        g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+        if ( state != null && state.isFinalState () )
+        {
+          g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+        }
+        else
+          g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
       }
       try
       {

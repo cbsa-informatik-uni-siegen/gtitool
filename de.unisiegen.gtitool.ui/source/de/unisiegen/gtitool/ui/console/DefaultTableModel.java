@@ -114,6 +114,7 @@ public class DefaultTableModel extends AbstractTableModel
    */
   public void clearData() {
     this.data.clear ();
+    fireTableDataChanged ();
   }
 
 }

@@ -5,6 +5,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
@@ -340,6 +343,26 @@ public final class MainWindow
   public final void handleValidate ()
   {
     // TODOBenny
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+   try
+  {
+     panel.clearValidationMessages ();
+     panel.getMachine ().validate ();
+  }
+  catch ( MachineValidationException e )
+  {
+    for ( MachineException error : e.getMachineExceptionList () )
+    {
+      if ( error.getType ().equals ( ErrorType.ERROR ) )
+      {
+        panel.addError ( error );
+      }
+      else if ( error.getType ().equals ( ErrorType.WARNING ) )
+      {
+        panel.addWarning ( error );
+      }
+    }
+  }
   }
 
 

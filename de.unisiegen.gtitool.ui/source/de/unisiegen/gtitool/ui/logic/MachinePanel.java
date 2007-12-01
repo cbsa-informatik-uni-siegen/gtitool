@@ -1050,7 +1050,7 @@ public class MachinePanel implements EditorPanel
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemErrorTransition ().getColor () );
     }
-    graphModel.cellsChanged ( DefaultGraphModel
+    this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
   }
   
@@ -1073,11 +1073,15 @@ public class MachinePanel implements EditorPanel
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
     }
-    graphModel.cellsChanged ( DefaultGraphModel
+    this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
   }
 
-
+  /**
+   * 
+   * Clear all Error and Warning messages
+   *
+   */
   public void clearValidationMessages ()
   {
     this.errorTableModel.clearData();

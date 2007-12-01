@@ -49,9 +49,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         bottom = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPaneErrors = new javax.swing.JScrollPane();
-        jTextPaneErrors = new javax.swing.JTextPane();
+        jTableErrors = new javax.swing.JTable();
         jScrollPaneWarnings = new javax.swing.JScrollPane();
-        jTextPaneWarnings = new javax.swing.JTextPane();
+        jTableWarnings = new javax.swing.JTable();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -171,7 +171,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         add(toolbar, gridBagConstraints);
 
-        jSplitPane2.setDividerLocation(400);
+        jSplitPane2.setDividerLocation(300);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane2.setOneTouchExpandable(true);
         top.setLayout(new java.awt.GridBagLayout());
@@ -205,15 +205,56 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         bottom.setLayout(new java.awt.GridBagLayout());
 
         bottom.setName("Console");
-        jTextPaneErrors.setEditable(false);
-        jTextPaneErrors.setForeground(new java.awt.Color(255, 51, 51));
-        jScrollPaneErrors.setViewportView(jTextPaneErrors);
+        jTabbedPane1.setFocusable(false);
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleTabbedPaneMouseClicked(evt);
+            }
+        });
+
+        jTableErrors.setForeground(new java.awt.Color(255, 0, 51));
+        jTableErrors.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Titel 1", "Titel 2", "Titel 3", "Titel 4"
+            }
+        ));
+        jTableErrors.setFocusable(false);
+        jTableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleMouseClickedEvent(evt);
+            }
+        });
+
+        jScrollPaneErrors.setViewportView(jTableErrors);
 
         jTabbedPane1.addTab("Errors", jScrollPaneErrors);
 
-        jTextPaneWarnings.setEditable(false);
-        jTextPaneWarnings.setForeground(new java.awt.Color(255, 255, 51));
-        jScrollPaneWarnings.setViewportView(jTextPaneWarnings);
+        jScrollPaneWarnings.setForeground(new java.awt.Color(255, 255, 51));
+        jTableWarnings.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Titel 1", "Titel 2", "Titel 3", "Titel 4"
+            }
+        ));
+        jTableWarnings.setFocusable(false);
+        jTableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleMouseClickedEvent(evt);
+            }
+        });
+
+        jScrollPaneWarnings.setViewportView(jTableWarnings);
 
         jTabbedPane1.addTab("Warnings", jScrollPaneWarnings);
 
@@ -236,6 +277,16 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         add(jSplitPane2, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleTabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleTabbedPaneMouseClicked
+        this.jTableErrors.clearSelection();
+        this.jTableWarnings.clearSelection();
+        this.logic.clearHighlight();
+    }//GEN-LAST:event_handleTabbedPaneMouseClicked
+
+    private void handleMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleMouseClickedEvent
+        logic.handleTableMouseEvent ( evt );
+    }//GEN-LAST:event_handleMouseClickedEvent
 
     private void handleToolbarMouse(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarMouse
         this.logic.handleToolbarMouse(this.jButtonMouse.isSelected());
@@ -278,8 +329,8 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    public javax.swing.JTextPane jTextPaneErrors;
-    public javax.swing.JTextPane jTextPaneWarnings;
+    public javax.swing.JTable jTableErrors;
+    public javax.swing.JTable jTableWarnings;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JPanel toolbar;
     private javax.swing.ButtonGroup toolbarButton;

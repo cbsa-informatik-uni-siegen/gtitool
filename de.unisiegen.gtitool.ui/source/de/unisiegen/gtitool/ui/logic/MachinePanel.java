@@ -8,12 +8,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
@@ -24,14 +26,16 @@ import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.console.ConsoleColumnModel;
+import de.unisiegen.gtitool.ui.console.DefaultTableModel;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
@@ -52,6 +56,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  */
 public class MachinePanel implements EditorPanel
 {
+
   //
   // Attributes
   //
@@ -61,6 +66,9 @@ public class MachinePanel implements EditorPanel
 
   /** The {@linkMachinesPanelForm} */
   private MachinesPanelForm machinePanel;
+
+  /** The {@link DefaultMachineModel} */
+  private DefaultMachineModel model;
 
 
   /** The {@link Machine} */
@@ -72,7 +80,7 @@ public class MachinePanel implements EditorPanel
 
 
   /** The {@link DefaultGraphModel} for this graph */
-  private DefaultGraphModel model;
+  private DefaultGraphModel graphModel;
 
 
   /** The {@link MouseAdapter} for the mouse icon in the toolbar */
@@ -126,6 +134,18 @@ public class MachinePanel implements EditorPanel
   /** The zoom factor for this graph */
   private double zoomFactor;
 
+  /** The {@link DefaultTableModel} for the warning table */
+  private DefaultTableModel warningTableModel;
+
+  /** The {@link DefaultTableModel} for the error table */
+  private DefaultTableModel errorTableModel;
+
+  /** The actual highlighted error states */
+  private ArrayList < DefaultStateView > oldErrorStates = new ArrayList < DefaultStateView > ();
+
+  /** The actual highlighted error transitions */
+  private ArrayList < DefaultTransitionView > oldErrorTransitions = new ArrayList < DefaultTransitionView > ();
+
 
   /**
    * Create a temporary Object to paint the Transiton on Mouse move
@@ -162,90 +182,17 @@ public class MachinePanel implements EditorPanel
 
 
   /**
-   * Create a new State view
-   * 
-   * @param x the x position of the new state view
-   * @param y the y position of the new state view
-   * @param pState the state represented via this view
-   * @return {@link DefaultStateView} the new created state view
-   */
-  public static DefaultStateView createStateView ( double x, double y,
-      State pState )
-  {
-    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
-    DefaultStateView cell = new DefaultStateView ( pState, pState.getName () );
-
-    // set the view class (indirection for the renderer and the editor)
-    GPCellViewFactory.setViewClass ( cell.getAttributes (), viewClass );
-
-    // Set bounds
-    GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
-        x - 35, y - 35, 70, 70 ) );
-
-    // Set fill color
-    if ( pState.isStartState () )
-      GraphConstants.setGradientColor ( cell.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStartState ()
-              .getColor () );
-    else
-      GraphConstants.setGradientColor ( cell.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
-    GraphConstants.setOpaque ( cell.getAttributes (), true );
-
-    // Set black border
-    GraphConstants.setBorderColor ( cell.getAttributes (), Color.black );
-
-    // Set the line width
-    GraphConstants.setLineWidth ( cell.getAttributes (), 1 );
-
-    // Add a Floating Port
-    cell.addPort ();
-
-    return cell;
-  }
-
-
-  /**
-   * Create a new Transition
-   *
-   * @param graph The {@link JGraph}
-   * @param pTransition The {@link Transition} 
-   * @param source The source of the new Transition
-   * @param target The target of the new Transition
-   * @param symbols The Symbols for the new Transition
-   */
-  public static void createTransitionView ( JGraph graph,
-      Transition pTransition, DefaultStateView source, DefaultStateView target, Alphabet symbols )
-  {
-    DefaultTransitionView newEdge = new DefaultTransitionView ( pTransition,
-        source, target, symbols != null ? symbols.toString ()
-            : TransitionDialog.EPSILON );
-
-    GraphConstants.setLineEnd ( newEdge.getAttributes (),
-        GraphConstants.ARROW_CLASSIC );
-    GraphConstants.setEndFill ( newEdge.getAttributes (), true );
-    
-    GraphConstants.setLineColor ( newEdge.getAttributes (), PreferenceManager.getInstance ().getColorItemTransition ().getColor ());
-    GraphConstants.setLabelColor ( newEdge.getAttributes (), PreferenceManager.getInstance ().getColorItemSymbol ().getColor ());
-
-    graph.getGraphLayoutCache ().insertEdge ( newEdge, source.getChildAt ( 0 ),
-        target.getChildAt ( 0 ) );
-    target.addTransition ( newEdge );
-    source.addTransition ( newEdge );
-  }
-
-
-  /**
    * Create a new Machine Panel Object
    * 
    * @param pParent The parent frame
-   * @param pMachine the {@link Machine} of this panel
+   * @param pModel the {@link DefaultMachineModel} of this panel
    */
-  public MachinePanel ( JFrame pParent, Machine pMachine )
+  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel )
   {
     this.parent = pParent;
-    this.machine = pMachine;
-    this.alphabet = pMachine.getAlphabet ();
+    this.model = pModel;
+    this.machine = pModel.getMachine ();
+    this.alphabet = this.machine.getAlphabet ();
     this.machinePanel = new MachinesPanelForm ();
     this.machinePanel.setMachinePanel ( this );
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
@@ -254,6 +201,14 @@ public class MachinePanel implements EditorPanel
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
+
+    this.errorTableModel = new DefaultTableModel ();
+    this.machinePanel.jTableErrors.setModel ( this.errorTableModel );
+    this.machinePanel.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.warningTableModel = new DefaultTableModel ();
+    this.machinePanel.jTableWarnings.setModel ( this.warningTableModel );
+    this.machinePanel.jTableWarnings
+        .setColumnModel ( new ConsoleColumnModel () );
 
     /*
      * Language changed listener
@@ -283,103 +238,129 @@ public class MachinePanel implements EditorPanel
                     .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
           }
         } );
-    
-    PreferenceManager.getInstance ().addColorChangedListener ( new ColorChangedAdapter() {
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
 
-      /**
-       * 
-       * TODO
-       *
-       * @param pNewColor
-       */
-      @Override
-      public void colorChangedStartState ( Color pNewColor )
-      {
-        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
-          try {
-            DefaultStateView state = ( DefaultStateView ) object;
-            if ( state.getState ().isStartState () )
-              GraphConstants.setGradientColor ( state
-                  .getAttributes (), PreferenceManager.getInstance ()
-                  .getColorItemStartState ().getColor () );
-              
-          }
-          catch ( ClassCastException e){
-            // Do nothing
-          }
-        }
-        MachinePanel.this.model.cellsChanged ( DefaultGraphModel.getAll ( model ) );
-        
-      }
+         /**
+          * {@inheritDoc}
+          * @see ColorChangedAdapter#colorChangedStartState ( Color )
+          */
+          @SuppressWarnings("synthetic-access")
+          @Override
+          public void colorChangedStartState ( Color pNewColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultStateView state = ( DefaultStateView ) object;
+                if ( state.getState ().isStartState () )
+                  GraphConstants.setGradientColor ( state.getAttributes (),
+                      pNewColor) ;
 
-      public void colorChangedState ( Color pNewColor )
-      {
-        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
-          try {
-            DefaultStateView state = ( DefaultStateView ) object;
-            if ( !state.getState ().isStartState () )
-              GraphConstants.setGradientColor ( state
-                  .getAttributes (), PreferenceManager.getInstance ()
-                  .getColorItemState ().getColor () );
-              
-          }
-          catch ( ClassCastException e){
-            // Do nothing
-          }
-        }
-        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
-        
-      }
-      
-      /**
-       * Invoked when the color of the {@link Transition} changed.
-       * 
-       * @param pNewColor The new color of the {@link Transition}.
-       */
-      public void colorChangedTransition ( @SuppressWarnings ( "unused" )
-      Color pNewColor )
-      {
-        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
-          try {
-            DefaultTransitionView t = ( DefaultTransitionView ) object;
-              GraphConstants.setLineColor ( t
-                  .getAttributes (), PreferenceManager.getInstance ().getColorItemTransition ().getColor () );
-              
-          }
-          catch ( ClassCastException e){
-            // Do nothing
-          }
-        }
-        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
-        
-        
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
 
-      }
-      
-      /**
-       * Invoked when the color of the {@link Symbol} changed.
-       * 
-       * @param pNewColor The new color of the {@link Symbol}.
-       */
-      public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
-      Color pNewColor )
-      {
-        for ( Object object : DefaultGraphModel.getAll ( MachinePanel.this.model )){
-          try {
-            DefaultTransitionView t = ( DefaultTransitionView ) object;
-              GraphConstants.setLabelColor ( t
-                  .getAttributes (), PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
-              
           }
-          catch ( ClassCastException e){
-            // Do nothing
+
+          /**
+           *{@inheritDoc}
+           * @see ColorChangedAdapter#colorChangedState ( Color )
+           */
+          @SuppressWarnings("synthetic-access")
+          @Override
+          public void colorChangedState ( Color pNewColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultStateView state = ( DefaultStateView ) object;
+                if ( !state.getState ().isStartState () )
+                  GraphConstants.setGradientColor ( state.getAttributes (),
+                      pNewColor );
+
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
+
           }
-        }
-        model.cellsChanged ( DefaultGraphModel.getAll ( MachinePanel.this.model ) );
-        
-      }
-      
-    });
+
+
+          /**
+           *{@inheritDoc}
+           * @see ColorChangedAdapter#colorChangedTransition ( Color )
+           */
+          @SuppressWarnings("synthetic-access")
+          @Override
+          public void colorChangedTransition ( Color pNewColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultTransitionView t = ( DefaultTransitionView ) object;
+                GraphConstants.setLineColor ( t.getAttributes (),
+                    pNewColor );
+
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
+
+          }
+
+
+          /**
+           *{@inheritDoc}
+           * @see ColorChangedAdapter#colorChangedSymbol ( Color )
+           */
+          @SuppressWarnings("synthetic-access")
+          @Override
+          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+          Color pNewColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultTransitionView t = ( DefaultTransitionView ) object;
+                GraphConstants.setLabelColor ( t.getAttributes (),
+                    PreferenceManager.getInstance ().getColorItemSymbol ()
+                        .getColor () );
+
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
+
+          }
+
+        } );
   }
 
 
@@ -415,7 +396,7 @@ public class MachinePanel implements EditorPanel
   {
     JDialog changeAlphabetDialog = new JDialog ( this.parent, true );
 
-    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel (this.machine);
+    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel ( this.machine );
     changeAlphabetDialog.add ( editAlphabetPanel.getPanel () );
 
     changeAlphabetDialog.setTitle ( Messages
@@ -499,9 +480,9 @@ public class MachinePanel implements EditorPanel
   private void initializeGraph ()
   {
     // Construct Model and Graph
-    this.model = new DefaultGraphModel ();
+    this.graphModel = new DefaultGraphModel ();
 
-    this.graph = new JGraph ( this.model );
+    this.graph = new JGraph ( this.graphModel );
 
     this.graph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
 
@@ -531,7 +512,6 @@ public class MachinePanel implements EditorPanel
     // Set the zoom factor of this graph
     this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
 
-    
     EdgeView.renderer.setForeground ( Color.magenta );
   }
 
@@ -562,7 +542,7 @@ public class MachinePanel implements EditorPanel
           popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
         if ( popup != null )
-          popup.show ( ( Component ) e.getSource (), e.getX(), e.getY () );
+          popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
       }
     };
 
@@ -581,17 +561,17 @@ public class MachinePanel implements EditorPanel
           return;
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, false,
-              false );
+          State newState = new State ( MachinePanel.this.alphabet, false, false );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
-              createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
+              MachinePanel.this.model.createStateView ( e.getPoint ().x
+                  / MachinePanel.this.zoomFactor, e.getPoint ().y
+                  / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
           e1.printStackTrace ();
-          System.exit ( 1 ) ;
+          System.exit ( 1 );
         }
 
       }
@@ -620,7 +600,7 @@ public class MachinePanel implements EditorPanel
           else
           {
 
-            MachinePanel.this.model.remove ( new Object []
+            MachinePanel.this.graphModel.remove ( new Object []
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
             DefaultStateView target = ( DefaultStateView ) MachinePanel.this.graph
                 .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
@@ -637,9 +617,10 @@ public class MachinePanel implements EditorPanel
                 try
                 {
                   State newState = new State ( MachinePanel.this.alphabet,
-                       false, false );
+                      false, false );
                   MachinePanel.this.machine.addState ( newState );
-                  target = createStateView ( e.getPoint ().x
+                  target = MachinePanel.this.model.createStateView ( e
+                      .getPoint ().x
                       / MachinePanel.this.zoomFactor, e.getPoint ().y
                       / MachinePanel.this.zoomFactor, newState );
 
@@ -649,7 +630,7 @@ public class MachinePanel implements EditorPanel
                 catch ( StateException e1 )
                 {
                   e1.printStackTrace ();
-                  System.exit ( 1 ) ;
+                  System.exit ( 1 );
                 }
 
               }
@@ -667,20 +648,21 @@ public class MachinePanel implements EditorPanel
                           .getState (), dialog.getAlphabet ().getSymbol () );
                 MachinePanel.this.machine.addTransition ( newTransition );
 
-                createTransitionView ( MachinePanel.this.graph, newTransition,
-                    MachinePanel.this.firstState, target,
-                    dialog.getAlphabet () );
+                MachinePanel.this.model
+                    .createTransitionView ( MachinePanel.this.graph,
+                        newTransition, MachinePanel.this.firstState, target,
+                        dialog.getAlphabet () );
                 dialog.dispose ();
               }
               catch ( TransitionSymbolNotInAlphabetException e1 )
               {
                 e1.printStackTrace ();
-                System.exit ( 1 ) ;
+                System.exit ( 1 );
               }
               catch ( TransitionSymbolOnlyOneTimeException e1 )
               {
                 e1.printStackTrace ();
-                System.exit ( 1 ) ;
+                System.exit ( 1 );
               }
             }
             MachinePanel.this.firstState = null;
@@ -711,7 +693,7 @@ public class MachinePanel implements EditorPanel
                   .getY () );
           if ( target != null && target.equals ( MachinePanel.this.firstState ) )
             return;
-          MachinePanel.this.model.remove ( new Object []
+          MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
           TransitionDialog dialog = new TransitionDialog (
@@ -724,13 +706,12 @@ public class MachinePanel implements EditorPanel
 
               try
               {
-                
-                
+
                 State newState;
-                newState = new State ( MachinePanel.this.alphabet, false, 
-                    false );
+                newState = new State ( MachinePanel.this.alphabet, false, false );
                 MachinePanel.this.machine.addState ( newState );
-                target = createStateView ( e.getPoint ().x
+                target = MachinePanel.this.model.createStateView ( e
+                    .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
 
@@ -739,7 +720,7 @@ public class MachinePanel implements EditorPanel
               catch ( StateException e1 )
               {
                 e1.printStackTrace ();
-                System.exit ( 1 ) ;
+                System.exit ( 1 );
               }
 
             }
@@ -756,20 +737,20 @@ public class MachinePanel implements EditorPanel
                     MachinePanel.this.firstState.getState (), target
                         .getState (), dialog.getAlphabet ().getSymbol () );
               MachinePanel.this.machine.addTransition ( newTransition );
-              createTransitionView ( MachinePanel.this.graph, newTransition,
-                  MachinePanel.this.firstState, target,
-                  dialog.getAlphabet () );
+              MachinePanel.this.model.createTransitionView (
+                  MachinePanel.this.graph, newTransition,
+                  MachinePanel.this.firstState, target, dialog.getAlphabet () );
               dialog.dispose ();
             }
             catch ( TransitionSymbolNotInAlphabetException e1 )
             {
               e1.printStackTrace ();
-              System.exit ( 1 ) ;
+              System.exit ( 1 );
             }
             catch ( TransitionSymbolOnlyOneTimeException e1 )
             {
               e1.printStackTrace ();
-              System.exit ( 1 ) ;
+              System.exit ( 1 );
             }
 
           }
@@ -805,7 +786,7 @@ public class MachinePanel implements EditorPanel
         else
         {
           // Remove old tmp state and transition
-          MachinePanel.this.model.remove ( new Object []
+          MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           x = e.getX () / MachinePanel.this.zoomFactor;
           y = e.getY () / MachinePanel.this.zoomFactor;
@@ -841,7 +822,7 @@ public class MachinePanel implements EditorPanel
         if ( MachinePanel.this.firstState != null )
         {
           // Remove old tmp state and transition
-          MachinePanel.this.model.remove ( new Object []
+          MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
           x = e.getX () / MachinePanel.this.zoomFactor;
@@ -881,17 +862,17 @@ public class MachinePanel implements EditorPanel
 
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, true,
-              false );
+          State newState = new State ( MachinePanel.this.alphabet, true, false );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
-              createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
+              MachinePanel.this.model.createStateView ( e.getPoint ().x
+                  / MachinePanel.this.zoomFactor, e.getPoint ().y
+                  / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
           e1.printStackTrace ();
-          System.exit ( 1 ) ;
+          System.exit ( 1 );
         }
 
       }
@@ -912,17 +893,17 @@ public class MachinePanel implements EditorPanel
 
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, false,
-              true );
+          State newState = new State ( MachinePanel.this.alphabet, false, true );
           MachinePanel.this.machine.addState ( newState );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
-              createStateView ( e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState ) );
+              MachinePanel.this.model.createStateView ( e.getPoint ().x
+                  / MachinePanel.this.zoomFactor, e.getPoint ().y
+                  / MachinePanel.this.zoomFactor, newState ) );
         }
         catch ( StateException e1 )
         {
           e1.printStackTrace ();
-          System.exit ( 1 ) ;
+          System.exit ( 1 );
         }
       }
     };
@@ -950,8 +931,8 @@ public class MachinePanel implements EditorPanel
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
-    return new TransitionPopupMenu ( this.graph, this.machinePanel, this.model,
-        pTransition, this.machine, this.alphabet );
+    return new TransitionPopupMenu ( this.graph, this.machinePanel,
+        this.graphModel, pTransition, this.machine, this.alphabet );
   }
 
 
@@ -963,7 +944,8 @@ public class MachinePanel implements EditorPanel
    */
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
-    return new StatePopupMenu ( this.graph, this.model, pState, this.machine );
+    return new StatePopupMenu ( this.graph, this.graphModel, pState,
+        this.machine );
   }
 
 
@@ -980,9 +962,8 @@ public class MachinePanel implements EditorPanel
 
 
   /**
-   * 
    * Getter for the {@link Machine}
-   *
+   * 
    * @return the {@link Machine} of this panel
    */
   public Machine getMachine ()
@@ -991,21 +972,116 @@ public class MachinePanel implements EditorPanel
   }
 
 
-  public void setErrorText ( String text )
-  {
-    machinePanel.jTextPaneErrors.setText ( text );
-    
-  }
-  
-  public void setWarningText ( String text )
-  {
-    machinePanel.jTextPaneWarnings.setText ( text );
-    
-  }
-
-
   public Alphabet getAlphabet ()
   {
     return this.machine.getAlphabet ();
+  }
+
+
+  public void addError ( MachineException e )
+  {
+    this.errorTableModel.addRow ( e );
+  }
+
+
+  public void addWarning ( MachineException e )
+  {
+    this.warningTableModel.addRow ( e );
+  }
+
+
+  public void handleTableMouseEvent ( MouseEvent e )
+  {
+    JTable table = ( JTable ) e.getSource ();
+    int index = table.rowAtPoint ( e.getPoint () );
+
+    if ( index >= 0 )
+    {
+      highlightStates ( ( ArrayList < State > ) table.getModel ()
+          .getValueAt ( index, DefaultTableModel.STATES_COLUMN ) );
+      highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
+          .getValueAt ( index, DefaultTableModel.TRANSITIONS_COLUMN ) );
+    }
+  }
+
+
+  private void highlightStates ( ArrayList < State > states )
+  {
+    for ( DefaultStateView view : this.oldErrorStates )
+    {
+      if ( view.getState ().isStartState () )
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStartState ()
+                .getColor () );
+      else
+      {
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+    }
+    this.oldErrorStates.clear ();
+    for ( State state : states )
+    {
+      DefaultStateView view = this.model.getStateViewForState ( state );
+      this.oldErrorStates.add ( view );
+      GraphConstants.setGradientColor ( view.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemErrorState ()
+              .getColor () );
+    }
+    graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+  }
+
+
+  private void highlightTransitions ( ArrayList < Transition > transitions )
+  {
+    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    {
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
+    }
+    this.oldErrorTransitions.clear ();
+
+    for ( Transition transition : transitions )
+    {
+      DefaultTransitionView view = this.model
+          .getTransitionViewForTransition ( transition );
+      this.oldErrorTransitions.add ( view );
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemErrorTransition ().getColor () );
+    }
+    graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+  }
+  
+  public void clearHighlight () {
+    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    {
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
+    }
+    
+    for ( DefaultStateView view : this.oldErrorStates )
+    {
+      if ( view.getState ().isStartState () )
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStartState ()
+                .getColor () );
+      else
+      {
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+    }
+    graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+  }
+
+
+  public void clearValidationMessages ()
+  {
+    this.errorTableModel.clearData();
+    this.warningTableModel.clearData();
+    
   }
 }

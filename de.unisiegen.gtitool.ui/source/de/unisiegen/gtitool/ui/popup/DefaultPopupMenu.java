@@ -230,27 +230,23 @@ public class DefaultPopupMenu extends JPopupMenu
       {
         try
         {
+          DefaultPopupMenu.this.panel.clearValidationMessages();
           DefaultPopupMenu.this.machine.validate ();
+          
         }
         catch ( MachineValidationException e1 )
         {
-          String errorText = ""; //$NON-NLS-1$
-          String warningText = ""; //$NON-NLS-1$
           for ( MachineException error : e1.getMachineExceptionList () )
           {
             if ( error.getType ().equals ( ErrorType.ERROR ) )
             {
-              errorText += error.toString ();
-              errorText += "\n\n"; //$NON-NLS-1$
+              DefaultPopupMenu.this.panel.addError ( error );
             }
             else if ( error.getType ().equals ( ErrorType.WARNING ) )
             {
-              warningText += error.toString ();
-              warningText += "\n\n"; //$NON-NLS-1$
+              DefaultPopupMenu.this.panel.addWarning ( error );
             }
           }
-            DefaultPopupMenu.this.panel.setErrorText ( errorText );
-            DefaultPopupMenu.this.panel.setWarningText ( warningText );
         }
       }
     } );

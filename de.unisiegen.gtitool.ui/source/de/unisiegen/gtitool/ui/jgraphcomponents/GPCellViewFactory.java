@@ -30,7 +30,7 @@ public class GPCellViewFactory extends DefaultCellViewFactory {
 	 * @param map
 	 * @param viewClass
 	 */
-	public static final void setViewClass(Map < String, String > map, String viewClass) {
+	public static final void setViewClass(Map  map, String viewClass) {
 		map.put(VIEW_CLASS_KEY, viewClass);
 	}
 

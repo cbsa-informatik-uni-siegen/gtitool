@@ -1080,25 +1080,42 @@ public class MachinePanel implements EditorPanel
     return this.machine;
   }
 
-
+  /**
+   * {@inheritDoc}
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
+   */
   public Alphabet getAlphabet ()
   {
     return this.machine.getAlphabet ();
   }
 
-
+  /**
+   *  
+   * Add a new Error 
+   * 
+   * @param e  The {@link MachineException} containing the data
+   */
   public void addError ( MachineException e )
   {
     this.errorTableModel.addRow ( e );
   }
 
-
+  /**
+   *  Add a new Warning 
+   *
+   * @param e The {@link MachineException} containing the data
+   */
   public void addWarning ( MachineException e )
   {
     this.warningTableModel.addRow ( e );
   }
 
-
+  /**
+   * 
+   * Handle Row Selection for the tables
+   *
+   * @param e {@link MouseEvent}
+   */
   public void handleTableMouseEvent ( MouseEvent e )
   {
     JTable table = ( JTable ) e.getSource ();
@@ -1113,7 +1130,12 @@ public class MachinePanel implements EditorPanel
     }
   }
 
-
+  /**
+   * 
+   * Highlight the affected states 
+   *
+   * @param states list with all states that are affected
+   */
   private void highlightStates ( ArrayList < State > states )
   {
     for ( DefaultStateView view : this.oldErrorStates )
@@ -1137,11 +1159,16 @@ public class MachinePanel implements EditorPanel
           PreferenceManager.getInstance ().getColorItemErrorState ()
               .getColor () );
     }
-    graphModel.cellsChanged ( DefaultGraphModel
+    this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
   }
 
-
+  /**
+   * 
+   * Highlight the affected transitions 
+   *
+   * @param transitions list with all transitions that are affected
+   */
   private void highlightTransitions ( ArrayList < Transition > transitions )
   {
     for ( DefaultTransitionView view : this.oldErrorTransitions )
@@ -1151,10 +1178,10 @@ public class MachinePanel implements EditorPanel
     }
     this.oldErrorTransitions.clear ();
 
-    for ( Transition transition : transitions )
+    for ( Transition t : transitions )
     {
       DefaultTransitionView view = this.model
-          .getTransitionViewForTransition ( transition );
+          .getTransitionViewForTransition ( t );
       this.oldErrorTransitions.add ( view );
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemErrorTransition ().getColor () );
@@ -1163,6 +1190,11 @@ public class MachinePanel implements EditorPanel
         .getAll ( MachinePanel.this.graphModel ) );
   }
   
+  /**
+   * 
+   * Remove all highlighting
+   *
+   */
   public void clearHighlight () {
     for ( DefaultTransitionView view : this.oldErrorTransitions )
     {

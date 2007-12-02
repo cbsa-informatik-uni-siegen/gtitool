@@ -340,7 +340,6 @@ public final class MainWindow
    */
   public final void handleValidate ()
   {
-    // TODOBenny
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
    try
   {

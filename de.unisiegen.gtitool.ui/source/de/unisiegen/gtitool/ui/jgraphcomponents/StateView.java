@@ -7,10 +7,12 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
@@ -252,6 +254,17 @@ public class StateView extends VertexView
             .getColorItemSelectedState ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
 
+      }
+      if ( state != null && state.isStartState () && !this.preview )
+      {
+        g.setColor ( PreferenceManager.getInstance ()
+            .getColorItemTransitionPaint an arrow if state is start state ().getColor ());
+        // Manipulate the clipping area
+        g2.setClip ( -100, 0, 150, 70 );
+        
+        // Paint an arrow if state is start state
+        g.drawLine ( - 50, 35, 0 , 35 );
+        g.fillPolygon ( new int [] { - 6, -6, 0}, new int [] { 30, 40, 35}, 3 );
       }
     }
   }

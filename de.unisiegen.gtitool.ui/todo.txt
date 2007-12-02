@@ -1,5 +1,4 @@
 *** Benny ***
-- Pfeil auf Startzustand
 - Notizen im Graph hinzufügen
 - DND bei Transitionsdialog einbauen
 

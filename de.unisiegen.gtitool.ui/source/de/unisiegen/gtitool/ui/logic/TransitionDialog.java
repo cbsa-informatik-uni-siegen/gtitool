@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
@@ -15,19 +16,20 @@ import javax.swing.event.ListSelectionEvent;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.dnd.SymbolTransferHandler;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 
 
 /**
- * The Logic class for the create new transition dialog
+ * The logic class for the create new transition dialog.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public class TransitionDialog
+public final class TransitionDialog
 {
 
   /**
@@ -35,7 +37,8 @@ public class TransitionDialog
    * 
    * @author Christian Fehler
    */
-  protected final class SymbolListModel extends AbstractListModel
+  public final class SymbolListModel extends AbstractListModel implements
+      Iterable < Symbol >
   {
 
     /**
@@ -47,7 +50,7 @@ public class TransitionDialog
     /**
      * The item list.
      */
-    ArrayList < String > list;
+    private ArrayList < Symbol > list;
 
 
     /**
@@ -55,7 +58,7 @@ public class TransitionDialog
      */
     public SymbolListModel ()
     {
-      this.list = new ArrayList < String > ();
+      this.list = new ArrayList < Symbol > ();
     }
 
 
@@ -64,10 +67,22 @@ public class TransitionDialog
      * 
      * @param pItem The item to add.
      */
-    public final void add ( String pItem )
+    public final void add ( Symbol pItem )
     {
       this.list.add ( pItem );
-      fireIntervalAdded ( this, this.list.size () - 1, this.list.size () - 1 );
+      Collections.sort ( this.list );
+      fireContentsChanged ( this, 0, this.list.size () - 1 );
+    }
+
+
+    /**
+     * Clears the model.
+     */
+    public final void clear ()
+    {
+      int size = this.list.size ();
+      this.list.clear ();
+      fireIntervalRemoved ( this, 0, size - 1 < 0 ? 0 : size - 1 );
     }
 
 
@@ -101,16 +116,38 @@ public class TransitionDialog
 
 
     /**
-     * Adds the given item.
+     * {@inheritDoc}
      * 
-     * @param pItem The item to add.
+     * @see Iterable#iterator()
      */
-    public final void remove ( String pItem )
+    public final Iterator < Symbol > iterator ()
+    {
+      return this.list.iterator ();
+    }
+
+
+    /**
+     * Removes the item with the given index.
+     * 
+     * @param pIndex The item index.
+     */
+    public final void remove ( int pIndex )
+    {
+      this.list.remove ( pIndex );
+      fireIntervalRemoved ( this, pIndex, pIndex );
+    }
+
+
+    /**
+     * Removes the given item.
+     * 
+     * @param pItem The item to remove.
+     */
+    public final void remove ( Symbol pItem )
     {
       int index = this.list.indexOf ( pItem );
       this.list.remove ( pItem );
-      if ( index > 0 )
-        fireIntervalRemoved ( this, index, index );
+      fireIntervalRemoved ( this, index, index );
     }
   }
 
@@ -123,12 +160,16 @@ public class TransitionDialog
   public static int DIALOG_CONFIRMED = 1;
 
 
+  /** The epsilon {@link Symbol} */
+  public final static String EPSILON = "\u03B5"; //$NON-NLS-1$
+
+
   /** result value of this dialog */
   public int DIALOG_RESULT = DIALOG_CANCELED;
 
 
   /** The {@link TransitionDialogForm} */
-  private TransitionDialogForm transitionDialog;
+  private TransitionDialogForm gui;
 
 
   /** The parent frame */
@@ -147,8 +188,10 @@ public class TransitionDialog
   private SymbolListModel modelAlphabet;
 
 
-  /** The epsilon {@link Symbol} */
-  public final static String EPSILON = "\u03B5"; //$NON-NLS-1$
+  /**
+   * The {@link SymbolTransferHandler}.
+   */
+  private SymbolTransferHandler transferHandler;
 
 
   /**
@@ -156,29 +199,44 @@ public class TransitionDialog
    * 
    * @param pParent the parent frame
    * @param pAlphabet the alphabet available for the new Transition
+   * @param pSource The source {@link DefaultStateView}.
+   * @param pTarget The target {@link DefaultStateView}.
    */
   public TransitionDialog ( JFrame pParent, Alphabet pAlphabet,
-      DefaultStateView source, DefaultStateView target )
+      DefaultStateView pSource, DefaultStateView pTarget )
   {
     this.parent = pParent;
     this.alphabet = pAlphabet;
-    this.transitionDialog = new TransitionDialogForm ( this, pParent );
-    String targetName = target == null ? Messages
-        .getString ( "TransitionDialog.NewState" ) : target.getState () //$NON-NLS-1$
+    this.gui = new TransitionDialogForm ( this, pParent );
+    String targetName = pTarget == null ? Messages
+        .getString ( "TransitionDialog.NewState" ) : pTarget.getState () //$NON-NLS-1$
         .getName ();
-    this.transitionDialog.JLabelHeadline.setText ( Messages.getString (
-        "TransitionDialog.Header", source.getState ().getName (), targetName ) ); //$NON-NLS-1$
-
-    initialize ();
+    this.gui.JLabelHeadline.setText ( Messages.getString (
+        "TransitionDialog.Header", pSource //$NON-NLS-1$
+            .getState ().getName (), targetName ) );
+    this.transferHandler = new SymbolTransferHandler ();
+    this.gui.jListChangeOverSet.setTransferHandler ( this.transferHandler );
+    this.gui.jListChangeOverSet.setDragEnabled ( true );
+    this.gui.jListAlphabet.setTransferHandler ( this.transferHandler );
+    this.gui.jListAlphabet.setDragEnabled ( true );
+    this.modelAlphabet = new SymbolListModel ();
+    for ( Symbol symbol : this.alphabet )
+    {
+      this.modelAlphabet.add ( symbol );
+    }
+    this.gui.jListAlphabet.setModel ( this.modelAlphabet );
+    this.modelChangeOverSet = new SymbolListModel ();
+    this.gui.jListChangeOverSet.setModel ( this.modelChangeOverSet );
+    this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet () );
   }
 
 
   /**
    * Dispose the Dialog
    */
-  public void dispose ()
+  public final void dispose ()
   {
-    this.transitionDialog.dispose ();
+    this.gui.dispose ();
   }
 
 
@@ -187,7 +245,7 @@ public class TransitionDialog
    * 
    * @return The {@link Alphabet}
    */
-  public Alphabet getAlphabet ()
+  public final Alphabet getAlphabet ()
   {
     return this.alphabet;
   }
@@ -196,50 +254,36 @@ public class TransitionDialog
   /**
    * Handle Cancel Button pressed.
    */
-  public void handleActionPerformedCancel ()
+  public final void handleActionPerformedCancel ()
   {
-    this.transitionDialog.dispose ();
+    this.gui.dispose ();
   }
 
 
   /**
    * Handle MoveLeft Button pressed
    */
-  public void handleActionPerformedMoveLeft ()
+  public final void handleActionPerformedMoveLeft ()
   {
     ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    Object [] objects = this.transitionDialog.jListChangeOverSet
-        .getSelectedValues ();
+    Object [] objects = this.gui.jListChangeOverSet.getSelectedValues ();
     for ( Object object : objects )
     {
-      String symbol = ( String ) object;
+      Symbol symbol = ( Symbol ) object;
       this.modelAlphabet.add ( symbol );
       this.modelChangeOverSet.remove ( symbol );
     }
-    try
+    for ( Symbol symbol : this.modelChangeOverSet )
     {
-      for ( String symbol : this.modelChangeOverSet.list )
-      {
-        sym.add ( new Symbol ( symbol ) );
-      }
+      sym.add ( symbol );
     }
-    catch ( SymbolException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
-    this.transitionDialog.jListChangeOverSet.repaint ();
-    if ( this.modelChangeOverSet.getSize () == 0 )
-      this.modelChangeOverSet.add ( EPSILON );
-    this.transitionDialog.jListChangeOverSet.clearSelection ();
-    Collections.sort ( this.modelChangeOverSet.list );
-    Collections.sort ( this.modelAlphabet.list );
-    this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
-
+    this.gui.jListChangeOverSet.repaint ();
+    this.gui.jListChangeOverSet.clearSelection ();
+    this.gui.jButtonMoveLeft.setEnabled ( false );
     try
     {
 
-      this.transitionDialog.styledAlphabetParserPanel
+      this.gui.styledAlphabetParserPanel
           .setAlphabet ( sym.size () > 0 ? new Alphabet ( sym )
               : new Alphabet () );
     }
@@ -254,41 +298,28 @@ public class TransitionDialog
   /**
    * Handle MoveRight Button pressed
    */
-  public void handleActionPerformedMoveRight ()
+  public final void handleActionPerformedMoveRight ()
   {
     ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    this.modelChangeOverSet.remove ( EPSILON );
-    Object [] symbols = this.transitionDialog.jListAlphabet
-        .getSelectedValues ();
+    Object [] symbols = this.gui.jListAlphabet.getSelectedValues ();
     if ( symbols == null )
       return;
     for ( Object object : symbols )
     {
-      String symbol = ( String ) object;
+      Symbol symbol = ( Symbol ) object;
       this.modelChangeOverSet.add ( symbol );
       this.modelAlphabet.remove ( symbol );
     }
+    for ( Symbol symbol : this.modelChangeOverSet )
+    {
+      sym.add ( symbol );
+    }
+    this.gui.jListAlphabet.repaint ();
+    this.gui.jListAlphabet.clearSelection ();
+    this.gui.jButtonMoveRight.setEnabled ( false );
     try
     {
-      for ( String symbol : this.modelChangeOverSet.list )
-      {
-        sym.add ( new Symbol ( symbol ) );
-      }
-    }
-    catch ( SymbolException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
-    this.transitionDialog.jListAlphabet.repaint ();
-    this.transitionDialog.jListAlphabet.clearSelection ();
-    this.transitionDialog.jButtonMoveRight.setEnabled ( false );
-    Collections.sort ( this.modelChangeOverSet.list );
-    Collections.sort ( this.modelAlphabet.list );
-    try
-    {
-      this.transitionDialog.styledAlphabetParserPanel
-          .setAlphabet ( new Alphabet ( sym ) );
+      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet ( sym ) );
     }
     catch ( AlphabetException e )
     {
@@ -301,34 +332,30 @@ public class TransitionDialog
   /**
    * Handle Ok Button pressed.
    */
-  public void handleActionPerformedOk ()
+  public final void handleActionPerformedOk ()
   {
     this.DIALOG_RESULT = DIALOG_CONFIRMED;
-    this.transitionDialog.setVisible ( false );
+    this.gui.setVisible ( false );
     try
     {
-      if ( this.modelChangeOverSet.list.contains ( EPSILON ) )
+      ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+      for ( Symbol symbol : this.modelChangeOverSet )
+      {
+        symbols.add ( symbol );
+      }
+      if ( symbols.size () == 0 )
+      {
         this.alphabet = null;
+      }
       else
       {
-        try
-        {
-          ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-          for ( String symbol : this.modelChangeOverSet.list )
-            symbols.add ( new Symbol ( symbol ) );
-          this.alphabet = new Alphabet ( symbols );
-        }
-        catch ( SymbolException e )
-        {
-          e.printStackTrace ();
-          System.exit ( 1 );
-        }
+        this.alphabet = new Alphabet ( symbols );
       }
-
     }
     catch ( AlphabetException e )
     {
       e.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 
@@ -338,67 +365,33 @@ public class TransitionDialog
    * 
    * @param evt the {@link FocusEvent}
    */
-  public void handleFocusGained ( ListSelectionEvent evt )
+  public final void handleFocusGained ( ListSelectionEvent evt )
   {
 
     JList selectedList = ( JList ) evt.getSource ();
-    String selected = ( String ) selectedList.getSelectedValue ();
-    if ( selected == null || selected.equals ( EPSILON )
-        || selected.equals ( " " ) ) //$NON-NLS-1$
-      return;
-    if ( selectedList.equals ( this.transitionDialog.jListAlphabet ) )
+    Symbol selected = ( Symbol ) selectedList.getSelectedValue ();
+    if ( selected == null )
     {
-      this.transitionDialog.jListChangeOverSet.clearSelection ();
-      this.transitionDialog.jButtonMoveLeft.setEnabled ( false );
+      return;
+    }
+    if ( selectedList.equals ( this.gui.jListAlphabet ) )
+    {
+      this.gui.jListChangeOverSet.clearSelection ();
+      this.gui.jButtonMoveLeft.setEnabled ( false );
       if ( selectedList.getSelectedValues ().length > 0 )
-        this.transitionDialog.jButtonMoveRight.setEnabled ( true );
+        this.gui.jButtonMoveRight.setEnabled ( true );
     }
     else
     {
-      this.transitionDialog.jListAlphabet.clearSelection ();
+      this.gui.jListAlphabet.clearSelection ();
       if ( selectedList.getSelectedValues ().length > 0 )
-        this.transitionDialog.jButtonMoveLeft.setEnabled ( true );
-      this.transitionDialog.jButtonMoveRight.setEnabled ( false );
+        this.gui.jButtonMoveLeft.setEnabled ( true );
+      this.gui.jButtonMoveRight.setEnabled ( false );
     }
   }
 
 
-  /**
-   * Initialize the Jlists
-   */
-  private void initialize ()
-  {
-    this.transitionDialog.jListChangeOverSet.setDragEnabled ( true );
-    this.transitionDialog.jListAlphabet.setDragEnabled ( true );
-    this.modelAlphabet = new SymbolListModel ();
 
-    for ( Symbol symbol : this.alphabet )
-      this.modelAlphabet.add ( symbol.getName () );
-    this.transitionDialog.jListAlphabet.setModel ( this.modelAlphabet );
-
-    this.modelChangeOverSet = new SymbolListModel ();
-    this.modelChangeOverSet.add ( EPSILON );
-    this.transitionDialog.jListChangeOverSet
-        .setModel ( this.modelChangeOverSet );
-
-    this.transitionDialog.styledAlphabetParserPanel
-        .setAlphabet ( new Alphabet () );
-  }
-
-
-  /**
-   * Show the dialog for creating a new transition
-   */
-  public void show ()
-  {
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.transitionDialog.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.transitionDialog.getHeight () / 2 );
-    this.transitionDialog.setBounds ( x, y, this.transitionDialog.getWidth (),
-        this.transitionDialog.getHeight () );
-    this.transitionDialog.setVisible ( true );
-  }
 
 
   /**
@@ -406,31 +399,43 @@ public class TransitionDialog
    * 
    * @param symbols the Symbols of the Over change Set
    */
-  public void setOverChangeSet ( TreeSet < Symbol > symbols )
+  public final void setOverChangeSet ( TreeSet < Symbol > symbols )
   {
     if ( symbols.size () > 0 )
-      this.modelChangeOverSet.list.clear ();
+    {
+      this.modelChangeOverSet.clear ();
+    }
     for ( Symbol symbol : symbols )
     {
-      this.modelAlphabet.remove ( symbol.toString () );
-      this.modelChangeOverSet.add ( symbol.toString () );
-
+      this.modelAlphabet.remove ( symbol );
+      this.modelChangeOverSet.add ( symbol );
     }
     try
     {
       if ( symbols.size () > 0 )
-        this.transitionDialog.styledAlphabetParserPanel
+        this.gui.styledAlphabetParserPanel
             .setAlphabet ( new Alphabet ( symbols ) );
       else
-        this.transitionDialog.styledAlphabetParserPanel
-            .setAlphabet ( new Alphabet () );
+        this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet () );
     }
     catch ( AlphabetException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
     }
-
   }
 
+
+  /**
+   * Show the dialog for creating a new transition
+   */
+  public final void show ()
+  {
+    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+    this.gui.setVisible ( true );
+  }
 }

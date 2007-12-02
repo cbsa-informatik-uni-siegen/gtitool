@@ -39,7 +39,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
  * @version 1.0 1/1/02
  * @author Gaudenz Alder
  */
-
+@SuppressWarnings("all")
 public class EdgeView extends AbstractCellView {
 
 	/** Renderer for the class. */

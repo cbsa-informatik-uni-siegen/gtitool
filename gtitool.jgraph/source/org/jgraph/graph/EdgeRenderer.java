@@ -737,13 +737,20 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 			int sw = metrics.stringWidth(label);
 			int sh = metrics.getHeight();
 			Graphics2D g2 = (Graphics2D) g;
+			
+			// Manipulate the clipping area
+			int width = new Double (g2.getClip ( ).getBounds ( ).getWidth ( ) ).intValue ( );
+			int height = new Double (g2.getClip ( ).getBounds ( ).getHeight ( ) ).intValue ( );
+			int x = new Double (g2.getClip ( ).getBounds ( ).getX ( ) ).intValue ( );
+			int y = new Double (g2.getClip ( ).getBounds ( ).getY ( ) ).intValue ( );
+			g2.setClip ( x-20 , y -20, width +40 , height+40 );
 			boolean applyTransform = isLabelTransform(label);
 			double angle = 0;
 			int dx = -sw / 2;
 			int offset = isMoveBelowZero || applyTransform ? 0 : Math
 					.min(0, (int) (dx + p.getX()));
 
-			g2.translate(p.getX() - offset +3 , p.getY() + 5);
+			g2.translate(p.getX() - offset +3 , p.getY()  -10);
 			if (applyTransform) {
 				angle = angle + 10;
 				g2.rotate(angle);
@@ -780,7 +787,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 	 * current graph. This method sets the global beginShape, lineShape and
 	 * endShape variables as a side-effect.
 	 */
-	protected Shape createShape() {
+	public Shape createShape() {
 		int n = view.getPointCount();
 		if (n > 1) {
 			// Following block may modify static vars as side effect (Flyweight

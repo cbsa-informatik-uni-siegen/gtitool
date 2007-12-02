@@ -16,6 +16,8 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 
 
@@ -155,11 +157,18 @@ public class TransitionDialog
    * @param pParent the parent frame
    * @param pAlphabet the alphabet available for the new Transition
    */
-  public TransitionDialog ( JFrame pParent, Alphabet pAlphabet )
+  public TransitionDialog ( JFrame pParent, Alphabet pAlphabet,
+      DefaultStateView source, DefaultStateView target )
   {
     this.parent = pParent;
     this.alphabet = pAlphabet;
     this.transitionDialog = new TransitionDialogForm ( this, pParent );
+    String targetName = target == null ? Messages
+        .getString ( "TransitionDialog.NewState" ) : target.getState () //$NON-NLS-1$
+        .getName ();
+    this.transitionDialog.JLabelHeadline.setText ( Messages.getString (
+        "TransitionDialog.Header", source.getState ().getName (), targetName ) ); //$NON-NLS-1$
+
     initialize ();
   }
 

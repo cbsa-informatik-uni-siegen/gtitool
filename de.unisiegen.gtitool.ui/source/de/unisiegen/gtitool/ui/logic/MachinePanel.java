@@ -145,6 +145,9 @@ public class MachinePanel implements EditorPanel
 
   /** The actual highlighted error transitions */
   private ArrayList < DefaultTransitionView > oldErrorTransitions = new ArrayList < DefaultTransitionView > ();
+  
+  /** The {@link JPopupMenu} */
+  private JPopupMenu popup;
 
 
   /**
@@ -524,25 +527,32 @@ public class MachinePanel implements EditorPanel
   {
     this.mouse = new MouseAdapter ()
     {
-
+      /**
+       * Invoked when the mouse has been clicked on a component.
+       */
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () != MouseEvent.BUTTON3 )
+        // Return if pressed Button is not the left mouse button
+        if ( e.getButton () != MouseEvent.BUTTON3 ) {
+          MachinePanel.this.popup = null ;
           return;
-        JPopupMenu popup = null;
+        }
+         
+        
+        // Open a new popup menu
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
                 .getY () );
         if ( object == null )
-          popup = createPopupMenu ();
+          MachinePanel.this.popup = createPopupMenu ();
         else if ( object instanceof DefaultTransitionView )
-          popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
         else
-          popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
-        if ( popup != null )
-          popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+        if ( MachinePanel.this.popup != null )
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
       }
     };
 
@@ -557,8 +567,33 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () != MouseEvent.BUTTON1 )
+        // if Middle Mouse Button was pressed return
+        if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
+        
+        // if an popup menu is open close it and do nothing more
+        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+          MachinePanel.this.popup = null;
+          return;
+        }
+        
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 ) {
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                .getY () );
+        if ( object == null )
+          MachinePanel.this.popup = createPopupMenu ();
+        else if ( object instanceof DefaultTransitionView )
+          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        else
+          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+        if ( MachinePanel.this.popup != null )
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+        return;
+      }
+      
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, false, false );
@@ -583,8 +618,32 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () != MouseEvent.BUTTON1 )
+        // if Middle Mouse Button was pressed return
+        if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
+        
+        // if an popup menu is open close it and do nothing more
+        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+          MachinePanel.this.popup = null;
+          return;
+        }
+        
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 ) {
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                .getY () );
+        if ( object == null )
+          MachinePanel.this.popup = createPopupMenu ();
+        else if ( object instanceof DefaultTransitionView )
+          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        else
+          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+        if ( MachinePanel.this.popup != null )
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+        return;
+      }
 
         // if drag in progress return
         if ( MachinePanel.this.dragged )
@@ -596,6 +655,8 @@ public class MachinePanel implements EditorPanel
             MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
                 .getSelectionCellAt ( e.getPoint () );
             MachinePanel.this.firstStatePosition = e.getPoint ();
+            if ( MachinePanel.this.firstState == null )
+              return;
           }
           else
           {
@@ -607,7 +668,7 @@ public class MachinePanel implements EditorPanel
                     .getY () );
 
             TransitionDialog dialog = new TransitionDialog (
-                MachinePanel.this.parent, MachinePanel.this.alphabet );
+                MachinePanel.this.parent, MachinePanel.this.alphabet, MachinePanel.this.firstState, target );
             dialog.show ();
             if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
             {
@@ -686,7 +747,7 @@ public class MachinePanel implements EditorPanel
           return;
         try
         {
-          if ( !MachinePanel.this.dragged )
+          if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
             return;
           DefaultStateView target = ( DefaultStateView ) MachinePanel.this.graph
               .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
@@ -697,7 +758,7 @@ public class MachinePanel implements EditorPanel
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
           TransitionDialog dialog = new TransitionDialog (
-              MachinePanel.this.parent, MachinePanel.this.alphabet );
+              MachinePanel.this.parent, MachinePanel.this.alphabet, MachinePanel.this.firstState, target );
           dialog.show ();
           if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
           {
@@ -857,8 +918,32 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () != MouseEvent.BUTTON1 )
+        // if Middle Mouse Button was pressed return
+        if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
+        
+        // if an popup menu is open close it and do nothing more
+        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+          MachinePanel.this.popup = null;
+          return;
+        }
+        
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 ) {
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                .getY () );
+        if ( object == null )
+          MachinePanel.this.popup = createPopupMenu ();
+        else if ( object instanceof DefaultTransitionView )
+          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        else
+          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+        if ( MachinePanel.this.popup != null )
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+        return;
+      }
 
         try
         {
@@ -888,8 +973,32 @@ public class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent e )
       {
-        if ( e.getButton () != MouseEvent.BUTTON1 )
+        // if Middle Mouse Button was pressed return
+        if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
+        
+        // if an popup menu is open close it and do nothing more
+        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+          MachinePanel.this.popup = null;
+          return;
+        }
+        
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 ) {
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                .getY () );
+        if ( object == null )
+          MachinePanel.this.popup = createPopupMenu ();
+        else if ( object instanceof DefaultTransitionView )
+          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        else
+          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+        if ( MachinePanel.this.popup != null )
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+        return;
+      }
 
         try
         {

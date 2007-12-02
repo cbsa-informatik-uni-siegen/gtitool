@@ -46,7 +46,8 @@ public class TransitionPopupMenu extends JPopupMenu
 
   /** The {@link MachinesPanelForm} */
   private MachinesPanelForm parent;
-  
+
+
   /** The link {@link Machine} */
   private Machine machine;
 
@@ -82,7 +83,8 @@ public class TransitionPopupMenu extends JPopupMenu
    * @param pAlphabet The {@link Alphabet}
    */
   public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
-      GraphModel pModel, DefaultTransitionView pTransition, Machine pMachine, Alphabet pAlphabet )
+      GraphModel pModel, DefaultTransitionView pTransition, Machine pMachine,
+      Alphabet pAlphabet )
   {
     this.graph = pGraph;
     this.parent = pParent;
@@ -136,7 +138,9 @@ public class TransitionPopupMenu extends JPopupMenu
         {
           TransitionPopupMenu.this.model.remove ( new Object []
           { TransitionPopupMenu.this.transition } );
-          TransitionPopupMenu.this.machine.removeTransition ( TransitionPopupMenu.this.transition.getTransition () );
+          TransitionPopupMenu.this.machine
+              .removeTransition ( TransitionPopupMenu.this.transition
+                  .getTransition () );
         }
 
       }
@@ -158,12 +162,15 @@ public class TransitionPopupMenu extends JPopupMenu
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
-            TransitionPopupMenu.this.alphabet );
+            TransitionPopupMenu.this.alphabet,
+            TransitionPopupMenu.this.transition.getSourceView (),
+            TransitionPopupMenu.this.transition.getTargetView () );
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
             .getTransition ().getSymbol () );
         dialog.show ();
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
-        .valueForCellChanged ( TransitionPopupMenu.this.transition, dialog.getAlphabet ().toString () );
+            .valueForCellChanged ( TransitionPopupMenu.this.transition,
+                dialog.getAlphabet ().toString () );
       }
     } );
     add ( this.config );

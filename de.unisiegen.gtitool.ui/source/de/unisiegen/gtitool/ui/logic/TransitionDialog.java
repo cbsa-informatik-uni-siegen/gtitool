@@ -214,7 +214,7 @@ public final class TransitionDialog
     this.gui.JLabelHeadline.setText ( Messages.getString (
         "TransitionDialog.Header", pSource //$NON-NLS-1$
             .getState ().getName (), targetName ) );
-    this.transferHandler = new SymbolTransferHandler ();
+    this.transferHandler = new SymbolTransferHandler ( this );
     this.gui.jListChangeOverSet.setTransferHandler ( this.transferHandler );
     this.gui.jListChangeOverSet.setDragEnabled ( true );
     this.gui.jListAlphabet.setTransferHandler ( this.transferHandler );
@@ -228,6 +228,38 @@ public final class TransitionDialog
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet () );
+  }
+
+
+  /**
+   * Adds the given {@link Symbol}s to the change over set.
+   * 
+   * @param pList The {@link Symbol}s to add.
+   */
+  public final void addToChangeOver ( ArrayList < Symbol > pList )
+  {
+    for ( Symbol current : pList )
+    {
+      this.modelChangeOverSet.add ( current );
+      this.modelAlphabet.remove ( current );
+    }
+    ArrayList < Symbol > changeOverSymbols = new ArrayList < Symbol > ();
+    for ( Symbol current : this.modelChangeOverSet )
+    {
+      changeOverSymbols.add ( current );
+    }
+    this.gui.jListAlphabet.clearSelection ();
+    this.gui.jButtonMoveRight.setEnabled ( false );
+    try
+    {
+      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet (
+          changeOverSymbols ) );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -252,6 +284,18 @@ public final class TransitionDialog
 
 
   /**
+   * Returns the gui.
+   * 
+   * @return The gui.
+   * @see #gui
+   */
+  public final TransitionDialogForm getGui ()
+  {
+    return this.gui;
+  }
+
+
+  /**
    * Handle Cancel Button pressed.
    */
   public final void handleActionPerformedCancel ()
@@ -265,33 +309,13 @@ public final class TransitionDialog
    */
   public final void handleActionPerformedMoveLeft ()
   {
-    ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    Object [] objects = this.gui.jListChangeOverSet.getSelectedValues ();
-    for ( Object object : objects )
+    Object [] selectedValues = this.gui.jListChangeOverSet.getSelectedValues ();
+    ArrayList < Symbol > removeList = new ArrayList < Symbol > ();
+    for ( Object current : selectedValues )
     {
-      Symbol symbol = ( Symbol ) object;
-      this.modelAlphabet.add ( symbol );
-      this.modelChangeOverSet.remove ( symbol );
+      removeList.add ( ( Symbol ) current );
     }
-    for ( Symbol symbol : this.modelChangeOverSet )
-    {
-      sym.add ( symbol );
-    }
-    this.gui.jListChangeOverSet.repaint ();
-    this.gui.jListChangeOverSet.clearSelection ();
-    this.gui.jButtonMoveLeft.setEnabled ( false );
-    try
-    {
-
-      this.gui.styledAlphabetParserPanel
-          .setAlphabet ( sym.size () > 0 ? new Alphabet ( sym )
-              : new Alphabet () );
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+    removeFromChangeOver ( removeList );
   }
 
 
@@ -300,32 +324,13 @@ public final class TransitionDialog
    */
   public final void handleActionPerformedMoveRight ()
   {
-    ArrayList < Symbol > sym = new ArrayList < Symbol > ();
-    Object [] symbols = this.gui.jListAlphabet.getSelectedValues ();
-    if ( symbols == null )
-      return;
-    for ( Object object : symbols )
+    Object [] selectedValues = this.gui.jListAlphabet.getSelectedValues ();
+    ArrayList < Symbol > addList = new ArrayList < Symbol > ();
+    for ( Object current : selectedValues )
     {
-      Symbol symbol = ( Symbol ) object;
-      this.modelChangeOverSet.add ( symbol );
-      this.modelAlphabet.remove ( symbol );
+      addList.add ( ( Symbol ) current );
     }
-    for ( Symbol symbol : this.modelChangeOverSet )
-    {
-      sym.add ( symbol );
-    }
-    this.gui.jListAlphabet.repaint ();
-    this.gui.jListAlphabet.clearSelection ();
-    this.gui.jButtonMoveRight.setEnabled ( false );
-    try
-    {
-      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet ( sym ) );
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+    addToChangeOver ( addList );
   }
 
 
@@ -391,7 +396,36 @@ public final class TransitionDialog
   }
 
 
-
+  /**
+   * Removes the given {@link Symbol}s from the change over set.
+   * 
+   * @param pList The {@link Symbol}s to remove.
+   */
+  public final void removeFromChangeOver ( ArrayList < Symbol > pList )
+  {
+    for ( Symbol current : pList )
+    {
+      this.modelAlphabet.add ( current );
+      this.modelChangeOverSet.remove ( current );
+    }
+    ArrayList < Symbol > changeOverSymbols = new ArrayList < Symbol > ();
+    for ( Symbol current : this.modelChangeOverSet )
+    {
+      changeOverSymbols.add ( current );
+    }
+    this.gui.jListChangeOverSet.clearSelection ();
+    this.gui.jButtonMoveLeft.setEnabled ( false );
+    try
+    {
+      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet (
+          changeOverSymbols ) );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
 
 
   /**

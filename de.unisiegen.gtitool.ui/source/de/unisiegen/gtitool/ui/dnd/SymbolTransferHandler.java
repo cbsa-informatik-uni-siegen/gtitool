@@ -12,7 +12,7 @@ import javax.swing.JList;
 import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.ui.logic.TransitionDialog.SymbolListModel;
+import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 
 
 /**
@@ -54,7 +54,7 @@ public final class SymbolTransferHandler extends TransferHandler
      * 
      * @see Transferable#getTransferData(DataFlavor)
      */
-    public  final Object getTransferData ( DataFlavor pDataFlavor )
+    public final Object getTransferData ( DataFlavor pDataFlavor )
         throws UnsupportedFlavorException
     {
       if ( !isDataFlavorSupported ( pDataFlavor ) )
@@ -71,7 +71,7 @@ public final class SymbolTransferHandler extends TransferHandler
      * @see Transferable#getTransferDataFlavors()
      */
     @SuppressWarnings ( "synthetic-access" )
-    public  final DataFlavor [] getTransferDataFlavors ()
+    public final DataFlavor [] getTransferDataFlavors ()
     {
       return new DataFlavor []
       { SymbolTransferHandler.this.dataFlavor };
@@ -84,7 +84,7 @@ public final class SymbolTransferHandler extends TransferHandler
      * @see Transferable#isDataFlavorSupported(DataFlavor)
      */
     @SuppressWarnings ( "synthetic-access" )
-    public  final boolean isDataFlavorSupported ( DataFlavor flavor )
+    public final boolean isDataFlavorSupported ( DataFlavor flavor )
     {
       if ( SymbolTransferHandler.this.dataFlavor.equals ( flavor ) )
       {
@@ -121,15 +121,17 @@ public final class SymbolTransferHandler extends TransferHandler
 
 
   /**
-   * The indices which should be moved.
+   * The {@link TransitionDialog}.
    */
-  private int [] indices = null;
+  private TransitionDialog transitionDialog;
 
 
   /**
    * Allocates a new <code>SymbolTransferHandler</code>.
+   * 
+   * @param pTransitionDialog
    */
-  public SymbolTransferHandler ()
+  public SymbolTransferHandler ( TransitionDialog pTransitionDialog )
   {
     try
     {
@@ -140,6 +142,7 @@ public final class SymbolTransferHandler extends TransferHandler
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    this.transitionDialog = pTransitionDialog;
   }
 
 
@@ -166,12 +169,11 @@ public final class SymbolTransferHandler extends TransferHandler
    * @see TransferHandler#createTransferable(JComponent)
    */
   @Override
-  protected  final Transferable createTransferable ( JComponent pSource )
+  protected final Transferable createTransferable ( JComponent pSource )
   {
     if ( pSource instanceof JList )
     {
       this.source = ( JList ) pSource;
-      this.indices = this.source.getSelectedIndices ();
       Object [] values = this.source.getSelectedValues ();
       if ( values == null || values.length == 0 )
       {
@@ -191,33 +193,10 @@ public final class SymbolTransferHandler extends TransferHandler
   /**
    * {@inheritDoc}
    * 
-   * @see TransferHandler#exportDone(JComponent, Transferable, int)
-   */
-  @Override
-  protected  final void exportDone ( @SuppressWarnings ( "unused" )
-  JComponent pSource, @SuppressWarnings ( "unused" )
-  Transferable pTransferable, int pAction )
-  {
-    if ( ( pAction == MOVE ) && ( this.indices != null ) )
-    {
-      SymbolListModel symbolListModel = ( SymbolListModel ) this.source
-          .getModel ();
-      for ( int i = this.indices.length - 1 ; i >= 0 ; i-- )
-      {
-        symbolListModel.remove ( this.indices [ i ] );
-      }
-    }
-    this.indices = null;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see TransferHandler#getSourceActions(JComponent)
    */
   @Override
-  public  final int getSourceActions ( @SuppressWarnings ( "unused" )
+  public final int getSourceActions ( @SuppressWarnings ( "unused" )
   JComponent pSource )
   {
     return MOVE;
@@ -230,7 +209,7 @@ public final class SymbolTransferHandler extends TransferHandler
    * @param pDataFlavors
    * @return True if the local array list flavor is used.
    */
-  private  final boolean hasLocalArrayListFlavor ( DataFlavor [] pDataFlavors )
+  private final boolean hasLocalArrayListFlavor ( DataFlavor [] pDataFlavors )
   {
     if ( this.dataFlavor == null )
     {
@@ -254,7 +233,8 @@ public final class SymbolTransferHandler extends TransferHandler
    */
   @SuppressWarnings ( "unchecked" )
   @Override
-  public  final boolean importData ( JComponent pTarget, Transferable pTransferable )
+  public final boolean importData ( JComponent pTarget,
+      Transferable pTransferable )
   {
     JList targetJList = null;
     ArrayList < Symbol > receivedList = null;
@@ -290,15 +270,16 @@ public final class SymbolTransferHandler extends TransferHandler
 
     if ( this.source.equals ( targetJList ) )
     {
-      this.indices = null;
       return true;
     }
 
-    SymbolListModel symbolListModel = ( SymbolListModel ) targetJList
-        .getModel ();
-    for ( int i = 0 ; i < receivedList.size () ; i++ )
+    if ( this.source == this.transitionDialog.getGui ().jListAlphabet )
     {
-      symbolListModel.add ( receivedList.get ( i ) );
+      this.transitionDialog.addToChangeOver ( receivedList );
+    }
+    else
+    {
+      this.transitionDialog.removeFromChangeOver ( receivedList );
     }
     return true;
   }

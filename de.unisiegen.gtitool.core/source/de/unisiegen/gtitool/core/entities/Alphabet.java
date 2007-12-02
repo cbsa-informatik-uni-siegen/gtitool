@@ -149,10 +149,6 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    if ( !pSymbols.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
-    }
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( Symbol current : pSymbols )
     {
@@ -180,10 +176,6 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
     if ( pSymbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    if ( pSymbols.length == 0 )
-    {
-      throw new IllegalArgumentException ( "symbols is empty" ); //$NON-NLS-1$
     }
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( Symbol current : pSymbols )

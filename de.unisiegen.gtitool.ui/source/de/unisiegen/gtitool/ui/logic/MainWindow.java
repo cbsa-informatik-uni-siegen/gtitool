@@ -274,9 +274,7 @@ public final class MainWindow
    */
   public final void handleEnterWord ()
   {
-    WordDialog wordDialog = new WordDialog ( this );
-    wordDialog.show ();
-    // TODOChristian
+    // TODO
   }
 
 

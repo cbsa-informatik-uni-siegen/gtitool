@@ -7,12 +7,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jgraph.graph.CellViewRenderer;
-import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
@@ -258,7 +256,7 @@ public class StateView extends VertexView
       if ( state != null && state.isStartState () && !this.preview )
       {
         g.setColor ( PreferenceManager.getInstance ()
-            .getColorItemTransitionPaint an arrow if state is start state ().getColor ());
+            .getColorItemTransition ().getColor ());
         // Manipulate the clipping area
         g2.setClip ( -100, 0, 150, 70 );
         

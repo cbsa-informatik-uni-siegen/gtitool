@@ -20,13 +20,19 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourceimpldir" value="${basedir}/source-impl" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
+	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
+	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
+	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 
-	<!-- taskdef -->
-	<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11a-gtitool.jar" />
-	<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex-1.4.1-gtitool.jar" />
+	<!-- declare -->
+	<target name="declare">
+	  <taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/JFlex-1.4.1-gtitool.jar" />
+	  <taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/java-cup-11a-gtitool.jar" />
+	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-3rdparty,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-jflex,dist-javacup,dist-compile,dist-jar,dist-lib,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
@@ -34,6 +40,17 @@
 	<target name="dist-preclean">
 		<delete dir="${distdir}" />
 		<mkdir dir="${distdir}" />
+	</target>
+	
+	<!-- dist jflex -->
+	<target name="dist-jflex">
+		<ant dir="${jflex.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- dist javacup -->
+	<target name="dist-javacup">
+		<ant dir="${javacup.basedir}" target="dist" inheritall="false" />
+		<copy file="${javacup.distdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
 	</target>
 
 	<!-- dist compile -->
@@ -46,7 +63,7 @@
 			<src path="${sourcegenerateddir}" />
 			<classpath>
 				<pathelement location="${libdir}/log4j-1.2.14.jar" />
-				<pathelement location="${libdir}/java-cup-11a-gtitool-runtime.jar" />
+				<pathelement location="${distdir}/java-cup-11a-gtitool-runtime.jar" />
 			</classpath>
 		</javac>
 	</target>
@@ -94,9 +111,8 @@
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
-	<!-- dist 3rdparty -->
-	<target name="dist-3rdparty">
-		<copy file="${libdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
+	<!-- dist lib -->
+	<target name="dist-lib">
 		<copy file="${libdir}/log4j-1.2.14.jar" todir="${distdir}" />
 	</target>
 
@@ -106,7 +122,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="parser-clean,parser-alphabet,parser-state,parser-symbol,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-state,parser-symbol,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">

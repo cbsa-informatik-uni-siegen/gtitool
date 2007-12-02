@@ -1,6 +1,5 @@
 *** Benny ***
 - Notizen im Graph hinzufügen
-- DND bei Transitionsdialog einbauen
+
 
 *** Christian ***
-- Button Größe im PreferenceDialog bei Sprachänderungen aktualisieren

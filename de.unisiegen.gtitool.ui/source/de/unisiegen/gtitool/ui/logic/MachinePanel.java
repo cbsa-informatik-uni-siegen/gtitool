@@ -629,7 +629,7 @@ public class MachinePanel implements EditorPanel
         }
         
         // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 ) {
+        if ( e.getButton () == MouseEvent.BUTTON3 && MachinePanel.this.firstState == null ) {
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
                 .getY () );

@@ -36,7 +36,7 @@ public class Word implements ParseableEntity, Iterable < Symbol >
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = NO_PARSER_OFFSET;
+  private int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -45,7 +45,7 @@ public class Word implements ParseableEntity, Iterable < Symbol >
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = NO_PARSER_OFFSET;
+  private int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**

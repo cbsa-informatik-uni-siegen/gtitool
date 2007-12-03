@@ -7,6 +7,9 @@ import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -15,7 +18,8 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolEx
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Alphabet implements ParseableEntity, Iterable < Symbol >
+public final class Alphabet implements ParseableEntity, Storable,
+    Iterable < Symbol >
 {
 
   /**
@@ -30,7 +34,7 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = NO_PARSER_OFFSET;
+  private int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -39,7 +43,7 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = NO_PARSER_OFFSET;
+  private int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -55,6 +59,46 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+  }
+
+
+  /**
+   * Allocates a new <code>Alphabet</code>.
+   * 
+   * @param pElement The {@link Element}.
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
+   *           not correct.
+   */
+  public Alphabet ( Element pElement ) throws AlphabetException
+  {
+    this ();
+    if ( !pElement.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a alphabet" ); //$NON-NLS-1$
+    }
+    try
+    {
+      this.parserStartOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
+      this.parserEndOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    for ( Element current : pElement.getElement () )
+    {
+      addSymbol ( new Symbol ( current ) );
+    }
   }
 
 
@@ -97,6 +141,35 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
 
 
   /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Alphabet</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Alphabet</code>.
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
+   *           not correct.
+   */
+  public final void addSymbol ( Iterable < Symbol > pSymbols )
+      throws AlphabetException
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+    for ( Symbol current : pSymbols )
+    {
+      symbolList.add ( current );
+    }
+    checkDuplicatedSymbols ( symbolList );
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
    * Appends the specified {@link Symbol} to the end of this
    * <code>Alphabet</code>.
    * 
@@ -130,35 +203,6 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
       throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
     this.symbolSet.add ( pSymbol );
-  }
-
-
-  /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * <code>Alphabet</code>.
-   * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
-   *          <code>Alphabet</code>.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
-   */
-  public final void addSymbol ( Iterable < Symbol > pSymbols )
-      throws AlphabetException
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
-    for ( Symbol current : pSymbols )
-    {
-      symbolList.add ( current );
-    }
-    checkDuplicatedSymbols ( symbolList );
-    for ( Symbol current : pSymbols )
-    {
-      addSymbol ( current );
-    }
   }
 
 
@@ -285,6 +329,26 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Element newElement = new Element ( "Alphabet" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
+        this.parserStartOffset ) );
+    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
+        this.parserEndOffset ) );
+    for ( Symbol current : this.symbolSet )
+    {
+      newElement.addElement ( current.getElement () );
+    }
+    return newElement;
+  }
+
+
+  /**
+   * {@inheritDoc}
    */
   public final int getParserEndOffset ()
   {
@@ -298,6 +362,17 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
+  }
+
+
+  /**
+   * Returns the {@link Symbol}s.
+   * 
+   * @return The {@link Symbol}s.
+   */
+  public final TreeSet < Symbol > getSymbol ()
+  {
+    return this.symbolSet;
   }
 
 
@@ -316,17 +391,6 @@ public final class Alphabet implements ParseableEntity, Iterable < Symbol >
       iterator.next ();
     }
     return iterator.next ();
-  }
-
-
-  /**
-   * Returns the {@link Symbol}s.
-   * 
-   * @return The {@link Symbol}s.
-   */
-  public final TreeSet < Symbol > getSymbol ()
-  {
-    return this.symbolSet;
   }
 
 

@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.core.entities;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -12,7 +15,8 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Symbol implements ParseableEntity, Comparable < Symbol >
+public final class Symbol implements ParseableEntity, Storable,
+    Comparable < Symbol >
 {
 
   /**
@@ -33,7 +37,7 @@ public final class Symbol implements ParseableEntity, Comparable < Symbol >
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = NO_PARSER_OFFSET;
+  private int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -42,38 +46,40 @@ public final class Symbol implements ParseableEntity, Comparable < Symbol >
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = NO_PARSER_OFFSET;
+  private int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
    * Allocates a new <code>Symbol</code>.
    * 
-   * @param pName The name of this symbol.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
-   *           correct.
+   * @param pElement The {@link Element}.
    */
-  public Symbol ( char pName ) throws SymbolException
+  public Symbol ( Element pElement )
   {
-    // Name
-    setName ( String.valueOf ( pName ) );
-  }
-
-
-  /**
-   * Allocates a new <code>Symbol</code>.
-   * 
-   * @param pName The name of this symbol.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
-   *           correct.
-   */
-  public Symbol ( Character pName ) throws SymbolException
-  {
-    // Name
-    if ( pName == null )
+    if ( !pElement.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
     {
-      throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a symbol" ); //$NON-NLS-1$
     }
-    setName ( String.valueOf ( pName.charValue () ) );
+    this.name = pElement.getAttribute ( "name" ); //$NON-NLS-1$
+    try
+    {
+      this.parserStartOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
+      this.parserEndOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
   }
 
 
@@ -137,6 +143,23 @@ public final class Symbol implements ParseableEntity, Comparable < Symbol >
       return this.name.equals ( other.name );
     }
     return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Element newElement = new Element ( "Symbol" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
+        this.parserStartOffset ) );
+    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
+        this.parserEndOffset ) );
+    return newElement;
   }
 
 

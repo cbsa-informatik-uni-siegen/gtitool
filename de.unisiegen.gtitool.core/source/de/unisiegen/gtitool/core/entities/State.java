@@ -35,7 +35,7 @@ public final class State implements ParseableEntity
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
    */
-  protected int parserStartOffset = NO_PARSER_OFFSET;
+  private int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -44,7 +44,7 @@ public final class State implements ParseableEntity
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
    */
-  protected int parserEndOffset = NO_PARSER_OFFSET;
+  private int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**

@@ -26,7 +26,7 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
-	<target name="dist" depends="dist-core,dist-jgraph,generate,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-jgraph,version,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
@@ -194,25 +194,8 @@
 		<delete dir="${classesdir}" />
 	</target>
 
-	<!-- generate -->
-	<target name="generate" description="Generate the version interface">
-		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
-		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
-
-
-/**
- * Automatically generated interface for the project version.
- * 
- * @author Christian Fehler
- */
-public interface Version
-{
-
-  /** 
-   * The version of the project.
-   */
-  public static final String VERSION = "${gtitool.version}"; //$NON-NLS-1$
-}
-</echo>
+	<!-- version -->
+	<target name="version">
+		<ant antfile="${basedir}/version.xml" target="version" inheritall="false" />
 	</target>
 </project>

@@ -7,6 +7,9 @@ import java.util.Iterator;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -15,7 +18,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
  * @author Christian Fehler
  * @version $Id$
  */
-public class Word implements ParseableEntity, Iterable < Symbol >
+public class Word implements ParseableEntity, Storable, Iterable < Symbol >
 {
 
   /**
@@ -57,7 +60,7 @@ public class Word implements ParseableEntity, Iterable < Symbol >
   /**
    * The current position in this <code>Word</code>.
    */
-  private int currentPosition;
+  private int currentPosition = START_INDEX;
 
 
   /**
@@ -67,7 +70,53 @@ public class Word implements ParseableEntity, Iterable < Symbol >
   {
     // SymbolList
     this.symbolList = new ArrayList < Symbol > ();
-    this.currentPosition = START_INDEX;
+  }
+
+
+  /**
+   * Allocates a new <code>Word</code>.
+   * 
+   * @param pElement The {@link Element}.
+   */
+  public Word ( Element pElement )
+  {
+    this ();
+    if ( !pElement.getName ().equals ( "Word" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a word" ); //$NON-NLS-1$
+    }
+    try
+    {
+      this.parserStartOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
+      this.parserEndOffset = Integer.parseInt ( pElement
+          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
+      this.currentPosition = Integer.parseInt ( pElement
+          .getAttribute ( "currentPosition" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    for ( Element current : pElement.getElement () )
+    {
+      addSymbol ( new Symbol ( current ) );
+    }
   }
 
 
@@ -225,6 +274,28 @@ public class Word implements ParseableEntity, Iterable < Symbol >
       throw new WordFinishedException ( this );
     }
     return this.symbolList.get ( this.currentPosition );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Element newElement = new Element ( "Word" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
+        this.parserStartOffset ) );
+    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
+        this.parserEndOffset ) );
+    newElement.addAttribute ( new Attribute ( "currentPosition", //$NON-NLS-1$
+        this.currentPosition ) );
+    for ( Symbol current : this.symbolList )
+    {
+      newElement.addElement ( current.getElement () );
+    }
+    return newElement;
   }
 
 

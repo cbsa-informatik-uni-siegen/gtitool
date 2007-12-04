@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -132,9 +133,13 @@ public final class Storage
       {
         return new Alphabet ( element );
       }
-      if ( element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      else if ( element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
         return new Symbol ( element );
+      }
+      else if ( element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
+      {
+        return new Word ( element );
       }
     }
     catch ( SAXException exc )

@@ -101,7 +101,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
         {
           exceptionList.add ( new ParserException ( current
               .getParserStartOffset (), current.getParserEndOffset (), Messages
-              .getString ( "WordDialog.SymbolNotInAlphabet", //$NON-NLS-1$
+              .getString ( "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
                   current.getName (), this.alphabet ) ) );
         }
       }

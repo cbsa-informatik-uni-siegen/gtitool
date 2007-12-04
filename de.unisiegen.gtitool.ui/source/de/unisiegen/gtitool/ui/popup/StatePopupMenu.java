@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -20,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -87,22 +89,29 @@ public class StatePopupMenu extends JPopupMenu
 
 
   /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+
+
+  /**
    * Allocates a new <code>StatePopupMenu</code>.
    * 
+   * @param pParent The parent {@link JFrame}.
    * @param pGraph the JGraph containing the state
    * @param pModel the model containing the state
    * @param pState the state to open the popup menu
    * @param pMachine The {@link Machine}
    */
-  public StatePopupMenu ( JGraph pGraph, DefaultGraphModel pModel,
-      DefaultStateView pState, Machine pMachine )
+  public StatePopupMenu ( JFrame pParent, JGraph pGraph,
+      DefaultGraphModel pModel, DefaultStateView pState, Machine pMachine )
   {
+    this.parent = pParent;
     this.machine = pMachine;
     this.graph = pGraph;
     this.model = pModel;
     this.state = pState;
     populateMenues ();
-
   }
 
 
@@ -200,26 +209,26 @@ public class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent e )
       {
-        while ( true )
+
+        NewStateNameDialog dialog = new NewStateNameDialog (
+            StatePopupMenu.this.parent, StatePopupMenu.this.state.getState () );
+        dialog.show ();
+        if ( ( dialog.getStateName () != null )
+            && ( !dialog.getStateName ().equals (
+                StatePopupMenu.this.state.getState ().getName () ) ) )
         {
-          String name = JOptionPane
-              .showInputDialog ( Messages
-                  .getString (
-                      "MachinePanel.RenameText", StatePopupMenu.this.state.getState ().getName () ) ); //$NON-NLS-1$
           try
           {
-            if ( name != null )
-            {
-              StatePopupMenu.this.state.getState ().setName ( name );
-              StatePopupMenu.this.graph.getGraphLayoutCache ()
-                  .valueForCellChanged ( StatePopupMenu.this.state, name );
-            }
-            break;
+            StatePopupMenu.this.state.getState ().setName (
+                dialog.getStateName () );
           }
-          catch ( StateException e1 )
+          catch ( StateException exc )
           {
-            // Nothing to do
+            exc.printStackTrace ();
+            System.exit ( 1 );
           }
+          StatePopupMenu.this.graph.getGraphLayoutCache ().valueForCellChanged (
+              StatePopupMenu.this.state, dialog.getStateName () );
         }
       }
     } );

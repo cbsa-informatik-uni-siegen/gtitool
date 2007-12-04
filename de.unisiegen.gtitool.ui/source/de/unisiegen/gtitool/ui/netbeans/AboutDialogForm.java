@@ -25,7 +25,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private AboutDialog logic ;
     
     /**
-     * Creates new form AboutDialog
+     * Creates new form <code>AboutDialog</code>.
      * 
      * @param pLogic The {@link AboutDialog}.
      * @param pParent The parent {@link Frame}.

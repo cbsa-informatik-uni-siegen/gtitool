@@ -1053,7 +1053,7 @@ public class MachinePanel implements EditorPanel
    */
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
-    return new StatePopupMenu ( this.graph, this.graphModel, pState,
+    return new StatePopupMenu ( this.parent , this.graph, this.graphModel, pState,
         this.machine );
   }
 

@@ -68,8 +68,6 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t\f]
 Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 %%
@@ -77,7 +75,6 @@ Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 <YYINITIAL>
 {
 	{Symbol}			{ return symbol(SYMBOL, yytext()); }
-	{WhiteSpace}		{ }
 }
 
 .|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

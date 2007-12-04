@@ -577,12 +577,11 @@ public final class State implements ParseableEntity
 
 
   /**
-   * {@inheritDoc}
+   * Returns the debug string.
    * 
-   * @see Object#toString()
+   * @return The debug string.
    */
-  @Override
-  public final String toString ()
+  public final String toDebugString ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();
@@ -622,6 +621,18 @@ public final class State implements ParseableEntity
       }
     }
     return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    return this.name;
   }
 
 

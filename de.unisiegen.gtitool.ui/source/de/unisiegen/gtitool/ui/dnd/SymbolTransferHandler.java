@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -18,7 +17,7 @@ import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 /**
  * The {@link Symbol} transfer handler class.
  * 
- * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public final class SymbolTransferHandler extends TransferHandler
@@ -115,9 +114,9 @@ public final class SymbolTransferHandler extends TransferHandler
 
 
   /**
-   * The source {@link JList}.
+   * The source {@link JDragList}.
    */
-  private JList source = null;
+  private JDragList source = null;
 
 
   /**
@@ -171,9 +170,9 @@ public final class SymbolTransferHandler extends TransferHandler
   @Override
   protected final Transferable createTransferable ( JComponent pSource )
   {
-    if ( pSource instanceof JList )
+    if ( pSource instanceof JDragList )
     {
-      this.source = ( JList ) pSource;
+      this.source = ( JDragList ) pSource;
       Object [] values = this.source.getSelectedValues ();
       if ( values == null || values.length == 0 )
       {
@@ -236,7 +235,7 @@ public final class SymbolTransferHandler extends TransferHandler
   public final boolean importData ( JComponent pTarget,
       Transferable pTransferable )
   {
-    JList targetJList = null;
+    JDragList targetJList = null;
     ArrayList < Symbol > receivedList = null;
     if ( !canImport ( pTarget, pTransferable.getTransferDataFlavors () ) )
     {
@@ -244,7 +243,7 @@ public final class SymbolTransferHandler extends TransferHandler
     }
     try
     {
-      targetJList = ( JList ) pTarget;
+      targetJList = ( JDragList ) pTarget;
       if ( hasLocalArrayListFlavor ( pTransferable.getTransferDataFlavors () ) )
       {
         receivedList = ( ArrayList < Symbol > ) pTransferable
@@ -273,7 +272,7 @@ public final class SymbolTransferHandler extends TransferHandler
       return true;
     }
 
-    if ( this.source == this.transitionDialog.getGui ().jListAlphabet )
+    if ( this.source == this.transitionDialog.getGui ().jDragListAlphabet )
     {
       this.transitionDialog.addToChangeOver ( receivedList );
     }

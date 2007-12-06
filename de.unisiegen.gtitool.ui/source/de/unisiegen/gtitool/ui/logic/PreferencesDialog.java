@@ -21,7 +21,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -42,6 +41,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
@@ -67,7 +67,7 @@ public final class PreferencesDialog
    * 
    * @author Christian Fehler
    */
-  protected final class ColorItemCellRenderer extends DefaultListCellRenderer
+  protected final class ColorItemCellRenderer extends ModifiedListCellRenderer
   {
 
     /**
@@ -84,13 +84,11 @@ public final class PreferencesDialog
      */
     @Override
     public Component getListCellRendererComponent ( JList pJList,
-        Object pValue, int pIndex, boolean pIsSelected,
-        @SuppressWarnings ( "unused" )
-        boolean pCellHasFocus )
+        Object pValue, int pIndex, boolean pIsSelected, boolean pCellHasFocus )
     {
-      // The pCellHasFocus value is not used any more
+      // The cell has focus value is not used any more
       JLabel label = ( JLabel ) super.getListCellRendererComponent ( pJList,
-          pValue, pIndex, pIsSelected, pIsSelected );
+          pValue, pIndex, pIsSelected, pCellHasFocus );
       ColorItem colorItem = ( ColorItem ) pValue;
       label.setIcon ( colorItem.getIcon () );
       label.setText ( colorItem.getCaption () );
@@ -166,38 +164,6 @@ public final class PreferencesDialog
     public final int getSize ()
     {
       return this.list.size ();
-    }
-  }
-
-
-  /**
-   * The {@link ListCellRenderer} of the {@link JComboBox}.
-   * 
-   * @author Christian Fehler
-   */
-  protected final class ComboBoxListCellRenderer extends
-      DefaultListCellRenderer
-  {
-
-    /**
-     * The serial version uid.
-     */
-    private static final long serialVersionUID = 7193233782672236696L;
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see ListCellRenderer#getListCellRendererComponent(JList, Object, int,
-     *      boolean, boolean)
-     */
-    @Override
-    public Component getListCellRendererComponent ( JList pJList,
-        Object pValue, int pIndex, boolean pIsSelected, boolean pCellHasFocus )
-    {
-      // Change nothing
-      return super.getListCellRendererComponent ( pJList, pValue, pIndex,
-          pIsSelected, pCellHasFocus );
     }
   }
 
@@ -688,7 +654,6 @@ public final class PreferencesDialog
     {
       this.languageComboBoxModel.addElement ( current );
     }
-    this.gui.jComboBoxLanguage.setRenderer ( new ComboBoxListCellRenderer () );
     this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
@@ -765,8 +730,6 @@ public final class PreferencesDialog
       this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( current
           .getName (), current.getClassName () ) );
     }
-    this.gui.jComboBoxLookAndFeel
-        .setRenderer ( new ComboBoxListCellRenderer () );
     this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();

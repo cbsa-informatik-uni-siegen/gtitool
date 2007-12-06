@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.logic;
+package de.unisiegen.gtitool.ui.model;
 
 
 import java.awt.Color;
@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 /**
@@ -22,7 +23,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The Model for the {@link Machine}s
  *
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: DefaultMachineModel.java 273 2007-12-01 15:30:30Z mies $
  *
  */
 public class DefaultMachineModel
@@ -36,6 +37,9 @@ public class DefaultMachineModel
 
   /** A list of all <code>DefaultTransitionView</code>s */
   ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
+  
+  /** The {@link MachineTableModel} */
+  private MachineTableModel tableModel;
 
   /**
    * 
@@ -46,6 +50,7 @@ public class DefaultMachineModel
   public DefaultMachineModel ( Machine pMachine )
   {
     this.machine = pMachine;
+    this.tableModel = new MachineTableModel ( this.machine.getAlphabet ());
   }
 
   /**
@@ -124,6 +129,7 @@ public class DefaultMachineModel
     cell.addPort ();
 
     this.stateViewList.add ( cell );
+    this.tableModel.addState ( pState );
 
     return cell;
   }
@@ -160,6 +166,7 @@ public class DefaultMachineModel
     source.addTransition ( newEdge );
 
     this.transitionViewList.add ( newEdge );
+    this.tableModel.addTransition ( pTransition );
   }
 
   /**
@@ -171,6 +178,17 @@ public class DefaultMachineModel
   public Machine getMachine ()
   {
     return this.machine;
+  }
+
+  /**
+   * 
+   * Getter for the {@link MachineTableModel}
+   *
+   * @return the {@link MachineTableModel} of this model
+   */
+  public MachineTableModel getTableModel ()
+  {
+    return this.tableModel;
   }
 
 }

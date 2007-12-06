@@ -34,11 +34,13 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.console.ConsoleColumnModel;
-import de.unisiegen.gtitool.ui.console.DefaultTableModel;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultTableModel;
+import de.unisiegen.gtitool.ui.model.MachineColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
@@ -212,6 +214,9 @@ public class MachinePanel implements EditorPanel
     this.machinePanel.jTableWarnings.setModel ( this.warningTableModel );
     this.machinePanel.jTableWarnings
         .setColumnModel ( new ConsoleColumnModel () );
+    this.machinePanel.jTableMachine.setModel ( this.model.getTableModel () );
+    this.machinePanel.jTableMachine.setColumnModel ( new MachineColumnModel ( this.machine.getAlphabet ()) );
+    
 
     /*
      * Language changed listener

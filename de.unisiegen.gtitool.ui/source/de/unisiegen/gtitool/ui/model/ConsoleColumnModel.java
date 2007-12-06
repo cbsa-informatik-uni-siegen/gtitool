@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.console;
+package de.unisiegen.gtitool.ui.model;
 
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;

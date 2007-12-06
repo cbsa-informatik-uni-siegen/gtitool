@@ -260,9 +260,10 @@ public class StateView extends VertexView
         // Manipulate the clipping area
         g2.setClip ( -100, 0, 150, 70 );
         
-        // Paint an arrow if state is start state
+        // Paint an arrow and a string "start" if state is start state
         g.drawLine ( - 50, 35, 0 , 35 );
         g.fillPolygon ( new int [] { - 6, -6, 0}, new int [] { 30, 40, 35}, 3 );
+        g.drawString("Start", -40, 30); //$NON-NLS-1$
       }
     }
   }

@@ -104,25 +104,6 @@ public final class Element
 
 
   /**
-   * Returns the {@link Attribute} with the given name.
-   * 
-   * @param pName The name of the {@link Attribute}.
-   * @return The {@link Attribute} with the given name.
-   */
-  public final String getAttribute ( String pName )
-  {
-    for ( Attribute current : this.attributeList )
-    {
-      if ( current.getName ().equals ( pName ) )
-      {
-        return current.getValue ();
-      }
-    }
-    return null;
-  }
-
-
-  /**
    * Returns the element list.
    * 
    * @return The element list.
@@ -170,6 +151,10 @@ public final class Element
     if ( pName == null )
     {
       throw new NullPointerException ();
+    }
+    if ( pName.length () == 0 )
+    {
+      throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
     this.name = pName;
   }

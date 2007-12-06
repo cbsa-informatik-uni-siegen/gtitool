@@ -3,34 +3,27 @@ package de.unisiegen.gtitool.ui.storage;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -125,8 +118,9 @@ public final class Storage
    * 
    * @param pFileName The file name.
    * @return The {@link Storable} from the given file name.
+   * @throws StoreException If the file could not be loaded.
    */
-  public final Storable load ( String pFileName )
+  public final Storable load ( String pFileName ) throws StoreException
   {
     try
     {
@@ -155,37 +149,13 @@ public final class Storage
         return new Transition ( element );
       }
     }
-    catch ( SAXException exc )
+    catch ( StoreException exc )
     {
-      exc.printStackTrace ();
+      throw exc;
     }
-    catch ( IOException exc )
+    catch ( Exception exc )
     {
-      exc.printStackTrace ();
-    }
-    catch ( ParserConfigurationException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( TransformerFactoryConfigurationError exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( TransitionSymbolNotInAlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( TransitionSymbolOnlyOneTimeException exc )
-    {
-      exc.printStackTrace ();
+      throw new StoreException ( Messages.getString ( "StoreException.Load" ) ); //$NON-NLS-1$
     }
     return null;
   }
@@ -195,35 +165,22 @@ public final class Storage
    * Writes a string to the {@link BufferedWriter}.
    * 
    * @param pText The text which should be written to the {@link BufferedWriter}.
+   * @throws IOException If an I/O error occurs.
    */
-  private final void print ( String pText )
+  private final void print ( String pText ) throws IOException
   {
-    try
-    {
-      this.writer.write ( pText );
-    }
-    catch ( IOException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    this.writer.write ( pText );
   }
 
 
   /**
    * Writes a new line to the {@link BufferedWriter}.
+   * 
+   * @throws IOException If an I/O error occurs.
    */
-  private final void println ()
+  private final void println () throws IOException
   {
-    try
-    {
-      this.writer.newLine ();
-    }
-    catch ( IOException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    this.writer.newLine ();
   }
 
 
@@ -231,19 +188,12 @@ public final class Storage
    * Writes a string and a new line to the {@link BufferedWriter}.
    * 
    * @param pText The text which should be written to the {@link BufferedWriter}.
+   * @throws IOException If an I/O error occurs.
    */
-  private final void println ( String pText )
+  private final void println ( String pText ) throws IOException
   {
-    try
-    {
-      this.writer.write ( pText );
-      this.writer.newLine ();
-    }
-    catch ( IOException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    this.writer.write ( pText );
+    this.writer.newLine ();
   }
 
 
@@ -252,8 +202,9 @@ public final class Storage
    * 
    * @param pElement The {@link Element} to store.
    * @param pIndent The used indent.
+   * @throws IOException If an I/O error occurs.
    */
-  private final void store ( Element pElement, int pIndent )
+  private final void store ( Element pElement, int pIndent ) throws IOException
   {
     StringBuilder indent = new StringBuilder ();
     for ( int i = 0 ; i < pIndent ; i++ )
@@ -304,37 +255,23 @@ public final class Storage
    * 
    * @param pStorable The {@link Storable} to store.
    * @param pFileName The used file name.
+   * @throws StoreException If the file could not be loaded.
    */
   public final void store ( Storable pStorable, String pFileName )
+      throws StoreException
   {
     try
     {
       this.writer = new BufferedWriter ( new OutputStreamWriter (
           new FileOutputStream ( pFileName ), CHARSET_NAME ) );
-    }
-    catch ( UnsupportedEncodingException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( FileNotFoundException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    println ( "<?xml version='1.0' encoding='UTF-8'?>" ); //$NON-NLS-1$
-    println ();
-    store ( pStorable.getElement (), 0 );
-    try
-    {
+      println ( "<?xml version='1.0' encoding='UTF-8'?>" ); //$NON-NLS-1$
+      println ();
+      store ( pStorable.getElement (), 0 );
       this.writer.close ();
     }
-    catch ( IOException exc )
+    catch ( Exception exc )
     {
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      throw new StoreException ( Messages.getString ( "StoreException.Store" ) ); //$NON-NLS-1$
     }
   }
 }

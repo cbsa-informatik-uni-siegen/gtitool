@@ -3,13 +3,16 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -157,89 +160,161 @@ public final class State implements ParseableEntity, Storable
    * @param pElement The {@link Element}.
    * @throws StateException If something with the <code>State</code> is not
    *           correct.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
+   *           not correct.
+   * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public State ( Element pElement ) throws StateException
+  public State ( Element pElement ) throws StateException, SymbolException,
+      AlphabetException, StoreException
   {
+    // Check if the element is correct
+    if ( !pElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a state" ); //$NON-NLS-1$
+    }
+
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
     this.transitionEndIdList = new ArrayList < Integer > ();
-    if ( !pElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+
+    // Attribute
+    boolean foundId = false;
+    boolean foundName = false;
+    boolean foundStartState = false;
+    boolean foundFinalState = false;
+    boolean foundCanSetDefaultName = false;
+    boolean foundParserStartOffset = false;
+    boolean foundParserEndOffset = false;
+    for ( Attribute current : pElement.getAttribute () )
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
-          + "\" is not a state" ); //$NON-NLS-1$
+      if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
+      {
+        setId ( current.getValueInt () );
+        foundId = true;
+      }
+      else if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
+      {
+        setName ( current.getValue () );
+        foundName = true;
+      }
+      else if ( current.getName ().equals ( "startState" ) ) //$NON-NLS-1$
+      {
+        setStartState ( current.getValueBoolean () );
+        foundStartState = true;
+      }
+      else if ( current.getName ().equals ( "finalState" ) ) //$NON-NLS-1$
+      {
+        setFinalState ( current.getValueBoolean () );
+        foundFinalState = true;
+      }
+      else if ( current.getName ().equals ( "canSetDefaultName" ) ) //$NON-NLS-1$
+      {
+        setCanSetDefaultName ( current.getValueBoolean () );
+        foundCanSetDefaultName = true;
+      }
+      else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
+      {
+        setParserStartOffset ( current.getValueInt () );
+        foundParserStartOffset = true;
+      }
+      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
+      {
+        setParserEndOffset ( current.getValueInt () );
+        foundParserEndOffset = true;
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
     }
-    try
+
+    // Not all attribute values found
+    if ( ( !foundId ) || ( !foundName ) || ( !foundStartState )
+        || ( !foundFinalState ) || ( !foundCanSetDefaultName )
+        || ( !foundParserStartOffset ) || ( !foundParserEndOffset ) )
     {
-      this.id = Integer.parseInt ( pElement.getAttribute ( "id" ) ); //$NON-NLS-1$
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    setName ( pElement.getAttribute ( "name" ) ); //$NON-NLS-1$
-    setStartState ( Boolean.parseBoolean ( pElement
-        .getAttribute ( "startState" ) ) ); //$NON-NLS-1$
-    setFinalState ( Boolean.parseBoolean ( pElement
-        .getAttribute ( "finalState" ) ) ); //$NON-NLS-1$
-    this.canSetDefaultName = Boolean.parseBoolean ( pElement
-        .getAttribute ( "canSetDefaultName" ) ); //$NON-NLS-1$
-    try
-    {
-      setParserStartOffset ( Integer.parseInt ( pElement
-          .getAttribute ( "parserStartOffset" ) ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    try
-    {
-      setParserEndOffset ( Integer.parseInt ( pElement
-          .getAttribute ( "parserEndOffset" ) ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
+
+    // Element
+    boolean foundAlphabet = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
-        try
-        {
-          setAlphabet ( new Alphabet ( current ) );
-        }
-        catch ( AlphabetException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
+        setAlphabet ( new Alphabet ( current ) );
+        foundAlphabet = true;
       }
       else if ( current.getName ().equals ( "TransitionBegin" ) ) //$NON-NLS-1$
       {
+        boolean foundTransitionBeginId = false;
         for ( Attribute currentAttribute : current.getAttribute () )
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            this.transitionBeginIdList.add ( Integer.valueOf ( currentAttribute
-                .getValue () ) );
+            this.transitionBeginIdList.add ( new Integer ( currentAttribute
+                .getValueInt () ) );
+            foundTransitionBeginId = true;
           }
+          else
+          {
+            // TODO Warning
+            throw new IllegalArgumentException ();
+          }
+        }
+
+        // Not all attribute values found
+        if ( !foundTransitionBeginId )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
         }
       }
       else if ( current.getName ().equals ( "TransitionEnd" ) ) //$NON-NLS-1$
       {
+        boolean foundTransitionEndId = false;
         for ( Attribute currentAttribute : current.getAttribute () )
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            this.transitionEndIdList.add ( Integer.valueOf ( currentAttribute
-                .getValue () ) );
+            this.transitionEndIdList.add ( new Integer ( currentAttribute
+                .getValueInt () ) );
+            foundTransitionEndId = true;
+          }
+          else
+          {
+            // TODO Warning
+            throw new IllegalArgumentException ();
           }
         }
+
+        // Not all attribute values found
+        if ( !foundTransitionEndId )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+        }
       }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
+    }
+
+    // Not all element values found
+    if ( !foundAlphabet )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
   }
 
@@ -668,6 +743,18 @@ public final class State implements ParseableEntity, Storable
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
+  }
+
+
+  /**
+   * Sets the canSetDefaultName value.
+   * 
+   * @param pCanSetDefaultName The canSetDefaultName to set.
+   * @see #canSetDefaultName
+   */
+  private final void setCanSetDefaultName ( boolean pCanSetDefaultName )
+  {
+    this.canSetDefaultName = pCanSetDefaultName;
   }
 
 

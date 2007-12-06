@@ -1,6 +1,10 @@
 package de.unisiegen.gtitool.core.storage;
 
 
+import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+
+
 /**
  * The <code>Attribute</code> class.
  * 
@@ -92,6 +96,52 @@ public final class Attribute
 
 
   /**
+   * Returns the boolean value.
+   * 
+   * @return The boolean value.
+   * @throws StoreException If the value is not a boolean.
+   * @see #value
+   */
+  public final boolean getValueBoolean () throws StoreException
+  {
+    if ( this.value.equals ( "true" ) ) //$NON-NLS-1$
+    {
+      return true;
+    }
+    else if ( this.value.equals ( "false" ) ) //$NON-NLS-1$
+    {
+      return false;
+    }
+    else
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.WrongAttributeValueFormat" ) ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Returns the integer value.
+   * 
+   * @return The integer value.
+   * @throws StoreException If the value is not a integer.
+   * @see #value
+   */
+  public final int getValueInt () throws StoreException
+  {
+    try
+    {
+      return Integer.parseInt ( this.value );
+    }
+    catch ( NumberFormatException exc )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.WrongAttributeValueFormat" ) ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * Sets the name.
    * 
    * @param pName The name to set.
@@ -102,6 +152,10 @@ public final class Attribute
     if ( pName == null )
     {
       throw new NullPointerException ();
+    }
+    if ( pName.length () == 0 )
+    {
+      throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
     this.name = pName;
   }
@@ -118,6 +172,10 @@ public final class Attribute
     if ( pValue == null )
     {
       throw new NullPointerException ();
+    }
+    if ( pValue.length () == 0 )
+    {
+      throw new IllegalArgumentException ( "value is empty" ); //$NON-NLS-1$
     }
     this.value = pValue;
   }

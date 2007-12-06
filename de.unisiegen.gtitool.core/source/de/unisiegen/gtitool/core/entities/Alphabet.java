@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -68,38 +71,61 @@ public final class Alphabet implements ParseableEntity, Storable,
    * @param pElement The {@link Element}.
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public Alphabet ( Element pElement ) throws AlphabetException
+  public Alphabet ( Element pElement ) throws AlphabetException,
+      SymbolException, StoreException
   {
     this ();
+    // Check if the element is correct
     if ( !pElement.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a alphabet" ); //$NON-NLS-1$
     }
-    try
+
+    // Attribute
+    boolean foundParserStartOffset = false;
+    boolean foundParserEndOffset = false;
+    for ( Attribute current : pElement.getAttribute () )
     {
-      this.parserStartOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
+      if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
+      {
+        setParserStartOffset ( current.getValueInt () );
+        foundParserStartOffset = true;
+      }
+      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
+      {
+        setParserEndOffset ( current.getValueInt () );
+        foundParserEndOffset = true;
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
     }
-    catch ( NumberFormatException exc )
+
+    // Not all values found
+    if ( ( !foundParserStartOffset ) || ( !foundParserEndOffset ) )
     {
-      // Do nothing
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
-    try
-    {
-      this.parserEndOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
+
+    // Element
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
         addSymbol ( new Symbol ( current ) );
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
       }
     }
   }

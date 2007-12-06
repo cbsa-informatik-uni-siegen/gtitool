@@ -4,12 +4,15 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -77,45 +80,68 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * Allocates a new <code>Word</code>.
    * 
    * @param pElement The {@link Element}.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public Word ( Element pElement )
+  public Word ( Element pElement ) throws SymbolException, StoreException
   {
     this ();
+    // Check if the element is correct
     if ( !pElement.getName ().equals ( "Word" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a word" ); //$NON-NLS-1$
     }
-    try
-    {
-      this.currentPosition = Integer.parseInt ( pElement
-          .getAttribute ( "currentPosition" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    try
-    {
-      this.parserStartOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    try
-    {
-      this.parserEndOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
+
+    // Element
     for ( Element current : pElement.getElement () )
     {
-      addSymbol ( new Symbol ( current ) );
+      if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      {
+        addSymbol ( new Symbol ( current ) );
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
+    }
+    
+    // Attribute
+    boolean foundCurrentPosition = false;
+    boolean foundParserStartOffset = false;
+    boolean foundParserEndOffset = false;
+    for ( Attribute current : pElement.getAttribute () )
+    {
+      if ( current.getName ().equals ( "currentPosition" ) ) //$NON-NLS-1$
+      {
+        setCurrentPosition ( current.getValueInt () );
+        foundCurrentPosition = true;
+      }
+      else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
+      {
+        setParserStartOffset ( current.getValueInt () );
+        foundParserStartOffset = true;
+      }
+      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
+      {
+        setParserEndOffset ( current.getValueInt () );
+        foundParserEndOffset = true;
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
+    }
+
+    // Not all attribute values found
+    if ( ( !foundCurrentPosition ) || ( !foundParserStartOffset )
+        || ( !foundParserEndOffset ) )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
   }
 
@@ -429,6 +455,28 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   public final void setParserEndOffset ( int pParserEndOffset )
   {
     this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * Sets the current position.
+   * 
+   * @param pCurrentPosition The current position.
+   */
+  private final void setCurrentPosition ( int pCurrentPosition )
+  {
+    if ( this.currentPosition < START_INDEX )
+    {
+      this.currentPosition = START_INDEX;
+    }
+    else if (this.currentPosition >= this.symbolList.size () )
+    {
+      this.currentPosition = this.symbolList.size ()-1;
+    }
+    else
+    {
+      this.currentPosition = pCurrentPosition;
+    }
   }
 
 

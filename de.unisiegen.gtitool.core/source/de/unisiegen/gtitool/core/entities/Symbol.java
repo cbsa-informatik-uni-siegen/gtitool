@@ -1,12 +1,14 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -53,32 +55,60 @@ public final class Symbol implements ParseableEntity, Storable,
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pElement The {@link Element}.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public Symbol ( Element pElement )
+  public Symbol ( Element pElement ) throws SymbolException, StoreException
   {
+    // Check if the element is correct
     if ( !pElement.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a symbol" ); //$NON-NLS-1$
     }
-    this.name = pElement.getAttribute ( "name" ); //$NON-NLS-1$
-    try
+
+    // Attribute
+    boolean foundName = false;
+    boolean foundParserStartOffset = false;
+    boolean foundParserEndOffset = false;
+    for ( Attribute current : pElement.getAttribute () )
     {
-      this.parserStartOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
+      if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
+      {
+        setName ( current.getValue () );
+        foundName = true;
+      }
+      else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
+      {
+        setParserStartOffset ( current.getValueInt () );
+        foundParserStartOffset = true;
+      }
+      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
+      {
+        setParserEndOffset ( current.getValueInt () );
+        foundParserEndOffset = true;
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
     }
-    catch ( NumberFormatException exc )
+
+    // Not all attribute values found
+    if ( ( !foundName ) || ( !foundParserStartOffset )
+        || ( !foundParserEndOffset ) )
     {
-      // Do nothing
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
-    try
+
+    // Element
+    if ( pElement.getElement ().size () > 0 )
     {
-      this.parserEndOffset = Integer.parseInt ( pElement
-          .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
+      // TODO Warning
+      throw new IllegalArgumentException ();
     }
   }
 

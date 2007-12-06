@@ -4,13 +4,16 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -153,40 +156,60 @@ public final class Transition implements Entity, Storable
    *           <code>Transition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws AlphabetException If something with the <code>Alphabet</code> is
+   *           not correct.
+   * @throws StoreException If the {@link Element} can not be parsed.
    */
   public Transition ( Element pElement )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
+      TransitionSymbolOnlyOneTimeException, SymbolException, AlphabetException,
+      StoreException
   {
-    // Symbols
-    this.symbolSet = new TreeSet < Symbol > ();
-
+    // Check if the element is correct
     if ( !pElement.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a transition" ); //$NON-NLS-1$
     }
-    try
+
+    // Symbols
+    this.symbolSet = new TreeSet < Symbol > ();
+
+    // Attribute
+    boolean foundId = false;
+    for ( Attribute current : pElement.getAttribute () )
     {
-      this.id = Integer.parseInt ( pElement.getAttribute ( "id" ) ); //$NON-NLS-1$
+      if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
+      {
+        setId ( current.getValueInt () );
+        foundId = true;
+      }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
     }
-    catch ( NumberFormatException exc )
+    
+    // Not all attribute values found
+    if ( !foundId )
     {
-      // Do nothing
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
+
+    // Element
+    boolean foundAlphabet = false;
+    boolean foundStateBegin = false;
+    boolean foundStateEnd = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
-        try
-        {
-          setAlphabet ( new Alphabet ( current ) );
-        }
-        catch ( AlphabetException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
+        setAlphabet ( new Alphabet ( current ) );
+        foundAlphabet = true;
       }
       else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
@@ -194,26 +217,67 @@ public final class Transition implements Entity, Storable
       }
       else if ( current.getName ().equals ( "StateBegin" ) ) //$NON-NLS-1$
       {
+        boolean foundStateBeginId = false;
         for ( Attribute currentAttribute : current.getAttribute () )
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            setStateBeginId ( Integer.valueOf ( currentAttribute.getValue () )
-                .intValue () );
+            setStateBeginId ( currentAttribute.getValueInt () );
+            foundStateBegin = true;
+            foundStateBeginId= true ;
           }
+          else
+          {
+            // TODO Warning
+            throw new IllegalArgumentException ();
+          }
+        }
+        
+        // Not all attribute values found
+        if ( !foundStateBeginId )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
         }
       }
       else if ( current.getName ().equals ( "StateEnd" ) ) //$NON-NLS-1$
       {
+        boolean foundStateEndId = false;
         for ( Attribute currentAttribute : current.getAttribute () )
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            setStateEndId ( Integer.valueOf ( currentAttribute.getValue () )
-                .intValue () );
+            setStateEndId ( currentAttribute.getValueInt () );
+            foundStateEnd = true;
+            foundStateEndId=true;
+          }
+          else
+          {
+            // TODO Warning
+            throw new IllegalArgumentException ();
           }
         }
+        
+        // Not all attribute values found
+        if ( !foundStateEndId )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+        }
       }
+      else
+      {
+        // TODO Warning
+        throw new IllegalArgumentException ();
+      }
+    }
+
+    // Not all element values found
+    if ( ( !foundAlphabet ) || ( !foundStateBegin )
+        || ( !foundStateEnd ) )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
   }
 

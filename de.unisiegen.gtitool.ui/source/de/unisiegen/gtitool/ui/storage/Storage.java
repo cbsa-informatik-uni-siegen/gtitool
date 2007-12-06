@@ -20,9 +20,11 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -141,6 +143,10 @@ public final class Storage
       {
         return new Word ( element );
       }
+      else if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
+      {
+        return new State ( element );
+      }
     }
     catch ( SAXException exc )
     {
@@ -159,6 +165,10 @@ public final class Storage
       exc.printStackTrace ();
     }
     catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( StateException exc )
     {
       exc.printStackTrace ();
     }

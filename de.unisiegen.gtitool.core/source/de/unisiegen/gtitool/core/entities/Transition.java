@@ -19,6 +19,12 @@ public final class Transition implements Entity
 {
 
   /**
+   * The value of the id of it was not defined so far.
+   */
+  public static final int ID_NOT_DEFINED = -1;
+
+
+  /**
    * The serial version uid.
    */
   private static final long serialVersionUID = 7649068993385065572L;
@@ -28,6 +34,12 @@ public final class Transition implements Entity
    * The {@link Alphabet} of this <code>Transition</code>.
    */
   private Alphabet alphabet;
+
+
+  /**
+   * The id of this <code>Transition</code>.
+   */
+  private int id = ID_NOT_DEFINED;
 
 
   /**
@@ -118,6 +130,32 @@ public final class Transition implements Entity
 
 
   /**
+   * Appends the specified {@link Symbol}s to the end of this
+   * <code>Transition</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to be appended to this
+   *          <code>Transition</code>.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
+   */
+  public final void addSymbol ( Iterable < Symbol > pSymbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      addSymbol ( current );
+    }
+  }
+
+
+  /**
    * Appends the specified {@link Symbol} to the end of this
    * <code>Transition</code>.
    * 
@@ -142,32 +180,6 @@ public final class Transition implements Entity
       throw new TransitionSymbolOnlyOneTimeException ( this, pSymbol );
     }
     this.symbolSet.add ( pSymbol );
-  }
-
-
-  /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * <code>Transition</code>.
-   * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
-   *          <code>Transition</code>.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   */
-  public final void addSymbol ( Iterable < Symbol > pSymbols )
-      throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      addSymbol ( current );
-    }
   }
 
 
@@ -272,6 +284,22 @@ public final class Transition implements Entity
 
 
   /**
+   * Returns the id.
+   * 
+   * @return The id.
+   * @see #id
+   */
+  public final int getId ()
+  {
+    if ( this.id == ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+    }
+    return this.id;
+  }
+
+
+  /**
    * Returns the {@link State} where the <code>Transition</code> begins.
    * 
    * @return The {@link State} where the <code>Transition</code> begins.
@@ -296,6 +324,18 @@ public final class Transition implements Entity
 
 
   /**
+   * Returns the symbolSet.
+   * 
+   * @return The symbolSet.
+   * @see #symbolSet
+   */
+  public final TreeSet < Symbol > getSymbol ()
+  {
+    return this.symbolSet;
+  }
+
+
+  /**
    * Returns the {@link Symbol} with the given index.
    * 
    * @param pIndex The index.
@@ -310,18 +350,6 @@ public final class Transition implements Entity
       iterator.next ();
     }
     return iterator.next ();
-  }
-
-
-  /**
-   * Returns the symbolSet.
-   * 
-   * @return The symbolSet.
-   * @see #symbolSet
-   */
-  public final TreeSet < Symbol > getSymbol ()
-  {
-    return this.symbolSet;
   }
 
 
@@ -363,6 +391,22 @@ public final class Transition implements Entity
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
+  }
+
+
+  /**
+   * Sets the id.
+   * 
+   * @param pId The id to set.
+   * @see #id
+   */
+  public final void setId ( int pId )
+  {
+    if ( this.id != ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
+    }
+    this.id = pId;
   }
 
 

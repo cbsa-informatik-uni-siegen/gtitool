@@ -3,9 +3,13 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -14,8 +18,14 @@ import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class State implements ParseableEntity
+public final class State implements ParseableEntity, Storable
 {
+
+  /**
+   * The value of the id of it was not defined so far.
+   */
+  public static final int ID_NOT_DEFINED = -1;
+
 
   /**
    * The serial verion uid.
@@ -24,18 +34,33 @@ public final class State implements ParseableEntity
 
 
   /**
-   * The value if the id of it was not defined so far.
+   * The {@link Alphabet} of this <code>State</code>.
    */
-  public static final int ID_NOT_DEFINED = -1;
+  private Alphabet alphabet = null;
 
 
   /**
-   * The start offset of this <code>Symbol</code> in the source code.
-   * 
-   * @see #getParserStartOffset()
-   * @see #setParserStartOffset(int)
+   * Flag that indicates if the default name can be set.
    */
-  private int parserStartOffset = NO_PARSER_OFFSET;
+  private boolean canSetDefaultName;
+
+
+  /**
+   * This <code>State</code> is a final <code>State</code>.
+   */
+  private boolean finalState = false;
+
+
+  /**
+   * The id of this <code>State</code>.
+   */
+  private int id = ID_NOT_DEFINED;
+
+
+  /**
+   * The name of this <code>State</code>.
+   */
+  private String name;
 
 
   /**
@@ -48,27 +73,18 @@ public final class State implements ParseableEntity
 
 
   /**
-   * The {@link Alphabet} of this <code>State</code>.
+   * The start offset of this <code>Symbol</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
    */
-  private Alphabet alphabet = null;
-
-
-  /**
-   * The name of this <code>State</code>.
-   */
-  private String name;
+  private int parserStartOffset = NO_PARSER_OFFSET;
 
 
   /**
    * This <code>State</code> is a start <code>State</code>.
    */
   private boolean startState = false;
-
-
-  /**
-   * This <code>State</code> is a final <code>State</code>.
-   */
-  private boolean finalState = false;
 
 
   /**
@@ -81,18 +97,6 @@ public final class State implements ParseableEntity
    * The list of {@link Transition}s, which end in this <code>State</code>.
    */
   private ArrayList < Transition > transitionEndList;
-
-
-  /**
-   * The id of this <code>State</code>.
-   */
-  private int id;
-
-
-  /**
-   * Flag that indicates if the default name can be set.
-   */
-  private boolean canSetDefaultName;
 
 
   /**
@@ -138,6 +142,88 @@ public final class State implements ParseableEntity
   /**
    * Allocates a new <code>State</code>.
    * 
+   * @param pElement The {@link Element}.
+   * @throws StateException If something with the <code>State</code> is not
+   *           correct.
+   */
+  public State ( Element pElement ) throws StateException
+  {
+    if ( !pElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a state" ); //$NON-NLS-1$
+    }
+    try
+    {
+      this.id = Integer.parseInt ( pElement.getAttribute ( "id" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    setName ( pElement.getAttribute ( "name" ) ); //$NON-NLS-1$
+    setStartState ( Boolean.parseBoolean ( "startState" ) ); //$NON-NLS-1$
+    setFinalState ( Boolean.parseBoolean ( "finalState" ) ); //$NON-NLS-1$
+    this.canSetDefaultName = Boolean.parseBoolean ( "canSetDefaultName" ); //$NON-NLS-1$
+    try
+    {
+      setParserStartOffset ( Integer.parseInt ( pElement
+          .getAttribute ( "parserStartOffset" ) ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
+      setParserEndOffset ( Integer.parseInt ( pElement
+          .getAttribute ( "parserEndOffset" ) ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    for ( Element current : pElement.getElement () )
+    {
+      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+      {
+        try
+        {
+          setAlphabet ( new Alphabet ( current ) );
+        }
+        catch ( AlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+      }
+      else if ( current.getName ().equals ( "TransitionBegin" ) ) //$NON-NLS-1$
+      {
+        for ( Attribute currentAttribute : current.getAttribute () )
+        {
+          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
+          {
+            // TODO
+          }
+        }
+      }
+      else if ( current.getName ().equals ( "TransitionEnd" ) ) //$NON-NLS-1$
+      {
+        for ( Attribute currentAttribute : current.getAttribute () )
+        {
+          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
+          {
+            // TODO
+          }
+        }
+      }
+    }
+  }
+
+
+  /**
+   * Allocates a new <code>State</code>.
+   * 
    * @param pName The name of this <code>State</code>.
    * @throws StateException If something with the <code>State</code> is not
    *           correct.
@@ -150,8 +236,6 @@ public final class State implements ParseableEntity
     this.transitionBeginList = new ArrayList < Transition > ();
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
-    // Id
-    this.id = ID_NOT_DEFINED;
     // DefaultName
     this.canSetDefaultName = false;
   }
@@ -269,6 +353,41 @@ public final class State implements ParseableEntity
   public final Alphabet getAlphabet ()
   {
     return this.alphabet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Element newElement = new Element ( "State" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "id", this.id ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "startState", this.startState ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "finalState", this.finalState ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "canSetDefaultName", //$NON-NLS-1$
+        this.canSetDefaultName ) );
+    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
+        this.parserStartOffset ) );
+    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
+        this.parserEndOffset ) );
+    newElement.addElement ( this.alphabet );
+    for ( Transition current : this.transitionBeginList )
+    {
+      Element currentElement = new Element ( "TransitionBegin" ); //$NON-NLS-1$
+      currentElement.addAttribute ( new Attribute ( "id", current.getId () ) ); //$NON-NLS-1$
+      newElement.addElement ( currentElement );
+    }
+    for ( Transition current : this.transitionEndList )
+    {
+      Element currentElement = new Element ( "TransitionEnd" ); //$NON-NLS-1$
+      currentElement.addAttribute ( new Attribute ( "id", current.getId () ) ); //$NON-NLS-1$
+      newElement.addElement ( currentElement );
+    }
+    return newElement;
   }
 
 

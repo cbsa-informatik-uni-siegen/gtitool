@@ -341,7 +341,7 @@ public final class Alphabet implements ParseableEntity, Storable,
         this.parserEndOffset ) );
     for ( Symbol current : this.symbolSet )
     {
-      newElement.addElement ( current.getElement () );
+      newElement.addElement ( current );
     }
     return newElement;
   }

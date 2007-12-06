@@ -28,12 +28,12 @@ public final class Attribute
    * @param pName The name of this <code>Attribute</code>.
    * @param pValue The value of this <code>Attribute</code>.
    */
-  public Attribute ( String pName, String pValue )
+  public Attribute ( String pName, boolean pValue )
   {
     // Name
     setName ( pName );
     // Value
-    setValue ( pValue );
+    setValue ( String.valueOf ( pValue ) );
   }
 
 
@@ -49,6 +49,21 @@ public final class Attribute
     setName ( pName );
     // Value
     setValue ( String.valueOf ( pValue ) );
+  }
+
+
+  /**
+   * Allocates a new <code>Attribute</code>.
+   * 
+   * @param pName The name of this <code>Attribute</code>.
+   * @param pValue The value of this <code>Attribute</code>.
+   */
+  public Attribute ( String pName, String pValue )
+  {
+    // Name
+    setName ( pName );
+    // Value
+    setValue ( pValue );
   }
 
 

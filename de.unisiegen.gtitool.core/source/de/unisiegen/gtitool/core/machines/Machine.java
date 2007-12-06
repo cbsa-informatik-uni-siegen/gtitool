@@ -23,9 +23,33 @@ public abstract class Machine implements Serializable
 {
 
   /**
+   * The active {@link State}s.
+   */
+  private ArrayList < State > activeStateList;
+
+
+  /**
    * The {@link Alphabet} of this <code>Machine</code>.
    */
   private Alphabet alphabet;
+
+
+  /**
+   * The current {@link State} id.
+   */
+  private int currentStateId = State.ID_NOT_DEFINED;
+
+
+  /**
+   * The current {@link Transition} id.
+   */
+  private int currentTransitionId = Transition.ID_NOT_DEFINED;
+
+
+  /**
+   * The history of this <code>Machine</code>.
+   */
+  private ArrayList < ArrayList < Transition > > history;
 
 
   /**
@@ -41,27 +65,9 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * The active {@link State}s.
-   */
-  private ArrayList < State > activeStateList;
-
-
-  /**
-   * The current {@link State} id.
-   */
-  private int currentId = State.ID_NOT_DEFINED;
-
-
-  /**
    * The current {@link Word}.
    */
   private Word word = null;
-
-
-  /**
-   * The history of this <code>Machine</code>.
-   */
-  private ArrayList < ArrayList < Transition > > history;
 
 
   /**
@@ -190,7 +196,7 @@ public abstract class Machine implements Serializable
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
-    pState.setId ( ++this.currentId );
+    pState.setId ( ++this.currentStateId );
     pState.setDefaultName ();
     this.stateList.add ( pState );
     link ( pState );
@@ -260,6 +266,7 @@ public abstract class Machine implements Serializable
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
+    pTransition.setId ( ++this.currentTransitionId );
     this.transitionList.add ( pTransition );
     link ( pTransition );
   }
@@ -332,6 +339,17 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Returns the current {@link State} id.
+   * 
+   * @return The current {@link State} id.
+   */
+  public int getCurrentStateId ()
+  {
+    return this.currentStateId;
+  }
+
+
+  /**
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
@@ -341,6 +359,17 @@ public abstract class Machine implements Serializable
   public final Symbol getCurrentSymbol () throws WordException
   {
     return this.word.getCurrentSymbol ();
+  }
+
+
+  /**
+   * Returns the current {@link Transition} id.
+   * 
+   * @return The current {@link Transition} id.
+   */
+  public int getCurrentTransitionId ()
+  {
+    return this.currentTransitionId;
   }
 
 
@@ -690,6 +719,28 @@ public abstract class Machine implements Serializable
       }
       this.activeStateList.add ( current );
     }
+  }
+
+
+  /**
+   * Sets the current {@link State} id.
+   * 
+   * @param pCurrentStateId The current {@link State} id.
+   */
+  public void setCurrentStateId ( int pCurrentStateId )
+  {
+    this.currentStateId = pCurrentStateId;
+  }
+
+
+  /**
+   * Sets the current {@link Transition} id.
+   * 
+   * @param pCurrentTransitionId The current {@link Transition} id.
+   */
+  public void setCurrentTransitionId ( int pCurrentTransitionId )
+  {
+    this.currentTransitionId = pCurrentTransitionId;
   }
 
 

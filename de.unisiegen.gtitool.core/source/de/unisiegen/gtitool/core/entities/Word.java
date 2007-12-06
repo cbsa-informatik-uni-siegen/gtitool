@@ -88,6 +88,15 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     }
     try
     {
+      this.currentPosition = Integer.parseInt ( pElement
+          .getAttribute ( "currentPosition" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    try
+    {
       this.parserStartOffset = Integer.parseInt ( pElement
           .getAttribute ( "parserStartOffset" ) ); //$NON-NLS-1$
     }
@@ -99,15 +108,6 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     {
       this.parserEndOffset = Integer.parseInt ( pElement
           .getAttribute ( "parserEndOffset" ) ); //$NON-NLS-1$
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    try
-    {
-      this.currentPosition = Integer.parseInt ( pElement
-          .getAttribute ( "currentPosition" ) ); //$NON-NLS-1$
     }
     catch ( NumberFormatException exc )
     {
@@ -285,15 +285,15 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   public final Element getElement ()
   {
     Element newElement = new Element ( "Word" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "currentPosition", //$NON-NLS-1$
+        this.currentPosition ) );
     newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
         this.parserStartOffset ) );
     newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
         this.parserEndOffset ) );
-    newElement.addAttribute ( new Attribute ( "currentPosition", //$NON-NLS-1$
-        this.currentPosition ) );
     for ( Symbol current : this.symbolList )
     {
-      newElement.addElement ( current.getElement () );
+      newElement.addElement ( current );
     }
     return newElement;
   }

@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.core.storage;
 import java.util.ArrayList;
 
 
-
 /**
  * The <code>Element</code> class.
  * 
@@ -13,12 +12,6 @@ import java.util.ArrayList;
  */
 public final class Element
 {
-
-  /**
-   * The name.
-   */
-  private String name;
-
 
   /**
    * The {@link Attribute} list.
@@ -30,6 +23,12 @@ public final class Element
    * The <code>Element</code> list.
    */
   private ArrayList < Element > elementList;
+
+
+  /**
+   * The name.
+   */
+  private String name;
 
 
   /**
@@ -65,6 +64,17 @@ public final class Element
   public final void addElement ( Element pElement )
   {
     this.elementList.add ( pElement );
+  }
+
+
+  /**
+   * Adds the {@link Storable}.
+   * 
+   * @param pStorable The {@link Storable} to add.
+   */
+  public final void addElement ( Storable pStorable )
+  {
+    this.elementList.add ( pStorable.getElement () );
   }
 
 

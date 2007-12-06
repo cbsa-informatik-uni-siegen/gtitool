@@ -22,9 +22,12 @@ import org.xml.sax.SAXException;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -147,6 +150,10 @@ public final class Storage
       {
         return new State ( element );
       }
+      else if ( element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
+      {
+        return new Transition ( element );
+      }
     }
     catch ( SAXException exc )
     {
@@ -169,6 +176,14 @@ public final class Storage
       exc.printStackTrace ();
     }
     catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
     {
       exc.printStackTrace ();
     }
@@ -309,7 +324,7 @@ public final class Storage
       System.exit ( 1 );
       return;
     }
-    println ( "<?xml version='1.0' encoding='utf-8'?>" ); //$NON-NLS-1$
+    println ( "<?xml version='1.0' encoding='UTF-8'?>" ); //$NON-NLS-1$
     println ();
     store ( pStorable.getElement (), 0 );
     try

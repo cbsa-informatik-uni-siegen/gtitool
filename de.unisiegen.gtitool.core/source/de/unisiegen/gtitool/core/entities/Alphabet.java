@@ -97,7 +97,10 @@ public final class Alphabet implements ParseableEntity, Storable,
     }
     for ( Element current : pElement.getElement () )
     {
-      addSymbol ( new Symbol ( current ) );
+      if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      {
+        addSymbol ( new Symbol ( current ) );
+      }
     }
   }
 
@@ -449,10 +452,35 @@ public final class Alphabet implements ParseableEntity, Storable,
   /**
    * {@inheritDoc}
    * 
-   * @see Object#toString()
+   * @see Entity#toString()
    */
   @Override
   public final String toString ()
+  {
+    StringBuilder result = new StringBuilder ();
+    result.append ( "{" ); //$NON-NLS-1$
+    Iterator < Symbol > iterator = this.symbolSet.iterator ();
+    boolean first = true;
+    while ( iterator.hasNext () )
+    {
+      if ( !first )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      first = false;
+      result.append ( iterator.next () );
+    }
+    result.append ( "}" ); //$NON-NLS-1$
+    return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#toString()
+   */
+  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     result.append ( "{" ); //$NON-NLS-1$

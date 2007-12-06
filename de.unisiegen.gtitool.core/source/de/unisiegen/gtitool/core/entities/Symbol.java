@@ -278,10 +278,21 @@ public final class Symbol implements ParseableEntity, Storable,
   /**
    * {@inheritDoc}
    * 
-   * @see Object#toString()
+   * @see Entity#toString()
    */
   @Override
   public final String toString ()
+  {
+    return this.name;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#toString()
+   */
+  public final String toStringDebug ()
   {
     return this.name;
   }

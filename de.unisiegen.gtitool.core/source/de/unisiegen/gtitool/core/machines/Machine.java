@@ -192,6 +192,10 @@ public abstract class Machine implements Serializable
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
+    if ( ( pState.isIdDefined () ) && ( this.stateList.contains ( pState ) ) )
+    {
+      throw new IllegalArgumentException ( "state is already added" ); //$NON-NLS-1$
+    }
     if ( !this.alphabet.equals ( pState.getAlphabet () ) )
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
@@ -258,7 +262,8 @@ public abstract class Machine implements Serializable
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( this.transitionList.contains ( pTransition ) )
+    if ( ( pTransition.isIdDefined () )
+        && ( this.transitionList.contains ( pTransition ) ) )
     {
       throw new IllegalArgumentException ( "transition is already added" ); //$NON-NLS-1$
     }

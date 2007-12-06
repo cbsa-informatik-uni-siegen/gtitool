@@ -464,10 +464,26 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   /**
    * {@inheritDoc}
    * 
-   * @see Object#toString()
+   * @see Entity#toString()
    */
   @Override
   public final String toString ()
+  {
+    StringBuilder result = new StringBuilder ();
+    for ( Symbol current : this.symbolList )
+    {
+      result.append ( current.getName () );
+    }
+    return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#toString()
+   */
+  public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
     for ( Symbol current : this.symbolList )

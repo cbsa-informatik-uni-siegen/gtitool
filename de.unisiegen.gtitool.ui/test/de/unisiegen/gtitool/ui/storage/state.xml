@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<State id="1" name="z1" startState="false" finalState="false" canSetDefaultName="true" parserStartOffset="-1" parserEndOffset="-1">
+  <Alphabet parserStartOffset="-1" parserEndOffset="-1">
+    <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
+    <Symbol name="b" parserStartOffset="-1" parserEndOffset="-1"/>
+    <Symbol name="c" parserStartOffset="-1" parserEndOffset="-1"/>
+  </Alphabet>
+  <TransitionBegin id="2"/>
+  <TransitionBegin id="3"/>
+  <TransitionEnd id="1"/>
+  <TransitionEnd id="2"/>
+</State>

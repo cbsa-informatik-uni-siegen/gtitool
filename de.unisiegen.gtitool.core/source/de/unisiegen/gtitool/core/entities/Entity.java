@@ -27,4 +27,20 @@ public interface Entity extends Cloneable, Serializable
    * @see Object#hashCode()
    */
   public int hashCode ();
+
+
+  /**
+   * Returns the string.
+   * 
+   * @return The string.
+   */
+  public String toString ();
+
+
+  /**
+   * Returns the debug string.
+   * 
+   * @return The debug string.
+   */
+  public String toStringDebug ();
 }

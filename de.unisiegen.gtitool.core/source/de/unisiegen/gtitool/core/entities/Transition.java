@@ -4,9 +4,13 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
@@ -15,7 +19,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Transition implements Entity
+public final class Transition implements Entity, Storable
 {
 
   /**
@@ -49,9 +53,21 @@ public final class Transition implements Entity
 
 
   /**
+   * The {@link State} id where the <code>Transition</code> begins.
+   */
+  private int stateBeginId;
+
+
+  /**
    * The {@link State} where the <code>Transition</code> ends.
    */
   private State stateEnd;
+
+
+  /**
+   * The {@link State} id where the <code>Transition</code> ends.
+   */
+  private int stateEndId;
 
 
   /**
@@ -126,6 +142,79 @@ public final class Transition implements Entity
     }
     this.symbolSet = new TreeSet < Symbol > ();
     addSymbol ( pSymbols );
+  }
+
+
+  /**
+   * Allocates a new <code>Transition</code>.
+   * 
+   * @param pElement The {@link Element}. *
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
+   */
+  public Transition ( Element pElement )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    // Symbols
+    this.symbolSet = new TreeSet < Symbol > ();
+
+    if ( !pElement.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+          + "\" is not a transition" ); //$NON-NLS-1$
+    }
+    try
+    {
+      this.id = Integer.parseInt ( pElement.getAttribute ( "id" ) ); //$NON-NLS-1$
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    for ( Element current : pElement.getElement () )
+    {
+      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+      {
+        try
+        {
+          setAlphabet ( new Alphabet ( current ) );
+        }
+        catch ( AlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+      }
+      else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      {
+        addSymbol ( new Symbol ( current ) );
+      }
+      else if ( current.getName ().equals ( "StateBegin" ) ) //$NON-NLS-1$
+      {
+        for ( Attribute currentAttribute : current.getAttribute () )
+        {
+          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
+          {
+            setStateBeginId ( Integer.valueOf ( currentAttribute.getValue () )
+                .intValue () );
+          }
+        }
+      }
+      else if ( current.getName ().equals ( "StateEnd" ) ) //$NON-NLS-1$
+      {
+        for ( Attribute currentAttribute : current.getAttribute () )
+        {
+          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
+          {
+            setStateEndId ( Integer.valueOf ( currentAttribute.getValue () )
+                .intValue () );
+          }
+        }
+      }
+    }
   }
 
 
@@ -262,10 +351,11 @@ public final class Transition implements Entity
     if ( pOther instanceof Transition )
     {
       Transition other = ( Transition ) pOther;
-      return ( ( this.alphabet.equals ( other.alphabet ) )
-          && ( this.stateBegin.equals ( other.stateBegin ) )
-          && ( this.stateEnd.equals ( other.stateEnd ) ) && ( this.symbolSet
-          .equals ( other.symbolSet ) ) );
+      if ( ( this.id == ID_NOT_DEFINED ) || ( other.id == ID_NOT_DEFINED ) )
+      {
+        throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+      }
+      return this.id == other.id;
     }
     return false;
   }
@@ -280,6 +370,31 @@ public final class Transition implements Entity
   public final Alphabet getAlphabet ()
   {
     return this.alphabet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Element newElement = new Element ( "Transition" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "id", this.id ) ); //$NON-NLS-1$
+    newElement.addElement ( this.alphabet );
+    for ( Symbol current : this.symbolSet )
+    {
+      newElement.addElement ( current );
+    }
+    Element stateBeginElement = new Element ( "StateBegin" ); //$NON-NLS-1$
+    stateBeginElement
+        .addAttribute ( new Attribute ( "id", getStateBeginId () ) ); //$NON-NLS-1$
+    newElement.addElement ( stateBeginElement );
+    Element stateEndElement = new Element ( "StateEnd" ); //$NON-NLS-1$
+    stateEndElement.addAttribute ( new Attribute ( "id", getStateEndId () ) ); //$NON-NLS-1$
+    newElement.addElement ( stateEndElement );
+    return newElement;
   }
 
 
@@ -312,6 +427,19 @@ public final class Transition implements Entity
 
 
   /**
+   * Returns the {@link State} id where the <code>Transition</code> begins.
+   * 
+   * @return The {@link State} id where the <code>Transition</code> begins.
+   * @see #stateBeginId
+   */
+  public final int getStateBeginId ()
+  {
+    return this.stateBegin == null ? this.stateBeginId : this.stateBegin
+        .getId ();
+  }
+
+
+  /**
    * Returns the {@link State} where the <code>Transition</code> ends.
    * 
    * @return The {@link State} where the <code>Transition</code> ends.
@@ -320,6 +448,18 @@ public final class Transition implements Entity
   public final State getStateEnd ()
   {
     return this.stateEnd;
+  }
+
+
+  /**
+   * Returns the {@link State} id where the <code>Transition</code> ends.
+   * 
+   * @return The {@link State} id where the <code>Transition</code> ends.
+   * @see #stateEndId
+   */
+  public final int getStateEndId ()
+  {
+    return this.stateEnd == null ? this.stateEndId : this.stateEnd.getId ();
   }
 
 
@@ -361,8 +501,11 @@ public final class Transition implements Entity
   @Override
   public final int hashCode ()
   {
-    return this.alphabet.hashCode () + this.stateBegin.hashCode ()
-        + this.stateEnd.hashCode () + this.symbolSet.hashCode ();
+    if ( this.id == ID_NOT_DEFINED )
+    {
+      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
+    }
+    return this.id;
   }
 
 
@@ -376,6 +519,19 @@ public final class Transition implements Entity
   public final boolean isEpsilonTransition ()
   {
     return this.symbolSet.size () == 0;
+  }
+
+
+  /**
+   * Returns true if the id of this <code>Transition</code> is defined,
+   * otherwise false.
+   * 
+   * @return True if the id of this <code>Transition</code> is defined,
+   *         otherwise false.
+   */
+  public final boolean isIdDefined ()
+  {
+    return this.id != ID_NOT_DEFINED;
   }
 
 
@@ -426,6 +582,22 @@ public final class Transition implements Entity
 
 
   /**
+   * Sets the {@link State} id where the <code>Transition</code> begins.
+   * 
+   * @param pStateBeginId The {@link State} id to set.
+   */
+  private final void setStateBeginId ( int pStateBeginId )
+  {
+    if ( this.stateBegin != null )
+    {
+      throw new IllegalArgumentException (
+          "can not set the id if there is a state" ); //$NON-NLS-1$
+    }
+    this.stateBeginId = pStateBeginId;
+  }
+
+
+  /**
    * Sets the {@link State} where the <code>Transition</code> ends.
    * 
    * @param pStateEnd The {@link State} to set.
@@ -441,12 +613,53 @@ public final class Transition implements Entity
 
 
   /**
+   * Sets the {@link State} id where the <code>Transition</code> ends.
+   * 
+   * @param pStateEndId The {@link State} id to set.
+   */
+  private final void setStateEndId ( int pStateEndId )
+  {
+    if ( this.stateEnd != null )
+    {
+      throw new IllegalArgumentException (
+          "can not set the id if there is a state" ); //$NON-NLS-1$
+    }
+    this.stateEndId = pStateEndId;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
-   * @see Object#toString()
+   * @see Entity#toString()
    */
   @Override
   public final String toString ()
+  {
+    StringBuilder result = new StringBuilder ();
+    result.append ( "{" ); //$NON-NLS-1$
+    Iterator < Symbol > iterator = this.symbolSet.iterator ();
+    boolean first = true;
+    while ( iterator.hasNext () )
+    {
+      if ( !first )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      first = false;
+      result.append ( iterator.next () );
+    }
+    result.append ( "}" ); //$NON-NLS-1$
+    return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Entity#toStringDebug()
+   */
+  public final String toStringDebug ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();

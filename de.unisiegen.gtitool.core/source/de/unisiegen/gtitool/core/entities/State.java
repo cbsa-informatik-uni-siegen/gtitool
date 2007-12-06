@@ -94,9 +94,21 @@ public final class State implements ParseableEntity, Storable
 
 
   /**
+   * The list of {@link Transition} ids, which begin in this <code>State</code>.
+   */
+  private ArrayList < Integer > transitionBeginIdList;
+
+
+  /**
    * The list of {@link Transition}s, which end in this <code>State</code>.
    */
   private ArrayList < Transition > transitionEndList;
+
+
+  /**
+   * The list of {@link Transition} ids, which end in this <code>State</code>.
+   */
+  private ArrayList < Integer > transitionEndIdList;
 
 
   /**
@@ -148,6 +160,12 @@ public final class State implements ParseableEntity, Storable
    */
   public State ( Element pElement ) throws StateException
   {
+    // TransitionBegin
+    this.transitionBeginList = new ArrayList < Transition > ();
+    this.transitionBeginIdList = new ArrayList < Integer > ();
+    // TransitionEnd
+    this.transitionEndList = new ArrayList < Transition > ();
+    this.transitionEndIdList = new ArrayList < Integer > ();
     if ( !pElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
@@ -162,9 +180,12 @@ public final class State implements ParseableEntity, Storable
       // Do nothing
     }
     setName ( pElement.getAttribute ( "name" ) ); //$NON-NLS-1$
-    setStartState ( Boolean.parseBoolean ( "startState" ) ); //$NON-NLS-1$
-    setFinalState ( Boolean.parseBoolean ( "finalState" ) ); //$NON-NLS-1$
-    this.canSetDefaultName = Boolean.parseBoolean ( "canSetDefaultName" ); //$NON-NLS-1$
+    setStartState ( Boolean.parseBoolean ( pElement
+        .getAttribute ( "startState" ) ) ); //$NON-NLS-1$
+    setFinalState ( Boolean.parseBoolean ( pElement
+        .getAttribute ( "finalState" ) ) ); //$NON-NLS-1$
+    this.canSetDefaultName = Boolean.parseBoolean ( pElement
+        .getAttribute ( "canSetDefaultName" ) ); //$NON-NLS-1$
     try
     {
       setParserStartOffset ( Integer.parseInt ( pElement
@@ -203,7 +224,8 @@ public final class State implements ParseableEntity, Storable
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            // TODO
+            this.transitionBeginIdList.add ( Integer.valueOf ( currentAttribute
+                .getValue () ) );
           }
         }
       }
@@ -213,7 +235,8 @@ public final class State implements ParseableEntity, Storable
         {
           if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
           {
-            // TODO
+            this.transitionEndIdList.add ( Integer.valueOf ( currentAttribute
+                .getValue () ) );
           }
         }
       }
@@ -234,8 +257,10 @@ public final class State implements ParseableEntity, Storable
     setName ( pName );
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
+    this.transitionBeginIdList = new ArrayList < Integer > ();
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
+    this.transitionEndIdList = new ArrayList < Integer > ();
     // DefaultName
     this.canSetDefaultName = false;
   }
@@ -463,6 +488,31 @@ public final class State implements ParseableEntity, Storable
 
 
   /**
+   * Returns the {@link Transition} id begin list.
+   * 
+   * @return The {@link Transition} id begin list.
+   */
+  public final ArrayList < Integer > getTransitionBeginId ()
+  {
+    return this.transitionBeginIdList;
+  }
+
+
+  /**
+   * Returns the {@link Transition} id at the specified position in the
+   * {@link Transition} begin list.
+   * 
+   * @param pIndex The index of the {@link Transition} id to return.
+   * @return The {@link Transition} at the specified position in the
+   *         {@link Transition} id begin list.
+   */
+  public final int getTransitionBeginId ( int pIndex )
+  {
+    return this.transitionBeginIdList.get ( pIndex ).intValue ();
+  }
+
+
+  /**
    * Returns the {@link Transition} end list.
    * 
    * @return The {@link Transition} end list.
@@ -484,6 +534,31 @@ public final class State implements ParseableEntity, Storable
   public final Transition getTransitionEnd ( int pIndex )
   {
     return this.transitionEndList.get ( pIndex );
+  }
+
+
+  /**
+   * Returns the {@link Transition} id end list.
+   * 
+   * @return The {@link Transition} id end list.
+   */
+  public final ArrayList < Integer > getTransitionEndId ()
+  {
+    return this.transitionEndIdList;
+  }
+
+
+  /**
+   * Returns the {@link Transition} id at the specified position in the
+   * {@link Transition} end list.
+   * 
+   * @param pIndex The index of the {@link Transition} id to return.
+   * @return The {@link Transition} at the specified position in the
+   *         {@link Transition} id end list.
+   */
+  public final int getTransitionEndId ( int pIndex )
+  {
+    return this.transitionEndIdList.get ( pIndex ).intValue ();
   }
 
 
@@ -512,6 +587,19 @@ public final class State implements ParseableEntity, Storable
   public final boolean isFinalState ()
   {
     return this.finalState;
+  }
+
+
+  /**
+   * Returns true if the id of this <code>State</code> is defined, otherwise
+   * false.
+   * 
+   * @return True if the id of this <code>State</code> is defined, otherwise
+   *         false.
+   */
+  public final boolean isIdDefined ()
+  {
+    return this.id != ID_NOT_DEFINED;
   }
 
 
@@ -696,11 +784,23 @@ public final class State implements ParseableEntity, Storable
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    return this.name;
+  }
+
+
+  /**
    * Returns the debug string.
    * 
    * @return The debug string.
    */
-  public final String toDebugString ()
+  public final String toStringDebug ()
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();
@@ -740,43 +840,5 @@ public final class State implements ParseableEntity, Storable
       }
     }
     return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#toString()
-   */
-  @Override
-  public final String toString ()
-  {
-    return this.name;
-  }
-
-
-  /**
-   * Returns the number of {@link Transition}s in the {@link Transition} begin
-   * list.
-   * 
-   * @return The number of {@link Transition}s in the {@link Transition} begin
-   *         list.
-   */
-  public final int transitionBeginSize ()
-  {
-    return this.transitionBeginList.size ();
-  }
-
-
-  /**
-   * Returns the number of {@link Transition}s in the {@link Transition} end
-   * list.
-   * 
-   * @return The number of {@link Transition}s in the {@link Transition} end
-   *         list.
-   */
-  public final int transitionEndSize ()
-  {
-    return this.transitionEndList.size ();
   }
 }

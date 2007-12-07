@@ -76,6 +76,35 @@ public final class Messages
     }
     catch ( MissingResourceException e )
     {
+      return getStringCore ( pKey, pArguments );
+    }
+    catch ( IllegalArgumentException e )
+    {
+      return getStringCore ( pKey, pArguments );
+    }
+  }
+
+
+  /**
+   * Gets a string for the given key from the resource bundle of the core
+   * project.
+   * 
+   * @param pKey The key for the desired string.
+   * @param pArguments The optional arguments.
+   * @return The string for the given key.
+   */
+  private final static String getStringCore ( String pKey,
+      Object ... pArguments )
+  {
+    try
+    {
+      ResourceBundle resourceBundle = ResourceBundle
+          .getBundle ( "de.unisiegen.gtitool.core.messages" ); //$NON-NLS-1$
+      return MessageFormat.format ( resourceBundle.getString ( pKey ),
+          pArguments );
+    }
+    catch ( MissingResourceException e )
+    {
       logger.error ( "key not found", e ); //$NON-NLS-1$
       return pKey;
     }

@@ -55,6 +55,12 @@ public final class Symbol implements ParseableEntity, Storable,
 
 
   /**
+   * The warning list.
+   */
+  private ArrayList < StoreWarningException > warningList;
+
+
+  /**
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pElement The {@link Element}.
@@ -94,8 +100,8 @@ public final class Symbol implements ParseableEntity, Storable,
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -110,8 +116,8 @@ public final class Symbol implements ParseableEntity, Storable,
     // Element
     if ( pElement.getElement ().size () > 0 )
     {
-      // TODO Warning
-      throw new IllegalArgumentException ();
+      this.warningList.add ( new StoreWarningException ( Messages
+          .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
     }
   }
 
@@ -229,6 +235,28 @@ public final class Symbol implements ParseableEntity, Storable,
   /**
    * {@inheritDoc}
    * 
+   * @see Storable#getWarning()
+   */
+  public ArrayList < StoreWarningException > getWarning ()
+  {
+    return this.warningList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getWarning(int)
+   */
+  public StoreWarningException getWarning ( int pIndex )
+  {
+    return this.warningList.get ( pIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#hashCode()
    */
   @Override
@@ -328,19 +356,5 @@ public final class Symbol implements ParseableEntity, Storable,
   public final String toStringDebug ()
   {
     return this.name;
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ( int pIndex )
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

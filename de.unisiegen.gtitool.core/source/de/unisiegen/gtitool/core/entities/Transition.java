@@ -82,6 +82,12 @@ public final class Transition implements Entity, Storable
 
 
   /**
+   * The warning list.
+   */
+  private ArrayList < StoreWarningException > warningList;
+
+
+  /**
    * Allocates a new <code>Transition</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>Transition</code>.
@@ -190,8 +196,8 @@ public final class Transition implements Entity, Storable
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -230,8 +236,8 @@ public final class Transition implements Entity, Storable
           }
           else
           {
-            // TODO Warning
-            throw new IllegalArgumentException ();
+            this.warningList.add ( new StoreWarningException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
           }
         }
 
@@ -255,8 +261,8 @@ public final class Transition implements Entity, Storable
           }
           else
           {
-            // TODO Warning
-            throw new IllegalArgumentException ();
+            this.warningList.add ( new StoreWarningException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
           }
         }
 
@@ -269,8 +275,8 @@ public final class Transition implements Entity, Storable
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -561,6 +567,28 @@ public final class Transition implements Entity, Storable
   /**
    * {@inheritDoc}
    * 
+   * @see Storable#getWarning()
+   */
+  public ArrayList < StoreWarningException > getWarning ()
+  {
+    return this.warningList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getWarning(int)
+   */
+  public StoreWarningException getWarning ( int pIndex )
+  {
+    return this.warningList.get ( pIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#hashCode()
    */
   @Override
@@ -733,19 +761,5 @@ public final class Transition implements Entity, Storable
     result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
     result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
     return result.toString ();
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ( int pIndex )
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

@@ -37,5 +37,5 @@ public interface Storable
    * @param pIndex The index to return.
    * @return The warning with the given index.
    */
-  public ArrayList < StoreWarningException > getWarning ( int pIndex );
+  public StoreWarningException getWarning ( int pIndex );
 }

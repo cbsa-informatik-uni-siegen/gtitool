@@ -116,6 +116,12 @@ public final class State implements ParseableEntity, Storable
 
 
   /**
+   * The warning list.
+   */
+  private ArrayList < StoreWarningException > warningList;
+
+
+  /**
    * Allocates a new <code>State</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>State</code>.
@@ -231,8 +237,8 @@ public final class State implements ParseableEntity, Storable
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -267,8 +273,8 @@ public final class State implements ParseableEntity, Storable
           }
           else
           {
-            // TODO Warning
-            throw new IllegalArgumentException ();
+            this.warningList.add ( new StoreWarningException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
           }
         }
 
@@ -292,8 +298,8 @@ public final class State implements ParseableEntity, Storable
           }
           else
           {
-            // TODO Warning
-            throw new IllegalArgumentException ();
+            this.warningList.add ( new StoreWarningException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
           }
         }
 
@@ -306,8 +312,8 @@ public final class State implements ParseableEntity, Storable
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -641,6 +647,28 @@ public final class State implements ParseableEntity, Storable
   /**
    * {@inheritDoc}
    * 
+   * @see Storable#getWarning()
+   */
+  public ArrayList < StoreWarningException > getWarning ()
+  {
+    return this.warningList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getWarning(int)
+   */
+  public StoreWarningException getWarning ( int pIndex )
+  {
+    return this.warningList.get ( pIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#hashCode()
    */
   @Override
@@ -928,19 +956,5 @@ public final class State implements ParseableEntity, Storable
       }
     }
     return result.toString ();
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ( int pIndex )
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

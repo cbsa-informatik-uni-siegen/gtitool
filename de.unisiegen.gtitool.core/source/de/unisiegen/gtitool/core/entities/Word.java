@@ -68,6 +68,12 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
+   * The warning list.
+   */
+  private ArrayList < StoreWarningException > warningList;
+
+
+  /**
    * Allocates a new <code>Word</code>.
    */
   public Word ()
@@ -104,8 +110,8 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -132,8 +138,8 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
       }
       else
       {
-        // TODO Warning
-        throw new IllegalArgumentException ();
+        this.warningList.add ( new StoreWarningException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
       }
     }
 
@@ -371,6 +377,28 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   /**
    * {@inheritDoc}
    * 
+   * @see Storable#getWarning()
+   */
+  public ArrayList < StoreWarningException > getWarning ()
+  {
+    return this.warningList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getWarning(int)
+   */
+  public StoreWarningException getWarning ( int pIndex )
+  {
+    return this.warningList.get ( pIndex );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#hashCode()
    */
   @Override
@@ -451,15 +479,6 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   */
-  public final void setParserEndOffset ( int pParserEndOffset )
-  {
-    this.parserEndOffset = pParserEndOffset;
-  }
-
-
-  /**
    * Sets the current position.
    * 
    * @param pCurrentPosition The current position.
@@ -478,6 +497,15 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     {
       this.currentPosition = pCurrentPosition;
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
   }
 
 
@@ -540,19 +568,5 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
       result.append ( current.getName () );
     }
     return result.toString ();
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  public ArrayList < StoreWarningException > getWarning ( int pIndex )
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

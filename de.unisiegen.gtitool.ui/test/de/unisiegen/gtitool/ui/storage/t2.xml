@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Transition id="2" stateBeginId="1" stateEndId="1">
+  <Alphabet parserStartOffset="-1" parserEndOffset="-1">
+    <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
+    <Symbol name="b" parserStartOffset="-1" parserEndOffset="-1"/>
+    <Symbol name="c" parserStartOffset="-1" parserEndOffset="-1"/>
+  </Alphabet>
+  <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
+  <Symbol name="c" parserStartOffset="-1" parserEndOffset="-1"/>
+</Transition>

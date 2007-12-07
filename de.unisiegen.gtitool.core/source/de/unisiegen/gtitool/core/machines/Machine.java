@@ -345,7 +345,7 @@ public abstract class Machine implements Serializable
    * @param pIndex The index.
    * @return The active {@link State} with the given index.
    */
-  protected final State getActiveState ( int pIndex )
+  public final State getActiveState ( int pIndex )
   {
     return this.activeStateList.get ( pIndex );
   }
@@ -490,11 +490,29 @@ public abstract class Machine implements Serializable
   {
     for ( Transition current : this.transitionList )
     {
-      if ( current.getStateBegin ().equals ( pState ) )
+      // State begin
+      if ( current.getStateBegin () == null )
+      {
+        if ( current.getStateBeginId () == pState.getId () )
+        {
+          current.setStateBegin ( pState );
+          pState.addTransitionBegin ( current );
+        }
+      }
+      else if ( current.getStateBegin ().equals ( pState ) )
       {
         pState.addTransitionBegin ( current );
       }
-      if ( current.getStateEnd ().equals ( pState ) )
+      // State end
+      if ( current.getStateEnd () == null )
+      {
+        if ( current.getStateEndId () == pState.getId () )
+        {
+          current.setStateEnd ( pState );
+          pState.addTransitionEnd ( current );
+        }
+      }
+      else if ( current.getStateEnd ().equals ( pState ) )
       {
         pState.addTransitionEnd ( current );
       }
@@ -509,15 +527,33 @@ public abstract class Machine implements Serializable
    */
   private final void link ( Transition pTransition )
   {
-    for ( State current : this.stateList )
+    for ( State currentState : this.stateList )
     {
-      if ( pTransition.getStateBegin ().equals ( current ) )
+      // State begin
+      if ( pTransition.getStateBegin () == null )
       {
-        current.addTransitionBegin ( pTransition );
+        if ( pTransition.getStateBeginId () == currentState.getId () )
+        {
+          pTransition.setStateBegin ( currentState );
+          currentState.addTransitionBegin ( pTransition );
+        }
       }
-      if ( pTransition.getStateEnd ().equals ( current ) )
+      else if ( pTransition.getStateBegin ().equals ( currentState ) )
       {
-        current.addTransitionEnd ( pTransition );
+        currentState.addTransitionBegin ( pTransition );
+      }
+      // State end
+      if ( pTransition.getStateEnd () == null )
+      {
+        if ( pTransition.getStateEndId () == currentState.getId () )
+        {
+          pTransition.setStateEnd ( currentState );
+          currentState.addTransitionEnd ( pTransition );
+        }
+      }
+      else if ( pTransition.getStateEnd ().equals ( currentState ) )
+      {
+        currentState.addTransitionEnd ( pTransition );
       }
     }
   }

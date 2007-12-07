@@ -113,6 +113,7 @@ public class MachinesTest
     catch ( MachineValidationException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
     out ( "*** Next *** " );
     out ();
@@ -131,6 +132,7 @@ public class MachinesTest
     catch ( WordException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
     out ( "*** Previous *** " );
     out ();
@@ -148,6 +150,7 @@ public class MachinesTest
     catch ( WordException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 

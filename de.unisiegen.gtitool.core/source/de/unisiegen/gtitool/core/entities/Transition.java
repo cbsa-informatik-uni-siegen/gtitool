@@ -196,12 +196,12 @@ public final class Transition implements Entity, Storable
         setId ( current.getValueInt () );
         foundId = true;
       }
-      else if ( current.getName ().equals ( "StateBeginId" ) ) //$NON-NLS-1$
+      else if ( current.getName ().equals ( "stateBeginId" ) ) //$NON-NLS-1$
       {
         setStateBeginId ( current.getValueInt () );
         foundStateBeginId = true;
       }
-      else if ( current.getName ().equals ( "StateEndId" ) ) //$NON-NLS-1$
+      else if ( current.getName ().equals ( "stateEndId" ) ) //$NON-NLS-1$
       {
         setStateEndId ( current.getValueInt () );
         foundStateEndId = true;
@@ -413,8 +413,9 @@ public final class Transition implements Entity, Storable
   {
     Element newElement = new Element ( "Transition" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "id", this.id ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "StateBeginId", this.id ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "StateEndId", this.id ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "stateBeginId", //$NON-NLS-1$
+        getStateBeginId () ) );
+    newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
     newElement.addElement ( this.alphabet );
     for ( Symbol current : this.symbolSet )
     {
@@ -615,7 +616,7 @@ public final class Transition implements Entity, Storable
    * 
    * @param pStateBegin The {@link State} to set.
    */
-  private final void setStateBegin ( State pStateBegin )
+  public final void setStateBegin ( State pStateBegin )
   {
     if ( pStateBegin == null )
     {
@@ -646,7 +647,7 @@ public final class Transition implements Entity, Storable
    * 
    * @param pStateEnd The {@link State} to set.
    */
-  private final void setStateEnd ( State pStateEnd )
+  public final void setStateEnd ( State pStateEnd )
   {
     if ( pStateEnd == null )
     {

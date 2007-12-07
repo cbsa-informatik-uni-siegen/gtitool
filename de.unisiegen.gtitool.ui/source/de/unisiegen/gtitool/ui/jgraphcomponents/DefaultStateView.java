@@ -1,11 +1,17 @@
 package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -14,7 +20,7 @@ import de.unisiegen.gtitool.core.entities.State;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class DefaultStateView extends DefaultGraphCell
+public class DefaultStateView extends DefaultGraphCell implements Storable
 {
 
   /**
@@ -76,6 +82,38 @@ public class DefaultStateView extends DefaultGraphCell
   public Object [] getRemoveObjects ()
   {
     return this.removeList.toArray ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    double x = bounds.getX ();
+    double y = bounds.getY ();
+    Element newElement = new Element ( "DefaultStateView" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "x", String.valueOf ( x ) ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "y", String.valueOf ( y ) ) ); //$NON-NLS-1$
+    newElement.addElement ( this.state.getElement () );
+    return newElement;
+  }
+
+
+  public ArrayList < StoreWarningException > getWarning ()
+  {
+    // TODO implement me
+    return null;
+  }
+
+
+  public StoreWarningException getWarning ( int pIndex )
+  {
+    // TODO implement me
+    return null;
   }
 
 }

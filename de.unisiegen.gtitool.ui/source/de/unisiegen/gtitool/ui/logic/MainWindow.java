@@ -3,18 +3,22 @@ package de.unisiegen.gtitool.ui.logic;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -289,6 +293,7 @@ public final class MainWindow
     EditorPanel newEditorPanel = newDialog.getEditorPanel ();
     if ( newEditorPanel != null )
     {
+      
       this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
       this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
           .getPanel () );
@@ -296,6 +301,7 @@ public final class MainWindow
           .getSelectedIndex (), "newFile" + count + ".test" ); //$NON-NLS-1$ //$NON-NLS-2$
       count++ ;
       setGeneralStates ( true );
+      this.gui.jButtonSave.setEnabled ( true );
     }
   }
 
@@ -309,6 +315,25 @@ public final class MainWindow
     JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
     chooser.setMultiSelectionEnabled ( true );
     chooser.showOpenDialog ( this.gui );
+    try
+    {
+     DefaultMachineModel model = (DefaultMachineModel) Storage.getInstance ().load ( chooser.getSelectedFile ( ).toString () );
+     EditorPanel newEditorPanel = new MachinePanel ( this.gui, model );
+       
+       this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
+       this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
+           .getPanel () );
+       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
+           .getSelectedIndex (), "newFile" + count + ".test" ); //$NON-NLS-1$ //$NON-NLS-2$
+       count++ ;
+       setGeneralStates ( true );
+       this.gui.jButtonSave.setEnabled ( true );
+    }
+    catch ( StoreException e )
+    {
+      e.printStackTrace();
+      System.exit ( 1 );
+    }
     prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
         .getAbsolutePath () );
   }
@@ -454,5 +479,14 @@ public final class MainWindow
   {
     this.gui.jButtonUndo.setEnabled ( pState );
     this.gui.jMenuItemUndo.setEnabled ( pState );
+  }
+
+
+  public void handleSave ()
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleSave ();
+    
+    
   }
 }

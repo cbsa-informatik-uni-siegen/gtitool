@@ -35,6 +35,7 @@ import javax.swing.border.Border;
  * @version 1.0 1/1/02
  * @author Gaudenz Alder
  */
+@SuppressWarnings("all")
 public class GraphConstants {
 
 	/**

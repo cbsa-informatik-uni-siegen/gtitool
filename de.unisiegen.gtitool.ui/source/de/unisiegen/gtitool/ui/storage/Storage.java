@@ -24,6 +24,7 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
@@ -148,6 +149,8 @@ public final class Storage
       {
         return new Transition ( element );
       }
+      else if ( element.getName ().equals ( "DefaultMachineModel") ) //$NON-NLS-1$
+        return new DefaultMachineModel ( element );
     }
     catch ( StoreException exc )
     {

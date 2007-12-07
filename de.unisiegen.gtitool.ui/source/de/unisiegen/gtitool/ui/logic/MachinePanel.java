@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -21,7 +22,6 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
-import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -32,14 +32,15 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -48,6 +49,7 @@ import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -200,9 +202,10 @@ public class MachinePanel implements EditorPanel
     this.alphabet = this.machine.getAlphabet ();
     this.machinePanel = new MachinesPanelForm ();
     this.machinePanel.setMachinePanel ( this );
+    this.graph = this.model.getJGraph ();
+    this.graphModel = this.model.getGraphModel ();
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
-    initializeGraph ();
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
@@ -482,46 +485,6 @@ public class MachinePanel implements EditorPanel
   }
 
 
-  /**
-   * Initialize this JGraph
-   */
-  private void initializeGraph ()
-  {
-    // Construct Model and Graph
-    this.graphModel = new DefaultGraphModel ();
-
-    this.graph = new JGraph ( this.graphModel );
-
-    this.graph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
-
-    // Control-drag should clone selection
-    this.graph.setCloneable ( true );
-
-    // Enable edit without final RETURN keystroke
-    this.graph.setInvokesStopCellEditing ( true );
-
-    // When over a cell, jump to its default port (we only have one, anyway)
-    this.graph.setJumpToDefaultPort ( true );
-
-    // Set states to not sizeable
-    this.graph.setSizeable ( false );
-
-    // Set states to not connectable and disconnectable
-    // So Transitions are not moveable
-    this.graph.setConnectable ( false );
-    this.graph.setDisconnectable ( false );
-
-    // Set the labels of the Transitions to not moveable
-    this.graph.setEdgeLabelsMovable ( false );
-
-    // Set states to not editable
-    this.graph.setEditable ( false );
-
-    // Set the zoom factor of this graph
-    this.graph.setScale ( this.graph.getScale () * this.zoomFactor );
-
-    EdgeView.renderer.setForeground ( Color.magenta );
-  }
 
 
   /**
@@ -602,11 +565,10 @@ public class MachinePanel implements EditorPanel
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, false, false );
-          MachinePanel.this.machine.addState ( newState );
-          MachinePanel.this.graph.getGraphLayoutCache ().insert (
+          
               MachinePanel.this.model.createStateView ( e.getPoint ().x
                   / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) );
+                  / MachinePanel.this.zoomFactor, newState ) ;
         }
         catch ( StateException e1 )
         {
@@ -684,14 +646,11 @@ public class MachinePanel implements EditorPanel
                 {
                   State newState = new State ( MachinePanel.this.alphabet,
                       false, false );
-                  MachinePanel.this.machine.addState ( newState );
                   target = MachinePanel.this.model.createStateView ( e
                       .getPoint ().x
                       / MachinePanel.this.zoomFactor, e.getPoint ().y
                       / MachinePanel.this.zoomFactor, newState );
 
-                  MachinePanel.this.graph.getGraphLayoutCache ().insert (
-                      target );
                 }
                 catch ( StateException e1 )
                 {
@@ -712,12 +671,9 @@ public class MachinePanel implements EditorPanel
                   newTransition = new Transition ( MachinePanel.this.alphabet,
                       MachinePanel.this.firstState.getState (), target
                           .getState (), dialog.getAlphabet ().getSymbol () );
-                MachinePanel.this.machine.addTransition ( newTransition );
 
                 MachinePanel.this.model
-                    .createTransitionView ( MachinePanel.this.graph,
-                        newTransition, MachinePanel.this.firstState, target,
-                        dialog.getAlphabet () );
+                    .createTransitionView ( newTransition, MachinePanel.this.firstState, target );
                 dialog.dispose ();
               }
               catch ( TransitionSymbolNotInAlphabetException e1 )
@@ -775,13 +731,11 @@ public class MachinePanel implements EditorPanel
 
                 State newState;
                 newState = new State ( MachinePanel.this.alphabet, false, false );
-                MachinePanel.this.machine.addState ( newState );
                 target = MachinePanel.this.model.createStateView ( e
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
 
-                MachinePanel.this.graph.getGraphLayoutCache ().insert ( target );
               }
               catch ( StateException e1 )
               {
@@ -802,10 +756,9 @@ public class MachinePanel implements EditorPanel
                 newTransition = new Transition ( MachinePanel.this.alphabet,
                     MachinePanel.this.firstState.getState (), target
                         .getState (), dialog.getAlphabet ().getSymbol () );
-              MachinePanel.this.machine.addTransition ( newTransition );
-              MachinePanel.this.model.createTransitionView (
-                  MachinePanel.this.graph, newTransition,
-                  MachinePanel.this.firstState, target, dialog.getAlphabet () );
+              
+              MachinePanel.this.model.createTransitionView ( newTransition,
+                  MachinePanel.this.firstState, target );
               dialog.dispose ();
             }
             catch ( TransitionSymbolNotInAlphabetException e1 )
@@ -953,11 +906,9 @@ public class MachinePanel implements EditorPanel
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, true, false );
-          MachinePanel.this.machine.addState ( newState );
-          MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.model.createStateView ( e.getPoint ().x
                   / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) );
+                  / MachinePanel.this.zoomFactor, newState ) ;
         }
         catch ( StateException e1 )
         {
@@ -1008,11 +959,9 @@ public class MachinePanel implements EditorPanel
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, false, true );
-          MachinePanel.this.machine.addState ( newState );
-          MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.model.createStateView ( e.getPoint ().x
                   / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) );
+                  / MachinePanel.this.zoomFactor, newState ) ;
         }
         catch ( StateException e1 )
         {
@@ -1233,5 +1182,17 @@ public class MachinePanel implements EditorPanel
     this.errorTableModel.clearData();
     this.warningTableModel.clearData();
     
+  }
+  
+  public void handleSave(){
+    try
+    {
+      Storage.getInstance ().store ( this.model, "test.machine" );
+      JOptionPane.showMessageDialog ( this.parent, "Datei wurde erfolgreich gespeichert", "Datei speichern", JOptionPane.INFORMATION_MESSAGE );
+    }
+    catch ( StoreException e )
+    {
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), "Datei speichern", JOptionPane.ERROR_MESSAGE );
+    }
   }
 }

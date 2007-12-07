@@ -190,12 +190,14 @@ public final class State implements ParseableEntity, Storable
     this.transitionEndList = new ArrayList < Transition > ();
     this.transitionEndIdList = new ArrayList < Integer > ();
 
+    // CanSetDefaultName
+    this.canSetDefaultName = false;
+
     // Attribute
     boolean foundId = false;
     boolean foundName = false;
     boolean foundStartState = false;
     boolean foundFinalState = false;
-    boolean foundCanSetDefaultName = false;
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
     for ( Attribute current : pElement.getAttribute () )
@@ -220,11 +222,6 @@ public final class State implements ParseableEntity, Storable
         setFinalState ( current.getValueBoolean () );
         foundFinalState = true;
       }
-      else if ( current.getName ().equals ( "canSetDefaultName" ) ) //$NON-NLS-1$
-      {
-        setCanSetDefaultName ( current.getValueBoolean () );
-        foundCanSetDefaultName = true;
-      }
       else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
       {
         setParserStartOffset ( current.getValueInt () );
@@ -244,8 +241,8 @@ public final class State implements ParseableEntity, Storable
 
     // Not all attribute values found
     if ( ( !foundId ) || ( !foundName ) || ( !foundStartState )
-        || ( !foundFinalState ) || ( !foundCanSetDefaultName )
-        || ( !foundParserStartOffset ) || ( !foundParserEndOffset ) )
+        || ( !foundFinalState ) || ( !foundParserStartOffset )
+        || ( !foundParserEndOffset ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -475,8 +472,6 @@ public final class State implements ParseableEntity, Storable
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "startState", this.startState ) ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "finalState", this.finalState ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "canSetDefaultName", //$NON-NLS-1$
-        this.canSetDefaultName ) );
     newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
         this.parserStartOffset ) );
     newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
@@ -506,10 +501,6 @@ public final class State implements ParseableEntity, Storable
    */
   public final int getId ()
   {
-    if ( this.id == ID_NOT_DEFINED )
-    {
-      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
-    }
     return this.id;
   }
 
@@ -772,18 +763,6 @@ public final class State implements ParseableEntity, Storable
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
-  }
-
-
-  /**
-   * Sets the canSetDefaultName value.
-   * 
-   * @param pCanSetDefaultName The canSetDefaultName to set.
-   * @see #canSetDefaultName
-   */
-  private final void setCanSetDefaultName ( boolean pCanSetDefaultName )
-  {
-    this.canSetDefaultName = pCanSetDefaultName;
   }
 
 

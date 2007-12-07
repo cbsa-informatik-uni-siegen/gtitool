@@ -144,8 +144,8 @@ public class StorageTest
     Word word = new Word ( b, c, a, c, b, a, b );
     try
     {
-     // Storage.getInstance ().store ( alphabet,
-     //     "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
+      Storage.getInstance ().store ( alphabet,
+          "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
       Alphabet loadedAlphabet = ( Alphabet ) Storage.getInstance ().load (
           "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
       out ( loadedAlphabet );

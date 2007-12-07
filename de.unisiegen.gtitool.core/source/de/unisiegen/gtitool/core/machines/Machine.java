@@ -200,7 +200,17 @@ public abstract class Machine implements Serializable
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
-    pState.setId ( ++this.currentStateId );
+    if ( pState.getId () == State.ID_NOT_DEFINED )
+    {
+      pState.setId ( ++this.currentStateId );
+    }
+    else
+    {
+      if ( pState.getId () > this.currentStateId )
+      {
+        this.currentStateId = pState.getId ();
+      }
+    }
     pState.setDefaultName ();
     this.stateList.add ( pState );
     link ( pState );
@@ -271,7 +281,17 @@ public abstract class Machine implements Serializable
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
-    pTransition.setId ( ++this.currentTransitionId );
+    if ( pTransition.getId () == Transition.ID_NOT_DEFINED )
+    {
+      pTransition.setId ( ++this.currentTransitionId );
+    }
+    else
+    {
+      if ( pTransition.getId () > this.currentTransitionId )
+      {
+        this.currentStateId = pTransition.getId ();
+      }
+    }
     this.transitionList.add ( pTransition );
     link ( pTransition );
   }
@@ -724,28 +744,6 @@ public abstract class Machine implements Serializable
       }
       this.activeStateList.add ( current );
     }
-  }
-
-
-  /**
-   * Sets the current {@link State} id.
-   * 
-   * @param pCurrentStateId The current {@link State} id.
-   */
-  public void setCurrentStateId ( int pCurrentStateId )
-  {
-    this.currentStateId = pCurrentStateId;
-  }
-
-
-  /**
-   * Sets the current {@link Transition} id.
-   * 
-   * @param pCurrentTransitionId The current {@link Transition} id.
-   */
-  public void setCurrentTransitionId ( int pCurrentTransitionId )
-  {
-    this.currentTransitionId = pCurrentTransitionId;
   }
 
 

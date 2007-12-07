@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<State id="1" name="z1" startState="false" finalState="false" canSetDefaultName="true" parserStartOffset="-1" parserEndOffset="-1">
+<State id="1" name="z1" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
   <Alphabet parserStartOffset="-1" parserEndOffset="-1">
     <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
     <Symbol name="b" parserStartOffset="-1" parserEndOffset="-1"/>

@@ -214,17 +214,13 @@ public final class Storage
     print ( indent.toString () );
     print ( "<" ); //$NON-NLS-1$
     print ( pElement.getName () );
-    print ( " " ); //$NON-NLS-1$
-    for ( int i = 0 ; i < pElement.getAttribute ().size () ; i++ )
+    for ( Attribute current : pElement.getAttribute () )
     {
-      if ( i > 0 )
-      {
-        print ( " " ); //$NON-NLS-1$
-      }
-      print ( pElement.getAttribute ( i ).getName () );
+      print ( " " ); //$NON-NLS-1$
+      print ( current.getName () );
       print ( "=" ); //$NON-NLS-1$
       print ( "\"" ); //$NON-NLS-1$
-      print ( pElement.getAttribute ( i ).getValue () );
+      print ( current.getValue () );
       print ( "\"" ); //$NON-NLS-1$
     }
     if ( pElement.getElement ().size () == 0 )
@@ -234,9 +230,9 @@ public final class Storage
     else
     {
       println ( ">" ); //$NON-NLS-1$
-      for ( int i = 0 ; i < pElement.getElement ().size () ; i++ )
+      for ( Element current : pElement.getElement () )
       {
-        store ( pElement.getElement ( i ), pIndent + 2 );
+        store ( current, pIndent + 2 );
       }
       print ( indent.toString () );
       print ( "</" ); //$NON-NLS-1$
@@ -264,7 +260,7 @@ public final class Storage
     {
       this.writer = new BufferedWriter ( new OutputStreamWriter (
           new FileOutputStream ( pFileName ), CHARSET_NAME ) );
-      println ( "<?xml version='1.0' encoding='UTF-8'?>" ); //$NON-NLS-1$
+      println ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); //$NON-NLS-1$
       println ();
       store ( pStorable.getElement (), 0 );
       this.writer.close ();

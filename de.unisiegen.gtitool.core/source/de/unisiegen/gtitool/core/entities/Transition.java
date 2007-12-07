@@ -477,10 +477,6 @@ public final class Transition implements Entity, Storable
    */
   public final int getId ()
   {
-    if ( this.id == ID_NOT_DEFINED )
-    {
-      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
-    }
     return this.id;
   }
 

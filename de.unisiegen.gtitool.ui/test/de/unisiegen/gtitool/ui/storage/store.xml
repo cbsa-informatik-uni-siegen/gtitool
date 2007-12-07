@@ -1,12 +1,9 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<Transition id="1">
+<State id="1" name="z1" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
   <Alphabet parserStartOffset="-1" parserEndOffset="-1">
     <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
     <Symbol name="b" parserStartOffset="-1" parserEndOffset="-1"/>
     <Symbol name="c" parserStartOffset="-1" parserEndOffset="-1"/>
   </Alphabet>
-  <Symbol name="a" parserStartOffset="-1" parserEndOffset="-1"/>
-  <StateBegin id="0"/>
-  <StateEnd id="1"/>
-</Transition>
+</State>

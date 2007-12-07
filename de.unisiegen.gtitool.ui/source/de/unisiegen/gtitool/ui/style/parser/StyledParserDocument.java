@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -161,14 +160,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           Color pNewColor )
           {
             initAttributes ();
-            try
-            {
-              processChanged ();
-            }
-            catch ( BadLocationException e )
-            {
-              e.printStackTrace ();
-            }
+            processChanged ();
           }
 
 
@@ -180,14 +172,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           public void colorChangedParserWarning ( Color pNewColor )
           {
             StyledParserDocument.this.parserWarningColor = pNewColor;
-            try
-            {
-              processChanged ();
-            }
-            catch ( BadLocationException e )
-            {
-              e.printStackTrace ();
-            }
+            processChanged ();
           }
         } );
   }
@@ -336,15 +321,21 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Parses the document.
+   */
+  public final void parse ()
+  {
+    fireParseableChanged ( processChanged () );
+  }
+
+
+  /**
    * Processes the document content after a change and returns the parsed object
    * or null, if the text could not be parsed.
    * 
    * @return The parsed object or null, if the text could not be parsed.
-   * @throws BadLocationException if the processing failed.
    */
-  @SuppressWarnings (
-  { "unused", "null" } )
-  private final Object processChanged () throws BadLocationException
+  protected final Object processChanged ()
   {
     this.parsedObject = null;
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
@@ -407,13 +398,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
           }
 
 
-          public Symbol nextSymbol () throws IOException, ScannerException
+          public Symbol nextSymbol () throws ScannerException
           {
             return ( !symbols.isEmpty () ) ? symbols.poll () : null;
           }
 
 
-          public void restart ( String pText )
+          public void restart ( @SuppressWarnings ( "unused" )
+          String pText )
           {
             throw new UnsupportedOperationException ();
           }

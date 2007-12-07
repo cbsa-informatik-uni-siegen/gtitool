@@ -84,7 +84,7 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * Flag that indicates if the panel is read only.
    */
-  private boolean editable = true;
+  private boolean editable;
 
 
   /**
@@ -118,6 +118,7 @@ public abstract class StyledParserPanel extends JPanel
    */
   public StyledParserPanel ( Parseable pParseable )
   {
+    this.editable = true;
     this.editor = new StyledParserEditor ();
 
     // PopupMenu
@@ -343,6 +344,7 @@ public abstract class StyledParserPanel extends JPanel
     this.jScrollPane.setViewportView ( this.editor );
     this.editor.setDocument ( this.document );
     this.editor.setAutoscrolls ( false );
+    this.document.parse ();
   }
 
 

@@ -9,13 +9,14 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.ui.utils.StateList;
 
 
 /**
  * The Table Model for the warning and error tables
  * 
  * @author Benjamin Mies
- * @version $Id: DefaultTableModel.java 274 2007-12-01 15:50:03Z mies $
+ * @version $Id$
  */
 public class MachineTableModel extends AbstractTableModel
 {
@@ -88,6 +89,9 @@ public class MachineTableModel extends AbstractTableModel
     this.states.put (state, new Integer(this.data.size () ) );
     Object [] row = new Object [getColumnCount ()];
     row[0] = state;
+    for ( int i = 1; i < getColumnCount () ; i ++ ){
+      row[i] = new StateList < State > ();
+    }
     this.data.add ( row );
     fireTableRowsInserted ( this.data.size ()-1, this.data.size ()-1 );
   }
@@ -103,7 +107,7 @@ public class MachineTableModel extends AbstractTableModel
     
     for (Symbol symbol : transition.getSymbol ()){
       int column = this.symbols.get ( symbol ).intValue () + 1 ;
-      this.data.get ( row )[column] = transition.getStateEnd ();
+      ( ( StateList < State > ) this.data.get ( row )[column] ).add( transition.getStateEnd () );
     }
     fireTableDataChanged ();
   }

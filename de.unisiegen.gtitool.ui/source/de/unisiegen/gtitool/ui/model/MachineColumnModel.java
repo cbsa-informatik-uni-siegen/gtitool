@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
  * The <code>ConsoleColumnModel</code> for the error and warning tables
  * 
  * @author Benjamin Mies
- * @version $Id: ConsoleColumnModel.java 273 2007-12-01 15:30:30Z mies $
+ * @version $Id$
  */
 public class MachineColumnModel extends DefaultTableColumnModel
 {

@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The Model for the {@link Machine}s
  *
  * @author Benjamin Mies
- * @version $Id: DefaultMachineModel.java 273 2007-12-01 15:30:30Z mies $
+ * @version $Id$
  *
  */
 public class DefaultMachineModel

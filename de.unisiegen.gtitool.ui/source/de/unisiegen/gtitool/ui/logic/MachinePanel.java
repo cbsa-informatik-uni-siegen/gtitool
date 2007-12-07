@@ -39,7 +39,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.DefaultTableModel;
+import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.MachineColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -136,11 +136,11 @@ public class MachinePanel implements EditorPanel
   /** The zoom factor for this graph */
   private double zoomFactor;
 
-  /** The {@link DefaultTableModel} for the warning table */
-  private DefaultTableModel warningTableModel;
+  /** The {@link ConsoleTableModel} for the warning table */
+  private ConsoleTableModel warningTableModel;
 
-  /** The {@link DefaultTableModel} for the error table */
-  private DefaultTableModel errorTableModel;
+  /** The {@link ConsoleTableModel} for the error table */
+  private ConsoleTableModel errorTableModel;
 
   /** The actual highlighted error states */
   private ArrayList < DefaultStateView > oldErrorStates = new ArrayList < DefaultStateView > ();
@@ -207,10 +207,10 @@ public class MachinePanel implements EditorPanel
     this.graph.addMouseListener ( this.mouse );
     this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
 
-    this.errorTableModel = new DefaultTableModel ();
+    this.errorTableModel = new ConsoleTableModel ();
     this.machinePanel.jTableErrors.setModel ( this.errorTableModel );
     this.machinePanel.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.warningTableModel = new DefaultTableModel ();
+    this.warningTableModel = new ConsoleTableModel ();
     this.machinePanel.jTableWarnings.setModel ( this.warningTableModel );
     this.machinePanel.jTableWarnings
         .setColumnModel ( new ConsoleColumnModel () );
@@ -1129,9 +1129,9 @@ public class MachinePanel implements EditorPanel
     if ( index >= 0 )
     {
       highlightStates ( ( ArrayList < State > ) table.getModel ()
-          .getValueAt ( index, DefaultTableModel.STATES_COLUMN ) );
+          .getValueAt ( index, ConsoleTableModel.STATES_COLUMN ) );
       highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
-          .getValueAt ( index, DefaultTableModel.TRANSITIONS_COLUMN ) );
+          .getValueAt ( index, ConsoleTableModel.TRANSITIONS_COLUMN ) );
     }
   }
 

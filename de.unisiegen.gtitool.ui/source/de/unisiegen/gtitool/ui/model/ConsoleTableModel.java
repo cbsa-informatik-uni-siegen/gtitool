@@ -19,9 +19,9 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeExce
  * The Table Model for the warning and error tables
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id:DefaultTableModel.java 305 2007-12-06 19:55:14Z mies $
  */
-public class DefaultTableModel extends AbstractTableModel
+public class ConsoleTableModel extends AbstractTableModel
 {
   
   /**

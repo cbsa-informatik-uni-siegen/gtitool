@@ -7,7 +7,7 @@ import javax.swing.table.TableColumn;
  * The <code>ConsoleColumnModel</code> for the error and warning tables
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id:ConsoleColumnModel.java 305 2007-12-06 19:55:14Z mies $
  */
 public class ConsoleColumnModel extends DefaultTableColumnModel {
 
@@ -23,7 +23,7 @@ public class ConsoleColumnModel extends DefaultTableColumnModel {
     
     // Target Name
     TableColumn descriptionColumn;
-    descriptionColumn = new TableColumn(DefaultTableModel.DESCRIPTION_COLUMN);
+    descriptionColumn = new TableColumn(ConsoleTableModel.DESCRIPTION_COLUMN);
     descriptionColumn.setHeaderValue(""); //$NON-NLS-1$
     this.addColumn(descriptionColumn);
   }

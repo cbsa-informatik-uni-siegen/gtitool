@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -107,7 +108,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
         throw new IllegalArgumentException ();
       }
     }
-    
+
     // Attribute
     boolean foundCurrentPosition = false;
     boolean foundParserStartOffset = false;
@@ -469,9 +470,9 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     {
       this.currentPosition = START_INDEX;
     }
-    else if (this.currentPosition >= this.symbolList.size () )
+    else if ( this.currentPosition >= this.symbolList.size () )
     {
-      this.currentPosition = this.symbolList.size ()-1;
+      this.currentPosition = this.symbolList.size () - 1;
     }
     else
     {
@@ -542,14 +543,14 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   }
 
 
-  public ArrayList < StoreException > getWarning ()
+  public ArrayList < StoreWarningException > getWarning ()
   {
     // TODO Auto-generated method stub
     return null;
   }
 
 
-  public ArrayList < StoreException > getWarning ( int pIndex )
+  public ArrayList < StoreWarningException > getWarning ( int pIndex )
   {
     // TODO Auto-generated method stub
     return null;

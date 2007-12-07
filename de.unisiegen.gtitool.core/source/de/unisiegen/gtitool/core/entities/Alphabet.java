@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -526,14 +527,14 @@ public final class Alphabet implements ParseableEntity, Storable,
   }
 
 
-  public ArrayList < StoreException > getWarning ()
+  public ArrayList < StoreWarningException > getWarning ()
   {
     // TODO Auto-generated method stub
     return null;
   }
 
 
-  public ArrayList < StoreException > getWarning ( int pIndex )
+  public ArrayList < StoreWarningException > getWarning ( int pIndex )
   {
     // TODO Auto-generated method stub
     return null;

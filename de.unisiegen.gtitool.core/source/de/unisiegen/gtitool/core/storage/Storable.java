@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.core.storage;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -28,7 +28,7 @@ public interface Storable
    * 
    * @return The warning.
    */
-  public ArrayList < StoreException > getWarning ();
+  public ArrayList < StoreWarningException > getWarning ();
 
 
   /**
@@ -37,5 +37,5 @@ public interface Storable
    * @param pIndex The index to return.
    * @return The warning with the given index.
    */
-  public ArrayList < StoreException > getWarning ( int pIndex );
+  public ArrayList < StoreWarningException > getWarning ( int pIndex );
 }

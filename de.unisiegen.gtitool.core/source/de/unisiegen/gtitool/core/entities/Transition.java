@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -193,7 +194,7 @@ public final class Transition implements Entity, Storable
         throw new IllegalArgumentException ();
       }
     }
-    
+
     // Not all attribute values found
     if ( !foundId )
     {
@@ -225,7 +226,7 @@ public final class Transition implements Entity, Storable
           {
             setStateBeginId ( currentAttribute.getValueInt () );
             foundStateBegin = true;
-            foundStateBeginId= true ;
+            foundStateBeginId = true;
           }
           else
           {
@@ -233,7 +234,7 @@ public final class Transition implements Entity, Storable
             throw new IllegalArgumentException ();
           }
         }
-        
+
         // Not all attribute values found
         if ( !foundStateBeginId )
         {
@@ -250,7 +251,7 @@ public final class Transition implements Entity, Storable
           {
             setStateEndId ( currentAttribute.getValueInt () );
             foundStateEnd = true;
-            foundStateEndId=true;
+            foundStateEndId = true;
           }
           else
           {
@@ -258,7 +259,7 @@ public final class Transition implements Entity, Storable
             throw new IllegalArgumentException ();
           }
         }
-        
+
         // Not all attribute values found
         if ( !foundStateEndId )
         {
@@ -274,8 +275,7 @@ public final class Transition implements Entity, Storable
     }
 
     // Not all element values found
-    if ( ( !foundAlphabet ) || ( !foundStateBegin )
-        || ( !foundStateEnd ) )
+    if ( ( !foundAlphabet ) || ( !foundStateBegin ) || ( !foundStateEnd ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
@@ -736,14 +736,14 @@ public final class Transition implements Entity, Storable
   }
 
 
-  public ArrayList < StoreException > getWarning ()
+  public ArrayList < StoreWarningException > getWarning ()
   {
     // TODO Auto-generated method stub
     return null;
   }
 
 
-  public ArrayList < StoreException > getWarning ( int pIndex )
+  public ArrayList < StoreWarningException > getWarning ( int pIndex )
   {
     // TODO Auto-generated method stub
     return null;

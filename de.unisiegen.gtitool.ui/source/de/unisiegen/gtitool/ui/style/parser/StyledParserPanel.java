@@ -235,8 +235,7 @@ public abstract class StyledParserPanel extends JPanel
       {
         if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
         {
-          StyledParserPanel.this.jPopupMenu.show ( pEvent.getComponent (),
-              pEvent.getX (), pEvent.getY () );
+          showPopupMenu ( pEvent );
         }
       }
 
@@ -247,8 +246,7 @@ public abstract class StyledParserPanel extends JPanel
       {
         if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
         {
-          StyledParserPanel.this.jPopupMenu.show ( pEvent.getComponent (),
-              pEvent.getX (), pEvent.getY () );
+          showPopupMenu ( pEvent );
         }
       }
     } );
@@ -509,5 +507,22 @@ public abstract class StyledParserPanel extends JPanel
       this.editor.setFocusable ( this.editable );
       this.document.setEditable ( this.editable );
     }
+  }
+
+
+  /**
+   * Shows the {@link JPopupMenu} and enables the copy and cut menu item if text
+   * is selected, otherwise they are diasabled.
+   * 
+   * @param pEvent
+   */
+  private final void showPopupMenu ( MouseEvent pEvent )
+  {
+    int start = this.editor.getSelectionStart ();
+    int end = this.editor.getSelectionEnd ();
+    this.jMenuItemCopy.setEnabled ( start != end );
+    this.jMenuItemCut.setEnabled ( start != end );
+    this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
+        .getY () );
   }
 }

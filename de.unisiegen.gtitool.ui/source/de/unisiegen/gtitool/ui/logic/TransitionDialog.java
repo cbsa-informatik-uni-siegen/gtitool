@@ -295,73 +295,11 @@ public final class TransitionDialog
 
 
   /**
-   * Handle Cancel Button pressed.
+   * Handles cancel button pressed.
    */
-  public final void handleActionPerformedCancel ()
+  public final void handleCancel ()
   {
     this.gui.dispose ();
-  }
-
-
-  /**
-   * Handle MoveLeft Button pressed
-   */
-  public final void handleActionPerformedMoveLeft ()
-  {
-    Object [] selectedValues = this.gui.jDragListChangeOverSet
-        .getSelectedValues ();
-    ArrayList < Symbol > removeList = new ArrayList < Symbol > ();
-    for ( Object current : selectedValues )
-    {
-      removeList.add ( ( Symbol ) current );
-    }
-    removeFromChangeOver ( removeList );
-  }
-
-
-  /**
-   * Handle MoveRight Button pressed
-   */
-  public final void handleActionPerformedMoveRight ()
-  {
-    Object [] selectedValues = this.gui.jDragListAlphabet.getSelectedValues ();
-    ArrayList < Symbol > addList = new ArrayList < Symbol > ();
-    for ( Object current : selectedValues )
-    {
-      addList.add ( ( Symbol ) current );
-    }
-    addToChangeOver ( addList );
-  }
-
-
-  /**
-   * Handle Ok Button pressed.
-   */
-  public final void handleActionPerformedOk ()
-  {
-    this.DIALOG_RESULT = DIALOG_CONFIRMED;
-    this.gui.setVisible ( false );
-    try
-    {
-      ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-      for ( Symbol symbol : this.modelChangeOverSet )
-      {
-        symbols.add ( symbol );
-      }
-      if ( symbols.size () == 0 )
-      {
-        this.alphabet = null;
-      }
-      else
-      {
-        this.alphabet = new Alphabet ( symbols );
-      }
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
   }
 
 
@@ -395,6 +333,68 @@ public final class TransitionDialog
         this.gui.jButtonMoveLeft.setEnabled ( true );
       }
       this.gui.jButtonMoveRight.setEnabled ( false );
+    }
+  }
+
+
+  /**
+   * Handles move left button pressed
+   */
+  public final void handleMoveLeft ()
+  {
+    Object [] selectedValues = this.gui.jDragListChangeOverSet
+        .getSelectedValues ();
+    ArrayList < Symbol > removeList = new ArrayList < Symbol > ();
+    for ( Object current : selectedValues )
+    {
+      removeList.add ( ( Symbol ) current );
+    }
+    removeFromChangeOver ( removeList );
+  }
+
+
+  /**
+   * Handles move right button pressed.
+   */
+  public final void handleMoveRight ()
+  {
+    Object [] selectedValues = this.gui.jDragListAlphabet.getSelectedValues ();
+    ArrayList < Symbol > addList = new ArrayList < Symbol > ();
+    for ( Object current : selectedValues )
+    {
+      addList.add ( ( Symbol ) current );
+    }
+    addToChangeOver ( addList );
+  }
+
+
+  /**
+   * Handle ok button pressed.
+   */
+  public final void handleOk ()
+  {
+    this.DIALOG_RESULT = DIALOG_CONFIRMED;
+    this.gui.setVisible ( false );
+    try
+    {
+      ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+      for ( Symbol symbol : this.modelChangeOverSet )
+      {
+        symbols.add ( symbol );
+      }
+      if ( symbols.size () == 0 )
+      {
+        this.alphabet = null;
+      }
+      else
+      {
+        this.alphabet = new Alphabet ( symbols );
+      }
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 

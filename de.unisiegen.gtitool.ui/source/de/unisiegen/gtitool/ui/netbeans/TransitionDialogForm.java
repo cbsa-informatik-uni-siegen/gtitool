@@ -106,7 +106,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         jScrollPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneAlphabet.setPreferredSize(new java.awt.Dimension(100, 130));
-        jDragListAlphabet.setFocusable(false);
         jDragListAlphabet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jDragListAlphabetValueChanged(evt);
@@ -171,7 +170,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         jScrollPaneChangeOverSet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneChangeOverSet.setPreferredSize(new java.awt.Dimension(100, 130));
-        jDragListChangeOverSet.setFocusable(false);
         jDragListChangeOverSet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jDragListChangeOverSetValueChanged(evt);
@@ -280,19 +278,19 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_jDragListAlphabetValueChanged
 
     private void handleActionPerformedMoveLeft(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedMoveLeft
-        this.logic.handleActionPerformedMoveLeft();
+        this.logic.handleMoveLeft();
     }//GEN-LAST:event_handleActionPerformedMoveLeft
 
     private void handleActionPerformedMoveRight(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedMoveRight
-        this.logic.handleActionPerformedMoveRight();
+        this.logic.handleMoveRight();
     }//GEN-LAST:event_handleActionPerformedMoveRight
 
     private void handleActionPerformedCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedCancel
-        this.logic.handleActionPerformedCancel();
+        this.logic.handleCancel();
     }//GEN-LAST:event_handleActionPerformedCancel
 
     private void handleActionPerformedOk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedOk
-        this.logic.handleActionPerformedOk();
+        this.logic.handleOk();
     }//GEN-LAST:event_handleActionPerformedOk
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -75,7 +75,7 @@ public class WordPanelForm extends javax.swing.JPanel {
 
         JLabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        JLabelAlphabet.setText(bundle.getString("WordDialog.Alphabet")); // NOI18N
+        JLabelAlphabet.setText(bundle.getString("StyledWordParserPanel.Alphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

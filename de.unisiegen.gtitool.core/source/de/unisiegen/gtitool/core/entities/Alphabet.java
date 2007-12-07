@@ -524,4 +524,18 @@ public final class Alphabet implements ParseableEntity, Storable,
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
+
+
+  public ArrayList < StoreException > getWarning ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public ArrayList < StoreException > getWarning ( int pIndex )
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

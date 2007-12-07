@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.storage;
 
 
+import java.util.ArrayList;
+
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -18,4 +21,21 @@ public interface Storable
    * @return The {@link Element}.
    */
   public Element getElement ();
+
+
+  /**
+   * Returns the warnings.
+   * 
+   * @return The warning.
+   */
+  public ArrayList < StoreException > getWarning ();
+
+
+  /**
+   * Returns the warning with the given index.
+   * 
+   * @param pIndex The index to return.
+   * @return The warning with the given index.
+   */
+  public ArrayList < StoreException > getWarning ( int pIndex );
 }

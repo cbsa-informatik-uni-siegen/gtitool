@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -732,5 +733,19 @@ public final class Transition implements Entity, Storable
     result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
     result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
     return result.toString ();
+  }
+
+
+  public ArrayList < StoreException > getWarning ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public ArrayList < StoreException > getWarning ( int pIndex )
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

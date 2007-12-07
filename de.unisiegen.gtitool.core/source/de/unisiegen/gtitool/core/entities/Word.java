@@ -540,4 +540,18 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     }
     return result.toString ();
   }
+
+
+  public ArrayList < StoreException > getWarning ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public ArrayList < StoreException > getWarning ( int pIndex )
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

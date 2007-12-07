@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -325,5 +327,19 @@ public final class Symbol implements ParseableEntity, Storable,
   public final String toStringDebug ()
   {
     return this.name;
+  }
+
+
+  public ArrayList < StoreException > getWarning ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public ArrayList < StoreException > getWarning ( int pIndex )
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

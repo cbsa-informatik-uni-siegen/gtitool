@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.core.storage.exceptions;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StoreException extends Exception
+public class StoreException extends Exception
 {
 
   /**

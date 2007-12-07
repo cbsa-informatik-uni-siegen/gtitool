@@ -12,3 +12,4 @@
 - JSplitpane position speichern
 - Meldung über Fehler und Warnungen
 - Items im Popup-Menü deaktivieren, wenn nicht sinnvoll
+- Strg-Z und Strg-Y in den Parsers implementieren

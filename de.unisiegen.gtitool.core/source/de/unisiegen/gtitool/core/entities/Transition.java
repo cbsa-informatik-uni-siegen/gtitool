@@ -681,19 +681,26 @@ public final class Transition implements Entity, Storable
   public final String toString ()
   {
     StringBuilder result = new StringBuilder ();
-    result.append ( "{" ); //$NON-NLS-1$
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
+    if ( this.symbolSet.size () == 0 )
     {
-      if ( !first )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      first = false;
-      result.append ( iterator.next () );
+      result.append ( "\u03B5" ); //$NON-NLS-1$
     }
-    result.append ( "}" ); //$NON-NLS-1$
+    else
+    {
+      result.append ( "{" ); //$NON-NLS-1$
+      Iterator < Symbol > iterator = this.symbolSet.iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
+      {
+        if ( !first )
+        {
+          result.append ( ", " ); //$NON-NLS-1$
+        }
+        first = false;
+        result.append ( iterator.next () );
+      }
+      result.append ( "}" ); //$NON-NLS-1$
+    }
     return result.toString ();
   }
 

@@ -187,12 +187,24 @@ public final class Transition implements Entity, Storable
 
     // Attribute
     boolean foundId = false;
+    boolean foundStateBeginId = false;
+    boolean foundStateEndId = false;
     for ( Attribute current : pElement.getAttribute () )
     {
       if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
       {
         setId ( current.getValueInt () );
         foundId = true;
+      }
+      else if ( current.getName ().equals ( "StateBeginId" ) ) //$NON-NLS-1$
+      {
+        setStateBeginId ( current.getValueInt () );
+        foundStateBeginId = true;
+      }
+      else if ( current.getName ().equals ( "StateEndId" ) ) //$NON-NLS-1$
+      {
+        setStateEndId ( current.getValueInt () );
+        foundStateEndId = true;
       }
       else
       {
@@ -202,7 +214,7 @@ public final class Transition implements Entity, Storable
     }
 
     // Not all attribute values found
-    if ( !foundId )
+    if ( ( !foundId ) || ( !foundStateBeginId ) || ( !foundStateEndId ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
@@ -210,8 +222,6 @@ public final class Transition implements Entity, Storable
 
     // Element
     boolean foundAlphabet = false;
-    boolean foundStateBegin = false;
-    boolean foundStateEnd = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
@@ -223,56 +233,6 @@ public final class Transition implements Entity, Storable
       {
         addSymbol ( new Symbol ( current ) );
       }
-      else if ( current.getName ().equals ( "StateBegin" ) ) //$NON-NLS-1$
-      {
-        boolean foundStateBeginId = false;
-        for ( Attribute currentAttribute : current.getAttribute () )
-        {
-          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
-          {
-            setStateBeginId ( currentAttribute.getValueInt () );
-            foundStateBegin = true;
-            foundStateBeginId = true;
-          }
-          else
-          {
-            this.warningList.add ( new StoreWarningException ( Messages
-                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
-          }
-        }
-
-        // Not all attribute values found
-        if ( !foundStateBeginId )
-        {
-          throw new StoreException ( Messages
-              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-        }
-      }
-      else if ( current.getName ().equals ( "StateEnd" ) ) //$NON-NLS-1$
-      {
-        boolean foundStateEndId = false;
-        for ( Attribute currentAttribute : current.getAttribute () )
-        {
-          if ( currentAttribute.getName ().equals ( "id" ) ) //$NON-NLS-1$
-          {
-            setStateEndId ( currentAttribute.getValueInt () );
-            foundStateEnd = true;
-            foundStateEndId = true;
-          }
-          else
-          {
-            this.warningList.add ( new StoreWarningException ( Messages
-                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
-          }
-        }
-
-        // Not all attribute values found
-        if ( !foundStateEndId )
-        {
-          throw new StoreException ( Messages
-              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-        }
-      }
       else
       {
         this.warningList.add ( new StoreWarningException ( Messages
@@ -281,7 +241,7 @@ public final class Transition implements Entity, Storable
     }
 
     // Not all element values found
-    if ( ( !foundAlphabet ) || ( !foundStateBegin ) || ( !foundStateEnd ) )
+    if ( !foundAlphabet )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
@@ -453,18 +413,13 @@ public final class Transition implements Entity, Storable
   {
     Element newElement = new Element ( "Transition" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "id", this.id ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "StateBeginId", this.id ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "StateEndId", this.id ) ); //$NON-NLS-1$
     newElement.addElement ( this.alphabet );
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );
     }
-    Element stateBeginElement = new Element ( "StateBegin" ); //$NON-NLS-1$
-    stateBeginElement
-        .addAttribute ( new Attribute ( "id", getStateBeginId () ) ); //$NON-NLS-1$
-    newElement.addElement ( stateBeginElement );
-    Element stateEndElement = new Element ( "StateEnd" ); //$NON-NLS-1$
-    stateEndElement.addAttribute ( new Attribute ( "id", getStateEndId () ) ); //$NON-NLS-1$
-    newElement.addElement ( stateEndElement );
     return newElement;
   }
 

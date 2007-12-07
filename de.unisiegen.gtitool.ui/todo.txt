@@ -11,3 +11,4 @@
 - Console Tabelle automatische Fehlerkorrektur
 - JSplitpane position speichern
 - Meldung über Fehler und Warnungen
+- Items im Popup-Menü deaktivieren, wenn nicht sinnvoll

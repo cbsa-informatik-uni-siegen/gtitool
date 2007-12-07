@@ -1,5 +1,13 @@
 *** Benny ***
-- Notizen im Graph hinzufügen
+- speichern
+- button deaktivieren wenn fehler im alphabet
+- new dialog umbauen, kein tabbedpane mehr
+- transitionen überarbeiten
+- Toolbar hochziehen
+- Highlighten aufheben wenn Console fokus verliert
 
 
 *** Christian ***
+- Console Tabelle automatische Fehlerkorrektur
+- JSplitpane position speichern
+- Meldung über Fehler und Warnungen

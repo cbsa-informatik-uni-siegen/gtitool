@@ -8,15 +8,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileFilter;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
@@ -1187,8 +1190,47 @@ public class MachinePanel implements EditorPanel
   public void handleSave(){
     try
     {
-      Storage.getInstance ().store ( this.model, "test.machine" );
+      PreferenceManager prefmanager = PreferenceManager.getInstance ();
+      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
+      chooser.setMultiSelectionEnabled ( false );
+      chooser.setAcceptAllFileFilterUsed ( false );
+      chooser.addChoosableFileFilter ( new FileFilter ( ) {
+
+        @Override
+        public boolean accept ( File file )
+        {
+          if ( file.isDirectory ( ) )
+          {
+            return true ;
+          }
+            String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
+            try {
+            if (components[1].contains ( "dfa" ) ) //$NON-NLS-1$
+              return true;
+            }
+            catch (ArrayIndexOutOfBoundsException e){
+              // Nothing to do here
+            }
+            return false;
+            
+        }
+
+        @Override
+        public String getDescription ()
+        {
+          return "dfa"; //$NON-NLS-1$
+        }
+        
+      });
+      int n = chooser.showSaveDialog ( this.parent );
+      if (n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null)
+        return;
+      Storage.getInstance ().store ( this.model, chooser.getSelectedFile ().toString () );
       JOptionPane.showMessageDialog ( this.parent, "Datei wurde erfolgreich gespeichert", "Datei speichern", JOptionPane.INFORMATION_MESSAGE );
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
+      
+      
+      
     }
     catch ( StoreException e )
     {

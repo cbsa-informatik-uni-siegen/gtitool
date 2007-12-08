@@ -1,9 +1,13 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
@@ -314,7 +318,33 @@ public final class MainWindow
     PreferenceManager prefmanager = PreferenceManager.getInstance ();
     JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
     chooser.setMultiSelectionEnabled ( true );
-    chooser.showOpenDialog ( this.gui );
+    chooser.setAcceptAllFileFilterUsed ( false );
+    chooser.addChoosableFileFilter ( new FileFilter ( ) {
+
+      @Override
+      public boolean accept ( File file )
+      {
+        if ( file.isDirectory ( ) )
+        {
+          return true ;
+        }
+          String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
+          if (components[components.length-1].contains ( "dfa" ) ) //$NON-NLS-1$
+            return true;
+          return false;
+          
+      }
+
+      @Override
+      public String getDescription ()
+      {
+        return "dfa"; //$NON-NLS-1$
+      }
+      
+    });
+    int n =chooser.showOpenDialog ( this.gui );
+    if ( n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile ( ) == null )
+      return;
     try
     {
      DefaultMachineModel model = (DefaultMachineModel) Storage.getInstance ().load ( chooser.getSelectedFile ( ).toString () );
@@ -486,7 +516,5 @@ public final class MainWindow
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleSave ();
-    
-    
   }
 }

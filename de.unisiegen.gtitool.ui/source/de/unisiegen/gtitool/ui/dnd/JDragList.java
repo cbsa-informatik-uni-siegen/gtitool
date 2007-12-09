@@ -154,11 +154,11 @@ public class JDragList extends JList implements DropTargetListener
 
 
   /**
-   * Returns the drop location.
+   * Returns the drop point.
    * 
-   * @return The drop location.
+   * @return The drop point.
    */
-  public final Point getDropLocation ()
+  public final Point getDropPoint ()
   {
     return this.dropLocation;
   }

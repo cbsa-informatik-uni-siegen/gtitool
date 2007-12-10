@@ -1,15 +1,14 @@
 *** Benny ***
-- speichern
-- button deaktivieren wenn fehler im alphabet
-- new dialog umbauen, kein tabbedpane mehr
-- transitionen überarbeiten
+- Speichern
+- Button deaktivieren wenn fehler im alphabet
+- New dialog umbauen, kein tabbedpane mehr
+- Transitionen überarbeiten
 - Toolbar hochziehen
 - Highlighten aufheben wenn Console fokus verliert
 
 
 *** Christian ***
-- Console Tabelle automatische Fehlerkorrektur
+- Console Tabelle: automatische Fehlerkorrektur
 - JSplitpane position speichern
 - Meldung über Fehler und Warnungen
-- Items im Popup-Menü deaktivieren, wenn nicht sinnvoll
-- Strg-Z und Strg-Y in den Parsers implementieren
+- Strg-Z und Strg-Y in den Parser Paneln implementieren

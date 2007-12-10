@@ -76,7 +76,7 @@ public final class Symbol implements ParseableEntity, Storable,
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a symbol" ); //$NON-NLS-1$
     }
-    
+
     // WarningList
     this.warningList = new ArrayList < StoreWarningException > ();
 
@@ -308,6 +308,10 @@ public final class Symbol implements ParseableEntity, Storable,
     }
     else if ( pName.length () == 1 )
     {
+      if ( pName.equals ( "\u03B5" ) ) //$NON-NLS-1$
+      {
+        throw new SymbolIllegalNameException ( pName );
+      }
       if ( !Character.isJavaIdentifierPart ( pName.charAt ( 0 ) ) )
       {
         throw new SymbolIllegalNameException ( pName );

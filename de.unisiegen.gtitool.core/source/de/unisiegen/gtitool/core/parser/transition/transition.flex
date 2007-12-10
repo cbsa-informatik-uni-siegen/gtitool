@@ -2,7 +2,7 @@
  * The lexer file of the transition scanner.
  * 
  * @author Christian Fehler
- * @version $Id: transition.flex 255 2007-11-30 01:13:45Z fehler $
+ * @version $Id$
  */
 package de.unisiegen.gtitool.core.parser.transition;
 

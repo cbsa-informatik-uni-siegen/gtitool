@@ -7,7 +7,9 @@
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 
 
@@ -102,7 +104,14 @@ alphabet_error					::= LCBRACE:l epsilon
 
 symbol							::= SYMBOL:s
 									{:
-									   RESULT = new Symbol(s);
+									   try
+									   {
+									     RESULT = new Symbol(s);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(sleft, sright, s);
+									   }
 									   RESULT.setParserStartOffset(sleft);
 									   RESULT.setParserEndOffset(sright);
 									:}

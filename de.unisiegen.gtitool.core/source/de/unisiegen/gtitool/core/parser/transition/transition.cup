@@ -2,12 +2,14 @@
  * The cup file of the transition parser.
  * 
  * @author Christian Fehler
- * @version $Id: transition.cup 230 2007-11-23 10:57:06Z fehler $
+ * @version $Id$
  */
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 
 
@@ -109,7 +111,14 @@ transition_error				::= LCBRACE:l epsilon
 
 symbol							::= SYMBOL:s
 									{:
-									   RESULT = new Symbol(s);
+									   try
+									   {
+									     RESULT = new Symbol(s);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(sleft, sright, s);
+									   }
 									   RESULT.setParserStartOffset(sleft);
 									   RESULT.setParserEndOffset(sright);
 									:}

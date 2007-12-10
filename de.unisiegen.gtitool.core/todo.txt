@@ -2,5 +2,3 @@
 
 
 *** Christian ***
-- Epsilon im Parser verbieten
-

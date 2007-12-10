@@ -29,7 +29,8 @@ public class MachineColumnModel extends DefaultTableColumnModel
   {
     TableColumn column;
     column = new TableColumn ( 0 );
-    column.setHeaderValue ( "" ); 
+    // Workaround for windows
+    column.setHeaderValue ( " " ); 
     this.addColumn ( column );
 
     for ( int i = 0 ; i < alphabet.symbolSize () ; i++ )

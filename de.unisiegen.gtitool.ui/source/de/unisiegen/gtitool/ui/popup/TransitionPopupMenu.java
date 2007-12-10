@@ -163,14 +163,14 @@ public class TransitionPopupMenu extends JPopupMenu
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
             TransitionPopupMenu.this.alphabet,
-            TransitionPopupMenu.this.transition.getSourceView (),
-            TransitionPopupMenu.this.transition.getTargetView () );
+            TransitionPopupMenu.this.transition.getSourceView ().getState (),
+            TransitionPopupMenu.this.transition.getTargetView ().getState () );
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
             .getTransition ().getSymbol () );
         dialog.show ();
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
             .valueForCellChanged ( TransitionPopupMenu.this.transition,
-                dialog.getAlphabet ().toString () );
+                dialog.getTransition() );
       }
     } );
     add ( this.config );

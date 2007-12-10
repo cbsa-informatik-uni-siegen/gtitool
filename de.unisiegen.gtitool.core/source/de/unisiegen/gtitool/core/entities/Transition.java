@@ -24,7 +24,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Transition implements Entity, Storable
+public final class Transition implements ParseableEntity, Storable
 {
 
   /**
@@ -37,6 +37,24 @@ public final class Transition implements Entity, Storable
    * The serial version uid.
    */
   private static final long serialVersionUID = 7649068993385065572L;
+
+
+  /**
+   * The start offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  private int parserStartOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * The end offset of this <code>Alphabet</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  private int parserEndOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -84,7 +102,16 @@ public final class Transition implements Entity, Storable
   /**
    * The warning list.
    */
-  private ArrayList < StoreWarningException > warningList;
+  private ArrayList < StoreWarningException > warningList = new ArrayList < StoreWarningException > ();
+
+
+  /**
+   * Allocates a new <code>Transition</code>.
+   */
+  public Transition ()
+  {
+    this.symbolSet = new TreeSet < Symbol > ();
+  }
 
 
   /**
@@ -185,6 +212,9 @@ public final class Transition implements Entity, Storable
     // Symbols
     this.symbolSet = new TreeSet < Symbol > ();
 
+    // WarningList
+    this.warningList = new ArrayList < StoreWarningException > ();
+
     // Attribute
     boolean foundId = false;
     boolean foundStateBeginId = false;
@@ -250,6 +280,52 @@ public final class Transition implements Entity, Storable
 
 
   /**
+   * Allocates a new <code>Transition</code>.
+   * 
+   * @param pSymbols The array of {@link Symbol}s.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
+   */
+  public Transition ( Iterable < Symbol > pSymbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    // Symbols
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    this.symbolSet = new TreeSet < Symbol > ();
+    addSymbol ( pSymbols );
+  }
+
+
+  /**
+   * Allocates a new <code>Transition</code>.
+   * 
+   * @param pSymbols The array of {@link Symbol}s.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           <code>Transition</code> is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>Transition</code> is not correct.
+   */
+  public Transition ( Symbol ... pSymbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    // Symbols
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    this.symbolSet = new TreeSet < Symbol > ();
+    addSymbol ( pSymbols );
+  }
+
+
+  /**
    * Appends the specified {@link Symbol}s to the end of this
    * <code>Transition</code>.
    * 
@@ -290,14 +366,26 @@ public final class Transition implements Entity, Storable
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( !this.alphabet.contains ( pSymbol ) )
+    if ( ( this.alphabet != null ) && ( !this.alphabet.contains ( pSymbol ) ) )
     {
+      ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
+      tmpList.add ( pSymbol );
       throw new TransitionSymbolNotInAlphabetException ( this, this.alphabet,
-          pSymbol );
+          tmpList );
     }
     if ( this.symbolSet.contains ( pSymbol ) )
     {
-      throw new TransitionSymbolOnlyOneTimeException ( this, pSymbol );
+      ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
+      for ( Symbol current : this.symbolSet )
+      {
+        if ( pSymbol.equals ( current ) )
+        {
+          tmpList.add ( current );
+          break;
+        }
+      }
+      tmpList.add ( pSymbol );
+      throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
     this.symbolSet.add ( pSymbol );
   }
@@ -365,7 +453,7 @@ public final class Transition implements Entity, Storable
    * @return True if the {@link Alphabet} of this <code>Transition</code>
    *         contains the given {@link Symbol}. Otherwise false.
    */
-  public final boolean containsSymbol ( Symbol pSymbol )
+  public final boolean contains ( Symbol pSymbol )
   {
     return this.symbolSet.contains ( pSymbol );
   }
@@ -434,6 +522,24 @@ public final class Transition implements Entity, Storable
   public final int getId ()
   {
     return this.id;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
   }
 
 
@@ -585,7 +691,7 @@ public final class Transition implements Entity, Storable
    * 
    * @param pAlphabet The {@link Alphabet} to set.
    */
-  private final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet pAlphabet )
   {
     if ( pAlphabet == null )
     {
@@ -608,6 +714,24 @@ public final class Transition implements Entity, Storable
       throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
     }
     this.id = pId;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

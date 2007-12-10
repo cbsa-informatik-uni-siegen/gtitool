@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.transition;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -30,19 +32,19 @@ public final class TransitionSymbolOnlyOneTimeException extends
    * Allocates a new <code>TransitionSymbolOnlyOneTimeException</code>.
    * 
    * @param pTransition The {@link Transition}.
-   * @param pSymbol The {@link Symbol}.
+   * @param pSymbolList The {@link Symbol}s.
    */
   public TransitionSymbolOnlyOneTimeException ( Transition pTransition,
-      Symbol pSymbol )
+      ArrayList < Symbol > pSymbolList )
   {
-    super ( pTransition, pSymbol );
+    super ( pTransition, pSymbolList );
     // Message and Description
     setMessage ( Messages
         .getString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "TransitionSymbolOnlyOneTimeException.Description", pSymbol.getName (), //$NON-NLS-1$
-        pTransition.getStateBegin ().getName (), pTransition.getStateEnd ()
-            .getName () ) );
+        "TransitionSymbolOnlyOneTimeException.Description", pSymbolList //$NON-NLS-1$
+            .get ( 0 ).getName (), pTransition.getStateBegin ().getName (),
+        pTransition.getStateEnd ().getName () ) );
   }
 
 

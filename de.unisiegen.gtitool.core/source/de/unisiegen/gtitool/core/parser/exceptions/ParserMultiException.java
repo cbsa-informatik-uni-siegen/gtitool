@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 
 
 /**
@@ -38,6 +39,29 @@ public class ParserMultiException extends ParserException
     for ( int j = 0 ; j < pNegativeSymbols.size () ; j++ )
     {
       message [ j ] = Messages.getString ( "Parser.4", pNegativeSymbols //$NON-NLS-1$
+          .get ( j ) );
+      startOffset [ j ] = pNegativeSymbols.get ( j ).getParserStartOffset ();
+      endOffset [ j ] = pNegativeSymbols.get ( j ).getParserEndOffset ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
+
+
+  /**
+   * Throws a <code>ParserMultiException</code> if the {@link Transition}
+   * consist of {@link Symbol}s with the same name.
+   * 
+   * @param pNegativeSymbols The input list of {@link Symbol}s.
+   */
+  public static void throwTransitionException (
+      ArrayList < Symbol > pNegativeSymbols )
+  {
+    String [] message = new String [ pNegativeSymbols.size () ];
+    int [] startOffset = new int [ pNegativeSymbols.size () ];
+    int [] endOffset = new int [ pNegativeSymbols.size () ];
+    for ( int j = 0 ; j < pNegativeSymbols.size () ; j++ )
+    {
+      message [ j ] = Messages.getString ( "Parser.5", pNegativeSymbols //$NON-NLS-1$
           .get ( j ) );
       startOffset [ j ] = pNegativeSymbols.get ( j ).getParserStartOffset ();
       endOffset [ j ] = pNegativeSymbols.get ( j ).getParserEndOffset ();

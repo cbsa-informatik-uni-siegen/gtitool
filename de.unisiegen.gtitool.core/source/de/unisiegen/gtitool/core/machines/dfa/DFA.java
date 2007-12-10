@@ -64,7 +64,7 @@ public final class DFA extends Machine
     Symbol symbol = getWord ().nextSymbol ();
     for ( Transition current : activeState.getTransitionBegin () )
     {
-      if ( current.containsSymbol ( symbol ) )
+      if ( current.contains ( symbol ) )
       {
         setActiveState ( current.getStateEnd () );
         ArrayList < Transition > result = new ArrayList < Transition > ();
@@ -224,7 +224,7 @@ public final class DFA extends Machine
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
         for ( Transition currentTransition : currentState.getTransitionBegin () )
         {
-          if ( currentTransition.containsSymbol ( currentSymbol ) )
+          if ( currentTransition.contains ( currentSymbol ) )
           {
             transitions.add ( currentTransition );
           }

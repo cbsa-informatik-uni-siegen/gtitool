@@ -69,8 +69,6 @@ public final class Alphabet implements ParseableEntity, Storable,
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
-    // Warning
-    this.warningList = new ArrayList < StoreWarningException > ();
   }
 
 
@@ -95,6 +93,9 @@ public final class Alphabet implements ParseableEntity, Storable,
           + "\" is not a alphabet" ); //$NON-NLS-1$
     }
 
+    // WarningList
+    this.warningList = new ArrayList < StoreWarningException > ();
+    
     // Attribute
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;

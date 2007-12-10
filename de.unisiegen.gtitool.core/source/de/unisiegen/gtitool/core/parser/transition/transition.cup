@@ -1,12 +1,12 @@
 /**
- * The cup file of the alphabet parser.
+ * The cup file of the transition parser.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: transition.cup 230 2007-11-23 10:57:06Z fehler $
  */
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
 
@@ -19,13 +19,14 @@ terminal String				SYMBOL;
 terminal					COMMA;
 terminal					LCBRACE;
 terminal					RCBRACE;
+terminal					EPSILON;
 
 
 /****************
  * Non Terminal *
  ****************/
  
-non terminal Alphabet		alphabet;
+non terminal Transition		transition;
 non terminal Symbol			symbol;
 non terminal Symbol[]		symbol_list;
 
@@ -35,23 +36,29 @@ non terminal Symbol[]		symbol_list;
  *********/
 
 non terminal 				epsilon;
-non terminal				alphabet_error;
+non terminal				transition_error;
 non terminal				symbol_list_error;
 
 
-/************
- * Alphabet *
- ************/
+/**************
+ * Transition *
+ **************/
 
-alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
+transition						::= EPSILON:e
+									{:
+									   RESULT = new Transition();
+									   RESULT.setParserStartOffset(eleft);
+									   RESULT.setParserEndOffset(eright);
+									:}
+								|	LCBRACE:l symbol_list:sl RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new Alphabet(sl);
+									     RESULT = new Transition(sl);
 									   }
-									   catch (AlphabetException ecx)
+									   catch (TransitionException ecx)
 									   {
-									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
 									   }
 									   RESULT.setParserStartOffset(lleft);
 									   RESULT.setParserEndOffset(rright);
@@ -60,43 +67,43 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new Alphabet(sl);
+									     RESULT = new Transition(sl);
 									   }
-									   catch (AlphabetException ecx)
+									   catch (TransitionException ecx)
 									   {
-									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
 									   }
 									   RESULT.setParserStartOffset(slleft);
 									   RESULT.setParserEndOffset(slright);
 									:}
-								|	alphabet_error
+								|	transition_error
 									{: :}
 								;
 
-alphabet_error					::= LCBRACE:l epsilon
+transition_error				::= LCBRACE:l epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									   ErrorHandling.expect ( "Transition", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
 								|	LCBRACE:l symbol_list:sl epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", "}", lleft, slright, "}" );
+									   ErrorHandling.expect ( "Transition", "}", lleft, slright, "}" );
 									:}
 								|	LCBRACE:l symbol_list:sl COMMA:c epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									   ErrorHandling.expect ( "Transition", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
 								/* one missing token */
 								|	LCBRACE:l symbol_list:sl SYMBOL:s
 									{:
-									   ErrorHandling.expect ( "Alphabet", ", ", lleft, slright, "," );
+									   ErrorHandling.expect ( "Transition", ", ", lleft, slright, "," );
 									:}
 								|	LCBRACE:l COMMA:c
 									{:
-									   ErrorHandling.expect ( "Alphabet", "s", lleft, lright, "s" );
+									   ErrorHandling.expect ( "Transition", "s", lleft, lright, "s" );
 									:}
 								|	LCBRACE:l RCBRACE:r
 									{:
-									   ErrorHandling.expect ( "Alphabet", "s", lleft, lright, "s" );
+									   ErrorHandling.expect ( "Transition", "s", lleft, lright, "s" );
 									:}
 								;
 
@@ -124,12 +131,12 @@ symbol_list						::= symbol_list:sl COMMA:c symbol:s
 
 symbol_list_error				::= symbol_list:sl COMMA:c epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", " s", slleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									   ErrorHandling.expect ( "Transition", " s", slleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
 									:}
 								/* one missing token */
 								|	symbol_list:sl SYMBOL:s
 									{:
-									   ErrorHandling.expect ( "Alphabet", ", ", slleft, slright, "," );
+									   ErrorHandling.expect ( "Transition", ", ", slleft, slright, "," );
 									:}
 								;
 

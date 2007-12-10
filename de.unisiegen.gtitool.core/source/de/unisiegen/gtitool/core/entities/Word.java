@@ -101,6 +101,9 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
           + "\" is not a word" ); //$NON-NLS-1$
     }
 
+    // WarningList
+    this.warningList = new ArrayList < StoreWarningException > ();
+
     // Element
     for ( Element current : pElement.getElement () )
     {

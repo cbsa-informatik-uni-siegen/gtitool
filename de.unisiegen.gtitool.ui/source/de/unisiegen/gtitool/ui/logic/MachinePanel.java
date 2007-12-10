@@ -32,8 +32,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -638,10 +637,13 @@ public class MachinePanel implements EditorPanel
                     .getY () );
 
             TransitionDialog dialog = new TransitionDialog (
-                MachinePanel.this.parent, MachinePanel.this.alphabet, MachinePanel.this.firstState, target );
+                MachinePanel.this.parent, MachinePanel.this.alphabet,
+                MachinePanel.this.firstState.getState (), target == null ? null
+                    : target.getState () );
             dialog.show ();
             if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
             {
+              Transition newTransition =dialog.getTransition();
               if ( target == null )
               {
 
@@ -653,42 +655,21 @@ public class MachinePanel implements EditorPanel
                       .getPoint ().x
                       / MachinePanel.this.zoomFactor, e.getPoint ().y
                       / MachinePanel.this.zoomFactor, newState );
+                  newTransition.setStateEnd ( target.getState () );
 
                 }
                 catch ( StateException e1 )
                 {
                   e1.printStackTrace ();
                   System.exit ( 1 );
+                  return ;
                 }
 
               }
 
-              try
-              {
-                Transition newTransition;
-                if ( dialog.getAlphabet () == null )
-                  newTransition = new Transition ( MachinePanel.this.alphabet,
-                      MachinePanel.this.firstState.getState (), target
-                          .getState () );
-                else
-                  newTransition = new Transition ( MachinePanel.this.alphabet,
-                      MachinePanel.this.firstState.getState (), target
-                          .getState (), dialog.getAlphabet ().getSymbol () );
-
                 MachinePanel.this.model
                     .createTransitionView ( newTransition, MachinePanel.this.firstState, target );
                 dialog.dispose ();
-              }
-              catch ( TransitionSymbolNotInAlphabetException e1 )
-              {
-                e1.printStackTrace ();
-                System.exit ( 1 );
-              }
-              catch ( TransitionSymbolOnlyOneTimeException e1 )
-              {
-                e1.printStackTrace ();
-                System.exit ( 1 );
-              }
             }
             MachinePanel.this.firstState = null;
             MachinePanel.this.tmpTransition = null;
@@ -722,58 +703,36 @@ public class MachinePanel implements EditorPanel
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
           TransitionDialog dialog = new TransitionDialog (
-              MachinePanel.this.parent, MachinePanel.this.alphabet, MachinePanel.this.firstState, target );
+              MachinePanel.this.parent, MachinePanel.this.alphabet,
+              MachinePanel.this.firstState.getState (), target == null ? null
+                  : target.getState () );
           dialog.show ();
           if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
           {
+            Transition newTransition =dialog.getTransition ();
             if ( target == null )
             {
-
               try
               {
-
                 State newState;
                 newState = new State ( MachinePanel.this.alphabet, false, false );
                 target = MachinePanel.this.model.createStateView ( e
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
-
+                newTransition.setStateEnd ( target.getState () );
               }
               catch ( StateException e1 )
               {
                 e1.printStackTrace ();
                 System.exit ( 1 );
+                return ;
               }
-
             }
 
-            try
-            {
-              Transition newTransition;
-              if ( dialog.getAlphabet () == null )
-                newTransition = new Transition ( MachinePanel.this.alphabet,
-                    MachinePanel.this.firstState.getState (), target
-                        .getState () );
-              else
-                newTransition = new Transition ( MachinePanel.this.alphabet,
-                    MachinePanel.this.firstState.getState (), target
-                        .getState (), dialog.getAlphabet ().getSymbol () );
-              
               MachinePanel.this.model.createTransitionView ( newTransition,
                   MachinePanel.this.firstState, target );
               dialog.dispose ();
-            }
-            catch ( TransitionSymbolNotInAlphabetException e1 )
-            {
-              e1.printStackTrace ();
-              System.exit ( 1 );
-            }
-            catch ( TransitionSymbolOnlyOneTimeException e1 )
-            {
-              e1.printStackTrace ();
-              System.exit ( 1 );
-            }
 
           }
           MachinePanel.this.firstState = null;

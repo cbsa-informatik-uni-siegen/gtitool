@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.transition;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -25,16 +27,17 @@ public abstract class TransitionException extends CoreException
   /**
    * The {@link Symbol}.
    */
-  private Symbol symbol;
+  private ArrayList < Symbol > symbolList;
 
 
   /**
    * Allocates a new <code>TransitionException</code>.
    * 
    * @param pTransition The {@link Transition}.
-   * @param pSymbol The {@link Symbol}.
+   * @param pSymbolList The {@link Symbol}s.
    */
-  public TransitionException ( Transition pTransition, Symbol pSymbol )
+  public TransitionException ( Transition pTransition,
+      ArrayList < Symbol > pSymbolList )
   {
     super ();
     // Transition
@@ -43,26 +46,42 @@ public abstract class TransitionException extends CoreException
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
     this.transition = pTransition;
-
-    // Symbol
-    if ( pSymbol == null )
+    // SymbolList
+    if ( pSymbolList == null )
     {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "symbol list is null" ); //$NON-NLS-1$
     }
-    this.symbol = pSymbol;
-    // Message and Description
+    if ( pSymbolList.size () < 2 )
+    {
+      throw new IllegalArgumentException (
+          "symbol list must contain at least two elements" ); //$NON-NLS-1$
+    }
+    this.symbolList = pSymbolList;
   }
 
 
   /**
-   * Returns the {@link Symbol}.
+   * Returns the {@link Symbol}s.
    * 
-   * @return The {@link Symbol}.
-   * @see #symbol
+   * @return The {@link Symbol}s.
+   * @see #symbolList
    */
-  public final Symbol getSymbol ()
+  public final ArrayList < Symbol > getSymbol ()
   {
-    return this.symbol;
+    return this.symbolList;
+  }
+
+
+  /**
+   * Returns the {@link Symbol} with the given index.
+   * 
+   * @param pIndex The index.
+   * @return The {@link Symbol} with the given index.
+   * @see #symbolList
+   */
+  public final Symbol getSymbol ( int pIndex )
+  {
+    return this.symbolList.get ( pIndex );
   }
 
 
@@ -94,8 +113,15 @@ public abstract class TransitionException extends CoreException
     result.append ( " -> " ); //$NON-NLS-1$
     result.append ( this.transition.getStateEnd ().getName () );
     result.append ( lineBreak );
-    result.append ( "Symbol:      " ); //$NON-NLS-1$
-    result.append ( this.symbol );
+    result.append ( "Symbols:     " ); //$NON-NLS-1$
+    for ( int i = 0 ; i < this.symbolList.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      result.append ( this.symbolList.get ( i ) );
+    }
     return result.toString ();
   }
 }

@@ -76,6 +76,9 @@ public final class Symbol implements ParseableEntity, Storable,
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a symbol" ); //$NON-NLS-1$
     }
+    
+    // WarningList
+    this.warningList = new ArrayList < StoreWarningException > ();
 
     // Attribute
     boolean foundName = false;

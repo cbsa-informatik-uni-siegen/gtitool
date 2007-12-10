@@ -122,7 +122,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-state,parser-symbol,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-state,parser-symbol,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -183,6 +183,27 @@
 			package="de.unisiegen.gtitool.core.parser.symbol"
 			parser="SymbolAbstractParser"
 			symbols="SymbolTerminals"
+			interface="yes"
+			debug="no"
+			expect="100"
+			nonterms="no"
+			nopositions="no"
+			compact_red="no"
+			dump_grammar="no" />
+	</target>
+
+	<!-- parser transition -->
+	<target name="parser-transition">
+		<jflex 
+	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.flex"
+	   		destdir="${sourcegenerateddir}"
+			nobak="yes" />
+		<cup
+			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.cup"
+			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/transition"
+			package="de.unisiegen.gtitool.core.parser.transition"
+			parser="TransitionAbstractParser"
+			symbols="TransitionTerminals"
 			interface="yes"
 			debug="no"
 			expect="100"

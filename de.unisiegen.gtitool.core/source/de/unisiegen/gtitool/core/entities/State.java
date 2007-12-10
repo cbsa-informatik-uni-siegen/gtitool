@@ -182,6 +182,9 @@ public final class State implements ParseableEntity, Storable
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a state" ); //$NON-NLS-1$
     }
+    
+    // WarningList
+    this.warningList = new ArrayList < StoreWarningException > ();
 
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();

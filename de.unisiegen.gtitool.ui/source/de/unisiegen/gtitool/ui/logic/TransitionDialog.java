@@ -12,12 +12,13 @@ import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.dnd.JDragList;
 import de.unisiegen.gtitool.ui.dnd.SymbolTransferHandler;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 
 
@@ -179,6 +180,10 @@ public final class TransitionDialog
   private Alphabet alphabet;
 
 
+  /** The {@link Transition} for this dialog */
+  private Transition transition;
+
+
   /** The model for the change over set JList */
   private SymbolListModel modelChangeOverSet;
 
@@ -194,25 +199,41 @@ public final class TransitionDialog
 
 
   /**
+   * The {@link State} where the <code>Transition</code> begins.
+   */
+  private State stateBegin;
+
+
+  /**
+   * The {@link State} where the <code>Transition</code> ends.
+   */
+  private State stateEnd;
+
+
+  /**
    * Create a new {@link TransitionDialog}
    * 
    * @param pParent the parent frame
    * @param pAlphabet the alphabet available for the new Transition
-   * @param pSource The source {@link DefaultStateView}.
-   * @param pTarget The target {@link DefaultStateView}.
+   * @param pStateBegin The {@link State} where the <code>Transition</code>
+   *          begins.
+   * @param pStateEnd The {@link State} where the <code>Transition</code>
+   *          ends.
    */
   public TransitionDialog ( JFrame pParent, Alphabet pAlphabet,
-      DefaultStateView pSource, DefaultStateView pTarget )
+      State pStateBegin, State pStateEnd )
   {
     this.parent = pParent;
     this.alphabet = pAlphabet;
+    this.transition = null;
+    this.stateBegin = pStateBegin;
+    this.stateEnd = pStateEnd;
     this.gui = new TransitionDialogForm ( this, pParent );
-    String targetName = pTarget == null ? Messages
-        .getString ( "TransitionDialog.NewState" ) : pTarget.getState () //$NON-NLS-1$
+    String targetName = this.stateEnd == null ? Messages
+        .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
         .getName ();
     this.gui.JLabelHeadline.setText ( Messages.getString (
-        "TransitionDialog.Header", pSource //$NON-NLS-1$
-            .getState ().getName (), targetName ) );
+        "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
     this.transferHandler = new SymbolTransferHandler ( this );
     this.gui.jDragListChangeOverSet.setTransferHandler ( this.transferHandler );
     this.gui.jDragListChangeOverSet.setDragEnabled ( true );
@@ -226,7 +247,7 @@ public final class TransitionDialog
     this.gui.jDragListAlphabet.setModel ( this.modelAlphabet );
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jDragListChangeOverSet.setModel ( this.modelChangeOverSet );
-    this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet () );
+    this.gui.styledTransitionParserPanel.setTransition ( new Transition () );
   }
 
 
@@ -251,12 +272,12 @@ public final class TransitionDialog
     this.gui.jButtonMoveRight.setEnabled ( false );
     try
     {
-      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet (
+      this.gui.styledTransitionParserPanel.setTransition ( new Transition (
           changeOverSymbols ) );
     }
-    catch ( AlphabetException e )
+    catch ( TransitionException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }
@@ -272,17 +293,6 @@ public final class TransitionDialog
 
 
   /**
-   * Get the {@link Alphabet} of this Dialog
-   * 
-   * @return The {@link Alphabet}
-   */
-  public final Alphabet getAlphabet ()
-  {
-    return this.alphabet;
-  }
-
-
-  /**
    * Returns the gui.
    * 
    * @return The gui.
@@ -291,6 +301,17 @@ public final class TransitionDialog
   public final TransitionDialogForm getGui ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Get the {@link Transition} of this dialog.
+   * 
+   * @return The {@link Transition}
+   */
+  public final Transition getTransition ()
+  {
+    return this.transition;
   }
 
 
@@ -382,16 +403,16 @@ public final class TransitionDialog
       {
         symbols.add ( symbol );
       }
-      if ( symbols.size () == 0 )
+      System.out.println ( symbols.size () );
+      this.transition = new Transition ( symbols );
+      this.transition.setAlphabet ( this.alphabet );
+      this.transition.setStateBegin ( this.stateBegin );
+      if ( this.stateEnd != null )
       {
-        this.alphabet = null;
-      }
-      else
-      {
-        this.alphabet = new Alphabet ( symbols );
+        this.transition.setStateEnd ( this.stateEnd );
       }
     }
-    catch ( AlphabetException e )
+    catch ( TransitionException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
@@ -420,12 +441,12 @@ public final class TransitionDialog
     this.gui.jButtonMoveLeft.setEnabled ( false );
     try
     {
-      this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet (
+      this.gui.styledTransitionParserPanel.setTransition ( new Transition (
           changeOverSymbols ) );
     }
-    catch ( AlphabetException e )
+    catch ( TransitionException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }
@@ -450,14 +471,18 @@ public final class TransitionDialog
     try
     {
       if ( symbols.size () > 0 )
-        this.gui.styledAlphabetParserPanel
-            .setAlphabet ( new Alphabet ( symbols ) );
+      {
+        this.gui.styledTransitionParserPanel.setTransition ( new Transition (
+            symbols ) );
+      }
       else
-        this.gui.styledAlphabetParserPanel.setAlphabet ( new Alphabet () );
+      {
+        this.gui.styledTransitionParserPanel.setTransition ( new Transition () );
+      }
     }
-    catch ( AlphabetException e )
+    catch ( TransitionException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
   }

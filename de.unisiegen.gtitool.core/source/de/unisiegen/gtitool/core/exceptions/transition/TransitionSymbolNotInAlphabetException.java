@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.transition;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -38,12 +40,12 @@ public final class TransitionSymbolNotInAlphabetException extends
    * 
    * @param pTransition The {@link Transition}.
    * @param pAlphabet The {@link Alphabet}.
-   * @param pSymbol The {@link Symbol}.
+   * @param pSymbolList The {@link Symbol}s.
    */
   public TransitionSymbolNotInAlphabetException ( Transition pTransition,
-      Alphabet pAlphabet, Symbol pSymbol )
+      Alphabet pAlphabet, ArrayList < Symbol > pSymbolList )
   {
-    super ( pTransition, pSymbol );
+    super ( pTransition, pSymbolList );
     // Alphabet
     if ( pAlphabet == null )
     {
@@ -54,8 +56,8 @@ public final class TransitionSymbolNotInAlphabetException extends
     setMessage ( Messages
         .getString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "TransitionSymbolNotInAlphabetException.Description", pSymbol //$NON-NLS-1$
-            .getName (), pAlphabet.toString () ) );
+        "TransitionSymbolNotInAlphabetException.Description", pSymbolList.get ( //$NON-NLS-1$
+            0 ).getName (), pAlphabet.toString () ) );
   }
 
 

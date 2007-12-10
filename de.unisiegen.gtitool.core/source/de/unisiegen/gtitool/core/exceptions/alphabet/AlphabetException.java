@@ -78,9 +78,22 @@ public abstract class AlphabetException extends CoreException
    * @return The {@link Symbol}s.
    * @see #symbolList
    */
-  public final ArrayList < Symbol > getSymbolList ()
+  public final ArrayList < Symbol > getSymbol ()
   {
     return this.symbolList;
+  }
+
+
+  /**
+   * Returns the {@link Symbol} with the given index.
+   * 
+   * @param pIndex The index.
+   * @return The {@link Symbol} with the given index.
+   * @see #symbolList
+   */
+  public final Symbol getSymbol ( int pIndex )
+  {
+    return this.symbolList.get ( pIndex );
   }
 
 

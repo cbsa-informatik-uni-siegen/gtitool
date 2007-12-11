@@ -328,8 +328,7 @@ public final class MainWindow
         {
           return true ;
         }
-          String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
-          if (components[components.length-1].contains ( "dfa" ) ) //$NON-NLS-1$
+          if (file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
             return true;
           return false;
           
@@ -338,7 +337,7 @@ public final class MainWindow
       @Override
       public String getDescription ()
       {
-        return "dfa"; //$NON-NLS-1$
+        return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$
       }
       
     });
@@ -354,7 +353,7 @@ public final class MainWindow
        this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
            .getPanel () );
        this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-           .getSelectedIndex (), "newFile" + count + ".test" ); //$NON-NLS-1$ //$NON-NLS-2$
+           .getSelectedIndex (), chooser.getSelectedFile ( ).getName () ); 
        count++ ;
        setGeneralStates ( true );
        this.gui.jButtonSave.setEnabled ( true );

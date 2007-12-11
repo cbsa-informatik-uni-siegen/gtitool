@@ -1162,14 +1162,8 @@ public class MachinePanel implements EditorPanel
           {
             return true ;
           }
-            String [ ] components = file.getName ( ).split ( "\\." ) ; //$NON-NLS-1$
-            try {
-            if (components[1].contains ( "dfa" ) ) //$NON-NLS-1$
+            if (file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
               return true;
-            }
-            catch (ArrayIndexOutOfBoundsException e){
-              // Nothing to do here
-            }
             return false;
             
         }
@@ -1177,14 +1171,17 @@ public class MachinePanel implements EditorPanel
         @Override
         public String getDescription ()
         {
-          return "dfa"; //$NON-NLS-1$
+          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ /$NON-NLS-2$
         }
         
       });
       int n = chooser.showSaveDialog ( this.parent );
       if (n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null)
         return;
-      Storage.getInstance ().store ( this.model, chooser.getSelectedFile ().toString () );
+      String filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ? 
+          chooser.getSelectedFile ().toString () : chooser.getSelectedFile ().toString () + ".dfa";
+      
+      Storage.getInstance ().store ( this.model, filename );
       JOptionPane.showMessageDialog ( this.parent, "Datei wurde erfolgreich gespeichert", "Datei speichern", JOptionPane.INFORMATION_MESSAGE );
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
       

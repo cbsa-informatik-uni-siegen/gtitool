@@ -2,7 +2,6 @@
 - New dialog umbauen, kein tabbedpane mehr
 - Transitionen überarbeiten
 - Toolbar hochziehen
-- Highlighten aufheben wenn Console fokus verliert
 
 
 *** Christian ***
@@ -10,3 +9,4 @@
 - JSplitpane position speichern
 - Meldung über Fehler und Warnungen
 - Strg-Z und Strg-Y in den Parser Paneln implementieren
+- Standard Farbe für Start Zustand auf weiss setzen

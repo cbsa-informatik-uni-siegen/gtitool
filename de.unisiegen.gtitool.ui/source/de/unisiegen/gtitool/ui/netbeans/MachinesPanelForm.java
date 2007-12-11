@@ -237,9 +237,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
 
         bottom.setName("Console");
         jTabbedPane1.setFocusable(false);
-        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                handleTabbedPaneMouseClicked(evt);
+        jTabbedPane1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                handleFocusLostEvent(evt);
             }
         });
 
@@ -256,9 +256,18 @@ public class MachinesPanelForm extends javax.swing.JPanel {
             }
         ));
         jTableErrors.setFocusable(false);
+        jTableErrors.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jTableErrors.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                handleMouseEntered(evt);
+            }
+        });
         jTableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                handleMouseClickedEvent(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                handleMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                handleMouseExited(evt);
             }
         });
 
@@ -279,9 +288,18 @@ public class MachinesPanelForm extends javax.swing.JPanel {
             }
         ));
         jTableWarnings.setFocusable(false);
+        jTableWarnings.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        jTableWarnings.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                handleMouseEntered(evt);
+            }
+        });
         jTableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                handleMouseClickedEvent(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                handleMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                handleMouseExited(evt);
             }
         });
 
@@ -309,19 +327,25 @@ public class MachinesPanelForm extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTableMachinehandleMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMachinehandleMouseClickedEvent
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jTableMachinehandleMouseClickedEvent
+    private void handleMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleMouseExited
+         this.jTableErrors.clearSelection();
+        this.jTableWarnings.clearSelection();
+        this.logic.clearHighlight();
+    }//GEN-LAST:event_handleMouseExited
 
-    private void handleTabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleTabbedPaneMouseClicked
+    private void handleMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleMouseEntered
+        logic.handleTableMouseEvent ( evt );
+    }//GEN-LAST:event_handleMouseEntered
+
+    private void handleFocusLostEvent(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_handleFocusLostEvent
         this.jTableErrors.clearSelection();
         this.jTableWarnings.clearSelection();
         this.logic.clearHighlight();
-    }//GEN-LAST:event_handleTabbedPaneMouseClicked
+    }//GEN-LAST:event_handleFocusLostEvent
 
-    private void handleMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleMouseClickedEvent
-        logic.handleTableMouseEvent ( evt );
-    }//GEN-LAST:event_handleMouseClickedEvent
+    private void jTableMachinehandleMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMachinehandleMouseClickedEvent
+// TODO Ihre Ereignisbehandlung hier einfügen:
+    }//GEN-LAST:event_jTableMachinehandleMouseClickedEvent
 
     private void handleToolbarMouse(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarMouse
         this.logic.handleToolbarMouse(this.jButtonMouse.isSelected());

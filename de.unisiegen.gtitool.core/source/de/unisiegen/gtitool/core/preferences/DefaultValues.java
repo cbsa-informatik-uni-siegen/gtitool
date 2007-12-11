@@ -38,7 +38,7 @@ public interface DefaultValues
   /**
    * The default {@link Color} of the start {@link State}.
    */
-  public final Color DEFAULT_START_STATE_COLOR = new Color ( 0, 255, 0 );
+  public final Color DEFAULT_START_STATE_COLOR = new Color ( 255, 255, 255 );
 
 
   /**

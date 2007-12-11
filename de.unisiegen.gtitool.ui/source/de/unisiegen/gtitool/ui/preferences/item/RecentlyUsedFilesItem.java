@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 
 /**
- * The class which handles the recently used files and the index of the last
- * active file.
+ * The class which handles the recently used files.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class RecentlyUsedItem
+public class RecentlyUsedFilesItem
 {
 
   /**
@@ -22,18 +21,11 @@ public final class RecentlyUsedItem
 
 
   /**
-   * The index of the last active file.
-   */
-  private int activeIndex;
-
-
-  /**
    * Allocates a new <code>RecentlyUsedItem</code>.
    * 
    * @param pFiles The recently used files.
-   * @param pActiveIndex The index of the last active file.
    */
-  public RecentlyUsedItem ( ArrayList < File > pFiles, int pActiveIndex )
+  public RecentlyUsedFilesItem ( ArrayList < File > pFiles )
   {
     // Files
     if ( pFiles == null )
@@ -41,20 +33,6 @@ public final class RecentlyUsedItem
       throw new NullPointerException ( "files is null" ); //$NON-NLS-1$
     }
     this.files = pFiles;
-    // ActiveIndex
-    this.activeIndex = pActiveIndex;
-  }
-
-
-  /**
-   * Returns the activeIndex.
-   * 
-   * @return The activeIndex.
-   * @see #activeIndex
-   */
-  public final int getActiveIndex ()
-  {
-    return this.activeIndex;
   }
 
 

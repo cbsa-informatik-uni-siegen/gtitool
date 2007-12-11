@@ -29,7 +29,8 @@ import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
-import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedItem;
+import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
+import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -830,6 +831,33 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the opened files and the index of the last active file.
+   * 
+   * @return The opened files and the index of the last active file.
+   */
+  public final OpenedFilesItem getOpenedFilesItem ()
+  {
+    ArrayList < File > files = new ArrayList < File > ();
+    int count = this.preferences.getInt ( "mainWindow.openedFilesCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      String file = this.preferences.get ( "mainWindow.openedFiles" + i, //$NON-NLS-1$
+          end );
+      if ( file.equals ( end ) )
+      {
+        break;
+      }
+      files.add ( new File ( file ) );
+    }
+    int activeIndex = this.preferences.getInt (
+        "mainWindow.openedActiveIndex", -1 ); //$NON-NLS-1$
+    return new OpenedFilesItem ( files, activeIndex );
+  }
+
+
+  /**
    * Returns the last active tab of the {@link PreferencesDialog}.
    * 
    * @return The last active tab of the {@link PreferencesDialog}.
@@ -842,11 +870,11 @@ public final class PreferenceManager
 
 
   /**
-   * Returns the recently used files and the index of the last active file.
+   * Returns the recently used files.
    * 
-   * @return The recently used files and the index of the last active file.
+   * @return The recently used files.
    */
-  public final RecentlyUsedItem getRecentlyUsedItem ()
+  public final RecentlyUsedFilesItem getRecentlyUsedFilesItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
     int count = this.preferences.getInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
@@ -862,9 +890,7 @@ public final class PreferenceManager
       }
       files.add ( new File ( file ) );
     }
-    int activeIndex = this.preferences.getInt (
-        "mainWindow.recentlyUsedActiveIndex", -1 ); //$NON-NLS-1$
-    return new RecentlyUsedItem ( files, activeIndex );
+    return new RecentlyUsedFilesItem ( files );
   }
 
 
@@ -1272,6 +1298,27 @@ public final class PreferenceManager
 
 
   /**
+   * Sets the opened files and the index of the last active file.
+   * 
+   * @param pOpenedFilesItem The {@link OpenedFilesItem}.
+   */
+  public final void setOpenedFilesItem ( OpenedFilesItem pOpenedFilesItem )
+  {
+    for ( int i = 0 ; i < pOpenedFilesItem.getFiles ().size () ; i++ )
+    {
+      logger.debug ( "set opened file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
+          + pOpenedFilesItem.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
+      this.preferences.put ( "mainWindow.openedFiles" + i, pOpenedFilesItem //$NON-NLS-1$
+          .getFiles ().get ( i ).getAbsolutePath () );
+    }
+    this.preferences.putInt ( "mainWindow.openedActiveIndex", //$NON-NLS-1$
+        pOpenedFilesItem.getActiveIndex () );
+    this.preferences.putInt ( "mainWindow.openedFilesCount", //$NON-NLS-1$
+        pOpenedFilesItem.getFiles ().size () );
+  }
+
+
+  /**
    * Sets the last active tab of the {@link PreferencesDialog}.
    * 
    * @param pIndex The index of the last active {@link PreferencesDialog}.
@@ -1284,23 +1331,24 @@ public final class PreferenceManager
 
 
   /**
-   * Sets the recently used files and the index of the last active file.
+   * Sets the recently used files.
    * 
-   * @param pRecentlyUsed The {@link RecentlyUsedItem}.
+   * @param pRecentlyUsedFilesItem The {@link RecentlyUsedFilesItem}.
    */
-  public final void setRecentlyUsedItem ( RecentlyUsedItem pRecentlyUsed )
+  public final void setRecentlyUsedFilesItem (
+      RecentlyUsedFilesItem pRecentlyUsedFilesItem )
   {
-    for ( int i = 0 ; i < pRecentlyUsed.getFiles ().size () ; i++ )
+    for ( int i = 0 ; i < pRecentlyUsedFilesItem.getFiles ().size () ; i++ )
     {
       logger.debug ( "set recently used file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
-          + pRecentlyUsed.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
-      this.preferences.put ( "mainWindow.recentlyUsedFiles" + i, pRecentlyUsed //$NON-NLS-1$
-          .getFiles ().get ( i ).getAbsolutePath () );
+          + pRecentlyUsedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
+          + "\"" ); //$NON-NLS-1$
+      this.preferences.put (
+          "mainWindow.recentlyUsedFiles" + i, pRecentlyUsedFilesItem //$NON-NLS-1$
+              .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "mainWindow.recentlyUsedActiveIndex", //$NON-NLS-1$
-        pRecentlyUsed.getActiveIndex () );
     this.preferences.putInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
-        pRecentlyUsed.getFiles ().size () );
+        pRecentlyUsedFilesItem.getFiles ().size () );
   }
 
 

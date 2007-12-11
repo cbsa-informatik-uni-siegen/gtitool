@@ -19,12 +19,12 @@ import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 public class GrammarPanel implements EditorPanel
 {
 
-  GrammarPanelForm grammarPanel;
+  GrammarPanelForm gui;
 
 
   public GrammarPanel ( JFrame pParent, Alphabet pAlphabet )
   {
-    this.grammarPanel = new GrammarPanelForm ();
+    this.gui = new GrammarPanelForm ();
     
 
   }
@@ -32,7 +32,7 @@ public class GrammarPanel implements EditorPanel
 
   public JPanel getPanel ()
   {
-    return this.grammarPanel;
+    return this.gui;
   }
 
 

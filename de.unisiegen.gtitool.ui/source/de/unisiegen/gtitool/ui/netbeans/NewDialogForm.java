@@ -43,12 +43,12 @@ public class NewDialogForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc=" Erzeugter Quelltext ">//GEN-BEGIN:initComponents
     private void initComponents() {
         javax.swing.JPanel buttonsPanel;
-        javax.swing.JButton cancelButton;
         java.awt.GridBagConstraints gridBagConstraints;
         javax.swing.JLabel headerImageLabel;
         javax.swing.JPanel headerPanel;
         javax.swing.JLabel headerSubTitleLabel;
         javax.swing.JLabel headerTitleLabel;
+        javax.swing.JButton jButtonCancel;
         javax.swing.JPanel tabbedPanel;
 
         machines = new javax.swing.ButtonGroup();
@@ -81,8 +81,8 @@ public class NewDialogForm extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         styledAlphabetParserPanelGrammar = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         buttonsPanel = new javax.swing.JPanel();
-        cancelButton = new javax.swing.JButton();
-        okButton = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
+        jButtonOk = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -352,11 +352,11 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
-        cancelButton.setText(bundle.getString("Cancel")); // NOI18N
-        cancelButton.setLabel(bundle.getString("Cancel")); // NOI18N
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCancel.setText(bundle.getString("Cancel")); // NOI18N
+        jButtonCancel.setLabel(bundle.getString("Cancel")); // NOI18N
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                jButtonCancelActionPerformed(evt);
             }
         });
 
@@ -365,13 +365,13 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        buttonsPanel.add(cancelButton, gridBagConstraints);
+        buttonsPanel.add(jButtonCancel, gridBagConstraints);
 
-        okButton.setMnemonic('O');
-        okButton.setText("Ok");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        jButtonOk.setMnemonic('O');
+        jButtonOk.setText("Ok");
+        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
+                jButtonOkActionPerformed(evt);
             }
         });
 
@@ -381,7 +381,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        buttonsPanel.add(okButton, gridBagConstraints);
+        buttonsPanel.add(jButtonOk, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -405,17 +405,17 @@ public class NewDialogForm extends javax.swing.JDialog {
 // NOTICE Ihre Ereignisbehandlung hier einfügen:
     }//GEN-LAST:event_formWindowClosing
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
 // NOTICE Ihre Ereignisbehandlung hier einfügen:
       this.canceled = false;
       dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
+    }//GEN-LAST:event_jButtonOkActionPerformed
 
-  private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
 // NOTICE Ihre Ereignisbehandlung hier einfügen:
      this.canceled =  true;
       dispose();
-  }//GEN-LAST:event_cancelButtonActionPerformed
+    }//GEN-LAST:event_jButtonCancelActionPerformed
   
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     public javax.swing.JPanel bodyPanelGrammar;
@@ -424,6 +424,7 @@ public class NewDialogForm extends javax.swing.JDialog {
     private javax.swing.JPanel buttonMachinesPanel;
     public javax.swing.ButtonGroup grammars;
     private javax.swing.JPanel grammarsPanel;
+    public javax.swing.JButton jButtonOk;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelGrammarsCaption;
@@ -439,7 +440,6 @@ public class NewDialogForm extends javax.swing.JDialog {
     public javax.swing.JRadioButton jRadioButtonStackMachine;
     public javax.swing.ButtonGroup machines;
     public javax.swing.JPanel machinesPanel;
-    public javax.swing.JButton okButton;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelGrammar;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelMachine;
     public javax.swing.JTabbedPane tabbedPane;

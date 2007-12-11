@@ -1,6 +1,4 @@
 *** Benny ***
-- Speichern
-- Button deaktivieren wenn fehler im alphabet
 - New dialog umbauen, kein tabbedpane mehr
 - Transitionen überarbeiten
 - Toolbar hochziehen

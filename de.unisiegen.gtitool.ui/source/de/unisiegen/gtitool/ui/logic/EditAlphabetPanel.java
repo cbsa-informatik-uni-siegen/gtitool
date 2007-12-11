@@ -19,7 +19,7 @@ public class EditAlphabetPanel
   /**
    * The {@link EditAlphabetPanelForm}
    */
-  private EditAlphabetPanelForm editAlphabetPanel;
+  private EditAlphabetPanelForm gui;
   
   /** The {@link Machine} */
   private Machine machine;
@@ -35,9 +35,9 @@ public class EditAlphabetPanel
   public EditAlphabetPanel ( Machine pMachine )
   {
     this.machine = pMachine;
-    this.editAlphabetPanel = new EditAlphabetPanelForm ();
-    this.editAlphabetPanel.setLogic ( this );
-    this.editAlphabetPanel.styledAlphabetParserPanel.setAlphabet ( this.machine.getAlphabet () );
+    this.gui = new EditAlphabetPanelForm ();
+    this.gui.setLogic ( this );
+    this.gui.styledAlphabetParserPanel.setAlphabet ( this.machine.getAlphabet () );
   }
   
   /**
@@ -47,7 +47,7 @@ public class EditAlphabetPanel
    * @return the panel to edit the Alphabet
    */
   public JPanel getPanel (){
-    return this.editAlphabetPanel;
+    return this.gui;
   }
   
 }

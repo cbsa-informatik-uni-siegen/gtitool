@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 
 
 /**
@@ -24,7 +25,7 @@ public class NewDialog
   /**
    * The {@link NewDialogForm}.
    */
-  private NewDialogForm newDialogForm;
+  private NewDialogForm gui;
 
 
   /**
@@ -47,13 +48,55 @@ public class NewDialog
   public NewDialog ( JFrame pParent )
   {
     this.parent = pParent;
-    this.newDialogForm = new NewDialogForm ( pParent, true );
-    this.newDialogForm.setLogic ( this );
+    this.gui = new NewDialogForm ( pParent, true );
+    this.gui.setLogic ( this );
     this.alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
         .getAlphabet ().clone ();
-    this.newDialogForm.styledAlphabetParserPanelGrammar.setAlphabet ( this.alphabet );
-    this.newDialogForm.styledAlphabetParserPanelMachine.setAlphabet ( this.alphabet );
-    this.newDialogForm.styledAlphabetParserPanelGrammar.synchronize ( this.newDialogForm.styledAlphabetParserPanelMachine );
+    this.gui.styledAlphabetParserPanelGrammar.setAlphabet ( this.alphabet );
+    this.gui.styledAlphabetParserPanelMachine.setAlphabet ( this.alphabet );
+    this.gui.styledAlphabetParserPanelGrammar.synchronize ( this.gui.styledAlphabetParserPanelMachine );
+    
+    /*
+     * Alphabet changed listener
+     */
+    this.gui.styledAlphabetParserPanelGrammar
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( Alphabet pNewAlphabet )
+          {
+            if ( pNewAlphabet == null )
+            {
+              NewDialog.this.gui.jButtonOk.setEnabled ( false );
+            }
+            else
+            {
+              NewDialog.this.gui.jButtonOk.setEnabled ( true );
+            }
+          }
+        } );
+    
+    /*
+     * Alphabet changed listener
+     */
+    this.gui.styledAlphabetParserPanelGrammar
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( Alphabet pNewAlphabet )
+          {
+            if ( pNewAlphabet == null )
+            {
+              NewDialog.this.gui.jButtonOk.setEnabled ( false );
+            }
+            else
+            {
+              NewDialog.this.gui.jButtonOk.setEnabled ( true );
+            }
+          }
+        } );
   }
 
 
@@ -63,12 +106,12 @@ public class NewDialog
   public void show ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.newDialogForm.getWidth () / 2 );
+        - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.newDialogForm.getHeight () / 2 );
-    this.newDialogForm.setBounds ( x, y, this.newDialogForm.getWidth (),
-        this.newDialogForm.getHeight () );
-    this.newDialogForm.setVisible ( true );
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (),
+        this.gui.getHeight () );
+    this.gui.setVisible ( true );
   }
 
 
@@ -79,16 +122,16 @@ public class NewDialog
    */
   public EditorPanel getEditorPanel ()
   {
-    if ( this.newDialogForm.isCanceled () )
+    if ( this.gui.isCanceled () )
       return null;
-    if ( this.newDialogForm.tabbedPane.getSelectedComponent () == this.newDialogForm.machinesPanel )
+    if ( this.gui.tabbedPane.getSelectedComponent () == this.gui.machinesPanel )
     {
-      if ( this.newDialogForm.jRadioButtonDFA.isSelected ()  ) {
+      if ( this.gui.jRadioButtonDFA.isSelected ()  ) {
         
-        return new MachinePanel ( this.parent, new DefaultMachineModel ( new DFA( this.newDialogForm.styledAlphabetParserPanelMachine.getAlphabet () ) ) );
+        return new MachinePanel ( this.parent, new DefaultMachineModel ( new DFA( this.gui.styledAlphabetParserPanelMachine.getAlphabet () ) ) );
       }
     }
-    return new GrammarPanel ( this.parent, this.newDialogForm.styledAlphabetParserPanelGrammar.getAlphabet () );
+    return new GrammarPanel ( this.parent, this.gui.styledAlphabetParserPanelGrammar.getAlphabet () );
   }
 
 

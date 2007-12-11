@@ -32,7 +32,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -71,7 +70,7 @@ public class MachinePanel implements EditorPanel
 
 
   /** The {@linkMachinesPanelForm} */
-  private MachinesPanelForm machinePanel;
+  private MachinesPanelForm gui;
 
   /** The {@link DefaultMachineModel} */
   private DefaultMachineModel model;
@@ -202,25 +201,25 @@ public class MachinePanel implements EditorPanel
     this.model = pModel;
     this.machine = pModel.getMachine ();
     this.alphabet = this.machine.getAlphabet ();
-    this.machinePanel = new MachinesPanelForm ();
-    this.machinePanel.setMachinePanel ( this );
+    this.gui = new MachinesPanelForm ();
+    this.gui.setMachinePanel ( this );
     this.graph = this.model.getJGraph ();
     this.graphModel = this.model.getGraphModel ();
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
     intitializeMouseAdapter ();
     this.graph.addMouseListener ( this.mouse );
-    this.machinePanel.diagrammContentPanel.setViewportView ( this.graph );
+    this.gui.diagrammContentPanel.setViewportView ( this.graph );
 
     this.errorTableModel = new ConsoleTableModel ();
-    this.machinePanel.jTableErrors.setModel ( this.errorTableModel );
-    this.machinePanel.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jTableErrors.setModel ( this.errorTableModel );
+    this.gui.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
     this.warningTableModel = new ConsoleTableModel ();
-    this.machinePanel.jTableWarnings.setModel ( this.warningTableModel );
-    this.machinePanel.jTableWarnings
+    this.gui.jTableWarnings.setModel ( this.warningTableModel );
+    this.gui.jTableWarnings
         .setColumnModel ( new ConsoleColumnModel () );
-    this.machinePanel.jTableMachine.setModel ( this.model.getTableModel () );
-    this.machinePanel.jTableMachine.setColumnModel ( new MachineColumnModel ( this.machine.getAlphabet ()) );
+    this.gui.jTableMachine.setModel ( this.model.getTableModel () );
+    this.gui.jTableMachine.setColumnModel ( new MachineColumnModel ( this.machine.getAlphabet ()) );
     
 
     /*
@@ -233,20 +232,20 @@ public class MachinePanel implements EditorPanel
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            MachinePanel.this.machinePanel.jButtonMouse
+            MachinePanel.this.gui.jButtonMouse
                 .setToolTipText ( Messages.getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
-            MachinePanel.this.machinePanel.jButtonAddState
+            MachinePanel.this.gui.jButtonAddState
                 .setToolTipText ( Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
-            MachinePanel.this.machinePanel.jButtonAddTransition
+            MachinePanel.this.gui.jButtonAddTransition
                 .setToolTipText ( Messages
                     .getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
-            MachinePanel.this.machinePanel.jButtonStartState
+            MachinePanel.this.gui.jButtonStartState
                 .setToolTipText ( Messages
                     .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
-            MachinePanel.this.machinePanel.jButtonFinalState
+            MachinePanel.this.gui.jButtonFinalState
                 .setToolTipText ( Messages
                     .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-            MachinePanel.this.machinePanel.jButtonEditAlphabet
+            MachinePanel.this.gui.jButtonEditAlphabet
                 .setToolTipText ( Messages
                     .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
           }
@@ -384,7 +383,7 @@ public class MachinePanel implements EditorPanel
    */
   public JPanel getPanel ()
   {
-    return this.machinePanel;
+    return this.gui;
   }
 
 
@@ -956,7 +955,7 @@ public class MachinePanel implements EditorPanel
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
-    return new TransitionPopupMenu ( this.graph, this.machinePanel,
+    return new TransitionPopupMenu ( this.graph, this.gui,
         this.graphModel, pTransition, this.machine, this.alphabet );
   }
 
@@ -1032,6 +1031,7 @@ public class MachinePanel implements EditorPanel
    *
    * @param e {@link MouseEvent}
    */
+  @SuppressWarnings("unchecked")
   public void handleTableMouseEvent ( MouseEvent e )
   {
     JTable table = ( JTable ) e.getSource ();
@@ -1146,6 +1146,11 @@ public class MachinePanel implements EditorPanel
     
   }
   
+  /** 
+   * 
+   * Handle save operation
+   *
+   */
   public void handleSave(){
     try
     {
@@ -1171,18 +1176,18 @@ public class MachinePanel implements EditorPanel
         @Override
         public String getDescription ()
         {
-          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ /$NON-NLS-2$
+          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
         }
         
       });
       int n = chooser.showSaveDialog ( this.parent );
       if (n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null)
         return;
-      String filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ? 
-          chooser.getSelectedFile ().toString () : chooser.getSelectedFile ().toString () + ".dfa";
+      String filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ?  //$NON-NLS-1$
+          chooser.getSelectedFile ().toString () : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
       
       Storage.getInstance ().store ( this.model, filename );
-      JOptionPane.showMessageDialog ( this.parent, "Datei wurde erfolgreich gespeichert", "Datei speichern", JOptionPane.INFORMATION_MESSAGE );
+      JOptionPane.showMessageDialog ( this.parent, Messages.getString("Data saved successful"), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE );  //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
       
       
@@ -1190,7 +1195,7 @@ public class MachinePanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), "Datei speichern", JOptionPane.ERROR_MESSAGE );
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),  Messages.getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
   }
 }

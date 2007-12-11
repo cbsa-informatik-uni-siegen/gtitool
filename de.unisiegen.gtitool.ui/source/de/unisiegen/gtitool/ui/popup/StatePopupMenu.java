@@ -152,8 +152,8 @@ public class StatePopupMenu extends JPopupMenu
 
     this.startState = new JCheckBoxMenuItem ( Messages
         .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
-    this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
+//    this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
+//        "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
     this.startState.addActionListener ( new ActionListener ()
     {
 
@@ -181,8 +181,8 @@ public class StatePopupMenu extends JPopupMenu
 
     this.finalState = new JCheckBoxMenuItem ( Messages
         .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-    this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
+//    this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
+//        "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
     this.finalState.addActionListener ( new ActionListener ()
     {
 

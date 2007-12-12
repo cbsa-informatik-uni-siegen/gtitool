@@ -954,7 +954,7 @@ public class MachinePanel implements EditorPanel
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
-    return new TransitionPopupMenu ( this.graph, this.gui, this.graphModel,
+    return new TransitionPopupMenu ( this.graph, this.gui, this.model,
         pTransition, this.machine, this.alphabet );
   }
 
@@ -967,7 +967,7 @@ public class MachinePanel implements EditorPanel
    */
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
-    return new StatePopupMenu ( this.parent, this.graph, this.graphModel,
+    return new StatePopupMenu ( this.parent, this.graph, this.model,
         pState, this.machine );
   }
 

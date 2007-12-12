@@ -96,18 +96,36 @@ public class MachineTableModel extends AbstractTableModel
     fireTableRowsInserted ( this.data.size ()-1, this.data.size ()-1 );
   }
   
+  public void removeState (State state){
+    int index = this.states.get ( state ).intValue ();
+    this.data.remove ( index );
+    fireTableRowsDeleted ( index, index );
+  }
+  
   /** 
    * 
    * Add a transition to this data model
    *
    * @param transition The {@link Transition} to add
    */
+  @SuppressWarnings("unchecked")
   public void addTransition (Transition transition){
     int row = this.states.get ( transition.getStateBegin () ).intValue () ;
     
     for (Symbol symbol : transition.getSymbol ()){
       int column = this.symbols.get ( symbol ).intValue () + 1 ;
       ( ( StateList < State > ) this.data.get ( row )[column] ).add( transition.getStateEnd () );
+    }
+    fireTableDataChanged ();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public void removeTransition (Transition transition){
+   int row = this.states.get ( transition.getStateBegin () ).intValue () ;
+    
+    for (Symbol symbol : transition.getSymbol ()){
+      int column = this.symbols.get ( symbol ).intValue () + 1 ;
+      ( ( StateList < State > ) this.data.get ( row )[column] ).remove ( transition.getStateEnd () );
     }
     fireTableDataChanged ();
   }
@@ -120,6 +138,11 @@ public class MachineTableModel extends AbstractTableModel
     fireTableDataChanged ();
   }
   
+  /**
+   * 
+   * Initialize this table model
+   *
+   */
   private void initialize(){
     for ( int i = 0 ; i < this.alphabet.symbolSize () ; i++ ) {
       this.symbols.put(this.alphabet.getSymbol ( i ), new Integer ( i ) ) ;

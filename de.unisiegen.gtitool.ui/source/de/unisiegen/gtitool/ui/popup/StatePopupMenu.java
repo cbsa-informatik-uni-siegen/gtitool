@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.jgraph.JGraph;
-import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
@@ -22,6 +21,8 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.MachineTableModel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -52,10 +53,10 @@ public class StatePopupMenu extends JPopupMenu
   private JGraph graph;
 
 
-  /**
+  /**DefaultMachineModel
    * {@link GraphModel}
    */
-  private DefaultGraphModel model;
+  private DefaultMachineModel model;
 
 
   /**
@@ -104,7 +105,7 @@ public class StatePopupMenu extends JPopupMenu
    * @param pMachine The {@link Machine}
    */
   public StatePopupMenu ( JFrame pParent, JGraph pGraph,
-      DefaultGraphModel pModel, DefaultStateView pState, Machine pMachine )
+      DefaultMachineModel pModel, DefaultStateView pState, Machine pMachine )
   {
     this.parent = pParent;
     this.machine = pMachine;
@@ -141,9 +142,7 @@ public class StatePopupMenu extends JPopupMenu
         if ( choice == JOptionPane.YES_OPTION )
         {
           StatePopupMenu.this.model.remove ( StatePopupMenu.this.state
-              .getRemoveObjects () );
-          StatePopupMenu.this.machine.removeState ( StatePopupMenu.this.state
-              .getState () );
+               );
         }
 
       }
@@ -172,7 +171,7 @@ public class StatePopupMenu extends JPopupMenu
               .getAttributes (), PreferenceManager.getInstance ()
               .getColorItemState ().getColor () );
 
-        StatePopupMenu.this.model.cellsChanged ( new Object []
+        StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
       }
     } );
@@ -192,7 +191,7 @@ public class StatePopupMenu extends JPopupMenu
       {
         StatePopupMenu.this.state.getState ().setFinalState (
             !StatePopupMenu.this.state.getState ().isFinalState () );
-        StatePopupMenu.this.model.cellsChanged ( new Object []
+        StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
       }
     } );

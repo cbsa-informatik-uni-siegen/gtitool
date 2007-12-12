@@ -32,6 +32,8 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
+import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -46,7 +48,8 @@ public class DefaultMachineModel implements Storable
 
   /** The {@link Machine} */
   private Machine machine;
-  
+
+
   /** The {@link JGraph} containing the diagramm */
   private JGraph jGraph;
 
@@ -65,7 +68,8 @@ public class DefaultMachineModel implements Storable
 
   /** The {@link MachineTableModel} */
   private MachineTableModel tableModel;
-  
+
+
   /**
    * The warning list.
    */
@@ -83,19 +87,22 @@ public class DefaultMachineModel implements Storable
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
   }
-  
+
+
   /**
    * Allocates a new <code>Alphabet</code>.
    * 
    * @param pElement The {@link Element}.
-   * @throws StoreException 
-   * @throws AlphabetException 
-   * @throws SymbolException 
-   * @throws StateException 
-   * @throws TransitionSymbolOnlyOneTimeException 
-   * @throws TransitionException 
+   * @throws StoreException
+   * @throws AlphabetException
+   * @throws SymbolException
+   * @throws StateException
+   * @throws TransitionSymbolOnlyOneTimeException
+   * @throws TransitionException
    */
-  public DefaultMachineModel ( Element pElement ) throws StoreException, StateException, SymbolException, AlphabetException, TransitionException, TransitionSymbolOnlyOneTimeException 
+  public DefaultMachineModel ( Element pElement ) throws StoreException,
+      StateException, SymbolException, AlphabetException, TransitionException,
+      TransitionSymbolOnlyOneTimeException
   {
     // Check if the element is correct
     if ( !pElement.getName ().equals ( "DefaultMachineModel" ) ) //$NON-NLS-1$
@@ -116,9 +123,9 @@ public class DefaultMachineModel implements Storable
     if ( !foundAlphabet )
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    
+
     // initialize this models elements
-    this.machine = new DFA( alphabet );
+    this.machine = new DFA ( alphabet );
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
 
@@ -132,34 +139,36 @@ public class DefaultMachineModel implements Storable
         State state = null;
         boolean xValueLoaded = false;
         boolean yValueLoaded = false;
-        for ( Attribute attribute : current.getAttribute ()){
-          if (attribute.getName ().equals("x")){ //$NON-NLS-1$
+        for ( Attribute attribute : current.getAttribute () )
+        {
+          if ( attribute.getName ().equals ( "x" ) ) { //$NON-NLS-1$
             x = Double.valueOf ( attribute.getValue () ).doubleValue ();
             xValueLoaded = true;
           }
-          if (attribute.getName ().equals("y")){ //$NON-NLS-1$
+          if ( attribute.getName ().equals ( "y" ) ) { //$NON-NLS-1$
             y = Double.valueOf ( attribute.getValue () ).doubleValue ();
             yValueLoaded = true;
           }
         }
-        if ( ! ( xValueLoaded && yValueLoaded ))
+        if ( ! ( xValueLoaded && yValueLoaded ) )
           throw new StoreException ( Messages
               .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-        for ( Element element : current.getElement () ) {
+        for ( Element element : current.getElement () )
+        {
           if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
-              state = new State ( element );
+            state = new State ( element );
         }
         createStateView ( x + 35, y + 35, state );
       }
     }
-    
+
     // Load the transitions
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "DefaultTransitionView" ) ) //$NON-NLS-1$
       {
         Transition transition = new Transition ( current.getElement ( 0 ) );
-        DefaultStateView source = getStateById( transition.getStateBeginId () );
+        DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
         createTransitionView ( transition, source, target );
@@ -183,7 +192,8 @@ public class DefaultMachineModel implements Storable
     }
     return null;
   }
-  
+
+
   /**
    * Get the {@link DefaultStateView} for a {@link State}
    * 
@@ -231,14 +241,15 @@ public class DefaultMachineModel implements Storable
   {
     this.machine.addState ( pState );
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
-    DefaultStateView stateView = new DefaultStateView ( pState, pState.getName () );
+    DefaultStateView stateView = new DefaultStateView ( pState, pState
+        .getName () );
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
 
     // Set bounds
-    GraphConstants.setBounds ( stateView.getAttributes (), new Rectangle2D.Double (
-        x - 35, y - 35, 70, 70 ) );
+    GraphConstants.setBounds ( stateView.getAttributes (),
+        new Rectangle2D.Double ( x - 35, y - 35, 70, 70 ) );
 
     // Set fill color
     if ( pState.isStartState () )
@@ -258,17 +269,15 @@ public class DefaultMachineModel implements Storable
 
     // Add a Floating Port
     stateView.addPort ();
-    
-    
-    
+
     this.jGraph.getGraphLayoutCache ().insert ( stateView );
     this.stateViewList.add ( stateView );
     this.tableModel.addState ( pState );
-   
 
     return stateView;
   }
-  
+
+
   /**
    * Create a new Transition
    * 
@@ -292,14 +301,14 @@ public class DefaultMachineModel implements Storable
     GraphConstants.setLabelColor ( newEdge.getAttributes (), PreferenceManager
         .getInstance ().getColorItemSymbol ().getColor () );
 
-    this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge, source.getChildAt ( 0 ),
-        target.getChildAt ( 0 ) );
+    this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge,
+        source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
     target.addTransition ( newEdge );
     source.addTransition ( newEdge );
 
     this.transitionViewList.add ( newEdge );
     this.tableModel.addTransition ( pTransition );
-    
+
   }
 
 
@@ -359,7 +368,8 @@ public class DefaultMachineModel implements Storable
     // TODO implement me
     return null;
   }
-  
+
+
   /**
    * Initialize this JGraph
    */
@@ -397,24 +407,49 @@ public class DefaultMachineModel implements Storable
 
     double zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
-    
+
     // Set the zoom factor of this graph
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
     EdgeView.renderer.setForeground ( Color.magenta );
   }
 
-  
+
   public DefaultGraphModel getGraphModel ()
   {
     return this.graphModel;
   }
 
-  
+
   public JGraph getJGraph ()
   {
     return this.jGraph;
   }
 
+
+  public void remove ( DefaultStateView state )
+  {
+    this.graphModel.remove ( state.getRemoveObjects () );
+    this.machine.removeState ( state.getState () );
+    this.tableModel.removeState ( state.getState () );
+
+  }
+
+
+  public void removeTransition ( DefaultTransitionView transition )
+  {
+    this.graphModel.remove ( new Object [] { transition } );
+    this.machine.removeTransition ( transition.getTransition () );
+    this.tableModel.removeTransition ( transition.getTransition () );
+
+  }
+
+
+  public void transitionChanged ( Transition oldTransition, Transition transition )
+  {
+    this.tableModel.removeTransition ( oldTransition );
+    this.tableModel.addTransition ( transition );
+    
+  }
 
 }

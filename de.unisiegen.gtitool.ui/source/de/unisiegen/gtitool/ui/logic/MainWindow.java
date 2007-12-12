@@ -365,6 +365,14 @@ public final class MainWindow
        count++ ;
        setGeneralStates ( true );
        this.gui.jButtonSave.setEnabled ( true );
+       
+       
+       // toolbar items
+       this.gui.jButtonAddState.setEnabled ( true );
+       this.gui.jButtonAddTransition.setEnabled( true );
+       this.gui.jButtonFinalState.setEnabled ( true );
+       this.gui.jButtonMouse.setEnabled ( true );
+       this.gui.jButtonStartState.setEnabled ( true );
     }
     catch ( StoreException e )
     {

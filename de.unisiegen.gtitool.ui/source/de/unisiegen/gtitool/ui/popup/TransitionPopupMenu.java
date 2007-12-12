@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -60,8 +61,8 @@ public class TransitionPopupMenu extends JPopupMenu
   private DefaultTransitionView transition;
 
 
-  /** The model containing the transition view */
-  private GraphModel model;
+  /** The {@link DefaultMachineModel} */
+  private DefaultMachineModel model;
 
 
   /** The delete item */
@@ -83,7 +84,7 @@ public class TransitionPopupMenu extends JPopupMenu
    * @param pAlphabet The {@link Alphabet}
    */
   public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
-      GraphModel pModel, DefaultTransitionView pTransition, Machine pMachine,
+      DefaultMachineModel pModel, DefaultTransitionView pTransition, Machine pMachine,
       Alphabet pAlphabet )
   {
     this.graph = pGraph;
@@ -136,11 +137,7 @@ public class TransitionPopupMenu extends JPopupMenu
             "Transition löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          TransitionPopupMenu.this.model.remove ( new Object []
-          { TransitionPopupMenu.this.transition } );
-          TransitionPopupMenu.this.machine
-              .removeTransition ( TransitionPopupMenu.this.transition
-                  .getTransition () );
+          TransitionPopupMenu.this.model.removeTransition (  TransitionPopupMenu.this.transition  );
         }
 
       }
@@ -158,7 +155,7 @@ public class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent e )
       {
-
+        //Transition oldTransition = transition.getTransition ().clone ();
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
@@ -171,6 +168,7 @@ public class TransitionPopupMenu extends JPopupMenu
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
             .valueForCellChanged ( TransitionPopupMenu.this.transition,
                 dialog.getTransition() );
+        //model.transitionChanged( oldTransition, dialog.getTransition ());
       }
     } );
     add ( this.config );

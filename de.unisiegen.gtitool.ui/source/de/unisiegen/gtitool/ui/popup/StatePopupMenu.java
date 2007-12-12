@@ -17,12 +17,10 @@ import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.MachineTableModel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -57,12 +55,6 @@ public class StatePopupMenu extends JPopupMenu
    * {@link GraphModel}
    */
   private DefaultMachineModel model;
-
-
-  /**
-   * The {@link Machine}
-   */
-  private Machine machine;
 
 
   /**
@@ -102,13 +94,11 @@ public class StatePopupMenu extends JPopupMenu
    * @param pGraph the JGraph containing the state
    * @param pModel the model containing the state
    * @param pState the state to open the popup menu
-   * @param pMachine The {@link Machine}
    */
   public StatePopupMenu ( JFrame pParent, JGraph pGraph,
-      DefaultMachineModel pModel, DefaultStateView pState, Machine pMachine )
+      DefaultMachineModel pModel, DefaultStateView pState )
   {
     this.parent = pParent;
-    this.machine = pMachine;
     this.graph = pGraph;
     this.model = pModel;
     this.state = pState;
@@ -141,7 +131,7 @@ public class StatePopupMenu extends JPopupMenu
             "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.remove ( StatePopupMenu.this.state
+          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state
                );
         }
 

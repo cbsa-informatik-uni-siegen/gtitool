@@ -2,11 +2,9 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -516,14 +514,22 @@ public final class MainWindow
     this.gui.jMenuItemUndo.setEnabled ( pState );
   }
 
-
+  /**
+   * 
+   * Handle the save file event
+   *
+   */
   public void handleSave ()
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleSave ();
   }
 
-
+  /**
+   * Handle Toolbar End button value changed
+   * 
+   * @param state The new State of the End Toolbar button
+   */
   public void handleToolbarEnd ( boolean state )
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
@@ -531,28 +537,44 @@ public final class MainWindow
     
   }
 
-
+  /**
+   * Handle Toolbar Start button value changed
+   * 
+   * @param state The new State of the Start Toolbar button
+   */
   public void handleToolbarStart ( boolean state )
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleToolbarStart ( state );
   }
 
-
+  /**
+   * Handle Toolbar Transition button value changed
+   * 
+   * @param state The new State of the Transition Toolbar button
+   */
   public void handleToolbarTransition ( boolean state )
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleToolbarTransition ( state );
   }
 
-
+  /**
+   * Handle Toolbar Add State button value changed
+   * 
+   * @param state The new State of the Add State Toolbar button
+   */
   public void handleToolbarAddState ( boolean state )
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleToolbarAddState ( state );
   }
 
-
+  /**
+   * Handle Toolbar Mouse button value changed
+   * 
+   * @param state The new State of the Mouse Toolbar button
+   */
   public void handleToolbarMouse ( boolean state )
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();

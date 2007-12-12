@@ -48,7 +48,6 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
-import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.storage.Storage;
 
 
@@ -955,7 +954,7 @@ public class MachinePanel implements EditorPanel
       DefaultTransitionView pTransition )
   {
     return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        pTransition, this.machine, this.alphabet );
+        pTransition, this.alphabet );
   }
 
 
@@ -968,7 +967,7 @@ public class MachinePanel implements EditorPanel
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
     return new StatePopupMenu ( this.parent, this.graph, this.model,
-        pState, this.machine );
+        pState );
   }
 
 

@@ -18,7 +18,6 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
@@ -30,10 +29,6 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.logic.TransitionDialog;
-import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
-import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -195,9 +190,9 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * Get the {@link DefaultStateView} for a {@link State}
+   * Get the {@link DefaultStateView} for an id
    * 
-   * @param state The {@link State}
+   * @param id the id
    * @return The {@link DefaultStateView}
    */
   public DefaultStateView getStateById ( int id )
@@ -414,20 +409,35 @@ public class DefaultMachineModel implements Storable
     EdgeView.renderer.setForeground ( Color.magenta );
   }
 
-
+  /**
+   * 
+   * Getter for the {@link DefaultGraphModel}
+   *
+   * @return the {@link DefaultGraphModel}
+   */
   public DefaultGraphModel getGraphModel ()
   {
     return this.graphModel;
   }
 
-
+  /**
+   * 
+   * Getter for the {@link JGraph}
+   *
+   * @return the {@link JGraph}
+   */
   public JGraph getJGraph ()
   {
     return this.jGraph;
   }
 
-
-  public void remove ( DefaultStateView state )
+  /**
+   * 
+   * Remove a state
+   *
+   * @param state that should be removed
+   */
+  public void removeState ( DefaultStateView state )
   {
     this.graphModel.remove ( state.getRemoveObjects () );
     this.machine.removeState ( state.getState () );
@@ -435,7 +445,12 @@ public class DefaultMachineModel implements Storable
 
   }
 
-
+  /**
+   * 
+   * Remove a transition
+   *
+   * @param transition that should be removed
+   */
   public void removeTransition ( DefaultTransitionView transition )
   {
     this.graphModel.remove ( new Object [] { transition } );
@@ -444,7 +459,13 @@ public class DefaultMachineModel implements Storable
 
   }
 
-
+  /**
+   * 
+   * Update data for transition
+   *
+   * @param oldTransition the old transition object
+   * @param transition the new transition object
+   */
   public void transitionChanged ( Transition oldTransition, Transition transition )
   {
     this.tableModel.removeTransition ( oldTransition );

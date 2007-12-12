@@ -12,11 +12,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
-import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
@@ -49,10 +47,6 @@ public class TransitionPopupMenu extends JPopupMenu
   private MachinesPanelForm parent;
 
 
-  /** The link {@link Machine} */
-  private Machine machine;
-
-
   /** The {@link Alphabet} */
   private Alphabet alphabet;
 
@@ -80,16 +74,14 @@ public class TransitionPopupMenu extends JPopupMenu
    * @param pParent The parent panel
    * @param pModel the model containing the state
    * @param pTransition the transition to open the popup menu
-   * @param pMachine The {@link Machine}
    * @param pAlphabet The {@link Alphabet}
    */
   public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
-      DefaultMachineModel pModel, DefaultTransitionView pTransition, Machine pMachine,
+      DefaultMachineModel pModel, DefaultTransitionView pTransition,
       Alphabet pAlphabet )
   {
     this.graph = pGraph;
     this.parent = pParent;
-    this.machine = pMachine;
     this.alphabet = pAlphabet;
     this.model = pModel;
     this.transition = pTransition;
@@ -155,7 +147,7 @@ public class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent e )
       {
-        //Transition oldTransition = transition.getTransition ().clone ();
+        Transition oldTransition = transition.getTransition ().clone ();
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
@@ -168,7 +160,7 @@ public class TransitionPopupMenu extends JPopupMenu
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
             .valueForCellChanged ( TransitionPopupMenu.this.transition,
                 dialog.getTransition() );
-        //model.transitionChanged( oldTransition, dialog.getTransition ());
+        model.transitionChanged( oldTransition, dialog.getTransition ());
       }
     } );
     add ( this.config );

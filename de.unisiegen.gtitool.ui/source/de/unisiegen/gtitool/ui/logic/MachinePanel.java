@@ -222,31 +222,6 @@ public class MachinePanel implements EditorPanel
     this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
         this.machine.getAlphabet () ) );
 
-    /*
-     * Language changed listener
-     */
-    PreferenceManager.getInstance ().addLanguageChangedListener (
-        new LanguageChangedListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void languageChanged ()
-          {
-            MachinePanel.this.gui.jButtonMouse.setToolTipText ( Messages
-                .getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonAddState.setToolTipText ( Messages
-                .getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonAddTransition
-                .setToolTipText ( Messages
-                    .getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonStartState.setToolTipText ( Messages
-                .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonFinalState.setToolTipText ( Messages
-                .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonEditAlphabet.setToolTipText ( Messages
-                .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
-          }
-        } );
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {

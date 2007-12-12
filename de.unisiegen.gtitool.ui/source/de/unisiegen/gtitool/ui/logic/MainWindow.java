@@ -72,14 +72,6 @@ public final class MainWindow
     this.gui.jButtonSave.setEnabled ( false );
     this.gui.jMenuItemSave.setEnabled ( false );
     // Copy
-    this.gui.jButtonCopy.setEnabled ( false );
-    this.gui.jMenuItemCopy.setEnabled ( false );
-    // Paste
-    this.gui.jButtonPaste.setEnabled ( false );
-    this.gui.jMenuItemPaste.setEnabled ( false );
-    // Cut
-    this.gui.jButtonCut.setEnabled ( false );
-    this.gui.jMenuItemCut.setEnabled ( false );
     // Validate
     this.gui.jMenuItemValidate.setEnabled ( false );
     // EnterWord
@@ -88,7 +80,14 @@ public final class MainWindow
     this.gui.jMenuItemPreferences.setEnabled ( true );
     // RecentlyUsed
     this.gui.jMenuRecentlyUsed.setEnabled ( false );
-
+    
+    // toolbar items
+    this.gui.jButtonAddState.setEnabled ( false );
+    this.gui.jButtonAddTransition.setEnabled( false );
+    this.gui.jButtonFinalState.setEnabled ( false );
+    this.gui.jButtonMouse.setEnabled ( false );
+    this.gui.jButtonStartState.setEnabled ( false );
+    
     /*
      * Language changed listener
      */
@@ -162,36 +161,26 @@ public final class MainWindow
                 .getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemCut.setMnemonic ( Messages.getString (
                 "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jButtonCut.setToolTipText ( Messages
-                .getString ( "MainWindow.CutToolTip" ) ); //$NON-NLS-1$
             // Copy
             MainWindow.this.gui.jMenuItemCopy.setText ( Messages
                 .getString ( "MainWindow.Copy" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemCopy.setMnemonic ( Messages.getString (
                 "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jButtonCopy.setToolTipText ( Messages
-                .getString ( "MainWindow.CopyToolTip" ) ); //$NON-NLS-1$           
             // Paste
             MainWindow.this.gui.jMenuItemPaste.setText ( Messages
                 .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemPaste.setMnemonic ( Messages
                 .getString ( "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jButtonPaste.setToolTipText ( Messages
-                .getString ( "MainWindow.PasteToolTip" ) ); //$NON-NLS-1$
             // Undo
             MainWindow.this.gui.jMenuItemUndo.setText ( Messages
                 .getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemUndo.setMnemonic ( Messages.getString (
                 "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jButtonUndo.setToolTipText ( Messages
-                .getString ( "MainWindow.UndoToolTip" ) ); //$NON-NLS-1$           
             // Redo
             MainWindow.this.gui.jMenuItemRedo.setText ( Messages
                 .getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemRedo.setMnemonic ( Messages.getString (
                 "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-            MainWindow.this.gui.jButtonRedo.setToolTipText ( Messages
-                .getString ( "MainWindow.RedoToolTip" ) ); //$NON-NLS-1$              
             // Preferences
             MainWindow.this.gui.jMenuItemPreferences.setText ( Messages
                 .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
@@ -222,6 +211,17 @@ public final class MainWindow
                 .getString ( "MainWindow.About" ) ); //$NON-NLS-1$
             MainWindow.this.gui.jMenuItemAbout.setMnemonic ( Messages
                 .getString ( "MainWindow.AboutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonMouse.setToolTipText ( Messages
+                .getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonAddState.setToolTipText ( Messages
+                .getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonAddTransition
+                .setToolTipText ( Messages
+                    .getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonStartState.setToolTipText ( Messages
+                .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+            MainWindow.this.gui.jButtonFinalState.setToolTipText ( Messages
+                .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
           }
         } );
   }
@@ -306,6 +306,14 @@ public final class MainWindow
       count++ ;
       setGeneralStates ( true );
       this.gui.jButtonSave.setEnabled ( true );
+      
+      
+      // toolbar items
+      this.gui.jButtonAddState.setEnabled ( true );
+      this.gui.jButtonAddTransition.setEnabled( true );
+      this.gui.jButtonFinalState.setEnabled ( true );
+      this.gui.jButtonMouse.setEnabled ( true );
+      this.gui.jButtonStartState.setEnabled ( true );
     }
   }
 
@@ -441,30 +449,22 @@ public final class MainWindow
     this.gui.jMenuItemEnterWord.setEnabled ( pState );
 
     // Cut
-    // this.gui.jButtonCut.setEnabled ( pState );
-    this.gui.jButtonCut.setVisible ( false );
     // this.gui.jMenuItemCut.setEnabled ( pState );
     this.gui.jMenuItemCut.setVisible ( false );
 
     // Copy
-    // this.gui.jButtonCopy.setEnabled ( pState );
-    this.gui.jButtonCopy.setVisible ( false );
     // this.gui.jMenuItemCopy.setEnabled ( pState );
     this.gui.jMenuItemCopy.setVisible ( false );
 
     // Paste
-    // this.gui.jButtonPaste.setEnabled ( pState );
-    this.gui.jButtonPaste.setVisible ( false );
     // this.gui.jMenuItemPaste.setEnabled ( pState );
     this.gui.jMenuItemPaste.setVisible ( false );
 
     // Undo
-    this.gui.jButtonUndo.setVisible ( false );
     this.gui.jMenuItemUndo.setVisible ( false );
     setUndoState ( pState );
 
     // Redo
-    this.gui.jButtonRedo.setVisible ( false );
     this.gui.jMenuItemRedo.setVisible ( false );
     setRedoState ( pState );
 
@@ -481,7 +481,6 @@ public final class MainWindow
    */
   private final void setRedoState ( boolean pState )
   {
-    this.gui.jButtonRedo.setEnabled ( pState );
     this.gui.jMenuItemRedo.setEnabled ( pState );
   }
 
@@ -506,7 +505,6 @@ public final class MainWindow
    */
   private final void setUndoState ( boolean pState )
   {
-    this.gui.jButtonUndo.setEnabled ( pState );
     this.gui.jMenuItemUndo.setEnabled ( pState );
   }
 
@@ -515,5 +513,41 @@ public final class MainWindow
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleSave ();
+  }
+
+
+  public void handleToolbarEnd ( boolean state )
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleToolbarEnd ( state );
+    
+  }
+
+
+  public void handleToolbarStart ( boolean state )
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleToolbarStart ( state );
+  }
+
+
+  public void handleToolbarTransition ( boolean state )
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleToolbarTransition ( state );
+  }
+
+
+  public void handleToolbarAddState ( boolean state )
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleToolbarAddState ( state );
+  }
+
+
+  public void handleToolbarMouse ( boolean state )
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleToolbarMouse ( state );
   }
 }

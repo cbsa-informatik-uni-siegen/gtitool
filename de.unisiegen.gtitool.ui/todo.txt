@@ -1,8 +1,6 @@
 *** Benny ***
 - New dialog umbauen, kein tabbedpane mehr
-- Transitionen überarbeiten
-- Toolbar hochziehen
-
+- In der Tabelle auf Transition löschen und Transition ändern reagieren
 
 *** Christian ***
 - Console Tabelle: automatische Fehlerkorrektur

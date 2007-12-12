@@ -403,7 +403,6 @@ public final class TransitionDialog
       {
         symbols.add ( symbol );
       }
-      System.out.println ( symbols.size () );
       this.transition = new Transition ( symbols );
       this.transition.setAlphabet ( this.alphabet );
       this.transition.setStateBegin ( this.stateBegin );

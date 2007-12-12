@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -72,6 +71,7 @@ public class MachinePanel implements EditorPanel
   /** The {@linkMachinesPanelForm} */
   private MachinesPanelForm gui;
 
+
   /** The {@link DefaultMachineModel} */
   private DefaultMachineModel model;
 
@@ -124,10 +124,6 @@ public class MachinePanel implements EditorPanel
   private DefaultEdge tmpTransition;
 
 
-  /** The position of the first state */
-  private Point firstStatePosition;
-
-
   /** Signals if drag in progress */
   private boolean dragged;
 
@@ -139,18 +135,23 @@ public class MachinePanel implements EditorPanel
   /** The zoom factor for this graph */
   private double zoomFactor;
 
+
   /** The {@link ConsoleTableModel} for the warning table */
   private ConsoleTableModel warningTableModel;
+
 
   /** The {@link ConsoleTableModel} for the error table */
   private ConsoleTableModel errorTableModel;
 
+
   /** The actual highlighted error states */
   private ArrayList < DefaultStateView > oldErrorStates = new ArrayList < DefaultStateView > ();
 
+
   /** The actual highlighted error transitions */
   private ArrayList < DefaultTransitionView > oldErrorTransitions = new ArrayList < DefaultTransitionView > ();
-  
+
+
   /** The {@link JPopupMenu} */
   private JPopupMenu popup;
 
@@ -216,11 +217,10 @@ public class MachinePanel implements EditorPanel
     this.gui.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
     this.warningTableModel = new ConsoleTableModel ();
     this.gui.jTableWarnings.setModel ( this.warningTableModel );
-    this.gui.jTableWarnings
-        .setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jTableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jTableMachine.setModel ( this.model.getTableModel () );
-    this.gui.jTableMachine.setColumnModel ( new MachineColumnModel ( this.machine.getAlphabet ()) );
-    
+    this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
+        this.machine.getAlphabet () ) );
 
     /*
      * Language changed listener
@@ -232,33 +232,31 @@ public class MachinePanel implements EditorPanel
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            MachinePanel.this.gui.jButtonMouse
-                .setToolTipText ( Messages.getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonAddState
-                .setToolTipText ( Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
+            MachinePanel.this.gui.jButtonMouse.setToolTipText ( Messages
+                .getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
+            MachinePanel.this.gui.jButtonAddState.setToolTipText ( Messages
+                .getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
             MachinePanel.this.gui.jButtonAddTransition
                 .setToolTipText ( Messages
                     .getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonStartState
-                .setToolTipText ( Messages
-                    .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonFinalState
-                .setToolTipText ( Messages
-                    .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-            MachinePanel.this.gui.jButtonEditAlphabet
-                .setToolTipText ( Messages
-                    .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
+            MachinePanel.this.gui.jButtonStartState.setToolTipText ( Messages
+                .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+            MachinePanel.this.gui.jButtonFinalState.setToolTipText ( Messages
+                .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+            MachinePanel.this.gui.jButtonEditAlphabet.setToolTipText ( Messages
+                .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
           }
         } );
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
 
-         /**
-          * {@inheritDoc}
-          * @see ColorChangedAdapter#colorChangedStartState ( Color )
-          */
-          @SuppressWarnings("synthetic-access")
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedStartState ( Color )
+           */
+          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedStartState ( Color pNewColor )
           {
@@ -270,7 +268,7 @@ public class MachinePanel implements EditorPanel
                 DefaultStateView state = ( DefaultStateView ) object;
                 if ( state.getState ().isStartState () )
                   GraphConstants.setGradientColor ( state.getAttributes (),
-                      pNewColor) ;
+                      pNewColor );
 
               }
               catch ( ClassCastException e )
@@ -283,11 +281,13 @@ public class MachinePanel implements EditorPanel
 
           }
 
+
           /**
-           *{@inheritDoc}
+           * {@inheritDoc}
+           * 
            * @see ColorChangedAdapter#colorChangedState ( Color )
            */
-          @SuppressWarnings("synthetic-access")
+          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedState ( Color pNewColor )
           {
@@ -314,10 +314,11 @@ public class MachinePanel implements EditorPanel
 
 
           /**
-           *{@inheritDoc}
+           * {@inheritDoc}
+           * 
            * @see ColorChangedAdapter#colorChangedTransition ( Color )
            */
-          @SuppressWarnings("synthetic-access")
+          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedTransition ( Color pNewColor )
           {
@@ -327,8 +328,7 @@ public class MachinePanel implements EditorPanel
               try
               {
                 DefaultTransitionView t = ( DefaultTransitionView ) object;
-                GraphConstants.setLineColor ( t.getAttributes (),
-                    pNewColor );
+                GraphConstants.setLineColor ( t.getAttributes (), pNewColor );
 
               }
               catch ( ClassCastException e )
@@ -343,10 +343,11 @@ public class MachinePanel implements EditorPanel
 
 
           /**
-           *{@inheritDoc}
+           * {@inheritDoc}
+           * 
            * @see ColorChangedAdapter#colorChangedSymbol ( Color )
            */
-          @SuppressWarnings("synthetic-access")
+          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
           Color pNewColor )
@@ -486,8 +487,6 @@ public class MachinePanel implements EditorPanel
   }
 
 
-
-
   /**
    * Initialize the Mouse Adapter of the Toolbar
    */
@@ -496,6 +495,7 @@ public class MachinePanel implements EditorPanel
   {
     this.mouse = new MouseAdapter ()
     {
+
       /**
        * Invoked when the mouse has been clicked on a component.
        */
@@ -503,12 +503,12 @@ public class MachinePanel implements EditorPanel
       public void mouseClicked ( MouseEvent e )
       {
         // Return if pressed Button is not the left mouse button
-        if ( e.getButton () != MouseEvent.BUTTON3 ) {
-          MachinePanel.this.popup = null ;
+        if ( e.getButton () != MouseEvent.BUTTON3 )
+        {
+          MachinePanel.this.popup = null;
           return;
         }
-         
-        
+
         // Open a new popup menu
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
@@ -521,7 +521,8 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
         if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
+          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
+              .getX (), e.getY () );
       }
     };
 
@@ -539,37 +540,41 @@ public class MachinePanel implements EditorPanel
         // if Middle Mouse Button was pressed return
         if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
-        
+
         // if an popup menu is open close it and do nothing more
-        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+        if ( e.getButton () == MouseEvent.BUTTON1
+            && MachinePanel.this.popup != null )
+        {
           MachinePanel.this.popup = null;
           return;
         }
-        
-        // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 ) {
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                .getY () );
-        if ( object == null )
-          MachinePanel.this.popup = createPopupMenu ();
-        else if ( object instanceof DefaultTransitionView )
-          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-        else
-          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
-        if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
-        return;
-      }
-      
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 )
+        {
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                  .getY () );
+          if ( object == null )
+            MachinePanel.this.popup = createPopupMenu ();
+          else if ( object instanceof DefaultTransitionView )
+            MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          else
+            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+          if ( MachinePanel.this.popup != null )
+            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
+                .getX (), e.getY () );
+          return;
+        }
+
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, false, false );
-          
-              MachinePanel.this.model.createStateView ( e.getPoint ().x
-                  / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) ;
+
+          MachinePanel.this.model.createStateView ( e.getPoint ().x
+              / MachinePanel.this.zoomFactor, e.getPoint ().y
+              / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
         {
@@ -589,97 +594,104 @@ public class MachinePanel implements EditorPanel
         // if Middle Mouse Button was pressed return
         if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
-        
+
         // if an popup menu is open close it and do nothing more
-        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+        if ( e.getButton () == MouseEvent.BUTTON1
+            && MachinePanel.this.popup != null )
+        {
           MachinePanel.this.popup = null;
           return;
         }
-        
-        // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 && MachinePanel.this.firstState == null ) {
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                .getY () );
-        if ( object == null )
-          MachinePanel.this.popup = createPopupMenu ();
-        else if ( object instanceof DefaultTransitionView )
-          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-        else
-          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
-        if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
-        return;
-      }
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3
+            && MachinePanel.this.firstState == null )
+        {
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                  .getY () );
+          if ( object == null )
+            MachinePanel.this.popup = createPopupMenu ();
+          else if ( object instanceof DefaultTransitionView )
+            MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          else
+            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+          if ( MachinePanel.this.popup != null )
+            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
+                .getX (), e.getY () );
+          return;
+        }
 
         // if drag in progress return
         if ( MachinePanel.this.dragged )
           return;
-        try
+
+        if ( MachinePanel.this.firstState == null )
         {
+          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
+              .getSelectionCellAt ( e.getPoint () );
           if ( MachinePanel.this.firstState == null )
+            return;
+        }
+        else
+        {
+          DefaultStateView target = null ;
+          try
           {
-            MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
-                .getSelectionCellAt ( e.getPoint () );
-            MachinePanel.this.firstStatePosition = e.getPoint ();
-            if ( MachinePanel.this.firstState == null )
-              return;
-          }
-          else
-          {
+
+            target = ( DefaultStateView ) MachinePanel.this.graph
+                .getNextCellForLocation ( MachinePanel.this.tmpState, e
+                    .getPoint ().getX (), e.getPoint ().getY () );
 
             MachinePanel.this.graphModel.remove ( new Object []
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-            DefaultStateView target = ( DefaultStateView ) MachinePanel.this.graph
-                .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                    .getY () );
 
-            TransitionDialog dialog = new TransitionDialog (
-                MachinePanel.this.parent, MachinePanel.this.alphabet,
-                MachinePanel.this.firstState.getState (), target == null ? null
-                    : target.getState () );
-            dialog.show ();
-            if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
-            {
-              Transition newTransition =dialog.getTransition();
-              if ( target == null )
-              {
-
-                try
-                {
-                  State newState = new State ( MachinePanel.this.alphabet,
-                      false, false );
-                  target = MachinePanel.this.model.createStateView ( e
-                      .getPoint ().x
-                      / MachinePanel.this.zoomFactor, e.getPoint ().y
-                      / MachinePanel.this.zoomFactor, newState );
-                  newTransition.setStateEnd ( target.getState () );
-
-                }
-                catch ( StateException e1 )
-                {
-                  e1.printStackTrace ();
-                  System.exit ( 1 );
-                  return ;
-                }
-
-              }
-
-                MachinePanel.this.model
-                    .createTransitionView ( newTransition, MachinePanel.this.firstState, target );
-                dialog.dispose ();
-            }
-            MachinePanel.this.firstState = null;
-            MachinePanel.this.tmpTransition = null;
-            MachinePanel.this.tmpState = null;
           }
 
-        }
+          catch ( ClassCastException exc )
+          {
+            MachinePanel.this.graphModel.remove ( new Object []
+                                                              { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+          }
+          TransitionDialog dialog = new TransitionDialog (
+              MachinePanel.this.parent, MachinePanel.this.alphabet,
+              MachinePanel.this.firstState.getState (), target == null ? null
+                  : target.getState () );
+          dialog.show ();
+          if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+          {
+            Transition newTransition = dialog.getTransition ();
+            if ( target == null )
+            {
 
-        catch ( ClassCastException exc )
-        {
-          // Nothing to do here
+              try
+              {
+                State newState = new State ( MachinePanel.this.alphabet, false,
+                    false );
+                target = MachinePanel.this.model.createStateView ( e
+                    .getPoint ().x
+                    / MachinePanel.this.zoomFactor, e.getPoint ().y
+                    / MachinePanel.this.zoomFactor, newState );
+                newTransition.setStateEnd ( target.getState () );
+
+              }
+              catch ( StateException e1 )
+              {
+                e1.printStackTrace ();
+                System.exit ( 1 );
+                return;
+              }
+
+            }
+
+            MachinePanel.this.model.createTransitionView ( newTransition,
+                MachinePanel.this.firstState, target );
+            dialog.dispose ();
+          }
+          MachinePanel.this.firstState = null;
+          MachinePanel.this.tmpTransition = null;
+          MachinePanel.this.tmpState = null;
         }
       }
 
@@ -689,60 +701,67 @@ public class MachinePanel implements EditorPanel
       {
         if ( e.getButton () != MouseEvent.BUTTON1 )
           return;
+
+        if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
+          return;
+
+        DefaultStateView target = null;
+
         try
         {
-          if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
-            return;
-          DefaultStateView target = ( DefaultStateView ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
-          if ( target != null && target.equals ( MachinePanel.this.firstState ) )
-            return;
+          target = ( DefaultStateView ) MachinePanel.this.graph
+              .getNextCellForLocation ( MachinePanel.this.tmpState, e
+                  .getPoint ().getX (), e.getPoint ().getY () );
+
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
-          TransitionDialog dialog = new TransitionDialog (
-              MachinePanel.this.parent, MachinePanel.this.alphabet,
-              MachinePanel.this.firstState.getState (), target == null ? null
-                  : target.getState () );
-          dialog.show ();
-          if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
-          {
-            Transition newTransition =dialog.getTransition ();
-            if ( target == null )
-            {
-              try
-              {
-                State newState;
-                newState = new State ( MachinePanel.this.alphabet, false, false );
-                target = MachinePanel.this.model.createStateView ( e
-                    .getPoint ().x
-                    / MachinePanel.this.zoomFactor, e.getPoint ().y
-                    / MachinePanel.this.zoomFactor, newState );
-                newTransition.setStateEnd ( target.getState () );
-              }
-              catch ( StateException e1 )
-              {
-                e1.printStackTrace ();
-                System.exit ( 1 );
-                return ;
-              }
-            }
-
-              MachinePanel.this.model.createTransitionView ( newTransition,
-                  MachinePanel.this.firstState, target );
-              dialog.dispose ();
-
-          }
-          MachinePanel.this.firstState = null;
-          MachinePanel.this.tmpTransition = null;
-          MachinePanel.this.tmpState = null;
-          MachinePanel.this.dragged = false;
+          if ( target != null && target.equals ( MachinePanel.this.firstState ) )
+            return;
         }
         catch ( ClassCastException exc )
         {
-          // Nothint to do here
+          MachinePanel.this.graphModel.remove ( new Object []
+                                                            { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
         }
+
+        TransitionDialog dialog = new TransitionDialog (
+            MachinePanel.this.parent, MachinePanel.this.alphabet,
+            MachinePanel.this.firstState.getState (), target == null ? null
+                : target.getState () );
+        dialog.show ();
+        if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+        {
+          Transition newTransition = dialog.getTransition ();
+          if ( target == null )
+          {
+            try
+            {
+              State newState;
+              newState = new State ( MachinePanel.this.alphabet, false, false );
+              target = MachinePanel.this.model.createStateView (
+                  e.getPoint ().x / MachinePanel.this.zoomFactor,
+                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
+              newTransition.setStateEnd ( target.getState () );
+            }
+            catch ( StateException e1 )
+            {
+              e1.printStackTrace ();
+              System.exit ( 1 );
+              return;
+            }
+          }
+
+          MachinePanel.this.model.createTransitionView ( newTransition,
+              MachinePanel.this.firstState, target );
+          dialog.dispose ();
+
+        }
+        MachinePanel.this.firstState = null;
+        MachinePanel.this.tmpTransition = null;
+        MachinePanel.this.tmpState = null;
+        MachinePanel.this.dragged = false;
+
       }
 
     };
@@ -760,7 +779,6 @@ public class MachinePanel implements EditorPanel
           MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
               .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
                   .getY () );
-          MachinePanel.this.firstStatePosition = e.getPoint ();
         }
 
         else
@@ -770,8 +788,6 @@ public class MachinePanel implements EditorPanel
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           x = e.getX () / MachinePanel.this.zoomFactor;
           y = e.getY () / MachinePanel.this.zoomFactor;
-          x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
-          y = MachinePanel.this.firstStatePosition.y < y ? y - 3 : y + 10;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
@@ -807,8 +823,8 @@ public class MachinePanel implements EditorPanel
 
           x = e.getX () / MachinePanel.this.zoomFactor;
           y = e.getY () / MachinePanel.this.zoomFactor;
-          x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
-          y = MachinePanel.this.firstStatePosition.y < x ? y - 3 : y + 10;
+          // x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
+          // y = MachinePanel.this.firstStatePosition.y < x ? y - 3 : y + 10;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
@@ -840,36 +856,40 @@ public class MachinePanel implements EditorPanel
         // if Middle Mouse Button was pressed return
         if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
-        
+
         // if an popup menu is open close it and do nothing more
-        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+        if ( e.getButton () == MouseEvent.BUTTON1
+            && MachinePanel.this.popup != null )
+        {
           MachinePanel.this.popup = null;
           return;
         }
-        
-        // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 ) {
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                .getY () );
-        if ( object == null )
-          MachinePanel.this.popup = createPopupMenu ();
-        else if ( object instanceof DefaultTransitionView )
-          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-        else
-          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
-        if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
-        return;
-      }
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 )
+        {
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                  .getY () );
+          if ( object == null )
+            MachinePanel.this.popup = createPopupMenu ();
+          else if ( object instanceof DefaultTransitionView )
+            MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          else
+            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+          if ( MachinePanel.this.popup != null )
+            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
+                .getX (), e.getY () );
+          return;
+        }
 
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, true, false );
-              MachinePanel.this.model.createStateView ( e.getPoint ().x
-                  / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) ;
+          MachinePanel.this.model.createStateView ( e.getPoint ().x
+              / MachinePanel.this.zoomFactor, e.getPoint ().y
+              / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
         {
@@ -893,36 +913,40 @@ public class MachinePanel implements EditorPanel
         // if Middle Mouse Button was pressed return
         if ( e.getButton () == MouseEvent.BUTTON2 )
           return;
-        
+
         // if an popup menu is open close it and do nothing more
-        if (e.getButton() == MouseEvent.BUTTON1 && MachinePanel.this.popup != null) {
+        if ( e.getButton () == MouseEvent.BUTTON1
+            && MachinePanel.this.popup != null )
+        {
           MachinePanel.this.popup = null;
           return;
         }
-        
-        // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 ) {
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                .getY () );
-        if ( object == null )
-          MachinePanel.this.popup = createPopupMenu ();
-        else if ( object instanceof DefaultTransitionView )
-          MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
-        else
-          MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
-        if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e.getX (), e.getY () );
-        return;
-      }
+        // Open popup menu if left button was pressed
+        if ( e.getButton () == MouseEvent.BUTTON3 )
+        {
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
+                  .getY () );
+          if ( object == null )
+            MachinePanel.this.popup = createPopupMenu ();
+          else if ( object instanceof DefaultTransitionView )
+            MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          else
+            MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+
+          if ( MachinePanel.this.popup != null )
+            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
+                .getX (), e.getY () );
+          return;
+        }
 
         try
         {
           State newState = new State ( MachinePanel.this.alphabet, false, true );
-              MachinePanel.this.model.createStateView ( e.getPoint ().x
-                  / MachinePanel.this.zoomFactor, e.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState ) ;
+          MachinePanel.this.model.createStateView ( e.getPoint ().x
+              / MachinePanel.this.zoomFactor, e.getPoint ().y
+              / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
         {
@@ -955,8 +979,8 @@ public class MachinePanel implements EditorPanel
   private TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView pTransition )
   {
-    return new TransitionPopupMenu ( this.graph, this.gui,
-        this.graphModel, pTransition, this.machine, this.alphabet );
+    return new TransitionPopupMenu ( this.graph, this.gui, this.graphModel,
+        pTransition, this.machine, this.alphabet );
   }
 
 
@@ -968,8 +992,8 @@ public class MachinePanel implements EditorPanel
    */
   private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
   {
-    return new StatePopupMenu ( this.parent , this.graph, this.graphModel, pState,
-        this.machine );
+    return new StatePopupMenu ( this.parent, this.graph, this.graphModel,
+        pState, this.machine );
   }
 
 
@@ -995,8 +1019,10 @@ public class MachinePanel implements EditorPanel
     return this.machine;
   }
 
+
   /**
    * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
    */
   public Alphabet getAlphabet ()
@@ -1004,20 +1030,21 @@ public class MachinePanel implements EditorPanel
     return this.machine.getAlphabet ();
   }
 
+
   /**
-   *  
-   * Add a new Error 
+   * Add a new Error
    * 
-   * @param e  The {@link MachineException} containing the data
+   * @param e The {@link MachineException} containing the data
    */
   public void addError ( MachineException e )
   {
     this.errorTableModel.addRow ( e );
   }
 
+
   /**
-   *  Add a new Warning 
-   *
+   * Add a new Warning
+   * 
    * @param e The {@link MachineException} containing the data
    */
   public void addWarning ( MachineException e )
@@ -1025,13 +1052,13 @@ public class MachinePanel implements EditorPanel
     this.warningTableModel.addRow ( e );
   }
 
+
   /**
-   * 
    * Handle Row Selection for the tables
-   *
+   * 
    * @param e {@link MouseEvent}
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings ( "unchecked" )
   public void handleTableMouseEvent ( MouseEvent e )
   {
     JTable table = ( JTable ) e.getSource ();
@@ -1039,17 +1066,17 @@ public class MachinePanel implements EditorPanel
 
     if ( index >= 0 )
     {
-      highlightStates ( ( ArrayList < State > ) table.getModel ()
-          .getValueAt ( index, ConsoleTableModel.STATES_COLUMN ) );
+      highlightStates ( ( ArrayList < State > ) table.getModel ().getValueAt (
+          index, ConsoleTableModel.STATES_COLUMN ) );
       highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
           .getValueAt ( index, ConsoleTableModel.TRANSITIONS_COLUMN ) );
     }
   }
 
+
   /**
+   * Highlight the affected states
    * 
-   * Highlight the affected states 
-   *
    * @param states list with all states that are affected
    */
   private void highlightStates ( ArrayList < State > states )
@@ -1079,10 +1106,10 @@ public class MachinePanel implements EditorPanel
         .getAll ( MachinePanel.this.graphModel ) );
   }
 
+
   /**
+   * Highlight the affected transitions
    * 
-   * Highlight the affected transitions 
-   *
    * @param transitions list with all transitions that are affected
    */
   private void highlightTransitions ( ArrayList < Transition > transitions )
@@ -1105,19 +1132,19 @@ public class MachinePanel implements EditorPanel
     this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
   }
-  
+
+
   /**
-   * 
    * Remove all highlighting
-   *
    */
-  public void clearHighlight () {
+  public void clearHighlight ()
+  {
     for ( DefaultTransitionView view : this.oldErrorTransitions )
     {
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemTransition ().getColor () );
     }
-    
+
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
@@ -1134,68 +1161,75 @@ public class MachinePanel implements EditorPanel
         .getAll ( MachinePanel.this.graphModel ) );
   }
 
+
   /**
-   * 
    * Clear all Error and Warning messages
-   *
    */
   public void clearValidationMessages ()
   {
-    this.errorTableModel.clearData();
-    this.warningTableModel.clearData();
-    
+    this.errorTableModel.clearData ();
+    this.warningTableModel.clearData ();
+
   }
-  
-  /** 
-   * 
+
+
+  /**
    * Handle save operation
-   *
    */
-  public void handleSave(){
+  public void handleSave ()
+  {
     try
     {
       PreferenceManager prefmanager = PreferenceManager.getInstance ();
       JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
       chooser.setMultiSelectionEnabled ( false );
       chooser.setAcceptAllFileFilterUsed ( false );
-      chooser.addChoosableFileFilter ( new FileFilter ( ) {
+      chooser.addChoosableFileFilter ( new FileFilter ()
+      {
 
         @Override
         public boolean accept ( File file )
         {
-          if ( file.isDirectory ( ) )
+          if ( file.isDirectory () )
           {
-            return true ;
+            return true;
           }
-            if (file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
-              return true;
-            return false;
-            
+          if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
+            return true;
+          return false;
+
         }
+
 
         @Override
         public String getDescription ()
         {
           return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
         }
-        
-      });
+
+      } );
       int n = chooser.showSaveDialog ( this.parent );
-      if (n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null)
+      if ( n == JFileChooser.CANCEL_OPTION
+          || chooser.getSelectedFile () == null )
         return;
-      String filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ?  //$NON-NLS-1$
-          chooser.getSelectedFile ().toString () : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
-      
+      String filename = chooser.getSelectedFile ().toString ().matches (
+          ".+\\.dfa" ) ? //$NON-NLS-1$
+      chooser.getSelectedFile ().toString ()
+          : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
+
       Storage.getInstance ().store ( this.model, filename );
-      JOptionPane.showMessageDialog ( this.parent, Messages.getString("Data saved successful"), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE );  //$NON-NLS-1$//$NON-NLS-2$
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ( ).getAbsolutePath ( ) );
-      
-      
-      
+      JOptionPane
+          .showMessageDialog (
+              this.parent,
+              Messages.getString ( "Data saved successful" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
+          .getAbsolutePath () );
+
     }
     catch ( StoreException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),  Messages.getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
+          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
   }
 }

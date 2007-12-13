@@ -1195,7 +1195,7 @@ public class MachinePanel implements EditorPanel
       JOptionPane
           .showMessageDialog (
               this.parent,
-              Messages.getString ( "Data saved successful" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
 

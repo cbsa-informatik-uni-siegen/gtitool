@@ -374,6 +374,7 @@ public final class MainWindow
     }
     catch ( StoreException e )
     {
+      // TODOBenny Handle exception
       e.printStackTrace();
       System.exit ( 1 );
     }

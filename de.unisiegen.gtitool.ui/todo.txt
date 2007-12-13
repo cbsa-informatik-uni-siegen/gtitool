@@ -1,6 +1,8 @@
 *** Benny ***
 - New dialog umbauen, kein tabbedpane mehr
-
+- Machine Panel Focus deaktivieren
+- Neue Dateien: "newfile.dfa"
+- Exception-Handling beim Öffnen
 
 
 *** Christian ***

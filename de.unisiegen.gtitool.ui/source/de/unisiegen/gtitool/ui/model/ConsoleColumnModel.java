@@ -42,5 +42,25 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel
         .getString ( "MachinePanel.Description" ) ); //$NON-NLS-1$
     descriptionColumn.setPreferredWidth ( 800 );
     this.addColumn ( descriptionColumn );
+    /*
+     * Only for debug
+     */
+    /*// States
+    TableColumn statesColumn;
+    statesColumn = new TableColumn ( ConsoleTableModel.STATES_COLUMN );
+    statesColumn.setHeaderValue ( Messages.getString ( "MachinePanel.States" ) ); //$NON-NLS-1$
+    this.addColumn ( statesColumn );
+    // Transitions
+    TableColumn transitionsColumn;
+    transitionsColumn = new TableColumn ( ConsoleTableModel.TRANSITIONS_COLUMN );
+    transitionsColumn.setHeaderValue ( Messages
+        .getString ( "MachinePanel.Transitions" ) ); //$NON-NLS-1$
+    this.addColumn ( transitionsColumn );
+    // Symbols
+    TableColumn symbolsColumn;
+    symbolsColumn = new TableColumn ( ConsoleTableModel.SYMBOL_COLUMN );
+    symbolsColumn.setHeaderValue ( Messages
+        .getString ( "MachinePanel.Symbols" ) ); //$NON-NLS-1$
+    this.addColumn ( symbolsColumn );*/
   }
 }

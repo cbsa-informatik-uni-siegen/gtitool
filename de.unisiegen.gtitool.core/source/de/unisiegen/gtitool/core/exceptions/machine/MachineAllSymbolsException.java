@@ -119,6 +119,18 @@ public final class MachineAllSymbolsException extends MachineException
 
 
   /**
+   * Returns the symbolSet.
+   * 
+   * @return The symbolSet.
+   * @see #symbolSet
+   */
+  public final TreeSet < Symbol > getSymbol ()
+  {
+    return this.symbolSet;
+  }
+
+
+  /**
    * Returns the {@link Symbol} with the given index.
    * 
    * @param pIndex The index.
@@ -133,18 +145,6 @@ public final class MachineAllSymbolsException extends MachineException
       iterator.next ();
     }
     return iterator.next ();
-  }
-
-
-  /**
-   * Returns the symbolSet.
-   * 
-   * @return The symbolSet.
-   * @see #symbolSet
-   */
-  public final TreeSet < Symbol > getSymbolSet ()
-  {
-    return this.symbolSet;
   }
 
 

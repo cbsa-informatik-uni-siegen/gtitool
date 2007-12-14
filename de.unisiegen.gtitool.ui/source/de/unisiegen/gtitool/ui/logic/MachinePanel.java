@@ -649,7 +649,7 @@ public final class MachinePanel implements EditorPanel
     }
     else
     {
-      throw new IllegalArgumentException ( "wrong event source"); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
     }
     int index = table.rowAtPoint ( pEvent.getPoint () );
     if ( this.consoleTimer != null )
@@ -699,10 +699,10 @@ public final class MachinePanel implements EditorPanel
     }
     else
     {
-      highlightStates ( ( ArrayList < State > ) table.getModel ().getValueAt (
-          index, ConsoleTableModel.STATES_COLUMN ) );
-      highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
-          .getValueAt ( index, ConsoleTableModel.TRANSITIONS_COLUMN ) );
+      highlightStates ( ( ( ConsoleTableModel ) table.getModel () )
+          .getStates ( index ) );
+      highlightTransitions ( ( ( ConsoleTableModel ) table.getModel () )
+          .getTransitions ( index ) );
     }
   }
 

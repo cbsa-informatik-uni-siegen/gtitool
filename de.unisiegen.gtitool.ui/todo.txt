@@ -7,7 +7,6 @@
 
 
 *** Christian ***
-- Console Tabelle: automatische Fehlerkorrektur
-- JSplitpane position speichern
-- Meldung über Fehler und Warnungen
-- Strg-Z und Strg-Y in den Parser Paneln implementieren
+- Console: Automatische Fehlerkorrektur
+- Meldung über Fehler und Warnungen anzeigen
+- Rückgängig im Parser Panel implementieren

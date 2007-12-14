@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -20,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -424,6 +427,33 @@ public final class MachinePanel implements EditorPanel
 
           }
 
+        } );
+    /*
+     * Divider Location
+     */
+    this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationConsole () );
+    this.gui.jSplitPaneConsole.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+
+          public void propertyChange ( PropertyChangeEvent evt )
+          {
+            PreferenceManager.getInstance ().setDividerLocationConsole (
+                ( ( Integer ) evt.getNewValue () ).intValue () );
+          }
+        } );
+    this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationTable () );
+    this.gui.jSplitPaneTable.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+
+          public void propertyChange ( PropertyChangeEvent evt )
+          {
+            PreferenceManager.getInstance ().setDividerLocationTable (
+                ( ( Integer ) evt.getNewValue () ).intValue () );
+          }
         } );
   }
 

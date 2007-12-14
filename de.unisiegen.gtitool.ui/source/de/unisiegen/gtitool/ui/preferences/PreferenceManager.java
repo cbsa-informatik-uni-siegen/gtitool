@@ -124,6 +124,18 @@ public final class PreferenceManager
 
 
   /**
+   * The default console divider location.
+   */
+  public static int DEFAULT_DIVIDER_LOCATION_CONSOLE = -1;
+
+
+  /**
+   * The default table divider location.
+   */
+  public static int DEFAULT_DIVIDER_LOCATION_TABLE = -1;
+
+
+  /**
    * The default preference dialog last active tab.
    */
   public static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
@@ -464,12 +476,12 @@ public final class PreferenceManager
   public final AlphabetItem getAlphabetItem ()
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    int count = this.preferences.getInt ( "defaultAlphabetCount", //$NON-NLS-1$
+    int count = this.preferences.getInt ( "DefaultAlphabetCount", //$NON-NLS-1$
         Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
     loop : for ( int i = 0 ; i < count ; i++ )
     {
-      String symbol = this.preferences.get ( "defaultAlphabet" + i, //$NON-NLS-1$
+      String symbol = this.preferences.get ( "DefaultAlphabet" + i, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
       {
@@ -771,6 +783,30 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the console divider location.
+   * 
+   * @return The console divider location.
+   */
+  public final int getDividerLocationConsole ()
+  {
+    return this.preferences.getInt ( "MachinePanel.DividerConsole", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_CONSOLE );
+  }
+
+
+  /**
+   * Returns the table divider location.
+   * 
+   * @return The table divider location.
+   */
+  public final int getDividerLocationTable ()
+  {
+    return this.preferences.getInt ( "MachinePanel.DividerTable", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_TABLE );
+  }
+
+
+  /**
    * Returns the {@link LanguageItem}.
    * 
    * @return The {@link LanguageItem}.
@@ -808,12 +844,12 @@ public final class PreferenceManager
    */
   public final Rectangle getMainWindowBounds ()
   {
-    int x = this.preferences.getInt ( "mainWindow.xPosition", //$NON-NLS-1$
+    int x = this.preferences.getInt ( "MainWindow.XPosition", //$NON-NLS-1$
         DEFAULT_POSITION_X );
-    int y = this.preferences.getInt ( "mainWindow.yPosition", //$NON-NLS-1$
+    int y = this.preferences.getInt ( "MainWindow.YPosition", //$NON-NLS-1$
         DEFAULT_POSITION_Y );
-    int width = this.preferences.getInt ( "mainWindow.width", DEFAULT_WIDTH ); //$NON-NLS-1$
-    int height = this.preferences.getInt ( "mainWindow.height", DEFAULT_HEIGHT ); //$NON-NLS-1$
+    int width = this.preferences.getInt ( "MainWindow.Width", DEFAULT_WIDTH ); //$NON-NLS-1$
+    int height = this.preferences.getInt ( "MainWindow.Height", DEFAULT_HEIGHT ); //$NON-NLS-1$
     return new Rectangle ( x, y, width, height );
   }
 
@@ -825,7 +861,7 @@ public final class PreferenceManager
    */
   public final boolean getMainWindowMaximized ()
   {
-    return this.preferences.getBoolean ( "mainWindow.maximized", //$NON-NLS-1$
+    return this.preferences.getBoolean ( "MainWindow.Maximized", //$NON-NLS-1$
         DEFAULT_MAXIMIZED );
   }
 
@@ -838,12 +874,12 @@ public final class PreferenceManager
   public final OpenedFilesItem getOpenedFilesItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
-    int count = this.preferences.getInt ( "mainWindow.openedFilesCount", //$NON-NLS-1$
+    int count = this.preferences.getInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
         Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
     for ( int i = 0 ; i < count ; i++ )
     {
-      String file = this.preferences.get ( "mainWindow.openedFiles" + i, //$NON-NLS-1$
+      String file = this.preferences.get ( "MainWindow.OpenedFiles" + i, //$NON-NLS-1$
           end );
       if ( file.equals ( end ) )
       {
@@ -852,7 +888,7 @@ public final class PreferenceManager
       files.add ( new File ( file ) );
     }
     int activeIndex = this.preferences.getInt (
-        "mainWindow.openedActiveIndex", -1 ); //$NON-NLS-1$
+        "MainWindow.OpenedActiveIndex", -1 ); //$NON-NLS-1$
     return new OpenedFilesItem ( files, activeIndex );
   }
 
@@ -877,12 +913,12 @@ public final class PreferenceManager
   public final RecentlyUsedFilesItem getRecentlyUsedFilesItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
-    int count = this.preferences.getInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
+    int count = this.preferences.getInt ( "MainWindow.RecentlyUsedFilesCount", //$NON-NLS-1$
         Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
     for ( int i = 0 ; i < count ; i++ )
     {
-      String file = this.preferences.get ( "mainWindow.recentlyUsedFiles" + i, //$NON-NLS-1$
+      String file = this.preferences.get ( "MainWindow.RecentlyUsedFiles" + i, //$NON-NLS-1$
           end );
       if ( file.equals ( end ) )
       {
@@ -912,7 +948,7 @@ public final class PreferenceManager
    */
   public final String getWorkingPath ()
   {
-    return this.preferences.get ( "workingPath", DEFAULT_WORKING_PATH ); //$NON-NLS-1$
+    return this.preferences.get ( "WorkingPath", DEFAULT_WORKING_PATH ); //$NON-NLS-1$
   }
 
 
@@ -924,7 +960,7 @@ public final class PreferenceManager
   public final ZoomFactorItem getZoomFactorItem ()
   {
     return ZoomFactorItem.createFactor ( this.preferences.getInt (
-        "zoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
+        "ZoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
   }
 
 
@@ -979,10 +1015,10 @@ public final class PreferenceManager
     for ( int i = 0 ; i < pAlphabetItem.getAlphabet ().symbolSize () ; i++ )
     {
       this.preferences.put (
-          "defaultAlphabet" + i, pAlphabetItem.getAlphabet ().getSymbol ( i ) //$NON-NLS-1$
+          "DefaultAlphabet" + i, pAlphabetItem.getAlphabet ().getSymbol ( i ) //$NON-NLS-1$
               .getName () );
     }
-    this.preferences.putInt ( "defaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
+    this.preferences.putInt ( "DefaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
         .getAlphabet ().symbolSize () );
   }
 
@@ -1237,6 +1273,30 @@ public final class PreferenceManager
 
 
   /**
+   * Sets the console divider location.
+   * 
+   * @param pLocation The console divider location.
+   */
+  public final void setDividerLocationConsole ( int pLocation )
+  {
+    logger.debug ( "set console divider location to \"" + pLocation + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "MachinePanel.DividerConsole", pLocation ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the table divider location.
+   * 
+   * @param pLocation The table divider location.
+   */
+  public final void setDividerLocationTable ( int pLocation )
+  {
+    logger.debug ( "set table divider location to \"" + pLocation + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "MachinePanel.DividerTable", pLocation ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Sets the {@link LanguageItem}.
    * 
    * @param pLanguageItem The {@link LanguageItem}.
@@ -1284,15 +1344,15 @@ public final class PreferenceManager
       logger.debug ( "set main window bounds to \"" + "x=" + bounds.x + ", " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           + "y=" + bounds.y + ", " + "width=" + bounds.width + ", " + "height=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
           + bounds.height + "\"" ); //$NON-NLS-1$
-      this.preferences.putInt ( "mainWindow.xPosition", bounds.x ); //$NON-NLS-1$
-      this.preferences.putInt ( "mainWindow.yPosition", bounds.y ); //$NON-NLS-1$
-      this.preferences.putInt ( "mainWindow.width", bounds.width ); //$NON-NLS-1$
-      this.preferences.putInt ( "mainWindow.height", bounds.height ); //$NON-NLS-1$
+      this.preferences.putInt ( "MainWindow.XPosition", bounds.x ); //$NON-NLS-1$
+      this.preferences.putInt ( "MainWindow.YPosition", bounds.y ); //$NON-NLS-1$
+      this.preferences.putInt ( "MainWindow.Width", bounds.width ); //$NON-NLS-1$
+      this.preferences.putInt ( "MainWindow.Height", bounds.height ); //$NON-NLS-1$
     }
     else
     {
       logger.debug ( "set main window maximized to \"true\"" ); //$NON-NLS-1$
-      this.preferences.putBoolean ( "mainWindow.maximized", true ); //$NON-NLS-1$
+      this.preferences.putBoolean ( "MainWindow.Maximized", true ); //$NON-NLS-1$
     }
   }
 
@@ -1308,12 +1368,12 @@ public final class PreferenceManager
     {
       logger.debug ( "set opened file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
           + pOpenedFilesItem.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
-      this.preferences.put ( "mainWindow.openedFiles" + i, pOpenedFilesItem //$NON-NLS-1$
+      this.preferences.put ( "MainWindow.OpenedFiles" + i, pOpenedFilesItem //$NON-NLS-1$
           .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "mainWindow.openedActiveIndex", //$NON-NLS-1$
+    this.preferences.putInt ( "MainWindow.OpenedActiveIndex", //$NON-NLS-1$
         pOpenedFilesItem.getActiveIndex () );
-    this.preferences.putInt ( "mainWindow.openedFilesCount", //$NON-NLS-1$
+    this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
         pOpenedFilesItem.getFiles ().size () );
   }
 
@@ -1344,10 +1404,10 @@ public final class PreferenceManager
           + pRecentlyUsedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
           + "\"" ); //$NON-NLS-1$
       this.preferences.put (
-          "mainWindow.recentlyUsedFiles" + i, pRecentlyUsedFilesItem //$NON-NLS-1$
+          "MainWindow.RecentlyUsedFiles" + i, pRecentlyUsedFilesItem //$NON-NLS-1$
               .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "mainWindow.recentlyUsedFilesCount", //$NON-NLS-1$
+    this.preferences.putInt ( "MainWindow.RecentlyUsedFilesCount", //$NON-NLS-1$
         pRecentlyUsedFilesItem.getFiles ().size () );
   }
 
@@ -1371,7 +1431,7 @@ public final class PreferenceManager
   public final void setWorkingPath ( String pPath )
   {
     logger.debug ( "set the working path to \"" + pPath + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.put ( "workingPath", pPath ); //$NON-NLS-1$
+    this.preferences.put ( "WorkingPath", pPath ); //$NON-NLS-1$
   }
 
 
@@ -1384,7 +1444,6 @@ public final class PreferenceManager
   {
     logger.debug ( "set zoom factor to \"" //$NON-NLS-1$
         + pZoomFactor.getFactor () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "zoomFactor", pZoomFactor.getFactor () ); //$NON-NLS-1$
+    this.preferences.putInt ( "ZoomFactor", pZoomFactor.getFactor () ); //$NON-NLS-1$
   }
-
 }

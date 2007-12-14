@@ -34,7 +34,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         jPanelTable = new javax.swing.JPanel();
         jScrollPaneTable = new javax.swing.JScrollPane();
         jTableMachine = new javax.swing.JTable();
-        jPanelButtom = new javax.swing.JPanel();
+        jPanelBottom = new javax.swing.JPanel();
         jTabbedPaneConsole = new javax.swing.JTabbedPane();
         jScrollPaneErrors = new javax.swing.JScrollPane();
         jTableErrors = new javax.swing.JTable();
@@ -87,7 +87,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
 
         jSplitPaneConsole.setLeftComponent(jPanelTop);
 
-        jPanelButtom.setLayout(new java.awt.GridBagLayout());
+        jPanelBottom.setLayout(new java.awt.GridBagLayout());
 
         jTabbedPaneConsole.setFocusable(false);
         jTableErrors.setFocusable(false);
@@ -139,9 +139,9 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelButtom.add(jTabbedPaneConsole, gridBagConstraints);
+        jPanelBottom.add(jTabbedPaneConsole, gridBagConstraints);
 
-        jSplitPaneConsole.setRightComponent(jPanelButtom);
+        jSplitPaneConsole.setRightComponent(jPanelBottom);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -180,7 +180,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane diagrammContentPanel;
-    public javax.swing.JPanel jPanelButtom;
+    public javax.swing.JPanel jPanelBottom;
     public javax.swing.JPanel jPanelDiagramm;
     public javax.swing.JPanel jPanelTable;
     public javax.swing.JPanel jPanelTop;

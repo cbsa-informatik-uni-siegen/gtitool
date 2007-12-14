@@ -11,6 +11,6 @@
 *** Christian ***
 - Console: Automatische Fehlerkorrektur
 - Meldung über Fehler und Warnungen anzeigen
-- Im WordPanel die Symbole kopieren
 - Ausblenden von Console und Tabelle
 - Zustand highlighten mit Timer
+- LanguageChangedListener überprüfen

@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -695,10 +696,12 @@ public final class MachinePanel implements EditorPanel
     this.consoleTimer = new Timer ();
     if ( index == -1 )
     {
+      table.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
       this.consoleTimer.schedule ( new SleepTimerTask ( table, -1 ), 250 );
     }
     else
     {
+      table.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
       this.consoleTimer.schedule ( new SleepTimerTask ( table, index ), 250 );
     }
   }

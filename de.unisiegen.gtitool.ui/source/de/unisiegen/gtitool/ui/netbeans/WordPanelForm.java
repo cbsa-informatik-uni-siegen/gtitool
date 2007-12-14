@@ -85,6 +85,7 @@ public class WordPanelForm extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(JLabelAlphabet, gridBagConstraints);
 
+        styledAlphabetParserPanel.setCopyable(true);
         styledAlphabetParserPanel.setEditable(false);
         styledAlphabetParserPanel.setMinimumSize(new java.awt.Dimension(100, 60));
         styledAlphabetParserPanel.setPreferredSize(new java.awt.Dimension(100, 60));

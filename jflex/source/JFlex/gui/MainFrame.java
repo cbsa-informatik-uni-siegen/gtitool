@@ -43,7 +43,8 @@ import JFlex.Out;
  * JFlex main application frame (GUI mode only)
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision$, $Date$
+ * @version JFlex 1.4.1, $Revision$, $Date: 2007-11-30 00:25:38 +0100 (Fr,
+ *          30 Nov 2007) $
  */
 @SuppressWarnings (
 { "all" } )

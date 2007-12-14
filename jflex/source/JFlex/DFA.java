@@ -27,7 +27,8 @@ import java.util.Hashtable;
  * DFA representation in JFlex. Contains minimization algorithm.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision$, $Date$
+ * @version JFlex 1.4.1, $Revision$, $Date: 2007-11-30 00:20:03 +0100 (Fr,
+ *          30 Nov 2007) $
  */
 @SuppressWarnings (
 { "all" } )
@@ -684,7 +685,7 @@ final public class DFA
           block [ B_i ]-- ;
 
           SD [ B_i ]-- ; // there is now one state less in B_i that goes with a
-                          // into B_j
+          // into B_j
           // printBlocks(block, b_forward, b_backward, lastBlock);
           // System.out.println("finished move");
         }

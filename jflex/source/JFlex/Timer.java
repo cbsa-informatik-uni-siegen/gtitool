@@ -19,7 +19,8 @@ package JFlex;
  * measures user time, not processor time.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision$, $Date$
+ * @version JFlex 1.4.1, $Revision$, $Date: 2007-11-30 00:20:03 +0100 (Fr,
+ *          30 Nov 2007) $
  */
 @SuppressWarnings (
 { "all" } )

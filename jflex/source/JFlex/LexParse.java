@@ -654,7 +654,7 @@ class CUP$LexParse$actions
       result = r;
       n1-- ;
       n2-- ; // we need one concatenation less than the number of expressions
-              // to match
+      // to match
     }
     else
     {

@@ -27,7 +27,8 @@ import java.util.Vector;
  * Grid layout manager like GridLayout but with predefinable grid size.
  * 
  * @author Gerwin Klein
- * @version JFlex 1.4.1, $Revision$, $Date$
+ * @version JFlex 1.4.1, $Revision$, $Date: 2007-11-30 00:25:38 +0100 (Fr,
+ *          30 Nov 2007) $
  */
 @SuppressWarnings (
 { "all" } )

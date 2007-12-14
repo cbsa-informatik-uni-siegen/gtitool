@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -200,9 +201,15 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Flag that indicates if the panel is read only.
+   * Flag that indicates if the panel is editable.
    */
   private boolean editable;
+
+
+  /**
+   * Flag that indicates if the panel is copyable.
+   */
+  private boolean copyable;
 
 
   /**
@@ -210,15 +217,18 @@ public abstract class StyledParserPanel extends JPanel
    */
   private JPopupMenu jPopupMenu;
 
+
   /**
    * The undo {@link JMenuItem}.
    */
   private JMenuItem jMenuItemUndo;
-  
+
+
   /**
    * The redo {@link JMenuItem}.
    */
   private JMenuItem jMenuItemRedo;
+
 
   /**
    * The cut {@link JMenuItem}.
@@ -252,13 +262,15 @@ public abstract class StyledParserPanel extends JPanel
   public StyledParserPanel ( Parseable pParseable )
   {
     this.editable = true;
+    this.copyable = false;
     this.editor = new StyledParserEditor ();
 
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ();
 
     // Undo
-    this.jMenuItemUndo = new JMenuItem ( Messages.getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
+    this.jMenuItemUndo = new JMenuItem ( Messages
+        .getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setMnemonic ( Messages.getString (
         "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -276,9 +288,10 @@ public abstract class StyledParserPanel extends JPanel
       }
     } );
     this.jPopupMenu.add ( this.jMenuItemUndo );
-    
+
     // Redo
-    this.jMenuItemRedo = new JMenuItem ( Messages.getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
+    this.jMenuItemRedo = new JMenuItem ( Messages
+        .getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setMnemonic ( Messages.getString (
         "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -296,10 +309,10 @@ public abstract class StyledParserPanel extends JPanel
       }
     } );
     this.jPopupMenu.add ( this.jMenuItemRedo );
-    
+
     // Separator
     this.jPopupMenu.addSeparator ();
-        
+
     // Cut
     this.jMenuItemCut = new JMenuItem ( Messages.getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
     this.jMenuItemCut.setMnemonic ( Messages.getString (
@@ -409,7 +422,7 @@ public abstract class StyledParserPanel extends JPanel
       @Override
       public void mousePressed ( MouseEvent pEvent )
       {
-        if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
+        if ( pEvent.isPopupTrigger () )
         {
           showPopupMenu ( pEvent );
         }
@@ -420,7 +433,7 @@ public abstract class StyledParserPanel extends JPanel
       @Override
       public void mouseReleased ( MouseEvent pEvent )
       {
-        if ( ( pEvent.isPopupTrigger () ) && ( StyledParserPanel.this.editable ) )
+        if ( pEvent.isPopupTrigger () )
         {
           showPopupMenu ( pEvent );
         }
@@ -663,6 +676,17 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Return the copyable value.
+   * 
+   * @return The copyable value.
+   */
+  public final boolean isCopyable ()
+  {
+    return this.copyable;
+  }
+
+
+  /**
    * Return the editable value.
    * 
    * @return The editable value.
@@ -725,20 +749,55 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * Sets the specified boolean to indicate whether or not this
+   * <code>StyledParserPanel</code> should be copyable.
+   * 
+   * @param pCopyable The boolean to be set.
+   */
+  public final void setCopyable ( boolean pCopyable )
+  {
+    this.copyable = pCopyable;
+    setStatus ();
+  }
+
+
+  /**
+   * Sets the specified boolean to indicate whether or not this
    * <code>StyledParserPanel</code> should be editable.
    * 
    * @param pEditable The boolean to be set.
    */
   public final void setEditable ( boolean pEditable )
   {
-    boolean change = this.editable != pEditable;
     this.editable = pEditable;
-    if ( change )
+    setStatus ();
+  }
+
+
+  /**
+   * Sets the status.
+   */
+  private final void setStatus ()
+  {
+    if ( this.editable )
     {
-      this.sideBar.setVisible ( this.editable );
-      this.editor.setEditable ( this.editable );
-      this.editor.setFocusable ( this.editable );
-      this.document.setEditable ( this.editable );
+      this.sideBar.setVisible ( true );
+      this.editor.setEditable ( true );
+      this.editor.setFocusable ( true );
+    }
+    else
+    {
+      this.sideBar.setVisible ( false );
+      this.editor.setEditable ( false );
+      if ( this.copyable )
+      {
+        this.editor.setFocusable ( true );
+        this.editor.setCursor ( new Cursor ( Cursor.TEXT_CURSOR ) );
+      }
+      else
+      {
+        this.editor.setFocusable ( false );
+        this.editor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
+      }
     }
   }
 
@@ -751,13 +810,29 @@ public abstract class StyledParserPanel extends JPanel
    */
   private final void showPopupMenu ( MouseEvent pEvent )
   {
-    int start = this.editor.getSelectionStart ();
-    int end = this.editor.getSelectionEnd ();
-    this.jMenuItemUndo.setEnabled ( this.history.canUndo () );
-    this.jMenuItemRedo.setEnabled ( this.history.canRedo () );
-    this.jMenuItemCopy.setEnabled ( start != end );
-    this.jMenuItemCut.setEnabled ( start != end );
-    this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
-        .getY () );
+    if ( this.editable )
+    {
+      int start = this.editor.getSelectionStart ();
+      int end = this.editor.getSelectionEnd ();
+      this.jMenuItemUndo.setEnabled ( this.history.canUndo () );
+      this.jMenuItemRedo.setEnabled ( this.history.canRedo () );
+      this.jMenuItemCopy.setEnabled ( start != end );
+      this.jMenuItemCut.setEnabled ( start != end );
+      this.jMenuItemPaste.setEnabled ( true );
+      this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
+          .getY () );
+    }
+    else if (this.copyable)
+    {
+      int start = this.editor.getSelectionStart ();
+      int end = this.editor.getSelectionEnd ();
+      this.jMenuItemUndo.setEnabled ( false );
+      this.jMenuItemRedo.setEnabled ( false );
+      this.jMenuItemCopy.setEnabled ( start != end );
+      this.jMenuItemCut.setEnabled ( false );
+      this.jMenuItemPaste.setEnabled ( false );
+      this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
+          .getY () );
+    }
   }
 }

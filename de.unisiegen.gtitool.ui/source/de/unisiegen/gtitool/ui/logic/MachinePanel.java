@@ -3,12 +3,15 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
@@ -18,6 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.jgraph.JGraph;
@@ -57,8 +64,82 @@ import de.unisiegen.gtitool.ui.storage.Storage;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class MachinePanel implements EditorPanel
+public final class MachinePanel implements EditorPanel
 {
+
+  /**
+   * Selects the item with the given index in the console table or clears the
+   * selection after a delay.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class SleepTimerTask extends TimerTask
+  {
+
+    /**
+     * The index.
+     */
+    protected int index;
+
+
+    /**
+     * The console table.
+     */
+    protected JTable consoleTable;
+
+
+    /**
+     * Initilizes the <code>SleepTimerTask</code>.
+     * 
+     * @param pConsoleTable The console table.
+     * @param pIndex The index.
+     */
+    public SleepTimerTask ( JTable pConsoleTable, int pIndex )
+    {
+      this.index = pIndex;
+      this.consoleTable = pConsoleTable;
+    }
+
+
+    /**
+     * Selects the item with the given index in the color list or clears the
+     * selection after a delay.
+     * 
+     * @see TimerTask#run()
+     */
+    @Override
+    public final void run ()
+    {
+      if ( this.index == -1 )
+      {
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          public void run ()
+          {
+            SleepTimerTask.this.consoleTable.getSelectionModel ()
+                .clearSelection ();
+            SleepTimerTask.this.consoleTable.repaint ();
+          }
+        } );
+      }
+      else
+      {
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          public void run ()
+          {
+            SleepTimerTask.this.consoleTable.getSelectionModel ()
+                .setSelectionInterval ( SleepTimerTask.this.index,
+                    SleepTimerTask.this.index );
+            SleepTimerTask.this.consoleTable.repaint ();
+          }
+        } );
+      }
+    }
+  }
+
 
   //
   // Attributes
@@ -156,37 +237,9 @@ public class MachinePanel implements EditorPanel
 
 
   /**
-   * Create a temporary Object to paint the Transiton on Mouse move
-   * 
-   * @param x the x position of the new state view
-   * @param y the y position of the new state view
-   * @return {@link DefaultGraphCell} the new created tmp Object
+   * The {@link Timer} of the console table.
    */
-  private DefaultGraphCell createTmpObject ( double x, double y )
-  {
-    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
-
-    DefaultGraphCell cell = new DefaultGraphCell ();
-
-    // set the view class (indirection for the renderer and the editor)
-    GPCellViewFactory.setViewClass ( cell.getAttributes (), viewClass );
-
-    // Set bounds
-    GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
-        x, y, 1, 1 ) );
-
-    GraphConstants.setBorder ( cell.getAttributes (), BorderFactory
-        .createRaisedBevelBorder () );
-
-    // Set the line width
-    GraphConstants.setLineWidth ( cell.getAttributes (), 2 );
-
-    // Add a Floating Port
-    cell.addPort ();
-
-    return cell;
-
-  }
+  private Timer consoleTimer = null;
 
 
   /**
@@ -214,9 +267,33 @@ public class MachinePanel implements EditorPanel
     this.errorTableModel = new ConsoleTableModel ();
     this.gui.jTableErrors.setModel ( this.errorTableModel );
     this.gui.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jTableErrors
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jTableErrors.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent pEvent )
+          {
+            handleConsoleTableValueChanged ( pEvent );
+          }
+
+        } );
     this.warningTableModel = new ConsoleTableModel ();
     this.gui.jTableWarnings.setModel ( this.warningTableModel );
     this.gui.jTableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jTableWarnings
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jTableWarnings.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent pEvent )
+          {
+            handleConsoleTableValueChanged ( pEvent );
+          }
+
+        } );
     this.gui.jTableMachine.setModel ( this.model.getTableModel () );
     this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
         this.machine.getAlphabet () ) );
@@ -290,35 +367,6 @@ public class MachinePanel implements EditorPanel
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedTransition ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedTransition ( Color pNewColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultTransitionView t = ( DefaultTransitionView ) object;
-                GraphConstants.setLineColor ( t.getAttributes (), pNewColor );
-
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
            * @see ColorChangedAdapter#colorChangedSymbol ( Color )
            */
           @SuppressWarnings ( "synthetic-access" )
@@ -347,7 +395,191 @@ public class MachinePanel implements EditorPanel
 
           }
 
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedTransition ( Color )
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedTransition ( Color pNewColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultTransitionView t = ( DefaultTransitionView ) object;
+                GraphConstants.setLineColor ( t.getAttributes (), pNewColor );
+
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
+
+          }
+
         } );
+  }
+
+
+  /**
+   * Add a new Error
+   * 
+   * @param e The {@link MachineException} containing the data
+   */
+  public void addError ( MachineException e )
+  {
+    this.errorTableModel.addRow ( e );
+  }
+
+
+  /**
+   * Add a new Warning
+   * 
+   * @param e The {@link MachineException} containing the data
+   */
+  public void addWarning ( MachineException e )
+  {
+    this.warningTableModel.addRow ( e );
+  }
+
+
+  /**
+   * Remove all highlighting
+   */
+  public void clearHighlight ()
+  {
+    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    {
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
+    }
+
+    for ( DefaultStateView view : this.oldErrorStates )
+    {
+      if ( view.getState ().isStartState () )
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStartState ()
+                .getColor () );
+      else
+      {
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+    }
+    this.graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+  }
+
+
+  /**
+   * Clear all Error and Warning messages
+   */
+  public void clearValidationMessages ()
+  {
+    this.errorTableModel.clearData ();
+    this.warningTableModel.clearData ();
+
+  }
+
+
+  /**
+   * Create a standard Popup Menu
+   * 
+   * @return the new created Popup Menu
+   */
+  private DefaultPopupMenu createPopupMenu ()
+  {
+    int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
+    return new DefaultPopupMenu ( this, this.machine, factor );
+  }
+
+
+  /**
+   * Create a new Popup Menu for the given State
+   * 
+   * @param pState the State for to create a popup menu
+   * @return the new created Popup Menu
+   */
+  private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
+  {
+    return new StatePopupMenu ( this.parent, this.graph, this.model, pState );
+  }
+
+
+  /**
+   * Create a temporary Object to paint the Transiton on Mouse move
+   * 
+   * @param x the x position of the new state view
+   * @param y the y position of the new state view
+   * @return {@link DefaultGraphCell} the new created tmp Object
+   */
+  private DefaultGraphCell createTmpObject ( double x, double y )
+  {
+    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
+
+    DefaultGraphCell cell = new DefaultGraphCell ();
+
+    // set the view class (indirection for the renderer and the editor)
+    GPCellViewFactory.setViewClass ( cell.getAttributes (), viewClass );
+
+    // Set bounds
+    GraphConstants.setBounds ( cell.getAttributes (), new Rectangle2D.Double (
+        x, y, 1, 1 ) );
+
+    GraphConstants.setBorder ( cell.getAttributes (), BorderFactory
+        .createRaisedBevelBorder () );
+
+    // Set the line width
+    GraphConstants.setLineWidth ( cell.getAttributes (), 2 );
+
+    // Add a Floating Port
+    cell.addPort ();
+
+    return cell;
+
+  }
+
+
+  /**
+   * Create a new Popup Menu for the given Transition
+   * 
+   * @param pTransition the Transition for to create a popup menu
+   * @return the new created Popup Menu
+   */
+  private TransitionPopupMenu createTransitionPopupMenu (
+      DefaultTransitionView pTransition )
+  {
+    return new TransitionPopupMenu ( this.graph, this.gui, this.model,
+        pTransition, this.alphabet );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
+   */
+  public Alphabet getAlphabet ()
+  {
+    return this.machine.getAlphabet ();
+  }
+
+
+  /**
+   * Getter for the {@link Machine}
+   * 
+   * @return the {@link Machine} of this panel
+   */
+  public Machine getMachine ()
+  {
+    return this.machine;
   }
 
 
@@ -359,6 +591,180 @@ public class MachinePanel implements EditorPanel
   public JPanel getPanel ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Handles {@link FocusEvent}s on the console table.
+   * 
+   * @param pEvent The {@link FocusEvent}.
+   */
+  public void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
+  FocusEvent pEvent )
+  {
+    if ( this.consoleTimer != null )
+    {
+      this.consoleTimer.cancel ();
+    }
+    this.gui.jTableErrors.clearSelection ();
+    this.gui.jTableWarnings.clearSelection ();
+    this.clearHighlight ();
+  }
+
+
+  /**
+   * Handles the mouse exited event on the console table.
+   * 
+   * @param pEvent The {@link MouseEvent}.
+   */
+  public final void handleConsoleTableMouseExited (
+      @SuppressWarnings ( "unused" )
+      MouseEvent pEvent )
+  {
+    if ( this.consoleTimer != null )
+    {
+      this.consoleTimer.cancel ();
+    }
+    this.gui.jTableErrors.clearSelection ();
+    this.gui.jTableWarnings.clearSelection ();
+    this.clearHighlight ();
+  }
+
+
+  /**
+   * Handles the mouse moved event on the console table.
+   * 
+   * @param pEvent The {@link MouseEvent}.
+   */
+  public final void handleConsoleTableMouseMoved ( MouseEvent pEvent )
+  {
+    JTable table;
+    if ( pEvent.getSource () == this.gui.jTableErrors )
+    {
+      table = this.gui.jTableErrors;
+    }
+    else if ( pEvent.getSource () == this.gui.jTableWarnings )
+    {
+      table = this.gui.jTableWarnings;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "wrong event source"); //$NON-NLS-1$
+    }
+    int index = table.rowAtPoint ( pEvent.getPoint () );
+    if ( this.consoleTimer != null )
+    {
+      this.consoleTimer.cancel ();
+    }
+    this.consoleTimer = new Timer ();
+    if ( index == -1 )
+    {
+      this.consoleTimer.schedule ( new SleepTimerTask ( table, -1 ), 250 );
+    }
+    else
+    {
+      this.consoleTimer.schedule ( new SleepTimerTask ( table, index ), 250 );
+    }
+  }
+
+
+  /**
+   * Handles {@link ListSelectionEvent}s on the console table.
+   * 
+   * @param pEvent The {@link ListSelectionEvent}.
+   */
+  @SuppressWarnings ( "unchecked" )
+  public final void handleConsoleTableValueChanged (
+      @SuppressWarnings ( "unused" )
+      ListSelectionEvent pEvent )
+  {
+    JTable table;
+    if ( pEvent.getSource () == this.gui.jTableErrors.getSelectionModel () )
+    {
+      table = this.gui.jTableErrors;
+    }
+    else if ( pEvent.getSource () == this.gui.jTableWarnings
+        .getSelectionModel () )
+    {
+      table = this.gui.jTableWarnings;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
+    }
+    int index = table.getSelectedRow ();
+    if ( index == -1 )
+    {
+      clearHighlight ();
+    }
+    else
+    {
+      highlightStates ( ( ArrayList < State > ) table.getModel ().getValueAt (
+          index, ConsoleTableModel.STATES_COLUMN ) );
+      highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
+          .getValueAt ( index, ConsoleTableModel.TRANSITIONS_COLUMN ) );
+    }
+  }
+
+
+  /**
+   * Handle save operation
+   */
+  public void handleSave ()
+  {
+    try
+    {
+      PreferenceManager prefmanager = PreferenceManager.getInstance ();
+      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
+      chooser.setMultiSelectionEnabled ( false );
+      chooser.setAcceptAllFileFilterUsed ( false );
+      chooser.addChoosableFileFilter ( new FileFilter ()
+      {
+
+        @Override
+        public boolean accept ( File file )
+        {
+          if ( file.isDirectory () )
+          {
+            return true;
+          }
+          if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
+            return true;
+          return false;
+
+        }
+
+
+        @Override
+        public String getDescription ()
+        {
+          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+        }
+
+      } );
+      int n = chooser.showSaveDialog ( this.parent );
+      if ( n == JFileChooser.CANCEL_OPTION
+          || chooser.getSelectedFile () == null )
+        return;
+      String filename = chooser.getSelectedFile ().toString ().matches (
+          ".+\\.dfa" ) ? //$NON-NLS-1$
+      chooser.getSelectedFile ().toString ()
+          : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
+
+      Storage.getInstance ().store ( this.model, filename );
+      JOptionPane
+          .showMessageDialog (
+              this.parent,
+              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
+          .getAbsolutePath () );
+
+    }
+    catch ( StoreException e )
+    {
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
+          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+    }
   }
 
 
@@ -458,6 +864,66 @@ public class MachinePanel implements EditorPanel
       this.graph.removeMouseListener ( this.transition );
       this.graph.removeMouseMotionListener ( this.transitionMove );
     }
+  }
+
+
+  /**
+   * Highlight the affected states
+   * 
+   * @param states list with all states that are affected
+   */
+  private void highlightStates ( ArrayList < State > states )
+  {
+    for ( DefaultStateView view : this.oldErrorStates )
+    {
+      if ( view.getState ().isStartState () )
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStartState ()
+                .getColor () );
+      else
+      {
+        GraphConstants.setGradientColor ( view.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+    }
+    this.oldErrorStates.clear ();
+    for ( State state : states )
+    {
+      DefaultStateView view = this.model.getStateViewForState ( state );
+      this.oldErrorStates.add ( view );
+      GraphConstants.setGradientColor ( view.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemErrorState ()
+              .getColor () );
+    }
+    this.graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+  }
+
+
+  /**
+   * Highlight the affected transitions
+   * 
+   * @param transitions list with all transitions that are affected
+   */
+  private void highlightTransitions ( ArrayList < Transition > transitions )
+  {
+    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    {
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
+    }
+    this.oldErrorTransitions.clear ();
+
+    for ( Transition t : transitions )
+    {
+      DefaultTransitionView view = this.model
+          .getTransitionViewForTransition ( t );
+      this.oldErrorTransitions.add ( view );
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemErrorTransition ().getColor () );
+    }
+    this.graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
   }
 
 
@@ -610,7 +1076,7 @@ public class MachinePanel implements EditorPanel
         }
         else
         {
-          DefaultStateView target = null ;
+          DefaultStateView target = null;
           try
           {
 
@@ -626,7 +1092,7 @@ public class MachinePanel implements EditorPanel
           catch ( ClassCastException exc )
           {
             MachinePanel.this.graphModel.remove ( new Object []
-                                                              { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+            { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           }
           TransitionDialog dialog = new TransitionDialog (
               MachinePanel.this.parent, MachinePanel.this.alphabet,
@@ -696,7 +1162,7 @@ public class MachinePanel implements EditorPanel
         catch ( ClassCastException exc )
         {
           MachinePanel.this.graphModel.remove ( new Object []
-                                                            { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+          { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
         }
 
         TransitionDialog dialog = new TransitionDialog (
@@ -933,45 +1399,6 @@ public class MachinePanel implements EditorPanel
 
 
   /**
-   * Create a standard Popup Menu
-   * 
-   * @return the new created Popup Menu
-   */
-  private DefaultPopupMenu createPopupMenu ()
-  {
-    int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
-    return new DefaultPopupMenu ( this, this.machine, factor );
-  }
-
-
-  /**
-   * Create a new Popup Menu for the given Transition
-   * 
-   * @param pTransition the Transition for to create a popup menu
-   * @return the new created Popup Menu
-   */
-  private TransitionPopupMenu createTransitionPopupMenu (
-      DefaultTransitionView pTransition )
-  {
-    return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        pTransition, this.alphabet );
-  }
-
-
-  /**
-   * Create a new Popup Menu for the given State
-   * 
-   * @param pState the State for to create a popup menu
-   * @return the new created Popup Menu
-   */
-  private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
-  {
-    return new StatePopupMenu ( this.parent, this.graph, this.model,
-        pState );
-  }
-
-
-  /**
    * Set the zoom factor for this panel
    * 
    * @param pFactor the new zoom factor
@@ -980,230 +1407,5 @@ public class MachinePanel implements EditorPanel
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
-  }
-
-
-  /**
-   * Getter for the {@link Machine}
-   * 
-   * @return the {@link Machine} of this panel
-   */
-  public Machine getMachine ()
-  {
-    return this.machine;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
-   */
-  public Alphabet getAlphabet ()
-  {
-    return this.machine.getAlphabet ();
-  }
-
-
-  /**
-   * Add a new Error
-   * 
-   * @param e The {@link MachineException} containing the data
-   */
-  public void addError ( MachineException e )
-  {
-    this.errorTableModel.addRow ( e );
-  }
-
-
-  /**
-   * Add a new Warning
-   * 
-   * @param e The {@link MachineException} containing the data
-   */
-  public void addWarning ( MachineException e )
-  {
-    this.warningTableModel.addRow ( e );
-  }
-
-
-  /**
-   * Handle Row Selection for the tables
-   * 
-   * @param e {@link MouseEvent}
-   */
-  @SuppressWarnings ( "unchecked" )
-  public void handleTableMouseEvent ( MouseEvent e )
-  {
-    JTable table = ( JTable ) e.getSource ();
-    int index = table.rowAtPoint ( e.getPoint () );
-
-    if ( index >= 0 )
-    {
-      highlightStates ( ( ArrayList < State > ) table.getModel ().getValueAt (
-          index, ConsoleTableModel.STATES_COLUMN ) );
-      highlightTransitions ( ( ArrayList < Transition > ) table.getModel ()
-          .getValueAt ( index, ConsoleTableModel.TRANSITIONS_COLUMN ) );
-    }
-  }
-
-
-  /**
-   * Highlight the affected states
-   * 
-   * @param states list with all states that are affected
-   */
-  private void highlightStates ( ArrayList < State > states )
-  {
-    for ( DefaultStateView view : this.oldErrorStates )
-    {
-      if ( view.getState ().isStartState () )
-        GraphConstants.setGradientColor ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStartState ()
-                .getColor () );
-      else
-      {
-        GraphConstants.setGradientColor ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-      }
-    }
-    this.oldErrorStates.clear ();
-    for ( State state : states )
-    {
-      DefaultStateView view = this.model.getStateViewForState ( state );
-      this.oldErrorStates.add ( view );
-      GraphConstants.setGradientColor ( view.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemErrorState ()
-              .getColor () );
-    }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
-  }
-
-
-  /**
-   * Highlight the affected transitions
-   * 
-   * @param transitions list with all transitions that are affected
-   */
-  private void highlightTransitions ( ArrayList < Transition > transitions )
-  {
-    for ( DefaultTransitionView view : this.oldErrorTransitions )
-    {
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
-    this.oldErrorTransitions.clear ();
-
-    for ( Transition t : transitions )
-    {
-      DefaultTransitionView view = this.model
-          .getTransitionViewForTransition ( t );
-      this.oldErrorTransitions.add ( view );
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemErrorTransition ().getColor () );
-    }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
-  }
-
-
-  /**
-   * Remove all highlighting
-   */
-  public void clearHighlight ()
-  {
-    for ( DefaultTransitionView view : this.oldErrorTransitions )
-    {
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
-
-    for ( DefaultStateView view : this.oldErrorStates )
-    {
-      if ( view.getState ().isStartState () )
-        GraphConstants.setGradientColor ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStartState ()
-                .getColor () );
-      else
-      {
-        GraphConstants.setGradientColor ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-      }
-    }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
-  }
-
-
-  /**
-   * Clear all Error and Warning messages
-   */
-  public void clearValidationMessages ()
-  {
-    this.errorTableModel.clearData ();
-    this.warningTableModel.clearData ();
-
-  }
-
-
-  /**
-   * Handle save operation
-   */
-  public void handleSave ()
-  {
-    try
-    {
-      PreferenceManager prefmanager = PreferenceManager.getInstance ();
-      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
-      chooser.setMultiSelectionEnabled ( false );
-      chooser.setAcceptAllFileFilterUsed ( false );
-      chooser.addChoosableFileFilter ( new FileFilter ()
-      {
-
-        @Override
-        public boolean accept ( File file )
-        {
-          if ( file.isDirectory () )
-          {
-            return true;
-          }
-          if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
-            return true;
-          return false;
-
-        }
-
-
-        @Override
-        public String getDescription ()
-        {
-          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
-        }
-
-      } );
-      int n = chooser.showSaveDialog ( this.parent );
-      if ( n == JFileChooser.CANCEL_OPTION
-          || chooser.getSelectedFile () == null )
-        return;
-      String filename = chooser.getSelectedFile ().toString ().matches (
-          ".+\\.dfa" ) ? //$NON-NLS-1$
-      chooser.getSelectedFile ().toString ()
-          : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
-
-      Storage.getInstance ().store ( this.model, filename );
-      JOptionPane
-          .showMessageDialog (
-              this.parent,
-              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-          .getAbsolutePath () );
-
-    }
-    catch ( StoreException e )
-    {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
-          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
-    }
   }
 }

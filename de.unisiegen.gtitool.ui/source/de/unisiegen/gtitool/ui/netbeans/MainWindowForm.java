@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
-import de.unisiegen.gtitool.ui.storage.Storage;
 
 /**
  *
@@ -232,6 +231,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         getContentPane().add(jToolBarMain, java.awt.BorderLayout.NORTH);
 
+        jTabbedPaneMain.setFocusable(false);
         getContentPane().add(jTabbedPaneMain, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.FileMnemonic").charAt(0));

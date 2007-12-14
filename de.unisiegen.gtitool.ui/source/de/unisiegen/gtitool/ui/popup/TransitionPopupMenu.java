@@ -157,10 +157,13 @@ public class TransitionPopupMenu extends JPopupMenu
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
             .getTransition ().getSymbol () );
         dialog.show ();
+        if (dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED ) {
         TransitionPopupMenu.this.graph.getGraphLayoutCache ()
             .valueForCellChanged ( TransitionPopupMenu.this.transition,
                 dialog.getTransition() );
-        model.transitionChanged( oldTransition, dialog.getTransition ());
+        
+          model.transitionChanged( oldTransition, dialog.getTransition ());
+        }
       }
     } );
     add ( this.config );

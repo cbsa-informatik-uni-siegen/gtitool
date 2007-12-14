@@ -5,6 +5,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -300,7 +301,7 @@ public final class MainWindow
       this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
           .getPanel () );
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-          .getSelectedIndex (), "newFile" + count + ".test" ); //$NON-NLS-1$ //$NON-NLS-2$
+          .getSelectedIndex (), "newFile" + count + newDialog.getFileEnding () ); //$NON-NLS-1$ 
       count++ ;
       setGeneralStates ( true );
       this.gui.jButtonSave.setEnabled ( true );
@@ -374,9 +375,10 @@ public final class MainWindow
     }
     catch ( StoreException e )
     {
-      // TODOBenny Handle exception
-      e.printStackTrace();
-      System.exit ( 1 );
+      JOptionPane
+      .showMessageDialog (
+          this.gui, e.getMessage (), "Load Error" , JOptionPane.ERROR_MESSAGE ); 
+
     }
     prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
         .getAbsolutePath () );

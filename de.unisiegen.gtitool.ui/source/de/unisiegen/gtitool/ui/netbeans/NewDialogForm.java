@@ -56,6 +56,8 @@ public class NewDialogForm extends javax.swing.JDialog {
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        setTitle(bundle.getString("NewDialog.Title")); // NOI18N
         setModal(true);
         setName("newDialog");
         setResizable(false);
@@ -69,7 +71,6 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         headerPanel.setBackground(new java.awt.Color(255, 255, 255));
         headerTitleLabel.setFont(new java.awt.Font("Dialog", 1, 24));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         headerTitleLabel.setText(bundle.getString("MainWindow.New")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;

@@ -90,7 +90,6 @@ public final class MachinePanel implements EditorPanel
      */
     protected JTable consoleTable;
 
-
     /**
      * Initilizes the <code>SleepTimerTask</code>.
      * 
@@ -243,6 +242,11 @@ public final class MachinePanel implements EditorPanel
    * The {@link Timer} of the console table.
    */
   private Timer consoleTimer = null;
+  
+  /**
+   * The File for this MachinePanel
+   */
+  private File fileName ;
 
 
   /**
@@ -250,12 +254,14 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param pParent The parent frame
    * @param pModel the {@link DefaultMachineModel} of this panel
+   * @param pFileName the filename for this Machine Panel
    */
-  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel )
+  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel, File pFileName )
   {
     this.parent = pParent;
     this.model = pModel;
     this.machine = pModel.getMachine ();
+    this.fileName = pFileName;
     this.alphabet = this.machine.getAlphabet ();
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
@@ -736,11 +742,37 @@ public final class MachinePanel implements EditorPanel
     }
   }
 
-
   /**
-   * Handle save operation
+   * Handle save as operation
    */
   public void handleSave ()
+  {
+    if ( this.fileName == null ){
+      handleSaveAs();
+      return;
+      
+    }
+      
+    try 
+    {
+    Storage.getInstance ().store ( this.model, this.fileName.toString () );
+    JOptionPane
+        .showMessageDialog (
+            this.parent,
+            Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+
+  }
+  catch ( StoreException e )
+  {
+    JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
+        .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+  }
+  }
+
+  /**
+   * Handle save as operation
+   */
+  public void handleSaveAs ()
   {
     try
     {
@@ -788,6 +820,7 @@ public final class MachinePanel implements EditorPanel
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
+      this.fileName = new File(filename);
 
     }
     catch ( StoreException e )
@@ -1438,4 +1471,18 @@ public final class MachinePanel implements EditorPanel
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
   }
+
+
+  /**
+   * 
+   * Set the file for this Machine Panel
+   *
+   * @param pFileName the file for this Machine Panel
+   */
+  public void setFileName ( File pFileName )
+  {
+    this.fileName = pFileName;
+  }
+  
+  
 }

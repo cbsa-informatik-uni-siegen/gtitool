@@ -301,7 +301,7 @@ public final class MainWindow
       this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
           .getPanel () );
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-          .getSelectedIndex (), "newFile" + count + newDialog.getFileEnding () ); //$NON-NLS-1$ 
+          .getSelectedIndex (), Messages.getString ( "MainWindow.NewFile" ) + count + newDialog.getFileEnding () ); //$NON-NLS-1$ 
       count++ ;
       setGeneralStates ( true );
       this.gui.jButtonSave.setEnabled ( true );
@@ -354,7 +354,7 @@ public final class MainWindow
     try
     {
      DefaultMachineModel model = (DefaultMachineModel) Storage.getInstance ().load ( chooser.getSelectedFile ( ).toString () );
-     EditorPanel newEditorPanel = new MachinePanel ( this.gui, model );
+     EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, chooser.getSelectedFile ( ) );
        
        this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
        this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
@@ -364,6 +364,7 @@ public final class MainWindow
        count++ ;
        setGeneralStates ( true );
        this.gui.jButtonSave.setEnabled ( true );
+       this.gui.jMenuItemSave.setEnabled ( true );
        
        
        // toolbar items
@@ -372,12 +373,14 @@ public final class MainWindow
        this.gui.jButtonFinalState.setEnabled ( true );
        this.gui.jButtonMouse.setEnabled ( true );
        this.gui.jButtonStartState.setEnabled ( true );
+       
+       
     }
     catch ( StoreException e )
     {
       JOptionPane
       .showMessageDialog (
-          this.gui, e.getMessage (), "Load Error" , JOptionPane.ERROR_MESSAGE ); 
+          this.gui, e.getMessage (), Messages.getString("MainWindow.ErrorLoad") , JOptionPane.ERROR_MESSAGE );  //$NON-NLS-1$
 
     }
     prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
@@ -526,6 +529,17 @@ public final class MainWindow
   {
     MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
     panel.handleSave ();
+  }
+  
+  /**
+   * 
+   * Handle the save file as event
+   *
+   */
+  public void handleSaveAs ()
+  {
+    MachinePanel panel =  ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain.getSelectedComponent () ).getLogic ();
+    panel.handleSaveAs ();
   }
 
   /**

@@ -171,14 +171,14 @@ public class NewDialog
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DFA ( this.newDialogAlphabet
-                .getAlphabet () ) ) );
+                .getAlphabet () ) ), null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
     }
     else
     {
-      // Implement me
+      //TODO Implement me (Grammar)
     }
 
   }

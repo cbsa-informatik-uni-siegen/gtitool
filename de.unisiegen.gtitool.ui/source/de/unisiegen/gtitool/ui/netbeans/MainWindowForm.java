@@ -150,6 +150,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonSaveAs.setFocusPainted(false);
         jButtonSaveAs.setFocusable(false);
         jButtonSaveAs.setOpaque(false);
+        jButtonSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionPerformedSaveAs(evt);
+            }
+        });
+
         jToolBarFile.add(jButtonSaveAs);
 
         jToolBarMain.add(jToolBarFile);
@@ -272,11 +278,23 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
         jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveMnemonic").charAt(0));
         jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionPerformedSave(evt);
+            }
+        });
+
         jMenuFile.add(jMenuItemSave);
 
         jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
         jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
         jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
+        jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionPerformedSaveAs(evt);
+            }
+        });
+
         jMenuFile.add(jMenuItemSaveAs);
 
         jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
@@ -400,6 +418,10 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setBounds(0, 0, 706, 561);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void actionPerformedSaveAs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionPerformedSaveAs
+        this.logic.handleSaveAs();
+    }//GEN-LAST:event_actionPerformedSaveAs
 
     private void jButtonFinalStatehandleToolbarEnd(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonFinalStatehandleToolbarEnd
         this.logic.handleToolbarEnd(this.jButtonFinalState.isSelected());

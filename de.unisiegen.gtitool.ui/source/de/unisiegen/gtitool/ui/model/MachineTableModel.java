@@ -98,8 +98,9 @@ public class MachineTableModel extends AbstractTableModel
   
   public void removeState (State state){
     int index = this.states.get ( state ).intValue ();
-    this.data.remove ( index );
-    fireTableRowsDeleted ( index, index );
+    this.data.remove ( state );
+    // TODOBenny
+    fireTableDataChanged ();
   }
   
   /** 

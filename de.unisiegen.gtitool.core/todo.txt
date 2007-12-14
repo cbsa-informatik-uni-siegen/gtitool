@@ -3,3 +3,4 @@
 
 *** Christian ***
 - Andere Machines implementieren
+- Alphabet setzen

@@ -1,7 +1,19 @@
 *** Benny ***
 - Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
-
+- Neu Dialog braucht einen Titel
+- Neue Buttons für die ToolBar
+- newFile übersetzen
+- Wort eingeben können
+- RecentlyUsedFiles
+- OpenedFiles
+- Schließen
+- Status der Items
+- Speichern unter
+- MachineTableModel.removeState überprüfen
 
 *** Christian ***
 - Console: Automatische Fehlerkorrektur
 - Meldung über Fehler und Warnungen anzeigen
+- Im WordPanel die Symbole kopieren
+- Ausblenden von Console und Tabelle
+- Zustand highlighten mit Timer

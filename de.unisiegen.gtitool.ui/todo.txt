@@ -10,4 +10,3 @@
 - JSplitpane position speichern
 - Meldung über Fehler und Warnungen
 - Strg-Z und Strg-Y in den Parser Paneln implementieren
-- Transition methode clone() führt in rekursion !?!

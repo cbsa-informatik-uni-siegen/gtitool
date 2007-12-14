@@ -428,9 +428,8 @@ public final class Transition implements ParseableEntity, Storable
     Transition newTransition = null;
     try
     {
-      // TODOChristian take a look at this
-      // start and end state are not longer cloned because of recursion
-      newTransition = new Transition ( this.alphabet.clone (), this.stateBegin, this.stateEnd  );
+      newTransition = new Transition ( this.alphabet.clone (), this.stateBegin,
+          this.stateEnd );
       for ( Symbol current : this.symbolSet )
       {
         newTransition.addSymbol ( current.clone () );

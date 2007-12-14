@@ -59,6 +59,7 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.storage.Storage;
 
 
@@ -68,7 +69,7 @@ import de.unisiegen.gtitool.ui.storage.Storage;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class MachinePanel implements EditorPanel
+public final class MachinePanel implements EditorPanel, LanguageChangedListener
 {
 
   /**
@@ -90,6 +91,7 @@ public final class MachinePanel implements EditorPanel
      * The console table.
      */
     protected JTable consoleTable;
+
 
     /**
      * Initilizes the <code>SleepTimerTask</code>.
@@ -243,11 +245,12 @@ public final class MachinePanel implements EditorPanel
    * The {@link Timer} of the console table.
    */
   private Timer consoleTimer = null;
-  
+
+
   /**
    * The File for this MachinePanel
    */
-  private File fileName ;
+  private File fileName;
 
 
   /**
@@ -257,7 +260,8 @@ public final class MachinePanel implements EditorPanel
    * @param pModel the {@link DefaultMachineModel} of this panel
    * @param pFileName the filename for this Machine Panel
    */
-  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel, File pFileName )
+  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel,
+      File pFileName )
   {
     this.parent = pParent;
     this.model = pModel;
@@ -307,6 +311,8 @@ public final class MachinePanel implements EditorPanel
     this.gui.jTableMachine.setModel ( this.model.getTableModel () );
     this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
         this.machine.getAlphabet () ) );
+
+    PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
@@ -745,32 +751,35 @@ public final class MachinePanel implements EditorPanel
     }
   }
 
+
   /**
    * Handle save as operation
    */
   public void handleSave ()
   {
-    if ( this.fileName == null ){
-      handleSaveAs();
-      return;
-      
-    }
-      
-    try 
+    if ( this.fileName == null )
     {
-    Storage.getInstance ().store ( this.model, this.fileName.toString () );
-    JOptionPane
-        .showMessageDialog (
-            this.parent,
-            Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      handleSaveAs ();
+      return;
 
+    }
+
+    try
+    {
+      Storage.getInstance ().store ( this.model, this.fileName.toString () );
+      JOptionPane
+          .showMessageDialog (
+              this.parent,
+              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+
+    }
+    catch ( StoreException e )
+    {
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
+          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+    }
   }
-  catch ( StoreException e )
-  {
-    JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
-        .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
-  }
-  }
+
 
   /**
    * Handle save as operation
@@ -823,7 +832,7 @@ public final class MachinePanel implements EditorPanel
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
-      this.fileName = new File(filename);
+      this.fileName = new File ( filename );
 
     }
     catch ( StoreException e )
@@ -1465,6 +1474,31 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see LanguageChangedListener#languageChanged()
+   */
+  public final void languageChanged ()
+  {
+    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Set the file for this Machine Panel
+   * 
+   * @param pFileName the file for this Machine Panel
+   */
+  public void setFileName ( File pFileName )
+  {
+    this.fileName = pFileName;
+  }
+
+
+  /**
    * Set the zoom factor for this panel
    * 
    * @param pFactor the new zoom factor
@@ -1475,17 +1509,4 @@ public final class MachinePanel implements EditorPanel
     this.graph.setScale ( pFactor );
   }
 
-
-  /**
-   * 
-   * Set the file for this Machine Panel
-   *
-   * @param pFileName the file for this Machine Panel
-   */
-  public void setFileName ( File pFileName )
-  {
-    this.fileName = pFileName;
-  }
-  
-  
 }

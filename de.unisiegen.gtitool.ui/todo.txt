@@ -13,4 +13,3 @@
 - Meldung über Fehler und Warnungen anzeigen
 - Ausblenden von Console und Tabelle
 - Zustand highlighten mit Timer
-- LanguageChangedListener überprüfen

@@ -8,11 +8,8 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
-import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.utils.Clipboard;
 
 
@@ -55,39 +52,6 @@ public final class AboutDialog
     this.gui = new AboutDialogForm ( this, pParent );
     this.gui.jLabelName.setText ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-
-    /*
-     * Language changed listener
-     */
-    PreferenceManager.getInstance ().addLanguageChangedListener (
-        new LanguageChangedListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void languageChanged ()
-          {
-            logger.debug ( "language changed listener" ); //$NON-NLS-1$
-            AboutDialog.this.gui.setTitle ( Messages
-                .getString ( "AboutDialog.Title" ) ); //$NON-NLS-1$
-
-            AboutDialog.this.gui.jLabelCopyright.setText ( Messages
-                .getString ( "AboutDialog.Copyright" ) ); //$NON-NLS-1$
-
-            AboutDialog.this.gui.jLabelWebpage.setText ( Messages
-                .getString ( "AboutDialog.Webpage" ) ); //$NON-NLS-1$
-
-            AboutDialog.this.gui.jLabelWebpageEntry.setToolTipText ( Messages
-                .getString ( "AboutDialog.WebpageEntryToolTip" ) ); //$NON-NLS-1$
-
-            AboutDialog.this.gui.jLabelDeveloper.setText ( Messages
-                .getString ( "AboutDialog.Developer" ) ); //$NON-NLS-1$
-
-            AboutDialog.this.gui.jButtonClose.setText ( Messages
-                .getString ( "AboutDialog.Close" ) ); //$NON-NLS-1$
-            AboutDialog.this.gui.jButtonClose.setMnemonic ( Messages.getString (
-                "AboutDialog.Close" ).charAt ( 0 ) ); //$NON-NLS-1$
-          }
-        } );
   }
 
 

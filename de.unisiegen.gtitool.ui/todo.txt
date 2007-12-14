@@ -5,4 +5,3 @@
 *** Christian ***
 - Console: Automatische Fehlerkorrektur
 - Meldung über Fehler und Warnungen anzeigen
-- Rückgängig im Parser Panel implementieren

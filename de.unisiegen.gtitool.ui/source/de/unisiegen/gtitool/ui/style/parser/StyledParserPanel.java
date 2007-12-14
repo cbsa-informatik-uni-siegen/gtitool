@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -38,6 +39,123 @@ import de.unisiegen.gtitool.ui.utils.Clipboard;
  */
 public abstract class StyledParserPanel extends JPanel
 {
+
+  /**
+   * The history of parsed objects.
+   * 
+   * @author Christian Fehler
+   */
+  private class History
+  {
+
+    /**
+     * The history list.
+     */
+    private ArrayList < Object > list;
+
+
+    /**
+     * The current index.
+     */
+    private int index;
+
+
+    /**
+     * Flag that indicates if the neex object should be added.
+     */
+    private boolean addNextObject;
+
+
+    /**
+     * Allocates a new <code>History</code>.
+     */
+    public History ()
+    {
+      this.list = new ArrayList < Object > ();
+      this.index = -1;
+      this.addNextObject = true;
+    }
+
+
+    /**
+     * Add a new object.
+     * 
+     * @param pNewObject The object to add.
+     */
+    public final void add ( Object pNewObject )
+    {
+      if ( this.addNextObject
+          && ( ( this.list.size () == 0 ) || !this.list.get (
+              this.list.size () - 1 ).toString ().equals (
+              pNewObject.toString () ) ) )
+      {
+        this.list.add ( pNewObject );
+        this.index = this.list.size () - 1;
+      }
+      this.addNextObject = true;
+    }
+
+
+    /**
+     * Returns true if a redo can be performed.
+     * 
+     * @return True if a redo can be performed.
+     */
+    public final boolean canRedo ()
+    {
+      return this.index < this.list.size () - 1;
+    }
+
+
+    /**
+     * Returns true if a undo can be performed.
+     * 
+     * @return True if a undo can be performed.
+     */
+    public final boolean canUndo ()
+    {
+      return this.index > 0;
+    }
+
+
+    /**
+     * Preforms a redo.
+     * 
+     * @return The next object.
+     */
+    public final Object redo ()
+    {
+      this.index++ ;
+      this.addNextObject = false;
+      return this.list.get ( this.index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Object#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      return "index: " + this.index + ": " + this.list.toString (); //$NON-NLS-1$//$NON-NLS-2$
+    }
+
+
+    /**
+     * Preforms a undo.
+     * 
+     * @return The previous object.
+     */
+    public final Object undo ()
+    {
+      this.index-- ;
+      this.addNextObject = false;
+      return this.list.get ( this.index );
+    }
+  }
+
 
   /**
    * The normal {@link Color}.
@@ -92,6 +210,15 @@ public abstract class StyledParserPanel extends JPanel
    */
   private JPopupMenu jPopupMenu;
 
+  /**
+   * The undo {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemUndo;
+  
+  /**
+   * The redo {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemRedo;
 
   /**
    * The cut {@link JMenuItem}.
@@ -112,6 +239,12 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * The {@link History}.
+   */
+  private History history;
+
+
+  /**
    * Allocates a new <code>StyledPanel</code>.
    * 
    * @param pParseable The input {@link Parseable}.
@@ -124,6 +257,49 @@ public abstract class StyledParserPanel extends JPanel
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ();
 
+    // Undo
+    this.jMenuItemUndo = new JMenuItem ( Messages.getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
+    this.jMenuItemUndo.setMnemonic ( Messages.getString (
+        "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.jMenuItemUndo.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/undo16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemUndo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
+        InputEvent.CTRL_MASK ) );
+    this.jMenuItemUndo.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        handleUndo ();
+      }
+    } );
+    this.jPopupMenu.add ( this.jMenuItemUndo );
+    
+    // Redo
+    this.jMenuItemRedo = new JMenuItem ( Messages.getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
+    this.jMenuItemRedo.setMnemonic ( Messages.getString (
+        "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.jMenuItemRedo.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/redo16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemRedo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
+        InputEvent.CTRL_MASK ) );
+    this.jMenuItemRedo.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        handleRedo ();
+      }
+    } );
+    this.jPopupMenu.add ( this.jMenuItemRedo );
+    
+    // Separator
+    this.jPopupMenu.addSeparator ();
+        
     // Cut
     this.jMenuItemCut = new JMenuItem ( Messages.getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
     this.jMenuItemCut.setMnemonic ( Messages.getString (
@@ -342,6 +518,32 @@ public abstract class StyledParserPanel extends JPanel
     this.jScrollPane.setViewportView ( this.editor );
     this.editor.setDocument ( this.document );
     this.editor.setAutoscrolls ( false );
+    this.history = new History ();
+    this.editor.registerKeyboardAction ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        handleUndo ();
+      }
+
+    }, KeyStroke.getKeyStroke ( KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK ),
+        JComponent.WHEN_FOCUSED );
+
+    this.editor.registerKeyboardAction ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        handleRedo ();
+      }
+
+    }, KeyStroke.getKeyStroke ( KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK ),
+        JComponent.WHEN_FOCUSED );
     this.document.parse ();
   }
 
@@ -373,6 +575,13 @@ public abstract class StyledParserPanel extends JPanel
     {
       this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
     }
+
+    // History
+    if ( pNewObject != null )
+    {
+      this.history.add ( pNewObject );
+    }
+
     for ( ParseableChangedListener current : this.parseableChangedListenerList )
     {
       current.parseableChanged ( pNewObject );
@@ -426,6 +635,30 @@ public abstract class StyledParserPanel extends JPanel
   protected final Object getParsedObject () throws Exception
   {
     return this.document.getParsedObject ();
+  }
+
+
+  /**
+   * Handles the redo action.
+   */
+  private final void handleRedo ()
+  {
+    if ( this.history.canRedo () )
+    {
+      this.editor.setText ( this.history.redo ().toString () );
+    }
+  }
+
+
+  /**
+   * Handles the undo action.
+   */
+  private final void handleUndo ()
+  {
+    if ( this.history.canUndo () )
+    {
+      this.editor.setText ( this.history.undo ().toString () );
+    }
   }
 
 
@@ -520,6 +753,8 @@ public abstract class StyledParserPanel extends JPanel
   {
     int start = this.editor.getSelectionStart ();
     int end = this.editor.getSelectionEnd ();
+    this.jMenuItemUndo.setEnabled ( this.history.canUndo () );
+    this.jMenuItemRedo.setEnabled ( this.history.canRedo () );
     this.jMenuItemCopy.setEnabled ( start != end );
     this.jMenuItemCut.setEnabled ( start != end );
     this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent

@@ -238,13 +238,17 @@ public class DefaultMachineModel implements Storable
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
     DefaultStateView stateView = new DefaultStateView ( pState, pState
         .getName () );
+    
+    // check position of the new state
+    double xPosition = x < 35 ? 35 : x ;
+    double yPostition = y < 35 ? 35 : y ;
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
 
     // Set bounds
     GraphConstants.setBounds ( stateView.getAttributes (),
-        new Rectangle2D.Double ( x - 35, y - 35, 70, 70 ) );
+        new Rectangle2D.Double ( xPosition - 35, yPostition - 35, 70, 70 ) );
 
     // Set fill color
     if ( pState.isStartState () )

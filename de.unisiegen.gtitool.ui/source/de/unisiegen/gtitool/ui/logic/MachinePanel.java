@@ -19,7 +19,6 @@ import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -54,6 +53,7 @@ import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
@@ -150,7 +150,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   // Attributes
   //
   /** the parent window */
-  private JFrame parent;
+  private MainWindowForm parent;
 
 
   /** The {@linkMachinesPanelForm} */
@@ -254,13 +254,25 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
 
   /**
+   * Flag that indicates if the console divider location should be stored.
+   */
+  private boolean setDividerLocationConsole = true;
+
+
+  /**
+   * Flag that indicates if the table divider location should be stored.
+   */
+  private boolean setDividerLocationTable = true;
+
+
+  /**
    * Create a new Machine Panel Object
    * 
    * @param pParent The parent frame
    * @param pModel the {@link DefaultMachineModel} of this panel
    * @param pFileName the filename for this Machine Panel
    */
-  public MachinePanel ( JFrame pParent, DefaultMachineModel pModel,
+  public MachinePanel ( MainWindowForm pParent, DefaultMachineModel pModel,
       File pFileName )
   {
     this.parent = pParent;
@@ -450,10 +462,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent evt )
           {
-            PreferenceManager.getInstance ().setDividerLocationConsole (
-                ( ( Integer ) evt.getNewValue () ).intValue () );
+            if ( MachinePanel.this.setDividerLocationConsole )
+            {
+              PreferenceManager.getInstance ().setDividerLocationConsole (
+                  ( ( Integer ) evt.getNewValue () ).intValue () );
+            }
           }
         } );
     this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
@@ -462,10 +478,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent evt )
           {
-            PreferenceManager.getInstance ().setDividerLocationTable (
-                ( ( Integer ) evt.getNewValue () ).intValue () );
+            if ( MachinePanel.this.setDividerLocationTable )
+            {
+              PreferenceManager.getInstance ().setDividerLocationTable (
+                  ( ( Integer ) evt.getNewValue () ).intValue () );
+            }
           }
         } );
   }
@@ -1495,6 +1515,55 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void setFileName ( File pFileName )
   {
     this.fileName = pFileName;
+  }
+
+
+  /**
+   * Sets the visibility of the console.
+   * 
+   * @param pVisible Visible or not visible.
+   */
+  public void setVisibleConsole ( boolean pVisible )
+  {
+    if ( pVisible )
+    {
+      this.gui.jSplitPaneConsole
+          .setRightComponent ( this.gui.jTabbedPaneConsole );
+      this.gui.jSplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+          .getInstance ().getDividerLocationConsole () );
+      this.setDividerLocationConsole = true;
+    }
+    else
+    {
+      this.setDividerLocationConsole = false;
+      this.gui.jSplitPaneConsole.setRightComponent ( null );
+      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+    }
+  }
+
+
+  /**
+   * Sets the visibility of the table.
+   * 
+   * @param pVisible Visible or not visible.
+   */
+  public void setVisibleTable ( boolean pVisible )
+  {
+    if ( pVisible )
+    {
+      this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneTable );
+      this.gui.jSplitPaneTable.setDividerSize ( 3 );
+      this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
+          .getInstance ().getDividerLocationTable () );
+      this.setDividerLocationTable = true;
+    }
+    else
+    {
+      this.setDividerLocationTable = false;
+      this.gui.jSplitPaneTable.setRightComponent ( null );
+      this.gui.jSplitPaneTable.setDividerSize ( 0 );
+    }
   }
 
 

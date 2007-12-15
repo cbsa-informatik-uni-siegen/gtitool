@@ -44,12 +44,12 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         jSplitPaneConsole.setDividerLocation(300);
-        jSplitPaneConsole.setDividerSize(4);
+        jSplitPaneConsole.setDividerSize(3);
         jSplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPaneConsole.setResizeWeight(1.0);
         jPanelTop.setLayout(new java.awt.GridBagLayout());
 
-        jSplitPaneTable.setDividerSize(4);
+        jSplitPaneTable.setDividerSize(3);
         jSplitPaneTable.setResizeWeight(1.0);
         jPanelDiagramm.setLayout(new java.awt.GridBagLayout());
 

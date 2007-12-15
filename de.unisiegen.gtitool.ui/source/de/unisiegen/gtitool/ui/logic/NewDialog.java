@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 
 
@@ -32,7 +33,7 @@ public class NewDialog
   /**
    * The parent {@link JFrame}.
    */
-  private JFrame parent;
+  private MainWindowForm parent;
 
 
   /**
@@ -88,7 +89,7 @@ public class NewDialog
    * 
    * @param pParent The parent {@link JFrame}.
    */
-  public NewDialog ( JFrame pParent )
+  public NewDialog ( MainWindowForm pParent )
   {
     this.parent = pParent;
     initialize ();

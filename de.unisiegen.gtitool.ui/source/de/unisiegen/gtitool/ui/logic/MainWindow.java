@@ -145,6 +145,21 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Handles console state changes.
+   */
+  public final void handleConsoleStateChanged ()
+  {
+    for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+    {
+      MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+          .getComponentAt ( i ) ).getLogic ();
+      current
+          .setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
+    }
+  }
+
+
+  /**
    * Handle the action event of the enter word item.
    */
   public final void handleEnterWord ()
@@ -298,6 +313,20 @@ public final class MainWindow implements LanguageChangedListener
     MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleSaveAs ();
+  }
+
+
+  /**
+   * Handles table state changes.
+   */
+  public final void handleTableStateChanged ()
+  {
+    for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+    {
+      MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+          .getComponentAt ( i ) ).getLogic ();
+      current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
+    }
   }
 
 
@@ -491,6 +520,21 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemPreferences.setMnemonic ( Messages.getString (
         "MainWindow.PreferencesMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // View
+    MainWindow.this.gui.jMenuView.setText ( Messages
+        .getString ( "MainWindow.View" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuView.setMnemonic ( Messages.getString (
+        "MainWindow.ViewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Console
+    MainWindow.this.gui.jCheckBoxMenuItemConsole.setText ( Messages
+        .getString ( "MainWindow.Console" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jCheckBoxMenuItemConsole.setMnemonic ( Messages
+        .getString ( "MainWindow.ConsoleMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Table
+    MainWindow.this.gui.jCheckBoxMenuItemTable.setText ( Messages
+        .getString ( "MainWindow.Table" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jCheckBoxMenuItemTable.setMnemonic ( Messages
+        .getString ( "MainWindow.TableMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Execute
     MainWindow.this.gui.jMenuExecute.setText ( Messages
         .getString ( "MainWindow.Execute" ) ); //$NON-NLS-1$

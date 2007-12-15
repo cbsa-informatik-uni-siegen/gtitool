@@ -6,7 +6,7 @@
 - OpenedFiles
 - Schließen
 - Status der Items
-- MachineTableModel.removeState überprüfen
+
 
 *** Christian ***
 - Console: Automatische Fehlerkorrektur

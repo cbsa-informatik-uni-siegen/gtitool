@@ -30,7 +30,7 @@ public class MachineTableModel extends AbstractTableModel
   private Alphabet alphabet ;
   
   /** The states and the coresponding row */
-  private HashMap < State, Integer > states = new HashMap < State, Integer > ();
+  private HashMap < State, Object [] > states = new HashMap < State, Object [] > ();
   
   /**The Symbols and the coresponding column */
   private HashMap < Symbol, Integer > symbols = new HashMap < Symbol, Integer > ();
@@ -86,20 +86,19 @@ public class MachineTableModel extends AbstractTableModel
    * @param state The {@link State} to add
    */
   public void addState (State state){
-    this.states.put (state, new Integer(this.data.size () ) );
     Object [] row = new Object [getColumnCount ()];
     row[0] = state;
     for ( int i = 1; i < getColumnCount () ; i ++ ){
       row[i] = new StateList < State > ();
     }
     this.data.add ( row );
+    this.states.put (state, row );
     fireTableRowsInserted ( this.data.size ()-1, this.data.size ()-1 );
   }
   
   public void removeState (State state){
-    int index = this.states.get ( state ).intValue ();
-    this.data.remove ( state );
-    // TODOBenny
+    
+    this.data.remove ( this.states.get ( state ) );
     fireTableDataChanged ();
   }
   
@@ -111,7 +110,7 @@ public class MachineTableModel extends AbstractTableModel
    */
   @SuppressWarnings("unchecked")
   public void addTransition (Transition transition){
-    int row = this.states.get ( transition.getStateBegin () ).intValue () ;
+    int row = this.data.indexOf ( this.states.get ( transition.getStateBegin () ) ) ;
     
     for (Symbol symbol : transition.getSymbol ()){
       int column = this.symbols.get ( symbol ).intValue () + 1 ;
@@ -122,7 +121,7 @@ public class MachineTableModel extends AbstractTableModel
   
   @SuppressWarnings("unchecked")
   public void removeTransition (Transition transition){
-   int row = this.states.get ( transition.getStateBegin () ).intValue () ;
+   int row = this.data.indexOf ( this.states.get ( transition.getStateBegin () ) );
     
     for (Symbol symbol : transition.getSymbol ()){
       int column = this.symbols.get ( symbol ).intValue () + 1 ;

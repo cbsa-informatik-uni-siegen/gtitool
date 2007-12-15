@@ -1,6 +1,5 @@
 *** Benny ***
 - Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
-- Neue Buttons für die ToolBar
 - Wort eingeben können
 - RecentlyUsedFiles
 - OpenedFiles

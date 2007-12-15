@@ -171,11 +171,13 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.setBorderPainted(false);
         jToolBarEdit.setOpaque(false);
         toolbarButton.add(jButtonMouse);
-        jButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.png")));
+        jButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.gif")));
         jButtonMouse.setSelected(true);
         jButtonMouse.setToolTipText(bundle.getString("MachinePanel.Mouse")); // NOI18N
         jButtonMouse.setFocusable(false);
-        jButtonMouse.setPreferredSize(new java.awt.Dimension(40, 40));
+        jButtonMouse.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonMouse.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonMouse.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonMouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jButtonMousehandleToolbarMouse(evt);
@@ -185,10 +187,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonMouse);
 
         toolbarButton.add(jButtonAddState);
-        jButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_add.png")));
+        jButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_add.gif")));
         jButtonAddState.setToolTipText(bundle.getString("MachinePanel.AddState")); // NOI18N
         jButtonAddState.setFocusable(false);
-        jButtonAddState.setPreferredSize(new java.awt.Dimension(40, 40));
+        jButtonAddState.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonAddState.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonAddState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonAddState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jButtonAddStatehandleToolbarAddState(evt);
@@ -198,10 +202,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonAddState);
 
         toolbarButton.add(jButtonAddTransition);
-        jButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_transition.png")));
+        jButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_transition.gif")));
         jButtonAddTransition.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
         jButtonAddTransition.setFocusable(false);
-        jButtonAddTransition.setPreferredSize(new java.awt.Dimension(40, 40));
+        jButtonAddTransition.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonAddTransition.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonAddTransition.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonAddTransition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jButtonAddTransitionhandleToolBarTransition(evt);
@@ -211,10 +217,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonAddTransition);
 
         toolbarButton.add(jButtonStartState);
-        jButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_start.png")));
+        jButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_start.gif")));
         jButtonStartState.setToolTipText(bundle.getString("MachinePanel.StartState")); // NOI18N
         jButtonStartState.setFocusable(false);
-        jButtonStartState.setPreferredSize(new java.awt.Dimension(40, 40));
+        jButtonStartState.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonStartState.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonStartState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonStartState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jButtonStartStatehandleToolbarStart(evt);
@@ -224,10 +232,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonStartState);
 
         toolbarButton.add(jButtonFinalState);
-        jButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_stop.png")));
+        jButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_final.gif")));
         jButtonFinalState.setToolTipText(bundle.getString("MachinePanel.FinalState")); // NOI18N
         jButtonFinalState.setFocusable(false);
-        jButtonFinalState.setPreferredSize(new java.awt.Dimension(40, 40));
+        jButtonFinalState.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonFinalState.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonFinalState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jButtonFinalStatehandleToolbarEnd(evt);

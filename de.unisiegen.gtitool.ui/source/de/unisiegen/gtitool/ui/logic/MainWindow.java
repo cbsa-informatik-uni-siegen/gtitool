@@ -671,4 +671,83 @@ public final class MainWindow implements LanguageChangedListener
   {
     this.gui.jMenuItemUndo.setEnabled ( pState );
   }
+  
+  /**
+   * Closes the active editor window.
+   * 
+   * @return true if the active editor could be closed.
+   */
+  public boolean handleClose ( )
+  {
+    EditorPanel selectedEditor = getActiveEditor ( ) ;
+    boolean success ;
+//    if ( selectedEditor.shouldBeSaved ( ) )
+//    {
+//      Object [ ] options =
+//      {
+//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+//              .getString ( "Yes" ) ,
+//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+//              .getString ( "No" ) ,
+//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+//              .getString ( "Cancel" ) } ;
+//      int n = JOptionPane.showOptionDialog ( window , selectedEditor
+//          .getFileName ( )
+//          + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+//              .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
+//          "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
+//          JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
+//          null , options , options [ 2 ] ) ;
+//      switch ( n )
+//      {
+//        case 0 : // Save Changes
+//          logger.debug ( "Close dialog: YES" ) ;
+//          success = selectedEditor.handleSave ( ) ;
+//          if ( success )
+//          {
+//            window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+//            window.repaint ( ) ;
+//          }
+//          return success ;
+//        case 1 : // Do not save changes
+//          logger.debug ( "Close dialog: NO" ) ;
+//          window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+//          window.repaint ( ) ;
+//          success = true ;
+//        case 2 : // Cancelled.
+//          logger.debug ( "Close dialog: CANCEL" ) ;
+//          success = false ;
+//        default :
+//          success = false ;
+//      }
+//    }
+//    else
+    {
+      this.gui.jTabbedPaneMain.remove ( this.gui.jTabbedPaneMain.getSelectedIndex ( ) ) ;
+      this.gui.repaint ( ) ;
+      success = true ;
+    }
+    if ( getActiveEditor ( ) == null )
+    {
+      setGeneralStates ( false ) ;
+      this.gui.jMenuItemSave.setEnabled ( false ) ;
+      this.gui.jButtonSave.setEnabled ( false ) ;
+      
+      // toolbar items
+      this.gui.jButtonAddState.setEnabled ( false );
+      this.gui.jButtonAddTransition.setEnabled ( false );
+      this.gui.jButtonFinalState.setEnabled ( false );
+      this.gui.jButtonMouse.setEnabled ( false );
+      this.gui.jButtonStartState.setEnabled ( false );
+    }
+    return success ;
+  }
+  
+  public EditorPanel getActiveEditor ( )
+  {
+      if (this.gui.jTabbedPaneMain.getSelectedComponent () == null) return null;
+    return (( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ());
+  }
+
 }

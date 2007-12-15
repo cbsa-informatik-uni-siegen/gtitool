@@ -4,8 +4,6 @@
 - Wort eingeben können
 - RecentlyUsedFiles
 - OpenedFiles
-- Schließen
-- Status der Items
 - Zustände können so angelegt werden, dass sie zum Teil links oder oben
   außerhalb des sichtbaren Bereichs liegen
 

@@ -458,6 +458,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
      */
     this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
+    setVisibleConsole ( this.parent.jCheckBoxMenuItemConsole.getState () );
     this.gui.jSplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
@@ -474,6 +475,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         } );
     this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationTable () );
+    setVisibleTable ( this.parent.jCheckBoxMenuItemTable.getState () );
     this.gui.jSplitPaneTable.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {

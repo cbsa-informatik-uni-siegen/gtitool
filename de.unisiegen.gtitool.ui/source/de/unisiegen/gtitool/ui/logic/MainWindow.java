@@ -62,8 +62,8 @@ public final class MainWindow implements LanguageChangedListener
       e.printStackTrace ();
     }
     this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
-    PreferenceManager preferenceManager = PreferenceManager.getInstance ();
-    this.gui.setBounds ( preferenceManager.getMainWindowBounds () );
+    this.gui.setBounds ( PreferenceManager.getInstance ()
+        .getMainWindowBounds () );
     this.gui.setVisible ( true );
     // Setting the default states
     setGeneralStates ( false );
@@ -80,16 +80,20 @@ public final class MainWindow implements LanguageChangedListener
     // RecentlyUsed
     this.gui.jMenuRecentlyUsed.setEnabled ( false );
 
-    // toolbar items
+    // Toolbar items
     this.gui.jButtonAddState.setEnabled ( false );
     this.gui.jButtonAddTransition.setEnabled ( false );
     this.gui.jButtonFinalState.setEnabled ( false );
     this.gui.jButtonMouse.setEnabled ( false );
     this.gui.jButtonStartState.setEnabled ( false );
 
-    /*
-     * Language changed listener
-     */
+    // Console and table visibility
+    this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
+        .getInstance ().getVisibleConsole () );
+    this.gui.jCheckBoxMenuItemTable.setSelected ( PreferenceManager
+        .getInstance ().getVisibleTable () );
+
+    // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
@@ -149,12 +153,18 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleConsoleStateChanged ()
   {
-    for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+    if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
+        .getState () )
     {
-      MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-          .getComponentAt ( i ) ).getLogic ();
-      current
-          .setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
+      PreferenceManager.getInstance ().setVisibleConsole (
+          this.gui.jCheckBoxMenuItemConsole.getState () );
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+      {
+        MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i ) ).getLogic ();
+        current.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+            .getState () );
+      }
     }
   }
 
@@ -321,11 +331,17 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTableStateChanged ()
   {
-    for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+    if ( PreferenceManager.getInstance ().getVisibleTable () != this.gui.jCheckBoxMenuItemTable
+        .getState () )
     {
-      MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-          .getComponentAt ( i ) ).getLogic ();
-      current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
+      PreferenceManager.getInstance ().setVisibleTable (
+          this.gui.jCheckBoxMenuItemTable.getState () );
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+      {
+        MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i ) ).getLogic ();
+        current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
+      }
     }
   }
 

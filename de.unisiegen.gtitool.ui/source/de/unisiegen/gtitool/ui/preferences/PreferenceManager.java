@@ -47,40 +47,27 @@ public final class PreferenceManager
 {
 
   /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( PreferenceManager.class );
-
-
-  /**
-   * The single instance of the <code>PreferenceManager<code>
-   */
-  private static PreferenceManager singlePreferenceManager;
-
-
-  /**
-   * The default width of the {@link MainWindow}.
-   */
-  public static int DEFAULT_WIDTH = 800;
-
-
-  /**
-   * The default hight of the {@link MainWindow}.
-   */
-  public static int DEFAULT_HEIGHT = 600;
-
-
-  /**
    * The default hight of the {@link MainWindow}.
    */
   public static Alphabet DEFAULT_ALPHABET;
 
 
   /**
-   * The default language title.
+   * The default console divider location.
    */
-  public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
+  public static int DEFAULT_DIVIDER_LOCATION_CONSOLE = -1;
+
+
+  /**
+   * The default table divider location.
+   */
+  public static int DEFAULT_DIVIDER_LOCATION_TABLE = -1;
+
+
+  /**
+   * The default hight of the {@link MainWindow}.
+   */
+  public static int DEFAULT_HEIGHT = 600;
 
 
   /**
@@ -91,9 +78,9 @@ public final class PreferenceManager
 
 
   /**
-   * The default look and feel name.
+   * The default language title.
    */
-  public static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
+  public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
 
 
   /**
@@ -101,6 +88,24 @@ public final class PreferenceManager
    */
   public static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = UIManager
       .getSystemLookAndFeelClassName ();
+
+
+  /**
+   * The default look and feel name.
+   */
+  public static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
+
+
+  /**
+   * The default maximized state of the {@link MainWindow}.
+   */
+  public static boolean DEFAULT_MAXIMIZED = false;
+
+
+  /**
+   * The default width of the {@link MainWindow}.
+   */
+  public static int DEFAULT_WIDTH = 800;
 
 
   /**
@@ -118,27 +123,21 @@ public final class PreferenceManager
 
 
   /**
-   * The default maximized state of the {@link MainWindow}.
-   */
-  public static boolean DEFAULT_MAXIMIZED = false;
-
-
-  /**
-   * The default console divider location.
-   */
-  public static int DEFAULT_DIVIDER_LOCATION_CONSOLE = -1;
-
-
-  /**
-   * The default table divider location.
-   */
-  public static int DEFAULT_DIVIDER_LOCATION_TABLE = -1;
-
-
-  /**
    * The default preference dialog last active tab.
    */
   public static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
+
+
+  /**
+   * The visible console value.
+   */
+  public static boolean DEFAULT_VISIBLE_CONSOLE = true;
+
+
+  /**
+   * The visible table value.
+   */
+  public static boolean DEFAULT_VISIBLE_TABLE = true;
 
 
   /**
@@ -151,6 +150,19 @@ public final class PreferenceManager
    * The default zoom factor value.
    */
   public static int DEFAULT_ZOOM_FACTOR = 100;
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( PreferenceManager.class );
+
+
+  /**
+   * The single instance of the <code>PreferenceManager<code>
+   */
+  private static PreferenceManager singlePreferenceManager;
 
   static
   {
@@ -185,12 +197,9 @@ public final class PreferenceManager
 
 
   /**
-   * The {@link Preferences} object for the node where the settings are stored
-   * and loaded.
-   * 
-   * @see Preferences
+   * The list of {@link ColorChangedListener}.
    */
-  private Preferences preferences;
+  private ArrayList < ColorChangedListener > colorChangedListenerList = new ArrayList < ColorChangedListener > ();
 
 
   /**
@@ -200,21 +209,24 @@ public final class PreferenceManager
 
 
   /**
-   * The list of {@link ColorChangedListener}.
+   * The {@link Preferences} object for the node where the settings are stored
+   * and loaded.
+   * 
+   * @see Preferences
    */
-  private ArrayList < ColorChangedListener > colorChangedListenerList = new ArrayList < ColorChangedListener > ();
-
-
-  /**
-   * The list of {@link ZoomFactorChangedListener}.
-   */
-  private ArrayList < ZoomFactorChangedListener > zoomFactorChangedListenerList = new ArrayList < ZoomFactorChangedListener > ();
+  private Preferences preferences;
 
 
   /**
    * The system {@link Locale}.
    */
   private Locale systemLocale;
+
+
+  /**
+   * The list of {@link ZoomFactorChangedListener}.
+   */
+  private ArrayList < ZoomFactorChangedListener > zoomFactorChangedListenerList = new ArrayList < ZoomFactorChangedListener > ();
 
 
   /**
@@ -942,6 +954,30 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the visible console value.
+   * 
+   * @return The visible console value.
+   */
+  public final boolean getVisibleConsole ()
+  {
+    return this.preferences.getBoolean ( "MachinePanel.ConsoleVisible", //$NON-NLS-1$
+        DEFAULT_VISIBLE_CONSOLE );
+  }
+
+
+  /**
+   * Returns the visible table value.
+   * 
+   * @return The visible table value.
+   */
+  public final boolean getVisibleTable ()
+  {
+    return this.preferences.getBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
+        DEFAULT_VISIBLE_TABLE );
+  }
+
+
+  /**
    * Returns the working path.
    * 
    * @return The working path.
@@ -1420,6 +1456,32 @@ public final class PreferenceManager
   public final void setSystemLocale ( Locale pLocale )
   {
     this.systemLocale = pLocale;
+  }
+
+
+  /**
+   * Sets the visible console value.
+   * 
+   * @param pVisible The visible console value.
+   */
+  public final void setVisibleConsole ( boolean pVisible )
+  {
+    logger.debug ( "set the visible console to \"" + pVisible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "MachinePanel.ConsoleVisible", //$NON-NLS-1$
+        pVisible );
+  }
+
+
+  /**
+   * Sets the visible table value.
+   * 
+   * @param pVisible The visible table value.
+   */
+  public final void setVisibleTable ( boolean pVisible )
+  {
+    logger.debug ( "set the visible table to \"" + pVisible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
+        pVisible );
   }
 
 

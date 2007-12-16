@@ -17,7 +17,7 @@ public final class NFA extends Machine
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 6284801477317314839L;
+  private static final long serialVersionUID = 6954358306581597015L;
 
 
   /**

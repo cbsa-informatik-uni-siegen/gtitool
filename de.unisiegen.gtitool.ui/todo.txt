@@ -3,10 +3,14 @@
 - Wort eingeben können
 - RecentlyUsedFiles
 - OpenedFiles
-- Den neuen NFA in die GUI integrieren
+- Dateien per Übergabe in der main Methode öffnen können (siehe TPML)
+- Den neuen NFA integrieren (Funktionalität wird noch getestet)
+- Den neuen ENFA integrieren (Nur angelegt, noch nicht implementiert)
+- Die neue SM integrieren (Nur angelegt, noch nicht implementiert)
 
 
 *** Christian ***
 - Console: Automatische Fehlerkorrektur
 - Meldung über Fehler und Warnungen anzeigen
 - Zustand highlighten mit Timer
+- Auswahl ob zur Maus gesprungen werden soll einbinden

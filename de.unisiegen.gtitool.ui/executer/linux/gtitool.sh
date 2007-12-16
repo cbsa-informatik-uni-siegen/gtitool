@@ -36,6 +36,7 @@ cat > "$XDG_DATA_HOME/mime/packages/gtitool.xml" <<EOF
     <glob pattern="*.[Dd][Ff][Aa]" />
     <glob pattern="*.[Nn][Ff][Aa]" />
     <glob pattern="*.[Ee][Nn][Ff][Aa]" />
+    <glob pattern="*.[Ss][Mm]" />
   </mime-type>
 </mime-info>
 EOF

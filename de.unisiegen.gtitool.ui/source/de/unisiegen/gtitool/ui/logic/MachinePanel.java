@@ -153,7 +153,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   private MainWindowForm parent;
 
 
-  /** The {@linkMachinesPanelForm} */
+  /** The {@link MachinesPanelForm} */
   private MachinesPanelForm gui;
 
 

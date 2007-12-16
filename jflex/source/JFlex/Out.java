@@ -178,7 +178,7 @@ public final class Out
    * All parts of JFlex, that want to provide dump information should use this
    * method for their output.
    * 
-   * @message the message to be printed
+   * @param message the message to be printed
    */
   public static void dump ( String message )
   {
@@ -191,7 +191,7 @@ public final class Out
    * All parts of JFlex, that want to report error messages should use this
    * method for their output.
    * 
-   * @message the message to be printed
+   * @param message the message to be printed
    */
   private static void err ( String message )
   {
@@ -458,7 +458,7 @@ public final class Out
    * 
    * @param file the file to read
    * @param line the line number to get
-   * @throw IOException if any error occurs
+   * @throws IOException if any error occurs
    */
   private static String getLine ( File file, int line ) throws IOException
   {

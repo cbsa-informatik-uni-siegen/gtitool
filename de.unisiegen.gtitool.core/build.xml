@@ -27,8 +27,8 @@
 
 	<!-- declare -->
 	<target name="declare">
-	  <taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/JFlex-1.4.1-gtitool.jar" />
-	  <taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/java-cup-11a-gtitool.jar" />
+		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/JFlex-1.4.1-gtitool.jar" />
+		<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/java-cup-11a-gtitool.jar" />
 	</target>
 
 	<!-- dist -->
@@ -41,7 +41,7 @@
 		<delete dir="${distdir}" />
 		<mkdir dir="${distdir}" />
 	</target>
-	
+
 	<!-- dist jflex -->
 	<target name="dist-jflex">
 		<ant dir="${jflex.basedir}" target="dist" inheritall="false" />
@@ -90,21 +90,21 @@
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
-				<include name="**/*.properties"/>
+				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${sourceimpldir}">
-				<include name="**/*.properties"/>
+				<include name="**/*.properties" />
 			</fileset>
 		</jar>
 		<!-- jar file source-->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${sourcedir}">
-				<include name="**/*.java"/>
-				<include name="**/*.properties"/>
+				<include name="**/*.java" />
+				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${sourceimpldir}">
-				<include name="**/*.java"/>
-				<include name="**/*.properties"/>
+				<include name="**/*.java" />
+				<include name="**/*.properties" />
 			</fileset>
 		</jar>
 		<!-- delete manifest -->
@@ -128,109 +128,50 @@
 	<target name="parser-clean">
 		<delete dir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser" />
 	</target>
-			
+
 	<!-- parser alphabet -->
 	<target name="parser-alphabet">
-		<jflex 
-	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex"
-	   		destdir="${sourcegenerateddir}"
-			nobak="yes" />
-		<cup
-			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup"
-			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/alphabet"
-			package="de.unisiegen.gtitool.core.parser.alphabet"
-			parser="AlphabetAbstractParser"
-			symbols="AlphabetTerminals"
-			interface="yes"
-			debug="no"
-			expect="100"
-			nonterms="no"
-			nopositions="no"
-			compact_red="no"
-			dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/alphabet" package="de.unisiegen.gtitool.core.parser.alphabet" parser="AlphabetAbstractParser" symbols="AlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser state -->
 	<target name="parser-state">
-		<jflex 
-	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex"
-	   		destdir="${sourcegenerateddir}"
-			nobak="yes" />
-		<cup
-			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.cup"
-			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/state"
-			package="de.unisiegen.gtitool.core.parser.state"
-			parser="StateAbstractParser"
-			symbols="StateTerminals"
-			interface="yes"
-			debug="no"
-			expect="100"
-			nonterms="no"
-			nopositions="no"
-			compact_red="no"
-			dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/state" package="de.unisiegen.gtitool.core.parser.state" parser="StateAbstractParser" symbols="StateTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
-	
+
 	<!-- parser symbol -->
 	<target name="parser-symbol">
-		<jflex 
-	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex"
-	   		destdir="${sourcegenerateddir}"
-			nobak="yes" />
-		<cup
-			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.cup"
-			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/symbol"
-			package="de.unisiegen.gtitool.core.parser.symbol"
-			parser="SymbolAbstractParser"
-			symbols="SymbolTerminals"
-			interface="yes"
-			debug="no"
-			expect="100"
-			nonterms="no"
-			nopositions="no"
-			compact_red="no"
-			dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/symbol" package="de.unisiegen.gtitool.core.parser.symbol" parser="SymbolAbstractParser" symbols="SymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser transition -->
 	<target name="parser-transition">
-		<jflex 
-	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.flex"
-	   		destdir="${sourcegenerateddir}"
-			nobak="yes" />
-		<cup
-			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.cup"
-			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/transition"
-			package="de.unisiegen.gtitool.core.parser.transition"
-			parser="TransitionAbstractParser"
-			symbols="TransitionTerminals"
-			interface="yes"
-			debug="no"
-			expect="100"
-			nonterms="no"
-			nopositions="no"
-			compact_red="no"
-			dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/transition/transition.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/transition" package="de.unisiegen.gtitool.core.parser.transition" parser="TransitionAbstractParser" symbols="TransitionTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser word -->
 	<target name="parser-word">
-		<jflex 
-	   		file="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.flex"
-	   		destdir="${sourcegenerateddir}"
-			nobak="yes" />
-		<cup
-			srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.cup"
-			destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/word"
-			package="de.unisiegen.gtitool.core.parser.word"
-			parser="WordAbstractParser"
-			symbols="WordTerminals"
-			interface="yes"
-			debug="no"
-			expect="100"
-			nonterms="no"
-			nopositions="no"
-			compact_red="no"
-			dump_grammar="no" />
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/word/word.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/word" package="de.unisiegen.gtitool.core.parser.word" parser="WordAbstractParser" symbols="WordTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- javadoc -->
+	<target name="javadoc" description="Generate the javadoc">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${libdir}/log4j-1.2.14.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+			<fileset dir="${sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${sourceimpldir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${sourcegenerateddir}">
+				<include name="**/*.java" />
+			</fileset>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
 	</target>
 </project>

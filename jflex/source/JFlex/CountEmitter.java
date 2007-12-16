@@ -47,8 +47,6 @@ public class CountEmitter extends PackEmitter
 
   /**
    * Emits count/value unpacking code for the generated array.
-   * 
-   * @see JFlex.PackEmitter#emitUnPack()
    */
   public void emitUnpack ()
   {

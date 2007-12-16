@@ -351,7 +351,7 @@ public class CUPTask extends Task
   /**
    * Sets the value of quiet
    * 
-   * @param arg_quiet Value to assign to this.quiet
+   * @param argquiet Value to assign to this.quiet
    */
   public void setQuiet ( boolean argquiet )
   {
@@ -373,7 +373,7 @@ public class CUPTask extends Task
   /**
    * Sets the value of force
    * 
-   * @param arg_package Value to assign to this.force
+   * @param argforce Value to assign to this.force
    */
   public void setForce ( boolean argforce )
   {
@@ -417,7 +417,7 @@ public class CUPTask extends Task
   /**
    * Sets the value of destdir
    * 
-   * @param arg_package Value to assign to this.destdir
+   * @param destdir Value to assign to this.destdir
    */
   public void setDestdir ( String destdir )
   {

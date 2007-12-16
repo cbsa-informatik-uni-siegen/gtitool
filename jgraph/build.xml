@@ -1,6 +1,6 @@
 <project name="gtitool.jgraph" default="dist" basedir=".">
-	<property name="sourcedir" value="${basedir}/source"/>
-	<property name="distdir" value="${basedir}/dist"/>
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 
 	<target name="dist" depends="dist-preclean,jar,dist-postclean" description="Clean up and produce all distributions">
@@ -8,28 +8,34 @@
 	</target>
 
 	<target name="dist-preclean">
-		<delete dir="${distdir}/"/>
-		<mkdir dir="${distdir}"/>
-		<mkdir dir="${classesdir}"/>
+		<delete dir="${distdir}/" />
+		<mkdir dir="${distdir}" />
+		<mkdir dir="${classesdir}" />
 	</target>
 
 	<target name="dist-postclean">
-    	<delete dir="${classesdir}"/>
+		<delete dir="${classesdir}" />
 	</target>
 
 	<target name="jar" depends="compile">
-		<jar jarfile="${distdir}/jgraph-gtitool.jar" basedir="${classesdir}"/>
+		<jar jarfile="${distdir}/jgraph-gtitool.jar" basedir="${classesdir}" />
 	</target>
-	
+
 	<target name="compile">
-		<javac srcdir="${sourcedir}"
-			debug="false"
-			deprecation="false"
-			optimize="true"
-			destdir="${classesdir}">
+		<javac srcdir="${sourcedir}" debug="false" deprecation="false" optimize="true" destdir="${classesdir}">
 			<classpath>
-				<pathelement path="${classesdir}"/>
+				<pathelement path="${classesdir}" />
 			</classpath>
 		</javac>
+	</target>
+
+	<!-- javadoc -->
+	<target name="javadoc" description="Generate the javadoc">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+			<fileset dir="${sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
 	</target>
 </project>

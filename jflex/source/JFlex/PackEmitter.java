@@ -116,7 +116,6 @@ public abstract class PackEmitter
    * Emit single unicode character. Updates length, position, etc.
    * 
    * @param i the character to emit.
-   * @prec 0 <= i <= 0xFFFF
    */
   public void emitUC ( int i )
   {
@@ -223,7 +222,6 @@ public abstract class PackEmitter
    * representation in a class file.
    * 
    * @param value the char code of the Unicode character
-   * @prec 0 <= value <= 0xFFFF
    * @return length of UTF8 representation.
    */
   private int UTF8Length ( char value )

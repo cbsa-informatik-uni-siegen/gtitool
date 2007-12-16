@@ -51,7 +51,6 @@ import java.util.Stack;
  * This class is "static" (contains only static data and methods).
  * <p>
  * 
- * @see java_cup.main
  * @version last update: 11/25/95
  * @author Scott Hudson
  * @author Christian Fehler

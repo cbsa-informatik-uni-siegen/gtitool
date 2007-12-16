@@ -340,7 +340,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   /**
    * Calculates the angle at which graphics should be rotated to paint label
    * along the edge. Before calling this method always check that transform
-   * should be applied using {@linkisLabelTransform}
+   * should be applied using isLabelTransform
    * 
    * @return the value of the angle, 0 if the angle is zero or can't be
    *         calculated

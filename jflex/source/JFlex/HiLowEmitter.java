@@ -43,8 +43,6 @@ public class HiLowEmitter extends PackEmitter
 
   /**
    * Emits hi/low pair unpacking code for the generated array.
-   * 
-   * @see JFlex.PackEmitter#emitUnPack()
    */
   public void emitUnpack ()
   {
@@ -83,7 +81,6 @@ public class HiLowEmitter extends PackEmitter
    * Emit one value using two characters.
    * 
    * @param val the value to emit
-   * @prec 0 <= val <= 0xFFFFFFFF
    */
   public void emit ( int val )
   {

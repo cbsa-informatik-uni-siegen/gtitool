@@ -61,7 +61,7 @@ public final class WordParser extends WordAbstractParser
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */

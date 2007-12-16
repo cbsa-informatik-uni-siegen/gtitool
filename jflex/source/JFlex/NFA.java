@@ -327,7 +327,7 @@ final public class NFA
    * closure for set a is the set of states that can be reached by epsilon edges
    * from a.
    * 
-   * @param set the set of states to calculate the epsilon closure for
+   * @param startState the set of states to calculate the epsilon closure for
    * @return the epsilon closure of the specified set of states in this NFA
    */
   private StateSet closure ( int startState )
@@ -722,7 +722,7 @@ final public class NFA
    * Converts the NFA into a DFA, then negates that DFA. Exponential state
    * blowup possible and common.
    * 
-   * @param the NFA to construct the complement for.
+   * @param nfa the NFA to construct the complement for.
    * @return a pair of integers denoting the index of start and end state of the
    *         complement NFA.
    */
@@ -934,8 +934,6 @@ final public class NFA
    * regExp.isCharClass(macros) == true
    * 
    * @param regExp the regular expression to construct the NFA for
-   * @return a pair of integers denoting the index of start and end state of the
-   *         NFA.
    */
   private void insertNFA ( RegExp regExp, int start, int end )
   {

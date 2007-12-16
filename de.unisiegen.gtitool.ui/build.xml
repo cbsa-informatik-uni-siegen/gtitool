@@ -14,11 +14,21 @@
 	<!-- property -->
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
+	<property name="core.libdir" value="${core.basedir}/lib" />
+	<property name="core.sourcedir" value="${core.basedir}/source" />
+	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
+	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
 	<property file="${core.basedir}/build.properties" />
-	
+
+	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
+	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+
+	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
+	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
+
 	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
 	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
-	
+
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
@@ -46,7 +56,7 @@
 			</filterset>
 		</copy>
 		<!-- move exe file -->
-		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe"/>
+		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.bz2" compression="bzip2" longfile="gnu">
 			<tarfileset dir="${distdir}">
@@ -85,10 +95,10 @@
 		</zip>
 		<!-- move files -->
 		<move todir="${distdir}">
-			<fileset dir="${gtitooldir}" includes="*"/>
+			<fileset dir="${gtitooldir}" includes="*" />
 		</move>
 		<!-- chmod gtitool.sh -->
-		<chmod file="${distdir}/gtitool.sh" perm="755"/>
+		<chmod file="${distdir}/gtitool.sh" perm="755" />
 		<!-- delete file -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 		<echo message="Distribution ready in ${distdir}" />
@@ -98,7 +108,7 @@
 	<target name="dist-core">
 		<ant dir="${core.basedir}" target="dist" inheritall="false" />
 	</target>
-	
+
 	<!-- dist jgraph -->
 	<target name="dist-jgraph">
 		<ant dir="${jgraph.basedir}" target="dist" inheritall="false" />
@@ -114,7 +124,7 @@
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5" >
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
 			<src path="${sourcedir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
@@ -150,9 +160,9 @@
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
-				<include name="**/*.gif"/>
-				<include name="**/*.png"/>
-				<include name="**/*.properties"/>
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${basedir}/log4j">
 				<include name="log4j.xml" />
@@ -161,10 +171,10 @@
 		<!-- jar file source-->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${sourcedir}">
-				<include name="**/*.java"/>
-				<include name="**/*.gif"/>
-				<include name="**/*.png"/>
-				<include name="**/*.properties"/>
+				<include name="**/*.java" />
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${basedir}/log4j">
 				<include name="log4j.xml" />
@@ -188,14 +198,53 @@
 		<!-- delete config file -->
 		<delete file="${basedir}/executer/windows/tmp_launch4j.xml" />
 	</target>
-	
+
 	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 	</target>
 
+	<!-- javadoc -->
+	<target name="javadoc" description="Generate the javadoc">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/log4j-1.2.14.jar; ${jgraph.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+			<fileset dir="${sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${sourcegenerateddir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${core.sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${core.sourceimpldir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${core.sourcegenerateddir}">
+				<include name="**/*.java" />
+			</fileset>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
+	</target>
+
 	<!-- version -->
-	<target name="version">
-		<ant antfile="${basedir}/version.xml" target="version" inheritall="false" />
+	<target name="version" description="Generate the version interface">
+		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
+		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
+
+
+/**
+ * Automatically generated interface for the project version.
+ * 
+ * @author Christian Fehler
+ */
+public interface Version
+{
+
+  /** 
+   * The version of the project.
+   */
+  public static final String VERSION = "${gtitool.version}"; //$NON-NLS-1$
+}
+</echo>
 	</target>
 </project>

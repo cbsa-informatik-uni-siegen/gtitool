@@ -145,7 +145,6 @@ final public class Emitter
    * file. Makes a backup if the file already exists.
    * 
    * @param name the name (without path) of the file
-   * @param path the path where to construct the file
    * @param input fallback location if path = <tt>null</tt> (expected to be a
    *          file in the directory to write to)
    */
@@ -521,7 +520,7 @@ final public class Emitter
   /**
    * Try to find out if user code ends with a javadoc comment
    * 
-   * @param buffer the user code
+   * @param usercode the user code
    * @return true if it ends with a javadoc comment
    */
   public static boolean endsWithJavadoc ( StringBuffer usercode )
@@ -815,7 +814,6 @@ final public class Emitter
    * Print number as octal/unicode escaped string character.
    * 
    * @param c the value to print
-   * @prec 0 <= c <= 0xFFFF
    */
   private void printUC ( int c )
   {

@@ -74,9 +74,6 @@ public final class IntCharSet
    * returns the index of the intervall that contains the character c, -1 if
    * there is no such intevall
    * 
-   * @prec: true
-   * @post: -1 <= return < intervalls.size() && (return > -1 -->
-   *        intervalls[return].contains(c))
    * @param c the character
    * @return the index of the enclosing interval, -1 if no such interval
    */

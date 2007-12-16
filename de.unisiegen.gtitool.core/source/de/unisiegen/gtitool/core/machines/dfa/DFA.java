@@ -1,11 +1,7 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
 
 
@@ -31,43 +27,10 @@ public final class DFA extends Machine
    */
   public DFA ( Alphabet pAlphabet )
   {
-    super ( pAlphabet );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#validate()
-   */
-  @Override
-  public final void validate () throws MachineValidationException
-  {
-    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
-
-    // Start state
-    machineExceptionList.addAll ( checkNoStartState () );
-    machineExceptionList.addAll ( checkMoreThanOneStartState () );
-
-    // State name
-    machineExceptionList.addAll ( checkStateName () );
-
-    // All symbols
-    machineExceptionList.addAll ( checkAllSymbols () );
-
-    // Epsilon transition
-    machineExceptionList.addAll ( checkEpsilonTransition () );
-
-    // Symbol only one time
-    machineExceptionList.addAll ( checkSymbolOnlyOneTime () );
-
-    // Warning: Final state
-    machineExceptionList.addAll ( checkFinalState () );
-
-    // Throw the exception if a warning or a error has occurred.
-    if ( machineExceptionList.size () > 0 )
-    {
-      throw new MachineValidationException ( machineExceptionList );
-    }
+    super ( pAlphabet, ValidationElement.ALL_SYMBOLS,
+        ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,
+        ValidationElement.MORE_THAN_ONE_START_STATE,
+        ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
+        ValidationElement.SYMBOL_ONLY_ONE_TIME );
   }
 }

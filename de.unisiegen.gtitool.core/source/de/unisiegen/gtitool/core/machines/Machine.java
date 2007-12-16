@@ -31,6 +31,53 @@ public abstract class Machine implements Serializable
 {
 
   /**
+   * This enum is used to indicate which validation elements should be checked
+   * during a validation.
+   * 
+   * @author Christian Fehler
+   */
+  protected enum ValidationElement
+  {
+    /**
+     * There is a {@link State}, which {@link Transition}s do not contain all
+     * {@link Symbol}s.
+     */
+    ALL_SYMBOLS,
+
+    /**
+     * There is a {@link Transition} without a {@link Symbol}.
+     */
+    EPSILON_TRANSITION,
+
+    /**
+     * There is no final state defined.
+     */
+    FINAL_STATE,
+
+    /**
+     * There is more than one start state defined.
+     */
+    MORE_THAN_ONE_START_STATE,
+
+    /**
+     * There is no start state is defined.
+     */
+    NO_START_STATE,
+
+    /**
+     * There are {@link State}s with the same name.
+     */
+    STATE_NAME,
+
+    /**
+     * There is a {@link State} with {@link Transition}s with the same
+     * {@link Symbol}.
+     */
+    SYMBOL_ONLY_ONE_TIME
+  }
+
+
+  /**
    * The active {@link State}s.
    */
   private ArrayList < State > activeStateList;
@@ -79,11 +126,20 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * The validation element list.
+   */
+  private ArrayList < ValidationElement > validationElementList;
+
+
+  /**
    * Allocates a new <code>Machine</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>Machine</code>.
+   * @param pValidationElements The validation elements which indicates which
+   *          validation elements should be checked during a validation.
    */
-  public Machine ( Alphabet pAlphabet )
+  public Machine ( Alphabet pAlphabet,
+      ValidationElement ... pValidationElements )
   {
     // Alphabet
     if ( pAlphabet == null )
@@ -91,6 +147,16 @@ public abstract class Machine implements Serializable
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
+    // Validation elements
+    if ( pValidationElements == null )
+    {
+      throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
+    }
+    this.validationElementList = new ArrayList < ValidationElement > ();
+    for ( ValidationElement current : pValidationElements )
+    {
+      this.validationElementList.add ( current );
+    }
     // StateList
     this.stateList = new ArrayList < State > ();
     // TransitionList
@@ -342,7 +408,7 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Checks if no final state is defined.
+   * Checks if there is no final state defined.
    * 
    * @return The list of {@link MachineException}.
    */
@@ -367,7 +433,7 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Checks if more than one start state is defined.
+   * Checks if there is more than one start state defined.
    * 
    * @return The list of {@link MachineException}.
    */
@@ -393,7 +459,7 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Checks if no start state is defined.
+   * Checks if there is no start state defined.
    * 
    * @return The list of {@link MachineException}.
    */
@@ -951,5 +1017,53 @@ public abstract class Machine implements Serializable
    * 
    * @throws MachineValidationException If the validation fails.
    */
-  public abstract void validate () throws MachineValidationException;
+  public final void validate () throws MachineValidationException
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+
+    if ( this.validationElementList.contains ( ValidationElement.ALL_SYMBOLS ) )
+    {
+      machineExceptionList.addAll ( checkAllSymbols () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.EPSILON_TRANSITION ) )
+    {
+      machineExceptionList.addAll ( checkEpsilonTransition () );
+    }
+
+    if ( this.validationElementList.contains ( ValidationElement.FINAL_STATE ) )
+    {
+      machineExceptionList.addAll ( checkFinalState () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.MORE_THAN_ONE_START_STATE ) )
+    {
+      machineExceptionList.addAll ( checkMoreThanOneStartState () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.NO_START_STATE ) )
+    {
+      machineExceptionList.addAll ( checkNoStartState () );
+    }
+
+    if ( this.validationElementList.contains ( ValidationElement.STATE_NAME ) )
+    {
+      machineExceptionList.addAll ( checkStateName () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.SYMBOL_ONLY_ONE_TIME ) )
+    {
+      machineExceptionList.addAll ( checkSymbolOnlyOneTime () );
+    }
+
+    // Throw the exception if a warning or an error has occurred.
+    if ( machineExceptionList.size () > 0 )
+    {
+      throw new MachineValidationException ( machineExceptionList );
+    }
+  }
 }

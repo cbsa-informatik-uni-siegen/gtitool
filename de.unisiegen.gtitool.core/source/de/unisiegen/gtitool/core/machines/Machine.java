@@ -3,12 +3,20 @@ package de.unisiegen.gtitool.core.machines;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateFinalException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 
@@ -99,54 +107,13 @@ public abstract class Machine implements Serializable
    * 
    * @param pTransitions The {@link Transition}s to add.
    */
-  protected final void addHistory ( Iterable < Transition > pTransitions )
+  private final void addHistory ( Iterable < Transition > pTransitions )
   {
     if ( pTransitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
     if ( !pTransitions.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
-    ArrayList < Transition > list = new ArrayList < Transition > ();
-    for ( Transition current : pTransitions )
-    {
-      list.add ( current );
-    }
-    this.history.add ( list );
-  }
-
-
-  /**
-   * Adds the {@link Transition} to the history of this <code>Machine</code>.
-   * 
-   * @param pTransition The {@link Transition} to add.
-   */
-  protected final void addHistory ( Transition pTransition )
-  {
-    if ( pTransition == null )
-    {
-      throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
-    }
-    ArrayList < Transition > list = new ArrayList < Transition > ();
-    list.add ( pTransition );
-    this.history.add ( list );
-  }
-
-
-  /**
-   * Adds the {@link Transition}s to the history of this <code>Machine</code>.
-   * 
-   * @param pTransitions The {@link Transition}s to add.
-   */
-  protected final void addHistory ( Transition ... pTransitions )
-  {
-    if ( pTransitions == null )
-    {
-      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
-    if ( pTransitions.length == 0 )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
@@ -320,9 +287,212 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Checks if there is a {@link State}, which {@link Transition}s do not
+   * contain all {@link Symbol}s.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkAllSymbols ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    for ( State currentState : this.getState () )
+    {
+      TreeSet < Symbol > currentSymbolSet = new TreeSet < Symbol > ();
+      for ( Transition currentTransition : currentState.getTransitionBegin () )
+      {
+        currentSymbolSet.addAll ( currentTransition.getSymbol () );
+      }
+      TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
+      for ( Symbol currentSymbol : this.getAlphabet () )
+      {
+        notUsedSymbolSet.add ( currentSymbol );
+      }
+      for ( Symbol currentSymbol : currentSymbolSet )
+      {
+        notUsedSymbolSet.remove ( currentSymbol );
+      }
+      if ( notUsedSymbolSet.size () > 0 )
+      {
+        machineExceptionList.add ( new MachineAllSymbolsException (
+            currentState, notUsedSymbolSet ) );
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if there is a {@link Transition} without a {@link Symbol}.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkEpsilonTransition ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    for ( Transition currentTransition : this.getTransition () )
+    {
+      if ( currentTransition.getSymbol ().size () == 0 )
+      {
+        machineExceptionList.add ( new MachineEpsilonTransitionException (
+            currentTransition ) );
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if no final state is defined.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkFinalState ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    boolean found = false;
+    loop : for ( State currentState : this.getState () )
+    {
+      if ( currentState.isFinalState () )
+      {
+        found = true;
+        break loop;
+      }
+    }
+    if ( !found )
+    {
+      machineExceptionList.add ( new MachineStateFinalException () );
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if more than one start state is defined.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkMoreThanOneStartState ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    ArrayList < State > startStateList = new ArrayList < State > ();
+    for ( State current : this.getState () )
+    {
+      if ( current.isStartState () )
+
+      {
+        startStateList.add ( current );
+      }
+    }
+    if ( startStateList.size () >= 2 )
+    {
+      machineExceptionList.add ( new MachineStateStartException (
+          startStateList ) );
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if no start state is defined.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkNoStartState ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    ArrayList < State > startStateList = new ArrayList < State > ();
+    for ( State current : this.getState () )
+    {
+      if ( current.isStartState () )
+
+      {
+        startStateList.add ( current );
+      }
+    }
+    if ( startStateList.size () == 0 )
+    {
+      machineExceptionList.add ( new MachineStateStartException (
+          startStateList ) );
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if there are {@link State}s with the same name.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkStateName ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    ArrayList < State > duplicatedListAll = new ArrayList < State > ();
+    firstLoop : for ( int i = 0 ; i < this.getState ().size () ; i++ )
+    {
+      if ( duplicatedListAll.contains ( this.getState ().get ( i ) ) )
+      {
+        continue firstLoop;
+      }
+      ArrayList < State > duplicatedListOne = new ArrayList < State > ();
+      for ( int j = i + 1 ; j < this.getState ().size () ; j++ )
+      {
+        if ( this.getState ().get ( i ).getName ().equals (
+            this.getState ().get ( j ).getName () ) )
+        {
+          duplicatedListOne.add ( this.getState ().get ( j ) );
+        }
+      }
+      if ( duplicatedListOne.size () > 0 )
+      {
+        duplicatedListOne.add ( this.getState ().get ( i ) );
+        for ( State current : duplicatedListOne )
+        {
+          duplicatedListAll.add ( current );
+        }
+        machineExceptionList.add ( new MachineStateNameException (
+            duplicatedListOne ) );
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if there is a {@link State} with {@link Transition}s with the same
+   * {@link Symbol}.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  protected final ArrayList < MachineException > checkSymbolOnlyOneTime ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    for ( State currentState : this.getState () )
+    {
+      for ( Symbol currentSymbol : this.getAlphabet () )
+      {
+        ArrayList < Transition > transitions = new ArrayList < Transition > ();
+        for ( Transition currentTransition : currentState.getTransitionBegin () )
+        {
+          if ( currentTransition.contains ( currentSymbol ) )
+          {
+            transitions.add ( currentTransition );
+          }
+        }
+        if ( transitions.size () > 1 )
+        {
+          machineExceptionList.add ( new MachineSymbolOnlyOneTimeException (
+              currentState, currentSymbol, transitions ) );
+        }
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
    * Clears the history of this <code>Machine</code>.
    */
-  protected final void clearHistory ()
+  private final void clearHistory ()
   {
     this.history.clear ();
   }
@@ -364,17 +534,6 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Returns the current {@link State} id.
-   * 
-   * @return The current {@link State} id.
-   */
-  public int getCurrentStateId ()
-  {
-    return this.currentStateId;
-  }
-
-
-  /**
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
@@ -384,17 +543,6 @@ public abstract class Machine implements Serializable
   public final Symbol getCurrentSymbol () throws WordException
   {
     return this.word.getCurrentSymbol ();
-  }
-
-
-  /**
-   * Returns the current {@link Transition} id.
-   * 
-   * @return The current {@link Transition} id.
-   */
-  public int getCurrentTransitionId ()
-  {
-    return this.currentTransitionId;
   }
 
 
@@ -445,18 +593,6 @@ public abstract class Machine implements Serializable
   public final Transition getTransition ( int pIndex )
   {
     return this.transitionList.get ( pIndex );
-  }
-
-
-  /**
-   * Returns the current {@link Word}.
-   * 
-   * @return The current {@link Word}.
-   * @see #word
-   */
-  protected final Word getWord ()
-  {
-    return this.word;
   }
 
 
@@ -566,7 +702,31 @@ public abstract class Machine implements Serializable
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordException If something with the {@link Word} is not correct.
    */
-  public abstract ArrayList < Transition > nextSymbol () throws WordException;
+  public final ArrayList < Transition > nextSymbol () throws WordException
+  {
+    if ( getActiveState ().size () == 0 )
+    {
+      throw new IllegalArgumentException (
+          "no active state: machine must be started first" ); //$NON-NLS-1$
+    }
+    Symbol symbol = this.word.nextSymbol ();
+    ArrayList < Transition > transitions = new ArrayList < Transition > ();
+    ArrayList < State > newActiveStates = new ArrayList < State > ();
+    for ( State activeState : getActiveState () )
+    {
+      for ( Transition current : activeState.getTransitionBegin () )
+      {
+        if ( current.contains ( symbol ) )
+        {
+          newActiveStates.add ( current.getStateEnd () );
+          transitions.add ( current );
+        }
+      }
+    }
+    setActiveState ( newActiveStates );
+    addHistory ( transitions );
+    return transitions;
+  }
 
 
   /**
@@ -576,8 +736,24 @@ public abstract class Machine implements Serializable
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordException If something with the {@link Word} is not correct.
    */
-  public abstract ArrayList < Transition > previousSymbol ()
-      throws WordException;
+  public final ArrayList < Transition > previousSymbol () throws WordException
+  {
+    if ( getActiveState ().size () == 0 )
+    {
+      throw new IllegalArgumentException (
+          "no active state: machine must be started first" ); //$NON-NLS-1$
+    }
+    this.word.previousSymbol ();
+    ArrayList < Transition > transitions = removeHistory ();
+    ArrayList < State > newActiveStates = new ArrayList < State > ();
+
+    for ( Transition current : transitions )
+    {
+      newActiveStates.add ( current.getStateBegin () );
+    }
+    setActiveState ( newActiveStates );
+    return transitions;
+  }
 
 
   /**
@@ -585,7 +761,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The last history element.
    */
-  protected final ArrayList < Transition > removeHistory ()
+  private final ArrayList < Transition > removeHistory ()
   {
     return this.history.remove ( this.history.size () - 1 );
   }
@@ -719,7 +895,7 @@ public abstract class Machine implements Serializable
    * 
    * @param pActiveStates The active {@link State}s.
    */
-  protected final void setActiveState ( ArrayList < State > pActiveStates )
+  private final void setActiveState ( ArrayList < State > pActiveStates )
   {
     if ( pActiveStates == null )
     {
@@ -735,63 +911,6 @@ public abstract class Machine implements Serializable
       }
       this.activeStateList.add ( current );
     }
-  }
-
-
-  /**
-   * Sets the active {@link State}.
-   * 
-   * @param pActiveState The active {@link State}.
-   */
-  protected final void setActiveState ( State pActiveState )
-  {
-    if ( pActiveState == null )
-    {
-      throw new NullPointerException ( "active state is null" ); //$NON-NLS-1$
-    }
-    this.activeStateList = new ArrayList < State > ();
-    if ( !this.stateList.contains ( pActiveState ) )
-    {
-      throw new IllegalArgumentException (
-          "active state is not in this machine" ); //$NON-NLS-1$
-    }
-    this.activeStateList.add ( pActiveState );
-  }
-
-
-  /**
-   * Sets the active {@link State}s.
-   * 
-   * @param pActiveStates The active {@link State}s.
-   */
-  protected final void setActiveState ( State ... pActiveStates )
-  {
-    if ( pActiveStates == null )
-    {
-      throw new NullPointerException ( "active states is null" ); //$NON-NLS-1$
-    }
-    this.activeStateList.clear ();
-    for ( State current : pActiveStates )
-    {
-      if ( !this.stateList.contains ( current ) )
-      {
-        throw new IllegalArgumentException (
-            "active state is not in this machine" ); //$NON-NLS-1$
-      }
-      this.activeStateList.add ( current );
-    }
-  }
-
-
-  /**
-   * Sets the current {@link Word}.
-   * 
-   * @param pWord The current {@link Word} to set.
-   * @see #word
-   */
-  protected final void setWord ( Word pWord )
-  {
-    this.word = pWord;
   }
 
 
@@ -802,7 +921,29 @@ public abstract class Machine implements Serializable
    * @param pWord The {@link Word} to start with.
    * @throws MachineValidationException If the validation fails.
    */
-  public abstract void start ( Word pWord ) throws MachineValidationException;
+  public final void start ( Word pWord ) throws MachineValidationException
+  {
+    // Word
+    if ( pWord == null )
+    {
+      throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
+    }
+    validate ();
+    this.word = pWord;
+    this.word.start ();
+    clearHistory ();
+    // Set active start
+    ArrayList < State > newActiveStates = new ArrayList < State > ();
+
+    for ( State current : this.getState () )
+    {
+      if ( current.isStartState () )
+      {
+        newActiveStates.add ( current );
+      }
+    }
+    setActiveState ( newActiveStates );
+  }
 
 
   /**

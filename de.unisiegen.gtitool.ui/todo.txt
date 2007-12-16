@@ -3,6 +3,7 @@
 - Wort eingeben können
 - RecentlyUsedFiles
 - OpenedFiles
+- Den neuen NFA in die GUI integrieren
 
 
 *** Christian ***

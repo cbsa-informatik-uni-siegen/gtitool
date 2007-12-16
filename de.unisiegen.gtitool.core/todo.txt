@@ -4,3 +4,5 @@
 *** Christian ***
 - Andere Machines implementieren
 - Alphabet setzen
+- NFA: Kein Übergang vorhanden
+- NFA testen

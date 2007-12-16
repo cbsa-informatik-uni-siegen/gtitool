@@ -34,6 +34,8 @@ cat > "$XDG_DATA_HOME/mime/packages/gtitool.xml" <<EOF
     <comment>GTITool source code</comment>
     <comment xml:lang="de">GTITool Quelltext</comment>
     <glob pattern="*.[Dd][Ff][Aa]" />
+    <glob pattern="*.[Nn][Ff][Aa]" />
+    <glob pattern="*.[Ee][Nn][Ff][Aa]" />
   </mime-type>
 </mime-info>
 EOF

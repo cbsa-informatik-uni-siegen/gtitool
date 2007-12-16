@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.machines.dfa;
+package de.unisiegen.gtitool.core.machines.nfa;
 
 
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The class for <code>DFA</code> machines.
+ * The class for <code>NFA</code> machines.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DFA extends Machine
+public final class NFA extends Machine
 {
 
   /**
@@ -25,11 +25,11 @@ public final class DFA extends Machine
 
 
   /**
-   * Allocates a new <code>DFA</code>.
+   * Allocates a new <code>NFA</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>DFA</code>.
+   * @param pAlphabet The {@link Alphabet} of this <code>NFA</code>.
    */
-  public DFA ( Alphabet pAlphabet )
+  public NFA ( Alphabet pAlphabet )
   {
     super ( pAlphabet );
   }
@@ -52,14 +52,8 @@ public final class DFA extends Machine
     // State name
     machineExceptionList.addAll ( checkStateName () );
 
-    // All symbols
-    machineExceptionList.addAll ( checkAllSymbols () );
-
     // Epsilon transition
     machineExceptionList.addAll ( checkEpsilonTransition () );
-
-    // Symbol only one time
-    machineExceptionList.addAll ( checkSymbolOnlyOneTime () );
 
     // Warning: Final state
     machineExceptionList.addAll ( checkFinalState () );

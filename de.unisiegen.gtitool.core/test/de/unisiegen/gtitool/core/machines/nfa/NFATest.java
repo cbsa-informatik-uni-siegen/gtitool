@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.machines;
+package de.unisiegen.gtitool.core.machines.nfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -13,18 +13,17 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
-import de.unisiegen.gtitool.core.machines.dfa.DFA;
 
 
 /**
- * The test class of the machines.
+ * The test class of the {@link NFA}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings (
 { "all" } )
-public class MachinesTest
+public class NFATest
 {
 
   public static void main ( String [] pArguments )
@@ -83,7 +82,7 @@ public class MachinesTest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, b, c );
+      t0 = new Transition ( alphabet, z0, z0, b );
       t1 = new Transition ( alphabet, z0, z1, a );
       t2 = new Transition ( alphabet, z1, z1, a, c );
       t3 = new Transition ( alphabet, z1, z2, b );
@@ -100,15 +99,15 @@ public class MachinesTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DFA ( alphabet );
-    dfa.addState ( z0, z1, z2 );
-    dfa.addTransition ( t0, t1, t2, t3, t4 );
+    NFA nfa = new NFA ( alphabet );
+    nfa.addState ( z0, z1, z2 );
+    nfa.addTransition ( t0, t1, t2, t3, t4 );
 
-    Word word = new Word ( b, c, a, c, b, a, b );
+    Word word = new Word ( b, a, c, b, a, b );
 
     try
     {
-      dfa.start ( word );
+      nfa.start ( word );
     }
     catch ( MachineValidationException exc )
     {
@@ -121,11 +120,11 @@ public class MachinesTest
     {
       while ( !word.isFinished () )
       {
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbol () );
-        out ( "Symbol:     " + dfa.getCurrentSymbol () );
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Accepted:   " + dfa.isWordAccepted () );
+        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
+        out ( "Transition: " + nfa.nextSymbol ().get ( 0 ).getSymbol () );
+        out ( "Symbol:     " + nfa.getCurrentSymbol () );
+        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
+        out ( "Accepted:   " + nfa.isWordAccepted () );
         out ();
       }
     }
@@ -140,10 +139,10 @@ public class MachinesTest
     {
       while ( !word.isReseted () )
       {
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Symbol:     " + dfa.getCurrentSymbol () );
-        out ( "Transition: " + dfa.previousSymbol ().get ( 0 ).getSymbol () );
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
+        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
+        out ( "Symbol:     " + nfa.getCurrentSymbol () );
+        out ( "Transition: " + nfa.previousSymbol ().get ( 0 ).getSymbol () );
+        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
         out ();
       }
     }

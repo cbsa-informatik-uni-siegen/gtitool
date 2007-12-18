@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.sm;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -114,18 +116,47 @@ public class SMTest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Next *** " );
-    out ();
+    println ( "*** Next *** " );
+    println ();
     try
     {
-      while ( !word.isFinished () )
+      while ( !sm.isFinished () )
       {
-        out ( "State:      " + sm.getActiveState ( 0 ).getName () );
-        out ( "Transition: " + sm.nextSymbol ().get ( 0 ).getSymbol () );
-        out ( "Symbol:     " + sm.getCurrentSymbol () );
-        out ( "State:      " + sm.getActiveState ( 0 ).getName () );
-        out ( "Accepted:   " + sm.isWordAccepted () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < sm.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( sm.getActiveState ( i ) );
+        }
+        println ();
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = sm.nextSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + sm.getCurrentSymbol () );
+        print ( "States:      " );
+        for ( int i = 0 ; i < sm.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( sm.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Accepted:    " + sm.isWordAccepted () );
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -133,17 +164,45 @@ public class SMTest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Previous *** " );
-    out ();
+    println ( "*** Previous *** " );
+    println ();
     try
     {
-      while ( !word.isReseted () )
+      while ( !sm.isReseted () )
       {
-        out ( "State:      " + sm.getActiveState ( 0 ).getName () );
-        out ( "Symbol:     " + sm.getCurrentSymbol () );
-        out ( "Transition: " + sm.previousSymbol ().get ( 0 ).getSymbol () );
-        out ( "State:      " + sm.getActiveState ( 0 ).getName () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < sm.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( sm.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + sm.getCurrentSymbol () );
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = sm.previousSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < sm.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( sm.getActiveState ( i ) );
+        }
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -154,13 +213,19 @@ public class SMTest
   }
 
 
-  public static void out ()
+  public static void print ( Object pObject )
+  {
+    System.out.print ( pObject.toString () );
+  }
+
+
+  public static void println ()
   {
     System.out.println ();
   }
 
 
-  public static void out ( Object pObject )
+  public static void println ( Object pObject )
   {
     System.out.println ( pObject.toString () );
   }

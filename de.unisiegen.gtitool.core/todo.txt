@@ -2,8 +2,5 @@
 
 
 *** Christian ***
-- Andere Machines implementieren
 - Alphabet setzen
-- Build files umbauen, da es zu Problemen kommen kann.
 - NFA: Kein Übergang vorhanden
-- NFA testen

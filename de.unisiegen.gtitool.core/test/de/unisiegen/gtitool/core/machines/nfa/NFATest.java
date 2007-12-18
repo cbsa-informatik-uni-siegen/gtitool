@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.nfa;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -63,11 +65,13 @@ public class NFATest
     State z0 = null;
     State z1 = null;
     State z2 = null;
+    State z3 = null;
     try
     {
       z0 = new State ( alphabet, true, false );
       z1 = new State ( alphabet, false, false );
-      z2 = new State ( alphabet, false, true );
+      z2 = new State ( alphabet, false, false );
+      z3 = new State ( alphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -82,11 +86,11 @@ public class NFATest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, b );
-      t1 = new Transition ( alphabet, z0, z1, a );
-      t2 = new Transition ( alphabet, z1, z1, a, c );
-      t3 = new Transition ( alphabet, z1, z2, b );
-      t4 = new Transition ( alphabet, z2, z2, a, b, c );
+      t0 = new Transition ( alphabet, z0, z1, a );
+      t1 = new Transition ( alphabet, z0, z2, a );
+      t2 = new Transition ( alphabet, z1, z3, b );
+      t3 = new Transition ( alphabet, z2, z3, c );
+      t4 = new Transition ( alphabet, z3, z3, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
@@ -100,10 +104,10 @@ public class NFATest
     }
 
     NFA nfa = new NFA ( alphabet );
-    nfa.addState ( z0, z1, z2 );
+    nfa.addState ( z0, z1, z2, z3 );
     nfa.addTransition ( t0, t1, t2, t3, t4 );
 
-    Word word = new Word ( b, a, c, b, a, b );
+    Word word = new Word ( a, b, c );
 
     try
     {
@@ -114,18 +118,47 @@ public class NFATest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Next *** " );
-    out ();
+    println ( "*** Next *** " );
+    println ();
     try
     {
-      while ( !word.isFinished () )
+      while ( !nfa.isFinished () )
       {
-        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
-        out ( "Transition: " + nfa.nextSymbol ().get ( 0 ).getSymbol () );
-        out ( "Symbol:     " + nfa.getCurrentSymbol () );
-        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
-        out ( "Accepted:   " + nfa.isWordAccepted () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < nfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( nfa.getActiveState ( i ) );
+        }
+        println ();
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = nfa.nextSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + nfa.getCurrentSymbol () );
+        print ( "States:      " );
+        for ( int i = 0 ; i < nfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( nfa.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Accepted:    " + nfa.isWordAccepted () );
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -133,17 +166,45 @@ public class NFATest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Previous *** " );
-    out ();
+    println ( "*** Previous *** " );
+    println ();
     try
     {
-      while ( !word.isReseted () )
+      while ( !nfa.isReseted () )
       {
-        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
-        out ( "Symbol:     " + nfa.getCurrentSymbol () );
-        out ( "Transition: " + nfa.previousSymbol ().get ( 0 ).getSymbol () );
-        out ( "State:      " + nfa.getActiveState ( 0 ).getName () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < nfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( nfa.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + nfa.getCurrentSymbol () );
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = nfa.previousSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < nfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( nfa.getActiveState ( i ) );
+        }
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -154,13 +215,19 @@ public class NFATest
   }
 
 
-  public static void out ()
+  public static void print ( Object pObject )
+  {
+    System.out.print ( pObject.toString () );
+  }
+
+
+  public static void println ()
   {
     System.out.println ();
   }
 
 
-  public static void out ( Object pObject )
+  public static void println ( Object pObject )
   {
     System.out.println ( pObject.toString () );
   }

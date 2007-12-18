@@ -24,7 +24,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Transition implements ParseableEntity, Storable
+public final class Transition implements ParseableEntity, Storable,
+    Comparable < Transition >
 {
 
   /**
@@ -442,6 +443,17 @@ public final class Transition implements ParseableEntity, Storable
       return null;
     }
     return newTransition;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public final int compareTo ( Transition pOther )
+  {
+    return this.id < pOther.id ? -1 : ( this.id > pOther.id ? 1 : 0 );
   }
 
 

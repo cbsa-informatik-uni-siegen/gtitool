@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -19,6 +20,9 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
+import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 
 
 /**
@@ -80,7 +84,7 @@ public abstract class Machine implements Serializable
   /**
    * The active {@link State}s.
    */
-  private ArrayList < State > activeStateList;
+  private TreeSet < State > activeStateSet;
 
 
   /**
@@ -161,8 +165,8 @@ public abstract class Machine implements Serializable
     this.stateList = new ArrayList < State > ();
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
-    // ActiveStateList
-    this.activeStateList = new ArrayList < State > ();
+    // ActiveStateSet
+    this.activeStateSet = new TreeSet < State > ();
     // History
     this.history = new ArrayList < ArrayList < Transition > > ();
   }
@@ -569,9 +573,9 @@ public abstract class Machine implements Serializable
    * 
    * @return The active {@link State}s.
    */
-  public final ArrayList < State > getActiveState ()
+  public final TreeSet < State > getActiveState ()
   {
-    return this.activeStateList;
+    return this.activeStateSet;
   }
 
 
@@ -583,7 +587,12 @@ public abstract class Machine implements Serializable
    */
   public final State getActiveState ( int pIndex )
   {
-    return this.activeStateList.get ( pIndex );
+    Iterator < State > iterator = this.activeStateSet.iterator ();
+    for ( int i = 0 ; i < pIndex ; i++ )
+    {
+      iterator.next ();
+    }
+    return iterator.next ();
   }
 
 
@@ -663,6 +672,29 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Returns true if the {@link Word} is finished, otherwise false.
+   * 
+   * @return True if this {@link Word} is finished, otherwise false.
+   */
+  public final boolean isFinished ()
+  {
+    return this.word.isFinished ()
+        || ( ( this.activeStateSet.size () == 0 ) && ( !this.word.isReseted () ) );
+  }
+
+
+  /**
+   * Returns true if this {@link Word} is reseted, otherwise false.
+   * 
+   * @return True if this {@link Word} is reseted, otherwise false.
+   */
+  public final boolean isReseted ()
+  {
+    return this.word.isReseted ();
+  }
+
+
+  /**
    * Returns true if one of the active {@link State}s is a final {@link State},
    * otherwise false.
    * 
@@ -671,7 +703,7 @@ public abstract class Machine implements Serializable
    */
   public final boolean isWordAccepted ()
   {
-    for ( State current : this.activeStateList )
+    for ( State current : this.activeStateSet )
     {
       if ( current.isFinalState () )
       {
@@ -766,9 +798,16 @@ public abstract class Machine implements Serializable
    * contains the {@link Symbol}.
    * 
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
-   * @throws WordException If something with the {@link Word} is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordNotAcceptedException If something with the {@link Word} is not
+   *           correct.
    */
-  public final ArrayList < Transition > nextSymbol () throws WordException
+  public final ArrayList < Transition > nextSymbol ()
+      throws WordFinishedException, WordResetedException,
+      WordNotAcceptedException
   {
     if ( getActiveState ().size () == 0 )
     {
@@ -777,19 +816,25 @@ public abstract class Machine implements Serializable
     }
     Symbol symbol = this.word.nextSymbol ();
     ArrayList < Transition > transitions = new ArrayList < Transition > ();
-    ArrayList < State > newActiveStates = new ArrayList < State > ();
+    TreeSet < State > newActiveStateSet = new TreeSet < State > ();
     for ( State activeState : getActiveState () )
     {
       for ( Transition current : activeState.getTransitionBegin () )
       {
         if ( current.contains ( symbol ) )
         {
-          newActiveStates.add ( current.getStateEnd () );
+          newActiveStateSet.add ( current.getStateEnd () );
           transitions.add ( current );
         }
       }
     }
-    setActiveState ( newActiveStates );
+    this.activeStateSet.clear ();
+    this.activeStateSet.addAll ( newActiveStateSet );
+    // No transition is found
+    if ( this.activeStateSet.size () == 0 )
+    {
+      throw new WordNotAcceptedException ( this.word );
+    }
     addHistory ( transitions );
     return transitions;
   }
@@ -800,9 +845,13 @@ public abstract class Machine implements Serializable
    * contains the {@link Symbol}.
    * 
    * @return The list of {@link Transition}s, which contains the {@link Symbol}.
-   * @throws WordException If something with the {@link Word} is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
    */
-  public final ArrayList < Transition > previousSymbol () throws WordException
+  public final ArrayList < Transition > previousSymbol ()
+      throws WordFinishedException, WordResetedException
   {
     if ( getActiveState ().size () == 0 )
     {
@@ -811,13 +860,11 @@ public abstract class Machine implements Serializable
     }
     this.word.previousSymbol ();
     ArrayList < Transition > transitions = removeHistory ();
-    ArrayList < State > newActiveStates = new ArrayList < State > ();
-
+    this.activeStateSet.clear ();
     for ( Transition current : transitions )
     {
-      newActiveStates.add ( current.getStateBegin () );
+      this.activeStateSet.add ( current.getStateBegin () );
     }
-    setActiveState ( newActiveStates );
     return transitions;
   }
 
@@ -957,30 +1004,6 @@ public abstract class Machine implements Serializable
 
 
   /**
-   * Sets the active {@link State}s.
-   * 
-   * @param pActiveStates The active {@link State}s.
-   */
-  private final void setActiveState ( ArrayList < State > pActiveStates )
-  {
-    if ( pActiveStates == null )
-    {
-      throw new NullPointerException ( "active states is null" ); //$NON-NLS-1$
-    }
-    this.activeStateList = new ArrayList < State > ();
-    for ( State current : pActiveStates )
-    {
-      if ( !this.stateList.contains ( current ) )
-      {
-        throw new IllegalArgumentException (
-            "active state is not in this machine" ); //$NON-NLS-1$
-      }
-      this.activeStateList.add ( current );
-    }
-  }
-
-
-  /**
    * Starts the <code>Machine</code> after a validation with the given
    * {@link Word}.
    * 
@@ -998,17 +1021,15 @@ public abstract class Machine implements Serializable
     this.word = pWord;
     this.word.start ();
     clearHistory ();
-    // Set active start
-    ArrayList < State > newActiveStates = new ArrayList < State > ();
-
-    for ( State current : this.getState () )
+    // Set active states
+    this.activeStateSet.clear ();
+    for ( State current : this.stateList )
     {
       if ( current.isStartState () )
       {
-        newActiveStates.add ( current );
+        this.activeStateSet.add ( current );
       }
     }
-    setActiveState ( newActiveStates );
   }
 
 

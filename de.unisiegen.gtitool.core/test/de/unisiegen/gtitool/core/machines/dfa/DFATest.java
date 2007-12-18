@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.machines.dfa;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -114,18 +116,47 @@ public class DFATest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Next *** " );
-    out ();
+    println ( "*** Next *** " );
+    println ();
     try
     {
-      while ( !word.isFinished () )
+      while ( !dfa.isFinished () )
       {
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Transition: " + dfa.nextSymbol ().get ( 0 ).getSymbol () );
-        out ( "Symbol:     " + dfa.getCurrentSymbol () );
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Accepted:   " + dfa.isWordAccepted () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < dfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( dfa.getActiveState ( i ) );
+        }
+        println ();
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = dfa.nextSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + dfa.getCurrentSymbol () );
+        print ( "States:      " );
+        for ( int i = 0 ; i < dfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( dfa.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Accepted:    " + dfa.isWordAccepted () );
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -133,17 +164,45 @@ public class DFATest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    out ( "*** Previous *** " );
-    out ();
+    println ( "*** Previous *** " );
+    println ();
     try
     {
-      while ( !word.isReseted () )
+      while ( !dfa.isReseted () )
       {
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ( "Symbol:     " + dfa.getCurrentSymbol () );
-        out ( "Transition: " + dfa.previousSymbol ().get ( 0 ).getSymbol () );
-        out ( "State:      " + dfa.getActiveState ( 0 ).getName () );
-        out ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < dfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( dfa.getActiveState ( i ) );
+        }
+        println ();
+        println ( "Symbol:      " + dfa.getCurrentSymbol () );
+        print ( "Transitions: " );
+        ArrayList < Transition > transitions = dfa.previousSymbol ();
+        for ( int i = 0 ; i < transitions.size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( transitions.get ( i ) );
+        }
+        println ();
+        print ( "States:      " );
+        for ( int i = 0 ; i < dfa.getActiveState ().size () ; i++ )
+        {
+          if ( i > 0 )
+          {
+            print ( ", " );
+          }
+          print ( dfa.getActiveState ( i ) );
+        }
+        println ();
+        println ();
       }
     }
     catch ( WordException exc )
@@ -154,13 +213,19 @@ public class DFATest
   }
 
 
-  public static void out ()
+  public static void print ( Object pObject )
+  {
+    System.out.print ( pObject.toString () );
+  }
+
+
+  public static void println ()
   {
     System.out.println ();
   }
 
 
-  public static void out ( Object pObject )
+  public static void println ( Object pObject )
   {
     System.out.println ( pObject.toString () );
   }

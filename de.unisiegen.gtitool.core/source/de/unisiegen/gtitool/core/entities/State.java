@@ -22,7 +22,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class State implements ParseableEntity, Storable
+public final class State implements ParseableEntity, Storable,
+    Comparable < State >
 {
 
   /**
@@ -182,7 +183,7 @@ public final class State implements ParseableEntity, Storable
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a state" ); //$NON-NLS-1$
     }
-    
+
     // WarningList
     this.warningList = new ArrayList < StoreWarningException > ();
 
@@ -427,6 +428,17 @@ public final class State implements ParseableEntity, Storable
       System.exit ( 1 );
       return null;
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public final int compareTo ( State pOther )
+  {
+    return this.id < pOther.id ? -1 : ( this.id > pOther.id ? 1 : 0 );
   }
 
 

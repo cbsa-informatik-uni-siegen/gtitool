@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.storage.Attribute;
@@ -296,10 +295,13 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
-   * @throws WordException If something with the <code>Word</code> is not
-   *           correct.
+   * @throws WordFinishedException If something with the <code>Word</code> is
+   *           not correct.
+   * @throws WordResetedException If something with the <code>Word</code> is
+   *           not correct.
    */
-  public final Symbol getCurrentSymbol () throws WordException
+  public final Symbol getCurrentSymbol () throws WordFinishedException,
+      WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
     {
@@ -448,10 +450,13 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * Returns the next {@link Symbol} and increments the current position.
    * 
    * @return The next {@link Symbol}.
-   * @throws WordException If something with the <code>Word</code> is not
-   *           correct.
+   * @throws WordFinishedException If something with the <code>Word</code> is
+   *           not correct.
+   * @throws WordResetedException If something with the <code>Word</code> is
+   *           not correct.
    */
-  public final Symbol nextSymbol () throws WordException
+  public final Symbol nextSymbol () throws WordFinishedException,
+      WordResetedException
   {
     if ( this.currentPosition == this.symbolList.size () - 1 )
     {
@@ -466,10 +471,13 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * Returns the previous {@link Symbol} and decrements the current position.
    * 
    * @return The previous {@link Symbol}.
-   * @throws WordException If something with the <code>Word</code> is not
-   *           correct.
+   * @throws WordFinishedException If something with the <code>Word</code> is
+   *           not correct.
+   * @throws WordResetedException If something with the <code>Word</code> is
+   *           not correct.
    */
-  public final Symbol previousSymbol () throws WordException
+  public final Symbol previousSymbol () throws WordFinishedException,
+      WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
     {

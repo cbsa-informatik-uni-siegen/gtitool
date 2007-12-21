@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.ChoiceItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
@@ -81,6 +82,12 @@ public final class PreferenceManager
    * The default language title.
    */
   public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
+
+
+  /**
+   * The default {@link ChoiceItem}.
+   */
+  public static final ChoiceItem DEFAULT_CHOICE_ITEM = ChoiceItem.WITHOUT_RETURN_TO_MOUSE;
 
 
   /**
@@ -524,6 +531,19 @@ public final class PreferenceManager
       System.exit ( 1 );
       return null;
     }
+  }
+
+
+  /**
+   * Returns the {@link ChoiceItem}.
+   * 
+   * @return The {@link ChoiceItem}.
+   */
+  public final ChoiceItem getChoiceItem ()
+  {
+    int index = this.preferences.getInt ( "PreferencesDialog.ChoiceItem.Index", //$NON-NLS-1$
+        DEFAULT_CHOICE_ITEM.getIndex () );
+    return ChoiceItem.create ( index );
   }
 
 
@@ -995,7 +1015,7 @@ public final class PreferenceManager
    */
   public final ZoomFactorItem getZoomFactorItem ()
   {
-    return ZoomFactorItem.createFactor ( this.preferences.getInt (
+    return ZoomFactorItem.create ( this.preferences.getInt (
         "ZoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
   }
 
@@ -1056,6 +1076,20 @@ public final class PreferenceManager
     }
     this.preferences.putInt ( "DefaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
         .getAlphabet ().symbolSize () );
+  }
+
+
+  /**
+   * Sets the {@link ChoiceItem}.
+   * 
+   * @param pChoiceItem The {@link ChoiceItem}.
+   */
+  public final void setChoiceItem ( ChoiceItem pChoiceItem )
+  {
+    logger.debug ( "set choice item to \"" //$NON-NLS-1$
+        + pChoiceItem.getIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ChoiceItem.Index", pChoiceItem //$NON-NLS-1$
+        .getIndex () );
   }
 
 
@@ -1375,7 +1409,7 @@ public final class PreferenceManager
     if ( ( pJFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
     {
       logger.debug ( "set main window maximized to \"false\"" ); //$NON-NLS-1$
-      this.preferences.putBoolean ( "mainWindow.maximized", false ); //$NON-NLS-1$
+      this.preferences.putBoolean ( "MainWindow.Maximized", false ); //$NON-NLS-1$
       Rectangle bounds = pJFrame.getBounds ();
       logger.debug ( "set main window bounds to \"" + "x=" + bounds.x + ", " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           + "y=" + bounds.y + ", " + "width=" + bounds.width + ", " + "height=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

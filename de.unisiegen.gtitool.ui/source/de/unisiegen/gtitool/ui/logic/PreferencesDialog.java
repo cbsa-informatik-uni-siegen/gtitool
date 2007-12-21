@@ -45,6 +45,7 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.ChoiceItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
@@ -61,6 +62,69 @@ import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
  */
 public final class PreferencesDialog implements LanguageChangedListener
 {
+
+  /**
+   * The choice {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class ChoiceComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 9167257578795363897L;
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param pChoiceItem The {@link ChoiceItem} to add.
+     */
+    public final void addElement ( ChoiceItem pChoiceItem )
+    {
+      super.addElement ( pChoiceItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object pObject )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public final ChoiceItem getElementAt ( int pIndex )
+    {
+      return ( ChoiceItem ) super.getElementAt ( pIndex );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public final ChoiceItem getSelectedItem ()
+    {
+      return ( ChoiceItem ) super.getSelectedItem ();
+    }
+  }
+
 
   /**
    * The color {@link ListCellRenderer}.
@@ -403,6 +467,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ChoiceComboBoxModel}.
+   */
+  private ChoiceComboBoxModel choiceComboBoxModel;
+
+
+  /**
    * The {@link DefaultComboBoxModel} of the languages.
    */
   private LookAndFeelComboBoxModel lookAndFeelComboBoxModel;
@@ -508,6 +578,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link LanguageItem}.
    */
   private LanguageItem initialLanguageItem;
+
+
+  /**
+   * The initial {@link ChoiceItem}.
+   */
+  private ChoiceItem initialChoiceItem;
 
 
   /**
@@ -640,300 +716,19 @@ public final class PreferencesDialog implements LanguageChangedListener
     logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
     this.parent = pParent;
     this.gui = new PreferencesDialogForm ( this, pParent );
-    this.gui.jComboBoxLanguage.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-    this.gui.jComboBoxLookAndFeel
-        .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
 
-    /*
-     * Language
-     */
-    this.languageComboBoxModel = new LanguageComboBoxModel ();
-    this.languageComboBoxModel.addElement ( new LanguageItem (
-        "Default", PreferenceManager.getInstance ().getSystemLocale () ) ); //$NON-NLS-1$
-    for ( LanguageItem current : Messages.getLanguageItems () )
-    {
-      this.languageComboBoxModel.addElement ( current );
-    }
-    this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
-    this.initialLanguageItem = PreferenceManager.getInstance ()
-        .getLanguageItem ();
-    this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
-
-    /*
-     * PopupMenu
-     */
     initPopupMenu ();
+    initLanguage ();
+    initLookAndFeel ();
+    initZoomFactor ();
+    initChoice ();
+    initColorList ();
+    initAlphabet ();
 
-    /*
-     * Zoom factor
-     */
-    this.initialZoomFactorItem = PreferenceManager.getInstance ()
-        .getZoomFactorItem ();
-    this.gui.jSliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
-
-    // PopupMenu
-    this.jPopupMenuZoomFactor = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
-        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
-        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreZoomFactor.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreZoomFactor.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
-      {
-        PreferencesDialog.this.gui.jSliderZoom
-            .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
-      }
-    } );
-    this.jPopupMenuZoomFactor.add ( jMenuItemRestoreZoomFactor );
-    this.gui.jSliderZoom.addMouseListener ( new MouseAdapter ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      public void mousePressed ( MouseEvent pEvent )
-      {
-        if ( pEvent.isPopupTrigger () )
-        {
-          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
-        }
-      }
-
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      public void mouseReleased ( MouseEvent pEvent )
-      {
-        if ( pEvent.isPopupTrigger () )
-        {
-
-          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
-        }
-      }
-    } );
-
-    /*
-     * Color
-     */
-    // State
-    this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
-    this.initialColorItemState = this.colorItemState.clone ();
-    // Selected state
-    this.colorItemSelectedState = PreferenceManager.getInstance ()
-        .getColorItemSelectedState ();
-    this.initialColorItemSelectedState = this.colorItemSelectedState.clone ();
-    // Active state
-    this.colorItemActiveState = PreferenceManager.getInstance ()
-        .getColorItemActiveState ();
-    this.initialColorItemActiveState = this.colorItemActiveState.clone ();
-    // Start state
-    this.colorItemStartState = PreferenceManager.getInstance ()
-        .getColorItemStartState ();
-    this.initialColorItemStartState = this.colorItemStartState.clone ();
-    // Error state
-    this.colorItemErrorState = PreferenceManager.getInstance ()
-        .getColorItemErrorState ();
-    this.initialColorItemErrorState = this.colorItemErrorState.clone ();
-    // Symbol
-    this.colorItemSymbol = PreferenceManager.getInstance ()
-        .getColorItemSymbol ();
-    this.initialColorItemSymbol = this.colorItemSymbol.clone ();
-    // Error symbol
-    this.colorItemErrorSymbol = PreferenceManager.getInstance ()
-        .getColorItemErrorSymbol ();
-    this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
-    // Transition
-    this.colorItemTransition = PreferenceManager.getInstance ()
-        .getColorItemTransition ();
-    this.initialColorItemTransition = this.colorItemTransition.clone ();
-    // Error transition
-    this.colorItemErrorTransition = PreferenceManager.getInstance ()
-        .getColorItemErrorTransition ();
-    this.initialColorItemErrorTransition = this.colorItemErrorTransition
-        .clone ();
-    // Parser warning
-    this.colorItemParserWarning = PreferenceManager.getInstance ()
-        .getColorItemParserWarning ();
-    this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
-    // Parser state
-    this.colorItemParserState = PreferenceManager.getInstance ()
-        .getColorItemParserState ();
-    this.initialColorItemParserState = this.colorItemParserState.clone ();
-    // Parser symbol
-    this.colorItemParserSymbol = PreferenceManager.getInstance ()
-        .getColorItemParserSymbol ();
-    this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
-    // Renderer
-    this.colorItemCellRenderer = new ColorItemCellRenderer ();
-    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
-    // Model
-    this.colorListModel = new ColorListModel ();
-
-    // PopupMenu
-    this.jPopupMenuColorList = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
-        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
-        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreColorList.setIcon ( new ImageIcon ( getClass ()
-        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreColorList.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
-      {
-        ( ( ColorItem ) PreferencesDialog.this.gui.jListColor
-            .getSelectedValue () ).restore ();
-      }
-    } );
-    this.jPopupMenuColorList.add ( jMenuItemRestoreColorList );
-    this.gui.jListColor.addMouseListener ( new MouseAdapter ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      public void mousePressed ( MouseEvent pEvent )
-      {
-        if ( pEvent.isPopupTrigger () )
-        {
-          if ( PreferencesDialog.this.colorTimer != null )
-          {
-            PreferencesDialog.this.colorTimer.cancel ();
-          }
-          int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( pEvent.getPoint () );
-          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
-              index, index );
-          // Mouse is not over an item
-          if ( pEvent.getY () > rect.y + rect.height )
-          {
-            return;
-          }
-          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
-        }
-      }
-
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      public void mouseReleased ( MouseEvent pEvent )
-      {
-        if ( pEvent.isPopupTrigger () )
-        {
-          if ( PreferencesDialog.this.colorTimer != null )
-          {
-            PreferencesDialog.this.colorTimer.cancel ();
-          }
-          int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( pEvent.getPoint () );
-          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
-              index, index );
-          // Mouse is not over an item
-          if ( pEvent.getY () > rect.y + rect.height )
-          {
-            return;
-          }
-          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
-        }
-      }
-    } );
-
-    // Items
-    this.colorListModel.add ( this.colorItemState );
-    this.colorListModel.add ( this.colorItemSelectedState );
-    this.colorListModel.add ( this.colorItemActiveState );
-    this.colorListModel.add ( this.colorItemStartState );
-    this.colorListModel.add ( this.colorItemErrorState );
-    this.colorListModel.add ( this.colorItemSymbol );
-    this.colorListModel.add ( this.colorItemErrorSymbol );
-    this.colorListModel.add ( this.colorItemTransition );
-    this.colorListModel.add ( this.colorItemErrorTransition );
-    this.colorListModel.add ( this.colorItemParserWarning );
-    this.colorListModel.add ( this.colorItemParserState );
-    this.colorListModel.add ( this.colorItemParserSymbol );
-    this.gui.jListColor.setModel ( this.colorListModel );
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
     this.gui.jTabbedPane.setSelectedIndex ( this.initialLastActiveTab );
 
-    /*
-     * Alphabet
-     */
-    this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
-    this.initialAlphabetItem = this.alphabetItem.clone ();
-    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
-        .getAlphabet () );
-
-    // PopupMenu
-    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanel.getJPopupMenu ();
-    jPopupMenu.addSeparator ();
-    // RestoreAlphabet
-    JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
-        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
-        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
-      {
-        PreferencesDialog.this.alphabetItem.restore ();
-        PreferencesDialog.this.gui.styledAlphabetParserPanel
-            .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
-      }
-    } );
-    jPopupMenu.add ( jMenuItemRestoreAlphabet );
-
-    /*
-     * Alphabet changed listener
-     */
-    this.gui.styledAlphabetParserPanel
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet pNewAlphabet )
-          {
-            if ( pNewAlphabet == null )
-            {
-              PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
-              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
-              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
-                  ALPHABET_TAB_INDEX, Color.RED );
-            }
-            else
-            {
-              PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
-              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
-              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
-                  ALPHABET_TAB_INDEX, null );
-              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
-            }
-          }
-        } );
-
-    /*
-     * Language changed listener
-     */
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
@@ -1111,30 +906,179 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Initializes the popup menu.
+   * Initializes the alphabet.
    */
-  private final void initPopupMenu ()
+  private final void initAlphabet ()
   {
-    this.jPopupMenuLanguage = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreLanguage = new JMenuItem ( Messages
+    this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
+    this.initialAlphabetItem = this.alphabetItem.clone ();
+    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+        .getAlphabet () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanel.getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    // RestoreAlphabet
+    JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+    jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
+    jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
+    jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent pEvent )
       {
-        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+        PreferencesDialog.this.alphabetItem.restore ();
+        PreferencesDialog.this.gui.styledAlphabetParserPanel
+            .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
       }
     } );
-    this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
-    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    jPopupMenu.add ( jMenuItemRestoreAlphabet );
+
+    /*
+     * Alphabet changed listener
+     */
+    this.gui.styledAlphabetParserPanel
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( Alphabet pNewAlphabet )
+          {
+            if ( pNewAlphabet == null )
+            {
+              PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
+              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
+              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
+                  ALPHABET_TAB_INDEX, Color.RED );
+            }
+            else
+            {
+              PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
+              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
+              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
+                  ALPHABET_TAB_INDEX, null );
+              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
+            }
+          }
+        } );
+  }
+
+
+  /**
+   * The choice item without return to the mouse.
+   */
+  private ChoiceItem choiceWithoutReturn;
+
+
+  /**
+   * The choice item with return to the mouse.
+   */
+  private ChoiceItem choiceWithReturn;
+
+
+  /**
+   * Initializes the choice.
+   */
+  private final void initChoice ()
+  {
+    this.choiceComboBoxModel = new ChoiceComboBoxModel ();
+    this.choiceWithoutReturn = ChoiceItem.create ( 0 );
+    this.choiceWithReturn = ChoiceItem.create ( 1 );
+    this.choiceComboBoxModel.addElement ( this.choiceWithoutReturn );
+    this.choiceComboBoxModel.addElement ( this.choiceWithReturn );
+    this.gui.jComboBoxChoice.setModel ( this.choiceComboBoxModel );
+    this.gui.jComboBoxChoice.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+    this.initialChoiceItem = PreferenceManager.getInstance ().getChoiceItem ();
+    this.gui.jComboBoxChoice.setSelectedItem ( this.initialChoiceItem );
+  }
+
+
+  /**
+   * Initializes the color list.
+   */
+  private final void initColorList ()
+  {
+    // State
+    this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
+    this.initialColorItemState = this.colorItemState.clone ();
+    // Selected state
+    this.colorItemSelectedState = PreferenceManager.getInstance ()
+        .getColorItemSelectedState ();
+    this.initialColorItemSelectedState = this.colorItemSelectedState.clone ();
+    // Active state
+    this.colorItemActiveState = PreferenceManager.getInstance ()
+        .getColorItemActiveState ();
+    this.initialColorItemActiveState = this.colorItemActiveState.clone ();
+    // Start state
+    this.colorItemStartState = PreferenceManager.getInstance ()
+        .getColorItemStartState ();
+    this.initialColorItemStartState = this.colorItemStartState.clone ();
+    // Error state
+    this.colorItemErrorState = PreferenceManager.getInstance ()
+        .getColorItemErrorState ();
+    this.initialColorItemErrorState = this.colorItemErrorState.clone ();
+    // Symbol
+    this.colorItemSymbol = PreferenceManager.getInstance ()
+        .getColorItemSymbol ();
+    this.initialColorItemSymbol = this.colorItemSymbol.clone ();
+    // Error symbol
+    this.colorItemErrorSymbol = PreferenceManager.getInstance ()
+        .getColorItemErrorSymbol ();
+    this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
+    // Transition
+    this.colorItemTransition = PreferenceManager.getInstance ()
+        .getColorItemTransition ();
+    this.initialColorItemTransition = this.colorItemTransition.clone ();
+    // Error transition
+    this.colorItemErrorTransition = PreferenceManager.getInstance ()
+        .getColorItemErrorTransition ();
+    this.initialColorItemErrorTransition = this.colorItemErrorTransition
+        .clone ();
+    // Parser warning
+    this.colorItemParserWarning = PreferenceManager.getInstance ()
+        .getColorItemParserWarning ();
+    this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
+    // Parser state
+    this.colorItemParserState = PreferenceManager.getInstance ()
+        .getColorItemParserState ();
+    this.initialColorItemParserState = this.colorItemParserState.clone ();
+    // Parser symbol
+    this.colorItemParserSymbol = PreferenceManager.getInstance ()
+        .getColorItemParserSymbol ();
+    this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
+    // Renderer
+    this.colorItemCellRenderer = new ColorItemCellRenderer ();
+    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
+    // Model
+    this.colorListModel = new ColorListModel ();
+
+    // PopupMenu
+    this.jPopupMenuColorList = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreColorList.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        ( ( ColorItem ) PreferencesDialog.this.gui.jListColor
+            .getSelectedValue () ).restore ();
+      }
+    } );
+    this.jPopupMenuColorList.add ( jMenuItemRestoreColorList );
+    this.gui.jListColor.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1143,7 +1087,21 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( pEvent.isPopupTrigger () )
         {
-          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+          if ( PreferencesDialog.this.colorTimer != null )
+          {
+            PreferencesDialog.this.colorTimer.cancel ();
+          }
+          int index = PreferencesDialog.this.gui.jListColor
+              .locationToIndex ( pEvent.getPoint () );
+          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
+              index, index );
+          // Mouse is not over an item
+          if ( pEvent.getY () > rect.y + rect.height )
+          {
+            return;
+          }
+          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
+          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
               .getComponent (), pEvent.getX (), pEvent.getY () );
         }
       }
@@ -1155,18 +1113,69 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( pEvent.isPopupTrigger () )
         {
-
-          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+          if ( PreferencesDialog.this.colorTimer != null )
+          {
+            PreferencesDialog.this.colorTimer.cancel ();
+          }
+          int index = PreferencesDialog.this.gui.jListColor
+              .locationToIndex ( pEvent.getPoint () );
+          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
+              index, index );
+          // Mouse is not over an item
+          if ( pEvent.getY () > rect.y + rect.height )
+          {
+            return;
+          }
+          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
+          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
               .getComponent (), pEvent.getX (), pEvent.getY () );
         }
       }
     } );
 
-    /*
-     * Look and feel
-     */
-    this.lookAndFeelComboBoxModel = new LookAndFeelComboBoxModel ();
+    // Items
+    this.colorListModel.add ( this.colorItemState );
+    this.colorListModel.add ( this.colorItemSelectedState );
+    this.colorListModel.add ( this.colorItemActiveState );
+    this.colorListModel.add ( this.colorItemStartState );
+    this.colorListModel.add ( this.colorItemErrorState );
+    this.colorListModel.add ( this.colorItemSymbol );
+    this.colorListModel.add ( this.colorItemErrorSymbol );
+    this.colorListModel.add ( this.colorItemTransition );
+    this.colorListModel.add ( this.colorItemErrorTransition );
+    this.colorListModel.add ( this.colorItemParserWarning );
+    this.colorListModel.add ( this.colorItemParserState );
+    this.colorListModel.add ( this.colorItemParserSymbol );
+    this.gui.jListColor.setModel ( this.colorListModel );
+  }
 
+
+  /**
+   * Initializes the language.
+   */
+  private final void initLanguage ()
+  {
+    this.languageComboBoxModel = new LanguageComboBoxModel ();
+    this.languageComboBoxModel.addElement ( new LanguageItem (
+        "Default", PreferenceManager.getInstance ().getSystemLocale () ) ); //$NON-NLS-1$
+    for ( LanguageItem current : Messages.getLanguageItems () )
+    {
+      this.languageComboBoxModel.addElement ( current );
+    }
+    this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
+    this.gui.jComboBoxLanguage.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+    this.initialLanguageItem = PreferenceManager.getInstance ()
+        .getLanguageItem ();
+    this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
+  }
+
+
+  /**
+   * Initializes the look and feel.
+   */
+  private final void initLookAndFeel ()
+  {
+    this.lookAndFeelComboBoxModel = new LookAndFeelComboBoxModel ();
     LookAndFeelInfo [] lookAndFeels = UIManager.getInstalledLookAndFeels ();
     String name = "System"; //$NON-NLS-1$
     String className = UIManager.getSystemLookAndFeelClassName ();
@@ -1186,6 +1195,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           .getName (), current.getClassName () ) );
     }
     this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
+    this.gui.jComboBoxLookAndFeel
+        .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();
     this.gui.jComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
@@ -1241,6 +1252,120 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Initializes the popup menu.
+   */
+  private final void initPopupMenu ()
+  {
+    this.jPopupMenuLanguage = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreLanguage = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+      }
+    } );
+    this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
+    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+  }
+
+
+  /**
+   * Initializes the zoom factor.
+   */
+  private final void initZoomFactor ()
+  {
+    this.initialZoomFactorItem = PreferenceManager.getInstance ()
+        .getZoomFactorItem ();
+    this.gui.jSliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
+
+    // PopupMenu
+    this.jPopupMenuZoomFactor = new JPopupMenu ();
+    // RestoreColorList
+    JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreZoomFactor.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.gui.jSliderZoom
+            .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
+      }
+    } );
+    this.jPopupMenuZoomFactor.add ( jMenuItemRestoreZoomFactor );
+    this.gui.jSliderZoom.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent pEvent )
+      {
+        if ( pEvent.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
+              .getComponent (), pEvent.getX (), pEvent.getY () );
+        }
+      }
+    } );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LanguageChangedListener#languageChanged()
@@ -1248,140 +1373,134 @@ public final class PreferencesDialog implements LanguageChangedListener
   public final void languageChanged ()
   {
     // Title
-    PreferencesDialog.this.gui.setTitle ( Messages
-        .getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
+    this.gui.setTitle ( Messages.getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
     // General
-    PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 0, Messages
+    this.gui.jTabbedPane.setTitleAt ( 0, Messages
         .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jTabbedPane.setToolTipTextAt ( 0, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( 0, Messages
         .getString ( "PreferencesDialog.TabGeneralToolTip" ) ); //$NON-NLS-1$
     // Colors
-    PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 1, Messages
+    this.gui.jTabbedPane.setTitleAt ( 1, Messages
         .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
         .getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
     // Alphabet
-    PreferencesDialog.this.gui.jTabbedPane.setTitleAt ( 2, Messages
+    this.gui.jTabbedPane.setTitleAt ( 2, Messages
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
     // Accept
-    PreferencesDialog.this.gui.jButtonAccept.setText ( Messages
+    this.gui.jButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonAccept.setMnemonic ( Messages.getString (
+    this.gui.jButtonAccept.setMnemonic ( Messages.getString (
         "PreferencesDialog.AcceptMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonAccept.setToolTipText ( Messages
+    this.gui.jButtonAccept.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AcceptToolTip" ) ); //$NON-NLS-1$
     // Ok
-    PreferencesDialog.this.gui.jButtonOk.setText ( Messages
-        .getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonOk.setMnemonic ( Messages.getString (
+    this.gui.jButtonOk.setText ( Messages.getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
+    this.gui.jButtonOk.setMnemonic ( Messages.getString (
         "PreferencesDialog.OkMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonOk.setToolTipText ( Messages
+    this.gui.jButtonOk.setToolTipText ( Messages
         .getString ( "PreferencesDialog.OkToolTip" ) ); //$NON-NLS-1$
     // Cancel
-    PreferencesDialog.this.gui.jButtonCancel.setText ( Messages
+    this.gui.jButtonCancel.setText ( Messages
         .getString ( "PreferencesDialog.Cancel" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonCancel.setMnemonic ( Messages.getString (
+    this.gui.jButtonCancel.setMnemonic ( Messages.getString (
         "PreferencesDialog.CancelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonCancel.setToolTipText ( Messages
+    this.gui.jButtonCancel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.CancelToolTip" ) ); //$NON-NLS-1$
     // Language
-    PreferencesDialog.this.gui.jLabelLanguage.setText ( Messages
+    this.gui.jLabelLanguage.setText ( Messages
         .getString ( "PreferencesDialog.Language" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jLabelLanguage.setDisplayedMnemonic ( Messages
-        .getString ( "PreferencesDialog.LanguageMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jComboBoxLanguage.setToolTipText ( Messages
+    this.gui.jLabelLanguage.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.LanguageMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    this.gui.jComboBoxLanguage.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LanguageToolTip" ) ); //$NON-NLS-1$
     // Look and feel
-    PreferencesDialog.this.gui.jLabelLookAndFeel.setText ( Messages
+    this.gui.jLabelLookAndFeel.setText ( Messages
         .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$    
-    PreferencesDialog.this.gui.jLabelLookAndFeel
-        .setDisplayedMnemonic ( Messages.getString (
-            "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    PreferencesDialog.this.gui.jComboBoxLookAndFeel.setToolTipText ( Messages
+    this.gui.jLabelLookAndFeel.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jComboBoxLookAndFeel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
-    // Zoom factor
-    PreferencesDialog.this.gui.jLabelZoom.setText ( Messages
+    this.gui.jLabelZoom.setText ( Messages
         .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
-    PreferencesDialog.this.gui.jLabelZoom.setDisplayedMnemonic ( Messages
-        .getString ( "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    PreferencesDialog.this.gui.jSliderZoom.setToolTipText ( Messages
+    this.gui.jLabelZoom.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jSliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
     // Restore
-    PreferencesDialog.this.gui.jButtonRestore.setText ( Messages
+    this.gui.jButtonRestore.setText ( Messages
         .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonRestore.setMnemonic ( Messages.getString (
+    this.gui.jButtonRestore.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    PreferencesDialog.this.gui.jButtonRestore.setToolTipText ( Messages
+    this.gui.jButtonRestore.setToolTipText ( Messages
         .getString ( "PreferencesDialog.RestoreToolTip" ) ); //$NON-NLS-1$
     // State
-    PreferencesDialog.this.colorItemState.setCaption ( Messages
+    this.colorItemState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemState.setDescription ( Messages
+    this.colorItemState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorStateDescription" ) ); //$NON-NLS-1$
     // Selected state
-    PreferencesDialog.this.colorItemSelectedState.setCaption ( Messages
+    this.colorItemSelectedState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorSelectedStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemSelectedState.setDescription ( Messages
+    this.colorItemSelectedState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorSelectedStateDescription" ) ); //$NON-NLS-1$
     // Active state
-    PreferencesDialog.this.colorItemActiveState.setCaption ( Messages
+    this.colorItemActiveState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorActiveStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemActiveState.setDescription ( Messages
+    this.colorItemActiveState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorActiveStateDescription" ) ); //$NON-NLS-1$
     // Start state
-    PreferencesDialog.this.colorItemStartState.setCaption ( Messages
+    this.colorItemStartState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorStartStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemStartState.setDescription ( Messages
+    this.colorItemStartState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorStartStateDescription" ) ); //$NON-NLS-1$
     // Error state
-    PreferencesDialog.this.colorItemErrorState.setCaption ( Messages
+    this.colorItemErrorState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorErrorStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemErrorState.setDescription ( Messages
+    this.colorItemErrorState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorErrorStateDescription" ) ); //$NON-NLS-1$
     // Symbol
-    PreferencesDialog.this.colorItemSymbol.setCaption ( Messages
+    this.colorItemSymbol.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorSymbolCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemSymbol.setDescription ( Messages
+    this.colorItemSymbol.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorSymbolDescription" ) ); //$NON-NLS-1$
     // Error symbol
-    PreferencesDialog.this.colorItemErrorSymbol.setCaption ( Messages
+    this.colorItemErrorSymbol.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorErrorSymbolCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemErrorSymbol.setDescription ( Messages
+    this.colorItemErrorSymbol.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorErrorSymbolDescription" ) ); //$NON-NLS-1$
     // Transition
-    PreferencesDialog.this.colorItemTransition.setCaption ( Messages
+    this.colorItemTransition.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorTransitionCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemTransition.setDescription ( Messages
+    this.colorItemTransition.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorTransitionDescription" ) ); //$NON-NLS-1$
     // Error transition
-    PreferencesDialog.this.colorItemErrorTransition.setCaption ( Messages
+    this.colorItemErrorTransition.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorErrorTransitionCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemErrorTransition.setDescription ( Messages
+    this.colorItemErrorTransition.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorErrorTransitionDescription" ) ); //$NON-NLS-1$
     // Parser warning
-    PreferencesDialog.this.colorItemParserWarning.setCaption ( Messages
+    this.colorItemParserWarning.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorParserWarningCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemParserWarning.setDescription ( Messages
+    this.colorItemParserWarning.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorParserWarningDescription" ) ); //$NON-NLS-1$
     // Parser state
-    PreferencesDialog.this.colorItemParserState.setCaption ( Messages
+    this.colorItemParserState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorParserStateCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemParserState.setDescription ( Messages
+    this.colorItemParserState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorParserStateDescription" ) ); //$NON-NLS-1$
     // Parser symbol
-    PreferencesDialog.this.colorItemParserSymbol.setCaption ( Messages
+    this.colorItemParserSymbol.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorParserSymbolCaption" ) ); //$NON-NLS-1$
-    PreferencesDialog.this.colorItemParserSymbol.setDescription ( Messages
+    this.colorItemParserSymbol.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorParserSymbolDescription" ) ); //$NON-NLS-1$
     // Update description
-    ColorItem colorItem = ( ColorItem ) PreferencesDialog.this.gui.jListColor
-        .getSelectedValue ();
+    ColorItem colorItem = ( ColorItem ) this.gui.jListColor.getSelectedValue ();
     if ( colorItem != null )
     {
-      PreferencesDialog.this.gui.jTextPaneDescription.setText ( colorItem
-          .getDescription () );
+      this.gui.jTextPaneDescription.setText ( colorItem.getDescription () );
     }
   }
 
@@ -1398,6 +1517,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     saveDataLanguage ();
     // Look and feel
     saveDataLookAndFeel ();
+    // Choice
+    saveDataChoice ();
     // Zoom factor
     saveDataZoomFactor ();
     // Color
@@ -1687,12 +1808,29 @@ public final class PreferencesDialog implements LanguageChangedListener
     {
       logger.debug ( "zoom factor changed to \"" //$NON-NLS-1$
           + this.gui.jSliderZoom.getValue () + "\"" ); //$NON-NLS-1$
-      this.initialZoomFactorItem = ZoomFactorItem
-          .createFactor ( this.gui.jSliderZoom.getValue () );
+      this.initialZoomFactorItem = ZoomFactorItem.create ( this.gui.jSliderZoom
+          .getValue () );
       PreferenceManager.getInstance ().setZoomFactorItem (
           this.initialZoomFactorItem );
       PreferenceManager.getInstance ().fireZoomFactorChanged (
           this.initialZoomFactorItem );
+    }
+  }
+
+
+  /**
+   * Saves the data of the choice.
+   */
+  private final void saveDataChoice ()
+  {
+    if ( this.initialChoiceItem.getIndex () != this.gui.jComboBoxChoice
+        .getSelectedIndex () )
+    {
+      logger.debug ( "choice item changed to \"" //$NON-NLS-1$
+          + this.gui.jComboBoxChoice.getSelectedIndex () + "\"" ); //$NON-NLS-1$
+      this.initialChoiceItem = ChoiceItem.create ( this.gui.jComboBoxChoice
+          .getSelectedIndex () );
+      PreferenceManager.getInstance ().setChoiceItem ( this.initialChoiceItem );
     }
   }
 

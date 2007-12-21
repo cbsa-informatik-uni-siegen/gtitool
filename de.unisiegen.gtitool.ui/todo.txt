@@ -7,6 +7,21 @@
 - Den neuen NFA integrieren (Funktionalität wird noch getestet)
 - Den neuen ENFA integrieren (Nur angelegt, noch nicht implementiert)
 - Die neue SM integrieren (Nur angelegt, noch nicht implementiert)
+- Verschiedene Auswahlmöglichkeiten:
+    switch ( PreferenceManager.getInstance ().getChoiceItem () )
+    {
+      case WITHOUT_RETURN_TO_MOUSE :
+      {
+        // Alles wie bisher
+        break;
+      }
+      case WITH_RETURN_TO_MOUSE :
+      {
+        // Nach jedem Anlegen einer Transition etc muss zur Maus gesprungen
+        // werden
+        break;
+      }
+    }
 
 
 *** Christian ***
@@ -14,3 +29,4 @@
 - Meldung über Fehler und Warnungen anzeigen
 - Zustand highlighten mit Timer
 - Auswahl ob zur Maus gesprungen werden soll einbinden
+- Konsole und Tabelle nur auf ein Panel beschränken

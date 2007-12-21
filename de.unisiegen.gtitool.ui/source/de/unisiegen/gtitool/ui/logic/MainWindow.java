@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Frame;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -64,7 +65,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
-    this.gui.setVisible ( true );
     // Setting the default states
     setGeneralStates ( false );
     // Save
@@ -92,7 +92,13 @@ public final class MainWindow implements LanguageChangedListener
         .getInstance ().getVisibleConsole () );
     this.gui.jCheckBoxMenuItemTable.setSelected ( PreferenceManager
         .getInstance ().getVisibleTable () );
-
+    
+    this.gui.setVisible ( true );
+    if ( PreferenceManager.getInstance ().getMainWindowMaximized ())
+    {
+      this.gui.setExtendedState ( this.gui.getExtendedState ()
+        | Frame.MAXIMIZED_BOTH );
+    }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }

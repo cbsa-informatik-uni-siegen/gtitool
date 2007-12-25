@@ -2,5 +2,5 @@
 
 
 *** Christian ***
-- Alphabet setzen
-- NFA: Kein Übergang vorhanden
+- ENFA: Epsilon Übergang
+- SM: Stack implementieren

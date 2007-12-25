@@ -1,9 +1,3 @@
-/*
- * GrammarPanelForm.java
- *
- * Created on 21. Oktober 2007, 16:48
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 /**
@@ -11,7 +5,14 @@ package de.unisiegen.gtitool.ui.netbeans;
  * @author Benjamin Mies
  * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class GrammarPanelForm extends javax.swing.JPanel {
+    
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -505151111103641215L;
+    
     
     /** Creates new form GrammarPanelForm */
     public GrammarPanelForm() {

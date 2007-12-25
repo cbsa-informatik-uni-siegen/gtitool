@@ -95,7 +95,7 @@ public final class Alphabet implements ParseableEntity, Storable,
 
     // WarningList
     this.warningList = new ArrayList < StoreWarningException > ();
-    
+
     // Attribute
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
@@ -475,6 +475,21 @@ public final class Alphabet implements ParseableEntity, Storable,
   public final Iterator < Symbol > iterator ()
   {
     return this.symbolSet.iterator ();
+  }
+
+
+  /**
+   * Removes the given {@link Symbol} from this <code>Alphabet</code>.
+   * 
+   * @param pSymbol The {@link Symbol} to remove.
+   */
+  public final void removeSymbol ( Symbol pSymbol )
+  {
+    if ( !this.symbolSet.contains ( pSymbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
+    }
+    this.symbolSet.remove ( pSymbol );
   }
 
 

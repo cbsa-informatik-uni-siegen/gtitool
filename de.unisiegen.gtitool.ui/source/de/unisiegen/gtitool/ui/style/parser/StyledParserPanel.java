@@ -23,6 +23,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
 import de.unisiegen.gtitool.core.parser.Parseable;
+import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -774,6 +775,28 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Sets the exceptions.
+   * 
+   * @param pExceptions The exceptions to set.
+   */
+  public final void setException ( Iterable < ScannerException > pExceptions )
+  {
+    this.document.setException ( pExceptions );
+  }
+
+
+  /**
+   * Sets the exception.
+   * 
+   * @param pException The exception to set.
+   */
+  public final void setException ( ScannerException pException )
+  {
+    this.document.setException ( pException );
+  }
+
+
+  /**
    * Sets the status.
    */
   private final void setStatus ()
@@ -822,7 +845,7 @@ public abstract class StyledParserPanel extends JPanel
       this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
           .getY () );
     }
-    else if (this.copyable)
+    else if ( this.copyable )
     {
       int start = this.editor.getSelectionStart ();
       int end = this.editor.getSelectionEnd ();

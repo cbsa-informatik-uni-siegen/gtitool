@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.style.parser;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import java_cup.runtime.Symbol;
@@ -539,11 +540,16 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @param pExceptions The exceptions to set.
    */
-  public final void setException ( ArrayList < ScannerException > pExceptions )
+  public final void setException ( Iterable < ScannerException > pExceptions )
   {
     if ( !pExceptions.equals ( this.exceptionList ) )
     {
-      this.exceptionList = pExceptions;
+      this.exceptionList.clear ();
+      Iterator < ScannerException > iterator = pExceptions.iterator ();
+      while ( iterator.hasNext () )
+      {
+        this.exceptionList.add ( iterator.next () );
+      }
       for ( ScannerException current : this.exceptionList )
       {
         SimpleAttributeSet errorSet = getAttributeSetError ();
@@ -560,5 +566,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
       }
       fireExceptionsChanged ();
     }
+  }
+
+
+  /**
+   * Sets the exception.
+   * 
+   * @param pException The exception to set.
+   */
+  public final void setException ( ScannerException pException )
+  {
+    ArrayList < ScannerException > exceptions = new ArrayList < ScannerException > ();
+    exceptions.add ( pException );
+    setException ( exceptions );
   }
 }

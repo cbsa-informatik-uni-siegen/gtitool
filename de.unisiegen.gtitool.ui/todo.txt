@@ -22,11 +22,13 @@
         break;
       }
     }
+- Ein Icon zum Editieren des Alphabetes hinzufügen, dass die Methode
+  handleToolbarAlphabet des selektierten MachinePanel aufruft ODER
+  kurz Bescheid sagen, dass ich das MainWindow bearbeiten darf.
 
 
 *** Christian ***
 - Console: Automatische Fehlerkorrektur
 - Meldung über Fehler und Warnungen anzeigen
 - Zustand highlighten mit Timer
-- Auswahl ob zur Maus gesprungen werden soll einbinden
 - Konsole und Tabelle nur auf ein Panel beschränken

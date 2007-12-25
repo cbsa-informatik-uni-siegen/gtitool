@@ -320,7 +320,6 @@ public final class TransitionDialog
    */
   public final void handleCancel ()
   {
-
     this.gui.dispose ();
   }
 

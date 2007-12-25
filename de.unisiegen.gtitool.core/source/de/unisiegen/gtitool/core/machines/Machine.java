@@ -695,6 +695,31 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Returns true if the given {@link Symbol} can be removed from the
+   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * 
+   * @param pSymbol The {@link Symbol} which should be checked.
+   * @return True if the given {@link Symbol} can be removed from the
+   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   */
+  public boolean isSymbolRemoveable ( Symbol pSymbol )
+  {
+    if ( !this.alphabet.contains ( pSymbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
+    }
+    for ( Transition current : this.transitionList )
+    {
+      if ( current.contains ( pSymbol ) )
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  /**
    * Returns true if one of the active {@link State}s is a final {@link State},
    * otherwise false.
    * 
@@ -940,6 +965,21 @@ public abstract class Machine implements Serializable
     {
       removeState ( current );
     }
+  }
+
+
+  /**
+   * Removes the given {@link Symbol} from this <code>Machine</code>.
+   * 
+   * @param pSymbol The {@link Symbol} to remove.
+   */
+  public final void removeSymbol ( Symbol pSymbol )
+  {
+    if ( !isSymbolRemoveable ( pSymbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not removeable" ); //$NON-NLS-1$
+    }
+    this.alphabet.removeSymbol ( pSymbol );
   }
 
 

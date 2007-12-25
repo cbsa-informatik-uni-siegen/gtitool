@@ -25,7 +25,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
  * @version $Id$
  */
 public final class Transition implements ParseableEntity, Storable,
-    Comparable < Transition >
+    Comparable < Transition >, Iterable < Symbol >
 {
 
   /**
@@ -614,8 +614,6 @@ public final class Transition implements ParseableEntity, Storable,
   {
     return this.symbolSet;
   }
-
-
   /**
    * Returns the {@link Symbol} with the given index.
    * 
@@ -632,7 +630,6 @@ public final class Transition implements ParseableEntity, Storable,
     }
     return iterator.next ();
   }
-
 
   /**
    * {@inheritDoc}
@@ -695,6 +692,34 @@ public final class Transition implements ParseableEntity, Storable,
   public final boolean isIdDefined ()
   {
     return this.id != ID_NOT_DEFINED;
+  }
+
+
+  /**
+   * Returns an iterator over the {@link Symbol}s in this
+   * <code>Transition</code>.
+   * 
+   * @return An iterator over the {@link Symbol}s in this
+   *         <code>Transition</code>.
+   */
+  public final Iterator < Symbol > iterator ()
+  {
+    return this.symbolSet.iterator ();
+  }
+
+
+  /**
+   * Removes the given {@link Symbol} from this <code>Transition</code>.
+   * 
+   * @param pSymbol The {@link Symbol} to remove.
+   */
+  public final void removeSymbol ( Symbol pSymbol )
+  {
+    if ( !this.symbolSet.contains ( pSymbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
+    }
+    this.symbolSet.remove ( pSymbol );
   }
 
 

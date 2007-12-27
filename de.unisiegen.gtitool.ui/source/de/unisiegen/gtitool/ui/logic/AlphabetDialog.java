@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
@@ -62,12 +63,6 @@ public final class AlphabetDialog
 
 
   /**
-   * The initial {@link Alphabet} of this dialog.
-   */
-  private Alphabet initialAlphabet;
-
-
-  /**
    * The {@link Machine} of this dialog.
    */
   private Machine machine;
@@ -84,7 +79,6 @@ public final class AlphabetDialog
   {
     this.parent = pParent;
     this.alphabet = pAlphabet;
-    this.initialAlphabet = this.alphabet.clone ();
     this.machine = pMachine;
     this.gui = new AlphabetDialogForm ( this, pParent );
     this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
@@ -98,12 +92,10 @@ public final class AlphabetDialog
             if ( pNewAlphabet == null )
             {
               AlphabetDialog.this.gui.jButtonOk.setEnabled ( false );
-              AlphabetDialog.this.alphabet = null;
             }
             else
             {
-              AlphabetDialog.this.alphabet = pNewAlphabet;
-              TreeSet < Symbol > notRemoveableSymbols = getNotRemoveableSymbols ();
+              TreeSet < Symbol > notRemoveableSymbols = getNotRemoveableSymbols ( pNewAlphabet );
               if ( notRemoveableSymbols.size () == 0 )
               {
                 AlphabetDialog.this.gui.jButtonOk.setEnabled ( true );
@@ -127,53 +119,23 @@ public final class AlphabetDialog
 
 
   /**
-   * Dispose the Dialog
-   */
-  public final void dispose ()
-  {
-    this.gui.dispose ();
-  }
-
-
-  /**
-   * Get the {@link Alphabet} of this dialog.
-   * 
-   * @return The {@link Alphabet}
-   */
-  public final Alphabet getAlphabet ()
-  {
-    return this.alphabet;
-  }
-
-
-  /**
-   * Returns the gui.
-   * 
-   * @return The gui.
-   * @see #gui
-   */
-  public final AlphabetDialogForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
    * Returns the set of not removeable {@link Symbol}s.
    * 
+   * @param pNewAlphabet The new {@link Alphabet}.
    * @return The set of not removeable {@link Symbol}s.
    */
-  private final TreeSet < Symbol > getNotRemoveableSymbols ()
+  private final TreeSet < Symbol > getNotRemoveableSymbols (
+      Alphabet pNewAlphabet )
   {
-    if ( this.alphabet == null )
+    if ( pNewAlphabet == null )
     {
-      throw new IllegalArgumentException ( "alphabet is null" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "new alphabet is null" ); //$NON-NLS-1$
     }
     TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
-    for ( Symbol current : this.initialAlphabet )
+    for ( Symbol current : this.alphabet )
     {
-      if ( !this.alphabet.contains ( current ) )
+      if ( !pNewAlphabet.contains ( current ) )
       {
         symbolsToRemove.add ( current );
       }
@@ -194,6 +156,7 @@ public final class AlphabetDialog
    */
   public final void handleCancel ()
   {
+    this.DIALOG_RESULT = DIALOG_CANCELED;
     this.gui.dispose ();
   }
 
@@ -203,7 +166,36 @@ public final class AlphabetDialog
    */
   public final void handleOk ()
   {
+    this.gui.setVisible ( false );
+    Alphabet newAlphabet = this.gui.styledAlphabetParserPanel.getAlphabet ();
+    TreeSet < Symbol > symbolsToAdd = new TreeSet < Symbol > ();
+    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
+    for ( Symbol current : newAlphabet )
+    {
+      if ( !this.alphabet.contains ( current ) )
+      {
+        symbolsToAdd.add ( current );
+      }
+    }
+    for ( Symbol current : this.alphabet )
+    {
+      if ( !newAlphabet.contains ( current ) )
+      {
+        symbolsToRemove.add ( current );
+      }
+    }
+    try
+    {
+      this.alphabet.addSymbol ( symbolsToAdd );
+      this.alphabet.removeSymbol ( symbolsToRemove );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
     this.DIALOG_RESULT = DIALOG_CONFIRMED;
+    this.gui.dispose ();
   }
 
 

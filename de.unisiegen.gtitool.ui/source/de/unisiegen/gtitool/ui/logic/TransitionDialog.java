@@ -416,6 +416,7 @@ public final class TransitionDialog
       e.printStackTrace ();
       System.exit ( 1 );
     }
+    this.gui.dispose ();
   }
 
 

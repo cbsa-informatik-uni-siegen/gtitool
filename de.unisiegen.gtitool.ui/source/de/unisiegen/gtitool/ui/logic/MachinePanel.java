@@ -884,21 +884,16 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   public void handleToolbarAlphabet ()
   {
-    JDialog changeAlphabetDialog = new JDialog ( this.parent, true );
-
-    EditAlphabetPanel editAlphabetPanel = new EditAlphabetPanel ( this.machine );
-    changeAlphabetDialog.add ( editAlphabetPanel.getPanel () );
-
-    changeAlphabetDialog.setTitle ( Messages
-        .getString ( "PreferencesDialog.AlphabetEdit" ) ); //$NON-NLS-1$
-    changeAlphabetDialog.pack ();
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( changeAlphabetDialog.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( changeAlphabetDialog.getHeight () / 2 );
-    changeAlphabetDialog.setBounds ( x, y, changeAlphabetDialog.getWidth (),
-        changeAlphabetDialog.getHeight () );
-    changeAlphabetDialog.setVisible ( true );
+    // TODOChristian
+    AlphabetDialog alphabetDialog = new AlphabetDialog (this.parent,
+        this.alphabet, this.machine);
+    alphabetDialog.show () ;
+    if ( alphabetDialog.DIALOG_RESULT == AlphabetDialog.DIALOG_CONFIRMED )
+    {
+      System.out.println ( "confirm") ;
+      System.out.println (this.alphabet) ;
+      System.out.println (this.machine.getAlphabet ());
+    }
   }
 
 
@@ -937,10 +932,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   public void handleToolbarStart ( boolean state )
   {
-    if ( state )
+    handleToolbarAlphabet ();
+    /*if ( state )
       this.graph.addMouseListener ( this.start );
     else
-      this.graph.removeMouseListener ( this.start );
+      this.graph.removeMouseListener ( this.start );*/
   }
 
 

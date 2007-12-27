@@ -479,6 +479,24 @@ public final class Alphabet implements ParseableEntity, Storable,
 
 
   /**
+   * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to remove.
+   */
+  public final void removeSymbol ( Iterable < Symbol > pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      removeSymbol ( current );
+    }
+  }
+
+
+  /**
    * Removes the given {@link Symbol} from this <code>Alphabet</code>.
    * 
    * @param pSymbol The {@link Symbol} to remove.
@@ -490,6 +508,24 @@ public final class Alphabet implements ParseableEntity, Storable,
       throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
     }
     this.symbolSet.remove ( pSymbol );
+  }
+
+
+  /**
+   * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to remove.
+   */
+  public final void removeSymbol ( Symbol ... pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      removeSymbol ( current );
+    }
   }
 
 

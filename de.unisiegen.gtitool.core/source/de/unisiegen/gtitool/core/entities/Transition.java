@@ -614,6 +614,8 @@ public final class Transition implements ParseableEntity, Storable,
   {
     return this.symbolSet;
   }
+
+
   /**
    * Returns the {@link Symbol} with the given index.
    * 
@@ -630,6 +632,7 @@ public final class Transition implements ParseableEntity, Storable,
     }
     return iterator.next ();
   }
+
 
   /**
    * {@inheritDoc}
@@ -709,6 +712,24 @@ public final class Transition implements ParseableEntity, Storable,
 
 
   /**
+   * Remove the given {@link Symbol}s from this <code>Transition</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to remove.
+   */
+  public final void removeSymbol ( Iterable < Symbol > pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      removeSymbol ( current );
+    }
+  }
+
+
+  /**
    * Removes the given {@link Symbol} from this <code>Transition</code>.
    * 
    * @param pSymbol The {@link Symbol} to remove.
@@ -720,6 +741,24 @@ public final class Transition implements ParseableEntity, Storable,
       throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
     }
     this.symbolSet.remove ( pSymbol );
+  }
+
+
+  /**
+   * Remove the given {@link Symbol}s from this <code>Transition</code>.
+   * 
+   * @param pSymbols The {@link Symbol}s to remove.
+   */
+  public final void removeSymbol ( Symbol ... pSymbols )
+  {
+    if ( pSymbols == null )
+    {
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+    }
+    for ( Symbol current : pSymbols )
+    {
+      removeSymbol ( current );
+    }
   }
 
 

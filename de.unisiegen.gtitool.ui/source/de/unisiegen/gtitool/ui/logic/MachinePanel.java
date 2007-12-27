@@ -932,11 +932,10 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   public void handleToolbarStart ( boolean state )
   {
-    handleToolbarAlphabet ();
-    /*if ( state )
+    if ( state )
       this.graph.addMouseListener ( this.start );
     else
-      this.graph.removeMouseListener ( this.start );*/
+      this.graph.removeMouseListener ( this.start );
   }
 
 

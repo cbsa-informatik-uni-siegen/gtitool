@@ -551,6 +551,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the parser highlighting.
+   */
+  private ColorItem colorItemParserHighlighting;
+
+
+  /**
    * The {@link ColorItem} of the parser {@link State}.
    */
   private ColorItem colorItemParserState;
@@ -653,6 +659,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial {@link ColorItem} of the parser highlighting.
+   */
+  private ColorItem initialColorItemParserHighlighting;
+
+
+  /**
    * The initial {@link ColorItem} of the parser {@link State}.
    */
   private ColorItem initialColorItemParserState;
@@ -704,6 +716,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The color list {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuColorList;
+
+
+  /**
+   * The choice item without return to the mouse.
+   */
+  private ChoiceItem choiceWithoutReturn;
+
+
+  /**
+   * The choice item with return to the mouse.
+   */
+  private ChoiceItem choiceWithReturn;
 
 
   /**
@@ -896,6 +920,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemTransition.restore ();
     this.colorItemErrorTransition.restore ();
     this.colorItemParserWarning.restore ();
+    this.colorItemParserHighlighting.restore ();
     this.colorItemParserState.restore ();
     this.colorItemParserSymbol.restore ();
     // Alphabet
@@ -970,18 +995,6 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The choice item without return to the mouse.
-   */
-  private ChoiceItem choiceWithoutReturn;
-
-
-  /**
-   * The choice item with return to the mouse.
-   */
-  private ChoiceItem choiceWithReturn;
-
-
-  /**
    * Initializes the choice.
    */
   private final void initChoice ()
@@ -1043,6 +1056,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserWarning = PreferenceManager.getInstance ()
         .getColorItemParserWarning ();
     this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
+    // Parser highlighting
+    this.colorItemParserHighlighting = PreferenceManager.getInstance ()
+        .getColorItemParserHighlighting ();
+    this.initialColorItemParserHighlighting = this.colorItemParserHighlighting
+        .clone ();
     // Parser state
     this.colorItemParserState = PreferenceManager.getInstance ()
         .getColorItemParserState ();
@@ -1144,6 +1162,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorListModel.add ( this.colorItemTransition );
     this.colorListModel.add ( this.colorItemErrorTransition );
     this.colorListModel.add ( this.colorItemParserWarning );
+    this.colorListModel.add ( this.colorItemParserHighlighting );
     this.colorListModel.add ( this.colorItemParserState );
     this.colorListModel.add ( this.colorItemParserSymbol );
     this.gui.jListColor.setModel ( this.colorListModel );
@@ -1486,6 +1505,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.ColorParserWarningCaption" ) ); //$NON-NLS-1$
     this.colorItemParserWarning.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorParserWarningDescription" ) ); //$NON-NLS-1$
+    // Parser highlighting
+    this.colorItemParserHighlighting.setCaption ( Messages
+        .getString ( "PreferencesDialog.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
+    this.colorItemParserHighlighting.setDescription ( Messages
+        .getString ( "PreferencesDialog.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
     // Parser state
     this.colorItemParserState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorParserStateCaption" ) ); //$NON-NLS-1$
@@ -1540,6 +1564,23 @@ public final class PreferencesDialog implements LanguageChangedListener
           + this.alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
       this.initialAlphabetItem = this.alphabetItem.clone ();
       PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
+    }
+  }
+
+
+  /**
+   * Saves the data of the choice.
+   */
+  private final void saveDataChoice ()
+  {
+    if ( this.initialChoiceItem.getIndex () != this.gui.jComboBoxChoice
+        .getSelectedIndex () )
+    {
+      logger.debug ( "choice item changed to \"" //$NON-NLS-1$
+          + this.gui.jComboBoxChoice.getSelectedIndex () + "\"" ); //$NON-NLS-1$
+      this.initialChoiceItem = ChoiceItem.create ( this.gui.jComboBoxChoice
+          .getSelectedIndex () );
+      PreferenceManager.getInstance ().setChoiceItem ( this.initialChoiceItem );
     }
   }
 
@@ -1682,6 +1723,22 @@ public final class PreferencesDialog implements LanguageChangedListener
       PreferenceManager.getInstance ().fireColorChangedParserWarning (
           this.colorItemParserWarning.getColor () );
     }
+    // Parser highlighting
+    if ( !this.initialColorItemParserHighlighting
+        .equals ( this.colorItemParserHighlighting ) )
+    {
+      logger
+          .debug ( "color of the parser highlighting changed to \"" //$NON-NLS-1$
+              + "r=" + this.colorItemParserHighlighting.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "g=" + this.colorItemParserHighlighting.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "b=" + this.colorItemParserHighlighting.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserHighlighting = this.colorItemParserHighlighting
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemParserHighlighting (
+          this.colorItemParserHighlighting );
+      PreferenceManager.getInstance ().fireColorChangedParserHighlighting (
+          this.colorItemParserHighlighting.getColor () );
+    }
     // Parser state
     if ( !this.initialColorItemParserState.equals ( this.colorItemParserState ) )
     {
@@ -1814,23 +1871,6 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.initialZoomFactorItem );
       PreferenceManager.getInstance ().fireZoomFactorChanged (
           this.initialZoomFactorItem );
-    }
-  }
-
-
-  /**
-   * Saves the data of the choice.
-   */
-  private final void saveDataChoice ()
-  {
-    if ( this.initialChoiceItem.getIndex () != this.gui.jComboBoxChoice
-        .getSelectedIndex () )
-    {
-      logger.debug ( "choice item changed to \"" //$NON-NLS-1$
-          + this.gui.jComboBoxChoice.getSelectedIndex () + "\"" ); //$NON-NLS-1$
-      this.initialChoiceItem = ChoiceItem.create ( this.gui.jComboBoxChoice
-          .getSelectedIndex () );
-      PreferenceManager.getInstance ().setChoiceItem ( this.initialChoiceItem );
     }
   }
 

@@ -66,6 +66,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
+   * Invoked when the color of the parser highlighting changed.
+   * 
+   * @param pNewColor The new color of the parser highlighting.
+   */
+  public void colorChangedParserHighlighting ( @SuppressWarnings ( "unused" )
+  Color pNewColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
    * Invoked when the color of the parser {@link State} changed.
    * 
    * @param pNewColor The new color of the parser {@link State}.

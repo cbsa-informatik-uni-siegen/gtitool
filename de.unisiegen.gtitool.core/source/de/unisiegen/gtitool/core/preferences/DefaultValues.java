@@ -88,4 +88,10 @@ public interface DefaultValues
    */
   public final Color DEFAULT_PARSER_WARNING_COLOR = new Color ( 232, 242, 254 );
 
+
+  /**
+   * The default {@link Color} of a parser highlighting.
+   */
+  public final Color DEFAULT_PARSER_HIGHLIGHTING_COLOR = new Color ( 255, 255,
+      0 );
 }

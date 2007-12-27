@@ -51,6 +51,14 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the parser highlighting changed.
+   * 
+   * @param pNewColor The new color of the parser highlighting.
+   */
+  public void colorChangedParserHighlighting ( Color pNewColor );
+
+
+  /**
    * Invoked when the color of the parser {@link State} changed.
    * 
    * @param pNewColor The new color of the parser {@link State}.

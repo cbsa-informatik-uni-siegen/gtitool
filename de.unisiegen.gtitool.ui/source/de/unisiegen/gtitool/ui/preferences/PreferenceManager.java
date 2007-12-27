@@ -342,6 +342,21 @@ public final class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the parser highlighting has
+   * changed.
+   * 
+   * @param pNewColor The new color of the parser warning.
+   */
+  public final void fireColorChangedParserHighlighting ( Color pNewColor )
+  {
+    for ( ColorChangedListener current : this.colorChangedListenerList )
+    {
+      current.colorChangedParserHighlighting ( pNewColor );
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the parser {@link State} has
    * changed.
    * 
@@ -635,6 +650,31 @@ public final class PreferenceManager
         .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the parser highlighting.
+   * 
+   * @return The {@link ColorItem} of the parser highlighting.
+   */
+  public final ColorItem getColorItemParserHighlighting ()
+  {
+    int r = this.preferences.getInt (
+        "PreferencesDialog.ColorParserHighlightingR", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getRed () );
+    int g = this.preferences.getInt (
+        "PreferencesDialog.ColorParserHighlightingG", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getGreen () );
+    int b = this.preferences.getInt (
+        "PreferencesDialog.ColorParserHighlightingB", //$NON-NLS-1$
+        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorParserHighlightingCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorParserHighlightingDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR );
   }
 
 
@@ -1172,6 +1212,29 @@ public final class PreferenceManager
             .getColor ().getGreen () );
     this.preferences.putInt (
         "PreferencesDialog.ColorErrorTransitionB", pColorItem //$NON-NLS-1$
+            .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser highlighting.
+   * 
+   * @param pColorItem The {@link ColorItem} of the parser highlighting.
+   */
+  public final void setColorItemParserHighlighting ( ColorItem pColorItem )
+  {
+    logger.debug ( "set color of the parser highlighting to \"" //$NON-NLS-1$
+        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserHighlightingR", pColorItem //$NON-NLS-1$
+            .getColor ().getRed () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserHighlightingG", pColorItem //$NON-NLS-1$
+            .getColor ().getGreen () );
+    this.preferences.putInt (
+        "PreferencesDialog.ColorParserHighlightingB", pColorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 

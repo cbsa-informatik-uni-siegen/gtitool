@@ -106,6 +106,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * The parser warning highlighting.
+   */
+  private Color parserHighlightingColor;
+
+
+  /**
    * Flag that indicates if the panel is read only.
    */
   private boolean editable = true;
@@ -152,6 +158,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
     initAttributes ();
     this.parserWarningColor = PreferenceManager.getInstance ()
         .getColorItemParserWarning ().getColor ();
+    this.parserHighlightingColor = PreferenceManager.getInstance ()
+        .getColorItemParserHighlighting ().getColor ();
 
     /*
      * ColorChangedListener
@@ -159,6 +167,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedParserHighlighting ( Color pNewColor )
+          {
+            StyledParserDocument.this.parserHighlightingColor = pNewColor;
+            processChanged ();
+          }
+
 
           /**
            * {@inheritDoc}
@@ -260,8 +280,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
   {
     SimpleAttributeSet highlightedParseableEntitySet = new SimpleAttributeSet ();
-    // TODO
-    StyleConstants.setBackground ( highlightedParseableEntitySet, Color.YELLOW );
+    StyleConstants.setBackground ( highlightedParseableEntitySet,
+        this.parserHighlightingColor );
     return highlightedParseableEntitySet;
   }
 
@@ -637,7 +657,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    *          highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable <? extends ParseableEntity > pParseableEntities )
+      Iterable < ? extends ParseableEntity > pParseableEntities )
   {
     this.highlightedParseableEntityList.clear ();
     for ( ParseableEntity current : pParseableEntities )

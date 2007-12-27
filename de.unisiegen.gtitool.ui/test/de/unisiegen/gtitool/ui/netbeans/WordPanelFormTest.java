@@ -5,8 +5,10 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.style.listener.WordChangedListener;
 
 
 /**
@@ -27,8 +29,21 @@ public class WordPanelFormTest
       Alphabet alphabet = new Alphabet ( new Symbol ( "0" ),
           new Symbol ( "1" ), new Symbol ( "2" ) );
       JFrame jFrame = new JFrame ( "WordPanelFormTest" );
-      WordPanelForm wordPanelForm = new WordPanelForm ();
+      final WordPanelForm wordPanelForm = new WordPanelForm ();
       wordPanelForm.setAlphabet ( alphabet );
+      wordPanelForm.styledWordParserPanel
+          .addWordChangedListener ( new WordChangedListener ()
+          {
+
+            public void wordChanged ( Word pNewWord )
+            {
+              if ( pNewWord != null )
+              {
+                wordPanelForm.styledWordParserPanel
+                    .setHighlightedParseableEntity ( pNewWord.getSymbol ( 0 ) );
+              }
+            }
+          } );
       jFrame.add ( wordPanelForm );
       jFrame.setBounds ( 300, 300, 400, 300 );
       jFrame.setVisible ( true );

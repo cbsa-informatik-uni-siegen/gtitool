@@ -20,6 +20,7 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
+import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -117,6 +118,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * The highlighted {@link ParseableEntity} list.
+   */
+  private ArrayList < ParseableEntity > highlightedParseableEntityList;
+
+
+  /**
    * Allocates a new <code>StyledParserDocument</code> for the given
    * <code>pParseable</code>, where the <code>pParseable</code> is used to
    * determine the scanner for the documents content and thereby dictates the
@@ -133,6 +140,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
     this.parseable = pParseable;
+    this.highlightedParseableEntityList = new ArrayList < ParseableEntity > ();
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
     SimpleAttributeSet stateSet = new SimpleAttributeSet ();
@@ -245,6 +253,20 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Returns the highlighted {@link ParseableEntity} set.
+   * 
+   * @return The highlighted {@link ParseableEntity} set.
+   */
+  private SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
+  {
+    SimpleAttributeSet highlightedParseableEntitySet = new SimpleAttributeSet ();
+    // TODO
+    StyleConstants.setBackground ( highlightedParseableEntitySet, Color.YELLOW );
+    return highlightedParseableEntitySet;
+  }
+
+
+  /**
    * Returns the warning set.
    * 
    * @return The warning set.
@@ -279,6 +301,32 @@ public final class StyledParserDocument extends DefaultStyledDocument
   public final Object getParsedObject () throws Exception
   {
     return this.parsedObject;
+  }
+
+
+  /**
+   * Highlights the {@link ParseableEntity}s.
+   */
+  private final void highlightedParseableEntities ()
+  {
+    for ( ParseableEntity current : this.highlightedParseableEntityList )
+    {
+      SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
+      highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
+      if ( current.getParserStartOffset () < 0
+          && current.getParserEndOffset () < 0 )
+      {
+        setCharacterAttributes ( getLength (), getLength (),
+            highlightedParseableEntitySet, false );
+      }
+      else
+      {
+        setCharacterAttributes ( current.getParserStartOffset (), current
+            .getParserEndOffset ()
+            - current.getParserStartOffset (), highlightedParseableEntitySet,
+            false );
+      }
+    }
   }
 
 
@@ -579,5 +627,38 @@ public final class StyledParserDocument extends DefaultStyledDocument
     ArrayList < ScannerException > exceptions = new ArrayList < ScannerException > ();
     exceptions.add ( pException );
     setException ( exceptions );
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * 
+   * @param pParseableEntities The {@link ParseableEntity}s which should be
+   *          highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      Iterable <? extends ParseableEntity > pParseableEntities )
+  {
+    this.highlightedParseableEntityList.clear ();
+    for ( ParseableEntity current : pParseableEntities )
+    {
+      this.highlightedParseableEntityList.add ( current );
+    }
+    highlightedParseableEntities ();
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity} which should be highlighted.
+   * 
+   * @param pParseableEntity The {@link ParseableEntity} which should be
+   *          highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      ParseableEntity pParseableEntity )
+  {
+    ArrayList < ParseableEntity > parseableEntities = new ArrayList < ParseableEntity > ();
+    parseableEntities.add ( pParseableEntity );
+    setHighlightedParseableEntity ( parseableEntities );
   }
 }

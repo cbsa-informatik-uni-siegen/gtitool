@@ -178,6 +178,28 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
+   * Sets the {@link Symbol}s which should be highlighted.
+   * 
+   * @param pSymbols The {@link Symbol}s which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Iterable < Symbol > pSymbols )
+  {
+    setHighlightedParseableEntity ( pSymbols );
+  }
+
+
+  /**
+   * Sets the {@link Symbol} which should be highlighted.
+   * 
+   * @param pSymbol The {@link Symbol} which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Symbol pSymbol )
+  {
+    setHighlightedParseableEntity ( pSymbol );
+  }
+
+
+  /**
    * Sets the {@link Word} of the document.
    * 
    * @param pWord The input {@link Word}.

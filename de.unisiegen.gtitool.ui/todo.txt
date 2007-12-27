@@ -32,3 +32,5 @@
 - Meldung über Fehler und Warnungen anzeigen
 - Zustand highlighten mit Timer
 - Konsole und Tabelle nur auf ein Panel beschränken
+- Listener umbauen
+- Farbe zum Highlighten hinzufügen

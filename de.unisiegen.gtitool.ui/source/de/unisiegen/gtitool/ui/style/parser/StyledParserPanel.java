@@ -22,6 +22,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
+import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.Messages;
@@ -793,6 +794,32 @@ public abstract class StyledParserPanel extends JPanel
   public final void setException ( ScannerException pException )
   {
     this.document.setException ( pException );
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * 
+   * @param pParseableEntities The {@link ParseableEntity}s which should be
+   *          highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      Iterable < ? extends ParseableEntity > pParseableEntities )
+  {
+    this.document.setHighlightedParseableEntity ( pParseableEntities );
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity} which should be highlighted.
+   * 
+   * @param pParseableEntity The {@link ParseableEntity} which should be
+   *          highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      ParseableEntity pParseableEntity )
+  {
+    this.document.setHighlightedParseableEntity ( pParseableEntity );
   }
 
 

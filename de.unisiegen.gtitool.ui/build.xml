@@ -185,7 +185,7 @@
 	</target>
 
 	<!-- exe -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/launch4j/launch4j.jar:${basedir}/launch4j/lib/xstream.jar" />
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/executer/windows/launch4j/launch4j.jar:${basedir}/executer/windows/launch4j/lib/xstream.jar" />
 	<target name="exe">
 		<!-- update config file -->
 		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">

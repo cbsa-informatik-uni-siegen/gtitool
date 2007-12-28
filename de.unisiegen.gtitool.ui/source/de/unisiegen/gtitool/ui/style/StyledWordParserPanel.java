@@ -31,12 +31,6 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * The list of {@link WordChangedListener}.
-   */
-  private ArrayList < WordChangedListener > wordChangedListenerList = new ArrayList < WordChangedListener > ();
-
-
-  /**
    * The {@link WordChangedListener} for the other
    * <code>StyledWordParserPanel</code>.
    */
@@ -81,7 +75,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
   public final synchronized void addWordChangedListener (
       WordChangedListener pListener )
   {
-    this.wordChangedListenerList.add ( pListener );
+    this.listenerList.add ( WordChangedListener.class, pListener );
   }
 
 
@@ -108,16 +102,20 @@ public final class StyledWordParserPanel extends StyledParserPanel
       if ( exceptionList.size () > 0 )
       {
         getDocument ().setException ( exceptionList );
-        for ( WordChangedListener current : this.wordChangedListenerList )
+        WordChangedListener [] listeners = this.listenerList
+            .getListeners ( WordChangedListener.class );
+        for ( int n = 0 ; n < listeners.length ; ++n )
         {
-          current.wordChanged ( null );
+          listeners [ n ].wordChanged ( null );
         }
         return;
       }
     }
-    for ( WordChangedListener current : this.wordChangedListenerList )
+    WordChangedListener [] listeners = this.listenerList
+        .getListeners ( WordChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.wordChanged ( pNewWord );
+      listeners [ n ].wordChanged ( pNewWord );
     }
   }
 
@@ -156,12 +154,11 @@ public final class StyledWordParserPanel extends StyledParserPanel
    * Removes the given {@link WordChangedListener}.
    * 
    * @param pListener The {@link WordChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeWordChangedListener (
+  public final synchronized void removeWordChangedListener (
       WordChangedListener pListener )
   {
-    return this.wordChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( WordChangedListener.class, pListener );
   }
 
 

@@ -197,12 +197,6 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * The list of {@link ParseableChangedListener}.
-   */
-  private ArrayList < ParseableChangedListener > parseableChangedListenerList = new ArrayList < ParseableChangedListener > ();
-
-
-  /**
    * Flag that indicates if the panel is editable.
    */
   private boolean editable;
@@ -571,7 +565,7 @@ public abstract class StyledParserPanel extends JPanel
   protected final synchronized void addParseableChangedListener (
       ParseableChangedListener pListener )
   {
-    this.parseableChangedListenerList.add ( pListener );
+    this.listenerList.add ( ParseableChangedListener.class, pListener );
   }
 
 
@@ -597,9 +591,11 @@ public abstract class StyledParserPanel extends JPanel
       this.history.add ( pNewObject );
     }
 
-    for ( ParseableChangedListener current : this.parseableChangedListenerList )
+    ParseableChangedListener [] listeners = this.listenerList
+        .getListeners ( ParseableChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.parseableChanged ( pNewObject );
+      listeners [ n ].parseableChanged ( pNewObject );
     }
   }
 
@@ -703,12 +699,11 @@ public abstract class StyledParserPanel extends JPanel
    * Removes the given {@link ParseableChangedListener}.
    * 
    * @param pListener The {@link ParseableChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  protected final synchronized boolean removeParseableChangedListener (
+  protected final synchronized void removeParseableChangedListener (
       ParseableChangedListener pListener )
   {
-    return this.parseableChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( ParseableChangedListener.class, pListener );
   }
 
 

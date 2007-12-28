@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.ui.style;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.parser.state.StateParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -23,12 +21,6 @@ public final class StyledStateParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = 257507642715920652L;
-
-
-  /**
-   * The list of {@link StateChangedListener}.
-   */
-  private ArrayList < StateChangedListener > stateChangedListenerList = new ArrayList < StateChangedListener > ();
 
 
   /**
@@ -71,7 +63,7 @@ public final class StyledStateParserPanel extends StyledParserPanel
   public final synchronized void addStateChangedListener (
       StateChangedListener pListener )
   {
-    this.stateChangedListenerList.add ( pListener );
+    this.listenerList.add ( StateChangedListener.class, pListener );
   }
 
 
@@ -82,9 +74,11 @@ public final class StyledStateParserPanel extends StyledParserPanel
    */
   private final void fireStateChanged ( State pNewState )
   {
-    for ( StateChangedListener current : this.stateChangedListenerList )
+    StateChangedListener [] listeners = this.listenerList
+        .getListeners ( StateChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.stateChanged ( pNewState );
+      listeners [ n ].stateChanged ( pNewState );
     }
   }
 
@@ -112,12 +106,11 @@ public final class StyledStateParserPanel extends StyledParserPanel
    * Removes the given {@link StateChangedListener}.
    * 
    * @param pListener The {@link StateChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeStateChangedListener (
+  public final synchronized void removeStateChangedListener (
       StateChangedListener pListener )
   {
-    return this.stateChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( StateChangedListener.class, pListener );
   }
 
 

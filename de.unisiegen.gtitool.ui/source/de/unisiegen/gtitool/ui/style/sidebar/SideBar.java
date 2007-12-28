@@ -33,7 +33,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserDocument;
  * @author Christian Fehler
  * @version $Id$
  */
-public class SideBar extends JComponent
+public final class SideBar extends JComponent
 {
 
   /**
@@ -186,7 +186,7 @@ public class SideBar extends JComponent
    * 
    * @param pSideBarListener The given {@link SideBarListener}.
    */
-  public void addSideBarListener ( SideBarListener pSideBarListener )
+  public final void addSideBarListener ( SideBarListener pSideBarListener )
   {
     this.listenerList.add ( SideBarListener.class, pSideBarListener );
   }
@@ -195,7 +195,7 @@ public class SideBar extends JComponent
   /**
    * Builds the marks.
    */
-  private void buildMarks ()
+  private final void buildMarks ()
   {
     this.exceptionList = this.document.getExceptionList ();
     this.verticalPositions = new int [ this.exceptionList.size () ];
@@ -226,16 +226,13 @@ public class SideBar extends JComponent
    * 
    * @param pInsertText The text which should be inserted.
    */
-  private void fireInsertText ( String pInsertText )
+  private final void fireInsertText ( String pInsertText )
   {
-    Object listeners[] = this.listenerList.getListenerList ();
-    for ( int i = 0 ; i < listeners.length ; i++ )
+    SideBarListener listeners[] = this.listenerList
+        .getListeners ( SideBarListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      if ( listeners [ i ] == SideBarListener.class )
-      {
-        ( ( SideBarListener ) listeners [ i + 1 ] ).insertText (
-            this.currentRight, pInsertText );
-      }
+      listeners [ n ].insertText ( this.currentRight, pInsertText );
     }
   }
 
@@ -243,16 +240,13 @@ public class SideBar extends JComponent
   /**
    * Marks the text with the given offsets.
    */
-  private void fireMarkText ()
+  private final void fireMarkText ()
   {
-    Object listeners[] = this.listenerList.getListenerList ();
-    for ( int i = 0 ; i < listeners.length ; i++ )
+    SideBarListener listeners[] = this.listenerList
+        .getListeners ( SideBarListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      if ( listeners [ i ] == SideBarListener.class )
-      {
-        ( ( SideBarListener ) listeners [ i + 1 ] ).markText (
-            this.currentLeft, this.currentRight );
-      }
+      listeners [ n ].markText ( this.currentLeft, this.currentRight );
     }
   }
 
@@ -261,7 +255,7 @@ public class SideBar extends JComponent
    * {@inheritDoc}
    */
   @Override
-  public Dimension getPreferredSize ()
+  public final Dimension getPreferredSize ()
   {
     return new Dimension ( this.errorIcon.getIconWidth (), getHeight () );
   }
@@ -272,7 +266,7 @@ public class SideBar extends JComponent
    * 
    * @param pMouseEvent The {@link MouseEvent}.
    */
-  public void mouseClicked ( MouseEvent pMouseEvent )
+  public final void mouseClicked ( MouseEvent pMouseEvent )
   {
     if ( this.currentLeft == -1 || this.currentRight == -1 )
     {
@@ -305,7 +299,7 @@ public class SideBar extends JComponent
    * 
    * @param pMouseEvent The {@link MouseEvent}.
    */
-  private void mouseMoved ( MouseEvent pMouseEvent )
+  private final void mouseMoved ( MouseEvent pMouseEvent )
   {
     if ( this.verticalPositions == null )
     {
@@ -336,7 +330,7 @@ public class SideBar extends JComponent
    * {@inheritDoc}
    */
   @Override
-  protected void paintComponent ( Graphics pGraphics )
+  protected final void paintComponent ( Graphics pGraphics )
   {
     if ( this.proppertyChanged )
     {
@@ -381,7 +375,7 @@ public class SideBar extends JComponent
    * 
    * @param pSideBarListener The given {@link SideBarListener}.
    */
-  public void removeSideBarListener ( SideBarListener pSideBarListener )
+  public final void removeSideBarListener ( SideBarListener pSideBarListener )
   {
     this.listenerList.remove ( SideBarListener.class, pSideBarListener );
   }

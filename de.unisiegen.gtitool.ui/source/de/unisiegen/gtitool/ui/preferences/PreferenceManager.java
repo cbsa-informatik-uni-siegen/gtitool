@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 
@@ -204,18 +205,6 @@ public final class PreferenceManager
 
 
   /**
-   * The list of {@link ColorChangedListener}.
-   */
-  private ArrayList < ColorChangedListener > colorChangedListenerList = new ArrayList < ColorChangedListener > ();
-
-
-  /**
-   * The list of {@link LanguageChangedListener}.
-   */
-  private ArrayList < LanguageChangedListener > languageChangedListenerList = new ArrayList < LanguageChangedListener > ();
-
-
-  /**
    * The {@link Preferences} object for the node where the settings are stored
    * and loaded.
    * 
@@ -231,9 +220,9 @@ public final class PreferenceManager
 
 
   /**
-   * The list of {@link ZoomFactorChangedListener}.
+   * The {@link EventListenerList}.
    */
-  private ArrayList < ZoomFactorChangedListener > zoomFactorChangedListenerList = new ArrayList < ZoomFactorChangedListener > ();
+  private final EventListenerList listenerList;
 
 
   /**
@@ -242,6 +231,7 @@ public final class PreferenceManager
   private PreferenceManager ()
   {
     this.preferences = Preferences.userRoot ();
+    this.listenerList = new EventListenerList ();
   }
 
 
@@ -253,7 +243,7 @@ public final class PreferenceManager
   public final synchronized void addColorChangedListener (
       ColorChangedListener pListener )
   {
-    this.colorChangedListenerList.add ( pListener );
+    this.listenerList.add ( ColorChangedListener.class, pListener );
   }
 
 
@@ -265,7 +255,7 @@ public final class PreferenceManager
   public final synchronized void addLanguageChangedListener (
       LanguageChangedListener pListener )
   {
-    this.languageChangedListenerList.add ( pListener );
+    this.listenerList.add ( LanguageChangedListener.class, pListener );
   }
 
 
@@ -277,7 +267,7 @@ public final class PreferenceManager
   public final synchronized void addZoomFactorChangedListener (
       ZoomFactorChangedListener pListener )
   {
-    this.zoomFactorChangedListenerList.add ( pListener );
+    this.listenerList.add ( ZoomFactorChangedListener.class, pListener );
   }
 
 
@@ -289,9 +279,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedActiveState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedActiveState ( pNewColor );
+      listeners [ n ].colorChangedActiveState ( pNewColor );
     }
   }
 
@@ -304,9 +296,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedErrorState ( pNewColor );
+      listeners [ n ].colorChangedErrorState ( pNewColor );
     }
   }
 
@@ -319,9 +313,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorSymbol ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedErrorSymbol ( pNewColor );
+      listeners [ n ].colorChangedErrorSymbol ( pNewColor );
     }
   }
 
@@ -334,9 +330,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorTransition ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedErrorTransition ( pNewColor );
+      listeners [ n ].colorChangedErrorTransition ( pNewColor );
     }
   }
 
@@ -349,9 +347,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserHighlighting ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedParserHighlighting ( pNewColor );
+      listeners [ n ].colorChangedParserHighlighting ( pNewColor );
     }
   }
 
@@ -364,9 +364,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedParserState ( pNewColor );
+      listeners [ n ].colorChangedParserState ( pNewColor );
     }
   }
 
@@ -379,9 +381,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserSymbol ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedParserSymbol ( pNewColor );
+      listeners [ n ].colorChangedParserSymbol ( pNewColor );
     }
   }
 
@@ -393,9 +397,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserWarning ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedParserWarning ( pNewColor );
+      listeners [ n ].colorChangedParserWarning ( pNewColor );
     }
   }
 
@@ -408,9 +414,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedSelectedState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedSelectedState ( pNewColor );
+      listeners [ n ].colorChangedSelectedState ( pNewColor );
     }
   }
 
@@ -423,9 +431,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedStartState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedStartState ( pNewColor );
+      listeners [ n ].colorChangedStartState ( pNewColor );
     }
   }
 
@@ -437,9 +447,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedState ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedState ( pNewColor );
+      listeners [ n ].colorChangedState ( pNewColor );
     }
   }
 
@@ -451,9 +463,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedSymbol ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedSymbol ( pNewColor );
+      listeners [ n ].colorChangedSymbol ( pNewColor );
     }
   }
 
@@ -466,9 +480,11 @@ public final class PreferenceManager
    */
   public final void fireColorChangedTransition ( Color pNewColor )
   {
-    for ( ColorChangedListener current : this.colorChangedListenerList )
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.colorChangedTransition ( pNewColor );
+      listeners [ n ].colorChangedTransition ( pNewColor );
     }
   }
 
@@ -481,9 +497,11 @@ public final class PreferenceManager
   public final void fireLanguageChanged ( Locale pNewLocale )
   {
     Locale.setDefault ( pNewLocale );
-    for ( LanguageChangedListener current : this.languageChangedListenerList )
+    LanguageChangedListener [] listeners = this.listenerList
+        .getListeners ( LanguageChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.languageChanged ();
+      listeners [ n ].languageChanged ();
     }
   }
 
@@ -495,9 +513,11 @@ public final class PreferenceManager
    */
   public final void fireZoomFactorChanged ( ZoomFactorItem pZoomFactor )
   {
-    for ( ZoomFactorChangedListener current : this.zoomFactorChangedListenerList )
+    ZoomFactorChangedListener [] listeners = this.listenerList
+        .getListeners ( ZoomFactorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.zoomFactorChanged ( pZoomFactor );
+      listeners [ n ].zoomFactorChanged ( pZoomFactor );
     }
   }
 
@@ -1064,12 +1084,11 @@ public final class PreferenceManager
    * Removes the given {@link ColorChangedListener}.
    * 
    * @param pListener The {@link ColorChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeColorChangedListener (
+  public final synchronized void removeColorChangedListener (
       ColorChangedListener pListener )
   {
-    return this.colorChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( ColorChangedListener.class, pListener );
   }
 
 
@@ -1077,12 +1096,11 @@ public final class PreferenceManager
    * Removes the given {@link LanguageChangedListener}.
    * 
    * @param pListener The {@link LanguageChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeLanguageChangedListener (
+  public final synchronized void removeLanguageChangedListener (
       LanguageChangedListener pListener )
   {
-    return this.languageChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( LanguageChangedListener.class, pListener );
   }
 
 
@@ -1090,12 +1108,11 @@ public final class PreferenceManager
    * Removes the given {@link ZoomFactorChangedListener}.
    * 
    * @param pListener The {@link ZoomFactorChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeZoomFactorChangedListener (
+  public final synchronized void removeZoomFactorChangedListener (
       ZoomFactorChangedListener pListener )
   {
-    return this.zoomFactorChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( ZoomFactorChangedListener.class, pListener );
   }
 
 

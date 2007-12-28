@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.ui.style;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.parser.transition.TransitionParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -24,12 +22,6 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = -6870722718951231990L;
-
-
-  /**
-   * The list of {@link TransitionChangedListener}.
-   */
-  private ArrayList < TransitionChangedListener > transitionChangedListenerList = new ArrayList < TransitionChangedListener > ();
 
 
   /**
@@ -72,7 +64,7 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   public final synchronized void addTransitionChangedListener (
       TransitionChangedListener pListener )
   {
-    this.transitionChangedListenerList.add ( pListener );
+    this.listenerList.add ( TransitionChangedListener.class, pListener );
   }
 
 
@@ -83,9 +75,11 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    */
   private final void fireTransitionChanged ( Transition pNewTransition )
   {
-    for ( TransitionChangedListener current : this.transitionChangedListenerList )
+    TransitionChangedListener [] listeners = this.listenerList
+        .getListeners ( TransitionChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.transitionChanged ( pNewTransition );
+      listeners [ n ].transitionChanged ( pNewTransition );
     }
   }
 
@@ -113,12 +107,11 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    * Removes the given {@link TransitionChangedListener}.
    * 
    * @param pListener The {@link TransitionChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeTransitionChangedListener (
+  public final synchronized void removeTransitionChangedListener (
       TransitionChangedListener pListener )
   {
-    return this.transitionChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( TransitionChangedListener.class, pListener );
   }
 
 

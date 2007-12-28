@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.ui.style;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -23,12 +21,6 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = 8301131779540090916L;
-
-
-  /**
-   * The list of {@link SymbolChangedListener}.
-   */
-  private ArrayList < SymbolChangedListener > symbolChangedListenerList = new ArrayList < SymbolChangedListener > ();
 
 
   /**
@@ -71,7 +63,7 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
   public final synchronized void addSymbolChangedListener (
       SymbolChangedListener pListener )
   {
-    this.symbolChangedListenerList.add ( pListener );
+    this.listenerList.add ( SymbolChangedListener.class, pListener );
   }
 
 
@@ -82,9 +74,11 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
    */
   private final void fireSymbolChanged ( Symbol pNewSymbol )
   {
-    for ( SymbolChangedListener current : this.symbolChangedListenerList )
+    SymbolChangedListener [] listeners = this.listenerList
+        .getListeners ( SymbolChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.symbolChanged ( pNewSymbol );
+      listeners [ n ].symbolChanged ( pNewSymbol );
     }
   }
 
@@ -112,12 +106,11 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
    * Removes the given {@link SymbolChangedListener}.
    * 
    * @param pListener The {@link SymbolChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeSymbolChangedListener (
+  public final synchronized void removeSymbolChangedListener (
       SymbolChangedListener pListener )
   {
-    return this.symbolChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( SymbolChangedListener.class, pListener );
   }
 
 

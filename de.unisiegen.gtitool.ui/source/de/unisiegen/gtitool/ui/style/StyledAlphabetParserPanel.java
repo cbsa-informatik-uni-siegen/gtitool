@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.ui.style;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
@@ -23,12 +21,6 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = -6870722718951231990L;
-
-
-  /**
-   * The list of {@link AlphabetChangedListener}.
-   */
-  private ArrayList < AlphabetChangedListener > alphabetChangedListenerList = new ArrayList < AlphabetChangedListener > ();
 
 
   /**
@@ -71,7 +63,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public final synchronized void addAlphabetChangedListener (
       AlphabetChangedListener pListener )
   {
-    this.alphabetChangedListenerList.add ( pListener );
+    this.listenerList.add ( AlphabetChangedListener.class, pListener );
   }
 
 
@@ -82,9 +74,11 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    */
   private final void fireAlphabetChanged ( Alphabet pNewAlphabet )
   {
-    for ( AlphabetChangedListener current : this.alphabetChangedListenerList )
+    AlphabetChangedListener [] listeners = this.listenerList
+        .getListeners ( AlphabetChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.alphabetChanged ( pNewAlphabet );
+      listeners [ n ].alphabetChanged ( pNewAlphabet );
     }
   }
 
@@ -112,12 +106,11 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    * Removes the given {@link AlphabetChangedListener}.
    * 
    * @param pListener The {@link AlphabetChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeAlphabetChangedListener (
+  public final synchronized void removeAlphabetChangedListener (
       AlphabetChangedListener pListener )
   {
-    return this.alphabetChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( AlphabetChangedListener.class, pListener );
   }
 
 

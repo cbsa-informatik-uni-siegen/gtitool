@@ -62,12 +62,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The list of {@link ParseableChangedListener}.
-   */
-  private ArrayList < ParseableChangedListener > parseableChangedListenerList = new ArrayList < ParseableChangedListener > ();
-
-
-  /**
    * The {@link Parseable} for which this document was allocated.
    */
   private Parseable parseable;
@@ -91,12 +85,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * The attributes for the various {@link Style}s.
    */
   private HashMap < Style, SimpleAttributeSet > attributes = new HashMap < Style, SimpleAttributeSet > ();
-
-
-  /**
-   * The list of {@link ExceptionsChangedListener}.
-   */
-  private ArrayList < ExceptionsChangedListener > exceptionsChangedListenerList = new ArrayList < ExceptionsChangedListener > ();
 
 
   /**
@@ -215,7 +203,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   public final synchronized void addExceptionsChangedListener (
       ExceptionsChangedListener pListener )
   {
-    this.exceptionsChangedListenerList.add ( pListener );
+    this.listenerList.add ( ExceptionsChangedListener.class, pListener );
   }
 
 
@@ -227,7 +215,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   public final synchronized void addParseableChangedListener (
       ParseableChangedListener pListener )
   {
-    this.parseableChangedListenerList.add ( pListener );
+    this.listenerList.add ( ParseableChangedListener.class, pListener );
   }
 
 
@@ -236,9 +224,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final void fireExceptionsChanged ()
   {
-    for ( ExceptionsChangedListener current : this.exceptionsChangedListenerList )
+    ExceptionsChangedListener [] listeners = this.listenerList
+        .getListeners ( ExceptionsChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.exceptionsChanged ();
+      listeners [ n ].exceptionsChanged ();
     }
   }
 
@@ -250,9 +240,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final void fireParseableChanged ( Object pNewObject )
   {
-    for ( ParseableChangedListener current : this.parseableChangedListenerList )
+    ParseableChangedListener [] listeners = this.listenerList
+        .getListeners ( ParseableChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      current.parseableChanged ( pNewObject );
+      listeners [ n ].parseableChanged ( pNewObject );
     }
   }
 
@@ -570,12 +562,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * Removes the given {@link ExceptionsChangedListener}.
    * 
    * @param pListener The {@link ExceptionsChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeExceptionsChangedListener (
+  public final synchronized void removeExceptionsChangedListener (
       ExceptionsChangedListener pListener )
   {
-    return this.exceptionsChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( ExceptionsChangedListener.class, pListener );
   }
 
 
@@ -583,12 +574,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * Removes the given {@link ParseableChangedListener}.
    * 
    * @param pListener The {@link ParseableChangedListener}.
-   * @return <tt>true</tt> if the list contained the specified element.
    */
-  public final synchronized boolean removeParseableChangedListener (
+  public final synchronized void removeParseableChangedListener (
       ParseableChangedListener pListener )
   {
-    return this.parseableChangedListenerList.remove ( pListener );
+    this.listenerList.remove ( ParseableChangedListener.class, pListener );
   }
 
 

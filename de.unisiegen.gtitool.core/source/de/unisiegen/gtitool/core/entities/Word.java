@@ -12,7 +12,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -67,12 +66,6 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList;
-
-
-  /**
    * Allocates a new <code>Word</code>.
    */
   public Word ()
@@ -100,20 +93,17 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
           + "\" is not a word" ); //$NON-NLS-1$
     }
 
-    // WarningList
-    this.warningList = new ArrayList < StoreWarningException > ();
-
     // Element
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
-        addSymbol ( new Symbol ( current ) );
+        add ( new Symbol ( current ) );
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
 
@@ -140,8 +130,8 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
@@ -168,7 +158,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -185,7 +175,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -195,7 +185,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public final void addSymbol ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -203,7 +193,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     }
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -213,7 +203,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * 
    * @param pSymbol The {@link Symbol} to be appended to this <code>Word</code>.
    */
-  public final void addSymbol ( Symbol pSymbol )
+  public final void add ( Symbol pSymbol )
   {
     // Symbol
     if ( pSymbol == null )
@@ -230,7 +220,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public final void addSymbol ( Symbol ... pSymbols )
+  public final void add ( Symbol ... pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -238,7 +228,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     }
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -255,7 +245,7 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
     for ( Symbol current : this.symbolList )
     {
 
-      newWord.addSymbol ( current.clone () );
+      newWord.add ( current.clone () );
 
     }
     return newWord;
@@ -276,6 +266,30 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
       return this.symbolList.equals ( other.symbolList );
     }
     return false;
+  }
+
+
+  /**
+   * Returns the {@link Symbol}s.
+   * 
+   * @return The {@link Symbol}s.
+   */
+  public final ArrayList < Symbol > get ()
+  {
+    return this.symbolList;
+  }
+
+
+  /**
+   * Returns the {@link Symbol} with the given index.
+   * 
+   * @param pIndex The index.
+   * @return The {@link Symbol} with the given index.
+   * @see #symbolList
+   */
+  public final Symbol get ( int pIndex )
+  {
+    return this.symbolList.get ( pIndex );
   }
 
 
@@ -352,52 +366,6 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
-  }
-
-
-  /**
-   * Returns the {@link Symbol} with the given index.
-   * 
-   * @param pIndex The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolList
-   */
-  public final Symbol getSymbol ( int pIndex )
-  {
-    return this.symbolList.get ( pIndex );
-  }
-
-
-  /**
-   * Returns the {@link Symbol}s.
-   * 
-   * @return The {@link Symbol}s.
-   */
-  public final ArrayList < Symbol > getSymbols ()
-  {
-    return this.symbolList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning()
-   */
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    return this.warningList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning(int)
-   */
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    return this.warningList.get ( pIndex );
   }
 
 
@@ -530,22 +498,22 @@ public class Word implements ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
+   * Returns the number of {@link Symbol}s in this <code>Word</code>.
+   * 
+   * @return The number of {@link Symbol}s in this <code>Word</code>.
+   */
+  public final int size ()
+  {
+    return this.symbolList.size ();
+  }
+
+
+  /**
    * Resets the current position of this <code>Word</code>.
    */
   public final void start ()
   {
     this.currentPosition = START_INDEX;
-  }
-
-
-  /**
-   * Returns the number of {@link Symbol}s in this <code>Word</code>.
-   * 
-   * @return The number of {@link Symbol}s in this <code>Word</code>.
-   */
-  public final int symbolSize ()
-  {
-    return this.symbolList.size ();
   }
 
 

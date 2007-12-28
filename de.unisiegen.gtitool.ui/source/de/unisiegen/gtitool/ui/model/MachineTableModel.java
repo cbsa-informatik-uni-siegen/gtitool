@@ -56,7 +56,7 @@ public class MachineTableModel extends AbstractTableModel
    */
   public int getColumnCount ()
   {
-    return this.alphabet.symbolSize () + 1;
+    return this.alphabet.size () + 1;
   }
 
 
@@ -144,8 +144,8 @@ public class MachineTableModel extends AbstractTableModel
    *
    */
   private void initialize(){
-    for ( int i = 0 ; i < this.alphabet.symbolSize () ; i++ ) {
-      this.symbols.put(this.alphabet.getSymbol ( i ), new Integer ( i ) ) ;
+    for ( int i = 0 ; i < this.alphabet.size () ; i++ ) {
+      this.symbols.put(this.alphabet.get ( i ), new Integer ( i ) ) ;
     }
   }
 

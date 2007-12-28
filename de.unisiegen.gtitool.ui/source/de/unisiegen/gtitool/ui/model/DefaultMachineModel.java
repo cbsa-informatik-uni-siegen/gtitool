@@ -25,7 +25,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
@@ -66,12 +65,6 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList;
-
-
-  /**
    * Allocate a new {@link DefaultMachineModel}
    * 
    * @param pMachine The {@link Machine}
@@ -105,6 +98,15 @@ public class DefaultMachineModel implements Storable
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a DefaultMachineModel" ); //$NON-NLS-1$
     }
+
+    // Attribute
+    if ( pElement.getAttribute ().size () > 0 )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
+    }
+
+    // Element
     Alphabet alphabet = null;
     boolean foundAlphabet = false;
     for ( Element current : pElement.getElement () )
@@ -114,11 +116,18 @@ public class DefaultMachineModel implements Storable
         alphabet = new Alphabet ( current );
         foundAlphabet = true;
       }
+      else if ( ( !current.getName ().equals ( "DefaultStateView" ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "DefaultTransitionView" ) ) ) //$NON-NLS-1$
+      {
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+      }
     }
     if ( !foundAlphabet )
+    {
       throw new StoreException ( Messages
-          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-
+          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
+    }
     // initialize this models elements
     this.machine = new DFA ( alphabet );
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
@@ -146,14 +155,22 @@ public class DefaultMachineModel implements Storable
           }
         }
         if ( ! ( xValueLoaded && yValueLoaded ) )
+        {
           throw new StoreException ( Messages
               .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+        }
         for ( Element element : current.getElement () )
         {
           if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
             state = new State ( element );
         }
         createStateView ( x + 35, y + 35, state );
+      }
+      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "DefaultTransitionView" ) ) ) //$NON-NLS-1$
+      {
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
 
@@ -167,6 +184,12 @@ public class DefaultMachineModel implements Storable
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
         createTransitionView ( transition, source, target );
+      }
+      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "DefaultStateView" ) ) ) //$NON-NLS-1$
+      {
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
   }
@@ -238,10 +261,10 @@ public class DefaultMachineModel implements Storable
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
     DefaultStateView stateView = new DefaultStateView ( pState, pState
         .getName () );
-    
+
     // check position of the new state
-    double xPosition = x < 35 ? 35 : x ;
-    double yPostition = y < 35 ? 35 : y ;
+    double xPosition = x < 35 ? 35 : x;
+    double yPostition = y < 35 ? 35 : y;
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
@@ -355,20 +378,6 @@ public class DefaultMachineModel implements Storable
   }
 
 
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO implement me
-    return null;
-  }
-
-
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    // TODO implement me
-    return null;
-  }
-
-
   /**
    * Initialize this JGraph
    */
@@ -413,10 +422,10 @@ public class DefaultMachineModel implements Storable
     EdgeView.renderer.setForeground ( Color.magenta );
   }
 
+
   /**
-   * 
    * Getter for the {@link DefaultGraphModel}
-   *
+   * 
    * @return the {@link DefaultGraphModel}
    */
   public DefaultGraphModel getGraphModel ()
@@ -424,10 +433,10 @@ public class DefaultMachineModel implements Storable
     return this.graphModel;
   }
 
+
   /**
-   * 
    * Getter for the {@link JGraph}
-   *
+   * 
    * @return the {@link JGraph}
    */
   public JGraph getJGraph ()
@@ -435,10 +444,10 @@ public class DefaultMachineModel implements Storable
     return this.jGraph;
   }
 
+
   /**
-   * 
    * Remove a state
-   *
+   * 
    * @param state that should be removed
    */
   public void removeState ( DefaultStateView state )
@@ -449,32 +458,34 @@ public class DefaultMachineModel implements Storable
 
   }
 
+
   /**
-   * 
    * Remove a transition
-   *
+   * 
    * @param transition that should be removed
    */
   public void removeTransition ( DefaultTransitionView transition )
   {
-    this.graphModel.remove ( new Object [] { transition } );
+    this.graphModel.remove ( new Object []
+    { transition } );
     this.machine.removeTransition ( transition.getTransition () );
     this.tableModel.removeTransition ( transition.getTransition () );
 
   }
 
+
   /**
-   * 
    * Update data for transition
-   *
+   * 
    * @param oldTransition the old transition object
    * @param transition the new transition object
    */
-  public void transitionChanged ( Transition oldTransition, Transition transition )
+  public void transitionChanged ( Transition oldTransition,
+      Transition transition )
   {
     this.tableModel.removeTransition ( oldTransition );
     this.tableModel.addTransition ( transition );
-    
+
   }
 
 }

@@ -40,7 +40,7 @@ public class WordPanelFormTest
               if ( pNewWord != null )
               {
                 wordPanelForm.styledWordParserPanel
-                    .setHighlightedParseableEntity ( pNewWord.getSymbol ( 0 ) );
+                    .setHighlightedParseableEntity ( pNewWord.get ( 0 ) );
               }
             }
           } );

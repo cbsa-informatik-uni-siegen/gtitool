@@ -15,7 +15,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -101,12 +100,6 @@ public final class Transition implements ParseableEntity, Storable,
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList = new ArrayList < StoreWarningException > ();
-
-
-  /**
    * Allocates a new <code>Transition</code>.
    */
   public Transition ()
@@ -146,7 +139,7 @@ public final class Transition implements ParseableEntity, Storable,
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -180,7 +173,7 @@ public final class Transition implements ParseableEntity, Storable,
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -213,9 +206,6 @@ public final class Transition implements ParseableEntity, Storable,
     // Symbols
     this.symbolSet = new TreeSet < Symbol > ();
 
-    // WarningList
-    this.warningList = new ArrayList < StoreWarningException > ();
-
     // Attribute
     boolean foundId = false;
     boolean foundStateBeginId = false;
@@ -239,8 +229,8 @@ public final class Transition implements ParseableEntity, Storable,
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
@@ -262,12 +252,12 @@ public final class Transition implements ParseableEntity, Storable,
       }
       else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
-        addSymbol ( new Symbol ( current ) );
+        add ( new Symbol ( current ) );
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
 
@@ -299,7 +289,7 @@ public final class Transition implements ParseableEntity, Storable,
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -322,7 +312,7 @@ public final class Transition implements ParseableEntity, Storable,
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -337,7 +327,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void addSymbol ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -347,7 +337,7 @@ public final class Transition implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -363,7 +353,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void addSymbol ( Symbol pSymbol )
+  public final void add ( Symbol pSymbol )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -403,7 +393,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void addSymbol ( Symbol ... pSymbols )
+  public final void add ( Symbol ... pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -413,7 +403,7 @@ public final class Transition implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -433,7 +423,7 @@ public final class Transition implements ParseableEntity, Storable,
           this.stateEnd );
       for ( Symbol current : this.symbolSet )
       {
-        newTransition.addSymbol ( current.clone () );
+        newTransition.add ( current.clone () );
       }
     }
     catch ( TransitionException exc )
@@ -637,28 +627,6 @@ public final class Transition implements ParseableEntity, Storable,
   /**
    * {@inheritDoc}
    * 
-   * @see Storable#getWarning()
-   */
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    return this.warningList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning(int)
-   */
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    return this.warningList.get ( pIndex );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Object#hashCode()
    */
   @Override
@@ -716,7 +684,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void removeSymbol ( Iterable < Symbol > pSymbols )
+  public final void remove ( Iterable < Symbol > pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -724,7 +692,7 @@ public final class Transition implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      removeSymbol ( current );
+      remove ( current );
     }
   }
 
@@ -734,7 +702,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbol The {@link Symbol} to remove.
    */
-  public final void removeSymbol ( Symbol pSymbol )
+  public final void remove ( Symbol pSymbol )
   {
     if ( !this.symbolSet.contains ( pSymbol ) )
     {
@@ -749,7 +717,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void removeSymbol ( Symbol ... pSymbols )
+  public final void remove ( Symbol ... pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -757,7 +725,7 @@ public final class Transition implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      removeSymbol ( current );
+      remove ( current );
     }
   }
 
@@ -870,6 +838,17 @@ public final class Transition implements ParseableEntity, Storable,
           "can not set the id if there is a state" ); //$NON-NLS-1$
     }
     this.stateEndId = pStateEndId;
+  }
+
+
+  /**
+   * Returns the number of {@link Symbol}s in this <code>Transition</code>.
+   * 
+   * @return The number of {@link Symbol}s in this <code>Transition</code>.
+   */
+  public final int size ()
+  {
+    return this.symbolSet.size ();
   }
 
 

@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -11,7 +9,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -55,12 +52,6 @@ public final class Symbol implements ParseableEntity, Storable,
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList;
-
-
-  /**
    * Allocates a new <code>Symbol</code>.
    * 
    * @param pElement The {@link Element}.
@@ -76,9 +67,6 @@ public final class Symbol implements ParseableEntity, Storable,
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a symbol" ); //$NON-NLS-1$
     }
-
-    // WarningList
-    this.warningList = new ArrayList < StoreWarningException > ();
 
     // Attribute
     boolean foundName = false;
@@ -103,8 +91,8 @@ public final class Symbol implements ParseableEntity, Storable,
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
@@ -119,8 +107,8 @@ public final class Symbol implements ParseableEntity, Storable,
     // Element
     if ( pElement.getElement ().size () > 0 )
     {
-      this.warningList.add ( new StoreWarningException ( Messages
-          .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
+      throw new StoreException ( Messages
+          .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
     }
   }
 
@@ -232,28 +220,6 @@ public final class Symbol implements ParseableEntity, Storable,
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning()
-   */
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    return this.warningList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning(int)
-   */
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    return this.warningList.get ( pIndex );
   }
 
 

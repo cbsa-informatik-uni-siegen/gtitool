@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -57,12 +56,6 @@ public final class Alphabet implements ParseableEntity, Storable,
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList;
-
-
-  /**
    * Allocates a new <code>Alphabet</code>.
    */
   public Alphabet ()
@@ -93,9 +86,6 @@ public final class Alphabet implements ParseableEntity, Storable,
           + "\" is not a alphabet" ); //$NON-NLS-1$
     }
 
-    // WarningList
-    this.warningList = new ArrayList < StoreWarningException > ();
-
     // Attribute
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
@@ -113,8 +103,8 @@ public final class Alphabet implements ParseableEntity, Storable,
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
@@ -130,12 +120,12 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
-        addSymbol ( new Symbol ( current ) );
+        add ( new Symbol ( current ) );
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
   }
@@ -156,7 +146,7 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -175,7 +165,7 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    addSymbol ( pSymbols );
+    add ( pSymbols );
   }
 
 
@@ -188,7 +178,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public final void addSymbol ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > pSymbols )
       throws AlphabetException
   {
     if ( pSymbols == null )
@@ -200,10 +190,10 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       symbolList.add ( current );
     }
-    checkDuplicatedSymbols ( symbolList );
+    checkDuplicated ( symbolList );
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -217,7 +207,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public final void addSymbol ( Symbol pSymbol ) throws AlphabetException
+  public final void add ( Symbol pSymbol ) throws AlphabetException
   {
     // Symbol
     if ( pSymbol == null )
@@ -254,7 +244,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public final void addSymbol ( Symbol ... pSymbols ) throws AlphabetException
+  public final void add ( Symbol ... pSymbols ) throws AlphabetException
   {
     if ( pSymbols == null )
     {
@@ -265,10 +255,10 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       symbolList.add ( current );
     }
-    checkDuplicatedSymbols ( symbolList );
+    checkDuplicated ( symbolList );
     for ( Symbol current : pSymbols )
     {
-      addSymbol ( current );
+      add ( current );
     }
   }
 
@@ -279,7 +269,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * @param pSymbolList The {@link Symbol} list.
    * @throws AlphabetException If a {@link Symbol} is duplicated.
    */
-  private final void checkDuplicatedSymbols ( ArrayList < Symbol > pSymbolList )
+  private final void checkDuplicated ( ArrayList < Symbol > pSymbolList )
       throws AlphabetException
   {
     Symbol duplicated = null;
@@ -322,7 +312,7 @@ public final class Alphabet implements ParseableEntity, Storable,
     {
       try
       {
-        newAlphabet.addSymbol ( current.clone () );
+        newAlphabet.add ( current.clone () );
       }
       catch ( AlphabetException e )
       {
@@ -367,6 +357,35 @@ public final class Alphabet implements ParseableEntity, Storable,
 
 
   /**
+   * Returns the {@link Symbol}s.
+   * 
+   * @return The {@link Symbol}s.
+   */
+  public final TreeSet < Symbol > get ()
+  {
+    return this.symbolSet;
+  }
+
+
+  /**
+   * Returns the {@link Symbol} with the given index.
+   * 
+   * @param pIndex The index.
+   * @return The {@link Symbol} with the given index.
+   * @see #symbolSet
+   */
+  public final Symbol get ( int pIndex )
+  {
+    Iterator < Symbol > iterator = this.symbolSet.iterator ();
+    for ( int i = 0 ; i < pIndex ; i++ )
+    {
+      iterator.next ();
+    }
+    return iterator.next ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Storable#getElement()
@@ -405,57 +424,6 @@ public final class Alphabet implements ParseableEntity, Storable,
 
 
   /**
-   * Returns the {@link Symbol}s.
-   * 
-   * @return The {@link Symbol}s.
-   */
-  public final TreeSet < Symbol > getSymbol ()
-  {
-    return this.symbolSet;
-  }
-
-
-  /**
-   * Returns the {@link Symbol} with the given index.
-   * 
-   * @param pIndex The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolSet
-   */
-  public final Symbol getSymbol ( int pIndex )
-  {
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning()
-   */
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    return this.warningList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning(int)
-   */
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    return this.warningList.get ( pIndex );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Entity#hashCode()
@@ -483,7 +451,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void removeSymbol ( Iterable < Symbol > pSymbols )
+  public final void remove ( Iterable < Symbol > pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -491,7 +459,7 @@ public final class Alphabet implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      removeSymbol ( current );
+      remove ( current );
     }
   }
 
@@ -501,8 +469,12 @@ public final class Alphabet implements ParseableEntity, Storable,
    * 
    * @param pSymbol The {@link Symbol} to remove.
    */
-  public final void removeSymbol ( Symbol pSymbol )
+  public final void remove ( Symbol pSymbol )
   {
+    if ( pSymbol == null )
+    {
+      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+    }
     if ( !this.symbolSet.contains ( pSymbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
@@ -516,7 +488,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void removeSymbol ( Symbol ... pSymbols )
+  public final void remove ( Symbol ... pSymbols )
   {
     if ( pSymbols == null )
     {
@@ -524,7 +496,7 @@ public final class Alphabet implements ParseableEntity, Storable,
     }
     for ( Symbol current : pSymbols )
     {
-      removeSymbol ( current );
+      remove ( current );
     }
   }
 
@@ -552,7 +524,7 @@ public final class Alphabet implements ParseableEntity, Storable,
    * 
    * @return The number of {@link Symbol}s in this <code>Alphabet</code>.
    */
-  public final int symbolSize ()
+  public final int size ()
   {
     return this.symbolSet.size ();
   }

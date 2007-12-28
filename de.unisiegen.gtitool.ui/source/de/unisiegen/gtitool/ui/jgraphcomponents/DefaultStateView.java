@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -101,19 +100,4 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
     newElement.addElement ( this.state.getElement () );
     return newElement;
   }
-
-
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    // TODO implement me
-    return null;
-  }
-
-
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    // TODO implement me
-    return null;
-  }
-
 }

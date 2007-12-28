@@ -1027,7 +1027,7 @@ public abstract class Machine implements Serializable
     {
       throw new IllegalArgumentException ( "symbol is not removeable" ); //$NON-NLS-1$
     }
-    this.alphabet.removeSymbol ( pSymbol );
+    this.alphabet.remove ( pSymbol );
   }
 
 

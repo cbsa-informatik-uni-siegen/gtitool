@@ -186,8 +186,8 @@ public final class AlphabetDialog
     }
     try
     {
-      this.alphabet.addSymbol ( symbolsToAdd );
-      this.alphabet.removeSymbol ( symbolsToRemove );
+      this.alphabet.add ( symbolsToAdd );
+      this.alphabet.remove ( symbolsToRemove );
     }
     catch ( AlphabetException exc )
     {

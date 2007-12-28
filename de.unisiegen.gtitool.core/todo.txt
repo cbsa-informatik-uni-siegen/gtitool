@@ -2,4 +2,5 @@
 
 
 *** Christian ***
-- SM: Stack implementieren
+- SM: Stack und Kelleralphabet implementieren
+- Storage Warning entfernen

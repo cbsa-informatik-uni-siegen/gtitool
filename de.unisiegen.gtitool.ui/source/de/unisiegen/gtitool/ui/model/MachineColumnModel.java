@@ -33,10 +33,10 @@ public class MachineColumnModel extends DefaultTableColumnModel
     column.setHeaderValue ( " " ); 
     this.addColumn ( column );
 
-    for ( int i = 0 ; i < alphabet.symbolSize () ; i++ )
+    for ( int i = 0 ; i < alphabet.size () ; i++ )
     {
       column = new TableColumn ( i + 1 );
-      column.setHeaderValue ( alphabet.getSymbol ( i ).toString () ); 
+      column.setHeaderValue ( alphabet.get ( i ).toString () ); 
       this.addColumn ( column );
     }
   }

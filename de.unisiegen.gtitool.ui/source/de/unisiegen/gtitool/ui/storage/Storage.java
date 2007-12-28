@@ -149,8 +149,10 @@ public final class Storage
       {
         return new Transition ( element );
       }
-      else if ( element.getName ().equals ( "DefaultMachineModel") ) //$NON-NLS-1$
+      else if ( element.getName ().equals ( "DefaultMachineModel" ) ) //$NON-NLS-1$
+      {
         return new DefaultMachineModel ( element );
+      }
     }
     catch ( StoreException exc )
     {

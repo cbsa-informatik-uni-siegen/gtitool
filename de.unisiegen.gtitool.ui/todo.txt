@@ -28,7 +28,8 @@
 
 
 *** Christian ***
+- SM: Stack und Kelleralphabet implementieren
 - Console: Automatische Fehlerkorrektur
-- Meldung über Fehler und Warnungen anzeigen
-- Zustand highlighten mit Timer
-- Konsole und Tabelle nur auf ein Panel beschränken
+- Meldung über Fehler und Warnungen anzeigen und Console einblenden
+- Zustand in der Tabelle highlighten mit Timer
+- Konsole und Tabelle nur auf ein MachinePanel beschränken

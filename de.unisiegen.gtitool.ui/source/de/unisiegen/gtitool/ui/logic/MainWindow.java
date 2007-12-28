@@ -280,6 +280,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     catch ( StoreException e )
     {
+      e.printStackTrace ();
       JOptionPane.showMessageDialog ( this.gui, e.getMessage (), Messages
           .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
 

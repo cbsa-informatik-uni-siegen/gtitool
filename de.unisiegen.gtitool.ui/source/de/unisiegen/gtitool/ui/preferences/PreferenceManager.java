@@ -1125,14 +1125,14 @@ public final class PreferenceManager
   {
     logger
         .debug ( "set the alphabet to \"" + pAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$//$NON-NLS-2$
-    for ( int i = 0 ; i < pAlphabetItem.getAlphabet ().symbolSize () ; i++ )
+    for ( int i = 0 ; i < pAlphabetItem.getAlphabet ().size () ; i++ )
     {
       this.preferences.put (
-          "DefaultAlphabet" + i, pAlphabetItem.getAlphabet ().getSymbol ( i ) //$NON-NLS-1$
+          "DefaultAlphabet" + i, pAlphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
     }
     this.preferences.putInt ( "DefaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
-        .getAlphabet ().symbolSize () );
+        .getAlphabet ().size () );
   }
 
 

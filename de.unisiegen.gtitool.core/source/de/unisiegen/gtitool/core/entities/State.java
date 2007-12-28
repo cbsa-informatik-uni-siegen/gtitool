@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreWarningException;
 
 
 /**
@@ -117,12 +116,6 @@ public final class State implements ParseableEntity, Storable,
 
 
   /**
-   * The warning list.
-   */
-  private ArrayList < StoreWarningException > warningList;
-
-
-  /**
    * Allocates a new <code>State</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>State</code>.
@@ -184,9 +177,6 @@ public final class State implements ParseableEntity, Storable,
           + "\" is not a state" ); //$NON-NLS-1$
     }
 
-    // WarningList
-    this.warningList = new ArrayList < StoreWarningException > ();
-
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
@@ -238,8 +228,8 @@ public final class State implements ParseableEntity, Storable,
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
@@ -274,8 +264,8 @@ public final class State implements ParseableEntity, Storable,
           }
           else
           {
-            this.warningList.add ( new StoreWarningException ( Messages
-                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+            throw new StoreException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
           }
         }
 
@@ -299,8 +289,8 @@ public final class State implements ParseableEntity, Storable,
           }
           else
           {
-            this.warningList.add ( new StoreWarningException ( Messages
-                .getString ( "StoreException.AdditionalAttribute" ) ) ); //$NON-NLS-1$
+            throw new StoreException ( Messages
+                .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
           }
         }
 
@@ -313,8 +303,8 @@ public final class State implements ParseableEntity, Storable,
       }
       else
       {
-        this.warningList.add ( new StoreWarningException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ) ); //$NON-NLS-1$
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
 
@@ -647,28 +637,6 @@ public final class State implements ParseableEntity, Storable,
   public final int getTransitionEndId ( int pIndex )
   {
     return this.transitionEndIdList.get ( pIndex ).intValue ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning()
-   */
-  public ArrayList < StoreWarningException > getWarning ()
-  {
-    return this.warningList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getWarning(int)
-   */
-  public StoreWarningException getWarning ( int pIndex )
-  {
-    return this.warningList.get ( pIndex );
   }
 
 

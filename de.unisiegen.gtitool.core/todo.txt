@@ -2,5 +2,4 @@
 
 
 *** Christian ***
-- ENFA: Epsilon Übergang
 - SM: Stack implementieren

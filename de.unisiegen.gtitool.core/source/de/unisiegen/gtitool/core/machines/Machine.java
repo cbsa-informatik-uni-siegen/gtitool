@@ -690,7 +690,7 @@ public abstract class Machine implements Serializable
    */
   public final boolean isReseted ()
   {
-    return this.word.isReseted ();
+    return this.word.isReseted () && this.history.isEmpty ();
   }
 
 
@@ -839,20 +839,53 @@ public abstract class Machine implements Serializable
       throw new IllegalArgumentException (
           "no active state: machine must be started first" ); //$NON-NLS-1$
     }
-    Symbol symbol = this.word.nextSymbol ();
-    ArrayList < Transition > transitions = new ArrayList < Transition > ();
-    TreeSet < State > newActiveStateSet = new TreeSet < State > ();
-    for ( State activeState : getActiveState () )
+    // Check for epsilon transitions
+    boolean epsilonTransitionFound = false;
+    stateLoop : for ( State activeState : getActiveState () )
     {
       for ( Transition current : activeState.getTransitionBegin () )
       {
-        if ( current.contains ( symbol ) )
+        if ( current.isEpsilonTransition () )
         {
-          newActiveStateSet.add ( current.getStateEnd () );
-          transitions.add ( current );
+          epsilonTransitionFound = true;
+          break stateLoop;
         }
       }
     }
+    ArrayList < Transition > transitions = new ArrayList < Transition > ();
+    TreeSet < State > newActiveStateSet = new TreeSet < State > ();
+    // Epsilon transition found
+    if ( epsilonTransitionFound )
+    {
+      for ( State activeState : getActiveState () )
+      {
+        for ( Transition current : activeState.getTransitionBegin () )
+        {
+          if ( current.isEpsilonTransition () )
+          {
+            newActiveStateSet.add ( current.getStateEnd () );
+            transitions.add ( current );
+          }
+        }
+      }
+    }
+    // No epsilon transition found
+    else
+    {
+      Symbol symbol = this.word.nextSymbol ();
+      for ( State activeState : getActiveState () )
+      {
+        for ( Transition current : activeState.getTransitionBegin () )
+        {
+          if ( current.contains ( symbol ) )
+          {
+            newActiveStateSet.add ( current.getStateEnd () );
+            transitions.add ( current );
+          }
+        }
+      }
+    }
+    // Set sctive state set
     this.activeStateSet.clear ();
     this.activeStateSet.addAll ( newActiveStateSet );
     // No transition is found
@@ -883,8 +916,23 @@ public abstract class Machine implements Serializable
       throw new IllegalArgumentException (
           "no active state: machine must be started first" ); //$NON-NLS-1$
     }
-    this.word.previousSymbol ();
     ArrayList < Transition > transitions = removeHistory ();
+    // Check for epsilon transitions
+    boolean epsilonTransitionFound = false;
+    transitionLoop : for ( Transition current : transitions )
+    {
+      if ( current.isEpsilonTransition () )
+      {
+        epsilonTransitionFound = true;
+        break transitionLoop;
+      }
+    }
+    // No epsilon transition found
+    if ( !epsilonTransitionFound )
+    {
+      this.word.previousSymbol ();
+    }
+    // Set sctive state set
     this.activeStateSet.clear ();
     for ( Transition current : transitions )
     {

@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.machines.sm;
+package de.unisiegen.gtitool.core.machines.pda;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -6,26 +6,26 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The class for <code>SM</code> machines.
+ * The class for <code>PDA</code> machines.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class SM extends Machine
+public final class PDA extends Machine
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 6284801477317314839L;
+  private static final long serialVersionUID = 5236169999605256506L;
 
 
   /**
-   * Allocates a new <code>SM</code>.
+   * Allocates a new <code>PDA</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>SM</code>.
+   * @param pAlphabet The {@link Alphabet} of this <code>PDA</code>.
    */
-  public SM ( Alphabet pAlphabet )
+  public PDA ( Alphabet pAlphabet )
   {
     super ( pAlphabet, ValidationElement.ALL_SYMBOLS,
         ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,

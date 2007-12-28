@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.machines.sm;
+package de.unisiegen.gtitool.core.machines.pda;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -15,14 +15,14 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
 
 
 /**
- * The test class of the {@link SM}.
+ * The test class of the {@link PDA}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings (
 { "all" } )
-public class SMTest extends MachineTest
+public class PDATest extends MachineTest
 {
 
   private static Symbol a = null;
@@ -135,7 +135,7 @@ public class SMTest extends MachineTest
   {
     initEntities ();
 
-    SM machine = new SM ( alphabet );
+    PDA machine = new PDA ( alphabet );
     machine.addState ( z0, z1, z2 );
     machine.addTransition ( t0, t1, t2, t3, t4 );
 

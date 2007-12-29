@@ -7,6 +7,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -45,6 +46,8 @@ public final class MainWindow implements LanguageChangedListener
    * The {@link MainWindowForm}.
    */
   private MainWindowForm gui;
+  
+  private boolean saveConsolePreferences = true ;
 
 
   /**
@@ -81,11 +84,8 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuRecentlyUsed.setEnabled ( false );
 
     // Toolbar items
-    this.gui.jButtonAddState.setEnabled ( false );
-    this.gui.jButtonAddTransition.setEnabled ( false );
-    this.gui.jButtonFinalState.setEnabled ( false );
-    this.gui.jButtonMouse.setEnabled ( false );
-    this.gui.jButtonStartState.setEnabled ( false );
+    setToolBarEditItemState ( false );
+    setToolBarEnterWordItemState ( false );
 
     // Console and table visibility
     this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
@@ -101,6 +101,26 @@ public final class MainWindow implements LanguageChangedListener
     }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
+  }
+
+
+  private void setToolBarEditItemState ( boolean state )
+  {
+    this.gui.jButtonAddState.setEnabled ( state );
+    this.gui.jButtonAddTransition.setEnabled ( state );
+    this.gui.jButtonFinalState.setEnabled ( state );
+    this.gui.jButtonMouse.setEnabled ( state );
+    this.gui.jButtonStartState.setEnabled ( state );
+  }
+
+
+  private void setToolBarEnterWordItemState ( boolean state )
+  {
+    this.gui.jButtonPrevious.setEnabled ( state );
+    this.gui.jButtonStart.setEnabled ( state );
+    this.gui.jButtonNextStep.setEnabled ( state );
+    this.gui.jButtonAutoStep.setEnabled ( state );
+    this.gui.jButtonStop.setEnabled ( state );
   }
 
 
@@ -160,17 +180,16 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleConsoleStateChanged ()
   {
     if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
-        .getState () )
+        .getState () && this.saveConsolePreferences )
     {
       PreferenceManager.getInstance ().setVisibleConsole (
           this.gui.jCheckBoxMenuItemConsole.getState () );
-      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
-      {
-        MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-            .getComponentAt ( i ) ).getLogic ();
+        MachinePanel current =  ( MachinePanel ) getActiveEditor ();
         current.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
             .getState () );
-      }
+        current.setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole
+        .getState () );
+        
     }
   }
 
@@ -180,7 +199,13 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEnterWord ()
   {
-    // TODO
+    setToolBarEditItemState ( false );
+    setToolBarEnterWordItemState ( true );
+    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    machinePanel.handleEnterWord ();
+    machinePanel.setVisibleConsole ( false) ;
+    this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
+    machinePanel.setWordEnterMode ( true );
   }
 
 
@@ -208,11 +233,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonSave.setEnabled ( true );
 
       // toolbar items
-      this.gui.jButtonAddState.setEnabled ( true );
-      this.gui.jButtonAddTransition.setEnabled ( true );
-      this.gui.jButtonFinalState.setEnabled ( true );
-      this.gui.jButtonMouse.setEnabled ( true );
-      this.gui.jButtonStartState.setEnabled ( true );
+      setToolBarEditItemState ( true );
     }
   }
 
@@ -271,11 +292,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jMenuItemSave.setEnabled ( true );
 
       // toolbar items
-      this.gui.jButtonAddState.setEnabled ( true );
-      this.gui.jButtonAddTransition.setEnabled ( true );
-      this.gui.jButtonFinalState.setEnabled ( true );
-      this.gui.jButtonMouse.setEnabled ( true );
-      this.gui.jButtonStartState.setEnabled ( true );
+      setToolBarEditItemState ( true );
 
     }
     catch ( StoreException e )
@@ -343,12 +360,8 @@ public final class MainWindow implements LanguageChangedListener
     {
       PreferenceManager.getInstance ().setVisibleTable (
           this.gui.jCheckBoxMenuItemTable.getState () );
-      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
-      {
-        MachinePanel current = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-            .getComponentAt ( i ) ).getLogic ();
+        MachinePanel current = (  MachinePanel ) getActiveEditor ();
         current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
-      }
     }
   }
 
@@ -387,9 +400,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleToolbarMouse ( boolean state )
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
-    panel.handleToolbarMouse ( state );
+    if ( this.gui != null )
+    {
+      MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+          .getSelectedComponent () ).getLogic ();
+      panel.handleToolbarMouse ( state );
+    }
   }
 
 
@@ -678,68 +694,70 @@ public final class MainWindow implements LanguageChangedListener
   {
     this.gui.jMenuItemUndo.setEnabled ( pState );
   }
-  
+
+
   /**
    * Closes the active editor window.
    * 
    * @return true if the active editor could be closed.
    */
-  public boolean handleClose ( )
+  public boolean handleClose ()
   {
-    EditorPanel selectedEditor = getActiveEditor ( ) ;
-    boolean success ;
-//    if ( selectedEditor.shouldBeSaved ( ) )
-//    {
-//      Object [ ] options =
-//      {
-//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-//              .getString ( "Yes" ) ,
-//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-//              .getString ( "No" ) ,
-//          java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-//              .getString ( "Cancel" ) } ;
-//      int n = JOptionPane.showOptionDialog ( window , selectedEditor
-//          .getFileName ( )
-//          + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-//              .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
-//          "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
-//          JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
-//          null , options , options [ 2 ] ) ;
-//      switch ( n )
-//      {
-//        case 0 : // Save Changes
-//          logger.debug ( "Close dialog: YES" ) ;
-//          success = selectedEditor.handleSave ( ) ;
-//          if ( success )
-//          {
-//            window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-//            window.repaint ( ) ;
-//          }
-//          return success ;
-//        case 1 : // Do not save changes
-//          logger.debug ( "Close dialog: NO" ) ;
-//          window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-//          window.repaint ( ) ;
-//          success = true ;
-//        case 2 : // Cancelled.
-//          logger.debug ( "Close dialog: CANCEL" ) ;
-//          success = false ;
-//        default :
-//          success = false ;
-//      }
-//    }
-//    else
+    EditorPanel selectedEditor = getActiveEditor ();
+    boolean success;
+    // if ( selectedEditor.shouldBeSaved ( ) )
+    // {
+    // Object [ ] options =
+    // {
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "Yes" ) ,
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "No" ) ,
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "Cancel" ) } ;
+    // int n = JOptionPane.showOptionDialog ( window , selectedEditor
+    // .getFileName ( )
+    // + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
+    // "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
+    // JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
+    // null , options , options [ 2 ] ) ;
+    // switch ( n )
+    // {
+    // case 0 : // Save Changes
+    // logger.debug ( "Close dialog: YES" ) ;
+    // success = selectedEditor.handleSave ( ) ;
+    // if ( success )
+    // {
+    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+    // window.repaint ( ) ;
+    // }
+    // return success ;
+    // case 1 : // Do not save changes
+    // logger.debug ( "Close dialog: NO" ) ;
+    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+    // window.repaint ( ) ;
+    // success = true ;
+    // case 2 : // Cancelled.
+    // logger.debug ( "Close dialog: CANCEL" ) ;
+    // success = false ;
+    // default :
+    // success = false ;
+    // }
+    // }
+    // else
     {
-      this.gui.jTabbedPaneMain.remove ( this.gui.jTabbedPaneMain.getSelectedIndex ( ) ) ;
-      this.gui.repaint ( ) ;
-      success = true ;
+      this.gui.jTabbedPaneMain.remove ( this.gui.jTabbedPaneMain
+          .getSelectedIndex () );
+      this.gui.repaint ();
+      success = true;
     }
-    if ( getActiveEditor ( ) == null )
+    if ( getActiveEditor () == null )
     {
-      setGeneralStates ( false ) ;
-      this.gui.jMenuItemSave.setEnabled ( false ) ;
-      this.gui.jButtonSave.setEnabled ( false ) ;
-      
+      setGeneralStates ( false );
+      this.gui.jMenuItemSave.setEnabled ( false );
+      this.gui.jButtonSave.setEnabled ( false );
+
       // toolbar items
       this.gui.jButtonAddState.setEnabled ( false );
       this.gui.jButtonAddTransition.setEnabled ( false );
@@ -747,14 +765,45 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonMouse.setEnabled ( false );
       this.gui.jButtonStartState.setEnabled ( false );
     }
-    return success ;
+    return success;
   }
-  
-  public EditorPanel getActiveEditor ( )
+
+
+  public EditorPanel getActiveEditor ()
   {
-      if (this.gui.jTabbedPaneMain.getSelectedComponent () == null) return null;
-    return (( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-        .getSelectedComponent () ).getLogic ());
+    if ( this.gui.jTabbedPaneMain.getSelectedComponent () == null )
+      return null;
+    return ( ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic () );
+  }
+
+
+  public void handleEditMachine ()
+  {
+    setToolBarEditItemState ( true );
+    setToolBarEnterWordItemState ( false );
+    MachinePanel machinePanel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ();
+    
+    machinePanel.handleEditMachine();
+    machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+        .getState () );
+    this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
+    machinePanel.setWordEnterMode ( false );
+  }
+
+
+  public void handleTabbedPaneStateChanged (ChangeEvent evt)
+  {
+    MachinePanel machinePanel =  ( MachinePanel ) getActiveEditor ();
+    this.gui.jCheckBoxMenuItemConsole.setEnabled( !machinePanel.isWordEnterMode () );
+    this.saveConsolePreferences = false ;
+    this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel.isConsoleVisible () );
+    machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode () && machinePanel.isConsoleVisible () );
+    this.saveConsolePreferences = true;
+    this.gui.jCheckBoxMenuItemTable.setState ( machinePanel.isTableVisible () );
+    setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
+    setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
   }
 
 }

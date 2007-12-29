@@ -263,6 +263,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    * Flag that indicates if the table divider location should be stored.
    */
   private boolean setDividerLocationTable = true;
+  
+  private boolean wordEnterMode = false;
+  
+  private boolean consoleVisible = PreferenceManager.getInstance ().getVisibleConsole ();
+  
+  private boolean tableVisible = PreferenceManager.getInstance ().getVisibleTable ();
 
 
   /**
@@ -490,6 +496,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             }
           }
         } );
+    
+    this.gui.wordPanel.setVisible( false );
+    this.gui.wordPanel.setAlphabet ( this.alphabet );
   }
 
 
@@ -1522,6 +1531,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   public void setVisibleConsole ( boolean pVisible )
   {
+    this.consoleVisible = pVisible;
     if ( pVisible )
     {
       this.gui.jSplitPaneConsole
@@ -1573,6 +1583,62 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
+  }
+
+
+  public void handleEnterWord ()
+  {
+      this.gui.wordPanel.setVisible( true );
+      this.model.getJGraph ().setEnabled ( false );
+  }
+
+
+  public void handleEditMachine ()
+  {
+    this.gui.wordPanel.setVisible( false );
+    this.model.getJGraph ().setEnabled ( true );
+  }
+
+
+  
+  public boolean isWordEnterMode ()
+  {
+    return wordEnterMode;
+  }
+
+
+  
+  public void setWordEnterMode ( boolean wordEnterMode )
+  {
+    this.wordEnterMode = wordEnterMode;
+  }
+
+
+  
+  public boolean isConsoleVisible ()
+  {
+    return consoleVisible;
+  }
+
+
+  
+  public boolean isTableVisible ()
+  {
+    return tableVisible;
+  }
+
+
+  
+  public void setConsoleVisible ( boolean consoleVisible )
+  {
+    this.consoleVisible = consoleVisible;
+  }
+
+
+  
+  public void setTableVisible ( boolean tableVisible )
+  {
+    this.tableVisible = tableVisible;
   }
 
 }

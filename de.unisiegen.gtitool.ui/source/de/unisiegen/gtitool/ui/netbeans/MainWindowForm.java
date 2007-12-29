@@ -58,6 +58,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonAddTransition = new javax.swing.JToggleButton();
         jButtonStartState = new javax.swing.JToggleButton();
         jButtonFinalState = new javax.swing.JToggleButton();
+        jButtonEditAlphabet = new javax.swing.JButton();
         jSeparatorMain1 = new javax.swing.JSeparator();
         jButtonPrevious = new javax.swing.JToggleButton();
         jButtonStart = new javax.swing.JToggleButton();
@@ -267,6 +268,19 @@ public class MainWindowForm extends javax.swing.JFrame {
         });
 
         jToolBarEdit.add(jButtonFinalState);
+
+        jButtonEditAlphabet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_alphabet.png")));
+        jButtonEditAlphabet.setToolTipText("Edit Alphabet");
+        jButtonEditAlphabet.setBorderPainted(false);
+        jButtonEditAlphabet.setFocusable(false);
+        jButtonEditAlphabet.setOpaque(false);
+        jButtonEditAlphabet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleEditAlphabet(evt);
+            }
+        });
+
+        jToolBarEdit.add(jButtonEditAlphabet);
 
         jSeparatorMain1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparatorMain1.setMaximumSize(new java.awt.Dimension(5, 32));
@@ -596,6 +610,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 600, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleEditAlphabet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleEditAlphabet
+        this.logic.handleEditAlphabet();
+    }//GEN-LAST:event_handleEditAlphabet
+
     private void handleTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_handleTabbedPaneStateChanged
         this.logic.handleTabbedPaneStateChanged(evt);
     }//GEN-LAST:event_handleTabbedPaneStateChanged
@@ -708,6 +726,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JToggleButton jButtonAddState;
     public javax.swing.JToggleButton jButtonAddTransition;
     public javax.swing.JToggleButton jButtonAutoStep;
+    public javax.swing.JButton jButtonEditAlphabet;
     public javax.swing.JToggleButton jButtonFinalState;
     public javax.swing.JToggleButton jButtonMouse;
     public javax.swing.JButton jButtonNew;

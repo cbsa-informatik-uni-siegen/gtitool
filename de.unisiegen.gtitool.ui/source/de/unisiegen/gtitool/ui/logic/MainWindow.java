@@ -111,6 +111,7 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonFinalState.setEnabled ( state );
     this.gui.jButtonMouse.setEnabled ( state );
     this.gui.jButtonStartState.setEnabled ( state );
+    this.gui.jButtonEditAlphabet.setEnabled ( state );
   }
 
 
@@ -804,6 +805,13 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jCheckBoxMenuItemTable.setState ( machinePanel.isTableVisible () );
     setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
     setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
+  }
+
+
+  public void handleEditAlphabet ()
+  {
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleToolbarAlphabet();
   }
 
 }

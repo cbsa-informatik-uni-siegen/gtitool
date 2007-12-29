@@ -21,6 +21,9 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -92,15 +95,31 @@ public class DefaultMachineModel implements Storable
       StateException, SymbolException, AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
+    boolean machineTypeMissing = true;
+    String machineType = ""; //$NON-NLS-1$
+    
     // Check if the element is correct
     if ( !pElement.getName ().equals ( "DefaultMachineModel" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
           + "\" is not a DefaultMachineModel" ); //$NON-NLS-1$
     }
-
+    
     // Attribute
-    if ( pElement.getAttribute ().size () > 0 )
+    for ( Attribute attribute : pElement.getAttribute () ) 
+    {
+      if ( attribute.getName ().equals ( "MachineType" ) ) //$NON-NLS-1$
+      {
+        machineTypeMissing = false;
+        machineType = attribute.getValue ();
+      }
+    }
+    
+    if ( machineTypeMissing )
+    {
+      throw new StoreException ( Messages.getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+    }
+    if ( pElement.getAttribute ().size () > 1 )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
@@ -129,7 +148,15 @@ public class DefaultMachineModel implements Storable
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
     // initialize this models elements
-    this.machine = new DFA ( alphabet );
+    
+    if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
+        this.machine = new DFA ( alphabet );
+    if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
+      this.machine = new NFA ( alphabet );
+    if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
+      this.machine = new ENFA ( alphabet );
+    if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
+      this.machine = new PDA ( alphabet );
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
 
@@ -364,6 +391,14 @@ public class DefaultMachineModel implements Storable
   public Element getElement ()
   {
     Element newElement = new Element ( "DefaultMachineModel" ); //$NON-NLS-1$
+    if ( this.machine instanceof DFA )
+      newElement.addAttribute ( new Attribute ("MachineType", "DFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    else if ( this.machine instanceof NFA )
+      newElement.addAttribute ( new Attribute ("MachineType", "NFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    else if ( this.machine instanceof ENFA )
+      newElement.addAttribute ( new Attribute ("MachineType", "ENFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    else if ( this.machine instanceof PDA )
+      newElement.addAttribute ( new Attribute ("MachineType", "PDA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     newElement.addElement ( this.machine.getAlphabet ().getElement () );
     for ( DefaultStateView stateView : this.stateViewList )
     {

@@ -22,22 +22,22 @@ public class NewDialogMachineChoice
     /**
      * DFA is choosen.
      */
-    NFA,
-
-    /**
-     * EDFA is choosen.
-     */
     DFA,
 
     /**
-     * ENDEA is choosen.
+     * NFA is choosen.
      */
-    EDFA,
+    NFA,
 
     /**
-     * StackMachine is choosen.
+     * ENFA is choosen.
      */
-    StackMachine
+    ENFA,
+
+    /**
+     * PDA is choosen.
+     */
+    PDA
   }
 
 
@@ -100,7 +100,7 @@ public class NewDialogMachineChoice
   public void handleEDFAItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.EDFA;
+      this.actualChoice = Choice.ENFA;
   }
 
 
@@ -112,7 +112,7 @@ public class NewDialogMachineChoice
   public void handleStackMachineItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.StackMachine;
+      this.actualChoice = Choice.PDA;
   }
 
 

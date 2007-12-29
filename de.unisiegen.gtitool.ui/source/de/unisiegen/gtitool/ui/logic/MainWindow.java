@@ -103,7 +103,12 @@ public final class MainWindow implements LanguageChangedListener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
-
+  /**
+   * 
+   * Set the state of the edit machine toolbar items
+   *
+   * @param state the new state
+   */
   private void setToolBarEditItemState ( boolean state )
   {
     this.gui.jButtonAddState.setEnabled ( state );
@@ -114,7 +119,12 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonEditAlphabet.setEnabled ( state );
   }
 
-
+  /**
+   * 
+   * Set the state of the enter word toolbar items
+   *
+   * @param state the new state
+   */
   private void setToolBarEnterWordItemState ( boolean state )
   {
     this.gui.jButtonPrevious.setEnabled ( state );
@@ -260,6 +270,12 @@ public final class MainWindow implements LanguageChangedListener
         }
         if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
           return true;
+        if ( file.getName ().matches ( ".+\\.nfa" ) ) //$NON-NLS-1$
+          return true;
+        if ( file.getName ().matches ( ".+\\.enfa" ) ) //$NON-NLS-1$
+          return true;
+        if ( file.getName ().matches ( ".+\\.pda" ) ) //$NON-NLS-1$
+          return true;
         return false;
 
       }
@@ -268,7 +284,8 @@ public final class MainWindow implements LanguageChangedListener
       @Override
       public String getDescription ()
       {
-        return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$
+        return "Source Files ( *.dfa; " //$NON-NLS-1$ 
+          + "*.nfa; *.enfa; *.pda )"; //$NON-NLS-1$
       }
 
     } );
@@ -336,7 +353,11 @@ public final class MainWindow implements LanguageChangedListener
   {
     MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
-    panel.handleSave ();
+    String fileName = panel.handleSave ();
+    if ( fileName != null )
+    this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
+        .getSelectedIndex (), fileName );
+    
   }
 
 
@@ -347,7 +368,11 @@ public final class MainWindow implements LanguageChangedListener
   {
     MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
-    panel.handleSaveAs ();
+    String fileName = panel.handleSaveAs ();
+    
+    if ( fileName != null )
+      this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
+          .getSelectedIndex (), fileName );
   }
 
 
@@ -778,7 +803,7 @@ public final class MainWindow implements LanguageChangedListener
         .getSelectedComponent () ).getLogic () );
   }
 
-
+  
   public void handleEditMachine ()
   {
     setToolBarEditItemState ( true );

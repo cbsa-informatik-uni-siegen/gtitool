@@ -5,100 +5,31 @@
     <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
     <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
   </Alphabet>
-  <DefaultStateView x="108.0" y="46.0">
+  <DefaultStateView x="175.0" y="63.0">
     <State id="0" name="z0" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
       <Alphabet parserStartOffset="0" parserEndOffset="6">
         <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
         <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
       </Alphabet>
       <TransitionBegin id="0"/>
-      <TransitionEnd id="3"/>
     </State>
   </DefaultStateView>
-  <DefaultStateView x="115.0" y="159.0">
-    <State id="1" name="z1" startState="true" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
+  <DefaultStateView x="373.0" y="69.0">
+    <State id="1" name="z1" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
       <Alphabet parserStartOffset="0" parserEndOffset="6">
         <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
         <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
       </Alphabet>
-      <TransitionBegin id="3"/>
-      <TransitionEnd id="2"/>
-    </State>
-  </DefaultStateView>
-  <DefaultStateView x="302.0" y="47.0">
-    <State id="2" name="z2" startState="false" finalState="true" parserStartOffset="-1" parserEndOffset="-1">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-      <TransitionBegin id="1"/>
       <TransitionEnd id="0"/>
     </State>
   </DefaultStateView>
-  <DefaultStateView x="308.0" y="161.0">
-    <State id="3" name="z3" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-      <TransitionBegin id="2"/>
-      <TransitionEnd id="1"/>
-    </State>
-  </DefaultStateView>
-  <DefaultStateView x="399.0" y="95.0">
-    <State id="4" name="z4" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-    </State>
-  </DefaultStateView>
-  <DefaultStateView x="489.0" y="183.0">
-    <State id="4" name="z4" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-    </State>
-  </DefaultStateView>
   <DefaultTransitionView>
-    <Transition id="0" stateBeginId="0" stateEndId="2">
+    <Transition id="0" stateBeginId="0" stateEndId="1">
       <Alphabet parserStartOffset="0" parserEndOffset="6">
         <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
         <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
       </Alphabet>
       <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-      <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-    </Transition>
-  </DefaultTransitionView>
-  <DefaultTransitionView>
-    <Transition id="1" stateBeginId="2" stateEndId="3">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-      <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-      <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-    </Transition>
-  </DefaultTransitionView>
-  <DefaultTransitionView>
-    <Transition id="2" stateBeginId="3" stateEndId="1">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-      <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-      <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-    </Transition>
-  </DefaultTransitionView>
-  <DefaultTransitionView>
-    <Transition id="3" stateBeginId="1" stateEndId="0">
-      <Alphabet parserStartOffset="0" parserEndOffset="6">
-        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
-      </Alphabet>
-      <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
-      <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
     </Transition>
   </DefaultTransitionView>
 </DefaultMachineModel>

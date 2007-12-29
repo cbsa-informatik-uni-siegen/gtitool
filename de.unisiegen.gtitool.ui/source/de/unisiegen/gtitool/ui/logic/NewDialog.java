@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
@@ -174,6 +177,36 @@ public class NewDialog
             new DefaultMachineModel ( new DFA ( this.newDialogAlphabet
                 .getAlphabet () ) ), null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
+        this.gui.dispose ();
+      }
+      
+      if ( this.machineChoice.getUserChoice ().equals (
+          NewDialogMachineChoice.Choice.NFA ) )
+      {
+        this.newPanel = new MachinePanel ( this.parent,
+            new DefaultMachineModel ( new NFA ( this.newDialogAlphabet
+                .getAlphabet () ) ), null );
+        this.fileEnding = ".nfa"; //$NON-NLS-1$
+        this.gui.dispose ();
+      }
+      
+      if ( this.machineChoice.getUserChoice ().equals (
+          NewDialogMachineChoice.Choice.ENFA ) )
+      {
+        this.newPanel = new MachinePanel ( this.parent,
+            new DefaultMachineModel ( new ENFA ( this.newDialogAlphabet
+                .getAlphabet () ) ), null );
+        this.fileEnding = ".enfa"; //$NON-NLS-1$
+        this.gui.dispose ();
+      }
+      
+      if ( this.machineChoice.getUserChoice ().equals (
+          NewDialogMachineChoice.Choice.PDA ) )
+      {
+        this.newPanel = new MachinePanel ( this.parent,
+            new DefaultMachineModel ( new PDA ( this.newDialogAlphabet
+                .getAlphabet () ) ), null );
+        this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }
     }

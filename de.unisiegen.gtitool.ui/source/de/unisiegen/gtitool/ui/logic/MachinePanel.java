@@ -17,7 +17,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -42,6 +41,10 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -263,12 +266,17 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    * Flag that indicates if the table divider location should be stored.
    */
   private boolean setDividerLocationTable = true;
-  
+
+
   private boolean wordEnterMode = false;
-  
-  private boolean consoleVisible = PreferenceManager.getInstance ().getVisibleConsole ();
-  
-  private boolean tableVisible = PreferenceManager.getInstance ().getVisibleTable ();
+
+
+  private boolean consoleVisible = PreferenceManager.getInstance ()
+      .getVisibleConsole ();
+
+
+  private boolean tableVisible = PreferenceManager.getInstance ()
+      .getVisibleTable ();
 
 
   /**
@@ -496,8 +504,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             }
           }
         } );
-    
-    this.gui.wordPanel.setVisible( false );
+
+    this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.alphabet );
   }
 
@@ -786,12 +794,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   /**
    * Handle save as operation
    */
-  public void handleSave ()
+  public String handleSave ()
   {
     if ( this.fileName == null )
     {
-      handleSaveAs ();
-      return;
+      return handleSaveAs ();
 
     }
 
@@ -809,13 +816,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
+    return this.fileName.getName ();
   }
 
 
   /**
    * Handle save as operation
    */
-  public void handleSaveAs ()
+  public String handleSaveAs ()
   {
     try
     {
@@ -826,6 +834,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       chooser.addChoosableFileFilter ( new FileFilter ()
       {
 
+        @SuppressWarnings ( "synthetic-access" )
         @Override
         public boolean accept ( File file )
         {
@@ -833,29 +842,71 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           {
             return true;
           }
-          if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
+          if ( MachinePanel.this.machine instanceof DFA
+              && file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
+            return true;
+          if ( MachinePanel.this.machine instanceof NFA
+              && file.getName ().matches ( ".+\\.nfa" ) ) //$NON-NLS-1$
+            return true;
+          if ( MachinePanel.this.machine instanceof ENFA
+              && file.getName ().matches ( ".+\\.enfa" ) ) //$NON-NLS-1$
+            return true;
+          if ( MachinePanel.this.machine instanceof PDA
+              && file.getName ().matches ( ".+\\.pda" ) ) //$NON-NLS-1$
             return true;
           return false;
 
         }
 
 
+        @SuppressWarnings ( "synthetic-access" )
         @Override
         public String getDescription ()
         {
-          return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+          if ( MachinePanel.this.machine instanceof DFA )
+            return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+          if ( MachinePanel.this.machine instanceof NFA )
+            return Messages.getString ( "NewDialog.NFA" ) + " (*.nfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+          if ( MachinePanel.this.machine instanceof ENFA )
+            return Messages.getString ( "NewDialog.ENFA" ) + " (*.enfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+          if ( MachinePanel.this.machine instanceof PDA )
+            return Messages.getString ( "NewDialog.PDA" ) + " (*.pda)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
+          return ""; //$NON-NLS-1$
         }
 
       } );
       int n = chooser.showSaveDialog ( this.parent );
       if ( n == JFileChooser.CANCEL_OPTION
           || chooser.getSelectedFile () == null )
-        return;
-      String filename = chooser.getSelectedFile ().toString ().matches (
-          ".+\\.dfa" ) ? //$NON-NLS-1$
-      chooser.getSelectedFile ().toString ()
-          : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
+        return null;
 
+      String filename = ""; //$NON-NLS-1$
+
+      if ( MachinePanel.this.machine instanceof DFA )
+      {
+        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ? //$NON-NLS-1$
+        chooser.getSelectedFile ().toString ()
+            : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
+      }
+      else if ( MachinePanel.this.machine instanceof NFA )
+      {
+        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.nfa" ) ? //$NON-NLS-1$
+        chooser.getSelectedFile ().toString ()
+            : chooser.getSelectedFile ().toString () + ".nfa"; //$NON-NLS-1$
+      }
+      else if ( MachinePanel.this.machine instanceof ENFA )
+      {
+        filename = chooser.getSelectedFile ().toString ()
+            .matches ( ".+\\.enfa" ) ? //$NON-NLS-1$
+        chooser.getSelectedFile ().toString ()
+            : chooser.getSelectedFile ().toString () + ".enfa"; //$NON-NLS-1$
+      }
+      else if ( MachinePanel.this.machine instanceof PDA )
+      {
+        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.pda" ) ? //$NON-NLS-1$
+        chooser.getSelectedFile ().toString ()
+            : chooser.getSelectedFile ().toString () + ".pda"; //$NON-NLS-1$
+      }
       Storage.getInstance ().store ( this.model, filename );
       JOptionPane
           .showMessageDialog (
@@ -871,6 +922,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
+    return this.fileName.getName ();
   }
 
 
@@ -894,14 +946,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void handleToolbarAlphabet ()
   {
     // TODOChristian
-    AlphabetDialog alphabetDialog = new AlphabetDialog (this.parent,
-        this.alphabet, this.machine);
-    alphabetDialog.show () ;
+    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
+        this.alphabet, this.machine );
+    alphabetDialog.show ();
     if ( alphabetDialog.DIALOG_RESULT == AlphabetDialog.DIALOG_CONFIRMED )
     {
-      System.out.println ( "confirm") ;
-      System.out.println (this.alphabet) ;
-      System.out.println (this.machine.getAlphabet ());
+      System.out.println ( "confirm" );
+      System.out.println ( this.alphabet );
+      System.out.println ( this.machine.getAlphabet () );
     }
   }
 
@@ -1122,7 +1174,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
-        
+
         switch ( PreferenceManager.getInstance ().getChoiceItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
@@ -1230,7 +1282,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
                 newTransition.setStateEnd ( target.getState () );
-                
+
                 switch ( PreferenceManager.getInstance ().getChoiceItem () )
                 {
                   case WITHOUT_RETURN_TO_MOUSE :
@@ -1259,14 +1311,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             MachinePanel.this.model.createTransitionView ( newTransition,
                 MachinePanel.this.firstState, target );
             dialog.dispose ();
-            
+
           }
           MachinePanel.this.firstState = null;
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
 
         }
-        
+
       }
 
 
@@ -1317,7 +1369,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
               newTransition.setStateEnd ( target.getState () );
-              
+
               switch ( PreferenceManager.getInstance ().getChoiceItem () )
               {
                 case WITHOUT_RETURN_TO_MOUSE :
@@ -1332,7 +1384,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                   break;
                 }
               }
-              
+
             }
             catch ( StateException e1 )
             {
@@ -1351,7 +1403,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         MachinePanel.this.tmpTransition = null;
         MachinePanel.this.tmpState = null;
         MachinePanel.this.dragged = false;
-        
+
       }
 
     };
@@ -1486,7 +1538,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
-        
+
         switch ( PreferenceManager.getInstance ().getChoiceItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
@@ -1558,7 +1610,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
-        
+
         switch ( PreferenceManager.getInstance ().getChoiceItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
@@ -1573,7 +1625,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             break;
           }
         }
-        
+
       }
     };
   }
@@ -1668,54 +1720,48 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   public void handleEnterWord ()
   {
-      this.gui.wordPanel.setVisible( true );
-      this.model.getJGraph ().setEnabled ( false );
+    this.gui.wordPanel.setVisible ( true );
+    this.model.getJGraph ().setEnabled ( false );
   }
 
 
   public void handleEditMachine ()
   {
-    this.gui.wordPanel.setVisible( false );
+    this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
   }
 
 
-  
   public boolean isWordEnterMode ()
   {
     return wordEnterMode;
   }
 
 
-  
   public void setWordEnterMode ( boolean wordEnterMode )
   {
     this.wordEnterMode = wordEnterMode;
   }
 
 
-  
   public boolean isConsoleVisible ()
   {
     return consoleVisible;
   }
 
 
-  
   public boolean isTableVisible ()
   {
     return tableVisible;
   }
 
 
-  
   public void setConsoleVisible ( boolean consoleVisible )
   {
     this.consoleVisible = consoleVisible;
   }
 
 
-  
   public void setTableVisible ( boolean tableVisible )
   {
     this.tableVisible = tableVisible;

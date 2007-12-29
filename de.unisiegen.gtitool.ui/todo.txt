@@ -7,21 +7,6 @@
 - Den neuen NFA integrieren
 - Den neuen ENFA integrieren
 - Die neue PDA integrieren (Nur angelegt, noch nicht implementiert)
-- Verschiedene Auswahlmöglichkeiten:
-    switch ( PreferenceManager.getInstance ().getChoiceItem () )
-    {
-      case WITHOUT_RETURN_TO_MOUSE :
-      {
-        // Alles wie bisher
-        break;
-      }
-      case WITH_RETURN_TO_MOUSE :
-      {
-        // Nach jedem Anlegen einer Transition etc muss zur Maus gesprungen
-        // werden
-        break;
-      }
-    }
 
 
 

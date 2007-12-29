@@ -1122,6 +1122,21 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
+        
+        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        {
+          case WITHOUT_RETURN_TO_MOUSE :
+          {
+            // Do nothing
+            break;
+          }
+          case WITH_RETURN_TO_MOUSE :
+          {
+            // Return to the normal Mouse after every click
+            parent.jButtonMouse.setSelected ( true );
+            break;
+          }
+        }
 
       }
     };
@@ -1215,6 +1230,21 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
                 newTransition.setStateEnd ( target.getState () );
+                
+                switch ( PreferenceManager.getInstance ().getChoiceItem () )
+                {
+                  case WITHOUT_RETURN_TO_MOUSE :
+                  {
+                    // Do nothing
+                    break;
+                  }
+                  case WITH_RETURN_TO_MOUSE :
+                  {
+                    // Return to the normal Mouse after every click
+                    parent.jButtonMouse.setSelected ( true );
+                    break;
+                  }
+                }
 
               }
               catch ( StateException e1 )
@@ -1229,11 +1259,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             MachinePanel.this.model.createTransitionView ( newTransition,
                 MachinePanel.this.firstState, target );
             dialog.dispose ();
+            
           }
           MachinePanel.this.firstState = null;
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
+
         }
+        
       }
 
 
@@ -1284,6 +1317,22 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
               newTransition.setStateEnd ( target.getState () );
+              
+              switch ( PreferenceManager.getInstance ().getChoiceItem () )
+              {
+                case WITHOUT_RETURN_TO_MOUSE :
+                {
+                  // Do nothing
+                  break;
+                }
+                case WITH_RETURN_TO_MOUSE :
+                {
+                  // Return to the normal Mouse after every click
+                  parent.jButtonMouse.setSelected ( true );
+                  break;
+                }
+              }
+              
             }
             catch ( StateException e1 )
             {
@@ -1302,7 +1351,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         MachinePanel.this.tmpTransition = null;
         MachinePanel.this.tmpState = null;
         MachinePanel.this.dragged = false;
-
+        
       }
 
     };
@@ -1437,6 +1486,21 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
+        
+        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        {
+          case WITHOUT_RETURN_TO_MOUSE :
+          {
+            // Do nothing
+            break;
+          }
+          case WITH_RETURN_TO_MOUSE :
+          {
+            // Return to the normal Mouse after every click
+            parent.jButtonMouse.setSelected ( true );
+            break;
+          }
+        }
 
       }
     };
@@ -1494,6 +1558,22 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           e1.printStackTrace ();
           System.exit ( 1 );
         }
+        
+        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        {
+          case WITHOUT_RETURN_TO_MOUSE :
+          {
+            // Do nothing
+            break;
+          }
+          case WITH_RETURN_TO_MOUSE :
+          {
+            // Return to the normal Mouse after every click
+            parent.jButtonMouse.setSelected ( true );
+            break;
+          }
+        }
+        
       }
     };
   }

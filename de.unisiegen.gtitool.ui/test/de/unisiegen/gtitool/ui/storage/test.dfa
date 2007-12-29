@@ -53,6 +53,14 @@
       </Alphabet>
     </State>
   </DefaultStateView>
+  <DefaultStateView x="489.0" y="183.0">
+    <State id="4" name="z4" startState="false" finalState="false" parserStartOffset="-1" parserEndOffset="-1">
+      <Alphabet parserStartOffset="0" parserEndOffset="6">
+        <Symbol name="0" parserStartOffset="1" parserEndOffset="2"/>
+        <Symbol name="1" parserStartOffset="4" parserEndOffset="5"/>
+      </Alphabet>
+    </State>
+  </DefaultStateView>
   <DefaultTransitionView>
     <Transition id="0" stateBeginId="0" stateEndId="2">
       <Alphabet parserStartOffset="0" parserEndOffset="6">

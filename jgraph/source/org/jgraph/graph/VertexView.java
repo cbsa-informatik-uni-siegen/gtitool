@@ -29,7 +29,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class VertexView extends AbstractCellView
 {
 

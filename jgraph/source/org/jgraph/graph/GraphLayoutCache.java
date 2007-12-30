@@ -43,7 +43,7 @@ import org.jgraph.event.GraphModelEvent;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class GraphLayoutCache implements CellMapper, Serializable
 {
 
@@ -288,6 +288,8 @@ public class GraphLayoutCache implements CellMapper, Serializable
    * 
    * @param model the model that constitues the data source
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public GraphLayoutCache ( GraphModel model, CellViewFactory factory,
       CellView [] cellViews, CellView [] hiddenCellViews, boolean partial )
   {
@@ -1309,6 +1311,8 @@ public class GraphLayoutCache implements CellMapper, Serializable
    * @param visible
    * @return whether or not the ports needed updating in the calling method
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public boolean setVisibleImpl ( Object [] cells, boolean visible )
   {
     cells = addVisibleDependencies ( cells, visible );
@@ -1727,6 +1731,8 @@ public class GraphLayoutCache implements CellMapper, Serializable
    * graph.getGraphLayoutCache ().insertGroup ( group, cells );
    * </pre>
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void insertGroup ( Object group, Object [] children )
   {
     if ( group != null && children != null && children.length > 0 )

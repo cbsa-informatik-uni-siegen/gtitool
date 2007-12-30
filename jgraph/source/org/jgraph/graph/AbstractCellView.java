@@ -27,7 +27,7 @@ import org.jgraph.JGraph;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public abstract class AbstractCellView implements CellView, Serializable
 {
 

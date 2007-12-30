@@ -1,21 +1,21 @@
-/*
- * FileWizard.java
- *
- * Created on 26. Juli 2006, 19:44
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.NewDialog;
 
 
-
 /**
+ * The new dialog form.
  *
  * @author Benjamin Mies
  * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class NewDialogForm extends javax.swing.JDialog {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 5230055486510640010L;
 
   //
   // Constructor

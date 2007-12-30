@@ -23,6 +23,7 @@
 
 	<target name="compile">
 		<javac srcdir="${sourcedir}" debug="false" deprecation="false" optimize="true" destdir="${classesdir}">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
 			<classpath>
 				<pathelement path="${classesdir}" />
 			</classpath>

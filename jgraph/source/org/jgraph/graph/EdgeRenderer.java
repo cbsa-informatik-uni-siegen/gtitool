@@ -42,7 +42,7 @@ import org.jgraph.util.Spline2D;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class EdgeRenderer extends JComponent implements CellViewRenderer,
     Serializable
 {

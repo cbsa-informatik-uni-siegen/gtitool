@@ -129,7 +129,8 @@ public class TransitionPopupMenu extends JPopupMenu
             "Transition löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          TransitionPopupMenu.this.model.removeTransition (  TransitionPopupMenu.this.transition  );
+          TransitionPopupMenu.this.model
+              .removeTransition ( TransitionPopupMenu.this.transition );
         }
 
       }
@@ -147,7 +148,8 @@ public class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent e )
       {
-        Transition oldTransition = transition.getTransition ().clone ();
+        Transition oldTransition = TransitionPopupMenu.this.transition
+            .getTransition ().clone ();
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
@@ -157,16 +159,16 @@ public class TransitionPopupMenu extends JPopupMenu
         dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
             .getTransition ().getSymbol () );
         dialog.show ();
-        if (dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED ) {
-        TransitionPopupMenu.this.graph.getGraphLayoutCache ()
-            .valueForCellChanged ( TransitionPopupMenu.this.transition,
-                dialog.getTransition() );
-        
-          model.transitionChanged( oldTransition, dialog.getTransition ());
+        if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+        {
+          TransitionPopupMenu.this.graph.getGraphLayoutCache ()
+              .valueForCellChanged ( TransitionPopupMenu.this.transition,
+                  dialog.getTransition () );
+          TransitionPopupMenu.this.model.transitionChanged ( oldTransition,
+              dialog.getTransition () );
         }
       }
     } );
     add ( this.config );
-
   }
 }

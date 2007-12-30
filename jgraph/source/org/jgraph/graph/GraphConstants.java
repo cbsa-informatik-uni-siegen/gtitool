@@ -35,7 +35,7 @@ import javax.swing.border.Border;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class GraphConstants
 {
 

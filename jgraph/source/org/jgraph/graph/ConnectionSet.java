@@ -20,7 +20,7 @@ import java.util.Set;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class ConnectionSet implements Serializable
 {
 

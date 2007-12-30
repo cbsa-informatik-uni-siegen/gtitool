@@ -28,7 +28,7 @@ import org.apache.tools.ant.Task;
 
 
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class CUPTask extends Task
 {
 

@@ -8,7 +8,9 @@
 	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
 
 	<target name="compile" depends="jflex,cup">
-		<javac srcdir="." destdir="${distdir}" target="1.5" classpath="." debug="on" />
+		<javac srcdir="." destdir="${distdir}" target="1.5" classpath="." debug="on">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+		</javac>
 	</target>
 
 	<target name="jflex">

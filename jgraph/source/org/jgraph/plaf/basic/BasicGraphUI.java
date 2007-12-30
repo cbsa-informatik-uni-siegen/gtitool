@@ -101,7 +101,7 @@ import org.jgraph.plaf.GraphUI;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "deprecation" } )
 public class BasicGraphUI extends GraphUI implements Serializable
 {
 
@@ -2449,6 +2449,8 @@ public class BasicGraphUI extends GraphUI implements Serializable
   } // End of BasicGraphUI.MouseHandler
 
 
+  @SuppressWarnings (
+  { "all", "unchecked" } )
   public class RootHandle implements CellHandle, Serializable
   {
 

@@ -17,7 +17,7 @@ import java.util.List;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class DefaultEdge extends DefaultGraphCell implements Edge
 {
 

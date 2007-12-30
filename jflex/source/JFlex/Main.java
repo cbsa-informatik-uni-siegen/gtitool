@@ -166,6 +166,8 @@ public class Main
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public static Vector parseOptions ( String argv[] ) throws SilentExit
   {
     Vector files = new Vector ();

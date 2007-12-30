@@ -24,19 +24,21 @@ public class MachineColumnModel extends DefaultTableColumnModel
 
   /**
    * Allocates a new <code>ConsoleColumnModel</code>.
+   * 
+   * @param alphabet The {@link Alphabet}.
    */
   public MachineColumnModel ( Alphabet alphabet )
   {
     TableColumn column;
     column = new TableColumn ( 0 );
     // Workaround for windows
-    column.setHeaderValue ( " " ); 
+    column.setHeaderValue ( " " ); //$NON-NLS-1$
     this.addColumn ( column );
 
     for ( int i = 0 ; i < alphabet.size () ; i++ )
     {
       column = new TableColumn ( i + 1 );
-      column.setHeaderValue ( alphabet.get ( i ).toString () ); 
+      column.setHeaderValue ( alphabet.get ( i ).toString () );
       this.addColumn ( column );
     }
   }

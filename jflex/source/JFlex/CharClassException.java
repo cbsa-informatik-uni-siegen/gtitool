@@ -22,16 +22,21 @@ package JFlex;
  * @version JFlex 1.4.1, $Revision$, $Date: 2007-11-30 00:20:03 +0100 (Fr,
  *          30 Nov 2007) $
  */
-@SuppressWarnings (
-{ "all" } )
 public class CharClassException extends RuntimeException
 {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 1516881867849971926L;
+
 
   /**
    * Creates a new CharClassException without message
    */
   public CharClassException ()
   {
+    // Do nothing
   }
 
 

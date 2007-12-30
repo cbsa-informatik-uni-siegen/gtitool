@@ -1,19 +1,21 @@
-/*
- * NewDialogMachineChoiceForm.java
- *
- * Created on 14. Dezember 2007, 09:55
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice;
 
 /**
+ * The new dialog machine choice form.
  *
- * @author  benny
+ * @author Benjamin Mies
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -1303990739783698131L;
+
     /** Creates new form NewDialogMachineChoiceForm */
     public NewDialogMachineChoiceForm() {
         initComponents();

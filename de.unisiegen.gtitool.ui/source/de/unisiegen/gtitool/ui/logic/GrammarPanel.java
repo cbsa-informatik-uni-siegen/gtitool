@@ -8,13 +8,12 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 
+
 /**
- * 
  * TODO
- *
+ * 
  * @author Benjamin Mies
  * @version $Id$
- *
  */
 public class GrammarPanel implements EditorPanel
 {
@@ -25,7 +24,6 @@ public class GrammarPanel implements EditorPanel
   public GrammarPanel ( JFrame pParent, Alphabet pAlphabet )
   {
     this.gui = new GrammarPanelForm ();
-    
 
   }
 
@@ -38,9 +36,6 @@ public class GrammarPanel implements EditorPanel
 
   public Alphabet getAlphabet ()
   {
-    return new Alphabet();
+    return new Alphabet ();
   }
-  
-  
-
 }

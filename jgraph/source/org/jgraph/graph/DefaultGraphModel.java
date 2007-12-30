@@ -42,7 +42,7 @@ import org.jgraph.event.GraphModelListener;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class DefaultGraphModel extends UndoableEditSupport implements
     Serializable, GraphModel
 {

@@ -147,6 +147,8 @@ public class Skeleton
    * @throws GeneratorException if the number of skeleton sections does not
    *           match
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public static void readSkel ( BufferedReader reader ) throws IOException
   {
     Vector lines = new Vector ();

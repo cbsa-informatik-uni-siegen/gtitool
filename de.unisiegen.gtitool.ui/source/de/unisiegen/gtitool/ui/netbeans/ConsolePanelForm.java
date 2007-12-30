@@ -1,19 +1,21 @@
-/*
- * ConsolePanelForm.java
- *
- * Created on 16. Dezember 2007, 17:49
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.ConsolePanel;
 
 /**
+ * The console panel form.
  *
- * @author  benny
+ * @author Benjamin Mies
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class ConsolePanelForm extends javax.swing.JPanel {
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 984259476779884511L;
+
     /** Creates new form ConsolePanelForm */
     public ConsolePanelForm() {
         initComponents();

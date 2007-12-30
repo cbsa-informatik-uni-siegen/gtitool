@@ -33,11 +33,11 @@ public class LexicalStates
 {
 
   /** maps state name to state number */
-  Hashtable states;
+  Hashtable < String, Integer > states;
 
 
   /** codes of inclusive states (subset of states) */
-  Vector inclusive;
+  Vector < Integer > inclusive;
 
 
   /** number of declared states */
@@ -49,8 +49,8 @@ public class LexicalStates
    */
   public LexicalStates ()
   {
-    states = new Hashtable ();
-    inclusive = new Vector ();
+    states = new Hashtable < String, Integer > ();
+    inclusive = new Vector < Integer > ();
   }
 
 

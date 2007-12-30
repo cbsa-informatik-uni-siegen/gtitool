@@ -54,7 +54,7 @@ import java.util.Stack;
  * @author Frank Flannery
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class lalr_state
 {
 

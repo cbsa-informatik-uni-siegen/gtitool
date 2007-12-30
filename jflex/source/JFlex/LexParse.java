@@ -587,6 +587,8 @@ class CUP$LexParse$actions
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   private Vector makePreClass ( int type )
   {
 
@@ -675,7 +677,7 @@ class CUP$LexParse$actions
 
   private RegExp makeNL ()
   {
-    Vector list = new Vector ();
+    Vector < Interval > list = new Vector < Interval > ();
     list.addElement ( new Interval ( '\n', '\r' ) );
     list.addElement ( new Interval ( '\u0085', '\u0085' ) );
     list.addElement ( new Interval ( '\u2028', '\u2029' ) );
@@ -705,6 +707,8 @@ class CUP$LexParse$actions
 
 
   /** Method with the actual generated action code. */
+  @SuppressWarnings (
+  { "unchecked" } )
   public final java_cup.runtime.Symbol CUP$LexParse$do_action (
       int CUP$LexParse$act_num, java_cup.runtime.lr_parser CUP$LexParse$parser,
       java.util.Stack CUP$LexParse$stack, int CUP$LexParse$top )

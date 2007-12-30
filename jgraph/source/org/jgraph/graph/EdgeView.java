@@ -39,7 +39,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class EdgeView extends AbstractCellView
 {
 

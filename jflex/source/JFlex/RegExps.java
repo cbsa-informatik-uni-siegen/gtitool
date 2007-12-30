@@ -65,6 +65,8 @@ public class RegExps
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public int insert ( int line, Vector stateList, RegExp regExp, Action action,
       Boolean isBOL, RegExp lookAhead )
   {
@@ -87,6 +89,8 @@ public class RegExps
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public int insert ( Vector stateList, Action action )
   {
 
@@ -107,6 +111,8 @@ public class RegExps
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public void addStates ( int regNum, Vector newStates )
   {
     Enumeration s = newStates.elements ();

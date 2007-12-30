@@ -29,7 +29,7 @@ import org.jgraph.JGraph;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class GraphContext implements CellMapper
 {
 

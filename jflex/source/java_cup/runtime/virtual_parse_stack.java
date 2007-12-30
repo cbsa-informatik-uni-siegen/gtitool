@@ -88,6 +88,8 @@ public class virtual_parse_stack
    * Transfer an element from the real to the virtual stack. This assumes that
    * the virtual stack is currently empty.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   protected void get_from_real ()
   {
     Symbol stack_sym;
@@ -155,6 +157,8 @@ public class virtual_parse_stack
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
   /** Push a state number onto the stack. */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void push ( int state_num )
   {
     vstack.push ( new Integer ( state_num ) );

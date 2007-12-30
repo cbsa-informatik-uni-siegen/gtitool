@@ -48,6 +48,8 @@ public class EOFActions
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public void add ( Vector stateList, Action action )
   {
 
@@ -75,6 +77,8 @@ public class EOFActions
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public void add ( Integer state, Action action )
   {
     if ( actions.get ( state ) == null )

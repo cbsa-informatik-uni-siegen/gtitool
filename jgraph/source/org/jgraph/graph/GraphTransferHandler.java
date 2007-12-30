@@ -26,7 +26,7 @@ import org.jgraph.JGraph;
  * @author Gaudenz Alder Default datatransfer handler.
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class GraphTransferHandler extends TransferHandler
 {
 

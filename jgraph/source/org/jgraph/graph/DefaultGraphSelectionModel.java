@@ -171,6 +171,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * 
    * @param cells new selection
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void setSelectionCells ( Object [] cells )
   {
     if ( cells != null )
@@ -232,6 +234,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * 
    * @param cells the cells to be added to the current selection
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void addSelectionCells ( Object [] cells )
   {
     if ( cells != null )
@@ -280,6 +284,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * 
    * @param cells the cells to remove from the current selection
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void removeSelectionCells ( Object [] cells )
   {
     if ( cells != null )
@@ -309,6 +315,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * Returns the cells that are currently selectable. The array is ordered so
    * that the top-most cell appears first. <br>
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public Object [] getSelectables ()
   {
     if ( isChildrenSelectable () )
@@ -405,6 +413,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * Empties the current selection. If this represents a change in the current
    * selection, the selection listeners are notified.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void clearSelection ()
   {
     if ( selection != null )
@@ -436,6 +446,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
   /**
    * Returns the number of selected childs for <code>cell</code>.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   protected int getSelectedChildCount ( Object cell )
   {
     if ( cell != null )
@@ -456,6 +468,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * Sets the number of selected childs for <code>cell</code> to
    * <code>count</code>.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   protected void setSelectedChildCount ( Object cell, int count )
   {
     Integer i = new Integer ( count );
@@ -467,6 +481,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * Selects a single cell and updates all datastructures. No listeners are
    * notified. Override this method to control individual cell selection.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   protected boolean select ( Set set, Object cell )
   {
     AttributeMap attrs = graph.getAttributes ( cell );
@@ -523,6 +539,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * Deselects a single cell and updates all datastructures. No listeners are
    * notified.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   protected boolean deselect ( Object cell )
   {
     if ( isCellSelected ( cell ) )
@@ -620,6 +638,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    *         from this model
    * @since 1.3
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public EventListener [] getListeners ( Class listenerType )
   {
     return listenerList.getListeners ( listenerType );
@@ -694,6 +714,8 @@ public class DefaultGraphSelectionModel implements GraphSelectionModel,
    * @exception CloneNotSupportedException never thrown by instances of this
    *              class
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public Object clone () throws CloneNotSupportedException
   {
     DefaultGraphSelectionModel clone = ( DefaultGraphSelectionModel ) super

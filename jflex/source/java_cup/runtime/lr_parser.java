@@ -272,7 +272,7 @@ public abstract class lr_parser
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */
 
   /** The parse stack itself. */
-  protected Stack stack = new Stack ();
+  protected Stack < Symbol > stack = new Stack < Symbol > ();
 
 
   /* . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . */

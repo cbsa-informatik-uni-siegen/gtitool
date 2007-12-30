@@ -17,7 +17,7 @@ import java.util.Set;
  * @author Gaudenz Alder
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class DefaultPort extends DefaultGraphCell implements Port
 {
 

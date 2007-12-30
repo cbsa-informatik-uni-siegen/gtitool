@@ -106,7 +106,7 @@ final public class DFA
   /**
    * all actions that are used in this DFA
    */
-  Hashtable usedActions = new Hashtable ();
+  Hashtable < Action, Action > usedActions = new Hashtable < Action, Action > ();
 
 
   public DFA ( int numLexStates, int numInp )

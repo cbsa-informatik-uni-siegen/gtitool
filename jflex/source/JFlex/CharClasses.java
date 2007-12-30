@@ -37,7 +37,7 @@ public class CharClasses
 
 
   /** the char classes */
-  private Vector /* of IntCharSet */classes;
+  private Vector < IntCharSet > classes;
 
 
   /** the largest character actually used in a specification */
@@ -58,7 +58,7 @@ public class CharClasses
 
     maxCharUsed = ( char ) maxCharCode;
 
-    classes = new Vector ();
+    classes = new Vector < IntCharSet > ();
     classes
         .addElement ( new IntCharSet ( new Interval ( ( char ) 0, maxChar ) ) );
   }

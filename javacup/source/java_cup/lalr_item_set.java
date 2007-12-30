@@ -20,7 +20,7 @@ import java.util.Hashtable;
  * @author Scott Hudson
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class lalr_item_set
 {
 

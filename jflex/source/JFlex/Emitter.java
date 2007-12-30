@@ -1310,6 +1310,8 @@ final public class Emitter
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public void emitActionTable ()
   {
     int lastAction = 1;
@@ -1396,6 +1398,8 @@ final public class Emitter
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   private void emitEOFVal ()
   {
     EOFActions eofActions = parser.getEOFActions ();

@@ -59,6 +59,8 @@ final public class Macros
    * @return <code>true</code>, iff the macro name has not been stored
    *         before.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public boolean insert ( String name, RegExp definition )
   {
 
@@ -76,6 +78,8 @@ final public class Macros
    * 
    * @return <code>true</code>, iff the macro name has been stored before.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public boolean markUsed ( String name )
   {
     return used.put ( name, Boolean.TRUE ) != null;
@@ -99,6 +103,8 @@ final public class Macros
    * 
    * @return the enumeration of macro names that have not been used.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public Enumeration unused ()
   {
 
@@ -141,6 +147,8 @@ final public class Macros
    * 
    * @throws MacroException if there is a cycle in the macro usage graph.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public void expand () throws MacroException
   {
 

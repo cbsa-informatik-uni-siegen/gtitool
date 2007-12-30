@@ -1,19 +1,21 @@
-/*
- * NewDialogAlphabetForm.java
- *
- * Created on 14. Dezember 2007, 12:26
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.NewDialogAlphabet;
 
 /**
+ * The new dialog alphabet form.
  *
- * @author  benny
+ * @author Benjamin Mies
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class NewDialogAlphabetForm extends javax.swing.JPanel {
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -8070356231677722624L;
+
     /** Creates new form NewDialogAlphabetForm */
     public NewDialogAlphabetForm() {
         initComponents();

@@ -1,19 +1,21 @@
-/*
- * NewDialogGrammarChoiceForm.java
- *
- * Created on 14. Dezember 2007, 09:56
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.NewDialogGrammarChoice;
 
 /**
+ * The new dialog choice form.
  *
- * @author  benny
+ * @author Benjamin Mies
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 5573593212620914155L;
+
     /** Creates new form NewDialogGrammarChoiceForm */
     public NewDialogGrammarChoiceForm() {
         initComponents();

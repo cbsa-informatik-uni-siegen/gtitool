@@ -84,7 +84,7 @@ import java.util.Stack;
  * code generation took (used to produce optional time reports in main).
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class emit
 {
 

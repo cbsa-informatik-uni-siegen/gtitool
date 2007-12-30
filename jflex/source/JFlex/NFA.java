@@ -421,6 +421,8 @@ final public class NFA
    * Returns an DFA that accepts the same language as this NFA. This DFA is
    * usualy not minimal.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public DFA getDFA ()
   {
 
@@ -726,6 +728,8 @@ final public class NFA
    * @return a pair of integers denoting the index of start and end state of the
    *         complement NFA.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   private IntPair complement ( IntPair nfa )
   {
 

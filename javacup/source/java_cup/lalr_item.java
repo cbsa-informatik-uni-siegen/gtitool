@@ -36,7 +36,7 @@ import java.util.Stack;
  * @author Scott Hudson
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class lalr_item extends lr_item_core
 {
 

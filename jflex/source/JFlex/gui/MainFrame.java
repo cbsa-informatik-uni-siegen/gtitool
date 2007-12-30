@@ -108,7 +108,7 @@ final public class MainFrame extends Frame implements Handles
     } );
 
     pack ();
-    show ();
+    setVisible ( true );
   }
 
 
@@ -261,7 +261,7 @@ final public class MainFrame extends Frame implements Handles
     {
       dialog = new OptionsDialog ( this );
     }
-    dialog.show ();
+    dialog.setVisible ( true );
   }
 
 
@@ -309,6 +309,8 @@ final public class MainFrame extends Frame implements Handles
   }
 
 
+  @SuppressWarnings (
+  { "deprecation" } )
   private void stop ()
   {
     if ( thread != null )
@@ -337,7 +339,7 @@ final public class MainFrame extends Frame implements Handles
 
     FileDialog d = new FileDialog ( this, "Choose directory", FileDialog.LOAD );
 
-    d.show ();
+    d.setVisible ( true );
 
     if ( d.getDirectory () != null )
     {
@@ -355,7 +357,7 @@ final public class MainFrame extends Frame implements Handles
     FileDialog d = new FileDialog ( this, "Choose file", FileDialog.LOAD );
 
     d.setFile ( "*.flex" );
-    d.show ();
+    d.setVisible ( true );
 
     if ( d.getFile () != null )
     {

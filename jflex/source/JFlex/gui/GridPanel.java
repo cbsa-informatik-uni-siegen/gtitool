@@ -190,6 +190,8 @@ public class GridPanel extends Panel implements Handles
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   public void add ( int x, int y, int dx, int dy, int handle, Component c )
   {
     super.add ( c );

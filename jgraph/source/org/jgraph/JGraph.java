@@ -629,6 +629,8 @@ public class JGraph
    * Creates and returns a sample <code>GraphModel</code>. Used primarily for
    * beanbuilders to show something interesting.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public static void addSampleData ( GraphModel model )
   {
     ConnectionSet cs = new ConnectionSet ();
@@ -3113,6 +3115,8 @@ public class JGraph
   /**
    * Returns all selected cells in <code>cells</code>.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   public Object [] getSelectionCells ( Object [] cells )
   {
     if ( cells != null )
@@ -3420,6 +3424,8 @@ public class JGraph
   /**
    * Serialization support.
    */
+  @SuppressWarnings (
+  { "unchecked" } )
   private void writeObject ( ObjectOutputStream s ) throws IOException
   {
     Vector values = new Vector ();

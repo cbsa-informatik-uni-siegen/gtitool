@@ -35,7 +35,7 @@ import org.jgraph.event.GraphSelectionListener;
 
 
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class DefaultGraphCellEditor implements ActionListener, GraphCellEditor,
     GraphSelectionListener, Serializable
 {

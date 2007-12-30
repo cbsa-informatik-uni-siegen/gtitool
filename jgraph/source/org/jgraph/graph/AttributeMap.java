@@ -28,7 +28,7 @@ import java.util.Set;
  * basis without having to change the GraphConstants class
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class AttributeMap extends Hashtable implements Cloneable
 {
 

@@ -274,10 +274,12 @@ public class OptionsDialog extends Dialog
   }
 
 
+  @SuppressWarnings (
+  { "unchecked" } )
   private void skelBrowse ()
   {
     FileDialog d = new FileDialog ( owner, "Choose file", FileDialog.LOAD );
-    d.show ();
+    d.setVisible ( true );
 
     if ( d.getFile () != null )
     {
@@ -344,7 +346,7 @@ public class OptionsDialog extends Dialog
 
   public void close ()
   {
-    hide ();
+    setVisible ( false );
   }
 
 }

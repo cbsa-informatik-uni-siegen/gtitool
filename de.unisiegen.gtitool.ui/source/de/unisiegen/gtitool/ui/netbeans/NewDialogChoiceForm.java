@@ -1,19 +1,21 @@
-/*
- * NewDialogChoiceForm.java
- *
- * Created on 14. Dezember 2007, 09:59
- */
-
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.ui.logic.NewDialogChoice;
 
 /**
+ * The new dialog choice form.
  *
- * @author  benny
+ * @author Benjamin Mies
+ * @version $Id$
  */
+@SuppressWarnings({ "all" })
 public class NewDialogChoiceForm extends javax.swing.JPanel {
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -4830869368935186916L;
+
     /** Creates new form NewDialogChoiceForm */
     public NewDialogChoiceForm() {
         initComponents();

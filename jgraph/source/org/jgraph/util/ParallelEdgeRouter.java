@@ -1,6 +1,6 @@
 /*
- * $Id$ Copyright
- * (c) 2001-2007 Gaudenz Alder Copyright (c) 2004-2007 David Benson
+ * $Id$ Copyright (c)
+ * 2001-2007 Gaudenz Alder Copyright (c) 2004-2007 David Benson
  */
 package org.jgraph.util;
 
@@ -27,7 +27,7 @@ import org.jgraph.graph.DefaultEdge.LoopRouting;
  * A routing algorithm that
  */
 @SuppressWarnings (
-{ "all" } )
+{ "all", "unchecked" } )
 public class ParallelEdgeRouter extends LoopRouting
 {
 

@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
 
 
 /**
- * The test class of the {@link PDA}.
+ * The test class of the {@link DefaultPDA}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -135,12 +135,12 @@ public class PDATest extends MachineTest
   {
     initEntities ();
 
-    PDA machine = new PDA ( alphabet );
-    machine.addState ( z0, z1, z2 );
-    machine.addTransition ( t0, t1, t2, t3, t4 );
+    PDA pda = new DefaultPDA ( alphabet );
+    pda.addState ( z0, z1, z2 );
+    pda.addTransition ( t0, t1, t2, t3, t4 );
 
     Word word = new Word ( b, c, a, c, b, a, b );
 
-    start ( machine, word );
+    start ( pda, word );
   }
 }

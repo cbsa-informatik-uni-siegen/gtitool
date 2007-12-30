@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
 
 
 /**
- * The test class of the {@link DFA}.
+ * The test class of the {@link DefaultDFA}.
  * 
  * @author Christian Fehler
  * @version $Id: MachinesTest.java 318 2007-12-07 15:37:08Z fehler $
@@ -134,13 +134,13 @@ public class DFATest extends MachineTest
   public static void main ( String [] pArguments )
   {
     initEntities ();
-    
-    DFA machine = new DFA ( alphabet );
-    machine.addState ( z0, z1, z2 );
-    machine.addTransition ( t0, t1, t2, t3, t4 );
+
+    DFA dfa = new DefaultDFA ( alphabet );
+    dfa.addState ( z0, z1, z2 );
+    dfa.addTransition ( t0, t1, t2, t3, t4 );
 
     Word word = new Word ( b, c, a, c, b, a, b );
 
-    start ( machine, word );
+    start ( dfa, word );
   }
 }

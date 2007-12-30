@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
 
 
 /**
- * The test class of the {@link NFA}.
+ * The test class of the {@link DefaultNFA}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -139,12 +139,12 @@ public class NFATest extends MachineTest
   {
     initEntities ();
 
-    NFA machine = new NFA ( alphabet );
-    machine.addState ( z0, z1, z2, z3 );
-    machine.addTransition ( t0, t1, t2, t3, t4 );
+    NFA nfa = new DefaultNFA ( alphabet );
+    nfa.addState ( z0, z1, z2, z3 );
+    nfa.addTransition ( t0, t1, t2, t3, t4 );
 
     Word word = new Word ( a, b, c );
 
-    start ( machine, word );
+    start ( nfa, word );
   }
 }

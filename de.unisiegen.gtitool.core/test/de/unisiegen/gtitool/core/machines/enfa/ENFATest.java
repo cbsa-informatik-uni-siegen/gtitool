@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
 
 
 /**
- * The test class of the {@link ENFA}.
+ * The test class of the {@link DefaultENFA}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -125,12 +125,12 @@ public class ENFATest extends MachineTest
   {
     initEntities ();
 
-    ENFA machine = new ENFA ( alphabet );
-    machine.addState ( z0, z1, z2 );
-    machine.addTransition ( t0, t1, t2, t3 );
+    ENFA enfa = new DefaultENFA ( alphabet );
+    enfa.addState ( z0, z1, z2 );
+    enfa.addTransition ( t0, t1, t2, t3 );
 
     Word word = new Word ( b, c );
 
-    start ( machine, word );
+    start ( enfa, word );
   }
 }

@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlph
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
@@ -142,7 +143,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DFA ( alphabet );
+    DFA dfa = new DefaultDFA ( alphabet );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -260,7 +261,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DFA ( alphabet );
+    DFA dfa = new DefaultDFA ( alphabet );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -307,7 +308,7 @@ public class StorageTest
       Transition t4loaded = ( Transition ) Storage.getInstance ().load (
           "test/de/unisiegen/gtitool/ui/storage/t4.xml" );
 
-      DFA dfaloaded = new DFA ( alphabet );
+      DFA dfaloaded = new DefaultDFA ( alphabet );
       dfaloaded.addState ( z0loaded, z1loaded, z2loaded );
       dfaloaded.addTransition ( t0loaded, t1loaded, t2loaded, t3loaded,
           t4loaded );

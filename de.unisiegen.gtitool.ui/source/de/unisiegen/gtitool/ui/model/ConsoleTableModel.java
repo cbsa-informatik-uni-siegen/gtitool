@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionExce
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateFinalException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 
@@ -183,6 +184,11 @@ public final class ConsoleTableModel extends AbstractTableModel
     else if ( pMachineException instanceof MachineStateFinalException )
     {
       // Do nothing
+    }
+    else if ( pMachineException instanceof MachineStateNotReachableException )
+    {
+      MachineStateNotReachableException exception = ( MachineStateNotReachableException ) pMachineException;
+      states.add ( exception.getState () );
     }
     else if ( pMachineException instanceof MachineSymbolOnlyOneTimeException )
     {

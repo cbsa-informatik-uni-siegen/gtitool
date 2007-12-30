@@ -3,4 +3,3 @@
 
 *** Christian ***
 - PDA: Kelleralphabet implementieren
-- Warnung anzeigen, wenn ein Zustand nicht erreich werden kann

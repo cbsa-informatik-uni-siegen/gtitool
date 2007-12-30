@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionExce
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateFinalException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
@@ -72,6 +73,11 @@ public abstract class Machine implements Serializable
      * There are {@link State}s with the same name.
      */
     STATE_NAME,
+
+    /**
+     * There is a {@link State} which is not reachable.
+     */
+    STATE_NOT_REACHABLE,
 
     /**
      * There is a {@link State} with {@link Transition}s with the same
@@ -362,7 +368,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkAllSymbols ()
+  private final ArrayList < MachineException > checkAllSymbols ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( State currentState : this.getState () )
@@ -396,7 +402,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkEpsilonTransition ()
+  private final ArrayList < MachineException > checkEpsilonTransition ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( Transition currentTransition : this.getTransition () )
@@ -416,7 +422,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkFinalState ()
+  private final ArrayList < MachineException > checkFinalState ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     boolean found = false;
@@ -441,7 +447,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkMoreThanOneStartState ()
+  private final ArrayList < MachineException > checkMoreThanOneStartState ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > startStateList = new ArrayList < State > ();
@@ -467,7 +473,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkNoStartState ()
+  private final ArrayList < MachineException > checkNoStartState ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > startStateList = new ArrayList < State > ();
@@ -493,7 +499,7 @@ public abstract class Machine implements Serializable
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkStateName ()
+  private final ArrayList < MachineException > checkStateName ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > duplicatedListAll = new ArrayList < State > ();
@@ -528,12 +534,33 @@ public abstract class Machine implements Serializable
 
 
   /**
+   * Checks if there is a {@link State} which is not reachable.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  private final ArrayList < MachineException > checkStateNotReachable ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    for ( State current : this.getState () )
+    {
+      if ( ( current.getTransitionEnd ().size () == 0 )
+          && ( !current.isStartState () ) )
+      {
+        machineExceptionList.add ( new MachineStateNotReachableException (
+            current ) );
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
    * Checks if there is a {@link State} with {@link Transition}s with the same
    * {@link Symbol}.
    * 
    * @return The list of {@link MachineException}.
    */
-  protected final ArrayList < MachineException > checkSymbolOnlyOneTime ()
+  private final ArrayList < MachineException > checkSymbolOnlyOneTime ()
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( State currentState : this.getState () )
@@ -1161,6 +1188,12 @@ public abstract class Machine implements Serializable
     if ( this.validationElementList.contains ( ValidationElement.STATE_NAME ) )
     {
       machineExceptionList.addAll ( checkStateName () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.STATE_NOT_REACHABLE ) )
+    {
+      machineExceptionList.addAll ( checkStateNotReachable () );
     }
 
     if ( this.validationElementList

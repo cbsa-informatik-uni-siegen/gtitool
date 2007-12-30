@@ -31,6 +31,7 @@ public final class PDA extends Machine
         ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
-        ValidationElement.SYMBOL_ONLY_ONE_TIME );
+        ValidationElement.SYMBOL_ONLY_ONE_TIME,
+        ValidationElement.STATE_NOT_REACHABLE );
   }
 }

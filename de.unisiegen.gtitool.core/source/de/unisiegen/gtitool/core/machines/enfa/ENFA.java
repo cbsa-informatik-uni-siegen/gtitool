@@ -29,6 +29,7 @@ public final class ENFA extends Machine
   {
     super ( pAlphabet, ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
-        ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME );
+        ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
+        ValidationElement.STATE_NOT_REACHABLE );
   }
 }

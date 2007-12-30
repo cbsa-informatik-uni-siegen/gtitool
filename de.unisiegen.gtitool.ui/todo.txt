@@ -4,7 +4,17 @@
 - RecentlyUsedFiles
 - OpenedFiles
 - Dateien per Übergabe in der main Methode öffnen können (siehe TPML)
-
+- Du müsstest dir mal die messages.properties im ui anschauen, die hast du mit
+  Konflikten hochgeladen, die deutsche übrigens gar nicht?! Folgende Werte
+  stehen in Widerspruch zu einander:
+  - MachinePanel.Mouse=Stop
+    MachinePanel.AddState=AutoStep
+    MachinePanel.AddTransition=Previous Step
+  - MachinePanel.Mouse=Mouse
+    MachinePanel.AddState=Add a new state
+    MachinePanel.AddTransition=Add a new transition
+  und die letzte Zeile:
+  - MainWindow.EditMachine=Edit Machine
 
 
 *** Christian ***

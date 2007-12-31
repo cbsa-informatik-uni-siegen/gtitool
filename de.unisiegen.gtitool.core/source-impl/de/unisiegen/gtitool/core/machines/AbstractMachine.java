@@ -332,7 +332,7 @@ public abstract class AbstractMachine implements Machine
     {
       if ( pTransition.getId () > this.currentTransitionId )
       {
-        this.currentStateId = pTransition.getId ();
+        this.currentTransitionId = pTransition.getId ();
       }
     }
     this.transitionList.add ( pTransition );

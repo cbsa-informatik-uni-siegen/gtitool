@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines.pda;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
@@ -33,5 +34,17 @@ public final class DefaultPDA extends AbstractMachine implements PDA
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.SYMBOL_ONLY_ONE_TIME,
         ValidationElement.STATE_NOT_REACHABLE );
+  }
+
+
+  /**
+   * Returns the {@link Machine} type.
+   * 
+   * @return The {@link Machine} type.
+   */
+  @Override
+  public final String getMachineType ()
+  {
+    return "PDA"; //$NON-NLS-1$
   }
 }

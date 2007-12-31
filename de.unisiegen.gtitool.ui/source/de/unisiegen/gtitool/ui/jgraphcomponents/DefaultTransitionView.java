@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * This class represents the {@link Transition} in the gui
+ * This class represents the {@link Transition} in the gui.
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -57,13 +57,15 @@ public class DefaultTransitionView extends DefaultEdge implements Storable
 
 
   /**
-   * Getter for this {@link Transition}
+   * {@inheritDoc}
    * 
-   * @return the {@link Transition} of this view
+   * @see Storable#getElement()
    */
-  public Transition getTransition ()
+  public final Element getElement ()
   {
-    return this.transition;
+    Element newElement = new Element ( "TransitionView" ); //$NON-NLS-1$
+    newElement.addElement ( this.transition.getElement () );
+    return newElement;
   }
 
 
@@ -90,14 +92,12 @@ public class DefaultTransitionView extends DefaultEdge implements Storable
 
 
   /**
-   * {@inheritDoc}
+   * Getter for this {@link Transition}
    * 
-   * @see Storable#getElement()
+   * @return the {@link Transition} of this view
    */
-  public final Element getElement ()
+  public Transition getTransition ()
   {
-    Element newElement = new Element ( "DefaultTransitionView" ); //$NON-NLS-1$
-    newElement.addElement ( this.transition.getElement () );
-    return newElement;
+    return this.transition;
   }
 }

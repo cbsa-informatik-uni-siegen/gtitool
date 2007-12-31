@@ -19,15 +19,8 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.machines.dfa.DFA;
-import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
-import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
-import de.unisiegen.gtitool.core.machines.enfa.ENFA;
-import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
-import de.unisiegen.gtitool.core.machines.nfa.NFA;
-import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
-import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -103,10 +96,10 @@ public class DefaultMachineModel implements Storable
     String machineType = ""; //$NON-NLS-1$
 
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "DefaultMachineModel" ) ) //$NON-NLS-1$
+    if ( !pElement.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
-          + "\" is not a DefaultMachineModel" ); //$NON-NLS-1$
+          + "\" is not a machine model" ); //$NON-NLS-1$
     }
 
     // Attribute
@@ -140,8 +133,8 @@ public class DefaultMachineModel implements Storable
         alphabet = new Alphabet ( current );
         foundAlphabet = true;
       }
-      else if ( ( !current.getName ().equals ( "DefaultStateView" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "DefaultTransitionView" ) ) ) //$NON-NLS-1$
+      else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
@@ -153,30 +146,14 @@ public class DefaultMachineModel implements Storable
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
     // initialize this models elements
-
-    if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
-    {
-      this.machine = new DefaultDFA ( alphabet );
-    }
-    if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
-    {
-      this.machine = new DefaultNFA ( alphabet );
-    }
-    if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
-    {
-      this.machine = new DefaultENFA ( alphabet );
-    }
-    if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
-    {
-      this.machine = new DefaultPDA ( alphabet );
-    }
+    this.machine = AbstractMachine.createMachine ( machineType, alphabet );
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
 
     // Load the states
     for ( Element current : pElement.getElement () )
     {
-      if ( current.getName ().equals ( "DefaultStateView" ) ) //$NON-NLS-1$
+      if ( current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
       {
         double x = 0;
         double y = 0;
@@ -186,11 +163,11 @@ public class DefaultMachineModel implements Storable
         for ( Attribute attribute : current.getAttribute () )
         {
           if ( attribute.getName ().equals ( "x" ) ) { //$NON-NLS-1$
-            x = Double.valueOf ( attribute.getValue () ).doubleValue ();
+            x = attribute.getValueDouble ();
             xValueLoaded = true;
           }
           if ( attribute.getName ().equals ( "y" ) ) { //$NON-NLS-1$
-            y = Double.valueOf ( attribute.getValue () ).doubleValue ();
+            y = attribute.getValueDouble ();
             yValueLoaded = true;
           }
         }
@@ -207,7 +184,7 @@ public class DefaultMachineModel implements Storable
         createStateView ( x + 35, y + 35, state );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "DefaultTransitionView" ) ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
@@ -217,7 +194,7 @@ public class DefaultMachineModel implements Storable
     // Load the transitions
     for ( Element current : pElement.getElement () )
     {
-      if ( current.getName ().equals ( "DefaultTransitionView" ) ) //$NON-NLS-1$
+      if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
       {
         Transition transition = new Transition ( current.getElement ( 0 ) );
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
@@ -226,7 +203,7 @@ public class DefaultMachineModel implements Storable
         createTransitionView ( transition, source, target );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "DefaultStateView" ) ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
@@ -403,21 +380,14 @@ public class DefaultMachineModel implements Storable
    */
   public Element getElement ()
   {
-    Element newElement = new Element ( "DefaultMachineModel" ); //$NON-NLS-1$
-    if ( this.machine instanceof DFA )
-      newElement.addAttribute ( new Attribute ( "MachineType", "DFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-    else if ( this.machine instanceof NFA )
-      newElement.addAttribute ( new Attribute ( "MachineType", "NFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-    else if ( this.machine instanceof ENFA )
-      newElement.addAttribute ( new Attribute ( "MachineType", "ENFA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-    else if ( this.machine instanceof PDA )
-      newElement.addAttribute ( new Attribute ( "MachineType", "PDA" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
+        .getMachineType () ) );
     newElement.addElement ( this.machine.getAlphabet ().getElement () );
     for ( DefaultStateView stateView : this.stateViewList )
     {
       newElement.addElement ( stateView.getElement () );
     }
-
     for ( DefaultTransitionView transitionView : this.transitionViewList )
     {
       newElement.addElement ( transitionView.getElement () );

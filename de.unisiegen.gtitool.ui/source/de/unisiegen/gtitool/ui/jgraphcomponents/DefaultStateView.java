@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * TODO
+ * This class represents the {@link State} in the gui.
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -52,17 +52,6 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
 
 
   /**
-   * Get the {@link State} of this view
-   * 
-   * @return the {@link State} of this view
-   */
-  public State getState ()
-  {
-    return this.state;
-  }
-
-
-  /**
    * Add a new Transition to this state view
    * 
    * @param transition
@@ -70,6 +59,22 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
   public void addTransition ( DefaultTransitionView transition )
   {
     this.removeList.add ( transition );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public final Element getElement ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    Element newElement = new Element ( "StateView" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "x", bounds.getX () ) ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "y", bounds.getY () ) ); //$NON-NLS-1$
+    newElement.addElement ( this.state.getElement () );
+    return newElement;
   }
 
 
@@ -85,19 +90,12 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
 
 
   /**
-   * {@inheritDoc}
+   * Get the {@link State} of this view
    * 
-   * @see Storable#getElement()
+   * @return the {@link State} of this view
    */
-  public final Element getElement ()
+  public State getState ()
   {
-    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
-    double x = bounds.getX ();
-    double y = bounds.getY ();
-    Element newElement = new Element ( "DefaultStateView" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "x", String.valueOf ( x ) ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "y", String.valueOf ( y ) ) ); //$NON-NLS-1$
-    newElement.addElement ( this.state.getElement () );
-    return newElement;
+    return this.state;
   }
 }

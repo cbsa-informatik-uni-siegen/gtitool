@@ -110,6 +110,14 @@ public interface Machine extends Serializable
 
 
   /**
+   * Returns the <code>Machine</code> type.
+   * 
+   * @return The <code>Machine</code> type.
+   */
+  public String getMachineType ();
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.

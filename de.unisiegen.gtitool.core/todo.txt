@@ -4,3 +4,6 @@
 *** Christian ***
 - PDA: Kelleralphabet implementieren
 - Eine bessere Fehlerbehandlung beim Speichern einbauen
+
+
+*** Benny oder Christian ***

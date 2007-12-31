@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines.dfa;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
@@ -33,5 +34,17 @@ public final class DefaultDFA extends AbstractMachine implements DFA
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.STATE_NOT_REACHABLE,
         ValidationElement.SYMBOL_ONLY_ONE_TIME );
+  }
+
+
+  /**
+   * Returns the {@link Machine} type.
+   * 
+   * @return The {@link Machine} type.
+   */
+  @Override
+  public final String getMachineType ()
+  {
+    return "DFA"; //$NON-NLS-1$
   }
 }

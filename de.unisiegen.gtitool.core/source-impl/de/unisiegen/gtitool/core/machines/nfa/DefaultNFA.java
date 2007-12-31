@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines.nfa;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
+import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
@@ -32,5 +33,17 @@ public final class DefaultNFA extends AbstractMachine implements NFA
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.STATE_NOT_REACHABLE );
+  }
+
+
+  /**
+   * Returns the {@link Machine} type.
+   * 
+   * @return The {@link Machine} type.
+   */
+  @Override
+  public final String getMachineType ()
+  {
+    return "NFA"; //$NON-NLS-1$
   }
 }

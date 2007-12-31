@@ -10,15 +10,21 @@ import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -149,20 +155,45 @@ public final class Storage
       {
         return new Transition ( element );
       }
-      else if ( element.getName ().equals ( "DefaultMachineModel" ) ) //$NON-NLS-1$
+      else if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
         return new DefaultMachineModel ( element );
       }
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MainElement" ) ); //$NON-NLS-1$
     }
     catch ( StoreException exc )
     {
       throw exc;
     }
-    catch ( Exception exc )
+    catch ( ParserConfigurationException e )
     {
-      throw new StoreException ( Messages.getString ( "StoreException.Load" ) ); //$NON-NLS-1$
+      throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
-    return null;
+    catch ( SAXException e )
+    {
+      throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
+    }
+    catch ( IOException e )
+    {
+      throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
+    }
+    catch ( AlphabetException e )
+    {
+      throw new StoreException ( e.getDescription () );
+    }
+    catch ( SymbolException e )
+    {
+      throw new StoreException ( e.getDescription () );
+    }
+    catch ( StateException e )
+    {
+      throw new StoreException ( e.getDescription () );
+    }
+    catch ( TransitionException e )
+    {
+      throw new StoreException ( e.getDescription () );
+    }
   }
 
 

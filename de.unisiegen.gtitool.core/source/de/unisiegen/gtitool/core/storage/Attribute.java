@@ -47,6 +47,21 @@ public final class Attribute
    * @param pName The name of this <code>Attribute</code>.
    * @param pValue The value of this <code>Attribute</code>.
    */
+  public Attribute ( String pName, double pValue )
+  {
+    // Name
+    setName ( pName );
+    // Value
+    setValue ( String.valueOf ( pValue ) );
+  }
+
+
+  /**
+   * Allocates a new <code>Attribute</code>.
+   * 
+   * @param pName The name of this <code>Attribute</code>.
+   * @param pValue The value of this <code>Attribute</code>.
+   */
   public Attribute ( String pName, int pValue )
   {
     // Name
@@ -113,6 +128,27 @@ public final class Attribute
       return false;
     }
     else
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.WrongAttributeValueFormat" ) ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * Returns the double value.
+   * 
+   * @return The double value.
+   * @throws StoreException If the value is not a double.
+   * @see #value
+   */
+  public final double getValueDouble () throws StoreException
+  {
+    try
+    {
+      return Double.parseDouble ( this.value );
+    }
+    catch ( NumberFormatException exc )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.WrongAttributeValueFormat" ) ); //$NON-NLS-1$

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -23,6 +24,11 @@ import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
+import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
+import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
+import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -83,6 +89,38 @@ public abstract class AbstractMachine implements Machine
      * {@link Symbol}.
      */
     SYMBOL_ONLY_ONE_TIME
+  }
+
+
+  /**
+   * Returns the {@link Machine} with the given {@link Machine} type.
+   * 
+   * @param pMachineType The {@link Machine} type.
+   * @param pAlphabet The {@link Alphabet}.
+   * @return The {@link Machine} with the given {@link Machine} type.
+   * @throws StoreException If the {@link Machine} type is unknown.
+   */
+  public static Machine createMachine ( String pMachineType, Alphabet pAlphabet )
+      throws StoreException
+  {
+    if ( pMachineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
+    {
+      return new DefaultDFA ( pAlphabet );
+    }
+    if ( pMachineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
+    {
+      return new DefaultNFA ( pAlphabet );
+    }
+    if ( pMachineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
+    {
+      return new DefaultENFA ( pAlphabet );
+    }
+    if ( pMachineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
+    {
+      return new DefaultPDA ( pAlphabet );
+    }
+    throw new StoreException ( Messages
+        .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
   }
 
 
@@ -646,6 +684,14 @@ public abstract class AbstractMachine implements Machine
   {
     return this.word.getCurrentSymbol ();
   }
+
+
+  /**
+   * Returns the <code>Machine</code> type.
+   * 
+   * @return The <code>Machine</code> type.
+   */
+  public abstract String getMachineType ();
 
 
   /**

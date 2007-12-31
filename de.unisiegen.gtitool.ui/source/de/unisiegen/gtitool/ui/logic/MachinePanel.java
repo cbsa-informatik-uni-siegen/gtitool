@@ -41,10 +41,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.machines.dfa.DFA;
-import de.unisiegen.gtitool.core.machines.enfa.ENFA;
-import de.unisiegen.gtitool.core.machines.nfa.NFA;
-import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -842,20 +838,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           {
             return true;
           }
-          if ( MachinePanel.this.machine instanceof DFA
-              && file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
+          if ( file.getName ().matches ( ".+\\." //$NON-NLS-1$
+              + MachinePanel.this.machine.getMachineType ().toLowerCase () ) )
+          {
             return true;
-          if ( MachinePanel.this.machine instanceof NFA
-              && file.getName ().matches ( ".+\\.nfa" ) ) //$NON-NLS-1$
-            return true;
-          if ( MachinePanel.this.machine instanceof ENFA
-              && file.getName ().matches ( ".+\\.enfa" ) ) //$NON-NLS-1$
-            return true;
-          if ( MachinePanel.this.machine instanceof PDA
-              && file.getName ().matches ( ".+\\.pda" ) ) //$NON-NLS-1$
-            return true;
+          }
           return false;
-
         }
 
 
@@ -863,50 +851,24 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         @Override
         public String getDescription ()
         {
-          if ( MachinePanel.this.machine instanceof DFA )
-            return Messages.getString ( "NewDialog.DFA" ) + " (*.dfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
-          if ( MachinePanel.this.machine instanceof NFA )
-            return Messages.getString ( "NewDialog.NFA" ) + " (*.nfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
-          if ( MachinePanel.this.machine instanceof ENFA )
-            return Messages.getString ( "NewDialog.ENFA" ) + " (*.enfa)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
-          if ( MachinePanel.this.machine instanceof PDA )
-            return Messages.getString ( "NewDialog.PDA" ) + " (*.pda)"; //$NON-NLS-1$ //$NON-NLS-2$ /$NON-NLS-2$
-          return ""; //$NON-NLS-1$
+          return Messages.getString ( "NewDialog." //$NON-NLS-1$
+              + MachinePanel.this.machine.getMachineType () )
+              + " (*." //$NON-NLS-1$
+              + MachinePanel.this.machine.getMachineType ().toLowerCase ()
+              + ")"; //$NON-NLS-1$
         }
-
       } );
       int n = chooser.showSaveDialog ( this.parent );
       if ( n == JFileChooser.CANCEL_OPTION
           || chooser.getSelectedFile () == null )
         return null;
 
-      String filename = ""; //$NON-NLS-1$
+      String filename = chooser.getSelectedFile ().toString ().matches (
+          ".+\\." + MachinePanel.this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
+          .getSelectedFile ().toString ()
+          : chooser.getSelectedFile ().toString () + "." //$NON-NLS-1$
+              + MachinePanel.this.machine.getMachineType ().toLowerCase ();
 
-      if ( MachinePanel.this.machine instanceof DFA )
-      {
-        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.dfa" ) ? //$NON-NLS-1$
-        chooser.getSelectedFile ().toString ()
-            : chooser.getSelectedFile ().toString () + ".dfa"; //$NON-NLS-1$
-      }
-      else if ( MachinePanel.this.machine instanceof NFA )
-      {
-        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.nfa" ) ? //$NON-NLS-1$
-        chooser.getSelectedFile ().toString ()
-            : chooser.getSelectedFile ().toString () + ".nfa"; //$NON-NLS-1$
-      }
-      else if ( MachinePanel.this.machine instanceof ENFA )
-      {
-        filename = chooser.getSelectedFile ().toString ()
-            .matches ( ".+\\.enfa" ) ? //$NON-NLS-1$
-        chooser.getSelectedFile ().toString ()
-            : chooser.getSelectedFile ().toString () + ".enfa"; //$NON-NLS-1$
-      }
-      else if ( MachinePanel.this.machine instanceof PDA )
-      {
-        filename = chooser.getSelectedFile ().toString ().matches ( ".+\\.pda" ) ? //$NON-NLS-1$
-        chooser.getSelectedFile ().toString ()
-            : chooser.getSelectedFile ().toString () + ".pda"; //$NON-NLS-1$
-      }
       Storage.getInstance ().store ( this.model, filename );
       JOptionPane
           .showMessageDialog (

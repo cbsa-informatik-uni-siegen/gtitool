@@ -23,3 +23,10 @@
 - Meldung über Fehler und Warnungen anzeigen und Console einblenden
 - Zustand in der Tabelle highlighten mit Timer
 - Konsole und Tabelle nur auf ein MachinePanel beschränken
+
+
+*** Benny oder Christian ***
+- Das MachineTableModel kommt mit einer Änderung des Alphabets nicht klar
+- Die gleiche Datei sollte nicht zweimal geöffnet werden können, sondern es
+  soll zu der geöffneten Datei gesprungen werden, wenn diese nochmal geöffnet
+  wird

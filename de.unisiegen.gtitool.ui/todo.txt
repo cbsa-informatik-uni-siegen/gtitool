@@ -23,6 +23,7 @@
 - Meldung über Fehler und Warnungen anzeigen und Console einblenden
 - Zustand in der Tabelle highlighten mit Timer
 - Konsole und Tabelle nur auf ein MachinePanel beschränken
+- MachineException Handling verbessern
 
 
 *** Benny oder Christian ***

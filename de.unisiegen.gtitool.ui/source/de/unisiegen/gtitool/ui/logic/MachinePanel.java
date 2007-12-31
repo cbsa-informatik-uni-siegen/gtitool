@@ -36,6 +36,7 @@ import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -1125,7 +1126,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, false, false );
+          State newState = new DefaultState ( MachinePanel.this.alphabet,
+              false, false );
 
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1237,8 +1239,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
               try
               {
-                State newState = new State ( MachinePanel.this.alphabet, false,
-                    false );
+                State newState = new DefaultState ( MachinePanel.this.alphabet,
+                    false, false );
                 target = MachinePanel.this.model.createStateView ( e
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1326,7 +1328,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             try
             {
               State newState;
-              newState = new State ( MachinePanel.this.alphabet, false, false );
+              newState = new DefaultState ( MachinePanel.this.alphabet, false,
+                  false );
               target = MachinePanel.this.model.createStateView (
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
@@ -1490,7 +1493,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, true, false );
+          State newState = new DefaultState ( MachinePanel.this.alphabet, true,
+              false );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
@@ -1562,7 +1566,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new State ( MachinePanel.this.alphabet, false, true );
+          State newState = new DefaultState ( MachinePanel.this.alphabet,
+              false, true );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );

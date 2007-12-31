@@ -11,80 +11,15 @@ import java.util.Iterator;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Stack implements Entity, Iterable < Symbol >
+public interface Stack extends Entity, Iterable < Symbol >
 {
-
-  /**
-   * The serial version uid.
-   */
-  private static final long serialVersionUID = -4411648655106144327L;
-
-
-  /**
-   * The list of {@link Symbol}s.
-   */
-  private ArrayList < Symbol > symbolList;
-
-
-  /**
-   * Allocates a new <code>Stack</code>.
-   */
-  public Stack ()
-  {
-    // SymbolList
-    this.symbolList = new ArrayList < Symbol > ();
-  }
-
-
-  /**
-   * Allocates a new <code>Stack</code>.
-   * 
-   * @param pSymbols The array of {@link Symbol}s.
-   */
-  public Stack ( Iterable < Symbol > pSymbols )
-  {
-    this ();
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    push ( pSymbols );
-  }
-
-
-  /**
-   * Allocates a new <code>Stack</code>.
-   * 
-   * @param pSymbols The array of {@link Symbol}s.
-   */
-  public Stack ( Symbol ... pSymbols )
-  {
-    this ();
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    push ( pSymbols );
-  }
-
 
   /**
    * {@inheritDoc}
    * 
    * @see Entity#clone()
    */
-  @Override
-  public final Stack clone ()
-  {
-    Stack newStack = new Stack ();
-    for ( Symbol current : this.symbolList )
-    {
-      newStack.push ( current.clone () );
-    }
-    return newStack;
-  }
+  public Stack clone ();
 
 
   /**
@@ -96,10 +31,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public final boolean contains ( Symbol pSymbol )
-  {
-    return this.symbolList.contains ( pSymbol );
-  }
+  public boolean contains ( Symbol pSymbol );
 
 
   /**
@@ -107,16 +39,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @see Object#equals(Object)
    */
-  @Override
-  public final boolean equals ( Object pOther )
-  {
-    if ( pOther instanceof Stack )
-    {
-      Stack other = ( Stack ) pOther;
-      return this.symbolList.equals ( other.symbolList );
-    }
-    return false;
-  }
+  public boolean equals ( Object pOther );
 
 
   /**
@@ -124,10 +47,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @return The {@link Symbol}s.
    */
-  public final ArrayList < Symbol > get ()
-  {
-    return this.symbolList;
-  }
+  public ArrayList < Symbol > get ();
 
 
   /**
@@ -135,17 +55,8 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @param pIndex The index.
    * @return The {@link Symbol} with the given index.
-   * @see #symbolList
    */
-  public final Symbol get ( int pIndex )
-  {
-    Iterator < Symbol > iterator = this.symbolList.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
-  }
+  public Symbol get ( int pIndex );
 
 
   /**
@@ -153,11 +64,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @see Entity#hashCode()
    */
-  @Override
-  public final int hashCode ()
-  {
-    return this.symbolList.hashCode ();
-  }
+  public int hashCode ();
 
 
   /**
@@ -165,10 +72,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @return An iterator over the {@link Symbol}s in this <code>Stack</code>.
    */
-  public final Iterator < Symbol > iterator ()
-  {
-    return this.symbolList.iterator ();
-  }
+  public Iterator < Symbol > iterator ();
 
 
   /**
@@ -177,10 +81,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @return The {@link Symbol} at the top of this <code>Stack</code>.
    */
-  public final Symbol peak ()
-  {
-    return this.symbolList.get ( this.symbolList.size () - 1 );
-  }
+  public Symbol peak ();
 
 
   /**
@@ -189,10 +90,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @return The {@link Symbol} at the top of this <code>Stack</code>.
    */
-  public final Symbol pop ()
-  {
-    return this.symbolList.remove ( this.symbolList.size () - 1 );
-  }
+  public Symbol pop ();
 
 
   /**
@@ -201,17 +99,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be pushed onto this
    *          <code>Stack</code>.
    */
-  public final void push ( Iterable < Symbol > pSymbols )
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      push ( current );
-    }
-  }
+  public void push ( Iterable < Symbol > pSymbols );
 
 
   /**
@@ -219,15 +107,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @param pSymbol The {@link Symbol} to be pushed onto this <code>Stack</code>.
    */
-  public final void push ( Symbol pSymbol )
-  {
-    // Symbol
-    if ( pSymbol == null )
-    {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
-    }
-    this.symbolList.add ( pSymbol );
-  }
+  public void push ( Symbol pSymbol );
 
 
   /**
@@ -236,17 +116,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * @param pSymbols The {@link Symbol}s to be pushed onto this
    *          <code>Stack</code>.
    */
-  public final void push ( Symbol ... pSymbols )
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      push ( current );
-    }
-  }
+  public void push ( Symbol ... pSymbols );
 
 
   /**
@@ -254,10 +124,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @return The number of {@link Symbol}s in this <code>Stack</code>.
    */
-  public final int size ()
-  {
-    return this.symbolList.size ();
-  }
+  public int size ();
 
 
   /**
@@ -265,16 +132,7 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @see Entity#toString()
    */
-  @Override
-  public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    for ( Symbol current : this.symbolList )
-    {
-      result.append ( current.getName () );
-    }
-    return result.toString ();
-  }
+  public String toString ();
 
 
   /**
@@ -282,13 +140,5 @@ public final class Stack implements Entity, Iterable < Symbol >
    * 
    * @see Entity#toString()
    */
-  public final String toStringDebug ()
-  {
-    StringBuilder result = new StringBuilder ();
-    for ( Symbol current : this.symbolList )
-    {
-      result.append ( current.getName () );
-    }
-    return result.toString ();
-  }
+  public String toStringDebug ();
 }

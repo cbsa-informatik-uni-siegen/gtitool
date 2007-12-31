@@ -1,20 +1,13 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import de.unisiegen.gtitool.core.Messages;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
-import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -23,7 +16,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Transition implements ParseableEntity, Storable,
+public interface Transition extends ParseableEntity, Storable,
     Comparable < Transition >, Iterable < Symbol >
 {
 
@@ -31,289 +24,6 @@ public final class Transition implements ParseableEntity, Storable,
    * The value of the id of it was not defined so far.
    */
   public static final int ID_NOT_DEFINED = -1;
-
-
-  /**
-   * The serial version uid.
-   */
-  private static final long serialVersionUID = 7649068993385065572L;
-
-
-  /**
-   * The start offset of this <code>Alphabet</code> in the source code.
-   * 
-   * @see #getParserStartOffset()
-   * @see #setParserStartOffset(int)
-   */
-  private int parserStartOffset = NO_PARSER_OFFSET;
-
-
-  /**
-   * The end offset of this <code>Alphabet</code> in the source code.
-   * 
-   * @see #getParserEndOffset()
-   * @see #setParserEndOffset(int)
-   */
-  private int parserEndOffset = NO_PARSER_OFFSET;
-
-
-  /**
-   * The {@link Alphabet} of this <code>Transition</code>.
-   */
-  private Alphabet alphabet;
-
-
-  /**
-   * The id of this <code>Transition</code>.
-   */
-  private int id = ID_NOT_DEFINED;
-
-
-  /**
-   * The {@link State} where the <code>Transition</code> begins.
-   */
-  private State stateBegin;
-
-
-  /**
-   * The {@link State} id where the <code>Transition</code> begins.
-   */
-  private int stateBeginId;
-
-
-  /**
-   * The {@link State} where the <code>Transition</code> ends.
-   */
-  private State stateEnd;
-
-
-  /**
-   * The {@link State} id where the <code>Transition</code> ends.
-   */
-  private int stateEndId;
-
-
-  /**
-   * The list of {@link Symbol}s.
-   */
-  private TreeSet < Symbol > symbolSet;
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   */
-  public Transition ()
-  {
-    this.symbolSet = new TreeSet < Symbol > ();
-  }
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   * 
-   * @param pAlphabet The {@link Alphabet} of this <code>Transition</code>.
-   * @param pStateBegin The {@link State} where the <code>Transition</code>
-   *          begins.
-   * @param pStateEnd The {@link State} where the <code>Transition</code>
-   *          ends.
-   * @param pSymbols The array of {@link Symbol}s.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   */
-  public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      Iterable < Symbol > pSymbols )
-      throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    // Alphabet
-    setAlphabet ( pAlphabet );
-    // StateBegin
-    setStateBegin ( pStateBegin );
-    // StateEnd
-    setStateEnd ( pStateEnd );
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
-  }
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   * 
-   * @param pAlphabet The {@link Alphabet} of this <code>Transition</code>.
-   * @param pStateBegin The {@link State} where the <code>Transition</code>
-   *          begins.
-   * @param pStateEnd The {@link State} where the <code>Transition</code>
-   *          ends.
-   * @param pSymbols The array of {@link Symbol}s.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   */
-  public Transition ( Alphabet pAlphabet, State pStateBegin, State pStateEnd,
-      Symbol ... pSymbols ) throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    // Alphabet
-    setAlphabet ( pAlphabet );
-    // StateBegin
-    setStateBegin ( pStateBegin );
-    // StateEnd
-    setStateEnd ( pStateEnd );
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
-  }
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   * 
-   * @param pElement The {@link Element}. *
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
-   *           correct.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
-   * @throws StoreException If the {@link Element} can not be parsed.
-   */
-  public Transition ( Element pElement )
-      throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException, SymbolException, AlphabetException,
-      StoreException
-  {
-    // Check if the element is correct
-    if ( !pElement.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
-    {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
-          + "\" is not a transition" ); //$NON-NLS-1$
-    }
-
-    // Symbols
-    this.symbolSet = new TreeSet < Symbol > ();
-
-    // Attribute
-    boolean foundId = false;
-    boolean foundStateBeginId = false;
-    boolean foundStateEndId = false;
-    for ( Attribute current : pElement.getAttribute () )
-    {
-      if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
-      {
-        setId ( current.getValueInt () );
-        foundId = true;
-      }
-      else if ( current.getName ().equals ( "stateBeginId" ) ) //$NON-NLS-1$
-      {
-        setStateBeginId ( current.getValueInt () );
-        foundStateBeginId = true;
-      }
-      else if ( current.getName ().equals ( "stateEndId" ) ) //$NON-NLS-1$
-      {
-        setStateEndId ( current.getValueInt () );
-        foundStateEndId = true;
-      }
-      else
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Not all attribute values found
-    if ( ( !foundId ) || ( !foundStateBeginId ) || ( !foundStateEndId ) )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
-    }
-
-    // Element
-    boolean foundAlphabet = false;
-    for ( Element current : pElement.getElement () )
-    {
-      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-      {
-        setAlphabet ( new Alphabet ( current ) );
-        foundAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
-      {
-        add ( new Symbol ( current ) );
-      }
-      else
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Not all element values found
-    if ( !foundAlphabet )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
-    }
-  }
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   * 
-   * @param pSymbols The array of {@link Symbol}s.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   */
-  public Transition ( Iterable < Symbol > pSymbols )
-      throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
-  }
-
-
-  /**
-   * Allocates a new <code>Transition</code>.
-   * 
-   * @param pSymbols The array of {@link Symbol}s.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
-   */
-  public Transition ( Symbol ... pSymbols )
-      throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    // Symbols
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
-  }
 
 
   /**
@@ -327,19 +37,9 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void add ( Iterable < Symbol > pSymbols )
+  public void add ( Iterable < Symbol > pSymbols )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      add ( current );
-    }
-  }
+      TransitionSymbolOnlyOneTimeException;
 
 
   /**
@@ -353,33 +53,9 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void add ( Symbol pSymbol )
+  public void add ( Symbol pSymbol )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    if ( ( this.alphabet != null ) && ( !this.alphabet.contains ( pSymbol ) ) )
-    {
-      ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
-      tmpList.add ( pSymbol );
-      throw new TransitionSymbolNotInAlphabetException ( this, this.alphabet,
-          tmpList );
-    }
-    if ( this.symbolSet.contains ( pSymbol ) )
-    {
-      ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
-      for ( Symbol current : this.symbolSet )
-      {
-        if ( pSymbol.equals ( current ) )
-        {
-          tmpList.add ( current );
-          break;
-        }
-      }
-      tmpList.add ( pSymbol );
-      throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
-    }
-    this.symbolSet.add ( pSymbol );
-  }
+      TransitionSymbolOnlyOneTimeException;
 
 
   /**
@@ -393,19 +69,9 @@ public final class Transition implements ParseableEntity, Storable,
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public final void add ( Symbol ... pSymbols )
+  public void add ( Symbol ... pSymbols )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      add ( current );
-    }
-  }
+      TransitionSymbolOnlyOneTimeException;
 
 
   /**
@@ -413,27 +79,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Object#clone()
    */
-  @Override
-  public final Transition clone ()
-  {
-    Transition newTransition = null;
-    try
-    {
-      newTransition = new Transition ( this.alphabet.clone (), this.stateBegin,
-          this.stateEnd );
-      for ( Symbol current : this.symbolSet )
-      {
-        newTransition.add ( current.clone () );
-      }
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-    return newTransition;
-  }
+  public Transition clone ();
 
 
   /**
@@ -441,10 +87,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Transition pOther )
-  {
-    return this.id < pOther.id ? -1 : ( this.id > pOther.id ? 1 : 0 );
-  }
+  public int compareTo ( Transition pOther );
 
 
   /**
@@ -455,10 +98,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @return True if the {@link Alphabet} of this <code>Transition</code>
    *         contains the given {@link Symbol}. Otherwise false.
    */
-  public final boolean contains ( Symbol pSymbol )
-  {
-    return this.symbolSet.contains ( pSymbol );
-  }
+  public boolean contains ( Symbol pSymbol );
 
 
   /**
@@ -466,32 +106,15 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Object#equals(Object)
    */
-  @Override
-  public final boolean equals ( Object pOther )
-  {
-    if ( pOther instanceof Transition )
-    {
-      Transition other = ( Transition ) pOther;
-      if ( ( this.id == ID_NOT_DEFINED ) || ( other.id == ID_NOT_DEFINED ) )
-      {
-        throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
-      }
-      return this.id == other.id;
-    }
-    return false;
-  }
+  public boolean equals ( Object pOther );
 
 
   /**
    * Returns the {@link Alphabet}.
    * 
    * @return The {@link Alphabet}.
-   * @see #alphabet
    */
-  public final Alphabet getAlphabet ()
-  {
-    return this.alphabet;
-  }
+  public Alphabet getAlphabet ();
 
 
   /**
@@ -499,111 +122,67 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Storable#getElement()
    */
-  public final Element getElement ()
-  {
-    Element newElement = new Element ( "Transition" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "id", this.id ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "stateBeginId", //$NON-NLS-1$
-        getStateBeginId () ) );
-    newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
-    newElement.addElement ( this.alphabet );
-    for ( Symbol current : this.symbolSet )
-    {
-      newElement.addElement ( current );
-    }
-    return newElement;
-  }
+  public Element getElement ();
 
 
   /**
    * Returns the id.
    * 
    * @return The id.
-   * @see #id
    */
-  public final int getId ()
-  {
-    return this.id;
-  }
+  public int getId ();
 
 
   /**
    * {@inheritDoc}
    */
-  public final int getParserEndOffset ()
-  {
-    return this.parserEndOffset;
-  }
+  public int getParserEndOffset ();
 
 
   /**
    * {@inheritDoc}
    */
-  public final int getParserStartOffset ()
-  {
-    return this.parserStartOffset;
-  }
+  public int getParserStartOffset ();
 
 
   /**
    * Returns the {@link State} where the <code>Transition</code> begins.
    * 
    * @return The {@link State} where the <code>Transition</code> begins.
-   * @see #stateBegin
    */
-  public final State getStateBegin ()
-  {
-    return this.stateBegin;
-  }
+  public State getStateBegin ();
 
 
   /**
    * Returns the {@link State} id where the <code>Transition</code> begins.
    * 
    * @return The {@link State} id where the <code>Transition</code> begins.
-   * @see #stateBeginId
    */
-  public final int getStateBeginId ()
-  {
-    return this.stateBegin == null ? this.stateBeginId : this.stateBegin
-        .getId ();
-  }
+  public int getStateBeginId ();
 
 
   /**
    * Returns the {@link State} where the <code>Transition</code> ends.
    * 
    * @return The {@link State} where the <code>Transition</code> ends.
-   * @see #stateEnd
    */
-  public final State getStateEnd ()
-  {
-    return this.stateEnd;
-  }
+  public State getStateEnd ();
 
 
   /**
    * Returns the {@link State} id where the <code>Transition</code> ends.
    * 
    * @return The {@link State} id where the <code>Transition</code> ends.
-   * @see #stateEndId
    */
-  public final int getStateEndId ()
-  {
-    return this.stateEnd == null ? this.stateEndId : this.stateEnd.getId ();
-  }
+  public int getStateEndId ();
 
 
   /**
    * Returns the symbolSet.
    * 
    * @return The symbolSet.
-   * @see #symbolSet
    */
-  public final TreeSet < Symbol > getSymbol ()
-  {
-    return this.symbolSet;
-  }
+  public TreeSet < Symbol > getSymbol ();
 
 
   /**
@@ -611,17 +190,8 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pIndex The index.
    * @return The {@link Symbol} with the given index.
-   * @see #symbolSet
    */
-  public final Symbol getSymbol ( int pIndex )
-  {
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
-  }
+  public Symbol getSymbol ( int pIndex );
 
 
   /**
@@ -629,15 +199,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Object#hashCode()
    */
-  @Override
-  public final int hashCode ()
-  {
-    if ( this.id == ID_NOT_DEFINED )
-    {
-      throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
-    }
-    return this.id;
-  }
+  public int hashCode ();
 
 
   /**
@@ -647,10 +209,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @return True, if this <code>Transition</code> is a epsilon
    *         <code>Transition</code>, otherwise false.
    */
-  public final boolean isEpsilonTransition ()
-  {
-    return this.symbolSet.size () == 0;
-  }
+  public boolean isEpsilonTransition ();
 
 
   /**
@@ -660,10 +219,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @return True if the id of this <code>Transition</code> is defined,
    *         otherwise false.
    */
-  public final boolean isIdDefined ()
-  {
-    return this.id != ID_NOT_DEFINED;
-  }
+  public boolean isIdDefined ();
 
 
   /**
@@ -673,10 +229,7 @@ public final class Transition implements ParseableEntity, Storable,
    * @return An iterator over the {@link Symbol}s in this
    *         <code>Transition</code>.
    */
-  public final Iterator < Symbol > iterator ()
-  {
-    return this.symbolSet.iterator ();
-  }
+  public Iterator < Symbol > iterator ();
 
 
   /**
@@ -684,17 +237,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Iterable < Symbol > pSymbols )
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      remove ( current );
-    }
-  }
+  public void remove ( Iterable < Symbol > pSymbols );
 
 
   /**
@@ -702,14 +245,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbol The {@link Symbol} to remove.
    */
-  public final void remove ( Symbol pSymbol )
-  {
-    if ( !this.symbolSet.contains ( pSymbol ) )
-    {
-      throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
-    }
-    this.symbolSet.remove ( pSymbol );
-  }
+  public void remove ( Symbol pSymbol );
 
 
   /**
@@ -717,17 +253,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pSymbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Symbol ... pSymbols )
-  {
-    if ( pSymbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    for ( Symbol current : pSymbols )
-    {
-      remove ( current );
-    }
-  }
+  public void remove ( Symbol ... pSymbols );
 
 
   /**
@@ -735,48 +261,27 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pAlphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
-  {
-    if ( pAlphabet == null )
-    {
-      throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
-    }
-    this.alphabet = pAlphabet;
-  }
+  public void setAlphabet ( Alphabet pAlphabet );
 
 
   /**
    * Sets the id.
    * 
    * @param pId The id to set.
-   * @see #id
    */
-  public final void setId ( int pId )
-  {
-    if ( this.id != ID_NOT_DEFINED )
-    {
-      throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
-    }
-    this.id = pId;
-  }
+  public void setId ( int pId );
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
-  {
-    this.parserEndOffset = pParserEndOffset;
-  }
+  public void setParserEndOffset ( int pParserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
-  {
-    this.parserStartOffset = pParserStartOffset;
-  }
+  public void setParserStartOffset ( int pParserStartOffset );
 
 
   /**
@@ -784,30 +289,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pStateBegin The {@link State} to set.
    */
-  public final void setStateBegin ( State pStateBegin )
-  {
-    if ( pStateBegin == null )
-    {
-      throw new NullPointerException ( "state begin is null" ); //$NON-NLS-1$
-    }
-    this.stateBegin = pStateBegin;
-  }
-
-
-  /**
-   * Sets the {@link State} id where the <code>Transition</code> begins.
-   * 
-   * @param pStateBeginId The {@link State} id to set.
-   */
-  private final void setStateBeginId ( int pStateBeginId )
-  {
-    if ( this.stateBegin != null )
-    {
-      throw new IllegalArgumentException (
-          "can not set the id if there is a state" ); //$NON-NLS-1$
-    }
-    this.stateBeginId = pStateBeginId;
-  }
+  public void setStateBegin ( State pStateBegin );
 
 
   /**
@@ -815,30 +297,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @param pStateEnd The {@link State} to set.
    */
-  public final void setStateEnd ( State pStateEnd )
-  {
-    if ( pStateEnd == null )
-    {
-      throw new NullPointerException ( "state end is null" ); //$NON-NLS-1$
-    }
-    this.stateEnd = pStateEnd;
-  }
-
-
-  /**
-   * Sets the {@link State} id where the <code>Transition</code> ends.
-   * 
-   * @param pStateEndId The {@link State} id to set.
-   */
-  private final void setStateEndId ( int pStateEndId )
-  {
-    if ( this.stateEnd != null )
-    {
-      throw new IllegalArgumentException (
-          "can not set the id if there is a state" ); //$NON-NLS-1$
-    }
-    this.stateEndId = pStateEndId;
-  }
+  public void setStateEnd ( State pStateEnd );
 
 
   /**
@@ -846,10 +305,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @return The number of {@link Symbol}s in this <code>Transition</code>.
    */
-  public final int size ()
-  {
-    return this.symbolSet.size ();
-  }
+  public int size ();
 
 
   /**
@@ -857,32 +313,7 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Entity#toString()
    */
-  @Override
-  public final String toString ()
-  {
-    StringBuilder result = new StringBuilder ();
-    if ( this.symbolSet.size () == 0 )
-    {
-      result.append ( "\u03B5" ); //$NON-NLS-1$
-    }
-    else
-    {
-      result.append ( "{" ); //$NON-NLS-1$
-      Iterator < Symbol > iterator = this.symbolSet.iterator ();
-      boolean first = true;
-      while ( iterator.hasNext () )
-      {
-        if ( !first )
-        {
-          result.append ( ", " ); //$NON-NLS-1$
-        }
-        first = false;
-        result.append ( iterator.next () );
-      }
-      result.append ( "}" ); //$NON-NLS-1$
-    }
-    return result.toString ();
-  }
+  public String toString ();
 
 
   /**
@@ -890,14 +321,5 @@ public final class Transition implements ParseableEntity, Storable,
    * 
    * @see Entity#toStringDebug()
    */
-  public final String toStringDebug ()
-  {
-    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    StringBuilder result = new StringBuilder ();
-    result.append ( "Alphabet:    " + this.alphabet.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Begin state: " + this.stateBegin.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
-    return result.toString ();
-  }
+  public String toStringDebug ();
 }

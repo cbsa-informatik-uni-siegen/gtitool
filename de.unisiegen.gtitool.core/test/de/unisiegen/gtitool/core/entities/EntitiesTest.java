@@ -26,9 +26,9 @@ public class EntitiesTest
     Symbol c = null;
     try
     {
-      a = new Symbol ( "a" );
-      b = new Symbol ( "b" );
-      c = new Symbol ( "c" );
+      a = new DefaultSymbol ( "a" );
+      b = new DefaultSymbol ( "b" );
+      c = new DefaultSymbol ( "c" );
     }
     catch ( SymbolException e )
     {
@@ -39,7 +39,7 @@ public class EntitiesTest
     Alphabet alphabet = null;
     try
     {
-      alphabet = new Alphabet ( a, b, c );
+      alphabet = new DefaultAlphabet ( a, b, c );
     }
     catch ( AlphabetException e )
     {
@@ -52,9 +52,9 @@ public class EntitiesTest
     State z2 = null;
     try
     {
-      z0 = new State ( alphabet, "z0", true, false );
-      z1 = new State ( alphabet, "z1", false, false );
-      z2 = new State ( alphabet, "z2", false, true );
+      z0 = new DefaultState ( alphabet, "z0", true, false );
+      z1 = new DefaultState ( alphabet, "z1", false, false );
+      z2 = new DefaultState ( alphabet, "z2", false, true );
     }
     catch ( StateException e )
     {
@@ -69,11 +69,11 @@ public class EntitiesTest
     Transition t4 = null;
     try
     {
-      t0 = new Transition ( alphabet, z0, z0, a, b );
-      t1 = new Transition ( alphabet, z0, z1, c );
-      t2 = new Transition ( alphabet, z1, z1, a, b );
-      t3 = new Transition ( alphabet, z1, z2, c );
-      t4 = new Transition ( alphabet, z2, z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, z0, z0, a, b );
+      t1 = new DefaultTransition ( alphabet, z0, z1, c );
+      t2 = new DefaultTransition ( alphabet, z1, z1, a, b );
+      t3 = new DefaultTransition ( alphabet, z1, z2, c );
+      t4 = new DefaultTransition ( alphabet, z2, z2, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException e )
     {

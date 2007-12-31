@@ -5,6 +5,7 @@
  * @version $Id$
  */
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
@@ -31,7 +32,7 @@ symbol							::= SYMBOL:s
 									{:
 									   try
 									   {
-									     RESULT = new Symbol(s);
+									     RESULT = new DefaultSymbol(s);
 									   }
 									   catch (SymbolException exc)
 									   {

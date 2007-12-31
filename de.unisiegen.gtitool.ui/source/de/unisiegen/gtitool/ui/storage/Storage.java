@@ -16,11 +16,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -137,23 +137,23 @@ public final class Storage
       Element element = getElement ( document.getDocumentElement () );
       if ( element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
-        return new Alphabet ( element );
+        return new DefaultAlphabet ( element );
       }
       else if ( element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
-        return new Symbol ( element );
+        return new DefaultSymbol ( element );
       }
       else if ( element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
       {
-        return new Word ( element );
+        return new DefaultWord ( element );
       }
       else if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
       {
-        return new State ( element );
+        return new DefaultState ( element );
       }
       else if ( element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
       {
-        return new Transition ( element );
+        return new DefaultTransition ( element );
       }
       else if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {

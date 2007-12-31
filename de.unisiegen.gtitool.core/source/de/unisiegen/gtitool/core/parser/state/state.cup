@@ -5,6 +5,7 @@
  * @version $Id$
  */
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.DefaultState;
 
 
 /************
@@ -27,7 +28,7 @@ non terminal State			state;
 
 state							::= STATE:s
 									{:
-									   RESULT = new State(s);
+									   RESULT = new DefaultState(s);
 									   RESULT.setParserStartOffset(sleft);
 									   RESULT.setParserEndOffset(sright);
 									:}

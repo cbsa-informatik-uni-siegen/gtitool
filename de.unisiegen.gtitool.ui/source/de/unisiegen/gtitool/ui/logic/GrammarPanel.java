@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 
@@ -36,6 +37,6 @@ public class GrammarPanel implements EditorPanel
 
   public Alphabet getAlphabet ()
   {
-    return new Alphabet ();
+    return new DefaultAlphabet ();
   }
 }

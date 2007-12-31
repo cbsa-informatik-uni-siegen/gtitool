@@ -12,6 +12,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -247,7 +248,8 @@ public final class TransitionDialog
     this.gui.jDragListAlphabet.setModel ( this.modelAlphabet );
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jDragListChangeOverSet.setModel ( this.modelChangeOverSet );
-    this.gui.styledTransitionParserPanel.setTransition ( new Transition () );
+    this.gui.styledTransitionParserPanel
+        .setTransition ( new DefaultTransition () );
   }
 
 
@@ -272,8 +274,8 @@ public final class TransitionDialog
     this.gui.jButtonMoveRight.setEnabled ( false );
     try
     {
-      this.gui.styledTransitionParserPanel.setTransition ( new Transition (
-          changeOverSymbols ) );
+      this.gui.styledTransitionParserPanel
+          .setTransition ( new DefaultTransition ( changeOverSymbols ) );
     }
     catch ( TransitionException exc )
     {
@@ -403,7 +405,7 @@ public final class TransitionDialog
       {
         symbols.add ( symbol );
       }
-      this.transition = new Transition ( symbols );
+      this.transition = new DefaultTransition ( symbols );
       this.transition.setAlphabet ( this.alphabet );
       this.transition.setStateBegin ( this.stateBegin );
       if ( this.stateEnd != null )
@@ -441,8 +443,8 @@ public final class TransitionDialog
     this.gui.jButtonMoveLeft.setEnabled ( false );
     try
     {
-      this.gui.styledTransitionParserPanel.setTransition ( new Transition (
-          changeOverSymbols ) );
+      this.gui.styledTransitionParserPanel
+          .setTransition ( new DefaultTransition ( changeOverSymbols ) );
     }
     catch ( TransitionException exc )
     {
@@ -472,12 +474,13 @@ public final class TransitionDialog
     {
       if ( symbols.size () > 0 )
       {
-        this.gui.styledTransitionParserPanel.setTransition ( new Transition (
-            symbols ) );
+        this.gui.styledTransitionParserPanel
+            .setTransition ( new DefaultTransition ( symbols ) );
       }
       else
       {
-        this.gui.styledTransitionParserPanel.setTransition ( new Transition () );
+        this.gui.styledTransitionParserPanel
+            .setTransition ( new DefaultTransition () );
       }
     }
     catch ( TransitionException exc )

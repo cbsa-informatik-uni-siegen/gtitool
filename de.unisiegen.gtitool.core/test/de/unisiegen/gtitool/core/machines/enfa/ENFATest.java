@@ -2,6 +2,11 @@ package de.unisiegen.gtitool.core.machines.enfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -71,12 +76,12 @@ public class ENFATest extends MachineTest
     // Symbols
     try
     {
-      a = new Symbol ( "a" );
-      b = new Symbol ( "b" );
-      c = new Symbol ( "c" );
-      d = new Symbol ( "d" );
-      e = new Symbol ( "e" );
-      f = new Symbol ( "f" );
+      a = new DefaultSymbol ( "a" );
+      b = new DefaultSymbol ( "b" );
+      c = new DefaultSymbol ( "c" );
+      d = new DefaultSymbol ( "d" );
+      e = new DefaultSymbol ( "e" );
+      f = new DefaultSymbol ( "f" );
     }
     catch ( SymbolException exc )
     {
@@ -86,7 +91,7 @@ public class ENFATest extends MachineTest
     // Alphabet
     try
     {
-      alphabet = new Alphabet ( a, b, c );
+      alphabet = new DefaultAlphabet ( a, b, c );
     }
     catch ( AlphabetException exc )
     {
@@ -96,9 +101,9 @@ public class ENFATest extends MachineTest
     // States
     try
     {
-      z0 = new State ( alphabet, true, false );
-      z1 = new State ( alphabet, false, false );
-      z2 = new State ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, true, false );
+      z1 = new DefaultState ( alphabet, false, false );
+      z2 = new DefaultState ( alphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -108,10 +113,10 @@ public class ENFATest extends MachineTest
     // Transitions
     try
     {
-      t0 = new Transition ( alphabet, z0, z1 );
-      t1 = new Transition ( alphabet, z0, z1, a );
-      t2 = new Transition ( alphabet, z1, z2, b );
-      t3 = new Transition ( alphabet, z2, z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, z0, z1 );
+      t1 = new DefaultTransition ( alphabet, z0, z1, a );
+      t2 = new DefaultTransition ( alphabet, z1, z2, b );
+      t3 = new DefaultTransition ( alphabet, z2, z2, a, b, c );
     }
     catch ( TransitionException exc )
     {
@@ -129,7 +134,7 @@ public class ENFATest extends MachineTest
     enfa.addState ( z0, z1, z2 );
     enfa.addTransition ( t0, t1, t2, t3 );
 
-    Word word = new Word ( b, c );
+    Word word = new DefaultWord ( b, c );
 
     start ( enfa, word );
   }

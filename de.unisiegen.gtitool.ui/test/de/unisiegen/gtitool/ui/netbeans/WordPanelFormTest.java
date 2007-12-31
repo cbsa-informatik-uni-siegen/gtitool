@@ -4,7 +4,8 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -26,8 +27,8 @@ public class WordPanelFormTest
   {
     try
     {
-      Alphabet alphabet = new Alphabet ( new Symbol ( "0" ),
-          new Symbol ( "1" ), new Symbol ( "2" ) );
+      Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
+          new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
       JFrame jFrame = new JFrame ( "WordPanelFormTest" );
       final WordPanelForm wordPanelForm = new WordPanelForm ();
       wordPanelForm.setAlphabet ( alphabet );

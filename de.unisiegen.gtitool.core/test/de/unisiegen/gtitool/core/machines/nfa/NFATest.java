@@ -2,6 +2,11 @@ package de.unisiegen.gtitool.core.machines.nfa;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -78,12 +83,12 @@ public class NFATest extends MachineTest
     // Symbols
     try
     {
-      a = new Symbol ( "a" );
-      b = new Symbol ( "b" );
-      c = new Symbol ( "c" );
-      d = new Symbol ( "d" );
-      e = new Symbol ( "e" );
-      f = new Symbol ( "f" );
+      a = new DefaultSymbol ( "a" );
+      b = new DefaultSymbol ( "b" );
+      c = new DefaultSymbol ( "c" );
+      d = new DefaultSymbol ( "d" );
+      e = new DefaultSymbol ( "e" );
+      f = new DefaultSymbol ( "f" );
     }
     catch ( SymbolException exc )
     {
@@ -93,7 +98,7 @@ public class NFATest extends MachineTest
     // Alphabet
     try
     {
-      alphabet = new Alphabet ( a, b, c );
+      alphabet = new DefaultAlphabet ( a, b, c );
     }
     catch ( AlphabetException exc )
     {
@@ -103,10 +108,10 @@ public class NFATest extends MachineTest
     // States
     try
     {
-      z0 = new State ( alphabet, true, false );
-      z1 = new State ( alphabet, false, false );
-      z2 = new State ( alphabet, false, false );
-      z3 = new State ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, true, false );
+      z1 = new DefaultState ( alphabet, false, false );
+      z2 = new DefaultState ( alphabet, false, false );
+      z3 = new DefaultState ( alphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -116,11 +121,11 @@ public class NFATest extends MachineTest
     // Transitions
     try
     {
-      t0 = new Transition ( alphabet, z0, z1, a );
-      t1 = new Transition ( alphabet, z0, z2, a );
-      t2 = new Transition ( alphabet, z1, z3, b );
-      t3 = new Transition ( alphabet, z2, z3, c );
-      t4 = new Transition ( alphabet, z3, z3, a, b, c );
+      t0 = new DefaultTransition ( alphabet, z0, z1, a );
+      t1 = new DefaultTransition ( alphabet, z0, z2, a );
+      t2 = new DefaultTransition ( alphabet, z1, z3, b );
+      t3 = new DefaultTransition ( alphabet, z2, z3, c );
+      t4 = new DefaultTransition ( alphabet, z3, z3, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
@@ -143,7 +148,7 @@ public class NFATest extends MachineTest
     nfa.addState ( z0, z1, z2, z3 );
     nfa.addTransition ( t0, t1, t2, t3, t4 );
 
-    Word word = new Word ( a, b, c );
+    Word word = new DefaultWord ( a, b, c );
 
     start ( nfa, word );
   }

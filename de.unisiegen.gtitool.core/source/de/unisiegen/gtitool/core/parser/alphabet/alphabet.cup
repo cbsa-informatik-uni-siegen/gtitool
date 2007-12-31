@@ -6,6 +6,8 @@
  */
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
@@ -49,7 +51,7 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new Alphabet(sl);
+									     RESULT = new DefaultAlphabet(sl);
 									   }
 									   catch (AlphabetException ecx)
 									   {
@@ -62,7 +64,7 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new Alphabet(sl);
+									     RESULT = new DefaultAlphabet(sl);
 									   }
 									   catch (AlphabetException ecx)
 									   {
@@ -106,7 +108,7 @@ symbol							::= SYMBOL:s
 									{:
 									   try
 									   {
-									     RESULT = new Symbol(s);
+									     RESULT = new DefaultSymbol(s);
 									   }
 									   catch (SymbolException exc)
 									   {

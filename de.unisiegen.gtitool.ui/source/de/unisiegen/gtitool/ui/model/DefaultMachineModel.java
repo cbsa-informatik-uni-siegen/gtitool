@@ -12,6 +12,9 @@ import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -130,7 +133,7 @@ public class DefaultMachineModel implements Storable
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
-        alphabet = new Alphabet ( current );
+        alphabet = new DefaultAlphabet ( current );
         foundAlphabet = true;
       }
       else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
@@ -179,7 +182,7 @@ public class DefaultMachineModel implements Storable
         for ( Element element : current.getElement () )
         {
           if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
-            state = new State ( element );
+            state = new DefaultState ( element );
         }
         createStateView ( x + 35, y + 35, state );
       }
@@ -196,7 +199,7 @@ public class DefaultMachineModel implements Storable
     {
       if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
       {
-        Transition transition = new Transition ( current.getElement ( 0 ) );
+        Transition transition = new DefaultTransition ( current.getElement ( 0 ) );
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 

@@ -6,6 +6,8 @@
  */
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
@@ -32,7 +34,7 @@ non terminal Word			word;
 
 word							::= symbol_list:sl
 									{:
-									   RESULT = new Word(sl);
+									   RESULT = new DefaultWord(sl);
 									   RESULT.setParserStartOffset(slleft);
 									   RESULT.setParserEndOffset(slright);
 									:}
@@ -42,7 +44,7 @@ symbol							::= SYMBOL:s
 									{:
 									   try
 									   {
-									     RESULT = new Symbol(s);
+									     RESULT = new DefaultSymbol(s);
 									   }
 									   catch (SymbolException exc)
 									   {

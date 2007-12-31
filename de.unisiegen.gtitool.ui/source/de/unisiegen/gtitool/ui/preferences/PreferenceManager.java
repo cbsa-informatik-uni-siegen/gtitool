@@ -17,6 +17,8 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -176,7 +178,8 @@ public final class PreferenceManager
   {
     try
     {
-      DEFAULT_ALPHABET = new Alphabet ( new Symbol ( "0" ), new Symbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      DEFAULT_ALPHABET = new DefaultAlphabet (
+          new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     catch ( AlphabetException e )
     {
@@ -543,7 +546,7 @@ public final class PreferenceManager
       }
       try
       {
-        symbols.add ( new Symbol ( symbol ) );
+        symbols.add ( new DefaultSymbol ( symbol ) );
       }
       catch ( SymbolException e )
       {
@@ -558,7 +561,8 @@ public final class PreferenceManager
     }
     try
     {
-      return new AlphabetItem ( new Alphabet ( symbols ), DEFAULT_ALPHABET );
+      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+          DEFAULT_ALPHABET );
     }
     catch ( AlphabetException e )
     {

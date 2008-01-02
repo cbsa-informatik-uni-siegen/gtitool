@@ -303,6 +303,7 @@ public final class Storage
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Store" ) ); //$NON-NLS-1$
     }
   }

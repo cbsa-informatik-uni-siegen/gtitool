@@ -57,6 +57,12 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * The push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   */
+  private Alphabet pushDownAlphabet;
+
+
+  /**
    * The id of this <code>DefaultTransition</code>.
    */
   private int id = ID_NOT_DEFINED;
@@ -106,6 +112,8 @@ public final class DefaultTransition implements Transition
    * 
    * @param pAlphabet The {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>DefaultTransition</code>.
    * @param pStateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
    * @param pStateEnd The {@link State} where the <code>DefaultTransition</code>
@@ -116,13 +124,15 @@ public final class DefaultTransition implements Transition
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Alphabet pAlphabet, State pStateBegin,
-      State pStateEnd, Iterable < Symbol > pSymbols )
+  public DefaultTransition ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
+      State pStateBegin, State pStateEnd, Iterable < Symbol > pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
     setAlphabet ( pAlphabet );
+    // PushDownAlphabet
+    setPushDownAlphabet ( pPushDownAlphabet );
     // StateBegin
     setStateBegin ( pStateBegin );
     // StateEnd
@@ -142,6 +152,8 @@ public final class DefaultTransition implements Transition
    * 
    * @param pAlphabet The {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>DefaultTransition</code>.
    * @param pStateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
    * @param pStateEnd The {@link State} where the <code>DefaultTransition</code>
@@ -152,13 +164,15 @@ public final class DefaultTransition implements Transition
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Alphabet pAlphabet, State pStateBegin,
-      State pStateEnd, Symbol ... pSymbols )
+  public DefaultTransition ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
+      State pStateBegin, State pStateEnd, Symbol ... pSymbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
     setAlphabet ( pAlphabet );
+    // PushDownAlphabet
+    setPushDownAlphabet ( pPushDownAlphabet );
     // StateBegin
     setStateBegin ( pStateBegin );
     // StateEnd
@@ -239,12 +253,19 @@ public final class DefaultTransition implements Transition
 
     // Element
     boolean foundAlphabet = false;
+    boolean foundPushDownAlphabet = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
         setAlphabet ( new DefaultAlphabet ( current ) );
         foundAlphabet = true;
+      }
+      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
+      {
+        current.setName ( "Alphabet" ); //$NON-NLS-1$
+        setPushDownAlphabet ( new DefaultAlphabet ( current ) );
+        foundPushDownAlphabet = true;
       }
       else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
@@ -258,7 +279,7 @@ public final class DefaultTransition implements Transition
     }
 
     // Not all element values found
-    if ( !foundAlphabet )
+    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
@@ -416,7 +437,7 @@ public final class DefaultTransition implements Transition
     try
     {
       newDefaultTransition = new DefaultTransition ( this.alphabet.clone (),
-          this.stateBegin, this.stateEnd );
+          this.pushDownAlphabet.clone (), this.stateBegin, this.stateEnd );
       for ( Symbol current : this.symbolSet )
       {
         newDefaultTransition.add ( current.clone () );
@@ -504,6 +525,9 @@ public final class DefaultTransition implements Transition
         getStateBeginId () ) );
     newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
     newElement.addElement ( this.alphabet );
+    Element newPushDownAlphabet = this.pushDownAlphabet.getElement ();
+    newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
+    newElement.addElement ( newPushDownAlphabet );
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );
@@ -539,6 +563,18 @@ public final class DefaultTransition implements Transition
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
+  }
+
+
+  /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   * @see #pushDownAlphabet
+   */
+  public final Alphabet getPushDownAlphabet ()
+  {
+    return this.pushDownAlphabet;
   }
 
 
@@ -779,6 +815,21 @@ public final class DefaultTransition implements Transition
   public final void setParserStartOffset ( int pParserStartOffset )
   {
     this.parserStartOffset = pParserStartOffset;
+  }
+
+
+  /**
+   * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   * 
+   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   */
+  public final void setPushDownAlphabet ( Alphabet pPushDownAlphabet )
+  {
+    if ( pPushDownAlphabet == null )
+    {
+      throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
+    }
+    this.pushDownAlphabet = pPushDownAlphabet;
   }
 
 

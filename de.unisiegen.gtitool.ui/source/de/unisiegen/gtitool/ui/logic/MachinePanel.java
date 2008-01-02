@@ -839,7 +839,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           {
             return true;
           }
-          if ( file.getName ().matches ( ".+\\." //$NON-NLS-1$
+          if ( file.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
               + MachinePanel.this.machine.getMachineType ().toLowerCase () ) )
           {
             return true;

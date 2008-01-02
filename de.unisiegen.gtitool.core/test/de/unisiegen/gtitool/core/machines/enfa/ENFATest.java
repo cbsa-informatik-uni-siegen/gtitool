@@ -50,6 +50,9 @@ public class ENFATest extends MachineTest
   private static Alphabet alphabet = null;
 
 
+  private static Alphabet pushDownAlphabet = null;
+
+
   private static State z0 = null;
 
 
@@ -98,6 +101,16 @@ public class ENFATest extends MachineTest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    // PushDownAlphabet
+    try
+    {
+      pushDownAlphabet = new DefaultAlphabet ( a, b, c );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
     // States
     try
     {
@@ -113,10 +126,10 @@ public class ENFATest extends MachineTest
     // Transitions
     try
     {
-      t0 = new DefaultTransition ( alphabet, z0, z1 );
-      t1 = new DefaultTransition ( alphabet, z0, z1, a );
-      t2 = new DefaultTransition ( alphabet, z1, z2, b );
-      t3 = new DefaultTransition ( alphabet, z2, z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z1 );
+      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z1, a );
+      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z2, b );
+      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, z2, z2, a, b, c );
     }
     catch ( TransitionException exc )
     {

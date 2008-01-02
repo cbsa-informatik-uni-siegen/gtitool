@@ -407,6 +407,8 @@ public final class TransitionDialog
       }
       this.transition = new DefaultTransition ( symbols );
       this.transition.setAlphabet ( this.alphabet );
+      // TODOChristian PushDownAlphabet
+      this.transition.setPushDownAlphabet ( this.alphabet );
       this.transition.setStateBegin ( this.stateBegin );
       if ( this.stateEnd != null )
       {

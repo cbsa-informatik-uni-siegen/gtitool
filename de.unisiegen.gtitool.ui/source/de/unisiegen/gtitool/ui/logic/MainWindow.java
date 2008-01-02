@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -46,8 +47,9 @@ public final class MainWindow implements LanguageChangedListener
    * The {@link MainWindowForm}.
    */
   private MainWindowForm gui;
-  
-  private boolean saveConsolePreferences = true ;
+
+
+  private boolean saveConsolePreferences = true;
 
 
   /**
@@ -92,21 +94,21 @@ public final class MainWindow implements LanguageChangedListener
         .getInstance ().getVisibleConsole () );
     this.gui.jCheckBoxMenuItemTable.setSelected ( PreferenceManager
         .getInstance ().getVisibleTable () );
-    
+
     this.gui.setVisible ( true );
-    if ( PreferenceManager.getInstance ().getMainWindowMaximized ())
+    if ( PreferenceManager.getInstance ().getMainWindowMaximized () )
     {
       this.gui.setExtendedState ( this.gui.getExtendedState ()
-        | Frame.MAXIMIZED_BOTH );
+          | Frame.MAXIMIZED_BOTH );
     }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
+
   /**
-   * 
    * Set the state of the edit machine toolbar items
-   *
+   * 
    * @param state the new state
    */
   private void setToolBarEditItemState ( boolean state )
@@ -119,10 +121,10 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonEditAlphabet.setEnabled ( state );
   }
 
+
   /**
-   * 
    * Set the state of the enter word toolbar items
-   *
+   * 
    * @param state the new state
    */
   private void setToolBarEnterWordItemState ( boolean state )
@@ -191,16 +193,17 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleConsoleStateChanged ()
   {
     if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
-        .getState () && this.saveConsolePreferences )
+        .getState ()
+        && this.saveConsolePreferences )
     {
       PreferenceManager.getInstance ().setVisibleConsole (
           this.gui.jCheckBoxMenuItemConsole.getState () );
-        MachinePanel current =  ( MachinePanel ) getActiveEditor ();
-        current.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
-            .getState () );
-        current.setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole
-        .getState () );
-        
+      MachinePanel current = ( MachinePanel ) getActiveEditor ();
+      current
+          .setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
+      current
+          .setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole.getState () );
+
     }
   }
 
@@ -214,7 +217,7 @@ public final class MainWindow implements LanguageChangedListener
     setToolBarEnterWordItemState ( true );
     MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
     machinePanel.handleEnterWord ();
-    machinePanel.setVisibleConsole ( false) ;
+    machinePanel.setVisibleConsole ( false );
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
     machinePanel.setWordEnterMode ( true );
   }
@@ -268,24 +271,35 @@ public final class MainWindow implements LanguageChangedListener
         {
           return true;
         }
-        if ( file.getName ().matches ( ".+\\.dfa" ) ) //$NON-NLS-1$
-          return true;
-        if ( file.getName ().matches ( ".+\\.nfa" ) ) //$NON-NLS-1$
-          return true;
-        if ( file.getName ().matches ( ".+\\.enfa" ) ) //$NON-NLS-1$
-          return true;
-        if ( file.getName ().matches ( ".+\\.pda" ) ) //$NON-NLS-1$
-          return true;
+        for ( String current : Machine.AVAILABLE_MACHINES )
+        {
+          if ( file.getName ().toLowerCase ().matches (
+              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+        }
         return false;
-
       }
 
 
       @Override
       public String getDescription ()
       {
-        return "Source Files ( *.dfa; " //$NON-NLS-1$ 
-          + "*.nfa; *.enfa; *.pda )"; //$NON-NLS-1$
+        StringBuilder result = new StringBuilder ();
+        result.append ( Messages.getString ( "MainWindow.OpenSourceFiles" ) ); //$NON-NLS-1$
+        result.append ( " (" ); //$NON-NLS-1$
+        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
+        {
+          result.append ( "*." ); //$NON-NLS-1$
+          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
+          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
+          {
+            result.append ( "; " ); //$NON-NLS-1$
+          }
+        }
+        result.append ( ")" ); //$NON-NLS-1$
+        return result.toString ();
       }
 
     } );
@@ -355,9 +369,9 @@ public final class MainWindow implements LanguageChangedListener
         .getSelectedComponent () ).getLogic ();
     String fileName = panel.handleSave ();
     if ( fileName != null )
-    this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-        .getSelectedIndex (), fileName );
-    
+      this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
+          .getSelectedIndex (), fileName );
+
   }
 
 
@@ -369,7 +383,7 @@ public final class MainWindow implements LanguageChangedListener
     MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     String fileName = panel.handleSaveAs ();
-    
+
     if ( fileName != null )
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
           .getSelectedIndex (), fileName );
@@ -386,8 +400,8 @@ public final class MainWindow implements LanguageChangedListener
     {
       PreferenceManager.getInstance ().setVisibleTable (
           this.gui.jCheckBoxMenuItemTable.getState () );
-        MachinePanel current = (  MachinePanel ) getActiveEditor ();
-        current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
+      MachinePanel current = ( MachinePanel ) getActiveEditor ();
+      current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
     }
   }
 
@@ -803,15 +817,15 @@ public final class MainWindow implements LanguageChangedListener
         .getSelectedComponent () ).getLogic () );
   }
 
-  
+
   public void handleEditMachine ()
   {
     setToolBarEditItemState ( true );
     setToolBarEnterWordItemState ( false );
     MachinePanel machinePanel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
-    
-    machinePanel.handleEditMachine();
+
+    machinePanel.handleEditMachine ();
     machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
         .getState () );
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
@@ -819,13 +833,16 @@ public final class MainWindow implements LanguageChangedListener
   }
 
 
-  public void handleTabbedPaneStateChanged (ChangeEvent evt)
+  public void handleTabbedPaneStateChanged ( ChangeEvent evt )
   {
-    MachinePanel machinePanel =  ( MachinePanel ) getActiveEditor ();
-    this.gui.jCheckBoxMenuItemConsole.setEnabled( !machinePanel.isWordEnterMode () );
-    this.saveConsolePreferences = false ;
-    this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel.isConsoleVisible () );
-    machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode () && machinePanel.isConsoleVisible () );
+    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
+        .isWordEnterMode () );
+    this.saveConsolePreferences = false;
+    this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
+        .isConsoleVisible () );
+    machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
+        && machinePanel.isConsoleVisible () );
     this.saveConsolePreferences = true;
     this.gui.jCheckBoxMenuItemTable.setState ( machinePanel.isTableVisible () );
     setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
@@ -836,7 +853,7 @@ public final class MainWindow implements LanguageChangedListener
   public void handleEditAlphabet ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleToolbarAlphabet();
+    current.handleToolbarAlphabet ();
   }
 
 }

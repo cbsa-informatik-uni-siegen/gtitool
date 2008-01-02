@@ -41,58 +41,6 @@ public abstract class AbstractMachine implements Machine
 {
 
   /**
-   * This enum is used to indicate which validation elements should be checked
-   * during a validation.
-   * 
-   * @author Christian Fehler
-   */
-  protected enum ValidationElement
-  {
-    /**
-     * There is a {@link State}, which {@link Transition}s do not contain all
-     * {@link Symbol}s.
-     */
-    ALL_SYMBOLS,
-
-    /**
-     * There is a {@link Transition} without a {@link Symbol}.
-     */
-    EPSILON_TRANSITION,
-
-    /**
-     * There is no final state defined.
-     */
-    FINAL_STATE,
-
-    /**
-     * There is more than one start state defined.
-     */
-    MORE_THAN_ONE_START_STATE,
-
-    /**
-     * There is no start state is defined.
-     */
-    NO_START_STATE,
-
-    /**
-     * There are {@link State}s with the same name.
-     */
-    STATE_NAME,
-
-    /**
-     * There is a {@link State} which is not reachable.
-     */
-    STATE_NOT_REACHABLE,
-
-    /**
-     * There is a {@link State} with {@link Transition}s with the same
-     * {@link Symbol}.
-     */
-    SYMBOL_ONLY_ONE_TIME
-  }
-
-
-  /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
    * @param pMachineType The {@link Machine} type.

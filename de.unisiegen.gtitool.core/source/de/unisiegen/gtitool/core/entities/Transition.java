@@ -146,6 +146,14 @@ public interface Transition extends ParseableEntity, Storable,
 
 
   /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   */
+  public Alphabet getPushDownAlphabet ();
+
+
+  /**
    * Returns the {@link State} where the <code>Transition</code> begins.
    * 
    * @return The {@link State} where the <code>Transition</code> begins.
@@ -282,6 +290,14 @@ public interface Transition extends ParseableEntity, Storable,
    * {@inheritDoc}
    */
   public void setParserStartOffset ( int pParserStartOffset );
+
+
+  /**
+   * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   * 
+   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   */
+  public void setPushDownAlphabet ( Alphabet pPushDownAlphabet );
 
 
   /**

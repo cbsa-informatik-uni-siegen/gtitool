@@ -27,6 +27,65 @@ public interface Machine extends Serializable
 {
 
   /**
+   * This enum is used to indicate which validation elements should be checked
+   * during a validation.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ValidationElement
+  {
+    /**
+     * There is a {@link State}, which {@link Transition}s do not contain all
+     * {@link Symbol}s.
+     */
+    ALL_SYMBOLS,
+
+    /**
+     * There is a {@link Transition} without a {@link Symbol}.
+     */
+    EPSILON_TRANSITION,
+
+    /**
+     * There is no final state defined.
+     */
+    FINAL_STATE,
+
+    /**
+     * There is more than one start state defined.
+     */
+    MORE_THAN_ONE_START_STATE,
+
+    /**
+     * There is no start state is defined.
+     */
+    NO_START_STATE,
+
+    /**
+     * There are {@link State}s with the same name.
+     */
+    STATE_NAME,
+
+    /**
+     * There is a {@link State} which is not reachable.
+     */
+    STATE_NOT_REACHABLE,
+
+    /**
+     * There is a {@link State} with {@link Transition}s with the same
+     * {@link Symbol}.
+     */
+    SYMBOL_ONLY_ONE_TIME
+  }
+
+
+  /**
+   * The available machines.
+   */
+  public static final String [] AVAILABLE_MACHINES =
+  { "DFA", "NFA", "ENFA", "PDA" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+
+
+  /**
    * Adds the {@link State}s to this <code>Machine</code>.
    * 
    * @param pStates The {@link State}s to add.

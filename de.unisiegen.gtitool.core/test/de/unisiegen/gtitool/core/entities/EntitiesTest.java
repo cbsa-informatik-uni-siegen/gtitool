@@ -47,6 +47,17 @@ public class EntitiesTest
       System.exit ( 1 );
     }
 
+    Alphabet pushDownAlphabet = null;
+    try
+    {
+      pushDownAlphabet = new DefaultAlphabet ( a, b, c );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+
     State z0 = null;
     State z1 = null;
     State z2 = null;
@@ -69,11 +80,11 @@ public class EntitiesTest
     Transition t4 = null;
     try
     {
-      t0 = new DefaultTransition ( alphabet, z0, z0, a, b );
-      t1 = new DefaultTransition ( alphabet, z0, z1, c );
-      t2 = new DefaultTransition ( alphabet, z1, z1, a, b );
-      t3 = new DefaultTransition ( alphabet, z1, z2, c );
-      t4 = new DefaultTransition ( alphabet, z2, z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z0, a, b );
+      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z1, c );
+      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z1, a, b );
+      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z2, c );
+      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, z2, z2, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException e )
     {

@@ -45,27 +45,29 @@ public abstract class AbstractMachine implements Machine
    * 
    * @param pMachineType The {@link Machine} type.
    * @param pAlphabet The {@link Alphabet}.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>DefaultTransition</code>.
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
    */
-  public static Machine createMachine ( String pMachineType, Alphabet pAlphabet )
-      throws StoreException
+  public static Machine createMachine ( String pMachineType,
+      Alphabet pAlphabet, Alphabet pPushDownAlphabet ) throws StoreException
   {
     if ( pMachineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultDFA ( pAlphabet );
+      return new DefaultDFA ( pAlphabet, pPushDownAlphabet );
     }
     if ( pMachineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultNFA ( pAlphabet );
+      return new DefaultNFA ( pAlphabet, pPushDownAlphabet );
     }
     if ( pMachineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultENFA ( pAlphabet );
+      return new DefaultENFA ( pAlphabet, pPushDownAlphabet );
     }
     if ( pMachineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultPDA ( pAlphabet );
+      return new DefaultPDA ( pAlphabet, pPushDownAlphabet );
     }
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
@@ -82,6 +84,12 @@ public abstract class AbstractMachine implements Machine
    * The {@link Alphabet} of this <code>AbstractMachine</code>.
    */
   private Alphabet alphabet;
+
+
+  /**
+   * The push down {@link Alphabet} of this <code>AbstractMachine</code>.
+   */
+  private Alphabet pushDownAlphabet = null;
 
 
   /**
@@ -130,10 +138,12 @@ public abstract class AbstractMachine implements Machine
    * Allocates a new <code>AbstractMachine</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>AbstractMachine</code>.
    * @param pValidationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
    */
-  public AbstractMachine ( Alphabet pAlphabet,
+  public AbstractMachine ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
       ValidationElement ... pValidationElements )
   {
     // Alphabet
@@ -142,6 +152,12 @@ public abstract class AbstractMachine implements Machine
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = pAlphabet;
+    // PushDownAlphabet
+    if ( pPushDownAlphabet == null )
+    {
+      throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
+    }
+    this.pushDownAlphabet = pPushDownAlphabet;
     // Validation elements
     if ( pValidationElements == null )
     {
@@ -618,6 +634,18 @@ public abstract class AbstractMachine implements Machine
   public final Alphabet getAlphabet ()
   {
     return this.alphabet;
+  }
+
+
+  /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   * @see #pushDownAlphabet
+   */
+  public final Alphabet getPushDownAlphabet ()
+  {
+    return this.pushDownAlphabet;
   }
 
 

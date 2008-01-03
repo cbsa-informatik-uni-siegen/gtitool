@@ -114,9 +114,9 @@ public class ENFATest extends MachineTest
     // States
     try
     {
-      z0 = new DefaultState ( alphabet, true, false );
-      z1 = new DefaultState ( alphabet, false, false );
-      z2 = new DefaultState ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -143,7 +143,7 @@ public class ENFATest extends MachineTest
   {
     initEntities ();
 
-    ENFA enfa = new DefaultENFA ( alphabet );
+    ENFA enfa = new DefaultENFA ( alphabet, pushDownAlphabet );
     enfa.addState ( z0, z1, z2 );
     enfa.addTransition ( t0, t1, t2, t3 );
 

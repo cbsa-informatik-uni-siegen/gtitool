@@ -110,6 +110,14 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
 
 
   /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   */
+  public Alphabet getPushDownAlphabet ();
+
+
+  /**
    * Returns the {@link Transition} begin list.
    * 
    * @return The {@link Transition} begin list.
@@ -287,6 +295,14 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * {@inheritDoc}
    */
   public void setParserStartOffset ( int pParserStartOffset );
+
+
+  /**
+   * Sets the push down {@link Alphabet} of this <code>State</code>.
+   * 
+   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   */
+  public void setPushDownAlphabet ( Alphabet pPushDownAlphabet );
 
 
   /**

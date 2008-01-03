@@ -63,9 +63,9 @@ public class EntitiesTest
     State z2 = null;
     try
     {
-      z0 = new DefaultState ( alphabet, "z0", true, false );
-      z1 = new DefaultState ( alphabet, "z1", false, false );
-      z2 = new DefaultState ( alphabet, "z2", false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, "z0", true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, "z1", false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, "z2", false, true );
     }
     catch ( StateException e )
     {

@@ -159,6 +159,14 @@ public interface Machine extends Serializable
 
 
   /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   */
+  public Alphabet getPushDownAlphabet ();
+
+
+  /**
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.

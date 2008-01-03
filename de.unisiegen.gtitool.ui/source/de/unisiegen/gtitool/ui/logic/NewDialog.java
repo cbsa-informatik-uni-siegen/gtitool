@@ -167,6 +167,7 @@ public class NewDialog
    */
   public void handleFinish ()
   {
+    // TODOChristian pushDownAlphabet
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.Machine ) )
     {
@@ -175,7 +176,8 @@ public class NewDialog
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
-                .getAlphabet () ) ), null );
+                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
+            null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -185,7 +187,8 @@ public class NewDialog
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
-                .getAlphabet () ) ), null );
+                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
+            null );
         this.fileEnding = ".nfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -195,7 +198,8 @@ public class NewDialog
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
-                .getAlphabet () ) ), null );
+                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
+            null );
         this.fileEnding = ".enfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -205,16 +209,16 @@ public class NewDialog
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
-                .getAlphabet () ) ), null );
+                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
+            null );
         this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }
     }
     else
     {
-      // TODO Implement me (Grammar)
+      // TODO Implement this (Grammar)
     }
-
   }
 
 

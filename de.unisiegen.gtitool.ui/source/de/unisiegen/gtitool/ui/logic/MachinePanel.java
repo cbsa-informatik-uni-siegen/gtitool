@@ -213,8 +213,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   private boolean dragged;
 
 
-  /** The alphabet of this Machine */
+  /** The {@link Alphabet} of this Machine */
   private Alphabet alphabet;
+
+
+  /** The push down {@link Alphabet} of this Machine */
+  private Alphabet pushDownAlphabet;
 
 
   /** The zoom factor for this graph */
@@ -291,6 +295,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.machine = pModel.getMachine ();
     this.fileName = pFileName;
     this.alphabet = this.machine.getAlphabet ();
+    this.pushDownAlphabet = this.machine.getPushDownAlphabet ();
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
     this.graph = this.model.getJGraph ();
@@ -788,6 +793,20 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  public void handleEditMachine ()
+  {
+    this.gui.wordPanel.setVisible ( false );
+    this.model.getJGraph ().setEnabled ( true );
+  }
+
+
+  public void handleEnterWord ()
+  {
+    this.gui.wordPanel.setVisible ( true );
+    this.model.getJGraph ().setEnabled ( false );
+  }
+
+
   /**
    * Handle save as operation
    */
@@ -914,7 +933,6 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     alphabetDialog.show ();
     if ( alphabetDialog.DIALOG_RESULT == AlphabetDialog.DIALOG_CONFIRMED )
     {
-      System.out.println ( "confirm" );
       System.out.println ( this.alphabet );
       System.out.println ( this.machine.getAlphabet () );
     }
@@ -1127,7 +1145,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         try
         {
           State newState = new DefaultState ( MachinePanel.this.alphabet,
-              false, false );
+              MachinePanel.this.pushDownAlphabet, false, false );
 
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1149,7 +1167,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
             break;
           }
         }
@@ -1240,7 +1258,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
               try
               {
                 State newState = new DefaultState ( MachinePanel.this.alphabet,
-                    false, false );
+                    MachinePanel.this.pushDownAlphabet, false, false );
                 target = MachinePanel.this.model.createStateView ( e
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1257,7 +1275,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                   case WITH_RETURN_TO_MOUSE :
                   {
                     // Return to the normal Mouse after every click
-                    parent.jButtonMouse.setSelected ( true );
+                    MachinePanel.this.parent.jButtonMouse.setSelected ( true );
                     break;
                   }
                 }
@@ -1328,8 +1346,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             try
             {
               State newState;
-              newState = new DefaultState ( MachinePanel.this.alphabet, false,
-                  false );
+              newState = new DefaultState ( MachinePanel.this.alphabet,
+                  MachinePanel.this.pushDownAlphabet, false, false );
               target = MachinePanel.this.model.createStateView (
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
@@ -1345,7 +1363,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                 case WITH_RETURN_TO_MOUSE :
                 {
                   // Return to the normal Mouse after every click
-                  parent.jButtonMouse.setSelected ( true );
+                  MachinePanel.this.parent.jButtonMouse.setSelected ( true );
                   break;
                 }
               }
@@ -1493,8 +1511,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new DefaultState ( MachinePanel.this.alphabet, true,
-              false );
+          State newState = new DefaultState ( MachinePanel.this.alphabet,
+              MachinePanel.this.pushDownAlphabet, true, false );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
@@ -1515,7 +1533,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
             break;
           }
         }
@@ -1567,7 +1585,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         try
         {
           State newState = new DefaultState ( MachinePanel.this.alphabet,
-              false, true );
+              MachinePanel.this.pushDownAlphabet, false, true );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
@@ -1588,13 +1606,31 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
             break;
           }
         }
 
       }
     };
+  }
+
+
+  public boolean isConsoleVisible ()
+  {
+    return this.consoleVisible;
+  }
+
+
+  public boolean isTableVisible ()
+  {
+    return this.tableVisible;
+  }
+
+
+  public boolean isWordEnterMode ()
+  {
+    return this.wordEnterMode;
   }
 
 
@@ -1612,6 +1648,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  public void setConsoleVisible ( boolean consoleVisible )
+  {
+    this.consoleVisible = consoleVisible;
+  }
+
+
   /**
    * Set the file for this Machine Panel
    * 
@@ -1620,6 +1662,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void setFileName ( File pFileName )
   {
     this.fileName = pFileName;
+  }
+
+
+  public void setTableVisible ( boolean tableVisible )
+  {
+    this.tableVisible = tableVisible;
   }
 
 
@@ -1673,6 +1721,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  public void setWordEnterMode ( boolean wordEnterMode )
+  {
+    this.wordEnterMode = wordEnterMode;
+  }
+
+
   /**
    * Set the zoom factor for this panel
    * 
@@ -1683,55 +1737,4 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
   }
-
-
-  public void handleEnterWord ()
-  {
-    this.gui.wordPanel.setVisible ( true );
-    this.model.getJGraph ().setEnabled ( false );
-  }
-
-
-  public void handleEditMachine ()
-  {
-    this.gui.wordPanel.setVisible ( false );
-    this.model.getJGraph ().setEnabled ( true );
-  }
-
-
-  public boolean isWordEnterMode ()
-  {
-    return wordEnterMode;
-  }
-
-
-  public void setWordEnterMode ( boolean wordEnterMode )
-  {
-    this.wordEnterMode = wordEnterMode;
-  }
-
-
-  public boolean isConsoleVisible ()
-  {
-    return consoleVisible;
-  }
-
-
-  public boolean isTableVisible ()
-  {
-    return tableVisible;
-  }
-
-
-  public void setConsoleVisible ( boolean consoleVisible )
-  {
-    this.consoleVisible = consoleVisible;
-  }
-
-
-  public void setTableVisible ( boolean tableVisible )
-  {
-    this.tableVisible = tableVisible;
-  }
-
 }

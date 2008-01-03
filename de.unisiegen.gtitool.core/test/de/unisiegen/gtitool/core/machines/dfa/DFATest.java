@@ -118,9 +118,9 @@ public class DFATest extends MachineTest
     // States
     try
     {
-      z0 = new DefaultState ( alphabet, true, false );
-      z1 = new DefaultState ( alphabet, false, false );
-      z2 = new DefaultState ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -153,7 +153,7 @@ public class DFATest extends MachineTest
   {
     initEntities ();
 
-    DFA dfa = new DefaultDFA ( alphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 

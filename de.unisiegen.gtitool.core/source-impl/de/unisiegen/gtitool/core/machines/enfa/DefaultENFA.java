@@ -25,10 +25,12 @@ public final class DefaultENFA extends AbstractMachine implements ENFA
    * Allocates a new <code>ENFA</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>ENFA</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>ENFA</code>.
    */
-  public DefaultENFA ( Alphabet pAlphabet )
+  public DefaultENFA ( Alphabet pAlphabet, Alphabet pPushDownAlphabet )
   {
-    super ( pAlphabet, ValidationElement.FINAL_STATE,
+    super ( pAlphabet, pPushDownAlphabet, ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.STATE_NOT_REACHABLE );

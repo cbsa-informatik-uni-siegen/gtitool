@@ -125,9 +125,9 @@ public class StorageTest
     State z2 = null;
     try
     {
-      z0 = new DefaultState ( alphabet, true, false );
-      z1 = new DefaultState ( alphabet, false, false );
-      z2 = new DefaultState ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -159,7 +159,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DefaultDFA ( alphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -254,9 +254,9 @@ public class StorageTest
     State z2 = null;
     try
     {
-      z0 = new DefaultState ( alphabet, true, false );
-      z1 = new DefaultState ( alphabet, false, false );
-      z2 = new DefaultState ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -288,7 +288,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DefaultDFA ( alphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -335,7 +335,7 @@ public class StorageTest
       Transition t4loaded = ( Transition ) Storage.getInstance ().load (
           "test/de/unisiegen/gtitool/ui/storage/t4.xml" );
 
-      DFA dfaloaded = new DefaultDFA ( alphabet );
+      DFA dfaloaded = new DefaultDFA ( alphabet, pushDownAlphabet );
       dfaloaded.addState ( z0loaded, z1loaded, z2loaded );
       dfaloaded.addTransition ( t0loaded, t1loaded, t2loaded, t3loaded,
           t4loaded );

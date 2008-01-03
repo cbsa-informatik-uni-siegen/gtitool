@@ -121,10 +121,10 @@ public class NFATest extends MachineTest
     // States
     try
     {
-      z0 = new DefaultState ( alphabet, true, false );
-      z1 = new DefaultState ( alphabet, false, false );
-      z2 = new DefaultState ( alphabet, false, false );
-      z3 = new DefaultState ( alphabet, false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, true, false );
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, false, false );
+      z3 = new DefaultState ( alphabet, pushDownAlphabet, false, true );
     }
     catch ( StateException exc )
     {
@@ -157,7 +157,7 @@ public class NFATest extends MachineTest
   {
     initEntities ();
 
-    NFA nfa = new DefaultNFA ( alphabet );
+    NFA nfa = new DefaultNFA ( alphabet, pushDownAlphabet );
     nfa.addState ( z0, z1, z2, z3 );
     nfa.addTransition ( t0, t1, t2, t3, t4 );
 

@@ -43,45 +43,44 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 public class DefaultMachineModel implements Storable
 {
 
-  /** The {@link Machine} */
+  /**
+   * The {@link Machine}
+   */
   private Machine machine;
 
 
-  /** The {@link JGraph} containing the diagramm */
+  /**
+   * The {@link JGraph} containing the diagramm
+   */
   private JGraph jGraph;
 
 
-  /** The {@link DefaultGraphModel} for this graph */
+  /**
+   * The {@link DefaultGraphModel} for this graph
+   */
   private DefaultGraphModel graphModel;
 
 
-  /** A list of all <code>DefaultStateView</code>s */
+  /**
+   * A list of all <code>DefaultStateView</code>s
+   */
   ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
 
 
-  /** A list of all <code>DefaultTransitionView</code>s */
+  /**
+   * A list of all <code>DefaultTransitionView</code>s
+   */
   ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
 
 
-  /** The {@link MachineTableModel} */
+  /**
+   * The {@link MachineTableModel}
+   */
   private MachineTableModel tableModel;
 
 
   /**
-   * Allocate a new {@link DefaultMachineModel}
-   * 
-   * @param pMachine The {@link Machine}
-   */
-  public DefaultMachineModel ( Machine pMachine )
-  {
-    this.machine = pMachine;
-    this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
-    initializeGraph ();
-  }
-
-
-  /**
-   * Allocates a new <code>Alphabet</code>.
+   * Allocates a new <code>DefaultMachineModel</code>.
    * 
    * @param pElement The {@link Element}.
    * @throws StoreException
@@ -128,13 +127,21 @@ public class DefaultMachineModel implements Storable
 
     // Element
     Alphabet alphabet = null;
+    Alphabet pushDownAlphabet = null;
     boolean foundAlphabet = false;
+    boolean foundPushDownAlphabet = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
         alphabet = new DefaultAlphabet ( current );
         foundAlphabet = true;
+      }
+      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
+      {
+        current.setName ( "Alphabet" ); //$NON-NLS-1$
+        pushDownAlphabet = new DefaultAlphabet ( current );
+        foundPushDownAlphabet = true;
       }
       else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
@@ -143,13 +150,14 @@ public class DefaultMachineModel implements Storable
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
-    if ( !foundAlphabet )
+    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
     // initialize this models elements
-    this.machine = AbstractMachine.createMachine ( machineType, alphabet );
+    this.machine = AbstractMachine.createMachine ( machineType, alphabet,
+        pushDownAlphabet );
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
 
@@ -216,54 +224,15 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * Get the {@link DefaultStateView} for a {@link State}
+   * Allocate a new {@link DefaultMachineModel}
    * 
-   * @param state The {@link State}
-   * @return The {@link DefaultStateView}
+   * @param pMachine The {@link Machine}
    */
-  public DefaultStateView getStateViewForState ( State state )
+  public DefaultMachineModel ( Machine pMachine )
   {
-    for ( DefaultStateView view : this.stateViewList )
-    {
-      if ( view.getState ().equals ( state ) )
-        return view;
-    }
-    return null;
-  }
-
-
-  /**
-   * Get the {@link DefaultStateView} for an id
-   * 
-   * @param id the id
-   * @return The {@link DefaultStateView}
-   */
-  public DefaultStateView getStateById ( int id )
-  {
-    for ( DefaultStateView view : this.stateViewList )
-    {
-      if ( view.getState ().getId () == id )
-        return view;
-    }
-    return null;
-  }
-
-
-  /**
-   * Get the {@link DefaultTransitionView} for a {@link Transition}
-   * 
-   * @param transition The {@link Transition}
-   * @return The {@link DefaultTransitionView}
-   */
-  public DefaultTransitionView getTransitionViewForTransition (
-      Transition transition )
-  {
-    for ( DefaultTransitionView view : this.transitionViewList )
-    {
-      if ( view.getTransition ().equals ( transition ) )
-        return view;
-    }
-    return null;
+    this.machine = pMachine;
+    this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
+    initializeGraph ();
   }
 
 
@@ -355,6 +324,55 @@ public class DefaultMachineModel implements Storable
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Storable#getElement()
+   */
+  public Element getElement ()
+  {
+    Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
+        .getMachineType () ) );
+    newElement.addElement ( this.machine.getAlphabet ().getElement () );
+    Element newPushDownAlphabet = this.machine.getPushDownAlphabet ()
+        .getElement ();
+    newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
+    newElement.addElement ( newPushDownAlphabet );
+    for ( DefaultStateView stateView : this.stateViewList )
+    {
+      newElement.addElement ( stateView.getElement () );
+    }
+    for ( DefaultTransitionView transitionView : this.transitionViewList )
+    {
+      newElement.addElement ( transitionView.getElement () );
+    }
+    return newElement;
+  }
+
+
+  /**
+   * Getter for the {@link DefaultGraphModel}
+   * 
+   * @return the {@link DefaultGraphModel}
+   */
+  public DefaultGraphModel getGraphModel ()
+  {
+    return this.graphModel;
+  }
+
+
+  /**
+   * Getter for the {@link JGraph}
+   * 
+   * @return the {@link JGraph}
+   */
+  public JGraph getJGraph ()
+  {
+    return this.jGraph;
+  }
+
+
+  /**
    * Get the {@link Machine} of this model
    * 
    * @return the {@link Machine}
@@ -362,6 +380,40 @@ public class DefaultMachineModel implements Storable
   public Machine getMachine ()
   {
     return this.machine;
+  }
+
+
+  /**
+   * Get the {@link DefaultStateView} for an id
+   * 
+   * @param id the id
+   * @return The {@link DefaultStateView}
+   */
+  public DefaultStateView getStateById ( int id )
+  {
+    for ( DefaultStateView view : this.stateViewList )
+    {
+      if ( view.getState ().getId () == id )
+        return view;
+    }
+    return null;
+  }
+
+
+  /**
+   * Get the {@link DefaultStateView} for a {@link State}
+   * 
+   * @param state The {@link State}
+   * @return The {@link DefaultStateView}
+   */
+  public DefaultStateView getStateViewForState ( State state )
+  {
+    for ( DefaultStateView view : this.stateViewList )
+    {
+      if ( view.getState ().equals ( state ) )
+        return view;
+    }
+    return null;
   }
 
 
@@ -377,25 +429,20 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * {@inheritDoc}
+   * Get the {@link DefaultTransitionView} for a {@link Transition}
    * 
-   * @see Storable#getElement()
+   * @param transition The {@link Transition}
+   * @return The {@link DefaultTransitionView}
    */
-  public Element getElement ()
+  public DefaultTransitionView getTransitionViewForTransition (
+      Transition transition )
   {
-    Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
-        .getMachineType () ) );
-    newElement.addElement ( this.machine.getAlphabet ().getElement () );
-    for ( DefaultStateView stateView : this.stateViewList )
+    for ( DefaultTransitionView view : this.transitionViewList )
     {
-      newElement.addElement ( stateView.getElement () );
+      if ( view.getTransition ().equals ( transition ) )
+        return view;
     }
-    for ( DefaultTransitionView transitionView : this.transitionViewList )
-    {
-      newElement.addElement ( transitionView.getElement () );
-    }
-    return newElement;
+    return null;
   }
 
 
@@ -441,28 +488,6 @@ public class DefaultMachineModel implements Storable
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
     EdgeView.renderer.setForeground ( Color.magenta );
-  }
-
-
-  /**
-   * Getter for the {@link DefaultGraphModel}
-   * 
-   * @return the {@link DefaultGraphModel}
-   */
-  public DefaultGraphModel getGraphModel ()
-  {
-    return this.graphModel;
-  }
-
-
-  /**
-   * Getter for the {@link JGraph}
-   * 
-   * @return the {@link JGraph}
-   */
-  public JGraph getJGraph ()
-  {
-    return this.jGraph;
   }
 
 

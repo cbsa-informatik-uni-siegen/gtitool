@@ -37,6 +37,12 @@ public final class DefaultState implements State
 
 
   /**
+   * The push down {@link Alphabet} of this <code>DefaultState</code>.
+   */
+  private Alphabet pushDownAlphabet = null;
+
+
+  /**
    * Flag that indicates if the default name can be set.
    */
   private boolean canSetDefaultName;
@@ -116,6 +122,8 @@ public final class DefaultState implements State
    * Allocates a new <code>DefaultState</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>DefaultState</code>.
    * @param pStartState This <code>DefaultState</code> is a start
    *          <code>DefaultState</code>.
    * @param pFinalState This <code>DefaultState</code> is a final
@@ -123,10 +131,11 @@ public final class DefaultState implements State
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public DefaultState ( Alphabet pAlphabet, boolean pStartState,
-      boolean pFinalState ) throws StateException
+  public DefaultState ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
+      boolean pStartState, boolean pFinalState ) throws StateException
   {
-    this ( pAlphabet, "DEFAULTNAME", pStartState, pFinalState ); //$NON-NLS-1$
+    this ( pAlphabet, pPushDownAlphabet,
+        "DEFAULTNAME", pStartState, pFinalState ); //$NON-NLS-1$
     this.canSetDefaultName = true;
   }
 
@@ -135,6 +144,8 @@ public final class DefaultState implements State
    * Allocates a new <code>DefaultState</code>.
    * 
    * @param pAlphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   *          <code>DefaultState</code>.
    * @param pName The name of this <code>DefaultState</code>.
    * @param pStartState This <code>DefaultState</code> is a start
    *          <code>DefaultState</code>.
@@ -143,12 +154,15 @@ public final class DefaultState implements State
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public DefaultState ( Alphabet pAlphabet, String pName, boolean pStartState,
-      boolean pFinalState ) throws StateException
+  public DefaultState ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
+      String pName, boolean pStartState, boolean pFinalState )
+      throws StateException
   {
     this ( pName );
     // Alphabet
     setAlphabet ( pAlphabet );
+    // PushDownAlphabet
+    setPushDownAlphabet ( pPushDownAlphabet );
     // StartState
     setStartState ( pStartState );
     // FinalState
@@ -245,12 +259,19 @@ public final class DefaultState implements State
 
     // Element
     boolean foundAlphabet = false;
+    boolean foundPushDownAlphabet = false;
     for ( Element current : pElement.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
         setAlphabet ( new DefaultAlphabet ( current ) );
         foundAlphabet = true;
+      }
+      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
+      {
+        current.setName ( "Alphabet" ); //$NON-NLS-1$
+        setPushDownAlphabet ( new DefaultAlphabet ( current ) );
+        foundPushDownAlphabet = true;
       }
       else if ( current.getName ().equals ( "TransitionBegin" ) ) //$NON-NLS-1$
       {
@@ -310,7 +331,7 @@ public final class DefaultState implements State
     }
 
     // Not all element values found
-    if ( !foundAlphabet )
+    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
@@ -402,7 +423,8 @@ public final class DefaultState implements State
     try
     {
       DefaultState newDefaultState = new DefaultState ( this.alphabet.clone (),
-          this.name, this.startState, this.finalState );
+          this.pushDownAlphabet.clone (), this.name, this.startState,
+          this.finalState );
       for ( Transition current : this.transitionBeginList )
       {
         newDefaultState.addTransitionBegin ( current.clone () );
@@ -484,6 +506,9 @@ public final class DefaultState implements State
     newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
         this.parserEndOffset ) );
     newElement.addElement ( this.alphabet );
+    Element newPushDownAlphabet = this.pushDownAlphabet.getElement ();
+    newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
+    newElement.addElement ( newPushDownAlphabet );
     for ( Transition current : this.transitionBeginList )
     {
       Element currentElement = new Element ( "TransitionBegin" ); //$NON-NLS-1$
@@ -539,6 +564,18 @@ public final class DefaultState implements State
   public final int getParserStartOffset ()
   {
     return this.parserStartOffset;
+  }
+
+
+  /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   * @see #pushDownAlphabet
+   */
+  public final Alphabet getPushDownAlphabet ()
+  {
+    return this.pushDownAlphabet;
   }
 
 
@@ -849,6 +886,21 @@ public final class DefaultState implements State
   public final void setParserStartOffset ( int pParserStartOffset )
   {
     this.parserStartOffset = pParserStartOffset;
+  }
+
+
+  /**
+   * Sets the push down {@link Alphabet} of this <code>DefaultState</code>.
+   * 
+   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   */
+  public final void setPushDownAlphabet ( Alphabet pPushDownAlphabet )
+  {
+    if ( pPushDownAlphabet == null )
+    {
+      throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
+    }
+    this.pushDownAlphabet = pPushDownAlphabet;
   }
 
 

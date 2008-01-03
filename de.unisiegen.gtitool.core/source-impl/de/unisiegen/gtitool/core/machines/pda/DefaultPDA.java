@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The class for <code>PDA</code> machines.
+ * The class for push down automatons.
  * 
  * @author Christian Fehler
  * @version $Id$

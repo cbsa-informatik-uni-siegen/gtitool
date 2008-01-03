@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The class for <code>ENFA</code> machines.
+ * The class for \u03B5 - nondeterministic finite automatons.
  * 
  * @author Christian Fehler
  * @version $Id$

@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The class for <code>DFA</code> machines.
+ * The class for deterministic finite automatons.
  * 
  * @author Christian Fehler
  * @version $Id$

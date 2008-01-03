@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -261,7 +262,9 @@ public final class MainWindow implements LanguageChangedListener
     JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
     chooser.setMultiSelectionEnabled ( true );
     chooser.setAcceptAllFileFilterUsed ( false );
-    chooser.addChoosableFileFilter ( new FileFilter ()
+
+    // Source files
+    FileFilter sourceFileFilter = new FileFilter ()
     {
 
       @Override
@@ -272,6 +275,14 @@ public final class MainWindow implements LanguageChangedListener
           return true;
         }
         for ( String current : Machine.AVAILABLE_MACHINES )
+        {
+          if ( file.getName ().toLowerCase ().matches (
+              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+        }
+        for ( String current : Grammar.AVAILABLE_GRAMMARS )
         {
           if ( file.getName ().toLowerCase ().matches (
               ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
@@ -298,11 +309,118 @@ public final class MainWindow implements LanguageChangedListener
             result.append ( "; " ); //$NON-NLS-1$
           }
         }
+        if ( ( Machine.AVAILABLE_MACHINES.length > 0 )
+            && ( Grammar.AVAILABLE_GRAMMARS.length > 0 ) )
+        {
+          result.append ( "; " ); //$NON-NLS-1$
+        }
+        for ( int i = 0 ; i < Grammar.AVAILABLE_GRAMMARS.length ; i++ )
+        {
+          result.append ( "*." ); //$NON-NLS-1$
+          result.append ( Grammar.AVAILABLE_GRAMMARS [ i ].toLowerCase () );
+          if ( i != Grammar.AVAILABLE_GRAMMARS.length - 1 )
+          {
+            result.append ( "; " ); //$NON-NLS-1$
+          }
+        }
         result.append ( ")" ); //$NON-NLS-1$
         return result.toString ();
       }
+    };
 
-    } );
+    // Machine files
+    FileFilter machineFileFilter = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File file )
+      {
+        if ( file.isDirectory () )
+        {
+          return true;
+        }
+        for ( String current : Machine.AVAILABLE_MACHINES )
+        {
+          if ( file.getName ().toLowerCase ().matches (
+              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        StringBuilder result = new StringBuilder ();
+        result.append ( Messages
+            .getString ( "MainWindow.OpenSourceFilesMachine" ) ); //$NON-NLS-1$
+        result.append ( " (" ); //$NON-NLS-1$
+        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
+        {
+          result.append ( "*." ); //$NON-NLS-1$
+          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
+          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
+          {
+            result.append ( "; " ); //$NON-NLS-1$
+          }
+        }
+        result.append ( ")" ); //$NON-NLS-1$
+        return result.toString ();
+      }
+    };
+
+    // Grammar files
+    FileFilter grammarFileFilter = new FileFilter ()
+    {
+
+      @Override
+      public boolean accept ( File file )
+      {
+        if ( file.isDirectory () )
+        {
+          return true;
+        }
+        for ( String current : Grammar.AVAILABLE_GRAMMARS )
+        {
+          if ( file.getName ().toLowerCase ().matches (
+              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
+          {
+            return true;
+          }
+        }
+        return false;
+      }
+
+
+      @Override
+      public String getDescription ()
+      {
+        StringBuilder result = new StringBuilder ();
+        result.append ( Messages
+            .getString ( "MainWindow.OpenSourceFilesGrammar" ) ); //$NON-NLS-1$
+        result.append ( " (" ); //$NON-NLS-1$
+        for ( int i = 0 ; i < Grammar.AVAILABLE_GRAMMARS.length ; i++ )
+        {
+          result.append ( "*." ); //$NON-NLS-1$
+          result.append ( Grammar.AVAILABLE_GRAMMARS [ i ].toLowerCase () );
+          if ( i != Grammar.AVAILABLE_GRAMMARS.length - 1 )
+          {
+            result.append ( "; " ); //$NON-NLS-1$
+          }
+        }
+        result.append ( ")" ); //$NON-NLS-1$
+        return result.toString ();
+      }
+    };
+
+    chooser.addChoosableFileFilter ( sourceFileFilter );
+    chooser.addChoosableFileFilter ( machineFileFilter );
+    chooser.addChoosableFileFilter ( grammarFileFilter );
+    chooser.setFileFilter ( sourceFileFilter );
+
     int n = chooser.showOpenDialog ( this.gui );
     if ( n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null )
       return;

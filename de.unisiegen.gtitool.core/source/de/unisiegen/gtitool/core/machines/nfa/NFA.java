@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
- * The interface for <code>NFA</code> machines.
+ * The interface for nondeterministic finite automatons.
  * 
  * @author Christian Fehler
  * @version $Id$

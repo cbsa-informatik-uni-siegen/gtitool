@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.ui.style.listener.WordChangedListener;
 
 
 /**
- * The test class of the word panel.
+ * The test class of the {@link WordPanelForm}.
  * 
  * @author Christian Fehler
  * @version $Id$

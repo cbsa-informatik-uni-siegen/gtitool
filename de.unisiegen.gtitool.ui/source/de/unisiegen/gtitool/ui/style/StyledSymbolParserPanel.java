@@ -84,8 +84,7 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
 
 
   /**
-   * Returns the {@link Symbol} for the program text within the document. Throws
-   * an exception if a parsing error occurred.
+   * Returns the {@link Symbol} for the program text within the document.
    * 
    * @return The {@link Symbol} for the program text.
    */

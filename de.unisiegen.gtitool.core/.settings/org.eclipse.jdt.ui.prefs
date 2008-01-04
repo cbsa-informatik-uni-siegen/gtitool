@@ -1,4 +1,4 @@
-#Thu Oct 18 11:11:50 CEST 2007
+#Thu Jan 03 23:53:23 CET 2008
 eclipse.preferences.version=1
 formatter_profile=_GTITool
 formatter_settings_version=10
@@ -7,4 +7,4 @@ org.eclipse.jdt.ui.ignorelowercasenames=true
 org.eclipse.jdt.ui.importorder=java;javax;org;com;
 org.eclipse.jdt.ui.ondemandthreshold=99
 org.eclipse.jdt.ui.staticondemandthreshold=99
-org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8"?><templates/>
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>

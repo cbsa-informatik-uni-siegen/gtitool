@@ -21,6 +21,24 @@ public final class DefaultStack implements Stack
 
 
   /**
+   * The start offset of this <code>DefaultStack</code> in the source code.
+   * 
+   * @see #getParserStartOffset()
+   * @see #setParserStartOffset(int)
+   */
+  private int parserStartOffset = NO_PARSER_OFFSET;
+
+
+  /**
+   * The end offset of this <code>DefaultStack</code> in the source code.
+   * 
+   * @see #getParserEndOffset()
+   * @see #setParserEndOffset(int)
+   */
+  private int parserEndOffset = NO_PARSER_OFFSET;
+
+
+  /**
    * The list of {@link Symbol}s.
    */
   private ArrayList < Symbol > symbolList;
@@ -150,6 +168,24 @@ public final class DefaultStack implements Stack
 
   /**
    * {@inheritDoc}
+   */
+  public final int getParserEndOffset ()
+  {
+    return this.parserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final int getParserStartOffset ()
+  {
+    return this.parserStartOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
    * 
    * @see Entity#hashCode()
    */
@@ -249,6 +285,24 @@ public final class DefaultStack implements Stack
     {
       push ( current );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserEndOffset ( int pParserEndOffset )
+  {
+    this.parserEndOffset = pParserEndOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final void setParserStartOffset ( int pParserStartOffset )
+  {
+    this.parserStartOffset = pParserStartOffset;
   }
 
 

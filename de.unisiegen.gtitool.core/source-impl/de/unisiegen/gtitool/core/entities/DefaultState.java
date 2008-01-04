@@ -67,7 +67,7 @@ public final class DefaultState implements State
 
 
   /**
-   * The end offset of this <code>Symbol</code> in the source code.
+   * The end offset of this <code>DefaultState</code> in the source code.
    * 
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)
@@ -76,7 +76,7 @@ public final class DefaultState implements State
 
 
   /**
-   * The start offset of this <code>Symbol</code> in the source code.
+   * The start offset of this <code>DefaultState</code> in the source code.
    * 
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)

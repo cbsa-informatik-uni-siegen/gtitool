@@ -85,7 +85,6 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
   /**
    * Returns the {@link Alphabet} for the program text within the document.
-   * Throws an exception if a parsing error occurred.
    * 
    * @return The {@link Alphabet} for the program text.
    */

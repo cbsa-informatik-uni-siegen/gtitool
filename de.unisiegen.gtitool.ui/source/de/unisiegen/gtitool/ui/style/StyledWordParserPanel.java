@@ -132,8 +132,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * Returns the {@link Word} for the program text within the document. Throws
-   * an exception if a parsing error occurred.
+   * Returns the {@link Word} for the program text within the document.
    * 
    * @return The {@link Word} for the program text.
    */

@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Stack extends Entity, Iterable < Symbol >
+public interface Stack extends ParseableEntity, Iterable < Symbol >
 {
 
   /**
@@ -57,6 +57,18 @@ public interface Stack extends Entity, Iterable < Symbol >
    * @return The {@link Symbol} with the given index.
    */
   public Symbol get ( int pIndex );
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public int getParserEndOffset ();
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public int getParserStartOffset ();
 
 
   /**
@@ -117,6 +129,18 @@ public interface Stack extends Entity, Iterable < Symbol >
    *          <code>Stack</code>.
    */
   public void push ( Symbol ... pSymbols );
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public void setParserEndOffset ( int pParserEndOffset );
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public void setParserStartOffset ( int pParserStartOffset );
 
 
   /**

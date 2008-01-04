@@ -36,7 +36,7 @@ public final class DefaultWord implements Word
 
 
   /**
-   * The start offset of this <code>Alphabet</code> in the source code.
+   * The start offset of this <code>DefaultWord</code> in the source code.
    * 
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
@@ -45,7 +45,7 @@ public final class DefaultWord implements Word
 
 
   /**
-   * The end offset of this <code>Alphabet</code> in the source code.
+   * The end offset of this <code>DefaultWord</code> in the source code.
    * 
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)

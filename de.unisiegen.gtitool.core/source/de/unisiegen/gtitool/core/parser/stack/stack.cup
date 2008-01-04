@@ -1,0 +1,68 @@
+/**
+ * The cup file of the stack parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.Stack;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.DefaultStack;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String				SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Symbol			symbol;
+non terminal Symbol[]		symbol_list;
+non terminal Stack			stack;
+
+
+/*********
+ * Stack *
+ *********/
+
+stack							::= symbol_list:sl
+									{:
+									   RESULT = new DefaultStack(sl);
+									   RESULT.setParserStartOffset(slleft);
+									   RESULT.setParserEndOffset(slright);
+									:}
+								;
+
+symbol							::= SYMBOL:s
+									{:
+									   try
+									   {
+									     RESULT = new DefaultSymbol(s);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(sleft, sright, s);
+									   }
+									   RESULT.setParserStartOffset(sleft);
+									   RESULT.setParserEndOffset(sright);
+									:}
+								;
+
+symbol_list						::= symbol_list:sl symbol:s
+								    {:
+								       RESULT = new Symbol[sl.length + 1];
+									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
+									   RESULT[sl.length] = s;
+								    :}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								;

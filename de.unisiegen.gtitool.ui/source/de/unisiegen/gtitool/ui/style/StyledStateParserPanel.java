@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * The styled {@link State} panel class.
  * 
  * @author Christian Fehler
- * @version $Id: StyledStateParserPanel.java 159 2007-11-15 12:00:39Z fehler $
+ * @version $Id$
  */
 public final class StyledStateParserPanel extends StyledParserPanel
 {
@@ -84,8 +84,7 @@ public final class StyledStateParserPanel extends StyledParserPanel
 
 
   /**
-   * Returns the {@link State} for the program text within the document. Throws
-   * an exception if a parsing error occurred.
+   * Returns the {@link State} for the program text within the document.
    * 
    * @return The {@link State} for the program text.
    */

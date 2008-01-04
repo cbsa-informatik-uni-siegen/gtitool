@@ -86,7 +86,6 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
 
   /**
    * Returns the {@link Transition} for the program text within the document.
-   * Throws an exception if a parsing error occurred.
    * 
    * @return The {@link Transition} for the program text.
    */

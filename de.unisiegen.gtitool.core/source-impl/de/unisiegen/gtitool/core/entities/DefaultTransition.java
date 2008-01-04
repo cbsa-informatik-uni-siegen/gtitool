@@ -33,7 +33,8 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The start offset of this <code>Alphabet</code> in the source code.
+   * The start offset of this <code>DefaultTransition</code> in the source
+   * code.
    * 
    * @see #getParserStartOffset()
    * @see #setParserStartOffset(int)
@@ -42,7 +43,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The end offset of this <code>Alphabet</code> in the source code.
+   * The end offset of this <code>DefaultTransition</code> in the source code.
    * 
    * @see #getParserEndOffset()
    * @see #setParserEndOffset(int)

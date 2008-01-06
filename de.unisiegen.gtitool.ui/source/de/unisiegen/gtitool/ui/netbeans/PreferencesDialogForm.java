@@ -62,7 +62,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jListColor = new javax.swing.JList();
         jTextPaneDescription = new javax.swing.JTextPane();
         jPanelAlphabet = new javax.swing.JPanel();
-        styledAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jLabelInputAlphabet = new javax.swing.JLabel();
+        styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jLabelPushDownAlphabet = new javax.swing.JLabel();
+        styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jButtonOk = new javax.swing.JButton();
         jButtonAccept = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -251,14 +254,41 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
 
+        jLabelInputAlphabet.setLabelFor(styledAlphabetParserPanelInput);
+        jLabelInputAlphabet.setText(bundle.getString("PreferencesDialog.InputAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        jPanelAlphabet.add(jLabelInputAlphabet, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 16);
-        jPanelAlphabet.add(styledAlphabetParserPanel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
+        jPanelAlphabet.add(styledAlphabetParserPanelInput, gridBagConstraints);
+
+        jLabelPushDownAlphabet.setLabelFor(styledAlphabetParserPanelPushDown);
+        jLabelPushDownAlphabet.setText(bundle.getString("PreferencesDialog.PushDownAlphabet")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        jPanelAlphabet.add(jLabelPushDownAlphabet, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 16);
+        jPanelAlphabet.add(styledAlphabetParserPanelPushDown, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N
 
@@ -371,19 +401,22 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
     public javax.swing.JLabel jLabelChoice;
+    public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JLabel jLabelLanguage;
     public javax.swing.JLabel jLabelLookAndFeel;
+    public javax.swing.JLabel jLabelPushDownAlphabet;
     public javax.swing.JLabel jLabelZoom;
     public javax.swing.JList jListColor;
     public javax.swing.JPanel jPanelAlphabet;
-    private javax.swing.JPanel jPanelColors;
-    private javax.swing.JPanel jPanelGeneral;
-    private javax.swing.JPanel jPanelGeneralSpace;
-    private javax.swing.JScrollPane jScrollPaneColor;
+    public javax.swing.JPanel jPanelColors;
+    public javax.swing.JPanel jPanelGeneral;
+    public javax.swing.JPanel jPanelGeneralSpace;
+    public javax.swing.JScrollPane jScrollPaneColor;
     public javax.swing.JSlider jSliderZoom;
     public javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JTextPane jTextPaneDescription;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     // End of variables declaration//GEN-END:variables
     
 }

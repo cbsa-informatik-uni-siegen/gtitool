@@ -51,9 +51,15 @@ public final class PreferenceManager
 {
 
   /**
-   * The default hight of the {@link MainWindow}.
+   * The default {@link Alphabet}.
    */
   public static Alphabet DEFAULT_ALPHABET;
+
+
+  /**
+   * The default push down {@link Alphabet}.
+   */
+  public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
 
 
   /**
@@ -180,14 +186,18 @@ public final class PreferenceManager
     {
       DEFAULT_ALPHABET = new DefaultAlphabet (
           new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      DEFAULT_PUSH_DOWN_ALPHABET = new DefaultAlphabet ( new DefaultSymbol (
+          "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    catch ( AlphabetException e )
+    catch ( AlphabetException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
-    catch ( SymbolException e )
+    catch ( SymbolException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 
@@ -1002,6 +1012,55 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The push down {@link AlphabetItem}.
+   */
+  public final AlphabetItem getPushDownAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    int count = this.preferences.getInt ( "DefaultPushDownAlphabetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    loop : for ( int i = 0 ; i < count ; i++ )
+    {
+      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      try
+      {
+        symbols.add ( new DefaultSymbol ( symbol ) );
+      }
+      catch ( SymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_PUSH_DOWN_ALPHABET,
+          DEFAULT_PUSH_DOWN_ALPHABET );
+    }
+    try
+    {
+      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+          DEFAULT_PUSH_DOWN_ALPHABET );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
+
+
+  /**
    * Returns the recently used files.
    * 
    * @return The recently used files.
@@ -1541,6 +1600,26 @@ public final class PreferenceManager
   {
     logger.debug ( "set last active tab to \"" + pIndex + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.LastActiveTab", pIndex ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the push down {@link AlphabetItem}.
+   * 
+   * @param pPushDownAlphabetItem The push down {@link AlphabetItem}.
+   */
+  public final void setPushDownAlphabetItem ( AlphabetItem pPushDownAlphabetItem )
+  {
+    logger.debug ( "set the push down alphabet to \"" //$NON-NLS-1$
+        + pPushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < pPushDownAlphabetItem.getAlphabet ().size () ; i++ )
+    {
+      this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
+          pPushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
+    }
+    this.preferences.putInt (
+        "DefaultPushDownAlphabetCount", pPushDownAlphabetItem //$NON-NLS-1$
+            .getAlphabet ().size () );
   }
 
 

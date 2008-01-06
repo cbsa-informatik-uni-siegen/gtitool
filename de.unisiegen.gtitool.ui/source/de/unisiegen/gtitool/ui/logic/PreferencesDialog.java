@@ -575,6 +575,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The push down {@link AlphabetItem}.
+   */
+  private AlphabetItem pushDownAlphabetItem;
+
+
+  /**
    * The initial last active tab.
    */
   private int initialLastActiveTab;
@@ -689,6 +695,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial push down {@link AlphabetItem}.
+   */
+  private AlphabetItem initialPushDownAlphabetItem;
+
+
+  /**
    * The {@link Timer} of the color list.
    */
   private Timer colorTimer = null;
@@ -748,6 +760,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     initChoice ();
     initColorList ();
     initAlphabet ();
+    initPushDownAlphabet ();
 
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
@@ -925,8 +938,12 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserSymbol.restore ();
     // Alphabet
     this.alphabetItem.restore ();
-    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+    this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
+    // PushDownAlphabet
+    this.pushDownAlphabetItem.restore ();
+    this.gui.styledAlphabetParserPanelPushDown
+        .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
   }
 
 
@@ -937,14 +954,15 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
     this.initialAlphabetItem = this.alphabetItem.clone ();
-    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabetItem
+    this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
 
     // PopupMenu
-    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanel.getJPopupMenu ();
+    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanelInput
+        .getJPopupMenu ();
     jPopupMenu.addSeparator ();
     // RestoreAlphabet
-    JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -958,35 +976,39 @@ public final class PreferencesDialog implements LanguageChangedListener
       ActionEvent pEvent )
       {
         PreferencesDialog.this.alphabetItem.restore ();
-        PreferencesDialog.this.gui.styledAlphabetParserPanel
+        PreferencesDialog.this.gui.styledAlphabetParserPanelInput
             .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
       }
     } );
+    // LanguageChangedListener
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreAlphabet.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
     jPopupMenu.add ( jMenuItemRestoreAlphabet );
 
     /*
      * Alphabet changed listener
      */
-    this.gui.styledAlphabetParserPanel
+    this.gui.styledAlphabetParserPanelInput
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
           public void alphabetChanged ( Alphabet pNewAlphabet )
           {
-            if ( pNewAlphabet == null )
+            setButtonStatus ();
+            if ( pNewAlphabet != null )
             {
-              PreferencesDialog.this.gui.jButtonOk.setEnabled ( false );
-              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( false );
-              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
-                  ALPHABET_TAB_INDEX, Color.RED );
-            }
-            else
-            {
-              PreferencesDialog.this.gui.jButtonOk.setEnabled ( true );
-              PreferencesDialog.this.gui.jButtonAccept.setEnabled ( true );
-              PreferencesDialog.this.gui.jTabbedPane.setForegroundAt (
-                  ALPHABET_TAB_INDEX, null );
               PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
             }
           }
@@ -1325,6 +1347,78 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Initializes the push down alphabet.
+   */
+  private final void initPushDownAlphabet ()
+  {
+    this.pushDownAlphabetItem = PreferenceManager.getInstance ()
+        .getPushDownAlphabetItem ();
+    this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
+    this.gui.styledAlphabetParserPanelPushDown
+        .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanelPushDown
+        .getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    // RestoreAlphabet
+    final JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent pEvent )
+      {
+        PreferencesDialog.this.pushDownAlphabetItem.restore ();
+        PreferencesDialog.this.gui.styledAlphabetParserPanelPushDown
+            .setAlphabet ( PreferencesDialog.this.pushDownAlphabetItem
+                .getAlphabet () );
+      }
+    } );
+    // LanguageChangedListener
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreAlphabet.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+    jPopupMenu.add ( jMenuItemRestoreAlphabet );
+
+    /*
+     * Alphabet changed listener
+     */
+    this.gui.styledAlphabetParserPanelPushDown
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( Alphabet pNewAlphabet )
+          {
+            setButtonStatus ();
+            if ( pNewAlphabet != null )
+            {
+              PreferencesDialog.this.pushDownAlphabetItem
+                  .setAlphabet ( pNewAlphabet );
+            }
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the zoom factor.
    */
   private final void initZoomFactor ()
@@ -1408,6 +1502,10 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
     this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
+    this.gui.jLabelInputAlphabet.setText ( Messages
+        .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
+    this.gui.jLabelPushDownAlphabet.setText ( Messages
+        .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
     // Accept
     this.gui.jButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
@@ -1549,6 +1647,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     saveDataColor ();
     // Alphabet
     saveDataAlphabet ();
+    // PushDownAlphabet
+    saveDataPushDownAlphabet ();
   }
 
 
@@ -1557,7 +1657,6 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveDataAlphabet ()
   {
-    // Alphabet
     if ( !this.initialAlphabetItem.equals ( this.alphabetItem ) )
     {
       logger.debug ( "alphabet changed to \"" //$NON-NLS-1$
@@ -1856,6 +1955,22 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Saves the data of the push down {@link AlphabetItem}.
+   */
+  private final void saveDataPushDownAlphabet ()
+  {
+    if ( !this.initialPushDownAlphabetItem.equals ( this.pushDownAlphabetItem ) )
+    {
+      logger.debug ( "push down alphabet changed to \"" //$NON-NLS-1$
+          + this.pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+      this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
+      PreferenceManager.getInstance ().setPushDownAlphabetItem (
+          this.pushDownAlphabetItem );
+    }
+  }
+
+
+  /**
    * Saves the data of the zoom factor.
    */
   private final void saveDataZoomFactor ()
@@ -1871,6 +1986,27 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.initialZoomFactorItem );
       PreferenceManager.getInstance ().fireZoomFactorChanged (
           this.initialZoomFactorItem );
+    }
+  }
+
+
+  /**
+   * Sets the status of the buttons.
+   */
+  private final void setButtonStatus ()
+  {
+    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
+        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
+    {
+      this.gui.jButtonOk.setEnabled ( false );
+      this.gui.jButtonAccept.setEnabled ( false );
+      this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
+    }
+    else
+    {
+      this.gui.jButtonOk.setEnabled ( true );
+      this.gui.jButtonAccept.setEnabled ( true );
+      this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
     }
   }
 

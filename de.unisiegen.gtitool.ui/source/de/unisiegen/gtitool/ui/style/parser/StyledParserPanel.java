@@ -395,6 +395,14 @@ public abstract class StyledParserPanel extends JPanel
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
+            StyledParserPanel.this.jMenuItemUndo.setText ( Messages
+                .getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemUndo.setMnemonic ( Messages
+                .getString ( "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemRedo.setText ( Messages
+                .getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
+            StyledParserPanel.this.jMenuItemRedo.setMnemonic ( Messages
+                .getString ( "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
             StyledParserPanel.this.jMenuItemCut.setText ( Messages
                 .getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
             StyledParserPanel.this.jMenuItemCut.setMnemonic ( Messages

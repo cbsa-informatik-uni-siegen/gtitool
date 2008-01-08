@@ -31,19 +31,6 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * The {@link WordChangedListener} for the other
-   * <code>StyledWordParserPanel</code>.
-   */
-  private WordChangedListener wordChangedListenerOther;
-
-
-  /**
-   * The {@link WordChangedListener} for this <code>StyledWordParserPanel</code>.
-   */
-  private WordChangedListener wordChangedListenerThis;
-
-
-  /**
    * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet}.
    */
   private Alphabet alphabet = null;
@@ -59,9 +46,9 @@ public final class StyledWordParserPanel extends StyledParserPanel
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object pNewObject )
+      public void parseableChanged ( Object newObject )
       {
-        fireWordChanged ( ( Word ) pNewObject );
+        fireWordChanged ( ( Word ) newObject );
       }
     } );
   }
@@ -70,26 +57,26 @@ public final class StyledWordParserPanel extends StyledParserPanel
   /**
    * Adds the given {@link WordChangedListener}.
    * 
-   * @param pListener The {@link WordChangedListener}.
+   * @param listener The {@link WordChangedListener}.
    */
   public final synchronized void addWordChangedListener (
-      WordChangedListener pListener )
+      WordChangedListener listener )
   {
-    this.listenerList.add ( WordChangedListener.class, pListener );
+    this.listenerList.add ( WordChangedListener.class, listener );
   }
 
 
   /**
    * Let the listeners know that the {@link Word} has changed.
    * 
-   * @param pNewWord The new {@link Word}.
+   * @param newWord The new {@link Word}.
    */
-  private final void fireWordChanged ( Word pNewWord )
+  private final void fireWordChanged ( Word newWord )
   {
-    if ( ( pNewWord != null ) && ( this.alphabet != null ) )
+    if ( ( newWord != null ) && ( this.alphabet != null ) )
     {
       ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : pNewWord )
+      for ( Symbol current : newWord )
       {
         if ( !this.alphabet.contains ( current ) )
         {
@@ -115,7 +102,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
         .getListeners ( WordChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].wordChanged ( pNewWord );
+      listeners [ n ].wordChanged ( newWord );
     }
   }
 
@@ -152,12 +139,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
   /**
    * Removes the given {@link WordChangedListener}.
    * 
-   * @param pListener The {@link WordChangedListener}.
+   * @param listener The {@link WordChangedListener}.
    */
   public final synchronized void removeWordChangedListener (
-      WordChangedListener pListener )
+      WordChangedListener listener )
   {
-    this.listenerList.remove ( WordChangedListener.class, pListener );
+    this.listenerList.remove ( WordChangedListener.class, listener );
   }
 
 
@@ -165,85 +152,43 @@ public final class StyledWordParserPanel extends StyledParserPanel
    * Sets the {@link Alphabet}. Every {@link Symbol} in the {@link Word} has to
    * be in the {@link Alphabet}.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet alphabet )
   {
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
   }
 
 
   /**
    * Sets the {@link Symbol}s which should be highlighted.
    * 
-   * @param pSymbols The {@link Symbol}s which should be highlighted.
+   * @param symbols The {@link Symbol}s which should be highlighted.
    */
-  public final void setHighlightedSymbol ( Iterable < Symbol > pSymbols )
+  public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
   {
-    setHighlightedParseableEntity ( pSymbols );
+    setHighlightedParseableEntity ( symbols );
   }
 
 
   /**
    * Sets the {@link Symbol} which should be highlighted.
    * 
-   * @param pSymbol The {@link Symbol} which should be highlighted.
+   * @param symbol The {@link Symbol} which should be highlighted.
    */
-  public final void setHighlightedSymbol ( Symbol pSymbol )
+  public final void setHighlightedSymbol ( Symbol symbol )
   {
-    setHighlightedParseableEntity ( pSymbol );
+    setHighlightedParseableEntity ( symbol );
   }
 
 
   /**
    * Sets the {@link Word} of the document.
    * 
-   * @param pWord The input {@link Word}.
+   * @param word The input {@link Word}.
    */
-  public final void setWord ( Word pWord )
+  public final void setWord ( Word word )
   {
-    getEditor ().setText ( pWord.toString () );
-  }
-
-
-  /**
-   * Synchronizes this <code>StyledWordParserPanel</code> with the given
-   * <code>StyledWordParserPanel</code>.
-   * 
-   * @param pStyledWordParserPanel The other <code>StyledWordParserPanel</code>
-   *          which should be synchronized.
-   */
-  public final void synchronize (
-      final StyledWordParserPanel pStyledWordParserPanel )
-  {
-    this.wordChangedListenerOther = new WordChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void wordChanged ( @SuppressWarnings ( "unused" )
-      Word pNewWord )
-      {
-        removeWordChangedListener ( StyledWordParserPanel.this.wordChangedListenerThis );
-        getEditor ().setText ( pStyledWordParserPanel.getEditor ().getText () );
-        addWordChangedListener ( StyledWordParserPanel.this.wordChangedListenerThis );
-      }
-    };
-    this.wordChangedListenerThis = new WordChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void wordChanged ( @SuppressWarnings ( "unused" )
-      Word pNewWord )
-      {
-        pStyledWordParserPanel
-            .removeWordChangedListener ( StyledWordParserPanel.this.wordChangedListenerOther );
-        pStyledWordParserPanel.getEditor ().setText ( getEditor ().getText () );
-        pStyledWordParserPanel
-            .addWordChangedListener ( StyledWordParserPanel.this.wordChangedListenerOther );
-      }
-    };
-    pStyledWordParserPanel
-        .addWordChangedListener ( this.wordChangedListenerOther );
-    addWordChangedListener ( this.wordChangedListenerThis );
+    getEditor ().setText ( word.toString () );
   }
 }

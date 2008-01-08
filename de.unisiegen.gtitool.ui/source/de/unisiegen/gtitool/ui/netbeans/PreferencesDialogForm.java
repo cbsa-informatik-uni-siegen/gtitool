@@ -27,12 +27,12 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     /**
      * Creates new form PreferenceDialog
      * 
-     * @param pLogic The {@link PreferencesDialog}.
-     * @param pParent The parent {@link Frame}.
+     * @param logic The {@link PreferencesDialog}.
+     * @param parent The parent {@link Frame}.
      */
-    public PreferencesDialogForm(PreferencesDialog pLogic, java.awt.Frame pParent) {
-        super(pParent, true);
-        this.logic = pLogic;
+    public PreferencesDialogForm(PreferencesDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
     
@@ -64,7 +64,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jPanelAlphabet = new javax.swing.JPanel();
         jLabelInputAlphabet = new javax.swing.JLabel();
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jLabelPushDownAlphabet = new javax.swing.JLabel();
+        jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jButtonOk = new javax.swing.JButton();
         jButtonAccept = new javax.swing.JButton();
@@ -272,18 +272,27 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
         jPanelAlphabet.add(styledAlphabetParserPanelInput, gridBagConstraints);
 
-        jLabelPushDownAlphabet.setLabelFor(styledAlphabetParserPanelPushDown);
-        jLabelPushDownAlphabet.setText(bundle.getString("PreferencesDialog.PushDownAlphabet")); // NOI18N
+        jCheckBoxPushDownAlphabet.setSelected(true);
+        jCheckBoxPushDownAlphabet.setText(bundle.getString("PreferencesDialog.PushDownAlphabet")); // NOI18N
+        jCheckBoxPushDownAlphabet.setToolTipText(bundle.getString("PreferencesDialog.PushDownAlphabetToolTip")); // NOI18N
+        jCheckBoxPushDownAlphabet.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jCheckBoxPushDownAlphabet.setFocusPainted(false);
+        jCheckBoxPushDownAlphabet.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxPushDownAlphabetItemStateChanged(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        jPanelAlphabet.add(jLabelPushDownAlphabet, gridBagConstraints);
+        jPanelAlphabet.add(jCheckBoxPushDownAlphabet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -356,6 +365,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         setBounds(0, 0, 401, 333);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
+       this.logic.handlePushDownAlphabetItemStateChanged(evt);
+    }//GEN-LAST:event_jCheckBoxPushDownAlphabetItemStateChanged
+
     private void jListColorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseExited
        this.logic.handleColorListMouseExited(evt);
     }//GEN-LAST:event_jListColorMouseExited
@@ -397,6 +410,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JButton jButtonCancel;
     public javax.swing.JButton jButtonOk;
     public javax.swing.JButton jButtonRestore;
+    public javax.swing.JCheckBox jCheckBoxPushDownAlphabet;
     public javax.swing.JComboBox jComboBoxChoice;
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
@@ -404,7 +418,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JLabel jLabelLanguage;
     public javax.swing.JLabel jLabelLookAndFeel;
-    public javax.swing.JLabel jLabelPushDownAlphabet;
     public javax.swing.JLabel jLabelZoom;
     public javax.swing.JList jListColor;
     public javax.swing.JPanel jPanelAlphabet;

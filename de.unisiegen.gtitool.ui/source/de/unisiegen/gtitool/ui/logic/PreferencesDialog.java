@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -80,11 +81,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     /**
      * Adds the given item.
      * 
-     * @param pChoiceItem The {@link ChoiceItem} to add.
+     * @param choiceItem The {@link ChoiceItem} to add.
      */
-    public final void addElement ( ChoiceItem pChoiceItem )
+    public final void addElement ( ChoiceItem choiceItem )
     {
-      super.addElement ( pChoiceItem );
+      super.addElement ( choiceItem );
     }
 
 
@@ -95,7 +96,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     @Override
     public final void addElement ( @SuppressWarnings ( "unused" )
-    Object pObject )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -107,9 +108,9 @@ public final class PreferencesDialog implements LanguageChangedListener
      * @see DefaultComboBoxModel#getElementAt(int)
      */
     @Override
-    public final ChoiceItem getElementAt ( int pIndex )
+    public final ChoiceItem getElementAt ( int index )
     {
-      return ( ChoiceItem ) super.getElementAt ( pIndex );
+      return ( ChoiceItem ) super.getElementAt ( index );
     }
 
 
@@ -147,13 +148,13 @@ public final class PreferencesDialog implements LanguageChangedListener
      *      int, boolean, boolean)
      */
     @Override
-    public Component getListCellRendererComponent ( JList pJList,
-        Object pValue, int pIndex, boolean pIsSelected, boolean pCellHasFocus )
+    public Component getListCellRendererComponent ( JList jList, Object value,
+        int index, boolean isSelected, boolean cellHasFocus )
     {
       // The cell has focus value is not used any more
-      JLabel label = ( JLabel ) super.getListCellRendererComponent ( pJList,
-          pValue, pIndex, pIsSelected, pCellHasFocus );
-      ColorItem colorItem = ( ColorItem ) pValue;
+      JLabel label = ( JLabel ) super.getListCellRendererComponent ( jList,
+          value, index, isSelected, cellHasFocus );
+      ColorItem colorItem = ( ColorItem ) value;
       label.setIcon ( colorItem.getIcon () );
       label.setText ( colorItem.getCaption () );
       label.setToolTipText ( colorItem.getDescription () );
@@ -194,28 +195,28 @@ public final class PreferencesDialog implements LanguageChangedListener
     /**
      * Adds the given item.
      * 
-     * @param pItem The item to add.
+     * @param item The item to add.
      */
-    public final void add ( ColorItem pItem )
+    public final void add ( ColorItem item )
     {
-      this.list.add ( pItem );
+      this.list.add ( item );
     }
 
 
     /**
      * Returns the value at the specified index.
      * 
-     * @param pIndex The requested index.
+     * @param index The requested index.
      * @return The value at <code>pIndex</code>
      * @see ListModel#getElementAt(int)
      */
-    public final Object getElementAt ( int pIndex )
+    public final Object getElementAt ( int index )
     {
-      if ( pIndex < 0 || pIndex >= this.list.size () )
+      if ( index < 0 || index >= this.list.size () )
       {
         throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
       }
-      return this.list.get ( pIndex );
+      return this.list.get ( index );
     }
 
 
@@ -249,11 +250,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     /**
      * Adds the given item.
      * 
-     * @param pLanguageItem The {@link LanguageItem} to add.
+     * @param languageItem The {@link LanguageItem} to add.
      */
-    public final void addElement ( LanguageItem pLanguageItem )
+    public final void addElement ( LanguageItem languageItem )
     {
-      super.addElement ( pLanguageItem );
+      super.addElement ( languageItem );
     }
 
 
@@ -264,7 +265,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     @Override
     public final void addElement ( @SuppressWarnings ( "unused" )
-    Object pObject )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -276,9 +277,9 @@ public final class PreferencesDialog implements LanguageChangedListener
      * @see DefaultComboBoxModel#getElementAt(int)
      */
     @Override
-    public final LanguageItem getElementAt ( int pIndex )
+    public final LanguageItem getElementAt ( int index )
     {
-      return ( LanguageItem ) super.getElementAt ( pIndex );
+      return ( LanguageItem ) super.getElementAt ( index );
     }
 
 
@@ -312,11 +313,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     /**
      * Adds the given {@link LookAndFeelItem}.
      * 
-     * @param pLookAndFeelItem The {@link LookAndFeelItem} to add.
+     * @param lookAndFeelItem The {@link LookAndFeelItem} to add.
      */
-    public final void addElement ( LookAndFeelItem pLookAndFeelItem )
+    public final void addElement ( LookAndFeelItem lookAndFeelItem )
     {
-      super.addElement ( pLookAndFeelItem );
+      super.addElement ( lookAndFeelItem );
     }
 
 
@@ -327,7 +328,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     @Override
     public final void addElement ( @SuppressWarnings ( "unused" )
-    Object pObject )
+    Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -339,9 +340,9 @@ public final class PreferencesDialog implements LanguageChangedListener
      * @see DefaultComboBoxModel#getElementAt(int)
      */
     @Override
-    public final LookAndFeelItem getElementAt ( int pIndex )
+    public final LookAndFeelItem getElementAt ( int index )
     {
-      return ( LookAndFeelItem ) super.getElementAt ( pIndex );
+      return ( LookAndFeelItem ) super.getElementAt ( index );
     }
 
 
@@ -382,13 +383,13 @@ public final class PreferencesDialog implements LanguageChangedListener
     /**
      * Initilizes the <code>SleepTimerTask</code>.
      * 
-     * @param pColorList The color list.
-     * @param pIndex The index.
+     * @param colorList The color list.
+     * @param index The index.
      */
-    public SleepTimerTask ( JList pColorList, int pIndex )
+    public SleepTimerTask ( JList colorList, int index )
     {
-      this.index = pIndex;
-      this.colorList = pColorList;
+      this.colorList = colorList;
+      this.index = index;
     }
 
 
@@ -701,6 +702,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial use push down {@link Alphabet}.
+   */
+  private boolean initialUsePushDownAlphabet;
+
+
+  /**
    * The {@link Timer} of the color list.
    */
   private Timer colorTimer = null;
@@ -745,13 +752,13 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Allocates a new <code>PreferencesDialog</code>.
    * 
-   * @param pParent The parent {@link JFrame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public PreferencesDialog ( JFrame pParent )
+  public PreferencesDialog ( JFrame parent )
   {
     logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
-    this.parent = pParent;
-    this.gui = new PreferencesDialogForm ( this, pParent );
+    this.parent = parent;
+    this.gui = new PreferencesDialogForm ( this, parent );
 
     initPopupMenu ();
     initLanguage ();
@@ -800,10 +807,10 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Handles the mouse exited event on the color list.
    * 
-   * @param pEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
   public final void handleColorListMouseExited ( @SuppressWarnings ( "unused" )
-  MouseEvent pEvent )
+  MouseEvent event )
   {
     logger.debug ( "handle color list mouse exited" ); //$NON-NLS-1$
     if ( this.colorTimer != null )
@@ -816,11 +823,11 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Handles the mouse moved event on the color list.
    * 
-   * @param pEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
-  public final void handleColorListMouseMoved ( MouseEvent pEvent )
+  public final void handleColorListMouseMoved ( MouseEvent event )
   {
-    int index = this.gui.jListColor.locationToIndex ( pEvent.getPoint () );
+    int index = this.gui.jListColor.locationToIndex ( event.getPoint () );
     Rectangle rect = this.gui.jListColor.getCellBounds ( index, index );
     // Mouse is not over an item
     if ( this.colorTimer != null )
@@ -828,7 +835,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       this.colorTimer.cancel ();
     }
     this.colorTimer = new Timer ();
-    if ( pEvent.getY () > rect.y + rect.height )
+    if ( event.getY () > rect.y + rect.height )
     {
       this.gui.jListColor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
       this.colorTimer.schedule (
@@ -846,17 +853,17 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Handles the {@link MouseEvent} on the color list.
    * 
-   * @param pEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
-  public final void handleColorListMouseReleased ( MouseEvent pEvent )
+  public final void handleColorListMouseReleased ( MouseEvent event )
   {
     logger.debug ( "handle color list mouse released" ); //$NON-NLS-1$
-    if ( pEvent.getButton () == MouseEvent.BUTTON1 )
+    if ( event.getButton () == MouseEvent.BUTTON1 )
     {
-      int index = this.gui.jListColor.locationToIndex ( pEvent.getPoint () );
+      int index = this.gui.jListColor.locationToIndex ( event.getPoint () );
       Rectangle rect = this.gui.jListColor.getCellBounds ( index, index );
       // Mouse is not over an item
-      if ( pEvent.getY () > rect.y + rect.height )
+      if ( event.getY () > rect.y + rect.height )
       {
         return;
       }
@@ -880,10 +887,10 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Handles {@link ListSelectionEvent}s on the color list.
    * 
-   * @param pEvent The {@link ListSelectionEvent}.
+   * @param event The {@link ListSelectionEvent}.
    */
   public final void handleColorListValueChanged ( @SuppressWarnings ( "unused" )
-  ListSelectionEvent pEvent )
+  ListSelectionEvent event )
   {
     logger.debug ( "handle color list value changed" ); //$NON-NLS-1$
     ColorItem colorItem = ( ColorItem ) this.gui.jListColor.getSelectedValue ();
@@ -907,6 +914,30 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.setVisible ( false );
     saveData ();
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the push down {@link Alphabet} item state changed.
+   * 
+   * @param event The item event.
+   */
+  public final void handlePushDownAlphabetItemStateChanged (
+      @SuppressWarnings ( "unused" )
+      ItemEvent event )
+  {
+    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
+    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
+      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
+    }
+    else
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
+      this.gui.styledAlphabetParserPanelPushDown
+          .synchronize ( this.gui.styledAlphabetParserPanelInput );
+    }
   }
 
 
@@ -941,6 +972,9 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
     // PushDownAlphabet
+    // TODOChristian The restore does not work so good ...
+    this.gui.jCheckBoxPushDownAlphabet
+        .setSelected ( this.initialUsePushDownAlphabet );
     this.pushDownAlphabetItem.restore ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
@@ -973,7 +1007,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         PreferencesDialog.this.alphabetItem.restore ();
         PreferencesDialog.this.gui.styledAlphabetParserPanelInput
@@ -1004,12 +1038,12 @@ public final class PreferencesDialog implements LanguageChangedListener
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet pNewAlphabet )
+          public void alphabetChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
-            if ( pNewAlphabet != null )
+            if ( newAlphabet != null )
             {
-              PreferencesDialog.this.alphabetItem.setAlphabet ( pNewAlphabet );
+              PreferencesDialog.this.alphabetItem.setAlphabet ( newAlphabet );
             }
           }
         } );
@@ -1111,7 +1145,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         ( ( ColorItem ) PreferencesDialog.this.gui.jListColor
             .getSelectedValue () ).restore ();
@@ -1123,52 +1157,52 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( MouseEvent pEvent )
+      public void mousePressed ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
           if ( PreferencesDialog.this.colorTimer != null )
           {
             PreferencesDialog.this.colorTimer.cancel ();
           }
           int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( pEvent.getPoint () );
+              .locationToIndex ( event.getPoint () );
           Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
               index, index );
           // Mouse is not over an item
-          if ( pEvent.getY () > rect.y + rect.height )
+          if ( event.getY () > rect.y + rect.height )
           {
             return;
           }
           PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuColorList.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
 
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseReleased ( MouseEvent pEvent )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
           if ( PreferencesDialog.this.colorTimer != null )
           {
             PreferencesDialog.this.colorTimer.cancel ();
           }
           int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( pEvent.getPoint () );
+              .locationToIndex ( event.getPoint () );
           Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
               index, index );
           // Mouse is not over an item
-          if ( pEvent.getY () > rect.y + rect.height )
+          if ( event.getY () > rect.y + rect.height )
           {
             return;
           }
           PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuColorList.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
@@ -1256,7 +1290,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
       }
@@ -1267,25 +1301,25 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( MouseEvent pEvent )
+      public void mousePressed ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
 
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseReleased ( MouseEvent pEvent )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
 
-          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuLookAndFeel.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
@@ -1310,7 +1344,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
       }
@@ -1321,25 +1355,25 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( MouseEvent pEvent )
+      public void mousePressed ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
 
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseReleased ( MouseEvent pEvent )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
 
-          PreferencesDialog.this.jPopupMenuLanguage.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
@@ -1356,6 +1390,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+    this.initialUsePushDownAlphabet = PreferenceManager.getInstance ()
+        .getUsePushDownAlphabet ();
+    this.gui.jCheckBoxPushDownAlphabet
+        .setSelected ( this.initialUsePushDownAlphabet );
 
     // PopupMenu
     JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanelPushDown
@@ -1373,7 +1411,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         PreferencesDialog.this.pushDownAlphabetItem.restore ();
         PreferencesDialog.this.gui.styledAlphabetParserPanelPushDown
@@ -1405,13 +1443,13 @@ public final class PreferencesDialog implements LanguageChangedListener
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet pNewAlphabet )
+          public void alphabetChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
-            if ( pNewAlphabet != null )
+            if ( newAlphabet != null )
             {
               PreferencesDialog.this.pushDownAlphabetItem
-                  .setAlphabet ( pNewAlphabet );
+                  .setAlphabet ( newAlphabet );
             }
           }
         } );
@@ -1441,7 +1479,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         PreferencesDialog.this.gui.jSliderZoom
             .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
@@ -1453,25 +1491,24 @@ public final class PreferencesDialog implements LanguageChangedListener
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( MouseEvent pEvent )
+      public void mousePressed ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
 
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseReleased ( MouseEvent pEvent )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-
-          PreferencesDialog.this.jPopupMenuZoomFactor.show ( pEvent
-              .getComponent (), pEvent.getX (), pEvent.getY () );
+          PreferencesDialog.this.jPopupMenuZoomFactor.show ( event
+              .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
@@ -1504,7 +1541,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
     this.gui.jLabelInputAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
-    this.gui.jLabelPushDownAlphabet.setText ( Messages
+    this.gui.jCheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
     // Accept
     this.gui.jButtonAccept.setText ( Messages
@@ -1966,6 +2003,16 @@ public final class PreferencesDialog implements LanguageChangedListener
       this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
       PreferenceManager.getInstance ().setPushDownAlphabetItem (
           this.pushDownAlphabetItem );
+    }
+    if ( this.initialUsePushDownAlphabet != this.gui.jCheckBoxPushDownAlphabet
+        .isSelected () )
+    {
+      logger.debug ( "use push down alphabet changed to \"" //$NON-NLS-1$
+          + this.gui.jCheckBoxPushDownAlphabet.isSelected () + "\"" ); //$NON-NLS-1$
+      this.initialUsePushDownAlphabet = this.gui.jCheckBoxPushDownAlphabet
+          .isSelected ();
+      PreferenceManager.getInstance ().setUsePushDownAlphabet (
+          this.gui.jCheckBoxPushDownAlphabet.isSelected () );
     }
   }
 

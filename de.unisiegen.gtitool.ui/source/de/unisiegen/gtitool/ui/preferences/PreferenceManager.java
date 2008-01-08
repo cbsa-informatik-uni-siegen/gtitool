@@ -63,6 +63,12 @@ public final class PreferenceManager
 
 
   /**
+   * The default use push down {@link Alphabet}.
+   */
+  public static boolean DEFAULT_USE_PUSH_DOWN_ALPHABET = false;
+
+
+  /**
    * The default console divider location.
    */
   public static int DEFAULT_DIVIDER_LOCATION_CONSOLE = -1;
@@ -251,36 +257,36 @@ public final class PreferenceManager
   /**
    * Adds the given {@link ColorChangedListener}.
    * 
-   * @param pListener The {@link ColorChangedListener}.
+   * @param listener The {@link ColorChangedListener}.
    */
   public final synchronized void addColorChangedListener (
-      ColorChangedListener pListener )
+      ColorChangedListener listener )
   {
-    this.listenerList.add ( ColorChangedListener.class, pListener );
+    this.listenerList.add ( ColorChangedListener.class, listener );
   }
 
 
   /**
    * Adds the given {@link LanguageChangedListener}.
    * 
-   * @param pListener The {@link LanguageChangedListener}.
+   * @param listener The {@link LanguageChangedListener}.
    */
   public final synchronized void addLanguageChangedListener (
-      LanguageChangedListener pListener )
+      LanguageChangedListener listener )
   {
-    this.listenerList.add ( LanguageChangedListener.class, pListener );
+    this.listenerList.add ( LanguageChangedListener.class, listener );
   }
 
 
   /**
    * Adds the given {@link ZoomFactorChangedListener}.
    * 
-   * @param pListener The {@link ZoomFactorChangedListener}.
+   * @param listener The {@link ZoomFactorChangedListener}.
    */
   public final synchronized void addZoomFactorChangedListener (
-      ZoomFactorChangedListener pListener )
+      ZoomFactorChangedListener listener )
   {
-    this.listenerList.add ( ZoomFactorChangedListener.class, pListener );
+    this.listenerList.add ( ZoomFactorChangedListener.class, listener );
   }
 
 
@@ -288,15 +294,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the active {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the active {@link State}.
+   * @param newColor The new color of the active {@link State}.
    */
-  public final void fireColorChangedActiveState ( Color pNewColor )
+  public final void fireColorChangedActiveState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedActiveState ( pNewColor );
+      listeners [ n ].colorChangedActiveState ( newColor );
     }
   }
 
@@ -305,15 +311,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the error {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the error {@link State}.
+   * @param newColor The new color of the error {@link State}.
    */
-  public final void fireColorChangedErrorState ( Color pNewColor )
+  public final void fireColorChangedErrorState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedErrorState ( pNewColor );
+      listeners [ n ].colorChangedErrorState ( newColor );
     }
   }
 
@@ -322,15 +328,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the error {@link Symbol} has
    * changed.
    * 
-   * @param pNewColor The new color of the error {@link Symbol}.
+   * @param newColor The new color of the error {@link Symbol}.
    */
-  public final void fireColorChangedErrorSymbol ( Color pNewColor )
+  public final void fireColorChangedErrorSymbol ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedErrorSymbol ( pNewColor );
+      listeners [ n ].colorChangedErrorSymbol ( newColor );
     }
   }
 
@@ -339,15 +345,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the error {@link Transition} has
    * changed.
    * 
-   * @param pNewColor The new color of the error {@link Transition}.
+   * @param newColor The new color of the error {@link Transition}.
    */
-  public final void fireColorChangedErrorTransition ( Color pNewColor )
+  public final void fireColorChangedErrorTransition ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedErrorTransition ( pNewColor );
+      listeners [ n ].colorChangedErrorTransition ( newColor );
     }
   }
 
@@ -356,15 +362,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the parser highlighting has
    * changed.
    * 
-   * @param pNewColor The new color of the parser warning.
+   * @param newColor The new color of the parser warning.
    */
-  public final void fireColorChangedParserHighlighting ( Color pNewColor )
+  public final void fireColorChangedParserHighlighting ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedParserHighlighting ( pNewColor );
+      listeners [ n ].colorChangedParserHighlighting ( newColor );
     }
   }
 
@@ -373,15 +379,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the parser {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the parser {@link State}.
+   * @param newColor The new color of the parser {@link State}.
    */
-  public final void fireColorChangedParserState ( Color pNewColor )
+  public final void fireColorChangedParserState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedParserState ( pNewColor );
+      listeners [ n ].colorChangedParserState ( newColor );
     }
   }
 
@@ -390,15 +396,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the parser {@link Symbol} has
    * changed.
    * 
-   * @param pNewColor The new color of the parser {@link Symbol}.
+   * @param newColor The new color of the parser {@link Symbol}.
    */
-  public final void fireColorChangedParserSymbol ( Color pNewColor )
+  public final void fireColorChangedParserSymbol ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedParserSymbol ( pNewColor );
+      listeners [ n ].colorChangedParserSymbol ( newColor );
     }
   }
 
@@ -406,15 +412,15 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the color of the parser warning has changed.
    * 
-   * @param pNewColor The new color of the parser warning.
+   * @param newColor The new color of the parser warning.
    */
-  public final void fireColorChangedParserWarning ( Color pNewColor )
+  public final void fireColorChangedParserWarning ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedParserWarning ( pNewColor );
+      listeners [ n ].colorChangedParserWarning ( newColor );
     }
   }
 
@@ -423,15 +429,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the selected {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the selected {@link State}.
+   * @param newColor The new color of the selected {@link State}.
    */
-  public final void fireColorChangedSelectedState ( Color pNewColor )
+  public final void fireColorChangedSelectedState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedSelectedState ( pNewColor );
+      listeners [ n ].colorChangedSelectedState ( newColor );
     }
   }
 
@@ -440,15 +446,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the start {@link State} has
    * changed.
    * 
-   * @param pNewColor The new color of the start {@link State}.
+   * @param newColor The new color of the start {@link State}.
    */
-  public final void fireColorChangedStartState ( Color pNewColor )
+  public final void fireColorChangedStartState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedStartState ( pNewColor );
+      listeners [ n ].colorChangedStartState ( newColor );
     }
   }
 
@@ -456,15 +462,15 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the color of the {@link State} has changed.
    * 
-   * @param pNewColor The new color of the {@link State}.
+   * @param newColor The new color of the {@link State}.
    */
-  public final void fireColorChangedState ( Color pNewColor )
+  public final void fireColorChangedState ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedState ( pNewColor );
+      listeners [ n ].colorChangedState ( newColor );
     }
   }
 
@@ -472,15 +478,15 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the color of the {@link Symbol} has changed.
    * 
-   * @param pNewColor The new color of the {@link Symbol}.
+   * @param newColor The new color of the {@link Symbol}.
    */
-  public final void fireColorChangedSymbol ( Color pNewColor )
+  public final void fireColorChangedSymbol ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedSymbol ( pNewColor );
+      listeners [ n ].colorChangedSymbol ( newColor );
     }
   }
 
@@ -489,15 +495,15 @@ public final class PreferenceManager
    * Let the listeners know that the color of the {@link Transition} has
    * changed.
    * 
-   * @param pNewColor The new color of the {@link Transition}.
+   * @param newColor The new color of the {@link Transition}.
    */
-  public final void fireColorChangedTransition ( Color pNewColor )
+  public final void fireColorChangedTransition ( Color newColor )
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].colorChangedTransition ( pNewColor );
+      listeners [ n ].colorChangedTransition ( newColor );
     }
   }
 
@@ -505,11 +511,11 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the language has changed.
    * 
-   * @param pNewLocale The new {@link Locale}.
+   * @param newLocale The new {@link Locale}.
    */
-  public final void fireLanguageChanged ( Locale pNewLocale )
+  public final void fireLanguageChanged ( Locale newLocale )
   {
-    Locale.setDefault ( pNewLocale );
+    Locale.setDefault ( newLocale );
     LanguageChangedListener [] listeners = this.listenerList
         .getListeners ( LanguageChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
@@ -522,15 +528,15 @@ public final class PreferenceManager
   /**
    * Let the listeners know that the zoom factor has changed.
    * 
-   * @param pZoomFactor The new {@link ZoomFactorItem}.
+   * @param zoomFactor The new {@link ZoomFactorItem}.
    */
-  public final void fireZoomFactorChanged ( ZoomFactorItem pZoomFactor )
+  public final void fireZoomFactorChanged ( ZoomFactorItem zoomFactor )
   {
     ZoomFactorChangedListener [] listeners = this.listenerList
         .getListeners ( ZoomFactorChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].zoomFactorChanged ( pZoomFactor );
+      listeners [ n ].zoomFactorChanged ( zoomFactor );
     }
   }
 
@@ -1097,6 +1103,18 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the use push down {@link Alphabet} value.
+   * 
+   * @return The use push down {@link Alphabet} value.
+   */
+  public final boolean getUsePushDownAlphabet ()
+  {
+    return this.preferences.getBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
+        DEFAULT_USE_PUSH_DOWN_ALPHABET );
+  }
+
+
+  /**
    * Returns the visible console value.
    * 
    * @return The visible console value.
@@ -1146,55 +1164,55 @@ public final class PreferenceManager
   /**
    * Removes the given {@link ColorChangedListener}.
    * 
-   * @param pListener The {@link ColorChangedListener}.
+   * @param listener The {@link ColorChangedListener}.
    */
   public final synchronized void removeColorChangedListener (
-      ColorChangedListener pListener )
+      ColorChangedListener listener )
   {
-    this.listenerList.remove ( ColorChangedListener.class, pListener );
+    this.listenerList.remove ( ColorChangedListener.class, listener );
   }
 
 
   /**
    * Removes the given {@link LanguageChangedListener}.
    * 
-   * @param pListener The {@link LanguageChangedListener}.
+   * @param listener The {@link LanguageChangedListener}.
    */
   public final synchronized void removeLanguageChangedListener (
-      LanguageChangedListener pListener )
+      LanguageChangedListener listener )
   {
-    this.listenerList.remove ( LanguageChangedListener.class, pListener );
+    this.listenerList.remove ( LanguageChangedListener.class, listener );
   }
 
 
   /**
    * Removes the given {@link ZoomFactorChangedListener}.
    * 
-   * @param pListener The {@link ZoomFactorChangedListener}.
+   * @param listener The {@link ZoomFactorChangedListener}.
    */
   public final synchronized void removeZoomFactorChangedListener (
-      ZoomFactorChangedListener pListener )
+      ZoomFactorChangedListener listener )
   {
-    this.listenerList.remove ( ZoomFactorChangedListener.class, pListener );
+    this.listenerList.remove ( ZoomFactorChangedListener.class, listener );
   }
 
 
   /**
    * Sets the {@link AlphabetItem}.
    * 
-   * @param pAlphabetItem The {@link AlphabetItem}.
+   * @param alphabetItem The {@link AlphabetItem}.
    */
-  public final void setAlphabetItem ( AlphabetItem pAlphabetItem )
+  public final void setAlphabetItem ( AlphabetItem alphabetItem )
   {
     logger
-        .debug ( "set the alphabet to \"" + pAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$//$NON-NLS-2$
-    for ( int i = 0 ; i < pAlphabetItem.getAlphabet ().size () ; i++ )
+        .debug ( "set the alphabet to \"" + alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$//$NON-NLS-2$
+    for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
     {
       this.preferences.put (
-          "DefaultAlphabet" + i, pAlphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
+          "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
     }
-    this.preferences.putInt ( "DefaultAlphabetCount", pAlphabetItem //$NON-NLS-1$
+    this.preferences.putInt ( "DefaultAlphabetCount", alphabetItem //$NON-NLS-1$
         .getAlphabet ().size () );
   }
 
@@ -1202,13 +1220,13 @@ public final class PreferenceManager
   /**
    * Sets the {@link ChoiceItem}.
    * 
-   * @param pChoiceItem The {@link ChoiceItem}.
+   * @param choiceItem The {@link ChoiceItem}.
    */
-  public final void setChoiceItem ( ChoiceItem pChoiceItem )
+  public final void setChoiceItem ( ChoiceItem choiceItem )
   {
     logger.debug ( "set choice item to \"" //$NON-NLS-1$
-        + pChoiceItem.getIndex () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.ChoiceItem.Index", pChoiceItem //$NON-NLS-1$
+        + choiceItem.getIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ChoiceItem.Index", choiceItem //$NON-NLS-1$
         .getIndex () );
   }
 
@@ -1216,59 +1234,59 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the active {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the active {@link State}.
+   * @param colorItem The {@link ColorItem} of the active {@link State}.
    */
-  public final void setColorItemActiveState ( ColorItem pColorItem )
+  public final void setColorItemActiveState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the avtive state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
-        pColorItem.getColor ().getRed () );
+        colorItem.getColor ().getRed () );
     this.preferences.putInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
-        pColorItem.getColor ().getGreen () );
+        colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
-        pColorItem.getColor ().getBlue () );
+        colorItem.getColor ().getBlue () );
   }
 
 
   /**
    * Sets the {@link ColorItem} of the error {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the error {@link State}.
+   * @param colorItem The {@link ColorItem} of the error {@link State}.
    */
-  public final void setColorItemErrorState ( ColorItem pColorItem )
+  public final void setColorItemErrorState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the error state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
-        pColorItem.getColor ().getRed () );
+        colorItem.getColor ().getRed () );
     this.preferences.putInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
-        pColorItem.getColor ().getGreen () );
+        colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
-        pColorItem.getColor ().getBlue () );
+        colorItem.getColor ().getBlue () );
   }
 
 
   /**
    * Sets the {@link ColorItem} of the error {@link Symbol}.
    * 
-   * @param pColorItem The {@link ColorItem} of the error {@link Symbol}.
+   * @param colorItem The {@link ColorItem} of the error {@link Symbol}.
    */
-  public final void setColorItemErrorSymbol ( ColorItem pColorItem )
+  public final void setColorItemErrorSymbol ( ColorItem colorItem )
   {
     logger.debug ( "set color of the error symbol to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolR", pColorItem //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolR", colorItem //$NON-NLS-1$
         .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolG", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolG", colorItem //$NON-NLS-1$
         .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolB", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
 
@@ -1276,22 +1294,22 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the error {@link Transition}.
    * 
-   * @param pColorItem The {@link ColorItem} of the error {@link Transition}.
+   * @param colorItem The {@link ColorItem} of the error {@link Transition}.
    */
-  public final void setColorItemErrorTransition ( ColorItem pColorItem )
+  public final void setColorItemErrorTransition ( ColorItem colorItem )
   {
     logger.debug ( "set color of the error transition to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionR", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorErrorTransitionR", colorItem //$NON-NLS-1$
             .getColor ().getRed () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionG", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorErrorTransitionG", colorItem //$NON-NLS-1$
             .getColor ().getGreen () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionB", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorErrorTransitionB", colorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 
@@ -1299,22 +1317,22 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the parser highlighting.
    * 
-   * @param pColorItem The {@link ColorItem} of the parser highlighting.
+   * @param colorItem The {@link ColorItem} of the parser highlighting.
    */
-  public final void setColorItemParserHighlighting ( ColorItem pColorItem )
+  public final void setColorItemParserHighlighting ( ColorItem colorItem )
   {
     logger.debug ( "set color of the parser highlighting to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingR", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserHighlightingR", colorItem //$NON-NLS-1$
             .getColor ().getRed () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingG", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserHighlightingG", colorItem //$NON-NLS-1$
             .getColor ().getGreen () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingB", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserHighlightingB", colorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 
@@ -1322,19 +1340,19 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the parser {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the parser {@link State}.
+   * @param colorItem The {@link ColorItem} of the parser {@link State}.
    */
-  public final void setColorItemParserState ( ColorItem pColorItem )
+  public final void setColorItemParserState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the parser state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateR", pColorItem //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateR", colorItem //$NON-NLS-1$
         .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateG", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateG", colorItem //$NON-NLS-1$
         .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateB", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorParserStateB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
 
@@ -1342,45 +1360,42 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the parser {@link Symbol}.
    * 
-   * @param pColorItem The {@link ColorItem} of the parser {@link Symbol}.
+   * @param colorItem The {@link ColorItem} of the parser {@link Symbol}.
    */
-  public final void setColorItemParserSymbol ( ColorItem pColorItem )
+  public final void setColorItemParserSymbol ( ColorItem colorItem )
   {
     logger.debug ( "set color of the parser symbol to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserSymbolR", pColorItem //$NON-NLS-1$
-            .getColor ().getRed () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserSymbolG", pColorItem //$NON-NLS-1$
-            .getColor ().getGreen () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserSymbolB", pColorItem //$NON-NLS-1$
-            .getColor ().getBlue () );
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolR", colorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolG", colorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolB", colorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
   }
 
 
   /**
    * Sets the {@link ColorItem} of the parser warning.
    * 
-   * @param pColorItem The {@link ColorItem} of the parser warning.
+   * @param colorItem The {@link ColorItem} of the parser warning.
    */
-  public final void setColorItemParserWarning ( ColorItem pColorItem )
+  public final void setColorItemParserWarning ( ColorItem colorItem )
   {
     logger.debug ( "set color of the parser warning to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningR", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserWarningR", colorItem //$NON-NLS-1$
             .getColor ().getRed () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningG", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserWarningG", colorItem //$NON-NLS-1$
             .getColor ().getGreen () );
     this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningB", pColorItem //$NON-NLS-1$
+        "PreferencesDialog.ColorParserWarningB", colorItem //$NON-NLS-1$
             .getColor ().getBlue () );
   }
 
@@ -1388,59 +1403,59 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the selected {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the selected {@link State}.
+   * @param colorItem The {@link ColorItem} of the selected {@link State}.
    */
-  public final void setColorItemSelectedState ( ColorItem pColorItem )
+  public final void setColorItemSelectedState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the selected state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
-        pColorItem.getColor ().getRed () );
+        colorItem.getColor ().getRed () );
     this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
-        pColorItem.getColor ().getGreen () );
+        colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
-        pColorItem.getColor ().getBlue () );
+        colorItem.getColor ().getBlue () );
   }
 
 
   /**
    * Sets the {@link ColorItem} of the start {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the start {@link State}.
+   * @param colorItem The {@link ColorItem} of the start {@link State}.
    */
-  public final void setColorItemStartState ( ColorItem pColorItem )
+  public final void setColorItemStartState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the start state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
-        pColorItem.getColor ().getRed () );
+        colorItem.getColor ().getRed () );
     this.preferences.putInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
-        pColorItem.getColor ().getGreen () );
+        colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
-        pColorItem.getColor ().getBlue () );
+        colorItem.getColor ().getBlue () );
   }
 
 
   /**
    * Sets the {@link ColorItem} of the {@link State}.
    * 
-   * @param pColorItem The {@link ColorItem} of the {@link State}.
+   * @param colorItem The {@link ColorItem} of the {@link State}.
    */
-  public final void setColorItemState ( ColorItem pColorItem )
+  public final void setColorItemState ( ColorItem colorItem )
   {
     logger.debug ( "set color of the state to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorStateR", pColorItem //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorStateR", colorItem //$NON-NLS-1$
         .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStateG", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorStateG", colorItem //$NON-NLS-1$
         .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStateB", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorStateB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
 
@@ -1448,19 +1463,19 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the {@link Symbol}.
    * 
-   * @param pColorItem The {@link ColorItem} of the {@link Symbol}.
+   * @param colorItem The {@link ColorItem} of the {@link Symbol}.
    */
-  public final void setColorItemSymbol ( ColorItem pColorItem )
+  public final void setColorItemSymbol ( ColorItem colorItem )
   {
     logger.debug ( "set color of the symbol to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolR", pColorItem //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolR", colorItem //$NON-NLS-1$
         .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolG", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolG", colorItem //$NON-NLS-1$
         .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolB", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorSymbolB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
 
@@ -1468,19 +1483,19 @@ public final class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the {@link Transition}.
    * 
-   * @param pColorItem The {@link ColorItem} of the {@link Transition}.
+   * @param colorItem The {@link ColorItem} of the {@link Transition}.
    */
-  public final void setColorItemTransition ( ColorItem pColorItem )
+  public final void setColorItemTransition ( ColorItem colorItem )
   {
     logger.debug ( "set color of the transition to \"" //$NON-NLS-1$
-        + "r=" + pColorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + pColorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + pColorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionR", pColorItem //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionR", colorItem //$NON-NLS-1$
         .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionG", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionG", colorItem //$NON-NLS-1$
         .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionB", pColorItem //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.ColorTransitionB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
 
@@ -1488,39 +1503,39 @@ public final class PreferenceManager
   /**
    * Sets the console divider location.
    * 
-   * @param pLocation The console divider location.
+   * @param location The console divider location.
    */
-  public final void setDividerLocationConsole ( int pLocation )
+  public final void setDividerLocationConsole ( int location )
   {
-    logger.debug ( "set console divider location to \"" + pLocation + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "MachinePanel.DividerConsole", pLocation ); //$NON-NLS-1$
+    logger.debug ( "set console divider location to \"" + location + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "MachinePanel.DividerConsole", location ); //$NON-NLS-1$
   }
 
 
   /**
    * Sets the table divider location.
    * 
-   * @param pLocation The table divider location.
+   * @param location The table divider location.
    */
-  public final void setDividerLocationTable ( int pLocation )
+  public final void setDividerLocationTable ( int location )
   {
-    logger.debug ( "set table divider location to \"" + pLocation + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "MachinePanel.DividerTable", pLocation ); //$NON-NLS-1$
+    logger.debug ( "set table divider location to \"" + location + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "MachinePanel.DividerTable", location ); //$NON-NLS-1$
   }
 
 
   /**
    * Sets the {@link LanguageItem}.
    * 
-   * @param pLanguageItem The {@link LanguageItem}.
+   * @param languageItem The {@link LanguageItem}.
    */
-  public final void setLanguageItem ( LanguageItem pLanguageItem )
+  public final void setLanguageItem ( LanguageItem languageItem )
   {
     logger.debug ( "set language to \"" //$NON-NLS-1$
-        + pLanguageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Language.Title", pLanguageItem //$NON-NLS-1$
+        + languageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Language.Title", languageItem //$NON-NLS-1$
         .getTitle () );
-    this.preferences.put ( "PreferencesDialog.Language.Language", pLanguageItem //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Language.Language", languageItem //$NON-NLS-1$
         .getLocale ().getLanguage () );
   }
 
@@ -1528,32 +1543,31 @@ public final class PreferenceManager
   /**
    * Sets the {@link LookAndFeelItem}.
    * 
-   * @param pLookAndFeelItem The {@link LookAndFeelItem}.
+   * @param lookAndFeelItem The {@link LookAndFeelItem}.
    */
-  public final void setLookAndFeelItem ( LookAndFeelItem pLookAndFeelItem )
+  public final void setLookAndFeelItem ( LookAndFeelItem lookAndFeelItem )
   {
     logger.debug ( "set look and feel to \"" //$NON-NLS-1$
-        + pLookAndFeelItem.getName () + "\"" ); //$NON-NLS-1$
+        + lookAndFeelItem.getName () + "\"" ); //$NON-NLS-1$
     this.preferences.put (
-        "PreferencesDialog.LookAndFeel.Name", pLookAndFeelItem.getName () ); //$NON-NLS-1$
-    this.preferences
-        .put (
-            "PreferencesDialog.LookAndFeel.ClassName", pLookAndFeelItem.getClassName () ); //$NON-NLS-1$
+        "PreferencesDialog.LookAndFeel.Name", lookAndFeelItem.getName () ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.LookAndFeel.ClassName", //$NON-NLS-1$
+        lookAndFeelItem.getClassName () );
   }
 
 
   /**
    * Sets the {@link MainWindow} preferences.
    * 
-   * @param pJFrame The {@link JFrame} of the {@link MainWindow}.
+   * @param jFrame The {@link JFrame} of the {@link MainWindow}.
    */
-  public final void setMainWindowPreferences ( JFrame pJFrame )
+  public final void setMainWindowPreferences ( JFrame jFrame )
   {
-    if ( ( pJFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
+    if ( ( jFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
     {
       logger.debug ( "set main window maximized to \"false\"" ); //$NON-NLS-1$
       this.preferences.putBoolean ( "MainWindow.Maximized", false ); //$NON-NLS-1$
-      Rectangle bounds = pJFrame.getBounds ();
+      Rectangle bounds = jFrame.getBounds ();
       logger.debug ( "set main window bounds to \"" + "x=" + bounds.x + ", " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
           + "y=" + bounds.y + ", " + "width=" + bounds.width + ", " + "height=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
           + bounds.height + "\"" ); //$NON-NLS-1$
@@ -1573,52 +1587,52 @@ public final class PreferenceManager
   /**
    * Sets the opened files and the index of the last active file.
    * 
-   * @param pOpenedFilesItem The {@link OpenedFilesItem}.
+   * @param openedFilesItem The {@link OpenedFilesItem}.
    */
-  public final void setOpenedFilesItem ( OpenedFilesItem pOpenedFilesItem )
+  public final void setOpenedFilesItem ( OpenedFilesItem openedFilesItem )
   {
-    for ( int i = 0 ; i < pOpenedFilesItem.getFiles ().size () ; i++ )
+    for ( int i = 0 ; i < openedFilesItem.getFiles ().size () ; i++ )
     {
       logger.debug ( "set opened file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
-          + pOpenedFilesItem.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
-      this.preferences.put ( "MainWindow.OpenedFiles" + i, pOpenedFilesItem //$NON-NLS-1$
+          + openedFilesItem.getFiles ().get ( i ).getAbsolutePath () + "\"" ); //$NON-NLS-1$
+      this.preferences.put ( "MainWindow.OpenedFiles" + i, openedFilesItem //$NON-NLS-1$
           .getFiles ().get ( i ).getAbsolutePath () );
     }
     this.preferences.putInt ( "MainWindow.OpenedActiveIndex", //$NON-NLS-1$
-        pOpenedFilesItem.getActiveIndex () );
+        openedFilesItem.getActiveIndex () );
     this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
-        pOpenedFilesItem.getFiles ().size () );
+        openedFilesItem.getFiles ().size () );
   }
 
 
   /**
    * Sets the last active tab of the {@link PreferencesDialog}.
    * 
-   * @param pIndex The index of the last active {@link PreferencesDialog}.
+   * @param index The index of the last active {@link PreferencesDialog}.
    */
-  public final void setPreferencesDialogLastActiveTab ( int pIndex )
+  public final void setPreferencesDialogLastActiveTab ( int index )
   {
-    logger.debug ( "set last active tab to \"" + pIndex + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.LastActiveTab", pIndex ); //$NON-NLS-1$
+    logger.debug ( "set last active tab to \"" + index + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.LastActiveTab", index ); //$NON-NLS-1$
   }
 
 
   /**
    * Sets the push down {@link AlphabetItem}.
    * 
-   * @param pPushDownAlphabetItem The push down {@link AlphabetItem}.
+   * @param pushDownAlphabetItem The push down {@link AlphabetItem}.
    */
-  public final void setPushDownAlphabetItem ( AlphabetItem pPushDownAlphabetItem )
+  public final void setPushDownAlphabetItem ( AlphabetItem pushDownAlphabetItem )
   {
     logger.debug ( "set the push down alphabet to \"" //$NON-NLS-1$
-        + pPushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
-    for ( int i = 0 ; i < pPushDownAlphabetItem.getAlphabet ().size () ; i++ )
+        + pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < pushDownAlphabetItem.getAlphabet ().size () ; i++ )
     {
       this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
-          pPushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
+          pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
     }
     this.preferences.putInt (
-        "DefaultPushDownAlphabetCount", pPushDownAlphabetItem //$NON-NLS-1$
+        "DefaultPushDownAlphabetCount", pushDownAlphabetItem //$NON-NLS-1$
             .getAlphabet ().size () );
   }
 
@@ -1626,83 +1640,95 @@ public final class PreferenceManager
   /**
    * Sets the recently used files.
    * 
-   * @param pRecentlyUsedFilesItem The {@link RecentlyUsedFilesItem}.
+   * @param recentlyUsedFilesItem The {@link RecentlyUsedFilesItem}.
    */
   public final void setRecentlyUsedFilesItem (
-      RecentlyUsedFilesItem pRecentlyUsedFilesItem )
+      RecentlyUsedFilesItem recentlyUsedFilesItem )
   {
-    for ( int i = 0 ; i < pRecentlyUsedFilesItem.getFiles ().size () ; i++ )
+    for ( int i = 0 ; i < recentlyUsedFilesItem.getFiles ().size () ; i++ )
     {
       logger.debug ( "set recently used file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
-          + pRecentlyUsedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
+          + recentlyUsedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
           + "\"" ); //$NON-NLS-1$
       this.preferences.put (
-          "MainWindow.RecentlyUsedFiles" + i, pRecentlyUsedFilesItem //$NON-NLS-1$
+          "MainWindow.RecentlyUsedFiles" + i, recentlyUsedFilesItem //$NON-NLS-1$
               .getFiles ().get ( i ).getAbsolutePath () );
     }
     this.preferences.putInt ( "MainWindow.RecentlyUsedFilesCount", //$NON-NLS-1$
-        pRecentlyUsedFilesItem.getFiles ().size () );
+        recentlyUsedFilesItem.getFiles ().size () );
   }
 
 
   /**
    * Sets the system {@link Locale}.
    * 
-   * @param pLocale The system {@link Locale}.
+   * @param locale The system {@link Locale}.
    */
-  public final void setSystemLocale ( Locale pLocale )
+  public final void setSystemLocale ( Locale locale )
   {
-    this.systemLocale = pLocale;
+    this.systemLocale = locale;
+  }
+
+
+  /**
+   * Sets the use push down {@link Alphabet} value.
+   * 
+   * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
+   */
+  public final void setUsePushDownAlphabet ( boolean usePushDownAlphabet )
+  {
+    this.preferences.putBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
+        usePushDownAlphabet );
   }
 
 
   /**
    * Sets the visible console value.
    * 
-   * @param pVisible The visible console value.
+   * @param visible The visible console value.
    */
-  public final void setVisibleConsole ( boolean pVisible )
+  public final void setVisibleConsole ( boolean visible )
   {
-    logger.debug ( "set the visible console to \"" + pVisible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "set the visible console to \"" + visible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putBoolean ( "MachinePanel.ConsoleVisible", //$NON-NLS-1$
-        pVisible );
+        visible );
   }
 
 
   /**
    * Sets the visible table value.
    * 
-   * @param pVisible The visible table value.
+   * @param visible The visible table value.
    */
-  public final void setVisibleTable ( boolean pVisible )
+  public final void setVisibleTable ( boolean visible )
   {
-    logger.debug ( "set the visible table to \"" + pVisible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "set the visible table to \"" + visible + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
-        pVisible );
+        visible );
   }
 
 
   /**
    * Sets the working path.
    * 
-   * @param pPath The working path.
+   * @param path The working path.
    */
-  public final void setWorkingPath ( String pPath )
+  public final void setWorkingPath ( String path )
   {
-    logger.debug ( "set the working path to \"" + pPath + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.put ( "WorkingPath", pPath ); //$NON-NLS-1$
+    logger.debug ( "set the working path to \"" + path + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.put ( "WorkingPath", path ); //$NON-NLS-1$
   }
 
 
   /**
    * Sets the {@link ZoomFactorItem}.
    * 
-   * @param pZoomFactor The {@link ZoomFactorItem}.
+   * @param zoomFactor The {@link ZoomFactorItem}.
    */
-  public final void setZoomFactorItem ( ZoomFactorItem pZoomFactor )
+  public final void setZoomFactorItem ( ZoomFactorItem zoomFactor )
   {
     logger.debug ( "set zoom factor to \"" //$NON-NLS-1$
-        + pZoomFactor.getFactor () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "ZoomFactor", pZoomFactor.getFactor () ); //$NON-NLS-1$
+        + zoomFactor.getFactor () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "ZoomFactor", zoomFactor.getFactor () ); //$NON-NLS-1$
   }
 }

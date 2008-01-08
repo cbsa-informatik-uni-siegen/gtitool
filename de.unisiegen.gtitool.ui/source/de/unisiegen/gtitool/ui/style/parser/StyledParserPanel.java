@@ -83,16 +83,16 @@ public abstract class StyledParserPanel extends JPanel
     /**
      * Add a new object.
      * 
-     * @param pNewObject The object to add.
+     * @param newObject The object to add.
      */
-    public final void add ( Object pNewObject )
+    public final void add ( Object newObject )
     {
       if ( this.addNextObject
           && ( ( this.list.size () == 0 ) || !this.list.get (
               this.list.size () - 1 ).toString ().equals (
-              pNewObject.toString () ) ) )
+              newObject.toString () ) ) )
       {
-        this.list.add ( pNewObject );
+        this.list.add ( newObject );
         this.index = this.list.size () - 1;
       }
       this.addNextObject = true;
@@ -251,11 +251,31 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * The synchronized {@link StyledParserPanel}.
+   */
+  private StyledParserPanel synchronizedStyledParserPanel = null;
+
+
+  /**
+   * The {@link ParseableChangedListener} for the other
+   * <code>StyledParserPanel</code>.
+   */
+  private ParseableChangedListener parseableChangedListenerOther;
+
+
+  /**
+   * The {@link ParseableChangedListener} for this
+   * <code>StyledParserPanel</code>.
+   */
+  private ParseableChangedListener parseableChangedListenerThis;
+
+
+  /**
    * Allocates a new <code>StyledPanel</code>.
    * 
-   * @param pParseable The input {@link Parseable}.
+   * @param parseable The input {@link Parseable}.
    */
-  public StyledParserPanel ( Parseable pParseable )
+  public StyledParserPanel ( Parseable parseable )
   {
     this.editable = true;
     this.copyable = false;
@@ -278,7 +298,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         handleUndo ();
       }
@@ -299,7 +319,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         handleRedo ();
       }
@@ -322,7 +342,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         try
         {
@@ -357,7 +377,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         Clipboard.getInstance ().copy (
             StyledParserPanel.this.editor.getSelectedText () );
@@ -379,7 +399,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         StyledParserPanel.this.editor.replaceSelection ( Clipboard
             .getInstance ().paste () );
@@ -424,35 +444,35 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( MouseEvent pEvent )
+      public void mousePressed ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-          showPopupMenu ( pEvent );
+          showPopupMenu ( event );
         }
       }
 
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseReleased ( MouseEvent pEvent )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( pEvent.isPopupTrigger () )
+        if ( event.isPopupTrigger () )
         {
-          showPopupMenu ( pEvent );
+          showPopupMenu ( event );
         }
       }
     } );
 
     // Document
-    this.document = new StyledParserDocument ( pParseable );
+    this.document = new StyledParserDocument ( parseable );
     this.document.addParseableChangedListener ( new ParseableChangedListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object pNewObject )
+      public void parseableChanged ( Object newObject )
       {
-        fireParseableChanged ( pNewObject );
+        fireParseableChanged ( newObject );
       }
     } );
     setLayout ( new BorderLayout () );
@@ -466,17 +486,17 @@ public abstract class StyledParserPanel extends JPanel
       /**
        * Inserts a given text at the given index.
        * 
-       * @param pIndex The index in the text, where the text should be inserted.
-       * @param pInsertText The text which should be inserted.
+       * @param index The index in the text, where the text should be inserted.
+       * @param insertText The text which should be inserted.
        */
       @SuppressWarnings ( "synthetic-access" )
-      public void insertText ( int pIndex, String pInsertText )
+      public void insertText ( int index, String insertText )
       {
         int countSpaces = 0;
         try
         {
           while ( StyledParserPanel.this.document.getText (
-              pIndex + countSpaces, 1 ).equals ( " " ) ) //$NON-NLS-1$
+              index + countSpaces, 1 ).equals ( " " ) ) //$NON-NLS-1$
           {
             countSpaces++ ;
           }
@@ -488,7 +508,7 @@ public abstract class StyledParserPanel extends JPanel
         try
         {
           int offset = 0;
-          String text = pInsertText;
+          String text = insertText;
           if ( ( countSpaces >= 1 )
               && ( text.substring ( 0, 1 ).equals ( " " ) ) ) //$NON-NLS-1$
           {
@@ -501,7 +521,7 @@ public abstract class StyledParserPanel extends JPanel
           {
             text = text.substring ( 0, text.length () - 1 );
           }
-          StyledParserPanel.this.document.insertString ( pIndex + offset, text,
+          StyledParserPanel.this.document.insertString ( index + offset, text,
               null );
         }
         catch ( BadLocationException e )
@@ -514,20 +534,20 @@ public abstract class StyledParserPanel extends JPanel
       /**
        * Marks the text with the given offsets.
        * 
-       * @param pLeft The left offset of the text which should be marked.
-       * @param pRight The right offset of the text which should be marked.
+       * @param left The left offset of the text which should be marked.
+       * @param right The right offset of the text which should be marked.
        */
       @SuppressWarnings ( "synthetic-access" )
-      public void markText ( int pLeft, int pRight )
+      public void markText ( int left, int right )
       {
-        if ( ( StyledParserPanel.this.editor.getSelectionStart () == pLeft )
-            && ( StyledParserPanel.this.editor.getSelectionEnd () == pRight ) )
+        if ( ( StyledParserPanel.this.editor.getSelectionStart () == left )
+            && ( StyledParserPanel.this.editor.getSelectionEnd () == right ) )
         {
           StyledParserPanel.this.removeSelectedText ();
         }
         else
         {
-          StyledParserPanel.this.selectErrorText ( pLeft, pRight );
+          StyledParserPanel.this.selectErrorText ( left, right );
         }
       }
     } );
@@ -541,7 +561,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         handleUndo ();
       }
@@ -554,7 +574,7 @@ public abstract class StyledParserPanel extends JPanel
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent pEvent )
+      ActionEvent event )
       {
         handleRedo ();
       }
@@ -568,23 +588,23 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * Adds the given {@link ParseableChangedListener}.
    * 
-   * @param pListener The {@link ParseableChangedListener}.
+   * @param listener The {@link ParseableChangedListener}.
    */
   protected final synchronized void addParseableChangedListener (
-      ParseableChangedListener pListener )
+      ParseableChangedListener listener )
   {
-    this.listenerList.add ( ParseableChangedListener.class, pListener );
+    this.listenerList.add ( ParseableChangedListener.class, listener );
   }
 
 
   /**
    * Let the listeners know that the {@link Object} has changed.
    * 
-   * @param pNewObject The new {@link Object}.
+   * @param newObject The new {@link Object}.
    */
-  private final void fireParseableChanged ( Object pNewObject )
+  private final void fireParseableChanged ( Object newObject )
   {
-    if ( ( pNewObject == null ) && ( this.editable ) )
+    if ( ( newObject == null ) && ( this.editable ) )
     {
       this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
     }
@@ -594,16 +614,16 @@ public abstract class StyledParserPanel extends JPanel
     }
 
     // History
-    if ( pNewObject != null )
+    if ( newObject != null )
     {
-      this.history.add ( pNewObject );
+      this.history.add ( newObject );
     }
 
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].parseableChanged ( pNewObject );
+      listeners [ n ].parseableChanged ( newObject );
     }
   }
 
@@ -704,14 +724,26 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Return the enabled value.
+   * 
+   * @return The enabled value.
+   */
+  @Override
+  public final boolean isEnabled ()
+  {
+    return super.isEnabled ();
+  }
+
+
+  /**
    * Removes the given {@link ParseableChangedListener}.
    * 
-   * @param pListener The {@link ParseableChangedListener}.
+   * @param listener The {@link ParseableChangedListener}.
    */
   protected final synchronized void removeParseableChangedListener (
-      ParseableChangedListener pListener )
+      ParseableChangedListener listener )
   {
-    this.listenerList.remove ( ParseableChangedListener.class, pListener );
+    this.listenerList.remove ( ParseableChangedListener.class, listener );
   }
 
 
@@ -743,12 +775,12 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * Selects the error text.
    * 
-   * @param pLeft The left index.
-   * @param pRight The right index.
+   * @param left The left index.
+   * @param right The right index.
    */
-  private final void selectErrorText ( int pLeft, int pRight )
+  private final void selectErrorText ( int left, int right )
   {
-    this.editor.select ( pLeft, pRight );
+    this.editor.select ( left, right );
   }
 
 
@@ -756,11 +788,11 @@ public abstract class StyledParserPanel extends JPanel
    * Sets the specified boolean to indicate whether or not this
    * <code>StyledParserPanel</code> should be copyable.
    * 
-   * @param pCopyable The boolean to be set.
+   * @param copyable The boolean to be set.
    */
-  public final void setCopyable ( boolean pCopyable )
+  public final void setCopyable ( boolean copyable )
   {
-    this.copyable = pCopyable;
+    this.copyable = copyable;
     setStatus ();
   }
 
@@ -769,60 +801,83 @@ public abstract class StyledParserPanel extends JPanel
    * Sets the specified boolean to indicate whether or not this
    * <code>StyledParserPanel</code> should be editable.
    * 
-   * @param pEditable The boolean to be set.
+   * @param editable The boolean to be set.
    */
-  public final void setEditable ( boolean pEditable )
+  public final void setEditable ( boolean editable )
   {
-    this.editable = pEditable;
+    this.editable = editable;
     setStatus ();
+  }
+
+
+  /**
+   * Sets the specified boolean to indicate whether or not this
+   * <code>StyledParserPanel</code> should be enabled.
+   * 
+   * @param enabled The boolean to be set.
+   */
+  @Override
+  public final void setEnabled ( boolean enabled )
+  {
+    this.sideBar.setEnabled ( enabled );
+    this.editor.setEnabled ( enabled );
+    if ( enabled )
+    {
+      this.editor.setBackground ( Color.WHITE );
+    }
+    else
+    {
+      this.editor.setBackground ( new Color ( 232, 242, 254 ) );
+    }
+    super.setEnabled ( enabled );
   }
 
 
   /**
    * Sets the exceptions.
    * 
-   * @param pExceptions The exceptions to set.
+   * @param exceptions The exceptions to set.
    */
-  public final void setException ( Iterable < ScannerException > pExceptions )
+  public final void setException ( Iterable < ScannerException > exceptions )
   {
-    this.document.setException ( pExceptions );
+    this.document.setException ( exceptions );
   }
 
 
   /**
    * Sets the exception.
    * 
-   * @param pException The exception to set.
+   * @param exception The exception to set.
    */
-  public final void setException ( ScannerException pException )
+  public final void setException ( ScannerException exception )
   {
-    this.document.setException ( pException );
+    this.document.setException ( exception );
   }
 
 
   /**
    * Sets the {@link ParseableEntity}s which should be highlighted.
    * 
-   * @param pParseableEntities The {@link ParseableEntity}s which should be
+   * @param parseableEntities The {@link ParseableEntity}s which should be
    *          highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable < ? extends ParseableEntity > pParseableEntities )
+      Iterable < ? extends ParseableEntity > parseableEntities )
   {
-    this.document.setHighlightedParseableEntity ( pParseableEntities );
+    this.document.setHighlightedParseableEntity ( parseableEntities );
   }
 
 
   /**
    * Sets the {@link ParseableEntity} which should be highlighted.
    * 
-   * @param pParseableEntity The {@link ParseableEntity} which should be
+   * @param parseableEntity The {@link ParseableEntity} which should be
    *          highlighted.
    */
   public final void setHighlightedParseableEntity (
-      ParseableEntity pParseableEntity )
+      ParseableEntity parseableEntity )
   {
-    this.document.setHighlightedParseableEntity ( pParseableEntity );
+    this.document.setHighlightedParseableEntity ( parseableEntity );
   }
 
 
@@ -859,9 +914,9 @@ public abstract class StyledParserPanel extends JPanel
    * Shows the {@link JPopupMenu} and enables the copy and cut menu item if text
    * is selected, otherwise they are diasabled.
    * 
-   * @param pEvent
+   * @param event
    */
-  private final void showPopupMenu ( MouseEvent pEvent )
+  private final void showPopupMenu ( MouseEvent event )
   {
     if ( this.editable )
     {
@@ -872,7 +927,7 @@ public abstract class StyledParserPanel extends JPanel
       this.jMenuItemCopy.setEnabled ( start != end );
       this.jMenuItemCut.setEnabled ( start != end );
       this.jMenuItemPaste.setEnabled ( true );
-      this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
+      this.jPopupMenu.show ( event.getComponent (), event.getX (), event
           .getY () );
     }
     else if ( this.copyable )
@@ -884,8 +939,67 @@ public abstract class StyledParserPanel extends JPanel
       this.jMenuItemCopy.setEnabled ( start != end );
       this.jMenuItemCut.setEnabled ( false );
       this.jMenuItemPaste.setEnabled ( false );
-      this.jPopupMenu.show ( pEvent.getComponent (), pEvent.getX (), pEvent
+      this.jPopupMenu.show ( event.getComponent (), event.getX (), event
           .getY () );
     }
+  }
+
+
+  /**
+   * Synchronizes this <code>StyledParserPanel</code> with the given
+   * <code>StyledParserPanel</code>.
+   * 
+   * @param styledParserPanel The other <code>StyledParserPanel</code> which
+   *          should be synchronized.
+   */
+  public final void synchronize ( StyledParserPanel styledParserPanel )
+  {
+    if ( styledParserPanel == null )
+    {
+      this.synchronizedStyledParserPanel
+          .removeParseableChangedListener ( this.parseableChangedListenerOther );
+      removeParseableChangedListener ( this.parseableChangedListenerThis );
+      this.parseableChangedListenerThis = null;
+      this.parseableChangedListenerOther = null;
+      this.synchronizedStyledParserPanel = null;
+      return;
+    }
+    this.synchronizedStyledParserPanel = styledParserPanel;
+
+    getEditor ().setText (
+        this.synchronizedStyledParserPanel.getEditor ().getText () );
+
+    this.parseableChangedListenerOther = new ParseableChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void parseableChanged ( @SuppressWarnings ( "unused" )
+      Object newObject )
+      {
+        removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
+        getEditor ().setText (
+            StyledParserPanel.this.synchronizedStyledParserPanel.getEditor ()
+                .getText () );
+        addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
+      }
+    };
+    this.parseableChangedListenerThis = new ParseableChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void parseableChanged ( @SuppressWarnings ( "unused" )
+      Object newObject )
+      {
+        StyledParserPanel.this.synchronizedStyledParserPanel
+            .removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );
+        StyledParserPanel.this.synchronizedStyledParserPanel.getEditor ()
+            .setText ( getEditor ().getText () );
+        StyledParserPanel.this.synchronizedStyledParserPanel
+            .addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );
+      }
+    };
+    this.synchronizedStyledParserPanel
+        .addParseableChangedListener ( this.parseableChangedListenerOther );
+    addParseableChangedListener ( this.parseableChangedListenerThis );
   }
 }

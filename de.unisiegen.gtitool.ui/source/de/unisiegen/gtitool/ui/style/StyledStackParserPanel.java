@@ -31,20 +31,6 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
-   * The {@link StackChangedListener} for the other
-   * <code>StyledStackParserPanel</code>.
-   */
-  private StackChangedListener stackChangedListenerOther;
-
-
-  /**
-   * The {@link StackChangedListener} for this
-   * <code>StyledStackParserPanel</code>.
-   */
-  private StackChangedListener stackChangedListenerThis;
-
-
-  /**
    * Every {@link Symbol} in the {@link Stack} has to be in this push down
    * {@link Alphabet}.
    */
@@ -61,9 +47,9 @@ public final class StyledStackParserPanel extends StyledParserPanel
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object pNewObject )
+      public void parseableChanged ( Object newObject )
       {
-        fireStackChanged ( ( Stack ) pNewObject );
+        fireStackChanged ( ( Stack ) newObject );
       }
     } );
   }
@@ -72,26 +58,26 @@ public final class StyledStackParserPanel extends StyledParserPanel
   /**
    * Adds the given {@link StackChangedListener}.
    * 
-   * @param pListener The {@link StackChangedListener}.
+   * @param listener The {@link StackChangedListener}.
    */
   public final synchronized void addStackChangedListener (
-      StackChangedListener pListener )
+      StackChangedListener listener )
   {
-    this.listenerList.add ( StackChangedListener.class, pListener );
+    this.listenerList.add ( StackChangedListener.class, listener );
   }
 
 
   /**
    * Let the listeners know that the {@link Stack} has changed.
    * 
-   * @param pNewStack The new {@link Stack}.
+   * @param newStack The new {@link Stack}.
    */
-  private final void fireStackChanged ( Stack pNewStack )
+  private final void fireStackChanged ( Stack newStack )
   {
-    if ( ( pNewStack != null ) && ( this.pushDownAlphabet != null ) )
+    if ( ( newStack != null ) && ( this.pushDownAlphabet != null ) )
     {
       ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : pNewStack )
+      for ( Symbol current : newStack )
       {
         if ( !this.pushDownAlphabet.contains ( current ) )
         {
@@ -118,7 +104,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
         .getListeners ( StackChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].stackChanged ( pNewStack );
+      listeners [ n ].stackChanged ( newStack );
     }
   }
 
@@ -155,34 +141,34 @@ public final class StyledStackParserPanel extends StyledParserPanel
   /**
    * Removes the given {@link StackChangedListener}.
    * 
-   * @param pListener The {@link StackChangedListener}.
+   * @param listener The {@link StackChangedListener}.
    */
   public final synchronized void removeStackChangedListener (
-      StackChangedListener pListener )
+      StackChangedListener listener )
   {
-    this.listenerList.remove ( StackChangedListener.class, pListener );
+    this.listenerList.remove ( StackChangedListener.class, listener );
   }
 
 
   /**
    * Sets the {@link Symbol}s which should be highlighted.
    * 
-   * @param pSymbols The {@link Symbol}s which should be highlighted.
+   * @param symbols The {@link Symbol}s which should be highlighted.
    */
-  public final void setHighlightedSymbol ( Iterable < Symbol > pSymbols )
+  public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
   {
-    setHighlightedParseableEntity ( pSymbols );
+    setHighlightedParseableEntity ( symbols );
   }
 
 
   /**
    * Sets the {@link Symbol} which should be highlighted.
    * 
-   * @param pSymbol The {@link Symbol} which should be highlighted.
+   * @param symbol The {@link Symbol} which should be highlighted.
    */
-  public final void setHighlightedSymbol ( Symbol pSymbol )
+  public final void setHighlightedSymbol ( Symbol symbol )
   {
-    setHighlightedParseableEntity ( pSymbol );
+    setHighlightedParseableEntity ( symbol );
   }
 
 
@@ -190,64 +176,21 @@ public final class StyledStackParserPanel extends StyledParserPanel
    * Sets the push down {@link Alphabet}. Every {@link Symbol} in the
    * {@link Stack} has to be in the push down {@link Alphabet}.
    * 
-   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
-  public final void setPushDownAlphabet ( Alphabet pPushDownAlphabet )
+  public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
   {
-    this.pushDownAlphabet = pPushDownAlphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
   }
 
 
   /**
    * Sets the {@link Stack} of the document.
    * 
-   * @param pStack The input {@link Stack}.
+   * @param stack The input {@link Stack}.
    */
-  public final void setStack ( Stack pStack )
+  public final void setStack ( Stack stack )
   {
-    getEditor ().setText ( pStack.toString () );
-  }
-
-
-  /**
-   * Synchronizes this <code>StyledStackParserPanel</code> with the given
-   * <code>StyledStackParserPanel</code>.
-   * 
-   * @param pStyledStackParserPanel The other
-   *          <code>StyledStackParserPanel</code> which should be
-   *          synchronized.
-   */
-  public final void synchronize (
-      final StyledStackParserPanel pStyledStackParserPanel )
-  {
-    this.stackChangedListenerOther = new StackChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void stackChanged ( @SuppressWarnings ( "unused" )
-      Stack pNewStack )
-      {
-        removeStackChangedListener ( StyledStackParserPanel.this.stackChangedListenerThis );
-        getEditor ().setText ( pStyledStackParserPanel.getEditor ().getText () );
-        addStackChangedListener ( StyledStackParserPanel.this.stackChangedListenerThis );
-      }
-    };
-    this.stackChangedListenerThis = new StackChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void stackChanged ( @SuppressWarnings ( "unused" )
-      Stack pNewStack )
-      {
-        pStyledStackParserPanel
-            .removeStackChangedListener ( StyledStackParserPanel.this.stackChangedListenerOther );
-        pStyledStackParserPanel.getEditor ().setText ( getEditor ().getText () );
-        pStyledStackParserPanel
-            .addStackChangedListener ( StyledStackParserPanel.this.stackChangedListenerOther );
-      }
-    };
-    pStyledStackParserPanel
-        .addStackChangedListener ( this.stackChangedListenerOther );
-    addStackChangedListener ( this.stackChangedListenerThis );
+    getEditor ().setText ( stack.toString () );
   }
 }

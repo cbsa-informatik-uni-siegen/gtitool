@@ -25,20 +25,6 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
 
 
   /**
-   * The {@link TransitionChangedListener} for the other
-   * <code>StyledTransitionParserPanel</code>.
-   */
-  private TransitionChangedListener transitionChangedListenerOther;
-
-
-  /**
-   * The {@link TransitionChangedListener} for this
-   * <code>StyledTransitionParserPanel</code>.
-   */
-  private TransitionChangedListener transitionChangedListenerThis;
-
-
-  /**
    * Allocates a new <code>StyledTransitionParserPanel</code>.
    */
   public StyledTransitionParserPanel ()
@@ -48,9 +34,9 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object pNewObject )
+      public void parseableChanged ( Object newObject )
       {
-        fireTransitionChanged ( ( Transition ) pNewObject );
+        fireTransitionChanged ( ( Transition ) newObject );
       }
     } );
   }
@@ -59,27 +45,27 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   /**
    * Adds the given {@link TransitionChangedListener}.
    * 
-   * @param pListener The {@link TransitionChangedListener}.
+   * @param listener The {@link TransitionChangedListener}.
    */
   public final synchronized void addTransitionChangedListener (
-      TransitionChangedListener pListener )
+      TransitionChangedListener listener )
   {
-    this.listenerList.add ( TransitionChangedListener.class, pListener );
+    this.listenerList.add ( TransitionChangedListener.class, listener );
   }
 
 
   /**
    * Let the listeners know that the {@link Transition} has changed.
    * 
-   * @param pNewTransition The new {@link Transition}.
+   * @param newTransition The new {@link Transition}.
    */
-  private final void fireTransitionChanged ( Transition pNewTransition )
+  private final void fireTransitionChanged ( Transition newTransition )
   {
     TransitionChangedListener [] listeners = this.listenerList
         .getListeners ( TransitionChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].transitionChanged ( pNewTransition );
+      listeners [ n ].transitionChanged ( newTransition );
     }
   }
 
@@ -105,67 +91,22 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   /**
    * Removes the given {@link TransitionChangedListener}.
    * 
-   * @param pListener The {@link TransitionChangedListener}.
+   * @param listener The {@link TransitionChangedListener}.
    */
   public final synchronized void removeTransitionChangedListener (
-      TransitionChangedListener pListener )
+      TransitionChangedListener listener )
   {
-    this.listenerList.remove ( TransitionChangedListener.class, pListener );
+    this.listenerList.remove ( TransitionChangedListener.class, listener );
   }
 
 
   /**
    * Sets the {@link Transition} of the document.
    * 
-   * @param pTransition The input {@link Transition}.
+   * @param transition The input {@link Transition}.
    */
-  public final void setTransition ( Transition pTransition )
+  public final void setTransition ( Transition transition )
   {
-    getEditor ().setText ( pTransition.toString () );
-  }
-
-
-  /**
-   * Synchronizes this <code>StyledTransitionParserPanel</code> with the given
-   * <code>StyledTransitionParserPanel</code>.
-   * 
-   * @param pStyledTransitionParserPanel The other
-   *          <code>StyledTransitionParserPanel</code> which should be
-   *          synchronized.
-   */
-  public final void synchronize (
-      final StyledTransitionParserPanel pStyledTransitionParserPanel )
-  {
-    this.transitionChangedListenerOther = new TransitionChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void transitionChanged ( @SuppressWarnings ( "unused" )
-      Transition pNewTransition )
-      {
-        removeTransitionChangedListener ( StyledTransitionParserPanel.this.transitionChangedListenerThis );
-        getEditor ().setText (
-            pStyledTransitionParserPanel.getEditor ().getText () );
-        addTransitionChangedListener ( StyledTransitionParserPanel.this.transitionChangedListenerThis );
-      }
-    };
-    this.transitionChangedListenerThis = new TransitionChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void transitionChanged ( @SuppressWarnings ( "unused" )
-      Transition pNewTransition )
-      {
-        pStyledTransitionParserPanel
-            .removeTransitionChangedListener ( StyledTransitionParserPanel.this.transitionChangedListenerOther );
-        pStyledTransitionParserPanel.getEditor ().setText (
-            getEditor ().getText () );
-        pStyledTransitionParserPanel
-            .addTransitionChangedListener ( StyledTransitionParserPanel.this.transitionChangedListenerOther );
-      }
-    };
-    pStyledTransitionParserPanel
-        .addTransitionChangedListener ( this.transitionChangedListenerOther );
-    addTransitionChangedListener ( this.transitionChangedListenerThis );
+    getEditor ().setText ( transition.toString () );
   }
 }

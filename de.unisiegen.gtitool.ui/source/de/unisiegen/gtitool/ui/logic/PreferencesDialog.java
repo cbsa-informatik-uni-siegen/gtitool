@@ -732,6 +732,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The push down {@link Alphabet} {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuUsePushDownAlphabet;
+
+
+  /**
    * The color list {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuColorList;
@@ -972,9 +978,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
     // PushDownAlphabet
-    // TODOChristian The restore does not work so good ...
     this.gui.jCheckBoxPushDownAlphabet
-        .setSelected ( this.initialUsePushDownAlphabet );
+        .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
@@ -1453,6 +1458,56 @@ public final class PreferencesDialog implements LanguageChangedListener
             }
           }
         } );
+
+    // PopupMenu
+    this.jPopupMenuUsePushDownAlphabet = new JPopupMenu ();
+    // RestoreUsePushDownAlphabet
+    JMenuItem jMenuItemRestoreUsePushDownAlphabet = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreUsePushDownAlphabet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreUsePushDownAlphabet.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreUsePushDownAlphabet
+        .addActionListener ( new ActionListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent event )
+          {
+            PreferencesDialog.this.gui.jCheckBoxPushDownAlphabet
+            .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
+          }
+        } );
+    this.jPopupMenuUsePushDownAlphabet
+        .add ( jMenuItemRestoreUsePushDownAlphabet );
+    this.gui.jCheckBoxPushDownAlphabet.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuUsePushDownAlphabet.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuUsePushDownAlphabet.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
   }
 
 
@@ -1467,7 +1522,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // PopupMenu
     this.jPopupMenuZoomFactor = new JPopupMenu ();
-    // RestoreColorList
+    // RestoreZoomFactor
     JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (

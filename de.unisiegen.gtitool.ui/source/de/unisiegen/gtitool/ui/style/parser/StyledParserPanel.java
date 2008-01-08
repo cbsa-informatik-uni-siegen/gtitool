@@ -827,7 +827,7 @@ public abstract class StyledParserPanel extends JPanel
     }
     else
     {
-      this.editor.setBackground ( new Color ( 232, 242, 254 ) );
+      this.editor.setBackground ( new Color ( 240, 240, 240 ) );
     }
     super.setEnabled ( enabled );
   }
@@ -918,6 +918,10 @@ public abstract class StyledParserPanel extends JPanel
    */
   private final void showPopupMenu ( MouseEvent event )
   {
+    if ( !isEnabled () )
+    {
+      return;
+    }
     if ( this.editable )
     {
       int start = this.editor.getSelectionStart ();

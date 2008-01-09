@@ -40,7 +40,12 @@ import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.word.WordException;
+import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
+import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
@@ -1664,7 +1669,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.fileName = pFileName;
   }
 
-
+/**
+ * 
+ * Set the value of the table visible Flag
+ *
+ * @param tableVisible The new value
+ */
   public void setTableVisible ( boolean tableVisible )
   {
     this.tableVisible = tableVisible;
@@ -1720,7 +1730,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
   }
 
-
+  /**
+   * 
+   * Set the value of the word Enter Mode Flag
+   *
+   * @param wordEnterMode The new value
+   */
   public void setWordEnterMode ( boolean wordEnterMode )
   {
     this.wordEnterMode = wordEnterMode;
@@ -1736,5 +1751,145 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
+  }
+
+  /**
+   * Handle Stop Action in the Word Enter Mode 
+   */
+  public void handleWordStop ()
+  {
+    this.gui.wordPanel.styledWordParserPanel.setEnabled ( true );
+
+  }
+
+
+  /**
+   * Handle Next Step Action in the Word Enter Mode 
+   */
+  public void handleWordNextStep ()
+  {
+    try
+    {
+      for ( Transition current : this.machine.nextSymbol () )
+      {
+        DefaultStateView state = this.model.getStateViewForState ( current
+            .getStateEnd () );
+        GraphConstants.setGradientColor ( state.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveState ()
+                .getColor () );
+        DefaultStateView oldState = this.model.getStateViewForState ( current
+            .getStateBegin () );
+        GraphConstants.setGradientColor ( oldState.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+
+      }
+      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( MachinePanel.this.graphModel ) );
+
+      this.gui.wordPanel.styledWordParserPanel
+          .setHighlightedParseableEntity ( this.machine.getCurrentSymbol () );
+
+    }
+    catch ( WordFinishedException e )
+    {
+      JOptionPane.showMessageDialog ( this.parent,  e
+          .getMessage (), "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+
+    }
+    catch ( WordResetedException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( WordNotAcceptedException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( WordException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+  }
+
+  /**
+   * Handle Start Action in the Word Enter Mode 
+   */
+  public void handleWordStart ()
+  {
+    try
+    {
+      this.gui.wordPanel.styledWordParserPanel.setEnabled ( false );
+      this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+
+      DefaultStateView state = this.model.getStateViewForState ( this.machine
+          .getActiveState ( 0 ) );
+      GraphConstants.setGradientColor ( state.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemActiveState ()
+              .getColor () );
+      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( MachinePanel.this.graphModel ) );
+    }
+    catch ( MachineValidationException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+  /**
+   * Handle Previous Step Action in the Word Enter Mode 
+   */
+  public void handleWordPreviousStep ()
+  {
+    try
+    {
+      for ( Transition current : this.machine.previousSymbol () )
+      {
+        DefaultStateView state = this.model.getStateViewForState ( current
+            .getStateBegin () );
+        GraphConstants.setGradientColor ( state.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveState ()
+                .getColor () );
+        DefaultStateView oldState = this.model.getStateViewForState ( current
+            .getStateEnd () );
+        GraphConstants.setGradientColor ( oldState.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+
+      }
+      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( MachinePanel.this.graphModel ) );
+
+      this.gui.wordPanel.styledWordParserPanel
+          .setHighlightedParseableEntity ( this.machine.getCurrentSymbol () );
+    }
+    catch ( WordFinishedException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( WordResetedException e )
+    {
+      JOptionPane.showMessageDialog ( this.parent, e
+          .getMessage () , "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+
+    }
+    catch ( WordException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+  }
+
+  /**
+   * Handle Auto Step Action in the Word Enter Mode 
+   */
+  public void handleWordAutoStep ()
+  {
+    // TODO Auto-generated method stub
+
   }
 }

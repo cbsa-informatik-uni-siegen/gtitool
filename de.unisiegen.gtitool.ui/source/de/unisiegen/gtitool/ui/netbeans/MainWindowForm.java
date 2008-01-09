@@ -60,11 +60,11 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonFinalState = new javax.swing.JToggleButton();
         jButtonEditAlphabet = new javax.swing.JButton();
         jSeparatorMain1 = new javax.swing.JSeparator();
-        jButtonPrevious = new javax.swing.JToggleButton();
-        jButtonStart = new javax.swing.JToggleButton();
-        jButtonNextStep = new javax.swing.JToggleButton();
+        jButtonPrevious = new javax.swing.JButton();
+        jButtonStart = new javax.swing.JButton();
+        jButtonNextStep = new javax.swing.JButton();
         jButtonAutoStep = new javax.swing.JToggleButton();
-        jButtonStop = new javax.swing.JToggleButton();
+        jButtonStop = new javax.swing.JButton();
         jTabbedPaneMain = new javax.swing.JTabbedPane();
         jMenuBarMain = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
@@ -121,7 +121,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonNew.setOpaque(false);
         jButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNewActionPerformed(evt);
+                handleNew(evt);
             }
         });
 
@@ -135,7 +135,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonOpen.setOpaque(false);
         jButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonOpenActionPerformed(evt);
+                handleOpen(evt);
             }
         });
 
@@ -149,7 +149,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonSave.setOpaque(false);
         jButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionPerformedSave(evt);
+                handleSave(evt);
             }
         });
 
@@ -163,7 +163,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonSaveAs.setOpaque(false);
         jButtonSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionPerformedSaveAs(evt);
+                handleSaveAs(evt);
             }
         });
 
@@ -191,7 +191,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonMouse.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonMouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonMousehandleToolbarMouse(evt);
+                handleToolbarMouse(evt);
             }
         });
 
@@ -209,7 +209,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonAddState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonAddState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonAddStatehandleToolbarAddState(evt);
+                handleToolbarAddState(evt);
             }
         });
 
@@ -227,7 +227,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonAddTransition.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonAddTransition.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonAddTransitionhandleToolBarTransition(evt);
+                handleToolbarAddTransition(evt);
             }
         });
 
@@ -245,7 +245,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonStartState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonStartState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonStartStatehandleToolbarStart(evt);
+                handleToolbarAddStartState(evt);
             }
         });
 
@@ -263,7 +263,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonFinalState.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonFinalState.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonFinalStatehandleToolbarEnd(evt);
+                handleToolbarAddFinalState(evt);
             }
         });
 
@@ -276,7 +276,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonEditAlphabet.setOpaque(false);
         jButtonEditAlphabet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                handleEditAlphabet(evt);
+                handleToolbarEditAlphabet(evt);
             }
         });
 
@@ -286,55 +286,40 @@ public class MainWindowForm extends javax.swing.JFrame {
         jSeparatorMain1.setMaximumSize(new java.awt.Dimension(5, 32));
         jToolBarEdit.add(jSeparatorMain1);
 
-        toolbarButton.add(jButtonPrevious);
         jButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_previous.png")));
-        jButtonPrevious.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
+        jButtonPrevious.setToolTipText("Previous Step");
         jButtonPrevious.setBorderPainted(false);
-        jButtonPrevious.setFocusPainted(false);
         jButtonPrevious.setFocusable(false);
-        jButtonPrevious.setMaximumSize(new java.awt.Dimension(36, 36));
-        jButtonPrevious.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonPrevious.setOpaque(false);
-        jButtonPrevious.setPreferredSize(new java.awt.Dimension(36, 36));
-        jButtonPrevious.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonPrevioushandleToolBarTransition(evt);
+        jButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleWordPreviousStep(evt);
             }
         });
 
         jToolBarEdit.add(jButtonPrevious);
 
-        toolbarButton.add(jButtonStart);
         jButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_start.png")));
-        jButtonStart.setToolTipText(bundle.getString("MachinePanel.FinalState")); // NOI18N
+        jButtonStart.setToolTipText("Start");
         jButtonStart.setBorderPainted(false);
-        jButtonStart.setFocusPainted(false);
         jButtonStart.setFocusable(false);
-        jButtonStart.setMaximumSize(new java.awt.Dimension(36, 36));
-        jButtonStart.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonStart.setOpaque(false);
-        jButtonStart.setPreferredSize(new java.awt.Dimension(36, 36));
-        jButtonStart.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonStarthandleToolbarEnd(evt);
+        jButtonStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleWordStart(evt);
             }
         });
 
         jToolBarEdit.add(jButtonStart);
 
-        toolbarButton.add(jButtonNextStep);
         jButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_next.png")));
-        jButtonNextStep.setToolTipText(bundle.getString("MachinePanel.StartState")); // NOI18N
+        jButtonNextStep.setToolTipText("Next Step");
         jButtonNextStep.setBorderPainted(false);
-        jButtonNextStep.setFocusPainted(false);
         jButtonNextStep.setFocusable(false);
-        jButtonNextStep.setMaximumSize(new java.awt.Dimension(36, 36));
-        jButtonNextStep.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonNextStep.setOpaque(false);
-        jButtonNextStep.setPreferredSize(new java.awt.Dimension(36, 36));
-        jButtonNextStep.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonNextStephandleToolbarStart(evt);
+        jButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleWordNextStep(evt);
             }
         });
 
@@ -352,26 +337,20 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonAutoStep.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonAutoStephandleToolbarAddState(evt);
+                handleWordAutoStep(evt);
             }
         });
 
         jToolBarEdit.add(jButtonAutoStep);
 
-        toolbarButton.add(jButtonStop);
         jButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_stop.png")));
-        jButtonStop.setSelected(true);
-        jButtonStop.setToolTipText(bundle.getString("MachinePanel.Mouse")); // NOI18N
+        jButtonStop.setToolTipText("Stop");
         jButtonStop.setBorderPainted(false);
-        jButtonStop.setFocusPainted(false);
         jButtonStop.setFocusable(false);
-        jButtonStop.setMaximumSize(new java.awt.Dimension(36, 36));
-        jButtonStop.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonStop.setOpaque(false);
-        jButtonStop.setPreferredSize(new java.awt.Dimension(36, 36));
-        jButtonStop.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jButtonStophandleToolbarMouse(evt);
+        jButtonStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleWordStop(evt);
             }
         });
 
@@ -398,7 +377,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNewActionPerformed(evt);
+                handleNew(evt);
             }
         });
 
@@ -410,7 +389,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemOpenActionPerformed(evt);
+                handleOpen(evt);
             }
         });
 
@@ -422,7 +401,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionPerformedClose(evt);
+                handleClose(evt);
             }
         });
 
@@ -436,7 +415,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionPerformedSave(evt);
+                handleSave(evt);
             }
         });
 
@@ -447,7 +426,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
         jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                actionPerformedSaveAs(evt);
+                handleSaveAs(evt);
             }
         });
 
@@ -474,7 +453,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
         jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemQuitActionPerformed(evt);
+                handleQuit(evt);
             }
         });
 
@@ -610,9 +589,25 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 600, 450);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void handleEditAlphabet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleEditAlphabet
+    private void handleWordStop(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleWordStop
+        this.logic.handleWordStop();
+    }//GEN-LAST:event_handleWordStop
+
+    private void handleWordNextStep(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleWordNextStep
+        this.logic.handleWordNextStep();
+    }//GEN-LAST:event_handleWordNextStep
+
+    private void handleWordStart(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleWordStart
+        this.logic.handleWordStart();
+    }//GEN-LAST:event_handleWordStart
+
+    private void handleWordPreviousStep(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleWordPreviousStep
+        this.logic.handleWordPreviousStep();
+    }//GEN-LAST:event_handleWordPreviousStep
+
+    private void handleToolbarEditAlphabet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleToolbarEditAlphabet
         this.logic.handleEditAlphabet();
-    }//GEN-LAST:event_handleEditAlphabet
+    }//GEN-LAST:event_handleToolbarEditAlphabet
 
     private void handleTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_handleTabbedPaneStateChanged
         this.logic.handleTabbedPaneStateChanged(evt);
@@ -622,29 +617,13 @@ public class MainWindowForm extends javax.swing.JFrame {
         this.logic.handleEditMachine();
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
-    private void jButtonStophandleToolbarMouse(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonStophandleToolbarMouse
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jButtonStophandleToolbarMouse
+    private void handleWordAutoStep(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleWordAutoStep
+        this.logic.handleWordAutoStep(evt);
+    }//GEN-LAST:event_handleWordAutoStep
 
-    private void jButtonAutoStephandleToolbarAddState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonAutoStephandleToolbarAddState
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jButtonAutoStephandleToolbarAddState
-
-    private void jButtonPrevioushandleToolBarTransition(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonPrevioushandleToolBarTransition
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jButtonPrevioushandleToolBarTransition
-
-    private void jButtonNextStephandleToolbarStart(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonNextStephandleToolbarStart
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jButtonNextStephandleToolbarStart
-
-    private void jButtonStarthandleToolbarEnd(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonStarthandleToolbarEnd
-// TODO Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_jButtonStarthandleToolbarEnd
-
-    private void actionPerformedClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionPerformedClose
+    private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose
         this.logic.handleClose();
-    }//GEN-LAST:event_actionPerformedClose
+    }//GEN-LAST:event_handleClose
 
     private void jCheckBoxMenuItemTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemTableItemStateChanged
         this.logic.handleTableStateChanged();
@@ -654,33 +633,33 @@ public class MainWindowForm extends javax.swing.JFrame {
         this.logic.handleConsoleStateChanged();
     }//GEN-LAST:event_jCheckBoxMenuItemConsoleItemStateChanged
 
-    private void actionPerformedSaveAs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionPerformedSaveAs
+    private void handleSaveAs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSaveAs
         this.logic.handleSaveAs();
-    }//GEN-LAST:event_actionPerformedSaveAs
+    }//GEN-LAST:event_handleSaveAs
 
-    private void jButtonFinalStatehandleToolbarEnd(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonFinalStatehandleToolbarEnd
+    private void handleToolbarAddFinalState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarAddFinalState
         this.logic.handleToolbarEnd(this.jButtonFinalState.isSelected());
-    }//GEN-LAST:event_jButtonFinalStatehandleToolbarEnd
+    }//GEN-LAST:event_handleToolbarAddFinalState
 
-    private void jButtonStartStatehandleToolbarStart(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonStartStatehandleToolbarStart
+    private void handleToolbarAddStartState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarAddStartState
         this.logic.handleToolbarStart(this.jButtonStartState.isSelected());
-    }//GEN-LAST:event_jButtonStartStatehandleToolbarStart
+    }//GEN-LAST:event_handleToolbarAddStartState
 
-    private void jButtonAddTransitionhandleToolBarTransition(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonAddTransitionhandleToolBarTransition
+    private void handleToolbarAddTransition(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarAddTransition
         this.logic.handleToolbarTransition(this.jButtonAddTransition.isSelected());
-    }//GEN-LAST:event_jButtonAddTransitionhandleToolBarTransition
+    }//GEN-LAST:event_handleToolbarAddTransition
 
-    private void jButtonAddStatehandleToolbarAddState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonAddStatehandleToolbarAddState
+    private void handleToolbarAddState(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarAddState
         this.logic.handleToolbarAddState(this.jButtonAddState.isSelected());
-    }//GEN-LAST:event_jButtonAddStatehandleToolbarAddState
+    }//GEN-LAST:event_handleToolbarAddState
 
-    private void jButtonMousehandleToolbarMouse(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jButtonMousehandleToolbarMouse
+    private void handleToolbarMouse(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleToolbarMouse
         this.logic.handleToolbarMouse(this.jButtonMouse.isSelected());
-    }//GEN-LAST:event_jButtonMousehandleToolbarMouse
+    }//GEN-LAST:event_handleToolbarMouse
 
-    private void actionPerformedSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionPerformedSave
+    private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
         logic.handleSave();
-    }//GEN-LAST:event_actionPerformedSave
+    }//GEN-LAST:event_handleSave
 
     private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
       this.logic.handleValidate();
@@ -690,9 +669,9 @@ public class MainWindowForm extends javax.swing.JFrame {
       this.logic.handleEnterWord();
     }//GEN-LAST:event_jMenuItemEnterWordActionPerformed
 
-    private void jButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNewActionPerformed
+    private void handleNew(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleNew
       this.logic.handleNew();
-    }//GEN-LAST:event_jButtonNewActionPerformed
+    }//GEN-LAST:event_handleNew
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.logic.handleQuit();
@@ -706,21 +685,13 @@ public class MainWindowForm extends javax.swing.JFrame {
       this.logic.handlePreferences();
     }//GEN-LAST:event_jMenuItemPreferencesActionPerformed
 
-    private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
+    private void handleQuit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleQuit
       this.logic.handleQuit();
-    }//GEN-LAST:event_jMenuItemQuitActionPerformed
+    }//GEN-LAST:event_handleQuit
 
-    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
-      this.logic.handleOpen();
-    }//GEN-LAST:event_jMenuItemOpenActionPerformed
-
-    private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNewActionPerformed
-     this.logic.handleNew();
-    }//GEN-LAST:event_jMenuItemNewActionPerformed
-
-    private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenActionPerformed
+    private void handleOpen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleOpen
       this.logic.handleOpen(); 
-    }//GEN-LAST:event_jButtonOpenActionPerformed
+    }//GEN-LAST:event_handleOpen
   
     // Variablendeklaration - nicht modifizieren//GEN-BEGIN:variables
     public javax.swing.JToggleButton jButtonAddState;
@@ -730,14 +701,14 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JToggleButton jButtonFinalState;
     public javax.swing.JToggleButton jButtonMouse;
     public javax.swing.JButton jButtonNew;
-    public javax.swing.JToggleButton jButtonNextStep;
+    public javax.swing.JButton jButtonNextStep;
     public javax.swing.JButton jButtonOpen;
-    public javax.swing.JToggleButton jButtonPrevious;
+    public javax.swing.JButton jButtonPrevious;
     public javax.swing.JButton jButtonSave;
     public javax.swing.JButton jButtonSaveAs;
-    public javax.swing.JToggleButton jButtonStart;
+    public javax.swing.JButton jButtonStart;
     public javax.swing.JToggleButton jButtonStartState;
-    public javax.swing.JToggleButton jButtonStop;
+    public javax.swing.JButton jButtonStop;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
     public javax.swing.JMenuBar jMenuBarMain;

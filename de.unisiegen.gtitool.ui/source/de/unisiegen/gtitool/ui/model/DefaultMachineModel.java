@@ -524,7 +524,6 @@ public final class DefaultMachineModel implements Storable
       if ( current.getTransition ().getStateBegin ().equals (
           stateView.getState () ) )
       {
-        System.out.println ( current.getTransition ().getId () );
         this.graphModel.remove ( new Object []
         { current } );
         this.tableModel.removeTransition ( current.getTransition () );
@@ -533,7 +532,6 @@ public final class DefaultMachineModel implements Storable
       else if ( current.getTransition ().getStateEnd ().equals (
           stateView.getState () ) )
       {
-        System.out.println ( current.getTransition ().getId () );
         this.graphModel.remove ( new Object []
         { current } );
         this.tableModel.removeTransition ( current.getTransition () );

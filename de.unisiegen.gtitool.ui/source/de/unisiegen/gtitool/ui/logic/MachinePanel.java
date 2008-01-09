@@ -1270,21 +1270,6 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                     / MachinePanel.this.zoomFactor, newState );
                 newTransition.setStateEnd ( target.getState () );
 
-                switch ( PreferenceManager.getInstance ().getChoiceItem () )
-                {
-                  case WITHOUT_RETURN_TO_MOUSE :
-                  {
-                    // Do nothing
-                    break;
-                  }
-                  case WITH_RETURN_TO_MOUSE :
-                  {
-                    // Return to the normal Mouse after every click
-                    MachinePanel.this.parent.jButtonMouse.setSelected ( true );
-                    break;
-                  }
-                }
-
               }
               catch ( StateException e1 )
               {
@@ -1298,14 +1283,25 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             MachinePanel.this.model.createTransitionView ( newTransition,
                 MachinePanel.this.firstState, target );
             dialog.dispose ();
-
+          }
+          switch ( PreferenceManager.getInstance ().getChoiceItem () )
+          {
+            case WITHOUT_RETURN_TO_MOUSE :
+            {
+              // Do nothing
+              break;
+            }
+            case WITH_RETURN_TO_MOUSE :
+            {
+              // Return to the normal Mouse after every click
+              MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+              break;
+            }
           }
           MachinePanel.this.firstState = null;
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
-
         }
-
       }
 
 
@@ -1357,22 +1353,6 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
               newTransition.setStateEnd ( target.getState () );
-
-              switch ( PreferenceManager.getInstance ().getChoiceItem () )
-              {
-                case WITHOUT_RETURN_TO_MOUSE :
-                {
-                  // Do nothing
-                  break;
-                }
-                case WITH_RETURN_TO_MOUSE :
-                {
-                  // Return to the normal Mouse after every click
-                  MachinePanel.this.parent.jButtonMouse.setSelected ( true );
-                  break;
-                }
-              }
-
             }
             catch ( StateException e1 )
             {
@@ -1387,11 +1367,24 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           dialog.dispose ();
 
         }
+        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        {
+          case WITHOUT_RETURN_TO_MOUSE :
+          {
+            // Do nothing
+            break;
+          }
+          case WITH_RETURN_TO_MOUSE :
+          {
+            // Return to the normal Mouse after every click
+            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+            break;
+          }
+        }
         MachinePanel.this.firstState = null;
         MachinePanel.this.tmpTransition = null;
         MachinePanel.this.tmpState = null;
         MachinePanel.this.dragged = false;
-
       }
 
     };
@@ -1669,12 +1662,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.fileName = pFileName;
   }
 
-/**
- * 
- * Set the value of the table visible Flag
- *
- * @param tableVisible The new value
- */
+
+  /**
+   * Set the value of the table visible Flag
+   * 
+   * @param tableVisible The new value
+   */
   public void setTableVisible ( boolean tableVisible )
   {
     this.tableVisible = tableVisible;
@@ -1730,10 +1723,10 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
   }
 
+
   /**
-   * 
    * Set the value of the word Enter Mode Flag
-   *
+   * 
    * @param wordEnterMode The new value
    */
   public void setWordEnterMode ( boolean wordEnterMode )
@@ -1753,8 +1746,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.graph.setScale ( pFactor );
   }
 
+
   /**
-   * Handle Stop Action in the Word Enter Mode 
+   * Handle Stop Action in the Word Enter Mode
    */
   public void handleWordStop ()
   {
@@ -1764,7 +1758,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
 
   /**
-   * Handle Next Step Action in the Word Enter Mode 
+   * Handle Next Step Action in the Word Enter Mode
    */
   public void handleWordNextStep ()
   {
@@ -1792,8 +1786,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
     catch ( WordFinishedException e )
     {
-      JOptionPane.showMessageDialog ( this.parent,  e
-          .getMessage (), "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),
+          "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
 
     }
     catch ( WordResetedException e )
@@ -1814,8 +1808,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   }
 
+
   /**
-   * Handle Start Action in the Word Enter Mode 
+   * Handle Start Action in the Word Enter Mode
    */
   public void handleWordStart ()
   {
@@ -1839,8 +1834,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
   }
 
+
   /**
-   * Handle Previous Step Action in the Word Enter Mode 
+   * Handle Previous Step Action in the Word Enter Mode
    */
   public void handleWordPreviousStep ()
   {
@@ -1872,8 +1868,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
     catch ( WordResetedException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e
-          .getMessage () , "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),
+          "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
 
     }
     catch ( WordException e )
@@ -1884,8 +1880,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   }
 
+
   /**
-   * Handle Auto Step Action in the Word Enter Mode 
+   * Handle Auto Step Action in the Word Enter Mode
    */
   public void handleWordAutoStep ()
   {

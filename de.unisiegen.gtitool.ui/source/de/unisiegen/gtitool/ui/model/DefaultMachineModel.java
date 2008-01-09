@@ -44,6 +44,12 @@ public class DefaultMachineModel implements Storable
 {
 
   /**
+   * The {@link Machine} version.
+   */
+  private static final int MACHINE_VERSION = 5;
+
+
+  /**
    * The {@link Machine}
    */
   private Machine machine;
@@ -94,9 +100,6 @@ public class DefaultMachineModel implements Storable
       StateException, SymbolException, AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
-    boolean machineTypeMissing = true;
-    String machineType = ""; //$NON-NLS-1$
-
     // Check if the element is correct
     if ( !pElement.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {
@@ -105,24 +108,36 @@ public class DefaultMachineModel implements Storable
     }
 
     // Attribute
+    boolean foundMachineType = false;
+    boolean foundMachineVersion = false;
+    String machineType = ""; //$NON-NLS-1$
     for ( Attribute attribute : pElement.getAttribute () )
     {
       if ( attribute.getName ().equals ( "MachineType" ) ) //$NON-NLS-1$
       {
-        machineTypeMissing = false;
+        foundMachineType = true;
         machineType = attribute.getValue ();
+      }
+      else if ( attribute.getName ().equals ( "MachineVersion" ) ) //$NON-NLS-1$
+      {
+        foundMachineVersion = true;
+        if ( MACHINE_VERSION != attribute.getValueInt () )
+        {
+          throw new StoreException ( Messages
+              .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
 
-    if ( machineTypeMissing )
+    if ( ( !foundMachineType ) || ( !foundMachineVersion ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
-    if ( pElement.getAttribute ().size () > 1 )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
 
     // Element
@@ -333,6 +348,8 @@ public class DefaultMachineModel implements Storable
     Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
         .getMachineType () ) );
+    newElement.addAttribute ( new Attribute ( "MachineVersion", //$NON-NLS-1$
+        MACHINE_VERSION ) );
     newElement.addElement ( this.machine.getAlphabet ().getElement () );
     Element newPushDownAlphabet = this.machine.getPushDownAlphabet ()
         .getElement ();

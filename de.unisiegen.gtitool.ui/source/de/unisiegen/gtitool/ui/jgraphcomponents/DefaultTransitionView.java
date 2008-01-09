@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class DefaultTransitionView extends DefaultEdge implements Storable
+public final class DefaultTransitionView extends DefaultEdge implements
+    Storable
 {
 
   /**
@@ -29,30 +30,51 @@ public class DefaultTransitionView extends DefaultEdge implements Storable
   private Transition transition;
 
 
-  /** The source view of this transition */
+  /**
+   * The source view of this {@link Transition}.
+   */
   private DefaultStateView sourceView;
 
 
-  /** The target view of this transition */
+  /**
+   * The target view of this {@link Transition}.
+   */
   private DefaultStateView targetView;
 
 
   /**
    * Create a new {@link DefaultTransitionView}
    * 
-   * @param pTransition The {@link Transition} represented by this view
-   * @param pSourceView the source view
-   * @param pTargetView the target view
-   * @param pUserObject The name of this Transition
+   * @param transition The {@link Transition} represented by this view.
+   * @param sourceView The source view.
+   * @param targetView The target view.
+   * @param userObject The name of this {@link Transition}.
    */
-  public DefaultTransitionView ( Transition pTransition,
-      DefaultStateView pSourceView, DefaultStateView pTargetView,
-      Object pUserObject )
+  public DefaultTransitionView ( Transition transition,
+      DefaultStateView sourceView, DefaultStateView targetView,
+      Object userObject )
   {
-    super ( pUserObject );
-    this.transition = pTransition;
-    this.sourceView = pSourceView;
-    this.targetView = pTargetView;
+    super ( userObject );
+    this.transition = transition;
+    this.sourceView = sourceView;
+    this.targetView = targetView;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public final boolean equals ( Object other )
+  {
+    if ( other instanceof DefaultTransitionView )
+    {
+      DefaultTransitionView transitionView = ( DefaultTransitionView ) other;
+      return this.transition.equals ( transitionView.getTransition () );
+    }
+    return false;
   }
 
 
@@ -70,34 +92,46 @@ public class DefaultTransitionView extends DefaultEdge implements Storable
 
 
   /**
-   * Getter for the source view
+   * Getter for the source view.
    * 
-   * @return the source {@link DefaultStateView}
+   * @return The source {@link DefaultStateView}.
    */
-  public DefaultStateView getSourceView ()
+  public final DefaultStateView getSourceView ()
   {
     return this.sourceView;
   }
 
 
   /**
-   * Getter for the target view
+   * Getter for the target view.
    * 
-   * @return the target {@link DefaultStateView}
+   * @return The target {@link DefaultStateView}.
    */
-  public DefaultStateView getTargetView ()
+  public final DefaultStateView getTargetView ()
   {
     return this.targetView;
   }
 
 
   /**
-   * Getter for this {@link Transition}
+   * Getter for this {@link Transition}.
    * 
-   * @return the {@link Transition} of this view
+   * @return The {@link Transition} of this view.
    */
-  public Transition getTransition ()
+  public final Transition getTransition ()
   {
     return this.transition;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @Override
+  public final int hashCode ()
+  {
+    return this.transition.hashCode ();
   }
 }

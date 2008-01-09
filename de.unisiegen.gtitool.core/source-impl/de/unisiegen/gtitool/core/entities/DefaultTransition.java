@@ -427,6 +427,15 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Removes all {@link Symbol}s.
+   */
+  public final void clear ()
+  {
+    this.symbolSet.clear ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#clone()

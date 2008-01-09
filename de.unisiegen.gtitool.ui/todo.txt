@@ -1,9 +1,6 @@
 *** Benny ***
 - Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
 - Wort eingeben können
-- RecentlyUsedFiles
-- OpenedFiles
-- Dateien per Übergabe in der main Methode öffnen können (siehe TPML)
 
 
 *** Christian ***
@@ -12,8 +9,6 @@
 - Meldung über Fehler und Warnungen anzeigen und Console einblenden
 - Zustand in der Tabelle highlighten mit Timer
 - Konsole und Tabelle nur auf ein MachinePanel beschränken
-- MachineException Handling verbessern
-- Transitionen bearbeiten (Bug) 
 
 
 *** Benny oder Christian ***
@@ -21,3 +16,6 @@
 - Die gleiche Datei sollte nicht zweimal geöffnet werden können, sondern es
   soll zu der geöffneten Datei gesprungen werden, wenn diese nochmal geöffnet
   wird
+- RecentlyUsedFiles
+- OpenedFiles
+- Dateien per Übergabe in der main Methode öffnen können (siehe TPML)

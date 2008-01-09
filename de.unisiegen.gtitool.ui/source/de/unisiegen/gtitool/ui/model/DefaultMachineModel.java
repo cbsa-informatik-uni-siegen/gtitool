@@ -38,9 +38,10 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The Model for the {@link Machine}s
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public class DefaultMachineModel implements Storable
+public final class DefaultMachineModel implements Storable
 {
 
   /**
@@ -70,13 +71,13 @@ public class DefaultMachineModel implements Storable
   /**
    * A list of all <code>DefaultStateView</code>s
    */
-  ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
+  private ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
 
 
   /**
    * A list of all <code>DefaultTransitionView</code>s
    */
-  ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
+  private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
 
 
   /**
@@ -88,22 +89,27 @@ public class DefaultMachineModel implements Storable
   /**
    * Allocates a new <code>DefaultMachineModel</code>.
    * 
-   * @param pElement The {@link Element}.
-   * @throws StoreException
-   * @throws AlphabetException
-   * @throws SymbolException
-   * @throws StateException
-   * @throws TransitionSymbolOnlyOneTimeException
-   * @throws TransitionException
+   * @param element The {@link Element}.
+   * @throws StoreException If the {@link Element} can not be parsed.
+   * @throws AlphabetException If something with the
+   *           <code>DefaultAlphabet</code> is not correct.
+   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           correct.
+   * @throws StateException If something with the <code>DefaultState</code> is
+   *           not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           <code>DefaultTransition</code> is not correct.
+   * @throws TransitionException If something with the
+   *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultMachineModel ( Element pElement ) throws StoreException,
+  public DefaultMachineModel ( Element element ) throws StoreException,
       StateException, SymbolException, AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a machine model" ); //$NON-NLS-1$
     }
 
@@ -111,7 +117,7 @@ public class DefaultMachineModel implements Storable
     boolean foundMachineType = false;
     boolean foundMachineVersion = false;
     String machineType = ""; //$NON-NLS-1$
-    for ( Attribute attribute : pElement.getAttribute () )
+    for ( Attribute attribute : element.getAttribute () )
     {
       if ( attribute.getName ().equals ( "MachineType" ) ) //$NON-NLS-1$
       {
@@ -145,7 +151,7 @@ public class DefaultMachineModel implements Storable
     Alphabet pushDownAlphabet = null;
     boolean foundAlphabet = false;
     boolean foundPushDownAlphabet = false;
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
@@ -177,7 +183,7 @@ public class DefaultMachineModel implements Storable
     initializeGraph ();
 
     // Load the states
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
       {
@@ -202,10 +208,10 @@ public class DefaultMachineModel implements Storable
           throw new StoreException ( Messages
               .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
         }
-        for ( Element element : current.getElement () )
+        for ( Element childElement : current.getElement () )
         {
-          if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
-            state = new DefaultState ( element );
+          if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+            state = new DefaultState ( childElement );
         }
         createStateView ( x + 35, y + 35, state );
       }
@@ -218,7 +224,7 @@ public class DefaultMachineModel implements Storable
     }
 
     // Load the transitions
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
       {
@@ -239,13 +245,13 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * Allocate a new {@link DefaultMachineModel}
+   * Allocate a new {@link DefaultMachineModel}.
    * 
-   * @param pMachine The {@link Machine}
+   * @param machine The {@link Machine}.
    */
-  public DefaultMachineModel ( Machine pMachine )
+  public DefaultMachineModel ( Machine machine )
   {
-    this.machine = pMachine;
+    this.machine = machine;
     this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
   }
@@ -254,17 +260,17 @@ public class DefaultMachineModel implements Storable
   /**
    * Create a new State view
    * 
-   * @param x the x position of the new state view
-   * @param y the y position of the new state view
-   * @param pState the state represented via this view
-   * @return {@link DefaultStateView} the new created state view
+   * @param x The x position of the new state view.
+   * @param y The y position of the new state view.
+   * @param state The state represented via this view.
+   * @return The new created {@link DefaultStateView}.
    */
-  public DefaultStateView createStateView ( double x, double y, State pState )
+  public final DefaultStateView createStateView ( double x, double y,
+      State state )
   {
-    this.machine.addState ( pState );
+    this.machine.addState ( state );
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
-    DefaultStateView stateView = new DefaultStateView ( pState, pState
-        .getName () );
+    DefaultStateView stateView = new DefaultStateView ( state, state.getName () );
 
     // check position of the new state
     double xPosition = x < 35 ? 35 : x;
@@ -278,7 +284,7 @@ public class DefaultMachineModel implements Storable
         new Rectangle2D.Double ( xPosition - 35, yPostition - 35, 70, 70 ) );
 
     // Set fill color
-    if ( pState.isStartState () )
+    if ( state.isStartState () )
       GraphConstants.setGradientColor ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemStartState ()
               .getColor () );
@@ -298,25 +304,25 @@ public class DefaultMachineModel implements Storable
 
     this.jGraph.getGraphLayoutCache ().insert ( stateView );
     this.stateViewList.add ( stateView );
-    this.tableModel.addState ( pState );
+    this.tableModel.addState ( state );
 
     return stateView;
   }
 
 
   /**
-   * Create a new Transition
+   * Create a new {@link Transition}.
    * 
-   * @param pTransition The {@link Transition}
-   * @param source The source of the new Transition
-   * @param target The target of the new Transition
+   * @param transition The {@link Transition}.
+   * @param source The source of the new {@link Transition}.
+   * @param target The target of the new {@link Transition}.
    */
-  public void createTransitionView ( Transition pTransition,
+  public final void createTransitionView ( Transition transition,
       DefaultStateView source, DefaultStateView target )
   {
-    this.machine.addTransition ( pTransition );
-    DefaultTransitionView newEdge = new DefaultTransitionView ( pTransition,
-        source, target, pTransition.toString () );
+    this.machine.addTransition ( transition );
+    DefaultTransitionView newEdge = new DefaultTransitionView ( transition,
+        source, target, transition.toString () );
 
     GraphConstants.setLineEnd ( newEdge.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
@@ -329,12 +335,9 @@ public class DefaultMachineModel implements Storable
 
     this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
-    target.addTransition ( newEdge );
-    source.addTransition ( newEdge );
 
     this.transitionViewList.add ( newEdge );
-    this.tableModel.addTransition ( pTransition );
-
+    this.tableModel.addTransition ( transition );
   }
 
 
@@ -343,7 +346,7 @@ public class DefaultMachineModel implements Storable
    * 
    * @see Storable#getElement()
    */
-  public Element getElement ()
+  public final Element getElement ()
   {
     Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
@@ -372,7 +375,7 @@ public class DefaultMachineModel implements Storable
    * 
    * @return the {@link DefaultGraphModel}
    */
-  public DefaultGraphModel getGraphModel ()
+  public final DefaultGraphModel getGraphModel ()
   {
     return this.graphModel;
   }
@@ -383,7 +386,7 @@ public class DefaultMachineModel implements Storable
    * 
    * @return the {@link JGraph}
    */
-  public JGraph getJGraph ()
+  public final JGraph getJGraph ()
   {
     return this.jGraph;
   }
@@ -394,7 +397,7 @@ public class DefaultMachineModel implements Storable
    * 
    * @return the {@link Machine}
    */
-  public Machine getMachine ()
+  public final Machine getMachine ()
   {
     return this.machine;
   }
@@ -406,7 +409,7 @@ public class DefaultMachineModel implements Storable
    * @param id the id
    * @return The {@link DefaultStateView}
    */
-  public DefaultStateView getStateById ( int id )
+  public final DefaultStateView getStateById ( int id )
   {
     for ( DefaultStateView view : this.stateViewList )
     {
@@ -423,7 +426,7 @@ public class DefaultMachineModel implements Storable
    * @param state The {@link State}
    * @return The {@link DefaultStateView}
    */
-  public DefaultStateView getStateViewForState ( State state )
+  public final DefaultStateView getStateViewForState ( State state )
   {
     for ( DefaultStateView view : this.stateViewList )
     {
@@ -439,7 +442,7 @@ public class DefaultMachineModel implements Storable
    * 
    * @return the {@link MachineTableModel} of this model
    */
-  public MachineTableModel getTableModel ()
+  public final MachineTableModel getTableModel ()
   {
     return this.tableModel;
   }
@@ -451,7 +454,7 @@ public class DefaultMachineModel implements Storable
    * @param transition The {@link Transition}
    * @return The {@link DefaultTransitionView}
    */
-  public DefaultTransitionView getTransitionViewForTransition (
+  public final DefaultTransitionView getTransitionViewForTransition (
       Transition transition )
   {
     for ( DefaultTransitionView view : this.transitionViewList )
@@ -466,7 +469,7 @@ public class DefaultMachineModel implements Storable
   /**
    * Initialize this JGraph
    */
-  private void initializeGraph ()
+  private final void initializeGraph ()
   {
     // Construct Model and Graph
     this.graphModel = new DefaultGraphModel ();
@@ -509,31 +512,61 @@ public class DefaultMachineModel implements Storable
 
 
   /**
-   * Remove a state
+   * Removes a {@link DefaultStateView}.
    * 
-   * @param state that should be removed
+   * @param stateView The {@link DefaultStateView} that should be removed.
    */
-  public void removeState ( DefaultStateView state )
+  public final void removeState ( DefaultStateView stateView )
   {
-    this.graphModel.remove ( state.getRemoveObjects () );
-    this.machine.removeState ( state.getState () );
-    this.tableModel.removeState ( state.getState () );
+    ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
+    for ( DefaultTransitionView current : this.transitionViewList )
+    {
+      if ( current.getTransition ().getStateBegin ().equals (
+          stateView.getState () ) )
+      {
+        System.out.println ( current.getTransition ().getId () );
+        this.graphModel.remove ( new Object []
+        { current } );
+        this.tableModel.removeTransition ( current.getTransition () );
+        removeList.add ( current );
+      }
+      else if ( current.getTransition ().getStateEnd ().equals (
+          stateView.getState () ) )
+      {
+        System.out.println ( current.getTransition ().getId () );
+        this.graphModel.remove ( new Object []
+        { current } );
+        this.tableModel.removeTransition ( current.getTransition () );
+        removeList.add ( current );
+      }
+    }
 
+    for ( DefaultTransitionView current : removeList )
+    {
+      this.transitionViewList.remove ( current );
+    }
+
+    this.graphModel.remove ( new Object []
+    { stateView } );
+    this.machine.removeState ( stateView.getState () );
+    this.tableModel.removeState ( stateView.getState () );
+    this.stateViewList.remove ( stateView );
   }
 
 
   /**
-   * Remove a transition
+   * Removes a {@link DefaultTransitionView}.
    * 
-   * @param transition that should be removed
+   * @param transitionView The {@link DefaultTransitionView} that should be
+   *          removed.
    */
-  public void removeTransition ( DefaultTransitionView transition )
+  public final void removeTransition ( DefaultTransitionView transitionView )
   {
     this.graphModel.remove ( new Object []
-    { transition } );
-    this.machine.removeTransition ( transition.getTransition () );
-    this.tableModel.removeTransition ( transition.getTransition () );
-
+    { transitionView } );
+    this.machine.removeTransition ( transitionView.getTransition () );
+    this.tableModel.removeTransition ( transitionView.getTransition () );
+    this.transitionViewList.remove ( transitionView );
   }
 
 
@@ -541,14 +574,22 @@ public class DefaultMachineModel implements Storable
    * Update data for transition
    * 
    * @param oldTransition the old transition object
-   * @param transition the new transition object
+   * @param newTransition the new transition object
    */
-  public void transitionChanged ( Transition oldTransition,
-      Transition transition )
+  public final void transitionChanged ( Transition oldTransition,
+      Transition newTransition )
   {
     this.tableModel.removeTransition ( oldTransition );
-    this.tableModel.addTransition ( transition );
-
+    this.tableModel.addTransition ( newTransition );
+    oldTransition.clear ();
+    try
+    {
+      oldTransition.add ( newTransition );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
-
 }

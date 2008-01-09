@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
@@ -19,7 +18,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class DefaultStateView extends DefaultGraphCell implements Storable
+public final class DefaultStateView extends DefaultGraphCell implements
+    Storable
 {
 
   /**
@@ -28,37 +28,39 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
   private static final long serialVersionUID = -2780335257122860579L;
 
 
-  /** The {@link State} represented by this view */
-  State state;
-
-
-  /** List with all objects which should be removed if this view is deleted */
-  private ArrayList < DefaultGraphCell > removeList;
+  /**
+   * The {@link State} represented by this view.
+   */
+  private State state;
 
 
   /**
-   * Create a new {@link DefaultStateView}
+   * Creates a new {@link DefaultStateView}.
    * 
-   * @param pState the State represented by this view
-   * @param pUserObject the name of this State
+   * @param state The {@link State} represented by this view.
+   * @param userObject The name of this {@link State}.
    */
-  public DefaultStateView ( State pState, Object pUserObject )
+  public DefaultStateView ( State state, Object userObject )
   {
-    super ( pUserObject );
-    this.state = pState;
-    this.removeList = new ArrayList < DefaultGraphCell > ();
-    this.removeList.add ( this );
+    super ( userObject );
+    this.state = state;
   }
 
 
   /**
-   * Add a new Transition to this state view
+   * {@inheritDoc}
    * 
-   * @param transition
+   * @see Object#equals(Object)
    */
-  public void addTransition ( DefaultTransitionView transition )
+  @Override
+  public final boolean equals ( Object other )
   {
-    this.removeList.add ( transition );
+    if ( other instanceof DefaultStateView )
+    {
+      DefaultStateView stateView = ( DefaultStateView ) other;
+      return this.state.equals ( stateView.getState () );
+    }
+    return false;
   }
 
 
@@ -79,23 +81,24 @@ public class DefaultStateView extends DefaultGraphCell implements Storable
 
 
   /**
-   * Get the Objects to remove if this view is deleted
+   * Returns the {@link State} of this view.
    * 
-   * @return Array containing all Objects to remove if this view is deleted
+   * @return The {@link State} of this view.
    */
-  public Object [] getRemoveObjects ()
+  public final State getState ()
   {
-    return this.removeList.toArray ();
+    return this.state;
   }
 
 
   /**
-   * Get the {@link State} of this view
+   * {@inheritDoc}
    * 
-   * @return the {@link State} of this view
+   * @see Object#hashCode()
    */
-  public State getState ()
+  @Override
+  public final int hashCode ()
   {
-    return this.state;
+    return this.state.hashCode ();
   }
 }

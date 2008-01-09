@@ -87,17 +87,17 @@ public final class Storage
   /**
    * Returns the {@link Element}.
    * 
-   * @param pNode The input {@link Node}.
+   * @param node The input {@link Node}.
    * @return The {@link Element}.
    */
-  private final Element getElement ( Node pNode )
+  private final Element getElement ( Node node )
   {
-    Element newElement = new Element ( pNode.getNodeName () );
-    if ( pNode.getAttributes () != null )
+    Element newElement = new Element ( node.getNodeName () );
+    if ( node.getAttributes () != null )
     {
-      for ( int i = 0 ; i < pNode.getAttributes ().getLength () ; i++ )
+      for ( int i = 0 ; i < node.getAttributes ().getLength () ; i++ )
       {
-        Node current = pNode.getAttributes ().item ( i );
+        Node current = node.getAttributes ().item ( i );
         if ( current.getNodeType () == Node.ATTRIBUTE_NODE )
         {
           newElement.addAttribute ( new Attribute ( current.getNodeName (),
@@ -105,11 +105,11 @@ public final class Storage
         }
       }
     }
-    if ( pNode.getChildNodes () != null )
+    if ( node.getChildNodes () != null )
     {
-      for ( int i = 0 ; i < pNode.getChildNodes ().getLength () ; i++ )
+      for ( int i = 0 ; i < node.getChildNodes ().getLength () ; i++ )
       {
-        Node current = pNode.getChildNodes ().item ( i );
+        Node current = node.getChildNodes ().item ( i );
         if ( current.getNodeType () == Node.ELEMENT_NODE )
         {
           newElement.addElement ( getElement ( current ) );
@@ -123,17 +123,17 @@ public final class Storage
   /**
    * Loads the {@link Storable} from the given file name.
    * 
-   * @param pFileName The file name.
+   * @param fileName The file name.
    * @return The {@link Storable} from the given file name.
    * @throws StoreException If the file could not be loaded.
    */
-  public final Storable load ( String pFileName ) throws StoreException
+  public final Storable load ( String fileName ) throws StoreException
   {
     try
     {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance ();
       DocumentBuilder builder = factory.newDocumentBuilder ();
-      Document document = builder.parse ( new File ( pFileName ) );
+      Document document = builder.parse ( new File ( fileName ) );
       Element element = getElement ( document.getDocumentElement () );
       if ( element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
@@ -166,33 +166,37 @@ public final class Storage
     {
       throw exc;
     }
-    catch ( ParserConfigurationException e )
+    catch ( ParserConfigurationException exc )
     {
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
-    catch ( SAXException e )
+    catch ( SAXException exc )
     {
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
-    catch ( IOException e )
+    catch ( IOException exc )
     {
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
-    catch ( AlphabetException e )
+    catch ( AlphabetException exc )
     {
-      throw new StoreException ( e.getDescription () );
+      throw new StoreException ( exc.getDescription () );
     }
-    catch ( SymbolException e )
+    catch ( SymbolException exc )
     {
-      throw new StoreException ( e.getDescription () );
+      throw new StoreException ( exc.getDescription () );
     }
-    catch ( StateException e )
+    catch ( StateException exc )
     {
-      throw new StoreException ( e.getDescription () );
+      throw new StoreException ( exc.getDescription () );
     }
-    catch ( TransitionException e )
+    catch ( TransitionException exc )
     {
-      throw new StoreException ( e.getDescription () );
+      throw new StoreException ( exc.getDescription () );
+    }
+    catch ( Exception exc )
+    {
+      throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
   }
 
@@ -200,12 +204,12 @@ public final class Storage
   /**
    * Writes a string to the {@link BufferedWriter}.
    * 
-   * @param pText The text which should be written to the {@link BufferedWriter}.
+   * @param text The text which should be written to the {@link BufferedWriter}.
    * @throws IOException If an I/O error occurs.
    */
-  private final void print ( String pText ) throws IOException
+  private final void print ( String text ) throws IOException
   {
-    this.writer.write ( pText );
+    this.writer.write ( text );
   }
 
 
@@ -223,12 +227,12 @@ public final class Storage
   /**
    * Writes a string and a new line to the {@link BufferedWriter}.
    * 
-   * @param pText The text which should be written to the {@link BufferedWriter}.
+   * @param text The text which should be written to the {@link BufferedWriter}.
    * @throws IOException If an I/O error occurs.
    */
-  private final void println ( String pText ) throws IOException
+  private final void println ( String text ) throws IOException
   {
-    this.writer.write ( pText );
+    this.writer.write ( text );
     this.writer.newLine ();
   }
 
@@ -236,21 +240,21 @@ public final class Storage
   /**
    * Stores the given {@link Element} with the given indent.
    * 
-   * @param pElement The {@link Element} to store.
-   * @param pIndent The used indent.
+   * @param element The {@link Element} to store.
+   * @param indent The used indent.
    * @throws IOException If an I/O error occurs.
    */
-  private final void store ( Element pElement, int pIndent ) throws IOException
+  private final void store ( Element element, int indent ) throws IOException
   {
-    StringBuilder indent = new StringBuilder ();
-    for ( int i = 0 ; i < pIndent ; i++ )
+    StringBuilder indentText = new StringBuilder ();
+    for ( int i = 0 ; i < indent ; i++ )
     {
-      indent.append ( " " ); //$NON-NLS-1$
+      indentText.append ( " " ); //$NON-NLS-1$
     }
-    print ( indent.toString () );
+    print ( indentText.toString () );
     print ( "<" ); //$NON-NLS-1$
-    print ( pElement.getName () );
-    for ( Attribute current : pElement.getAttribute () )
+    print ( element.getName () );
+    for ( Attribute current : element.getAttribute () )
     {
       print ( " " ); //$NON-NLS-1$
       print ( current.getName () );
@@ -259,23 +263,23 @@ public final class Storage
       print ( current.getValue () );
       print ( "\"" ); //$NON-NLS-1$
     }
-    if ( pElement.getElement ().size () == 0 )
+    if ( element.getElement ().size () == 0 )
     {
       print ( "/>" ); //$NON-NLS-1$
     }
     else
     {
       println ( ">" ); //$NON-NLS-1$
-      for ( Element current : pElement.getElement () )
+      for ( Element current : element.getElement () )
       {
-        store ( current, pIndent + 2 );
+        store ( current, indent + 2 );
       }
-      print ( indent.toString () );
+      print ( indentText.toString () );
       print ( "</" ); //$NON-NLS-1$
-      print ( pElement.getName () );
+      print ( element.getName () );
       print ( ">" ); //$NON-NLS-1$
     }
-    if ( pIndent != 0 )
+    if ( indent != 0 )
     {
       println ();
     }
@@ -285,25 +289,24 @@ public final class Storage
   /**
    * Stores the given {@link Storable} to the given file name.
    * 
-   * @param pStorable The {@link Storable} to store.
-   * @param pFileName The used file name.
+   * @param storable The {@link Storable} to store.
+   * @param fileName The used file name.
    * @throws StoreException If the file could not be loaded.
    */
-  public final void store ( Storable pStorable, String pFileName )
+  public final void store ( Storable storable, String fileName )
       throws StoreException
   {
     try
     {
       this.writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( pFileName ), CHARSET_NAME ) );
+          new FileOutputStream ( fileName ), CHARSET_NAME ) );
       println ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); //$NON-NLS-1$
       println ();
-      store ( pStorable.getElement (), 0 );
+      store ( storable.getElement (), 0 );
       this.writer.close ();
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Store" ) ); //$NON-NLS-1$
     }
   }

@@ -75,6 +75,12 @@ public interface Transition extends ParseableEntity, Storable,
 
 
   /**
+   * Removes all {@link Symbol}s.
+   */
+  public void clear ();
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#clone()

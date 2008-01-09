@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class TransitionPopupMenu extends JPopupMenu
+public final class TransitionPopupMenu extends JPopupMenu
 {
 
   /**
@@ -70,21 +70,21 @@ public class TransitionPopupMenu extends JPopupMenu
   /**
    * Allocates a new <code>StatePopupMenu</code>.
    * 
-   * @param pGraph The {@link JGraph}
-   * @param pParent The parent panel
-   * @param pModel the model containing the state
-   * @param pTransition the transition to open the popup menu
-   * @param pAlphabet The {@link Alphabet}
+   * @param jGraph The {@link JGraph}
+   * @param parent The parent panel
+   * @param model the model containing the state
+   * @param transition the transition to open the popup menu
+   * @param alphabet The {@link Alphabet}
    */
-  public TransitionPopupMenu ( JGraph pGraph, MachinesPanelForm pParent,
-      DefaultMachineModel pModel, DefaultTransitionView pTransition,
-      Alphabet pAlphabet )
+  public TransitionPopupMenu ( JGraph jGraph, MachinesPanelForm parent,
+      DefaultMachineModel model, DefaultTransitionView transition,
+      Alphabet alphabet )
   {
-    this.graph = pGraph;
-    this.parent = pParent;
-    this.alphabet = pAlphabet;
-    this.model = pModel;
-    this.transition = pTransition;
+    this.graph = jGraph;
+    this.parent = parent;
+    this.alphabet = alphabet;
+    this.model = model;
+    this.transition = transition;
     populateMenues ();
 
     /*
@@ -107,7 +107,7 @@ public class TransitionPopupMenu extends JPopupMenu
   /**
    * Populates the menues of this popup menu.
    */
-  protected void populateMenues ()
+  protected final void populateMenues ()
   {
 
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
@@ -148,8 +148,6 @@ public class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent e )
       {
-        Transition oldTransition = TransitionPopupMenu.this.transition
-            .getTransition ().clone ();
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
@@ -161,11 +159,14 @@ public class TransitionPopupMenu extends JPopupMenu
         dialog.show ();
         if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
         {
+          Transition newTransition = dialog.getTransition ();
           TransitionPopupMenu.this.graph.getGraphLayoutCache ()
               .valueForCellChanged ( TransitionPopupMenu.this.transition,
-                  dialog.getTransition () );
+                  newTransition );
+          Transition oldTransition = TransitionPopupMenu.this.transition
+              .getTransition ();
           TransitionPopupMenu.this.model.transitionChanged ( oldTransition,
-              dialog.getTransition () );
+              newTransition );
         }
       }
     } );

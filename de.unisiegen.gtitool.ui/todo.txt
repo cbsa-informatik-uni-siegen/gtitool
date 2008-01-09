@@ -13,6 +13,7 @@
 - Zustand in der Tabelle highlighten mit Timer
 - Konsole und Tabelle nur auf ein MachinePanel beschränken
 - MachineException Handling verbessern
+- Transitionen bearbeiten (Bug) 
 
 
 *** Benny oder Christian ***

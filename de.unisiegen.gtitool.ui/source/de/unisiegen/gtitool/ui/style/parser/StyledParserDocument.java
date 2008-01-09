@@ -321,6 +321,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private final void highlightedParseableEntities ()
   {
+    processChanged ();
     for ( ParseableEntity current : this.highlightedParseableEntityList )
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();

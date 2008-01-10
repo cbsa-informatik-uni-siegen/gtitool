@@ -40,7 +40,6 @@ import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -1771,6 +1770,21 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void setWordEnterMode ( boolean wordEnterMode )
   {
     this.enterWordMode = wordEnterMode;
+    if ( !wordEnterMode )
+    {
+      this.gui.jSplitPaneConsole
+          .setRightComponent ( this.gui.jTabbedPaneConsole );
+      this.gui.jSplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+          .getInstance ().getDividerLocationConsole () );
+      this.setDividerLocationConsole = true;
+    }
+    else
+    {
+      this.setDividerLocationConsole = false;
+      this.gui.jSplitPaneConsole.setRightComponent ( null );
+      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+    }
   }
 
 
@@ -1921,25 +1935,16 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
 
-    try
-    {
-      this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
+    this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
 
-      this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+    this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
 
-      DefaultStateView state = this.model.getStateViewForState ( this.machine
-          .getActiveState ( 0 ) );
-      GraphConstants.setGradientColor ( state.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemActiveState ()
-              .getColor () );
-      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( MachinePanel.this.graphModel ) );
-    }
-    catch ( MachineValidationException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+    DefaultStateView state = this.model.getStateViewForState ( this.machine
+        .getActiveState ( 0 ) );
+    GraphConstants.setGradientColor ( state.getAttributes (), PreferenceManager
+        .getInstance ().getColorItemActiveState ().getColor () );
+    MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
     return true;
   }
 

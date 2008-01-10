@@ -256,7 +256,6 @@ public final class MainWindow implements LanguageChangedListener
     setToolBarEnterWordItemState ( true );
     MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
     machinePanel.handleEnterWord ();
-    machinePanel.setVisibleConsole ( false );
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
     machinePanel.setWordEnterMode ( true );
   }
@@ -1015,8 +1014,8 @@ public final class MainWindow implements LanguageChangedListener
       this.saveConsolePreferences = false;
       this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
           .isConsoleVisible () );
-      machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
-          && machinePanel.isConsoleVisible () );
+//      machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
+//          && machinePanel.isConsoleVisible () );
       this.saveConsolePreferences = true;
       this.gui.jCheckBoxMenuItemTable
           .setState ( machinePanel.isTableVisible () );

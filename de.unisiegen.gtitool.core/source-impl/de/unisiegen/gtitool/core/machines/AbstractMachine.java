@@ -996,9 +996,15 @@ public abstract class AbstractMachine implements Machine
    * Removes and returns the last history element.
    * 
    * @return The last history element.
+   * @throws WordResetedException If the {@link Word} is reseted.
    */
   private final ArrayList < Transition > removeHistory ()
+      throws WordResetedException
   {
+    if ( this.history.size () == 0 )
+    {
+      throw new WordResetedException ( this.word );
+    }
     return this.history.remove ( this.history.size () - 1 );
   }
 

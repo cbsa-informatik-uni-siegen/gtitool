@@ -842,10 +842,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     try
     {
       Storage.getInstance ().store ( this.model, this.fileName.toString () );
-      JOptionPane
-          .showMessageDialog (
-              this.parent,
-              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      JOptionPane.showMessageDialog ( this.parent, Messages
+          .getString ( "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$
+          .getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
 
     }
     catch ( StoreException e )
@@ -1882,8 +1881,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
     catch ( WordFinishedException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),
-          "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.parent, e.getDescription (), e
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
 
     }
     catch ( WordResetedException e )
@@ -1914,6 +1913,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
+      // TODOBenny i18n
       JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben", //$NON-NLS-1$
           "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
       return false;
@@ -1997,8 +1997,18 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( MachinePanel.this.graphModel ) );
 
-      this.gui.wordPanel.styledWordParserPanel
-          .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
+      /*
+       * After the last previous step the current symbol is not defined.
+       */
+      try
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
+      }
+      catch ( WordResetedException e )
+      {
+        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+      }
     }
     catch ( WordFinishedException e )
     {
@@ -2007,16 +2017,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     }
     catch ( WordResetedException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (),
-          "Info", JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
-
+      JOptionPane.showMessageDialog ( this.parent, e.getDescription (), e
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
     catch ( WordException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
     }
-
   }
 
 
@@ -2026,6 +2034,5 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void handleWordAutoStep ()
   {
     // TODO Auto-generated method stub
-
   }
 }

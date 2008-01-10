@@ -41,7 +41,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -570,8 +569,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
     }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -906,10 +905,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         return null;
 
       String filename = chooser.getSelectedFile ().toString ().matches (
-          ".+\\." + MachinePanel.this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
-          .getSelectedFile ().toString ()
-          : chooser.getSelectedFile ().toString () + "." //$NON-NLS-1$
-              + MachinePanel.this.machine.getMachineType ().toLowerCase ();
+          ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
+          .getSelectedFile ().toString () : chooser.getSelectedFile ()
+          .toString ()
+          + "." //$NON-NLS-1$
+          + this.machine.getMachineType ().toLowerCase ();
 
       Storage.getInstance ().store ( this.model, filename );
       JOptionPane
@@ -1051,8 +1051,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           PreferenceManager.getInstance ().getColorItemErrorState ()
               .getColor () );
     }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -1078,8 +1078,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemErrorTransition ().getColor () );
     }
-    this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -1818,11 +1818,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
-    MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
 
+    this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
-
   }
 
 
@@ -1872,35 +1872,28 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
 
-      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( MachinePanel.this.graphModel ) );
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
 
       this.gui.wordPanel.styledWordParserPanel
-          .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
+          .setHighlightedSymbol ( this.machine.getReadedSymbols () );
 
     }
-    catch ( WordFinishedException e )
+    catch ( WordFinishedException exc )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getDescription (), e
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-
     }
-    catch ( WordResetedException e )
+    catch ( WordResetedException exc )
     {
-      e.printStackTrace ();
-      System.exit ( 1 );
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
-    catch ( WordNotAcceptedException e )
+    catch ( WordNotAcceptedException exc )
     {
-      e.printStackTrace ();
-      System.exit ( 1 );
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
-    catch ( WordException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
-
   }
 
 
@@ -1932,8 +1925,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
-    MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
 
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
 
@@ -1943,8 +1936,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         .getActiveState ( 0 ) );
     GraphConstants.setGradientColor ( state.getAttributes (), PreferenceManager
         .getInstance ().getColorItemActiveState ().getColor () );
-    MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-        .getAll ( MachinePanel.this.graphModel ) );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
     return true;
   }
 
@@ -1994,8 +1987,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         GraphConstants.setGradientColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
-      MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( MachinePanel.this.graphModel ) );
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
 
       /*
        * After the last previous step the current symbol is not defined.
@@ -2003,27 +1996,22 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       try
       {
         this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
+            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
       }
       catch ( WordResetedException e )
       {
         this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
       }
     }
-    catch ( WordFinishedException e )
+    catch ( WordFinishedException exc )
     {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( WordResetedException e )
-    {
-      JOptionPane.showMessageDialog ( this.parent, e.getDescription (), e
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
-    catch ( WordException e )
+    catch ( WordResetedException exc )
     {
-      e.printStackTrace ();
-      System.exit ( 1 );
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
   }
 

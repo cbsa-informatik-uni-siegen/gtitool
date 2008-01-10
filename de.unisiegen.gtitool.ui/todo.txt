@@ -11,7 +11,7 @@ CF		- Das MachineTableModel kommt mit einer Änderung des Alphabets nicht klar
 BM		- RecentlyUsedFiles
 BM		- OpenedFiles
 BM		- Dateien per Übergabe in der main Methode öffnen können
-		- Das Setzen eines Highlighting überschreibt Exceptions
 CF		- ParserPanel editable ohne Verschieben
 CF		- Roten Rahmen um das WordParserPanel 
 CF		- Einen Info-Diolog für die Nachrichten bauen
+CF		- Einstellungsmöglichkeit für das Anlegen von Transitionen

@@ -20,7 +20,6 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableExce
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
-import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -638,6 +637,30 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Returns the current {@link Symbol}.
+   * 
+   * @return The current {@link Symbol}.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
+   */
+  public final Symbol getCurrentSymbol () throws WordFinishedException,
+      WordResetedException
+  {
+    return this.word.getCurrentSymbol ();
+  }
+
+
+  /**
+   * Returns the <code>Machine</code> type.
+   * 
+   * @return The <code>Machine</code> type.
+   */
+  public abstract String getMachineType ();
+
+
+  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -650,24 +673,19 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Returns the current {@link Symbol}.
+   * Returns the readed {@link Symbol}s.
    * 
-   * @return The current {@link Symbol}.
-   * @throws WordException If something with the <code>Word</code> is not
-   *           correct.
+   * @return The readed {@link Symbol}s.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
    */
-  public final Symbol getCurrentSymbol () throws WordException
+  public final ArrayList < Symbol > getReadedSymbols ()
+      throws WordFinishedException, WordResetedException
   {
-    return this.word.getCurrentSymbol ();
+    return this.word.getReadedSymbols ();
   }
-
-
-  /**
-   * Returns the <code>Machine</code> type.
-   * 
-   * @return The <code>Machine</code> type.
-   */
-  public abstract String getMachineType ();
 
 
   /**

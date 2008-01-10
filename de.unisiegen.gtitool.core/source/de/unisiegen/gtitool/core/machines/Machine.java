@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
-import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -159,21 +158,16 @@ public interface Machine extends Serializable
 
 
   /**
-   * Returns the push down {@link Alphabet}.
-   * 
-   * @return The push down {@link Alphabet}.
-   */
-  public Alphabet getPushDownAlphabet ();
-
-
-  /**
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
-   * @throws WordException If something with the <code>Word</code> is not
-   *           correct.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
    */
-  public Symbol getCurrentSymbol () throws WordException;
+  public Symbol getCurrentSymbol () throws WordFinishedException,
+      WordResetedException;
 
 
   /**
@@ -182,6 +176,27 @@ public interface Machine extends Serializable
    * @return The <code>Machine</code> type.
    */
   public String getMachineType ();
+
+
+  /**
+   * Returns the push down {@link Alphabet}.
+   * 
+   * @return The push down {@link Alphabet}.
+   */
+  public Alphabet getPushDownAlphabet ();
+
+
+  /**
+   * Returns the readed {@link Symbol}s.
+   * 
+   * @return The readed {@link Symbol}s.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
+   */
+  public ArrayList < Symbol > getReadedSymbols () throws WordFinishedException,
+      WordResetedException;
 
 
   /**

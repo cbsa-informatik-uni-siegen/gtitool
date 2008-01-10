@@ -374,6 +374,35 @@ public final class DefaultWord implements Word
 
 
   /**
+   * Returns the readed {@link Symbol}s.
+   * 
+   * @return The readed {@link Symbol}s.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
+   */
+  public final ArrayList < Symbol > getReadedSymbols ()
+      throws WordFinishedException, WordResetedException
+  {
+    if ( this.currentPosition == START_INDEX )
+    {
+      throw new WordResetedException ( this );
+    }
+    if ( this.currentPosition >= this.symbolList.size () )
+    {
+      throw new WordFinishedException ( this );
+    }
+    ArrayList < Symbol > readedSymbols = new ArrayList < Symbol > ();
+    for ( int i = 0 ; i <= this.currentPosition ; i++ )
+    {
+      readedSymbols.add ( this.symbolList.get ( i ) );
+    }
+    return readedSymbols;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Entity#hashCode()

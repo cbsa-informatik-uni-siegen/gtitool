@@ -120,6 +120,19 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
+   * Returns the readed {@link Symbol}s.
+   * 
+   * @return The readed {@link Symbol}s.
+   * @throws WordFinishedException If something with the
+   *           <code>DefaultWord</code> is not correct.
+   * @throws WordResetedException If something with the <code>DefaultWord</code>
+   *           is not correct.
+   */
+  public ArrayList < Symbol > getReadedSymbols () throws WordFinishedException,
+      WordResetedException;
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Entity#hashCode()

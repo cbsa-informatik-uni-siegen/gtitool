@@ -90,7 +90,7 @@ public final class MainWindow implements LanguageChangedListener
     // Toolbar items
     setToolBarEditItemState ( false );
     setToolBarEnterWordItemState ( false );
-    
+
     this.gui.jButtonNextStep.setEnabled ( false );
     this.gui.jButtonPrevious.setEnabled ( false );
     this.gui.jButtonAutoStep.setEnabled ( false );
@@ -136,11 +136,11 @@ public final class MainWindow implements LanguageChangedListener
    */
   private void setToolBarEnterWordItemState ( boolean state )
   {
-//    this.gui.jButtonPrevious.setEnabled ( state );
+    // this.gui.jButtonPrevious.setEnabled ( state );
     this.gui.jButtonStart.setEnabled ( state );
-//    this.gui.jButtonNextStep.setEnabled ( state );
-//    this.gui.jButtonAutoStep.setEnabled ( state );
-//    this.gui.jButtonStop.setEnabled ( state );
+    // this.gui.jButtonNextStep.setEnabled ( state );
+    // this.gui.jButtonAutoStep.setEnabled ( state );
+    // this.gui.jButtonStop.setEnabled ( state );
   }
 
 
@@ -236,20 +236,19 @@ public final class MainWindow implements LanguageChangedListener
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {
           panel.addError ( error );
-          errorCount++;
+          errorCount++ ;
         }
         else if ( error.getType ().equals ( ErrorType.WARNING ) )
         {
           panel.addWarning ( error );
-          warningCount++;
+          warningCount++ ;
         }
       }
     }
     if ( errorCount > 0 )
     {
-      JOptionPane
-      .showMessageDialog (
-          this.gui, errorCount + " Error(s) in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      JOptionPane.showMessageDialog ( this.gui, errorCount
+          + " Error(s) in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       return;
     }
     setToolBarEditItemState ( false );
@@ -650,18 +649,17 @@ public final class MainWindow implements LanguageChangedListener
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {
           panel.addError ( error );
-          errorCount++;
+          errorCount++ ;
         }
         else if ( error.getType ().equals ( ErrorType.WARNING ) )
         {
           panel.addWarning ( error );
-          warningCount++;
+          warningCount++ ;
         }
       }
     }
-      JOptionPane
-      .showMessageDialog (
-          this.gui, errorCount + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+    JOptionPane.showMessageDialog ( this.gui, errorCount
+        + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
 
@@ -994,6 +992,7 @@ public final class MainWindow implements LanguageChangedListener
     machinePanel.setWordEnterMode ( false );
   }
 
+
   /**
    * Handle TabbedPane state changed event
    * 
@@ -1001,23 +1000,28 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleTabbedPaneStateChanged ( ChangeEvent evt )
   {
-    MachinePanel machinePanel =  ( MachinePanel ) getActiveEditor ();
-    if ( machinePanel != null ){
-    this.gui.jCheckBoxMenuItemConsole.setEnabled( !machinePanel.isWordEnterMode () );
-    this.saveConsolePreferences = false ;
-    this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel.isConsoleVisible () );
-    machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
-        && machinePanel.isConsoleVisible () );
-    this.saveConsolePreferences = true;
-    this.gui.jCheckBoxMenuItemTable.setState ( machinePanel.isTableVisible () );
-    setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
-    setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
+    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    if ( machinePanel != null )
+    {
+      this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
+          .isWordEnterMode () );
+      this.saveConsolePreferences = false;
+      this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
+          .isConsoleVisible () );
+      machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
+          && machinePanel.isConsoleVisible () );
+      this.saveConsolePreferences = true;
+      this.gui.jCheckBoxMenuItemTable
+          .setState ( machinePanel.isTableVisible () );
+      setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
+      setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
     }
-    
+
   }
 
+
   /**
-   * Handle Edit Alphabet Action in the Toolbar 
+   * Handle Edit Alphabet Action in the Toolbar
    */
   public void handleEditAlphabet ()
   {
@@ -1025,8 +1029,9 @@ public final class MainWindow implements LanguageChangedListener
     current.handleToolbarAlphabet ();
   }
 
+
   /**
-   * Handle Stop Action in the Word Enter Mode 
+   * Handle Stop Action in the Word Enter Mode
    */
   public void handleWordStop ()
   {
@@ -1037,21 +1042,23 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonStop.setEnabled ( false );
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordStop ();
-    
+
   }
 
+
   /**
-   * Handle Next Step Action in the Word Enter Mode 
+   * Handle Next Step Action in the Word Enter Mode
    */
   public void handleWordNextStep ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordNextStep ();
-    
+
   }
 
+
   /**
-   * Handle Start Action in the Word Enter Mode 
+   * Handle Start Action in the Word Enter Mode
    */
   public void handleWordStart ()
   {
@@ -1071,51 +1078,56 @@ public final class MainWindow implements LanguageChangedListener
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {
           panel.addError ( error );
-          errorCount++;
+          errorCount++ ;
         }
         else if ( error.getType ().equals ( ErrorType.WARNING ) )
         {
           panel.addWarning ( error );
-          warningCount++;
+          warningCount++ ;
         }
       }
     }
     if ( errorCount > 0 )
     {
-      JOptionPane
-      .showMessageDialog (
-          this.gui, errorCount + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      JOptionPane.showMessageDialog ( this.gui, errorCount
+          + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       return;
     }
-    
-    this.gui.jButtonStart.setEnabled ( false );
-    this.gui.jButtonNextStep.setEnabled ( true );
-    this.gui.jButtonPrevious.setEnabled ( true );
-    this.gui.jButtonAutoStep.setEnabled ( true );
-    this.gui.jButtonStop.setEnabled ( true );
+
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordStart ();
-    
+
+    if ( current.handleWordStart () )
+    {
+      this.gui.jButtonStart.setEnabled ( false );
+      this.gui.jButtonNextStep.setEnabled ( true );
+      this.gui.jButtonPrevious.setEnabled ( true );
+      this.gui.jButtonAutoStep.setEnabled ( true );
+      this.gui.jButtonStop.setEnabled ( true );
+
+    }
+
   }
 
+
   /**
-   * Handle Previous Step Action in the Word Enter Mode 
+   * Handle Previous Step Action in the Word Enter Mode
    */
   public void handleWordPreviousStep ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
-      current.handleWordPreviousStep ();
-    
+    current.handleWordPreviousStep ();
+
   }
 
+
   /**
-   * Handle Auto Step Action in the Word Enter Mode 
+   * Handle Auto Step Action in the Word Enter Mode
    */
   public void handleWordAutoStep ( ItemEvent evt )
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordAutoStep ();
-    
+
   }
 
 }

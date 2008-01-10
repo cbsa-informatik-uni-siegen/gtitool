@@ -1,5 +1,4 @@
 BM		- Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
-BM		- Wort eingeben können
 CF		- PDA: Stack und Kelleralphabet implementieren
 CF		- Console: Automatische Fehlerkorrektur
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
@@ -9,8 +8,8 @@ CF		- Das MachineTableModel kommt mit einer Änderung des Alphabets nicht klar
 		- Die gleiche Datei sollte nicht zweimal geöffnet werden können,
 		  sondern es soll zu der geöffneten Datei gesprungen werden, wenn 
 		  diese nochmal geöffnet wird
-		- RecentlyUsedFiles
-		- OpenedFiles
-		- Dateien per Übergabe in der main Methode öffnen können
+BM		- RecentlyUsedFiles
+BM		- OpenedFiles
+BM		- Dateien per Übergabe in der main Methode öffnen können
 		- Das Setzen eines Highlighting überschreibt Exceptions
 CF		- ParserPanel editable ohne Verschieben

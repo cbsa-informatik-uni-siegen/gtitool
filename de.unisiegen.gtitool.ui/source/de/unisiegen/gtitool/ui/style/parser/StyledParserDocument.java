@@ -123,17 +123,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * determine the scanner for the documents content and thereby dictates the
    * syntax highlighting.
    * 
-   * @param pParseable The {@link Parseable} for which to allocate a document.
+   * @param parseable The {@link Parseable} for which to allocate a document.
    * @throws NullPointerException if the <code>pParseable</code> is
    *           <code>null</code>.
    */
-  public StyledParserDocument ( Parseable pParseable )
+  public StyledParserDocument ( Parseable parseable )
   {
-    if ( pParseable == null )
+    if ( parseable == null )
     {
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
-    this.parseable = pParseable;
+    this.parseable = parseable;
     this.highlightedParseableEntityList = new ArrayList < ParseableEntity > ();
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
@@ -161,9 +161,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserHighlighting ( Color pNewColor )
+          public void colorChangedParserHighlighting ( Color newColor )
           {
-            StyledParserDocument.this.parserHighlightingColor = pNewColor;
+            StyledParserDocument.this.parserHighlightingColor = newColor;
             processChanged ();
           }
 
@@ -174,7 +174,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
-          Color pNewColor )
+          Color newColor )
           {
             initAttributes ();
             processChanged ();
@@ -186,9 +186,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserWarning ( Color pNewColor )
+          public void colorChangedParserWarning ( Color newColor )
           {
-            StyledParserDocument.this.parserWarningColor = pNewColor;
+            StyledParserDocument.this.parserWarningColor = newColor;
             processChanged ();
           }
         } );
@@ -198,24 +198,24 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Adds the given {@link ExceptionsChangedListener}.
    * 
-   * @param pListener The {@link ExceptionsChangedListener}.
+   * @param listener The {@link ExceptionsChangedListener}.
    */
   public final synchronized void addExceptionsChangedListener (
-      ExceptionsChangedListener pListener )
+      ExceptionsChangedListener listener )
   {
-    this.listenerList.add ( ExceptionsChangedListener.class, pListener );
+    this.listenerList.add ( ExceptionsChangedListener.class, listener );
   }
 
 
   /**
    * Adds the given {@link ParseableChangedListener}.
    * 
-   * @param pListener The {@link ParseableChangedListener}.
+   * @param listener The {@link ParseableChangedListener}.
    */
   public final synchronized void addParseableChangedListener (
-      ParseableChangedListener pListener )
+      ParseableChangedListener listener )
   {
-    this.listenerList.add ( ParseableChangedListener.class, pListener );
+    this.listenerList.add ( ParseableChangedListener.class, listener );
   }
 
 
@@ -236,15 +236,15 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Let the listeners know that the {@link Object} has changed.
    * 
-   * @param pNewObject The new {@link Object}.
+   * @param newObject The new {@link Object}.
    */
-  public final void fireParseableChanged ( Object pNewObject )
+  public final void fireParseableChanged ( Object newObject )
   {
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].parseableChanged ( pNewObject );
+      listeners [ n ].parseableChanged ( newObject );
     }
   }
 
@@ -363,10 +363,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * @see AbstractDocument#insertString(int, String, AttributeSet)
    */
   @Override
-  public final void insertString ( int pOffset, String pString,
-      AttributeSet pAttributeSet ) throws BadLocationException
+  public final void insertString ( int offset, String string,
+      AttributeSet attributeSet ) throws BadLocationException
   {
-    super.insertString ( pOffset, pString, pAttributeSet );
+    super.insertString ( offset, string, attributeSet );
     fireParseableChanged ( processChanged () );
   }
 
@@ -454,9 +454,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
         {
 
           @Override
-          public Style getStyleBySymbolId ( int pId )
+          public Style getStyleBySymbolId ( int id )
           {
-            return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( pId );
+            return ( ( AbstractScanner ) scanner ).getStyleBySymbolId ( id );
           }
 
 
@@ -467,7 +467,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
           public void restart ( @SuppressWarnings ( "unused" )
-          String pText )
+          String text )
           {
             throw new UnsupportedOperationException ();
           }
@@ -551,10 +551,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * @see Document#remove(int, int)
    */
   @Override
-  public final void remove ( int pOffset, int pLength )
+  public final void remove ( int offset, int length )
       throws BadLocationException
   {
-    super.remove ( pOffset, pLength );
+    super.remove ( offset, length );
     fireParseableChanged ( processChanged () );
   }
 
@@ -562,49 +562,49 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Removes the given {@link ExceptionsChangedListener}.
    * 
-   * @param pListener The {@link ExceptionsChangedListener}.
+   * @param listener The {@link ExceptionsChangedListener}.
    */
   public final synchronized void removeExceptionsChangedListener (
-      ExceptionsChangedListener pListener )
+      ExceptionsChangedListener listener )
   {
-    this.listenerList.remove ( ExceptionsChangedListener.class, pListener );
+    this.listenerList.remove ( ExceptionsChangedListener.class, listener );
   }
 
 
   /**
    * Removes the given {@link ParseableChangedListener}.
    * 
-   * @param pListener The {@link ParseableChangedListener}.
+   * @param listener The {@link ParseableChangedListener}.
    */
   public final synchronized void removeParseableChangedListener (
-      ParseableChangedListener pListener )
+      ParseableChangedListener listener )
   {
-    this.listenerList.remove ( ParseableChangedListener.class, pListener );
+    this.listenerList.remove ( ParseableChangedListener.class, listener );
   }
 
 
   /**
    * Sets the editable value.
    * 
-   * @param pEditable The boolean to be set.
+   * @param editable The boolean to be set.
    */
-  public final void setEditable ( boolean pEditable )
+  public final void setEditable ( boolean editable )
   {
-    this.editable = pEditable;
+    this.editable = editable;
   }
 
 
   /**
    * Sets the exceptions.
    * 
-   * @param pExceptions The exceptions to set.
+   * @param exceptions The exceptions to set.
    */
-  public final void setException ( Iterable < ScannerException > pExceptions )
+  public final void setException ( Iterable < ScannerException > exceptions )
   {
-    if ( !pExceptions.equals ( this.exceptionList ) )
+    if ( !exceptions.equals ( this.exceptionList ) )
     {
       this.exceptionList.clear ();
-      Iterator < ScannerException > iterator = pExceptions.iterator ();
+      Iterator < ScannerException > iterator = exceptions.iterator ();
       while ( iterator.hasNext () )
       {
         this.exceptionList.add ( iterator.next () );
@@ -631,12 +631,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Sets the exception.
    * 
-   * @param pException The exception to set.
+   * @param exception The exception to set.
    */
-  public final void setException ( ScannerException pException )
+  public final void setException ( ScannerException exception )
   {
     ArrayList < ScannerException > exceptions = new ArrayList < ScannerException > ();
-    exceptions.add ( pException );
+    exceptions.add ( exception );
     setException ( exceptions );
   }
 
@@ -644,14 +644,32 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Sets the {@link ParseableEntity}s which should be highlighted.
    * 
-   * @param pParseableEntities The {@link ParseableEntity}s which should be
+   * @param parseableEntities The {@link ParseableEntity}s which should be
    *          highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable < ? extends ParseableEntity > pParseableEntities )
+      Iterable < ? extends ParseableEntity > parseableEntities )
   {
     this.highlightedParseableEntityList.clear ();
-    for ( ParseableEntity current : pParseableEntities )
+    for ( ParseableEntity current : parseableEntities )
+    {
+      this.highlightedParseableEntityList.add ( current );
+    }
+    highlightedParseableEntities ();
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * 
+   * @param parseableEntities The {@link ParseableEntity}s which should be
+   *          highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      ParseableEntity ... parseableEntities )
+  {
+    this.highlightedParseableEntityList.clear ();
+    for ( ParseableEntity current : parseableEntities )
     {
       this.highlightedParseableEntityList.add ( current );
     }
@@ -662,14 +680,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Sets the {@link ParseableEntity} which should be highlighted.
    * 
-   * @param pParseableEntity The {@link ParseableEntity} which should be
+   * @param parseableEntity The {@link ParseableEntity} which should be
    *          highlighted.
    */
   public final void setHighlightedParseableEntity (
-      ParseableEntity pParseableEntity )
+      ParseableEntity parseableEntity )
   {
     ArrayList < ParseableEntity > parseableEntities = new ArrayList < ParseableEntity > ();
-    parseableEntities.add ( pParseableEntity );
+    parseableEntities.add ( parseableEntity );
     setHighlightedParseableEntity ( parseableEntities );
   }
 }

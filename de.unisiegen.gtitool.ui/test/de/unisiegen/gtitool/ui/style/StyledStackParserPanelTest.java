@@ -41,7 +41,7 @@ public class StyledStackParserPanelTest
             {
               if ( newStack != null )
               {
-                styledStackParserPanel.setHighlightedParseableEntity ( newStack
+                styledStackParserPanel.setHighlightedSymbol ( newStack
                     .get ( 0 ) );
               }
             }

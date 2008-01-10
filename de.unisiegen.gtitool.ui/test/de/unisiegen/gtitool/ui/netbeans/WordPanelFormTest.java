@@ -41,7 +41,11 @@ public class WordPanelFormTest
               if ( newWord != null )
               {
                 wordPanelForm.styledWordParserPanel
-                    .setHighlightedParseableEntity ( newWord.get ( 0 ) );
+                    .setHighlightedSymbol ( newWord.get ( 0 ) );
+              }
+              else
+              {
+                wordPanelForm.styledWordParserPanel.setHighlightedSymbol ();
               }
             }
           } );

@@ -82,10 +82,10 @@ public class JDragList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragEnter(DropTargetDragEvent)
    */
-  public void dragEnter ( DropTargetDragEvent pEvent )
+  public void dragEnter ( DropTargetDragEvent event )
   {
-    pEvent.acceptDrag ( pEvent.getDropAction () );
-    this.dropLocation = pEvent.getLocation ();
+    event.acceptDrag ( event.getDropAction () );
+    this.dropLocation = event.getLocation ();
     repaint ();
   }
 
@@ -96,7 +96,7 @@ public class JDragList extends JList implements DropTargetListener
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
   public void dragExit ( @SuppressWarnings ( "unused" )
-  DropTargetEvent pEvent )
+  DropTargetEvent event )
   {
     this.dropLocation = null;
     repaint ();
@@ -108,10 +108,10 @@ public class JDragList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragOver(DropTargetDragEvent)
    */
-  public void dragOver ( DropTargetDragEvent pEvent )
+  public void dragOver ( DropTargetDragEvent event )
   {
-    pEvent.acceptDrag ( pEvent.getDropAction () );
-    this.dropLocation = pEvent.getLocation ();
+    event.acceptDrag ( event.getDropAction () );
+    this.dropLocation = event.getLocation ();
     repaint ();
   }
 
@@ -121,18 +121,18 @@ public class JDragList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#drop(DropTargetDropEvent)
    */
-  public void drop ( DropTargetDropEvent pEvent )
+  public void drop ( DropTargetDropEvent event )
   {
-    pEvent.acceptDrop ( pEvent.getDropAction () );
+    event.acceptDrop ( event.getDropAction () );
     try
     {
-      Transferable transferable = pEvent.getTransferable ();
-      pEvent.dropComplete ( getTransferHandler ().importData ( this,
+      Transferable transferable = event.getTransferable ();
+      event.dropComplete ( getTransferHandler ().importData ( this,
           transferable ) );
     }
     catch ( RuntimeException exc )
     {
-      pEvent.dropComplete ( false );
+      event.dropComplete ( false );
     }
     this.dropLocation = null;
     repaint ();
@@ -145,10 +145,10 @@ public class JDragList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dropActionChanged(DropTargetDragEvent)
    */
-  public void dropActionChanged ( DropTargetDragEvent pEvent )
+  public void dropActionChanged ( DropTargetDragEvent event )
   {
-    pEvent.acceptDrag ( pEvent.getDropAction () );
-    this.dropLocation = pEvent.getLocation ();
+    event.acceptDrag ( event.getDropAction () );
+    this.dropLocation = event.getLocation ();
     repaint ();
   }
 
@@ -170,9 +170,9 @@ public class JDragList extends JList implements DropTargetListener
    * @see JComponent#paintComponent(Graphics)
    */
   @Override
-  protected void paintComponent ( Graphics pGraphics )
+  protected void paintComponent ( Graphics graphics )
   {
-    super.paintComponent ( pGraphics );
+    super.paintComponent ( graphics );
     if ( this.dropLocation != null )
     {
       int rowIndex = locationToIndex ( this.dropLocation );
@@ -194,15 +194,15 @@ public class JDragList extends JList implements DropTargetListener
       int width = getWidth () - 1;
       int size = 3;
       // Color
-      pGraphics.setColor ( Color.BLACK );
+      graphics.setColor ( Color.BLACK );
       // Line
-      pGraphics.drawLine ( size, y, width - size, y );
+      graphics.drawLine ( size, y, width - size, y );
       // Left
-      pGraphics.drawLine ( size, y, 0, y - size );
-      pGraphics.drawLine ( size, y, 0, y + size );
+      graphics.drawLine ( size, y, 0, y - size );
+      graphics.drawLine ( size, y, 0, y + size );
       // Right
-      pGraphics.drawLine ( width - size, y, width, y - size );
-      pGraphics.drawLine ( width - size, y, width, y + size );
+      graphics.drawLine ( width - size, y, width, y - size );
+      graphics.drawLine ( width - size, y, width, y + size );
     }
   }
 }

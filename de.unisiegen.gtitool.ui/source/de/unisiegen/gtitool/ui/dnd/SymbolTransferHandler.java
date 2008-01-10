@@ -40,11 +40,11 @@ public final class SymbolTransferHandler extends TransferHandler
     /**
      * Allocates a new <code>ArrayListTransferable</code>.
      * 
-     * @param pData The data.
+     * @param data The data.
      */
-    public ArrayListTransferable ( ArrayList < Symbol > pData )
+    public ArrayListTransferable ( ArrayList < Symbol > data )
     {
-      this.data = pData;
+      this.data = data;
     }
 
 
@@ -53,12 +53,12 @@ public final class SymbolTransferHandler extends TransferHandler
      * 
      * @see Transferable#getTransferData(DataFlavor)
      */
-    public final Object getTransferData ( DataFlavor pDataFlavor )
+    public final Object getTransferData ( DataFlavor dataFlavor )
         throws UnsupportedFlavorException
     {
-      if ( !isDataFlavorSupported ( pDataFlavor ) )
+      if ( !isDataFlavorSupported ( dataFlavor ) )
       {
-        throw new UnsupportedFlavorException ( pDataFlavor );
+        throw new UnsupportedFlavorException ( dataFlavor );
       }
       return this.data;
     }
@@ -73,7 +73,7 @@ public final class SymbolTransferHandler extends TransferHandler
     public final DataFlavor [] getTransferDataFlavors ()
     {
       return new DataFlavor []
-      { SymbolTransferHandler.this.dataFlavor };
+      { SymbolTransferHandler.this.symbolDataFlavor };
     }
 
 
@@ -83,9 +83,9 @@ public final class SymbolTransferHandler extends TransferHandler
      * @see Transferable#isDataFlavorSupported(DataFlavor)
      */
     @SuppressWarnings ( "synthetic-access" )
-    public final boolean isDataFlavorSupported ( DataFlavor flavor )
+    public final boolean isDataFlavorSupported ( DataFlavor dataFlavor )
     {
-      if ( SymbolTransferHandler.this.dataFlavor.equals ( flavor ) )
+      if ( SymbolTransferHandler.this.symbolDataFlavor.equals ( dataFlavor ) )
       {
         return true;
       }
@@ -103,7 +103,7 @@ public final class SymbolTransferHandler extends TransferHandler
   /**
    * The {@link DataFlavor}.
    */
-  private DataFlavor dataFlavor;
+  private DataFlavor symbolDataFlavor;
 
 
   /**
@@ -128,20 +128,20 @@ public final class SymbolTransferHandler extends TransferHandler
   /**
    * Allocates a new <code>SymbolTransferHandler</code>.
    * 
-   * @param pTransitionDialog
+   * @param transitionDialog
    */
-  public SymbolTransferHandler ( TransitionDialog pTransitionDialog )
+  public SymbolTransferHandler ( TransitionDialog transitionDialog )
   {
     try
     {
-      this.dataFlavor = new DataFlavor ( this.localArrayListType );
+      this.symbolDataFlavor = new DataFlavor ( this.localArrayListType );
     }
     catch ( ClassNotFoundException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    this.transitionDialog = pTransitionDialog;
+    this.transitionDialog = transitionDialog;
   }
 
 
@@ -152,9 +152,9 @@ public final class SymbolTransferHandler extends TransferHandler
    */
   @Override
   public final boolean canImport ( @SuppressWarnings ( "unused" )
-  JComponent pTarget, DataFlavor [] pDataFlavors )
+  JComponent targetList, DataFlavor [] dataFlavors )
   {
-    if ( hasLocalArrayListFlavor ( pDataFlavors ) )
+    if ( hasLocalArrayListFlavor ( dataFlavors ) )
     {
       return true;
     }
@@ -168,11 +168,11 @@ public final class SymbolTransferHandler extends TransferHandler
    * @see TransferHandler#createTransferable(JComponent)
    */
   @Override
-  protected final Transferable createTransferable ( JComponent pSource )
+  protected final Transferable createTransferable ( JComponent sourceList )
   {
-    if ( pSource instanceof JDragList )
+    if ( sourceList instanceof JDragList )
     {
-      this.source = ( JDragList ) pSource;
+      this.source = ( JDragList ) sourceList;
       Object [] values = this.source.getSelectedValues ();
       if ( values == null || values.length == 0 )
       {
@@ -196,7 +196,7 @@ public final class SymbolTransferHandler extends TransferHandler
    */
   @Override
   public final int getSourceActions ( @SuppressWarnings ( "unused" )
-  JComponent pSource )
+  JComponent sourceList )
   {
     return MOVE;
   }
@@ -205,18 +205,18 @@ public final class SymbolTransferHandler extends TransferHandler
   /**
    * Returns true if the local array list flavor is used.
    * 
-   * @param pDataFlavors
+   * @param dataFlavors
    * @return True if the local array list flavor is used.
    */
-  private final boolean hasLocalArrayListFlavor ( DataFlavor [] pDataFlavors )
+  private final boolean hasLocalArrayListFlavor ( DataFlavor [] dataFlavors )
   {
-    if ( this.dataFlavor == null )
+    if ( this.symbolDataFlavor == null )
     {
       return false;
     }
-    for ( int i = 0 ; i < pDataFlavors.length ; i++ )
+    for ( int i = 0 ; i < dataFlavors.length ; i++ )
     {
-      if ( pDataFlavors [ i ].equals ( this.dataFlavor ) )
+      if ( dataFlavors [ i ].equals ( this.symbolDataFlavor ) )
       {
         return true;
       }
@@ -232,22 +232,22 @@ public final class SymbolTransferHandler extends TransferHandler
    */
   @SuppressWarnings ( "unchecked" )
   @Override
-  public final boolean importData ( JComponent pTarget,
-      Transferable pTransferable )
+  public final boolean importData ( JComponent targetList,
+      Transferable transferable )
   {
     JDragList targetJList = null;
     ArrayList < Symbol > receivedList = null;
-    if ( !canImport ( pTarget, pTransferable.getTransferDataFlavors () ) )
+    if ( !canImport ( targetList, transferable.getTransferDataFlavors () ) )
     {
       return false;
     }
     try
     {
-      targetJList = ( JDragList ) pTarget;
-      if ( hasLocalArrayListFlavor ( pTransferable.getTransferDataFlavors () ) )
+      targetJList = ( JDragList ) targetList;
+      if ( hasLocalArrayListFlavor ( transferable.getTransferDataFlavors () ) )
       {
-        receivedList = ( ArrayList < Symbol > ) pTransferable
-            .getTransferData ( this.dataFlavor );
+        receivedList = ( ArrayList < Symbol > ) transferable
+            .getTransferData ( this.symbolDataFlavor );
       }
       else
       {

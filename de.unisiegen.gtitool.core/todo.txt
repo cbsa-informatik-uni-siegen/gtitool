@@ -1,8 +1,2 @@
-*** Benny ***
-
-
-*** Christian ***
-- PDA: Kelleralphabet implementieren
-
-
-*** Benny oder Christian ***
+CF		- Kelleralphabet implementieren
+CF		- Transition überarbeiten mit Stack

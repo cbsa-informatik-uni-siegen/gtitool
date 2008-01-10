@@ -861,8 +861,21 @@ public abstract class StyledParserPanel extends JPanel
    * @param parseableEntities The {@link ParseableEntity}s which should be
    *          highlighted.
    */
-  public final void setHighlightedParseableEntity (
+  protected final void setHighlightedParseableEntity (
       Iterable < ? extends ParseableEntity > parseableEntities )
+  {
+    this.document.setHighlightedParseableEntity ( parseableEntities );
+  }
+
+
+  /**
+   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * 
+   * @param parseableEntities The {@link ParseableEntity}s which should be
+   *          highlighted.
+   */
+  protected final void setHighlightedParseableEntity (
+      ParseableEntity ... parseableEntities )
   {
     this.document.setHighlightedParseableEntity ( parseableEntities );
   }
@@ -874,7 +887,7 @@ public abstract class StyledParserPanel extends JPanel
    * @param parseableEntity The {@link ParseableEntity} which should be
    *          highlighted.
    */
-  public final void setHighlightedParseableEntity (
+  protected final void setHighlightedParseableEntity (
       ParseableEntity parseableEntity )
   {
     this.document.setHighlightedParseableEntity ( parseableEntity );

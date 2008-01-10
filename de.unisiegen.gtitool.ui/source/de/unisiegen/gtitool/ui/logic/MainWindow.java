@@ -220,6 +220,38 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEnterWord ()
   {
+    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ();
+    int errorCount = 0;
+    int warningCount = 0;
+    try
+    {
+      panel.clearValidationMessages ();
+      panel.getMachine ().validate ();
+    }
+    catch ( MachineValidationException e )
+    {
+      for ( MachineException error : e.getMachineException () )
+      {
+        if ( error.getType ().equals ( ErrorType.ERROR ) )
+        {
+          panel.addError ( error );
+          errorCount++;
+        }
+        else if ( error.getType ().equals ( ErrorType.WARNING ) )
+        {
+          panel.addWarning ( error );
+          warningCount++;
+        }
+      }
+    }
+    if ( errorCount > 0 )
+    {
+      JOptionPane
+      .showMessageDialog (
+          this.gui, errorCount + " Error(s) in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      return;
+    }
     setToolBarEditItemState ( false );
     setToolBarEnterWordItemState ( true );
     MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();

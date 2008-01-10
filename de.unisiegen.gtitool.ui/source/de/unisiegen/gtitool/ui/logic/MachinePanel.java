@@ -273,8 +273,10 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   private boolean setDividerLocationTable = true;
 
-
-  private boolean wordEnterMode = false;
+  /**
+   * Flag signals if we are in the enter word mode
+   */
+  private boolean enterWordMode = false;
 
 
   private boolean consoleVisible = PreferenceManager.getInstance ()
@@ -1628,7 +1630,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   public boolean isWordEnterMode ()
   {
-    return this.wordEnterMode;
+    return this.enterWordMode;
   }
 
 
@@ -1731,7 +1733,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    */
   public void setWordEnterMode ( boolean wordEnterMode )
   {
-    this.wordEnterMode = wordEnterMode;
+    this.enterWordMode = wordEnterMode;
   }
 
 
@@ -1764,24 +1766,44 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     try
     {
-      for ( Transition current : this.machine.nextSymbol () )
-      {
-        DefaultStateView state = this.model.getStateViewForState ( current
-            .getStateEnd () );
+      ArrayList < Transition > activeTransitions = this.machine.nextSymbol ();
+      ArrayList < DefaultTransitionView > inactiveTransitions= new ArrayList < DefaultTransitionView > ();
+      inactiveTransitions.addAll( this.model.getTransitionViewList ());
+      
+      for ( Transition current : activeTransitions ){
+        DefaultTransitionView transitionView = this.model.getTransitionViewForTransition ( current );
+        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemErrorTransition ()
+                .getColor () );
+        inactiveTransitions.remove ( transitionView );
+      }
+      
+      for ( DefaultTransitionView current : inactiveTransitions ){
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransition ()
+                .getColor () );
+      }
+      
+      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
+      inactiveStates.addAll( this.model.getStateViewList ());
+      
+      for ( State current : this.machine.getActiveState () ){
+        DefaultStateView state = this.model.getStateViewForState ( current  );
         GraphConstants.setGradientColor ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveState ()
                 .getColor () );
-        DefaultStateView oldState = this.model.getStateViewForState ( current
-            .getStateBegin () );
-        GraphConstants.setGradientColor ( oldState.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-
+        inactiveStates.remove(state);
+      }
+      for ( DefaultStateView current : inactiveStates ){
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ()
+                .getColor () );
       }
       MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( MachinePanel.this.graphModel ) );
 
       this.gui.wordPanel.styledWordParserPanel
-          .setHighlightedParseableEntity ( this.machine.getCurrentSymbol () );
+          .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
 
     }
     catch ( WordFinishedException e )
@@ -1816,7 +1838,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     try
     {
-      this.gui.wordPanel.styledWordParserPanel.setEnabled ( false );
+      this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
+      //TODO check if word is null
       this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
 
       DefaultStateView state = this.model.getStateViewForState ( this.machine
@@ -1842,24 +1865,44 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     try
     {
-      for ( Transition current : this.machine.previousSymbol () )
-      {
-        DefaultStateView state = this.model.getStateViewForState ( current
-            .getStateBegin () );
+      ArrayList < Transition > activeTransitions = this.machine.previousSymbol ();
+      ArrayList < DefaultTransitionView > inactiveTransitions= new ArrayList < DefaultTransitionView > ();
+      inactiveTransitions.addAll( this.model.getTransitionViewList ());
+      
+      for ( Transition current : activeTransitions ){
+        DefaultTransitionView transitionView = this.model.getTransitionViewForTransition ( current );
+        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemErrorTransition ()
+                .getColor () );
+        inactiveTransitions.remove ( transitionView );
+      }
+      
+      for ( DefaultTransitionView current : inactiveTransitions ){
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransition ()
+                .getColor () );
+      }
+      
+      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
+      inactiveStates.addAll( this.model.getStateViewList ());
+      
+      for ( State current : this.machine.getActiveState () ){
+        DefaultStateView state = this.model.getStateViewForState ( current  );
         GraphConstants.setGradientColor ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveState ()
                 .getColor () );
-        DefaultStateView oldState = this.model.getStateViewForState ( current
-            .getStateEnd () );
-        GraphConstants.setGradientColor ( oldState.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-
+        inactiveStates.remove(state);
+      }
+      for ( DefaultStateView current : inactiveStates ){
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ()
+                .getColor () );
       }
       MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( MachinePanel.this.graphModel ) );
 
       this.gui.wordPanel.styledWordParserPanel
-          .setHighlightedParseableEntity ( this.machine.getCurrentSymbol () );
+          .setHighlightedSymbol ( this.machine.getCurrentSymbol () );
     }
     catch ( WordFinishedException e )
     {

@@ -590,4 +590,28 @@ public final class DefaultMachineModel implements Storable
       System.exit ( 1 );
     }
   }
+
+
+  /**
+   * 
+   * Get a list with all {@link DefaultStateView}s of this Model
+   *
+   * @return DefaultStateView list
+   */
+  public ArrayList < DefaultStateView > getStateViewList ()
+  {
+    return this.stateViewList;
+  }
+
+
+  /**
+   * 
+   * Get a list with all {@link DefaultTransitionView}s of this Model
+   *
+   * @return DefaultTransitionView list
+   */
+  public ArrayList < DefaultTransitionView > getTransitionViewList ()
+  {
+    return this.transitionViewList;
+  }
 }

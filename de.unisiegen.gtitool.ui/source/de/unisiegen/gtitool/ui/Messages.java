@@ -61,27 +61,27 @@ public final class Messages
   /**
    * Gets a string for the given key from the resource bundle of the ui project.
    * 
-   * @param pKey The key for the desired string.
-   * @param pArguments The optional arguments.
+   * @param key The key for the desired string.
+   * @param arguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String pKey, Object ... pArguments )
+  public final static String getString ( String key, Object ... arguments )
   {
     try
     {
       ResourceBundle resourceBundle = ResourceBundle
           .getBundle ( "de.unisiegen.gtitool.ui.messages" ); //$NON-NLS-1$
-      return MessageFormat.format ( resourceBundle.getString ( pKey ),
-          pArguments );
+      return MessageFormat
+          .format ( resourceBundle.getString ( key ), arguments );
     }
     catch ( MissingResourceException e )
     {
-      return de.unisiegen.gtitool.core.Messages.getString ( pKey, pArguments );
+      return de.unisiegen.gtitool.core.Messages.getString ( key, arguments );
     }
     catch ( IllegalArgumentException e )
     {
       logger.error ( "illegal argument exception", e ); //$NON-NLS-1$
-      return pKey;
+      return key;
     }
   }
 }

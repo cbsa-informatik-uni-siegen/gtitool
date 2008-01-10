@@ -88,49 +88,49 @@ public interface Machine extends Serializable
   /**
    * Adds the {@link State}s to this <code>Machine</code>.
    * 
-   * @param pStates The {@link State}s to add.
+   * @param states The {@link State}s to add.
    */
-  public void addState ( Iterable < State > pStates );
+  public void addState ( Iterable < State > states );
 
 
   /**
    * Adds the {@link State} to this <code>Machine</code>.
    * 
-   * @param pState The {@link State} to add.
+   * @param state The {@link State} to add.
    */
-  public void addState ( State pState );
+  public void addState ( State state );
 
 
   /**
    * Adds the {@link State}s to this <code>Machine</code>.
    * 
-   * @param pStates The {@link State}s to add.
+   * @param states The {@link State}s to add.
    */
-  public void addState ( State ... pStates );
+  public void addState ( State ... states );
 
 
   /**
    * Adds the {@link Transition}s to this <code>Machine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to add.
+   * @param transitions The {@link Transition}s to add.
    */
-  public void addTransition ( Iterable < Transition > pTransitions );
+  public void addTransition ( Iterable < Transition > transitions );
 
 
   /**
    * Adds the {@link Transition} to this <code>Machine</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public void addTransition ( Transition pTransition );
+  public void addTransition ( Transition transition );
 
 
   /**
    * Adds the {@link Transition}s to this <code>Machine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to add.
+   * @param transitions The {@link Transition}s to add.
    */
-  public void addTransition ( Transition ... pTransitions );
+  public void addTransition ( Transition ... transitions );
 
 
   /**
@@ -144,10 +144,10 @@ public interface Machine extends Serializable
   /**
    * Returns the active {@link State} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The active {@link State} with the given index.
    */
-  public State getActiveState ( int pIndex );
+  public State getActiveState ( int index );
 
 
   /**
@@ -195,10 +195,10 @@ public interface Machine extends Serializable
   /**
    * Returns the {@link State} with the given index.
    * 
-   * @param pIndex The index to return.
+   * @param index The index to return.
    * @return The {@link State} list.
    */
-  public State getState ( int pIndex );
+  public State getState ( int index );
 
 
   /**
@@ -212,10 +212,10 @@ public interface Machine extends Serializable
   /**
    * Returns the {@link Transition} with the given index.
    * 
-   * @param pIndex pIndex The index to return.
+   * @param index pIndex The index to return.
    * @return The {@link Transition} list.
    */
-  public Transition getTransition ( int pIndex );
+  public Transition getTransition ( int index );
 
 
   /**
@@ -238,11 +238,11 @@ public interface Machine extends Serializable
    * Returns true if the given {@link Symbol} can be removed from the
    * {@link Alphabet} of this <code>Machine</code>, otherwise false.
    * 
-   * @param pSymbol The {@link Symbol} which should be checked.
+   * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the
    *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
    */
-  public boolean isSymbolRemoveable ( Symbol pSymbol );
+  public boolean isSymbolRemoveable ( Symbol symbol );
 
 
   /**
@@ -288,67 +288,67 @@ public interface Machine extends Serializable
   /**
    * Removes the given {@link State}s from this <code>Machine</code>.
    * 
-   * @param pStates The {@link State}s to remove.
+   * @param states The {@link State}s to remove.
    */
-  public void removeState ( Iterable < State > pStates );
+  public void removeState ( Iterable < State > states );
 
 
   /**
    * Removes the given {@link State} from this <code>Machine</code>.
    * 
-   * @param pState The {@link State} to remove.
+   * @param state The {@link State} to remove.
    */
-  public void removeState ( State pState );
+  public void removeState ( State state );
 
 
   /**
    * Removes the given {@link State}s from this <code>Machine</code>.
    * 
-   * @param pStates The {@link State}s to remove.
+   * @param states The {@link State}s to remove.
    */
-  public void removeState ( State ... pStates );
+  public void removeState ( State ... states );
 
 
   /**
    * Removes the given {@link Symbol} from this <code>Machine</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public void removeSymbol ( Symbol pSymbol );
+  public void removeSymbol ( Symbol symbol );
 
 
   /**
    * Removes the given {@link Transition}s from this <code>Machine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to remove.
+   * @param transitions The {@link Transition}s to remove.
    */
-  public void removeTransition ( Iterable < Transition > pTransitions );
+  public void removeTransition ( Iterable < Transition > transitions );
 
 
   /**
    * Removes the given {@link Transition} from this <code>Machine</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public void removeTransition ( Transition pTransition );
+  public void removeTransition ( Transition transition );
 
 
   /**
    * Removes the given {@link Transition}s from this <code>Machine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to remove.
+   * @param transitions The {@link Transition}s to remove.
    */
-  public void removeTransition ( Transition ... pTransitions );
+  public void removeTransition ( Transition ... transitions );
 
 
   /**
    * Starts the <code>Machine</code> after a validation with the given
    * {@link Word}.
    * 
-   * @param pWord The {@link Word} to start with.
+   * @param word The {@link Word} to start with.
    * @throws MachineValidationException If the validation fails.
    */
-  public void start ( Word pWord ) throws MachineValidationException;
+  public void start ( Word word ) throws MachineValidationException;
 
 
   /**

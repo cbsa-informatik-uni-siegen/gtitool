@@ -18,7 +18,7 @@ import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 public class ParserTest
 {
 
-  public static void main ( String [] args )
+  public static void main ( String [] arguments )
   {
     /*
      * Alphabet

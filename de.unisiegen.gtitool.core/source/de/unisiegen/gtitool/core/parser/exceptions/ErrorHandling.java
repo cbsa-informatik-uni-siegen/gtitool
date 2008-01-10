@@ -45,15 +45,15 @@ public abstract class ErrorHandling
   /**
    * Throws an {@link ParserWarningException}.
    * 
-   * @param pSymbol The symbol which should be completed.
-   * @param pInsertText The text which should be inserted to complete the source
+   * @param symbol The symbol which should be completed.
+   * @param insertText The text which should be inserted to complete the source
    *          code.
-   * @param pLeft The left position in the source code.
-   * @param pRight The right position in the source code.
-   * @param pTokenSequence The token sequence which should be added.
+   * @param left The left position in the source code.
+   * @param right The right position in the source code.
+   * @param tokenSequence The token sequence which should be added.
    */
-  public static final void expect ( String pSymbol, String pInsertText,
-      int pLeft, int pRight, String ... pTokenSequence )
+  public static final void expect ( String symbol, String insertText,
+      int left, int right, String ... tokenSequence )
   {
     Preferences preferences = Preferences.userRoot ();
     int r = preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
@@ -66,35 +66,35 @@ public abstract class ErrorHandling
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();
     result.append ( "\"" ); //$NON-NLS-1$
-    for ( int i = 0 ; i < pTokenSequence.length ; i++ )
+    for ( int i = 0 ; i < tokenSequence.length ; i++ )
     {
-      String token = pTokenSequence [ i ];
+      String token = tokenSequence [ i ];
       token = token.replaceAll ( "&", "&amp" ); //$NON-NLS-1$ //$NON-NLS-2$
       token = token.replaceAll ( "<", "&lt" ); //$NON-NLS-1$//$NON-NLS-2$
       token = token.replaceAll ( ">", "&gt" ); //$NON-NLS-1$ //$NON-NLS-2$
       result.append ( syntaxHighlighting ( token ) );
     }
     result.append ( "\"" ); //$NON-NLS-1$
-    throw new ParserWarningException ( pLeft, pRight, "<html>" //$NON-NLS-1$
-        + Messages.getString ( "Parser.2", result.toString (), "<b>" + pSymbol //$NON-NLS-1$//$NON-NLS-2$
+    throw new ParserWarningException ( left, right, "<html>" //$NON-NLS-1$
+        + Messages.getString ( "Parser.2", result.toString (), "<b>" + symbol //$NON-NLS-1$//$NON-NLS-2$
             + "</b>" ) + "<br>" + "(" + Messages.getString ( "Parser.3" ) + ")" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-        + "</html>", pInsertText ); //$NON-NLS-1$
+        + "</html>", insertText ); //$NON-NLS-1$
   }
 
 
   /**
    * Returns the color in hexadecimal formatting.
    * 
-   * @param pColor The color which should be returned.
+   * @param color The color which should be returned.
    * @return The color in hexadecimal formatting.
    */
-  private static final String getHexadecimalColor ( Color pColor )
+  private static final String getHexadecimalColor ( Color color )
   {
-    String red = Integer.toHexString ( pColor.getRed () );
+    String red = Integer.toHexString ( color.getRed () );
     red = red.length () == 1 ? red = "0" + red : red; //$NON-NLS-1$
-    String green = Integer.toHexString ( pColor.getGreen () );
+    String green = Integer.toHexString ( color.getGreen () );
     green = green.length () == 1 ? green = "0" + green : green; //$NON-NLS-1$
-    String blue = Integer.toHexString ( pColor.getBlue () );
+    String blue = Integer.toHexString ( color.getBlue () );
     blue = blue.length () == 1 ? blue = "0" + blue : blue; //$NON-NLS-1$
     return red + green + blue;
   }
@@ -103,24 +103,24 @@ public abstract class ErrorHandling
   /**
    * Highlights the syntax of the given input string.
    * 
-   * @param pInput The input string.
+   * @param input The input string.
    * @return The highlighted the syntax string of the given input string.
    */
-  private static final String syntaxHighlighting ( String pInput )
+  private static final String syntaxHighlighting ( String input )
   {
-    if ( pInput.matches ( symbols2 ) )
+    if ( input.matches ( symbols2 ) )
     {
-      String withIndex = pInput;
+      String withIndex = input;
       withIndex = withIndex.substring ( 0, withIndex.length () - 2 );
-      withIndex += "<font size = \"-2\"><sub>" + pInput.charAt ( pInput.length () - 1 ) + "</sub></font>"; //$NON-NLS-1$ //$NON-NLS-2$
+      withIndex += "<font size = \"-2\"><sub>" + input.charAt ( input.length () - 1 ) + "</sub></font>"; //$NON-NLS-1$ //$NON-NLS-2$
       return "<font color=\"#" + symbolColor + "\">" + withIndex //$NON-NLS-1$ //$NON-NLS-2$
           + "</font>"; //$NON-NLS-1$
     }
-    if ( pInput.matches ( symbols1 ) )
+    if ( input.matches ( symbols1 ) )
     {
-      return "<font color=\"#" + symbolColor + "\">" + pInput //$NON-NLS-1$ //$NON-NLS-2$
+      return "<font color=\"#" + symbolColor + "\">" + input //$NON-NLS-1$ //$NON-NLS-2$
           + "</font>"; //$NON-NLS-1$
     }
-    return "<font color=\"#" + normalColor + "\">" + pInput + "</font>"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    return "<font color=\"#" + normalColor + "\">" + input + "</font>"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
   }
 }

@@ -121,21 +121,20 @@ public final class DefaultState implements State
   /**
    * Allocates a new <code>DefaultState</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>DefaultState</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultState</code>.
-   * @param pStartState This <code>DefaultState</code> is a start
+   * @param startState This <code>DefaultState</code> is a start
    *          <code>DefaultState</code>.
-   * @param pFinalState This <code>DefaultState</code> is a final
+   * @param finalState This <code>DefaultState</code> is a final
    *          <code>DefaultState</code>.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public DefaultState ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
-      boolean pStartState, boolean pFinalState ) throws StateException
+  public DefaultState ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      boolean startState, boolean finalState ) throws StateException
   {
-    this ( pAlphabet, pPushDownAlphabet,
-        "DEFAULTNAME", pStartState, pFinalState ); //$NON-NLS-1$
+    this ( alphabet, pushDownAlphabet, "DEFAULTNAME", startState, finalState ); //$NON-NLS-1$
     this.canSetDefaultName = true;
   }
 
@@ -143,37 +142,37 @@ public final class DefaultState implements State
   /**
    * Allocates a new <code>DefaultState</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>DefaultState</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultState</code>.
-   * @param pName The name of this <code>DefaultState</code>.
-   * @param pStartState This <code>DefaultState</code> is a start
+   * @param name The name of this <code>DefaultState</code>.
+   * @param startState This <code>DefaultState</code> is a start
    *          <code>DefaultState</code>.
-   * @param pFinalState This <code>DefaultState</code> is a final
+   * @param finalState This <code>DefaultState</code> is a final
    *          <code>DefaultState</code>.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public DefaultState ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
-      String pName, boolean pStartState, boolean pFinalState )
+  public DefaultState ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      String name, boolean startState, boolean finalState )
       throws StateException
   {
-    this ( pName );
+    this ( name );
     // Alphabet
-    setAlphabet ( pAlphabet );
+    setAlphabet ( alphabet );
     // PushDownAlphabet
-    setPushDownAlphabet ( pPushDownAlphabet );
+    setPushDownAlphabet ( pushDownAlphabet );
     // StartState
-    setStartState ( pStartState );
+    setStartState ( startState );
     // FinalState
-    setFinalState ( pFinalState );
+    setFinalState ( finalState );
   }
 
 
   /**
    * Allocates a new <code>DefaultState</code>.
    * 
-   * @param pElement The {@link Element}.
+   * @param element The {@link Element}.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    * @throws SymbolException If something with the <code>Symbol</code> is not
@@ -182,13 +181,13 @@ public final class DefaultState implements State
    *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultState ( Element pElement ) throws StateException,
+  public DefaultState ( Element element ) throws StateException,
       SymbolException, AlphabetException, StoreException
   {
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "State" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a state" ); //$NON-NLS-1$
     }
 
@@ -209,7 +208,7 @@ public final class DefaultState implements State
     boolean foundFinalState = false;
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
-    for ( Attribute current : pElement.getAttribute () )
+    for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
       {
@@ -260,7 +259,7 @@ public final class DefaultState implements State
     // Element
     boolean foundAlphabet = false;
     boolean foundPushDownAlphabet = false;
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
@@ -342,14 +341,14 @@ public final class DefaultState implements State
   /**
    * Allocates a new <code>DefaultState</code>.
    * 
-   * @param pName The name of this <code>DefaultState</code>.
+   * @param name The name of this <code>DefaultState</code>.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public DefaultState ( String pName ) throws StateException
+  public DefaultState ( String name ) throws StateException
   {
     // Name
-    setName ( pName );
+    setName ( name );
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
@@ -365,25 +364,25 @@ public final class DefaultState implements State
    * Adds the {@link Transition} to the list of {@link Transition}s, which
    * begin in this <code>DefaultState</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public final void addTransitionBegin ( Transition pTransition )
+  public final void addTransitionBegin ( Transition transition )
   {
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( this.transitionBeginList.contains ( pTransition ) )
+    if ( this.transitionBeginList.contains ( transition ) )
     {
       throw new IllegalArgumentException (
           "transition begins already in this state" ); //$NON-NLS-1$
     }
-    if ( pTransition.getStateBegin () != this )
+    if ( transition.getStateBegin () != this )
     {
       throw new IllegalArgumentException (
           "transition begins not in this state" ); //$NON-NLS-1$
     }
-    this.transitionBeginList.add ( pTransition );
+    this.transitionBeginList.add ( transition );
   }
 
 
@@ -391,24 +390,24 @@ public final class DefaultState implements State
    * Adds the {@link Transition} to the list of {@link Transition}s, which end
    * in this <code>DefaultState</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public final void addTransitionEnd ( Transition pTransition )
+  public final void addTransitionEnd ( Transition transition )
   {
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( this.transitionEndList.contains ( pTransition ) )
+    if ( this.transitionEndList.contains ( transition ) )
     {
       throw new IllegalArgumentException (
           "transition ends already in this state" ); //$NON-NLS-1$
     }
-    if ( pTransition.getStateEnd () != this )
+    if ( transition.getStateEnd () != this )
     {
       throw new IllegalArgumentException ( "transition ends not in this state" ); //$NON-NLS-1$
     }
-    this.transitionEndList.add ( pTransition );
+    this.transitionEndList.add ( transition );
   }
 
 
@@ -449,10 +448,9 @@ public final class DefaultState implements State
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( State pOther )
+  public final int compareTo ( State other )
   {
-    return this.id < pOther.getId () ? -1
-        : ( this.id > pOther.getId () ? 1 : 0 );
+    return this.id < other.getId () ? -1 : ( this.id > other.getId () ? 1 : 0 );
   }
 
 
@@ -462,16 +460,17 @@ public final class DefaultState implements State
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultState )
+    if ( other instanceof DefaultState )
     {
-      DefaultState other = ( DefaultState ) pOther;
-      if ( ( this.id == ID_NOT_DEFINED ) || ( other.id == ID_NOT_DEFINED ) )
+      DefaultState defaultState = ( DefaultState ) other;
+      if ( ( this.id == ID_NOT_DEFINED )
+          || ( defaultState.id == ID_NOT_DEFINED ) )
       {
         throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
       }
-      return this.id == other.id;
+      return this.id == defaultState.id;
     }
     return false;
   }
@@ -594,13 +593,13 @@ public final class DefaultState implements State
    * Returns the {@link Transition} at the specified position in the
    * {@link Transition} begin list.
    * 
-   * @param pIndex The index of the {@link Transition} to return.
+   * @param index The index of the {@link Transition} to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} begin list.
    */
-  public final Transition getTransitionBegin ( int pIndex )
+  public final Transition getTransitionBegin ( int index )
   {
-    return this.transitionBeginList.get ( pIndex );
+    return this.transitionBeginList.get ( index );
   }
 
 
@@ -619,13 +618,13 @@ public final class DefaultState implements State
    * Returns the {@link Transition} id at the specified position in the
    * {@link Transition} begin list.
    * 
-   * @param pIndex The index of the {@link Transition} id to return.
+   * @param index The index of the {@link Transition} id to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} id begin list.
    */
-  public final int getTransitionBeginId ( int pIndex )
+  public final int getTransitionBeginId ( int index )
   {
-    return this.transitionBeginIdList.get ( pIndex ).intValue ();
+    return this.transitionBeginIdList.get ( index ).intValue ();
   }
 
 
@@ -644,13 +643,13 @@ public final class DefaultState implements State
    * Returns the {@link Transition} at the specified position in the
    * {@link Transition} end list.
    * 
-   * @param pIndex The index of the {@link Transition} to return.
+   * @param index The index of the {@link Transition} to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} end list.
    */
-  public final Transition getTransitionEnd ( int pIndex )
+  public final Transition getTransitionEnd ( int index )
   {
-    return this.transitionEndList.get ( pIndex );
+    return this.transitionEndList.get ( index );
   }
 
 
@@ -669,13 +668,13 @@ public final class DefaultState implements State
    * Returns the {@link Transition} id at the specified position in the
    * {@link Transition} end list.
    * 
-   * @param pIndex The index of the {@link Transition} id to return.
+   * @param index The index of the {@link Transition} id to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} id end list.
    */
-  public final int getTransitionEndId ( int pIndex )
+  public final int getTransitionEndId ( int index )
   {
-    return this.transitionEndIdList.get ( pIndex ).intValue ();
+    return this.transitionEndIdList.get ( index ).intValue ();
   }
 
 
@@ -736,20 +735,20 @@ public final class DefaultState implements State
    * Removes the {@link Transition} from the list of {@link Transition}s, which
    * begin in this <code>DefaultState</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public final void removeTransitionBegin ( Transition pTransition )
+  public final void removeTransitionBegin ( Transition transition )
   {
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( !this.transitionBeginList.contains ( pTransition ) )
+    if ( !this.transitionBeginList.contains ( transition ) )
     {
       throw new IllegalArgumentException (
           "transition begins not in this state" ); //$NON-NLS-1$
     }
-    this.transitionBeginList.remove ( pTransition );
+    this.transitionBeginList.remove ( transition );
   }
 
 
@@ -757,34 +756,34 @@ public final class DefaultState implements State
    * Removes the {@link Transition} from the list of {@link Transition}s, which
    * end in this <code>DefaultState</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public final void removeTransitionEnd ( Transition pTransition )
+  public final void removeTransitionEnd ( Transition transition )
   {
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( !this.transitionEndList.contains ( pTransition ) )
+    if ( !this.transitionEndList.contains ( transition ) )
     {
       throw new IllegalArgumentException ( "transition ends not in this state" ); //$NON-NLS-1$
     }
-    this.transitionEndList.remove ( pTransition );
+    this.transitionEndList.remove ( transition );
   }
 
 
   /**
    * Sets the {@link Alphabet} of this <code>DefaultState</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet alphabet )
   {
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
   }
 
 
@@ -815,103 +814,103 @@ public final class DefaultState implements State
   /**
    * Sets the finalState value.
    * 
-   * @param pFinalState The finalState to set.
+   * @param finalState The finalState to set.
    */
-  public final void setFinalState ( boolean pFinalState )
+  public final void setFinalState ( boolean finalState )
   {
-    this.finalState = pFinalState;
+    this.finalState = finalState;
   }
 
 
   /**
    * Sets the id.
    * 
-   * @param pId The id to set.
+   * @param id The id to set.
    * @see #id
    */
-  public final void setId ( int pId )
+  public final void setId ( int id )
   {
     if ( this.id != ID_NOT_DEFINED )
     {
       throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
     }
-    this.id = pId;
+    this.id = id;
   }
 
 
   /**
    * Sets the name of this <code>DefaultState</code>.
    * 
-   * @param pName The name to set.
+   * @param name The name to set.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
    */
-  public final void setName ( String pName ) throws StateException
+  public final void setName ( String name ) throws StateException
   {
-    if ( pName == null )
+    if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    if ( pName.equals ( "" ) ) //$NON-NLS-1$
+    if ( name.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new StateEmptyNameException ();
     }
-    if ( !Character.isJavaIdentifierStart ( pName.charAt ( 0 ) ) )
+    if ( !Character.isJavaIdentifierStart ( name.charAt ( 0 ) ) )
     {
-      throw new StateIllegalNameException ( pName );
+      throw new StateIllegalNameException ( name );
     }
-    for ( int i = 1 ; i < pName.length () ; i++ )
+    for ( int i = 1 ; i < name.length () ; i++ )
     {
-      if ( !Character.isJavaIdentifierPart ( pName.charAt ( i ) ) )
+      if ( !Character.isJavaIdentifierPart ( name.charAt ( i ) ) )
       {
-        throw new StateIllegalNameException ( pName );
+        throw new StateIllegalNameException ( name );
       }
     }
-    this.name = pName;
+    this.name = name;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 
   /**
    * Sets the push down {@link Alphabet} of this <code>DefaultState</code>.
    * 
-   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
-  public final void setPushDownAlphabet ( Alphabet pPushDownAlphabet )
+  public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
   {
-    if ( pPushDownAlphabet == null )
+    if ( pushDownAlphabet == null )
     {
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
-    this.pushDownAlphabet = pPushDownAlphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
   }
 
 
   /**
    * Sets the startState value.
    * 
-   * @param pStartState The startState to set.
+   * @param startState The startState to set.
    */
-  public final void setStartState ( boolean pStartState )
+  public final void setStartState ( boolean startState )
   {
-    this.startState = pStartState;
+    this.startState = startState;
   }
 
 

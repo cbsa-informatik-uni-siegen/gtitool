@@ -23,17 +23,17 @@ public abstract class WordException extends CoreException
   /**
    * Allocates a new <code>WordException</code>.
    * 
-   * @param pWord The {@link Word}.
+   * @param word The {@link Word}.
    */
-  public WordException ( Word pWord )
+  public WordException ( Word word )
   {
     super ();
     // Word
-    if ( pWord == null )
+    if ( word == null )
     {
       throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
     }
-    this.word = pWord;
+    this.word = word;
   }
 
 

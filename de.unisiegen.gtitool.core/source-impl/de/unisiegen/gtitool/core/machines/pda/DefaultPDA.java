@@ -24,13 +24,13 @@ public final class DefaultPDA extends AbstractMachine implements PDA
   /**
    * Allocates a new <code>PDA</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>PDA</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>PDA</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>PDA</code>.
    */
-  public DefaultPDA ( Alphabet pAlphabet, Alphabet pPushDownAlphabet )
+  public DefaultPDA ( Alphabet alphabet, Alphabet pushDownAlphabet )
   {
-    super ( pAlphabet, pPushDownAlphabet, ValidationElement.ALL_SYMBOLS,
+    super ( alphabet, pushDownAlphabet, ValidationElement.ALL_SYMBOLS,
         ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,

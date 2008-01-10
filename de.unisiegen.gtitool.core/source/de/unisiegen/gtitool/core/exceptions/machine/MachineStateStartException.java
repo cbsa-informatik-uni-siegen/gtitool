@@ -27,18 +27,18 @@ public final class MachineStateStartException extends MachineStateException
   /**
    * Allocates a new <code>MachineStateStartException</code>.
    * 
-   * @param pStateList The list of {@link State}s.
+   * @param stateList The list of {@link State}s.
    */
-  public MachineStateStartException ( ArrayList < State > pStateList )
+  public MachineStateStartException ( ArrayList < State > stateList )
   {
-    super ( pStateList );
+    super ( stateList );
     // StateList
-    if ( pStateList.size () == 1 )
+    if ( stateList.size () == 1 )
     {
       throw new IllegalArgumentException ( "no exception: one start state" ); //$NON-NLS-1$
     }
     // Message and Description
-    if ( pStateList.size () == 0 )
+    if ( stateList.size () == 0 )
     {
       setMessage ( Messages
           .getString ( "MachineStateStartException.NoStartStateMessage" ) ); //$NON-NLS-1$
@@ -50,16 +50,16 @@ public final class MachineStateStartException extends MachineStateException
       setMessage ( Messages
           .getString ( "MachineStateStartException.MoreThanOneStartStateMessage" ) ); //$NON-NLS-1$
       StringBuilder states = new StringBuilder ();
-      for ( int i = 0 ; i < pStateList.size () ; i++ )
+      for ( int i = 0 ; i < stateList.size () ; i++ )
       {
         states.append ( "\"" ); //$NON-NLS-1$
-        states.append ( pStateList.get ( i ).getName () );
+        states.append ( stateList.get ( i ).getName () );
         states.append ( "\"" ); //$NON-NLS-1$
-        if ( i < pStateList.size () - 2 )
+        if ( i < stateList.size () - 2 )
         {
           states.append ( ", " ); //$NON-NLS-1$
         }
-        if ( i == pStateList.size () - 2 )
+        if ( i == stateList.size () - 2 )
         {
           states.append ( " " + Messages.getString ( "And" ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
         }

@@ -31,32 +31,32 @@ public class ScannerException extends RuntimeException
   /**
    * Allocates a new <code>ScannerException</code>.
    * 
-   * @param pLeft The left parser index.
-   * @param pRight The right parser index.
-   * @param pMessage The message of the parser.
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param message The message of the parser.
    */
-  public ScannerException ( int pLeft, int pRight, String pMessage )
+  public ScannerException ( int left, int right, String message )
   {
-    super ( pMessage );
-    this.left = pLeft;
-    this.right = pRight;
+    super ( message );
+    this.left = left;
+    this.right = right;
   }
 
 
   /**
    * Allocates a new <code>ScannerException</code>.
    * 
-   * @param pLeft The left parser index.
-   * @param pRight The right parser index.
-   * @param pMessage The message of the parser.
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param message The message of the parser.
    * @param pThrowable The {@link Throwable}.
    */
-  public ScannerException ( int pLeft, int pRight, String pMessage,
+  public ScannerException ( int left, int right, String message,
       Throwable pThrowable )
   {
-    super ( pMessage, pThrowable );
-    this.left = pLeft;
-    this.right = pRight;
+    super ( message, pThrowable );
+    this.left = left;
+    this.right = right;
   }
 
 

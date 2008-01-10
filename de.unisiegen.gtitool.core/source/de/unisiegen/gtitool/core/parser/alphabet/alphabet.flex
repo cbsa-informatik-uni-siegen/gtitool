@@ -33,20 +33,20 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 %char
 
 %{
-	private Symbol symbol(int pId)
+	private Symbol symbol(int id)
 	{
-	  return symbol(pId, yychar, yychar + yylength(), yytext());
+	  return symbol(id, yychar, yychar + yylength(), yytext());
 	}
 	
-	private Symbol symbol(int pId, Object pValue)
+	private Symbol symbol(int id, Object value)
 	{
-	  return symbol(pId, yychar, yychar + yylength(), pValue);
+	  return symbol(id, yychar, yychar + yylength(), value);
 	}
 
 	@Override
-	public Style getStyleBySymbolId(int pId)
+	public Style getStyleBySymbolId(int id)
 	{
-	  switch (pId)
+	  switch (id)
 	  {
 		case SYMBOL:
 		  return Style.SYMBOL;
@@ -55,13 +55,13 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  }
 	}
 	
-	public void restart(String pText)
+	public void restart(String text)
 	{
-	  if (pText == null)
+	  if (text == null)
 	  {
 		throw new NullPointerException("text is null");
 	  }
-	  yyreset(new StringReader(pText));
+	  yyreset(new StringReader(text));
 	}
 %}
 

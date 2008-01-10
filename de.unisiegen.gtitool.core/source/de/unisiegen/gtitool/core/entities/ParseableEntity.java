@@ -35,15 +35,15 @@ public interface ParseableEntity extends Entity
   /**
    * Sets the parser end offset.
    * 
-   * @param pParserEndOffset The new parser end offset.
+   * @param parserEndOffset The new parser end offset.
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * Sets the parser start offset.
    * 
-   * @param pParserStartOffset The new parser start offset.
+   * @param parserStartOffset The new parser start offset.
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 }

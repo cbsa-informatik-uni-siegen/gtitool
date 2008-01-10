@@ -57,34 +57,34 @@ public final class DefaultStack implements Stack
   /**
    * Allocates a new <code>DefaultStack</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    */
-  public DefaultStack ( Iterable < Symbol > pSymbols )
+  public DefaultStack ( Iterable < Symbol > symbols )
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    push ( pSymbols );
+    push ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultStack</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    */
-  public DefaultStack ( Symbol ... pSymbols )
+  public DefaultStack ( Symbol ... symbols )
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    push ( pSymbols );
+    push ( symbols );
   }
 
 
@@ -109,14 +109,14 @@ public final class DefaultStack implements Stack
    * Returns <tt>true</tt> if this <code>DefaultStack</code> contains the
    * specified {@link Symbol}.
    * 
-   * @param pSymbol {@link Symbol} whose presence in this
+   * @param symbol {@link Symbol} whose presence in this
    *          <code>DefaultStack</code> is to be tested.
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public final boolean contains ( Symbol pSymbol )
+  public final boolean contains ( Symbol symbol )
   {
-    return this.symbolList.contains ( pSymbol );
+    return this.symbolList.contains ( symbol );
   }
 
 
@@ -126,12 +126,12 @@ public final class DefaultStack implements Stack
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultStack )
+    if ( other instanceof DefaultStack )
     {
-      DefaultStack other = ( DefaultStack ) pOther;
-      return this.symbolList.equals ( other.symbolList );
+      DefaultStack defaultStack = ( DefaultStack ) other;
+      return this.symbolList.equals ( defaultStack.symbolList );
     }
     return false;
   }
@@ -151,14 +151,14 @@ public final class DefaultStack implements Stack
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolList
    */
-  public final Symbol get ( int pIndex )
+  public final Symbol get ( int index )
   {
     Iterator < Symbol > iterator = this.symbolList.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
+    for ( int i = 0 ; i < index ; i++ )
     {
       iterator.next ();
     }
@@ -236,16 +236,16 @@ public final class DefaultStack implements Stack
   /**
    * Pushes the {@link Symbol}s onto the top of this <code>DefaultStack</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be pushed onto this
+   * @param symbols The {@link Symbol}s to be pushed onto this
    *          <code>DefaultStack</code>.
    */
-  public final void push ( Iterable < Symbol > pSymbols )
+  public final void push ( Iterable < Symbol > symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       push ( current );
     }
@@ -255,33 +255,33 @@ public final class DefaultStack implements Stack
   /**
    * Pushes the {@link Symbol} onto the top of this <code>DefaultStack</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be pushed onto this
+   * @param symbol The {@link Symbol} to be pushed onto this
    *          <code>DefaultStack</code>.
    */
-  public final void push ( Symbol pSymbol )
+  public final void push ( Symbol symbol )
   {
     // Symbol
-    if ( pSymbol == null )
+    if ( symbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    this.symbolList.add ( pSymbol );
+    this.symbolList.add ( symbol );
   }
 
 
   /**
    * Pushes the {@link Symbol}s onto the top of this <code>DefaultStack</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be pushed onto this
+   * @param symbols The {@link Symbol}s to be pushed onto this
    *          <code>DefaultStack</code>.
    */
-  public final void push ( Symbol ... pSymbols )
+  public final void push ( Symbol ... symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       push ( current );
     }
@@ -291,18 +291,18 @@ public final class DefaultStack implements Stack
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 

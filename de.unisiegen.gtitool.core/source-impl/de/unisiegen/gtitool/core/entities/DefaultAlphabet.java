@@ -67,28 +67,28 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Allocates a new <code>DefaultAlphabet</code>.
    * 
-   * @param pElement The {@link Element}.
+   * @param element The {@link Element}.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    * @throws SymbolException If something with the <code>Symbol</code> is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultAlphabet ( Element pElement ) throws AlphabetException,
+  public DefaultAlphabet ( Element element ) throws AlphabetException,
       SymbolException, StoreException
   {
     this ();
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a alphabet" ); //$NON-NLS-1$
     }
 
     // Attribute
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
-    for ( Attribute current : pElement.getAttribute () )
+    for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
       {
@@ -115,7 +115,7 @@ public final class DefaultAlphabet implements Alphabet
     }
 
     // Element
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
@@ -133,39 +133,39 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Allocates a new <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    */
-  public DefaultAlphabet ( Iterable < Symbol > pSymbols )
+  public DefaultAlphabet ( Iterable < Symbol > symbols )
       throws AlphabetException
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    */
-  public DefaultAlphabet ( Symbol ... pSymbols ) throws AlphabetException
+  public DefaultAlphabet ( Symbol ... symbols ) throws AlphabetException
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
@@ -173,25 +173,25 @@ public final class DefaultAlphabet implements Alphabet
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultAlphabet</code>.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    */
-  public final void add ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > symbols )
       throws AlphabetException
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       symbolList.add ( current );
     }
     checkDuplicated ( symbolList );
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -202,15 +202,15 @@ public final class DefaultAlphabet implements Alphabet
    * Appends the specified {@link Symbol} to the end of this
    * <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this
+   * @param symbol The {@link Symbol} to be appended to this
    *          <code>DefaultAlphabet</code>.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    */
-  public final void add ( Symbol pSymbol ) throws AlphabetException
+  public final void add ( Symbol symbol ) throws AlphabetException
   {
     // Symbol
-    if ( pSymbol == null )
+    if ( symbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
@@ -218,20 +218,20 @@ public final class DefaultAlphabet implements Alphabet
      * Throws an AlphabetException if the symbol which should be added is
      * already in this Alphabet.
      */
-    if ( this.symbolSet.contains ( pSymbol ) )
+    if ( this.symbolSet.contains ( symbol ) )
     {
       ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
       for ( Symbol current : this.symbolSet )
       {
-        if ( pSymbol.equals ( current ) )
+        if ( symbol.equals ( current ) )
         {
           negativeSymbols.add ( current );
         }
       }
-      negativeSymbols.add ( pSymbol );
+      negativeSymbols.add ( symbol );
       throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
-    this.symbolSet.add ( pSymbol );
+    this.symbolSet.add ( symbol );
   }
 
 
@@ -239,24 +239,24 @@ public final class DefaultAlphabet implements Alphabet
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultAlphabet</code>.
    * @throws AlphabetException If something with the
    *           <code>DefaultAlphabet</code> is not correct.
    */
-  public final void add ( Symbol ... pSymbols ) throws AlphabetException
+  public final void add ( Symbol ... symbols ) throws AlphabetException
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       symbolList.add ( current );
     }
     checkDuplicated ( symbolList );
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -266,20 +266,20 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Checks the {@link Symbol} list for {@link Symbol}s with the same name.
    * 
-   * @param pSymbolList The {@link Symbol} list.
+   * @param symbols The {@link Symbol} list.
    * @throws AlphabetException If a {@link Symbol} is duplicated.
    */
-  private final void checkDuplicated ( ArrayList < Symbol > pSymbolList )
+  private final void checkDuplicated ( ArrayList < Symbol > symbols )
       throws AlphabetException
   {
     Symbol duplicated = null;
-    loop : for ( int i = 0 ; i < pSymbolList.size () ; i++ )
+    loop : for ( int i = 0 ; i < symbols.size () ; i++ )
     {
-      for ( int j = i + 1 ; j < pSymbolList.size () ; j++ )
+      for ( int j = i + 1 ; j < symbols.size () ; j++ )
       {
-        if ( pSymbolList.get ( i ).equals ( pSymbolList.get ( j ) ) )
+        if ( symbols.get ( i ).equals ( symbols.get ( j ) ) )
         {
-          duplicated = pSymbolList.get ( i );
+          duplicated = symbols.get ( i );
           break loop;
         }
       }
@@ -287,7 +287,7 @@ public final class DefaultAlphabet implements Alphabet
     if ( duplicated != null )
     {
       ArrayList < Symbol > negativeSymbols = new ArrayList < Symbol > ();
-      for ( Symbol current : pSymbolList )
+      for ( Symbol current : symbols )
       {
         if ( duplicated.equals ( current ) )
         {
@@ -328,14 +328,14 @@ public final class DefaultAlphabet implements Alphabet
    * Returns <tt>true</tt> if this <code>DefaultAlphabet</code> contains the
    * specified {@link Symbol}.
    * 
-   * @param pSymbol {@link Symbol} whose presence in this
+   * @param symbol {@link Symbol} whose presence in this
    *          <code>DefaultAlphabet</code> is to be tested.
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public final boolean contains ( Symbol pSymbol )
+  public final boolean contains ( Symbol symbol )
   {
-    return this.symbolSet.contains ( pSymbol );
+    return this.symbolSet.contains ( symbol );
   }
 
 
@@ -345,12 +345,12 @@ public final class DefaultAlphabet implements Alphabet
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultAlphabet )
+    if ( other instanceof DefaultAlphabet )
     {
-      DefaultAlphabet other = ( DefaultAlphabet ) pOther;
-      return this.symbolSet.equals ( other.symbolSet );
+      DefaultAlphabet defaultAlphabet = ( DefaultAlphabet ) other;
+      return this.symbolSet.equals ( defaultAlphabet.symbolSet );
     }
     return false;
   }
@@ -370,14 +370,14 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolSet
    */
-  public final Symbol get ( int pIndex )
+  public final Symbol get ( int index )
   {
     Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
+    for ( int i = 0 ; i < index ; i++ )
     {
       iterator.next ();
     }
@@ -451,15 +451,15 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Remove the given {@link Symbol}s from this <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Iterable < Symbol > pSymbols )
+  public final void remove ( Iterable < Symbol > symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       remove ( current );
     }
@@ -469,34 +469,34 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * Removes the given {@link Symbol} from this <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public final void remove ( Symbol pSymbol )
+  public final void remove ( Symbol symbol )
   {
-    if ( pSymbol == null )
+    if ( symbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    if ( !this.symbolSet.contains ( pSymbol ) )
+    if ( !this.symbolSet.contains ( symbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
     }
-    this.symbolSet.remove ( pSymbol );
+    this.symbolSet.remove ( symbol );
   }
 
 
   /**
    * Remove the given {@link Symbol}s from this <code>DefaultAlphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Symbol ... pSymbols )
+  public final void remove ( Symbol ... symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       remove ( current );
     }
@@ -506,18 +506,18 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 

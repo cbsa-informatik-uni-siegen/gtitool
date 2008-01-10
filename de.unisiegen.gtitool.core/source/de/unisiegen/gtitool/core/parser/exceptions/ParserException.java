@@ -24,27 +24,27 @@ public class ParserException extends ScannerException
    * Throws a <code>ParserException</code> if the {@link Symbol} name is not
    * correct.
    * 
-   * @param pLeft The left parser index.
-   * @param pRight The right parser index.
-   * @param pIllegalName The illegal name.
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param illegalName The illegal name.
    */
-  public static void throwSymbolException ( int pLeft, int pRight,
-      String pIllegalName )
+  public static void throwSymbolException ( int left, int right,
+      String illegalName )
   {
-    throw new ParserException ( pLeft, pRight, Messages.getString ( "Parser.6", //$NON-NLS-1$
-        pIllegalName ) );
+    throw new ParserException ( left, right, Messages.getString ( "Parser.6", //$NON-NLS-1$
+        illegalName ) );
   }
 
 
   /**
    * Allocates a new <code>ParserException</code>.
    * 
-   * @param pLeft The left parser index.
-   * @param pRight The right parser index.
-   * @param pMessage The message of the parser.
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param message The message of the parser.
    */
-  public ParserException ( int pLeft, int pRight, String pMessage )
+  public ParserException ( int left, int right, String message )
   {
-    super ( pLeft, pRight, pMessage );
+    super ( left, right, message );
   }
 }

@@ -25,16 +25,16 @@ public class StoreException extends Exception
   /**
    * Allocates a new <code>StoreException</code>.
    * 
-   * @param pMessage The detail message.
+   * @param message The detail message.
    */
-  public StoreException ( String pMessage )
+  public StoreException ( String message )
   {
     // Message
-    if ( pMessage == null )
+    if ( message == null )
     {
       throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
-    this.message = pMessage;
+    this.message = message;
   }
 
 
@@ -65,15 +65,15 @@ public class StoreException extends Exception
   /**
    * Sets the detail message.
    * 
-   * @param pMessage The message to set.
+   * @param message The message to set.
    */
-  protected final void setMessage ( String pMessage )
+  protected final void setMessage ( String message )
   {
-    if ( pMessage == null )
+    if ( message == null )
     {
       throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
-    this.message = pMessage;
+    this.message = message;
   }
 
 

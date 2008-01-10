@@ -31,20 +31,20 @@ public final class TransitionSymbolOnlyOneTimeException extends
   /**
    * Allocates a new <code>TransitionSymbolOnlyOneTimeException</code>.
    * 
-   * @param pTransition The {@link Transition}.
-   * @param pSymbolList The {@link Symbol}s.
+   * @param transition The {@link Transition}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public TransitionSymbolOnlyOneTimeException ( Transition pTransition,
-      ArrayList < Symbol > pSymbolList )
+  public TransitionSymbolOnlyOneTimeException ( Transition transition,
+      ArrayList < Symbol > symbolList )
   {
-    super ( pTransition, pSymbolList );
+    super ( transition, symbolList );
     // Message and Description
     setMessage ( Messages
         .getString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "TransitionSymbolOnlyOneTimeException.Description", pSymbolList //$NON-NLS-1$
-            .get ( 0 ).getName (), pTransition.getStateBegin ().getName (),
-        pTransition.getStateEnd ().getName () ) );
+        "TransitionSymbolOnlyOneTimeException.Description", symbolList //$NON-NLS-1$
+            .get ( 0 ).getName (), transition.getStateBegin ().getName (),
+        transition.getStateEnd ().getName () ) );
   }
 
 

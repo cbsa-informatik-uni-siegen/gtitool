@@ -33,30 +33,30 @@ public abstract class AlphabetException extends CoreException
   /**
    * Allocates a new <code>AlphabetException</code>.
    * 
-   * @param pAlphabet The {@link Alphabet}.
-   * @param pSymbolList The {@link Symbol}s.
+   * @param alphabet The {@link Alphabet}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public AlphabetException ( Alphabet pAlphabet,
-      ArrayList < Symbol > pSymbolList )
+  public AlphabetException ( Alphabet alphabet,
+      ArrayList < Symbol > symbolList )
   {
     super ();
     // Alphabet
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
     // SymbolList
-    if ( pSymbolList == null )
+    if ( symbolList == null )
     {
       throw new NullPointerException ( "symbol list is null" ); //$NON-NLS-1$
     }
-    if ( pSymbolList.size () < 2 )
+    if ( symbolList.size () < 2 )
     {
       throw new IllegalArgumentException (
           "symbol list must contain at least two elements" ); //$NON-NLS-1$
     }
-    this.symbolList = pSymbolList;
+    this.symbolList = symbolList;
   }
 
 
@@ -87,13 +87,13 @@ public abstract class AlphabetException extends CoreException
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolList
    */
-  public final Symbol getSymbol ( int pIndex )
+  public final Symbol getSymbol ( int index )
   {
-    return this.symbolList.get ( pIndex );
+    return this.symbolList.get ( index );
   }
 
 

@@ -24,13 +24,13 @@ public final class DefaultNFA extends AbstractMachine implements NFA
   /**
    * Allocates a new <code>NFA</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>NFA</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>NFA</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>NFA</code>.
    */
-  public DefaultNFA ( Alphabet pAlphabet, Alphabet pPushDownAlphabet )
+  public DefaultNFA ( Alphabet alphabet, Alphabet pushDownAlphabet )
   {
-    super ( pAlphabet, pPushDownAlphabet, ValidationElement.EPSILON_TRANSITION,
+    super ( alphabet, pushDownAlphabet, ValidationElement.EPSILON_TRANSITION,
         ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,

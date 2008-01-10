@@ -53,18 +53,18 @@ public final class DefaultSymbol implements Symbol
   /**
    * Allocates a new <code>DefaultSymbol</code>.
    * 
-   * @param pElement The {@link Element}.
+   * @param element The {@link Element}.
    * @throws SymbolException If something with the <code>DefaultSymbol</code>
    *           is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultSymbol ( Element pElement ) throws SymbolException,
+  public DefaultSymbol ( Element element ) throws SymbolException,
       StoreException
   {
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a symbol" ); //$NON-NLS-1$
     }
 
@@ -72,7 +72,7 @@ public final class DefaultSymbol implements Symbol
     boolean foundName = false;
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
-    for ( Attribute current : pElement.getAttribute () )
+    for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
@@ -105,7 +105,7 @@ public final class DefaultSymbol implements Symbol
     }
 
     // Element
-    if ( pElement.getElement ().size () > 0 )
+    if ( element.getElement ().size () > 0 )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
@@ -116,14 +116,14 @@ public final class DefaultSymbol implements Symbol
   /**
    * Allocates a new <code>DefaultSymbol</code>.
    * 
-   * @param pName The name of this symbol.
+   * @param name The name of this symbol.
    * @throws SymbolException If something with the <code>DefaultSymbol</code>
    *           is not correct.
    */
-  public DefaultSymbol ( String pName ) throws SymbolException
+  public DefaultSymbol ( String name ) throws SymbolException
   {
     // Name
-    setName ( pName );
+    setName ( name );
   }
 
 
@@ -153,9 +153,9 @@ public final class DefaultSymbol implements Symbol
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Symbol pOther )
+  public final int compareTo ( Symbol other )
   {
-    return this.name.compareTo ( pOther.getName () );
+    return this.name.compareTo ( other.getName () );
   }
 
 
@@ -165,12 +165,12 @@ public final class DefaultSymbol implements Symbol
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultSymbol )
+    if ( other instanceof DefaultSymbol )
     {
-      DefaultSymbol other = ( DefaultSymbol ) pOther;
-      return this.name.equals ( other.name );
+      DefaultSymbol defaultSymbol = ( DefaultSymbol ) other;
+      return this.name.equals ( defaultSymbol.name );
     }
     return false;
   }
@@ -238,74 +238,74 @@ public final class DefaultSymbol implements Symbol
   /**
    * Sets the name of this symbol.
    * 
-   * @param pName The name to set.
+   * @param name The name to set.
    * @throws SymbolException If something with the <code>DefaultSymbol</code>
    *           is not correct.
    */
-  private final void setName ( String pName ) throws SymbolException
+  private final void setName ( String name ) throws SymbolException
   {
     // Name
-    if ( pName == null )
+    if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    if ( pName.equals ( "" ) ) //$NON-NLS-1$
+    if ( name.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new SymbolEmptyNameException ();
     }
-    if ( pName.startsWith ( "\"" ) ) //$NON-NLS-1$
+    if ( name.startsWith ( "\"" ) ) //$NON-NLS-1$
     {
-      if ( !pName.endsWith ( "\"" ) ) //$NON-NLS-1$
+      if ( !name.endsWith ( "\"" ) ) //$NON-NLS-1$
       {
-        throw new SymbolIllegalNameException ( pName );
+        throw new SymbolIllegalNameException ( name );
       }
-      if ( pName.length () <= 2 )
+      if ( name.length () <= 2 )
       {
-        throw new SymbolIllegalNameException ( pName );
+        throw new SymbolIllegalNameException ( name );
       }
-      String tmpName = pName.substring ( 1, pName.length () - 1 );
+      String tmpName = name.substring ( 1, name.length () - 1 );
       for ( int i = 0 ; i < tmpName.length () ; i++ )
       {
         if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
         {
-          throw new SymbolIllegalNameException ( pName );
+          throw new SymbolIllegalNameException ( name );
         }
       }
     }
-    else if ( pName.length () == 1 )
+    else if ( name.length () == 1 )
     {
-      if ( pName.equals ( "\u03B5" ) ) //$NON-NLS-1$
+      if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
       {
-        throw new SymbolIllegalNameException ( pName );
+        throw new SymbolIllegalNameException ( name );
       }
-      if ( !Character.isJavaIdentifierPart ( pName.charAt ( 0 ) ) )
+      if ( !Character.isJavaIdentifierPart ( name.charAt ( 0 ) ) )
       {
-        throw new SymbolIllegalNameException ( pName );
+        throw new SymbolIllegalNameException ( name );
       }
     }
     else
     {
-      throw new SymbolIllegalNameException ( pName );
+      throw new SymbolIllegalNameException ( name );
     }
-    this.name = pName;
+    this.name = name;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 

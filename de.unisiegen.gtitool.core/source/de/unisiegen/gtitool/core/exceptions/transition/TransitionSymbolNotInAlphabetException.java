@@ -38,26 +38,26 @@ public final class TransitionSymbolNotInAlphabetException extends
   /**
    * Allocates a new <code>TransitionSymbolNotInAlphabetException</code>.
    * 
-   * @param pTransition The {@link Transition}.
-   * @param pAlphabet The {@link Alphabet}.
-   * @param pSymbolList The {@link Symbol}s.
+   * @param transition The {@link Transition}.
+   * @param alphabet The {@link Alphabet}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public TransitionSymbolNotInAlphabetException ( Transition pTransition,
-      Alphabet pAlphabet, ArrayList < Symbol > pSymbolList )
+  public TransitionSymbolNotInAlphabetException ( Transition transition,
+      Alphabet alphabet, ArrayList < Symbol > symbolList )
   {
-    super ( pTransition, pSymbolList );
+    super ( transition, symbolList );
     // Alphabet
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
     // Message and Description
     setMessage ( Messages
         .getString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "TransitionSymbolNotInAlphabetException.Description", pSymbolList.get ( //$NON-NLS-1$
-            0 ).getName (), pAlphabet.toString () ) );
+        "TransitionSymbolNotInAlphabetException.Description", symbolList.get ( //$NON-NLS-1$
+            0 ).getName (), alphabet.toString () ) );
   }
 
 

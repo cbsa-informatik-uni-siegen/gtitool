@@ -236,7 +236,7 @@ public class DefaultPopupMenu extends JPopupMenu
         }
         catch ( MachineValidationException e1 )
         {
-          for ( MachineException error : e1.getMachineExceptionList () )
+          for ( MachineException error : e1.getMachineException () )
           {
             if ( error.getType ().equals ( ErrorType.ERROR ) )
             {

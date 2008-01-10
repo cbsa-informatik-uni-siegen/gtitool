@@ -30,14 +30,14 @@ public interface Transition extends ParseableEntity, Storable,
    * Appends the specified {@link Symbol}s to the end of this
    * <code>Transition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public void add ( Iterable < Symbol > pSymbols )
+  public void add ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException;
 
@@ -46,14 +46,14 @@ public interface Transition extends ParseableEntity, Storable,
    * Appends the specified {@link Symbol} to the end of this
    * <code>Transition</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this
+   * @param symbol The {@link Symbol} to be appended to this
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public void add ( Symbol pSymbol )
+  public void add ( Symbol symbol )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException;
 
@@ -62,14 +62,14 @@ public interface Transition extends ParseableEntity, Storable,
    * Appends the specified {@link Symbol}s to the end of this
    * <code>Transition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Transition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>Transition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>Transition</code> is not correct.
    */
-  public void add ( Symbol ... pSymbols )
+  public void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException;
 
@@ -93,18 +93,18 @@ public interface Transition extends ParseableEntity, Storable,
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( Transition pOther );
+  public int compareTo ( Transition other );
 
 
   /**
    * Returns true if the {@link Alphabet} of this <code>Transition</code>
    * contains the given {@link Symbol}. Otherwise false.
    * 
-   * @param pSymbol The {@link Symbol}.
+   * @param symbol The {@link Symbol}.
    * @return True if the {@link Alphabet} of this <code>Transition</code>
    *         contains the given {@link Symbol}. Otherwise false.
    */
-  public boolean contains ( Symbol pSymbol );
+  public boolean contains ( Symbol symbol );
 
 
   /**
@@ -112,7 +112,7 @@ public interface Transition extends ParseableEntity, Storable,
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -202,10 +202,10 @@ public interface Transition extends ParseableEntity, Storable,
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    */
-  public Symbol getSymbol ( int pIndex );
+  public Symbol getSymbol ( int index );
 
 
   /**
@@ -249,77 +249,77 @@ public interface Transition extends ParseableEntity, Storable,
   /**
    * Remove the given {@link Symbol}s from this <code>Transition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public void remove ( Iterable < Symbol > pSymbols );
+  public void remove ( Iterable < Symbol > symbols );
 
 
   /**
    * Removes the given {@link Symbol} from this <code>Transition</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public void remove ( Symbol pSymbol );
+  public void remove ( Symbol symbol );
 
 
   /**
    * Remove the given {@link Symbol}s from this <code>Transition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public void remove ( Symbol ... pSymbols );
+  public void remove ( Symbol ... symbols );
 
 
   /**
    * Sets the {@link Alphabet} of this <code>Transition</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public void setAlphabet ( Alphabet pAlphabet );
+  public void setAlphabet ( Alphabet alphabet );
 
 
   /**
    * Sets the id.
    * 
-   * @param pId The id to set.
+   * @param id The id to set.
    */
-  public void setId ( int pId );
+  public void setId ( int id );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**
    * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
    * 
-   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
-  public void setPushDownAlphabet ( Alphabet pPushDownAlphabet );
+  public void setPushDownAlphabet ( Alphabet pushDownAlphabet );
 
 
   /**
    * Sets the {@link State} where the <code>Transition</code> begins.
    * 
-   * @param pStateBegin The {@link State} to set.
+   * @param stateBegin The {@link State} to set.
    */
-  public void setStateBegin ( State pStateBegin );
+  public void setStateBegin ( State stateBegin );
 
 
   /**
    * Sets the {@link State} where the <code>Transition</code> ends.
    * 
-   * @param pStateEnd The {@link State} to set.
+   * @param stateEnd The {@link State} to set.
    */
-  public void setStateEnd ( State pStateEnd );
+  public void setStateEnd ( State stateEnd );
 
 
   /**

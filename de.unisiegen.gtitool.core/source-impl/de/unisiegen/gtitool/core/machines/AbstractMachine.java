@@ -43,31 +43,31 @@ public abstract class AbstractMachine implements Machine
   /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
-   * @param pMachineType The {@link Machine} type.
-   * @param pAlphabet The {@link Alphabet}.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param machineType The {@link Machine} type.
+   * @param alphabet The {@link Alphabet}.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
    */
-  public static Machine createMachine ( String pMachineType,
-      Alphabet pAlphabet, Alphabet pPushDownAlphabet ) throws StoreException
+  public static Machine createMachine ( String machineType, Alphabet alphabet,
+      Alphabet pushDownAlphabet ) throws StoreException
   {
-    if ( pMachineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
+    if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultDFA ( pAlphabet, pPushDownAlphabet );
+      return new DefaultDFA ( alphabet, pushDownAlphabet );
     }
-    if ( pMachineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
+    if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultNFA ( pAlphabet, pPushDownAlphabet );
+      return new DefaultNFA ( alphabet, pushDownAlphabet );
     }
-    if ( pMachineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
+    if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultENFA ( pAlphabet, pPushDownAlphabet );
+      return new DefaultENFA ( alphabet, pushDownAlphabet );
     }
-    if ( pMachineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
+    if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultPDA ( pAlphabet, pPushDownAlphabet );
+      return new DefaultPDA ( alphabet, pushDownAlphabet );
     }
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
@@ -137,34 +137,34 @@ public abstract class AbstractMachine implements Machine
   /**
    * Allocates a new <code>AbstractMachine</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>AbstractMachine</code>.
-   * @param pValidationElements The validation elements which indicates which
+   * @param validationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
    */
-  public AbstractMachine ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
-      ValidationElement ... pValidationElements )
+  public AbstractMachine ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      ValidationElement ... validationElements )
   {
     // Alphabet
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
     // PushDownAlphabet
-    if ( pPushDownAlphabet == null )
+    if ( pushDownAlphabet == null )
     {
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
-    this.pushDownAlphabet = pPushDownAlphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
     // Validation elements
-    if ( pValidationElements == null )
+    if ( validationElements == null )
     {
       throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
     }
     this.validationElementList = new ArrayList < ValidationElement > ();
-    for ( ValidationElement current : pValidationElements )
+    for ( ValidationElement current : validationElements )
     {
       this.validationElementList.add ( current );
     }
@@ -183,20 +183,20 @@ public abstract class AbstractMachine implements Machine
    * Adds the {@link Transition}s to the history of this
    * <code>AbstractMachine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to add.
+   * @param transitions The {@link Transition}s to add.
    */
-  private final void addHistory ( Iterable < Transition > pTransitions )
+  private final void addHistory ( Iterable < Transition > transitions )
   {
-    if ( pTransitions == null )
+    if ( transitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( !pTransitions.iterator ().hasNext () )
+    if ( !transitions.iterator ().hasNext () )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
     ArrayList < Transition > list = new ArrayList < Transition > ();
-    for ( Transition current : pTransitions )
+    for ( Transition current : transitions )
     {
       list.add ( current );
     }
@@ -207,19 +207,19 @@ public abstract class AbstractMachine implements Machine
   /**
    * Adds the {@link State}s to this <code>AbstractMachine</code>.
    * 
-   * @param pStates The {@link State}s to add.
+   * @param states The {@link State}s to add.
    */
-  public final void addState ( Iterable < State > pStates )
+  public final void addState ( Iterable < State > states )
   {
-    if ( pStates == null )
+    if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
-    if ( !pStates.iterator ().hasNext () )
+    if ( !states.iterator ().hasNext () )
     {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
     }
-    for ( State current : pStates )
+    for ( State current : states )
     {
       addState ( current );
     }
@@ -229,55 +229,55 @@ public abstract class AbstractMachine implements Machine
   /**
    * Adds the {@link State} to this <code>AbstractMachine</code>.
    * 
-   * @param pState The {@link State} to add.
+   * @param state The {@link State} to add.
    */
-  public final void addState ( State pState )
+  public final void addState ( State state )
   {
-    if ( pState == null )
+    if ( state == null )
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
-    if ( ( pState.isIdDefined () ) && ( this.stateList.contains ( pState ) ) )
+    if ( ( state.isIdDefined () ) && ( this.stateList.contains ( state ) ) )
     {
       throw new IllegalArgumentException ( "state is already added" ); //$NON-NLS-1$
     }
-    if ( !this.alphabet.equals ( pState.getAlphabet () ) )
+    if ( !this.alphabet.equals ( state.getAlphabet () ) )
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
-    if ( pState.getId () == State.ID_NOT_DEFINED )
+    if ( state.getId () == State.ID_NOT_DEFINED )
     {
-      pState.setId ( ++this.currentStateId );
+      state.setId ( ++this.currentStateId );
     }
     else
     {
-      if ( pState.getId () > this.currentStateId )
+      if ( state.getId () > this.currentStateId )
       {
-        this.currentStateId = pState.getId ();
+        this.currentStateId = state.getId ();
       }
     }
-    pState.setDefaultName ();
-    this.stateList.add ( pState );
-    link ( pState );
+    state.setDefaultName ();
+    this.stateList.add ( state );
+    link ( state );
   }
 
 
   /**
    * Adds the {@link State}s to this <code>AbstractMachine</code>.
    * 
-   * @param pStates The {@link State}s to add.
+   * @param states The {@link State}s to add.
    */
-  public final void addState ( State ... pStates )
+  public final void addState ( State ... states )
   {
-    if ( pStates == null )
+    if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
-    if ( pStates.length == 0 )
+    if ( states.length == 0 )
     {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
     }
-    for ( State current : pStates )
+    for ( State current : states )
     {
       addState ( current );
     }
@@ -287,19 +287,19 @@ public abstract class AbstractMachine implements Machine
   /**
    * Adds the {@link Transition}s to this <code>AbstractMachine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to add.
+   * @param transitions The {@link Transition}s to add.
    */
-  public final void addTransition ( Iterable < Transition > pTransitions )
+  public final void addTransition ( Iterable < Transition > transitions )
   {
-    if ( pTransitions == null )
+    if ( transitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( !pTransitions.iterator ().hasNext () )
+    if ( !transitions.iterator ().hasNext () )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    for ( Transition current : pTransitions )
+    for ( Transition current : transitions )
     {
       addTransition ( current );
     }
@@ -309,55 +309,55 @@ public abstract class AbstractMachine implements Machine
   /**
    * Adds the {@link Transition} to this <code>AbstractMachine</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public final void addTransition ( Transition pTransition )
+  public final void addTransition ( Transition transition )
   {
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    if ( ( pTransition.isIdDefined () )
-        && ( this.transitionList.contains ( pTransition ) ) )
+    if ( ( transition.isIdDefined () )
+        && ( this.transitionList.contains ( transition ) ) )
     {
       throw new IllegalArgumentException ( "transition is already added" ); //$NON-NLS-1$
     }
-    if ( !this.alphabet.equals ( pTransition.getAlphabet () ) )
+    if ( !this.alphabet.equals ( transition.getAlphabet () ) )
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
-    if ( pTransition.getId () == Transition.ID_NOT_DEFINED )
+    if ( transition.getId () == Transition.ID_NOT_DEFINED )
     {
-      pTransition.setId ( ++this.currentTransitionId );
+      transition.setId ( ++this.currentTransitionId );
     }
     else
     {
-      if ( pTransition.getId () > this.currentTransitionId )
+      if ( transition.getId () > this.currentTransitionId )
       {
-        this.currentTransitionId = pTransition.getId ();
+        this.currentTransitionId = transition.getId ();
       }
     }
-    this.transitionList.add ( pTransition );
-    link ( pTransition );
+    this.transitionList.add ( transition );
+    link ( transition );
   }
 
 
   /**
    * Adds the {@link Transition}s to this <code>AbstractMachine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to add.
+   * @param transitions The {@link Transition}s to add.
    */
-  public final void addTransition ( Transition ... pTransitions )
+  public final void addTransition ( Transition ... transitions )
   {
-    if ( pTransitions == null )
+    if ( transitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( pTransitions.length == 0 )
+    if ( transitions.length == 0 )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    for ( Transition current : pTransitions )
+    for ( Transition current : transitions )
     {
       addTransition ( current );
     }
@@ -611,13 +611,13 @@ public abstract class AbstractMachine implements Machine
   /**
    * Returns the active {@link State} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The active {@link State} with the given index.
    */
-  public final State getActiveState ( int pIndex )
+  public final State getActiveState ( int index )
   {
     Iterator < State > iterator = this.activeStateSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
+    for ( int i = 0 ; i < index ; i++ )
     {
       iterator.next ();
     }
@@ -685,13 +685,13 @@ public abstract class AbstractMachine implements Machine
   /**
    * Returns the {@link State} with the given index.
    * 
-   * @param pIndex The index to return.
+   * @param index The index to return.
    * @return The {@link State} list.
    * @see #stateList
    */
-  public final State getState ( int pIndex )
+  public final State getState ( int index )
   {
-    return this.stateList.get ( pIndex );
+    return this.stateList.get ( index );
   }
 
 
@@ -710,13 +710,13 @@ public abstract class AbstractMachine implements Machine
   /**
    * Returns the {@link Transition} with the given index.
    * 
-   * @param pIndex pIndex The index to return.
+   * @param index pIndex The index to return.
    * @return The {@link Transition} list.
    * @see #transitionList
    */
-  public final Transition getTransition ( int pIndex )
+  public final Transition getTransition ( int index )
   {
-    return this.transitionList.get ( pIndex );
+    return this.transitionList.get ( index );
   }
 
 
@@ -747,20 +747,20 @@ public abstract class AbstractMachine implements Machine
    * Returns true if the given {@link Symbol} can be removed from the
    * {@link Alphabet} of this <code>AbstractMachine</code>, otherwise false.
    * 
-   * @param pSymbol The {@link Symbol} which should be checked.
+   * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the
    *         {@link Alphabet} of this <code>AbstractMachine</code>, otherwise
    *         false.
    */
-  public boolean isSymbolRemoveable ( Symbol pSymbol )
+  public boolean isSymbolRemoveable ( Symbol symbol )
   {
-    if ( !this.alphabet.contains ( pSymbol ) )
+    if ( !this.alphabet.contains ( symbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
     }
     for ( Transition current : this.transitionList )
     {
-      if ( current.contains ( pSymbol ) )
+      if ( current.contains ( symbol ) )
       {
         return false;
       }
@@ -792,38 +792,38 @@ public abstract class AbstractMachine implements Machine
   /**
    * Links the {@link Transition}s with the given {@link State}.
    * 
-   * @param pState The {@link State} to which the {@link Transition}s should be
+   * @param state The {@link State} to which the {@link Transition}s should be
    *          linked.
    */
-  private final void link ( State pState )
+  private final void link ( State state )
   {
     for ( Transition current : this.transitionList )
     {
       // State begin
       if ( current.getStateBegin () == null )
       {
-        if ( current.getStateBeginId () == pState.getId () )
+        if ( current.getStateBeginId () == state.getId () )
         {
-          current.setStateBegin ( pState );
-          pState.addTransitionBegin ( current );
+          current.setStateBegin ( state );
+          state.addTransitionBegin ( current );
         }
       }
-      else if ( current.getStateBegin ().equals ( pState ) )
+      else if ( current.getStateBegin ().equals ( state ) )
       {
-        pState.addTransitionBegin ( current );
+        state.addTransitionBegin ( current );
       }
       // State end
       if ( current.getStateEnd () == null )
       {
-        if ( current.getStateEndId () == pState.getId () )
+        if ( current.getStateEndId () == state.getId () )
         {
-          current.setStateEnd ( pState );
-          pState.addTransitionEnd ( current );
+          current.setStateEnd ( state );
+          state.addTransitionEnd ( current );
         }
       }
-      else if ( current.getStateEnd ().equals ( pState ) )
+      else if ( current.getStateEnd ().equals ( state ) )
       {
-        pState.addTransitionEnd ( current );
+        state.addTransitionEnd ( current );
       }
     }
   }
@@ -832,37 +832,37 @@ public abstract class AbstractMachine implements Machine
   /**
    * Links the given {@link Transition} with the {@link State}s.
    * 
-   * @param pTransition The {@link Transition} to link with the {@link State}s.
+   * @param transition The {@link Transition} to link with the {@link State}s.
    */
-  private final void link ( Transition pTransition )
+  private final void link ( Transition transition )
   {
     for ( State currentState : this.stateList )
     {
       // State begin
-      if ( pTransition.getStateBegin () == null )
+      if ( transition.getStateBegin () == null )
       {
-        if ( pTransition.getStateBeginId () == currentState.getId () )
+        if ( transition.getStateBeginId () == currentState.getId () )
         {
-          pTransition.setStateBegin ( currentState );
-          currentState.addTransitionBegin ( pTransition );
+          transition.setStateBegin ( currentState );
+          currentState.addTransitionBegin ( transition );
         }
       }
-      else if ( pTransition.getStateBegin ().equals ( currentState ) )
+      else if ( transition.getStateBegin ().equals ( currentState ) )
       {
-        currentState.addTransitionBegin ( pTransition );
+        currentState.addTransitionBegin ( transition );
       }
       // State end
-      if ( pTransition.getStateEnd () == null )
+      if ( transition.getStateEnd () == null )
       {
-        if ( pTransition.getStateEndId () == currentState.getId () )
+        if ( transition.getStateEndId () == currentState.getId () )
         {
-          pTransition.setStateEnd ( currentState );
-          currentState.addTransitionEnd ( pTransition );
+          transition.setStateEnd ( currentState );
+          currentState.addTransitionEnd ( transition );
         }
       }
-      else if ( pTransition.getStateEnd ().equals ( currentState ) )
+      else if ( transition.getStateEnd ().equals ( currentState ) )
       {
-        currentState.addTransitionEnd ( pTransition );
+        currentState.addTransitionEnd ( transition );
       }
     }
   }
@@ -1006,19 +1006,19 @@ public abstract class AbstractMachine implements Machine
   /**
    * Removes the given {@link State}s from this <code>AbstractMachine</code>.
    * 
-   * @param pStates The {@link State}s to remove.
+   * @param states The {@link State}s to remove.
    */
-  public final void removeState ( Iterable < State > pStates )
+  public final void removeState ( Iterable < State > states )
   {
-    if ( pStates == null )
+    if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
-    if ( !pStates.iterator ().hasNext () )
+    if ( !states.iterator ().hasNext () )
     {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
     }
-    for ( State current : pStates )
+    for ( State current : states )
     {
       removeState ( current );
     }
@@ -1028,16 +1028,16 @@ public abstract class AbstractMachine implements Machine
   /**
    * Removes the given {@link State} from this <code>AbstractMachine</code>.
    * 
-   * @param pState The {@link State} to remove.
+   * @param state The {@link State} to remove.
    */
-  public final void removeState ( State pState )
+  public final void removeState ( State state )
   {
-    this.stateList.remove ( pState );
-    for ( Transition current : pState.getTransitionBegin () )
+    this.stateList.remove ( state );
+    for ( Transition current : state.getTransitionBegin () )
     {
       removeTransition ( current );
     }
-    for ( Transition current : pState.getTransitionEnd () )
+    for ( Transition current : state.getTransitionEnd () )
     {
       removeTransition ( current );
     }
@@ -1047,19 +1047,19 @@ public abstract class AbstractMachine implements Machine
   /**
    * Removes the given {@link State}s from this <code>AbstractMachine</code>.
    * 
-   * @param pStates The {@link State}s to remove.
+   * @param states The {@link State}s to remove.
    */
-  public final void removeState ( State ... pStates )
+  public final void removeState ( State ... states )
   {
-    if ( pStates == null )
+    if ( states == null )
     {
       throw new NullPointerException ( "states is null" ); //$NON-NLS-1$
     }
-    if ( pStates.length == 0 )
+    if ( states.length == 0 )
     {
       throw new IllegalArgumentException ( "states is empty" ); //$NON-NLS-1$
     }
-    for ( State current : pStates )
+    for ( State current : states )
     {
       removeState ( current );
     }
@@ -1069,15 +1069,15 @@ public abstract class AbstractMachine implements Machine
   /**
    * Removes the given {@link Symbol} from this <code>AbstractMachine</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public final void removeSymbol ( Symbol pSymbol )
+  public final void removeSymbol ( Symbol symbol )
   {
-    if ( !isSymbolRemoveable ( pSymbol ) )
+    if ( !isSymbolRemoveable ( symbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not removeable" ); //$NON-NLS-1$
     }
-    this.alphabet.remove ( pSymbol );
+    this.alphabet.remove ( symbol );
   }
 
 
@@ -1085,19 +1085,19 @@ public abstract class AbstractMachine implements Machine
    * Removes the given {@link Transition}s from this
    * <code>AbstractMachine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to remove.
+   * @param transitions The {@link Transition}s to remove.
    */
-  public final void removeTransition ( Iterable < Transition > pTransitions )
+  public final void removeTransition ( Iterable < Transition > transitions )
   {
-    if ( pTransitions == null )
+    if ( transitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( !pTransitions.iterator ().hasNext () )
+    if ( !transitions.iterator ().hasNext () )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    for ( Transition current : pTransitions )
+    for ( Transition current : transitions )
     {
       removeTransition ( current );
     }
@@ -1107,15 +1107,15 @@ public abstract class AbstractMachine implements Machine
   /**
    * Removes the given {@link Transition} from this <code>AbstractMachine</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public final void removeTransition ( Transition pTransition )
+  public final void removeTransition ( Transition transition )
   {
-    this.transitionList.remove ( pTransition );
+    this.transitionList.remove ( transition );
     for ( State current : this.stateList )
     {
-      current.getTransitionBegin ().remove ( pTransition );
-      current.getTransitionEnd ().remove ( pTransition );
+      current.getTransitionBegin ().remove ( transition );
+      current.getTransitionEnd ().remove ( transition );
     }
   }
 
@@ -1124,19 +1124,19 @@ public abstract class AbstractMachine implements Machine
    * Removes the given {@link Transition}s from this
    * <code>AbstractMachine</code>.
    * 
-   * @param pTransitions The {@link Transition}s to remove.
+   * @param transitions The {@link Transition}s to remove.
    */
-  public final void removeTransition ( Transition ... pTransitions )
+  public final void removeTransition ( Transition ... transitions )
   {
-    if ( pTransitions == null )
+    if ( transitions == null )
     {
       throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( pTransitions.length == 0 )
+    if ( transitions.length == 0 )
     {
       throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
     }
-    for ( Transition current : pTransitions )
+    for ( Transition current : transitions )
     {
       removeTransition ( current );
     }
@@ -1147,18 +1147,18 @@ public abstract class AbstractMachine implements Machine
    * Starts the <code>AbstractMachine</code> after a validation with the given
    * {@link Word}.
    * 
-   * @param pWord The {@link Word} to start with.
+   * @param startWord The {@link Word} to start with.
    * @throws MachineValidationException If the validation fails.
    */
-  public final void start ( Word pWord ) throws MachineValidationException
+  public final void start ( Word startWord ) throws MachineValidationException
   {
     // Word
-    if ( pWord == null )
+    if ( startWord == null )
     {
       throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
     }
     validate ();
-    this.word = pWord;
+    this.word = startWord;
     this.word.start ();
     clearHistory ();
     // Set active states

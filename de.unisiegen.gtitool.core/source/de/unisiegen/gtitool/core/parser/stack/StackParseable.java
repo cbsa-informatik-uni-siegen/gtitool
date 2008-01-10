@@ -22,30 +22,30 @@ public final class StackParseable implements Parseable
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param pText The input {@link String}.
+   * @param text The input {@link String}.
    * @return A new {@link GTIParser}.
    * @see Parseable#newParser(String)
    */
-  public final GTIParser newParser ( String pText )
+  public final GTIParser newParser ( String text )
   {
-    return newParser ( newScanner ( pText ) );
+    return newParser ( newScanner ( text ) );
   }
 
 
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param pGTIScanner The input {@link GTIScanner}.
+   * @param gtiScanner The input {@link GTIScanner}.
    * @return A new {@link GTIParser}.
    * @see Parseable#newParser(GTIScanner)
    */
-  public final GTIParser newParser ( GTIScanner pGTIScanner )
+  public final GTIParser newParser ( GTIScanner gtiScanner )
   {
-    if ( pGTIScanner == null )
+    if ( gtiScanner == null )
     {
       throw new NullPointerException ( "scanner is null" ); //$NON-NLS-1$
     }
-    final lr_parser parser = new StackParser ( pGTIScanner );
+    final lr_parser parser = new StackParser ( gtiScanner );
     return new GTIParser ()
     {
 
@@ -60,16 +60,16 @@ public final class StackParseable implements Parseable
   /**
    * Returns a new {@link GTIScanner}.
    * 
-   * @param pText The input {@link String}.
+   * @param text The input {@link String}.
    * @return A new {@link GTIScanner}.
    * @see Parseable#newScanner(String)
    */
-  public final GTIScanner newScanner ( String pText )
+  public final GTIScanner newScanner ( String text )
   {
-    if ( pText == null )
+    if ( text == null )
     {
       throw new NullPointerException ( "text is null" ); //$NON-NLS-1$
     }
-    return new StackScanner ( new StringReader ( pText ) );
+    return new StackScanner ( new StringReader ( text ) );
   }
 }

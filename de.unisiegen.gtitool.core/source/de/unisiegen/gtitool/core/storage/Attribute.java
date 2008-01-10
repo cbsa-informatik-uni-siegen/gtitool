@@ -29,60 +29,60 @@ public final class Attribute
   /**
    * Allocates a new <code>Attribute</code>.
    * 
-   * @param pName The name of this <code>Attribute</code>.
-   * @param pValue The value of this <code>Attribute</code>.
+   * @param name The name of this <code>Attribute</code>.
+   * @param value The value of this <code>Attribute</code>.
    */
-  public Attribute ( String pName, boolean pValue )
+  public Attribute ( String name, boolean value )
   {
     // Name
-    setName ( pName );
+    setName ( name );
     // Value
-    setValue ( String.valueOf ( pValue ) );
+    setValue ( String.valueOf ( value ) );
   }
 
 
   /**
    * Allocates a new <code>Attribute</code>.
    * 
-   * @param pName The name of this <code>Attribute</code>.
-   * @param pValue The value of this <code>Attribute</code>.
+   * @param name The name of this <code>Attribute</code>.
+   * @param value The value of this <code>Attribute</code>.
    */
-  public Attribute ( String pName, double pValue )
+  public Attribute ( String name, double value )
   {
     // Name
-    setName ( pName );
+    setName ( name );
     // Value
-    setValue ( String.valueOf ( pValue ) );
+    setValue ( String.valueOf ( value ) );
   }
 
 
   /**
    * Allocates a new <code>Attribute</code>.
    * 
-   * @param pName The name of this <code>Attribute</code>.
-   * @param pValue The value of this <code>Attribute</code>.
+   * @param name The name of this <code>Attribute</code>.
+   * @param value The value of this <code>Attribute</code>.
    */
-  public Attribute ( String pName, int pValue )
+  public Attribute ( String name, int value )
   {
     // Name
-    setName ( pName );
+    setName ( name );
     // Value
-    setValue ( String.valueOf ( pValue ) );
+    setValue ( String.valueOf ( value ) );
   }
 
 
   /**
    * Allocates a new <code>Attribute</code>.
    * 
-   * @param pName The name of this <code>Attribute</code>.
-   * @param pValue The value of this <code>Attribute</code>.
+   * @param name The name of this <code>Attribute</code>.
+   * @param value The value of this <code>Attribute</code>.
    */
-  public Attribute ( String pName, String pValue )
+  public Attribute ( String name, String value )
   {
     // Name
-    setName ( pName );
+    setName ( name );
     // Value
-    setValue ( pValue );
+    setValue ( value );
   }
 
 
@@ -180,39 +180,39 @@ public final class Attribute
   /**
    * Sets the name.
    * 
-   * @param pName The name to set.
+   * @param name The name to set.
    * @see #name
    */
-  public final void setName ( String pName )
+  public final void setName ( String name )
   {
-    if ( pName == null )
+    if ( name == null )
     {
       throw new NullPointerException ();
     }
-    if ( pName.length () == 0 )
+    if ( name.length () == 0 )
     {
       throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
-    this.name = pName;
+    this.name = name;
   }
 
 
   /**
    * Sets the value.
    * 
-   * @param pValue The value to set.
+   * @param value The value to set.
    * @see #value
    */
-  public final void setValue ( String pValue )
+  public final void setValue ( String value )
   {
-    if ( pValue == null )
+    if ( value == null )
     {
       throw new NullPointerException ();
     }
-    if ( pValue.length () == 0 )
+    if ( value.length () == 0 )
     {
       throw new IllegalArgumentException ( "value is empty" ); //$NON-NLS-1$
     }
-    this.value = pValue;
+    this.value = value;
   }
 }

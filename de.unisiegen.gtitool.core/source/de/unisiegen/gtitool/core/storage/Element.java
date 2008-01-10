@@ -34,12 +34,12 @@ public final class Element
   /**
    * Allocates a new <code>Element</code>.
    * 
-   * @param pName The name of this <code>Attribute</code>.
+   * @param name The name of this <code>Attribute</code>.
    */
-  public Element ( String pName )
+  public Element ( String name )
   {
     // Name
-    setName ( pName );
+    setName ( name );
     this.attributeList = new ArrayList < Attribute > ();
     this.elementList = new ArrayList < Element > ();
   }
@@ -48,33 +48,33 @@ public final class Element
   /**
    * Adds the {@link Attribute}.
    * 
-   * @param pAttribute The {@link Attribute} to add.
+   * @param attribute The {@link Attribute} to add.
    */
-  public final void addAttribute ( Attribute pAttribute )
+  public final void addAttribute ( Attribute attribute )
   {
-    this.attributeList.add ( pAttribute );
+    this.attributeList.add ( attribute );
   }
 
 
   /**
    * Adds the <code>Element</code>.
    * 
-   * @param pElement The <code>Element</code> to add.
+   * @param element The <code>Element</code> to add.
    */
-  public final void addElement ( Element pElement )
+  public final void addElement ( Element element )
   {
-    this.elementList.add ( pElement );
+    this.elementList.add ( element );
   }
 
 
   /**
    * Adds the {@link Storable}.
    * 
-   * @param pStorable The {@link Storable} to add.
+   * @param storable The {@link Storable} to add.
    */
-  public final void addElement ( Storable pStorable )
+  public final void addElement ( Storable storable )
   {
-    this.elementList.add ( pStorable.getElement () );
+    this.elementList.add ( storable.getElement () );
   }
 
 
@@ -93,13 +93,13 @@ public final class Element
   /**
    * Returns the attribute with the given index.
    * 
-   * @param pIndex The index to return.
+   * @param index The index to return.
    * @return The attribute list with the given index.
    * @see #attributeList
    */
-  public final Attribute getAttribute ( int pIndex )
+  public final Attribute getAttribute ( int index )
   {
-    return this.attributeList.get ( pIndex );
+    return this.attributeList.get ( index );
   }
 
 
@@ -118,13 +118,13 @@ public final class Element
   /**
    * Returns the element with the given index.
    * 
-   * @param pIndex The index to return.
+   * @param index The index to return.
    * @return The element list with the given index.
    * @see #elementList
    */
-  public final Element getElement ( int pIndex )
+  public final Element getElement ( int index )
   {
-    return this.elementList.get ( pIndex );
+    return this.elementList.get ( index );
   }
 
 
@@ -143,19 +143,19 @@ public final class Element
   /**
    * Sets the name.
    * 
-   * @param pName The name to set.
+   * @param name The name to set.
    * @see #name
    */
-  public final void setName ( String pName )
+  public final void setName ( String name )
   {
-    if ( pName == null )
+    if ( name == null )
     {
       throw new NullPointerException ();
     }
-    if ( pName.length () == 0 )
+    if ( name.length () == 0 )
     {
       throw new IllegalArgumentException ( "name is empty" ); //$NON-NLS-1$
     }
-    this.name = pName;
+    this.name = name;
   }
 }

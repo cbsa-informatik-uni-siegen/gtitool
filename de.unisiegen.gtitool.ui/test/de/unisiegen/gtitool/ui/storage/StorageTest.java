@@ -34,7 +34,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 public class StorageTest
 {
 
-  public static void main ( String [] pArguments )
+  public static void main ( String [] arguments )
   {
     switch ( 6 )
     {
@@ -69,9 +69,9 @@ public class StorageTest
   }
 
 
-  public static void out ( Object pObject )
+  public static void out ( Object object )
   {
-    System.out.println ( pObject.toString () );
+    System.out.println ( object.toString () );
   }
 
 

@@ -27,13 +27,13 @@ public final class MachineStateNameException extends MachineStateException
   /**
    * Allocates a new <code>MachineStateNameException</code>.
    * 
-   * @param pStateList The list of {@link State}s.
+   * @param stateList The list of {@link State}s.
    */
-  public MachineStateNameException ( ArrayList < State > pStateList )
+  public MachineStateNameException ( ArrayList < State > stateList )
   {
-    super ( pStateList );
+    super ( stateList );
     // StateList
-    if ( pStateList.size () < 2 )
+    if ( stateList.size () < 2 )
     {
       throw new IllegalArgumentException ( "no exception: list size too small" ); //$NON-NLS-1$
     }

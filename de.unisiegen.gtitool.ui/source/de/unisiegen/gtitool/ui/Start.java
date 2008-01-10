@@ -32,9 +32,9 @@ public final class Start
    * The main entry point for the GTI Tool project. This method also sets up
    * look and feel for the platform if possible.
    * 
-   * @param pArguments The command line arguments.
+   * @param arguments The command line arguments.
    */
-  public final static void main ( String [] pArguments )
+  public final static void main ( String [] arguments )
   {
     /*
      * Set the last active look and feel

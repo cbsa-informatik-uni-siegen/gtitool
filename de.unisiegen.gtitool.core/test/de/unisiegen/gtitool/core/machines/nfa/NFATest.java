@@ -153,7 +153,7 @@ public class NFATest extends MachineTest
   }
 
 
-  public static void main ( String [] pArguments )
+  public static void main ( String [] arguments )
   {
     initEntities ();
 

@@ -43,32 +43,31 @@ public final class MachineAllSymbolsException extends MachineException
   /**
    * Allocates a new <code>MachineAllSymbolsException</code>.
    * 
-   * @param pState The {@link State}.
-   * @param pSymbolSet The set of {@link Symbol}s which are not member of a
+   * @param state The {@link State}.
+   * @param symbolSet The set of {@link Symbol}s which are not member of a
    *          {@link Transition} of the given {@link State}.
    */
-  public MachineAllSymbolsException ( State pState,
-      TreeSet < Symbol > pSymbolSet )
+  public MachineAllSymbolsException ( State state, TreeSet < Symbol > symbolSet )
   {
     super ();
     // State
-    if ( pState == null )
+    if ( state == null )
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
-    this.state = pState;
+    this.state = state;
     // SymbolSet
-    if ( pSymbolSet == null )
+    if ( symbolSet == null )
     {
       throw new NullPointerException ( "symbol set is null" ); //$NON-NLS-1$
     }
-    if ( pSymbolSet.size () == 0 )
+    if ( symbolSet.size () == 0 )
     {
       throw new IllegalArgumentException ( "no exception: set size too small" ); //$NON-NLS-1$
     }
-    this.symbolSet = pSymbolSet;
+    this.symbolSet = symbolSet;
     // Message and Description
-    if ( pSymbolSet.size () == 1 )
+    if ( symbolSet.size () == 1 )
     {
       setMessage ( Messages
           .getString ( "MachineAllSymbolsException.SingleMessage" ) ); //$NON-NLS-1$
@@ -133,14 +132,14 @@ public final class MachineAllSymbolsException extends MachineException
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolSet
    */
-  public final Symbol getSymbol ( int pIndex )
+  public final Symbol getSymbol ( int index )
   {
     Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
+    for ( int i = 0 ; i < index ; i++ )
     {
       iterator.next ();
     }

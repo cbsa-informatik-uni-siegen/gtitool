@@ -19,7 +19,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 public class EntitiesTest
 {
 
-  public static void main ( String [] pArguments )
+  public static void main ( String [] arguments )
   {
     Symbol a = null;
     Symbol b = null;

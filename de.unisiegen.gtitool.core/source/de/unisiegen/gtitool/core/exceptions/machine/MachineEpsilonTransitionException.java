@@ -34,17 +34,17 @@ public final class MachineEpsilonTransitionException extends MachineException
   /**
    * Allocates a new <code>MachineEpsilonTransitionException</code>.
    * 
-   * @param pTransition The {@link Transition}.
+   * @param transition The {@link Transition}.
    */
-  public MachineEpsilonTransitionException ( Transition pTransition )
+  public MachineEpsilonTransitionException ( Transition transition )
   {
     super ();
     // Transition
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    this.transition = pTransition;
+    this.transition = transition;
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$

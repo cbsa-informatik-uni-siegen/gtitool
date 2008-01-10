@@ -22,36 +22,36 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * Appends the specified {@link Symbol}s to the end of this
    * <code>Alphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public void add ( Iterable < Symbol > pSymbols ) throws AlphabetException;
+  public void add ( Iterable < Symbol > symbols ) throws AlphabetException;
 
 
   /**
    * Appends the specified {@link Symbol} to the end of this
    * <code>Alphabet</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this
+   * @param symbol The {@link Symbol} to be appended to this
    *          <code>Alphabet</code>.
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public void add ( Symbol pSymbol ) throws AlphabetException;
+  public void add ( Symbol symbol ) throws AlphabetException;
 
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
    * <code>Alphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Alphabet</code>.
    * @throws AlphabetException If something with the <code>Alphabet</code> is
    *           not correct.
    */
-  public void add ( Symbol ... pSymbols ) throws AlphabetException;
+  public void add ( Symbol ... symbols ) throws AlphabetException;
 
 
   /**
@@ -66,12 +66,12 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * Returns <tt>true</tt> if this <code>Alphabet</code> contains the
    * specified {@link Symbol}.
    * 
-   * @param pSymbol {@link Symbol} whose presence in this <code>Alphabet</code>
+   * @param symbol {@link Symbol} whose presence in this <code>Alphabet</code>
    *          is to be tested.
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public boolean contains ( Symbol pSymbol );
+  public boolean contains ( Symbol symbol );
 
 
   /**
@@ -79,7 +79,7 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -93,10 +93,10 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    */
-  public Symbol get ( int pIndex );
+  public Symbol get ( int index );
 
 
   /**
@@ -138,37 +138,37 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
   /**
    * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public void remove ( Iterable < Symbol > pSymbols );
+  public void remove ( Iterable < Symbol > symbols );
 
 
   /**
    * Removes the given {@link Symbol} from this <code>Alphabet</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public void remove ( Symbol pSymbol );
+  public void remove ( Symbol symbol );
 
 
   /**
    * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public void remove ( Symbol ... pSymbols );
+  public void remove ( Symbol ... symbols );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**

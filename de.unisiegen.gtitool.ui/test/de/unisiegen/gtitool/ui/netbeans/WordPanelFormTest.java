@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.style.listener.WordChangedListener;
 public class WordPanelFormTest
 {
 
-  public static void main ( String [] args )
+  public static void main ( String [] arguments )
   {
     try
     {
@@ -36,12 +36,12 @@ public class WordPanelFormTest
           .addWordChangedListener ( new WordChangedListener ()
           {
 
-            public void wordChanged ( Word pNewWord )
+            public void wordChanged ( Word newWord )
             {
-              if ( pNewWord != null )
+              if ( newWord != null )
               {
                 wordPanelForm.styledWordParserPanel
-                    .setHighlightedParseableEntity ( pNewWord.get ( 0 ) );
+                    .setHighlightedParseableEntity ( newWord.get ( 0 ) );
               }
             }
           } );

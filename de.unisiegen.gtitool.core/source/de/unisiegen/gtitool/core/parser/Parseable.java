@@ -26,19 +26,19 @@ public interface Parseable
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param pGTIScanner The input {@link GTIScanner}.
+   * @param gtiScanner The input {@link GTIScanner}.
    * @return A new {@link GTIParser}.
    * @see Parseable#newParser(GTIScanner)
    */
-  public GTIParser newParser ( GTIScanner pGTIScanner );
+  public GTIParser newParser ( GTIScanner gtiScanner );
 
 
   /**
    * Returns a new {@link GTIScanner}.
    * 
-   * @param pText The input {@link String}.
+   * @param text The input {@link String}.
    * @return A new {@link GTIScanner}.
    * @see Parseable#newScanner(String)
    */
-  public GTIScanner newScanner ( String pText );
+  public GTIScanner newScanner ( String text );
 }

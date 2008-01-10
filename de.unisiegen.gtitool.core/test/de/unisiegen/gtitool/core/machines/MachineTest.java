@@ -22,9 +22,9 @@ import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 public abstract class MachineTest
 {
 
-  public static void print ( Object pObject )
+  public static void print ( Object object )
   {
-    System.out.print ( pObject.toString () );
+    System.out.print ( object.toString () );
   }
 
 
@@ -34,9 +34,9 @@ public abstract class MachineTest
   }
 
 
-  public static void println ( Object pObject )
+  public static void println ( Object object )
   {
-    System.out.println ( pObject.toString () );
+    System.out.println ( object.toString () );
   }
 
 

@@ -21,11 +21,11 @@ public interface GTIScanner extends Scanner
   /**
    * Returns the {@link Style} of the given {@link Symbol}.
    * 
-   * @param pSymbol The {@link Symbol}.
+   * @param symbol The {@link Symbol}.
    * @return The {@link Style} of the given {@link Symbol}.
    * @see GTIScanner#getStyleBySymbol(Symbol)
    */
-  public Style getStyleBySymbol ( Symbol pSymbol );
+  public Style getStyleBySymbol ( Symbol symbol );
 
 
   /**
@@ -41,7 +41,7 @@ public interface GTIScanner extends Scanner
   /**
    * Restarts the scanner with the given {@link String}.
    * 
-   * @param pText The input {@link String}.
+   * @param text The input {@link String}.
    */
-  public void restart ( String pText );
+  public void restart ( String text );
 }

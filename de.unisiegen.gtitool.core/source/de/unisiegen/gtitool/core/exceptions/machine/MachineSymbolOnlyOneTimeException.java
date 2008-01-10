@@ -48,42 +48,42 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
   /**
    * Allocates a new <code>MachineEpsilonTransitionException</code>.
    * 
-   * @param pState The {@link State}.
-   * @param pSymbol The {@link Symbol}.
-   * @param pTransitionList The {@link Transition} list.
+   * @param state The {@link State}.
+   * @param symbol The {@link Symbol}.
+   * @param transitionList The {@link Transition} list.
    */
-  public MachineSymbolOnlyOneTimeException ( State pState, Symbol pSymbol,
-      ArrayList < Transition > pTransitionList )
+  public MachineSymbolOnlyOneTimeException ( State state, Symbol symbol,
+      ArrayList < Transition > transitionList )
   {
     super ();
     // State
-    if ( pState == null )
+    if ( state == null )
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
-    this.state = pState;
+    this.state = state;
     // Symbol
-    if ( pSymbol == null )
+    if ( symbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    this.symbol = pSymbol;
+    this.symbol = symbol;
     // TransitionList
-    if ( pTransitionList == null )
+    if ( transitionList == null )
     {
       throw new NullPointerException ( "transition list is null" ); //$NON-NLS-1$
     }
-    if ( pTransitionList.size () < 2 )
+    if ( transitionList.size () < 2 )
     {
       throw new IllegalArgumentException ( "transition list size is too small" ); //$NON-NLS-1$
     }
-    this.transitionList = pTransitionList;
+    this.transitionList = transitionList;
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "MachineSymbolOnlyOneTimeException.Description", pState.getName (), //$NON-NLS-1$
-        pSymbol.getName () ) );
+        "MachineSymbolOnlyOneTimeException.Description", state.getName (), //$NON-NLS-1$
+        symbol.getName () ) );
   }
 
 
@@ -112,27 +112,27 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
 
 
   /**
-   * Returns the {@link Transition} at the specified position in the list of
-   * {@link Transition}s.
-   * 
-   * @param pIndex The index of the {@link Transition} to return.
-   * @return The {@link Transition} at the specified position in the list of
-   *         {@link Transition}s.
-   */
-  public final Transition getTransition ( int pIndex )
-  {
-    return this.transitionList.get ( pIndex );
-  }
-
-
-  /**
    * Returns the {@link Transition} list.
    * 
    * @return The {@link Transition} list.
    */
-  public final ArrayList < Transition > getTransitionList ()
+  public final ArrayList < Transition > getTransition ()
   {
     return this.transitionList;
+  }
+
+
+  /**
+   * Returns the {@link Transition} at the specified position in the list of
+   * {@link Transition}s.
+   * 
+   * @param index The index of the {@link Transition} to return.
+   * @return The {@link Transition} at the specified position in the list of
+   *         {@link Transition}s.
+   */
+  public final Transition getTransition ( int index )
+  {
+    return this.transitionList.get ( index );
   }
 
 
@@ -178,18 +178,5 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
       result.append ( this.transitionList.get ( i ).getStateEnd ().getName () );
     }
     return result.toString ();
-  }
-
-
-  /**
-   * Returns the number of {@link Transition}s in the list of
-   * {@link Transition}s.
-   * 
-   * @return The number of {@link Transition}s in the list of
-   *         {@link Transition}s.
-   */
-  public final int transitionSize ()
-  {
-    return this.transitionList.size ();
   }
 }

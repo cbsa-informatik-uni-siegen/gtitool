@@ -25,15 +25,15 @@ public final class WordNotAcceptedException extends WordException
   /**
    * Allocates a new <code>WordNotAcceptedException</code>.
    * 
-   * @param pWord The {@link Word}.
+   * @param word The {@link Word}.
    */
-  public WordNotAcceptedException ( Word pWord )
+  public WordNotAcceptedException ( Word word )
   {
-    super ( pWord );
+    super ( word );
     // Message and Description
     setMessage ( Messages.getString ( "WordException.NotAcceptedMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "WordException.NotAcceptedDescription", pWord ) ); //$NON-NLS-1$
+        "WordException.NotAcceptedDescription", word ) ); //$NON-NLS-1$
   }
 
 

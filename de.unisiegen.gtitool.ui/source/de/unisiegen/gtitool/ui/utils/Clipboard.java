@@ -79,14 +79,14 @@ public final class Clipboard implements ClipboardOwner
   /**
    * Copies the given text into the clipboard.
    * 
-   * @param pText The text, which should be copied into the clipboard.
+   * @param text The text, which should be copied into the clipboard.
    */
-  public final void copy ( String pText )
+  public final void copy ( String text )
   {
     try
     {
-      logger.debug ( "copy \"" + pText + "\" into the clipboard" ); //$NON-NLS-1$//$NON-NLS-2$
-      this.systemClipboard.setContents ( new StringSelection ( pText ), this );
+      logger.debug ( "copy \"" + text + "\" into the clipboard" ); //$NON-NLS-1$//$NON-NLS-2$
+      this.systemClipboard.setContents ( new StringSelection ( text ), this );
     }
     catch ( IllegalStateException e )
     {
@@ -99,7 +99,7 @@ public final class Clipboard implements ClipboardOwner
    * {@inheritDoc}
    */
   public final void lostOwnership ( @SuppressWarnings ( UNUSED )
-  java.awt.datatransfer.Clipboard pClipboard, @SuppressWarnings ( UNUSED )
+  java.awt.datatransfer.Clipboard clipboard, @SuppressWarnings ( UNUSED )
   Transferable pContents )
   {
     // Do Nothing

@@ -32,17 +32,17 @@ public final class MachineStateNotReachableException extends MachineException
   /**
    * Allocates a new <code>MachineStateNotReachableException</code>.
    * 
-   * @param pState The {@link State}.
+   * @param state The {@link State}.
    */
-  public MachineStateNotReachableException ( State pState )
+  public MachineStateNotReachableException ( State state )
   {
     super ();
     // State
-    if ( pState == null )
+    if ( state == null )
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
-    this.state = pState;
+    this.state = state;
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineStateNotReachableException.Message" ) ); //$NON-NLS-1$

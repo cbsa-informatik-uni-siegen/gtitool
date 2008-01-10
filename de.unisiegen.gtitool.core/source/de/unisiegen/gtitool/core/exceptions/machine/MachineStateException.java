@@ -25,30 +25,16 @@ public abstract class MachineStateException extends MachineException
   /**
    * Allocates a new <code>MachineStateException</code>.
    * 
-   * @param pStateList The list of {@link State}s.
+   * @param stateList The list of {@link State}s.
    */
-  public MachineStateException ( ArrayList < State > pStateList )
+  public MachineStateException ( ArrayList < State > stateList )
   {
     // StateList
-    if ( pStateList == null )
+    if ( stateList == null )
     {
       throw new NullPointerException ( "state list is null" ); //$NON-NLS-1$
     }
-    this.stateList = pStateList;
-  }
-
-
-  /**
-   * Returns the {@link State} at the specified position in the list of
-   * {@link State}s.
-   * 
-   * @param pIndex The index of the {@link State} to return.
-   * @return The {@link State} at the specified position in the list of
-   *         {@link State}s.
-   */
-  public final State getState ( int pIndex )
-  {
-    return this.stateList.get ( pIndex );
+    this.stateList = stateList;
   }
 
 
@@ -57,20 +43,23 @@ public abstract class MachineStateException extends MachineException
    * 
    * @return The {@link State} list.
    */
-  public final ArrayList < State > getStateList ()
+  public final ArrayList < State > getState ()
   {
     return this.stateList;
   }
 
 
   /**
-   * Returns the number of {@link State}s in the list of {@link State}s.
+   * Returns the {@link State} at the specified position in the list of
+   * {@link State}s.
    * 
-   * @return The number of {@link State}s in the list of {@link State}s.
+   * @param index The index of the {@link State} to return.
+   * @return The {@link State} at the specified position in the list of
+   *         {@link State}s.
    */
-  public final int stateSize ()
+  public final State getState ( int index )
   {
-    return this.stateList.size ();
+    return this.stateList.get ( index );
   }
 
 

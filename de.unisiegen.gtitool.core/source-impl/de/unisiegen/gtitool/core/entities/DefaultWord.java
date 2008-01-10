@@ -78,24 +78,23 @@ public final class DefaultWord implements Word
   /**
    * Allocates a new <code>DefaultWord</code>.
    * 
-   * @param pElement The {@link Element}.
+   * @param element The {@link Element}.
    * @throws SymbolException If something with the <code>Symbol</code> is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultWord ( Element pElement ) throws SymbolException,
-      StoreException
+  public DefaultWord ( Element element ) throws SymbolException, StoreException
   {
     this ();
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "Word" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a word" ); //$NON-NLS-1$
     }
 
     // Element
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
@@ -112,7 +111,7 @@ public final class DefaultWord implements Word
     boolean foundCurrentPosition = false;
     boolean foundParserStartOffset = false;
     boolean foundParserEndOffset = false;
-    for ( Attribute current : pElement.getAttribute () )
+    for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "currentPosition" ) ) //$NON-NLS-1$
       {
@@ -149,34 +148,34 @@ public final class DefaultWord implements Word
   /**
    * Allocates a new <code>DefaultWord</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    */
-  public DefaultWord ( Iterable < Symbol > pSymbols )
+  public DefaultWord ( Iterable < Symbol > symbols )
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultWord</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    */
-  public DefaultWord ( Symbol ... pSymbols )
+  public DefaultWord ( Symbol ... symbols )
   {
     this ();
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
@@ -184,16 +183,16 @@ public final class DefaultWord implements Word
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultWord</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultWord</code>.
    */
-  public final void add ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -204,17 +203,17 @@ public final class DefaultWord implements Word
    * Appends the specified {@link Symbol} to the end of this
    * <code>DefaultWord</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this
+   * @param symbol The {@link Symbol} to be appended to this
    *          <code>DefaultWord</code>.
    */
-  public final void add ( Symbol pSymbol )
+  public final void add ( Symbol symbol )
   {
     // Symbol
-    if ( pSymbol == null )
+    if ( symbol == null )
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    this.symbolList.add ( pSymbol );
+    this.symbolList.add ( symbol );
   }
 
 
@@ -222,16 +221,16 @@ public final class DefaultWord implements Word
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultWord</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultWord</code>.
    */
-  public final void add ( Symbol ... pSymbols )
+  public final void add ( Symbol ... symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -263,12 +262,12 @@ public final class DefaultWord implements Word
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultWord )
+    if ( other instanceof DefaultWord )
     {
-      DefaultWord other = ( DefaultWord ) pOther;
-      return this.symbolList.equals ( other.symbolList );
+      DefaultWord defaultWord = ( DefaultWord ) other;
+      return this.symbolList.equals ( defaultWord.symbolList );
     }
     return false;
   }
@@ -288,13 +287,13 @@ public final class DefaultWord implements Word
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolList
    */
-  public final Symbol get ( int pIndex )
+  public final Symbol get ( int index )
   {
-    return this.symbolList.get ( pIndex );
+    return this.symbolList.get ( index );
   }
 
 
@@ -467,9 +466,9 @@ public final class DefaultWord implements Word
   /**
    * Sets the current position.
    * 
-   * @param pCurrentPosition The current position.
+   * @param currentPosition The current position.
    */
-  private final void setCurrentPosition ( int pCurrentPosition )
+  private final void setCurrentPosition ( int currentPosition )
   {
     if ( this.currentPosition < START_INDEX )
     {
@@ -481,7 +480,7 @@ public final class DefaultWord implements Word
     }
     else
     {
-      this.currentPosition = pCurrentPosition;
+      this.currentPosition = currentPosition;
     }
   }
 
@@ -489,18 +488,18 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 

@@ -31,21 +31,21 @@ public final class SymbolIllegalNameException extends SymbolException
   /**
    * Allocates a new <code>SymbolIllegalNameException</code>.
    * 
-   * @param pIllegalName The illegal name of the {@link Symbol}.
+   * @param illegalName The illegal name of the {@link Symbol}.
    */
-  public SymbolIllegalNameException ( String pIllegalName )
+  public SymbolIllegalNameException ( String illegalName )
   {
     super ();
     // IllegalName
-    if ( pIllegalName == null )
+    if ( illegalName == null )
     {
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
-    this.illegalName = pIllegalName;
+    this.illegalName = illegalName;
     // Message and Description
     setMessage ( Messages.getString ( "SymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "SymbolException.IllegalNameDescription", pIllegalName ) ); //$NON-NLS-1$
+        "SymbolException.IllegalNameDescription", illegalName ) ); //$NON-NLS-1$
   }
 
 

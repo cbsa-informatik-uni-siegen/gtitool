@@ -29,19 +29,19 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
   /**
    * Allocates a new <code>AlphabetMoreThanOneSymbolException</code>.
    * 
-   * @param pAlphabet The {@link Alphabet}.
-   * @param pSymbolList The {@link Symbol}s.
+   * @param alphabet The {@link Alphabet}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public AlphabetMoreThanOneSymbolException ( Alphabet pAlphabet,
-      ArrayList < Symbol > pSymbolList )
+  public AlphabetMoreThanOneSymbolException ( Alphabet alphabet,
+      ArrayList < Symbol > symbolList )
   {
-    super ( pAlphabet, pSymbolList );
+    super ( alphabet, symbolList );
     // Message and Description
     setMessage ( Messages
         .getString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "AlphabetException.MoreThanOneSymbolDescription", pSymbolList.get ( //$NON-NLS-1$
-            0 ).getName (), pAlphabet.toString () ) );
+        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( //$NON-NLS-1$
+            0 ).getName (), alphabet.toString () ) );
   }
 
 

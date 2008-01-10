@@ -33,34 +33,20 @@ public final class MachineValidationException extends CoreException implements
   /**
    * Allocates a new <code>MachineValidationException</code>.
    * 
-   * @param pMachineExceptionList The list of {@link MachineException}s.
+   * @param machineExceptionList The list of {@link MachineException}s.
    */
   public MachineValidationException (
-      ArrayList < MachineException > pMachineExceptionList )
+      ArrayList < MachineException > machineExceptionList )
   {
-    if ( pMachineExceptionList == null )
+    if ( machineExceptionList == null )
     {
       throw new NullPointerException ( "machine exception list is null" ); //$NON-NLS-1$
     }
-    if ( pMachineExceptionList.size () == 0 )
+    if ( machineExceptionList.size () == 0 )
     {
       throw new IllegalArgumentException ( "machine exception list is empty" ); //$NON-NLS-1$
     }
-    this.machineExceptionList = pMachineExceptionList;
-  }
-
-
-  /**
-   * Returns the {@link MachineException} at the specified position in the list
-   * of {@link MachineException}s.
-   * 
-   * @param pIndex The index of the {@link MachineException} to return.
-   * @return The {@link MachineException} at the specified position in the list
-   *         of {@link MachineException}s.
-   */
-  public final MachineException getMachineException ( int pIndex )
-  {
-    return this.machineExceptionList.get ( pIndex );
+    this.machineExceptionList = machineExceptionList;
   }
 
 
@@ -69,33 +55,23 @@ public final class MachineValidationException extends CoreException implements
    * 
    * @return The {@link MachineException} list.
    */
-  public final ArrayList < MachineException > getMachineExceptionList ()
+  public final ArrayList < MachineException > getMachineException ()
   {
     return this.machineExceptionList;
   }
 
 
   /**
-   * {@inheritDoc}
+   * Returns the {@link MachineException} at the specified position in the list
+   * of {@link MachineException}s.
    * 
-   * @see Iterable#iterator()
+   * @param index The index of the {@link MachineException} to return.
+   * @return The {@link MachineException} at the specified position in the list
+   *         of {@link MachineException}s.
    */
-  public final Iterator < MachineException > iterator ()
+  public final MachineException getMachineException ( int index )
   {
-    return this.machineExceptionList.iterator ();
-  }
-
-
-  /**
-   * Returns the number of {@link MachineException}s in the list of
-   * {@link MachineException}s.
-   * 
-   * @return The number of {@link MachineException}s in the list of
-   *         {@link MachineException}s.
-   */
-  public final int machineExceptionSize ()
-  {
-    return this.machineExceptionList.size ();
+    return this.machineExceptionList.get ( index );
   }
 
 
@@ -108,6 +84,17 @@ public final class MachineValidationException extends CoreException implements
   public final ErrorType getType ()
   {
     return ErrorType.COLLECTION;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Iterable#iterator()
+   */
+  public final Iterator < MachineException > iterator ()
+  {
+    return this.machineExceptionList.iterator ();
   }
 
 

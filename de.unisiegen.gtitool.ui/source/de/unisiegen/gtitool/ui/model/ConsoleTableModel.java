@@ -161,12 +161,12 @@ public final class ConsoleTableModel extends AbstractTableModel
     if ( pMachineException instanceof MachineStateNameException )
     {
       MachineStateNameException exception = ( MachineStateNameException ) pMachineException;
-      states.addAll ( exception.getStateList () );
+      states.addAll ( exception.getState () );
     }
     else if ( pMachineException instanceof MachineStateStartException )
     {
       MachineStateStartException exception = ( MachineStateStartException ) pMachineException;
-      states.addAll ( exception.getStateList () );
+      states.addAll ( exception.getState () );
     }
     else if ( pMachineException instanceof MachineAllSymbolsException )
     {
@@ -195,7 +195,7 @@ public final class ConsoleTableModel extends AbstractTableModel
       MachineSymbolOnlyOneTimeException exception = ( MachineSymbolOnlyOneTimeException ) pMachineException;
       states.add ( exception.getState () );
       symbols.add ( exception.getSymbol () );
-      transitions.addAll ( exception.getTransitionList () );
+      transitions.addAll ( exception.getTransition () );
     }
 
     this.data.add ( new ConsoleTableEntry ( pMachineException.getMessage (),

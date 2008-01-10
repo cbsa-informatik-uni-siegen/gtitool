@@ -59,23 +59,23 @@ public abstract class CoreException extends Exception
   /**
    * Allocates a new <code>CoreException</code>.
    * 
-   * @param pMessage The detail message.
-   * @param pDescription The detail description.
+   * @param message The detail message.
+   * @param description The detail description.
    */
-  public CoreException ( String pMessage, String pDescription )
+  public CoreException ( String message, String description )
   {
     // Message
-    if ( pMessage == null )
+    if ( message == null )
     {
       throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
-    this.message = pMessage;
+    this.message = message;
     // Description
-    if ( pDescription == null )
+    if ( description == null )
     {
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
     }
-    this.description = pDescription;
+    this.description = description;
   }
 
 
@@ -141,15 +141,15 @@ public abstract class CoreException extends Exception
   /**
    * Sets the detail message.
    * 
-   * @param pMessage The message to set.
+   * @param message The message to set.
    */
-  protected final void setMessage ( String pMessage )
+  protected final void setMessage ( String message )
   {
-    if ( pMessage == null )
+    if ( message == null )
     {
       throw new NullPointerException ( "message is null" ); //$NON-NLS-1$
     }
-    this.message = pMessage;
+    this.message = message;
   }
 
 

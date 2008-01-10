@@ -21,23 +21,23 @@ public abstract class AbstractScanner implements GTIScanner
   /**
    * Returns the {@link Style} of the given {@link Symbol}.
    * 
-   * @param pSymbol The {@link Symbol}.
+   * @param symbol The {@link Symbol}.
    * @return The {@link Style} of the given {@link Symbol}.
    * @see GTIScanner#getStyleBySymbol(Symbol)
    */
-  public final Style getStyleBySymbol ( Symbol pSymbol )
+  public final Style getStyleBySymbol ( Symbol symbol )
   {
-    return getStyleBySymbolId ( pSymbol.sym );
+    return getStyleBySymbolId ( symbol.sym );
   }
 
 
   /**
    * Returns the {@link Style} of the given symbol id.
    * 
-   * @param pSymbolId The symbol id.
+   * @param symbolId The symbol id.
    * @return The {@link Style} of the given symbol id.
    */
-  public abstract Style getStyleBySymbolId ( int pSymbolId );
+  public abstract Style getStyleBySymbolId ( int symbolId );
 
 
   /**
@@ -57,14 +57,14 @@ public abstract class AbstractScanner implements GTIScanner
   /**
    * Returns the {@link Symbol} with the given parameters.
    * 
-   * @param pId The id of the {@link Symbol}.
-   * @param pLeft The left index of the {@link Symbol}.
-   * @param pRight The right index of the {@link Symbol}.
-   * @param pValue The value of the {@link Symbol}.
+   * @param id The id of the {@link Symbol}.
+   * @param left The left index of the {@link Symbol}.
+   * @param right The right index of the {@link Symbol}.
+   * @param value The value of the {@link Symbol}.
    * @return The {@link Symbol} with the given parameters.
    */
-  public final Symbol symbol ( int pId, int pLeft, int pRight, Object pValue )
+  public final Symbol symbol ( int id, int left, int right, Object value )
   {
-    return new Symbol ( pId, pLeft, pRight, pValue );
+    return new Symbol ( id, left, right, value );
   }
 }

@@ -613,7 +613,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     catch ( MachineValidationException e )
     {
-      for ( MachineException error : e.getMachineExceptionList () )
+      for ( MachineException error : e.getMachineException () )
       {
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {
@@ -1034,7 +1034,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     catch ( MachineValidationException e )
     {
-      for ( MachineException error : e.getMachineExceptionList () )
+      for ( MachineException error : e.getMachineException () )
       {
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {

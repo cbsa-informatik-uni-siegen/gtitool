@@ -31,21 +31,21 @@ public final class StateIllegalNameException extends StateException
   /**
    * Allocates a new <code>StateIllegalNameException</code>.
    * 
-   * @param pIllegalName The illegal name of the {@link State}.
+   * @param illegalName The illegal name of the {@link State}.
    */
-  public StateIllegalNameException ( String pIllegalName )
+  public StateIllegalNameException ( String illegalName )
   {
     super ();
     // IllegalName
-    if ( pIllegalName == null )
+    if ( illegalName == null )
     {
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
-    this.illegalName = pIllegalName;
+    this.illegalName = illegalName;
     // Message and Description
     setMessage ( Messages.getString ( "StateException.IllegalNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "StateException.IllegalNameDescription", pIllegalName ) ); //$NON-NLS-1$
+        "StateException.IllegalNameDescription", illegalName ) ); //$NON-NLS-1$
   }
 
 

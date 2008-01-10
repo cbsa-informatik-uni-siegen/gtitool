@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.style.listener.StackChangedListener;
 public class StyledStackParserPanelTest
 {
 
-  public static void main ( String [] args )
+  public static void main ( String [] arguments )
   {
     try
     {
@@ -37,12 +37,12 @@ public class StyledStackParserPanelTest
           .addStackChangedListener ( new StackChangedListener ()
           {
 
-            public void stackChanged ( Stack pNewStack )
+            public void stackChanged ( Stack newStack )
             {
-              if ( pNewStack != null )
+              if ( newStack != null )
               {
-                styledStackParserPanel
-                    .setHighlightedParseableEntity ( pNewStack.get ( 0 ) );
+                styledStackParserPanel.setHighlightedParseableEntity ( newStack
+                    .get ( 0 ) );
               }
             }
           } );

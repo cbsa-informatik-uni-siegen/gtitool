@@ -26,12 +26,12 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
    * Returns <tt>true</tt> if this <code>Stack</code> contains the specified
    * {@link Symbol}.
    * 
-   * @param pSymbol {@link Symbol} whose presence in this <code>Stack</code>
-   *          is to be tested.
+   * @param symbol {@link Symbol} whose presence in this <code>Stack</code> is
+   *          to be tested.
    * @return <code>true</code> if the specified {@link Symbol} is present;
    *         <code>false</code> otherwise.
    */
-  public boolean contains ( Symbol pSymbol );
+  public boolean contains ( Symbol symbol );
 
 
   /**
@@ -39,7 +39,7 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -53,10 +53,10 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    */
-  public Symbol get ( int pIndex );
+  public Symbol get ( int index );
 
 
   /**
@@ -108,39 +108,39 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
   /**
    * Pushes the {@link Symbol}s onto the top of this <code>Stack</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be pushed onto this
+   * @param symbols The {@link Symbol}s to be pushed onto this
    *          <code>Stack</code>.
    */
-  public void push ( Iterable < Symbol > pSymbols );
+  public void push ( Iterable < Symbol > symbols );
 
 
   /**
    * Pushes the {@link Symbol} onto the top of this <code>Stack</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be pushed onto this <code>Stack</code>.
+   * @param symbol The {@link Symbol} to be pushed onto this <code>Stack</code>.
    */
-  public void push ( Symbol pSymbol );
+  public void push ( Symbol symbol );
 
 
   /**
    * Pushes the {@link Symbol}s onto the top of this <code>Stack</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be pushed onto this
+   * @param symbols The {@link Symbol}s to be pushed onto this
    *          <code>Stack</code>.
    */
-  public void push ( Symbol ... pSymbols );
+  public void push ( Symbol ... symbols );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**

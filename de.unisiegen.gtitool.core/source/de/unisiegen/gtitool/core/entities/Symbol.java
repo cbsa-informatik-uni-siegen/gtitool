@@ -27,7 +27,7 @@ public interface Symbol extends ParseableEntity, Storable, Comparable < Symbol >
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( Symbol pOther );
+  public int compareTo ( Symbol other );
 
 
   /**
@@ -35,7 +35,7 @@ public interface Symbol extends ParseableEntity, Storable, Comparable < Symbol >
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -77,13 +77,13 @@ public interface Symbol extends ParseableEntity, Storable, Comparable < Symbol >
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**

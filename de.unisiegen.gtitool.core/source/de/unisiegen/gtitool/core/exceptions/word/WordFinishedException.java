@@ -25,15 +25,15 @@ public final class WordFinishedException extends WordException
   /**
    * Allocates a new <code>WordFinishedException</code>.
    * 
-   * @param pWord The {@link Word}.
+   * @param word The {@link Word}.
    */
-  public WordFinishedException ( Word pWord )
+  public WordFinishedException ( Word word )
   {
-    super ( pWord );
+    super ( word );
     // Message and Description
     setMessage ( Messages.getString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString ( "WordException.FinishedDescription", //$NON-NLS-1$
-        pWord ) );
+        word ) );
   }
 
 

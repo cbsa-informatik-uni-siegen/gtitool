@@ -25,15 +25,15 @@ public final class WordResetedException extends WordException
   /**
    * Allocates a new <code>WordFinishedException</code>.
    * 
-   * @param pWord The {@link Word}.
+   * @param word The {@link Word}.
    */
-  public WordResetedException ( Word pWord )
+  public WordResetedException ( Word word )
   {
-    super ( pWord );
+    super ( word );
     // Message and Description
     setMessage ( Messages.getString ( "WordException.ResetedMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString ( "WordException.ResetedDescription", //$NON-NLS-1$
-        pWord ) );
+        word ) );
   }
 
 

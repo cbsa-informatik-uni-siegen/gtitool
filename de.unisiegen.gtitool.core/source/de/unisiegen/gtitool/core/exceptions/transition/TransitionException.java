@@ -33,30 +33,30 @@ public abstract class TransitionException extends CoreException
   /**
    * Allocates a new <code>TransitionException</code>.
    * 
-   * @param pTransition The {@link Transition}.
-   * @param pSymbolList The {@link Symbol}s.
+   * @param transition The {@link Transition}.
+   * @param symbolList The {@link Symbol}s.
    */
-  public TransitionException ( Transition pTransition,
-      ArrayList < Symbol > pSymbolList )
+  public TransitionException ( Transition transition,
+      ArrayList < Symbol > symbolList )
   {
     super ();
     // Transition
-    if ( pTransition == null )
+    if ( transition == null )
     {
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
-    this.transition = pTransition;
+    this.transition = transition;
     // SymbolList
-    if ( pSymbolList == null )
+    if ( symbolList == null )
     {
       throw new NullPointerException ( "symbol list is null" ); //$NON-NLS-1$
     }
-    if ( pSymbolList.size () < 2 )
+    if ( symbolList.size () < 2 )
     {
       throw new IllegalArgumentException (
           "symbol list must contain at least two elements" ); //$NON-NLS-1$
     }
-    this.symbolList = pSymbolList;
+    this.symbolList = symbolList;
   }
 
 
@@ -75,13 +75,13 @@ public abstract class TransitionException extends CoreException
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolList
    */
-  public final Symbol getSymbol ( int pIndex )
+  public final Symbol getSymbol ( int index )
   {
-    return this.symbolList.get ( pIndex );
+    return this.symbolList.get ( index );
   }
 
 

@@ -111,87 +111,85 @@ public final class DefaultTransition implements Transition
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>.
-   * @param pStateBegin The {@link State} where the
+   * @param stateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
-   * @param pStateEnd The {@link State} where the <code>DefaultTransition</code>
+   * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
    *          ends.
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
-      State pStateBegin, State pStateEnd, Iterable < Symbol > pSymbols )
+  public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      State stateBegin, State stateEnd, Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
-    setAlphabet ( pAlphabet );
+    setAlphabet ( alphabet );
     // PushDownAlphabet
-    setPushDownAlphabet ( pPushDownAlphabet );
+    setPushDownAlphabet ( pushDownAlphabet );
     // StateBegin
-    setStateBegin ( pStateBegin );
+    setStateBegin ( stateBegin );
     // StateEnd
-    setStateEnd ( pStateEnd );
+    setStateEnd ( stateEnd );
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this
+   * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
-   * @param pPushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>.
-   * @param pStateBegin The {@link State} where the
+   * @param stateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
-   * @param pStateEnd The {@link State} where the <code>DefaultTransition</code>
+   * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
    *          ends.
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Alphabet pAlphabet, Alphabet pPushDownAlphabet,
-      State pStateBegin, State pStateEnd, Symbol ... pSymbols )
+  public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      State stateBegin, State stateEnd, Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Alphabet
-    setAlphabet ( pAlphabet );
+    setAlphabet ( alphabet );
     // PushDownAlphabet
-    setPushDownAlphabet ( pPushDownAlphabet );
+    setPushDownAlphabet ( pushDownAlphabet );
     // StateBegin
-    setStateBegin ( pStateBegin );
+    setStateBegin ( stateBegin );
     // StateEnd
-    setStateEnd ( pStateEnd );
+    setStateEnd ( stateEnd );
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
-   * @param pElement The {@link Element}. *
+   * @param element The {@link Element}. *
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
@@ -202,15 +200,15 @@ public final class DefaultTransition implements Transition
    *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultTransition ( Element pElement )
+  public DefaultTransition ( Element element )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException, SymbolException, AlphabetException,
       StoreException
   {
     // Check if the element is correct
-    if ( !pElement.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + pElement.getName () //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a transition" ); //$NON-NLS-1$
     }
 
@@ -221,7 +219,7 @@ public final class DefaultTransition implements Transition
     boolean foundId = false;
     boolean foundStateBeginId = false;
     boolean foundStateEndId = false;
-    for ( Attribute current : pElement.getAttribute () )
+    for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "id" ) ) //$NON-NLS-1$
       {
@@ -255,7 +253,7 @@ public final class DefaultTransition implements Transition
     // Element
     boolean foundAlphabet = false;
     boolean foundPushDownAlphabet = false;
-    for ( Element current : pElement.getElement () )
+    for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
       {
@@ -291,46 +289,46 @@ public final class DefaultTransition implements Transition
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Iterable < Symbol > pSymbols )
+  public DefaultTransition ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The array of {@link Symbol}s.
+   * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Symbol ... pSymbols )
+  public DefaultTransition ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
     // Symbols
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
-    add ( pSymbols );
+    add ( symbols );
   }
 
 
@@ -338,22 +336,22 @@ public final class DefaultTransition implements Transition
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultTransition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public final void add ( Iterable < Symbol > pSymbols )
+  public final void add ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -364,39 +362,39 @@ public final class DefaultTransition implements Transition
    * Appends the specified {@link Symbol} to the end of this
    * <code>DefaultTransition</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this
+   * @param symbol The {@link Symbol} to be appended to this
    *          <code>DefaultTransition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public final void add ( Symbol pSymbol )
+  public final void add ( Symbol symbol )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( ( this.alphabet != null ) && ( !this.alphabet.contains ( pSymbol ) ) )
+    if ( ( this.alphabet != null ) && ( !this.alphabet.contains ( symbol ) ) )
     {
       ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
-      tmpList.add ( pSymbol );
+      tmpList.add ( symbol );
       throw new TransitionSymbolNotInAlphabetException ( this, this.alphabet,
           tmpList );
     }
-    if ( this.symbolSet.contains ( pSymbol ) )
+    if ( this.symbolSet.contains ( symbol ) )
     {
       ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
       for ( Symbol current : this.symbolSet )
       {
-        if ( pSymbol.equals ( current ) )
+        if ( symbol.equals ( current ) )
         {
           tmpList.add ( current );
           break;
         }
       }
-      tmpList.add ( pSymbol );
+      tmpList.add ( symbol );
       throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
-    this.symbolSet.add ( pSymbol );
+    this.symbolSet.add ( symbol );
   }
 
 
@@ -404,22 +402,22 @@ public final class DefaultTransition implements Transition
    * Appends the specified {@link Symbol}s to the end of this
    * <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>DefaultTransition</code>.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public final void add ( Symbol ... pSymbols )
+  public final void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       add ( current );
     }
@@ -468,10 +466,9 @@ public final class DefaultTransition implements Transition
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Transition pOther )
+  public final int compareTo ( Transition other )
   {
-    return this.id < pOther.getId () ? -1
-        : ( this.id > pOther.getId () ? 1 : 0 );
+    return this.id < other.getId () ? -1 : ( this.id > other.getId () ? 1 : 0 );
   }
 
 
@@ -479,13 +476,13 @@ public final class DefaultTransition implements Transition
    * Returns true if the {@link Alphabet} of this <code>DefaultTransition</code>
    * contains the given {@link Symbol}. Otherwise false.
    * 
-   * @param pSymbol The {@link Symbol}.
+   * @param symbol The {@link Symbol}.
    * @return True if the {@link Alphabet} of this <code>DefaultTransition</code>
    *         contains the given {@link Symbol}. Otherwise false.
    */
-  public final boolean contains ( Symbol pSymbol )
+  public final boolean contains ( Symbol symbol )
   {
-    return this.symbolSet.contains ( pSymbol );
+    return this.symbolSet.contains ( symbol );
   }
 
 
@@ -495,16 +492,17 @@ public final class DefaultTransition implements Transition
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof DefaultTransition )
+    if ( other instanceof DefaultTransition )
     {
-      DefaultTransition other = ( DefaultTransition ) pOther;
-      if ( ( this.id == ID_NOT_DEFINED ) || ( other.id == ID_NOT_DEFINED ) )
+      DefaultTransition defaultTransition = ( DefaultTransition ) other;
+      if ( ( this.id == ID_NOT_DEFINED )
+          || ( defaultTransition.id == ID_NOT_DEFINED ) )
       {
         throw new IllegalArgumentException ( "id is not defined" ); //$NON-NLS-1$
       }
-      return this.id == other.id;
+      return this.id == defaultTransition.id;
     }
     return false;
   }
@@ -658,14 +656,14 @@ public final class DefaultTransition implements Transition
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    * @see #symbolSet
    */
-  public final Symbol getSymbol ( int pIndex )
+  public final Symbol getSymbol ( int index )
   {
     Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < pIndex ; i++ )
+    for ( int i = 0 ; i < index ; i++ )
     {
       iterator.next ();
     }
@@ -731,15 +729,15 @@ public final class DefaultTransition implements Transition
   /**
    * Remove the given {@link Symbol}s from this <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Iterable < Symbol > pSymbols )
+  public final void remove ( Iterable < Symbol > symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       remove ( current );
     }
@@ -749,30 +747,30 @@ public final class DefaultTransition implements Transition
   /**
    * Removes the given {@link Symbol} from this <code>DefaultTransition</code>.
    * 
-   * @param pSymbol The {@link Symbol} to remove.
+   * @param symbol The {@link Symbol} to remove.
    */
-  public final void remove ( Symbol pSymbol )
+  public final void remove ( Symbol symbol )
   {
-    if ( !this.symbolSet.contains ( pSymbol ) )
+    if ( !this.symbolSet.contains ( symbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
     }
-    this.symbolSet.remove ( pSymbol );
+    this.symbolSet.remove ( symbol );
   }
 
 
   /**
    * Remove the given {@link Symbol}s from this <code>DefaultTransition</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to remove.
+   * @param symbols The {@link Symbol}s to remove.
    */
-  public final void remove ( Symbol ... pSymbols )
+  public final void remove ( Symbol ... symbols )
   {
-    if ( pSymbols == null )
+    if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : pSymbols )
+    for ( Symbol current : symbols )
     {
       remove ( current );
     }
@@ -782,79 +780,79 @@ public final class DefaultTransition implements Transition
   /**
    * Sets the {@link Alphabet} of this <code>DefaultTransition</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet alphabet )
   {
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
   }
 
 
   /**
    * Sets the id.
    * 
-   * @param pId The id to set.
+   * @param id The id to set.
    * @see #id
    */
-  public final void setId ( int pId )
+  public final void setId ( int id )
   {
     if ( this.id != ID_NOT_DEFINED )
     {
       throw new IllegalArgumentException ( "id is already setted" ); //$NON-NLS-1$
     }
-    this.id = pId;
+    this.id = id;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int pParserEndOffset )
+  public final void setParserEndOffset ( int parserEndOffset )
   {
-    this.parserEndOffset = pParserEndOffset;
+    this.parserEndOffset = parserEndOffset;
   }
 
 
   /**
    * {@inheritDoc}
    */
-  public final void setParserStartOffset ( int pParserStartOffset )
+  public final void setParserStartOffset ( int parserStartOffset )
   {
-    this.parserStartOffset = pParserStartOffset;
+    this.parserStartOffset = parserStartOffset;
   }
 
 
   /**
    * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
    * 
-   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
-  public final void setPushDownAlphabet ( Alphabet pPushDownAlphabet )
+  public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
   {
-    if ( pPushDownAlphabet == null )
+    if ( pushDownAlphabet == null )
     {
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
-    this.pushDownAlphabet = pPushDownAlphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
   }
 
 
   /**
    * Sets the {@link State} where the <code>DefaultTransition</code> begins.
    * 
-   * @param pStateBegin The {@link State} to set.
+   * @param stateBegin The {@link State} to set.
    */
-  public final void setStateBegin ( State pStateBegin )
+  public final void setStateBegin ( State stateBegin )
   {
-    if ( pStateBegin == null )
+    if ( stateBegin == null )
     {
       throw new NullPointerException ( "state begin is null" ); //$NON-NLS-1$
     }
-    this.stateBegin = pStateBegin;
+    this.stateBegin = stateBegin;
   }
 
 
@@ -862,47 +860,47 @@ public final class DefaultTransition implements Transition
    * Sets the {@link State} id where the <code>DefaultTransition</code>
    * begins.
    * 
-   * @param pStateBeginId The {@link State} id to set.
+   * @param stateBeginId The {@link State} id to set.
    */
-  private final void setStateBeginId ( int pStateBeginId )
+  private final void setStateBeginId ( int stateBeginId )
   {
     if ( this.stateBegin != null )
     {
       throw new IllegalArgumentException (
           "can not set the id if there is a state" ); //$NON-NLS-1$
     }
-    this.stateBeginId = pStateBeginId;
+    this.stateBeginId = stateBeginId;
   }
 
 
   /**
    * Sets the {@link State} where the <code>DefaultTransition</code> ends.
    * 
-   * @param pStateEnd The {@link State} to set.
+   * @param stateEnd The {@link State} to set.
    */
-  public final void setStateEnd ( State pStateEnd )
+  public final void setStateEnd ( State stateEnd )
   {
-    if ( pStateEnd == null )
+    if ( stateEnd == null )
     {
       throw new NullPointerException ( "state end is null" ); //$NON-NLS-1$
     }
-    this.stateEnd = pStateEnd;
+    this.stateEnd = stateEnd;
   }
 
 
   /**
    * Sets the {@link State} id where the <code>DefaultTransition</code> ends.
    * 
-   * @param pStateEndId The {@link State} id to set.
+   * @param stateEndId The {@link State} id to set.
    */
-  private final void setStateEndId ( int pStateEndId )
+  private final void setStateEndId ( int stateEndId )
   {
     if ( this.stateEnd != null )
     {
       throw new IllegalArgumentException (
           "can not set the id if there is a state" ); //$NON-NLS-1$
     }
-    this.stateEndId = pStateEndId;
+    this.stateEndId = stateEndId;
   }
 
 

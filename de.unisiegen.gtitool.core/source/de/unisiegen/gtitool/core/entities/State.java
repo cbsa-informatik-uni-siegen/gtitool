@@ -27,18 +27,18 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Adds the {@link Transition} to the list of {@link Transition}s, which
    * begin in this <code>State</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public void addTransitionBegin ( Transition pTransition );
+  public void addTransitionBegin ( Transition transition );
 
 
   /**
    * Adds the {@link Transition} to the list of {@link Transition}s, which end
    * in this <code>State</code>.
    * 
-   * @param pTransition The {@link Transition} to add.
+   * @param transition The {@link Transition} to add.
    */
-  public void addTransitionEnd ( Transition pTransition );
+  public void addTransitionEnd ( Transition transition );
 
 
   /**
@@ -54,7 +54,7 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * 
    * @see Comparable#compareTo(Object)
    */
-  public int compareTo ( State pOther );
+  public int compareTo ( State other );
 
 
   /**
@@ -62,7 +62,7 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -129,11 +129,11 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Returns the {@link Transition} at the specified position in the
    * {@link Transition} begin list.
    * 
-   * @param pIndex The index of the {@link Transition} to return.
+   * @param index The index of the {@link Transition} to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} begin list.
    */
-  public Transition getTransitionBegin ( int pIndex );
+  public Transition getTransitionBegin ( int index );
 
 
   /**
@@ -148,11 +148,11 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Returns the {@link Transition} id at the specified position in the
    * {@link Transition} begin list.
    * 
-   * @param pIndex The index of the {@link Transition} id to return.
+   * @param index The index of the {@link Transition} id to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} id begin list.
    */
-  public int getTransitionBeginId ( int pIndex );
+  public int getTransitionBeginId ( int index );
 
 
   /**
@@ -167,11 +167,11 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Returns the {@link Transition} at the specified position in the
    * {@link Transition} end list.
    * 
-   * @param pIndex The index of the {@link Transition} to return.
+   * @param index The index of the {@link Transition} to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} end list.
    */
-  public Transition getTransitionEnd ( int pIndex );
+  public Transition getTransitionEnd ( int index );
 
 
   /**
@@ -186,11 +186,11 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Returns the {@link Transition} id at the specified position in the
    * {@link Transition} end list.
    * 
-   * @param pIndex The index of the {@link Transition} id to return.
+   * @param index The index of the {@link Transition} id to return.
    * @return The {@link Transition} at the specified position in the
    *         {@link Transition} id end list.
    */
-  public int getTransitionEndId ( int pIndex );
+  public int getTransitionEndId ( int index );
 
 
   /**
@@ -231,26 +231,26 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * Removes the {@link Transition} from the list of {@link Transition}s, which
    * begin in this <code>State</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public void removeTransitionBegin ( Transition pTransition );
+  public void removeTransitionBegin ( Transition transition );
 
 
   /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
    * end in this <code>State</code>.
    * 
-   * @param pTransition The {@link Transition} to remove.
+   * @param transition The {@link Transition} to remove.
    */
-  public void removeTransitionEnd ( Transition pTransition );
+  public void removeTransitionEnd ( Transition transition );
 
 
   /**
    * Sets the {@link Alphabet} of this <code>State</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public void setAlphabet ( Alphabet pAlphabet );
+  public void setAlphabet ( Alphabet alphabet );
 
 
   /**
@@ -262,55 +262,55 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
   /**
    * Sets the State value.
    * 
-   * @param pFinalState The State to set.
+   * @param finalState The State to set.
    */
-  public void setFinalState ( boolean pFinalState );
+  public void setFinalState ( boolean finalState );
 
 
   /**
    * Sets the id.
    * 
-   * @param pId The id to set.
+   * @param id The id to set.
    */
-  public void setId ( int pId );
+  public void setId ( int id );
 
 
   /**
    * Sets the name of this <code>State</code>.
    * 
-   * @param pName The name to set.
+   * @param name The name to set.
    * @throws StateException If something with the <code>State</code> is not
    *           correct.
    */
-  public void setName ( String pName ) throws StateException;
+  public void setName ( String name ) throws StateException;
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**
    * Sets the push down {@link Alphabet} of this <code>State</code>.
    * 
-   * @param pPushDownAlphabet The push down {@link Alphabet} to set.
+   * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
-  public void setPushDownAlphabet ( Alphabet pPushDownAlphabet );
+  public void setPushDownAlphabet ( Alphabet pushDownAlphabet );
 
 
   /**
    * Sets the startState value.
    * 
-   * @param pStartState The startState to set.
+   * @param startState The startState to set.
    */
-  public void setStartState ( boolean pStartState );
+  public void setStartState ( boolean startState );
 
 
   /**

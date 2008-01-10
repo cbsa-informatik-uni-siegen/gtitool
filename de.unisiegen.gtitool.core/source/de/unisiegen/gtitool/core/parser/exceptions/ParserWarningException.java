@@ -25,30 +25,30 @@ public final class ParserWarningException extends ParserException
   /**
    * Initializes the exception.
    * 
-   * @param pMessages The message.
-   * @param pParserStartOffset The parser start offset.
-   * @param pParserEndOffset The parser end offset.
+   * @param messages The message.
+   * @param parserStartOffset The parser start offset.
+   * @param parserEndOffset The parser end offset.
    */
-  public ParserWarningException ( int pParserStartOffset, int pParserEndOffset,
-      String pMessages )
+  public ParserWarningException ( int parserStartOffset, int parserEndOffset,
+      String messages )
   {
-    this ( pParserStartOffset, pParserEndOffset, pMessages, "" ); //$NON-NLS-1$
+    this ( parserStartOffset, parserEndOffset, messages, "" ); //$NON-NLS-1$
   }
 
 
   /**
    * Initializes the exception.
    * 
-   * @param pParserStartOffset The parser start offset.
-   * @param pParserEndOffset The parser end offset.
-   * @param pMessages The message.
-   * @param pInsertText The text, which should be inserted.
+   * @param parserStartOffset The parser start offset.
+   * @param parserEndOffset The parser end offset.
+   * @param messages The message.
+   * @param insertText The text, which should be inserted.
    */
-  public ParserWarningException ( int pParserStartOffset, int pParserEndOffset,
-      String pMessages, String pInsertText )
+  public ParserWarningException ( int parserStartOffset, int parserEndOffset,
+      String messages, String insertText )
   {
-    super ( pParserStartOffset, pParserEndOffset, pMessages );
-    this.insertText = pInsertText;
+    super ( parserStartOffset, parserEndOffset, messages );
+    this.insertText = insertText;
   }
 
 

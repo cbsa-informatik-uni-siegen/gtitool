@@ -19,11 +19,11 @@ public final class StateParser extends StateAbstractParser
   /**
    * Allocates a new <code>StateParser</code>.
    * 
-   * @param pGTIScanner The {@link GTIScanner}.
+   * @param gtiScanner The {@link GTIScanner}.
    */
-  public StateParser ( GTIScanner pGTIScanner )
+  public StateParser ( GTIScanner gtiScanner )
   {
-    super ( pGTIScanner );
+    super ( gtiScanner );
   }
 
 
@@ -34,15 +34,15 @@ public final class StateParser extends StateAbstractParser
    *      java.lang.Object)
    */
   @Override
-  public void report_error ( String pMessage, Object pInfo )
+  public void report_error ( String message, Object info )
   {
-    Symbol symbol = ( Symbol ) pInfo;
-    String message = pMessage;
+    Symbol symbol = ( Symbol ) info;
+    String messageText = message;
     if ( symbol.sym == EOF_sym () )
     {
-      message = Messages.getString ( "Parser.0" ); //$NON-NLS-1$
+      messageText = Messages.getString ( "Parser.0" ); //$NON-NLS-1$
     }
-    throw new ParserException ( symbol.left, symbol.right, message );
+    throw new ParserException ( symbol.left, symbol.right, messageText );
   }
 
 
@@ -53,10 +53,10 @@ public final class StateParser extends StateAbstractParser
    *      java.lang.Object)
    */
   @Override
-  public void report_fatal_error ( String pMessage, Object pInfo )
+  public void report_fatal_error ( String message, Object info )
       throws Exception
   {
-    report_error ( pMessage, pInfo );
+    report_error ( message, info );
   }
 
 
@@ -66,8 +66,8 @@ public final class StateParser extends StateAbstractParser
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */
   @Override
-  public void syntax_error ( Symbol pSymbol )
+  public void syntax_error ( Symbol symbol )
   {
-    report_error ( Messages.getString ( "Parser.1", pSymbol.value ), pSymbol ); //$NON-NLS-1$
+    report_error ( Messages.getString ( "Parser.1", symbol.value ), symbol ); //$NON-NLS-1$
   }
 }

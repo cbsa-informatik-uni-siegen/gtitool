@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 /**
  * The <code>MachineException</code> is used to be collected in a
- * {@link MachineValidationException}
+ * {@link MachineValidationException}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -26,11 +26,11 @@ public abstract class MachineException extends CoreException
   /**
    * Allocates a new <code>MachineException</code>.
    * 
-   * @param pMessage The detail message.
-   * @param pDescription The detail description.
+   * @param message The detail message.
+   * @param description The detail description.
    */
-  public MachineException ( String pMessage, String pDescription )
+  public MachineException ( String message, String description )
   {
-    super ( pMessage, pDescription );
+    super ( message, description );
   }
 }

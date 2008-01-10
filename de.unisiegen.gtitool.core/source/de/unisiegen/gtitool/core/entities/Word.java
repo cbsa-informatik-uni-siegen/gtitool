@@ -22,27 +22,27 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
   /**
    * Appends the specified {@link Symbol}s to the end of this <code>Word</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public void add ( Iterable < Symbol > pSymbols );
+  public void add ( Iterable < Symbol > symbols );
 
 
   /**
    * Appends the specified {@link Symbol} to the end of this <code>Word</code>.
    * 
-   * @param pSymbol The {@link Symbol} to be appended to this <code>Word</code>.
+   * @param symbol The {@link Symbol} to be appended to this <code>Word</code>.
    */
-  public void add ( Symbol pSymbol );
+  public void add ( Symbol symbol );
 
 
   /**
    * Appends the specified {@link Symbol}s to the end of this <code>Word</code>.
    * 
-   * @param pSymbols The {@link Symbol}s to be appended to this
+   * @param symbols The {@link Symbol}s to be appended to this
    *          <code>Word</code>.
    */
-  public void add ( Symbol ... pSymbols );
+  public void add ( Symbol ... symbols );
 
 
   /**
@@ -58,7 +58,7 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
    * 
    * @see Object#equals(Object)
    */
-  public boolean equals ( Object pOther );
+  public boolean equals ( Object other );
 
 
   /**
@@ -72,10 +72,10 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
   /**
    * Returns the {@link Symbol} with the given index.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return The {@link Symbol} with the given index.
    */
-  public Symbol get ( int pIndex );
+  public Symbol get ( int index );
 
 
   /**
@@ -180,13 +180,13 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
   /**
    * {@inheritDoc}
    */
-  public void setParserEndOffset ( int pParserEndOffset );
+  public void setParserEndOffset ( int parserEndOffset );
 
 
   /**
    * {@inheritDoc}
    */
-  public void setParserStartOffset ( int pParserStartOffset );
+  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**

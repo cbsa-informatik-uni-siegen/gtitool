@@ -1148,16 +1148,14 @@ public abstract class AbstractMachine implements Machine
    * {@link Word}.
    * 
    * @param startWord The {@link Word} to start with.
-   * @throws MachineValidationException If the validation fails.
    */
-  public final void start ( Word startWord ) throws MachineValidationException
+  public final void start ( Word startWord )
   {
     // Word
     if ( startWord == null )
     {
       throw new NullPointerException ( "word is null" ); //$NON-NLS-1$
     }
-    validate ();
     this.word = startWord;
     this.word.start ();
     clearHistory ();

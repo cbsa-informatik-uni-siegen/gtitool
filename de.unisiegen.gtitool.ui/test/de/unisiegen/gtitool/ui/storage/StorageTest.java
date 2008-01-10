@@ -12,7 +12,6 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
@@ -342,15 +341,7 @@ public class StorageTest
 
       Word word_loaded = new DefaultWord ( b, c, a, c, b, a, b );
 
-      try
-      {
-        dfaloaded.start ( word_loaded );
-      }
-      catch ( MachineValidationException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      dfaloaded.start ( word_loaded );
       out ( "*** Next *** " );
       out ();
       try

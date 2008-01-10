@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -42,15 +41,8 @@ public abstract class MachineTest
 
   public static void start ( Machine machine, Word word )
   {
-    try
-    {
-      machine.start ( word );
-    }
-    catch ( MachineValidationException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+
+    machine.start ( word );
     println ( "*** Next *** " );
     println ();
     try

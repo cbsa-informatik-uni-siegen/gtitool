@@ -346,9 +346,8 @@ public interface Machine extends Serializable
    * {@link Word}.
    * 
    * @param word The {@link Word} to start with.
-   * @throws MachineValidationException If the validation fails.
    */
-  public void start ( Word word ) throws MachineValidationException;
+  public void start ( Word word );
 
 
   /**

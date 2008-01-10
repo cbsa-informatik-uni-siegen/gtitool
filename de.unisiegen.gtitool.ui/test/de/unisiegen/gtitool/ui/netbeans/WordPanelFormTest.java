@@ -23,6 +23,9 @@ import de.unisiegen.gtitool.ui.style.listener.WordChangedListener;
 public class WordPanelFormTest
 {
 
+  public static int offset = 0;
+
+
   public static void main ( String [] arguments )
   {
     try
@@ -40,8 +43,12 @@ public class WordPanelFormTest
             {
               if ( newWord != null )
               {
-                wordPanelForm.styledWordParserPanel
-                    .setHighlightedSymbol ( newWord.get ( 0 ) );
+                for ( int i = offset ; i < newWord.size () ; i = i + 2 )
+                {
+                  wordPanelForm.styledWordParserPanel
+                      .setHighlightedSymbol ( newWord.get ( i ) );
+                }
+                offset = offset == 0 ? 1 : 0;
               }
               else
               {

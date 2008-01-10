@@ -108,11 +108,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
    */
   private final void fireWordChanged ( Word newWord )
   {
+    Word checkWord = checkWord ( newWord );
     WordChangedListener [] listeners = this.listenerList
         .getListeners ( WordChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].wordChanged ( checkWord ( newWord ) );
+      listeners [ n ].wordChanged ( checkWord );
     }
   }
 

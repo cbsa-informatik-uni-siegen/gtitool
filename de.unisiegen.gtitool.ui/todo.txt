@@ -13,3 +13,4 @@ BM		- OpenedFiles
 BM		- Dateien per Übergabe in der main Methode öffnen können
 		- Das Setzen eines Highlighting überschreibt Exceptions
 CF		- ParserPanel editable ohne Verschieben
+CF		- Roten Rahmen um das WordParserPanel 

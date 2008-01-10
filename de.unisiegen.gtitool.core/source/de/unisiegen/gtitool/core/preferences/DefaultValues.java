@@ -24,6 +24,12 @@ public interface DefaultValues
 
 
   /**
+   * The default {@link Color} of the active {@link Transition}.
+   */
+  public final Color DEFAULT_ACTIVE_TRANSITION_COLOR = new Color ( 0, 0, 255 );
+
+
+  /**
    * The default {@link Color} of the error {@link State}.
    */
   public final Color DEFAULT_ERROR_STATE_COLOR = new Color ( 255, 0, 0 );

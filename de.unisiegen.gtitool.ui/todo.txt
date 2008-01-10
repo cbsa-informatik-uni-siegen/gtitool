@@ -13,3 +13,4 @@ CF		- Das MachineTableModel kommt mit einer Änderung des Alphabets nicht klar
 		- OpenedFiles
 		- Dateien per Übergabe in der main Methode öffnen können
 		- Das Setzen eines Highlighting überschreibt Exceptions
+CF		- ParserPanel editable ohne Verschieben

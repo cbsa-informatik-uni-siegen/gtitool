@@ -308,6 +308,23 @@ public final class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the active {@link Transition} has
+   * changed.
+   * 
+   * @param newColor The new color of the active {@link Transition}.
+   */
+  public final void fireColorChangedActiveTransition ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].colorChangedActiveTransition ( newColor );
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the error {@link State} has
    * changed.
    * 
@@ -621,6 +638,31 @@ public final class PreferenceManager
         .getString ( "PreferencesDialog.ColorActiveStateDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DefaultValues.DEFAULT_ACTIVE_STATE_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the active {@link Transition}.
+   * 
+   * @return The {@link ColorItem} of the active {@link Transition}.
+   */
+  public final ColorItem getColorItemActiveTransition ()
+  {
+    int r = this.preferences.getInt (
+        "PreferencesDialog.ColorActiveTransitionR", //$NON-NLS-1$
+        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getRed () );
+    int g = this.preferences.getInt (
+        "PreferencesDialog.ColorActiveTransitionG", //$NON-NLS-1$
+        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getGreen () );
+    int b = this.preferences.getInt (
+        "PreferencesDialog.ColorActiveTransitionB", //$NON-NLS-1$
+        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "PreferencesDialog.ColorActiveTransitionCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "PreferencesDialog.ColorActiveTransitionDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR );
   }
 
 
@@ -1247,6 +1289,26 @@ public final class PreferenceManager
     this.preferences.putInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
         colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
+        colorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the active {@link Transition}.
+   * 
+   * @param colorItem The {@link ColorItem} of the active {@link Transition}.
+   */
+  public final void setColorItemActiveTransition ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the active transition to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionR", //$NON-NLS-1$
+        colorItem.getColor ().getRed () );
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionG", //$NON-NLS-1$
+        colorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionB", //$NON-NLS-1$
         colorItem.getColor ().getBlue () );
   }
 

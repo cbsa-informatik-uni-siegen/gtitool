@@ -510,6 +510,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the active {@link Transition}.
+   */
+  private ColorItem colorItemActiveTransition;
+
+
+  /**
    * The {@link ColorItem} of the start {@link State}.
    */
   private ColorItem colorItemStartState;
@@ -621,6 +627,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the active {@link State}.
    */
   private ColorItem initialColorItemActiveState;
+
+
+  /**
+   * The initial {@link ColorItem} of the active {@link Transition}.
+   */
+  private ColorItem initialColorItemActiveTransition;
 
 
   /**
@@ -774,6 +786,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     initColorList ();
     initAlphabet ();
     initPushDownAlphabet ();
+    initLastActiveTab ();
 
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
@@ -963,6 +976,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemState.restore ();
     this.colorItemSelectedState.restore ();
     this.colorItemActiveState.restore ();
+    this.colorItemActiveTransition.restore ();
     this.colorItemStartState.restore ();
     this.colorItemErrorState.restore ();
     this.colorItemSymbol.restore ();
@@ -1088,6 +1102,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemActiveState = PreferenceManager.getInstance ()
         .getColorItemActiveState ();
     this.initialColorItemActiveState = this.colorItemActiveState.clone ();
+    // Active transition
+    this.colorItemActiveTransition = PreferenceManager.getInstance ()
+        .getColorItemActiveTransition ();
+    this.initialColorItemActiveTransition = this.colorItemActiveTransition
+        .clone ();
     // Start state
     this.colorItemStartState = PreferenceManager.getInstance ()
         .getColorItemStartState ();
@@ -1216,6 +1235,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorListModel.add ( this.colorItemState );
     this.colorListModel.add ( this.colorItemSelectedState );
     this.colorListModel.add ( this.colorItemActiveState );
+    this.colorListModel.add ( this.colorItemActiveTransition );
     this.colorListModel.add ( this.colorItemStartState );
     this.colorListModel.add ( this.colorItemErrorState );
     this.colorListModel.add ( this.colorItemSymbol );
@@ -1247,6 +1267,17 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
     this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
+  }
+
+
+  /**
+   * Initializes the last active tab.
+   */
+  private final void initLastActiveTab ()
+  {
+    this.initialLastActiveTab = PreferenceManager.getInstance ()
+        .getPreferencesDialogLastActiveTab ();
+    this.gui.jTabbedPane.setSelectedIndex ( this.initialLastActiveTab );
   }
 
 
@@ -1477,7 +1508,7 @@ public final class PreferencesDialog implements LanguageChangedListener
           ActionEvent event )
           {
             PreferencesDialog.this.gui.jCheckBoxPushDownAlphabet
-            .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
+                .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
           }
         } );
     this.jPopupMenuUsePushDownAlphabet
@@ -1660,6 +1691,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.ColorActiveStateCaption" ) ); //$NON-NLS-1$
     this.colorItemActiveState.setDescription ( Messages
         .getString ( "PreferencesDialog.ColorActiveStateDescription" ) ); //$NON-NLS-1$
+    // Active transition
+    this.colorItemActiveTransition.setCaption ( Messages
+        .getString ( "PreferencesDialog.ColorActiveTransitionCaption" ) ); //$NON-NLS-1$
+    this.colorItemActiveTransition.setDescription ( Messages
+        .getString ( "PreferencesDialog.ColorActiveTransitionDescription" ) ); //$NON-NLS-1$
     // Start state
     this.colorItemStartState.setCaption ( Messages
         .getString ( "PreferencesDialog.ColorStartStateCaption" ) ); //$NON-NLS-1$
@@ -1819,6 +1855,22 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemActiveState );
       PreferenceManager.getInstance ().fireColorChangedActiveState (
           this.colorItemActiveState.getColor () );
+    }
+    // Active transition
+    if ( !this.initialColorItemActiveTransition
+        .equals ( this.colorItemActiveTransition ) )
+    {
+      logger
+          .debug ( "color of the active transition changed to \"" //$NON-NLS-1$
+              + "r=" + this.colorItemActiveTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "g=" + this.colorItemActiveTransition.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "b=" + this.colorItemActiveTransition.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemActiveTransition = this.colorItemActiveTransition
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemActiveTransition (
+          this.colorItemActiveTransition );
+      PreferenceManager.getInstance ().fireColorChangedActiveTransition (
+          this.colorItemActiveTransition.getColor () );
     }
     // Start state
     if ( !this.initialColorItemStartState.equals ( this.colorItemStartState ) )

@@ -68,16 +68,19 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * Let the listeners know that the {@link Word} has changed.
+   * Checks the given {@link Word}.
    * 
-   * @param newWord The new {@link Word}.
+   * @param word The {@link Word} to check.
+   * @return The input {@link Word} or null, if a {@link Symbol} in the
+   *         {@link Word} is not in the {@link Alphabet}.
    */
-  private final void fireWordChanged ( Word newWord )
+  private final Word checkWord ( Word word )
   {
-    if ( ( newWord != null ) && ( this.alphabet != null ) )
+    Word checkedWord = word;
+    if ( ( checkedWord != null ) && ( this.alphabet != null ) )
     {
       ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : newWord )
+      for ( Symbol current : checkedWord )
       {
         if ( !this.alphabet.contains ( current ) )
         {
@@ -87,23 +90,29 @@ public final class StyledWordParserPanel extends StyledParserPanel
                   current.getName (), this.alphabet ) ) );
         }
       }
+      // Check for exceptions
       if ( exceptionList.size () > 0 )
       {
+        checkedWord = null;
         getDocument ().setException ( exceptionList );
-        WordChangedListener [] listeners = this.listenerList
-            .getListeners ( WordChangedListener.class );
-        for ( int n = 0 ; n < listeners.length ; ++n )
-        {
-          listeners [ n ].wordChanged ( null );
-        }
-        return;
       }
     }
+    return checkedWord;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Word} has changed.
+   * 
+   * @param newWord The new {@link Word}.
+   */
+  private final void fireWordChanged ( Word newWord )
+  {
     WordChangedListener [] listeners = this.listenerList
         .getListeners ( WordChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].wordChanged ( newWord );
+      listeners [ n ].wordChanged ( checkWord ( newWord ) );
     }
   }
 
@@ -128,7 +137,8 @@ public final class StyledWordParserPanel extends StyledParserPanel
   {
     try
     {
-      return ( Word ) getParsedObject ();
+      Word word = ( Word ) getParsedObject ();
+      return checkWord ( word );
     }
     catch ( Exception exc )
     {

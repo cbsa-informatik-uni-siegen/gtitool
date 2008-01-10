@@ -610,7 +610,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleToolbarEditAlphabet
 
     private void handleTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_handleTabbedPaneStateChanged
-        this.logic.handleTabbedPaneStateChanged(evt);
+        this.logic.handleTabbedPaneStateChanged();
     }//GEN-LAST:event_handleTabbedPaneStateChanged
 
     private void jMenuItemEditMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEditMachineActionPerformed
@@ -618,7 +618,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
     private void handleWordAutoStep(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleWordAutoStep
-        this.logic.handleWordAutoStep(evt);
+        this.logic.handleWordAutoStep();
     }//GEN-LAST:event_handleWordAutoStep
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose

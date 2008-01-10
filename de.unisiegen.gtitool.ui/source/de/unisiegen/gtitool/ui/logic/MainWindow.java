@@ -2,13 +2,11 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Frame;
-import java.awt.event.ItemEvent;
 import java.io.File;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -51,6 +49,9 @@ public final class MainWindow implements LanguageChangedListener
   private MainWindowForm gui;
 
 
+  /**
+   * Flag signals if Console Preferences should be saved
+   */
   private boolean saveConsolePreferences = true;
 
 
@@ -902,7 +903,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public boolean handleClose ()
   {
-    EditorPanel selectedEditor = getActiveEditor ();
+    // EditorPanel selectedEditor = getActiveEditor ();
     boolean success;
     // if ( selectedEditor.shouldBeSaved ( ) )
     // {
@@ -969,6 +970,11 @@ public final class MainWindow implements LanguageChangedListener
   }
 
 
+  /**
+   * Getter for the active EditorPanel
+   * 
+   * @return the active EditorPanel
+   */
   public EditorPanel getActiveEditor ()
   {
     if ( this.gui.jTabbedPaneMain.getSelectedComponent () == null )
@@ -978,6 +984,9 @@ public final class MainWindow implements LanguageChangedListener
   }
 
 
+  /**
+   * Handle Edit Machine button pressed
+   */
   public void handleEditMachine ()
   {
     setToolBarEditItemState ( true );
@@ -995,10 +1004,8 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Handle TabbedPane state changed event
-   * 
-   * @param evt The {@link ChangeEvent}
    */
-  public void handleTabbedPaneStateChanged ( ChangeEvent evt )
+  public void handleTabbedPaneStateChanged ()
   {
     MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
     if ( machinePanel != null )
@@ -1123,7 +1130,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle Auto Step Action in the Word Enter Mode
    */
-  public void handleWordAutoStep ( ItemEvent evt )
+  public void handleWordAutoStep ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordAutoStep ();

@@ -20,7 +20,7 @@
   <SubComponents>
     <Container class="javax.swing.JSplitPane" name="jSplitPaneConsole">
       <Properties>
-        <Property name="dividerLocation" type="int" value="300"/>
+        <Property name="dividerLocation" type="int" value="200"/>
         <Property name="dividerSize" type="int" value="3"/>
         <Property name="orientation" type="int" value="0"/>
         <Property name="resizeWeight" type="double" value="1.0"/>

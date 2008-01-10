@@ -280,10 +280,16 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   private boolean enterWordMode = false;
 
 
+  /**
+   * Flag signals if console is visible
+   */
   private boolean consoleVisible = PreferenceManager.getInstance ()
       .getVisibleConsole ();
 
 
+  /**
+   * Flag signals if table is visible
+   */
   private boolean tableVisible = PreferenceManager.getInstance ()
       .getVisibleTable ();
 
@@ -801,6 +807,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  /**
+   * Handle Edit Machine button pressed
+   */
   public void handleEditMachine ()
   {
     this.gui.wordPanel.setVisible ( false );
@@ -808,6 +817,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  /**
+   * Handle Enter Word button pressed
+   */
   public void handleEnterWord ()
   {
     this.gui.wordPanel.setVisible ( true );
@@ -817,6 +829,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   /**
    * Handle save as operation
+   * 
+   * @return filename
    */
   public String handleSave ()
   {
@@ -846,6 +860,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   /**
    * Handle save as operation
+   * 
+   * @return filename
    */
   public String handleSaveAs ()
   {
@@ -1617,18 +1633,33 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  /**
+   * Getter for the flag if console is visible
+   * 
+   * @return true if console is visible, else false
+   */
   public boolean isConsoleVisible ()
   {
     return this.consoleVisible;
   }
 
 
+  /**
+   * Getter for the flag if table is visible
+   * 
+   * @return true if table is visible, else false
+   */
   public boolean isTableVisible ()
   {
     return this.tableVisible;
   }
 
 
+  /**
+   * Getter for the flag if we are in word enter mode
+   * 
+   * @return true if we are in word enter mode, else false
+   */
   public boolean isWordEnterMode ()
   {
     return this.enterWordMode;
@@ -1649,6 +1680,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  /**
+   * Set flag if console is visible
+   * 
+   * @param consoleVisible flag if console is visible
+   */
   public void setConsoleVisible ( boolean consoleVisible )
   {
     this.consoleVisible = consoleVisible;
@@ -1762,16 +1798,16 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           PreferenceManager.getInstance ().getColorItemTransition ()
               .getColor () );
     }
-    
+
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
       GraphConstants.setGradientColor ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
-    
+
     MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
         .getAll ( MachinePanel.this.graphModel ) );
-    
+
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
 
   }
@@ -1816,13 +1852,13 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                 .getColor () );
         inactiveStates.remove ( state );
       }
-      
+
       for ( DefaultStateView current : inactiveStates )
       {
         GraphConstants.setGradientColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
-      
+
       MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( MachinePanel.this.graphModel ) );
 
@@ -1857,54 +1893,52 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   /**
    * Handle Start Action in the Word Enter Mode
+   * 
+   * @return true if started else false
    */
   public boolean handleWordStart ()
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
-      JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben",
+      JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben", //$NON-NLS-1$
           "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
       return false;
     }
-    else
+    // Reset all highlightings
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      // Reset all highlightings
-      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransition ()
-                .getColor () );
-      }
-      
-      for ( DefaultStateView current : this.model.getStateViewList () )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-      }
-      
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemTransition ()
+              .getColor () );
+    }
+
+    for ( DefaultStateView current : this.model.getStateViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+    }
+
+    MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+        .getAll ( MachinePanel.this.graphModel ) );
+
+    try
+    {
+      this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
+
+      this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+
+      DefaultStateView state = this.model.getStateViewForState ( this.machine
+          .getActiveState ( 0 ) );
+      GraphConstants.setGradientColor ( state.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemActiveState ()
+              .getColor () );
       MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( MachinePanel.this.graphModel ) );
-      
-      try
-      {
-        this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
-
-        this.machine.start ( this.gui.wordPanel.styledWordParserPanel
-            .getWord () );
-
-        DefaultStateView state = this.model.getStateViewForState ( this.machine
-            .getActiveState ( 0 ) );
-        GraphConstants.setGradientColor ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveState ()
-                .getColor () );
-        MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-            .getAll ( MachinePanel.this.graphModel ) );
-      }
-      catch ( MachineValidationException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+    }
+    catch ( MachineValidationException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
     }
     return true;
   }

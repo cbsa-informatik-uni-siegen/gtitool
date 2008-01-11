@@ -36,6 +36,7 @@ import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
+import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
@@ -104,6 +105,12 @@ public final class PreferenceManager
    * The default {@link MouseSelectionItem}.
    */
   public static final MouseSelectionItem DEFAULT_MOUSE_SELECTION_ITEM = MouseSelectionItem.WITHOUT_RETURN_TO_MOUSE;
+
+
+  /**
+   * The default {@link MouseSelectionItem}.
+   */
+  public static final TransitionItem DEFAULT_TRANSITION_ITEM = TransitionItem.DRAG_MODE;
 
 
   /**
@@ -1165,6 +1172,20 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the {@link TransitionItem}.
+   * 
+   * @return The {@link TransitionItem}.
+   */
+  public final TransitionItem getTransitionItem ()
+  {
+    int index = this.preferences.getInt (
+        "PreferencesDialog.TransitionItem.Index", //$NON-NLS-1$
+        DEFAULT_TRANSITION_ITEM.getIndex () );
+    return TransitionItem.create ( index );
+  }
+
+
+  /**
    * Returns the use push down {@link Alphabet} value.
    * 
    * @return The use push down {@link Alphabet} value.
@@ -1764,6 +1785,20 @@ public final class PreferenceManager
   public final void setSystemLocale ( Locale locale )
   {
     this.systemLocale = locale;
+  }
+
+
+  /**
+   * Sets the {@link TransitionItem}.
+   * 
+   * @param transitionItem The {@link TransitionItem}.
+   */
+  public final void setTransitionItem ( TransitionItem transitionItem )
+  {
+    logger.debug ( "set transition item to \"" //$NON-NLS-1$
+        + transitionItem.getIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.TransitionItem.Index", //$NON-NLS-1$
+        transitionItem.getIndex () );
   }
 
 

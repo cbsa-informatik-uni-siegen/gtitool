@@ -12,6 +12,6 @@ BM		- RecentlyUsedFiles
 BM		- OpenedFiles
 BM		- Dateien per Übergabe in der main Methode öffnen können 
 CF		- Einen Info-Diolog für die Nachrichten bauen
-CF		- Einstellungsmöglichkeit für das Anlegen von Transitionen
-		- History über die Zustände führen (erst im core implementieren)
-BM		- Auto Step Interval von den Preferencen verwenden
+CF		- History über die Zustände führen (erst im core implementieren)
+BM		- Auto Step Interval der Preferencen verwenden
+BM		- Transitions Auswahl der Preferencen verwenden

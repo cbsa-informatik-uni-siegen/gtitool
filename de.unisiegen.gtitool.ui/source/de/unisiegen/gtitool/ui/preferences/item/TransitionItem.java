@@ -1,50 +1,50 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 
 
 /**
- * Indicates which mouse selection is choosen.
+ * Indicates which {@link Transition} choice is choosen.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public enum MouseSelectionItem
+public enum TransitionItem
 {
   /**
-   * The without return to the mouse value.
+   * The {@link Transition} can be created per mouse drag.
    */
-  WITHOUT_RETURN_TO_MOUSE ( 0, "PreferencesDialog.MouseSelectionWithoutReturn" ), //$NON-NLS-1$
+  DRAG_MODE ( 0, "PreferencesDialog.TransitionDrag" ), //$NON-NLS-1$
 
   /**
-   * The with return to the mouse value.
+   * The {@link Transition} can be created per mouse click.
    */
-  WITH_RETURN_TO_MOUSE ( 1, "PreferencesDialog.MouseSelectionWithReturn" ); //$NON-NLS-1$
+  CLICK_MODE ( 1, "PreferencesDialog.TransitionClick" ); //$NON-NLS-1$
 
   /**
-   * Creates a new {@link MouseSelectionItem} of the given index, or throws an
+   * Creates a new {@link TransitionItem} of the given index, or throws an
    * exception if the index is not supported.
    * 
    * @param index The index.
-   * @return A new {@link MouseSelectionItem}.
+   * @return A new {@link TransitionItem}.
    */
-  public final static MouseSelectionItem create ( int index )
+  public final static TransitionItem create ( int index )
   {
     switch ( index )
     {
       case 0 :
       {
-        return WITHOUT_RETURN_TO_MOUSE;
+        return DRAG_MODE;
       }
       case 1 :
       {
-        return WITH_RETURN_TO_MOUSE;
+        return CLICK_MODE;
       }
       default :
       {
-        throw new IllegalArgumentException (
-            "mouse selection index not supported" ); //$NON-NLS-1$
+        throw new IllegalArgumentException ( "transition mode not supported" ); //$NON-NLS-1$
       }
     }
   }
@@ -63,12 +63,12 @@ public enum MouseSelectionItem
 
 
   /**
-   * Allocates a new <code>MouseSelectionItem</code>.
+   * Allocates a new <code>TransitionItem</code>.
    * 
    * @param index The index.
    * @param title The title.
    */
-  private MouseSelectionItem ( int index, String title )
+  private TransitionItem ( int index, String title )
   {
     this.index = index;
     this.title = title;

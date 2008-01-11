@@ -51,6 +51,7 @@ import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
+import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
@@ -439,6 +440,69 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The transition {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class TransitionComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 480693066999856887L;
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param transitionItem The {@link TransitionItem} to add.
+     */
+    public final void addElement ( TransitionItem transitionItem )
+    {
+      super.addElement ( transitionItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public final TransitionItem getElementAt ( int index )
+    {
+      return ( TransitionItem ) super.getElementAt ( index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public final TransitionItem getSelectedItem ()
+    {
+      return ( TransitionItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -473,6 +537,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The {@link MouseSelectionComboBoxModel}.
    */
   private MouseSelectionComboBoxModel mouseSelectionComboBoxModel;
+
+
+  /**
+   * The {@link TransitionComboBoxModel}.
+   */
+  private TransitionComboBoxModel transitionComboBoxModel;
 
 
   /**
@@ -605,6 +675,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link MouseSelectionItem}.
    */
   private MouseSelectionItem initialMouseSelectionItem;
+
+
+  /**
+   * The initial {@link MouseSelectionItem}.
+   */
+  private TransitionItem initialTransitionItem;
 
 
   /**
@@ -752,6 +828,18 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link Transition} {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuTransition;
+
+
+  /**
+   * The mouse selection {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuMouseSelection;
+
+
+  /**
    * The auto interval {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuAutoStep;
@@ -770,18 +858,6 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The choice item without return to the mouse.
-   */
-  private MouseSelectionItem mouseSelectionWithoutReturn;
-
-
-  /**
-   * The choice item with return to the mouse.
-   */
-  private MouseSelectionItem mouseSelectionWithReturn;
-
-
-  /**
    * Allocates a new <code>PreferencesDialog</code>.
    * 
    * @param parent The parent {@link JFrame}.
@@ -791,22 +867,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new PreferencesDialogForm ( this, parent );
-
-    initPopupMenu ();
-    initLanguage ();
-    initLookAndFeel ();
-    initZoomFactor ();
-    initMouseSelection ();
-    initAutoStep ();
-    initColorList ();
-    initAlphabet ();
-    initPushDownAlphabet ();
-    initLastActiveTab ();
-
-    this.initialLastActiveTab = PreferenceManager.getInstance ()
-        .getPreferencesDialogLastActiveTab ();
-    this.gui.jTabbedPane.setSelectedIndex ( this.initialLastActiveTab );
-
+    init ();
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
@@ -817,7 +878,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   public final void handleAccept ()
   {
     logger.debug ( "handle accept" ); //$NON-NLS-1$
-    saveData ();
+    save ();
   }
 
 
@@ -946,7 +1007,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     logger.debug ( "handle ok" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
-    saveData ();
+    save ();
     this.gui.dispose ();
   }
 
@@ -981,16 +1042,26 @@ public final class PreferencesDialog implements LanguageChangedListener
   public final void handleRestore ()
   {
     logger.debug ( "handle restore" ); //$NON-NLS-1$
-    // Language
+    /*
+     * General
+     */
     this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
-    // Look and feel
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
-    // Zoom factor
     this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
-    // Auto step
+    /*
+     * View
+     */
+    this.gui.jComboBoxTransition
+        .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
+            .getIndex () );
+    this.gui.jComboBoxMouseSelection
+        .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
+            .getIndex () );
     this.gui.jSliderAutoStep
         .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
-    // Color
+    /*
+     * Color
+     */
     this.colorItemState.restore ();
     this.colorItemSelectedState.restore ();
     this.colorItemActiveState.restore ();
@@ -1005,16 +1076,50 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserHighlighting.restore ();
     this.colorItemParserState.restore ();
     this.colorItemParserSymbol.restore ();
-    // Alphabet
+    /*
+     * Alphabet
+     */
     this.alphabetItem.restore ();
     this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
-    // PushDownAlphabet
     this.gui.jCheckBoxPushDownAlphabet
         .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+  }
+
+
+  /**
+   * Initializes the data.
+   */
+  private final void init ()
+  {
+    /*
+     * General
+     */
+    initLanguage ();
+    initLookAndFeel ();
+    initZoomFactor ();
+    /*
+     * View
+     */
+    initTransition ();
+    initMouseSelection ();
+    initAutoStep ();
+    /*
+     * Color
+     */
+    initColorList ();
+    /*
+     * Alphabet
+     */
+    initAlphabet ();
+    initPushDownAlphabet ();
+    /*
+     * Tab
+     */
+    initLastActiveTab ();
   }
 
 
@@ -1032,7 +1137,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanelInput
         .getJPopupMenu ();
     jPopupMenu.addSeparator ();
-    // RestoreAlphabet
     final JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
@@ -1051,7 +1155,6 @@ public final class PreferencesDialog implements LanguageChangedListener
             .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
       }
     } );
-    // LanguageChangedListener
     PreferenceManager.getInstance ().addLanguageChangedListener (
         new LanguageChangedListener ()
         {
@@ -1099,8 +1202,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // PopupMenu
     this.jPopupMenuAutoStep = new JPopupMenu ();
-    // RestoreAutoStep
-    JMenuItem jMenuItemRestoreAutoStep = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestoreAutoStep = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreAutoStep.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -1117,6 +1219,19 @@ public final class PreferencesDialog implements LanguageChangedListener
             .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
       }
     } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreAutoStep.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreAutoStep.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
     this.jPopupMenuAutoStep.add ( jMenuItemRestoreAutoStep );
     this.gui.jSliderAutoStep.addMouseListener ( new MouseAdapter ()
     {
@@ -1218,8 +1333,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // PopupMenu
     this.jPopupMenuColorList = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -1291,6 +1405,19 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
     } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreColorList.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreColorList.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
 
     // Items
     this.colorListModel.add ( this.colorItemState );
@@ -1328,6 +1455,66 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
     this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
+
+    // PopupMenu
+    this.jPopupMenuLanguage = new JPopupMenu ();
+    final JMenuItem jMenuItemRestoreLanguage = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+      }
+    } );
+    this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
+    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+
+          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreLanguage.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
   }
 
 
@@ -1375,8 +1562,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // PopupMenu
     this.jPopupMenuLookAndFeel = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreLookAndFeel = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestoreLookAndFeel = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreLookAndFeel.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -1420,6 +1606,19 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
     } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreLookAndFeel.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreLookAndFeel.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
   }
 
 
@@ -1429,12 +1628,10 @@ public final class PreferencesDialog implements LanguageChangedListener
   private final void initMouseSelection ()
   {
     this.mouseSelectionComboBoxModel = new MouseSelectionComboBoxModel ();
-    this.mouseSelectionWithoutReturn = MouseSelectionItem.create ( 0 );
-    this.mouseSelectionWithReturn = MouseSelectionItem.create ( 1 );
-    this.mouseSelectionComboBoxModel
-        .addElement ( this.mouseSelectionWithoutReturn );
-    this.mouseSelectionComboBoxModel
-        .addElement ( this.mouseSelectionWithReturn );
+    this.mouseSelectionComboBoxModel.addElement ( MouseSelectionItem
+        .create ( 0 ) );
+    this.mouseSelectionComboBoxModel.addElement ( MouseSelectionItem
+        .create ( 1 ) );
     this.gui.jComboBoxMouseSelection
         .setModel ( this.mouseSelectionComboBoxModel );
     this.gui.jComboBoxMouseSelection.setCursor ( new Cursor (
@@ -1443,34 +1640,29 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getMouseSelectionItem ();
     this.gui.jComboBoxMouseSelection
         .setSelectedItem ( this.initialMouseSelectionItem );
-  }
 
-
-  /**
-   * Initializes the popup menu.
-   */
-  private final void initPopupMenu ()
-  {
-    this.jPopupMenuLanguage = new JPopupMenu ();
-    // RestoreColorList
-    JMenuItem jMenuItemRestoreLanguage = new JMenuItem ( Messages
+    // PopupMenu
+    this.jPopupMenuMouseSelection = new JPopupMenu ();
+    final JMenuItem jMenuItemRestoreMouseSelection = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.setMnemonic ( Messages.getString (
+    jMenuItemRestoreMouseSelection.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreLanguage.addActionListener ( new ActionListener ()
+    jMenuItemRestoreMouseSelection.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreMouseSelection.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+        PreferencesDialog.this.gui.jComboBoxMouseSelection
+            .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
+                .getIndex () );
       }
     } );
-    this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
-    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    this.jPopupMenuMouseSelection.add ( jMenuItemRestoreMouseSelection );
+    this.gui.jComboBoxMouseSelection.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1479,7 +1671,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+          PreferencesDialog.this.jPopupMenuMouseSelection.show ( event
               .getComponent (), event.getX (), event.getY () );
         }
       }
@@ -1491,12 +1683,24 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-
-          PreferencesDialog.this.jPopupMenuLanguage.show ( event
+          PreferencesDialog.this.jPopupMenuMouseSelection.show ( event
               .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreMouseSelection.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreMouseSelection.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
   }
 
 
@@ -1519,14 +1723,13 @@ public final class PreferencesDialog implements LanguageChangedListener
     JPopupMenu jPopupMenu = this.gui.styledAlphabetParserPanelPushDown
         .getJPopupMenu ();
     jPopupMenu.addSeparator ();
-    // RestoreAlphabet
-    final JMenuItem jMenuItemRestoreAlphabet = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestorePushDownAlphabet = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+    jMenuItemRestorePushDownAlphabet.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
-    jMenuItemRestoreAlphabet.addActionListener ( new ActionListener ()
+    jMenuItemRestorePushDownAlphabet.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestorePushDownAlphabet.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1539,7 +1742,6 @@ public final class PreferencesDialog implements LanguageChangedListener
                 .getAlphabet () );
       }
     } );
-    // LanguageChangedListener
     PreferenceManager.getInstance ().addLanguageChangedListener (
         new LanguageChangedListener ()
         {
@@ -1547,13 +1749,13 @@ public final class PreferencesDialog implements LanguageChangedListener
           @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
-            jMenuItemRestoreAlphabet.setText ( Messages
+            jMenuItemRestorePushDownAlphabet.setText ( Messages
                 .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
-            jMenuItemRestoreAlphabet.setMnemonic ( Messages.getString (
+            jMenuItemRestorePushDownAlphabet.setMnemonic ( Messages.getString (
                 "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
           }
         } );
-    jPopupMenu.add ( jMenuItemRestoreAlphabet );
+    jPopupMenu.add ( jMenuItemRestorePushDownAlphabet );
 
     /*
      * Alphabet changed listener
@@ -1627,6 +1829,83 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Initializes the transition.
+   */
+  private final void initTransition ()
+  {
+    this.transitionComboBoxModel = new TransitionComboBoxModel ();
+    this.transitionComboBoxModel.addElement ( TransitionItem.create ( 0 ) );
+    this.transitionComboBoxModel.addElement ( TransitionItem.create ( 1 ) );
+    this.gui.jComboBoxTransition.setModel ( this.transitionComboBoxModel );
+    this.gui.jComboBoxTransition.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+    this.initialTransitionItem = PreferenceManager.getInstance ()
+        .getTransitionItem ();
+    this.gui.jComboBoxTransition.setSelectedItem ( this.initialTransitionItem );
+
+    // PopupMenu
+    this.jPopupMenuTransition = new JPopupMenu ();
+    final JMenuItem jMenuItemRestoreTranstion = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreTranstion.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreTranstion.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreTranstion.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PreferencesDialog.this.gui.jComboBoxTransition
+            .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
+                .getIndex () );
+      }
+    } );
+    this.jPopupMenuTransition.add ( jMenuItemRestoreTranstion );
+    this.gui.jComboBoxTransition.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuTransition.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuTransition.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreTranstion.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreTranstion.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the zoom factor.
    */
   private final void initZoomFactor ()
@@ -1637,8 +1916,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // PopupMenu
     this.jPopupMenuZoomFactor = new JPopupMenu ();
-    // RestoreZoomFactor
-    JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
+    final JMenuItem jMenuItemRestoreZoomFactor = new JMenuItem ( Messages
         .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
     jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -1682,6 +1960,19 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
     } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreZoomFactor.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreZoomFactor.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
   }
 
 
@@ -1857,34 +2148,41 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data.
    */
-  private final void saveData ()
+  private final void save ()
   {
     logger.debug ( "save data" ); //$NON-NLS-1$
-    // Last active tab
-    saveDataLastActiveTab ();
-    // Language
-    saveDataLanguage ();
-    // Look and feel
-    saveDataLookAndFeel ();
-    // Mouse selection
-    saveDataMouseSelection ();
-    // Zoom factor
-    saveDataZoomFactor ();
-    // Auto step
-    saveDataAutoStep ();
-    // Color
-    saveDataColor ();
-    // Alphabet
-    saveDataAlphabet ();
-    // PushDownAlphabet
-    saveDataPushDownAlphabet ();
+    /*
+     * General
+     */
+    saveLanguage ();
+    saveLookAndFeel ();
+    saveZoomFactor ();
+    /*
+     * View
+     */
+    saveTransition ();
+    saveMouseSelection ();
+    saveAutoStep ();
+    /*
+     * Color
+     */
+    saveColor ();
+    /*
+     * Alphabet
+     */
+    saveAlphabet ();
+    savePushDownAlphabet ();
+    /*
+     * Tab
+     */
+    saveLastActiveTab ();
   }
 
 
   /**
    * Saves the data of the {@link AlphabetItem}.
    */
-  private final void saveDataAlphabet ()
+  private final void saveAlphabet ()
   {
     if ( !this.initialAlphabetItem.equals ( this.alphabetItem ) )
     {
@@ -1899,7 +2197,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the auto step .
    */
-  private final void saveDataAutoStep ()
+  private final void saveAutoStep ()
   {
     if ( this.initialAutoStepItem.getAutoStepInterval () != this.gui.jSliderAutoStep
         .getValue () )
@@ -1917,7 +2215,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the color.
    */
-  private final void saveDataColor ()
+  private final void saveColor ()
   {
     // State
     if ( !this.initialColorItemState.equals ( this.colorItemState ) )
@@ -2117,7 +2415,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the language.
    */
-  private final void saveDataLanguage ()
+  private final void saveLanguage ()
   {
     LanguageItem selectedLanguageItem = this.languageComboBoxModel
         .getSelectedItem ();
@@ -2140,7 +2438,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the last active tab.
    */
-  private final void saveDataLastActiveTab ()
+  private final void saveLastActiveTab ()
   {
     if ( this.initialLastActiveTab != this.gui.jTabbedPane.getSelectedIndex () )
     {
@@ -2154,7 +2452,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the look and feel.
    */
-  private final void saveDataLookAndFeel ()
+  private final void saveLookAndFeel ()
   {
     LookAndFeelItem selectedLookAndFeelItem = this.lookAndFeelComboBoxModel
         .getSelectedItem ();
@@ -2203,7 +2501,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the mouse selection.
    */
-  private final void saveDataMouseSelection ()
+  private final void saveMouseSelection ()
   {
     if ( this.initialMouseSelectionItem.getIndex () != this.gui.jComboBoxMouseSelection
         .getSelectedIndex () )
@@ -2221,7 +2519,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * Saves the data of the push down {@link AlphabetItem}.
    */
-  private final void saveDataPushDownAlphabet ()
+  private final void savePushDownAlphabet ()
   {
     if ( !this.initialPushDownAlphabetItem.equals ( this.pushDownAlphabetItem ) )
     {
@@ -2245,9 +2543,27 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Saves the data of the {@link Transition}.
+   */
+  private final void saveTransition ()
+  {
+    if ( this.initialTransitionItem.getIndex () != this.gui.jComboBoxTransition
+        .getSelectedIndex () )
+    {
+      logger.debug ( "transition item changed to \"" //$NON-NLS-1$
+          + this.gui.jComboBoxTransition.getSelectedIndex () + "\"" ); //$NON-NLS-1$
+      this.initialTransitionItem = TransitionItem
+          .create ( this.gui.jComboBoxTransition.getSelectedIndex () );
+      PreferenceManager.getInstance ().setTransitionItem (
+          this.initialTransitionItem );
+    }
+  }
+
+
+  /**
    * Saves the data of the zoom factor.
    */
-  private final void saveDataZoomFactor ()
+  private final void saveZoomFactor ()
   {
     if ( this.initialZoomFactorItem.getFactor () != this.gui.jSliderZoom
         .getValue () )

@@ -1179,7 +1179,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           System.exit ( 1 );
         }
 
-        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
           {
@@ -1301,7 +1301,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
                 MachinePanel.this.firstState, target );
             dialog.dispose ();
           }
-          switch ( PreferenceManager.getInstance ().getChoiceItem () )
+          switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
             case WITHOUT_RETURN_TO_MOUSE :
             {
@@ -1384,7 +1384,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           dialog.dispose ();
 
         }
-        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
           {
@@ -1538,7 +1538,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           System.exit ( 1 );
         }
 
-        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
           {
@@ -1611,7 +1611,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           System.exit ( 1 );
         }
 
-        switch ( PreferenceManager.getInstance ().getChoiceItem () )
+        switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
           {

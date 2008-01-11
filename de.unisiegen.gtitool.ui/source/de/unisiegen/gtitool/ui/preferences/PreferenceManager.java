@@ -29,10 +29,10 @@ import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
-import de.unisiegen.gtitool.ui.preferences.item.ChoiceItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
+import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
@@ -100,9 +100,9 @@ public final class PreferenceManager
 
 
   /**
-   * The default {@link ChoiceItem}.
+   * The default {@link MouseSelectionItem}.
    */
-  public static final ChoiceItem DEFAULT_CHOICE_ITEM = ChoiceItem.WITHOUT_RETURN_TO_MOUSE;
+  public static final MouseSelectionItem DEFAULT_MOUSE_SELECTION_ITEM = MouseSelectionItem.WITHOUT_RETURN_TO_MOUSE;
 
 
   /**
@@ -607,15 +607,16 @@ public final class PreferenceManager
 
 
   /**
-   * Returns the {@link ChoiceItem}.
+   * Returns the {@link MouseSelectionItem}.
    * 
-   * @return The {@link ChoiceItem}.
+   * @return The {@link MouseSelectionItem}.
    */
-  public final ChoiceItem getChoiceItem ()
+  public final MouseSelectionItem getMouseSelectionItem ()
   {
-    int index = this.preferences.getInt ( "PreferencesDialog.ChoiceItem.Index", //$NON-NLS-1$
-        DEFAULT_CHOICE_ITEM.getIndex () );
-    return ChoiceItem.create ( index );
+    int index = this.preferences.getInt (
+        "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
+        DEFAULT_MOUSE_SELECTION_ITEM.getIndex () );
+    return MouseSelectionItem.create ( index );
   }
 
 
@@ -1260,16 +1261,17 @@ public final class PreferenceManager
 
 
   /**
-   * Sets the {@link ChoiceItem}.
+   * Sets the {@link MouseSelectionItem}.
    * 
-   * @param choiceItem The {@link ChoiceItem}.
+   * @param mouseSelectionItem The {@link MouseSelectionItem}.
    */
-  public final void setChoiceItem ( ChoiceItem choiceItem )
+  public final void setMouseSelectionItem (
+      MouseSelectionItem mouseSelectionItem )
   {
-    logger.debug ( "set choice item to \"" //$NON-NLS-1$
-        + choiceItem.getIndex () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.ChoiceItem.Index", choiceItem //$NON-NLS-1$
-        .getIndex () );
+    logger.debug ( "set mouse selection item to \"" //$NON-NLS-1$
+        + mouseSelectionItem.getIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
+        mouseSelectionItem.getIndex () );
   }
 
 

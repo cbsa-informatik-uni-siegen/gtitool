@@ -46,10 +46,10 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
-import de.unisiegen.gtitool.ui.preferences.item.ChoiceItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
+import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
@@ -63,69 +63,6 @@ import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
  */
 public final class PreferencesDialog implements LanguageChangedListener
 {
-
-  /**
-   * The choice {@link ComboBoxModel}.
-   * 
-   * @author Christian Fehler
-   */
-  protected final class ChoiceComboBoxModel extends DefaultComboBoxModel
-  {
-
-    /**
-     * The serial version uid.
-     */
-    private static final long serialVersionUID = 9167257578795363897L;
-
-
-    /**
-     * Adds the given item.
-     * 
-     * @param choiceItem The {@link ChoiceItem} to add.
-     */
-    public final void addElement ( ChoiceItem choiceItem )
-    {
-      super.addElement ( choiceItem );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see DefaultComboBoxModel#addElement(Object)
-     */
-    @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
-    {
-      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see DefaultComboBoxModel#getElementAt(int)
-     */
-    @Override
-    public final ChoiceItem getElementAt ( int index )
-    {
-      return ( ChoiceItem ) super.getElementAt ( index );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see DefaultComboBoxModel#getSelectedItem()
-     */
-    @Override
-    public final ChoiceItem getSelectedItem ()
-    {
-      return ( ChoiceItem ) super.getSelectedItem ();
-    }
-  }
-
 
   /**
    * The color {@link ListCellRenderer}.
@@ -360,6 +297,70 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The mouse selection {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class MouseSelectionComboBoxModel extends
+      DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 9167257578795363897L;
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param mouseSelectionItem The {@link MouseSelectionItem} to add.
+     */
+    public final void addElement ( MouseSelectionItem mouseSelectionItem )
+    {
+      super.addElement ( mouseSelectionItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public final void addElement ( @SuppressWarnings ( "unused" )
+    Object object )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public final MouseSelectionItem getElementAt ( int index )
+    {
+      return ( MouseSelectionItem ) super.getElementAt ( index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public final MouseSelectionItem getSelectedItem ()
+    {
+      return ( MouseSelectionItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
    * Selects the item with the given index in the color list or clears the
    * selection after a delay.
    * 
@@ -468,9 +469,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link ChoiceComboBoxModel}.
+   * The {@link MouseSelectionComboBoxModel}.
    */
-  private ChoiceComboBoxModel choiceComboBoxModel;
+  private MouseSelectionComboBoxModel mouseSelectionComboBoxModel;
 
 
   /**
@@ -600,9 +601,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The initial {@link ChoiceItem}.
+   * The initial {@link MouseSelectionItem}.
    */
-  private ChoiceItem initialChoiceItem;
+  private MouseSelectionItem initialMouseSelectionItem;
 
 
   /**
@@ -758,13 +759,13 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The choice item without return to the mouse.
    */
-  private ChoiceItem choiceWithoutReturn;
+  private MouseSelectionItem mouseSelectionWithoutReturn;
 
 
   /**
    * The choice item with return to the mouse.
    */
-  private ChoiceItem choiceWithReturn;
+  private MouseSelectionItem mouseSelectionWithReturn;
 
 
   /**
@@ -782,7 +783,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     initLanguage ();
     initLookAndFeel ();
     initZoomFactor ();
-    initChoice ();
+    initMouseSelection ();
     initColorList ();
     initAlphabet ();
     initPushDownAlphabet ();
@@ -1070,23 +1071,6 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Initializes the choice.
-   */
-  private final void initChoice ()
-  {
-    this.choiceComboBoxModel = new ChoiceComboBoxModel ();
-    this.choiceWithoutReturn = ChoiceItem.create ( 0 );
-    this.choiceWithReturn = ChoiceItem.create ( 1 );
-    this.choiceComboBoxModel.addElement ( this.choiceWithoutReturn );
-    this.choiceComboBoxModel.addElement ( this.choiceWithReturn );
-    this.gui.jComboBoxChoice.setModel ( this.choiceComboBoxModel );
-    this.gui.jComboBoxChoice.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-    this.initialChoiceItem = PreferenceManager.getInstance ().getChoiceItem ();
-    this.gui.jComboBoxChoice.setSelectedItem ( this.initialChoiceItem );
-  }
-
-
-  /**
    * Initializes the color list.
    */
   private final void initColorList ()
@@ -1359,6 +1343,29 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
     } );
+  }
+
+
+  /**
+   * Initializes the mouse selection.
+   */
+  private final void initMouseSelection ()
+  {
+    this.mouseSelectionComboBoxModel = new MouseSelectionComboBoxModel ();
+    this.mouseSelectionWithoutReturn = MouseSelectionItem.create ( 0 );
+    this.mouseSelectionWithReturn = MouseSelectionItem.create ( 1 );
+    this.mouseSelectionComboBoxModel
+        .addElement ( this.mouseSelectionWithoutReturn );
+    this.mouseSelectionComboBoxModel
+        .addElement ( this.mouseSelectionWithReturn );
+    this.gui.jComboBoxMouseSelection
+        .setModel ( this.mouseSelectionComboBoxModel );
+    this.gui.jComboBoxMouseSelection.setCursor ( new Cursor (
+        Cursor.HAND_CURSOR ) );
+    this.initialMouseSelectionItem = PreferenceManager.getInstance ()
+        .getMouseSelectionItem ();
+    this.gui.jComboBoxMouseSelection
+        .setSelectedItem ( this.initialMouseSelectionItem );
   }
 
 
@@ -1663,12 +1670,20 @@ public final class PreferencesDialog implements LanguageChangedListener
         "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jComboBoxLookAndFeel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
+    // Zoom
     this.gui.jLabelZoom.setText ( Messages
         .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
     this.gui.jLabelZoom.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jSliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
+    // Mouse selection
+    this.gui.jLabelMouseSelection.setText ( Messages
+        .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$    
+    this.gui.jLabelMouseSelection.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jComboBoxMouseSelection.setToolTipText ( Messages
+        .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
     // Restore
     this.gui.jButtonRestore.setText ( Messages
         .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
@@ -1767,8 +1782,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     saveDataLanguage ();
     // Look and feel
     saveDataLookAndFeel ();
-    // Choice
-    saveDataChoice ();
+    // Mouse selection
+    saveDataMouseSelection ();
     // Zoom factor
     saveDataZoomFactor ();
     // Color
@@ -1791,23 +1806,6 @@ public final class PreferencesDialog implements LanguageChangedListener
           + this.alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
       this.initialAlphabetItem = this.alphabetItem.clone ();
       PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
-    }
-  }
-
-
-  /**
-   * Saves the data of the choice.
-   */
-  private final void saveDataChoice ()
-  {
-    if ( this.initialChoiceItem.getIndex () != this.gui.jComboBoxChoice
-        .getSelectedIndex () )
-    {
-      logger.debug ( "choice item changed to \"" //$NON-NLS-1$
-          + this.gui.jComboBoxChoice.getSelectedIndex () + "\"" ); //$NON-NLS-1$
-      this.initialChoiceItem = ChoiceItem.create ( this.gui.jComboBoxChoice
-          .getSelectedIndex () );
-      PreferenceManager.getInstance ().setChoiceItem ( this.initialChoiceItem );
     }
   }
 
@@ -2094,6 +2092,24 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
       this.initialLookAndFeel = selectedLookAndFeelItem;
+    }
+  }
+
+
+  /**
+   * Saves the data of the mouse selection.
+   */
+  private final void saveDataMouseSelection ()
+  {
+    if ( this.initialMouseSelectionItem.getIndex () != this.gui.jComboBoxMouseSelection
+        .getSelectedIndex () )
+    {
+      logger.debug ( "mouse selection item changed to \"" //$NON-NLS-1$
+          + this.gui.jComboBoxMouseSelection.getSelectedIndex () + "\"" ); //$NON-NLS-1$
+      this.initialMouseSelectionItem = MouseSelectionItem
+          .create ( this.gui.jComboBoxMouseSelection.getSelectedIndex () );
+      PreferenceManager.getInstance ().setMouseSelectionItem (
+          this.initialMouseSelectionItem );
     }
   }
 

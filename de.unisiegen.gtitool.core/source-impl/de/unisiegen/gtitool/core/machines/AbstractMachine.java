@@ -904,8 +904,7 @@ public abstract class AbstractMachine implements Machine
   {
     if ( getActiveState ().size () == 0 )
     {
-      throw new IllegalArgumentException (
-          "no active state: machine must be started first" ); //$NON-NLS-1$
+      throw new WordNotAcceptedException ( this.word );
     }
     // Check for epsilon transitions
     boolean epsilonTransitionFound = false;
@@ -959,6 +958,10 @@ public abstract class AbstractMachine implements Machine
     // No transition is found
     if ( this.activeStateSet.size () == 0 )
     {
+      if ( !epsilonTransitionFound )
+      {
+        this.word.previousSymbol ();
+      }
       throw new WordNotAcceptedException ( this.word );
     }
     addHistory ( transitions );
@@ -979,11 +982,6 @@ public abstract class AbstractMachine implements Machine
   public final ArrayList < Transition > previousSymbol ()
       throws WordFinishedException, WordResetedException
   {
-    if ( getActiveState ().size () == 0 )
-    {
-      throw new IllegalArgumentException (
-          "no active state: machine must be started first" ); //$NON-NLS-1$
-    }
     ArrayList < Transition > transitions = removeHistory ();
     // Check for epsilon transitions
     boolean epsilonTransitionFound = false;

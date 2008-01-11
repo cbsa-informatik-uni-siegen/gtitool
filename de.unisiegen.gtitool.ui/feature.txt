@@ -1,5 +1,1 @@
-*** Benny ***
-- Notizen im Graph hinzufügen
-
-
-*** Christian ***
+BM		- Notizen im Graph hinzufügen

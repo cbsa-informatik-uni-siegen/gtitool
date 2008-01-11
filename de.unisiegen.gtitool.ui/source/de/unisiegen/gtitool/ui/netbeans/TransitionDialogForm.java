@@ -211,9 +211,11 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 16, 10, 16);
         getContentPane().add(JLabelTransitionSet, gridBagConstraints);
 
+        styledTransitionParserPanel.setCopyable(false);
         styledTransitionParserPanel.setEditable(false);
         styledTransitionParserPanel.setMinimumSize(new java.awt.Dimension(80, 80));
         styledTransitionParserPanel.setPreferredSize(new java.awt.Dimension(80, 80));
+        styledTransitionParserPanel.setSideBarVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;

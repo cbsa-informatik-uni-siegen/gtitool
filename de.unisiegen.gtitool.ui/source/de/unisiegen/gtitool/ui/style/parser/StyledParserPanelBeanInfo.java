@@ -112,28 +112,29 @@ public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
     private static final int PROPERTY_requestFocusEnabled = 81;
     private static final int PROPERTY_rootPane = 82;
     private static final int PROPERTY_showing = 83;
-    private static final int PROPERTY_size = 84;
-    private static final int PROPERTY_toolkit = 85;
-    private static final int PROPERTY_toolTipText = 86;
-    private static final int PROPERTY_topLevelAncestor = 87;
-    private static final int PROPERTY_transferHandler = 88;
-    private static final int PROPERTY_treeLock = 89;
-    private static final int PROPERTY_UI = 90;
-    private static final int PROPERTY_UIClassID = 91;
-    private static final int PROPERTY_valid = 92;
-    private static final int PROPERTY_validateRoot = 93;
-    private static final int PROPERTY_verifyInputWhenFocusTarget = 94;
-    private static final int PROPERTY_vetoableChangeListeners = 95;
-    private static final int PROPERTY_visible = 96;
-    private static final int PROPERTY_visibleRect = 97;
-    private static final int PROPERTY_width = 98;
-    private static final int PROPERTY_x = 99;
-    private static final int PROPERTY_y = 100;
+    private static final int PROPERTY_sideBarVisible = 84;
+    private static final int PROPERTY_size = 85;
+    private static final int PROPERTY_toolkit = 86;
+    private static final int PROPERTY_toolTipText = 87;
+    private static final int PROPERTY_topLevelAncestor = 88;
+    private static final int PROPERTY_transferHandler = 89;
+    private static final int PROPERTY_treeLock = 90;
+    private static final int PROPERTY_UI = 91;
+    private static final int PROPERTY_UIClassID = 92;
+    private static final int PROPERTY_valid = 93;
+    private static final int PROPERTY_validateRoot = 94;
+    private static final int PROPERTY_verifyInputWhenFocusTarget = 95;
+    private static final int PROPERTY_vetoableChangeListeners = 96;
+    private static final int PROPERTY_visible = 97;
+    private static final int PROPERTY_visibleRect = 98;
+    private static final int PROPERTY_width = 99;
+    private static final int PROPERTY_x = 100;
+    private static final int PROPERTY_y = 101;
 
     // Property array 
     /*lazy PropertyDescriptor*/
     private static PropertyDescriptor[] getPdescriptor(){
-        PropertyDescriptor[] properties = new PropertyDescriptor[101];
+        PropertyDescriptor[] properties = new PropertyDescriptor[102];
     
         try {
             properties[PROPERTY_accessibleContext] = new PropertyDescriptor ( "accessibleContext", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getAccessibleContext", null ); // NOI18N
@@ -224,6 +225,9 @@ public class StyledParserPanelBeanInfo extends SimpleBeanInfo {
             properties[PROPERTY_requestFocusEnabled] = new PropertyDescriptor ( "requestFocusEnabled", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isRequestFocusEnabled", "setRequestFocusEnabled" ); // NOI18N
             properties[PROPERTY_rootPane] = new PropertyDescriptor ( "rootPane", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getRootPane", null ); // NOI18N
             properties[PROPERTY_showing] = new PropertyDescriptor ( "showing", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isShowing", null ); // NOI18N
+            properties[PROPERTY_sideBarVisible] = new PropertyDescriptor ( "sideBarVisible", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "isSideBarVisible", "setSideBarVisible" ); // NOI18N
+            properties[PROPERTY_sideBarVisible].setDisplayName ( "sideBarVisible" );
+            properties[PROPERTY_sideBarVisible].setShortDescription ( "the sideBarVisible value" );
             properties[PROPERTY_size] = new PropertyDescriptor ( "size", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getSize", "setSize" ); // NOI18N
             properties[PROPERTY_toolkit] = new PropertyDescriptor ( "toolkit", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getToolkit", null ); // NOI18N
             properties[PROPERTY_toolTipText] = new PropertyDescriptor ( "toolTipText", de.unisiegen.gtitool.ui.style.parser.StyledParserPanel.class, "getToolTipText", "setToolTipText" ); // NOI18N

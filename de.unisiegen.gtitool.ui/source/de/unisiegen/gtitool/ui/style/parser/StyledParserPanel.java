@@ -203,6 +203,12 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Flag that indicates if the {@link SideBar} is visible.
+   */
+  private boolean sideBarVisible;
+
+
+  /**
    * Flag that indicates if the panel is copyable.
    */
   private boolean copyable;
@@ -279,6 +285,7 @@ public abstract class StyledParserPanel extends JPanel
   {
     this.editable = true;
     this.copyable = false;
+    this.sideBarVisible = true;
     this.editor = new StyledParserEditor ();
 
     // PopupMenu
@@ -736,6 +743,17 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Return the sideBarVisible value.
+   * 
+   * @return The sideBarVisible value.
+   */
+  public final boolean isSideBarVisible ()
+  {
+    return this.sideBarVisible;
+  }
+
+
+  /**
    * Removes the given {@link ParseableChangedListener}.
    * 
    * @param listener The {@link ParseableChangedListener}.
@@ -895,20 +913,30 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Sets the specified boolean to indicate whether or not the {@link SideBar}
+   * should be visible.
+   * 
+   * @param sideBarVisible The boolean to be set.
+   */
+  public final void setSideBarVisible ( boolean sideBarVisible )
+  {
+    this.sideBarVisible = sideBarVisible;
+    setStatus ();
+  }
+
+
+  /**
    * Sets the status.
    */
   private final void setStatus ()
   {
+    this.editor.setEditable ( this.editable );
     if ( this.editable )
     {
-      this.sideBar.setVisible ( true );
-      this.editor.setEditable ( true );
       this.editor.setFocusable ( true );
     }
     else
     {
-      this.sideBar.setVisible ( false );
-      this.editor.setEditable ( false );
       if ( this.copyable )
       {
         this.editor.setFocusable ( true );
@@ -920,6 +948,8 @@ public abstract class StyledParserPanel extends JPanel
         this.editor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
       }
     }
+    // SideBar
+    this.sideBar.setVisible ( this.sideBarVisible );
   }
 
 

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.unisiegen.gtitool.ui.style.sidebar;
 
 

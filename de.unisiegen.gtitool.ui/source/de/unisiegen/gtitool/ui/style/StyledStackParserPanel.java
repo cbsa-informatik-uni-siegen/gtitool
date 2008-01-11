@@ -3,7 +3,10 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
+import javax.swing.border.LineBorder;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -68,16 +71,19 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
-   * Let the listeners know that the {@link Stack} has changed.
+   * Checks the given {@link Stack}.
    * 
-   * @param newStack The new {@link Stack}.
+   * @param stack The {@link Stack} to check.
+   * @return The input {@link Stack} or null, if a {@link Symbol} in the
+   *         {@link Stack} is not in the push down {@link Alphabet}.
    */
-  private final void fireStackChanged ( Stack newStack )
+  private final Stack checkStack ( Stack stack )
   {
-    if ( ( newStack != null ) && ( this.pushDownAlphabet != null ) )
+    Stack checkedStack = stack;
+    if ( ( checkedStack != null ) && ( this.pushDownAlphabet != null ) )
     {
       ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : newStack )
+      for ( Symbol current : checkedStack )
       {
         if ( !this.pushDownAlphabet.contains ( current ) )
         {
@@ -88,23 +94,31 @@ public final class StyledStackParserPanel extends StyledParserPanel
                   current.getName (), this.pushDownAlphabet ) ) );
         }
       }
+      // Check for exceptions
       if ( exceptionList.size () > 0 )
       {
+        checkedStack = null;
+        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
         getDocument ().setException ( exceptionList );
-        StackChangedListener [] listeners = this.listenerList
-            .getListeners ( StackChangedListener.class );
-        for ( int n = 0 ; n < listeners.length ; ++n )
-        {
-          listeners [ n ].stackChanged ( null );
-        }
-        return;
       }
     }
+    return checkedStack;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Stack} has changed.
+   * 
+   * @param newStack The new {@link Stack}.
+   */
+  private final void fireStackChanged ( Stack newStack )
+  {
+    Stack checkedStack = checkStack ( newStack );
     StackChangedListener [] listeners = this.listenerList
         .getListeners ( StackChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].stackChanged ( newStack );
+      listeners [ n ].stackChanged ( checkedStack );
     }
   }
 
@@ -129,7 +143,8 @@ public final class StyledStackParserPanel extends StyledParserPanel
   {
     try
     {
-      return ( Stack ) getParsedObject ();
+      Stack stack = ( Stack ) getParsedObject ();
+      return checkStack ( stack );
     }
     catch ( Exception exc )
     {
@@ -158,6 +173,22 @@ public final class StyledStackParserPanel extends StyledParserPanel
   public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
   {
     setHighlightedParseableEntity ( symbols );
+  }
+
+
+  /**
+   * Sets the {@link Symbol}s which should be highlighted.
+   * 
+   * @param symbols The {@link Symbol}s which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Symbol ... symbols )
+  {
+    ParseableEntity [] entities = new ParseableEntity [ symbols.length ];
+    for ( int i = 0 ; i < symbols.length ; i++ )
+    {
+      entities [ i ] = symbols [ i ];
+    }
+    setHighlightedParseableEntity ( entities );
   }
 
 

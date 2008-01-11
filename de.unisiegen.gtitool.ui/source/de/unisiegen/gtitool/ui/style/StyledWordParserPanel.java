@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
+import javax.swing.border.LineBorder;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -94,6 +96,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
       if ( exceptionList.size () > 0 )
       {
         checkedWord = null;
+        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
         getDocument ().setException ( exceptionList );
       }
     }
@@ -108,12 +111,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
    */
   private final void fireWordChanged ( Word newWord )
   {
-    Word checkWord = checkWord ( newWord );
+    Word checkedWord = checkWord ( newWord );
     WordChangedListener [] listeners = this.listenerList
         .getListeners ( WordChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].wordChanged ( checkWord );
+      listeners [ n ].wordChanged ( checkedWord );
     }
   }
 

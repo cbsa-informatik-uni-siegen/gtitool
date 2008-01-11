@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.ParseableEntity;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -107,5 +109,43 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public final void setAlphabet ( Alphabet alphabet )
   {
     getEditor ().setText ( alphabet.toString () );
+  }
+
+
+  /**
+   * Sets the {@link Symbol}s which should be highlighted.
+   * 
+   * @param symbols The {@link Symbol}s which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
+  {
+    setHighlightedParseableEntity ( symbols );
+  }
+
+
+  /**
+   * Sets the {@link Symbol}s which should be highlighted.
+   * 
+   * @param symbols The {@link Symbol}s which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Symbol ... symbols )
+  {
+    ParseableEntity [] entities = new ParseableEntity [ symbols.length ];
+    for ( int i = 0 ; i < symbols.length ; i++ )
+    {
+      entities [ i ] = symbols [ i ];
+    }
+    setHighlightedParseableEntity ( entities );
+  }
+
+
+  /**
+   * Sets the {@link Symbol} which should be highlighted.
+   * 
+   * @param symbol The {@link Symbol} which should be highlighted.
+   */
+  public final void setHighlightedSymbol ( Symbol symbol )
+  {
+    setHighlightedParseableEntity ( symbol );
   }
 }

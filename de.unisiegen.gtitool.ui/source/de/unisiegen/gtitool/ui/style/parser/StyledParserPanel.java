@@ -163,13 +163,13 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * The normal {@link Color}.
    */
-  private static final Color NORMAL_COLOR = Color.BLACK;
+  protected static final Color NORMAL_COLOR = Color.BLACK;
 
 
   /**
    * The error {@link Color}.
    */
-  private static final Color ERROR_COLOR = Color.RED;
+  protected static final Color ERROR_COLOR = Color.RED;
 
 
   /**
@@ -187,7 +187,7 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * The {@link JScrollPane}.
    */
-  private JScrollPane jScrollPane;
+  protected JScrollPane jScrollPane;
 
 
   /**

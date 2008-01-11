@@ -28,15 +28,15 @@ public final class AlphabetItem implements Cloneable
   /**
    * Allocates a new <code>ColorItem</code>.
    * 
-   * @param pAlphabet The {@link Alphabet} of this item.
-   * @param pStandardAlphabet The standard {@link Alphabet} of this item.
+   * @param alphabet The {@link Alphabet} of this item.
+   * @param standardAlphabet The standard {@link Alphabet} of this item.
    */
-  public AlphabetItem ( Alphabet pAlphabet, Alphabet pStandardAlphabet )
+  public AlphabetItem ( Alphabet alphabet, Alphabet standardAlphabet )
   {
     // Alphabet
-    setAlphabet ( pAlphabet );
+    setAlphabet ( alphabet );
     // StandardAlphabet
-    setStandardAlphabet ( pStandardAlphabet );
+    setStandardAlphabet ( standardAlphabet );
   }
 
 
@@ -59,13 +59,13 @@ public final class AlphabetItem implements Cloneable
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof AlphabetItem )
+    if ( other instanceof AlphabetItem )
     {
-      AlphabetItem other = ( AlphabetItem ) pOther;
-      return ( ( this.alphabet.equals ( other.alphabet ) ) && ( this.standardAlphabet
-          .equals ( other.standardAlphabet ) ) );
+      AlphabetItem alphabetItem = ( AlphabetItem ) other;
+      return ( ( this.alphabet.equals ( alphabetItem.alphabet ) ) && ( this.standardAlphabet
+          .equals ( alphabetItem.standardAlphabet ) ) );
     }
     return false;
   }
@@ -119,30 +119,30 @@ public final class AlphabetItem implements Cloneable
   /**
    * Sets the {@link Alphabet}.
    * 
-   * @param pAlphabet The {@link Alphabet} to set.
+   * @param alphabet The {@link Alphabet} to set.
    */
-  public final void setAlphabet ( Alphabet pAlphabet )
+  public final void setAlphabet ( Alphabet alphabet )
   {
-    if ( pAlphabet == null )
+    if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
-    this.alphabet = pAlphabet;
+    this.alphabet = alphabet;
   }
 
 
   /**
    * Sets the standard {@link Alphabet}.
    * 
-   * @param pStandardAlphabet The standard {@link Alphabet} to set.
+   * @param standardAlphabet The standard {@link Alphabet} to set.
    */
-  public final void setStandardAlphabet ( Alphabet pStandardAlphabet )
+  public final void setStandardAlphabet ( Alphabet standardAlphabet )
   {
-    if ( pStandardAlphabet == null )
+    if ( standardAlphabet == null )
     {
       throw new NullPointerException ( "standardalphabet is null" ); //$NON-NLS-1$
     }
-    this.standardAlphabet = pStandardAlphabet;
+    this.standardAlphabet = standardAlphabet;
   }
 
 

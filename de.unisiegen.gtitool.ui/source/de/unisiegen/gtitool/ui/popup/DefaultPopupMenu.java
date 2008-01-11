@@ -105,15 +105,15 @@ public class DefaultPopupMenu extends JPopupMenu
   /**
    * Allocate a new {@link DefaultPopupMenu}
    * 
-   * @param pPanel the machine panel
-   * @param pMachine The {@link Machine}
-   * @param pFactor the actual zoom factor
+   * @param panel the machine panel
+   * @param machine The {@link Machine}
+   * @param factor the actual zoom factor
    */
-  public DefaultPopupMenu ( MachinePanel pPanel, Machine pMachine, int pFactor )
+  public DefaultPopupMenu ( MachinePanel panel, Machine machine, int factor )
   {
-    this.machine = pMachine;
-    this.factor = pFactor;
-    this.panel = pPanel;
+    this.machine = machine;
+    this.factor = factor;
+    this.panel = panel;
     populateMenues ();
   }
 
@@ -133,7 +133,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 0.5 );
       }
@@ -146,7 +146,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 0.75 );
       }
@@ -159,7 +159,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1 );
       }
@@ -172,7 +172,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.25 );
       }
@@ -185,7 +185,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.5 );
       }
@@ -198,7 +198,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.75 );
       }
@@ -211,7 +211,7 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 2 );
       }
@@ -226,13 +226,13 @@ public class DefaultPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         try
         {
-          DefaultPopupMenu.this.panel.clearValidationMessages();
+          DefaultPopupMenu.this.panel.clearValidationMessages ();
           DefaultPopupMenu.this.machine.validate ();
-          
+
         }
         catch ( MachineValidationException e1 )
         {
@@ -277,5 +277,4 @@ public class DefaultPopupMenu extends JPopupMenu
         break;
     }
   }
-
 }

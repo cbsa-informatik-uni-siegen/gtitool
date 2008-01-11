@@ -18,8 +18,8 @@ public interface StateChangedListener extends EventListener
   /**
    * Invoked when the {@link State} changed.
    * 
-   * @param pNewState The new {@link State}.
+   * @param newState The new {@link State}.
    */
-  public void stateChanged ( State pNewState );
+  public void stateChanged ( State newState );
 
 }

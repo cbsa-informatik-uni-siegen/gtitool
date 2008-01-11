@@ -118,7 +118,7 @@ public final class TransitionPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
 
         int choice = JOptionPane.NO_OPTION;
@@ -146,7 +146,7 @@ public final class TransitionPopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );

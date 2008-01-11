@@ -26,23 +26,23 @@ public final class LookAndFeelItem implements Cloneable,
   /**
    * Allocates a new <code>LookAndFeelItem</code>.
    * 
-   * @param pName The name of this item.
-   * @param pClassName The className of this item.
+   * @param name The name of this item.
+   * @param className The className of this item.
    */
-  public LookAndFeelItem ( String pName, String pClassName )
+  public LookAndFeelItem ( String name, String className )
   {
     // Name
-    if ( pName == null )
+    if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
     }
-    this.name = pName;
+    this.name = name;
     // ClassName
-    if ( pClassName == null )
+    if ( className == null )
     {
       throw new NullPointerException ( "class name is null" ); //$NON-NLS-1$
     }
-    this.className = pClassName;
+    this.className = className;
   }
 
 
@@ -63,9 +63,9 @@ public final class LookAndFeelItem implements Cloneable,
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( LookAndFeelItem pOther )
+  public final int compareTo ( LookAndFeelItem other )
   {
-    return this.name.compareTo ( pOther.name );
+    return this.name.compareTo ( other.name );
   }
 
 
@@ -75,13 +75,13 @@ public final class LookAndFeelItem implements Cloneable,
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof LookAndFeelItem )
+    if ( other instanceof LookAndFeelItem )
     {
-      LookAndFeelItem other = ( LookAndFeelItem ) pOther;
-      return ( this.name.equals ( other.name ) )
-          && ( this.className.equals ( other.className ) );
+      LookAndFeelItem lookAndFeelItem = ( LookAndFeelItem ) other;
+      return ( this.name.equals ( lookAndFeelItem.name ) )
+          && ( this.className.equals ( lookAndFeelItem.className ) );
     }
     return false;
   }

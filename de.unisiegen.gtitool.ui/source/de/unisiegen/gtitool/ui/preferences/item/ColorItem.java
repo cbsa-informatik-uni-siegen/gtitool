@@ -44,22 +44,22 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
   /**
    * Allocates a new <code>ColorItem</code>.
    * 
-   * @param pColor The {@link Color} of this item.
-   * @param pCaption The caption of this item.
-   * @param pDescription The description of this item.
-   * @param pStandardColor The standard {@link Color} of this item.
+   * @param color The {@link Color} of this item.
+   * @param caption The caption of this item.
+   * @param description The description of this item.
+   * @param standardColor The standard {@link Color} of this item.
    */
-  public ColorItem ( Color pColor, String pCaption, String pDescription,
-      Color pStandardColor )
+  public ColorItem ( Color color, String caption, String description,
+      Color standardColor )
   {
     // Color
-    setColor ( pColor );
+    setColor ( color );
     // Caption
-    setCaption ( pCaption );
+    setCaption ( caption );
     // Description
-    setDescription ( pDescription );
+    setDescription ( description );
     // StandardColor
-    setStandardColor ( pStandardColor );
+    setStandardColor ( standardColor );
   }
 
 
@@ -81,9 +81,9 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( ColorItem pOther )
+  public final int compareTo ( ColorItem other )
   {
-    return this.caption.compareTo ( pOther.caption );
+    return this.caption.compareTo ( other.caption );
   }
 
 
@@ -93,13 +93,13 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof ColorItem )
+    if ( other instanceof ColorItem )
     {
-      ColorItem other = ( ColorItem ) pOther;
-      return ( ( this.color.equals ( other.color ) ) && ( this.standardColor
-          .equals ( other.standardColor ) ) );
+      ColorItem colorItem = ( ColorItem ) other;
+      return ( ( this.color.equals ( colorItem.color ) ) && ( this.standardColor
+          .equals ( colorItem.standardColor ) ) );
     }
     return false;
   }
@@ -195,68 +195,68 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
   /**
    * Sets the caption.
    * 
-   * @param pCaption The caption to set.
+   * @param caption The caption to set.
    */
-  public final void setCaption ( String pCaption )
+  public final void setCaption ( String caption )
   {
-    if ( pCaption == null )
+    if ( caption == null )
     {
       throw new NullPointerException ( "caption is null" ); //$NON-NLS-1$
     }
-    if ( pCaption.equals ( "" ) ) //$NON-NLS-1$
+    if ( caption.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "caption is empty" ); //$NON-NLS-1$
     }
-    this.caption = pCaption;
+    this.caption = caption;
   }
 
 
   /**
    * Sets the color.
    * 
-   * @param pColor The color to set.
+   * @param color The color to set.
    */
-  public final void setColor ( Color pColor )
+  public final void setColor ( Color color )
   {
-    if ( pColor == null )
+    if ( color == null )
     {
       throw new NullPointerException ( "color is null" ); //$NON-NLS-1$
     }
-    this.color = pColor;
+    this.color = color;
   }
 
 
   /**
    * Sets the description.
    * 
-   * @param pDescription The description to set.
+   * @param description The description to set.
    */
-  public final void setDescription ( String pDescription )
+  public final void setDescription ( String description )
   {
-    if ( pDescription == null )
+    if ( description == null )
     {
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
     }
-    if ( pDescription.equals ( "" ) ) //$NON-NLS-1$
+    if ( description.equals ( "" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "description is empty" ); //$NON-NLS-1$
     }
-    this.description = pDescription;
+    this.description = description;
   }
 
 
   /**
    * Sets the standard color.
    * 
-   * @param pStandardColor The standard color to set.
+   * @param standardColor The standard color to set.
    */
-  public final void setStandardColor ( Color pStandardColor )
+  public final void setStandardColor ( Color standardColor )
   {
-    if ( pStandardColor == null )
+    if ( standardColor == null )
     {
       throw new NullPointerException ( "standard color is null" ); //$NON-NLS-1$
     }
-    this.standardColor = pStandardColor;
+    this.standardColor = standardColor;
   }
 
 

@@ -59,9 +59,9 @@ public final class StyledParserEditor extends JEditorPane
    * @see JTextComponent#getToolTipText(MouseEvent)
    */
   @Override
-  public String getToolTipText ( MouseEvent pEvent )
+  public String getToolTipText ( MouseEvent event )
   {
-    int index = viewToModel ( pEvent.getPoint () );
+    int index = viewToModel ( event.getPoint () );
     if ( index < getDocument ().getLength () )
     {
       StyledParserDocument document = ( StyledParserDocument ) getDocument ();
@@ -73,6 +73,6 @@ public final class StyledParserEditor extends JEditorPane
         return ( ( Exception ) exception ).getMessage ();
       }
     }
-    return super.getToolTipText ( pEvent );
+    return super.getToolTipText ( event );
   }
 }

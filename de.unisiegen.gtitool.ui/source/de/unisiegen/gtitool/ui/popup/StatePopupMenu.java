@@ -51,8 +51,8 @@ public class StatePopupMenu extends JPopupMenu
   private JGraph graph;
 
 
-  /**DefaultMachineModel
-   * {@link GraphModel}
+  /**
+   * DefaultMachineModel {@link GraphModel}
    */
   private DefaultMachineModel model;
 
@@ -90,18 +90,18 @@ public class StatePopupMenu extends JPopupMenu
   /**
    * Allocates a new <code>StatePopupMenu</code>.
    * 
-   * @param pParent The parent {@link JFrame}.
-   * @param pGraph the JGraph containing the state
-   * @param pModel the model containing the state
-   * @param pState the state to open the popup menu
+   * @param parent The parent {@link JFrame}.
+   * @param graph the JGraph containing the state
+   * @param model the model containing the state
+   * @param state the state to open the popup menu
    */
-  public StatePopupMenu ( JFrame pParent, JGraph pGraph,
-      DefaultMachineModel pModel, DefaultStateView pState )
+  public StatePopupMenu ( JFrame parent, JGraph graph,
+      DefaultMachineModel model, DefaultStateView state )
   {
-    this.parent = pParent;
-    this.graph = pGraph;
-    this.model = pModel;
-    this.state = pState;
+    this.parent = parent;
+    this.graph = graph;
+    this.model = model;
+    this.state = state;
     populateMenues ();
   }
 
@@ -120,7 +120,7 @@ public class StatePopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
 
         int choice = JOptionPane.NO_OPTION;
@@ -131,8 +131,7 @@ public class StatePopupMenu extends JPopupMenu
             "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state
-               );
+          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state );
         }
 
       }
@@ -141,14 +140,14 @@ public class StatePopupMenu extends JPopupMenu
 
     this.startState = new JCheckBoxMenuItem ( Messages
         .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
-//    this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
-//        "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
+    // this.startState.setIcon ( new ImageIcon ( getClass ().getResource (
+    // "/de/unisiegen/gtitool/ui/icon/popupMenu/start.png" ) ) ); //$NON-NLS-1$
     this.startState.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
@@ -170,14 +169,14 @@ public class StatePopupMenu extends JPopupMenu
 
     this.finalState = new JCheckBoxMenuItem ( Messages
         .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-//    this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
-//        "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
+    // this.finalState.setIcon ( new ImageIcon ( getClass ().getResource (
+    // "/de/unisiegen/gtitool/ui/icon/popupMenu/final.png" ) ) ); //$NON-NLS-1$
     this.finalState.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
         StatePopupMenu.this.state.getState ().setFinalState (
             !StatePopupMenu.this.state.getState ().isFinalState () );
@@ -196,7 +195,7 @@ public class StatePopupMenu extends JPopupMenu
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent e )
+      ActionEvent event )
       {
 
         NewStateNameDialog dialog = new NewStateNameDialog (

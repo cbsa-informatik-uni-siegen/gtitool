@@ -29,23 +29,23 @@ public final class LanguageItem implements Cloneable,
   /**
    * Allocates a new <code>LanguageItem</code>.
    * 
-   * @param pTitle The title of this item.
-   * @param pLocale The {@link Locale} of this item.
+   * @param title The title of this item.
+   * @param locale The {@link Locale} of this item.
    */
-  public LanguageItem ( String pTitle, Locale pLocale )
+  public LanguageItem ( String title, Locale locale )
   {
     // Title
-    if ( pTitle == null )
+    if ( title == null )
     {
       throw new NullPointerException ( "title is null" ); //$NON-NLS-1$
     }
-    this.title = pTitle;
+    this.title = title;
     // Locale
-    if ( pLocale == null )
+    if ( locale == null )
     {
       throw new NullPointerException ( "locale is null" ); //$NON-NLS-1$
     }
-    this.locale = pLocale;
+    this.locale = locale;
   }
 
 
@@ -66,9 +66,9 @@ public final class LanguageItem implements Cloneable,
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( LanguageItem pOther )
+  public final int compareTo ( LanguageItem other )
   {
-    return this.title.compareTo ( pOther.title );
+    return this.title.compareTo ( other.title );
   }
 
 
@@ -78,13 +78,14 @@ public final class LanguageItem implements Cloneable,
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( Object pOther )
+  public final boolean equals ( Object other )
   {
-    if ( pOther instanceof LanguageItem )
+    if ( other instanceof LanguageItem )
     {
-      LanguageItem other = ( LanguageItem ) pOther;
-      return ( this.title.equals ( other.title ) )
-          && ( this.locale.getLanguage ().equals ( other.locale.getLanguage () ) );
+      LanguageItem languageItem = ( LanguageItem ) other;
+      return ( this.title.equals ( languageItem.title ) )
+          && ( this.locale.getLanguage ().equals ( languageItem.locale
+              .getLanguage () ) );
     }
     return false;
   }

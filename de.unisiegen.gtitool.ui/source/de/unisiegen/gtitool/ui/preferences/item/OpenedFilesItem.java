@@ -6,14 +6,15 @@ import java.util.ArrayList;
 
 
 /**
- * The class which handles the opened files and the index of the last
- * active file.
+ * The class which handles the opened files and the index of the last active
+ * file.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 public final class OpenedFilesItem extends RecentlyUsedFilesItem
 {
+
   /**
    * The index of the last active file.
    */
@@ -23,14 +24,14 @@ public final class OpenedFilesItem extends RecentlyUsedFilesItem
   /**
    * Allocates a new <code>RecentlyUsedItem</code>.
    * 
-   * @param pFiles The opened files.
-   * @param pActiveIndex The index of the last active file.
+   * @param files The opened files.
+   * @param activeIndex The index of the last active file.
    */
-  public OpenedFilesItem ( ArrayList < File > pFiles, int pActiveIndex )
+  public OpenedFilesItem ( ArrayList < File > files, int activeIndex )
   {
-    super(pFiles);
+    super ( files );
     // ActiveIndex
-    this.activeIndex = pActiveIndex;
+    this.activeIndex = activeIndex;
   }
 
 

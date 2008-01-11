@@ -18,8 +18,8 @@ public interface WordChangedListener extends EventListener
   /**
    * Invoked when the {@link Word} changed.
    * 
-   * @param pNewWord The new {@link Word}.
+   * @param newWord The new {@link Word}.
    */
-  public void wordChanged ( Word pNewWord );
+  public void wordChanged ( Word newWord );
 
 }

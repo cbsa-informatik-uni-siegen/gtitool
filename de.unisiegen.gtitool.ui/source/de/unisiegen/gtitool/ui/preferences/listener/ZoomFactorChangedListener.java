@@ -18,8 +18,8 @@ public interface ZoomFactorChangedListener extends EventListener
   /**
    * Invoked when the zoom factor changed.
    * 
-   * @param pNewValue The new {@link ZoomFactorItem}.
+   * @param newValue The new {@link ZoomFactorItem}.
    */
-  public void zoomFactorChanged ( ZoomFactorItem pNewValue );
+  public void zoomFactorChanged ( ZoomFactorItem newValue );
 
 }

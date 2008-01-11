@@ -18,8 +18,8 @@ public interface AlphabetChangedListener extends EventListener
   /**
    * Invoked when the {@link Alphabet} changed.
    * 
-   * @param pNewAlphabet The new {@link Alphabet}.
+   * @param newAlphabet The new {@link Alphabet}.
    */
-  public void alphabetChanged ( Alphabet pNewAlphabet );
+  public void alphabetChanged ( Alphabet newAlphabet );
 
 }

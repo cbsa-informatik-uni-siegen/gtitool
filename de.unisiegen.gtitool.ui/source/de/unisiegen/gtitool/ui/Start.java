@@ -44,21 +44,21 @@ public final class Start
       UIManager.setLookAndFeel ( PreferenceManager.getInstance ()
           .getLookAndFeelItem ().getClassName () );
     }
-    catch ( ClassNotFoundException e )
+    catch ( ClassNotFoundException exc )
     {
-      logger.error ( "class not found exception", e ); //$NON-NLS-1$
+      logger.error ( "class not found exception", exc ); //$NON-NLS-1$
     }
-    catch ( InstantiationException e )
+    catch ( InstantiationException exc )
     {
-      logger.error ( "instantiation exception", e ); //$NON-NLS-1$
+      logger.error ( "instantiation exception", exc ); //$NON-NLS-1$
     }
-    catch ( IllegalAccessException e )
+    catch ( IllegalAccessException exc )
     {
-      logger.error ( "illegal access exception", e ); //$NON-NLS-1$
+      logger.error ( "illegal access exception", exc ); //$NON-NLS-1$
     }
-    catch ( UnsupportedLookAndFeelException e )
+    catch ( UnsupportedLookAndFeelException exc )
     {
-      logger.error ( "unsupported look and feel exception", e ); //$NON-NLS-1$
+      logger.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
     }
     /*
      * Set the last active language

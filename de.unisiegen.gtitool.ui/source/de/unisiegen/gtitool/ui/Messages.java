@@ -48,7 +48,7 @@ public final class Messages
         index++ ;
       }
     }
-    catch ( MissingResourceException e )
+    catch ( MissingResourceException exc )
     {
       /*
        * Happens after the last language is added.
@@ -74,13 +74,13 @@ public final class Messages
       return MessageFormat
           .format ( resourceBundle.getString ( key ), arguments );
     }
-    catch ( MissingResourceException e )
+    catch ( MissingResourceException exc )
     {
       return de.unisiegen.gtitool.core.Messages.getString ( key, arguments );
     }
-    catch ( IllegalArgumentException e )
+    catch ( IllegalArgumentException exc )
     {
-      logger.error ( "illegal argument exception", e ); //$NON-NLS-1$
+      logger.error ( "illegal argument exception", exc ); //$NON-NLS-1$
       return key;
     }
   }

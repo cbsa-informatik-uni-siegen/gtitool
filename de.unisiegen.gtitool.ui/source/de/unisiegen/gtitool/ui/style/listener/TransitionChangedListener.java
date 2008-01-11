@@ -18,8 +18,8 @@ public interface TransitionChangedListener extends EventListener
   /**
    * Invoked when the {@link Transition} changed.
    * 
-   * @param pNewTransition The new {@link Transition}.
+   * @param newTransition The new {@link Transition}.
    */
-  public void transitionChanged ( Transition pNewTransition );
+  public void transitionChanged ( Transition newTransition );
 
 }

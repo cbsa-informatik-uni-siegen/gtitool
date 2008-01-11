@@ -23,16 +23,16 @@ public class RecentlyUsedFilesItem
   /**
    * Allocates a new <code>RecentlyUsedItem</code>.
    * 
-   * @param pFiles The recently used files.
+   * @param files The recently used files.
    */
-  public RecentlyUsedFilesItem ( ArrayList < File > pFiles )
+  public RecentlyUsedFilesItem ( ArrayList < File > files )
   {
     // Files
-    if ( pFiles == null )
+    if ( files == null )
     {
       throw new NullPointerException ( "files is null" ); //$NON-NLS-1$
     }
-    this.files = pFiles;
+    this.files = files;
   }
 
 

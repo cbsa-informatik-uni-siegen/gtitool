@@ -1875,9 +1875,15 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
 
-      this.gui.wordPanel.styledWordParserPanel
-          .setHighlightedSymbol ( this.machine.getReadedSymbols () );
-
+      try
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
+      }
+      catch ( WordResetedException exc )
+      {
+        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+      }
     }
     catch ( WordFinishedException exc )
     {
@@ -1998,7 +2004,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         this.gui.wordPanel.styledWordParserPanel
             .setHighlightedSymbol ( this.machine.getReadedSymbols () );
       }
-      catch ( WordResetedException e )
+      catch ( WordResetedException exc )
       {
         this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
       }

@@ -18,8 +18,8 @@ public interface StackChangedListener extends EventListener
   /**
    * Invoked when the {@link Stack} changed.
    * 
-   * @param pNewStack The new {@link Stack}.
+   * @param newStack The new {@link Stack}.
    */
-  public void stackChanged ( Stack pNewStack );
+  public void stackChanged ( Stack newStack );
 
 }

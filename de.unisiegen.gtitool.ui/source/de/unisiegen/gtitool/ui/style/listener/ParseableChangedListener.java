@@ -18,8 +18,8 @@ public interface ParseableChangedListener extends EventListener
   /**
    * Invoked when the {@link Object} changed.
    * 
-   * @param pNewObject The new {@link Object}.
+   * @param newObject The new {@link Object}.
    */
-  public void parseableChanged ( Object pNewObject );
+  public void parseableChanged ( Object newObject );
 
 }

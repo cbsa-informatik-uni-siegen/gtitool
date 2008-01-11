@@ -114,19 +114,19 @@ public final class SideBar extends JComponent
   /**
    * Initializes the {@link SideBar}.
    * 
-   * @param pScrollPane The used {@link JScrollPane}.
-   * @param pDocument The used {@link StyledParserDocument}.
-   * @param pTextComponent The used text component.
+   * @param scrollPane The used {@link JScrollPane}.
+   * @param document The used {@link StyledParserDocument}.
+   * @param textComponent The used text component.
    */
-  public SideBar ( JScrollPane pScrollPane, StyledParserDocument pDocument,
-      JTextComponent pTextComponent )
+  public SideBar ( JScrollPane scrollPane, StyledParserDocument document,
+      JTextComponent textComponent )
   {
     super ();
     this.currentLeft = -1;
     this.currentRight = -1;
-    this.scrollPane = pScrollPane;
-    this.document = pDocument;
-    this.textComponent = pTextComponent;
+    this.scrollPane = scrollPane;
+    this.document = document;
+    this.textComponent = textComponent;
     this.errorIcon = new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/error.gif" ) ); //$NON-NLS-1$
     this.warningIcon = new ImageIcon ( getClass ().getResource (
@@ -181,11 +181,11 @@ public final class SideBar extends JComponent
   /**
    * Adds the given {@link SideBarListener}.
    * 
-   * @param pSideBarListener The given {@link SideBarListener}.
+   * @param sideBarListener The given {@link SideBarListener}.
    */
-  public final void addSideBarListener ( SideBarListener pSideBarListener )
+  public final void addSideBarListener ( SideBarListener sideBarListener )
   {
-    this.listenerList.add ( SideBarListener.class, pSideBarListener );
+    this.listenerList.add ( SideBarListener.class, sideBarListener );
   }
 
 
@@ -221,15 +221,15 @@ public final class SideBar extends JComponent
   /**
    * Inserts a given text at the given index.
    * 
-   * @param pInsertText The text which should be inserted.
+   * @param insertText The text which should be inserted.
    */
-  private final void fireInsertText ( String pInsertText )
+  private final void fireInsertText ( String insertText )
   {
     SideBarListener listeners[] = this.listenerList
         .getListeners ( SideBarListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].insertText ( this.currentRight, pInsertText );
+      listeners [ n ].insertText ( this.currentRight, insertText );
     }
   }
 
@@ -261,15 +261,15 @@ public final class SideBar extends JComponent
   /**
    * Handles the mouse clicked event.
    * 
-   * @param pMouseEvent The {@link MouseEvent}.
+   * @param mouseEvent The {@link MouseEvent}.
    */
-  public final void mouseClicked ( MouseEvent pMouseEvent )
+  public final void mouseClicked ( MouseEvent mouseEvent )
   {
     if ( this.currentLeft == -1 || this.currentRight == -1 )
     {
       return;
     }
-    int y = pMouseEvent.getY () + this.verticalScrollBar.getValue ();
+    int y = mouseEvent.getY () + this.verticalScrollBar.getValue ();
     int hh = this.errorIcon.getIconHeight () / 2;
     for ( int i = 0 ; i < this.verticalPositions.length ; i++ )
     {
@@ -294,15 +294,15 @@ public final class SideBar extends JComponent
   /**
    * Handles the mouse move event.
    * 
-   * @param pMouseEvent The {@link MouseEvent}.
+   * @param mouseEvent The {@link MouseEvent}.
    */
-  private final void mouseMoved ( MouseEvent pMouseEvent )
+  private final void mouseMoved ( MouseEvent mouseEvent )
   {
     if ( this.verticalPositions == null )
     {
       return;
     }
-    int y = pMouseEvent.getY () + this.verticalScrollBar.getValue ();
+    int y = mouseEvent.getY () + this.verticalScrollBar.getValue ();
     int hh = this.errorIcon.getIconHeight () / 2;
     for ( int i = 0 ; i < this.verticalPositions.length ; i++ )
     {
@@ -327,14 +327,14 @@ public final class SideBar extends JComponent
    * {@inheritDoc}
    */
   @Override
-  protected final void paintComponent ( Graphics pGraphics )
+  protected final void paintComponent ( Graphics graphics )
   {
     if ( this.proppertyChanged )
     {
       buildMarks ();
     }
-    pGraphics.setColor ( getBackground () );
-    pGraphics.fillRect ( 0, 0, getWidth (), getHeight () );
+    graphics.setColor ( getBackground () );
+    graphics.fillRect ( 0, 0, getWidth (), getHeight () );
     if ( this.verticalPositions == null )
     {
       return;
@@ -354,15 +354,15 @@ public final class SideBar extends JComponent
       }
       if ( this.exceptionList.get ( i ) instanceof ParserWarningException )
       {
-        pGraphics.drawImage ( this.warningIcon.getImage (), 0, y0, this );
+        graphics.drawImage ( this.warningIcon.getImage (), 0, y0, this );
       }
       else
       {
-        pGraphics.drawImage ( this.errorIcon.getImage (), 0, y0, this );
+        graphics.drawImage ( this.errorIcon.getImage (), 0, y0, this );
       }
     }
-    pGraphics.fillRect ( 0, getHeight ()
-        - this.horizontalScrollBar.getHeight (), getWidth (),
+    graphics.fillRect ( 0,
+        getHeight () - this.horizontalScrollBar.getHeight (), getWidth (),
         this.horizontalScrollBar.getHeight () );
   }
 
@@ -370,10 +370,10 @@ public final class SideBar extends JComponent
   /**
    * Adds the given {@link SideBarListener}.
    * 
-   * @param pSideBarListener The given {@link SideBarListener}.
+   * @param sideBarListener The given {@link SideBarListener}.
    */
-  public final void removeSideBarListener ( SideBarListener pSideBarListener )
+  public final void removeSideBarListener ( SideBarListener sideBarListener )
   {
-    this.listenerList.remove ( SideBarListener.class, pSideBarListener );
+    this.listenerList.remove ( SideBarListener.class, sideBarListener );
   }
 }

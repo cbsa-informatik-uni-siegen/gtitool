@@ -18,8 +18,8 @@ public interface SymbolChangedListener extends EventListener
   /**
    * Invoked when the {@link Symbol} changed.
    * 
-   * @param pNewSymbol The new {@link Symbol}.
+   * @param newSymbol The new {@link Symbol}.
    */
-  public void symbolChanged ( Symbol pNewSymbol );
+  public void symbolChanged ( Symbol newSymbol );
 
 }

@@ -48,12 +48,12 @@ public enum ZoomFactorItem
    * Creates a new {@link ZoomFactorItem} of the given zoom factor value, or
    * throws an exception if the zoom factor is not supported.
    * 
-   * @param pZoomFactor The zoom factor value.
+   * @param zoomFactor The zoom factor value.
    * @return A new {@link ZoomFactorItem}.
    */
-  public static ZoomFactorItem create ( int pZoomFactor )
+  public static ZoomFactorItem create ( int zoomFactor )
   {
-    switch ( pZoomFactor )
+    switch ( zoomFactor )
     {
       case 50 :
       {
@@ -100,11 +100,11 @@ public enum ZoomFactorItem
   /**
    * Creates a new <code>ZoomFactorItem</code>.
    * 
-   * @param pFactor The zoom factor.
+   * @param factor The zoom factor.
    */
-  private ZoomFactorItem ( int pFactor )
+  private ZoomFactorItem ( int factor )
   {
-    this.factor = pFactor;
+    this.factor = factor;
   }
 
 

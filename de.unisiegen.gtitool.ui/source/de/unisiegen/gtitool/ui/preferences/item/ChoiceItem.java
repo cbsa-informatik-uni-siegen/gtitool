@@ -26,12 +26,12 @@ public enum ChoiceItem
    * Creates a new {@link ChoiceItem} of the given index, or throws an exception
    * if the index is not supported.
    * 
-   * @param pIndex The index.
+   * @param index The index.
    * @return A new {@link ChoiceItem}.
    */
-  public final static ChoiceItem create ( int pIndex )
+  public final static ChoiceItem create ( int index )
   {
-    switch ( pIndex )
+    switch ( index )
     {
       case 0 :
       {
@@ -64,13 +64,13 @@ public enum ChoiceItem
   /**
    * Allocates a new <code>ChoiceItem</code>.
    * 
-   * @param pIndex
-   * @param pTitle
+   * @param index
+   * @param title
    */
-  private ChoiceItem ( int pIndex, String pTitle )
+  private ChoiceItem ( int index, String title )
   {
-    this.index = pIndex;
-    this.title = pTitle;
+    this.index = index;
+    this.title = title;
   }
 
 

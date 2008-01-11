@@ -53,10 +53,16 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jComboBoxLookAndFeel = new javax.swing.JComboBox();
         jLabelZoom = new javax.swing.JLabel();
         jSliderZoom = new javax.swing.JSlider();
-        jLabelMouseSelection = new javax.swing.JLabel();
-        jComboBoxMouseSelection = new javax.swing.JComboBox();
         jPanelGeneralSpace = new javax.swing.JPanel();
         jButtonRestore = new javax.swing.JButton();
+        jPanelView = new javax.swing.JPanel();
+        jLabelTransition = new javax.swing.JLabel();
+        jComboBoxTransition = new javax.swing.JComboBox();
+        jLabelMouseSelection = new javax.swing.JLabel();
+        jComboBoxMouseSelection = new javax.swing.JComboBox();
+        jLabelAutoStep = new javax.swing.JLabel();
+        jSliderAutoStep = new javax.swing.JSlider();
+        jPanelViewSpace = new javax.swing.JPanel();
         jPanelColors = new javax.swing.JPanel();
         jScrollPaneColor = new javax.swing.JScrollPane();
         jListColor = new javax.swing.JList();
@@ -153,29 +159,9 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jPanelGeneral.add(jSliderZoom, gridBagConstraints);
 
-        jLabelMouseSelection.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.MouseSelectionMnemonic").charAt(0));
-        jLabelMouseSelection.setLabelFor(jComboBoxMouseSelection);
-        jLabelMouseSelection.setText(bundle.getString("PreferencesDialog.MouseSelection")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
-        jPanelGeneral.add(jLabelMouseSelection, gridBagConstraints);
-
-        jComboBoxMouseSelection.setToolTipText(bundle.getString("PreferencesDialog.MouseSelectionToolTip")); // NOI18N
-        jComboBoxMouseSelection.setFocusable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
-        jPanelGeneral.add(jComboBoxMouseSelection, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -194,13 +180,92 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         jPanelGeneral.add(jButtonRestore, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
+
+        jPanelView.setLayout(new java.awt.GridBagLayout());
+
+        jLabelTransition.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.TransitionMnemonic").charAt(0));
+        jLabelTransition.setLabelFor(jComboBoxTransition);
+        jLabelTransition.setText(bundle.getString("PreferencesDialog.Transition")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 5);
+        jPanelView.add(jLabelTransition, gridBagConstraints);
+
+        jComboBoxTransition.setToolTipText(bundle.getString("PreferencesDialog.TransitionToolTip")); // NOI18N
+        jComboBoxTransition.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 5, 5, 16);
+        jPanelView.add(jComboBoxTransition, gridBagConstraints);
+
+        jLabelMouseSelection.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.MouseSelectionMnemonic").charAt(0));
+        jLabelMouseSelection.setLabelFor(jComboBoxMouseSelection);
+        jLabelMouseSelection.setText(bundle.getString("PreferencesDialog.MouseSelection")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
+        jPanelView.add(jLabelMouseSelection, gridBagConstraints);
+
+        jComboBoxMouseSelection.setToolTipText(bundle.getString("PreferencesDialog.MouseSelectionToolTip")); // NOI18N
+        jComboBoxMouseSelection.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
+        jPanelView.add(jComboBoxMouseSelection, gridBagConstraints);
+
+        jLabelAutoStep.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AutoStepMnemonic").charAt(0));
+        jLabelAutoStep.setLabelFor(jSliderAutoStep);
+        jLabelAutoStep.setText(bundle.getString("PreferencesDialog.AutoStep")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
+        jPanelView.add(jLabelAutoStep, gridBagConstraints);
+
+        jSliderAutoStep.setMajorTickSpacing(1);
+        jSliderAutoStep.setMaximum(5);
+        jSliderAutoStep.setMinimum(1);
+        jSliderAutoStep.setPaintLabels(true);
+        jSliderAutoStep.setPaintTicks(true);
+        jSliderAutoStep.setSnapToTicks(true);
+        jSliderAutoStep.setToolTipText(bundle.getString("PreferencesDialog.AutoStepToolTip")); // NOI18N
+        jSliderAutoStep.setValue(2);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
+        jPanelView.add(jSliderAutoStep, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanelView.add(jPanelViewSpace, gridBagConstraints);
+
+        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabView"), null, jPanelView, bundle.getString("PreferencesDialog.TabViewToolTip")); // NOI18N
 
         jPanelColors.setLayout(new java.awt.GridBagLayout());
 
@@ -362,7 +427,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 16);
         getContentPane().add(jButtonCancel, gridBagConstraints);
 
-        setBounds(0, 0, 401, 333);
+        setBounds(0, 0, 440, 333);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
@@ -414,17 +479,23 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
     public javax.swing.JComboBox jComboBoxMouseSelection;
+    public javax.swing.JComboBox jComboBoxTransition;
+    public javax.swing.JLabel jLabelAutoStep;
     public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JLabel jLabelLanguage;
     public javax.swing.JLabel jLabelLookAndFeel;
     public javax.swing.JLabel jLabelMouseSelection;
+    public javax.swing.JLabel jLabelTransition;
     public javax.swing.JLabel jLabelZoom;
     public javax.swing.JList jListColor;
     public javax.swing.JPanel jPanelAlphabet;
     public javax.swing.JPanel jPanelColors;
     public javax.swing.JPanel jPanelGeneral;
     public javax.swing.JPanel jPanelGeneralSpace;
+    public javax.swing.JPanel jPanelView;
+    public javax.swing.JPanel jPanelViewSpace;
     public javax.swing.JScrollPane jScrollPaneColor;
+    public javax.swing.JSlider jSliderAutoStep;
     public javax.swing.JSlider jSliderZoom;
     public javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JTextPane jTextPaneDescription;

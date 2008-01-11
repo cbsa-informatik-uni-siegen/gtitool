@@ -46,6 +46,7 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
@@ -447,7 +448,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The index of the alphabet tab.
    */
-  private static final int ALPHABET_TAB_INDEX = 2;
+  private static final int ALPHABET_TAB_INDEX = 3;
 
 
   /**
@@ -703,6 +704,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial {@link AutoStepItem}.
+   */
+  private AutoStepItem initialAutoStepItem;
+
+
+  /**
    * The initial {@link AlphabetItem}.
    */
   private AlphabetItem initialAlphabetItem;
@@ -745,6 +752,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The auto interval {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuAutoStep;
+
+
+  /**
    * The push down {@link Alphabet} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuUsePushDownAlphabet;
@@ -784,6 +797,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     initLookAndFeel ();
     initZoomFactor ();
     initMouseSelection ();
+    initAutoStep ();
     initColorList ();
     initAlphabet ();
     initPushDownAlphabet ();
@@ -972,7 +986,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     // Look and feel
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
     // Zoom factor
-    this.gui.jSliderZoom.setValue ( 100 );
+    this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
+    // Auto step
+    this.gui.jSliderAutoStep
+        .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
     // Color
     this.colorItemState.restore ();
     this.colorItemSelectedState.restore ();
@@ -1067,6 +1084,66 @@ public final class PreferencesDialog implements LanguageChangedListener
             }
           }
         } );
+  }
+
+
+  /**
+   * Initializes the auto step interval.
+   */
+  private final void initAutoStep ()
+  {
+    this.initialAutoStepItem = PreferenceManager.getInstance ()
+        .getAutoStepItem ();
+    this.gui.jSliderAutoStep.setValue ( this.initialAutoStepItem
+        .getAutoStepInterval () );
+
+    // PopupMenu
+    this.jPopupMenuAutoStep = new JPopupMenu ();
+    // RestoreAutoStep
+    JMenuItem jMenuItemRestoreAutoStep = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreAutoStep.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreAutoStep.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreAutoStep.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PreferencesDialog.this.gui.jSliderAutoStep
+            .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
+      }
+    } );
+    this.jPopupMenuAutoStep.add ( jMenuItemRestoreAutoStep );
+    this.gui.jSliderAutoStep.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuAutoStep.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuAutoStep.show ( event
+              .getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
   }
 
 
@@ -1677,6 +1754,13 @@ public final class PreferencesDialog implements LanguageChangedListener
         "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jSliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
+    // Auto Step
+    this.gui.jLabelAutoStep.setText ( Messages
+        .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$    
+    this.gui.jLabelAutoStep.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.AutoStepMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jSliderAutoStep.setToolTipText ( Messages
+        .getString ( "PreferencesDialog.AutoStepToolTip" ) ); //$NON-NLS-1$
     // Mouse selection
     this.gui.jLabelMouseSelection.setText ( Messages
         .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$    
@@ -1786,6 +1870,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     saveDataMouseSelection ();
     // Zoom factor
     saveDataZoomFactor ();
+    // Auto step
+    saveDataAutoStep ();
     // Color
     saveDataColor ();
     // Alphabet
@@ -1806,6 +1892,24 @@ public final class PreferencesDialog implements LanguageChangedListener
           + this.alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
       this.initialAlphabetItem = this.alphabetItem.clone ();
       PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
+    }
+  }
+
+
+  /**
+   * Saves the data of the auto step .
+   */
+  private final void saveDataAutoStep ()
+  {
+    if ( this.initialAutoStepItem.getAutoStepInterval () != this.gui.jSliderAutoStep
+        .getValue () )
+    {
+      logger.debug ( "auto step changed to \"" //$NON-NLS-1$
+          + this.gui.jSliderAutoStep.getValue () + "\"" ); //$NON-NLS-1$
+      this.initialAutoStepItem = AutoStepItem.create ( this.gui.jSliderAutoStep
+          .getValue () );
+      PreferenceManager.getInstance ().setAutoStepItem (
+          this.initialAutoStepItem );
     }
   }
 

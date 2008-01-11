@@ -29,6 +29,7 @@ import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
+import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
@@ -172,6 +173,12 @@ public final class PreferenceManager
    * The default zoom factor value.
    */
   public static int DEFAULT_ZOOM_FACTOR = 100;
+
+
+  /**
+   * The default auto step interval.
+   */
+  public static int DEFAULT_AUTO_STEP_INTERVAL = 2;
 
 
   /**
@@ -607,16 +614,14 @@ public final class PreferenceManager
 
 
   /**
-   * Returns the {@link MouseSelectionItem}.
+   * Returns the {@link AutoStepItem}.
    * 
-   * @return The {@link MouseSelectionItem}.
+   * @return The {@link AutoStepItem}.
    */
-  public final MouseSelectionItem getMouseSelectionItem ()
+  public final AutoStepItem getAutoStepItem ()
   {
-    int index = this.preferences.getInt (
-        "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
-        DEFAULT_MOUSE_SELECTION_ITEM.getIndex () );
-    return MouseSelectionItem.create ( index );
+    return AutoStepItem.create ( this.preferences.getInt (
+        "AutoStep", DEFAULT_AUTO_STEP_INTERVAL ) ); //$NON-NLS-1$
   }
 
 
@@ -1022,6 +1027,20 @@ public final class PreferenceManager
 
 
   /**
+   * Returns the {@link MouseSelectionItem}.
+   * 
+   * @return The {@link MouseSelectionItem}.
+   */
+  public final MouseSelectionItem getMouseSelectionItem ()
+  {
+    int index = this.preferences.getInt (
+        "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
+        DEFAULT_MOUSE_SELECTION_ITEM.getIndex () );
+    return MouseSelectionItem.create ( index );
+  }
+
+
+  /**
    * Returns the opened files and the index of the last active file.
    * 
    * @return The opened files and the index of the last active file.
@@ -1261,17 +1280,16 @@ public final class PreferenceManager
 
 
   /**
-   * Sets the {@link MouseSelectionItem}.
+   * Sets the {@link AutoStepItem}.
    * 
-   * @param mouseSelectionItem The {@link MouseSelectionItem}.
+   * @param autoStepInterval The {@link AutoStepItem}.
    */
-  public final void setMouseSelectionItem (
-      MouseSelectionItem mouseSelectionItem )
+  public final void setAutoStepItem ( AutoStepItem autoStepInterval )
   {
-    logger.debug ( "set mouse selection item to \"" //$NON-NLS-1$
-        + mouseSelectionItem.getIndex () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
-        mouseSelectionItem.getIndex () );
+    logger.debug ( "set auto step interval to \"" //$NON-NLS-1$
+        + autoStepInterval.getAutoStepInterval () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "AutoStep", autoStepInterval //$NON-NLS-1$
+        .getAutoStepInterval () );
   }
 
 
@@ -1645,6 +1663,21 @@ public final class PreferenceManager
       logger.debug ( "set main window maximized to \"true\"" ); //$NON-NLS-1$
       this.preferences.putBoolean ( "MainWindow.Maximized", true ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Sets the {@link MouseSelectionItem}.
+   * 
+   * @param mouseSelectionItem The {@link MouseSelectionItem}.
+   */
+  public final void setMouseSelectionItem (
+      MouseSelectionItem mouseSelectionItem )
+  {
+    logger.debug ( "set mouse selection item to \"" //$NON-NLS-1$
+        + mouseSelectionItem.getIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
+        mouseSelectionItem.getIndex () );
   }
 
 

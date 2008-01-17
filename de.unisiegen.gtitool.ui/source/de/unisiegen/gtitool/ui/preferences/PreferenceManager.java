@@ -1716,10 +1716,12 @@ public final class PreferenceManager
       this.preferences.put ( "MainWindow.OpenedFiles" + i, openedFilesItem //$NON-NLS-1$
           .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "MainWindow.OpenedActiveIndex", //$NON-NLS-1$
-        openedFilesItem.getActiveIndex () );
     this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
         openedFilesItem.getFiles ().size () );
+    logger.debug ( "set opened file index to \"" //$NON-NLS-1$
+        + openedFilesItem.getActiveIndex () + "\"" ); //$NON-NLS-1$
+    this.preferences.putInt ( "MainWindow.OpenedActiveIndex", //$NON-NLS-1$
+        openedFilesItem.getActiveIndex () );
   }
 
 

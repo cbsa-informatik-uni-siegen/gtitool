@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui;
 
 
+import java.io.File;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
@@ -34,7 +35,7 @@ public final class Start
    * 
    * @param arguments The command line arguments.
    */
-  public final static void main ( String [] arguments )
+  public final static void main ( final String [] arguments )
   {
     /*
      * Set the last active look and feel
@@ -71,10 +72,27 @@ public final class Start
      */
     SwingUtilities.invokeLater ( new Runnable ()
     {
-
+      
+      // allocate the main window
       public void run ()
       {
-        new MainWindow ();
+        MainWindow window = new MainWindow ();
+        
+        // check if any files are specified
+        if ( arguments.length > 0 )
+        {
+          // open any specified files
+          for ( String fileName : arguments )
+          {
+            File file = new File ( fileName ) ;
+            window.openFile ( file, true ) ;
+          }
+        }
+        else
+        {
+          // restore the files from the previous session
+          window.restoreOpenFiles ( ) ;
+        }
       }
     } );
   }

@@ -126,12 +126,10 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
     }
     
-    // open all files which was open at last session
-    for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ().getFiles () )
-    {
-      openFile ( file, false );
-    }
-    this.gui.jTabbedPaneMain.setSelectedIndex ( PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () );
+    int index = PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () ;
+    
+    if ( this.gui.jTabbedPaneMain.getTabCount () > index  )
+      this.gui.jTabbedPaneMain.setSelectedIndex ( index );
   }
 
 
@@ -1236,6 +1234,20 @@ public final class MainWindow implements LanguageChangedListener
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordAutoStep ();
 
+  }
+
+  /**
+   * 
+   * Open all files which was open at last session
+   *
+   */
+  public void restoreOpenFiles ()
+  {
+    for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ().getFiles () )
+    {
+      openFile ( file, false );
+    }
+    
   }
 
 }

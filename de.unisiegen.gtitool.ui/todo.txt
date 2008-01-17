@@ -4,7 +4,6 @@ CF		- Console: Automatische Fehlerkorrektur
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- Zustand in der Tabelle highlighten mit Timer
 		- Konsole und Tabelle nur auf ein MachinePanel beschränken
-BM		- Dateien per Übergabe in der main Methode öffnen können 
 CF		- Einen Info-Diolog für die Nachrichten bauen
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Auto Step Interval (ms) der Preferencen verwenden

@@ -186,6 +186,7 @@ public final class AlphabetDialog
     }
     try
     {
+      // TODOChristian Do not use the alphabet
       this.alphabet.add ( symbolsToAdd );
       this.alphabet.remove ( symbolsToRemove );
     }

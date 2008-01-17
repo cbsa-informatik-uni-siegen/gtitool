@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import javax.swing.JTable;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
@@ -134,6 +140,12 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * List of listeners
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
    * Allocates a new <code>AbstractMachine</code>.
    * 
    * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
@@ -258,6 +270,7 @@ public abstract class AbstractMachine implements Machine
     state.setDefaultName ();
     this.stateList.add ( state );
     link ( state );
+    fireTableDataChanged ();
   }
 
 
@@ -280,6 +293,17 @@ public abstract class AbstractMachine implements Machine
     {
       addState ( current );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#addTableModelListener(TableModelListener)
+   */
+  public final void addTableModelListener ( TableModelListener listener )
+  {
+    this.listenerList.add ( TableModelListener.class, listener );
   }
 
 
@@ -338,6 +362,7 @@ public abstract class AbstractMachine implements Machine
     }
     this.transitionList.add ( transition );
     link ( transition );
+    fireTableDataChanged ();
   }
 
 
@@ -597,6 +622,43 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Forwards the given notification event to all
+   * <code>TableModelListeners</code> that registered themselves as listeners
+   * for this table model.
+   * 
+   * @param event The event to be forwarded
+   * @see #addTableModelListener
+   * @see TableModelEvent
+   * @see EventListenerList
+   */
+  public final void fireTableChanged ( TableModelEvent event )
+  {
+    TableModelListener [] listeners = this.listenerList
+        .getListeners ( TableModelListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].tableChanged ( event );
+    }
+  }
+
+
+  /**
+   * Notifies all listeners that all cell values in the table's rows may have
+   * changed. The number of rows may also have changed and the
+   * <code>JTable</code> should redraw the table from scratch. The structure
+   * of the table (as in the order of the columns) is assumed to be the same.
+   * 
+   * @see TableModelEvent
+   * @see EventListenerList
+   * @see JTable#tableChanged(TableModelEvent)
+   */
+  public final void fireTableDataChanged ()
+  {
+    fireTableChanged ( new TableModelEvent ( this ) );
+  }
+
+
+  /**
    * Returns the active {@link State}s.
    * 
    * @return The active {@link State}s.
@@ -633,6 +695,44 @@ public abstract class AbstractMachine implements Machine
   public final Alphabet getAlphabet ()
   {
     return this.alphabet;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getColumnClass(int)
+   */
+  public final Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
+  int columnIndex )
+  {
+    return String.class;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getColumnCount()
+   */
+  public final int getColumnCount ()
+  {
+    return 1 + this.alphabet.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getColumnName(int)
+   */
+  public final String getColumnName ( int columnIndex )
+  {
+    if ( columnIndex == 0 )
+    {
+      return " "; //$NON-NLS-1$
+    }
+    return this.alphabet.get ( columnIndex - 1 ).toString ();
   }
 
 
@@ -689,6 +789,17 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getRowCount()
+   */
+  public final int getRowCount ()
+  {
+    return this.stateList.size ();
+  }
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.
@@ -735,6 +846,54 @@ public abstract class AbstractMachine implements Machine
   public final Transition getTransition ( int index )
   {
     return this.transitionList.get ( index );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getValueAt(int, int)
+   */
+  public final Object getValueAt ( int rowIndex, int columnIndex )
+  {
+    if ( columnIndex == 0 )
+    {
+      return this.stateList.get ( rowIndex ).toString ();
+    }
+
+    Symbol currentSymbol = this.alphabet.get ( columnIndex - 1 );
+    State currentState = this.stateList.get ( rowIndex );
+    ArrayList < State > stateEndList = new ArrayList < State > ();
+    for ( Transition currentTransition : currentState.getTransitionBegin () )
+    {
+      if ( currentTransition.contains ( currentSymbol ) )
+      {
+        stateEndList.add ( currentTransition.getStateEnd () );
+      }
+    }
+    StringBuilder result = new StringBuilder ();
+    for ( int i = 0 ; i < stateEndList.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      result.append ( stateEndList.get ( i ) );
+    }
+    return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#isCellEditable(int, int)
+   */
+  public final boolean isCellEditable ( @SuppressWarnings ( "unused" )
+  int rowIndex, @SuppressWarnings ( "unused" )
+  int columnIndex )
+  {
+    return false;
   }
 
 
@@ -1063,6 +1222,7 @@ public abstract class AbstractMachine implements Machine
     {
       removeTransition ( current );
     }
+    fireTableDataChanged ();
   }
 
 
@@ -1104,6 +1264,17 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#removeTableModelListener(TableModelListener)
+   */
+  public final void removeTableModelListener ( TableModelListener listener )
+  {
+    this.listenerList.remove ( TableModelListener.class, listener );
+  }
+
+
+  /**
    * Removes the given {@link Transition}s from this
    * <code>AbstractMachine</code>.
    * 
@@ -1139,6 +1310,7 @@ public abstract class AbstractMachine implements Machine
       current.getTransitionBegin ().remove ( transition );
       current.getTransitionEnd ().remove ( transition );
     }
+    fireTableDataChanged ();
   }
 
 
@@ -1162,6 +1334,20 @@ public abstract class AbstractMachine implements Machine
     {
       removeTransition ( current );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#setValueAt(Object, int, int)
+   */
+  public final void setValueAt ( @SuppressWarnings ( "unused" )
+  Object value, @SuppressWarnings ( "unused" )
+  int rowIndex, @SuppressWarnings ( "unused" )
+  int columnIndex )
+  {
+    // Do nothing
   }
 
 

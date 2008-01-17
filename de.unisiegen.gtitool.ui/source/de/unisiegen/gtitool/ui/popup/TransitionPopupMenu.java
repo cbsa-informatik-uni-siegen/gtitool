@@ -15,6 +15,7 @@ import org.jgraph.JGraph;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
@@ -107,7 +108,7 @@ public final class TransitionPopupMenu extends JPopupMenu
   /**
    * Populates the menues of this popup menu.
    */
-  protected final void populateMenues ()
+  private final void populateMenues ()
   {
 
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
@@ -120,7 +121,7 @@ public final class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-
+        // TODO i18n
         int choice = JOptionPane.NO_OPTION;
         String message = "Soll die Transition \"" //$NON-NLS-1$
             + TransitionPopupMenu.this.transition.toString ()
@@ -165,8 +166,16 @@ public final class TransitionPopupMenu extends JPopupMenu
                   newTransition );
           Transition oldTransition = TransitionPopupMenu.this.transition
               .getTransition ();
-          TransitionPopupMenu.this.model.transitionChanged ( oldTransition,
-              newTransition );
+          oldTransition.clear ();
+          try
+          {
+            oldTransition.add ( newTransition );
+          }
+          catch ( TransitionException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+          }
         }
       }
     } );

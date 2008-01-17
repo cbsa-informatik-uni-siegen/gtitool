@@ -54,7 +54,6 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.MachineColumnModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -348,9 +347,10 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           }
 
         } );
-    this.gui.jTableMachine.setModel ( this.model.getTableModel () );
-    this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
-        this.machine.getAlphabet () ) );
+    this.gui.jTableMachine.setModel ( this.machine );
+    // this.gui.jTableMachine.setModel ( this.model.getTableModel () );
+    // this.gui.jTableMachine.setColumnModel ( new MachineColumnModel (
+    // this.machine.getAlphabet () ) );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -1020,6 +1020,238 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       this.graph.removeMouseListener ( this.transition );
       this.graph.removeMouseMotionListener ( this.transitionMove );
     }
+  }
+
+
+  /**
+   * Handle Auto Step Action in the Word Enter Mode
+   */
+  public void handleWordAutoStep ()
+  {
+    // TODO Auto-generated method stub
+  }
+
+
+  /**
+   * Handle Next Step Action in the Word Enter Mode
+   */
+  public void handleWordNextStep ()
+  {
+    try
+    {
+      ArrayList < Transition > activeTransitions = this.machine.nextSymbol ();
+      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
+      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
+
+      for ( Transition current : activeTransitions )
+      {
+        DefaultTransitionView transitionView = this.model
+            .getTransitionViewForTransition ( current );
+        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveTransition ()
+                .getColor () );
+        inactiveTransitions.remove ( transitionView );
+      }
+
+      for ( DefaultTransitionView current : inactiveTransitions )
+      {
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransition ()
+                .getColor () );
+      }
+
+      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
+      inactiveStates.addAll ( this.model.getStateViewList () );
+
+      for ( State current : this.machine.getActiveState () )
+      {
+        DefaultStateView state = this.model.getStateViewForState ( current );
+        GraphConstants.setGradientColor ( state.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveState ()
+                .getColor () );
+        inactiveStates.remove ( state );
+      }
+
+      for ( DefaultStateView current : inactiveStates )
+      {
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
+
+      try
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
+      }
+      catch ( WordResetedException exc )
+      {
+        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+      }
+    }
+    catch ( WordFinishedException exc )
+    {
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+    }
+    catch ( WordResetedException exc )
+    {
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+    }
+    catch ( WordNotAcceptedException exc )
+    {
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Handle Previous Step Action in the Word Enter Mode
+   */
+  public void handleWordPreviousStep ()
+  {
+    try
+    {
+      ArrayList < Transition > activeTransitions = this.machine
+          .previousSymbol ();
+      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
+      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
+
+      for ( Transition current : activeTransitions )
+      {
+        DefaultTransitionView transitionView = this.model
+            .getTransitionViewForTransition ( current );
+        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveTransition ()
+                .getColor () );
+        inactiveTransitions.remove ( transitionView );
+      }
+
+      for ( DefaultTransitionView current : inactiveTransitions )
+      {
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransition ()
+                .getColor () );
+      }
+
+      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
+      inactiveStates.addAll ( this.model.getStateViewList () );
+
+      for ( State current : this.machine.getActiveState () )
+      {
+        DefaultStateView state = this.model.getStateViewForState ( current );
+        GraphConstants.setGradientColor ( state.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemActiveState ()
+                .getColor () );
+        inactiveStates.remove ( state );
+      }
+      for ( DefaultStateView current : inactiveStates )
+      {
+        GraphConstants.setGradientColor ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+      }
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
+
+      /*
+       * After the last previous step the current symbol is not defined.
+       */
+      try
+      {
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
+      }
+      catch ( WordResetedException exc )
+      {
+        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+      }
+    }
+    catch ( WordFinishedException exc )
+    {
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+    }
+    catch ( WordResetedException exc )
+    {
+      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
+          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+    }
+  }
+
+
+  /**
+   * Handle Start Action in the Word Enter Mode
+   * 
+   * @return true if started else false
+   */
+  public boolean handleWordStart ()
+  {
+    if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
+    {
+      // TODO i18n
+      JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben", //$NON-NLS-1$
+          "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      return false;
+    }
+    // Reset all highlightings
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemTransition ()
+              .getColor () );
+    }
+
+    for ( DefaultStateView current : this.model.getStateViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+    }
+
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+
+    this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
+
+    this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+
+    DefaultStateView state = this.model.getStateViewForState ( this.machine
+        .getActiveState ( 0 ) );
+    GraphConstants.setGradientColor ( state.getAttributes (), PreferenceManager
+        .getInstance ().getColorItemActiveState ().getColor () );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    return true;
+  }
+
+
+  /**
+   * Handle Stop Action in the Word Enter Mode
+   */
+  public void handleWordStop ()
+  {
+    // Reset all highlightings
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemTransition ()
+              .getColor () );
+    }
+
+    for ( DefaultStateView current : this.model.getStateViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+    }
+
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+
+    this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+    this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
   }
 
 
@@ -1796,237 +2028,5 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
-  }
-
-
-  /**
-   * Handle Stop Action in the Word Enter Mode
-   */
-  public void handleWordStop ()
-  {
-    // Reset all highlightings
-    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-    {
-      GraphConstants.setGradientColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemTransition ()
-              .getColor () );
-    }
-
-    for ( DefaultStateView current : this.model.getStateViewList () )
-    {
-      GraphConstants.setGradientColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
-    }
-
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
-
-    this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
-    this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
-  }
-
-
-  /**
-   * Handle Next Step Action in the Word Enter Mode
-   */
-  public void handleWordNextStep ()
-  {
-    try
-    {
-      ArrayList < Transition > activeTransitions = this.machine.nextSymbol ();
-      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
-      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
-
-      for ( Transition current : activeTransitions )
-      {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setGradientColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveTransition ()
-                .getColor () );
-        inactiveTransitions.remove ( transitionView );
-      }
-
-      for ( DefaultTransitionView current : inactiveTransitions )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransition ()
-                .getColor () );
-      }
-
-      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
-      inactiveStates.addAll ( this.model.getStateViewList () );
-
-      for ( State current : this.machine.getActiveState () )
-      {
-        DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setGradientColor ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveState ()
-                .getColor () );
-        inactiveStates.remove ( state );
-      }
-
-      for ( DefaultStateView current : inactiveStates )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-      }
-
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
-
-      try
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
-      }
-      catch ( WordResetedException exc )
-      {
-        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
-      }
-    }
-    catch ( WordFinishedException exc )
-    {
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-    }
-    catch ( WordResetedException exc )
-    {
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-    }
-    catch ( WordNotAcceptedException exc )
-    {
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-    }
-  }
-
-
-  /**
-   * Handle Start Action in the Word Enter Mode
-   * 
-   * @return true if started else false
-   */
-  public boolean handleWordStart ()
-  {
-    if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
-    {
-      // TODOBenny i18n
-      JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben", //$NON-NLS-1$
-          "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
-      return false;
-    }
-    // Reset all highlightings
-    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-    {
-      GraphConstants.setGradientColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemTransition ()
-              .getColor () );
-    }
-
-    for ( DefaultStateView current : this.model.getStateViewList () )
-    {
-      GraphConstants.setGradientColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
-    }
-
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
-
-    this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
-
-    this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
-
-    DefaultStateView state = this.model.getStateViewForState ( this.machine
-        .getActiveState ( 0 ) );
-    GraphConstants.setGradientColor ( state.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemActiveState ().getColor () );
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
-    return true;
-  }
-
-
-  /**
-   * Handle Previous Step Action in the Word Enter Mode
-   */
-  public void handleWordPreviousStep ()
-  {
-    try
-    {
-      ArrayList < Transition > activeTransitions = this.machine
-          .previousSymbol ();
-      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
-      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
-
-      for ( Transition current : activeTransitions )
-      {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setGradientColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveTransition ()
-                .getColor () );
-        inactiveTransitions.remove ( transitionView );
-      }
-
-      for ( DefaultTransitionView current : inactiveTransitions )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransition ()
-                .getColor () );
-      }
-
-      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
-      inactiveStates.addAll ( this.model.getStateViewList () );
-
-      for ( State current : this.machine.getActiveState () )
-      {
-        DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setGradientColor ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveState ()
-                .getColor () );
-        inactiveStates.remove ( state );
-      }
-      for ( DefaultStateView current : inactiveStates )
-      {
-        GraphConstants.setGradientColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
-      }
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
-
-      /*
-       * After the last previous step the current symbol is not defined.
-       */
-      try
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
-      }
-      catch ( WordResetedException exc )
-      {
-        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
-      }
-    }
-    catch ( WordFinishedException exc )
-    {
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-    }
-    catch ( WordResetedException exc )
-    {
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
-    }
-  }
-
-
-  /**
-   * Handle Auto Step Action in the Word Enter Mode
-   */
-  public void handleWordAutoStep ()
-  {
-    // TODO Auto-generated method stub
   }
 }

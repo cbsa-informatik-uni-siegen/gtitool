@@ -81,12 +81,6 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * The {@link MachineTableModel}
-   */
-  private MachineTableModel tableModel;
-
-
-  /**
    * Allocates a new <code>DefaultMachineModel</code>.
    * 
    * @param element The {@link Element}.
@@ -179,7 +173,6 @@ public final class DefaultMachineModel implements Storable
     // initialize this models elements
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet );
-    this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
 
     // Load the states
@@ -252,7 +245,6 @@ public final class DefaultMachineModel implements Storable
   public DefaultMachineModel ( Machine machine )
   {
     this.machine = machine;
-    this.tableModel = new MachineTableModel ( this.machine.getAlphabet () );
     initializeGraph ();
   }
 
@@ -304,7 +296,6 @@ public final class DefaultMachineModel implements Storable
 
     this.jGraph.getGraphLayoutCache ().insert ( stateView );
     this.stateViewList.add ( stateView );
-    this.tableModel.addState ( state );
 
     return stateView;
   }
@@ -337,7 +328,6 @@ public final class DefaultMachineModel implements Storable
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
     this.transitionViewList.add ( newEdge );
-    this.tableModel.addTransition ( transition );
   }
 
 
@@ -438,13 +428,13 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Getter for the {@link MachineTableModel}
+   * Get a list with all {@link DefaultStateView}s of this Model
    * 
-   * @return the {@link MachineTableModel} of this model
+   * @return DefaultStateView list
    */
-  public final MachineTableModel getTableModel ()
+  public final ArrayList < DefaultStateView > getStateViewList ()
   {
-    return this.tableModel;
+    return this.stateViewList;
   }
 
 
@@ -463,6 +453,17 @@ public final class DefaultMachineModel implements Storable
         return view;
     }
     return null;
+  }
+
+
+  /**
+   * Get a list with all {@link DefaultTransitionView}s of this Model
+   * 
+   * @return DefaultTransitionView list
+   */
+  public final ArrayList < DefaultTransitionView > getTransitionViewList ()
+  {
+    return this.transitionViewList;
   }
 
 
@@ -526,7 +527,6 @@ public final class DefaultMachineModel implements Storable
       {
         this.graphModel.remove ( new Object []
         { current } );
-        this.tableModel.removeTransition ( current.getTransition () );
         removeList.add ( current );
       }
       else if ( current.getTransition ().getStateEnd ().equals (
@@ -534,7 +534,6 @@ public final class DefaultMachineModel implements Storable
       {
         this.graphModel.remove ( new Object []
         { current } );
-        this.tableModel.removeTransition ( current.getTransition () );
         removeList.add ( current );
       }
     }
@@ -547,7 +546,6 @@ public final class DefaultMachineModel implements Storable
     this.graphModel.remove ( new Object []
     { stateView } );
     this.machine.removeState ( stateView.getState () );
-    this.tableModel.removeState ( stateView.getState () );
     this.stateViewList.remove ( stateView );
   }
 
@@ -563,55 +561,6 @@ public final class DefaultMachineModel implements Storable
     this.graphModel.remove ( new Object []
     { transitionView } );
     this.machine.removeTransition ( transitionView.getTransition () );
-    this.tableModel.removeTransition ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
-  }
-
-
-  /**
-   * Update data for transition
-   * 
-   * @param oldTransition the old transition object
-   * @param newTransition the new transition object
-   */
-  public final void transitionChanged ( Transition oldTransition,
-      Transition newTransition )
-  {
-    this.tableModel.removeTransition ( oldTransition );
-    this.tableModel.addTransition ( newTransition );
-    oldTransition.clear ();
-    try
-    {
-      oldTransition.add ( newTransition );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-  }
-
-
-  /**
-   * 
-   * Get a list with all {@link DefaultStateView}s of this Model
-   *
-   * @return DefaultStateView list
-   */
-  public ArrayList < DefaultStateView > getStateViewList ()
-  {
-    return this.stateViewList;
-  }
-
-
-  /**
-   * 
-   * Get a list with all {@link DefaultTransitionView}s of this Model
-   *
-   * @return DefaultTransitionView list
-   */
-  public ArrayList < DefaultTransitionView > getTransitionViewList ()
-  {
-    return this.transitionViewList;
   }
 }

@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import javax.swing.table.TableModel;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -22,7 +24,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Machine extends Serializable
+public interface Machine extends Serializable, TableModel
 {
 
   /**

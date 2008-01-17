@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -21,6 +24,13 @@ public enum MouseSelectionItem
    * The with return to the mouse value.
    */
   WITH_RETURN_TO_MOUSE ( 1, "PreferencesDialog.MouseSelectionWithReturn" ); //$NON-NLS-1$
+
+  /**
+   * The {@link Logger} for this enum.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( MouseSelectionItem.class );
+
 
   /**
    * Creates a new {@link MouseSelectionItem} of the given index, or throws an
@@ -43,8 +53,8 @@ public enum MouseSelectionItem
       }
       default :
       {
-        throw new IllegalArgumentException (
-            "mouse selection index not supported" ); //$NON-NLS-1$
+        logger.error ( "mouse selection index not supported" ); //$NON-NLS-1$
+        return PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM;
       }
     }
   }

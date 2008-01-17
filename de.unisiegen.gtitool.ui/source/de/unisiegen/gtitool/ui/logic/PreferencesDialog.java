@@ -1047,7 +1047,8 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
-    this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
+    this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM
+        .getFactor () );
     /*
      * View
      */
@@ -1058,7 +1059,8 @@ public final class PreferencesDialog implements LanguageChangedListener
         .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
             .getIndex () );
     this.gui.jSliderAutoStep
-        .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
+        .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
+            .getAutoStepInterval () );
     /*
      * Color
      */
@@ -1216,7 +1218,8 @@ public final class PreferencesDialog implements LanguageChangedListener
       ActionEvent event )
       {
         PreferencesDialog.this.gui.jSliderAutoStep
-            .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL );
+            .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
+                .getAutoStepInterval () );
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -1930,7 +1933,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       ActionEvent event )
       {
         PreferencesDialog.this.gui.jSliderZoom
-            .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR );
+            .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
       }
     } );
     this.jPopupMenuZoomFactor.add ( jMenuItemRestoreZoomFactor );

@@ -179,13 +179,13 @@ public final class PreferenceManager
   /**
    * The default zoom factor value.
    */
-  public static int DEFAULT_ZOOM_FACTOR = 100;
+  public static ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
 
 
   /**
-   * The default auto step interval.
+   * The default {@link AutoStepItem}.
    */
-  public static int DEFAULT_AUTO_STEP_INTERVAL = 2;
+  public static AutoStepItem DEFAULT_AUTO_STEP_INTERVAL_ITEM = AutoStepItem.AUTO_STEP_2000;
 
 
   /**
@@ -628,7 +628,7 @@ public final class PreferenceManager
   public final AutoStepItem getAutoStepItem ()
   {
     return AutoStepItem.create ( this.preferences.getInt (
-        "AutoStep", DEFAULT_AUTO_STEP_INTERVAL ) ); //$NON-NLS-1$
+        "AutoStep", DEFAULT_AUTO_STEP_INTERVAL_ITEM.getAutoStepInterval () ) ); //$NON-NLS-1$
   }
 
 
@@ -1240,7 +1240,7 @@ public final class PreferenceManager
   public final ZoomFactorItem getZoomFactorItem ()
   {
     return ZoomFactorItem.create ( this.preferences.getInt (
-        "ZoomFactor", DEFAULT_ZOOM_FACTOR ) ); //$NON-NLS-1$
+        "ZoomFactor", DEFAULT_ZOOM_FACTOR_ITEM.getFactor () ) ); //$NON-NLS-1$
   }
 
 

@@ -7,65 +7,92 @@
 <!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/docs/api/org/apache/log4j/xml/log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  <appender name="console" class="org.apache.log4j.ConsoleAppender"> 
-    <param name="Target" value="System.out"/> 
-    <layout class="org.apache.log4j.PatternLayout"> 
-      <param name="ConversionPattern" value="[%t: %C{1}.%M]%n%m%n"/> 
-    </layout> 
-  </appender> 
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%t: %C{1}.%M]%n%m%n" />
+		</layout>
+	</appender>
 
-  <!-- core project -->
+	<!-- core project -->
 
-  <logger name="de.unisiegen.gtitool.core.Messages">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <!-- ui project -->
+	<logger name="de.unisiegen.gtitool.core.Messages">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
 
-  <logger name="de.unisiegen.gtitool.ui.Start">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <logger name="de.unisiegen.gtitool.ui.logic.AboutDialog">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
+	<!-- ui project -->
 
-  <logger name="de.unisiegen.gtitool.ui.logic.NewStateNameDialog">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
+	<logger name="de.unisiegen.gtitool.ui.Start">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
 
-  <logger name="de.unisiegen.gtitool.ui.logic.PreferencesDialog">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <logger name="de.unisiegen.gtitool.ui.preferences.PreferenceManager">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <logger name="de.unisiegen.gtitool.ui.style.parser.StyledParserDocument">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
+	<logger name="de.unisiegen.gtitool.ui.logic.AboutDialog">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
 
-  <logger name="de.unisiegen.gtitool.ui.utils.Clipboard">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <logger name="de.unisiegen.gtitool.ui.Messages">
-    <level value="all" />
-    <appender-ref ref="console" />
-  </logger>
-  
-  <!-- all -->
+	<logger name="de.unisiegen.gtitool.ui.logic.NewStateNameDialog">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
 
-  <root> 
-    <priority value ="off" />
-  </root>
+	<logger name="de.unisiegen.gtitool.ui.logic.PreferencesDialog">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.preferences.PreferenceManager">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.preferences.item.AutoStepItem">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.preferences.item.TransitionItem">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.style.parser.StyledParserDocument">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger name="de.unisiegen.gtitool.ui.utils.Clipboard">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger name="de.unisiegen.gtitool.ui.Messages">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<!-- all -->
+
+	<root>
+		<priority value="off" />
+	</root>
 </log4j:configuration>

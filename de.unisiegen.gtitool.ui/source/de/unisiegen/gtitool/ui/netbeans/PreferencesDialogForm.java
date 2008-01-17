@@ -240,14 +240,13 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
         jPanelView.add(jLabelAutoStep, gridBagConstraints);
 
-        jSliderAutoStep.setMajorTickSpacing(1);
-        jSliderAutoStep.setMaximum(5);
-        jSliderAutoStep.setMinimum(1);
+        jSliderAutoStep.setMajorTickSpacing(1000);
+        jSliderAutoStep.setMaximum(5000);
+        jSliderAutoStep.setMinorTickSpacing(500);
         jSliderAutoStep.setPaintLabels(true);
         jSliderAutoStep.setPaintTicks(true);
         jSliderAutoStep.setSnapToTicks(true);
         jSliderAutoStep.setToolTipText(bundle.getString("PreferencesDialog.AutoStepToolTip")); // NOI18N
-        jSliderAutoStep.setValue(2);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;

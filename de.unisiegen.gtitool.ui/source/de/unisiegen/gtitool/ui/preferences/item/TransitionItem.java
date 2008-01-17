@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -22,6 +25,12 @@ public enum TransitionItem
    * The {@link Transition} can be created per mouse click.
    */
   CLICK_MODE ( 1, "PreferencesDialog.TransitionClick" ); //$NON-NLS-1$
+
+  /**
+   * The {@link Logger} for this enum.
+   */
+  private static final Logger logger = Logger.getLogger ( TransitionItem.class );
+
 
   /**
    * Creates a new {@link TransitionItem} of the given index, or throws an
@@ -44,7 +53,8 @@ public enum TransitionItem
       }
       default :
       {
-        throw new IllegalArgumentException ( "transition mode not supported" ); //$NON-NLS-1$
+        logger.error ( "transition mode not supported" ); //$NON-NLS-1$
+        return PreferenceManager.DEFAULT_TRANSITION_ITEM;
       }
     }
   }

@@ -330,16 +330,15 @@
             </Component>
             <Component class="javax.swing.JSlider" name="jSliderAutoStep">
               <Properties>
-                <Property name="majorTickSpacing" type="int" value="1"/>
-                <Property name="maximum" type="int" value="5"/>
-                <Property name="minimum" type="int" value="1"/>
+                <Property name="majorTickSpacing" type="int" value="1000"/>
+                <Property name="maximum" type="int" value="5000"/>
+                <Property name="minorTickSpacing" type="int" value="500"/>
                 <Property name="paintLabels" type="boolean" value="true"/>
                 <Property name="paintTicks" type="boolean" value="true"/>
                 <Property name="snapToTicks" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.AutoStepToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
-                <Property name="value" type="int" value="2"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

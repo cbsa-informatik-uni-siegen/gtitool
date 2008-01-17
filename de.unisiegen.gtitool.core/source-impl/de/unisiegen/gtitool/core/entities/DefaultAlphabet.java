@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -28,6 +31,12 @@ public final class DefaultAlphabet implements Alphabet
    * The serial version uid.
    */
   private static final long serialVersionUID = -4488353013296552669L;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private final EventListenerList listenerList;
 
 
   /**
@@ -61,6 +70,8 @@ public final class DefaultAlphabet implements Alphabet
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+    // ListenerList
+    this.listenerList = new EventListenerList ();
   }
 
 
@@ -232,6 +243,7 @@ public final class DefaultAlphabet implements Alphabet
       throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
     this.symbolSet.add ( symbol );
+    fireAlphabetChanged ();
   }
 
 
@@ -260,6 +272,18 @@ public final class DefaultAlphabet implements Alphabet
     {
       add ( current );
     }
+  }
+
+
+  /**
+   * Adds the given {@link AlphabetChangedListener}.
+   * 
+   * @param listener The {@link AlphabetChangedListener}.
+   */
+  public final synchronized void addAlphabetChangedListener (
+      AlphabetChangedListener listener )
+  {
+    this.listenerList.add ( AlphabetChangedListener.class, listener );
   }
 
 
@@ -353,6 +377,20 @@ public final class DefaultAlphabet implements Alphabet
       return this.symbolSet.equals ( defaultAlphabet.symbolSet );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Alphabet} has changed.
+   */
+  private final void fireAlphabetChanged ()
+  {
+    AlphabetChangedListener [] listeners = this.listenerList
+        .getListeners ( AlphabetChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].alphabetChanged ( this );
+    }
   }
 
 
@@ -482,6 +520,7 @@ public final class DefaultAlphabet implements Alphabet
       throw new IllegalArgumentException ( "symbol is not in this alphabet" ); //$NON-NLS-1$
     }
     this.symbolSet.remove ( symbol );
+    fireAlphabetChanged ();
   }
 
 
@@ -500,6 +539,18 @@ public final class DefaultAlphabet implements Alphabet
     {
       remove ( current );
     }
+  }
+
+
+  /**
+   * Removes the given {@link AlphabetChangedListener}.
+   * 
+   * @param listener The {@link AlphabetChangedListener}.
+   */
+  public final synchronized void removeAlphabetChangedListener (
+      AlphabetChangedListener listener )
+  {
+    this.listenerList.remove ( AlphabetChangedListener.class, listener );
   }
 
 

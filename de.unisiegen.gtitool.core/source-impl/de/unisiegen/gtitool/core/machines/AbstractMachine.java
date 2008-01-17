@@ -17,6 +17,9 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineEpsilonTransitionException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -146,6 +149,24 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The {@link AlphabetChangedListener}.
+   */
+  private AlphabetChangedListener alphabetChangedListener;
+
+
+  /**
+   * The {@link TransitionChangedListener}.
+   */
+  private TransitionChangedListener transitionChangedListener;
+
+
+  /**
+   * The {@link StateChangedListener}.
+   */
+  private StateChangedListener stateChangedListener;
+
+
+  /**
    * Allocates a new <code>AbstractMachine</code>.
    * 
    * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
@@ -187,6 +208,43 @@ public abstract class AbstractMachine implements Machine
     this.activeStateSet = new TreeSet < State > ();
     // History
     this.history = new ArrayList < ArrayList < Transition > > ();
+
+    // AlphabetChangedListener
+    this.alphabetChangedListener = new AlphabetChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void alphabetChanged ( @SuppressWarnings ( "unused" )
+      Alphabet newAlphabet )
+      {
+        fireTableStructureChanged ();
+      }
+    };
+    this.alphabet.addAlphabetChangedListener ( this.alphabetChangedListener );
+
+    // TransitionChangedListener
+    this.transitionChangedListener = new TransitionChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void transitionChanged ( @SuppressWarnings ( "unused" )
+      Transition newTransition )
+      {
+        fireTableDataChanged ();
+      }
+    };
+
+    // StateChangedListener
+    this.stateChangedListener = new StateChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void stateChanged ( @SuppressWarnings ( "unused" )
+      State newState )
+      {
+        fireTableDataChanged ();
+      }
+    };
   }
 
 
@@ -271,6 +329,7 @@ public abstract class AbstractMachine implements Machine
     this.stateList.add ( state );
     link ( state );
     fireTableDataChanged ();
+    state.addStateChangedListener ( this.stateChangedListener );
   }
 
 
@@ -363,6 +422,7 @@ public abstract class AbstractMachine implements Machine
     this.transitionList.add ( transition );
     link ( transition );
     fireTableDataChanged ();
+    transition.addTransitionChangedListener ( this.transitionChangedListener );
   }
 
 
@@ -631,7 +691,7 @@ public abstract class AbstractMachine implements Machine
    * @see TableModelEvent
    * @see EventListenerList
    */
-  public final void fireTableChanged ( TableModelEvent event )
+  private final void fireTableChanged ( TableModelEvent event )
   {
     TableModelListener [] listeners = this.listenerList
         .getListeners ( TableModelListener.class );
@@ -652,9 +712,27 @@ public abstract class AbstractMachine implements Machine
    * @see EventListenerList
    * @see JTable#tableChanged(TableModelEvent)
    */
-  public final void fireTableDataChanged ()
+  private final void fireTableDataChanged ()
   {
     fireTableChanged ( new TableModelEvent ( this ) );
+  }
+
+
+  /**
+   * Notifies all listeners that the table's structure has changed. The number
+   * of columns in the table, and the names and types of the new columns may be
+   * different from the previous state. If the <code>JTable</code> receives
+   * this event and its <code>autoCreateColumnsFromModel</code> flag is set it
+   * discards any table columns that it had and reallocates default columns in
+   * the order they appear in the model. This is the same as calling
+   * <code>setModel(TableModel)</code> on the <code>JTable</code>.
+   * 
+   * @see TableModelEvent
+   * @see EventListenerList
+   */
+  private final void fireTableStructureChanged ()
+  {
+    fireTableChanged ( new TableModelEvent ( this, TableModelEvent.HEADER_ROW ) );
   }
 
 
@@ -717,7 +795,7 @@ public abstract class AbstractMachine implements Machine
    */
   public final int getColumnCount ()
   {
-    return 1 + this.alphabet.size ();
+    return 2 + this.alphabet.size ();
   }
 
 
@@ -730,9 +808,13 @@ public abstract class AbstractMachine implements Machine
   {
     if ( columnIndex == 0 )
     {
-      return " "; //$NON-NLS-1$
+      return ""; //$NON-NLS-1$
     }
-    return this.alphabet.get ( columnIndex - 1 ).toString ();
+    if ( columnIndex == 1 )
+    {
+      return "\u03B5"; //$NON-NLS-1$
+    }
+    return this.alphabet.get ( columnIndex - 2 ).toString ();
   }
 
 
@@ -856,21 +938,40 @@ public abstract class AbstractMachine implements Machine
    */
   public final Object getValueAt ( int rowIndex, int columnIndex )
   {
+    // First column
     if ( columnIndex == 0 )
     {
       return this.stateList.get ( rowIndex ).toString ();
     }
 
-    Symbol currentSymbol = this.alphabet.get ( columnIndex - 1 );
-    State currentState = this.stateList.get ( rowIndex );
     ArrayList < State > stateEndList = new ArrayList < State > ();
-    for ( Transition currentTransition : currentState.getTransitionBegin () )
+    State currentState = this.stateList.get ( rowIndex );
+
+    // Epsilon column
+    if ( columnIndex == 1 )
     {
-      if ( currentTransition.contains ( currentSymbol ) )
+      for ( Transition currentTransition : currentState.getTransitionBegin () )
       {
-        stateEndList.add ( currentTransition.getStateEnd () );
+        if ( currentTransition.isEpsilonTransition () )
+        {
+          stateEndList.add ( currentTransition.getStateEnd () );
+        }
       }
     }
+    // Normal columns
+    else
+    {
+      Symbol currentSymbol = this.alphabet.get ( columnIndex - 2 );
+      for ( Transition currentTransition : currentState.getTransitionBegin () )
+      {
+        if ( currentTransition.contains ( currentSymbol ) )
+        {
+          stateEndList.add ( currentTransition.getStateEnd () );
+        }
+      }
+    }
+
+    // Build the result
     StringBuilder result = new StringBuilder ();
     for ( int i = 0 ; i < stateEndList.size () ; i++ )
     {
@@ -1223,6 +1324,7 @@ public abstract class AbstractMachine implements Machine
       removeTransition ( current );
     }
     fireTableDataChanged ();
+    state.removeStateChangedListener ( this.stateChangedListener );
   }
 
 
@@ -1311,6 +1413,8 @@ public abstract class AbstractMachine implements Machine
       current.getTransitionEnd ().remove ( transition );
     }
     fireTableDataChanged ();
+    transition
+        .removeTransitionChangedListener ( this.transitionChangedListener );
   }
 
 

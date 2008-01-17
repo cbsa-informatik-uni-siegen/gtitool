@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -72,6 +73,14 @@ public interface Transition extends ParseableEntity, Storable,
   public void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException;
+
+
+  /**
+   * Adds the given {@link TransitionChangedListener}.
+   * 
+   * @param listener The {@link TransitionChangedListener}.
+   */
+  public void addTransitionChangedListener ( TransitionChangedListener listener );
 
 
   /**
@@ -268,6 +277,15 @@ public interface Transition extends ParseableEntity, Storable,
    * @param symbols The {@link Symbol}s to remove.
    */
   public void remove ( Symbol ... symbols );
+
+
+  /**
+   * Removes the given {@link TransitionChangedListener}.
+   * 
+   * @param listener The {@link TransitionChangedListener}.
+   */
+  public void removeTransitionChangedListener (
+      TransitionChangedListener listener );
 
 
   /**

@@ -38,7 +38,7 @@ public interface DefaultValues
   /**
    * The default {@link Color} of the selected {@link State}.
    */
-  public final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255, 255, 0 );
+  public final Color DEFAULT_SELECTED_STATE_COLOR = new Color ( 255, 0, 0 );
 
 
   /**

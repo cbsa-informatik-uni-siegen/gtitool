@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
@@ -30,6 +33,12 @@ public final class DefaultTransition implements Transition
    * The serial version uid.
    */
   private static final long serialVersionUID = 7649068993385065572L;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private final EventListenerList listenerList;
 
 
   /**
@@ -104,7 +113,10 @@ public final class DefaultTransition implements Transition
    */
   public DefaultTransition ()
   {
+    // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+    // ListenerList
+    this.listenerList = new EventListenerList ();
   }
 
 
@@ -129,6 +141,8 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -168,6 +182,8 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -214,6 +230,8 @@ public final class DefaultTransition implements Transition
 
     // Symbols
     this.symbolSet = new TreeSet < Symbol > ();
+    // ListenerList
+    this.listenerList = new EventListenerList ();
 
     // Attribute
     boolean foundId = false;
@@ -299,6 +317,8 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
     // Symbols
     if ( symbols == null )
     {
@@ -322,6 +342,8 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
     // Symbols
     if ( symbols == null )
     {
@@ -395,6 +417,7 @@ public final class DefaultTransition implements Transition
       throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
     this.symbolSet.add ( symbol );
+    fireTransitionChanged ();
   }
 
 
@@ -425,11 +448,24 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Adds the given {@link TransitionChangedListener}.
+   * 
+   * @param listener The {@link TransitionChangedListener}.
+   */
+  public final synchronized void addTransitionChangedListener (
+      TransitionChangedListener listener )
+  {
+    this.listenerList.add ( TransitionChangedListener.class, listener );
+  }
+
+
+  /**
    * Removes all {@link Symbol}s.
    */
   public final void clear ()
   {
     this.symbolSet.clear ();
+    fireTransitionChanged ();
   }
 
 
@@ -505,6 +541,20 @@ public final class DefaultTransition implements Transition
       return this.id == defaultTransition.id;
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Transition} has changed.
+   */
+  private final void fireTransitionChanged ()
+  {
+    TransitionChangedListener [] listeners = this.listenerList
+        .getListeners ( TransitionChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].transitionChanged ( this );
+    }
   }
 
 
@@ -756,6 +806,7 @@ public final class DefaultTransition implements Transition
       throw new IllegalArgumentException ( "symbol is not in this transition" ); //$NON-NLS-1$
     }
     this.symbolSet.remove ( symbol );
+    fireTransitionChanged ();
   }
 
 
@@ -774,6 +825,18 @@ public final class DefaultTransition implements Transition
     {
       remove ( current );
     }
+  }
+
+
+  /**
+   * Removes the given {@link TransitionChangedListener}.
+   * 
+   * @param listener The {@link TransitionChangedListener}.
+   */
+  public final synchronized void removeTransitionChangedListener (
+      TransitionChangedListener listener )
+  {
+    this.listenerList.remove ( TransitionChangedListener.class, listener );
   }
 
 

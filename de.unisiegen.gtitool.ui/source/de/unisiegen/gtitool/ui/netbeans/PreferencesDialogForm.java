@@ -54,7 +54,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jLabelZoom = new javax.swing.JLabel();
         jSliderZoom = new javax.swing.JSlider();
         jPanelGeneralSpace = new javax.swing.JPanel();
-        jButtonRestore = new javax.swing.JButton();
         jPanelView = new javax.swing.JPanel();
         jLabelTransition = new javax.swing.JLabel();
         jComboBoxTransition = new javax.swing.JComboBox();
@@ -72,6 +71,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jButtonRestore = new javax.swing.JButton();
         jButtonOk = new javax.swing.JButton();
         jButtonAccept = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
@@ -104,11 +104,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxLanguage.setToolTipText(bundle.getString("PreferencesDialog.LanguageToolTip")); // NOI18N
         jComboBoxLanguage.setFocusable(false);
+        jComboBoxLanguage.setPreferredSize(new java.awt.Dimension(250, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(16, 5, 5, 16);
         jPanelGeneral.add(jComboBoxLanguage, gridBagConstraints);
 
@@ -124,11 +124,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxLookAndFeel.setToolTipText(bundle.getString("PreferencesDialog.LookAndFeelToolTip")); // NOI18N
         jComboBoxLookAndFeel.setFocusable(false);
+        jComboBoxLookAndFeel.setPreferredSize(new java.awt.Dimension(250, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jPanelGeneral.add(jComboBoxLookAndFeel, gridBagConstraints);
 
@@ -151,11 +151,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jSliderZoom.setSnapToTicks(true);
         jSliderZoom.setToolTipText(bundle.getString("PreferencesDialog.ZoomToolTip")); // NOI18N
         jSliderZoom.setValue(100);
+        jSliderZoom.setPreferredSize(new java.awt.Dimension(250, 42));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jPanelGeneral.add(jSliderZoom, gridBagConstraints);
 
@@ -167,24 +167,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanelGeneral.add(jPanelGeneralSpace, gridBagConstraints);
-
-        jButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
-        jButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
-        jButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
-        jButtonRestore.setFocusPainted(false);
-        jButtonRestore.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRestoreActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
-        jPanelGeneral.add(jButtonRestore, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
 
@@ -202,11 +184,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxTransition.setToolTipText(bundle.getString("PreferencesDialog.TransitionToolTip")); // NOI18N
         jComboBoxTransition.setFocusable(false);
+        jComboBoxTransition.setPreferredSize(new java.awt.Dimension(250, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(16, 5, 5, 16);
         jPanelView.add(jComboBoxTransition, gridBagConstraints);
 
@@ -222,11 +204,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxMouseSelection.setToolTipText(bundle.getString("PreferencesDialog.MouseSelectionToolTip")); // NOI18N
         jComboBoxMouseSelection.setFocusable(false);
+        jComboBoxMouseSelection.setPreferredSize(new java.awt.Dimension(250, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jPanelView.add(jComboBoxMouseSelection, gridBagConstraints);
 
@@ -247,11 +229,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jSliderAutoStep.setPaintTicks(true);
         jSliderAutoStep.setSnapToTicks(true);
         jSliderAutoStep.setToolTipText(bundle.getString("PreferencesDialog.AutoStepToolTip")); // NOI18N
+        jSliderAutoStep.setPreferredSize(new java.awt.Dimension(250, 42));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jPanelView.add(jSliderAutoStep, gridBagConstraints);
 
@@ -368,11 +350,29 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jTabbedPane, gridBagConstraints);
+
+        jButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
+        jButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
+        jButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
+        jButtonRestore.setFocusPainted(false);
+        jButtonRestore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRestoreActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 5);
+        getContentPane().add(jButtonRestore, gridBagConstraints);
 
         jButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
         jButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
@@ -385,7 +385,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
@@ -403,7 +403,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 5);
@@ -420,7 +420,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 16);

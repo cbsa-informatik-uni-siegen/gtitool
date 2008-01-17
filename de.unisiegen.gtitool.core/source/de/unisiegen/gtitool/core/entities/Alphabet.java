@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -52,6 +53,14 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    *           not correct.
    */
   public void add ( Symbol ... symbols ) throws AlphabetException;
+
+
+  /**
+   * Adds the given {@link AlphabetChangedListener}.
+   * 
+   * @param listener The {@link AlphabetChangedListener}.
+   */
+  public void addAlphabetChangedListener ( AlphabetChangedListener listener );
 
 
   /**
@@ -157,6 +166,14 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * @param symbols The {@link Symbol}s to remove.
    */
   public void remove ( Symbol ... symbols );
+
+
+  /**
+   * Removes the given {@link AlphabetChangedListener}.
+   * 
+   * @param listener The {@link AlphabetChangedListener}.
+   */
+  public void removeAlphabetChangedListener ( AlphabetChangedListener listener );
 
 
   /**

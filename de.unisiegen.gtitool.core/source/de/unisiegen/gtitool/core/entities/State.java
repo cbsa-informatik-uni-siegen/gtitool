@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -21,6 +22,14 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * The value of the id of it was not defined so far.
    */
   public static final int ID_NOT_DEFINED = -1;
+
+
+  /**
+   * Adds the given {@link StateChangedListener}.
+   * 
+   * @param listener The {@link StateChangedListener}.
+   */
+  public void addStateChangedListener ( StateChangedListener listener );
 
 
   /**
@@ -225,6 +234,14 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    * @return The startState.
    */
   public boolean isStartState ();
+
+
+  /**
+   * Removes the given {@link StateChangedListener}.
+   * 
+   * @param listener The {@link StateChangedListener}.
+   */
+  public void removeStateChangedListener ( StateChangedListener listener );
 
 
   /**

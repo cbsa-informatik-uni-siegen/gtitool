@@ -3,7 +3,10 @@ package de.unisiegen.gtitool.core.entities;
 
 import java.util.ArrayList;
 
+import javax.swing.event.EventListenerList;
+
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -28,6 +31,12 @@ public final class DefaultState implements State
    * The serial verion uid.
    */
   private static final long serialVersionUID = -1156609272782310462L;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private final EventListenerList listenerList;
 
 
   /**
@@ -191,6 +200,9 @@ public final class DefaultState implements State
           + "\" is not a state" ); //$NON-NLS-1$
     }
 
+    // ListenerList
+    this.listenerList = new EventListenerList ();
+
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
@@ -347,16 +359,34 @@ public final class DefaultState implements State
    */
   public DefaultState ( String name ) throws StateException
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
+    
     // Name
     setName ( name );
+
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
+
     // TransitionEnd
     this.transitionEndList = new ArrayList < Transition > ();
     this.transitionEndIdList = new ArrayList < Integer > ();
+
     // DefaultName
     this.canSetDefaultName = false;
+  }
+
+
+  /**
+   * Adds the given {@link StateChangedListener}.
+   * 
+   * @param listener The {@link StateChangedListener}.
+   */
+  public final synchronized void addStateChangedListener (
+      StateChangedListener listener )
+  {
+    this.listenerList.add ( StateChangedListener.class, listener );
   }
 
 
@@ -473,6 +503,20 @@ public final class DefaultState implements State
       return this.id == defaultState.id;
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the {@link State} has changed.
+   */
+  private final void fireStateChanged ()
+  {
+    StateChangedListener [] listeners = this.listenerList
+        .getListeners ( StateChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].stateChanged ( this );
+    }
   }
 
 
@@ -732,6 +776,18 @@ public final class DefaultState implements State
 
 
   /**
+   * Removes the given {@link StateChangedListener}.
+   * 
+   * @param listener The {@link StateChangedListener}.
+   */
+  public final synchronized void removeStateChangedListener (
+      StateChangedListener listener )
+  {
+    this.listenerList.remove ( StateChangedListener.class, listener );
+  }
+
+
+  /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
    * begin in this <code>DefaultState</code>.
    * 
@@ -867,6 +923,7 @@ public final class DefaultState implements State
       }
     }
     this.name = name;
+    fireStateChanged ();
   }
 
 

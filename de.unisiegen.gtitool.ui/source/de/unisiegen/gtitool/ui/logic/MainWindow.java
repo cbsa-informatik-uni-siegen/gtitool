@@ -605,7 +605,8 @@ public final class MainWindow implements LanguageChangedListener
     for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
     {
         editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
-        files.add ( editorPanel.getFile () );
+        if ( editorPanel.getFile () != null )
+          files.add ( editorPanel.getFile () );
     }
     OpenedFilesItem item = new OpenedFilesItem ( files, this.gui.jTabbedPaneMain.getSelectedIndex () );
     preferenceManager.setOpenedFilesItem ( item );

@@ -6,9 +6,9 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.NewStateNameDialogForm;
-import de.unisiegen.gtitool.ui.style.listener.StateChangedListener;
 
 
 /**

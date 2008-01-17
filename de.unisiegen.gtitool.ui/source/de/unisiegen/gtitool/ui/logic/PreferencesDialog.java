@@ -41,6 +41,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
@@ -54,7 +55,6 @@ import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 
 
 /**

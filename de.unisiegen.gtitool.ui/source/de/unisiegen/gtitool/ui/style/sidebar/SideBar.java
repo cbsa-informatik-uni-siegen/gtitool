@@ -181,11 +181,11 @@ public final class SideBar extends JComponent
   /**
    * Adds the given {@link SideBarListener}.
    * 
-   * @param sideBarListener The given {@link SideBarListener}.
+   * @param listener The given {@link SideBarListener}.
    */
-  public final void addSideBarListener ( SideBarListener sideBarListener )
+  public final void addSideBarListener ( SideBarListener listener )
   {
-    this.listenerList.add ( SideBarListener.class, sideBarListener );
+    this.listenerList.add ( SideBarListener.class, listener );
   }
 
 
@@ -261,15 +261,15 @@ public final class SideBar extends JComponent
   /**
    * Handles the mouse clicked event.
    * 
-   * @param mouseEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
-  public final void mouseClicked ( MouseEvent mouseEvent )
+  public final void mouseClicked ( MouseEvent event )
   {
     if ( this.currentLeft == -1 || this.currentRight == -1 )
     {
       return;
     }
-    int y = mouseEvent.getY () + this.verticalScrollBar.getValue ();
+    int y = event.getY () + this.verticalScrollBar.getValue ();
     int hh = this.errorIcon.getIconHeight () / 2;
     for ( int i = 0 ; i < this.verticalPositions.length ; i++ )
     {
@@ -294,15 +294,15 @@ public final class SideBar extends JComponent
   /**
    * Handles the mouse move event.
    * 
-   * @param mouseEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
-  private final void mouseMoved ( MouseEvent mouseEvent )
+  private final void mouseMoved ( MouseEvent event )
   {
     if ( this.verticalPositions == null )
     {
       return;
     }
-    int y = mouseEvent.getY () + this.verticalScrollBar.getValue ();
+    int y = event.getY () + this.verticalScrollBar.getValue ();
     int hh = this.errorIcon.getIconHeight () / 2;
     for ( int i = 0 ; i < this.verticalPositions.length ; i++ )
     {
@@ -370,10 +370,10 @@ public final class SideBar extends JComponent
   /**
    * Adds the given {@link SideBarListener}.
    * 
-   * @param sideBarListener The given {@link SideBarListener}.
+   * @param listener The given {@link SideBarListener}.
    */
-  public final void removeSideBarListener ( SideBarListener sideBarListener )
+  public final void removeSideBarListener ( SideBarListener listener )
   {
-    this.listenerList.remove ( SideBarListener.class, sideBarListener );
+    this.listenerList.remove ( SideBarListener.class, listener );
   }
 }

@@ -7,9 +7,9 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Stack;
+import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.ui.style.listener.StackChangedListener;
 
 
 /**

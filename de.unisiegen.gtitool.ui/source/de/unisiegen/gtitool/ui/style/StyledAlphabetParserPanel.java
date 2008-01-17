@@ -4,8 +4,8 @@ package de.unisiegen.gtitool.ui.style;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
-import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 

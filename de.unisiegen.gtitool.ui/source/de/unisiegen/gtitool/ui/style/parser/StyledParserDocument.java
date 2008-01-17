@@ -254,7 +254,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @return The error set.
    */
-  private SimpleAttributeSet getAttributeSetError ()
+  private final SimpleAttributeSet getAttributeSetError ()
   {
     SimpleAttributeSet errorSet = new SimpleAttributeSet ();
     StyleConstants.setForeground ( errorSet, Color.RED );
@@ -269,7 +269,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @return The highlighted {@link ParseableEntity} set.
    */
-  private SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
+  private final SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
   {
     SimpleAttributeSet highlightedParseableEntitySet = new SimpleAttributeSet ();
     StyleConstants.setBackground ( highlightedParseableEntitySet,
@@ -283,7 +283,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @return The warning set.
    */
-  private SimpleAttributeSet getAttributeSetWarning ()
+  private final SimpleAttributeSet getAttributeSetWarning ()
   {
     SimpleAttributeSet warningSet = new SimpleAttributeSet ();
     StyleConstants.setBackground ( warningSet, this.parserWarningColor );

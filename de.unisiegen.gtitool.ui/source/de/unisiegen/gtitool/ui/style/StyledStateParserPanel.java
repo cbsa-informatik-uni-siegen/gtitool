@@ -2,9 +2,9 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.parser.state.StateParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
-import de.unisiegen.gtitool.ui.style.listener.StateChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 

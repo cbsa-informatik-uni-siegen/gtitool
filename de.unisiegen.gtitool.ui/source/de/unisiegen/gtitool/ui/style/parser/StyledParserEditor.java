@@ -10,7 +10,6 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
 
 
-
 /**
  * An {@link JEditorPane} that works on {@link StyledParserDocument}s and
  * displays tooltips for parser and lexer errors detected by the document.
@@ -47,7 +46,7 @@ public final class StyledParserEditor extends JEditorPane
    * @see JEditorPane#getScrollableTracksViewportWidth()
    */
   @Override
-  public boolean getScrollableTracksViewportWidth ()
+  public final boolean getScrollableTracksViewportWidth ()
   {
     return true;
   }
@@ -59,7 +58,7 @@ public final class StyledParserEditor extends JEditorPane
    * @see JTextComponent#getToolTipText(MouseEvent)
    */
   @Override
-  public String getToolTipText ( MouseEvent event )
+  public final String getToolTipText ( MouseEvent event )
   {
     int index = viewToModel ( event.getPoint () );
     if ( index < getDocument ().getLength () )

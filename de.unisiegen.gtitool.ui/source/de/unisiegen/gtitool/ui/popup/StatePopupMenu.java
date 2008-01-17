@@ -122,7 +122,7 @@ public class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-
+        // TODO i18n
         int choice = JOptionPane.NO_OPTION;
         String message = "Soll der Zustand \"" //$NON-NLS-1$
             + StatePopupMenu.this.state.toString ()

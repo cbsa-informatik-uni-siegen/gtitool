@@ -616,6 +616,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
    * @param y the y position of the new state view
    * @return {@link DefaultGraphCell} the new created tmp Object
    */
+  @SuppressWarnings("unchecked")
   private DefaultGraphCell createTmpObject ( double x, double y )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$

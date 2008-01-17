@@ -14,8 +14,10 @@ import org.jgraph.graph.VertexView;
  * order it meets your requirements (else subclass it or subclass
  * DefaultCellViewFactory). You can also recover the gpConfiguration of that
  * javabean via an XML file via XMLEncoder/XMLDecoder.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-@SuppressWarnings ( "all" )
 public class GPCellViewFactory extends DefaultCellViewFactory
 {
 
@@ -25,16 +27,20 @@ public class GPCellViewFactory extends DefaultCellViewFactory
   private static final long serialVersionUID = -2222911017108871188L;
 
 
+  /**
+   * The view class key.
+   */
   public static final String VIEW_CLASS_KEY = "viewClassKey"; //$NON-NLS-1$
 
 
   /**
-   * TODO
+   * Sets the view class.
    * 
-   * @param map
-   * @param viewClass
+   * @param map The map.
+   * @param viewClass The view class.
    */
-  public static final void setViewClass ( Map map, String viewClass )
+  public static final void setViewClass ( Map < String, String > map,
+      String viewClass )
   {
     map.put ( VIEW_CLASS_KEY, viewClass );
   }
@@ -43,25 +49,25 @@ public class GPCellViewFactory extends DefaultCellViewFactory
   /**
    * {@inheritDoc}
    * 
-   * @see org.jgraph.graph.DefaultCellViewFactory#createVertexView(java.lang.Object)
+   * @see DefaultCellViewFactory#createVertexView(Object)
    */
   @Override
-  protected VertexView createVertexView ( Object v )
+  protected VertexView createVertexView ( Object value )
   {
     try
     {
-      DefaultGraphCell cell = ( DefaultGraphCell ) v;
+      DefaultGraphCell cell = ( DefaultGraphCell ) value;
       String viewClass = ( String ) cell.getAttributes ().get ( VIEW_CLASS_KEY );
 
       VertexView view = ( VertexView ) Thread.currentThread ()
           .getContextClassLoader ().loadClass ( viewClass ).newInstance ();
-      view.setCell ( v );
+      view.setCell ( value );
       return view;
     }
     catch ( Exception e )
     {
       // Nothing to do here
     }
-    return super.createVertexView ( v );
+    return super.createVertexView ( value );
   }
 }

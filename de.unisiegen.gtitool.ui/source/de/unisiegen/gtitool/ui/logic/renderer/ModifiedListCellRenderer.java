@@ -31,13 +31,13 @@ public class ModifiedListCellRenderer extends DefaultListCellRenderer
    *      int, boolean, boolean)
    */
   @Override
-  public Component getListCellRendererComponent ( JList pJList, Object pValue,
-      int pIndex, boolean pIsSelected, @SuppressWarnings ( "unused" )
-      boolean pCellHasFocus )
+  public Component getListCellRendererComponent ( JList jList, Object value,
+      int index, boolean isSelected, @SuppressWarnings ( "unused" )
+      boolean cellHasFocus )
   {
     // The cell has focus value is not used any more
-    JLabel label = ( JLabel ) super.getListCellRendererComponent ( pJList,
-        pValue, pIndex, pIsSelected, pIsSelected );
+    JLabel label = ( JLabel ) super.getListCellRendererComponent ( jList,
+        value, index, isSelected, isSelected );
     return label;
   }
 }

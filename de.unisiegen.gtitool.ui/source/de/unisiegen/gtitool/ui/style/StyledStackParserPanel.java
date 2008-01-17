@@ -9,12 +9,12 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.stack.StackParseable;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
-import de.unisiegen.gtitool.ui.style.listener.StackChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 

@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.style.listener;
+package de.unisiegen.gtitool.core.entities.listener;
 
 
 import java.util.EventListener;

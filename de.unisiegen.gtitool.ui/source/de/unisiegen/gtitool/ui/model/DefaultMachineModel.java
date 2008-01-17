@@ -257,6 +257,7 @@ public final class DefaultMachineModel implements Storable
    * @param state The state represented via this view.
    * @return The new created {@link DefaultStateView}.
    */
+  @SuppressWarnings("unchecked")
   public final DefaultStateView createStateView ( double x, double y,
       State state )
   {

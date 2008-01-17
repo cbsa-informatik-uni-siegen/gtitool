@@ -8,13 +8,13 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
-import de.unisiegen.gtitool.ui.style.listener.AlphabetChangedListener;
 
 
 /**

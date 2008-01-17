@@ -4,9 +4,9 @@ package de.unisiegen.gtitool.ui.style;
 import de.unisiegen.gtitool.core.entities.ParseableEntity;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.parser.transition.TransitionParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
-import de.unisiegen.gtitool.ui.style.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 

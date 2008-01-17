@@ -2,9 +2,9 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.listener.SymbolChangedListener;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
-import de.unisiegen.gtitool.ui.style.listener.SymbolChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 

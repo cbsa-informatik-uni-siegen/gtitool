@@ -318,11 +318,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.gui.diagrammContentPanel.setViewportView ( this.graph );
 
     this.errorTableModel = new ConsoleTableModel ();
-    this.gui.jTableErrors.setModel ( this.errorTableModel );
-    this.gui.jTableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jTableErrors
+    this.gui.jDragTableErrors.setModel ( this.errorTableModel );
+    this.gui.jDragTableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jDragTableErrors
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jTableErrors.getSelectionModel ().addListSelectionListener (
+    this.gui.jDragTableErrors.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
 
@@ -333,11 +333,11 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         } );
     this.warningTableModel = new ConsoleTableModel ();
-    this.gui.jTableWarnings.setModel ( this.warningTableModel );
-    this.gui.jTableWarnings.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jTableWarnings
+    this.gui.jDragTableWarnings.setModel ( this.warningTableModel );
+    this.gui.jDragTableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jDragTableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jTableWarnings.getSelectionModel ().addListSelectionListener (
+    this.gui.jDragTableWarnings.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
 
@@ -347,8 +347,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
           }
 
         } );
-    this.gui.jTableMachine.setModel ( this.machine );
-    this.gui.jTableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jDragTableMachine.setModel ( this.machine );
+    this.gui.jDragTableMachine.getTableHeader ().setReorderingAllowed ( false );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -701,8 +701,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     {
       this.consoleTimer.cancel ();
     }
-    this.gui.jTableErrors.clearSelection ();
-    this.gui.jTableWarnings.clearSelection ();
+    this.gui.jDragTableErrors.clearSelection ();
+    this.gui.jDragTableWarnings.clearSelection ();
     this.clearHighlight ();
   }
 
@@ -720,8 +720,8 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     {
       this.consoleTimer.cancel ();
     }
-    this.gui.jTableErrors.clearSelection ();
-    this.gui.jTableWarnings.clearSelection ();
+    this.gui.jDragTableErrors.clearSelection ();
+    this.gui.jDragTableWarnings.clearSelection ();
     this.clearHighlight ();
   }
 
@@ -734,13 +734,13 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public final void handleConsoleTableMouseMoved ( MouseEvent pEvent )
   {
     JTable table;
-    if ( pEvent.getSource () == this.gui.jTableErrors )
+    if ( pEvent.getSource () == this.gui.jDragTableErrors )
     {
-      table = this.gui.jTableErrors;
+      table = this.gui.jDragTableErrors;
     }
-    else if ( pEvent.getSource () == this.gui.jTableWarnings )
+    else if ( pEvent.getSource () == this.gui.jDragTableWarnings )
     {
-      table = this.gui.jTableWarnings;
+      table = this.gui.jDragTableWarnings;
     }
     else
     {
@@ -776,14 +776,14 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       ListSelectionEvent pEvent )
   {
     JTable table;
-    if ( pEvent.getSource () == this.gui.jTableErrors.getSelectionModel () )
+    if ( pEvent.getSource () == this.gui.jDragTableErrors.getSelectionModel () )
     {
-      table = this.gui.jTableErrors;
+      table = this.gui.jDragTableErrors;
     }
-    else if ( pEvent.getSource () == this.gui.jTableWarnings
+    else if ( pEvent.getSource () == this.gui.jDragTableWarnings
         .getSelectionModel () )
     {
-      table = this.gui.jTableWarnings;
+      table = this.gui.jDragTableWarnings;
     }
     else
     {
@@ -1977,7 +1977,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     if ( pVisible )
     {
-      this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneTable );
+      this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneMachine );
       this.gui.jSplitPaneTable.setDividerSize ( 3 );
       this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationTable () );

@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui;
 
 
+import java.io.File;
+
 import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -29,4 +31,27 @@ public interface EditorPanel
    * @return the {@link Alphabet}
    */
   public Alphabet getAlphabet ();
+  
+  /**
+   * Get the File for this EditorPanel
+   * 
+   * @return the File for this EditorPanel
+   */
+  public File getFile();
+
+  /**
+   * 
+   * Hanlde Save Button action performed
+   *
+   * @return filename of the saved file
+   */
+  public String handleSave ();
+
+  /**
+   * 
+   * Hanlde Save As Button action performed
+   *
+   * @return filename of the saved file
+   */
+  public String handleSaveAs ();
 }

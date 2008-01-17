@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
 /**
  * The Forms file for the {@link MachinePanel}
@@ -9,7 +11,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class MachinesPanelForm extends javax.swing.JPanel {
+public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanelForm{
     
     /** Creates new form MachinesPanelForm */
     public MachinesPanelForm() {
@@ -212,7 +214,7 @@ public class MachinesPanelForm extends javax.swing.JPanel {
         logic = window;
     }
     
-    public MachinePanel getLogic(){
+    public EditorPanel getLogic(){
       return this.logic;
     }
 }

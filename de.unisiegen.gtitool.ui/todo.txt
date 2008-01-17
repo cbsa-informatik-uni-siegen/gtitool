@@ -8,8 +8,6 @@ CF		- Das MachineTableModel kommt mit einer Änderung des Alphabets nicht klar
 		- Die gleiche Datei sollte nicht zweimal geöffnet werden können,
 		  sondern es soll zu der geöffneten Datei gesprungen werden, wenn 
 		  diese nochmal geöffnet wird
-BM		- RecentlyUsedFiles
-BM		- OpenedFiles
 BM		- Dateien per Übergabe in der main Methode öffnen können 
 CF		- Einen Info-Diolog für die Nachrichten bauen
 CF		- History über die Zustände führen (erst im core implementieren)

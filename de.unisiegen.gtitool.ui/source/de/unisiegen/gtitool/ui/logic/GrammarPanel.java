@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -55,5 +57,26 @@ public class GrammarPanel implements EditorPanel
   public Alphabet getAlphabet ()
   {
     return new DefaultAlphabet ();
+  }
+
+
+  public File getFile ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public String handleSave ()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+  public String handleSaveAs ()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

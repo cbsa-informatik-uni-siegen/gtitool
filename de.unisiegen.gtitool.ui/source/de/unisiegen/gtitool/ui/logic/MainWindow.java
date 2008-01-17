@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -22,7 +24,11 @@ import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
+import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.storage.Storage;
 
@@ -111,6 +117,21 @@ public final class MainWindow implements LanguageChangedListener
     }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
+    
+    // Set the recently used files
+    ArrayList < File > recentlyUsedFiles = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles () ;
+    if ( recentlyUsedFiles.size () > 0 )
+      this.gui.jMenuRecentlyUsed.setEnabled ( true );
+    for ( File file : recentlyUsedFiles ) {
+      this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
+    }
+    
+    // open all files which was open at last session
+    for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ().getFiles () )
+    {
+      openFile ( file, false );
+    }
+    this.gui.jTabbedPaneMain.setSelectedIndex ( PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () );
   }
 
 
@@ -221,7 +242,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEnterWord ()
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     int errorCount = 0;
     int warningCount = 0;
@@ -461,18 +482,74 @@ public final class MainWindow implements LanguageChangedListener
     int n = chooser.showOpenDialog ( this.gui );
     if ( n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null )
       return;
+
+    for ( File file : chooser.getSelectedFiles ()){
+      openFile ( file, true );
+    }
+  }
+  
+  /**
+   * 
+   * Organize the recently used files in the menu
+   *
+   */
+  private void organizeRecentlyUsedFilesMenu() {
+    ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
+    
+    this.gui.jMenuRecentlyUsed.removeAll ();
+    
+    for ( File file : fileList ){
+      this.gui.jMenuRecentlyUsed.add( new RecentlyUsedMenuItem ( this, file ) );
+    }
+  }
+
+  /**
+   * 
+   * Try to open the given file
+   *
+   * @param file The file to open
+   * @param addToRecentlyUsed Flag signals if file should be added to recently used files
+   */
+  public void openFile ( File file, boolean addToRecentlyUsed )
+  {
+
+    // check if we already have an editor panel for the file
+    EditorPanel editorPanel = null;
+    for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
+    {
+        editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
+        if ( file.equals ( editorPanel.getFile () ) )
+        {
+          this.gui.jTabbedPaneMain.setSelectedComponent ( component );
+          
+          // reorganize recently used files
+          if ( addToRecentlyUsed ){
+            ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
+            fileList.remove ( file );
+            fileList.add ( 0, file );
+            if ( fileList.size () > 10)
+              fileList.remove ( 10 );
+            if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
+              this.gui.jMenuRecentlyUsed.setEnabled ( true );
+            
+            PreferenceManager.getInstance ().setRecentlyUsedFilesItem ( new RecentlyUsedFilesItem(fileList) );
+            organizeRecentlyUsedFilesMenu();
+          }
+          
+          return ;
+        }
+    }
     try
     {
       DefaultMachineModel model = ( DefaultMachineModel ) Storage
-          .getInstance ().load ( chooser.getSelectedFile ().toString () );
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, chooser
-          .getSelectedFile () );
+          .getInstance ().load ( file.toString () );
+      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
       this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
       this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
           .getPanel () );
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-          .getSelectedIndex (), chooser.getSelectedFile ().getName () );
+          .getSelectedIndex (), file.getName () );
       count++ ;
       setGeneralStates ( true );
       this.gui.jButtonSave.setEnabled ( true );
@@ -480,6 +557,20 @@ public final class MainWindow implements LanguageChangedListener
 
       // toolbar items
       setToolBarEditItemState ( true );
+      
+      // reorganize recently used files
+      if ( addToRecentlyUsed ){
+        ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
+        fileList.remove ( file );
+        fileList.add ( 0, file );
+        if ( fileList.size () > 10)
+          fileList.remove ( 10 );
+        if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
+          this.gui.jMenuRecentlyUsed.setEnabled ( true );
+        
+        PreferenceManager.getInstance ().setRecentlyUsedFilesItem ( new RecentlyUsedFilesItem(fileList) );
+        organizeRecentlyUsedFilesMenu();
+      }
 
     }
     catch ( StoreException e )
@@ -487,8 +578,9 @@ public final class MainWindow implements LanguageChangedListener
       JOptionPane.showMessageDialog ( this.gui, e.getMessage (), Messages
           .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
-    prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-        .getAbsolutePath () );
+
+    PreferenceManager.getInstance ().setWorkingPath ( file.getAbsolutePath () );
+
   }
 
 
@@ -509,6 +601,16 @@ public final class MainWindow implements LanguageChangedListener
   {
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     preferenceManager.setMainWindowPreferences ( this.gui );
+    
+    EditorPanel editorPanel;
+    ArrayList < File > files = new ArrayList < File > ();
+    for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
+    {
+        editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
+        files.add ( editorPanel.getFile () );
+    }
+    OpenedFilesItem item = new OpenedFilesItem ( files, this.gui.jTabbedPaneMain.getSelectedIndex () );
+    preferenceManager.setOpenedFilesItem ( item );
     System.exit ( 0 );
   }
 
@@ -518,7 +620,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleSave ()
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    EditorPanel panel = ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     String fileName = panel.handleSave ();
     if ( fileName != null )
@@ -533,7 +635,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleSaveAs ()
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    EditorPanel panel = ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     String fileName = panel.handleSaveAs ();
 
@@ -566,7 +668,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleToolbarAddState ( boolean state )
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleToolbarAddState ( state );
   }
@@ -579,7 +681,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleToolbarEnd ( boolean state )
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleToolbarEnd ( state );
 
@@ -595,7 +697,7 @@ public final class MainWindow implements LanguageChangedListener
   {
     if ( this.gui != null )
     {
-      MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+      MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
           .getSelectedComponent () ).getLogic ();
       panel.handleToolbarMouse ( state );
     }
@@ -609,7 +711,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleToolbarStart ( boolean state )
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleToolbarStart ( state );
   }
@@ -622,7 +724,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleToolbarTransition ( boolean state )
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleToolbarTransition ( state );
   }
@@ -633,7 +735,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleValidate ()
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     int errorCount = 0;
     int warningCount = 0;
@@ -990,7 +1092,7 @@ public final class MainWindow implements LanguageChangedListener
   {
     setToolBarEditItemState ( true );
     setToolBarEnterWordItemState ( false );
-    MachinePanel machinePanel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel machinePanel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
 
     machinePanel.handleEditMachine ();
@@ -1014,8 +1116,8 @@ public final class MainWindow implements LanguageChangedListener
       this.saveConsolePreferences = false;
       this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
           .isConsoleVisible () );
-//      machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
-//          && machinePanel.isConsoleVisible () );
+      // machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
+      // && machinePanel.isConsoleVisible () );
       this.saveConsolePreferences = true;
       this.gui.jCheckBoxMenuItemTable
           .setState ( machinePanel.isTableVisible () );
@@ -1068,7 +1170,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleWordStart ()
   {
-    MachinePanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     int errorCount = 0;
     int warningCount = 0;

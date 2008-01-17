@@ -2030,4 +2030,15 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
   }
+
+
+  /**
+   * Get the file for this Machine Panel
+   * 
+   * @return the File of this Machine Panel
+   */
+  public File getFile ()
+  {
+    return this.fileName;
+  }
 }

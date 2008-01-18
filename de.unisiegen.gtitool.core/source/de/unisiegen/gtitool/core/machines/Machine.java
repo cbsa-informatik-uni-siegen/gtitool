@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
@@ -84,6 +85,15 @@ public interface Machine extends Serializable, TableModel
    */
   public static final String [] AVAILABLE_MACHINES =
   { "DFA", "NFA", "ENFA", "PDA" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+
+
+  /**
+   * Adds the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener );
 
 
   /**
@@ -300,6 +310,15 @@ public interface Machine extends Serializable, TableModel
    */
   public ArrayList < Transition > previousSymbol ()
       throws WordFinishedException, WordResetedException;
+
+
+  /**
+   * Removes the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener );
 
 
   /**

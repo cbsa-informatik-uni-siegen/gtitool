@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineAllSymbolsException;
@@ -218,6 +219,7 @@ public abstract class AbstractMachine implements Machine
       Alphabet newAlphabet )
       {
         fireTableStructureChanged ();
+        fireModifyStatusChanged ();
       }
     };
     this.alphabet.addAlphabetChangedListener ( this.alphabetChangedListener );
@@ -231,6 +233,7 @@ public abstract class AbstractMachine implements Machine
       Transition newTransition )
       {
         fireTableDataChanged ();
+        fireModifyStatusChanged ();
       }
     };
 
@@ -243,6 +246,7 @@ public abstract class AbstractMachine implements Machine
       State newState )
       {
         fireTableDataChanged ();
+        fireModifyStatusChanged ();
       }
     };
   }
@@ -270,6 +274,18 @@ public abstract class AbstractMachine implements Machine
       list.add ( current );
     }
     this.history.add ( list );
+  }
+
+
+  /**
+   * Adds the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -330,6 +346,7 @@ public abstract class AbstractMachine implements Machine
     link ( state );
     fireTableDataChanged ();
     state.addStateChangedListener ( this.stateChangedListener );
+    fireModifyStatusChanged ();
   }
 
 
@@ -423,6 +440,7 @@ public abstract class AbstractMachine implements Machine
     link ( transition );
     fireTableDataChanged ();
     transition.addTransitionChangedListener ( this.transitionChangedListener );
+    fireModifyStatusChanged ();
   }
 
 
@@ -678,6 +696,20 @@ public abstract class AbstractMachine implements Machine
   private final void clearHistory ()
   {
     this.history.clear ();
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ( true );
+    }
   }
 
 
@@ -1286,6 +1318,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Removes the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Removes the given {@link State}s from this <code>AbstractMachine</code>.
    * 
    * @param states The {@link State}s to remove.
@@ -1325,6 +1369,7 @@ public abstract class AbstractMachine implements Machine
     }
     fireTableDataChanged ();
     state.removeStateChangedListener ( this.stateChangedListener );
+    fireModifyStatusChanged ();
   }
 
 
@@ -1415,6 +1460,7 @@ public abstract class AbstractMachine implements Machine
     fireTableDataChanged ();
     transition
         .removeTransitionChangedListener ( this.transitionChangedListener );
+    fireModifyStatusChanged ();
   }
 
 

@@ -99,6 +99,18 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
+   * The modify status machine.
+   */
+  private boolean modifyStatusMachine = false;
+
+
+  /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
    * Allocates a new <code>DefaultMachineModel</code>.
    * 
    * @param element The {@link Element}.
@@ -256,6 +268,7 @@ public final class DefaultMachineModel implements Storable
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
+    initializeModifyStatusChangedListener ();
   }
 
 
@@ -271,6 +284,7 @@ public final class DefaultMachineModel implements Storable
     this.machine = machine;
     initializeGraph ();
     initializeGraphModelListener ();
+    initializeModifyStatusChangedListener ();
   }
 
 
@@ -525,7 +539,7 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Initialize this JGraph.
+   * Initialize the {@link JGraph}.
    */
   private final void initializeGraph ()
   {
@@ -600,12 +614,38 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
+   * Initialize the {@link ModifyStatusChangedListener}.
+   */
+  private final void initializeModifyStatusChangedListener ()
+  {
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( @SuppressWarnings ( "unused" )
+      boolean newModifyStatus )
+      {
+        DefaultMachineModel.this.modifyStatusMachine = true;
+        fireModifyStatusChanged ();
+      }
+    };
+    this.machine
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+  }
+
+
+  /**
    * Returns true if this {@link DefaultMachineModel} is modified.
    * 
    * @return True if this {@link DefaultMachineModel} is modified.
    */
   public final boolean isModified ()
   {
+    if ( this.modifyStatusMachine )
+    {
+      this.lastModifyStatus = true;
+      return true;
+    }
     for ( DefaultStateView current : this.stateViewList )
     {
       if ( current.isModified () )
@@ -693,6 +733,7 @@ public final class DefaultMachineModel implements Storable
     {
       current.resetModify ();
     }
+    this.modifyStatusMachine = false;
     fireModifyStatusChanged ();
   }
 }

@@ -175,9 +175,9 @@ public class NewDialog
           NewDialogMachineChoice.Choice.DFA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
-            null );
+            new DefaultMachineModel (
+                new DefaultDFA ( this.newDialogAlphabet.getAlphabet (),
+                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -186,9 +186,9 @@ public class NewDialog
           NewDialogMachineChoice.Choice.NFA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
-            null );
+            new DefaultMachineModel (
+                new DefaultNFA ( this.newDialogAlphabet.getAlphabet (),
+                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
         this.fileEnding = ".nfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -197,9 +197,9 @@ public class NewDialog
           NewDialogMachineChoice.Choice.ENFA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
-            null );
+            new DefaultMachineModel (
+                new DefaultENFA ( this.newDialogAlphabet.getAlphabet (),
+                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
         this.fileEnding = ".enfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -208,9 +208,9 @@ public class NewDialog
           NewDialogMachineChoice.Choice.PDA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getAlphabet () ) ),
-            null );
+            new DefaultMachineModel (
+                new DefaultPDA ( this.newDialogAlphabet.getAlphabet (),
+                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
         this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }

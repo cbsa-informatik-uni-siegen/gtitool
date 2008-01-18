@@ -35,14 +35,6 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
-
-
-  /**
    * Returns the {@link Symbol}s.
    * 
    * @return The {@link Symbol}s.
@@ -57,26 +49,6 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
    * @return The {@link Symbol} with the given index.
    */
   public Symbol get ( int index );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserEndOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserStartOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#hashCode()
-   */
-  public int hashCode ();
 
 
   /**
@@ -132,37 +104,10 @@ public interface Stack extends ParseableEntity, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserStartOffset ( int parserStartOffset );
-
-
-  /**
    * Returns the number of {@link Symbol}s in this <code>Stack</code>.
    * 
    * @return The number of {@link Symbol}s in this <code>Stack</code>.
    */
   public int size ();
 
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toString ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toStringDebug ();
 }

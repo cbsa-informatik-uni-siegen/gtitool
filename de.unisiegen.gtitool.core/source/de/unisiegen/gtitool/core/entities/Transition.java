@@ -1,13 +1,11 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -133,31 +131,11 @@ public interface Transition extends ParseableEntity, Storable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getElement()
-   */
-  public Element getElement ();
-
-
-  /**
    * Returns the id.
    * 
    * @return The id.
    */
   public int getId ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserEndOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserStartOffset ();
 
 
   /**
@@ -218,14 +196,6 @@ public interface Transition extends ParseableEntity, Storable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#hashCode()
-   */
-  public int hashCode ();
-
-
-  /**
    * Returns true, if this <code>Transition</code> is a epsilon
    * <code>Transition</code>, otherwise false.
    * 
@@ -243,16 +213,6 @@ public interface Transition extends ParseableEntity, Storable,
    *         otherwise false.
    */
   public boolean isIdDefined ();
-
-
-  /**
-   * Returns an iterator over the {@link Symbol}s in this
-   * <code>Transition</code>.
-   * 
-   * @return An iterator over the {@link Symbol}s in this
-   *         <code>Transition</code>.
-   */
-  public Iterator < Symbol > iterator ();
 
 
   /**
@@ -305,18 +265,6 @@ public interface Transition extends ParseableEntity, Storable,
 
 
   /**
-   * {@inheritDoc}
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserStartOffset ( int parserStartOffset );
-
-
-  /**
    * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
    * 
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
@@ -346,20 +294,4 @@ public interface Transition extends ParseableEntity, Storable,
    * @return The number of {@link Symbol}s in this <code>Transition</code>.
    */
   public int size ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toString ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toStringDebug()
-   */
-  public String toStringDebug ();
 }

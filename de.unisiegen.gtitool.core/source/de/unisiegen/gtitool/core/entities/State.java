@@ -107,18 +107,6 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
 
 
   /**
-   * {@inheritDoc}
-   */
-  public int getParserEndOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserStartOffset ();
-
-
-  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -200,14 +188,6 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    *         {@link Transition} id end list.
    */
   public int getTransitionEndId ( int index );
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#hashCode()
-   */
-  public int hashCode ();
 
 
   /**
@@ -300,18 +280,6 @@ public interface State extends ParseableEntity, Storable, Comparable < State >
    *           correct.
    */
   public void setName ( String name ) throws StateException;
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserStartOffset ( int parserStartOffset );
 
 
   /**

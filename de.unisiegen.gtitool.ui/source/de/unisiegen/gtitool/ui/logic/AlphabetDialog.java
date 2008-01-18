@@ -57,12 +57,6 @@ public final class AlphabetDialog
 
 
   /**
-   * The {@link Alphabet} of this dialog.
-   */
-  private Alphabet alphabet;
-
-
-  /**
    * The {@link Machine} of this dialog.
    */
   private Machine machine;
@@ -72,16 +66,15 @@ public final class AlphabetDialog
    * Create a new {@link AlphabetDialog}
    * 
    * @param pParent The parent frame.
-   * @param pAlphabet The {@link Alphabet} of this dialog.
    * @param pMachine The {@link Machine} of this dialog.
    */
-  public AlphabetDialog ( JFrame pParent, Alphabet pAlphabet, Machine pMachine )
+  public AlphabetDialog ( JFrame pParent, Machine pMachine )
   {
     this.parent = pParent;
-    this.alphabet = pAlphabet;
     this.machine = pMachine;
     this.gui = new AlphabetDialogForm ( this, pParent );
-    this.gui.styledAlphabetParserPanel.setAlphabet ( this.alphabet );
+    this.gui.styledAlphabetParserPanel.setAlphabet ( this.machine
+        .getAlphabet () );
     this.gui.styledAlphabetParserPanel
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
@@ -133,7 +126,7 @@ public final class AlphabetDialog
     }
     TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
-    for ( Symbol current : this.alphabet )
+    for ( Symbol current : this.machine.getAlphabet () )
     {
       if ( !pNewAlphabet.contains ( current ) )
       {
@@ -172,12 +165,12 @@ public final class AlphabetDialog
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
     for ( Symbol current : newAlphabet )
     {
-      if ( !this.alphabet.contains ( current ) )
+      if ( !this.machine.getAlphabet ().contains ( current ) )
       {
         symbolsToAdd.add ( current );
       }
     }
-    for ( Symbol current : this.alphabet )
+    for ( Symbol current : this.machine.getAlphabet () )
     {
       if ( !newAlphabet.contains ( current ) )
       {
@@ -186,9 +179,8 @@ public final class AlphabetDialog
     }
     try
     {
-      // TODOChristian Do not use the alphabet
-      this.alphabet.add ( symbolsToAdd );
-      this.alphabet.remove ( symbolsToRemove );
+      this.machine.getAlphabet ().add ( symbolsToAdd );
+      this.machine.getAlphabet ().remove ( symbolsToRemove );
     }
     catch ( AlphabetException exc )
     {

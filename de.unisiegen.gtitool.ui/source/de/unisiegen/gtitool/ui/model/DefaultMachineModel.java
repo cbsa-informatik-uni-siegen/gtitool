@@ -32,6 +32,7 @@ import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
@@ -47,7 +48,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultMachineModel implements Storable
+public final class DefaultMachineModel implements Storable, Modifyable
 {
 
   /**
@@ -89,7 +90,7 @@ public final class DefaultMachineModel implements Storable
   /**
    * The {@link EventListenerList}.
    */
-  private final EventListenerList listenerList;
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -136,9 +137,6 @@ public final class DefaultMachineModel implements Storable
       throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a machine model" ); //$NON-NLS-1$
     }
-
-    // ListenerList
-    this.listenerList = new EventListenerList ();
 
     // Attribute
     boolean foundMachineType = false;
@@ -279,8 +277,6 @@ public final class DefaultMachineModel implements Storable
    */
   public DefaultMachineModel ( Machine machine )
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
     this.machine = machine;
     initializeGraph ();
     initializeGraphModelListener ();
@@ -289,9 +285,9 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Adds the given {@link ModifyStatusChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link ModifyStatusChangedListener}.
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -635,9 +631,9 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Returns true if this {@link DefaultMachineModel} is modified.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultMachineModel} is modified.
+   * @see Modifyable#isModified()
    */
   public final boolean isModified ()
   {
@@ -660,9 +656,9 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Removes the given {@link ModifyStatusChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link ModifyStatusChangedListener}.
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -725,7 +721,9 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Resets the modify status.
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
    */
   public final void resetModify ()
   {

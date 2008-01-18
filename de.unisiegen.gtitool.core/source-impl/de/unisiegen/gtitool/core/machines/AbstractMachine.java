@@ -37,6 +37,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
@@ -278,9 +279,9 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the given {@link ModifyStatusChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link ModifyStatusChangedListener}.
+   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -1043,6 +1044,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public final boolean isModified ()
+  {
+    // TODO
+    return false;
+  }
+
+
+  /**
    * Returns true if this {@link Word} is reseted, otherwise false.
    * 
    * @return True if this {@link Word} is reseted, otherwise false.
@@ -1318,9 +1331,9 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link ModifyStatusChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link ModifyStatusChangedListener}.
+   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -1484,6 +1497,17 @@ public abstract class AbstractMachine implements Machine
     {
       removeTransition ( current );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
+   */
+  public final void resetModify ()
+  {
+    // TODO
   }
 
 

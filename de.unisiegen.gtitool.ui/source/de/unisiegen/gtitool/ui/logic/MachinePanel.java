@@ -25,6 +25,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
@@ -39,12 +40,14 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -71,7 +74,8 @@ import de.unisiegen.gtitool.ui.storage.Storage;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class MachinePanel implements EditorPanel, LanguageChangedListener
+public final class MachinePanel implements EditorPanel, Modifyable,
+    LanguageChangedListener
 {
 
   /**
@@ -148,6 +152,12 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   }
 
 
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
   //
   // Attributes
   //
@@ -213,14 +223,6 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
   /** Signals if drag in progress */
   private boolean dragged;
-
-
-  /** The {@link Alphabet} of this Machine */
-  private Alphabet alphabet;
-
-
-  /** The push down {@link Alphabet} of this Machine */
-  private Alphabet pushDownAlphabet;
 
 
   /** The zoom factor for this graph */
@@ -305,8 +307,6 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.model = pModel;
     this.machine = pModel.getMachine ();
     this.fileName = pFileName;
-    this.alphabet = this.machine.getAlphabet ();
-    this.pushDownAlphabet = this.machine.getPushDownAlphabet ();
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
     this.graph = this.model.getJGraph ();
@@ -520,7 +520,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         } );
 
     this.gui.wordPanel.setVisible ( false );
-    this.gui.wordPanel.setAlphabet ( this.alphabet );
+    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
   }
 
 
@@ -532,6 +532,18 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public void addError ( MachineException e )
   {
     this.errorTableModel.addRow ( e );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -654,7 +666,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
       DefaultTransitionView pTransition )
   {
     return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        pTransition, this.alphabet );
+        pTransition, this.machine.getAlphabet () );
   }
 
 
@@ -688,6 +700,18 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public Machine getMachine ()
   {
     return this.machine;
+  }
+
+
+  /**
+   * Returns the {@link DefaultMachineModel}.
+   * 
+   * @return The {@link DefaultMachineModel}.
+   * @see #model
+   */
+  public final DefaultMachineModel getModel ()
+  {
+    return this.model;
   }
 
 
@@ -961,11 +985,10 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     // TODOChristian
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
-        this.alphabet, this.machine );
+        this.machine );
     alphabetDialog.show ();
     if ( alphabetDialog.DIALOG_RESULT == AlphabetDialog.DIALOG_CONFIRMED )
     {
-      System.out.println ( this.alphabet );
       System.out.println ( this.machine.getAlphabet () );
     }
   }
@@ -1408,8 +1431,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new DefaultState ( MachinePanel.this.alphabet,
-              MachinePanel.this.pushDownAlphabet, false, false );
+          State newState = new DefaultState ( MachinePanel.this.machine
+              .getAlphabet (),
+              MachinePanel.this.machine.getPushDownAlphabet (), false, false );
 
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1509,9 +1533,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           }
           TransitionDialog dialog = new TransitionDialog (
-              MachinePanel.this.parent, MachinePanel.this.alphabet,
-              MachinePanel.this.firstState.getState (), target == null ? null
-                  : target.getState () );
+              MachinePanel.this.parent, MachinePanel.this.machine
+                  .getAlphabet (), MachinePanel.this.firstState.getState (),
+              target == null ? null : target.getState () );
           dialog.show ();
           if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
           {
@@ -1521,8 +1545,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
               try
               {
-                State newState = new DefaultState ( MachinePanel.this.alphabet,
-                    MachinePanel.this.pushDownAlphabet, false, false );
+                State newState = new DefaultState ( MachinePanel.this.machine
+                    .getAlphabet (), MachinePanel.this.machine
+                    .getPushDownAlphabet (), false, false );
                 target = MachinePanel.this.model.createStateView ( e
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, e.getPoint ().y
@@ -1594,7 +1619,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         }
 
         TransitionDialog dialog = new TransitionDialog (
-            MachinePanel.this.parent, MachinePanel.this.alphabet,
+            MachinePanel.this.parent, MachinePanel.this.machine.getAlphabet (),
             MachinePanel.this.firstState.getState (), target == null ? null
                 : target.getState () );
         dialog.show ();
@@ -1606,8 +1631,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
             try
             {
               State newState;
-              newState = new DefaultState ( MachinePanel.this.alphabet,
-                  MachinePanel.this.pushDownAlphabet, false, false );
+              newState = new DefaultState ( MachinePanel.this.machine
+                  .getAlphabet (), MachinePanel.this.machine
+                  .getPushDownAlphabet (), false, false );
               target = MachinePanel.this.model.createStateView (
                   e.getPoint ().x / MachinePanel.this.zoomFactor,
                   e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
@@ -1768,8 +1794,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new DefaultState ( MachinePanel.this.alphabet,
-              MachinePanel.this.pushDownAlphabet, true, false );
+          State newState = new DefaultState ( MachinePanel.this.machine
+              .getAlphabet (),
+              MachinePanel.this.machine.getPushDownAlphabet (), true, false );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
@@ -1841,8 +1868,9 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
         try
         {
-          State newState = new DefaultState ( MachinePanel.this.alphabet,
-              MachinePanel.this.pushDownAlphabet, false, true );
+          State newState = new DefaultState ( MachinePanel.this.machine
+              .getAlphabet (),
+              MachinePanel.this.machine.getPushDownAlphabet (), false, true );
           MachinePanel.this.model.createStateView ( e.getPoint ().x
               / MachinePanel.this.zoomFactor, e.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
@@ -1885,6 +1913,17 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public final boolean isModified ()
+  {
+    return this.model.isModified ();
+  }
+
+
+  /**
    * Getter for the flag if table is visible
    * 
    * @return true if table is visible, else false
@@ -1917,6 +1956,29 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
     this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
+   */
+  public final void resetModify ()
+  {
+    this.model.resetModify ();
   }
 
 
@@ -2038,37 +2100,5 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
-  }
-
-
-  /**
-   * Returns the {@link DefaultMachineModel}.
-   * 
-   * @return The {@link DefaultMachineModel}.
-   * @see #model
-   */
-  public final DefaultMachineModel getModel ()
-  {
-    return this.model;
-  }
-
-
-  /**
-   * Returns true if this {@link MachinePanel} is modified.
-   * 
-   * @return True if this {@link MachinePanel} is modified.
-   */
-  public final boolean isModified ()
-  {
-    return this.model.isModified ();
-  }
-
-
-  /**
-   * Resets the modify status.
-   */
-  public final void resetModify ()
-  {
-    this.model.resetModify ();
   }
 }

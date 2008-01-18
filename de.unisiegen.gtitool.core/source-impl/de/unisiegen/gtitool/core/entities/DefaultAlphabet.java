@@ -36,7 +36,7 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * The {@link EventListenerList}.
    */
-  private final EventListenerList listenerList;
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -70,8 +70,6 @@ public final class DefaultAlphabet implements Alphabet
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
-    // ListenerList
-    this.listenerList = new EventListenerList ();
   }
 
 

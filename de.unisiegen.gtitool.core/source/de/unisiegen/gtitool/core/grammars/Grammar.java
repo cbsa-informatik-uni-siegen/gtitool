@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.grammars;
 
 import java.io.Serializable;
 
+import de.unisiegen.gtitool.core.storage.Modifyable;
+
 
 /**
  * The interface for all grammars.
@@ -10,7 +12,7 @@ import java.io.Serializable;
  * @author Christian Fehler
  * @version $Id: Machine.java 398 2008-01-02 23:13:39Z fehler $
  */
-public interface Grammar extends Serializable
+public interface Grammar extends Serializable, Modifyable
 {
 
   /**

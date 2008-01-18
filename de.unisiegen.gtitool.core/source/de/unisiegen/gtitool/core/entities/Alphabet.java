@@ -1,12 +1,10 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -84,14 +82,6 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
-
-
-  /**
    * Returns the {@link Symbol}s.
    * 
    * @return The {@link Symbol}s.
@@ -106,42 +96,6 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * @return The {@link Symbol} with the given index.
    */
   public Symbol get ( int index );
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getElement()
-   */
-  public Element getElement ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserEndOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserStartOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#hashCode()
-   */
-  public int hashCode ();
-
-
-  /**
-   * Returns an iterator over the {@link Symbol}s in this <code>Alphabet</code>.
-   * 
-   * @return An iterator over the {@link Symbol}s in this <code>Alphabet</code>.
-   */
-  public Iterator < Symbol > iterator ();
 
 
   /**
@@ -177,37 +131,9 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserStartOffset ( int parserStartOffset );
-
-
-  /**
    * Returns the number of {@link Symbol}s in this <code>Alphabet</code>.
    * 
    * @return The number of {@link Symbol}s in this <code>Alphabet</code>.
    */
   public int size ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toString ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toStringDebug ();
 }

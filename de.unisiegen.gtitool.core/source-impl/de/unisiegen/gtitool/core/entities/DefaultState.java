@@ -36,7 +36,7 @@ public final class DefaultState implements State
   /**
    * The {@link EventListenerList}.
    */
-  private final EventListenerList listenerList;
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -200,9 +200,6 @@ public final class DefaultState implements State
           + "\" is not a state" ); //$NON-NLS-1$
     }
 
-    // ListenerList
-    this.listenerList = new EventListenerList ();
-
     // TransitionBegin
     this.transitionBeginList = new ArrayList < Transition > ();
     this.transitionBeginIdList = new ArrayList < Integer > ();
@@ -359,9 +356,6 @@ public final class DefaultState implements State
    */
   public DefaultState ( String name ) throws StateException
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
-    
     // Name
     setName ( name );
 

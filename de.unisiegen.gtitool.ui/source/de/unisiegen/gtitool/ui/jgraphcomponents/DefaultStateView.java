@@ -3,12 +3,16 @@ package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.event.EventListenerList;
+
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -16,10 +20,11 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * This class represents the {@link State} in the gui.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public final class DefaultStateView extends DefaultGraphCell implements
-    Storable
+    Storable, Modifyable
 {
 
   /**
@@ -47,6 +52,12 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
    * Creates a new {@link DefaultStateView}.
    * 
    * @param state The {@link State} represented by this view.
@@ -56,6 +67,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     super ( userObject );
     this.state = state;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -140,9 +163,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Returns true if this {@link DefaultStateView} is modified.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultStateView} is modified.
+   * @see Modifyable#isModified()
    */
   public final boolean isModified ()
   {
@@ -158,7 +181,21 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Resets the modify status.
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
    */
   public final void resetModify ()
   {

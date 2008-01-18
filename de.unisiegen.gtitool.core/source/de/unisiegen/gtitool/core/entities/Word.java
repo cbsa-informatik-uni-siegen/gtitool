@@ -2,11 +2,9 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
-import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -100,26 +98,6 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Storable#getElement()
-   */
-  public Element getElement ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserEndOffset ();
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public int getParserStartOffset ();
-
-
-  /**
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
@@ -130,14 +108,6 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
    */
   public ArrayList < Symbol > getReadedSymbols () throws WordFinishedException,
       WordResetedException;
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#hashCode()
-   */
-  public int hashCode ();
 
 
   /**
@@ -154,14 +124,6 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
    * @return True if this word is reseted, otherwise false.
    */
   public boolean isReseted ();
-
-
-  /**
-   * Returns an iterator over the {@link Symbol}s in this <code>Word</code>.
-   * 
-   * @return An iterator over the {@link Symbol}s in this <code>Word</code>.
-   */
-  public Iterator < Symbol > iterator ();
 
 
   /**
@@ -191,18 +153,6 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public void setParserStartOffset ( int parserStartOffset );
-
-
-  /**
    * Returns the number of {@link Symbol}s in this <code>Word</code>.
    * 
    * @return The number of {@link Symbol}s in this <code>Word</code>.
@@ -214,20 +164,4 @@ public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
    * Resets the current position of this <code>Word</code>.
    */
   public void start ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toString ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#toString()
-   */
-  public String toStringDebug ();
 }

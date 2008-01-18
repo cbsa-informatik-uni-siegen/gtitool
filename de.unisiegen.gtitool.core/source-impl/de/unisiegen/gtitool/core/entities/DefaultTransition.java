@@ -38,7 +38,7 @@ public final class DefaultTransition implements Transition
   /**
    * The {@link EventListenerList}.
    */
-  private final EventListenerList listenerList;
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -115,8 +115,6 @@ public final class DefaultTransition implements Transition
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
-    // ListenerList
-    this.listenerList = new EventListenerList ();
   }
 
 
@@ -141,8 +139,6 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -182,8 +178,6 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -230,8 +224,6 @@ public final class DefaultTransition implements Transition
 
     // Symbols
     this.symbolSet = new TreeSet < Symbol > ();
-    // ListenerList
-    this.listenerList = new EventListenerList ();
 
     // Attribute
     boolean foundId = false;
@@ -317,8 +309,6 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
     // Symbols
     if ( symbols == null )
     {
@@ -342,8 +332,6 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    // ListenerList
-    this.listenerList = new EventListenerList ();
     // Symbols
     if ( symbols == null )
     {

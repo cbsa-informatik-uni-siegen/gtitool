@@ -255,7 +255,7 @@ public final class PreferenceManager
   /**
    * The {@link EventListenerList}.
    */
-  private final EventListenerList listenerList;
+  private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
@@ -264,7 +264,6 @@ public final class PreferenceManager
   private PreferenceManager ()
   {
     this.preferences = Preferences.userRoot ();
-    this.listenerList = new EventListenerList ();
   }
 
 

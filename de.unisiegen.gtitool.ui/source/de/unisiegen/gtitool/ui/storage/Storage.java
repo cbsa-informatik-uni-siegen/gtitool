@@ -176,6 +176,7 @@ public final class Storage
     }
     catch ( IOException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( AlphabetException exc )
@@ -196,6 +197,7 @@ public final class Storage
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
   }

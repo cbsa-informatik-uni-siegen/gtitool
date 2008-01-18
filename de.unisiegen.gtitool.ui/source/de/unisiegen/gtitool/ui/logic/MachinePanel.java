@@ -320,6 +320,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.errorTableModel = new ConsoleTableModel ();
     this.gui.jDragTableErrors.setModel ( this.errorTableModel );
     this.gui.jDragTableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jDragTableErrors.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jDragTableErrors
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jDragTableErrors.getSelectionModel ().addListSelectionListener (
@@ -335,6 +336,7 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     this.warningTableModel = new ConsoleTableModel ();
     this.gui.jDragTableWarnings.setModel ( this.warningTableModel );
     this.gui.jDragTableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jDragTableWarnings.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jDragTableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jDragTableWarnings.getSelectionModel ().addListSelectionListener (
@@ -664,6 +666,17 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   public Alphabet getAlphabet ()
   {
     return this.machine.getAlphabet ();
+  }
+
+
+  /**
+   * Get the file for this Machine Panel
+   * 
+   * @return the File of this Machine Panel
+   */
+  public File getFile ()
+  {
+    return this.fileName;
   }
 
 
@@ -2027,16 +2040,5 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
-  }
-
-
-  /**
-   * Get the file for this Machine Panel
-   * 
-   * @return the File of this Machine Panel
-   */
-  public File getFile ()
-  {
-    return this.fileName;
   }
 }

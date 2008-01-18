@@ -847,22 +847,20 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
     if ( this.fileName == null )
     {
       return handleSaveAs ();
-
     }
-
     try
     {
       Storage.getInstance ().store ( this.model, this.fileName.toString () );
       JOptionPane.showMessageDialog ( this.parent, Messages
           .getString ( "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$
           .getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
-
     }
     catch ( StoreException e )
     {
       JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
+    resetModify ();
     return this.fileName.getName ();
   }
 
@@ -2040,5 +2038,37 @@ public final class MachinePanel implements EditorPanel, LanguageChangedListener
   {
     this.zoomFactor = pFactor;
     this.graph.setScale ( pFactor );
+  }
+
+
+  /**
+   * Returns the {@link DefaultMachineModel}.
+   * 
+   * @return The {@link DefaultMachineModel}.
+   * @see #model
+   */
+  public final DefaultMachineModel getModel ()
+  {
+    return this.model;
+  }
+
+
+  /**
+   * Returns true if this {@link MachinePanel} is modified.
+   * 
+   * @return True if this {@link MachinePanel} is modified.
+   */
+  public final boolean isModified ()
+  {
+    return this.model.isModified ();
+  }
+
+
+  /**
+   * Resets the modify status.
+   */
+  public final void resetModify ()
+  {
+    this.model.resetModify ();
   }
 }

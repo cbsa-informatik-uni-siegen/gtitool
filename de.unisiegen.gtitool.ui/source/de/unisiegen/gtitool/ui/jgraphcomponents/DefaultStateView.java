@@ -35,6 +35,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The initial x position.
+   */
+  private double initialXPosition = -1;
+
+
+  /**
+   * The initial y position.
+   */
+  private double initialYPosition = -1;
+
+
+  /**
    * Creates a new {@link DefaultStateView}.
    * 
    * @param state The {@link State} represented by this view.
@@ -92,6 +104,30 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the x position.
+   * 
+   * @return The x position.
+   */
+  public final double getXPosition ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    return bounds.getX ();
+  }
+
+
+  /**
+   * Returns the y position.
+   * 
+   * @return The y position.
+   */
+  public final double getYPosition ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    return bounds.getY ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -100,5 +136,33 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public final int hashCode ()
   {
     return this.state.hashCode ();
+  }
+
+
+  /**
+   * Returns true if this {@link DefaultStateView} is modified.
+   * 
+   * @return True if this {@link DefaultStateView} is modified.
+   */
+  public final boolean isModified ()
+  {
+    if ( ( this.initialXPosition == -1 ) && this.initialYPosition == -1 )
+    {
+      this.initialXPosition = getXPosition ();
+      this.initialYPosition = getYPosition ();
+      return false;
+    }
+    return ( this.initialXPosition != getXPosition () )
+        || ( this.initialYPosition != getYPosition () );
+  }
+
+
+  /**
+   * Resets the modify status.
+   */
+  public final void resetModify ()
+  {
+    this.initialXPosition = getXPosition ();
+    this.initialYPosition = getYPosition ();
   }
 }

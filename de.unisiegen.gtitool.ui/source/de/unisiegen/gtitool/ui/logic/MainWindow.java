@@ -11,7 +11,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Logger;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
@@ -50,6 +53,12 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( MainWindow.class );
+
+
+  /**
    * The {@link MainWindowForm}.
    */
   private MainWindowForm gui;
@@ -59,6 +68,12 @@ public final class MainWindow implements LanguageChangedListener
    * Flag signals if Console Preferences should be saved
    */
   private boolean saveConsolePreferences = true;
+
+
+  /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
@@ -82,8 +97,7 @@ public final class MainWindow implements LanguageChangedListener
     // Setting the default states
     setGeneralStates ( false );
     // Save
-    this.gui.jButtonSave.setEnabled ( false );
-    this.gui.jMenuItemSave.setEnabled ( false );
+    setSaveState ();
     // Copy
     // Validate
     this.gui.jMenuItemValidate.setEnabled ( false );
@@ -117,50 +131,50 @@ public final class MainWindow implements LanguageChangedListener
     }
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
-    
+
     // Set the recently used files
-    ArrayList < File > recentlyUsedFiles = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles () ;
+    ArrayList < File > recentlyUsedFiles = PreferenceManager.getInstance ()
+        .getRecentlyUsedFilesItem ().getFiles ();
     if ( recentlyUsedFiles.size () > 0 )
       this.gui.jMenuRecentlyUsed.setEnabled ( true );
-    for ( File file : recentlyUsedFiles ) {
+    for ( File file : recentlyUsedFiles )
+    {
       this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
     }
-    
-    int index = PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () ;
-    
-    if ( this.gui.jTabbedPaneMain.getTabCount () > index  )
+
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( @SuppressWarnings ( "unused" )
+      boolean newModifyStatus )
+      {
+        setSaveState ();
+      }
+    };
+
+    int index = PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getActiveIndex ();
+    if ( this.gui.jTabbedPaneMain.getTabCount () > index )
+    {
       this.gui.jTabbedPaneMain.setSelectedIndex ( index );
+    }
   }
 
 
   /**
-   * Set the state of the edit machine toolbar items
+   * Getter for the active EditorPanel
    * 
-   * @param state the new state
+   * @return the active EditorPanel
    */
-  private void setToolBarEditItemState ( boolean state )
+  public EditorPanel getActiveEditor ()
   {
-    this.gui.jButtonAddState.setEnabled ( state );
-    this.gui.jButtonAddTransition.setEnabled ( state );
-    this.gui.jButtonFinalState.setEnabled ( state );
-    this.gui.jButtonMouse.setEnabled ( state );
-    this.gui.jButtonStartState.setEnabled ( state );
-    this.gui.jButtonEditAlphabet.setEnabled ( state );
-  }
-
-
-  /**
-   * Set the state of the enter word toolbar items
-   * 
-   * @param state the new state
-   */
-  private void setToolBarEnterWordItemState ( boolean state )
-  {
-    // this.gui.jButtonPrevious.setEnabled ( state );
-    this.gui.jButtonStart.setEnabled ( state );
-    // this.gui.jButtonNextStep.setEnabled ( state );
-    // this.gui.jButtonAutoStep.setEnabled ( state );
-    // this.gui.jButtonStop.setEnabled ( state );
+    if ( this.gui.jTabbedPaneMain.getSelectedComponent () == null )
+    {
+      return null;
+    }
+    return ( ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic () );
   }
 
 
@@ -215,6 +229,79 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Closes the active editor window.
+   * 
+   * @return true if the active editor could be closed.
+   */
+  public boolean handleClose ()
+  {
+    // EditorPanel selectedEditor = getActiveEditor ();
+    boolean success;
+    // if ( selectedEditor.shouldBeSaved ( ) )
+    // {
+    // Object [ ] options =
+    // {
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "Yes" ) ,
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "No" ) ,
+    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "Cancel" ) } ;
+    // int n = JOptionPane.showOptionDialog ( window , selectedEditor
+    // .getFileName ( )
+    // + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
+    // .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
+    // "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
+    // JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
+    // null , options , options [ 2 ] ) ;
+    // switch ( n )
+    // {
+    // case 0 : // Save Changes
+    // logger.debug ( "Close dialog: YES" ) ;
+    // success = selectedEditor.handleSave ( ) ;
+    // if ( success )
+    // {
+    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+    // window.repaint ( ) ;
+    // }
+    // return success ;
+    // case 1 : // Do not save changes
+    // logger.debug ( "Close dialog: NO" ) ;
+    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
+    // window.repaint ( ) ;
+    // success = true ;
+    // case 2 : // Cancelled.
+    // logger.debug ( "Close dialog: CANCEL" ) ;
+    // success = false ;
+    // default :
+    // success = false ;
+    // }
+    // }
+    // else
+    {
+      this.gui.jTabbedPaneMain.remove ( this.gui.jTabbedPaneMain
+          .getSelectedIndex () );
+      this.gui.repaint ();
+      success = true;
+    }
+    if ( getActiveEditor () == null )
+    {
+      setGeneralStates ( false );
+      setSaveState ();
+
+      // toolbar items
+      this.gui.jButtonAddState.setEnabled ( false );
+      this.gui.jButtonAddTransition.setEnabled ( false );
+      this.gui.jButtonFinalState.setEnabled ( false );
+      this.gui.jButtonMouse.setEnabled ( false );
+      this.gui.jButtonStartState.setEnabled ( false );
+      this.gui.jButtonEditAlphabet.setEnabled ( false );
+    }
+    return success;
+  }
+
+
+  /**
    * Handles console state changes.
    */
   public final void handleConsoleStateChanged ()
@@ -232,6 +319,34 @@ public final class MainWindow implements LanguageChangedListener
           .setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole.getState () );
 
     }
+  }
+
+
+  /**
+   * Handle Edit Alphabet Action in the Toolbar
+   */
+  public void handleEditAlphabet ()
+  {
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleToolbarAlphabet ();
+  }
+
+
+  /**
+   * Handle Edit Machine button pressed
+   */
+  public void handleEditMachine ()
+  {
+    setToolBarEditItemState ( true );
+    setToolBarEnterWordItemState ( false );
+    MachinePanel machinePanel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ();
+
+    machinePanel.handleEditMachine ();
+    machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+        .getState () );
+    this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
+    machinePanel.setWordEnterMode ( false );
   }
 
 
@@ -301,7 +416,6 @@ public final class MainWindow implements LanguageChangedListener
               Messages.getString ( "MainWindow.NewFile" ) + count + newDialog.getFileEnding () ); //$NON-NLS-1$ 
       count++ ;
       setGeneralStates ( true );
-      this.gui.jButtonSave.setEnabled ( true );
 
       // toolbar items
       setToolBarEditItemState ( true );
@@ -481,104 +595,10 @@ public final class MainWindow implements LanguageChangedListener
     if ( n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null )
       return;
 
-    for ( File file : chooser.getSelectedFiles ()){
+    for ( File file : chooser.getSelectedFiles () )
+    {
       openFile ( file, true );
     }
-  }
-  
-  /**
-   * 
-   * Organize the recently used files in the menu
-   *
-   */
-  private void organizeRecentlyUsedFilesMenu() {
-    ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
-    
-    this.gui.jMenuRecentlyUsed.removeAll ();
-    
-    for ( File file : fileList ){
-      this.gui.jMenuRecentlyUsed.add( new RecentlyUsedMenuItem ( this, file ) );
-    }
-  }
-
-  /**
-   * 
-   * Try to open the given file
-   *
-   * @param file The file to open
-   * @param addToRecentlyUsed Flag signals if file should be added to recently used files
-   */
-  public void openFile ( File file, boolean addToRecentlyUsed )
-  {
-
-    // check if we already have an editor panel for the file
-    EditorPanel editorPanel = null;
-    for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
-    {
-        editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
-        if ( file.equals ( editorPanel.getFile () ) )
-        {
-          this.gui.jTabbedPaneMain.setSelectedComponent ( component );
-          
-          // reorganize recently used files
-          if ( addToRecentlyUsed ){
-            ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
-            fileList.remove ( file );
-            fileList.add ( 0, file );
-            if ( fileList.size () > 10)
-              fileList.remove ( 10 );
-            if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
-              this.gui.jMenuRecentlyUsed.setEnabled ( true );
-            
-            PreferenceManager.getInstance ().setRecentlyUsedFilesItem ( new RecentlyUsedFilesItem(fileList) );
-            organizeRecentlyUsedFilesMenu();
-          }
-          
-          return ;
-        }
-    }
-    try
-    {
-      DefaultMachineModel model = ( DefaultMachineModel ) Storage
-          .getInstance ().load ( file.toString () );
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
-
-      this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
-      this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
-          .getPanel () );
-      this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
-          .getSelectedIndex (), file.getName () );
-      count++ ;
-      setGeneralStates ( true );
-      this.gui.jButtonSave.setEnabled ( true );
-      this.gui.jMenuItemSave.setEnabled ( true );
-
-      // toolbar items
-      setToolBarEditItemState ( true );
-      
-      // reorganize recently used files
-      if ( addToRecentlyUsed ){
-        ArrayList < File > fileList = PreferenceManager.getInstance ().getRecentlyUsedFilesItem ().getFiles ();
-        fileList.remove ( file );
-        fileList.add ( 0, file );
-        if ( fileList.size () > 10)
-          fileList.remove ( 10 );
-        if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
-          this.gui.jMenuRecentlyUsed.setEnabled ( true );
-        
-        PreferenceManager.getInstance ().setRecentlyUsedFilesItem ( new RecentlyUsedFilesItem(fileList) );
-        organizeRecentlyUsedFilesMenu();
-      }
-
-    }
-    catch ( StoreException e )
-    {
-      JOptionPane.showMessageDialog ( this.gui, e.getMessage (), Messages
-          .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
-    }
-
-    PreferenceManager.getInstance ().setWorkingPath ( file.getAbsolutePath () );
-
   }
 
 
@@ -599,16 +619,17 @@ public final class MainWindow implements LanguageChangedListener
   {
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     preferenceManager.setMainWindowPreferences ( this.gui );
-    
+
     EditorPanel editorPanel;
     ArrayList < File > files = new ArrayList < File > ();
     for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
     {
-        editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
-        if ( editorPanel.getFile () != null )
-          files.add ( editorPanel.getFile () );
+      editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
+      if ( editorPanel.getFile () != null )
+        files.add ( editorPanel.getFile () );
     }
-    OpenedFilesItem item = new OpenedFilesItem ( files, this.gui.jTabbedPaneMain.getSelectedIndex () );
+    OpenedFilesItem item = new OpenedFilesItem ( files,
+        this.gui.jTabbedPaneMain.getSelectedIndex () );
     preferenceManager.setOpenedFilesItem ( item );
     System.exit ( 0 );
   }
@@ -623,9 +644,10 @@ public final class MainWindow implements LanguageChangedListener
         .getSelectedComponent () ).getLogic ();
     String fileName = panel.handleSave ();
     if ( fileName != null )
+    {
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
           .getSelectedIndex (), fileName );
-
+    }
   }
 
 
@@ -641,6 +663,44 @@ public final class MainWindow implements LanguageChangedListener
     if ( fileName != null )
       this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
           .getSelectedIndex (), fileName );
+  }
+
+
+  /**
+   * Handle TabbedPane state changed event
+   */
+  public void handleTabbedPaneStateChanged ()
+  {
+    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    if ( machinePanel != null )
+    {
+      this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
+          .isWordEnterMode () );
+      this.saveConsolePreferences = false;
+      this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
+          .isConsoleVisible () );
+      // machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
+      // && machinePanel.isConsoleVisible () );
+      this.saveConsolePreferences = true;
+      this.gui.jCheckBoxMenuItemTable
+          .setState ( machinePanel.isTableVisible () );
+      setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
+      setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
+
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getComponentCount () ; i++ )
+      {
+        MachinesPanelForm panel = ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i );
+        DefaultMachineModel model = ( ( MachinePanel ) panel.getLogic () )
+            .getModel ();
+        model
+            .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      }
+      machinePanel.getModel ().addModifyStatusChangedListener (
+          this.modifyStatusChangedListener );
+    }
+    // Save status
+    setSaveState ();
   }
 
 
@@ -761,6 +821,107 @@ public final class MainWindow implements LanguageChangedListener
     }
     JOptionPane.showMessageDialog ( this.gui, errorCount
         + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+  }
+
+
+  /**
+   * Handle Auto Step Action in the Word Enter Mode
+   */
+  public void handleWordAutoStep ()
+  {
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleWordAutoStep ();
+
+  }
+
+
+  /**
+   * Handle Next Step Action in the Word Enter Mode
+   */
+  public void handleWordNextStep ()
+  {
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleWordNextStep ();
+
+  }
+
+
+  /**
+   * Handle Previous Step Action in the Word Enter Mode
+   */
+  public void handleWordPreviousStep ()
+  {
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleWordPreviousStep ();
+
+  }
+
+
+  /**
+   * Handle Start Action in the Word Enter Mode
+   */
+  public void handleWordStart ()
+  {
+    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
+        .getSelectedComponent () ).getLogic ();
+    int errorCount = 0;
+    int warningCount = 0;
+    try
+    {
+      panel.clearValidationMessages ();
+      panel.getMachine ().validate ();
+    }
+    catch ( MachineValidationException e )
+    {
+      for ( MachineException error : e.getMachineException () )
+      {
+        if ( error.getType ().equals ( ErrorType.ERROR ) )
+        {
+          panel.addError ( error );
+          errorCount++ ;
+        }
+        else if ( error.getType ().equals ( ErrorType.WARNING ) )
+        {
+          panel.addWarning ( error );
+          warningCount++ ;
+        }
+      }
+    }
+    if ( errorCount > 0 )
+    {
+      JOptionPane.showMessageDialog ( this.gui, errorCount
+          + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      return;
+    }
+
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+
+    if ( current.handleWordStart () )
+    {
+      this.gui.jButtonStart.setEnabled ( false );
+      this.gui.jButtonNextStep.setEnabled ( true );
+      this.gui.jButtonPrevious.setEnabled ( true );
+      this.gui.jButtonAutoStep.setEnabled ( true );
+      this.gui.jButtonStop.setEnabled ( true );
+
+    }
+
+  }
+
+
+  /**
+   * Handle Stop Action in the Word Enter Mode
+   */
+  public void handleWordStop ()
+  {
+    this.gui.jButtonStart.setEnabled ( true );
+    this.gui.jButtonNextStep.setEnabled ( false );
+    this.gui.jButtonPrevious.setEnabled ( false );
+    this.gui.jButtonAutoStep.setEnabled ( false );
+    this.gui.jButtonStop.setEnabled ( false );
+    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    current.handleWordStop ();
+
   }
 
 
@@ -913,6 +1074,122 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Try to open the given file
+   * 
+   * @param file The file to open
+   * @param addToRecentlyUsed Flag signals if file should be added to recently
+   *          used files
+   */
+  public void openFile ( File file, boolean addToRecentlyUsed )
+  {
+
+    // check if we already have an editor panel for the file
+    EditorPanel editorPanel = null;
+    for ( Component component : this.gui.jTabbedPaneMain.getComponents () )
+    {
+      editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
+      if ( file.equals ( editorPanel.getFile () ) )
+      {
+        this.gui.jTabbedPaneMain.setSelectedComponent ( component );
+
+        // reorganize recently used files
+        if ( addToRecentlyUsed )
+        {
+          ArrayList < File > fileList = PreferenceManager.getInstance ()
+              .getRecentlyUsedFilesItem ().getFiles ();
+          fileList.remove ( file );
+          fileList.add ( 0, file );
+          if ( fileList.size () > 10 )
+            fileList.remove ( 10 );
+          if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
+            this.gui.jMenuRecentlyUsed.setEnabled ( true );
+
+          PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
+              new RecentlyUsedFilesItem ( fileList ) );
+          organizeRecentlyUsedFilesMenu ();
+        }
+
+        return;
+      }
+    }
+    try
+    {
+      DefaultMachineModel model = ( DefaultMachineModel ) Storage
+          .getInstance ().load ( file.toString () );
+      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
+
+      this.gui.jTabbedPaneMain.add ( newEditorPanel.getPanel () );
+      this.gui.jTabbedPaneMain.setSelectedComponent ( newEditorPanel
+          .getPanel () );
+      this.gui.jTabbedPaneMain.setTitleAt ( this.gui.jTabbedPaneMain
+          .getSelectedIndex (), file.getName () );
+      count++ ;
+      setGeneralStates ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+
+      // reorganize recently used files
+      if ( addToRecentlyUsed )
+      {
+        ArrayList < File > fileList = PreferenceManager.getInstance ()
+            .getRecentlyUsedFilesItem ().getFiles ();
+        fileList.remove ( file );
+        fileList.add ( 0, file );
+        if ( fileList.size () > 10 )
+          fileList.remove ( 10 );
+        if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
+          this.gui.jMenuRecentlyUsed.setEnabled ( true );
+
+        PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
+            new RecentlyUsedFilesItem ( fileList ) );
+        organizeRecentlyUsedFilesMenu ();
+      }
+
+    }
+    catch ( StoreException e )
+    {
+      JOptionPane.showMessageDialog ( this.gui, e.getMessage (), Messages
+          .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+    }
+
+    PreferenceManager.getInstance ().setWorkingPath ( file.getAbsolutePath () );
+
+  }
+
+
+  /**
+   * Organize the recently used files in the menu
+   */
+  private void organizeRecentlyUsedFilesMenu ()
+  {
+    ArrayList < File > fileList = PreferenceManager.getInstance ()
+        .getRecentlyUsedFilesItem ().getFiles ();
+
+    this.gui.jMenuRecentlyUsed.removeAll ();
+
+    for ( File file : fileList )
+    {
+      this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
+    }
+  }
+
+
+  /**
+   * Open all files which was open at last session
+   */
+  public void restoreOpenFiles ()
+  {
+    for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getFiles () )
+    {
+      openFile ( file, false );
+    }
+
+  }
+
+
+  /**
    * Sets general states for items and buttons.
    * 
    * @param pState The new state.
@@ -974,14 +1251,49 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Sets the state of the save button and item.
-   * 
-   * @param pState The new state for save.
    */
-  @SuppressWarnings ( "unused" )
-  private final void setSaveState ( boolean pState )
+  private final void setSaveState ()
   {
-    this.gui.jButtonSave.setEnabled ( pState );
-    this.gui.jMenuItemSave.setEnabled ( pState );
+    boolean state = false;
+    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    if ( machinePanel != null )
+    {
+      state = machinePanel.isModified ();
+    }
+    logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.jButtonSave.setEnabled ( state );
+    this.gui.jMenuItemSave.setEnabled ( state );
+  }
+
+
+  /**
+   * Set the state of the edit machine toolbar items
+   * 
+   * @param state the new state
+   */
+  private void setToolBarEditItemState ( boolean state )
+  {
+    this.gui.jButtonAddState.setEnabled ( state );
+    this.gui.jButtonAddTransition.setEnabled ( state );
+    this.gui.jButtonFinalState.setEnabled ( state );
+    this.gui.jButtonMouse.setEnabled ( state );
+    this.gui.jButtonStartState.setEnabled ( state );
+    this.gui.jButtonEditAlphabet.setEnabled ( state );
+  }
+
+
+  /**
+   * Set the state of the enter word toolbar items
+   * 
+   * @param state the new state
+   */
+  private void setToolBarEnterWordItemState ( boolean state )
+  {
+    // this.gui.jButtonPrevious.setEnabled ( state );
+    this.gui.jButtonStart.setEnabled ( state );
+    // this.gui.jButtonNextStep.setEnabled ( state );
+    // this.gui.jButtonAutoStep.setEnabled ( state );
+    // this.gui.jButtonStop.setEnabled ( state );
   }
 
 
@@ -993,262 +1305,6 @@ public final class MainWindow implements LanguageChangedListener
   private final void setUndoState ( boolean pState )
   {
     this.gui.jMenuItemUndo.setEnabled ( pState );
-  }
-
-
-  /**
-   * Closes the active editor window.
-   * 
-   * @return true if the active editor could be closed.
-   */
-  public boolean handleClose ()
-  {
-    // EditorPanel selectedEditor = getActiveEditor ();
-    boolean success;
-    // if ( selectedEditor.shouldBeSaved ( ) )
-    // {
-    // Object [ ] options =
-    // {
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "Yes" ) ,
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "No" ) ,
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "Cancel" ) } ;
-    // int n = JOptionPane.showOptionDialog ( window , selectedEditor
-    // .getFileName ( )
-    // + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
-    // "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
-    // JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
-    // null , options , options [ 2 ] ) ;
-    // switch ( n )
-    // {
-    // case 0 : // Save Changes
-    // logger.debug ( "Close dialog: YES" ) ;
-    // success = selectedEditor.handleSave ( ) ;
-    // if ( success )
-    // {
-    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-    // window.repaint ( ) ;
-    // }
-    // return success ;
-    // case 1 : // Do not save changes
-    // logger.debug ( "Close dialog: NO" ) ;
-    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-    // window.repaint ( ) ;
-    // success = true ;
-    // case 2 : // Cancelled.
-    // logger.debug ( "Close dialog: CANCEL" ) ;
-    // success = false ;
-    // default :
-    // success = false ;
-    // }
-    // }
-    // else
-    {
-      this.gui.jTabbedPaneMain.remove ( this.gui.jTabbedPaneMain
-          .getSelectedIndex () );
-      this.gui.repaint ();
-      success = true;
-    }
-    if ( getActiveEditor () == null )
-    {
-      setGeneralStates ( false );
-      this.gui.jMenuItemSave.setEnabled ( false );
-      this.gui.jButtonSave.setEnabled ( false );
-
-      // toolbar items
-      this.gui.jButtonAddState.setEnabled ( false );
-      this.gui.jButtonAddTransition.setEnabled ( false );
-      this.gui.jButtonFinalState.setEnabled ( false );
-      this.gui.jButtonMouse.setEnabled ( false );
-      this.gui.jButtonStartState.setEnabled ( false );
-      this.gui.jButtonEditAlphabet.setEnabled ( false );
-    }
-    return success;
-  }
-
-
-  /**
-   * Getter for the active EditorPanel
-   * 
-   * @return the active EditorPanel
-   */
-  public EditorPanel getActiveEditor ()
-  {
-    if ( this.gui.jTabbedPaneMain.getSelectedComponent () == null )
-      return null;
-    return ( ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-        .getSelectedComponent () ).getLogic () );
-  }
-
-
-  /**
-   * Handle Edit Machine button pressed
-   */
-  public void handleEditMachine ()
-  {
-    setToolBarEditItemState ( true );
-    setToolBarEnterWordItemState ( false );
-    MachinePanel machinePanel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
-
-    machinePanel.handleEditMachine ();
-    machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
-        .getState () );
-    this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
-    machinePanel.setWordEnterMode ( false );
-  }
-
-
-  /**
-   * Handle TabbedPane state changed event
-   */
-  public void handleTabbedPaneStateChanged ()
-  {
-    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
-    if ( machinePanel != null )
-    {
-      this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
-          .isWordEnterMode () );
-      this.saveConsolePreferences = false;
-      this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
-          .isConsoleVisible () );
-      // machinePanel.setVisibleConsole ( !machinePanel.isWordEnterMode ()
-      // && machinePanel.isConsoleVisible () );
-      this.saveConsolePreferences = true;
-      this.gui.jCheckBoxMenuItemTable
-          .setState ( machinePanel.isTableVisible () );
-      setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
-      setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
-    }
-
-  }
-
-
-  /**
-   * Handle Edit Alphabet Action in the Toolbar
-   */
-  public void handleEditAlphabet ()
-  {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleToolbarAlphabet ();
-  }
-
-
-  /**
-   * Handle Stop Action in the Word Enter Mode
-   */
-  public void handleWordStop ()
-  {
-    this.gui.jButtonStart.setEnabled ( true );
-    this.gui.jButtonNextStep.setEnabled ( false );
-    this.gui.jButtonPrevious.setEnabled ( false );
-    this.gui.jButtonAutoStep.setEnabled ( false );
-    this.gui.jButtonStop.setEnabled ( false );
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordStop ();
-
-  }
-
-
-  /**
-   * Handle Next Step Action in the Word Enter Mode
-   */
-  public void handleWordNextStep ()
-  {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordNextStep ();
-
-  }
-
-
-  /**
-   * Handle Start Action in the Word Enter Mode
-   */
-  public void handleWordStart ()
-  {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
-    int errorCount = 0;
-    int warningCount = 0;
-    try
-    {
-      panel.clearValidationMessages ();
-      panel.getMachine ().validate ();
-    }
-    catch ( MachineValidationException e )
-    {
-      for ( MachineException error : e.getMachineException () )
-      {
-        if ( error.getType ().equals ( ErrorType.ERROR ) )
-        {
-          panel.addError ( error );
-          errorCount++ ;
-        }
-        else if ( error.getType ().equals ( ErrorType.WARNING ) )
-        {
-          panel.addWarning ( error );
-          warningCount++ ;
-        }
-      }
-    }
-    if ( errorCount > 0 )
-    {
-      JOptionPane.showMessageDialog ( this.gui, errorCount
-          + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
-      return;
-    }
-
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-
-    if ( current.handleWordStart () )
-    {
-      this.gui.jButtonStart.setEnabled ( false );
-      this.gui.jButtonNextStep.setEnabled ( true );
-      this.gui.jButtonPrevious.setEnabled ( true );
-      this.gui.jButtonAutoStep.setEnabled ( true );
-      this.gui.jButtonStop.setEnabled ( true );
-
-    }
-
-  }
-
-
-  /**
-   * Handle Previous Step Action in the Word Enter Mode
-   */
-  public void handleWordPreviousStep ()
-  {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordPreviousStep ();
-
-  }
-
-
-  /**
-   * Handle Auto Step Action in the Word Enter Mode
-   */
-  public void handleWordAutoStep ()
-  {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordAutoStep ();
-
-  }
-
-  /**
-   * 
-   * Open all files which was open at last session
-   *
-   */
-  public void restoreOpenFiles ()
-  {
-    for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ().getFiles () )
-    {
-      openFile ( file, false );
-    }
-    
   }
 
 }

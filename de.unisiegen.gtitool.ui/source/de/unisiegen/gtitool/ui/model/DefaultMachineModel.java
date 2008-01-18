@@ -5,7 +5,12 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.event.EventListenerList;
+
 import org.jgraph.JGraph;
+import org.jgraph.event.GraphModelEvent;
+import org.jgraph.event.GraphModelListener;
+import org.jgraph.event.GraphModelEvent.GraphModelChange;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -17,6 +22,7 @@ import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -81,6 +87,18 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
+   * The {@link EventListenerList}.
+   */
+  private final EventListenerList listenerList;
+
+
+  /**
+   * The last modify status.
+   */
+  private boolean lastModifyStatus = false;
+
+
+  /**
    * Allocates a new <code>DefaultMachineModel</code>.
    * 
    * @param element The {@link Element}.
@@ -106,6 +124,9 @@ public final class DefaultMachineModel implements Storable
       throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
           + "\" is not a machine model" ); //$NON-NLS-1$
     }
+
+    // ListenerList
+    this.listenerList = new EventListenerList ();
 
     // Attribute
     boolean foundMachineType = false;
@@ -214,6 +235,7 @@ public final class DefaultMachineModel implements Storable
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
+      initializeGraphModelListener ();
     }
 
     // Load the transitions
@@ -244,8 +266,23 @@ public final class DefaultMachineModel implements Storable
    */
   public DefaultMachineModel ( Machine machine )
   {
+    // ListenerList
+    this.listenerList = new EventListenerList ();
     this.machine = machine;
     initializeGraph ();
+    initializeGraphModelListener ();
+  }
+
+
+  /**
+   * Adds the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -257,7 +294,7 @@ public final class DefaultMachineModel implements Storable
    * @param state The state represented via this view.
    * @return The new created {@link DefaultStateView}.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings ( "unchecked" )
   public final DefaultStateView createStateView ( double x, double y,
       State state )
   {
@@ -329,6 +366,25 @@ public final class DefaultMachineModel implements Storable
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
     this.transitionViewList.add ( newEdge );
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    boolean oldLastModifyStatus = this.lastModifyStatus;
+    boolean newModifyStatus = isModified ();
+    if ( oldLastModifyStatus != newModifyStatus )
+    {
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      }
+    }
   }
 
 
@@ -469,7 +525,7 @@ public final class DefaultMachineModel implements Storable
 
 
   /**
-   * Initialize this JGraph
+   * Initialize this JGraph.
    */
   private final void initializeGraph ()
   {
@@ -510,6 +566,68 @@ public final class DefaultMachineModel implements Storable
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
     EdgeView.renderer.setForeground ( Color.magenta );
+  }
+
+
+  /**
+   * Initialize the {@link GraphModelListener}.
+   */
+  private final void initializeGraphModelListener ()
+  {
+    this.graphModel.addGraphModelListener ( new GraphModelListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void graphChanged ( GraphModelEvent e )
+      {
+        GraphModelChange graphModelChange = e.getChange ();
+        Object [] changed = graphModelChange.getChanged ();
+        for ( Object current : changed )
+        {
+          if ( current instanceof DefaultStateView )
+          {
+            DefaultStateView defaultStateView = ( DefaultStateView ) current;
+            if ( defaultStateView.isModified () )
+            {
+              fireModifyStatusChanged ();
+              return;
+            }
+          }
+        }
+      }
+    } );
+  }
+
+
+  /**
+   * Returns true if this {@link DefaultMachineModel} is modified.
+   * 
+   * @return True if this {@link DefaultMachineModel} is modified.
+   */
+  public final boolean isModified ()
+  {
+    for ( DefaultStateView current : this.stateViewList )
+    {
+      if ( current.isModified () )
+      {
+        this.lastModifyStatus = true;
+        return true;
+      }
+    }
+    this.lastModifyStatus = false;
+    return false;
+  }
+
+
+  /**
+   * Removes the given {@link ModifyStatusChangedListener}.
+   * 
+   * @param listener The {@link ModifyStatusChangedListener}.
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -563,5 +681,18 @@ public final class DefaultMachineModel implements Storable
     { transitionView } );
     this.machine.removeTransition ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
+  }
+
+
+  /**
+   * Resets the modify status.
+   */
+  public final void resetModify ()
+  {
+    for ( DefaultStateView current : this.stateViewList )
+    {
+      current.resetModify ();
+    }
+    fireModifyStatusChanged ();
   }
 }

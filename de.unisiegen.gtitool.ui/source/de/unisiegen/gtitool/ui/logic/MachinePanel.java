@@ -64,6 +64,7 @@ import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.storage.Storage;
@@ -1549,9 +1550,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
                 .getX (), e.getY () );
           return;
         }
+        
+        TransitionItem transitionItem= PreferenceManager.getInstance ().getTransitionItem ();
 
         // if drag in progress return
-        if ( MachinePanel.this.dragged )
+        if ( MachinePanel.this.dragged || transitionItem.equals ( TransitionItem.DRAG_MODE ) )
           return;
 
         if ( MachinePanel.this.firstState == null )
@@ -1646,6 +1649,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
         if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
           return;
+        
 
         DefaultStateView target = null;
 
@@ -1658,8 +1662,6 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
-          if ( target != null && target.equals ( MachinePanel.this.firstState ) )
-            return;
         }
         catch ( ClassCastException exc )
         {
@@ -1729,6 +1731,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       @Override
       public void mouseDragged ( MouseEvent e )
       {
+        if ( PreferenceManager.getInstance ().getTransitionItem ().equals ( TransitionItem.CLICK_MODE ))
+          return;
         double x, y;
         if ( MachinePanel.this.firstState == null )
         {

@@ -6,4 +6,3 @@ CF		- Zustand in der Tabelle highlighten mit Timer
 		- Konsole und Tabelle nur auf ein MachinePanel beschränken
 CF		- Einen Info-Diolog für die Nachrichten bauen
 CF		- History über die Zustände führen (erst im core implementieren)
-BM		- Transitions Auswahl der Preferencen verwenden

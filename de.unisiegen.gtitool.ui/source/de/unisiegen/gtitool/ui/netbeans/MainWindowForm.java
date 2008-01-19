@@ -35,6 +35,17 @@ public class MainWindowForm extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * 
+     * Get the logic class for this gui class
+     *
+     * @return the logic class for this gui class
+     */
+    public MainWindow getLogic()
+    {
+      return this.logic;
+    }
+    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -618,7 +629,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
     private void handleWordAutoStep(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleWordAutoStep
-        this.logic.handleWordAutoStep();
+        this.logic.handleWordAutoStep(evt);
     }//GEN-LAST:event_handleWordAutoStep
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose

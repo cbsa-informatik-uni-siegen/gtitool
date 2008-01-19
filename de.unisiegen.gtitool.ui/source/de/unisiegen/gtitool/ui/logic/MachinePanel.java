@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -84,7 +85,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @author Christian Fehler
    */
-  protected final class SleepTimerTask extends TimerTask
+  protected final class WarningTimerTask extends TimerTask
   {
 
     /**
@@ -105,7 +106,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
      * @param pConsoleTable The console table.
      * @param pIndex The index.
      */
-    public SleepTimerTask ( JTable pConsoleTable, int pIndex )
+    public WarningTimerTask ( JTable pConsoleTable, int pIndex )
     {
       this.index = pIndex;
       this.consoleTable = pConsoleTable;
@@ -128,9 +129,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
           public void run ()
           {
-            SleepTimerTask.this.consoleTable.getSelectionModel ()
+            WarningTimerTask.this.consoleTable.getSelectionModel ()
                 .clearSelection ();
-            SleepTimerTask.this.consoleTable.repaint ();
+            WarningTimerTask.this.consoleTable.repaint ();
           }
         } );
       }
@@ -141,15 +142,44 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
           public void run ()
           {
-            SleepTimerTask.this.consoleTable.getSelectionModel ()
-                .setSelectionInterval ( SleepTimerTask.this.index,
-                    SleepTimerTask.this.index );
-            SleepTimerTask.this.consoleTable.repaint ();
+            WarningTimerTask.this.consoleTable.getSelectionModel ()
+                .setSelectionInterval ( WarningTimerTask.this.index,
+                    WarningTimerTask.this.index );
+            WarningTimerTask.this.consoleTable.repaint ();
           }
         } );
       }
     }
   }
+  
+  /**
+   * Do next step in word enter mode after a delay.
+   * 
+   * @author Benjamin Mies
+   */
+  protected final class AutoStepTimerTask extends TimerTask
+  {
+
+    /**
+     * Make next step after a delay.
+     * 
+     * @see TimerTask#run()
+     */
+    @Override
+    public final void run ()
+    {
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          public void run ()
+          {
+            MachinePanel.this.handleWordNextStep ();
+          }
+        } );
+    }
+  }
+  
+  
 
 
   /**
@@ -253,6 +283,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * The {@link Timer} of the console table.
    */
   private Timer consoleTimer = null;
+  
+  /**
+   * The {@link Timer} of the auto step mode.
+   */
+  private Timer autoStepTimer = null;
 
 
   /**
@@ -792,12 +827,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     if ( index == -1 )
     {
       table.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
-      this.consoleTimer.schedule ( new SleepTimerTask ( table, -1 ), 250 );
+      this.consoleTimer.schedule ( new WarningTimerTask ( table, -1 ), 250 );
     }
     else
     {
       table.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-      this.consoleTimer.schedule ( new SleepTimerTask ( table, index ), 250 );
+      this.consoleTimer.schedule ( new WarningTimerTask ( table, index ), 250 );
     }
   }
 
@@ -951,7 +986,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
               this.parent,
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-          .getAbsolutePath () );
+          .getPath () );
       this.fileName = new File ( filename );
 
     }
@@ -1058,10 +1093,22 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
   /**
    * Handle Auto Step Action in the Word Enter Mode
+   * @param evt 
    */
-  public void handleWordAutoStep ()
+  public void handleWordAutoStep (ItemEvent evt)
   {
-    // TODO Auto-generated method stub
+    if (evt.getStateChange () == ItemEvent.SELECTED){
+    if ( this.autoStepTimer == null ){
+      this.autoStepTimer = new Timer();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ().getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask(), 0, time );
+    }
+    }
+    else
+    {
+      this.autoStepTimer.cancel ();
+      this.autoStepTimer = null;
+    }
   }
 
 
@@ -1126,6 +1173,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     }
     catch ( WordFinishedException exc )
     {
+      this.parent.getLogic ().handleAutoStepStopped ();
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
@@ -1136,6 +1184,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     }
     catch ( WordNotAcceptedException exc )
     {
+      this.parent.getLogic ().handleAutoStepStopped ();
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }

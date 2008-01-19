@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -599,6 +600,9 @@ public final class MainWindow implements LanguageChangedListener
     {
       openFile ( file, true );
     }
+
+    PreferenceManager.getInstance ().setWorkingPath ( chooser.getSelectedFile ().getPath () );
+
   }
 
 
@@ -826,11 +830,12 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Handle Auto Step Action in the Word Enter Mode
+   * @param evt 
    */
-  public void handleWordAutoStep ()
+  public void handleWordAutoStep (ItemEvent evt)
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordAutoStep ();
+    current.handleWordAutoStep (evt);
 
   }
 
@@ -1305,6 +1310,20 @@ public final class MainWindow implements LanguageChangedListener
   private final void setUndoState ( boolean pState )
   {
     this.gui.jMenuItemUndo.setEnabled ( pState );
+    int index = PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () ;
+    
+    if ( this.gui.jTabbedPaneMain.getTabCount () > index  )
+      this.gui.jTabbedPaneMain.setSelectedIndex ( index );
+    
+  }
+  
+  /**
+   * 
+   * Handle Auto Step Stopped by Exception
+   *
+   */
+  public void handleAutoStepStopped (){
+    this.gui.jButtonAutoStep.setSelected ( false );
   }
 
 }

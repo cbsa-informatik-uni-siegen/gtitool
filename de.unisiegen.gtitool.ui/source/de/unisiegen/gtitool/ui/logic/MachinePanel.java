@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -557,6 +559,37 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
+    
+    this.graph.addKeyListener ( new KeyListener(){
+
+      @SuppressWarnings("synthetic-access")
+      public void keyPressed ( KeyEvent e )
+      {
+        if ( e.getKeyCode () == 27 )
+        {
+          MachinePanel.this.graphModel.remove ( new Object []
+              { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+          MachinePanel.this.firstState = null;
+          MachinePanel.this.tmpTransition = null;
+          MachinePanel.this.tmpState = null;
+          MachinePanel.this.dragged = false;
+        }
+        
+      }
+
+      public void keyReleased ( KeyEvent e )
+      {
+        // Nothing to do here
+        
+      }
+
+      public void keyTyped ( KeyEvent e )
+      {
+        // Nothing to do here
+        
+      }
+      
+    });
   }
 
 

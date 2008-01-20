@@ -7,11 +7,9 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -184,14 +182,9 @@ public final class DefaultState implements State
    * @param element The {@link Element}.
    * @throws StateException If something with the <code>DefaultState</code> is
    *           not correct.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
-   *           correct.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultState ( Element element ) throws StateException,
-      SymbolException, AlphabetException, StoreException
+  public DefaultState ( Element element ) throws StateException, StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "State" ) ) //$NON-NLS-1$
@@ -266,22 +259,9 @@ public final class DefaultState implements State
     }
 
     // Element
-    boolean foundAlphabet = false;
-    boolean foundPushDownAlphabet = false;
     for ( Element current : element.getElement () )
     {
-      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-      {
-        setAlphabet ( new DefaultAlphabet ( current ) );
-        foundAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
-      {
-        current.setName ( "Alphabet" ); //$NON-NLS-1$
-        setPushDownAlphabet ( new DefaultAlphabet ( current ) );
-        foundPushDownAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "TransitionBegin" ) ) //$NON-NLS-1$
+      if ( current.getName ().equals ( "TransitionBegin" ) ) //$NON-NLS-1$
       {
         boolean foundTransitionBeginId = false;
         for ( Attribute currentAttribute : current.getAttribute () )
@@ -336,13 +316,6 @@ public final class DefaultState implements State
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
-    }
-
-    // Not all element values found
-    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
   }
 
@@ -542,10 +515,6 @@ public final class DefaultState implements State
         this.parserStartOffset ) );
     newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
         this.parserEndOffset ) );
-    newElement.addElement ( this.alphabet );
-    Element newPushDownAlphabet = this.pushDownAlphabet.getElement ();
-    newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
-    newElement.addElement ( newPushDownAlphabet );
     for ( Transition current : this.transitionBeginList )
     {
       Element currentElement = new Element ( "TransitionBegin" ); //$NON-NLS-1$
@@ -832,6 +801,10 @@ public final class DefaultState implements State
     if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
+    }
+    if ( this.alphabet != null )
+    {
+      throw new IllegalArgumentException ( "alphabet is already set" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
   }

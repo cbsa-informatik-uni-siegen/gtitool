@@ -601,8 +601,8 @@ public final class MainWindow implements LanguageChangedListener
       openFile ( file, true );
     }
 
-    PreferenceManager.getInstance ().setWorkingPath ( chooser.getSelectedFile ().getPath () );
-
+    PreferenceManager.getInstance ().setWorkingPath (
+        chooser.getSelectedFile ().getParentFile ().getAbsolutePath () );
   }
 
 
@@ -830,12 +830,13 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Handle Auto Step Action in the Word Enter Mode
-   * @param evt 
+   * 
+   * @param evt
    */
-  public void handleWordAutoStep (ItemEvent evt)
+  public void handleWordAutoStep ( ItemEvent evt )
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordAutoStep (evt);
+    current.handleWordAutoStep ( evt );
 
   }
 
@@ -1150,16 +1151,14 @@ public final class MainWindow implements LanguageChangedListener
             new RecentlyUsedFilesItem ( fileList ) );
         organizeRecentlyUsedFilesMenu ();
       }
-
     }
     catch ( StoreException e )
     {
       JOptionPane.showMessageDialog ( this.gui, e.getMessage (), Messages
           .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
-
-    PreferenceManager.getInstance ().setWorkingPath ( file.getAbsolutePath () );
-
+    PreferenceManager.getInstance ().setWorkingPath (
+        file.getParentFile ().getAbsolutePath () );
   }
 
 
@@ -1310,19 +1309,20 @@ public final class MainWindow implements LanguageChangedListener
   private final void setUndoState ( boolean pState )
   {
     this.gui.jMenuItemUndo.setEnabled ( pState );
-    int index = PreferenceManager.getInstance ().getOpenedFilesItem ().getActiveIndex () ;
-    
-    if ( this.gui.jTabbedPaneMain.getTabCount () > index  )
+    int index = PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getActiveIndex ();
+
+    if ( this.gui.jTabbedPaneMain.getTabCount () > index )
       this.gui.jTabbedPaneMain.setSelectedIndex ( index );
-    
+
   }
-  
+
+
   /**
-   * 
    * Handle Auto Step Stopped by Exception
-   *
    */
-  public void handleAutoStepStopped (){
+  public void handleAutoStepStopped ()
+  {
     this.gui.jButtonAutoStep.setSelected ( false );
   }
 

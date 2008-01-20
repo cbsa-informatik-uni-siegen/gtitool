@@ -9,7 +9,6 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
@@ -63,7 +62,7 @@ public final class DefaultTransition implements Transition
   /**
    * The {@link Alphabet} of this <code>DefaultTransition</code>.
    */
-  private Alphabet alphabet;
+  private Alphabet alphabet = null;
 
 
   /**
@@ -206,14 +205,11 @@ public final class DefaultTransition implements Transition
    *           <code>DefaultTransition</code> is not correct.
    * @throws SymbolException If something with the <code>Symbol</code> is not
    *           correct.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultTransition ( Element element )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException, SymbolException, AlphabetException,
-      StoreException
+      TransitionSymbolOnlyOneTimeException, SymbolException, StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
@@ -261,22 +257,9 @@ public final class DefaultTransition implements Transition
     }
 
     // Element
-    boolean foundAlphabet = false;
-    boolean foundPushDownAlphabet = false;
     for ( Element current : element.getElement () )
     {
-      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-      {
-        setAlphabet ( new DefaultAlphabet ( current ) );
-        foundAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
-      {
-        current.setName ( "Alphabet" ); //$NON-NLS-1$
-        setPushDownAlphabet ( new DefaultAlphabet ( current ) );
-        foundPushDownAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
         add ( new DefaultSymbol ( current ) );
       }
@@ -285,13 +268,6 @@ public final class DefaultTransition implements Transition
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
-    }
-
-    // Not all element values found
-    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
   }
 
@@ -570,10 +546,6 @@ public final class DefaultTransition implements Transition
     newElement.addAttribute ( new Attribute ( "stateBeginId", //$NON-NLS-1$
         getStateBeginId () ) );
     newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
-    newElement.addElement ( this.alphabet );
-    Element newPushDownAlphabet = this.pushDownAlphabet.getElement ();
-    newPushDownAlphabet.setName ( "PushDownAlphabet" ); //$NON-NLS-1$
-    newElement.addElement ( newPushDownAlphabet );
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );
@@ -838,6 +810,10 @@ public final class DefaultTransition implements Transition
     if ( alphabet == null )
     {
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
+    }
+    if ( this.alphabet != null )
+    {
+      throw new IllegalArgumentException ( "alphabet is already set" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
   }

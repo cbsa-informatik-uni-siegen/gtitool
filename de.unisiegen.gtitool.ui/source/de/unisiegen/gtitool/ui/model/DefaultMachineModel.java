@@ -54,7 +54,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
   /**
    * The {@link Machine} version.
    */
-  private static final int MACHINE_VERSION = 5;
+  private static final int MACHINE_VERSION = 452;
 
 
   /**

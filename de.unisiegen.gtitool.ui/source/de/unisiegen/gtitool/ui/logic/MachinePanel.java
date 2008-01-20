@@ -154,7 +154,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       }
     }
   }
-  
+
+
   /**
    * Do next step in word enter mode after a delay.
    * 
@@ -171,18 +172,16 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     @Override
     public final void run ()
     {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
+      SwingUtilities.invokeLater ( new Runnable ()
+      {
 
-          public void run ()
-          {
-            MachinePanel.this.handleWordNextStep ();
-          }
-        } );
+        public void run ()
+        {
+          MachinePanel.this.handleWordNextStep ();
+        }
+      } );
     }
   }
-  
-  
 
 
   /**
@@ -286,7 +285,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * The {@link Timer} of the console table.
    */
   private Timer consoleTimer = null;
-  
+
+
   /**
    * The {@link Timer} of the auto step mode.
    */
@@ -559,37 +559,40 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
-    
-    this.graph.addKeyListener ( new KeyListener(){
 
-      @SuppressWarnings("synthetic-access")
+    this.graph.addKeyListener ( new KeyListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
       public void keyPressed ( KeyEvent e )
       {
         if ( e.getKeyCode () == 27 )
         {
           MachinePanel.this.graphModel.remove ( new Object []
-              { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+          { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           MachinePanel.this.firstState = null;
           MachinePanel.this.tmpTransition = null;
           MachinePanel.this.tmpState = null;
           MachinePanel.this.dragged = false;
         }
-        
+
       }
 
-      public void keyReleased ( KeyEvent e )
+
+      public void keyReleased ( @SuppressWarnings ( "unused" )
+      KeyEvent event )
       {
         // Nothing to do here
-        
       }
 
-      public void keyTyped ( KeyEvent e )
+
+      public void keyTyped ( @SuppressWarnings ( "unused" )
+      KeyEvent event )
       {
         // Nothing to do here
-        
       }
-      
-    });
+
+    } );
   }
 
 
@@ -1019,8 +1022,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .showMessageDialog (
               this.parent,
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-          .getPath () );
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ().getAbsolutePath () );
       this.fileName = new File ( filename );
 
     }
@@ -1029,6 +1031,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
+    resetModify ();
     return this.fileName.getName ();
   }
 
@@ -1127,16 +1130,20 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
   /**
    * Handle Auto Step Action in the Word Enter Mode
-   * @param evt 
+   * 
+   * @param evt
    */
-  public void handleWordAutoStep (ItemEvent evt)
+  public void handleWordAutoStep ( ItemEvent evt )
   {
-    if (evt.getStateChange () == ItemEvent.SELECTED){
-    if ( this.autoStepTimer == null ){
-      this.autoStepTimer = new Timer();
-    int time = PreferenceManager.getInstance ().getAutoStepItem ().getAutoStepInterval ();
-    this.autoStepTimer.schedule ( new AutoStepTimerTask(), 0, time );
-    }
+    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    {
+      if ( this.autoStepTimer == null )
+      {
+        this.autoStepTimer = new Timer ();
+        int time = PreferenceManager.getInstance ().getAutoStepItem ()
+            .getAutoStepInterval ();
+        this.autoStepTimer.schedule ( new AutoStepTimerTask (), 0, time );
+      }
     }
     else
     {
@@ -1583,11 +1590,13 @@ public final class MachinePanel implements EditorPanel, Modifyable,
                 .getX (), e.getY () );
           return;
         }
-        
-        TransitionItem transitionItem= PreferenceManager.getInstance ().getTransitionItem ();
+
+        TransitionItem transitionItem = PreferenceManager.getInstance ()
+            .getTransitionItem ();
 
         // if drag in progress return
-        if ( MachinePanel.this.dragged || transitionItem.equals ( TransitionItem.DRAG_MODE ) )
+        if ( MachinePanel.this.dragged
+            || transitionItem.equals ( TransitionItem.DRAG_MODE ) )
           return;
 
         if ( MachinePanel.this.firstState == null )
@@ -1682,7 +1691,6 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
         if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
           return;
-        
 
         DefaultStateView target = null;
 
@@ -1764,7 +1772,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       @Override
       public void mouseDragged ( MouseEvent e )
       {
-        if ( PreferenceManager.getInstance ().getTransitionItem ().equals ( TransitionItem.CLICK_MODE ))
+        if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
+            TransitionItem.CLICK_MODE ) )
           return;
         double x, y;
         if ( MachinePanel.this.firstState == null )

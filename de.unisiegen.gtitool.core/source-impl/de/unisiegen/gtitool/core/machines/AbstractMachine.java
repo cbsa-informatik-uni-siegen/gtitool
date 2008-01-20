@@ -327,6 +327,11 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "state is already added" ); //$NON-NLS-1$
     }
+    // Set the state alphabet if it is not set already.
+    if ( state.getAlphabet () == null )
+    {
+      state.setAlphabet ( this.alphabet );
+    }
     if ( !this.alphabet.equals ( state.getAlphabet () ) )
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
@@ -421,6 +426,11 @@ public abstract class AbstractMachine implements Machine
         && ( this.transitionList.contains ( transition ) ) )
     {
       throw new IllegalArgumentException ( "transition is already added" ); //$NON-NLS-1$
+    }
+    // Set the transition alphabet if it is not set already.
+    if ( transition.getAlphabet () == null )
+    {
+      transition.setAlphabet ( this.alphabet );
     }
     if ( !this.alphabet.equals ( transition.getAlphabet () ) )
     {

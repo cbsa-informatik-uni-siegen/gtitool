@@ -147,8 +147,7 @@ public final class MainWindow implements LanguageChangedListener
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ( @SuppressWarnings ( "unused" )
-      boolean newModifyStatus )
+      public void modifyStatusChanged ()
       {
         setSaveState ();
       }
@@ -695,13 +694,11 @@ public final class MainWindow implements LanguageChangedListener
       {
         MachinesPanelForm panel = ( MachinesPanelForm ) this.gui.jTabbedPaneMain
             .getComponentAt ( i );
-        DefaultMachineModel model = ( ( MachinePanel ) panel.getLogic () )
-            .getModel ();
-        model
+        ( ( MachinePanel ) panel.getLogic () )
             .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
       }
-      machinePanel.getModel ().addModifyStatusChangedListener (
-          this.modifyStatusChangedListener );
+      machinePanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     }
     // Save status
     setSaveState ();

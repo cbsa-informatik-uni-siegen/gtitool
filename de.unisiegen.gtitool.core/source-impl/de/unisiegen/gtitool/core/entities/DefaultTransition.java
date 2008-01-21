@@ -8,13 +8,16 @@ import java.util.TreeSet;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -102,9 +105,15 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The list of {@link Symbol}s.
+   * The set of {@link Symbol}s.
    */
   private TreeSet < Symbol > symbolSet;
+
+
+  /**
+   * The initial set of {@link Symbol}s.
+   */
+  private TreeSet < Symbol > initialSymbolSet;
 
 
   /**
@@ -114,6 +123,10 @@ public final class DefaultTransition implements Transition
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -152,7 +165,11 @@ public final class DefaultTransition implements Transition
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -191,7 +208,11 @@ public final class DefaultTransition implements Transition
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -220,6 +241,7 @@ public final class DefaultTransition implements Transition
 
     // Symbols
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
 
     // Attribute
     boolean foundId = false;
@@ -269,6 +291,9 @@ public final class DefaultTransition implements Transition
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -291,7 +316,11 @@ public final class DefaultTransition implements Transition
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -314,7 +343,11 @@ public final class DefaultTransition implements Transition
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -382,6 +415,7 @@ public final class DefaultTransition implements Transition
     }
     this.symbolSet.add ( symbol );
     fireTransitionChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -412,6 +446,18 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Adds the given {@link TransitionChangedListener}.
    * 
    * @param listener The {@link TransitionChangedListener}.
@@ -430,6 +476,7 @@ public final class DefaultTransition implements Transition
   {
     this.symbolSet.clear ();
     fireTransitionChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -505,6 +552,20 @@ public final class DefaultTransition implements Transition
       return this.id == defaultTransition.id;
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ();
+    }
   }
 
 
@@ -724,6 +785,17 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public final boolean isModified ()
+  {
+    return ( !this.symbolSet.equals ( this.initialSymbolSet ) );
+  }
+
+
+  /**
    * Returns an iterator over the {@link Symbol}s in this
    * <code>DefaultTransition</code>.
    * 
@@ -767,6 +839,7 @@ public final class DefaultTransition implements Transition
     }
     this.symbolSet.remove ( symbol );
     fireTransitionChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -789,6 +862,18 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Removes the given {@link TransitionChangedListener}.
    * 
    * @param listener The {@link TransitionChangedListener}.
@@ -797,6 +882,18 @@ public final class DefaultTransition implements Transition
       TransitionChangedListener listener )
   {
     this.listenerList.remove ( TransitionChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
+   */
+  public final void resetModify ()
+  {
+    this.initialSymbolSet.clear ();
+    this.initialSymbolSet.addAll ( this.symbolSet );
   }
 
 

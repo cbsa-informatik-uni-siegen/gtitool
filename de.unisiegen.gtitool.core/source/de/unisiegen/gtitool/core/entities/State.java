@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -15,7 +16,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface State extends ParseableEntity, Storable, Comparable < State >
+public interface State extends ParseableEntity, Storable, Modifyable,
+    Comparable < State >
 {
 
   /**

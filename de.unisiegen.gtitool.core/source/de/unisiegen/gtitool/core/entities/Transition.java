@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -15,7 +16,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Transition extends ParseableEntity, Storable,
+public interface Transition extends ParseableEntity, Storable, Modifyable,
     Comparable < Transition >, Iterable < Symbol >
 {
 

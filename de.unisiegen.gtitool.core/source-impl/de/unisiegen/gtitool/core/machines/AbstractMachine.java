@@ -127,9 +127,21 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The initial list of the {@link State}s.
+   */
+  private ArrayList < State > initialStateList;
+
+
+  /**
    * The list of the {@link Transition}.
    */
   private ArrayList < Transition > transitionList;
+
+
+  /**
+   * The list of the {@link Transition}.
+   */
+  private ArrayList < Transition > initialTransitionList;
 
 
   /**
@@ -169,6 +181,12 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
    * Allocates a new <code>AbstractMachine</code>.
    * 
    * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
@@ -204,8 +222,10 @@ public abstract class AbstractMachine implements Machine
     }
     // StateList
     this.stateList = new ArrayList < State > ();
+    this.initialStateList = new ArrayList < State > ();
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
+    this.initialTransitionList = new ArrayList < Transition > ();
     // ActiveStateSet
     this.activeStateSet = new TreeSet < State > ();
     // History
@@ -234,7 +254,6 @@ public abstract class AbstractMachine implements Machine
       Transition newTransition )
       {
         fireTableDataChanged ();
-        fireModifyStatusChanged ();
       }
     };
 
@@ -247,9 +266,22 @@ public abstract class AbstractMachine implements Machine
       State newState )
       {
         fireTableDataChanged ();
+      }
+    };
+
+    // ModifyStatusChangedListener
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ()
+      {
         fireModifyStatusChanged ();
       }
     };
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -352,6 +384,7 @@ public abstract class AbstractMachine implements Machine
     link ( state );
     fireTableDataChanged ();
     state.addStateChangedListener ( this.stateChangedListener );
+    state.addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ();
   }
 
@@ -451,6 +484,8 @@ public abstract class AbstractMachine implements Machine
     link ( transition );
     fireTableDataChanged ();
     transition.addTransitionChangedListener ( this.transitionChangedListener );
+    transition
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ();
   }
 
@@ -719,7 +754,7 @@ public abstract class AbstractMachine implements Machine
         .getListeners ( ModifyStatusChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].modifyStatusChanged ( true );
+      listeners [ n ].modifyStatusChanged ();
     }
   }
 
@@ -1060,7 +1095,30 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isModified ()
   {
-    // TODO
+    // TODO Alphabet
+    // TODO PushDownAlphabet
+    if ( !this.stateList.equals ( this.initialStateList ) )
+    {
+      return true;
+    }
+    if ( !this.transitionList.equals ( this.initialTransitionList ) )
+    {
+      return true;
+    }
+    for ( State current : this.stateList )
+    {
+      if ( current.isModified () )
+      {
+        return true;
+      }
+    }
+    for ( Transition current : this.transitionList )
+    {
+      if ( current.isModified () )
+      {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -1392,6 +1450,7 @@ public abstract class AbstractMachine implements Machine
     }
     fireTableDataChanged ();
     state.removeStateChangedListener ( this.stateChangedListener );
+    state.removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ();
   }
 
@@ -1483,6 +1542,8 @@ public abstract class AbstractMachine implements Machine
     fireTableDataChanged ();
     transition
         .removeTransitionChangedListener ( this.transitionChangedListener );
+    transition
+        .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ();
   }
 
@@ -1517,7 +1578,20 @@ public abstract class AbstractMachine implements Machine
    */
   public final void resetModify ()
   {
-    // TODO
+    // TODO Alphabet
+    // TODO PushDownAlphabet
+    this.initialStateList.clear ();
+    this.initialStateList.addAll ( this.stateList );
+    this.initialTransitionList.clear ();
+    this.initialTransitionList.addAll ( this.transitionList );
+    for ( State current : this.stateList )
+    {
+      current.resetModify ();
+    }
+    for ( Transition current : this.transitionList )
+    {
+      current.resetModify ();
+    }
   }
 
 

@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -62,6 +65,12 @@ public final class DefaultState implements State
 
 
   /**
+   * The initial final <code>DefaultState</code>.
+   */
+  private boolean initialFinalState = false;
+
+
+  /**
    * The id of this <code>DefaultState</code>.
    */
   private int id = ID_NOT_DEFINED;
@@ -71,6 +80,12 @@ public final class DefaultState implements State
    * The name of this <code>DefaultState</code>.
    */
   private String name;
+
+
+  /**
+   * The initial name of this <code>DefaultState</code>.
+   */
+  private String initialName = null;
 
 
   /**
@@ -95,6 +110,12 @@ public final class DefaultState implements State
    * This <code>DefaultState</code> is a start <code>DefaultState</code>.
    */
   private boolean startState = false;
+
+
+  /**
+   * The initial start <code>DefaultState</code>.
+   */
+  private boolean initialStartState = false;
 
 
   /**
@@ -143,6 +164,9 @@ public final class DefaultState implements State
   {
     this ( alphabet, pushDownAlphabet, "DEFAULTNAME", startState, finalState ); //$NON-NLS-1$
     this.canSetDefaultName = true;
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -173,6 +197,9 @@ public final class DefaultState implements State
     setStartState ( startState );
     // FinalState
     setFinalState ( finalState );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -317,6 +344,9 @@ public final class DefaultState implements State
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -342,6 +372,21 @@ public final class DefaultState implements State
 
     // DefaultName
     this.canSetDefaultName = false;
+
+    // Reset modify
+    resetModify ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -470,6 +515,20 @@ public final class DefaultState implements State
       return this.id == defaultState.id;
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ();
+    }
   }
 
 
@@ -727,6 +786,19 @@ public final class DefaultState implements State
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public final boolean isModified ()
+  {
+    return ( !this.name.equals ( this.initialName ) )
+        || ( this.startState != this.initialStartState )
+        || ( this.finalState != this.initialFinalState );
+  }
+
+
+  /**
    * Returns the startState.
    * 
    * @return The startState.
@@ -735,6 +807,18 @@ public final class DefaultState implements State
   public final boolean isStartState ()
   {
     return this.startState;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -792,6 +876,19 @@ public final class DefaultState implements State
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
+   */
+  public final void resetModify ()
+  {
+    this.initialName = this.name;
+    this.initialStartState = this.startState;
+    this.initialFinalState = this.finalState;
+  }
+
+
+  /**
    * Sets the {@link Alphabet} of this <code>DefaultState</code>.
    * 
    * @param alphabet The {@link Alphabet} to set.
@@ -842,6 +939,7 @@ public final class DefaultState implements State
   public final void setFinalState ( boolean finalState )
   {
     this.finalState = finalState;
+    fireModifyStatusChanged ();
   }
 
 
@@ -891,6 +989,7 @@ public final class DefaultState implements State
     }
     this.name = name;
     fireStateChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -935,6 +1034,7 @@ public final class DefaultState implements State
   public final void setStartState ( boolean startState )
   {
     this.startState = startState;
+    fireModifyStatusChanged ();
   }
 
 

@@ -100,12 +100,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * The modify status machine.
-   */
-  private boolean modifyStatusMachine = false;
-
-
-  /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
@@ -267,6 +261,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
       }
     }
     initializeModifyStatusChangedListener ();
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -281,6 +278,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     initializeGraph ();
     initializeGraphModelListener ();
     initializeModifyStatusChangedListener ();
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -392,7 +392,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
     {
       for ( int n = 0 ; n < listeners.length ; ++n )
       {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        listeners [ n ].modifyStatusChanged ();
       }
     }
   }
@@ -618,10 +618,8 @@ public final class DefaultMachineModel implements Storable, Modifyable
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ( @SuppressWarnings ( "unused" )
-      boolean newModifyStatus )
+      public void modifyStatusChanged ()
       {
-        DefaultMachineModel.this.modifyStatusMachine = true;
         fireModifyStatusChanged ();
       }
     };
@@ -637,7 +635,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    */
   public final boolean isModified ()
   {
-    if ( this.modifyStatusMachine )
+    if ( this.machine.isModified () )
     {
       this.lastModifyStatus = true;
       return true;
@@ -731,7 +729,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
     {
       current.resetModify ();
     }
-    this.modifyStatusMachine = false;
-    fireModifyStatusChanged ();
+    this.machine.resetModify ();
   }
 }

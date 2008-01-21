@@ -83,6 +83,34 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 {
 
   /**
+   * Do next step in word enter mode after a delay.
+   * 
+   * @author Benjamin Mies
+   */
+  protected final class AutoStepTimerTask extends TimerTask
+  {
+
+    /**
+     * Make next step after a delay.
+     * 
+     * @see TimerTask#run()
+     */
+    @Override
+    public final void run ()
+    {
+      SwingUtilities.invokeLater ( new Runnable ()
+      {
+
+        public void run ()
+        {
+          MachinePanel.this.handleWordNextStep ();
+        }
+      } );
+    }
+  }
+
+
+  /**
    * Selects the item with the given index in the console table or clears the
    * selection after a delay.
    * 
@@ -152,34 +180,6 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           }
         } );
       }
-    }
-  }
-
-
-  /**
-   * Do next step in word enter mode after a delay.
-   * 
-   * @author Benjamin Mies
-   */
-  protected final class AutoStepTimerTask extends TimerTask
-  {
-
-    /**
-     * Make next step after a delay.
-     * 
-     * @see TimerTask#run()
-     */
-    @Override
-    public final void run ()
-    {
-      SwingUtilities.invokeLater ( new Runnable ()
-      {
-
-        public void run ()
-        {
-          MachinePanel.this.handleWordNextStep ();
-        }
-      } );
     }
   }
 
@@ -329,6 +329,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    */
   private boolean tableVisible = PreferenceManager.getInstance ()
       .getVisibleTable ();
+
+
+  /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
@@ -593,6 +599,22 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       }
 
     } );
+
+    // ModifyStatusChangedListener
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ()
+      {
+        fireModifyStatusChanged ();
+      }
+    };
+    this.model
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -739,6 +761,20 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   {
     return new TransitionPopupMenu ( this.graph, this.gui, this.model,
         pTransition, this.machine.getAlphabet () );
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ();
+    }
   }
 
 
@@ -1022,7 +1058,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .showMessageDialog (
               this.parent,
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ().getAbsolutePath () );
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
+          .getAbsolutePath () );
       this.fileName = new File ( filename );
 
     }
@@ -2074,6 +2111,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   public final void resetModify ()
   {
     this.model.resetModify ();
+    fireModifyStatusChanged ();
   }
 
 

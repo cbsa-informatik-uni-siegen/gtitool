@@ -280,6 +280,11 @@ public abstract class AbstractMachine implements Machine
       }
     };
 
+    this.alphabet
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    this.pushDownAlphabet
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+
     // Reset modify
     resetModify ();
   }
@@ -1095,13 +1100,19 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isModified ()
   {
-    // TODO Alphabet
-    // TODO PushDownAlphabet
     if ( !this.stateList.equals ( this.initialStateList ) )
     {
       return true;
     }
     if ( !this.transitionList.equals ( this.initialTransitionList ) )
+    {
+      return true;
+    }
+    if ( this.alphabet.isModified () )
+    {
+      return true;
+    }
+    if ( this.pushDownAlphabet.isModified () )
     {
       return true;
     }
@@ -1578,12 +1589,12 @@ public abstract class AbstractMachine implements Machine
    */
   public final void resetModify ()
   {
-    // TODO Alphabet
-    // TODO PushDownAlphabet
     this.initialStateList.clear ();
     this.initialStateList.addAll ( this.stateList );
     this.initialTransitionList.clear ();
     this.initialTransitionList.addAll ( this.transitionList );
+    this.alphabet.resetModify ();
+    this.pushDownAlphabet.resetModify ();
     for ( State current : this.stateList )
     {
       current.resetModify ();

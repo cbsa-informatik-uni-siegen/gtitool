@@ -9,11 +9,14 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -64,12 +67,22 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * The initial set of {@link Symbol}s.
+   */
+  private TreeSet < Symbol > initialSymbolSet;
+
+
+  /**
    * Allocates a new <code>DefaultAlphabet</code>.
    */
   public DefaultAlphabet ()
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -136,6 +149,9 @@ public final class DefaultAlphabet implements Alphabet
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -156,6 +172,9 @@ public final class DefaultAlphabet implements Alphabet
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -175,6 +194,9 @@ public final class DefaultAlphabet implements Alphabet
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
     add ( symbols );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -242,6 +264,7 @@ public final class DefaultAlphabet implements Alphabet
     }
     this.symbolSet.add ( symbol );
     fireAlphabetChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -286,6 +309,18 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Checks the {@link Symbol} list for {@link Symbol}s with the same name.
    * 
    * @param symbols The {@link Symbol} list.
@@ -318,6 +353,17 @@ public final class DefaultAlphabet implements Alphabet
       }
       throw new AlphabetMoreThanOneSymbolException ( this, negativeSymbols );
     }
+  }
+
+
+  /**
+   * Removes all {@link Symbol}s.
+   */
+  public final void clear ()
+  {
+    this.symbolSet.clear ();
+    fireAlphabetChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -388,6 +434,20 @@ public final class DefaultAlphabet implements Alphabet
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].alphabetChanged ( this );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ();
     }
   }
 
@@ -472,6 +532,17 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#isModified()
+   */
+  public final boolean isModified ()
+  {
+    return ( !this.symbolSet.equals ( this.initialSymbolSet ) );
+  }
+
+
+  /**
    * Returns an iterator over the {@link Symbol}s in this
    * <code>DefaultAlphabet</code>.
    * 
@@ -519,6 +590,7 @@ public final class DefaultAlphabet implements Alphabet
     }
     this.symbolSet.remove ( symbol );
     fireAlphabetChanged ();
+    fireModifyStatusChanged ();
   }
 
 
@@ -549,6 +621,30 @@ public final class DefaultAlphabet implements Alphabet
       AlphabetChangedListener listener )
   {
     this.listenerList.remove ( AlphabetChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#resetModify()
+   */
+  public final void resetModify ()
+  {
+    this.initialSymbolSet.clear ();
+    this.initialSymbolSet.addAll ( this.symbolSet );
   }
 
 

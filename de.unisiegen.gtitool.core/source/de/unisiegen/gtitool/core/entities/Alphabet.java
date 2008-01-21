@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -14,7 +15,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
+public interface Alphabet extends ParseableEntity, Storable, Modifyable,
+    Iterable < Symbol >
 {
 
   /**
@@ -59,6 +61,12 @@ public interface Alphabet extends ParseableEntity, Storable, Iterable < Symbol >
    * @param listener The {@link AlphabetChangedListener}.
    */
   public void addAlphabetChangedListener ( AlphabetChangedListener listener );
+
+
+  /**
+   * Removes all {@link Symbol}s.
+   */
+  public void clear ();
 
 
   /**

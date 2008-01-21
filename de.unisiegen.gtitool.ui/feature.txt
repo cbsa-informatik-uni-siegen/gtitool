@@ -1,1 +1,2 @@
 BM		- Notizen im Graph hinzufügen
+CF		- Console: Automatische Fehlerkorrektur

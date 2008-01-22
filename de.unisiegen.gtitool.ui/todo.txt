@@ -6,3 +6,5 @@ BM		- Konsole und Tabelle nur auf ein MachinePanel beschränken
 CF		- StatusBar für Meldungen
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
+CF		- Drag-Indikator der Transitionen überarbeiten
+CF		- JTabbedPane anpassen, so dass der Code besser wird

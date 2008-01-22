@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.storage;
 
 
+import java.io.File;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
@@ -19,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
+import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
@@ -166,33 +169,38 @@ public class StorageTest
     try
     {
       Storage.getInstance ().store ( alphabet,
-          "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" ) );
       Alphabet loadedAlphabet = ( Alphabet ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" ),
+          Alphabet.class );
       out ( loadedAlphabet );
 
       Storage.getInstance ().store ( z1,
-          "test/de/unisiegen/gtitool/ui/storage/state.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/state.xml" ) );
       State loadedState = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/state.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/state.xml" ),
+          State.class );
       out ( loadedState );
 
       Storage.getInstance ().store ( a,
-          "test/de/unisiegen/gtitool/ui/storage/symbol.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/symbol.xml" ) );
       Symbol loadedSymbol = ( Symbol ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/symbol.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/symbol.xml" ),
+          Symbol.class );
       out ( loadedSymbol );
 
       Storage.getInstance ().store ( t1,
-          "test/de/unisiegen/gtitool/ui/storage/transition.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/transition.xml" ) );
       Transition loadedTransition = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/transition.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/transition.xml" ),
+          Transition.class );
       out ( loadedTransition );
 
       Storage.getInstance ().store ( word,
-          "test/de/unisiegen/gtitool/ui/storage/word.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/word.xml" ) );
       Word loadedWord = ( Word ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/word.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/word.xml" ),
+          Word.class );
       out ( loadedWord );
     }
     catch ( StoreException exc )
@@ -295,44 +303,52 @@ public class StorageTest
     try
     {
       Storage.getInstance ().store ( z0,
-          "test/de/unisiegen/gtitool/ui/storage/z0.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z0.xml" ) );
       State z0loaded = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/z0.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z0.xml" ),
+          State.class );
 
       Storage.getInstance ().store ( z1,
-          "test/de/unisiegen/gtitool/ui/storage/z1.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z1.xml" ) );
       State z1loaded = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/z1.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z1.xml" ),
+          State.class );
 
       Storage.getInstance ().store ( z2,
-          "test/de/unisiegen/gtitool/ui/storage/z2.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z2.xml" ) );
       State z2loaded = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/z2.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/z2.xml" ),
+          State.class );
 
       Storage.getInstance ().store ( t0,
-          "test/de/unisiegen/gtitool/ui/storage/t0.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t0.xml" ) );
       Transition t0loaded = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/t0.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t0.xml" ),
+          Transition.class );
 
       Storage.getInstance ().store ( t1,
-          "test/de/unisiegen/gtitool/ui/storage/t1.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t1.xml" ) );
       Transition t1loaded = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/t1.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t1.xml" ),
+          Transition.class );
 
       Storage.getInstance ().store ( t2,
-          "test/de/unisiegen/gtitool/ui/storage/t2.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t2.xml" ) );
       Transition t2loaded = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/t2.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t2.xml" ),
+          Transition.class );
 
       Storage.getInstance ().store ( t3,
-          "test/de/unisiegen/gtitool/ui/storage/t3.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t3.xml" ) );
       Transition t3loaded = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/t3.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t3.xml" ),
+          Transition.class );
 
       Storage.getInstance ().store ( t4,
-          "test/de/unisiegen/gtitool/ui/storage/t4.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t4.xml" ) );
       Transition t4loaded = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/t4.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/t4.xml" ),
+          Transition.class );
 
       DFA dfaloaded = new DefaultDFA ( alphabet, pushDownAlphabet );
       dfaloaded.addState ( z0loaded, z1loaded, z2loaded );
@@ -394,12 +410,14 @@ public class StorageTest
     try
     {
       Alphabet alphabet1 = ( Alphabet ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/alphabet.xml" ),
+          Alphabet.class );
       out ( alphabet1 );
       Storage.getInstance ().store ( alphabet1,
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ) );
       Alphabet alphabet2 = ( Alphabet ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ),
+          Alphabet.class );
       out ( alphabet2 );
     }
     catch ( StoreException exc )
@@ -415,12 +433,14 @@ public class StorageTest
     try
     {
       State state1 = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/state.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/state.xml" ),
+          State.class );
       out ( state1 );
       Storage.getInstance ().store ( state1,
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ) );
       State state2 = ( State ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ),
+          State.class );
       out ( state2 );
     }
     catch ( StoreException exc )
@@ -436,12 +456,14 @@ public class StorageTest
     try
     {
       Symbol symbol1 = ( Symbol ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/symbol.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/symbol.xml" ),
+          Symbol.class );
       out ( symbol1 );
       Storage.getInstance ().store ( symbol1,
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ) );
       Symbol symbol2 = ( Symbol ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ),
+          Symbol.class );
       out ( symbol2 );
     }
     catch ( StoreException exc )
@@ -457,12 +479,14 @@ public class StorageTest
     try
     {
       Transition transition1 = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/transition.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/transition.xml" ),
+          Transition.class );
       out ( transition1 );
       Storage.getInstance ().store ( transition1,
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ) );
       Transition transition2 = ( Transition ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ),
+          Transition.class );
       out ( transition2 );
     }
     catch ( StoreException exc )
@@ -478,12 +502,14 @@ public class StorageTest
     try
     {
       Word word1 = ( Word ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/word.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/word.xml" ),
+          Word.class );
       out ( word1 );
       Storage.getInstance ().store ( word1,
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ) );
       Word word2 = ( Word ) Storage.getInstance ().load (
-          "test/de/unisiegen/gtitool/ui/storage/store.xml" );
+          new File ( "test/de/unisiegen/gtitool/ui/storage/store.xml" ),
+          Word.class );
       out ( word2 );
     }
     catch ( StoreException exc )

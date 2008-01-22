@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.storage;
+package de.unisiegen.gtitool.core.storage;
 
 
 import java.io.BufferedWriter;
@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,21 +17,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
-import de.unisiegen.gtitool.core.entities.DefaultState;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.DefaultTransition;
-import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
-import de.unisiegen.gtitool.core.storage.Attribute;
-import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
@@ -123,48 +115,26 @@ public final class Storage
   /**
    * Loads the {@link Storable} from the given file name.
    * 
-   * @param fileName The file name.
+   * @param file The {@link File}.
+   * @param fileClass The {@link File} class.
    * @return The {@link Storable} from the given file name.
    * @throws StoreException If the file could not be loaded.
    */
-  public final Storable load ( String fileName ) throws StoreException
+  public final Storable load ( File file, Class < ? extends Storable > fileClass )
+      throws StoreException
   {
     try
     {
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance ();
       DocumentBuilder builder = factory.newDocumentBuilder ();
-      Document document = builder.parse ( new File ( fileName ) );
+      Document document = builder.parse ( file );
       Element element = getElement ( document.getDocumentElement () );
-      if ( element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-      {
-        return new DefaultAlphabet ( element );
-      }
-      else if ( element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
-      {
-        return new DefaultSymbol ( element );
-      }
-      else if ( element.getName ().equals ( "Word" ) ) //$NON-NLS-1$
-      {
-        return new DefaultWord ( element );
-      }
-      else if ( element.getName ().equals ( "State" ) ) //$NON-NLS-1$
-      {
-        return new DefaultState ( element );
-      }
-      else if ( element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
-      {
-        return new DefaultTransition ( element );
-      }
-      else if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
-      {
-        return new DefaultMachineModel ( element );
-      }
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MainElement" ) ); //$NON-NLS-1$
-    }
-    catch ( StoreException exc )
-    {
-      throw exc;
+      Constructor < ? extends Storable > constructor = fileClass
+          .getConstructor ( new Class []
+          { Element.class } );
+      return constructor.newInstance ( new Object []
+      { element } );
+
     }
     catch ( ParserConfigurationException exc )
     {
@@ -179,24 +149,31 @@ public final class Storage
       exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
-    catch ( AlphabetException exc )
-    {
-      throw new StoreException ( exc.getDescription () );
-    }
-    catch ( SymbolException exc )
-    {
-      throw new StoreException ( exc.getDescription () );
-    }
-    catch ( StateException exc )
-    {
-      throw new StoreException ( exc.getDescription () );
-    }
-    catch ( TransitionException exc )
-    {
-      throw new StoreException ( exc.getDescription () );
-    }
     catch ( Exception exc )
     {
+      if ( exc instanceof StoreException )
+      {
+        throw ( StoreException ) exc;
+      }
+      if ( exc instanceof AlphabetException )
+      {
+        throw new StoreException ( ( ( AlphabetException ) exc )
+            .getDescription () );
+      }
+      if ( exc instanceof SymbolException )
+      {
+        throw new StoreException ( ( ( SymbolException ) exc )
+            .getDescription () );
+      }
+      if ( exc instanceof StateException )
+      {
+        throw new StoreException ( ( ( StateException ) exc ).getDescription () );
+      }
+      if ( exc instanceof TransitionException )
+      {
+        throw new StoreException ( ( ( TransitionException ) exc )
+            .getDescription () );
+      }
       exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
@@ -292,16 +269,16 @@ public final class Storage
    * Stores the given {@link Storable} to the given file name.
    * 
    * @param storable The {@link Storable} to store.
-   * @param fileName The used file name.
+   * @param file The used {@link File}.
    * @throws StoreException If the file could not be loaded.
    */
-  public final void store ( Storable storable, String fileName )
+  public final void store ( Storable storable, File file )
       throws StoreException
   {
     try
     {
       this.writer = new BufferedWriter ( new OutputStreamWriter (
-          new FileOutputStream ( fileName ), CHARSET_NAME ) );
+          new FileOutputStream ( file ), CHARSET_NAME ) );
       println ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); //$NON-NLS-1$
       println ();
       store ( storable.getElement (), 0 );

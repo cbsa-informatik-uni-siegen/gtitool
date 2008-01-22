@@ -51,6 +51,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -69,7 +70,6 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -296,7 +296,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * The File for this MachinePanel
    */
-  private File fileName;
+  private File file;
 
 
   /**
@@ -350,7 +350,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     this.parent = parent;
     this.model = model;
     this.machine = model.getMachine ();
-    this.fileName = file;
+    this.file = file;
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
     this.graph = this.model.getJGraph ();
@@ -795,7 +795,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    */
   public final File getFile ()
   {
-    return this.fileName;
+    return this.file;
   }
 
 
@@ -975,13 +975,13 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    */
   public final String handleSave ()
   {
-    if ( this.fileName == null )
+    if ( this.file == null )
     {
       return handleSaveAs ();
     }
     try
     {
-      Storage.getInstance ().store ( this.model, this.fileName.toString () );
+      Storage.getInstance ().store ( this.model, this.file );
       JOptionPane.showMessageDialog ( this.parent, Messages
           .getString ( "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$
           .getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
@@ -992,7 +992,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
     resetModify ();
-    return this.fileName.getName ();
+    return this.file.getName ();
   }
 
 
@@ -1014,13 +1014,13 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
         @SuppressWarnings ( "synthetic-access" )
         @Override
-        public boolean accept ( File file )
+        public boolean accept ( File acceptedFile )
         {
-          if ( file.isDirectory () )
+          if ( acceptedFile.isDirectory () )
           {
             return true;
           }
-          if ( file.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
+          if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
               + MachinePanel.this.machine.getMachineType ().toLowerCase () ) )
           {
             return true;
@@ -1052,14 +1052,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           + "." //$NON-NLS-1$
           + this.machine.getMachineType ().toLowerCase ();
 
-      Storage.getInstance ().store ( this.model, filename );
+      Storage.getInstance ().store ( this.model, new File ( filename ) );
       JOptionPane
           .showMessageDialog (
               this.parent,
               Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
-      this.fileName = new File ( filename );
+      this.file = new File ( filename );
 
     }
     catch ( StoreException e )
@@ -1068,7 +1068,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
     resetModify ();
-    return this.fileName.getName ();
+    return this.file.getName ();
   }
 
 
@@ -2133,7 +2133,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    */
   public final void setFileName ( File file )
   {
-    this.fileName = file;
+    this.file = file;
   }
 
 

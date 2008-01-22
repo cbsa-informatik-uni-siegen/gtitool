@@ -1236,26 +1236,13 @@ public final class MainWindow implements LanguageChangedListener
 
     // Undo
     this.gui.jMenuItemUndo.setVisible ( false );
-    setUndoState ( pState );
 
     // Redo
     this.gui.jMenuItemRedo.setVisible ( false );
-    setRedoState ( pState );
 
     // Separator
     this.gui.jSeparatorEdit1.setVisible ( false );
     this.gui.jSeparatorEdit2.setVisible ( false );
-  }
-
-
-  /**
-   * Sets the state of the redo button and item.
-   * 
-   * @param pState The new state for redo.
-   */
-  private final void setRedoState ( boolean pState )
-  {
-    this.gui.jMenuItemRedo.setEnabled ( pState );
   }
 
 
@@ -1304,34 +1291,6 @@ public final class MainWindow implements LanguageChangedListener
     // this.gui.jButtonNextStep.setEnabled ( state );
     // this.gui.jButtonAutoStep.setEnabled ( state );
     // this.gui.jButtonStop.setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the state of the undo button and item.
-   * 
-   * @param state The new state for undo.
-   */
-  private final void setUndoState ( boolean state )
-  {
-    // TODOBenny Is this correct? Undo State??
-    this.gui.jMenuItemUndo.setEnabled ( state );
-
-    File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
-        .getActiveFile ();
-    if ( activeFile != null )
-    {
-      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
-      {
-        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-            .getComponentAt ( i ) ).getLogic ();
-        if ( panel.getFile ().equals ( activeFile ) )
-        {
-          this.gui.jTabbedPaneMain.setSelectedIndex ( i );
-          break;
-        }
-      }
-    }
   }
 
 

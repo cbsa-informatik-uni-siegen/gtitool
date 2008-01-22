@@ -1068,8 +1068,8 @@ public final class PreferenceManager
       files.add ( new File ( file ) );
     }
     String activeFileName = this.preferences.get (
-        "MainWindow.OpenedActiveFile", null ); //$NON-NLS-1$
-    File activeFile = activeFileName == null ? null
+        "MainWindow.OpenedActiveFile", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    File activeFile = activeFileName.equals ( "" ) ? null //$NON-NLS-1$
         : new File ( activeFileName );
     return new OpenedFilesItem ( files, activeFile );
   }
@@ -1719,10 +1719,19 @@ public final class PreferenceManager
     }
     this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
         openedFilesItem.getFiles ().size () );
-    logger.debug ( "set last opened file to \"" //$NON-NLS-1$
-        + openedFilesItem.getActiveFile ().getAbsolutePath () + "\"" ); //$NON-NLS-1$
-    this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
-        openedFilesItem.getActiveFile ().getAbsolutePath () );
+
+    if ( openedFilesItem.getActiveFile () == null )
+    {
+      logger.debug ( "set last opened file to \"null\"" ); //$NON-NLS-1$
+      this.preferences.put ( "MainWindow.OpenedActiveFile", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    else
+    {
+      logger.debug ( "set last opened file to \"" //$NON-NLS-1$
+          + openedFilesItem.getActiveFile ().getAbsolutePath () + "\"" ); //$NON-NLS-1$
+      this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
+          openedFilesItem.getActiveFile ().getAbsolutePath () );
+    }
   }
 
 

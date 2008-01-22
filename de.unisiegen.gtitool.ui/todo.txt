@@ -5,8 +5,4 @@ CF		- Zustand in der Tabelle highlighten mit Timer
 BM		- Konsole und Tabelle nur auf ein MachinePanel beschränken
 CF		- StatusBar für Meldungen
 CF		- History über die Zustände führen (erst im core implementieren)
-BM		- Tab einer neuen Datei selektieren
-BM		- Wenn eine Datei nicht geladen werden kann, den letzten Tab
-		  selektieren, falls ein Tab exisiert (Es wird jetzt der letzte
-		  aktive Dateinamen gespeichert)
 BM		- Routing der Transitionen

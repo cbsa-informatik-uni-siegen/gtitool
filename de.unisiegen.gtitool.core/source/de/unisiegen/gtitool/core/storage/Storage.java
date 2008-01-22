@@ -174,7 +174,6 @@ public final class Storage
         throw new StoreException ( ( ( TransitionException ) exc )
             .getDescription () );
       }
-      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
   }

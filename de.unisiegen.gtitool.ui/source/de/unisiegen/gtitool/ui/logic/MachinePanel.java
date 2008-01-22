@@ -982,9 +982,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     try
     {
       Storage.getInstance ().store ( this.model, this.file );
-      JOptionPane.showMessageDialog ( this.parent, Messages
-          .getString ( "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$
-          .getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+      /*
+       * JOptionPane.showMessageDialog ( this.parent, Messages .getString (
+       * "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$ .getString (
+       * "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+       */
     }
     catch ( StoreException e )
     {
@@ -1053,10 +1055,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           + this.machine.getMachineType ().toLowerCase ();
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
-      JOptionPane
-          .showMessageDialog (
-              this.parent,
-              Messages.getString ( "MachinePanel.DataSaved" ), Messages.getString ( "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      /*
+       * JOptionPane.showMessageDialog ( this.parent, Messages .getString (
+       * "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$ .getString (
+       * "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
+       */
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
       this.file = new File ( filename );

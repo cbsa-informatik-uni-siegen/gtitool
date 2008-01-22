@@ -16,33 +16,33 @@ public final class OpenedFilesItem extends RecentlyUsedFilesItem
 {
 
   /**
-   * The index of the last active file.
+   * The last active {@link File}.
    */
-  private int activeIndex;
+  private File activeFile;
 
 
   /**
    * Allocates a new <code>RecentlyUsedItem</code>.
    * 
    * @param files The opened files.
-   * @param activeIndex The index of the last active file.
+   * @param activeFile The last active {@link File}.
    */
-  public OpenedFilesItem ( ArrayList < File > files, int activeIndex )
+  public OpenedFilesItem ( ArrayList < File > files, File activeFile )
   {
     super ( files );
-    // ActiveIndex
-    this.activeIndex = activeIndex;
+    // ActiveFile
+    this.activeFile = activeFile;
   }
 
 
   /**
-   * Returns the activeIndex.
+   * Returns the last active {@link File}.
    * 
-   * @return The activeIndex.
-   * @see #activeIndex
+   * @return The last active {@link File}.
+   * @see #activeFile
    */
-  public final int getActiveIndex ()
+  public final File getActiveFile ()
   {
-    return this.activeIndex;
+    return this.activeFile;
   }
 }

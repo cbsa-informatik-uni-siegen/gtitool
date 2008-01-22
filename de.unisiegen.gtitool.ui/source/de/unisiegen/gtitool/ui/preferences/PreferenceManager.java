@@ -1067,9 +1067,11 @@ public final class PreferenceManager
       }
       files.add ( new File ( file ) );
     }
-    int activeIndex = this.preferences.getInt (
-        "MainWindow.OpenedActiveIndex", -1 ); //$NON-NLS-1$
-    return new OpenedFilesItem ( files, activeIndex );
+    String activeFileName = this.preferences.get (
+        "MainWindow.OpenedActiveFile", null ); //$NON-NLS-1$
+    File activeFile = activeFileName == null ? null
+        : new File ( activeFileName );
+    return new OpenedFilesItem ( files, activeFile );
   }
 
 
@@ -1717,10 +1719,10 @@ public final class PreferenceManager
     }
     this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
         openedFilesItem.getFiles ().size () );
-    logger.debug ( "set opened file index to \"" //$NON-NLS-1$
-        + openedFilesItem.getActiveIndex () + "\"" ); //$NON-NLS-1$
-    this.preferences.putInt ( "MainWindow.OpenedActiveIndex", //$NON-NLS-1$
-        openedFilesItem.getActiveIndex () );
+    logger.debug ( "set last opened file to \"" //$NON-NLS-1$
+        + openedFilesItem.getActiveFile ().getAbsolutePath () + "\"" ); //$NON-NLS-1$
+    this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
+        openedFilesItem.getActiveFile ().getAbsolutePath () );
   }
 
 

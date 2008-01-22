@@ -153,11 +153,20 @@ public final class MainWindow implements LanguageChangedListener
       }
     };
 
-    int index = PreferenceManager.getInstance ().getOpenedFilesItem ()
-        .getActiveIndex ();
-    if ( this.gui.jTabbedPaneMain.getTabCount () > index )
+    File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getActiveFile ();
+    if ( activeFile != null )
     {
-      this.gui.jTabbedPaneMain.setSelectedIndex ( index );
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+      {
+        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i ) ).getLogic ();
+        if ( panel.getFile ().equals ( activeFile ) )
+        {
+          this.gui.jTabbedPaneMain.setSelectedIndex ( i );
+          break;
+        }
+      }
     }
   }
 
@@ -631,8 +640,8 @@ public final class MainWindow implements LanguageChangedListener
       if ( editorPanel.getFile () != null )
         files.add ( editorPanel.getFile () );
     }
-    OpenedFilesItem item = new OpenedFilesItem ( files,
-        this.gui.jTabbedPaneMain.getSelectedIndex () );
+    OpenedFilesItem item = new OpenedFilesItem ( files, getActiveEditor ()
+        .getFile () );
     preferenceManager.setOpenedFilesItem ( item );
     System.exit ( 0 );
   }
@@ -1301,17 +1310,28 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Sets the state of the undo button and item.
    * 
-   * @param pState The new state for undo.
+   * @param state The new state for undo.
    */
-  private final void setUndoState ( boolean pState )
+  private final void setUndoState ( boolean state )
   {
-    this.gui.jMenuItemUndo.setEnabled ( pState );
-    int index = PreferenceManager.getInstance ().getOpenedFilesItem ()
-        .getActiveIndex ();
+    // TODOBenny Is this correct? Undo State??
+    this.gui.jMenuItemUndo.setEnabled ( state );
 
-    if ( this.gui.jTabbedPaneMain.getTabCount () > index )
-      this.gui.jTabbedPaneMain.setSelectedIndex ( index );
-
+    File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getActiveFile ();
+    if ( activeFile != null )
+    {
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+      {
+        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i ) ).getLogic ();
+        if ( panel.getFile ().equals ( activeFile ) )
+        {
+          this.gui.jTabbedPaneMain.setSelectedIndex ( i );
+          break;
+        }
+      }
+    }
   }
 
 

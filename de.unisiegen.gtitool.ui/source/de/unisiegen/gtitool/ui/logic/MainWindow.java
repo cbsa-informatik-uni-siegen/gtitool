@@ -88,9 +88,9 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
           "/de/unisiegen/gtitool/ui/icon/gtitool.png" ) ) ); //$NON-NLS-1$
     }
-    catch ( Exception e )
+    catch ( Exception exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
     }
     this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.setBounds ( PreferenceManager.getInstance ()
@@ -98,7 +98,7 @@ public final class MainWindow implements LanguageChangedListener
     // Setting the default states
     setGeneralStates ( false );
     // Save
-    setSaveState ();
+    setSaveState ( false );
     // Copy
     // Validate
     this.gui.jMenuItemValidate.setEnabled ( false );
@@ -147,9 +147,9 @@ public final class MainWindow implements LanguageChangedListener
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ()
+      public void modifyStatusChanged ( boolean modified )
       {
-        setSaveState ();
+        setSaveState ( modified );
       }
     };
 
@@ -176,7 +176,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @return the active EditorPanel
    */
-  public EditorPanel getActiveEditor ()
+  public final EditorPanel getActiveEditor ()
   {
     if ( this.gui.jTabbedPaneMain.getSelectedComponent () == null )
     {
@@ -238,11 +238,20 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Handle Auto Step Stopped by Exception
+   */
+  public final void handleAutoStepStopped ()
+  {
+    this.gui.jButtonAutoStep.setSelected ( false );
+  }
+
+
+  /**
    * Closes the active editor window.
    * 
    * @return true if the active editor could be closed.
    */
-  public boolean handleClose ()
+  public final boolean handleClose ()
   {
     // EditorPanel selectedEditor = getActiveEditor ();
     boolean success;
@@ -296,7 +305,7 @@ public final class MainWindow implements LanguageChangedListener
     if ( getActiveEditor () == null )
     {
       setGeneralStates ( false );
-      setSaveState ();
+      setSaveState ( false );
 
       // toolbar items
       this.gui.jButtonAddState.setEnabled ( false );
@@ -334,7 +343,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle Edit Alphabet Action in the Toolbar
    */
-  public void handleEditAlphabet ()
+  public final void handleEditAlphabet ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleToolbarAlphabet ();
@@ -344,7 +353,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle Edit Machine button pressed
    */
-  public void handleEditMachine ()
+  public final void handleEditMachine ()
   {
     setToolBarEditItemState ( true );
     setToolBarEnterWordItemState ( false );
@@ -391,8 +400,11 @@ public final class MainWindow implements LanguageChangedListener
     }
     if ( errorCount > 0 )
     {
-      JOptionPane.showMessageDialog ( this.gui, errorCount
-          + " Error(s) in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
+          .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages //$NON-NLS-1$
+          .getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+              .valueOf ( errorCount ) ), Messages
+          .getString ( "MainWindow.ErrorMachine" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
       return;
     }
     setToolBarEditItemState ( false );
@@ -640,8 +652,8 @@ public final class MainWindow implements LanguageChangedListener
       if ( editorPanel.getFile () != null )
         files.add ( editorPanel.getFile () );
     }
-    OpenedFilesItem item = new OpenedFilesItem ( files, getActiveEditor ()
-        .getFile () );
+    OpenedFilesItem item = new OpenedFilesItem ( files,
+        getActiveEditor () == null ? null : getActiveEditor ().getFile () );
     preferenceManager.setOpenedFilesItem ( item );
     System.exit ( 0 );
   }
@@ -650,7 +662,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle the save file event
    */
-  public void handleSave ()
+  public final void handleSave ()
   {
     EditorPanel panel = ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -666,7 +678,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle the save file as event
    */
-  public void handleSaveAs ()
+  public final void handleSaveAs ()
   {
     EditorPanel panel = ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -681,7 +693,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle TabbedPane state changed event
    */
-  public void handleTabbedPaneStateChanged ()
+  public final void handleTabbedPaneStateChanged ()
   {
     MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
     if ( machinePanel != null )
@@ -735,7 +747,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new State of the Add State Toolbar button
    */
-  public void handleToolbarAddState ( boolean state )
+  public final void handleToolbarAddState ( boolean state )
   {
     MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -748,12 +760,11 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new State of the End Toolbar button
    */
-  public void handleToolbarEnd ( boolean state )
+  public final void handleToolbarEnd ( boolean state )
   {
     MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
     panel.handleToolbarEnd ( state );
-
   }
 
 
@@ -762,7 +773,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new State of the Mouse Toolbar button
    */
-  public void handleToolbarMouse ( boolean state )
+  public final void handleToolbarMouse ( boolean state )
   {
     if ( this.gui != null )
     {
@@ -778,7 +789,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new State of the Start Toolbar button
    */
-  public void handleToolbarStart ( boolean state )
+  public final void handleToolbarStart ( boolean state )
   {
     MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -791,7 +802,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new State of the Transition Toolbar button
    */
-  public void handleToolbarTransition ( boolean state )
+  public final void handleToolbarTransition ( boolean state )
   {
     MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -829,8 +840,11 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
-    JOptionPane.showMessageDialog ( this.gui, errorCount
-        + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+    JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
+        .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages.getString ( //$NON-NLS-1$
+        "MainWindow.ErrorMachineCount", String.valueOf ( errorCount ) ), //$NON-NLS-1$
+        Messages.getString ( "MainWindow.ErrorMachine" ), //$NON-NLS-1$
+        JOptionPane.ERROR_MESSAGE );
   }
 
 
@@ -839,40 +853,37 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param evt
    */
-  public void handleWordAutoStep ( ItemEvent evt )
+  public final void handleWordAutoStep ( ItemEvent evt )
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordAutoStep ( evt );
-
   }
 
 
   /**
    * Handle Next Step Action in the Word Enter Mode
    */
-  public void handleWordNextStep ()
+  public final void handleWordNextStep ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordNextStep ();
-
   }
 
 
   /**
    * Handle Previous Step Action in the Word Enter Mode
    */
-  public void handleWordPreviousStep ()
+  public final void handleWordPreviousStep ()
   {
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordPreviousStep ();
-
   }
 
 
   /**
    * Handle Start Action in the Word Enter Mode
    */
-  public void handleWordStart ()
+  public final void handleWordStart ()
   {
     MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jTabbedPaneMain
         .getSelectedComponent () ).getLogic ();
@@ -901,8 +912,11 @@ public final class MainWindow implements LanguageChangedListener
     }
     if ( errorCount > 0 )
     {
-      JOptionPane.showMessageDialog ( this.gui, errorCount
-          + " Errors in the Machine", "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$//$NON-NLS-2$
+      JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
+          .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages //$NON-NLS-1$
+          .getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+              .valueOf ( errorCount ) ), Messages
+          .getString ( "MainWindow.ErrorMachine" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
       return;
     }
 
@@ -915,16 +929,14 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonPrevious.setEnabled ( true );
       this.gui.jButtonAutoStep.setEnabled ( true );
       this.gui.jButtonStop.setEnabled ( true );
-
     }
-
   }
 
 
   /**
    * Handle Stop Action in the Word Enter Mode
    */
-  public void handleWordStop ()
+  public final void handleWordStop ()
   {
     this.gui.jButtonStart.setEnabled ( true );
     this.gui.jButtonNextStep.setEnabled ( false );
@@ -933,7 +945,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonStop.setEnabled ( false );
     MachinePanel current = ( MachinePanel ) getActiveEditor ();
     current.handleWordStop ();
-
   }
 
 
@@ -1092,7 +1103,7 @@ public final class MainWindow implements LanguageChangedListener
    * @param addToRecentlyUsed Flag signals if file should be added to recently
    *          used files
    */
-  public void openFile ( File file, boolean addToRecentlyUsed )
+  public final void openFile ( File file, boolean addToRecentlyUsed )
   {
 
     // check if we already have an editor panel for the file
@@ -1171,7 +1182,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Organize the recently used files in the menu
    */
-  private void organizeRecentlyUsedFilesMenu ()
+  private final void organizeRecentlyUsedFilesMenu ()
   {
     ArrayList < File > fileList = PreferenceManager.getInstance ()
         .getRecentlyUsedFilesItem ().getFiles ();
@@ -1188,14 +1199,13 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Open all files which was open at last session
    */
-  public void restoreOpenFiles ()
+  public final void restoreOpenFiles ()
   {
     for ( File file : PreferenceManager.getInstance ().getOpenedFilesItem ()
         .getFiles () )
     {
       openFile ( file, false );
     }
-
   }
 
 
@@ -1257,6 +1267,20 @@ public final class MainWindow implements LanguageChangedListener
     {
       state = machinePanel.isModified ();
     }
+
+    logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.jButtonSave.setEnabled ( state );
+    this.gui.jMenuItemSave.setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the save button and item.
+   * 
+   * @param state The new state of the save button.
+   */
+  private final void setSaveState ( boolean state )
+  {
     logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.jButtonSave.setEnabled ( state );
     this.gui.jMenuItemSave.setEnabled ( state );
@@ -1268,7 +1292,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state the new state
    */
-  private void setToolBarEditItemState ( boolean state )
+  private final void setToolBarEditItemState ( boolean state )
   {
     this.gui.jButtonAddState.setEnabled ( state );
     this.gui.jButtonAddTransition.setEnabled ( state );
@@ -1284,7 +1308,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state the new state
    */
-  private void setToolBarEnterWordItemState ( boolean state )
+  private final void setToolBarEnterWordItemState ( boolean state )
   {
     // this.gui.jButtonPrevious.setEnabled ( state );
     this.gui.jButtonStart.setEnabled ( state );
@@ -1292,14 +1316,4 @@ public final class MainWindow implements LanguageChangedListener
     // this.gui.jButtonAutoStep.setEnabled ( state );
     // this.gui.jButtonStop.setEnabled ( state );
   }
-
-
-  /**
-   * Handle Auto Step Stopped by Exception
-   */
-  public void handleAutoStepStopped ()
-  {
-    this.gui.jButtonAutoStep.setSelected ( false );
-  }
-
 }

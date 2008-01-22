@@ -72,26 +72,26 @@ public final class Start
      */
     SwingUtilities.invokeLater ( new Runnable ()
     {
-      
+
       // allocate the main window
       public void run ()
       {
         MainWindow window = new MainWindow ();
-        
+
         // check if any files are specified
         if ( arguments.length > 0 )
         {
           // open any specified files
           for ( String fileName : arguments )
           {
-            File file = new File ( fileName ) ;
-            window.openFile ( file, true ) ;
+            File file = new File ( fileName );
+            window.openFile ( file, true );
           }
         }
         else
         {
           // restore the files from the previous session
-          window.restoreOpenFiles ( ) ;
+          window.restoreOpenFiles ();
         }
       }
     } );

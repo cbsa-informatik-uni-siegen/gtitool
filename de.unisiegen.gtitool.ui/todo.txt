@@ -8,3 +8,5 @@ CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
 CF		- Drag-Indikator der Transitionen überarbeiten
 CF		- JTabbedPane anpassen, so dass der Code besser wird
+BM		- Wenn man in einem Tab einen Zustand anlegt und dann in einen
+		  anderen Tab wechselt, ist man im normalen Maus-Modus

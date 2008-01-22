@@ -117,6 +117,12 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * The old modify status.
+   */
+  private boolean oldModifyStatus = false;
+
+
+  /**
    * Allocates a new <code>DefaultTransition</code>.
    */
   public DefaultTransition ()
@@ -562,9 +568,14 @@ public final class DefaultTransition implements Transition
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    boolean newModifyStatus = isModified ();
+    if ( newModifyStatus != this.oldModifyStatus )
     {
-      listeners [ n ].modifyStatusChanged ();
+      this.oldModifyStatus = newModifyStatus;
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      }
     }
   }
 
@@ -894,6 +905,7 @@ public final class DefaultTransition implements Transition
   {
     this.initialSymbolSet.clear ();
     this.initialSymbolSet.addAll ( this.symbolSet );
+    this.oldModifyStatus = false;
   }
 
 

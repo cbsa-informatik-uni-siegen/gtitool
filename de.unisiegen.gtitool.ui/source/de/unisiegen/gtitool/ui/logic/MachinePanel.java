@@ -605,9 +605,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ()
+      public void modifyStatusChanged ( boolean modified )
       {
-        fireModifyStatusChanged ();
+        fireModifyStatusChanged ( modified );
       }
     };
     this.model
@@ -765,14 +765,26 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
   /**
    * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ()
+  private final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    if ( forceModify )
     {
-      listeners [ n ].modifyStatusChanged ();
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( isModified () );
+      }
     }
   }
 
@@ -994,6 +1006,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
     resetModify ();
+    fireModifyStatusChanged ( false );
     return this.file.getName ();
   }
 
@@ -1071,6 +1084,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
     }
     resetModify ();
+    fireModifyStatusChanged ( false );
     return this.file.getName ();
   }
 
@@ -1094,14 +1108,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    */
   public final void handleToolbarAlphabet ()
   {
-    // TODOChristian
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
         this.machine );
     alphabetDialog.show ();
-    if ( alphabetDialog.DIALOG_RESULT == AlphabetDialog.DIALOG_CONFIRMED )
-    {
-      System.out.println ( this.machine.getAlphabet () );
-    }
   }
 
 
@@ -1354,9 +1363,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
-      // TODO i18n
-      JOptionPane.showMessageDialog ( this.parent, "Kein Wort eingegeben", //$NON-NLS-1$
-          "Error", JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      JOptionPane.showMessageDialog ( this.parent, Messages
+          .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
+          .getString ( "MachinePanel.WordModeError" ), //$NON-NLS-1$
+          JOptionPane.ERROR_MESSAGE );
       return false;
     }
     // Reset all highlightings
@@ -2114,7 +2124,6 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   public final void resetModify ()
   {
     this.model.resetModify ();
-    fireModifyStatusChanged ();
   }
 
 

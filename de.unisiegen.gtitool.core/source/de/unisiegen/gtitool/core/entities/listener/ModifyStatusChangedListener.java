@@ -16,7 +16,9 @@ public interface ModifyStatusChangedListener extends EventListener
 
   /**
    * Invoked when the modify status changed.
+   * 
+   * @param modified True if the status is modified, otherwise false.
    */
-  public void modifyStatusChanged ();
+  public void modifyStatusChanged ( boolean modified );
 
 }

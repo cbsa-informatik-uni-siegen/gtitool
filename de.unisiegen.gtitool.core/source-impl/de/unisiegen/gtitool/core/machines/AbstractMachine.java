@@ -187,6 +187,12 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The old modify status.
+   */
+  private boolean oldModifyStatus = false;
+
+
+  /**
    * Allocates a new <code>AbstractMachine</code>.
    * 
    * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
@@ -240,7 +246,6 @@ public abstract class AbstractMachine implements Machine
       Alphabet newAlphabet )
       {
         fireTableStructureChanged ();
-        fireModifyStatusChanged ();
       }
     };
     this.alphabet.addAlphabetChangedListener ( this.alphabetChangedListener );
@@ -274,9 +279,9 @@ public abstract class AbstractMachine implements Machine
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ()
+      public void modifyStatusChanged ( boolean modified )
       {
-        fireModifyStatusChanged ();
+        fireModifyStatusChanged ( modified );
       }
     };
 
@@ -390,7 +395,7 @@ public abstract class AbstractMachine implements Machine
     fireTableDataChanged ();
     state.addStateChangedListener ( this.stateChangedListener );
     state.addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    fireModifyStatusChanged ();
+    fireModifyStatusChanged ( true );
   }
 
 
@@ -491,7 +496,7 @@ public abstract class AbstractMachine implements Machine
     transition.addTransitionChangedListener ( this.transitionChangedListener );
     transition
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    fireModifyStatusChanged ();
+    fireModifyStatusChanged ( true );
   }
 
 
@@ -752,14 +757,32 @@ public abstract class AbstractMachine implements Machine
 
   /**
    * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ()
+  private final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    if ( forceModify )
     {
-      listeners [ n ].modifyStatusChanged ();
+      this.oldModifyStatus = true;
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      if ( newModifyStatus != this.oldModifyStatus )
+      {
+        this.oldModifyStatus = newModifyStatus;
+        for ( int n = 0 ; n < listeners.length ; ++n )
+        {
+          listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        }
+      }
     }
   }
 
@@ -1462,7 +1485,7 @@ public abstract class AbstractMachine implements Machine
     fireTableDataChanged ();
     state.removeStateChangedListener ( this.stateChangedListener );
     state.removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    fireModifyStatusChanged ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1555,7 +1578,7 @@ public abstract class AbstractMachine implements Machine
         .removeTransitionChangedListener ( this.transitionChangedListener );
     transition
         .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    fireModifyStatusChanged ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1603,6 +1626,7 @@ public abstract class AbstractMachine implements Machine
     {
       current.resetModify ();
     }
+    this.oldModifyStatus = false;
   }
 
 

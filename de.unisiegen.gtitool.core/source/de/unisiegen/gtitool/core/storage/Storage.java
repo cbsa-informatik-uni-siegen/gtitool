@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -151,27 +152,38 @@ public final class Storage
     }
     catch ( Exception exc )
     {
-      if ( exc instanceof StoreException )
+      Throwable exception;
+      if ( exc instanceof InvocationTargetException )
       {
-        throw ( StoreException ) exc;
+        exception = exc.getCause ();
       }
-      if ( exc instanceof AlphabetException )
+      else
       {
-        throw new StoreException ( ( ( AlphabetException ) exc )
+        exception = exc;
+      }
+
+      if ( exception instanceof StoreException )
+      {
+        throw ( StoreException ) exception;
+      }
+      if ( exception instanceof AlphabetException )
+      {
+        throw new StoreException ( ( ( AlphabetException ) exception )
             .getDescription () );
       }
-      if ( exc instanceof SymbolException )
+      if ( exception instanceof SymbolException )
       {
-        throw new StoreException ( ( ( SymbolException ) exc )
+        throw new StoreException ( ( ( SymbolException ) exception )
             .getDescription () );
       }
-      if ( exc instanceof StateException )
+      if ( exception instanceof StateException )
       {
-        throw new StoreException ( ( ( StateException ) exc ).getDescription () );
+        throw new StoreException ( ( ( StateException ) exception )
+            .getDescription () );
       }
-      if ( exc instanceof TransitionException )
+      if ( exception instanceof TransitionException )
       {
-        throw new StoreException ( ( ( TransitionException ) exc )
+        throw new StoreException ( ( ( TransitionException ) exception )
             .getDescription () );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$

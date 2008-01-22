@@ -97,6 +97,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
+   * The old modify status.
+   */
+  private boolean oldModifyStatus = false;
+
+
+  /**
    * Allocates a new <code>DefaultMachineModel</code>.
    * 
    * @param element The {@link Element}.
@@ -380,14 +386,32 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
   /**
    * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ()
+  private final void fireModifyStatusChanged ( boolean forceModify )
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    if ( forceModify )
     {
-      listeners [ n ].modifyStatusChanged ();
+      this.oldModifyStatus = true;
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      if ( newModifyStatus != this.oldModifyStatus )
+      {
+        this.oldModifyStatus = newModifyStatus;
+        for ( int n = 0 ; n < listeners.length ; ++n )
+        {
+          listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        }
+      }
     }
   }
 
@@ -582,9 +606,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ()
+      public void modifyStatusChanged ( boolean modified )
       {
-        fireModifyStatusChanged ();
+        fireModifyStatusChanged ( modified );
       }
     };
     this.machine
@@ -693,5 +717,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
       current.resetModify ();
     }
     this.machine.resetModify ();
+    this.oldModifyStatus = false;
   }
 }

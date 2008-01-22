@@ -27,31 +27,13 @@ public final class AlphabetDialog
 {
 
   /**
-   * Result value if dialog was canceled.
-   */
-  public static int DIALOG_CANCELED = -1;
-
-
-  /**
-   * Result value if dialog was confirmed.
-   */
-  public static int DIALOG_CONFIRMED = 1;
-
-
-  /**
-   * Result value of this dialog.
-   */
-  public int DIALOG_RESULT = DIALOG_CANCELED;
-
-
-  /**
    * The {@link AlphabetDialogForm}.
    */
   private AlphabetDialogForm gui;
 
 
   /**
-   * The parent frame.
+   * The parent {@link JFrame}.
    */
   private JFrame parent;
 
@@ -65,14 +47,14 @@ public final class AlphabetDialog
   /**
    * Create a new {@link AlphabetDialog}
    * 
-   * @param pParent The parent frame.
-   * @param pMachine The {@link Machine} of this dialog.
+   * @param parent The parent frame.
+   * @param machine The {@link Machine} of this dialog.
    */
-  public AlphabetDialog ( JFrame pParent, Machine pMachine )
+  public AlphabetDialog ( JFrame parent, Machine machine )
   {
-    this.parent = pParent;
-    this.machine = pMachine;
-    this.gui = new AlphabetDialogForm ( this, pParent );
+    this.parent = parent;
+    this.machine = machine;
+    this.gui = new AlphabetDialogForm ( this, parent );
     this.gui.styledAlphabetParserPanel.setAlphabet ( this.machine
         .getAlphabet () );
     this.gui.styledAlphabetParserPanel
@@ -80,15 +62,15 @@ public final class AlphabetDialog
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet pNewAlphabet )
+          public void alphabetChanged ( Alphabet newAlphabet )
           {
-            if ( pNewAlphabet == null )
+            if ( newAlphabet == null )
             {
               AlphabetDialog.this.gui.jButtonOk.setEnabled ( false );
             }
             else
             {
-              TreeSet < Symbol > notRemoveableSymbols = getNotRemoveableSymbols ( pNewAlphabet );
+              TreeSet < Symbol > notRemoveableSymbols = getNotRemoveableSymbols ( newAlphabet );
               if ( notRemoveableSymbols.size () == 0 )
               {
                 AlphabetDialog.this.gui.jButtonOk.setEnabled ( true );
@@ -114,13 +96,13 @@ public final class AlphabetDialog
   /**
    * Returns the set of not removeable {@link Symbol}s.
    * 
-   * @param pNewAlphabet The new {@link Alphabet}.
+   * @param newAlphabet The new {@link Alphabet}.
    * @return The set of not removeable {@link Symbol}s.
    */
   private final TreeSet < Symbol > getNotRemoveableSymbols (
-      Alphabet pNewAlphabet )
+      Alphabet newAlphabet )
   {
-    if ( pNewAlphabet == null )
+    if ( newAlphabet == null )
     {
       throw new IllegalArgumentException ( "new alphabet is null" ); //$NON-NLS-1$
     }
@@ -128,7 +110,7 @@ public final class AlphabetDialog
     TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
     for ( Symbol current : this.machine.getAlphabet () )
     {
-      if ( !pNewAlphabet.contains ( current ) )
+      if ( !newAlphabet.contains ( current ) )
       {
         symbolsToRemove.add ( current );
       }
@@ -149,7 +131,6 @@ public final class AlphabetDialog
    */
   public final void handleCancel ()
   {
-    this.DIALOG_RESULT = DIALOG_CANCELED;
     this.gui.dispose ();
   }
 
@@ -187,7 +168,6 @@ public final class AlphabetDialog
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    this.DIALOG_RESULT = DIALOG_CONFIRMED;
     this.gui.dispose ();
   }
 

@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import org.jgraph.JGraph;
-import org.jgraph.event.GraphModelEvent;
-import org.jgraph.event.GraphModelListener;
-import org.jgraph.event.GraphModelEvent.GraphModelChange;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -70,7 +67,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * The {@link DefaultGraphModel} for this graph
+   * The {@link DefaultGraphModel} for this model.
    */
   private DefaultGraphModel graphModel;
 
@@ -91,12 +88,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
-
-
-  /**
-   * The last modify status.
-   */
-  private boolean lastModifyStatus = false;
 
 
   /**
@@ -195,9 +186,10 @@ public final class DefaultMachineModel implements Storable, Modifyable
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
-    // initialize this models elements
+    // initialize this model elements
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet );
+    initializeModifyStatusChangedListener ();
     initializeGraph ();
 
     // Load the states
@@ -239,7 +231,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
-      initializeGraphModelListener ();
     }
 
     // Load the transitions
@@ -260,7 +251,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
-    initializeModifyStatusChangedListener ();
 
     // Reset modify
     resetModify ();
@@ -275,9 +265,8 @@ public final class DefaultMachineModel implements Storable, Modifyable
   public DefaultMachineModel ( Machine machine )
   {
     this.machine = machine;
-    initializeGraph ();
-    initializeGraphModelListener ();
     initializeModifyStatusChangedListener ();
+    initializeGraph ();
 
     // Reset modify
     resetModify ();
@@ -310,7 +299,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
   {
     this.machine.addState ( state );
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
-    DefaultStateView stateView = new DefaultStateView ( state, state.getName () );
+    DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
     // check position of the new state
     double xPosition = x < 35 ? 35 : x;
@@ -325,13 +314,17 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
     // Set fill color
     if ( state.isStartState () )
+    {
       GraphConstants.setGradientColor ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemStartState ()
               .getColor () );
+    }
     else
+    {
       GraphConstants.setGradientColor ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
-    GraphConstants.setOpaque ( stateView.getAttributes (), true );
+      GraphConstants.setOpaque ( stateView.getAttributes (), true );
+    }
 
     // Set black border
     GraphConstants.setBorderColor ( stateView.getAttributes (), Color.black );
@@ -344,6 +337,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
     this.jGraph.getGraphLayoutCache ().insert ( stateView );
     this.stateViewList.add ( stateView );
+
+    // Reset modify
+    stateView.resetModify ();
+
+    stateView
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
     return stateView;
   }
@@ -361,7 +360,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
   {
     this.machine.addTransition ( transition );
     DefaultTransitionView newEdge = new DefaultTransitionView ( transition,
-        source, target, transition.toString () );
+        source, target );
 
     GraphConstants.setLineEnd ( newEdge.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
@@ -386,14 +385,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    boolean oldLastModifyStatus = this.lastModifyStatus;
-    boolean newModifyStatus = isModified ();
-    if ( oldLastModifyStatus != newModifyStatus )
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      for ( int n = 0 ; n < listeners.length ; ++n )
-      {
-        listeners [ n ].modifyStatusChanged ();
-      }
+      listeners [ n ].modifyStatusChanged ();
     }
   }
 
@@ -580,36 +574,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * Initialize the {@link GraphModelListener}.
-   */
-  private final void initializeGraphModelListener ()
-  {
-    this.graphModel.addGraphModelListener ( new GraphModelListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void graphChanged ( GraphModelEvent e )
-      {
-        GraphModelChange graphModelChange = e.getChange ();
-        Object [] changed = graphModelChange.getChanged ();
-        for ( Object current : changed )
-        {
-          if ( current instanceof DefaultStateView )
-          {
-            DefaultStateView defaultStateView = ( DefaultStateView ) current;
-            if ( defaultStateView.isModified () )
-            {
-              fireModifyStatusChanged ();
-              return;
-            }
-          }
-        }
-      }
-    } );
-  }
-
-
-  /**
    * Initialize the {@link ModifyStatusChangedListener}.
    */
   private final void initializeModifyStatusChangedListener ()
@@ -637,18 +601,15 @@ public final class DefaultMachineModel implements Storable, Modifyable
   {
     if ( this.machine.isModified () )
     {
-      this.lastModifyStatus = true;
       return true;
     }
     for ( DefaultStateView current : this.stateViewList )
     {
       if ( current.isModified () )
       {
-        this.lastModifyStatus = true;
         return true;
       }
     }
-    this.lastModifyStatus = false;
     return false;
   }
 
@@ -700,6 +661,8 @@ public final class DefaultMachineModel implements Storable, Modifyable
     { stateView } );
     this.machine.removeState ( stateView.getState () );
     this.stateViewList.remove ( stateView );
+    stateView
+        .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
   }
 
 

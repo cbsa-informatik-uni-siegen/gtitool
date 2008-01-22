@@ -48,13 +48,11 @@ public final class DefaultTransitionView extends DefaultEdge implements
    * @param transition The {@link Transition} represented by this view.
    * @param sourceView The source view.
    * @param targetView The target view.
-   * @param userObject The name of this {@link Transition}.
    */
   public DefaultTransitionView ( Transition transition,
-      DefaultStateView sourceView, DefaultStateView targetView,
-      Object userObject )
+      DefaultStateView sourceView, DefaultStateView targetView )
   {
-    super ( userObject );
+    super ( transition );
     this.transition = transition;
     this.sourceView = sourceView;
     this.targetView = targetView;

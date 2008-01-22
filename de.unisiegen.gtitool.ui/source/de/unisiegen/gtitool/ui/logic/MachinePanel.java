@@ -134,13 +134,13 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     /**
      * Initilizes the <code>SleepTimerTask</code>.
      * 
-     * @param pConsoleTable The console table.
-     * @param pIndex The index.
+     * @param consoleTable The console table.
+     * @param index The index.
      */
-    public WarningTimerTask ( JTable pConsoleTable, int pIndex )
+    public WarningTimerTask ( JTable consoleTable, int index )
     {
-      this.index = pIndex;
-      this.consoleTable = pConsoleTable;
+      this.index = index;
+      this.consoleTable = consoleTable;
     }
 
 
@@ -340,17 +340,17 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Create a new Machine Panel Object
    * 
-   * @param pParent The parent frame
-   * @param pModel the {@link DefaultMachineModel} of this panel
-   * @param pFileName the filename for this Machine Panel
+   * @param parent The parent frame.
+   * @param model The {@link DefaultMachineModel} of this panel.
+   * @param file The {@link File} of this {@link MachinePanel}.
    */
-  public MachinePanel ( MainWindowForm pParent, DefaultMachineModel pModel,
-      File pFileName )
+  public MachinePanel ( MainWindowForm parent, DefaultMachineModel model,
+      File file )
   {
-    this.parent = pParent;
-    this.model = pModel;
-    this.machine = pModel.getMachine ();
-    this.fileName = pFileName;
+    this.parent = parent;
+    this.model = model;
+    this.machine = model.getMachine ();
+    this.fileName = file;
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
     this.graph = this.model.getJGraph ();
@@ -371,9 +371,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         new ListSelectionListener ()
         {
 
-          public void valueChanged ( ListSelectionEvent pEvent )
+          public void valueChanged ( ListSelectionEvent event )
           {
-            handleConsoleTableValueChanged ( pEvent );
+            handleConsoleTableValueChanged ( event );
           }
 
         } );
@@ -387,9 +387,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         new ListSelectionListener ()
         {
 
-          public void valueChanged ( ListSelectionEvent pEvent )
+          public void valueChanged ( ListSelectionEvent event )
           {
-            handleConsoleTableValueChanged ( pEvent );
+            handleConsoleTableValueChanged ( event );
           }
 
         } );
@@ -409,7 +409,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedStartState ( Color pNewColor )
+          public void colorChangedStartState ( Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -419,7 +419,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
                 DefaultStateView state = ( DefaultStateView ) object;
                 if ( state.getState ().isStartState () )
                   GraphConstants.setGradientColor ( state.getAttributes (),
-                      pNewColor );
+                      newColor );
 
               }
               catch ( ClassCastException e )
@@ -440,7 +440,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedState ( Color pNewColor )
+          public void colorChangedState ( Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -450,7 +450,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
                 DefaultStateView state = ( DefaultStateView ) object;
                 if ( !state.getState ().isStartState () )
                   GraphConstants.setGradientColor ( state.getAttributes (),
-                      pNewColor );
+                      newColor );
 
               }
               catch ( ClassCastException e )
@@ -472,7 +472,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
-          Color pNewColor )
+          Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -503,7 +503,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedTransition ( Color pNewColor )
+          public void colorChangedTransition ( Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -511,7 +511,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
               try
               {
                 DefaultTransitionView t = ( DefaultTransitionView ) object;
-                GraphConstants.setLineColor ( t.getAttributes (), pNewColor );
+                GraphConstants.setLineColor ( t.getAttributes (), newColor );
 
               }
               catch ( ClassCastException e )
@@ -536,12 +536,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent evt )
+          public void propertyChange ( PropertyChangeEvent event )
           {
             if ( MachinePanel.this.setDividerLocationConsole )
             {
               PreferenceManager.getInstance ().setDividerLocationConsole (
-                  ( ( Integer ) evt.getNewValue () ).intValue () );
+                  ( ( Integer ) event.getNewValue () ).intValue () );
             }
           }
         } );
@@ -553,12 +553,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent evt )
+          public void propertyChange ( PropertyChangeEvent event )
           {
             if ( MachinePanel.this.setDividerLocationTable )
             {
               PreferenceManager.getInstance ().setDividerLocationTable (
-                  ( ( Integer ) evt.getNewValue () ).intValue () );
+                  ( ( Integer ) event.getNewValue () ).intValue () );
             }
           }
         } );
@@ -570,9 +570,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void keyPressed ( KeyEvent e )
+      public void keyPressed ( KeyEvent event )
       {
-        if ( e.getKeyCode () == 27 )
+        if ( event.getKeyCode () == 27 )
         {
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
@@ -621,11 +621,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Add a new Error
    * 
-   * @param e The {@link MachineException} containing the data
+   * @param machineException The {@link MachineException} containing the data
    */
-  public void addError ( MachineException e )
+  public final void addError ( MachineException machineException )
   {
-    this.errorTableModel.addRow ( e );
+    this.errorTableModel.addRow ( machineException );
   }
 
 
@@ -644,18 +644,18 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Add a new Warning
    * 
-   * @param e The {@link MachineException} containing the data
+   * @param machineException The {@link MachineException} containing the data
    */
-  public void addWarning ( MachineException e )
+  public final void addWarning ( MachineException machineException )
   {
-    this.warningTableModel.addRow ( e );
+    this.warningTableModel.addRow ( machineException );
   }
 
 
   /**
    * Remove all highlighting
    */
-  public void clearHighlight ()
+  public final void clearHighlight ()
   {
     for ( DefaultTransitionView view : this.oldErrorTransitions )
     {
@@ -683,11 +683,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Clear all Error and Warning messages
    */
-  public void clearValidationMessages ()
+  public final void clearValidationMessages ()
   {
     this.errorTableModel.clearData ();
     this.warningTableModel.clearData ();
-
   }
 
 
@@ -696,7 +695,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return the new created Popup Menu
    */
-  private DefaultPopupMenu createPopupMenu ()
+  private final DefaultPopupMenu createPopupMenu ()
   {
     int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
     return new DefaultPopupMenu ( this, this.machine, factor );
@@ -706,12 +705,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Create a new Popup Menu for the given State
    * 
-   * @param pState the State for to create a popup menu
+   * @param stateView the State for to create a popup menu
    * @return the new created Popup Menu
    */
-  private StatePopupMenu createStatePopupMenu ( DefaultStateView pState )
+  private final StatePopupMenu createStatePopupMenu ( DefaultStateView stateView )
   {
-    return new StatePopupMenu ( this.parent, this.graph, this.model, pState );
+    return new StatePopupMenu ( this.parent, this.graph, this.model, stateView );
   }
 
 
@@ -723,7 +722,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * @return {@link DefaultGraphCell} the new created tmp Object
    */
   @SuppressWarnings ( "unchecked" )
-  private DefaultGraphCell createTmpObject ( double x, double y )
+  private final DefaultGraphCell createTmpObject ( double x, double y )
   {
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
 
@@ -753,14 +752,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Create a new Popup Menu for the given Transition
    * 
-   * @param pTransition the Transition for to create a popup menu
+   * @param transitionView the Transition for to create a popup menu
    * @return the new created Popup Menu
    */
-  private TransitionPopupMenu createTransitionPopupMenu (
-      DefaultTransitionView pTransition )
+  private final TransitionPopupMenu createTransitionPopupMenu (
+      DefaultTransitionView transitionView )
   {
     return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        pTransition, this.machine.getAlphabet () );
+        transitionView, this.machine.getAlphabet () );
   }
 
 
@@ -783,7 +782,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
    */
-  public Alphabet getAlphabet ()
+  public final Alphabet getAlphabet ()
   {
     return this.machine.getAlphabet ();
   }
@@ -794,7 +793,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return the File of this Machine Panel
    */
-  public File getFile ()
+  public final File getFile ()
   {
     return this.fileName;
   }
@@ -805,7 +804,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return the {@link Machine} of this panel
    */
-  public Machine getMachine ()
+  public final Machine getMachine ()
   {
     return this.machine;
   }
@@ -828,7 +827,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getPanel()
    */
-  public JPanel getPanel ()
+  public final JPanel getPanel ()
   {
     return this.gui;
   }
@@ -837,10 +836,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handles {@link FocusEvent}s on the console table.
    * 
-   * @param pEvent The {@link FocusEvent}.
+   * @param event The {@link FocusEvent}.
    */
-  public void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent pEvent )
+  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
+  FocusEvent event )
   {
     if ( this.consoleTimer != null )
     {
@@ -855,11 +854,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handles the mouse exited event on the console table.
    * 
-   * @param pEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
   public final void handleConsoleTableMouseExited (
       @SuppressWarnings ( "unused" )
-      MouseEvent pEvent )
+      MouseEvent event )
   {
     if ( this.consoleTimer != null )
     {
@@ -874,16 +873,16 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handles the mouse moved event on the console table.
    * 
-   * @param pEvent The {@link MouseEvent}.
+   * @param event The {@link MouseEvent}.
    */
-  public final void handleConsoleTableMouseMoved ( MouseEvent pEvent )
+  public final void handleConsoleTableMouseMoved ( MouseEvent event )
   {
     JTable table;
-    if ( pEvent.getSource () == this.gui.jDragTableErrors )
+    if ( event.getSource () == this.gui.jDragTableErrors )
     {
       table = this.gui.jDragTableErrors;
     }
-    else if ( pEvent.getSource () == this.gui.jDragTableWarnings )
+    else if ( event.getSource () == this.gui.jDragTableWarnings )
     {
       table = this.gui.jDragTableWarnings;
     }
@@ -891,7 +890,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
     }
-    int index = table.rowAtPoint ( pEvent.getPoint () );
+    int index = table.rowAtPoint ( event.getPoint () );
     if ( this.consoleTimer != null )
     {
       this.consoleTimer.cancel ();
@@ -913,19 +912,19 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handles {@link ListSelectionEvent}s on the console table.
    * 
-   * @param pEvent The {@link ListSelectionEvent}.
+   * @param event The {@link ListSelectionEvent}.
    */
   @SuppressWarnings ( "unchecked" )
   public final void handleConsoleTableValueChanged (
       @SuppressWarnings ( "unused" )
-      ListSelectionEvent pEvent )
+      ListSelectionEvent event )
   {
     JTable table;
-    if ( pEvent.getSource () == this.gui.jDragTableErrors.getSelectionModel () )
+    if ( event.getSource () == this.gui.jDragTableErrors.getSelectionModel () )
     {
       table = this.gui.jDragTableErrors;
     }
-    else if ( pEvent.getSource () == this.gui.jDragTableWarnings
+    else if ( event.getSource () == this.gui.jDragTableWarnings
         .getSelectionModel () )
     {
       table = this.gui.jDragTableWarnings;
@@ -952,7 +951,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Edit Machine button pressed
    */
-  public void handleEditMachine ()
+  public final void handleEditMachine ()
   {
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
@@ -962,7 +961,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Enter Word button pressed
    */
-  public void handleEnterWord ()
+  public final void handleEnterWord ()
   {
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
@@ -974,7 +973,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return filename
    */
-  public String handleSave ()
+  public final String handleSave ()
   {
     if ( this.fileName == null )
     {
@@ -1002,7 +1001,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return filename
    */
-  public String handleSaveAs ()
+  public final String handleSaveAs ()
   {
     try
     {
@@ -1078,7 +1077,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param state The new State of the Add State Toolbar button
    */
-  public void handleToolbarAddState ( boolean state )
+  public final void handleToolbarAddState ( boolean state )
   {
     if ( state )
       this.graph.addMouseListener ( this.addState );
@@ -1090,7 +1089,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Toolbar Alphabet button action event
    */
-  public void handleToolbarAlphabet ()
+  public final void handleToolbarAlphabet ()
   {
     // TODOChristian
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
@@ -1108,7 +1107,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param state The new State of the End Toolbar button
    */
-  public void handleToolbarEnd ( boolean state )
+  public final void handleToolbarEnd ( boolean state )
   {
     if ( state )
       this.graph.addMouseListener ( this.end );
@@ -1122,7 +1121,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param state The new State of the Mouse Toolbar button
    */
-  public void handleToolbarMouse ( boolean state )
+  public final void handleToolbarMouse ( boolean state )
   {
     if ( state )
       this.graph.addMouseListener ( this.mouse );
@@ -1136,7 +1135,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param state The new State of the Start Toolbar button
    */
-  public void handleToolbarStart ( boolean state )
+  public final void handleToolbarStart ( boolean state )
   {
     if ( state )
       this.graph.addMouseListener ( this.start );
@@ -1150,7 +1149,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param state The new State of the Transition Toolbar button
    */
-  public void handleToolbarTransition ( boolean state )
+  public final void handleToolbarTransition ( boolean state )
   {
     if ( state )
     {
@@ -1168,11 +1167,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Auto Step Action in the Word Enter Mode
    * 
-   * @param evt
+   * @param event
    */
-  public void handleWordAutoStep ( ItemEvent evt )
+  public final void handleWordAutoStep ( ItemEvent event )
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    if ( event.getStateChange () == ItemEvent.SELECTED )
     {
       if ( this.autoStepTimer == null )
       {
@@ -1193,7 +1192,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Next Step Action in the Word Enter Mode
    */
-  public void handleWordNextStep ()
+  public final void handleWordNextStep ()
   {
     try
     {
@@ -1272,7 +1271,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Previous Step Action in the Word Enter Mode
    */
-  public void handleWordPreviousStep ()
+  public final void handleWordPreviousStep ()
   {
     try
     {
@@ -1348,7 +1347,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return true if started else false
    */
-  public boolean handleWordStart ()
+  public final boolean handleWordStart ()
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
@@ -1391,7 +1390,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Handle Stop Action in the Word Enter Mode
    */
-  public void handleWordStop ()
+  public final void handleWordStop ()
   {
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
@@ -1420,7 +1419,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param states list with all states that are affected
    */
-  private void highlightStates ( ArrayList < State > states )
+  private final void highlightStates ( ArrayList < State > states )
   {
     for ( DefaultStateView view : this.oldErrorStates )
     {
@@ -1453,7 +1452,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param transitions list with all transitions that are affected
    */
-  private void highlightTransitions ( ArrayList < Transition > transitions )
+  private final void highlightTransitions ( ArrayList < Transition > transitions )
   {
     for ( DefaultTransitionView view : this.oldErrorTransitions )
     {
@@ -1479,7 +1478,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * Initialize the Mouse Adapter of the Toolbar
    */
   @SuppressWarnings ( "synthetic-access" )
-  private void intitializeMouseAdapter ()
+  private final void intitializeMouseAdapter ()
   {
     this.mouse = new MouseAdapter ()
     {
@@ -1488,10 +1487,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
        * Invoked when the mouse has been clicked on a component.
        */
       @Override
-      public void mouseClicked ( MouseEvent e )
+      public void mouseClicked ( MouseEvent event )
       {
         // Return if pressed Button is not the left mouse button
-        if ( e.getButton () != MouseEvent.BUTTON3 )
+        if ( event.getButton () != MouseEvent.BUTTON3 )
         {
           MachinePanel.this.popup = null;
           return;
@@ -1499,8 +1498,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
         // Open a new popup menu
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                .getY () );
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
         if ( object == null )
           MachinePanel.this.popup = createPopupMenu ();
         else if ( object instanceof DefaultTransitionView )
@@ -1509,8 +1508,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
         if ( MachinePanel.this.popup != null )
-          MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
-              .getX (), e.getY () );
+          MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+              event.getX (), event.getY () );
       }
     };
 
@@ -1523,14 +1522,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
        */
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mouseClicked ( MouseEvent e )
+      public void mouseClicked ( MouseEvent event )
       {
         // if Middle Mouse Button was pressed return
-        if ( e.getButton () == MouseEvent.BUTTON2 )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
           return;
 
         // if an popup menu is open close it and do nothing more
-        if ( e.getButton () == MouseEvent.BUTTON1
+        if ( event.getButton () == MouseEvent.BUTTON1
             && MachinePanel.this.popup != null )
         {
           MachinePanel.this.popup = null;
@@ -1538,11 +1537,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         }
 
         // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 )
+        if ( event.getButton () == MouseEvent.BUTTON3 )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
           if ( object == null )
             MachinePanel.this.popup = createPopupMenu ();
           else if ( object instanceof DefaultTransitionView )
@@ -1551,8 +1550,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
           if ( MachinePanel.this.popup != null )
-            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
-                .getX (), e.getY () );
+            MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+                event.getX (), event.getY () );
           return;
         }
 
@@ -1562,8 +1561,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
               .getAlphabet (),
               MachinePanel.this.machine.getPushDownAlphabet (), false, false );
 
-          MachinePanel.this.model.createStateView ( e.getPoint ().x
-              / MachinePanel.this.zoomFactor, e.getPoint ().y
+          MachinePanel.this.model.createStateView ( event.getPoint ().x
+              / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
@@ -1594,14 +1593,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
 
       @Override
-      public void mouseClicked ( MouseEvent e )
+      public void mouseClicked ( MouseEvent event )
       {
         // if Middle Mouse Button was pressed return
-        if ( e.getButton () == MouseEvent.BUTTON2 )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
           return;
 
         // if an popup menu is open close it and do nothing more
-        if ( e.getButton () == MouseEvent.BUTTON1
+        if ( event.getButton () == MouseEvent.BUTTON1
             && MachinePanel.this.popup != null )
         {
           MachinePanel.this.popup = null;
@@ -1609,12 +1608,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         }
 
         // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3
+        if ( event.getButton () == MouseEvent.BUTTON3
             && MachinePanel.this.firstState == null )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
           if ( object == null )
             MachinePanel.this.popup = createPopupMenu ();
           else if ( object instanceof DefaultTransitionView )
@@ -1623,8 +1622,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
           if ( MachinePanel.this.popup != null )
-            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
-                .getX (), e.getY () );
+            MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+                event.getX (), event.getY () );
           return;
         }
 
@@ -1639,7 +1638,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         if ( MachinePanel.this.firstState == null )
         {
           MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
-              .getSelectionCellAt ( e.getPoint () );
+              .getSelectionCellAt ( event.getPoint () );
           if ( MachinePanel.this.firstState == null )
             return;
         }
@@ -1650,8 +1649,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           {
 
             target = ( DefaultStateView ) MachinePanel.this.graph
-                .getNextCellForLocation ( MachinePanel.this.tmpState, e
-                    .getPoint ().getX (), e.getPoint ().getY () );
+                .getNextCellForLocation ( MachinePanel.this.tmpState, event
+                    .getPoint ().getX (), event.getPoint ().getY () );
 
             MachinePanel.this.graphModel.remove ( new Object []
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
@@ -1679,9 +1678,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
                 State newState = new DefaultState ( MachinePanel.this.machine
                     .getAlphabet (), MachinePanel.this.machine
                     .getPushDownAlphabet (), false, false );
-                target = MachinePanel.this.model.createStateView ( e
+                target = MachinePanel.this.model.createStateView ( event
                     .getPoint ().x
-                    / MachinePanel.this.zoomFactor, e.getPoint ().y
+                    / MachinePanel.this.zoomFactor, event.getPoint ().y
                     / MachinePanel.this.zoomFactor, newState );
                 newTransition.setStateEnd ( target.getState () );
 
@@ -1721,9 +1720,9 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
 
       @Override
-      public void mouseReleased ( MouseEvent e )
+      public void mouseReleased ( MouseEvent event )
       {
-        if ( e.getButton () != MouseEvent.BUTTON1 )
+        if ( event.getButton () != MouseEvent.BUTTON1 )
           return;
 
         if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
@@ -1734,8 +1733,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         try
         {
           target = ( DefaultStateView ) MachinePanel.this.graph
-              .getNextCellForLocation ( MachinePanel.this.tmpState, e
-                  .getPoint ().getX (), e.getPoint ().getY () );
+              .getNextCellForLocation ( MachinePanel.this.tmpState, event
+                  .getPoint ().getX (), event.getPoint ().getY () );
 
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
@@ -1763,9 +1762,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
               newState = new DefaultState ( MachinePanel.this.machine
                   .getAlphabet (), MachinePanel.this.machine
                   .getPushDownAlphabet (), false, false );
-              target = MachinePanel.this.model.createStateView (
-                  e.getPoint ().x / MachinePanel.this.zoomFactor,
-                  e.getPoint ().y / MachinePanel.this.zoomFactor, newState );
+              target = MachinePanel.this.model.createStateView ( event
+                  .getPoint ().x
+                  / MachinePanel.this.zoomFactor, event.getPoint ().y
+                  / MachinePanel.this.zoomFactor, newState );
               newTransition.setStateEnd ( target.getState () );
             }
             catch ( StateException e1 )
@@ -1807,7 +1807,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
 
       @Override
-      public void mouseDragged ( MouseEvent e )
+      public void mouseDragged ( MouseEvent event )
       {
         if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
             TransitionItem.CLICK_MODE ) )
@@ -1817,8 +1817,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         {
           MachinePanel.this.dragged = true;
           MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
         }
 
         else
@@ -1826,8 +1826,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           // Remove old tmp state and transition
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-          x = e.getX () / MachinePanel.this.zoomFactor;
-          y = e.getY () / MachinePanel.this.zoomFactor;
+          x = event.getX () / MachinePanel.this.zoomFactor;
+          y = event.getY () / MachinePanel.this.zoomFactor;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
@@ -1851,7 +1851,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
        * buttons no down).
        */
       @Override
-      public void mouseMoved ( MouseEvent e )
+      public void mouseMoved ( MouseEvent event )
       {
         double x, y;
 
@@ -1861,8 +1861,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
 
-          x = e.getX () / MachinePanel.this.zoomFactor;
-          y = e.getY () / MachinePanel.this.zoomFactor;
+          x = event.getX () / MachinePanel.this.zoomFactor;
+          y = event.getY () / MachinePanel.this.zoomFactor;
           // x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
           // y = MachinePanel.this.firstStatePosition.y < x ? y - 3 : y + 10;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
@@ -1891,14 +1891,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
        * on a component.
        */
       @Override
-      public void mouseClicked ( MouseEvent e )
+      public void mouseClicked ( MouseEvent event )
       {
         // if Middle Mouse Button was pressed return
-        if ( e.getButton () == MouseEvent.BUTTON2 )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
           return;
 
         // if an popup menu is open close it and do nothing more
-        if ( e.getButton () == MouseEvent.BUTTON1
+        if ( event.getButton () == MouseEvent.BUTTON1
             && MachinePanel.this.popup != null )
         {
           MachinePanel.this.popup = null;
@@ -1906,11 +1906,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         }
 
         // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 )
+        if ( event.getButton () == MouseEvent.BUTTON3 )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
           if ( object == null )
             MachinePanel.this.popup = createPopupMenu ();
           else if ( object instanceof DefaultTransitionView )
@@ -1919,8 +1919,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
           if ( MachinePanel.this.popup != null )
-            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
-                .getX (), e.getY () );
+            MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+                event.getX (), event.getY () );
           return;
         }
 
@@ -1929,8 +1929,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           State newState = new DefaultState ( MachinePanel.this.machine
               .getAlphabet (),
               MachinePanel.this.machine.getPushDownAlphabet (), true, false );
-          MachinePanel.this.model.createStateView ( e.getPoint ().x
-              / MachinePanel.this.zoomFactor, e.getPoint ().y
+          MachinePanel.this.model.createStateView ( event.getPoint ().x
+              / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
@@ -1965,14 +1965,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
        * on a component.
        */
       @Override
-      public void mouseClicked ( MouseEvent e )
+      public void mouseClicked ( MouseEvent event )
       {
         // if Middle Mouse Button was pressed return
-        if ( e.getButton () == MouseEvent.BUTTON2 )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
           return;
 
         // if an popup menu is open close it and do nothing more
-        if ( e.getButton () == MouseEvent.BUTTON1
+        if ( event.getButton () == MouseEvent.BUTTON1
             && MachinePanel.this.popup != null )
         {
           MachinePanel.this.popup = null;
@@ -1980,11 +1980,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
         }
 
         // Open popup menu if left button was pressed
-        if ( e.getButton () == MouseEvent.BUTTON3 )
+        if ( event.getButton () == MouseEvent.BUTTON3 )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( e.getPoint ().getX (), e.getPoint ()
-                  .getY () );
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
           if ( object == null )
             MachinePanel.this.popup = createPopupMenu ();
           else if ( object instanceof DefaultTransitionView )
@@ -1993,8 +1993,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
 
           if ( MachinePanel.this.popup != null )
-            MachinePanel.this.popup.show ( ( Component ) e.getSource (), e
-                .getX (), e.getY () );
+            MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+                event.getX (), event.getY () );
           return;
         }
 
@@ -2003,8 +2003,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           State newState = new DefaultState ( MachinePanel.this.machine
               .getAlphabet (),
               MachinePanel.this.machine.getPushDownAlphabet (), false, true );
-          MachinePanel.this.model.createStateView ( e.getPoint ().x
-              / MachinePanel.this.zoomFactor, e.getPoint ().y
+          MachinePanel.this.model.createStateView ( event.getPoint ().x
+              / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState );
         }
         catch ( StateException e1 )
@@ -2038,7 +2038,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return true if console is visible, else false
    */
-  public boolean isConsoleVisible ()
+  public final boolean isConsoleVisible ()
   {
     return this.consoleVisible;
   }
@@ -2060,7 +2060,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return true if table is visible, else false
    */
-  public boolean isTableVisible ()
+  public final boolean isTableVisible ()
   {
     return this.tableVisible;
   }
@@ -2071,7 +2071,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @return true if we are in word enter mode, else false
    */
-  public boolean isWordEnterMode ()
+  public final boolean isWordEnterMode ()
   {
     return this.enterWordMode;
   }
@@ -2120,20 +2120,20 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param consoleVisible flag if console is visible
    */
-  public void setConsoleVisible ( boolean consoleVisible )
+  public final void setConsoleVisible ( boolean consoleVisible )
   {
     this.consoleVisible = consoleVisible;
   }
 
 
   /**
-   * Set the file for this Machine Panel
+   * Set the file for this {@link Machine Panel}.
    * 
-   * @param pFileName the file for this Machine Panel
+   * @param file The file for this {@link Machine Panel}.
    */
-  public void setFileName ( File pFileName )
+  public final void setFileName ( File file )
   {
-    this.fileName = pFileName;
+    this.fileName = file;
   }
 
 
@@ -2142,7 +2142,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param tableVisible The new value
    */
-  public void setTableVisible ( boolean tableVisible )
+  public final void setTableVisible ( boolean tableVisible )
   {
     this.tableVisible = tableVisible;
   }
@@ -2151,12 +2151,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Sets the visibility of the console.
    * 
-   * @param pVisible Visible or not visible.
+   * @param visible Visible or not visible.
    */
-  public void setVisibleConsole ( boolean pVisible )
+  public final void setVisibleConsole ( boolean visible )
   {
-    this.consoleVisible = pVisible;
-    if ( pVisible )
+    this.consoleVisible = visible;
+    if ( visible )
     {
       this.gui.jSplitPaneConsole
           .setRightComponent ( this.gui.jTabbedPaneConsole );
@@ -2177,11 +2177,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Sets the visibility of the table.
    * 
-   * @param pVisible Visible or not visible.
+   * @param visible Visible or not visible.
    */
-  public void setVisibleTable ( boolean pVisible )
+  public final void setVisibleTable ( boolean visible )
   {
-    if ( pVisible )
+    if ( visible )
     {
       this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneMachine );
       this.gui.jSplitPaneTable.setDividerSize ( 3 );
@@ -2203,7 +2203,7 @@ public final class MachinePanel implements EditorPanel, Modifyable,
    * 
    * @param wordEnterMode The new value
    */
-  public void setWordEnterMode ( boolean wordEnterMode )
+  public final void setWordEnterMode ( boolean wordEnterMode )
   {
     this.enterWordMode = wordEnterMode;
     if ( !wordEnterMode )
@@ -2227,11 +2227,11 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   /**
    * Set the zoom factor for this panel
    * 
-   * @param pFactor the new zoom factor
+   * @param factor the new zoom factor
    */
-  public void setZoomFactor ( double pFactor )
+  public final void setZoomFactor ( double factor )
   {
-    this.zoomFactor = pFactor;
-    this.graph.setScale ( pFactor );
+    this.zoomFactor = factor;
+    this.graph.setScale ( factor );
   }
 }

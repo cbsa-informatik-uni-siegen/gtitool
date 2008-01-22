@@ -5,7 +5,11 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.event.EventListenerList;
 
+import org.jgraph.event.GraphModelEvent;
+import org.jgraph.event.GraphModelListener;
+import org.jgraph.event.GraphModelEvent.GraphModelChange;
 import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.State;
@@ -34,6 +38,12 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The position is not defined value.
+   */
+  public static final double POSITION_NOT_DEFINED = Double.MIN_VALUE;
+
+
+  /**
    * The {@link State} represented by this view.
    */
   private State state;
@@ -42,13 +52,13 @@ public final class DefaultStateView extends DefaultGraphCell implements
   /**
    * The initial x position.
    */
-  private double initialXPosition = -1;
+  private double initialXPosition = POSITION_NOT_DEFINED;
 
 
   /**
    * The initial y position.
    */
-  private double initialYPosition = -1;
+  private double initialYPosition = POSITION_NOT_DEFINED;
 
 
   /**
@@ -58,15 +68,50 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The {@link DefaultGraphModel} for this model.
+   */
+  private DefaultGraphModel graphModel;
+
+
+  /**
    * Creates a new {@link DefaultStateView}.
    * 
+   * @param graphModel The {@link DefaultGraphModel}.
    * @param state The {@link State} represented by this view.
-   * @param userObject The name of this {@link State}.
    */
-  public DefaultStateView ( State state, Object userObject )
+  public DefaultStateView ( DefaultGraphModel graphModel, State state )
   {
-    super ( userObject );
+    super ( state );
+
+    this.graphModel = graphModel;
     this.state = state;
+
+    this.graphModel.addGraphModelListener ( new GraphModelListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void graphChanged ( GraphModelEvent event )
+      {
+
+        GraphModelChange graphModelChange = event.getChange ();
+        Object [] changed = graphModelChange.getChanged ();
+        for ( Object current : changed )
+        {
+          if ( current instanceof DefaultStateView )
+          {
+            DefaultStateView defaultStateView = ( DefaultStateView ) current;
+            if ( defaultStateView.getState ().equals ( getState () ) )
+            {
+              fireModifyStatusChanged ();
+              return;
+            }
+          }
+        }
+      }
+    } );
+
+    // Reset modify
+    resetModify ();
   }
 
 
@@ -96,6 +141,20 @@ public final class DefaultStateView extends DefaultGraphCell implements
       return this.state.equals ( stateView.getState () );
     }
     return false;
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   */
+  private final void fireModifyStatusChanged ()
+  {
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].modifyStatusChanged ();
+    }
   }
 
 
@@ -134,6 +193,10 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public final double getXPosition ()
   {
     Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    if ( bounds == null )
+    {
+      return POSITION_NOT_DEFINED;
+    }
     return bounds.getX ();
   }
 
@@ -146,6 +209,10 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public final double getYPosition ()
   {
     Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    if ( bounds == null )
+    {
+      return POSITION_NOT_DEFINED;
+    }
     return bounds.getY ();
   }
 
@@ -169,12 +236,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   public final boolean isModified ()
   {
-    if ( ( this.initialXPosition == -1 ) && this.initialYPosition == -1 )
-    {
-      this.initialXPosition = getXPosition ();
-      this.initialYPosition = getYPosition ();
-      return false;
-    }
     return ( this.initialXPosition != getXPosition () )
         || ( this.initialYPosition != getYPosition () );
   }

@@ -50,12 +50,12 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jLabelChangeOverSet = new javax.swing.JLabel();
         jPanelList = new javax.swing.JPanel();
         jScrollPaneAlphabet = new javax.swing.JScrollPane();
-        jDragListAlphabet = new de.unisiegen.gtitool.ui.dnd.JDragList();
+        jGTIListAlphabet = new de.unisiegen.gtitool.ui.swing.JGTIList();
         jPanelChangeOverButtons = new javax.swing.JPanel();
         jButtonMoveLeft = new javax.swing.JButton();
         jButtonMoveRight = new javax.swing.JButton();
         jScrollPaneChangeOverSet = new javax.swing.JScrollPane();
-        jDragListChangeOverSet = new de.unisiegen.gtitool.ui.dnd.JDragList();
+        jGTIListChangeOverSet = new de.unisiegen.gtitool.ui.swing.JGTIList();
         JLabelTransitionSet = new javax.swing.JLabel();
         styledTransitionParserPanel = new de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel();
         jPanelButtons = new javax.swing.JPanel();
@@ -110,13 +110,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         jScrollPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneAlphabet.setPreferredSize(new java.awt.Dimension(100, 130));
-        jDragListAlphabet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jDragListAlphabetValueChanged(evt);
-            }
-        });
-
-        jScrollPaneAlphabet.setViewportView(jDragListAlphabet);
+        jScrollPaneAlphabet.setViewportView(jGTIListAlphabet);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -174,13 +168,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         jScrollPaneChangeOverSet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneChangeOverSet.setPreferredSize(new java.awt.Dimension(100, 130));
-        jDragListChangeOverSet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jDragListChangeOverSetValueChanged(evt);
-            }
-        });
-
-        jScrollPaneChangeOverSet.setViewportView(jDragListChangeOverSet);
+        jScrollPaneChangeOverSet.setViewportView(jGTIListChangeOverSet);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -211,7 +199,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 16, 10, 16);
         getContentPane().add(JLabelTransitionSet, gridBagConstraints);
 
-        styledTransitionParserPanel.setCopyable(false);
         styledTransitionParserPanel.setEditable(false);
         styledTransitionParserPanel.setMinimumSize(new java.awt.Dimension(80, 80));
         styledTransitionParserPanel.setPreferredSize(new java.awt.Dimension(80, 80));
@@ -279,14 +266,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jDragListChangeOverSetValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jDragListChangeOverSetValueChanged
-        this.logic.handleListSelection(evt);
-    }//GEN-LAST:event_jDragListChangeOverSetValueChanged
-
-    private void jDragListAlphabetValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jDragListAlphabetValueChanged
-        this.logic.handleListSelection(evt);
-    }//GEN-LAST:event_jDragListAlphabetValueChanged
-
     private void handleActionPerformedMoveLeft(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedMoveLeft
         this.logic.handleMoveLeft();
     }//GEN-LAST:event_handleActionPerformedMoveLeft
@@ -310,8 +289,8 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     public javax.swing.JButton jButtonMoveLeft;
     public javax.swing.JButton jButtonMoveRight;
     public javax.swing.JButton jButtonOk;
-    public de.unisiegen.gtitool.ui.dnd.JDragList jDragListAlphabet;
-    public de.unisiegen.gtitool.ui.dnd.JDragList jDragListChangeOverSet;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListChangeOverSet;
     public javax.swing.JLabel jLabelAlphabet;
     public javax.swing.JLabel jLabelChangeOverSet;
     public javax.swing.JPanel jPanelButtons;

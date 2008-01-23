@@ -35,13 +35,13 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         diagrammContentPanel = new javax.swing.JScrollPane();
         jPanelTable = new javax.swing.JPanel();
         jScrollPaneMachine = new javax.swing.JScrollPane();
-        jDragTableMachine = new de.unisiegen.gtitool.ui.dnd.JDragTable();
+        jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jPanelBottom = new javax.swing.JPanel();
         jTabbedPaneConsole = new javax.swing.JTabbedPane();
         jScrollPaneErrors = new javax.swing.JScrollPane();
-        jDragTableErrors = new de.unisiegen.gtitool.ui.dnd.JDragTable();
+        jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jScrollPaneWarnings = new javax.swing.JScrollPane();
-        jDragTableWarnings = new de.unisiegen.gtitool.ui.dnd.JDragTable();
+        jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
         wordPanel = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
 
         setLayout(new java.awt.GridBagLayout());
@@ -68,9 +68,20 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
 
         jPanelTable.setLayout(new java.awt.GridBagLayout());
 
-        jDragTableMachine.setFocusable(false);
-        jDragTableMachine.setRowSelectionAllowed(false);
-        jScrollPaneMachine.setViewportView(jDragTableMachine);
+        jGTITableMachine.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jGTITableMachine.setFocusable(false);
+        jGTITableMachine.setRowSelectionAllowed(false);
+        jScrollPaneMachine.setViewportView(jGTITableMachine);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -95,46 +106,14 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         jPanelBottom.setLayout(new java.awt.GridBagLayout());
 
         jTabbedPaneConsole.setFocusable(false);
-        jDragTableErrors.setFocusable(false);
-        jDragTableErrors.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jDragTableErrorsMouseMoved(evt);
-            }
-        });
-        jDragTableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDragTableErrorsFocusLost(evt);
-            }
-        });
-        jDragTableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jDragTableErrorsMouseExited(evt);
-            }
-        });
-
-        jScrollPaneErrors.setViewportView(jDragTableErrors);
+        jGTITableErrors.setFocusable(false);
+        jScrollPaneErrors.setViewportView(jGTITableErrors);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jScrollPaneErrors); // NOI18N
 
-        jDragTableWarnings.setFocusable(false);
-        jDragTableWarnings.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jDragTableWarningsMouseMoved(evt);
-            }
-        });
-        jDragTableWarnings.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDragTableWarningsFocusLost(evt);
-            }
-        });
-        jDragTableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jDragTableWarningsMouseExited(evt);
-            }
-        });
-
-        jScrollPaneWarnings.setViewportView(jDragTableWarnings);
+        jGTITableWarnings.setFocusable(false);
+        jScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
         jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jScrollPaneWarnings); // NOI18N
 
@@ -164,37 +143,13 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         add(wordPanel, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jDragTableErrorsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDragTableErrorsFocusLost
-      this.logic.handleConsoleTableFocusLost(evt);
-    }//GEN-LAST:event_jDragTableErrorsFocusLost
-
-    private void jDragTableErrorsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDragTableErrorsMouseExited
-      this.logic.handleConsoleTableMouseExited ( evt );
-    }//GEN-LAST:event_jDragTableErrorsMouseExited
-
-    private void jDragTableErrorsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDragTableErrorsMouseMoved
-      this.logic.handleConsoleTableMouseMoved(evt);
-    }//GEN-LAST:event_jDragTableErrorsMouseMoved
-
-    private void jDragTableWarningsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDragTableWarningsFocusLost
-      this.logic.handleConsoleTableFocusLost(evt);
-    }//GEN-LAST:event_jDragTableWarningsFocusLost
-
-    private void jDragTableWarningsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDragTableWarningsMouseMoved
-      this.logic.handleConsoleTableMouseMoved(evt);
-    }//GEN-LAST:event_jDragTableWarningsMouseMoved
-
-    private void jDragTableWarningsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDragTableWarningsMouseExited
-      this.logic.handleConsoleTableMouseExited ( evt );
-    }//GEN-LAST:event_jDragTableWarningsMouseExited
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane diagrammContentPanel;
-    public de.unisiegen.gtitool.ui.dnd.JDragTable jDragTableErrors;
-    public de.unisiegen.gtitool.ui.dnd.JDragTable jDragTableMachine;
-    public de.unisiegen.gtitool.ui.dnd.JDragTable jDragTableWarnings;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
     public javax.swing.JPanel jPanelBottom;
     public javax.swing.JPanel jPanelDiagramm;
     public javax.swing.JPanel jPanelTable;

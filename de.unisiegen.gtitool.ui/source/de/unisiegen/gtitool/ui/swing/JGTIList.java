@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.dnd;
+package de.unisiegen.gtitool.ui.swing;
 
 
 import java.awt.Color;
@@ -29,7 +29,7 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JDragList extends JList implements DropTargetListener
+public class JGTIList extends JList implements DropTargetListener
 {
 
   /**
@@ -47,7 +47,7 @@ public class JDragList extends JList implements DropTargetListener
   /**
    * Allocates a new <code>JDragList</code>.
    */
-  public JDragList ()
+  public JGTIList ()
   {
     super ();
     // Java swing bugfix
@@ -66,8 +66,8 @@ public class JDragList extends JList implements DropTargetListener
             && ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
         {
           TransferHandler transferHandler = getTransferHandler ();
-          transferHandler.exportAsDrag ( JDragList.this, event, transferHandler
-              .getSourceActions ( JDragList.this ) );
+          transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
+              .getSourceActions ( JGTIList.this ) );
           event.consume ();
         }
       }

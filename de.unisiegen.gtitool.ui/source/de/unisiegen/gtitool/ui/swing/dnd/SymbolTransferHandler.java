@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.dnd;
+package de.unisiegen.gtitool.ui.swing.dnd;
 
 
 import java.awt.datatransfer.DataFlavor;
@@ -12,6 +12,7 @@ import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.swing.JGTIList;
 
 
 /**
@@ -114,9 +115,9 @@ public final class SymbolTransferHandler extends TransferHandler
 
 
   /**
-   * The source {@link JDragList}.
+   * The source {@link JGTIList}.
    */
-  private JDragList source = null;
+  private JGTIList source = null;
 
 
   /**
@@ -170,9 +171,9 @@ public final class SymbolTransferHandler extends TransferHandler
   @Override
   protected final Transferable createTransferable ( JComponent sourceList )
   {
-    if ( sourceList instanceof JDragList )
+    if ( sourceList instanceof JGTIList )
     {
-      this.source = ( JDragList ) sourceList;
+      this.source = ( JGTIList ) sourceList;
       Object [] values = this.source.getSelectedValues ();
       if ( values == null || values.length == 0 )
       {
@@ -235,7 +236,7 @@ public final class SymbolTransferHandler extends TransferHandler
   public final boolean importData ( JComponent targetList,
       Transferable transferable )
   {
-    JDragList targetJList = null;
+    JGTIList targetJList = null;
     ArrayList < Symbol > receivedList = null;
     if ( !canImport ( targetList, transferable.getTransferDataFlavors () ) )
     {
@@ -243,7 +244,7 @@ public final class SymbolTransferHandler extends TransferHandler
     }
     try
     {
-      targetJList = ( JDragList ) targetList;
+      targetJList = ( JGTIList ) targetList;
       if ( hasLocalArrayListFlavor ( transferable.getTransferDataFlavors () ) )
       {
         receivedList = ( ArrayList < Symbol > ) transferable
@@ -272,7 +273,7 @@ public final class SymbolTransferHandler extends TransferHandler
       return true;
     }
 
-    if ( this.source == this.transitionDialog.getGui ().jDragListAlphabet )
+    if ( this.source == this.transitionDialog.getGui ().jGTIListAlphabet )
     {
       this.transitionDialog.addToChangeOver ( receivedList );
     }

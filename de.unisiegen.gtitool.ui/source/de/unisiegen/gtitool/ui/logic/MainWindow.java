@@ -152,22 +152,6 @@ public final class MainWindow implements LanguageChangedListener
         setSaveState ( modified );
       }
     };
-
-    File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
-        .getActiveFile ();
-    if ( activeFile != null )
-    {
-      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
-      {
-        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
-            .getComponentAt ( i ) ).getLogic ();
-        if ( panel.getFile ().equals ( activeFile ) )
-        {
-          this.gui.jTabbedPaneMain.setSelectedIndex ( i );
-          break;
-        }
-      }
-    }
   }
 
 
@@ -1206,6 +1190,23 @@ public final class MainWindow implements LanguageChangedListener
     {
       openFile ( file, false );
     }
+    File activeFile = PreferenceManager.getInstance ().getOpenedFilesItem ()
+        .getActiveFile ();
+    if ( activeFile != null )
+    {
+      for ( int i = 0 ; i < this.gui.jTabbedPaneMain.getTabCount () ; i++ )
+      {
+        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jTabbedPaneMain
+            .getComponentAt ( i ) ).getLogic ();
+        if ( panel.getFile ().getAbsolutePath ().equals (
+            activeFile.getAbsolutePath () ) )
+        {
+          this.gui.jTabbedPaneMain.setSelectedIndex ( i );
+          break;
+        }
+      }
+    }
+
   }
 
 

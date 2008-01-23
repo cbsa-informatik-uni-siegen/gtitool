@@ -18,9 +18,9 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.dnd.JDragList;
-import de.unisiegen.gtitool.ui.dnd.SymbolTransferHandler;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
+import de.unisiegen.gtitool.ui.swing.JGTIList;
+import de.unisiegen.gtitool.ui.swing.dnd.SymbolTransferHandler;
 
 
 /**
@@ -236,18 +236,18 @@ public final class TransitionDialog
     this.gui.JLabelHeadline.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
     this.transferHandler = new SymbolTransferHandler ( this );
-    this.gui.jDragListChangeOverSet.setTransferHandler ( this.transferHandler );
-    this.gui.jDragListChangeOverSet.setDragEnabled ( true );
-    this.gui.jDragListAlphabet.setTransferHandler ( this.transferHandler );
-    this.gui.jDragListAlphabet.setDragEnabled ( true );
+    this.gui.jGTIListChangeOverSet.setTransferHandler ( this.transferHandler );
+    this.gui.jGTIListChangeOverSet.setDragEnabled ( true );
+    this.gui.jGTIListAlphabet.setTransferHandler ( this.transferHandler );
+    this.gui.jGTIListAlphabet.setDragEnabled ( true );
     this.modelAlphabet = new SymbolListModel ();
     for ( Symbol symbol : this.alphabet )
     {
       this.modelAlphabet.add ( symbol );
     }
-    this.gui.jDragListAlphabet.setModel ( this.modelAlphabet );
+    this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
     this.modelChangeOverSet = new SymbolListModel ();
-    this.gui.jDragListChangeOverSet.setModel ( this.modelChangeOverSet );
+    this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledTransitionParserPanel
         .setTransition ( new DefaultTransition () );
   }
@@ -270,7 +270,7 @@ public final class TransitionDialog
     {
       changeOverSymbols.add ( current );
     }
-    this.gui.jDragListAlphabet.clearSelection ();
+    this.gui.jGTIListAlphabet.clearSelection ();
     this.gui.jButtonMoveRight.setEnabled ( false );
     try
     {
@@ -333,15 +333,15 @@ public final class TransitionDialog
    */
   public final void handleListSelection ( ListSelectionEvent pEvent )
   {
-    JDragList selectedList = ( JDragList ) pEvent.getSource ();
+    JGTIList selectedList = ( JGTIList ) pEvent.getSource ();
     Symbol selected = ( Symbol ) selectedList.getSelectedValue ();
     if ( selected == null )
     {
       return;
     }
-    if ( selectedList.equals ( this.gui.jDragListAlphabet ) )
+    if ( selectedList.equals ( this.gui.jGTIListAlphabet ) )
     {
-      this.gui.jDragListChangeOverSet.clearSelection ();
+      this.gui.jGTIListChangeOverSet.clearSelection ();
       this.gui.jButtonMoveLeft.setEnabled ( false );
       if ( selectedList.getSelectedValues ().length > 0 )
       {
@@ -350,7 +350,7 @@ public final class TransitionDialog
     }
     else
     {
-      this.gui.jDragListAlphabet.clearSelection ();
+      this.gui.jGTIListAlphabet.clearSelection ();
       if ( selectedList.getSelectedValues ().length > 0 )
       {
         this.gui.jButtonMoveLeft.setEnabled ( true );
@@ -365,7 +365,7 @@ public final class TransitionDialog
    */
   public final void handleMoveLeft ()
   {
-    Object [] selectedValues = this.gui.jDragListChangeOverSet
+    Object [] selectedValues = this.gui.jGTIListChangeOverSet
         .getSelectedValues ();
     ArrayList < Symbol > removeList = new ArrayList < Symbol > ();
     for ( Object current : selectedValues )
@@ -381,7 +381,7 @@ public final class TransitionDialog
    */
   public final void handleMoveRight ()
   {
-    Object [] selectedValues = this.gui.jDragListAlphabet.getSelectedValues ();
+    Object [] selectedValues = this.gui.jGTIListAlphabet.getSelectedValues ();
     ArrayList < Symbol > addList = new ArrayList < Symbol > ();
     for ( Object current : selectedValues )
     {
@@ -441,7 +441,7 @@ public final class TransitionDialog
     {
       changeOverSymbols.add ( current );
     }
-    this.gui.jDragListChangeOverSet.clearSelection ();
+    this.gui.jGTIListChangeOverSet.clearSelection ();
     this.gui.jButtonMoveLeft.setEnabled ( false );
     try
     {

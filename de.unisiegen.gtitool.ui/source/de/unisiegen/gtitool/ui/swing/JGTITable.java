@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.dnd;
+package de.unisiegen.gtitool.ui.swing;
 
 
 import java.awt.Container;
@@ -16,7 +16,7 @@ import javax.swing.JViewport;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JDragTable extends JTable
+public class JGTITable extends JTable
 {
 
   /**
@@ -26,9 +26,9 @@ public class JDragTable extends JTable
 
 
   /**
-   * Allocates a new {@link JDragTable}.
+   * Allocates a new {@link JGTITable}.
    */
-  public JDragTable ()
+  public JGTITable ()
   {
     super ();
   }

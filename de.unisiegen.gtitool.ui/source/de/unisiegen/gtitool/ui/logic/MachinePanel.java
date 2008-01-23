@@ -362,12 +362,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     this.gui.diagrammContentPanel.setViewportView ( this.graph );
 
     this.errorTableModel = new ConsoleTableModel ();
-    this.gui.jDragTableErrors.setModel ( this.errorTableModel );
-    this.gui.jDragTableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jDragTableErrors.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jDragTableErrors
+    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
+    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableErrors
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jDragTableErrors.getSelectionModel ().addListSelectionListener (
+    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
 
@@ -378,12 +378,12 @@ public final class MachinePanel implements EditorPanel, Modifyable,
 
         } );
     this.warningTableModel = new ConsoleTableModel ();
-    this.gui.jDragTableWarnings.setModel ( this.warningTableModel );
-    this.gui.jDragTableWarnings.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jDragTableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jDragTableWarnings
+    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
+    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableWarnings
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jDragTableWarnings.getSelectionModel ().addListSelectionListener (
+    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
 
@@ -393,8 +393,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
           }
 
         } );
-    this.gui.jDragTableMachine.setModel ( this.machine );
-    this.gui.jDragTableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine.setModel ( this.machine );
+    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -857,8 +857,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
       this.consoleTimer.cancel ();
     }
-    this.gui.jDragTableErrors.clearSelection ();
-    this.gui.jDragTableWarnings.clearSelection ();
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
     this.clearHighlight ();
   }
 
@@ -876,8 +876,8 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     {
       this.consoleTimer.cancel ();
     }
-    this.gui.jDragTableErrors.clearSelection ();
-    this.gui.jDragTableWarnings.clearSelection ();
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
     this.clearHighlight ();
   }
 
@@ -890,13 +890,13 @@ public final class MachinePanel implements EditorPanel, Modifyable,
   public final void handleConsoleTableMouseMoved ( MouseEvent event )
   {
     JTable table;
-    if ( event.getSource () == this.gui.jDragTableErrors )
+    if ( event.getSource () == this.gui.jGTITableErrors )
     {
-      table = this.gui.jDragTableErrors;
+      table = this.gui.jGTITableErrors;
     }
-    else if ( event.getSource () == this.gui.jDragTableWarnings )
+    else if ( event.getSource () == this.gui.jGTITableWarnings )
     {
-      table = this.gui.jDragTableWarnings;
+      table = this.gui.jGTITableWarnings;
     }
     else
     {
@@ -932,14 +932,14 @@ public final class MachinePanel implements EditorPanel, Modifyable,
       ListSelectionEvent event )
   {
     JTable table;
-    if ( event.getSource () == this.gui.jDragTableErrors.getSelectionModel () )
+    if ( event.getSource () == this.gui.jGTITableErrors.getSelectionModel () )
     {
-      table = this.gui.jDragTableErrors;
+      table = this.gui.jGTITableErrors;
     }
-    else if ( event.getSource () == this.gui.jDragTableWarnings
+    else if ( event.getSource () == this.gui.jGTITableWarnings
         .getSelectionModel () )
     {
-      table = this.gui.jDragTableWarnings;
+      table = this.gui.jGTITableWarnings;
     }
     else
     {

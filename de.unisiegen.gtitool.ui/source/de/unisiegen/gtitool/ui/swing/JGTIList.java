@@ -17,14 +17,13 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 
 
 /**
- * Special {@link JTable}, that supports drag and drop.
+ * Special {@link JList}, that supports drag and drop.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -72,7 +71,7 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
-   * Allocates a new <code>JDragList</code>.
+   * Allocates a new {@link JGTIList}.
    */
   public JGTIList ()
   {

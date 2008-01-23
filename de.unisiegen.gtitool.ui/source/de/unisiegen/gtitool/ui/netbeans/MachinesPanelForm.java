@@ -107,12 +107,44 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
 
         jTabbedPaneConsole.setFocusable(false);
         jGTITableErrors.setFocusable(false);
+        jGTITableErrors.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jGTITableErrorsMouseMoved(evt);
+            }
+        });
+        jGTITableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jGTITableErrorsFocusLost(evt);
+            }
+        });
+        jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableErrorsMouseExited(evt);
+            }
+        });
+
         jScrollPaneErrors.setViewportView(jGTITableErrors);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jScrollPaneErrors); // NOI18N
 
         jGTITableWarnings.setFocusable(false);
+        jGTITableWarnings.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jGTITableWarningsMouseMoved(evt);
+            }
+        });
+        jGTITableWarnings.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jGTITableWarningsFocusLost(evt);
+            }
+        });
+        jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableWarningsMouseExited(evt);
+            }
+        });
+
         jScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
         jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jScrollPaneWarnings); // NOI18N
@@ -143,6 +175,30 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         add(wordPanel, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTITableErrorsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableErrorsMouseExited
+      this.logic.handleConsoleTableMouseExited ( evt );
+    }//GEN-LAST:event_jGTITableErrorsMouseExited
+
+    private void jGTITableWarningsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableWarningsMouseExited
+      this.logic.handleConsoleTableMouseExited ( evt );
+    }//GEN-LAST:event_jGTITableWarningsMouseExited
+
+    private void jGTITableWarningsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableWarningsFocusLost
+      this.logic.handleConsoleTableFocusLost(evt);
+    }//GEN-LAST:event_jGTITableWarningsFocusLost
+
+    private void jGTITableWarningsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableWarningsMouseMoved
+      this.logic.handleConsoleTableMouseMoved(evt);
+    }//GEN-LAST:event_jGTITableWarningsMouseMoved
+
+    private void jGTITableErrorsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableErrorsMouseMoved
+      this.logic.handleConsoleTableMouseMoved(evt);
+    }//GEN-LAST:event_jGTITableErrorsMouseMoved
+
+    private void jGTITableErrorsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableErrorsFocusLost
+      this.logic.handleConsoleTableFocusLost(evt);
+    }//GEN-LAST:event_jGTITableErrorsFocusLost
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

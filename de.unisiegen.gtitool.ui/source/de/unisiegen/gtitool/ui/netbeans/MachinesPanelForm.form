@@ -171,6 +171,11 @@
                       <Properties>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseMoved"/>
+                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableErrorsFocusLost"/>
+                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseExited"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -197,6 +202,11 @@
                       <Properties>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarningsMouseMoved"/>
+                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableWarningsFocusLost"/>
+                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarningsMouseExited"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

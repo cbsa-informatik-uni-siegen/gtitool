@@ -29,7 +29,7 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIList extends JList implements DropTargetListener
+public final class JGTIList extends JList implements DropTargetListener
 {
 
   /**
@@ -39,9 +39,36 @@ public class JGTIList extends JList implements DropTargetListener
 
 
   /**
+   * The into drop mode.
+   * 
+   * @see #getDropMode()
+   * @see #setDropMode(int)
+   */
+  public static final int DROP_INTO = 0;
+
+
+  /**
+   * The between drop mode.
+   * 
+   * @see #getDropMode()
+   * @see #setDropMode(int)
+   */
+  public static final int DROP_BETWEEN = 1;
+
+
+  /**
    * The drop location.
    */
   private Point dropLocation = null;
+
+
+  /**
+   * The drop mode used for this {@link JGTIList}.
+   * 
+   * @see #getDropMode()
+   * @see #setDropMode(int)
+   */
+  private int dropMode = DROP_INTO;
 
 
   /**
@@ -82,7 +109,7 @@ public class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragEnter(DropTargetDragEvent)
    */
-  public void dragEnter ( DropTargetDragEvent event )
+  public final void dragEnter ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
     this.dropLocation = event.getLocation ();
@@ -95,7 +122,7 @@ public class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
-  public void dragExit ( @SuppressWarnings ( "unused" )
+  public final void dragExit ( @SuppressWarnings ( "unused" )
   DropTargetEvent event )
   {
     this.dropLocation = null;
@@ -108,7 +135,7 @@ public class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dragOver(DropTargetDragEvent)
    */
-  public void dragOver ( DropTargetDragEvent event )
+  public final void dragOver ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
     this.dropLocation = event.getLocation ();
@@ -121,7 +148,7 @@ public class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#drop(DropTargetDropEvent)
    */
-  public void drop ( DropTargetDropEvent event )
+  public final void drop ( DropTargetDropEvent event )
   {
     event.acceptDrop ( event.getDropAction () );
     try
@@ -136,7 +163,6 @@ public class JGTIList extends JList implements DropTargetListener
     }
     this.dropLocation = null;
     repaint ();
-
   }
 
 
@@ -145,11 +171,23 @@ public class JGTIList extends JList implements DropTargetListener
    * 
    * @see DropTargetListener#dropActionChanged(DropTargetDragEvent)
    */
-  public void dropActionChanged ( DropTargetDragEvent event )
+  public final void dropActionChanged ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
     this.dropLocation = event.getLocation ();
     repaint ();
+  }
+
+
+  /**
+   * Returns the drop mode of this {@link JGTIList}.
+   * 
+   * @return The drop mode of this {@link JGTIList}.
+   * @see #setDropMode(int)
+   */
+  public final int getDropMode ()
+  {
+    return this.dropMode;
   }
 
 
@@ -170,39 +208,64 @@ public class JGTIList extends JList implements DropTargetListener
    * @see JComponent#paintComponent(Graphics)
    */
   @Override
-  protected void paintComponent ( Graphics graphics )
+  protected final void paintComponent ( Graphics graphics )
   {
     super.paintComponent ( graphics );
     if ( this.dropLocation != null )
     {
-      int rowIndex = locationToIndex ( this.dropLocation );
-      Rectangle rect = getCellBounds ( rowIndex, rowIndex );
-      if ( ( rect == null )
-          || ( this.dropLocation.getY () > rect.y + rect.height ) )
+      if ( this.dropMode == DROP_INTO )
       {
-        rowIndex = getModel ().getSize ();
+        Rectangle rect = getVisibleRect ();
+        graphics.setColor ( Color.BLACK );
+        graphics.drawRect ( 0, rect.y, rect.width - 1, rect.height - 1 );
       }
-      int y = 0;
-      for ( int i = 0 ; i < rowIndex ; i++ )
+      else if ( this.dropMode == DROP_BETWEEN )
       {
-        y += getCellBounds ( i, i ).height; // getRowHeight(rowIndex);
+        int rowIndex = locationToIndex ( this.dropLocation );
+        Rectangle rect = getCellBounds ( rowIndex, rowIndex );
+        if ( ( rect == null )
+            || ( this.dropLocation.getY () > rect.y + rect.height ) )
+        {
+          rowIndex = getModel ().getSize ();
+        }
+        int y = 0;
+        for ( int i = 0 ; i < rowIndex ; i++ )
+        {
+          y += getCellBounds ( i, i ).height; // getRowHeight(rowIndex);
+        }
+        if ( y > 0 )
+        {
+          y -= 1;
+        }
+        int width = getWidth () - 1;
+        int size = 3;
+        // Color
+        graphics.setColor ( Color.BLACK );
+        // Line
+        graphics.drawLine ( size, y, width - size, y );
+        // Left
+        graphics.drawLine ( size, y, 0, y - size );
+        graphics.drawLine ( size, y, 0, y + size );
+        // Right
+        graphics.drawLine ( width - size, y, width, y - size );
+        graphics.drawLine ( width - size, y, width, y + size );
       }
-      if ( y > 0 )
-      {
-        y -= 1;
-      }
-      int width = getWidth () - 1;
-      int size = 3;
-      // Color
-      graphics.setColor ( Color.BLACK );
-      // Line
-      graphics.drawLine ( size, y, width - size, y );
-      // Left
-      graphics.drawLine ( size, y, 0, y - size );
-      graphics.drawLine ( size, y, 0, y + size );
-      // Right
-      graphics.drawLine ( width - size, y, width, y - size );
-      graphics.drawLine ( width - size, y, width, y + size );
     }
+  }
+
+
+  /**
+   * Sets the drop modeof this {@link JGTIList}.
+   * 
+   * @param dropMode The new drop mode.
+   */
+  public final void setDropMode ( int dropMode )
+  {
+    if ( ( dropMode != DROP_INTO ) && ( dropMode != DROP_BETWEEN ) )
+    {
+      throw new IllegalArgumentException ( "drop mode is invalid" ); //$NON-NLS-1$
+    }
+
+    this.dropMode = dropMode;
   }
 }

@@ -48,6 +48,44 @@ public final class JGTITabbedPane extends JTabbedPane implements
 
 
   /**
+   * Returns the {@link EditorPanel} with the given index.
+   * 
+   * @param index The index.
+   * @return The {@link EditorPanel}.
+   */
+  public final EditorPanel getEditorPanel ( int index )
+  {
+    Component component = getComponentAt ( index );
+    if ( component == null )
+    {
+      return null;
+    }
+    return ( ( EditorPanelForm ) component ).getLogic ();
+  }
+
+
+  /**
+   * Returns the title of the given {@link EditorPanel}.
+   * 
+   * @param editorPanel The {@link EditorPanel}.
+   * @return The title of the given {@link EditorPanel}.
+   */
+  public final String getEditorPanelTitle ( EditorPanel editorPanel )
+  {
+    int index = -1;
+    for ( int i = 0 ; i < getComponentCount () ; i++ )
+    {
+      if ( editorPanel.getPanel () == getComponentAt ( i ) )
+      {
+        index = i;
+        break;
+      }
+    }
+    return getTitleAt ( index );
+  }
+
+
+  /**
    * Returns the selected {@link EditorPanel}.
    * 
    * @return The selected {@link EditorPanel}.
@@ -77,6 +115,17 @@ public final class JGTITabbedPane extends JTabbedPane implements
       editorPanelList.add ( ( ( EditorPanelForm ) current ).getLogic () );
     }
     return editorPanelList.iterator ();
+  }
+
+
+  /**
+   * Removes the given {@link EditorPanel}.
+   * 
+   * @param editorPanel The {@link EditorPanel} to remove.
+   */
+  public final void removeEditorPanel ( EditorPanel editorPanel )
+  {
+    remove ( editorPanel.getPanel () );
   }
 
 

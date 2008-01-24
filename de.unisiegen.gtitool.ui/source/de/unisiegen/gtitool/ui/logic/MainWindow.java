@@ -183,12 +183,32 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Closes the active editor window.
+   * Closes the selected {@link EditorPanel}.
    */
   public final void handleClose ()
   {
-    this.gui.jGTITabbedPaneMain.removeSelectedEditorPanel ();
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
 
+    if ( panel.isModified () )
+    {
+      String fileName = panel.getFile () == null ? this.gui.jGTITabbedPaneMain
+          .getEditorPanelTitle ( panel ) : panel.getFile ().getName ();
+      int choice = JOptionPane.showConfirmDialog ( this.gui, Messages
+          .getString ( "MainWindow.CloseModifyMessage", fileName ), Messages //$NON-NLS-1$
+          .getString ( "MainWindow.CloseModifyTitle" ), //$NON-NLS-1$
+          JOptionPane.YES_NO_CANCEL_OPTION );
+      if ( choice == JOptionPane.YES_OPTION )
+      {
+        handleSave ();
+      }
+      else if ( choice == JOptionPane.CANCEL_OPTION )
+      {
+        return;
+      }
+    }
+
+    this.gui.jGTITabbedPaneMain.removeSelectedEditorPanel ();
+    // All editor panels are closed
     if ( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () == null )
     {
       setGeneralStates ( false );
@@ -537,21 +557,50 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleQuit ()
   {
-    PreferenceManager preferenceManager = PreferenceManager.getInstance ();
-    preferenceManager.setMainWindowPreferences ( this.gui );
+    // Active file
+    File activeFile = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () == null ? null
+        : this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getFile ();
 
-    ArrayList < File > files = new ArrayList < File > ();
-    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    // Opened file
+    ArrayList < File > openedFiles = new ArrayList < File > ();
+    for ( int i = this.gui.jGTITabbedPaneMain.getComponentCount () - 1 ; i >= 0 ; i-- )
     {
+      EditorPanel current = this.gui.jGTITabbedPaneMain.getEditorPanel ( i );
       if ( current.getFile () != null )
       {
-        files.add ( current.getFile () );
+        openedFiles.add ( current.getFile () );
       }
+      if ( current.isModified () )
+      {
+        this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
+        String fileName = current.getFile () == null ? this.gui.jGTITabbedPaneMain
+            .getEditorPanelTitle ( current )
+            : current.getFile ().getName ();
+        int choice = JOptionPane.showConfirmDialog ( this.gui, Messages
+            .getString ( "MainWindow.CloseModifyMessage", fileName ), Messages //$NON-NLS-1$
+            .getString ( "MainWindow.CloseModifyTitle" ), //$NON-NLS-1$
+            JOptionPane.YES_NO_CANCEL_OPTION );
+        if ( choice == JOptionPane.YES_OPTION )
+        {
+          String saveFileName = current.handleSave ();
+          if ( saveFileName != null )
+          {
+            this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( current,
+                saveFileName );
+          }
+        }
+        else if ( choice == JOptionPane.CANCEL_OPTION )
+        {
+          return;
+        }
+      }
+      this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );
     }
-    OpenedFilesItem item = new OpenedFilesItem ( files,
-        this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () == null ? null
-            : this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getFile () );
-    preferenceManager.setOpenedFilesItem ( item );
+    PreferenceManager.getInstance ().setMainWindowPreferences ( this.gui );
+    PreferenceManager.getInstance ().setOpenedFilesItem (
+        new OpenedFilesItem ( openedFiles, activeFile ) );
+
+    // System exit
     System.exit ( 0 );
   }
 
@@ -1261,7 +1310,7 @@ public final class MainWindow implements LanguageChangedListener
 
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
 
-    if ( panel != null )
+    if ( ( panel != null ) && ( panel.getFile () != null ) )
     {
       if ( state )
       {

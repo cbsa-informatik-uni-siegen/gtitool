@@ -324,6 +324,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
       GraphConstants.setGradientColor ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemStartState ()
               .getColor () );
+      GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }
     else
     {

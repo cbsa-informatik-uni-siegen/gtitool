@@ -658,6 +658,7 @@ public final class MainWindow implements LanguageChangedListener
             .isTableVisible () );
         setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
         setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
+        
       }
       else
       {
@@ -711,14 +712,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarAddState ( boolean state )
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    for ( EditorPanel panel : this.gui.jGTITabbedPaneMain )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      if ( ( panel instanceof MachinePanel ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleToolbarAddState ( state );
+        machinePanel.handleToolbarAddState ( state );
+      }
+    }
   }
 
 
@@ -729,14 +731,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarEnd ( boolean state )
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    for ( EditorPanel panel : this.gui.jGTITabbedPaneMain )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      if ( ( panel instanceof MachinePanel ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleToolbarEnd ( state );
+        machinePanel.handleToolbarEnd ( state );
+      }
+    }
   }
 
 
@@ -747,14 +750,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarMouse ( boolean state )
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    for ( EditorPanel panel : this.gui.jGTITabbedPaneMain )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      if ( ( panel instanceof MachinePanel ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleToolbarMouse ( state );
+        machinePanel.handleToolbarMouse ( state );
+      }
+    }
   }
 
 
@@ -765,14 +769,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarStart ( boolean state )
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    for ( EditorPanel panel : this.gui.jGTITabbedPaneMain )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      if ( ( panel instanceof MachinePanel ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleToolbarStart ( state );
+        machinePanel.handleToolbarStart ( state );
+      }
+    }
   }
 
 
@@ -783,14 +788,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarTransition ( boolean state )
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    for ( EditorPanel panel : this.gui.jGTITabbedPaneMain )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      if ( ( panel instanceof MachinePanel ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleToolbarTransition ( state );
+        machinePanel.handleToolbarTransition ( state );
+      }
+    }
   }
 
 

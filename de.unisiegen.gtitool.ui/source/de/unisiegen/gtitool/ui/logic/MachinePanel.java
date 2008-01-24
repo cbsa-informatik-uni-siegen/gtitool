@@ -238,6 +238,39 @@ public final class MachinePanel implements EditorPanel
 
   /** The {@link MouseAdapter} for the end icon in the toolbar */
   private MouseAdapter end;
+  
+  /** Signals the active mouse adapter */
+  public enum ACTIVE_MOUSE_ADAPTER
+  {
+    /**
+     * Mouse is choosen.
+     */
+    Mouse,
+
+    /**
+     * Add State is choosen.
+     */
+    AddState,
+    
+    /**
+     * Add Start State is choosen.
+     */
+    AddStartState,
+
+    /**
+     * Add Final State is choosen.
+     */
+    AddFinalState,
+    
+    /**
+     * Add Transition is choosen.
+     */
+    AddTransition,
+  }
+  
+  /** The actual active MouseAdapter */
+  private static ACTIVE_MOUSE_ADAPTER activeMouseAdapter;
+
 
 
   /** The source state for a new Transition */
@@ -363,7 +396,41 @@ public final class MachinePanel implements EditorPanel
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
     intitializeMouseAdapter ();
-    this.graph.addMouseListener ( this.mouse );
+    if ( activeMouseAdapter == null )
+    {
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.Mouse;
+    }
+    switch ( activeMouseAdapter )
+    {
+
+      case Mouse :
+      {
+        handleToolbarMouse ( true );
+        break;
+      }
+      case AddState :
+      {
+        handleToolbarAddState ( true );
+        break;
+      }
+      case AddStartState :
+      {
+        handleToolbarStart ( true );
+        break;
+      }
+      case AddFinalState :
+      {
+        handleToolbarEnd ( true );
+        break;
+      }
+      case AddTransition :
+      {
+        handleToolbarTransition ( true );
+        break;
+      }
+
+    }
+
     this.gui.diagrammContentPanel.setViewportView ( this.graph );
 
     this.errorTableModel = new ConsoleTableModel ();
@@ -1200,7 +1267,10 @@ public final class MachinePanel implements EditorPanel
   public final void handleToolbarAddState ( boolean state )
   {
     if ( state )
+    {
       this.graph.addMouseListener ( this.addState );
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddState;
+    }
     else
       this.graph.removeMouseListener ( this.addState );
   }
@@ -1225,7 +1295,10 @@ public final class MachinePanel implements EditorPanel
   public final void handleToolbarEnd ( boolean state )
   {
     if ( state )
+    {
       this.graph.addMouseListener ( this.end );
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddFinalState;
+    }
     else
       this.graph.removeMouseListener ( this.end );
   }
@@ -1239,7 +1312,10 @@ public final class MachinePanel implements EditorPanel
   public final void handleToolbarMouse ( boolean state )
   {
     if ( state )
+    {
       this.graph.addMouseListener ( this.mouse );
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.Mouse;
+    }
     else
       this.graph.removeMouseListener ( this.mouse );
   }
@@ -1253,7 +1329,10 @@ public final class MachinePanel implements EditorPanel
   public final void handleToolbarStart ( boolean state )
   {
     if ( state )
+    {
       this.graph.addMouseListener ( this.start );
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddStartState;
+    }
     else
       this.graph.removeMouseListener ( this.start );
   }
@@ -1270,6 +1349,8 @@ public final class MachinePanel implements EditorPanel
     {
       this.graph.addMouseListener ( this.transition );
       this.graph.addMouseMotionListener ( this.transitionMove );
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddTransition;
+      
     }
     else
     {

@@ -8,13 +8,12 @@ import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 
 
 /**
- * TODO
- * 
  * @author Benjamin Mies
  * @version $Id$
  */
@@ -22,11 +21,11 @@ import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 public class GrammarPanel implements EditorPanel
 {
 
-  GrammarPanelForm gui;
+  private GrammarPanelForm gui;
 
 
   /**
-   * Allocate a new <code>GrammarPanel</code>
+   * Allocates a new <code>GrammarPanel</code>
    * 
    * @param parent The parent frame
    * @param alphabet the {@link Alphabet}
@@ -38,14 +37,10 @@ public class GrammarPanel implements EditorPanel
   }
 
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getPanel()
-   */
-  public JPanel getPanel ()
+  public void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
   {
-    return this.gui;
+
   }
 
 
@@ -62,21 +57,60 @@ public class GrammarPanel implements EditorPanel
 
   public File getFile ()
   {
-    // TODO Auto-generated method stub
     return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getPanel()
+   */
+  public JPanel getPanel ()
+  {
+    return this.gui;
   }
 
 
   public String handleSave ()
   {
-    // TODO Auto-generated method stub
     return null;
   }
 
 
   public String handleSaveAs ()
   {
-    // TODO Auto-generated method stub
     return null;
+  }
+
+
+  public void handleToolbarAlphabet ()
+  {
+
+  }
+
+
+  public boolean isModified ()
+  {
+    return false;
+  }
+
+
+  public void languageChanged ()
+  {
+
+  }
+
+
+  public void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+
+  }
+
+
+  public void resetModify ()
+  {
+
   }
 }

@@ -78,8 +78,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class MachinePanel implements EditorPanel, Modifyable,
-    LanguageChangedListener
+public final class MachinePanel implements EditorPanel
 {
 
   /**
@@ -781,9 +780,10 @@ public final class MachinePanel implements EditorPanel, Modifyable,
     }
     else
     {
+      boolean newModifyStatus = isModified ();
       for ( int n = 0 ; n < listeners.length ; ++n )
       {
-        listeners [ n ].modifyStatusChanged ( isModified () );
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
       }
     }
   }

@@ -70,24 +70,12 @@ public final class DefaultSymbol implements Symbol
 
     // Attribute
     boolean foundName = false;
-    boolean foundParserStartOffset = false;
-    boolean foundParserEndOffset = false;
     for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
         setName ( current.getValue () );
         foundName = true;
-      }
-      else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
-      {
-        setParserStartOffset ( current.getValueInt () );
-        foundParserStartOffset = true;
-      }
-      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
-      {
-        setParserEndOffset ( current.getValueInt () );
-        foundParserEndOffset = true;
       }
       else
       {
@@ -97,8 +85,7 @@ public final class DefaultSymbol implements Symbol
     }
 
     // Not all attribute values found
-    if ( ( !foundName ) || ( !foundParserStartOffset )
-        || ( !foundParserEndOffset ) )
+    if ( !foundName )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -185,10 +172,6 @@ public final class DefaultSymbol implements Symbol
   {
     Element newElement = new Element ( "Symbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
-        this.parserStartOffset ) );
-    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
-        this.parserEndOffset ) );
     return newElement;
   }
 

@@ -14,7 +14,6 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -114,32 +113,10 @@ public final class DefaultAlphabet implements Alphabet
     }
 
     // Attribute
-    boolean foundParserStartOffset = false;
-    boolean foundParserEndOffset = false;
-    for ( Attribute current : element.getAttribute () )
-    {
-      if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
-      {
-        setParserStartOffset ( current.getValueInt () );
-        foundParserStartOffset = true;
-      }
-      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
-      {
-        setParserEndOffset ( current.getValueInt () );
-        foundParserEndOffset = true;
-      }
-      else
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Not all values found
-    if ( ( !foundParserStartOffset ) || ( !foundParserEndOffset ) )
+    if ( element.getAttribute ().size () >0 )
     {
       throw new StoreException ( Messages
-          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
 
     // Element
@@ -500,10 +477,6 @@ public final class DefaultAlphabet implements Alphabet
   public final Element getElement ()
   {
     Element newElement = new Element ( "Alphabet" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
-        this.parserStartOffset ) );
-    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
-        this.parserEndOffset ) );
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );

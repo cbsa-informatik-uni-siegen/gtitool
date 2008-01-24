@@ -81,12 +81,42 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 public final class MachinePanel implements EditorPanel
 {
 
+  /** Signals the active mouse adapter */
+  public enum ACTIVE_MOUSE_ADAPTER
+  {
+    /**
+     * Mouse is choosen.
+     */
+    MOUSE,
+
+    /**
+     * Add State is choosen.
+     */
+    ADD_STATE,
+
+    /**
+     * Add Start State is choosen.
+     */
+    ADD_START_STATE,
+
+    /**
+     * Add Final State is choosen.
+     */
+    ADD_FINAL_STATE,
+
+    /**
+     * Add Transition is choosen.
+     */
+    ADD_TRANSITION;
+  }
+
+
   /**
    * Do next step in word enter mode after a delay.
    * 
    * @author Benjamin Mies
    */
-  protected final class AutoStepTimerTask extends TimerTask
+  private final class AutoStepTimerTask extends TimerTask
   {
 
     /**
@@ -115,7 +145,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @author Christian Fehler
    */
-  protected final class HighlightTimerTask extends TimerTask
+  private final class HighlightTimerTask extends TimerTask
   {
 
     /**
@@ -183,6 +213,10 @@ public final class MachinePanel implements EditorPanel
   }
 
 
+  /** The actual active MouseAdapter */
+  private static ACTIVE_MOUSE_ADAPTER activeMouseAdapter;
+
+
   /**
    * The {@link EventListenerList}.
    */
@@ -238,39 +272,6 @@ public final class MachinePanel implements EditorPanel
 
   /** The {@link MouseAdapter} for the end icon in the toolbar */
   private MouseAdapter end;
-  
-  /** Signals the active mouse adapter */
-  public enum ACTIVE_MOUSE_ADAPTER
-  {
-    /**
-     * Mouse is choosen.
-     */
-    Mouse,
-
-    /**
-     * Add State is choosen.
-     */
-    AddState,
-    
-    /**
-     * Add Start State is choosen.
-     */
-    AddStartState,
-
-    /**
-     * Add Final State is choosen.
-     */
-    AddFinalState,
-    
-    /**
-     * Add Transition is choosen.
-     */
-    AddTransition,
-  }
-  
-  /** The actual active MouseAdapter */
-  private static ACTIVE_MOUSE_ADAPTER activeMouseAdapter;
-
 
 
   /** The source state for a new Transition */
@@ -398,32 +399,32 @@ public final class MachinePanel implements EditorPanel
     intitializeMouseAdapter ();
     if ( activeMouseAdapter == null )
     {
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.Mouse;
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
     }
     switch ( activeMouseAdapter )
     {
 
-      case Mouse :
+      case MOUSE :
       {
         handleToolbarMouse ( true );
         break;
       }
-      case AddState :
+      case ADD_STATE :
       {
         handleToolbarAddState ( true );
         break;
       }
-      case AddStartState :
+      case ADD_START_STATE :
       {
         handleToolbarStart ( true );
         break;
       }
-      case AddFinalState :
+      case ADD_FINAL_STATE :
       {
         handleToolbarEnd ( true );
         break;
       }
-      case AddTransition :
+      case ADD_TRANSITION :
       {
         handleToolbarTransition ( true );
         break;
@@ -1269,7 +1270,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.addState );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddState;
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_STATE;
     }
     else
       this.graph.removeMouseListener ( this.addState );
@@ -1297,7 +1298,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.end );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddFinalState;
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_FINAL_STATE;
     }
     else
       this.graph.removeMouseListener ( this.end );
@@ -1314,7 +1315,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.mouse );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.Mouse;
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
     }
     else
       this.graph.removeMouseListener ( this.mouse );
@@ -1331,7 +1332,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.start );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddStartState;
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_START_STATE;
     }
     else
       this.graph.removeMouseListener ( this.start );
@@ -1349,8 +1350,8 @@ public final class MachinePanel implements EditorPanel
     {
       this.graph.addMouseListener ( this.transition );
       this.graph.addMouseMotionListener ( this.transitionMove );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.AddTransition;
-      
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_TRANSITION;
+
     }
     else
     {
@@ -1365,6 +1366,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param event
    */
+  @SuppressWarnings ( "synthetic-access" )
   public final void handleWordAutoStep ( ItemEvent event )
   {
     if ( event.getStateChange () == ItemEvent.SELECTED )

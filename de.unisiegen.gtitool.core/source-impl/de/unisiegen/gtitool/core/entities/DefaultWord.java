@@ -109,24 +109,12 @@ public final class DefaultWord implements Word
 
     // Attribute
     boolean foundCurrentPosition = false;
-    boolean foundParserStartOffset = false;
-    boolean foundParserEndOffset = false;
     for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "currentPosition" ) ) //$NON-NLS-1$
       {
         setCurrentPosition ( current.getValueInt () );
         foundCurrentPosition = true;
-      }
-      else if ( current.getName ().equals ( "parserStartOffset" ) ) //$NON-NLS-1$
-      {
-        setParserStartOffset ( current.getValueInt () );
-        foundParserStartOffset = true;
-      }
-      else if ( current.getName ().equals ( "parserEndOffset" ) ) //$NON-NLS-1$
-      {
-        setParserEndOffset ( current.getValueInt () );
-        foundParserEndOffset = true;
       }
       else
       {
@@ -136,8 +124,7 @@ public final class DefaultWord implements Word
     }
 
     // Not all attribute values found
-    if ( ( !foundCurrentPosition ) || ( !foundParserStartOffset )
-        || ( !foundParserEndOffset ) )
+    if ( !foundCurrentPosition )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -343,10 +330,6 @@ public final class DefaultWord implements Word
     Element newElement = new Element ( "Word" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "currentPosition", //$NON-NLS-1$
         this.currentPosition ) );
-    newElement.addAttribute ( new Attribute ( "parserStartOffset", //$NON-NLS-1$
-        this.parserStartOffset ) );
-    newElement.addAttribute ( new Attribute ( "parserEndOffset", //$NON-NLS-1$
-        this.parserEndOffset ) );
     for ( Symbol current : this.symbolList )
     {
       newElement.addElement ( current );

@@ -563,13 +563,17 @@ public final class MainWindow implements LanguageChangedListener
 
     // Opened file
     ArrayList < File > openedFiles = new ArrayList < File > ();
-    for ( int i = this.gui.jGTITabbedPaneMain.getComponentCount () - 1 ; i >= 0 ; i-- )
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
     {
-      EditorPanel current = this.gui.jGTITabbedPaneMain.getEditorPanel ( i );
       if ( current.getFile () != null )
       {
         openedFiles.add ( current.getFile () );
       }
+    }
+    // Close the tabs
+    for ( int i = this.gui.jGTITabbedPaneMain.getComponentCount () - 1 ; i >= 0 ; i-- )
+    {
+      EditorPanel current = this.gui.jGTITabbedPaneMain.getEditorPanel ( i );
       if ( current.isModified () )
       {
         this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );

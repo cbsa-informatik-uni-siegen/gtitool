@@ -68,19 +68,23 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
 
         jPanelTable.setLayout(new java.awt.GridBagLayout());
 
-        jGTITableMachine.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         jGTITableMachine.setFocusable(false);
-        jGTITableMachine.setRowSelectionAllowed(false);
+        jGTITableMachine.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jGTITableMachineMouseMoved(evt);
+            }
+        });
+        jGTITableMachine.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jGTITableMachineFocusLost(evt);
+            }
+        });
+        jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableMachineMouseExited(evt);
+            }
+        });
+
         jScrollPaneMachine.setViewportView(jGTITableMachine);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -175,6 +179,18 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         add(wordPanel, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTITableMachineMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseMoved
+      this.logic.handleMachineTableMouseMoved(evt);
+    }//GEN-LAST:event_jGTITableMachineMouseMoved
+
+    private void jGTITableMachineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseExited
+      this.logic.handleMachineTableMouseExited(evt);
+    }//GEN-LAST:event_jGTITableMachineMouseExited
+
+    private void jGTITableMachineFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableMachineFocusLost
+      this.logic.handleMachineTableFocusLost(evt);
+    }//GEN-LAST:event_jGTITableMachineFocusLost
 
     private void jGTITableErrorsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableErrorsMouseExited
       this.logic.handleConsoleTableMouseExited ( evt );

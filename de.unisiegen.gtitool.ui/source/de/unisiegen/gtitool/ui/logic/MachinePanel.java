@@ -110,12 +110,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Selects the item with the given index in the console table or clears the
+   * Selects the item with the given index in the {@link JTable} or clears the
    * selection after a delay.
    * 
    * @author Christian Fehler
    */
-  protected final class WarningTimerTask extends TimerTask
+  protected final class HighlightTimerTask extends TimerTask
   {
 
     /**
@@ -125,26 +125,26 @@ public final class MachinePanel implements EditorPanel
 
 
     /**
-     * The console table.
+     * The {@link JTable}.
      */
-    protected JTable consoleTable;
+    protected JTable table;
 
 
     /**
-     * Initilizes the <code>SleepTimerTask</code>.
+     * Initilizes the {@link HighlightTimerTask}.
      * 
-     * @param consoleTable The console table.
+     * @param table The {@link JTable}.
      * @param index The index.
      */
-    public WarningTimerTask ( JTable consoleTable, int index )
+    public HighlightTimerTask ( JTable table, int index )
     {
       this.index = index;
-      this.consoleTable = consoleTable;
+      this.table = table;
     }
 
 
     /**
-     * Selects the item with the given index in the color list or clears the
+     * Selects the item with the given index in the {@link JTable} or clears the
      * selection after a delay.
      * 
      * @see TimerTask#run()
@@ -159,9 +159,9 @@ public final class MachinePanel implements EditorPanel
 
           public void run ()
           {
-            WarningTimerTask.this.consoleTable.getSelectionModel ()
+            HighlightTimerTask.this.table.getSelectionModel ()
                 .clearSelection ();
-            WarningTimerTask.this.consoleTable.repaint ();
+            HighlightTimerTask.this.table.repaint ();
           }
         } );
       }
@@ -172,10 +172,10 @@ public final class MachinePanel implements EditorPanel
 
           public void run ()
           {
-            WarningTimerTask.this.consoleTable.getSelectionModel ()
-                .setSelectionInterval ( WarningTimerTask.this.index,
-                    WarningTimerTask.this.index );
-            WarningTimerTask.this.consoleTable.repaint ();
+            HighlightTimerTask.this.table.getSelectionModel ()
+                .setSelectionInterval ( HighlightTimerTask.this.index,
+                    HighlightTimerTask.this.index );
+            HighlightTimerTask.this.table.repaint ();
           }
         } );
       }
@@ -287,6 +287,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * The {@link Timer} of the machine table.
+   */
+  private Timer machineTimer = null;
+
+
+  /**
    * The {@link Timer} of the auto step mode.
    */
   private Timer autoStepTimer = null;
@@ -394,6 +400,16 @@ public final class MachinePanel implements EditorPanel
         } );
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent event )
+          {
+            handleMachineTableValueChanged ( event );
+          }
+
+        } );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -846,7 +862,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Handles {@link FocusEvent}s on the console table.
+   * Handles focus lost event on the console table.
    * 
    * @param event The {@link FocusEvent}.
    */
@@ -911,12 +927,13 @@ public final class MachinePanel implements EditorPanel
     if ( index == -1 )
     {
       table.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
-      this.consoleTimer.schedule ( new WarningTimerTask ( table, -1 ), 250 );
+      this.consoleTimer.schedule ( new HighlightTimerTask ( table, -1 ), 250 );
     }
     else
     {
       table.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-      this.consoleTimer.schedule ( new WarningTimerTask ( table, index ), 250 );
+      this.consoleTimer
+          .schedule ( new HighlightTimerTask ( table, index ), 250 );
     }
   }
 
@@ -926,7 +943,6 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  @SuppressWarnings ( "unchecked" )
   public final void handleConsoleTableValueChanged (
       @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
@@ -977,6 +993,93 @@ public final class MachinePanel implements EditorPanel
   {
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
+  }
+
+
+  /**
+   * Handles the focus lost event on the machine table.
+   * 
+   * @param event The {@link FocusEvent}.
+   */
+  public final void handleMachineTableFocusLost ( @SuppressWarnings ( "unused" )
+  FocusEvent event )
+  {
+    if ( this.machineTimer != null )
+    {
+      this.machineTimer.cancel ();
+    }
+    this.gui.jGTITableMachine.clearSelection ();
+    this.clearHighlight ();
+  }
+
+
+  /**
+   * Handles the mouse exited event on the machine table.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleMachineTableMouseExited (
+      @SuppressWarnings ( "unused" )
+      MouseEvent event )
+  {
+    if ( this.machineTimer != null )
+    {
+      this.machineTimer.cancel ();
+    }
+    this.gui.jGTITableMachine.clearSelection ();
+    this.clearHighlight ();
+  }
+
+
+  /**
+   * Handles the mouse moved event on the machine table.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleMachineTableMouseMoved ( MouseEvent event )
+  {
+    int index = this.gui.jGTITableMachine.rowAtPoint ( event.getPoint () );
+    if ( this.machineTimer != null )
+    {
+      this.machineTimer.cancel ();
+    }
+    this.machineTimer = new Timer ();
+    if ( index == -1 )
+    {
+      this.gui.jGTITableMachine
+          .setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
+      this.machineTimer.schedule ( new HighlightTimerTask (
+          this.gui.jGTITableMachine, -1 ), 250 );
+    }
+    else
+    {
+      this.gui.jGTITableMachine.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+      this.machineTimer.schedule ( new HighlightTimerTask (
+          this.gui.jGTITableMachine, index ), 250 );
+    }
+  }
+
+
+  /**
+   * Handles {@link ListSelectionEvent}s on the machine table.
+   * 
+   * @param event The {@link ListSelectionEvent}.
+   */
+  public final void handleMachineTableValueChanged (
+      @SuppressWarnings ( "unused" )
+      ListSelectionEvent event )
+  {
+    int index = this.gui.jGTITableMachine.getSelectedRow ();
+    if ( index == -1 )
+    {
+      clearHighlight ();
+    }
+    else
+    {
+      ArrayList < State > stateList = new ArrayList < State > ( 1 );
+      stateList.add ( this.machine.getState ( index ) );
+      highlightStates ( stateList );
+    }
   }
 
 

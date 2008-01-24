@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.io.File;
@@ -14,7 +13,6 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -27,9 +25,7 @@ import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
@@ -156,22 +152,6 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Getter for the active EditorPanel
-   * 
-   * @return the active EditorPanel
-   */
-  public final EditorPanel getActiveEditor ()
-  {
-    if ( this.gui.jGTITabbedPaneMain.getSelectedComponent () == null )
-    {
-      return null;
-    }
-    return ( ( ( MachinesPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic () );
-  }
-
-
-  /**
    * Returns the gui.
    * 
    * @return The gui.
@@ -180,34 +160,6 @@ public final class MainWindow implements LanguageChangedListener
   public final MainWindowForm getGui ()
   {
     return this.gui;
-  }
-
-
-  /**
-   * Returns the {@link Alphabet} of the selected {@link EditorPanel}.
-   * 
-   * @return The {@link Alphabet} of the selected {@link EditorPanel}.
-   */
-  public final Alphabet getSelectedAlphabet ()
-  {
-    EditorPanel editorPanel = getSelectedEditorPanel ();
-    if ( editorPanel == null )
-    {
-      return null;
-    }
-    return editorPanel.getAlphabet ();
-  }
-
-
-  /**
-   * Returns the selected {@link EditorPanel}.
-   * 
-   * @return The selected {@link EditorPanel}.
-   */
-  public final EditorPanel getSelectedEditorPanel ()
-  {
-    return ( ( MachinesPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
   }
 
 
@@ -232,66 +184,17 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Closes the active editor window.
-   * 
-   * @return true if the active editor could be closed.
    */
-  public final boolean handleClose ()
+  public final void handleClose ()
   {
-    // EditorPanel selectedEditor = getActiveEditor ();
-    boolean success;
-    // if ( selectedEditor.shouldBeSaved ( ) )
-    // {
-    // Object [ ] options =
-    // {
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "Yes" ) ,
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "No" ) ,
-    // java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "Cancel" ) } ;
-    // int n = JOptionPane.showOptionDialog ( window , selectedEditor
-    // .getFileName ( )
-    // + java.util.ResourceBundle.getBundle ( "de/unisiegen/tpml/ui/ui" )
-    // .getString ( "WantTosave" ) , java.util.ResourceBundle.getBundle (
-    // "de/unisiegen/tpml/ui/ui" ).getString ( "Save_File" ) ,
-    // JOptionPane.YES_NO_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE ,
-    // null , options , options [ 2 ] ) ;
-    // switch ( n )
-    // {
-    // case 0 : // Save Changes
-    // logger.debug ( "Close dialog: YES" ) ;
-    // success = selectedEditor.handleSave ( ) ;
-    // if ( success )
-    // {
-    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-    // window.repaint ( ) ;
-    // }
-    // return success ;
-    // case 1 : // Do not save changes
-    // logger.debug ( "Close dialog: NO" ) ;
-    // window.tabbedPane.remove ( window.tabbedPane.getSelectedIndex ( ) ) ;
-    // window.repaint ( ) ;
-    // success = true ;
-    // case 2 : // Cancelled.
-    // logger.debug ( "Close dialog: CANCEL" ) ;
-    // success = false ;
-    // default :
-    // success = false ;
-    // }
-    // }
-    // else
-    {
-      this.gui.jGTITabbedPaneMain.remove ( this.gui.jGTITabbedPaneMain
-          .getSelectedIndex () );
-      this.gui.repaint ();
-      success = true;
-    }
-    if ( getActiveEditor () == null )
+    this.gui.jGTITabbedPaneMain.removeSelectedEditorPanel ();
+
+    if ( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () == null )
     {
       setGeneralStates ( false );
       setSaveState ( false );
 
-      // toolbar items
+      // Toolbar items
       this.gui.jButtonAddState.setEnabled ( false );
       this.gui.jButtonAddTransition.setEnabled ( false );
       this.gui.jButtonFinalState.setEnabled ( false );
@@ -299,7 +202,6 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonStartState.setEnabled ( false );
       this.gui.jButtonEditAlphabet.setEnabled ( false );
     }
-    return success;
   }
 
 
@@ -314,12 +216,12 @@ public final class MainWindow implements LanguageChangedListener
     {
       PreferenceManager.getInstance ().setVisibleConsole (
           this.gui.jCheckBoxMenuItemConsole.getState () );
-      MachinePanel current = ( MachinePanel ) getActiveEditor ();
+      MachinePanel current = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+          .getSelectedEditorPanel ();
       current
           .setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
       current
           .setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole.getState () );
-
     }
   }
 
@@ -329,7 +231,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEditAlphabet ()
   {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
+    MachinePanel current = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     current.handleToolbarAlphabet ();
   }
 
@@ -341,9 +244,8 @@ public final class MainWindow implements LanguageChangedListener
   {
     setToolBarEditItemState ( true );
     setToolBarEnterWordItemState ( false );
-    MachinePanel machinePanel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
-
+    MachinePanel machinePanel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     machinePanel.handleEditMachine ();
     machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
         .getState () );
@@ -357,8 +259,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEnterWord ()
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     int errorCount = 0;
     int warningCount = 0;
     try
@@ -366,9 +268,9 @@ public final class MainWindow implements LanguageChangedListener
       panel.clearValidationMessages ();
       panel.getMachine ().validate ();
     }
-    catch ( MachineValidationException e )
+    catch ( MachineValidationException exc )
     {
-      for ( MachineException error : e.getMachineException () )
+      for ( MachineException error : exc.getMachineException () )
       {
         if ( error.getType ().equals ( ErrorType.ERROR ) )
         {
@@ -393,7 +295,8 @@ public final class MainWindow implements LanguageChangedListener
     }
     setToolBarEditItemState ( false );
     setToolBarEnterWordItemState ( true );
-    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    MachinePanel machinePanel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     machinePanel.handleEnterWord ();
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
     machinePanel.setWordEnterMode ( true );
@@ -412,13 +315,11 @@ public final class MainWindow implements LanguageChangedListener
     if ( newEditorPanel != null )
     {
 
-      this.gui.jGTITabbedPaneMain.add ( newEditorPanel.getPanel () );
-      this.gui.jGTITabbedPaneMain.setSelectedComponent ( newEditorPanel
-          .getPanel () );
-      this.gui.jGTITabbedPaneMain
-          .setTitleAt (
-              this.gui.jGTITabbedPaneMain.getSelectedIndex (),
-              Messages.getString ( "MainWindow.NewFile" ) + count + newDialog.getFileEnding () ); //$NON-NLS-1$ 
+      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel,
+          Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+              + newDialog.getFileEnding () );
       count++ ;
       setGeneralStates ( true );
 
@@ -628,16 +529,17 @@ public final class MainWindow implements LanguageChangedListener
     PreferenceManager preferenceManager = PreferenceManager.getInstance ();
     preferenceManager.setMainWindowPreferences ( this.gui );
 
-    EditorPanel editorPanel;
     ArrayList < File > files = new ArrayList < File > ();
-    for ( Component component : this.gui.jGTITabbedPaneMain.getComponents () )
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
     {
-      editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
-      if ( editorPanel.getFile () != null )
-        files.add ( editorPanel.getFile () );
+      if ( current.getFile () != null )
+      {
+        files.add ( current.getFile () );
+      }
     }
     OpenedFilesItem item = new OpenedFilesItem ( files,
-        getActiveEditor () == null ? null : getActiveEditor ().getFile () );
+        this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () == null ? null
+            : this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getFile () );
     preferenceManager.setOpenedFilesItem ( item );
     System.exit ( 0 );
   }
@@ -648,13 +550,11 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleSave ()
   {
-    EditorPanel panel = ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     String fileName = panel.handleSave ();
     if ( fileName != null )
     {
-      this.gui.jGTITabbedPaneMain.setTitleAt ( this.gui.jGTITabbedPaneMain
-          .getSelectedIndex (), fileName );
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, fileName );
     }
   }
 
@@ -664,13 +564,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleSaveAs ()
   {
-    EditorPanel panel = ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     String fileName = panel.handleSaveAs ();
-
     if ( fileName != null )
-      this.gui.jGTITabbedPaneMain.setTitleAt ( this.gui.jGTITabbedPaneMain
-          .getSelectedIndex (), fileName );
+    {
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, fileName );
+    }
   }
 
 
@@ -679,7 +578,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTabbedPaneStateChanged ()
   {
-    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    MachinePanel machinePanel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     if ( machinePanel != null )
     {
       this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
@@ -695,11 +595,10 @@ public final class MainWindow implements LanguageChangedListener
       setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
       setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
 
-      for ( int i = 0 ; i < this.gui.jGTITabbedPaneMain.getComponentCount () ; i++ )
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        MachinesPanelForm panel = ( MachinesPanelForm ) this.gui.jGTITabbedPaneMain
-            .getComponentAt ( i );
-        ( ( MachinePanel ) panel.getLogic () )
+        MachinePanel panel = ( MachinePanel ) current;
+        panel
             .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
       }
       machinePanel
@@ -720,7 +619,8 @@ public final class MainWindow implements LanguageChangedListener
     {
       PreferenceManager.getInstance ().setVisibleTable (
           this.gui.jCheckBoxMenuItemTable.getState () );
-      MachinePanel current = ( MachinePanel ) getActiveEditor ();
+      MachinePanel current = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+          .getSelectedEditorPanel ();
       current.setVisibleTable ( this.gui.jCheckBoxMenuItemTable.getState () );
     }
   }
@@ -733,8 +633,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarAddState ( boolean state )
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     panel.handleToolbarAddState ( state );
   }
 
@@ -746,8 +646,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarEnd ( boolean state )
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     panel.handleToolbarEnd ( state );
   }
 
@@ -759,12 +659,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarMouse ( boolean state )
   {
-    if ( this.gui != null )
-    {
-      MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-          .getSelectedComponent () ).getLogic ();
-      panel.handleToolbarMouse ( state );
-    }
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
+    panel.handleToolbarMouse ( state );
   }
 
 
@@ -775,8 +672,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarStart ( boolean state )
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     panel.handleToolbarStart ( state );
   }
 
@@ -788,8 +685,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarTransition ( boolean state )
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     panel.handleToolbarTransition ( state );
   }
 
@@ -799,8 +696,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleValidate ()
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     int errorCount = 0;
     int warningCount = 0;
     try
@@ -839,8 +736,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordAutoStep ( ItemEvent evt )
   {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordAutoStep ( evt );
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
+    panel.handleWordAutoStep ( evt );
   }
 
 
@@ -849,8 +747,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordNextStep ()
   {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordNextStep ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
+    panel.handleWordNextStep ();
   }
 
 
@@ -859,8 +758,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordPreviousStep ()
   {
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordPreviousStep ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
+    panel.handleWordPreviousStep ();
   }
 
 
@@ -869,8 +769,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordStart ()
   {
-    MachinePanel panel = ( MachinePanel ) ( ( EditorPanelForm ) this.gui.jGTITabbedPaneMain
-        .getSelectedComponent () ).getLogic ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     int errorCount = 0;
     int warningCount = 0;
     try
@@ -904,9 +804,7 @@ public final class MainWindow implements LanguageChangedListener
       return;
     }
 
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-
-    if ( current.handleWordStart () )
+    if ( panel.handleWordStart () )
     {
       this.gui.jButtonStart.setEnabled ( false );
       this.gui.jButtonNextStep.setEnabled ( true );
@@ -927,8 +825,9 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonPrevious.setEnabled ( false );
     this.gui.jButtonAutoStep.setEnabled ( false );
     this.gui.jButtonStop.setEnabled ( false );
-    MachinePanel current = ( MachinePanel ) getActiveEditor ();
-    current.handleWordStop ();
+    MachinePanel panel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
+    panel.handleWordStop ();
   }
 
 
@@ -1091,13 +990,11 @@ public final class MainWindow implements LanguageChangedListener
   {
 
     // check if we already have an editor panel for the file
-    EditorPanel editorPanel = null;
-    for ( Component component : this.gui.jGTITabbedPaneMain.getComponents () )
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
     {
-      editorPanel = ( ( EditorPanelForm ) component ).getLogic ();
-      if ( file.equals ( editorPanel.getFile () ) )
+      if ( file.equals ( current.getFile () ) )
       {
-        this.gui.jGTITabbedPaneMain.setSelectedComponent ( component );
+        this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
 
         // reorganize recently used files
         if ( addToRecentlyUsed )
@@ -1125,11 +1022,10 @@ public final class MainWindow implements LanguageChangedListener
           .getInstance ().load ( file, DefaultMachineModel.class );
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
-      this.gui.jGTITabbedPaneMain.add ( newEditorPanel.getPanel () );
-      this.gui.jGTITabbedPaneMain.setSelectedComponent ( newEditorPanel
-          .getPanel () );
-      this.gui.jGTITabbedPaneMain.setTitleAt ( this.gui.jGTITabbedPaneMain
-          .getSelectedIndex (), file.getName () );
+      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
+          .getName () );
       count++ ;
       setGeneralStates ( true );
 
@@ -1194,14 +1090,12 @@ public final class MainWindow implements LanguageChangedListener
         .getActiveFile ();
     if ( activeFile != null )
     {
-      for ( int i = 0 ; i < this.gui.jGTITabbedPaneMain.getTabCount () ; i++ )
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        EditorPanel panel = ( ( MachinesPanelForm ) this.gui.jGTITabbedPaneMain
-            .getComponentAt ( i ) ).getLogic ();
-        if ( panel.getFile ().getAbsolutePath ().equals (
+        if ( current.getFile ().getAbsolutePath ().equals (
             activeFile.getAbsolutePath () ) )
         {
-          this.gui.jGTITabbedPaneMain.setSelectedIndex ( i );
+          this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
           break;
         }
       }
@@ -1262,7 +1156,8 @@ public final class MainWindow implements LanguageChangedListener
   private final void setSaveState ()
   {
     boolean state = false;
-    MachinePanel machinePanel = ( MachinePanel ) getActiveEditor ();
+    MachinePanel machinePanel = ( MachinePanel ) this.gui.jGTITabbedPaneMain
+        .getSelectedEditorPanel ();
     if ( machinePanel != null )
     {
       state = machinePanel.isModified ();

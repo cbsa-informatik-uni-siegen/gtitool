@@ -8,15 +8,17 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogMachineChoiceForm;
 
 
 /**
- * The <code>NewDialogChoice</code>.
+ * The {@link NewDialogChoice}.
  * 
  * @author Benjamin Mies
  * @version $Id$
  */
-public class NewDialogMachineChoice
+public final class NewDialogMachineChoice
 {
 
-  /** Signals the user choice */
+  /**
+   * Signals the user choice
+   */
   public enum Choice
   {
     /**
@@ -37,11 +39,13 @@ public class NewDialogMachineChoice
     /**
      * PDA is choosen.
      */
-    PDA
+    PDA;
   }
 
 
-  /** The parent Dialog containing this panel */
+  /**
+   * The parent Dialog containing this panel.
+   */
   private NewDialog parent;
 
 
@@ -51,53 +55,76 @@ public class NewDialogMachineChoice
   private NewDialogMachineChoiceForm gui;
 
 
-  /** The actual user choice */
-  Choice actualChoice = Choice.DFA;
+  /**
+   * The actual user choice.
+   */
+  private Choice actualChoice = Choice.DFA;
 
 
   /**
-   * Creates a new <code>NewDialogChoice</code>.
+   * Creates a new {@link NewDialogMachineChoice}.
    * 
-   * @param pParent The Dialog containing this panel
+   * @param parent The Dialog containing this panel.
    */
-  public NewDialogMachineChoice ( NewDialog pParent )
+  public NewDialogMachineChoice ( NewDialog parent )
   {
-    this.parent = pParent;
+    this.parent = parent;
     this.gui = new NewDialogMachineChoiceForm ();
     this.gui.setLogic ( this );
   }
 
 
   /**
-   * Handle DFA Item State changed
+   * Getter for the gui of this logic class.
    * 
-   * @param evt The {@link ItemEvent}
+   * @return The {@link NewDialogMachineChoiceForm}.
    */
-  public void handleDFAItemStateChanged ( ItemEvent evt )
+  public final NewDialogMachineChoiceForm getGui ()
+  {
+    return this.gui;
+  }
+
+
+  /**
+   * Get the user choice.
+   * 
+   * @return The user choice of this panel.
+   */
+  public final Choice getUserChoice ()
+  {
+    return this.actualChoice;
+  }
+
+
+  /**
+   * Handle the cancel button pressed event.
+   */
+  public final void handleCancel ()
+  {
+    this.parent.getGui ().dispose ();
+  }
+
+
+  /**
+   * Handle DFA Item State changed.
+   * 
+   * @param evt The {@link ItemEvent}.
+   */
+  public final void handleDFAItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
+    {
       this.actualChoice = Choice.DFA;
+    }
   }
 
 
   /**
-   * Handle NFA Item State changed
+   * Handle EDFA Item State changed.
    * 
-   * @param evt The {@link ItemEvent}
+   * @param evt The {@link ItemEvent}.
    */
-  public void handleNFAItemStateChanged ( ItemEvent evt )
-  {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.NFA;
-  }
-
-
-  /**
-   * Handle EDFA Item State changed
-   * 
-   * @param evt The {@link ItemEvent}
-   */
-  public void handleEDFAItemStateChanged ( ItemEvent evt )
+  public final void handleEDFAItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
       this.actualChoice = Choice.ENFA;
@@ -105,66 +132,45 @@ public class NewDialogMachineChoice
 
 
   /**
-   * Handle StackMachine Item State changed
-   * 
-   * @param evt The {@link ItemEvent}
+   * Handle the next button pressed event.
    */
-  public void handleStackMachineItemStateChanged ( ItemEvent evt )
+  public final void handleNextMachineChoice ()
+  {
+    this.parent.handleNextMachineChoice ();
+  }
+
+
+  /**
+   * Handle NFA Item State changed.
+   * 
+   * @param evt The {@link ItemEvent}.
+   */
+  public final void handleNFAItemStateChanged ( ItemEvent evt )
+  {
+    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    {
+      this.actualChoice = Choice.NFA;
+    }
+  }
+
+
+  /**
+   * Handle the previous button pressed event.
+   */
+  public final void handlePreviousMachineChoice ()
+  {
+    this.parent.handlePreviousMachineChoice ();
+  }
+
+
+  /**
+   * Handle StackMachine Item State changed.
+   * 
+   * @param evt The {@link ItemEvent}.
+   */
+  public final void handleStackMachineItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
       this.actualChoice = Choice.PDA;
   }
-
-
-  /**
-   * Get the UserChoice
-   * 
-   * @return The user choice of this panel
-   */
-  public Choice getUserChoice ()
-  {
-    return this.actualChoice;
-  }
-
-
-  /**
-   * Getter for the gui of this logic class
-   * 
-   * @return The {@link NewDialogMachineChoiceForm}
-   */
-  public NewDialogMachineChoiceForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
-   * Handle the next button pressed event
-   */
-  public void handleNextMachineChoice ()
-  {
-    this.parent.handleNextMachineChoice ();
-
-  }
-
-
-  /**
-   * Handle the previous button pressed event
-   */
-  public void handlePreviousMachineChoice ()
-  {
-    this.parent.handlePreviousMachineChoice ();
-
-  }
-
-
-  /**
-   * Handle the cancel button pressed event
-   */
-  public void handleCancel ()
-  {
-    this.parent.getGui ().dispose ();
-
-  }
-
 }

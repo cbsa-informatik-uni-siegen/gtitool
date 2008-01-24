@@ -22,12 +22,12 @@ public class NewDialogChoice
     /**
      * Machine is choosen.
      */
-    Machine,
+    MACHINE,
 
     /**
      * Grammar is choosen.
      */
-    Grammar,
+    GRAMMAR;
   }
 
 
@@ -37,25 +37,59 @@ public class NewDialogChoice
   private NewDialogChoiceForm gui;
 
 
-  /** The actual user choice */
-  private Choice actualChoice = Choice.Machine;
+  /**
+   * The actual user choice.
+   */
+  private Choice actualChoice = Choice.MACHINE;
 
 
-  /** The parent Dialog containing this panel */
+  /**
+   * The parent Dialog containing this panel.
+   */
   private NewDialog parent;
 
 
   /**
-   * Creates a new <code>NewDialogChoice</code>.
+   * Creates a new {@link NewDialogChoice}.
    * 
-   * @param pParent The Dialog containing this panel
+   * @param parent The dialog containing this panel
    */
-  public NewDialogChoice ( NewDialog pParent )
+  public NewDialogChoice ( NewDialog parent )
   {
-    this.parent = pParent;
+    this.parent = parent;
     this.gui = new NewDialogChoiceForm ();
     this.gui.setLogic ( this );
+  }
 
+
+  /**
+   * Getter for the gui of this logic class.
+   * 
+   * @return The {@link NewDialogChoiceForm}
+   */
+  public final NewDialogChoiceForm getGui ()
+  {
+    return this.gui;
+  }
+
+
+  /**
+   * Get the user choice.
+   * 
+   * @return The user choice of this panel.
+   */
+  public final Choice getUserChoice ()
+  {
+    return this.actualChoice;
+  }
+
+
+  /**
+   * Handle the cancel button pressed event.
+   */
+  public final void handleCancel ()
+  {
+    this.parent.getGui ().dispose ();
   }
 
 
@@ -64,64 +98,34 @@ public class NewDialogChoice
    * 
    * @param evt The {@link ItemEvent}
    */
-  public void handleGrammarItemStateChanged ( ItemEvent evt )
+  public final void handleGrammarItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.Grammar;
-
+    {
+      this.actualChoice = Choice.GRAMMAR;
+    }
   }
 
 
   /**
-   * Handle Machine Item State changed
+   * Handle machine item state changed.
    * 
    * @param evt The {@link ItemEvent}
    */
-  public void handleMachineItemStateChanged ( ItemEvent evt )
+  public final void handleMachineItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.Machine;
-
+    {
+      this.actualChoice = Choice.MACHINE;
+    }
   }
 
 
   /**
-   * Get the UserChoice
-   * 
-   * @return The user choice of this panel
+   * Handle the next button pressed event.
    */
-  public Choice getUserChoice ()
-  {
-    return this.actualChoice;
-  }
-
-
-  /**
-   * Getter for the gui of this logic class
-   * 
-   * @return The {@link NewDialogChoiceForm}
-   */
-  public NewDialogChoiceForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
-   * Handle the cancel button pressed event
-   */
-  public void handleCancel ()
-  {
-    this.parent.getGui ().dispose ();
-  }
-
-
-  /**
-   * Handle the next button pressed event
-   */
-  public void handleNextNewDialogChoice ()
+  public final void handleNextNewDialogChoice ()
   {
     this.parent.handleNextNewDialogChoice ();
   }
-
 }

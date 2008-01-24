@@ -2,8 +2,10 @@ BM		- Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
 CF		- Stack und Kelleralphabet implementieren (Neu, Edit, WordPanel)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 BM		- Konsole und Tabelle nur auf ein MachinePanel beschränken
-CF		- StatusBar für Meldungen
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
 BM		- Wenn man in einem Tab einen Zustand anlegt und dann in einen
 		  anderen Tab wechselt, ist man im normalen Maus-Modus
+CF		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,
+		  falls diese Datei geöffnet ist, muss sie geschlossen werden,
+		  ansonsten existiert eine Datei zweimal.

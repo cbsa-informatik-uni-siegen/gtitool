@@ -13,26 +13,28 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogGrammarChoiceForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class NewDialogGrammarChoice
+public final class NewDialogGrammarChoice
 {
 
-  /** Signals the user choice */
+  /**
+   * Signals the user choice
+   */
   public enum Choice
   {
     /**
      * Contextfree is choosen.
      */
-    Contextfree,
+    CONTEXT_FREE,
 
     /**
      * ContextSensitiv is choosen.
      */
-    ContextSensitiv,
+    CONTEXT_SENSITIV,
 
     /**
      * Regular is choosen.
      */
-    Regular
+    REGULAR;
   }
 
 
@@ -42,8 +44,10 @@ public class NewDialogGrammarChoice
   private NewDialogGrammarChoiceForm gui;
 
 
-  /** The actual user choice */
-  Choice actualChoice = Choice.Contextfree;
+  /**
+   * The actual user choice
+   */
+  private Choice actualChoice = Choice.CONTEXT_FREE;
 
 
   /** The parent Dialog containing this panel */
@@ -51,104 +55,105 @@ public class NewDialogGrammarChoice
 
 
   /**
-   * Creates a new <code>NewDialogChoice</code>.
+   * Creates a new {@link NewDialogChoice}.
    * 
-   * @param pParent The Dialog containing this panel
+   * @param parent The Dialog containing this panel
    */
-  public NewDialogGrammarChoice ( NewDialog pParent )
+  public NewDialogGrammarChoice ( NewDialog parent )
   {
-    this.parent = pParent;
+    this.parent = parent;
     this.gui = new NewDialogGrammarChoiceForm ();
     this.gui.setLogic ( this );
   }
 
 
   /**
-   * Get the UserChoice
+   * Getter for the gui of this logic class.
    * 
-   * @return The user choice of this panel
+   * @return The {@link NewDialogGrammarChoiceForm}.
    */
-  public Choice getUserChoice ()
-  {
-    return this.actualChoice;
-  }
-
-
-  /**
-   * Getter for the gui of this logic class
-   * 
-   * @return The {@link NewDialogGrammarChoiceForm}
-   */
-  public NewDialogGrammarChoiceForm getGui ()
+  public final NewDialogGrammarChoiceForm getGui ()
   {
     return this.gui;
   }
 
 
   /**
-   * Handle the next button pressed event
+   * Returns the user choice.
+   * 
+   * @return The user choice of this panel.
    */
-  public void handleNextGrammarChoice ()
+  public final Choice getUserChoice ()
   {
-    this.parent.handleNextGrammarChoice ();
-
+    return this.actualChoice;
   }
 
 
   /**
-   * Handle the previous button pressed event
+   * Handle the cancel button pressed event.
    */
-  public void handlePreviousGrammarChoice ()
-  {
-    this.parent.handlePreviousGrammarChoice ();
-
-  }
-
-
-  /**
-   * Handle the cancel button pressed event
-   */
-  public void handleCancel ()
+  public final void handleCancel ()
   {
     this.parent.getGui ().dispose ();
   }
 
 
   /**
-   * Handle Regular Item State changed
+   * Handle Contextfree Item State changed.
    * 
-   * @param evt The {@link ItemEvent}
+   * @param evt The {@link ItemEvent}.
    */
-  public void handleRegularGrammarItemStateChanged ( ItemEvent evt )
+  public final void handleContextFreeItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.Regular;
+    {
+      this.actualChoice = Choice.CONTEXT_FREE;
+    }
   }
 
 
   /**
-   * Handle Contextfree Item State changed
+   * Handle ContextSensitiv Item State changed.
    * 
-   * @param evt The {@link ItemEvent}
+   * @param evt The {@link ItemEvent}.
    */
-  public void handleContextFreeItemStateChanged ( ItemEvent evt )
+  public final void handleContextSensitivItemStateChanged ( ItemEvent evt )
   {
     if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.Contextfree;
-
+    {
+      this.actualChoice = Choice.CONTEXT_SENSITIV;
+    }
   }
 
 
   /**
-   * Handle ContextSensitiv Item State changed
-   * 
-   * @param evt The {@link ItemEvent}
+   * Handle the next button pressed event.
    */
-  public void handleContextSensitivItemStateChanged ( ItemEvent evt )
+  public final void handleNextGrammarChoice ()
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.ContextSensitiv;
-
+    this.parent.handleNextGrammarChoice ();
   }
 
+
+  /**
+   * Handle the previous button pressed event.
+   */
+  public final void handlePreviousGrammarChoice ()
+  {
+    this.parent.handlePreviousGrammarChoice ();
+  }
+
+
+  /**
+   * Handle Regular Item State changed.
+   * 
+   * @param evt The {@link ItemEvent}.
+   */
+  public final void handleRegularGrammarItemStateChanged ( ItemEvent evt )
+  {
+    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    {
+      this.actualChoice = Choice.REGULAR;
+    }
+  }
 }

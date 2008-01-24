@@ -1,6 +1,10 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.event.ItemEvent;
+
+import org.apache.log4j.Logger;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
@@ -11,81 +15,161 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The Panel used to enter the {@link Alphabet} for the new file
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public class NewDialogAlphabet
+public final class NewDialogAlphabet
 {
 
-  /** The {@link NewDialogAlphabetForm} */
+  /**
+   * The {@link NewDialogAlphabetForm}
+   */
   private NewDialogAlphabetForm gui;
 
 
-  /** The parent Dialog containing this panel */
+  /**
+   * The parent Dialog containing this panel
+   */
   private NewDialog parent;
 
 
   /**
-   * Allocate a new <code>NewDialogAlphabet</code>
+   * Allocate a new {@link NewDialogAlphabet}.
    * 
-   * @param pParent The Dialog containing this panel
+   * @param parent The dialog containing this panel.
    */
-  public NewDialogAlphabet ( NewDialog pParent )
+  public NewDialogAlphabet ( NewDialog parent )
   {
-    this.parent = pParent;
+    this.parent = parent;
     this.gui = new NewDialogAlphabetForm ();
     this.gui.setLogic ( this );
-    Alphabet alphabet = PreferenceManager.getInstance ().getAlphabetItem ()
-        .getAlphabet ().clone ();
-    this.gui.styledAlphabetParserPanel.setAlphabet ( alphabet );
+    this.gui.styledAlphabetParserPanelInput.setAlphabet ( PreferenceManager
+        .getInstance ().getAlphabetItem ().getAlphabet () );
+    this.gui.styledAlphabetParserPanelPushDown.setAlphabet ( PreferenceManager
+        .getInstance ().getPushDownAlphabetItem ().getAlphabet () );
 
     /*
      * Alphabet changed listener
      */
-    this.gui.styledAlphabetParserPanel
+    this.gui.styledAlphabetParserPanelInput
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet pNewAlphabet )
+          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          Alphabet newAlphabet )
           {
-            if ( pNewAlphabet == null )
-            {
-              NewDialogAlphabet.this.gui.jButtonNext.setEnabled ( false );
-            }
-            else
-            {
-              NewDialogAlphabet.this.gui.jButtonNext.setEnabled ( true );
-            }
+            setButtonStatus ();
+          }
+        } );
+    this.gui.styledAlphabetParserPanelPushDown
+        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          Alphabet newAlphabet )
+          {
+            setButtonStatus ();
           }
         } );
   }
 
 
   /**
-   * Getter for the gui of this logic class
-   * 
-   * @return The {@link NewDialogAlphabetForm}
+   * Sets the status of the buttons.
    */
-  public NewDialogAlphabetForm getGui ()
+  private final void setButtonStatus ()
+  {
+    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
+        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
+    {
+      this.gui.jButtonNext.setEnabled ( false );
+    }
+    else
+    {
+      this.gui.jButtonNext.setEnabled ( true );
+    }
+  }
+
+
+  /**
+   * Handles the push down {@link Alphabet} item state changed.
+   * 
+   * @param event The item event.
+   */
+  public final void handlePushDownAlphabetItemStateChanged (
+      @SuppressWarnings ( "unused" )
+      ItemEvent event )
+  {
+    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
+    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
+      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
+    }
+    else
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
+      this.gui.styledAlphabetParserPanelPushDown
+          .synchronize ( this.gui.styledAlphabetParserPanelInput );
+    }
+  }
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( PreferencesDialog.class );
+
+
+  /**
+   * Returns the {@link Alphabet} of the new file.
+   * 
+   * @return The {@link Alphabet} of the new file.
+   */
+  public final Alphabet getAlphabet ()
+  {
+    return this.gui.styledAlphabetParserPanelInput.getAlphabet ();
+  }
+
+
+  /**
+   * Getter for the gui of this logic class.
+   * 
+   * @return The {@link NewDialogAlphabetForm}.
+   */
+  public final NewDialogAlphabetForm getGui ()
   {
     return this.gui;
   }
 
 
   /**
-   * Handle the cancel button pressed event
+   * Returns the {@link Alphabet} of the new file.
+   * 
+   * @return The {@link Alphabet} of the new file.
    */
-  public void handleCancel ()
+  public final Alphabet getPushDownAlphabet ()
   {
-    this.parent.getGui ().dispose ();
-
+    return this.gui.styledAlphabetParserPanelPushDown.getAlphabet ();
   }
 
 
   /**
-   * Handle the finish button pressed event
+   * Handle the cancel button pressed event.
    */
-  public void handleFinish ()
+  public final void handleCancel ()
+  {
+    this.parent.getGui ().dispose ();
+  }
+
+
+  /**
+   * Handle the finish button pressed event.
+   */
+  public final void handleFinish ()
   {
     this.parent.handleFinish ();
 
@@ -93,23 +177,10 @@ public class NewDialogAlphabet
 
 
   /**
-   * Handle the previous button pressed event
+   * Handle the previous button pressed event.
    */
-  public void handlePrevious ()
+  public final void handlePrevious ()
   {
     this.parent.handleAlphabetPrevious ();
-
   }
-
-
-  /**
-   * Get the alphabet for the new file
-   * 
-   * @return the {@link Alphabet} for the new file
-   */
-  public Alphabet getAlphabet ()
-  {
-    return this.gui.styledAlphabetParserPanel.getAlphabet ();
-  }
-
 }

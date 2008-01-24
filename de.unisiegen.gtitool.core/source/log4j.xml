@@ -39,6 +39,11 @@
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger name="de.unisiegen.gtitool.ui.logic.NewDialogAlphabet">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="de.unisiegen.gtitool.ui.logic.NewStateNameDialog">
 		<level value="all" />
 		<appender-ref ref="console" />

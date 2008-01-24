@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
@@ -19,12 +18,12 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 
 
 /**
- * The <code>NewDialogg</code>.
+ * The{@link NewDialog}.
  * 
  * @author Benjamin Mies
  * @version $Id$
  */
-public class NewDialog
+public final class NewDialog
 {
 
   /**
@@ -40,73 +39,56 @@ public class NewDialog
 
 
   /**
-   * The {@link Alphabet} for the new file
-   */
-  private Alphabet alphabet;
-
-
-  /**
-   * The {@link NewDialogChoice}
+   * The {@link NewDialogChoice}.
    */
   private NewDialogChoice newDialogChoice;
 
 
   /**
-   * The {@link NewDialogGrammarChoice}
+   * The {@link NewDialogGrammarChoice}.
    */
   private NewDialogGrammarChoice grammarChoice;
 
 
   /**
-   * The {@link NewDialogMachineChoice}
+   * The {@link NewDialogMachineChoice}.
    */
   private NewDialogMachineChoice machineChoice;
 
 
   /**
-   * The {@link NewDialogAlphabet}
+   * The {@link NewDialogAlphabet}.
    */
   private NewDialogAlphabet newDialogAlphabet;
 
 
   /**
-   * The {@link GridBagConstraints} to add the body panel
+   * The {@link GridBagConstraints} to add the body panel.
    */
   private GridBagConstraints gridBagConstraints;
 
 
   /**
-   * The new created Panel
+   * The new created panel.
    */
   private EditorPanel newPanel;
 
 
   /**
-   * The ending of the new file name
+   * The ending of the new file name.
    */
   private String fileEnding;
 
 
   /**
-   * Creates a new <code>NewDialog</code>.
+   * Creates a new {@link NewDialog}.
    * 
-   * @param pParent The parent {@link JFrame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public NewDialog ( MainWindowForm pParent )
+  public NewDialog ( MainWindowForm parent )
   {
-    this.parent = pParent;
+    this.parent = parent;
     initialize ();
-  }
-
-
-  /**
-   * Get the alphabet for the new file
-   * 
-   * @return the {@link Alphabet} for the new file
-   */
-  public Alphabet getAlphabet ()
-  {
-    return this.alphabet;
   }
 
 
@@ -115,7 +97,7 @@ public class NewDialog
    * 
    * @return The {@link EditorPanel}
    */
-  public EditorPanel getEditorPanel ()
+  public final EditorPanel getEditorPanel ()
   {
     return this.newPanel;
   }
@@ -126,7 +108,7 @@ public class NewDialog
    * 
    * @return file ending for the new file
    */
-  public String getFileEnding ()
+  public final String getFileEnding ()
   {
     return this.fileEnding;
   }
@@ -137,7 +119,7 @@ public class NewDialog
    * 
    * @return The {@link JDialog}
    */
-  public JDialog getGui ()
+  public final JDialog getGui ()
   {
     return this.gui;
   }
@@ -146,10 +128,10 @@ public class NewDialog
   /**
    * Handle previous button pressed for the {@link NewDialogAlphabet}
    */
-  public void handleAlphabetPrevious ()
+  public final void handleAlphabetPrevious ()
   {
     if ( this.newDialogChoice.getUserChoice ().equals (
-        NewDialogChoice.Choice.Machine ) )
+        NewDialogChoice.Choice.MACHINE ) )
     {
       this.machineChoice.getGui ().setVisible ( true );
     }
@@ -163,21 +145,21 @@ public class NewDialog
 
 
   /**
-   * Handle finish button pressed for the {@link NewDialogAlphabet}
+   * Handle finish button pressed for the {@link NewDialogAlphabet}.
    */
-  public void handleFinish ()
+  public final void handleFinish ()
   {
-    // TODOChristian pushDownAlphabet
     if ( this.newDialogChoice.getUserChoice ().equals (
-        NewDialogChoice.Choice.Machine ) )
+        NewDialogChoice.Choice.MACHINE ) )
     {
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.DFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel (
-                new DefaultDFA ( this.newDialogAlphabet.getAlphabet (),
-                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
+        this.newPanel = new MachinePanel (
+            this.parent,
+            new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
+            null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -185,10 +167,11 @@ public class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.NFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel (
-                new DefaultNFA ( this.newDialogAlphabet.getAlphabet (),
-                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
+        this.newPanel = new MachinePanel (
+            this.parent,
+            new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
+            null );
         this.fileEnding = ".nfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -196,10 +179,11 @@ public class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.ENFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel (
-                new DefaultENFA ( this.newDialogAlphabet.getAlphabet (),
-                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
+        this.newPanel = new MachinePanel (
+            this.parent,
+            new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
+            null );
         this.fileEnding = ".enfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -207,50 +191,49 @@ public class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.PDA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
-            new DefaultMachineModel (
-                new DefaultPDA ( this.newDialogAlphabet.getAlphabet (),
-                    this.newDialogAlphabet.getAlphabet ().clone () ) ), null );
+        this.newPanel = new MachinePanel (
+            this.parent,
+            new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
+            null );
         this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }
     }
     else
     {
-      // TODO Implement this (Grammar)
+      // TODO Implement this grammar
     }
   }
 
 
   /**
-   * Handle next button pressed for the {@link NewDialogGrammarChoice}
+   * Handle next button pressed for the {@link NewDialogGrammarChoice}.
    */
-  public void handleNextGrammarChoice ()
+  public final void handleNextGrammarChoice ()
   {
     this.newDialogAlphabet.getGui ().setVisible ( true );
     this.grammarChoice.getGui ().setVisible ( false );
-
   }
 
 
   /**
-   * Handle next button pressed for the {@link NewDialogMachineChoice}
+   * Handle next button pressed for the {@link NewDialogMachineChoice}.
    */
-  public void handleNextMachineChoice ()
+  public final void handleNextMachineChoice ()
   {
     this.newDialogAlphabet.getGui ().setVisible ( true );
     this.machineChoice.getGui ().setVisible ( false );
-
   }
 
 
   /**
-   * Handle next button pressed for the {@link NewDialogChoice}
+   * Handle next button pressed for the {@link NewDialogChoice}.
    */
-  public void handleNextNewDialogChoice ()
+  public final void handleNextNewDialogChoice ()
   {
     if ( this.newDialogChoice.getUserChoice ().equals (
-        NewDialogChoice.Choice.Machine ) )
+        NewDialogChoice.Choice.MACHINE ) )
     {
       this.machineChoice.getGui ().setVisible ( true );
     }
@@ -264,20 +247,19 @@ public class NewDialog
 
 
   /**
-   * Handle previous button pressed for the {@link NewDialogGrammarChoice}
+   * Handle previous button pressed for the {@link NewDialogGrammarChoice}.
    */
-  public void handlePreviousGrammarChoice ()
+  public final void handlePreviousGrammarChoice ()
   {
     this.newDialogChoice.getGui ().setVisible ( true );
     this.grammarChoice.getGui ().setVisible ( false );
-
   }
 
 
   /**
-   * Handle previous button pressed for the {@link NewDialogMachineChoice}
+   * Handle previous button pressed for the {@link NewDialogMachineChoice}.
    */
-  public void handlePreviousMachineChoice ()
+  public final void handlePreviousMachineChoice ()
   {
     this.newDialogChoice.getGui ().setVisible ( true );
     this.machineChoice.getGui ().setVisible ( false );
@@ -286,9 +268,9 @@ public class NewDialog
 
 
   /**
-   * Initialize all components
+   * Initialize all components.
    */
-  private void initialize ()
+  private final void initialize ()
   {
     this.gui = new NewDialogForm ( this.parent, true );
     this.gui.setLogic ( this );
@@ -321,7 +303,7 @@ public class NewDialog
   /**
    * Shows the {@link AboutDialogForm}.
    */
-  public void show ()
+  public final void show ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );

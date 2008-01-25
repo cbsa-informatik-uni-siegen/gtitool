@@ -16,3 +16,6 @@ BM		- Die Recently Used Files einmal am Ende speichern
 BM		- Die Menüeinträge für "Edit machine" und "Enter word" sollten nur
 		  aktiv sein, wenn man in diesen Modus wechseln kann, sonst ist der
 		  Benutzer verwirrt
+BM		- Stati Button: Enter Word
+BM		- JGraph statt diasabled, MouseListener entfernen
+CF		- Save Button Status einer neuen Datei

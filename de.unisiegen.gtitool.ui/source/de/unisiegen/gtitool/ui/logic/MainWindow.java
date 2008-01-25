@@ -1320,6 +1320,8 @@ public final class MainWindow implements LanguageChangedListener
 
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
 
+    // TODO
+    
     if ( ( panel != null ) && ( panel.getFile () != null ) )
     {
       if ( state )

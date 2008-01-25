@@ -1112,6 +1112,24 @@ public final class MainWindow implements LanguageChangedListener
     // Final state
     MainWindow.this.gui.jButtonFinalState.setToolTipText ( Messages
         .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+    // Edit Alphabet
+    MainWindow.this.gui.jButtonEditAlphabet.setToolTipText ( Messages
+        .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
+    // Previous Step
+    MainWindow.this.gui.jButtonPrevious.setToolTipText ( Messages
+        .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
+    // Start Word
+    MainWindow.this.gui.jButtonStart.setToolTipText ( Messages
+        .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
+    // Next Step
+    MainWindow.this.gui.jButtonNextStep.setToolTipText ( Messages
+        .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
+    // Auto Step
+    MainWindow.this.gui.jButtonAutoStep.setToolTipText ( Messages
+        .getString ( "MachinePanel.WordModeAutoStep" ) ); //$NON-NLS-1$
+    // Stop Word
+    MainWindow.this.gui.jButtonStop.setToolTipText ( Messages
+        .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
   }
 
 

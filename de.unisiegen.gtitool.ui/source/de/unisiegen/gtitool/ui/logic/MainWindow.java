@@ -129,15 +129,7 @@ public final class MainWindow implements LanguageChangedListener
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
-    // Set the recently used files
-    ArrayList < File > recentlyUsedFiles = PreferenceManager.getInstance ()
-        .getRecentlyUsedFilesItem ().getFiles ();
-    if ( recentlyUsedFiles.size () > 0 )
-      this.gui.jMenuRecentlyUsed.setEnabled ( true );
-    for ( File file : recentlyUsedFiles )
-    {
-      this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
-    }
+    organizeRecentlyUsedFilesMenu ();
 
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
@@ -1222,7 +1214,8 @@ public final class MainWindow implements LanguageChangedListener
 
     for ( File file : fileList )
     {
-      this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );
+      if ( file.exists () ){
+        this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );}
     }
   }
 

@@ -12,6 +12,4 @@ BM		- Alle sichtbaren Komponenten müssen mit der dynamischen
 		  ToolBar Button, EditAlphabet und die Word-Navigations-Button
 BM		- Per Doppelklick einen Zustand oder eine Transition bearbeiten
 		  können
-BM		- Die Recently Used Files sollten überprüfen ob es die Dateien noch
-		  gibt, falls nicht, sollten die Dateien aus der Liste gelöscht
-		  werden. Im Moment bleiben die Einträge einfach da
+BM		- Die Recently Used Files einmal am Ende speichern.

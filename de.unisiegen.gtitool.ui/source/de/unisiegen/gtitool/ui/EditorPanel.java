@@ -20,14 +20,6 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 {
 
   /**
-   * Returns the {@link Alphabet} of this{@link JPanel}.
-   * 
-   * @return the {@link Alphabet}
-   */
-  public Alphabet getAlphabet ();
-
-
-  /**
    * Get the File for this EditorPanel
    * 
    * @return the File for this EditorPanel
@@ -44,17 +36,17 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Hanlde Save Button action performed
+   * Handles save button action performed.
    * 
-   * @return filename of the saved file
+   * @return The filename of the saved file.
    */
   public String handleSave ();
 
 
   /**
-   * Hanlde Save As Button action performed
+   * Handles save as button action performed.
    * 
-   * @return filename of the saved file
+   * @return The filename of the saved file.
    */
   public String handleSaveAs ();
 

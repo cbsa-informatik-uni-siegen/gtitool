@@ -4,6 +4,14 @@ CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 BM		- Konsole und Tabelle nur auf ein MachinePanel beschränken
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
-CF		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,
+BM		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,
 		  falls diese Datei geöffnet ist, muss sie geschlossen werden,
-		  ansonsten existiert eine Datei zweimal.
+		  ansonsten existiert eine Datei zweimal
+BM		- Alle sichtbaren Komponenten müssen mit der dynamischen
+		  Sprachänderung klar kommen, es fehlen noch die sechs neuen
+		  ToolBar Button, EditAlphabet und die Word-Navigations-Button
+BM		- Per Doppelklick einen Zustand oder eine Transition bearbeiten
+		  können
+BM		- Die Recently Used Files sollten überprüfen ob es die Dateien noch
+		  gibt, falls nicht, sollten die Dateien aus der Liste gelöscht
+		  werden. Im Moment bleiben die Einträge einfach da

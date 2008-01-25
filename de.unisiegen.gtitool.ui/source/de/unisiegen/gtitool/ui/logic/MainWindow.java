@@ -658,7 +658,7 @@ public final class MainWindow implements LanguageChangedListener
             .isTableVisible () );
         setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
         setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
-        
+
       }
       else
       {
@@ -846,9 +846,9 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle Auto Step Action in the Word Enter Mode
    * 
-   * @param evt
+   * @param event
    */
-  public final void handleWordAutoStep ( ItemEvent evt )
+  public final void handleWordAutoStep ( ItemEvent event )
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
@@ -857,7 +857,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    machinePanel.handleWordAutoStep ( evt );
+    machinePanel.handleWordAutoStep ( event );
   }
 
 
@@ -1257,21 +1257,21 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Sets general states for items and buttons.
    * 
-   * @param pState The new state.
+   * @param state The new state.
    */
-  private final void setGeneralStates ( boolean pState )
+  private final void setGeneralStates ( boolean state )
   {
     // SaveAs
-    this.gui.jButtonSaveAs.setEnabled ( pState );
-    this.gui.jMenuItemSaveAs.setEnabled ( pState );
+    this.gui.jButtonSaveAs.setEnabled ( state );
+    this.gui.jMenuItemSaveAs.setEnabled ( state );
     // SaveAll
-    this.gui.jMenuItemSaveAll.setEnabled ( pState );
+    this.gui.jMenuItemSaveAll.setEnabled ( state );
     // Close
-    this.gui.jMenuItemClose.setEnabled ( pState );
+    this.gui.jMenuItemClose.setEnabled ( state );
     // Validate
-    this.gui.jMenuItemValidate.setEnabled ( pState );
+    this.gui.jMenuItemValidate.setEnabled ( state );
     // Enter word
-    this.gui.jMenuItemEnterWord.setEnabled ( pState );
+    this.gui.jMenuItemEnterWord.setEnabled ( state );
     // Cut
     // this.gui.jMenuItemCut.setEnabled ( pState );
     this.gui.jMenuItemCut.setVisible ( false );
@@ -1300,7 +1300,14 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
-      state = panel.isModified ();
+      if ( panel.getFile () == null )
+      {
+        state = true;
+      }
+      else
+      {
+        state = panel.isModified ();
+      }
     }
 
     logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$

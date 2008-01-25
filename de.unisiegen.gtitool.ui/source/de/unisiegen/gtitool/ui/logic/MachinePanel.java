@@ -39,7 +39,6 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -870,17 +869,6 @@ public final class MachinePanel implements EditorPanel
         listeners [ n ].modifyStatusChanged ( newModifyStatus );
       }
     }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
-   */
-  public final Alphabet getAlphabet ()
-  {
-    return this.machine.getAlphabet ();
   }
 
 

@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
@@ -41,17 +40,6 @@ public class GrammarPanel implements EditorPanel
       ModifyStatusChangedListener listener )
   {
 
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getAlphabet()
-   */
-  public Alphabet getAlphabet ()
-  {
-    return new DefaultAlphabet ();
   }
 
 

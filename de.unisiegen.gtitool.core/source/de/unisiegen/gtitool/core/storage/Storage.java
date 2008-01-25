@@ -147,7 +147,6 @@ public final class Storage
     }
     catch ( IOException exc )
     {
-      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )

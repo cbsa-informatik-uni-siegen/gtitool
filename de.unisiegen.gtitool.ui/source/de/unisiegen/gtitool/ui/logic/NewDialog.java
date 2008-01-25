@@ -286,15 +286,15 @@ public final class NewDialog
     this.gridBagConstraints.weighty = 1;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH;
 
-    this.gui.bodyPanel.add ( this.newDialogChoice.getGui (),
+    this.gui.jPanelBody.add ( this.newDialogChoice.getGui (),
         this.gridBagConstraints );
-    this.gui.bodyPanel.add ( this.grammarChoice.getGui (),
+    this.gui.jPanelBody.add ( this.grammarChoice.getGui (),
         this.gridBagConstraints );
     this.grammarChoice.getGui ().setVisible ( false );
-    this.gui.bodyPanel.add ( this.machineChoice.getGui (),
+    this.gui.jPanelBody.add ( this.machineChoice.getGui (),
         this.gridBagConstraints );
     this.machineChoice.getGui ().setVisible ( false );
-    this.gui.bodyPanel.add ( this.newDialogAlphabet.getGui (),
+    this.gui.jPanelBody.add ( this.newDialogAlphabet.getGui (),
         this.gridBagConstraints );
     this.newDialogAlphabet.getGui ().setVisible ( false );
   }

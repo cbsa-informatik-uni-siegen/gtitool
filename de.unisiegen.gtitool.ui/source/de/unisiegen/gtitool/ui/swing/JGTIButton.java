@@ -34,6 +34,7 @@ public class JGTIButton extends JButton
   public JGTIButton ()
   {
     super ();
+    setFocusPainted ( false );
   }
 
 

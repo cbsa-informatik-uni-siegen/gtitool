@@ -29,19 +29,18 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
-        javax.swing.JButton jButtonCancel;
 
         buttonGroup = new javax.swing.ButtonGroup();
         jLabelGrammarsCaption = new javax.swing.JLabel();
-        buttonGrammarsPanel = new javax.swing.JPanel();
+        jPanelGrammars = new javax.swing.JPanel();
         jRadioButtonRegularGrammar = new javax.swing.JRadioButton();
         jRadioButtonContextFreeGrammar = new javax.swing.JRadioButton();
         jRadioButtonContextSensitivGrammar = new javax.swing.JRadioButton();
         jPanelGrammarsSpace = new javax.swing.JPanel();
-        buttonsPanel = new javax.swing.JPanel();
-        jButtonPrevious = new javax.swing.JButton();
-        jButtonNext = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jPanelButtons = new javax.swing.JPanel();
+        jGTIButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonNext = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -52,10 +51,10 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(25, 0, 15, 0);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         add(jLabelGrammarsCaption, gridBagConstraints);
 
-        buttonGrammarsPanel.setLayout(new java.awt.GridBagLayout());
+        jPanelGrammars.setLayout(new java.awt.GridBagLayout());
 
         buttonGroup.add(jRadioButtonRegularGrammar);
         jRadioButtonRegularGrammar.setSelected(true);
@@ -74,7 +73,8 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButtonRegularGrammar, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        jPanelGrammars.add(jRadioButtonRegularGrammar, gridBagConstraints);
 
         buttonGroup.add(jRadioButtonContextFreeGrammar);
         jRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.ContextFreeGrammar")); // NOI18N
@@ -93,7 +93,9 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButtonContextFreeGrammar, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        jPanelGrammars.add(jRadioButtonContextFreeGrammar, gridBagConstraints);
 
         buttonGroup.add(jRadioButtonContextSensitivGrammar);
         jRadioButtonContextSensitivGrammar.setText(bundle.getString("NewDialog.ContextSensitivGrammar")); // NOI18N
@@ -111,12 +113,16 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        buttonGrammarsPanel.add(jRadioButtonContextSensitivGrammar, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        jPanelGrammars.add(jRadioButtonContextSensitivGrammar, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        add(buttonGrammarsPanel, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(jPanelGrammars, gridBagConstraints);
 
         jPanelGrammarsSpace.setLayout(new java.awt.GridBagLayout());
 
@@ -126,17 +132,17 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(jPanelGrammarsSpace, gridBagConstraints);
 
-        buttonsPanel.setLayout(new java.awt.GridBagLayout());
+        jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
-        jButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
-        jButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
-        jButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
-        jButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
+        jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
+        jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
+        jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPreviousActionPerformed(evt);
+                jGTIButtonPreviousActionPerformed(evt);
             }
         });
 
@@ -145,15 +151,15 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        buttonsPanel.add(jButtonPrevious, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
 
-        jButtonNext.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.NextMnemonic").charAt(0));
-        jButtonNext.setText(bundle.getString("NewDialog.Next")); // NOI18N
-        jButtonNext.setToolTipText(bundle.getString("NewDialog.NextToolTip")); // NOI18N
-        jButtonNext.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonNext.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.NextMnemonic").charAt(0));
+        jGTIButtonNext.setText(bundle.getString("NewDialog.Next")); // NOI18N
+        jGTIButtonNext.setToolTipText(bundle.getString("NewDialog.NextToolTip")); // NOI18N
+        jGTIButtonNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNexthandleNextButtonActionPerformed(evt);
+                jGTIButtonNextActionPerformed(evt);
             }
         });
 
@@ -161,16 +167,15 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        buttonsPanel.add(jButtonNext, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        jPanelButtons.add(jGTIButtonNext, gridBagConstraints);
 
-        jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
-        jButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
-        jButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
-        jButtonCancel.setLabel(bundle.getString("Cancel")); // NOI18N
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelActionPerformed(evt);
+                jGTIButtonCancelActionPerformed(evt);
             }
         });
 
@@ -178,16 +183,30 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        buttonsPanel.add(jButtonCancel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(buttonsPanel, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        add(jPanelButtons, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPreviousActionPerformed
+        logic.handlePreviousGrammarChoice();
+    }//GEN-LAST:event_jGTIButtonPreviousActionPerformed
+
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+        logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
+
+    private void jGTIButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonNextActionPerformed
+        logic.handleNextGrammarChoice();
+    }//GEN-LAST:event_jGTIButtonNextActionPerformed
 
     private void handleContextSensitivItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleContextSensitivItemStateChanged
          logic.handleContextSensitivItemStateChanged ( evt );
@@ -200,27 +219,16 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
     private void handleRegularGrammarItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleRegularGrammarItemStateChanged
         logic.handleRegularGrammarItemStateChanged ( evt );
     }//GEN-LAST:event_handleRegularGrammarItemStateChanged
-
-    private void jButtonNexthandleNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNexthandleNextButtonActionPerformed
-        logic.handleNextGrammarChoice();
-    }//GEN-LAST:event_jButtonNexthandleNextButtonActionPerformed
-
-    private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousActionPerformed
-        logic.handlePreviousGrammarChoice();
-    }//GEN-LAST:event_jButtonPreviousActionPerformed
-
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        logic.handleCancel();
-    }//GEN-LAST:event_jButtonCancelActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JPanel buttonGrammarsPanel;
     public javax.swing.ButtonGroup buttonGroup;
-    public javax.swing.JPanel buttonsPanel;
-    public javax.swing.JButton jButtonNext;
-    public javax.swing.JButton jButtonPrevious;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonNext;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrevious;
     public javax.swing.JLabel jLabelGrammarsCaption;
+    public javax.swing.JPanel jPanelButtons;
+    public javax.swing.JPanel jPanelGrammars;
     public javax.swing.JPanel jPanelGrammarsSpace;
     public javax.swing.JRadioButton jRadioButtonContextFreeGrammar;
     public javax.swing.JRadioButton jRadioButtonContextSensitivGrammar;

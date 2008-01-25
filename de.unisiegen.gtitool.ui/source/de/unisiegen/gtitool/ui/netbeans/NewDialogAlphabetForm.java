@@ -30,16 +30,15 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
-        javax.swing.JButton jButtonCancel;
 
         jLabelInputAlphabet = new javax.swing.JLabel();
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        buttonsPanel = new javax.swing.JPanel();
-        jButtonPrevious = new javax.swing.JButton();
-        jButtonNext = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jPanelButtons = new javax.swing.JPanel();
+        jGTIButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonFinished = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -90,14 +89,14 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
         add(styledAlphabetParserPanelPushDown, gridBagConstraints);
 
-        buttonsPanel.setLayout(new java.awt.GridBagLayout());
+        jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
-        jButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
-        jButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
-        jButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
-        jButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
+        jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
+        jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
+        jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPreviousActionPerformed(evt);
+                jGTIButtonPreviousActionPerformed(evt);
             }
         });
 
@@ -106,15 +105,15 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        buttonsPanel.add(jButtonPrevious, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
 
-        jButtonNext.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
-        jButtonNext.setText(bundle.getString("NewDialog.Finished")); // NOI18N
-        jButtonNext.setToolTipText(bundle.getString("NewDialog.FinishedToolTip")); // NOI18N
-        jButtonNext.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonFinished.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
+        jGTIButtonFinished.setText(bundle.getString("NewDialog.Finished")); // NOI18N
+        jGTIButtonFinished.setToolTipText(bundle.getString("NewDialog.FinishedToolTip")); // NOI18N
+        jGTIButtonFinished.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNexthandleNextButtonActionPerformed(evt);
+                jGTIButtonFinishedActionPerformed(evt);
             }
         });
 
@@ -122,16 +121,15 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        buttonsPanel.add(jButtonNext, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        jPanelButtons.add(jGTIButtonFinished, gridBagConstraints);
 
-        jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
-        jButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
-        jButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
-        jButtonCancel.setLabel(bundle.getString("Cancel")); // NOI18N
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelActionPerformed(evt);
+                jGTIButtonCancelActionPerformed(evt);
             }
         });
 
@@ -139,40 +137,43 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        buttonsPanel.add(jButtonCancel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(buttonsPanel, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        add(jPanelButtons, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+        logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
+
+    private void jGTIButtonFinishedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonFinishedActionPerformed
+        logic.handleFinish();
+    }//GEN-LAST:event_jGTIButtonFinishedActionPerformed
+
+    private void jGTIButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPreviousActionPerformed
+        logic.handlePrevious();
+    }//GEN-LAST:event_jGTIButtonPreviousActionPerformed
 
     private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
         this.logic.handlePushDownAlphabetItemStateChanged(evt);
     }//GEN-LAST:event_jCheckBoxPushDownAlphabetItemStateChanged
-
-    private void jButtonNexthandleNextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNexthandleNextButtonActionPerformed
-        logic.handleFinish();
-    }//GEN-LAST:event_jButtonNexthandleNextButtonActionPerformed
-
-    private void jButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousActionPerformed
-        logic.handlePrevious();
-    }//GEN-LAST:event_jButtonPreviousActionPerformed
-
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        logic.handleCancel();
-    }//GEN-LAST:event_jButtonCancelActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JPanel buttonsPanel;
-    public javax.swing.JButton jButtonNext;
-    public javax.swing.JButton jButtonPrevious;
     public javax.swing.JCheckBox jCheckBoxPushDownAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonFinished;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrevious;
     public javax.swing.JLabel jLabelInputAlphabet;
+    public javax.swing.JPanel jPanelButtons;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     // End of variables declaration//GEN-END:variables

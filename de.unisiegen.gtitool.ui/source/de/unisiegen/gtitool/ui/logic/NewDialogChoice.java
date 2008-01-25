@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class NewDialogChoice
+public final class NewDialogChoice
 {
 
   /** Signals the user choice */

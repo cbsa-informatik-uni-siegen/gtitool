@@ -66,18 +66,18 @@ public final class AlphabetDialog
           {
             if ( newAlphabet == null )
             {
-              AlphabetDialog.this.gui.jButtonOk.setEnabled ( false );
+              AlphabetDialog.this.gui.jGTIButtonOk.setEnabled ( false );
             }
             else
             {
               TreeSet < Symbol > notRemoveableSymbols = getNotRemoveableSymbols ( newAlphabet );
               if ( notRemoveableSymbols.size () == 0 )
               {
-                AlphabetDialog.this.gui.jButtonOk.setEnabled ( true );
+                AlphabetDialog.this.gui.jGTIButtonOk.setEnabled ( true );
               }
               else
               {
-                AlphabetDialog.this.gui.jButtonOk.setEnabled ( false );
+                AlphabetDialog.this.gui.jGTIButtonOk.setEnabled ( false );
                 ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
                 for ( Symbol current : notRemoveableSymbols )
                 {

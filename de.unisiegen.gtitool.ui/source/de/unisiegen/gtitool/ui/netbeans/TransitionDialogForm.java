@@ -59,8 +59,8 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         JLabelTransitionSet = new javax.swing.JLabel();
         styledTransitionParserPanel = new de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel();
         jPanelButtons = new javax.swing.JPanel();
-        jButtonOk = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -214,13 +214,13 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
-        jButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
-        jButtonOk.setText(bundle.getString("TransitionDialog.Ok")); // NOI18N
-        jButtonOk.setToolTipText(bundle.getString("TransitionDialog.OkToolTip")); // NOI18N
-        jButtonOk.setFocusPainted(false);
-        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("TransitionDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("TransitionDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setFocusPainted(false);
+        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                handleActionPerformedOk(evt);
+                jGTIButtonOkActionPerformed(evt);
             }
         });
 
@@ -230,24 +230,24 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jButtonOk, gridBagConstraints);
+        jPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
-        jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.CancelMnemonic").charAt(0));
-        jButtonCancel.setText(bundle.getString("TransitionDialog.Cancel")); // NOI18N
-        jButtonCancel.setToolTipText(bundle.getString("TransitionDialog.CancelToolTip")); // NOI18N
-        jButtonCancel.setFocusPainted(false);
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("TransitionDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("TransitionDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setFocusPainted(false);
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                handleActionPerformedCancel(evt);
+                jGTIButtonCancelActionPerformed(evt);
             }
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelButtons.add(jButtonCancel, gridBagConstraints);
+        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -262,6 +262,14 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         setBounds((screenSize.width-400)/2, (screenSize.height-450)/2, 400, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+        this.logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
+
+    private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
+        this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButtonOkActionPerformed
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
@@ -274,21 +282,13 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         this.logic.handleMoveRight();
     }//GEN-LAST:event_handleActionPerformedMoveRight
 
-    private void handleActionPerformedCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedCancel
-        this.logic.handleCancel();
-    }//GEN-LAST:event_handleActionPerformedCancel
-
-    private void handleActionPerformedOk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleActionPerformedOk
-        this.logic.handleOk();
-    }//GEN-LAST:event_handleActionPerformedOk
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel JLabelHeadline;
     public javax.swing.JLabel JLabelTransitionSet;
-    public javax.swing.JButton jButtonCancel;
     public javax.swing.JButton jButtonMoveLeft;
     public javax.swing.JButton jButtonMoveRight;
-    public javax.swing.JButton jButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListChangeOverSet;
     public javax.swing.JLabel jLabelAlphabet;

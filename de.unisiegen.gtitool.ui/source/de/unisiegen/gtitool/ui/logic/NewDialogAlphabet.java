@@ -22,6 +22,13 @@ public final class NewDialogAlphabet
 {
 
   /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( PreferencesDialog.class );
+
+
+  /**
    * The {@link NewDialogAlphabetForm}
    */
   private NewDialogAlphabetForm gui;
@@ -74,54 +81,6 @@ public final class NewDialogAlphabet
           }
         } );
   }
-
-
-  /**
-   * Sets the status of the buttons.
-   */
-  private final void setButtonStatus ()
-  {
-    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
-        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
-    {
-      this.gui.jButtonNext.setEnabled ( false );
-    }
-    else
-    {
-      this.gui.jButtonNext.setEnabled ( true );
-    }
-  }
-
-
-  /**
-   * Handles the push down {@link Alphabet} item state changed.
-   * 
-   * @param event The item event.
-   */
-  public final void handlePushDownAlphabetItemStateChanged (
-      @SuppressWarnings ( "unused" )
-      ItemEvent event )
-  {
-    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
-    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
-      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
-    }
-    else
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
-      this.gui.styledAlphabetParserPanelPushDown
-          .synchronize ( this.gui.styledAlphabetParserPanelInput );
-    }
-  }
-
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( PreferencesDialog.class );
 
 
   /**
@@ -182,5 +141,46 @@ public final class NewDialogAlphabet
   public final void handlePrevious ()
   {
     this.parent.handleAlphabetPrevious ();
+  }
+
+
+  /**
+   * Handles the push down {@link Alphabet} item state changed.
+   * 
+   * @param event The item event.
+   */
+  public final void handlePushDownAlphabetItemStateChanged (
+      @SuppressWarnings ( "unused" )
+      ItemEvent event )
+  {
+    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
+    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
+      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
+    }
+    else
+    {
+      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
+      this.gui.styledAlphabetParserPanelPushDown
+          .synchronize ( this.gui.styledAlphabetParserPanelInput );
+    }
+  }
+
+
+  /**
+   * Sets the status of the buttons.
+   */
+  private final void setButtonStatus ()
+  {
+    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
+        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
+    {
+      this.gui.jGTIButtonFinished.setEnabled ( false );
+    }
+    else
+    {
+      this.gui.jGTIButtonFinished.setEnabled ( true );
+    }
   }
 }

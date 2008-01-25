@@ -57,7 +57,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jLabelDeveloper = new javax.swing.JLabel();
         jLabelDeveloper1 = new javax.swing.JLabel();
         jLabelDeveloper2 = new javax.swing.JLabel();
-        jButtonClose = new javax.swing.JButton();
+        jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -179,20 +179,20 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanelMain.add(jPanelSouth, gridBagConstraints);
 
-        jButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
-        jButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
-        jButtonClose.setFocusable(false);
-        jButtonClose.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
+        jGTIButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
+        jGTIButtonClose.setFocusable(false);
+        jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCloseActionPerformed(evt);
+                jGTIButtonCloseActionPerformed(evt);
             }
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 16, 0);
-        jPanelMain.add(jButtonClose, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 16);
+        jPanelMain.add(jGTIButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -205,6 +205,10 @@ public class AboutDialogForm extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(400, 260));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTIButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCloseActionPerformed
+      this.logic.handleClose();
+    }//GEN-LAST:event_jGTIButtonCloseActionPerformed
+
     private void jLabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebpageEntryMouseClicked
       this.logic.handleWebpageEntry();
     }//GEN-LAST:event_jLabelWebpageEntryMouseClicked
@@ -212,13 +216,9 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.logic.handleClose();
     }//GEN-LAST:event_formWindowClosing
-
-    private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseActionPerformed
-      this.logic.handleClose();
-    }//GEN-LAST:event_jButtonCloseActionPerformed
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jButtonClose;
+    private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
     public javax.swing.JLabel jLabelCopyright;
     public javax.swing.JLabel jLabelDeveloper;
     private javax.swing.JLabel jLabelDeveloper1;

@@ -12,4 +12,7 @@ BM		- Alle sichtbaren Komponenten müssen mit der dynamischen
 		  ToolBar Button, EditAlphabet und die Word-Navigations-Button
 BM		- Per Doppelklick einen Zustand oder eine Transition bearbeiten
 		  können
-BM		- Die Recently Used Files einmal am Ende speichern.
+BM		- Die Recently Used Files einmal am Ende speichern
+BM		- Die Menüeinträge für "Edit machine" und "Enter word" sollten nur
+		  aktiv sein, wenn man in diesen Modus wechseln kann, sonst ist der
+		  Benutzer verwirrt

@@ -1,0 +1,12 @@
+*** Dialoge ***
+- Zu allen Außenrändern 16 Pixel Abstand
+- Zwischen den Komponenten 10 Pixel Abstand
+
+*** JButton ***
+- Den JGTIButton verwenden: Hat immer eine Breite von 80 Pixel
+
+*** JList ***
+- Die JGTIList verwenden: Drag and Drop Unterstützung
+
+*** JTable ***
+- Die JGTITable verwenden: Nutzt den kompletten Platz aus

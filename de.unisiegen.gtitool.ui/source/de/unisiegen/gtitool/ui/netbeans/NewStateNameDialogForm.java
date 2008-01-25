@@ -47,8 +47,8 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
 
         jLabelRename = new javax.swing.JLabel();
         styledStateParserPanel = new de.unisiegen.gtitool.ui.style.StyledStateParserPanel();
-        jButtonOk = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -83,13 +83,14 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(styledStateParserPanel, gridBagConstraints);
 
-        jButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
-        jButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N
-        jButtonOk.setToolTipText(bundle.getString("NewStateNameDialog.OkToolTip")); // NOI18N
-        jButtonOk.setFocusPainted(false);
-        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("NewStateNameDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setFocusPainted(false);
+        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonOkActionPerformed(evt);
+                jGTIButtonOkActionPerformed(evt);
+                jGTIButton1ActionPerformed(evt);
             }
         });
 
@@ -98,16 +99,16 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 5);
-        getContentPane().add(jButtonOk, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
+        getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.CancelMnemonic").charAt(0));
-        jButtonCancel.setText(bundle.getString("NewStateNameDialog.Cancel")); // NOI18N
-        jButtonCancel.setToolTipText(bundle.getString("NewStateNameDialog.CancelToolTip")); // NOI18N
-        jButtonCancel.setFocusPainted(false);
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("NewStateNameDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("NewStateNameDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setFocusPainted(false);
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelActionPerformed(evt);
+                jGTIButtonCanceljGTIButton1ActionPerformed(evt);
             }
         });
 
@@ -116,27 +117,31 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
-        getContentPane().add(jButtonCancel, gridBagConstraints);
+        getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-350)/2, (screenSize.height-200)/2, 350, 200);
+        setBounds((screenSize.width-400)/2, (screenSize.height-250)/2, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIButtonCanceljGTIButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCanceljGTIButton1ActionPerformed
+      this.logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCanceljGTIButton1ActionPerformed
+
+    private void jGTIButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButton1ActionPerformed
+      this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButton1ActionPerformed
+
+    private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
+      this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButtonOkActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-      this.logic.handleCancel();
-    }//GEN-LAST:event_jButtonCancelActionPerformed
-
-    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
-      this.logic.handleOk();
-    }//GEN-LAST:event_jButtonOkActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jButtonCancel;
-    public javax.swing.JButton jButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public javax.swing.JLabel jLabelRename;
     public de.unisiegen.gtitool.ui.style.StyledStateParserPanel styledStateParserPanel;
     // End of variables declaration//GEN-END:variables

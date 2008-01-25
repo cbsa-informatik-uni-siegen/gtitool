@@ -83,12 +83,6 @@ public final class PreferenceManager
 
 
   /**
-   * The default hight of the {@link MainWindow}.
-   */
-  public static int DEFAULT_HEIGHT = 600;
-
-
-  /**
    * The default language language.
    */
   public static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
@@ -135,7 +129,13 @@ public final class PreferenceManager
   /**
    * The default width of the {@link MainWindow}.
    */
-  public static int DEFAULT_WIDTH = 800;
+  public static int DEFAULT_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link MainWindow}.
+   */
+  public static int DEFAULT_HEIGHT = 600;
 
 
   /**

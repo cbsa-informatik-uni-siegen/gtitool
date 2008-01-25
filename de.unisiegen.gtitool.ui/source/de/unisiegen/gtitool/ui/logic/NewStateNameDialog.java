@@ -73,11 +73,11 @@ public final class NewStateNameDialog
           {
             if ( pNewState == null )
             {
-              NewStateNameDialog.this.gui.jButtonOk.setEnabled ( false );
+              NewStateNameDialog.this.gui.jGTIButtonOk.setEnabled ( false );
             }
             else
             {
-              NewStateNameDialog.this.gui.jButtonOk.setEnabled ( true );
+              NewStateNameDialog.this.gui.jGTIButtonOk.setEnabled ( true );
             }
           }
         } );

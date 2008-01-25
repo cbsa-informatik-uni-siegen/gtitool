@@ -376,6 +376,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * The name of this {@link MachinePanel}.
+   */
+  private String name = null;
+
+
+  /**
    * Create a new Machine Panel Object
    * 
    * @param parent The parent frame.
@@ -873,9 +879,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Get the file for this Machine Panel
+   * {@inheritDoc}
    * 
-   * @return the File of this Machine Panel
+   * @see EditorPanel#getFile()
    */
   public final File getFile ()
   {
@@ -903,6 +909,17 @@ public final class MachinePanel implements EditorPanel
   public final DefaultMachineModel getModel ()
   {
     return this.model;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see EditorPanel#getName()
+   */
+  public final String getName ()
+  {
+    return this.file == null ? this.name : this.file.getName ();
   }
 
 
@@ -2238,7 +2255,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final boolean isModified ()
   {
-    return this.model.isModified ();
+    return ( this.model.isModified () ) || ( this.file == null );
   }
 
 
@@ -2320,6 +2337,17 @@ public final class MachinePanel implements EditorPanel
   public final void setFileName ( File file )
   {
     this.file = file;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see EditorPanel#setName(java.lang.String)
+   */
+  public final void setName ( String name )
+  {
+    this.name = name;
   }
 
 

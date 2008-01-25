@@ -20,11 +20,19 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 {
 
   /**
-   * Get the File for this EditorPanel
+   * Get the file of this {@link EditorPanel}.
    * 
-   * @return the File for this EditorPanel
+   * @return the File of this {@link EditorPanel}.
    */
   public File getFile ();
+
+
+  /**
+   * Returns the name of this {@link EditorPanel}.
+   * 
+   * @return The name of this {@link EditorPanel}.
+   */
+  public String getName ();
 
 
   /**
@@ -55,4 +63,12 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * Handle toolbar {@link Alphabet} button action event.
    */
   public void handleToolbarAlphabet ();
+
+
+  /**
+   * Sets the name of this {@link EditorPanel}.
+   * 
+   * @param name The name to set;
+   */
+  public void setName ( String name );
 }

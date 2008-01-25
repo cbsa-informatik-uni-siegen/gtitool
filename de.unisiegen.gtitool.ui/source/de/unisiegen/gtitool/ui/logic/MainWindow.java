@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -42,12 +43,6 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
  */
 public final class MainWindow implements LanguageChangedListener
 {
-
-  /**
-   * The number of opened files.
-   */
-  private static int count = 0;
-
 
   /**
    * The {@link Logger} for this class.
@@ -338,12 +333,29 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel newEditorPanel = newDialog.getEditorPanel ();
     if ( newEditorPanel != null )
     {
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + newDialog.getFileEnding ();
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + newDialog.getFileEnding ();
+      }
+
       this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel.setName ( name );
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
-      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel,
-          Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-              + newDialog.getFileEnding () );
-      count++ ;
       setGeneralStates ( true );
 
       // toolbar items
@@ -1183,7 +1195,6 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
       this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
           .getName () );
-      count++ ;
       setGeneralStates ( true );
 
       // toolbar items
@@ -1232,8 +1243,11 @@ public final class MainWindow implements LanguageChangedListener
 
     for ( File file : fileList )
     {
-      if ( file.exists () ){
-        this.gui.jMenuRecentlyUsed.add ( new RecentlyUsedMenuItem ( this, file ) );}
+      if ( file.exists () )
+      {
+        this.gui.jMenuRecentlyUsed
+            .add ( new RecentlyUsedMenuItem ( this, file ) );
+      }
     }
   }
 
@@ -1311,19 +1325,9 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
-      if ( panel.getFile () == null )
-      {
-        state = true;
-      }
-      else
-      {
-        state = panel.isModified ();
-      }
+      state = panel.isModified ();
     }
-
-    logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.gui.jButtonSave.setEnabled ( state );
-    this.gui.jMenuItemSave.setEnabled ( state );
+    setSaveState ( state );
   }
 
 
@@ -1337,20 +1341,17 @@ public final class MainWindow implements LanguageChangedListener
     logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-
-    // TODO
-    
-    if ( ( panel != null ) && ( panel.getFile () != null ) )
+    if ( panel != null )
     {
       if ( state )
       {
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
-            + panel.getFile ().getName () );
+            + panel.getName () );
       }
       else
       {
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, panel
-            .getFile ().getName () );
+            .getName () );
       }
     }
 

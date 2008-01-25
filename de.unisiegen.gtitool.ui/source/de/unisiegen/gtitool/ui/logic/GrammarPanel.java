@@ -49,10 +49,16 @@ public class GrammarPanel implements EditorPanel
   }
 
 
+  public String getName ()
+  {
+    return null;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getPanel()
+   * @see EditorPanel#getPanel()
    */
   public JPanel getPanel ()
   {
@@ -98,6 +104,12 @@ public class GrammarPanel implements EditorPanel
 
 
   public void resetModify ()
+  {
+
+  }
+
+
+  public void setName ( String name )
   {
 
   }

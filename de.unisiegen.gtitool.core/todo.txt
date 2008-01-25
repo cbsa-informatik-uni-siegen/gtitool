@@ -1,1 +1,2 @@
 CF		- Stack
+CF		- Epsilon Übergänge anpassen

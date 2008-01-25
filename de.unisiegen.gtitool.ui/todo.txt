@@ -7,15 +7,6 @@ BM		- Routing der Transitionen
 BM		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,
 		  falls diese Datei geöffnet ist, muss sie geschlossen werden,
 		  ansonsten existiert eine Datei zweimal
-BM		- Alle sichtbaren Komponenten müssen mit der dynamischen
-		  Sprachänderung klar kommen, es fehlen noch die sechs neuen
-		  ToolBar Button, EditAlphabet und die Word-Navigations-Button
-BM		- Per Doppelklick einen Zustand oder eine Transition bearbeiten
-		  können
 BM		- Die Recently Used Files einmal am Ende speichern
-BM		- Die Menüeinträge für "Edit machine" und "Enter word" sollten nur
-		  aktiv sein, wenn man in diesen Modus wechseln kann, sonst ist der
-		  Benutzer verwirrt
-BM		- Stati Button: Enter Word
 BM		- JGraph statt diasabled, MouseListener entfernen
 CF		- Save Button Status einer neuen Datei

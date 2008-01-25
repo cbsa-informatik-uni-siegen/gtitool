@@ -95,6 +95,8 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemValidate.setEnabled ( false );
     // EnterWord
     this.gui.jMenuItemEnterWord.setEnabled ( false );
+    // Edit Machine
+    this.gui.jMenuItemEditMachine.setEnabled(false);
     // Preferences
     this.gui.jMenuItemPreferences.setEnabled ( true );
     // RecentlyUsed
@@ -108,6 +110,7 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonPrevious.setEnabled ( false );
     this.gui.jButtonAutoStep.setEnabled ( false );
     this.gui.jButtonStop.setEnabled ( false );
+    
 
     // Console and table visibility
     this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
@@ -267,6 +270,9 @@ public final class MainWindow implements LanguageChangedListener
         .getState () );
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
     machinePanel.setWordEnterMode ( false );
+    this.gui.jMenuItemEnterWord.setEnabled ( true );
+    this.gui.jMenuItemEditMachine.setEnabled ( false );
+    this.gui.jMenuItemValidate.setEnabled ( true );
   }
 
 
@@ -315,10 +321,13 @@ public final class MainWindow implements LanguageChangedListener
       return;
     }
     setToolBarEditItemState ( false );
-    setToolBarEnterWordItemState ( true );
+    this.gui.jButtonStart.setEnabled ( true );
     machinePanel.handleEnterWord ();
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
     machinePanel.setWordEnterMode ( true );
+    this.gui.jMenuItemEnterWord.setEnabled ( false );
+    this.gui.jMenuItemEditMachine.setEnabled ( true );
+    this.gui.jMenuItemValidate.setEnabled ( false );
   }
 
 
@@ -357,6 +366,7 @@ public final class MainWindow implements LanguageChangedListener
       newEditorPanel.setName ( name );
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
       setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
 
       // toolbar items
       setToolBarEditItemState ( true );
@@ -662,6 +672,9 @@ public final class MainWindow implements LanguageChangedListener
             .isTableVisible () );
         setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
         setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
+        this.gui.jMenuItemEditMachine.setEnabled (machinePanel.isWordEnterMode () );
+        this.gui.jMenuItemValidate.setEnabled (!machinePanel.isWordEnterMode () );
+        this.gui.jMenuItemEnterWord.setEnabled (!machinePanel.isWordEnterMode () );
 
       }
       else
@@ -1196,6 +1209,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
           .getName () );
       setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
 
       // toolbar items
       setToolBarEditItemState ( true );
@@ -1293,8 +1307,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemSaveAll.setEnabled ( state );
     // Close
     this.gui.jMenuItemClose.setEnabled ( state );
-    // Validate
-    this.gui.jMenuItemValidate.setEnabled ( state );
     // Enter word
     this.gui.jMenuItemEnterWord.setEnabled ( state );
     // Cut
@@ -1383,10 +1395,10 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setToolBarEnterWordItemState ( boolean state )
   {
-    // this.gui.jButtonPrevious.setEnabled ( state );
+     this.gui.jButtonPrevious.setEnabled ( state );
     this.gui.jButtonStart.setEnabled ( state );
-    // this.gui.jButtonNextStep.setEnabled ( state );
-    // this.gui.jButtonAutoStep.setEnabled ( state );
-    // this.gui.jButtonStop.setEnabled ( state );
+     this.gui.jButtonNextStep.setEnabled ( state );
+     this.gui.jButtonAutoStep.setEnabled ( state );
+     this.gui.jButtonStop.setEnabled ( state );
   }
 }

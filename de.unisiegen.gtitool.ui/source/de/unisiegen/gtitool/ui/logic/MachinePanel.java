@@ -45,6 +45,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -1065,7 +1066,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleEnterWord ()
   {
     this.gui.wordPanel.setVisible ( true );
-    this.model.getJGraph ().setEnabled ( false );
+    // this.model.getJGraph ().setEnabled ( false );
   }
 
 
@@ -1574,9 +1575,6 @@ public final class MachinePanel implements EditorPanel
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
-
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
 
     this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
@@ -1693,6 +1691,74 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
+        // open configuration
+        if ( event.getButton () == MouseEvent.BUTTON1
+            && event.getClickCount () == 2 )
+        {
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+              .getFirstCellForLocation ( event.getPoint ().getX (), event
+                  .getPoint ().getY () );
+          if ( object == null )
+            return;
+          else if ( object instanceof DefaultTransitionView )
+          {
+            // open transition config dialog
+            DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
+            TransitionDialog dialog = new TransitionDialog ( MachinePanel.this.parent,
+                MachinePanel.this.machine.getAlphabet (),
+                transitionView.getSourceView ()
+                    .getState (), transitionView
+                    .getTargetView ().getState () );
+            dialog.setOverChangeSet ( transitionView
+                .getTransition ().getSymbol () );
+            dialog.show ();
+            if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+            {
+              Transition newTransition = dialog.getTransition ();
+              MachinePanel.this.graph.getGraphLayoutCache ()
+                  .valueForCellChanged ( transitionView,
+                      newTransition );
+              Transition oldTransition = transitionView
+                  .getTransition ();
+              oldTransition.clear ();
+              try
+              {
+                oldTransition.add ( newTransition );
+              }
+              catch ( TransitionException exc )
+              {
+                exc.printStackTrace ();
+                System.exit ( 1 );
+              }
+            }
+          }
+          else
+          {
+            // open transition config dialog
+            DefaultStateView state = ( DefaultStateView ) object;
+            NewStateNameDialog dialog = new NewStateNameDialog (
+                MachinePanel.this.parent, state.getState () );
+            dialog.show ();
+            if ( ( dialog.getStateName () != null )
+                && ( !dialog.getStateName ().equals (
+                    state.getState ().getName () ) ) )
+            {
+              try
+              {
+                state.getState ().setName (
+                    dialog.getStateName () );
+              }
+              catch ( StateException exc )
+              {
+                exc.printStackTrace ();
+                System.exit ( 1 );
+              }
+              MachinePanel.this.graph.getGraphLayoutCache ().valueForCellChanged (
+                  state, dialog.getStateName () );
+            }
+          }
+        }
+
         // Return if pressed Button is not the left mouse button
         if ( event.getButton () != MouseEvent.BUTTON3 )
         {

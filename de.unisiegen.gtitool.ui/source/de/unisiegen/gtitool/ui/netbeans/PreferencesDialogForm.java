@@ -71,10 +71,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jButtonRestore = new javax.swing.JButton();
-        jButtonOk = new javax.swing.JButton();
-        jButtonAccept = new javax.swing.JButton();
-        jButtonCancel = new javax.swing.JButton();
+        jGTIButtonRestore = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonAccept = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -104,7 +104,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxLanguage.setToolTipText(bundle.getString("PreferencesDialog.LanguageToolTip")); // NOI18N
         jComboBoxLanguage.setFocusable(false);
-        jComboBoxLanguage.setPreferredSize(new java.awt.Dimension(250, 24));
+        jComboBoxLanguage.setPreferredSize(new java.awt.Dimension(300, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -124,7 +124,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxLookAndFeel.setToolTipText(bundle.getString("PreferencesDialog.LookAndFeelToolTip")); // NOI18N
         jComboBoxLookAndFeel.setFocusable(false);
-        jComboBoxLookAndFeel.setPreferredSize(new java.awt.Dimension(250, 24));
+        jComboBoxLookAndFeel.setPreferredSize(new java.awt.Dimension(300, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -151,7 +151,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jSliderZoom.setSnapToTicks(true);
         jSliderZoom.setToolTipText(bundle.getString("PreferencesDialog.ZoomToolTip")); // NOI18N
         jSliderZoom.setValue(100);
-        jSliderZoom.setPreferredSize(new java.awt.Dimension(250, 42));
+        jSliderZoom.setPreferredSize(new java.awt.Dimension(300, 42));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -184,7 +184,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxTransition.setToolTipText(bundle.getString("PreferencesDialog.TransitionToolTip")); // NOI18N
         jComboBoxTransition.setFocusable(false);
-        jComboBoxTransition.setPreferredSize(new java.awt.Dimension(250, 24));
+        jComboBoxTransition.setPreferredSize(new java.awt.Dimension(300, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -204,7 +204,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jComboBoxMouseSelection.setToolTipText(bundle.getString("PreferencesDialog.MouseSelectionToolTip")); // NOI18N
         jComboBoxMouseSelection.setFocusable(false);
-        jComboBoxMouseSelection.setPreferredSize(new java.awt.Dimension(250, 24));
+        jComboBoxMouseSelection.setPreferredSize(new java.awt.Dimension(300, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -229,7 +229,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jSliderAutoStep.setPaintTicks(true);
         jSliderAutoStep.setSnapToTicks(true);
         jSliderAutoStep.setToolTipText(bundle.getString("PreferencesDialog.AutoStepToolTip")); // NOI18N
-        jSliderAutoStep.setPreferredSize(new java.awt.Dimension(250, 42));
+        jSliderAutoStep.setPreferredSize(new java.awt.Dimension(300, 42));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -356,13 +356,13 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jTabbedPane, gridBagConstraints);
 
-        jButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
-        jButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
-        jButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
-        jButtonRestore.setFocusPainted(false);
-        jButtonRestore.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
+        jGTIButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
+        jGTIButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
+        jGTIButtonRestore.setFocusPainted(false);
+        jGTIButtonRestore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRestoreActionPerformed(evt);
+                jGTIButtonRestoreActionPerformed(evt);
             }
         });
 
@@ -370,17 +370,16 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 5);
-        getContentPane().add(jButtonRestore, gridBagConstraints);
+        getContentPane().add(jGTIButtonRestore, gridBagConstraints);
 
-        jButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
-        jButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
-        jButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
-        jButtonOk.setFocusPainted(false);
-        jButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setFocusPainted(false);
+        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonOkActionPerformed(evt);
+                jGTIButtonOkActionPerformed(evt);
             }
         });
 
@@ -390,15 +389,15 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 5);
-        getContentPane().add(jButtonOk, gridBagConstraints);
+        getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
-        jButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
-        jButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
-        jButtonAccept.setFocusPainted(false);
-        jButtonAccept.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
+        jGTIButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
+        jGTIButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
+        jGTIButtonAccept.setFocusPainted(false);
+        jGTIButtonAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAcceptActionPerformed(evt);
+                jGTIButtonAcceptActionPerformed(evt);
             }
         });
 
@@ -407,15 +406,15 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 5);
-        getContentPane().add(jButtonAccept, gridBagConstraints);
+        getContentPane().add(jGTIButtonAccept, gridBagConstraints);
 
-        jButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
-        jButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
-        jButtonCancel.setToolTipText(bundle.getString("PreferencesDialog.CancelToolTip")); // NOI18N
-        jButtonCancel.setFocusPainted(false);
-        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("PreferencesDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setFocusPainted(false);
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelActionPerformed(evt);
+                jGTIButtonCancelActionPerformed(evt);
             }
         });
 
@@ -424,10 +423,26 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 16);
-        getContentPane().add(jButtonCancel, gridBagConstraints);
+        getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        setBounds(0, 0, 440, 333);
+        setBounds(0, 0, 480, 300);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIButtonRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonRestoreActionPerformed
+       this.logic.handleRestore();
+    }//GEN-LAST:event_jGTIButtonRestoreActionPerformed
+
+    private void jGTIButtonAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonAcceptActionPerformed
+       this.logic.handleAccept();
+    }//GEN-LAST:event_jGTIButtonAcceptActionPerformed
+
+    private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
+       this.logic.handleOk();
+    }//GEN-LAST:event_jGTIButtonOkActionPerformed
+
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+       this.logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
 
     private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
        this.logic.handlePushDownAlphabetItemStateChanged(evt);
@@ -449,36 +464,20 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         this.logic.handleColorListMouseReleased(evt);
     }//GEN-LAST:event_jListColorMouseReleased
 
-    private void jButtonRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRestoreActionPerformed
-        this.logic.handleRestore();
-    }//GEN-LAST:event_jButtonRestoreActionPerformed
-
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        this.logic.handleCancel();
-    }//GEN-LAST:event_jButtonCancelActionPerformed
-
-    private void jButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkActionPerformed
-        this.logic.handleOk();
-    }//GEN-LAST:event_jButtonOkActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.logic.handleCancel();
     }//GEN-LAST:event_formWindowClosing
-
-    private void jButtonAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAcceptActionPerformed
-        this.logic.handleAccept();
-    }//GEN-LAST:event_jButtonAcceptActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jButtonAccept;
-    public javax.swing.JButton jButtonCancel;
-    public javax.swing.JButton jButtonOk;
-    public javax.swing.JButton jButtonRestore;
     public javax.swing.JCheckBox jCheckBoxPushDownAlphabet;
     public javax.swing.JComboBox jComboBoxLanguage;
     public javax.swing.JComboBox jComboBoxLookAndFeel;
     public javax.swing.JComboBox jComboBoxMouseSelection;
     public javax.swing.JComboBox jComboBoxTransition;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonAccept;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonRestore;
     public javax.swing.JLabel jLabelAutoStep;
     public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JLabel jLabelLanguage;

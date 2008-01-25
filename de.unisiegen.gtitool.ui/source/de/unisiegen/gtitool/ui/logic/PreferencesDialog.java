@@ -2008,24 +2008,25 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jCheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
     // Accept
-    this.gui.jButtonAccept.setText ( Messages
+    this.gui.jGTIButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
-    this.gui.jButtonAccept.setMnemonic ( Messages.getString (
+    this.gui.jGTIButtonAccept.setMnemonic ( Messages.getString (
         "PreferencesDialog.AcceptMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    this.gui.jButtonAccept.setToolTipText ( Messages
+    this.gui.jGTIButtonAccept.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AcceptToolTip" ) ); //$NON-NLS-1$
     // Ok
-    this.gui.jButtonOk.setText ( Messages.getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
-    this.gui.jButtonOk.setMnemonic ( Messages.getString (
+    this.gui.jGTIButtonOk.setText ( Messages
+        .getString ( "PreferencesDialog.Ok" ) ); //$NON-NLS-1$
+    this.gui.jGTIButtonOk.setMnemonic ( Messages.getString (
         "PreferencesDialog.OkMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    this.gui.jButtonOk.setToolTipText ( Messages
+    this.gui.jGTIButtonOk.setToolTipText ( Messages
         .getString ( "PreferencesDialog.OkToolTip" ) ); //$NON-NLS-1$
     // Cancel
-    this.gui.jButtonCancel.setText ( Messages
+    this.gui.jGTIButtonCancel.setText ( Messages
         .getString ( "PreferencesDialog.Cancel" ) ); //$NON-NLS-1$
-    this.gui.jButtonCancel.setMnemonic ( Messages.getString (
+    this.gui.jGTIButtonCancel.setMnemonic ( Messages.getString (
         "PreferencesDialog.CancelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    this.gui.jButtonCancel.setToolTipText ( Messages
+    this.gui.jGTIButtonCancel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.CancelToolTip" ) ); //$NON-NLS-1$
     // Language
     this.gui.jLabelLanguage.setText ( Messages
@@ -2063,11 +2064,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jComboBoxMouseSelection.setToolTipText ( Messages
         .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
     // Restore
-    this.gui.jButtonRestore.setText ( Messages
+    this.gui.jGTIButtonRestore.setText ( Messages
         .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
-    this.gui.jButtonRestore.setMnemonic ( Messages.getString (
+    this.gui.jGTIButtonRestore.setMnemonic ( Messages.getString (
         "PreferencesDialog.RestoreMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    this.gui.jButtonRestore.setToolTipText ( Messages
+    this.gui.jGTIButtonRestore.setToolTipText ( Messages
         .getString ( "PreferencesDialog.RestoreToolTip" ) ); //$NON-NLS-1$
     // State
     this.colorItemState.setCaption ( Messages
@@ -2591,14 +2592,14 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
         || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
     {
-      this.gui.jButtonOk.setEnabled ( false );
-      this.gui.jButtonAccept.setEnabled ( false );
+      this.gui.jGTIButtonOk.setEnabled ( false );
+      this.gui.jGTIButtonAccept.setEnabled ( false );
       this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
     }
     else
     {
-      this.gui.jButtonOk.setEnabled ( true );
-      this.gui.jButtonAccept.setEnabled ( true );
+      this.gui.jGTIButtonOk.setEnabled ( true );
+      this.gui.jGTIButtonAccept.setEnabled ( true );
       this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
     }
   }

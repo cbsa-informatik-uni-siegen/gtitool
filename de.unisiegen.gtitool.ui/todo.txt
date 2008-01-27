@@ -1,7 +1,6 @@
 BM		- Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
 CF		- Stack und Kelleralphabet implementieren (Neu, Edit, WordPanel)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
-BM		- Konsole und Tabelle nur auf ein MachinePanel beschränken
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
 BM		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,

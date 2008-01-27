@@ -357,20 +357,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Flag signals if console is visible
-   */
-  private boolean consoleVisible = PreferenceManager.getInstance ()
-      .getVisibleConsole ();
-
-
-  /**
-   * Flag signals if table is visible
-   */
-  private boolean tableVisible = PreferenceManager.getInstance ()
-      .getVisibleTable ();
-
-
-  /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
@@ -2133,8 +2119,6 @@ public final class MachinePanel implements EditorPanel
 
           x = event.getX () / MachinePanel.this.zoomFactor;
           y = event.getY () / MachinePanel.this.zoomFactor;
-          // x = MachinePanel.this.firstStatePosition.x < x ? x - 5 : x + 5;
-          // y = MachinePanel.this.firstStatePosition.y < x ? y - 3 : y + 10;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
           MachinePanel.this.graph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
@@ -2304,17 +2288,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Getter for the flag if console is visible
-   * 
-   * @return true if console is visible, else false
-   */
-  public final boolean isConsoleVisible ()
-  {
-    return this.consoleVisible;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#isModified()
@@ -2322,17 +2295,6 @@ public final class MachinePanel implements EditorPanel
   public final boolean isModified ()
   {
     return ( this.model.isModified () ) || ( this.file == null );
-  }
-
-
-  /**
-   * Getter for the flag if table is visible
-   * 
-   * @return true if table is visible, else false
-   */
-  public final boolean isTableVisible ()
-  {
-    return this.tableVisible;
   }
 
 
@@ -2385,17 +2347,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Set flag if console is visible
-   * 
-   * @param consoleVisible flag if console is visible
-   */
-  public final void setConsoleVisible ( boolean consoleVisible )
-  {
-    this.consoleVisible = consoleVisible;
-  }
-
-
-  /**
    * Set the file for this {@link Machine Panel}.
    * 
    * @param file The file for this {@link Machine Panel}.
@@ -2418,24 +2369,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Set the value of the table visible Flag
-   * 
-   * @param tableVisible The new value
-   */
-  public final void setTableVisible ( boolean tableVisible )
-  {
-    this.tableVisible = tableVisible;
-  }
-
-
-  /**
    * Sets the visibility of the console.
    * 
    * @param visible Visible or not visible.
    */
   public final void setVisibleConsole ( boolean visible )
   {
-    this.consoleVisible = visible;
     if ( visible )
     {
       this.gui.jSplitPaneConsole

@@ -96,7 +96,7 @@ public final class MainWindow implements LanguageChangedListener
     // EnterWord
     this.gui.jMenuItemEnterWord.setEnabled ( false );
     // Edit Machine
-    this.gui.jMenuItemEditMachine.setEnabled(false);
+    this.gui.jMenuItemEditMachine.setEnabled ( false );
     // Preferences
     this.gui.jMenuItemPreferences.setEnabled ( true );
     // RecentlyUsed
@@ -110,7 +110,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonPrevious.setEnabled ( false );
     this.gui.jButtonAutoStep.setEnabled ( false );
     this.gui.jButtonStop.setEnabled ( false );
-    
 
     // Console and table visibility
     this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
@@ -221,22 +220,19 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleConsoleStateChanged ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( ( panel instanceof MachinePanel ) )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
 
-    if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
-        .getState ()
-        && this.saveConsolePreferences )
-    {
-      PreferenceManager.getInstance ().setVisibleConsole (
-          this.gui.jCheckBoxMenuItemConsole.getState () );
-      MachinePanel machinePanel = ( MachinePanel ) panel;
-      machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
-          .getState () );
-      machinePanel.setConsoleVisible ( this.gui.jCheckBoxMenuItemConsole
-          .getState () );
+      if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
+          .getState ()
+          && this.saveConsolePreferences )
+      {
+        PreferenceManager.getInstance ().setVisibleConsole (
+            this.gui.jCheckBoxMenuItemConsole.getState () );
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+        machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+            .getState () );
+      }
     }
   }
 
@@ -665,16 +661,20 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
             .isWordEnterMode () );
         this.saveConsolePreferences = false;
-        this.gui.jCheckBoxMenuItemConsole.setState ( machinePanel
-            .isConsoleVisible () );
         this.saveConsolePreferences = true;
-        this.gui.jCheckBoxMenuItemTable.setState ( machinePanel
-            .isTableVisible () );
+        machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+            .getState ()
+            && !machinePanel.isWordEnterMode () );
+        machinePanel.setVisibleTable ( this.gui.jCheckBoxMenuItemTable
+            .getState () );
         setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
         setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
-        this.gui.jMenuItemEditMachine.setEnabled (machinePanel.isWordEnterMode () );
-        this.gui.jMenuItemValidate.setEnabled (!machinePanel.isWordEnterMode () );
-        this.gui.jMenuItemEnterWord.setEnabled (!machinePanel.isWordEnterMode () );
+        this.gui.jMenuItemEditMachine.setEnabled ( machinePanel
+            .isWordEnterMode () );
+        this.gui.jMenuItemValidate.setEnabled ( !machinePanel
+            .isWordEnterMode () );
+        this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
+            .isWordEnterMode () );
 
       }
       else
@@ -1395,10 +1395,10 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setToolBarEnterWordItemState ( boolean state )
   {
-     this.gui.jButtonPrevious.setEnabled ( state );
+    this.gui.jButtonPrevious.setEnabled ( state );
     this.gui.jButtonStart.setEnabled ( state );
-     this.gui.jButtonNextStep.setEnabled ( state );
-     this.gui.jButtonAutoStep.setEnabled ( state );
-     this.gui.jButtonStop.setEnabled ( state );
+    this.gui.jButtonNextStep.setEnabled ( state );
+    this.gui.jButtonAutoStep.setEnabled ( state );
+    this.gui.jButtonStop.setEnabled ( state );
   }
 }

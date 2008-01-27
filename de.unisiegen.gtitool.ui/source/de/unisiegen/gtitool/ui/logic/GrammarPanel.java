@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
 
 /**
@@ -66,13 +67,13 @@ public class GrammarPanel implements EditorPanel
   }
 
 
-  public String handleSave ()
+  public File handleSave ()
   {
     return null;
   }
 
 
-  public String handleSaveAs ()
+  public File handleSaveAs ()
   {
     return null;
   }
@@ -112,5 +113,12 @@ public class GrammarPanel implements EditorPanel
   public void setName ( String name )
   {
 
+  }
+
+
+  public EditorPanelForm getGui ()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

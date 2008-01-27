@@ -3,9 +3,6 @@ CF		- Stack und Kelleralphabet implementieren (Neu, Edit, WordPanel)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
-BM		- Wenn eine Datei überschrieben wird, muss nachgefragt werden,
-		  falls diese Datei geöffnet ist, muss sie geschlossen werden,
-		  ansonsten existiert eine Datei zweimal
 BM		- Die Recently Used Files einmal am Ende speichern
-BM		- JGraph statt diasabled, MouseListener entfernen
+BM		- Farbverlauf bei Transitionen beseitigen
 CF		- Save Button Status einer neuen Datei

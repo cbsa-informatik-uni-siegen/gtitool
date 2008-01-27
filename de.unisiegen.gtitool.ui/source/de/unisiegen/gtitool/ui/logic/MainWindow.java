@@ -596,11 +596,11 @@ public final class MainWindow implements LanguageChangedListener
             JOptionPane.YES_NO_CANCEL_OPTION );
         if ( choice == JOptionPane.YES_OPTION )
         {
-          String saveFileName = current.handleSave ();
-          if ( saveFileName != null )
+          File file = current.handleSave ();
+          if ( file != null )
           {
             this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( current,
-                saveFileName );
+                file.getName() );
           }
         }
         else if ( choice == JOptionPane.CANCEL_OPTION )
@@ -625,10 +625,15 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleSave ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    String fileName = panel.handleSave ();
-    if ( fileName != null )
+    File file = panel.handleSave ();
+    if ( file != null )
     {
-      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, fileName );
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain ) {
+        if ( !(current.equals ( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) ){
+          this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );
+        }
+      }
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, file.getName() );
     }
   }
 
@@ -639,11 +644,18 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleSaveAs ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    String fileName = panel.handleSaveAs ();
-    if ( fileName != null )
+    File file = panel.handleSaveAs ();
+    if ( file != null )
     {
-      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, fileName );
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain ) {
+        if ( !(current.equals ( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) ){
+          this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );
+        }
+      }
+      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, file.getName() );
     }
+    
+  
   }
 
 

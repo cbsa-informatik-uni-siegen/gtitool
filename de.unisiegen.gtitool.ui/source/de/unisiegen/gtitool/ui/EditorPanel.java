@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
@@ -48,7 +49,7 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * 
    * @return The filename of the saved file.
    */
-  public String handleSave ();
+  public File handleSave ();
 
 
   /**
@@ -56,7 +57,7 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * 
    * @return The filename of the saved file.
    */
-  public String handleSaveAs ();
+  public File handleSaveAs ();
 
 
   /**
@@ -71,4 +72,12 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @param name The name to set;
    */
   public void setName ( String name );
+  
+  /**
+   * 
+   * Getter for the gui element of this logic class
+   *
+   * @return The {@link EditorPanelForm} for this logic class
+   */
+  public EditorPanelForm getGui();
 }

@@ -63,6 +63,7 @@ import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
@@ -1148,7 +1149,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @return filename
    */
-  public final String handleSave ()
+  public final File handleSave ()
   {
     if ( this.file == null )
     {
@@ -1170,7 +1171,7 @@ public final class MachinePanel implements EditorPanel
     }
     resetModify ();
     fireModifyStatusChanged ( false );
-    return this.file.getName ();
+    return this.file;
   }
 
 
@@ -1179,7 +1180,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @return filename
    */
-  public final String handleSaveAs ()
+  public final File handleSaveAs ()
   {
     try
     {
@@ -1222,6 +1223,17 @@ public final class MachinePanel implements EditorPanel
       if ( n == JFileChooser.CANCEL_OPTION
           || chooser.getSelectedFile () == null )
         return null;
+      if ( chooser.getSelectedFile ().exists () )
+      {
+        
+        int choice =  JOptionPane.showConfirmDialog  ( this.parent, Messages .getString (
+          "MachinePanel.FileExists", chooser.getSelectedFile ().getName()), Messages.getString ( //$NON-NLS-1$
+          "MachinePanel.Save" ), JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
+        
+        if ( choice == JOptionPane.NO_OPTION )
+          return null;
+         
+      }
 
       String filename = chooser.getSelectedFile ().toString ().matches (
           ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
@@ -1248,7 +1260,7 @@ public final class MachinePanel implements EditorPanel
     }
     resetModify ();
     fireModifyStatusChanged ( false );
-    return this.file.getName ();
+    return this.file;
   }
 
 
@@ -2452,5 +2464,16 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+
+  /**
+   * 
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
+   */
+  public EditorPanelForm getGui ()
+  {
+    return this.gui;
   }
 }

@@ -631,7 +631,7 @@ public final class MainWindow implements LanguageChangedListener
     {
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        if ( ! ( current.equals ( this.gui.jGTITabbedPaneMain
+        if ( ( !current.equals ( this.gui.jGTITabbedPaneMain
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
           this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );

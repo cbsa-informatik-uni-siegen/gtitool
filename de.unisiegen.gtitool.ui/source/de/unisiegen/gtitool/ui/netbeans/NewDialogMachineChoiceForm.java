@@ -45,7 +45,6 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        jLabelMachinesCaption.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jLabelMachinesCaption.setText(bundle.getString("NewDialog.ChooseMachine")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();

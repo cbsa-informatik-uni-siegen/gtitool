@@ -45,13 +45,12 @@ public class NewDialogChoiceForm extends javax.swing.JPanel {
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jLabelGrammarsCaption.setText(bundle.getString("NewDialog.ChoiceTitle")); // NOI18N
-        jLabelGrammarsCaption.setMaximumSize(new java.awt.Dimension(435, 30));
-        jLabelGrammarsCaption.setPreferredSize(new java.awt.Dimension(435, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         add(jLabelGrammarsCaption, gridBagConstraints);
 
         buttonGrammarsPanel.setLayout(new java.awt.GridBagLayout());
@@ -96,17 +95,18 @@ public class NewDialogChoiceForm extends javax.swing.JPanel {
         buttonGrammarsPanel.add(jRadioButtonContextFreeGrammar, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         add(buttonGrammarsPanel, gridBagConstraints);
 
         jPanelGrammarsSpace.setLayout(new java.awt.GridBagLayout());
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -161,7 +161,7 @@ public class NewDialogChoiceForm extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);

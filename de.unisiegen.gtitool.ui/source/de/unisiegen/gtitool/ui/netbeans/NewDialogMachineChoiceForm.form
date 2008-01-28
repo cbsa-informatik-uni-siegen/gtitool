@@ -20,7 +20,6 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabelMachinesCaption">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="NewDialog.ChooseMachine" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>

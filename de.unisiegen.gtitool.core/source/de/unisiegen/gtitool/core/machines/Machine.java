@@ -285,7 +285,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @throws WordNotAcceptedException If something with the {@link Word} is not
    *           correct.
    */
-  public ArrayList < Transition > nextSymbol () throws WordFinishedException,
+  public TreeSet < Transition > nextSymbol () throws WordFinishedException,
       WordResetedException, WordNotAcceptedException;
 
 
@@ -299,8 +299,8 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public ArrayList < Transition > previousSymbol ()
-      throws WordFinishedException, WordResetedException;
+  public TreeSet < Transition > previousSymbol () throws WordFinishedException,
+      WordResetedException;
 
 
   /**

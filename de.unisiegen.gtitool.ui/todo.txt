@@ -1,8 +1,8 @@
 BM		- Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
-CF		- Stack und Kelleralphabet implementieren (Neu, Edit, WordPanel)
+CF		- Stack und Kelleralphabet implementieren (Edit, WordPanel)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen (erst im core implementieren)
 BM		- Routing der Transitionen
 BM		- Die Recently Used Files einmal am Ende speichern
 BM		- Farbverlauf bei Transitionen beseitigen
-CF		- Save Button Status einer neuen Datei
+BM		- Der Automat muss im Wort-Eingeben-Modus readonly sein

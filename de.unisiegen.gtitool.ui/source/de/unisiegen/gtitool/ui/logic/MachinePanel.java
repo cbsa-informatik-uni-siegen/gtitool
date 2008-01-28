@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -1225,14 +1226,18 @@ public final class MachinePanel implements EditorPanel
         return null;
       if ( chooser.getSelectedFile ().exists () )
       {
-        
-        int choice =  JOptionPane.showConfirmDialog  ( this.parent, Messages .getString (
-          "MachinePanel.FileExists", chooser.getSelectedFile ().getName()), Messages.getString ( //$NON-NLS-1$
-          "MachinePanel.Save" ), JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
-        
+
+        int choice = JOptionPane
+            .showConfirmDialog (
+                this.parent,
+                Messages
+                    .getString (
+                        "MachinePanel.FileExists", chooser.getSelectedFile ().getName () ), Messages.getString ( //$NON-NLS-1$
+                    "MachinePanel.Save" ), JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
+
         if ( choice == JOptionPane.NO_OPTION )
           return null;
-         
+
       }
 
       String filename = chooser.getSelectedFile ().toString ().matches (
@@ -1398,7 +1403,7 @@ public final class MachinePanel implements EditorPanel
   {
     try
     {
-      ArrayList < Transition > activeTransitions = this.machine.nextSymbol ();
+      TreeSet < Transition > activeTransitions = this.machine.nextSymbol ();
       ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
       inactiveTransitions.addAll ( this.model.getTransitionViewList () );
 
@@ -1477,8 +1482,7 @@ public final class MachinePanel implements EditorPanel
   {
     try
     {
-      ArrayList < Transition > activeTransitions = this.machine
-          .previousSymbol ();
+      TreeSet < Transition > activeTransitions = this.machine.previousSymbol ();
       ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
       inactiveTransitions.addAll ( this.model.getTransitionViewList () );
 
@@ -1702,22 +1706,19 @@ public final class MachinePanel implements EditorPanel
           {
             // open transition config dialog
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
-            TransitionDialog dialog = new TransitionDialog ( MachinePanel.this.parent,
-                MachinePanel.this.machine.getAlphabet (),
-                transitionView.getSourceView ()
-                    .getState (), transitionView
-                    .getTargetView ().getState () );
-            dialog.setOverChangeSet ( transitionView
-                .getTransition ().getSymbol () );
+            TransitionDialog dialog = new TransitionDialog (
+                MachinePanel.this.parent, MachinePanel.this.machine
+                    .getAlphabet (), transitionView.getSourceView ()
+                    .getState (), transitionView.getTargetView ().getState () );
+            dialog.setOverChangeSet ( transitionView.getTransition ()
+                .getSymbol () );
             dialog.show ();
             if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
             {
               Transition newTransition = dialog.getTransition ();
               MachinePanel.this.graph.getGraphLayoutCache ()
-                  .valueForCellChanged ( transitionView,
-                      newTransition );
-              Transition oldTransition = transitionView
-                  .getTransition ();
+                  .valueForCellChanged ( transitionView, newTransition );
+              Transition oldTransition = transitionView.getTransition ();
               oldTransition.clear ();
               try
               {
@@ -1743,16 +1744,15 @@ public final class MachinePanel implements EditorPanel
             {
               try
               {
-                state.getState ().setName (
-                    dialog.getStateName () );
+                state.getState ().setName ( dialog.getStateName () );
               }
               catch ( StateException exc )
               {
                 exc.printStackTrace ();
                 System.exit ( 1 );
               }
-              MachinePanel.this.graph.getGraphLayoutCache ().valueForCellChanged (
-                  state, dialog.getStateName () );
+              MachinePanel.this.graph.getGraphLayoutCache ()
+                  .valueForCellChanged ( state, dialog.getStateName () );
             }
           }
         }
@@ -2466,8 +2466,8 @@ public final class MachinePanel implements EditorPanel
     this.graph.setScale ( factor );
   }
 
+
   /**
-   * 
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()

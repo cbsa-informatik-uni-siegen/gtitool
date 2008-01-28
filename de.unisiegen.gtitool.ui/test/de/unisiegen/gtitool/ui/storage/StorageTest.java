@@ -365,7 +365,7 @@ public class StorageTest
         while ( !word_loaded.isFinished () )
         {
           out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
-          out ( "Transition: " + dfaloaded.nextSymbol ().get ( 0 ).getSymbol () );
+          out ( "Transition: " + dfaloaded.nextSymbol ().first ().getSymbol () );
           out ( "Symbol:     " + dfaloaded.getCurrentSymbol () );
           out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
           out ( "Accepted:   " + dfaloaded.isWordAccepted () );
@@ -386,7 +386,7 @@ public class StorageTest
           out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
           out ( "Symbol:     " + dfaloaded.getCurrentSymbol () );
           out ( "Transition: "
-              + dfaloaded.previousSymbol ().get ( 0 ).getSymbol () );
+              + dfaloaded.previousSymbol ().first ().getSymbol () );
           out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
           out ();
         }

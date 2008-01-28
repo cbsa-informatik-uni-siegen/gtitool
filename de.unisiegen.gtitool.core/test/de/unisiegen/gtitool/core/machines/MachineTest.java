@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.core.machines;
 
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -60,14 +60,16 @@ public abstract class MachineTest
         }
         println ();
         print ( "Transitions: " );
-        ArrayList < Transition > transitions = machine.nextSymbol ();
-        for ( int i = 0 ; i < transitions.size () ; i++ )
+        TreeSet < Transition > transitions = machine.nextSymbol ();
+        boolean first = false;
+        for ( Transition current : transitions )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( transitions.get ( i ) );
+          first = true;
+          print ( current );
         }
         println ();
         try
@@ -131,14 +133,16 @@ public abstract class MachineTest
           println ( "Symbol:      FINISHED" );
         }
         print ( "Transitions: " );
-        ArrayList < Transition > transitions = machine.previousSymbol ();
-        for ( int i = 0 ; i < transitions.size () ; i++ )
+        TreeSet < Transition > transitions = machine.previousSymbol ();
+        boolean first = false;
+        for ( Transition current : transitions )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( transitions.get ( i ) );
+          first = true;
+          print ( current );
         }
         println ();
         print ( "States:      " );

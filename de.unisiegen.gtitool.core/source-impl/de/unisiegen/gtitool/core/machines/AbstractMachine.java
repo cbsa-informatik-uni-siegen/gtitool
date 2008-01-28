@@ -51,6 +51,65 @@ public abstract class AbstractMachine implements Machine
 {
 
   /**
+   * The history item.
+   * 
+   * @author Christian Fehler
+   */
+  private final class HistoryItem
+  {
+
+    /**
+     * The {@link Transition} set.
+     */
+    private TreeSet < Transition > transitionSet;
+
+
+    /**
+     * The {@link State} set.
+     */
+    private TreeSet < State > stateSet;
+
+
+    /**
+     * Allocates a new {@link HistoryItem}.
+     * 
+     * @param transitionSet
+     * @param stateSet
+     */
+    public HistoryItem ( TreeSet < Transition > transitionSet,
+        TreeSet < State > stateSet )
+    {
+      this.transitionSet = transitionSet;
+      this.stateSet = stateSet;
+    }
+
+
+    /**
+     * Returns the {@link State} set.
+     * 
+     * @return The {@link State} set.
+     * @see #stateSet
+     */
+    public final TreeSet < State > getStateSet ()
+    {
+      return this.stateSet;
+    }
+
+
+    /**
+     * Returns the {@link Transition} set.
+     * 
+     * @return The {@link Transition} set.
+     * @see #transitionSet
+     */
+    public final TreeSet < Transition > getTransitionSet ()
+    {
+      return this.transitionSet;
+    }
+  }
+
+
+  /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
    * @param machineType The {@link Machine} type.
@@ -115,9 +174,9 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * The history of this <code>AbstractMachine</code>.
+   * The history of this {@link AbstractMachine}.
    */
-  private ArrayList < ArrayList < Transition > > history;
+  private ArrayList < HistoryItem > history;
 
 
   /**
@@ -235,7 +294,7 @@ public abstract class AbstractMachine implements Machine
     // ActiveStateSet
     this.activeStateSet = new TreeSet < State > ();
     // History
-    this.history = new ArrayList < ArrayList < Transition > > ();
+    this.history = new ArrayList < HistoryItem > ();
 
     // AlphabetChangedListener
     this.alphabetChangedListener = new AlphabetChangedListener ()
@@ -292,31 +351,6 @@ public abstract class AbstractMachine implements Machine
 
     // Reset modify
     resetModify ();
-  }
-
-
-  /**
-   * Adds the {@link Transition}s to the history of this
-   * <code>AbstractMachine</code>.
-   * 
-   * @param transitions The {@link Transition}s to add.
-   */
-  private final void addHistory ( Iterable < Transition > transitions )
-  {
-    if ( transitions == null )
-    {
-      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
-    }
-    if ( !transitions.iterator ().hasNext () )
-    {
-      throw new IllegalArgumentException ( "transitions is empty" ); //$NON-NLS-1$
-    }
-    ArrayList < Transition > list = new ArrayList < Transition > ();
-    for ( Transition current : transitions )
-    {
-      list.add ( current );
-    }
-    this.history.add ( list );
   }
 
 
@@ -1305,7 +1339,7 @@ public abstract class AbstractMachine implements Machine
    * @throws WordNotAcceptedException If something with the {@link Word} is not
    *           correct.
    */
-  public final ArrayList < Transition > nextSymbol ()
+  public final TreeSet < Transition > nextSymbol ()
       throws WordFinishedException, WordResetedException,
       WordNotAcceptedException
   {
@@ -1319,14 +1353,15 @@ public abstract class AbstractMachine implements Machine
     {
       for ( Transition current : activeState.getTransitionBegin () )
       {
-        if ( current.isEpsilonTransition () )
+        if ( current.isEpsilonTransition ()
+            && ( !getActiveState ().contains ( current.getStateEnd () ) ) )
         {
           epsilonTransitionFound = true;
           break stateLoop;
         }
       }
     }
-    ArrayList < Transition > transitions = new ArrayList < Transition > ();
+    TreeSet < Transition > transitions = new TreeSet < Transition > ();
     TreeSet < State > newActiveStateSet = new TreeSet < State > ();
     // Epsilon transition found
     if ( epsilonTransitionFound )
@@ -1337,6 +1372,7 @@ public abstract class AbstractMachine implements Machine
         {
           if ( current.isEpsilonTransition () )
           {
+            newActiveStateSet.add ( activeState );
             newActiveStateSet.add ( current.getStateEnd () );
             transitions.add ( current );
           }
@@ -1360,6 +1396,8 @@ public abstract class AbstractMachine implements Machine
       }
     }
     // Set sctive state set
+    TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
+    oldActiveStateSet.addAll ( this.activeStateSet );
     this.activeStateSet.clear ();
     this.activeStateSet.addAll ( newActiveStateSet );
     // No transition is found
@@ -1371,7 +1409,7 @@ public abstract class AbstractMachine implements Machine
       }
       throw new WordNotAcceptedException ( this.word );
     }
-    addHistory ( transitions );
+    this.history.add ( new HistoryItem ( transitions, oldActiveStateSet ) );
     return transitions;
   }
 
@@ -1386,18 +1424,25 @@ public abstract class AbstractMachine implements Machine
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public final ArrayList < Transition > previousSymbol ()
+  public final TreeSet < Transition > previousSymbol ()
       throws WordFinishedException, WordResetedException
   {
-    ArrayList < Transition > transitions = removeHistory ();
+    if ( this.history.size () == 0 )
+    {
+      throw new WordResetedException ( this.word );
+    }
+    HistoryItem item = this.history.remove ( this.history.size () - 1 );
+    TreeSet < Transition > transitions = item.getTransitionSet ();
+    TreeSet < State > states = item.getStateSet ();
+
     // Check for epsilon transitions
     boolean epsilonTransitionFound = false;
-    transitionLoop : for ( Transition current : transitions )
+    for ( Transition current : transitions )
     {
       if ( current.isEpsilonTransition () )
       {
         epsilonTransitionFound = true;
-        break transitionLoop;
+        break;
       }
     }
     // No epsilon transition found
@@ -1407,28 +1452,11 @@ public abstract class AbstractMachine implements Machine
     }
     // Set sctive state set
     this.activeStateSet.clear ();
-    for ( Transition current : transitions )
+    for ( State current : states )
     {
-      this.activeStateSet.add ( current.getStateBegin () );
+      this.activeStateSet.add ( current );
     }
     return transitions;
-  }
-
-
-  /**
-   * Removes and returns the last history element.
-   * 
-   * @return The last history element.
-   * @throws WordResetedException If the {@link Word} is reseted.
-   */
-  private final ArrayList < Transition > removeHistory ()
-      throws WordResetedException
-  {
-    if ( this.history.size () == 0 )
-    {
-      throw new WordResetedException ( this.word );
-    }
-    return this.history.remove ( this.history.size () - 1 );
   }
 
 

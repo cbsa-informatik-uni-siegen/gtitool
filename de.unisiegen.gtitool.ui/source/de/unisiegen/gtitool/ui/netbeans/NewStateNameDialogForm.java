@@ -86,7 +86,6 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("NewStateNameDialog.OkToolTip")); // NOI18N
-        jGTIButtonOk.setFocusPainted(false);
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -105,7 +104,6 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("NewStateNameDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("NewStateNameDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.setFocusPainted(false);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCanceljGTIButton1ActionPerformed(evt);

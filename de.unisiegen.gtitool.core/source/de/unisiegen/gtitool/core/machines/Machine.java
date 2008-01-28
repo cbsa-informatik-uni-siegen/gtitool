@@ -260,7 +260,18 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @return True if the given {@link Symbol} can be removed from the
    *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
    */
-  public boolean isSymbolRemoveable ( Symbol symbol );
+  public boolean isSymbolRemoveableFromAlphabet ( Symbol symbol );
+
+
+  /**
+   * Returns true if the given {@link Symbol} can be removed from the push down
+   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * 
+   * @param symbol The {@link Symbol} which should be checked.
+   * @return True if the given {@link Symbol} can be removed from the push down
+   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   */
+  public boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol );
 
 
   /**

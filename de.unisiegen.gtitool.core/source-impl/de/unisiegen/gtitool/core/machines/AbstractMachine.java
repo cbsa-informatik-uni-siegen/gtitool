@@ -1211,7 +1211,7 @@ public abstract class AbstractMachine implements Machine
    *         {@link Alphabet} of this <code>AbstractMachine</code>, otherwise
    *         false.
    */
-  public boolean isSymbolRemoveable ( Symbol symbol )
+  public boolean isSymbolRemoveableFromAlphabet ( Symbol symbol )
   {
     if ( !this.alphabet.contains ( symbol ) )
     {
@@ -1224,6 +1224,26 @@ public abstract class AbstractMachine implements Machine
         return false;
       }
     }
+    return true;
+  }
+
+
+  /**
+   * Returns true if the given {@link Symbol} can be removed from the push down
+   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * 
+   * @param symbol The {@link Symbol} which should be checked.
+   * @return True if the given {@link Symbol} can be removed from the push down
+   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   */
+  public boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol )
+  {
+    if ( !this.pushDownAlphabet.contains ( symbol ) )
+    {
+      throw new IllegalArgumentException (
+          "symbol is not in the push down alphabet" ); //$NON-NLS-1$
+    }
+    // TODO Implement this
     return true;
   }
 
@@ -1546,7 +1566,7 @@ public abstract class AbstractMachine implements Machine
    */
   public final void removeSymbol ( Symbol symbol )
   {
-    if ( !isSymbolRemoveable ( symbol ) )
+    if ( !isSymbolRemoveableFromAlphabet ( symbol ) )
     {
       throw new IllegalArgumentException ( "symbol is not removeable" ); //$NON-NLS-1$
     }

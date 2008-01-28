@@ -27,19 +27,19 @@ public class JGTITable extends JTable
 
 
   /**
-   * The into drop mode.
+   * The into drag and drop mode.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
   public static final int DROP_INTO = 0;
 
 
   /**
-   * The between drop mode.
+   * The between drag and drop mode.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
   public static final int DROP_BETWEEN = 1;
 
@@ -47,10 +47,10 @@ public class JGTITable extends JTable
   /**
    * The drop mode used for this {@link JGTITable}.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
-  private int dropMode = DROP_INTO;
+  private int dndMode = DROP_INTO;
 
 
   /**
@@ -63,14 +63,14 @@ public class JGTITable extends JTable
 
 
   /**
-   * Returns the drop mode of this {@link JGTITable}.
+   * Returns the drag and drop mode of this {@link JGTIList}.
    * 
-   * @return The drop mode of this {@link JGTITable}.
-   * @see #setDropMode(int)
+   * @return The drag and drop mode of this {@link JGTIList}.
+   * @see #setDndMode(int)
    */
-  public final int getDropMode ()
+  public final int getDndMode ()
   {
-    return this.dropMode;
+    return this.dndMode;
   }
 
 
@@ -114,17 +114,16 @@ public class JGTITable extends JTable
 
 
   /**
-   * Sets the drop modeof this {@link JGTITable}.
+   * Sets the drag and drop mode of this {@link JGTITable}.
    * 
-   * @param dropMode The new drop mode.
+   * @param dndMode The new drag and drop mode.
    */
-  public final void setDropMode ( int dropMode )
+  public final void setDndMode ( int dndMode )
   {
-    if ( ( dropMode != DROP_INTO ) && ( dropMode != DROP_BETWEEN ) )
+    if ( ( dndMode != DROP_INTO ) && ( dndMode != DROP_BETWEEN ) )
     {
-      throw new IllegalArgumentException ( "drop mode is invalid" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "dnd mode is invalid" ); //$NON-NLS-1$
     }
-
-    this.dropMode = dropMode;
+    this.dndMode = dndMode;
   }
 }

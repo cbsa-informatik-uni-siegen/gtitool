@@ -38,19 +38,19 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
-   * The into drop mode.
+   * The into drag and drop mode.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
   public static final int DROP_INTO = 0;
 
 
   /**
-   * The between drop mode.
+   * The between drag and drop mode.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
   public static final int DROP_BETWEEN = 1;
 
@@ -64,10 +64,10 @@ public final class JGTIList extends JList implements DropTargetListener
   /**
    * The drop mode used for this {@link JGTIList}.
    * 
-   * @see #getDropMode()
-   * @see #setDropMode(int)
+   * @see #getDndMode()
+   * @see #setDndMode(int)
    */
-  private int dropMode = DROP_INTO;
+  private int dndMode = DROP_INTO;
 
 
   /**
@@ -179,14 +179,14 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
-   * Returns the drop mode of this {@link JGTIList}.
+   * Returns the drag and drop mode of this {@link JGTIList}.
    * 
-   * @return The drop mode of this {@link JGTIList}.
-   * @see #setDropMode(int)
+   * @return The drag and drop mode of this {@link JGTIList}.
+   * @see #setDndMode(int)
    */
-  public final int getDropMode ()
+  public final int getDndMode ()
   {
-    return this.dropMode;
+    return this.dndMode;
   }
 
 
@@ -212,13 +212,13 @@ public final class JGTIList extends JList implements DropTargetListener
     super.paintComponent ( graphics );
     if ( this.dropLocation != null )
     {
-      if ( this.dropMode == DROP_INTO )
+      if ( this.dndMode == DROP_INTO )
       {
         Rectangle rect = getVisibleRect ();
         graphics.setColor ( Color.BLACK );
         graphics.drawRect ( 0, rect.y, rect.width - 1, rect.height - 1 );
       }
-      else if ( this.dropMode == DROP_BETWEEN )
+      else if ( this.dndMode == DROP_BETWEEN )
       {
         int rowIndex = locationToIndex ( this.dropLocation );
         Rectangle rect = getCellBounds ( rowIndex, rowIndex );
@@ -254,17 +254,16 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
-   * Sets the drop modeof this {@link JGTIList}.
+   * Sets the drag and drop mode of this {@link JGTIList}.
    * 
-   * @param dropMode The new drop mode.
+   * @param dndMode The new drag and drop mode.
    */
-  public final void setDropMode ( int dropMode )
+  public final void setDndMode ( int dndMode )
   {
-    if ( ( dropMode != DROP_INTO ) && ( dropMode != DROP_BETWEEN ) )
+    if ( ( dndMode != DROP_INTO ) && ( dndMode != DROP_BETWEEN ) )
     {
-      throw new IllegalArgumentException ( "drop mode is invalid" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "dnd mode is invalid" ); //$NON-NLS-1$
     }
-
-    this.dropMode = dropMode;
+    this.dndMode = dndMode;
   }
 }

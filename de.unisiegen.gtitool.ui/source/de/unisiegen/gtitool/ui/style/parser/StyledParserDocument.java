@@ -328,18 +328,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
       highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
-      if ( current.getParserStartOffset () < 0
-          && current.getParserEndOffset () < 0 )
+      if ( current.getParserOffset ().getStart () < 0
+          && current.getParserOffset ().getEnd () < 0 )
       {
         setCharacterAttributes ( getLength (), getLength (),
             highlightedParseableEntitySet, false );
       }
       else
       {
-        setCharacterAttributes ( current.getParserStartOffset (), current
-            .getParserEndOffset ()
-            - current.getParserStartOffset (), highlightedParseableEntitySet,
-            false );
+        setCharacterAttributes ( current.getParserOffset ().getStart (),
+            current.getParserOffset ().getEnd ()
+                - current.getParserOffset ().getStart (),
+            highlightedParseableEntitySet, false );
       }
     }
   }

@@ -5,9 +5,10 @@
  * @version $Id$
  */
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.ParseableEntity.ParserOffset;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
@@ -57,8 +58,7 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									   {
 									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
 									   }
-									   RESULT.setParserStartOffset(lleft);
-									   RESULT.setParserEndOffset(rright);
+									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
 									:}
 								|	symbol_list:sl
 									{:
@@ -70,8 +70,7 @@ alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
 									   {
 									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
 									   }
-									   RESULT.setParserStartOffset(slleft);
-									   RESULT.setParserEndOffset(slright);
+									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
 									:}
 								|	alphabet_error
 									{: :}
@@ -114,8 +113,7 @@ symbol							::= SYMBOL:s
 									   {
 									     ParserException.throwSymbolException(sleft, sright, s);
 									   }
-									   RESULT.setParserStartOffset(sleft);
-									   RESULT.setParserEndOffset(sright);
+									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;
 

@@ -42,21 +42,12 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * The start offset of this <code>DefaultAlphabet</code> in the source code.
+   * The offset of this {@link DefaultAlphabet} in the source code.
    * 
-   * @see #getParserStartOffset()
-   * @see #setParserStartOffset(int)
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
    */
-  private int parserStartOffset = NO_PARSER_OFFSET;
-
-
-  /**
-   * The end offset of this <code>DefaultAlphabet</code> in the source code.
-   * 
-   * @see #getParserEndOffset()
-   * @see #setParserEndOffset(int)
-   */
-  private int parserEndOffset = NO_PARSER_OFFSET;
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -113,10 +104,10 @@ public final class DefaultAlphabet implements Alphabet
     }
 
     // Attribute
-    if ( element.getAttribute ().size () >0 )
+    if ( element.getAttribute ().size () > 0 )
     {
       throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
+          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
 
     // Element
@@ -488,18 +479,9 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    */
-  public final int getParserEndOffset ()
+  public final ParserOffset getParserOffset ()
   {
-    return this.parserEndOffset;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public final int getParserStartOffset ()
-  {
-    return this.parserStartOffset;
+    return this.parserOffset;
   }
 
 
@@ -636,18 +618,9 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int parserEndOffset )
+  public final void setParserOffset ( ParserOffset parserOffset )
   {
-    this.parserEndOffset = parserEndOffset;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public final void setParserStartOffset ( int parserStartOffset )
-  {
-    this.parserStartOffset = parserStartOffset;
+    this.parserOffset = parserOffset;
   }
 
 

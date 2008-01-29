@@ -4,9 +4,9 @@
  * @author Christian Fehler
  * @version $Id$
  */
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.DefaultState;
-
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.ParseableEntity.ParserOffset;
 
 /************
  * Terminal *
@@ -29,7 +29,6 @@ non terminal State			state;
 state							::= STATE:s
 									{:
 									   RESULT = new DefaultState(s);
-									   RESULT.setParserStartOffset(sleft);
-									   RESULT.setParserEndOffset(sright);
+									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;

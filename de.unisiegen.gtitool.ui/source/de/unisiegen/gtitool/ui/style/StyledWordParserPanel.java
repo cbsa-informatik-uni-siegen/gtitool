@@ -86,8 +86,8 @@ public final class StyledWordParserPanel extends StyledParserPanel
       {
         if ( !this.alphabet.contains ( current ) )
         {
-          exceptionList.add ( new ParserException ( current
-              .getParserStartOffset (), current.getParserEndOffset (), Messages
+          exceptionList.add ( new ParserException ( current.getParserOffset ()
+              .getStart (), current.getParserOffset ().getEnd (), Messages
               .getString ( "StyledWordParserPanel.SymbolNotInAlphabet", //$NON-NLS-1$
                   current.getName (), this.alphabet ) ) );
         }

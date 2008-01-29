@@ -11,39 +11,81 @@ public interface ParseableEntity extends Entity
 {
 
   /**
+   * The parser offset.
+   * 
+   * @author Christian Fehler
+   */
+  public class ParserOffset
+  {
+
+    /**
+     * The parser start offset.
+     */
+    private int start;
+
+
+    /**
+     * The parser end offset.
+     */
+    private int end;
+
+
+    /**
+     * Allocates a new {@link ParserOffset}.
+     * 
+     * @param start The parser start offset.
+     * @param end The parser end offset.
+     */
+    public ParserOffset ( int start, int end )
+    {
+      this.start = start;
+      this.end = end;
+    }
+
+
+    /**
+     * Returns the parser end offset.
+     * 
+     * @return Theparser end offset.
+     * @see #end
+     */
+    public final int getEnd ()
+    {
+      return this.end;
+    }
+
+
+    /**
+     * Returns the parser start offset.
+     * 
+     * @return The parser start offset.
+     * @see #start
+     */
+    public final int getStart ()
+    {
+      return this.start;
+    }
+  }
+
+
+  /**
    * The value if no parser offset is defined.
    */
-  public static final int NO_PARSER_OFFSET = -1;
+  public static final ParserOffset NO_PARSER_OFFSET = new ParserOffset ( -1, -1 );
 
 
   /**
-   * Returns the parserEndOffset.
+   * Returns the {@link ParserOffset}.
    * 
-   * @return The parserEndOffset.
+   * @return The {@link ParserOffset}.
    */
-  public int getParserEndOffset ();
+  public ParserOffset getParserOffset ();
 
 
   /**
-   * Returns the parserStartOffset.
+   * Sets the {@link ParserOffset}.
    * 
-   * @return The parserStartOffset.
+   * @param parserOffset The new {@link ParserOffset}.
    */
-  public int getParserStartOffset ();
-
-
-  /**
-   * Sets the parser end offset.
-   * 
-   * @param parserEndOffset The new parser end offset.
-   */
-  public void setParserEndOffset ( int parserEndOffset );
-
-
-  /**
-   * Sets the parser start offset.
-   * 
-   * @param parserStartOffset The new parser start offset.
-   */
-  public void setParserStartOffset ( int parserStartOffset );
+  public void setParserOffset ( ParserOffset parserOffset );
 }

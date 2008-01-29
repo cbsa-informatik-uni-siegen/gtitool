@@ -40,8 +40,9 @@ public class ParserMultiException extends ParserException
     {
       message [ j ] = Messages.getString ( "Parser.4", negativeSymbols //$NON-NLS-1$
           .get ( j ) );
-      startOffset [ j ] = negativeSymbols.get ( j ).getParserStartOffset ();
-      endOffset [ j ] = negativeSymbols.get ( j ).getParserEndOffset ();
+      startOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ()
+          .getStart ();
+      endOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ().getEnd ();
     }
     throw new ParserMultiException ( startOffset, endOffset, message );
   }
@@ -63,8 +64,9 @@ public class ParserMultiException extends ParserException
     {
       message [ j ] = Messages.getString ( "Parser.5", negativeSymbols //$NON-NLS-1$
           .get ( j ) );
-      startOffset [ j ] = negativeSymbols.get ( j ).getParserStartOffset ();
-      endOffset [ j ] = negativeSymbols.get ( j ).getParserEndOffset ();
+      startOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ()
+          .getStart ();
+      endOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ().getEnd ();
     }
     throw new ParserMultiException ( startOffset, endOffset, message );
   }

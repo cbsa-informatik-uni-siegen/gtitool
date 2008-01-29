@@ -87,8 +87,8 @@ public final class StyledStackParserPanel extends StyledParserPanel
       {
         if ( !this.pushDownAlphabet.contains ( current ) )
         {
-          exceptionList.add ( new ParserException ( current
-              .getParserStartOffset (), current.getParserEndOffset (), Messages
+          exceptionList.add ( new ParserException ( current.getParserOffset ()
+              .getStart (), current.getParserOffset ().getEnd (), Messages
               .getString (
                   "StyledStackParserPanel.SymbolNotInPushDownAlphabet", //$NON-NLS-1$
                   current.getName (), this.pushDownAlphabet ) ) );

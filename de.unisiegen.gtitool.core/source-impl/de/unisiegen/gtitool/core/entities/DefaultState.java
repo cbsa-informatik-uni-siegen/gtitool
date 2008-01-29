@@ -89,21 +89,12 @@ public final class DefaultState implements State
 
 
   /**
-   * The end offset of this <code>DefaultState</code> in the source code.
+   * The offset of this {@link DefaultState} in the source code.
    * 
-   * @see #getParserEndOffset()
-   * @see #setParserEndOffset(int)
+   * @see #getParserOffset()
+   * @see #setParserOffset(ParserOffset)
    */
-  private int parserEndOffset = NO_PARSER_OFFSET;
-
-
-  /**
-   * The start offset of this <code>DefaultState</code> in the source code.
-   * 
-   * @see #getParserStartOffset()
-   * @see #setParserStartOffset(int)
-   */
-  private int parserStartOffset = NO_PARSER_OFFSET;
+  private ParserOffset parserOffset = NO_PARSER_OFFSET;
 
 
   /**
@@ -611,18 +602,9 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    */
-  public final int getParserEndOffset ()
+  public final ParserOffset getParserOffset ()
   {
-    return this.parserEndOffset;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public final int getParserStartOffset ()
-  {
-    return this.parserStartOffset;
+    return this.parserOffset;
   }
 
 
@@ -995,18 +977,9 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    */
-  public final void setParserEndOffset ( int parserEndOffset )
+  public final void setParserOffset ( ParserOffset parserOffset )
   {
-    this.parserEndOffset = parserEndOffset;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public final void setParserStartOffset ( int parserStartOffset )
-  {
-    this.parserStartOffset = parserStartOffset;
+    this.parserOffset = parserOffset;
   }
 
 

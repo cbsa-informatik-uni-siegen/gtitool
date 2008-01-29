@@ -1,7 +1,7 @@
-BM		- Fehlerhafte Symbole highlighten (Sind schon im Table Model vorhanden)
-CF		- Stack und Kelleralphabet implementieren (Edit, WordPanel)
+BM		- Fehlerhafte Symbole highlighten
+CF		- Stack und Kelleralphabet implementieren
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
-CF		- History über die Zustände führen (erst im core implementieren)
+CF		- History über die Zustände führen
 BM		- Routing der Transitionen
 BM		- Die Recently Used Files einmal am Ende speichern
 BM		- Farbverlauf bei Transitionen beseitigen

@@ -40,50 +40,72 @@ public final class TransitionPopupMenu extends JPopupMenu
   private static final long serialVersionUID = 3541518527653662496L;
 
 
-  /** The {@link JGraph} */
+  /**
+   * The {@link JGraph}.
+   */
   private JGraph graph;
 
 
-  /** The {@link MachinesPanelForm} */
+  /**
+   * The {@link MachinesPanelForm}.
+   */
   private MachinesPanelForm parent;
 
 
-  /** The {@link Alphabet} */
+  /**
+   * The {@link Alphabet}.
+   */
   private Alphabet alphabet;
 
 
-  /** The {@link DefaultTransitionView} */
+  /**
+   * The push down {@link Alphabet}.
+   */
+  private Alphabet pushDownAlphabet;
+
+
+  /**
+   * The {@link DefaultTransitionView}.
+   */
   private DefaultTransitionView transition;
 
 
-  /** The {@link DefaultMachineModel} */
+  /**
+   * The {@link DefaultMachineModel}.
+   */
   private DefaultMachineModel model;
 
 
-  /** The delete item */
+  /**
+   * The delete item.
+   */
   private JMenuItem delete;
 
 
-  /** The configure item */
+  /**
+   * The configure item.
+   */
   private JMenuItem config;
 
 
   /**
    * Allocates a new <code>StatePopupMenu</code>.
    * 
-   * @param jGraph The {@link JGraph}
-   * @param parent The parent panel
-   * @param model the model containing the state
-   * @param transition the transition to open the popup menu
-   * @param alphabet The {@link Alphabet}
+   * @param jGraph The {@link JGraph}.
+   * @param parent The parent panel.
+   * @param model the model containing the state.
+   * @param transition the transition to open the popup menu.
+   * @param alphabet The {@link Alphabet}.
+   * @param pushDownAlphabet The push down {@link Alphabet}.
    */
   public TransitionPopupMenu ( JGraph jGraph, MachinesPanelForm parent,
       DefaultMachineModel model, DefaultTransitionView transition,
-      Alphabet alphabet )
+      Alphabet alphabet, Alphabet pushDownAlphabet )
   {
     this.graph = jGraph;
     this.parent = parent;
     this.alphabet = alphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
     this.model = model;
     this.transition = transition;
     populateMenues ();
@@ -121,19 +143,18 @@ public final class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        // TODO i18n
         int choice = JOptionPane.NO_OPTION;
-        String message = "Soll die Transition \"" //$NON-NLS-1$
-            + TransitionPopupMenu.this.transition.toString ()
-            + "\" wirklich gelöscht werden?"; //$NON-NLS-1$
-        choice = JOptionPane.showConfirmDialog ( null, message,
-            "Transition löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
+        String message = Messages.getString (
+            "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
+            TransitionPopupMenu.this.transition );
+        choice = JOptionPane.showConfirmDialog ( null, message, Messages
+            .getString ( "TransitionDialog.DeleteTransitionTitle" ), //$NON-NLS-1$
+            JOptionPane.YES_NO_OPTION );
         if ( choice == JOptionPane.YES_OPTION )
         {
           TransitionPopupMenu.this.model
               .removeTransition ( TransitionPopupMenu.this.transition );
         }
-
       }
     } );
     add ( this.delete );
@@ -153,10 +174,10 @@ public final class TransitionPopupMenu extends JPopupMenu
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog dialog = new TransitionDialog ( window,
             TransitionPopupMenu.this.alphabet,
+            TransitionPopupMenu.this.pushDownAlphabet,
+            TransitionPopupMenu.this.transition.getTransition ().getSymbol (),
             TransitionPopupMenu.this.transition.getSourceView ().getState (),
             TransitionPopupMenu.this.transition.getTargetView ().getState () );
-        dialog.setOverChangeSet ( TransitionPopupMenu.this.transition
-            .getTransition ().getSymbol () );
         dialog.show ();
         if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
         {

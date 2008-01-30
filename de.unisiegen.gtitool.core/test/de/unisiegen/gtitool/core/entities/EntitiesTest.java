@@ -80,11 +80,16 @@ public class EntitiesTest
     Transition t4 = null;
     try
     {
-      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z0, a, b );
-      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z1, c );
-      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z1, a, b );
-      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z2, c );
-      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, z2, z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
+          z0, a, b );
+      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
+          z1, c );
+      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z1,
+          z1, a, b );
+      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z1,
+          z2, c );
+      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z2,
+          z2, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException e )
     {

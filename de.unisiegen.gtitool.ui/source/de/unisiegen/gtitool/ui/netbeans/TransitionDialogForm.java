@@ -48,7 +48,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         JLabelHeadline = new javax.swing.JLabel();
         jLabelAlphabet = new javax.swing.JLabel();
         jLabelChangeOverSet = new javax.swing.JLabel();
-        jPanelList = new javax.swing.JPanel();
         jScrollPaneAlphabet = new javax.swing.JScrollPane();
         jGTIListAlphabet = new de.unisiegen.gtitool.ui.swing.JGTIList();
         jPanelChangeOverButtons = new javax.swing.JPanel();
@@ -56,6 +55,10 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jButtonMoveRight = new javax.swing.JButton();
         jScrollPaneChangeOverSet = new javax.swing.JScrollPane();
         jGTIListChangeOverSet = new de.unisiegen.gtitool.ui.swing.JGTIList();
+        jLabeStackRead = new javax.swing.JLabel();
+        jLabelWrite = new javax.swing.JLabel();
+        styledWordParserPanelRead = new de.unisiegen.gtitool.ui.style.StyledWordParserPanel();
+        styledWordParserPanelWrite = new de.unisiegen.gtitool.ui.style.StyledWordParserPanel();
         JLabelTransitionSet = new javax.swing.JLabel();
         styledTransitionParserPanel = new de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel();
         jPanelButtons = new javax.swing.JPanel();
@@ -67,6 +70,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         setTitle(bundle.getString("TransitionDialog.Title")); // NOI18N
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -81,7 +85,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 10, 16);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(JLabelHeadline, gridBagConstraints);
 
         jLabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -92,34 +96,38 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 16, 10, 26);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jLabelAlphabet, gridBagConstraints);
 
         jLabelChangeOverSet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelChangeOverSet.setText(bundle.getString("TransitionDialog.TransitionSet")); // NOI18N
         jLabelChangeOverSet.setPreferredSize(new java.awt.Dimension(100, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 26, 10, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jLabelChangeOverSet, gridBagConstraints);
-
-        jPanelList.setLayout(new java.awt.GridBagLayout());
 
         jScrollPaneAlphabet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneAlphabet.setPreferredSize(new java.awt.Dimension(100, 130));
+        jGTIListAlphabet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jGTIListAlphabetValueChanged(evt);
+            }
+        });
+
         jScrollPaneAlphabet.setViewportView(jGTIListAlphabet);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelList.add(jScrollPaneAlphabet, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jScrollPaneAlphabet, gridBagConstraints);
 
         jPanelChangeOverButtons.setLayout(new java.awt.GridBagLayout());
 
@@ -138,7 +146,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         jPanelChangeOverButtons.add(jButtonMoveLeft, gridBagConstraints);
 
         jButtonMoveRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/moveRight.png")));
@@ -156,60 +164,99 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         jPanelChangeOverButtons.add(jButtonMoveRight, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 1.0;
-        jPanelList.add(jPanelChangeOverButtons, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        getContentPane().add(jPanelChangeOverButtons, gridBagConstraints);
 
         jScrollPaneChangeOverSet.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPaneChangeOverSet.setPreferredSize(new java.awt.Dimension(100, 130));
+        jGTIListChangeOverSet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jGTIListChangeOverSetValueChanged(evt);
+            }
+        });
+
         jScrollPaneChangeOverSet.setViewportView(jGTIListChangeOverSet);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelList.add(jScrollPaneChangeOverSet, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jScrollPaneChangeOverSet, gridBagConstraints);
 
+        jLabeStackRead.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabeStackRead.setText(bundle.getString("TransitionDialog.PushDownWordRead")); // NOI18N
+        jLabeStackRead.setPreferredSize(new java.awt.Dimension(100, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 16);
-        getContentPane().add(jPanelList, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jLabeStackRead, gridBagConstraints);
+
+        jLabelWrite.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelWrite.setText(bundle.getString("TransitionDialog.PushDownWordWrite")); // NOI18N
+        jLabelWrite.setPreferredSize(new java.awt.Dimension(100, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jLabelWrite, gridBagConstraints);
+
+        styledWordParserPanelRead.setMinimumSize(new java.awt.Dimension(40, 40));
+        styledWordParserPanelRead.setPreferredSize(new java.awt.Dimension(40, 40));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(styledWordParserPanelRead, gridBagConstraints);
+
+        styledWordParserPanelWrite.setMinimumSize(new java.awt.Dimension(40, 40));
+        styledWordParserPanelWrite.setPreferredSize(new java.awt.Dimension(40, 40));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(styledWordParserPanelWrite, gridBagConstraints);
 
         JLabelTransitionSet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         JLabelTransitionSet.setText(bundle.getString("TransitionDialog.ResultingTransitionSet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 16, 10, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(JLabelTransitionSet, gridBagConstraints);
 
         styledTransitionParserPanel.setEditable(false);
-        styledTransitionParserPanel.setMinimumSize(new java.awt.Dimension(80, 80));
-        styledTransitionParserPanel.setPreferredSize(new java.awt.Dimension(80, 80));
+        styledTransitionParserPanel.setMinimumSize(new java.awt.Dimension(40, 40));
+        styledTransitionParserPanel.setPreferredSize(new java.awt.Dimension(40, 40));
         styledTransitionParserPanel.setSideBarVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(styledTransitionParserPanel, gridBagConstraints);
 
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
@@ -217,7 +264,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("TransitionDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("TransitionDialog.OkToolTip")); // NOI18N
-        jGTIButtonOk.setFocusPainted(false);
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -235,7 +281,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("TransitionDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("TransitionDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.setFocusPainted(false);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
@@ -251,16 +296,24 @@ public class TransitionDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         getContentPane().add(jPanelButtons, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-400)/2, (screenSize.height-450)/2, 400, 450);
+        setBounds((screenSize.width-440)/2, (screenSize.height-480)/2, 440, 480);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIListChangeOverSetValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jGTIListChangeOverSetValueChanged
+        this.logic.handleListSelection(evt);
+    }//GEN-LAST:event_jGTIListChangeOverSetValueChanged
+
+    private void jGTIListAlphabetValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jGTIListAlphabetValueChanged
+        this.logic.handleListSelection(evt);
+    }//GEN-LAST:event_jGTIListAlphabetValueChanged
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
         this.logic.handleCancel();
@@ -291,14 +344,17 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIListChangeOverSet;
+    public javax.swing.JLabel jLabeStackRead;
     public javax.swing.JLabel jLabelAlphabet;
     public javax.swing.JLabel jLabelChangeOverSet;
+    public javax.swing.JLabel jLabelWrite;
     public javax.swing.JPanel jPanelButtons;
     public javax.swing.JPanel jPanelChangeOverButtons;
-    public javax.swing.JPanel jPanelList;
     public javax.swing.JScrollPane jScrollPaneAlphabet;
     public javax.swing.JScrollPane jScrollPaneChangeOverSet;
     public de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel styledTransitionParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledWordParserPanel styledWordParserPanelRead;
+    public de.unisiegen.gtitool.ui.style.StyledWordParserPanel styledWordParserPanelWrite;
     // End of variables declaration//GEN-END:variables
  
 }

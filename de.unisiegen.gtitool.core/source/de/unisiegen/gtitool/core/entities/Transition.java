@@ -148,6 +148,22 @@ public interface Transition extends ParseableEntity, Storable, Modifyable,
 
 
   /**
+   * Returns the {@link Word} which is read from the {@link Stack}.
+   * 
+   * @return The {@link Word} which is read from the {@link Stack}.
+   */
+  public Word getPushDownWordRead ();
+
+
+  /**
+   * Returns the {@link Word} which should be written on the {@link Stack}.
+   * 
+   * @return The {@link Word} which should be written on the {@link Stack}.
+   */
+  public Word getPushDownWordWrite ();
+
+
+  /**
    * Returns the {@link State} where the <code>Transition</code> begins.
    * 
    * @return The {@link State} where the <code>Transition</code> begins.
@@ -271,6 +287,22 @@ public interface Transition extends ParseableEntity, Storable, Modifyable,
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
   public void setPushDownAlphabet ( Alphabet pushDownAlphabet );
+
+
+  /**
+   * Sets the {@link Word} which is read from the {@link Stack}.
+   * 
+   * @param pushDownWordRead The {@link Word} to set.
+   */
+  public void setPushDownWordRead ( Word pushDownWordRead );
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   * 
+   * @param pushDownWordWrite The {@link Word} to set.
+   */
+  public void setPushDownWordWrite ( Word pushDownWordWrite );
 
 
   /**

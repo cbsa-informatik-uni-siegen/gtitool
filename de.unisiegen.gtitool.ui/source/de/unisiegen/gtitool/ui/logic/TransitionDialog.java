@@ -153,43 +153,69 @@ public final class TransitionDialog
   }
 
 
-  /** result value if dialog was canceled */
+  /**
+   * result value if dialog was canceled.
+   */
   public static int DIALOG_CANCELED = -1;
 
 
-  /** result value if dialog was confirmed */
+  /**
+   * result value if dialog was confirmed.
+   */
   public static int DIALOG_CONFIRMED = 1;
 
 
-  /** The epsilon {@link Symbol} */
+  /**
+   * The epsilon {@link Symbol}.
+   */
   public final static String EPSILON = "\u03B5"; //$NON-NLS-1$
 
 
-  /** result value of this dialog */
+  /**
+   * result value of this dialog.
+   */
   public int DIALOG_RESULT = DIALOG_CANCELED;
 
 
-  /** The {@link TransitionDialogForm} */
+  /**
+   * The {@link TransitionDialogForm}.
+   */
   private TransitionDialogForm gui;
 
 
-  /** The parent frame */
+  /**
+   * The parent frame.
+   */
   private JFrame parent;
 
 
-  /** The {@link Alphabet} for this dialog */
+  /**
+   * The {@link Alphabet} for this dialog.
+   */
   private Alphabet alphabet;
 
 
-  /** The {@link Transition} for this dialog */
+  /**
+   * The push down {@link Alphabet} for this dialog.
+   */
+  private Alphabet pushDownAlphabet;
+
+
+  /**
+   * The {@link Transition} for this dialog.
+   */
   private Transition transition;
 
 
-  /** The model for the change over set JList */
+  /**
+   * The model for the change over set {@link JGTIList}.
+   */
   private SymbolListModel modelChangeOverSet;
 
 
-  /** The model for the alphabet JList */
+  /**
+   * The model for the alphabet {@link JGTIList}.
+   */
   private SymbolListModel modelAlphabet;
 
 
@@ -200,39 +226,61 @@ public final class TransitionDialog
 
 
   /**
-   * The {@link State} where the <code>Transition</code> begins.
+   * The {@link State} where the {@link Transition} begins.
    */
   private State stateBegin;
 
 
   /**
-   * The {@link State} where the <code>Transition</code> ends.
+   * The {@link State} where the {@link Transition} ends.
    */
   private State stateEnd;
 
 
   /**
-   * Create a new {@link TransitionDialog}
+   * Creates a new {@link TransitionDialog}.
    * 
-   * @param pParent the parent frame
-   * @param pAlphabet the alphabet available for the new Transition
-   * @param pStateBegin The {@link State} where the <code>Transition</code>
-   *          begins.
-   * @param pStateEnd The {@link State} where the <code>Transition</code>
-   *          ends.
+   * @param parent The parent frame.
+   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
+   * @param pushDownAlphabet The push down {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param stateBegin The {@link State} where the {@link Transition} begins.
+   * @param stateEnd The {@link State} where the {@link Transition} ends.
    */
-  public TransitionDialog ( JFrame pParent, Alphabet pAlphabet,
-      State pStateBegin, State pStateEnd )
+  public TransitionDialog ( JFrame parent, Alphabet alphabet,
+      Alphabet pushDownAlphabet, State stateBegin, State stateEnd )
   {
-    this.parent = pParent;
-    this.alphabet = pAlphabet;
+    this ( parent, alphabet, pushDownAlphabet, new TreeSet < Symbol > (),
+        stateBegin, stateEnd );
+  }
+
+
+  /**
+   * Creates a new {@link TransitionDialog}.
+   * 
+   * @param parent The parent frame.
+   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
+   * @param pushDownAlphabet The push down {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param overChangeSymbolSet The change over {@link Symbol} set.
+   * @param stateBegin The {@link State} where the {@link Transition} begins.
+   * @param stateEnd The {@link State} where the {@link Transition} ends.
+   */
+  public TransitionDialog ( JFrame parent, Alphabet alphabet,
+      Alphabet pushDownAlphabet, TreeSet < Symbol > overChangeSymbolSet,
+      State stateBegin, State stateEnd )
+  {
+    this.parent = parent;
+    this.alphabet = alphabet;
+    this.pushDownAlphabet = pushDownAlphabet;
+    this.stateBegin = stateBegin;
+    this.stateEnd = stateEnd;
     this.transition = null;
-    this.stateBegin = pStateBegin;
-    this.stateEnd = pStateEnd;
-    this.gui = new TransitionDialogForm ( this, pParent );
+    this.gui = new TransitionDialogForm ( this, parent );
     String targetName = this.stateEnd == null ? Messages
         .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
         .getName ();
+
     this.gui.JLabelHeadline.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
     this.transferHandler = new SymbolTransferHandler ( this );
@@ -250,17 +298,18 @@ public final class TransitionDialog
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledTransitionParserPanel
         .setTransition ( new DefaultTransition () );
+    setOverChangeSet ( overChangeSymbolSet );
   }
 
 
   /**
    * Adds the given {@link Symbol}s to the change over set.
    * 
-   * @param pList The {@link Symbol}s to add.
+   * @param symbolList The {@link Symbol}s to add.
    */
-  public final void addToChangeOver ( ArrayList < Symbol > pList )
+  public final void addToChangeOver ( ArrayList < Symbol > symbolList )
   {
-    for ( Symbol current : pList )
+    for ( Symbol current : symbolList )
     {
       this.modelChangeOverSet.add ( current );
       this.modelAlphabet.remove ( current );
@@ -286,7 +335,7 @@ public final class TransitionDialog
 
 
   /**
-   * Dispose the Dialog
+   * Disposes the dialog.
    */
   public final void dispose ()
   {
@@ -309,7 +358,7 @@ public final class TransitionDialog
   /**
    * Get the {@link Transition} of this dialog.
    * 
-   * @return The {@link Transition}
+   * @return The {@link Transition}.
    */
   public final Transition getTransition ()
   {
@@ -329,11 +378,11 @@ public final class TransitionDialog
   /**
    * Handles the list selection.
    * 
-   * @param pEvent The {@link ListSelectionEvent}.
+   * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleListSelection ( ListSelectionEvent pEvent )
+  public final void handleListSelection ( ListSelectionEvent event )
   {
-    JGTIList selectedList = ( JGTIList ) pEvent.getSource ();
+    JGTIList selectedList = ( JGTIList ) event.getSource ();
     Symbol selected = ( Symbol ) selectedList.getSelectedValue ();
     if ( selected == null )
     {
@@ -361,7 +410,7 @@ public final class TransitionDialog
 
 
   /**
-   * Handles move left button pressed
+   * Handles move left button pressed.
    */
   public final void handleMoveLeft ()
   {
@@ -407,8 +456,7 @@ public final class TransitionDialog
       }
       this.transition = new DefaultTransition ( symbols );
       this.transition.setAlphabet ( this.alphabet );
-      // TODOChristian PushDownAlphabet
-      this.transition.setPushDownAlphabet ( this.alphabet );
+      this.transition.setPushDownAlphabet ( this.pushDownAlphabet );
       this.transition.setStateBegin ( this.stateBegin );
       if ( this.stateEnd != null )
       {
@@ -427,11 +475,11 @@ public final class TransitionDialog
   /**
    * Removes the given {@link Symbol}s from the change over set.
    * 
-   * @param pList The {@link Symbol}s to remove.
+   * @param symbolList The {@link Symbol}s to remove.
    */
-  public final void removeFromChangeOver ( ArrayList < Symbol > pList )
+  public final void removeFromChangeOver ( ArrayList < Symbol > symbolList )
   {
-    for ( Symbol current : pList )
+    for ( Symbol current : symbolList )
     {
       this.modelAlphabet.add ( current );
       this.modelChangeOverSet.remove ( current );
@@ -457,33 +505,25 @@ public final class TransitionDialog
 
 
   /**
-   * Set the Symbols of the Over change Set
+   * Sets the {@link Symbol}s of the over change set.
    * 
-   * @param symbols the Symbols of the Over change Set
+   * @param overChangeSymbolSet The {@link Symbol}s of the over change set.
    */
-  public final void setOverChangeSet ( TreeSet < Symbol > symbols )
+  private final void setOverChangeSet ( TreeSet < Symbol > overChangeSymbolSet )
   {
-    if ( symbols.size () > 0 )
+    if ( overChangeSymbolSet.size () > 0 )
     {
       this.modelChangeOverSet.clear ();
     }
-    for ( Symbol symbol : symbols )
+    for ( Symbol symbol : overChangeSymbolSet )
     {
       this.modelAlphabet.remove ( symbol );
       this.modelChangeOverSet.add ( symbol );
     }
     try
     {
-      if ( symbols.size () > 0 )
-      {
-        this.gui.styledTransitionParserPanel
-            .setTransition ( new DefaultTransition ( symbols ) );
-      }
-      else
-      {
-        this.gui.styledTransitionParserPanel
-            .setTransition ( new DefaultTransition () );
-      }
+      this.gui.styledTransitionParserPanel
+          .setTransition ( new DefaultTransition ( overChangeSymbolSet ) );
     }
     catch ( TransitionException exc )
     {

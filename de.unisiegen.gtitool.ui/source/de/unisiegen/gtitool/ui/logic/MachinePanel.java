@@ -836,7 +836,8 @@ public final class MachinePanel implements EditorPanel
       DefaultTransitionView transitionView )
   {
     return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        transitionView, this.machine.getAlphabet () );
+        transitionView, this.machine.getAlphabet (), this.machine
+            .getPushDownAlphabet () );
   }
 
 
@@ -1708,10 +1709,10 @@ public final class MachinePanel implements EditorPanel
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
             TransitionDialog dialog = new TransitionDialog (
                 MachinePanel.this.parent, MachinePanel.this.machine
-                    .getAlphabet (), transitionView.getSourceView ()
-                    .getState (), transitionView.getTargetView ().getState () );
-            dialog.setOverChangeSet ( transitionView.getTransition ()
-                .getSymbol () );
+                    .getAlphabet (), MachinePanel.this.machine
+                    .getPushDownAlphabet (), transitionView.getTransition ()
+                    .getSymbol (), transitionView.getSourceView ().getState (),
+                transitionView.getTargetView ().getState () );
             dialog.show ();
             if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
             {
@@ -1932,8 +1933,9 @@ public final class MachinePanel implements EditorPanel
           }
           TransitionDialog dialog = new TransitionDialog (
               MachinePanel.this.parent, MachinePanel.this.machine
-                  .getAlphabet (), MachinePanel.this.firstState.getState (),
-              target == null ? null : target.getState () );
+                  .getAlphabet (), MachinePanel.this.machine
+                  .getPushDownAlphabet (), MachinePanel.this.firstState
+                  .getState (), target == null ? null : target.getState () );
           dialog.show ();
           if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
           {
@@ -2016,6 +2018,7 @@ public final class MachinePanel implements EditorPanel
 
         TransitionDialog dialog = new TransitionDialog (
             MachinePanel.this.parent, MachinePanel.this.machine.getAlphabet (),
+            MachinePanel.this.machine.getPushDownAlphabet (),
             MachinePanel.this.firstState.getState (), target == null ? null
                 : target.getState () );
         dialog.show ();

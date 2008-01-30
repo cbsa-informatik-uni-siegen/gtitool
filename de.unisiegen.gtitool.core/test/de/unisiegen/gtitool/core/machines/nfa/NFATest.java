@@ -134,11 +134,16 @@ public class NFATest extends MachineTest
     // Transitions
     try
     {
-      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z1, a );
-      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, z0, z2, a );
-      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, z1, z3, b );
-      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, z2, z3, c );
-      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, z3, z3, a, b, c );
+      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
+          z1, a );
+      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
+          z2, a );
+      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z1,
+          z3, b );
+      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z2,
+          z3, c );
+      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z3,
+          z3, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {

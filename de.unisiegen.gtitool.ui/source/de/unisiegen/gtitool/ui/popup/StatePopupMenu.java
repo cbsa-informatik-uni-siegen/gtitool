@@ -30,7 +30,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class StatePopupMenu extends JPopupMenu
+public final class StatePopupMenu extends JPopupMenu
 {
 
   /**
@@ -109,7 +109,7 @@ public class StatePopupMenu extends JPopupMenu
   /**
    * Populates the menues of this popup menu.
    */
-  protected void populateMenues ()
+  private final void populateMenues ()
   {
 
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
@@ -122,13 +122,13 @@ public class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        // TODO i18n
         int choice = JOptionPane.NO_OPTION;
-        String message = "Soll der Zustand \"" //$NON-NLS-1$
-            + StatePopupMenu.this.state.toString ()
-            + "\" wirklich gelöscht werden?"; //$NON-NLS-1$
-        choice = JOptionPane.showConfirmDialog ( null, message,
-            "Zustand löschen", JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
+        String message = Messages.getString (
+            "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
+            StatePopupMenu.this.state );
+        choice = JOptionPane.showConfirmDialog ( null, message, Messages
+            .getString ( "TransitionDialog.DeleteStateTitle" ), //$NON-NLS-1$
+            JOptionPane.YES_NO_OPTION );
         if ( choice == JOptionPane.YES_OPTION )
         {
           StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state );

@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class DefaultPopupMenu extends JPopupMenu
+public final class DefaultPopupMenu extends JPopupMenu
 {
 
   /**
@@ -99,7 +99,7 @@ public class DefaultPopupMenu extends JPopupMenu
   /**
    * The {@link MachinePanel}
    */
-  MachinePanel panel;
+  private MachinePanel panel;
 
 
   /**
@@ -121,7 +121,7 @@ public class DefaultPopupMenu extends JPopupMenu
   /**
    * Populates the menues of this popup menu.
    */
-  protected void populateMenues ()
+  private final void populateMenues ()
   {
     this.zoom = new JMenu ( "Zoom" ); //$NON-NLS-1$
     this.zoom.setIcon ( new ImageIcon ( getClass ().getResource (

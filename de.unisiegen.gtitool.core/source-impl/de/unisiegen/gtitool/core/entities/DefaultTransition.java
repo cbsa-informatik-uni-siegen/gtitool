@@ -107,6 +107,18 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * The {@link Word} which is read from the {@link Stack}.
+   */
+  private Word pushDownWordRead = null;
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   */
+  private Word pushDownWordWrite = null;
+
+
+  /**
    * The old modify status.
    */
   private boolean oldModifyStatus = false;
@@ -132,6 +144,10 @@ public final class DefaultTransition implements Transition
    * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
+   * @param pushDownWordRead The {@link Word} which is read from the
+   *          {@link Stack}.
+   * @param pushDownWordWrite The {@link Word} which should be written on the
+   *          {@link Stack}.
    * @param stateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
    * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
@@ -143,7 +159,8 @@ public final class DefaultTransition implements Transition
    *           <code>DefaultTransition</code> is not correct.
    */
   public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
-      State stateBegin, State stateEnd, Iterable < Symbol > symbols )
+      Word pushDownWordRead, Word pushDownWordWrite, State stateBegin,
+      State stateEnd, Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -151,6 +168,10 @@ public final class DefaultTransition implements Transition
     setAlphabet ( alphabet );
     // PushDownAlphabet
     setPushDownAlphabet ( pushDownAlphabet );
+    // PushDownWordRead
+    setPushDownWordRead ( pushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( pushDownWordWrite );
     // StateBegin
     setStateBegin ( stateBegin );
     // StateEnd
@@ -174,7 +195,11 @@ public final class DefaultTransition implements Transition
    * 
    * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>.
+   *          <code>DefaultTransition</code>. *
+   * @param pushDownWordRead The {@link Word} which is read from the
+   *          {@link Stack}.
+   * @param pushDownWordWrite The {@link Word} which should be written on the
+   *          {@link Stack}.
    * @param stateBegin The {@link State} where the
    *          <code>DefaultTransition</code> begins.
    * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
@@ -186,7 +211,8 @@ public final class DefaultTransition implements Transition
    *           <code>DefaultTransition</code> is not correct.
    */
   public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
-      State stateBegin, State stateEnd, Symbol ... symbols )
+      Word pushDownWordRead, Word pushDownWordWrite, State stateBegin,
+      State stateEnd, Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
@@ -194,6 +220,10 @@ public final class DefaultTransition implements Transition
     setAlphabet ( alphabet );
     // PushDownAlphabet
     setPushDownAlphabet ( pushDownAlphabet );
+    // PushDownWordRead
+    setPushDownWordRead ( pushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( pushDownWordWrite );
     // StateBegin
     setStateBegin ( stateBegin );
     // StateEnd
@@ -280,6 +310,16 @@ public final class DefaultTransition implements Transition
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
       {
         add ( new DefaultSymbol ( current ) );
+      }
+      else if ( current.getName ().equals ( "PushDownWordRead" ) ) //$NON-NLS-1$
+      {
+        current.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+        setPushDownWordRead ( new DefaultWord ( current ) );
+      }
+      else if ( current.getName ().equals ( "PushDownWordWrite" ) ) //$NON-NLS-1$
+      {
+        current.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+        setPushDownWordWrite ( new DefaultWord ( current ) );
       }
       else
       {
@@ -488,7 +528,8 @@ public final class DefaultTransition implements Transition
     try
     {
       newDefaultTransition = new DefaultTransition ( this.alphabet.clone (),
-          this.pushDownAlphabet.clone (), this.stateBegin, this.stateEnd );
+          this.pushDownAlphabet.clone (), this.pushDownWordRead.clone (),
+          this.pushDownWordWrite.clone (), this.stateBegin, this.stateEnd );
       for ( Symbol current : this.symbolSet )
       {
         newDefaultTransition.add ( current.clone () );
@@ -608,6 +649,18 @@ public final class DefaultTransition implements Transition
     newElement.addAttribute ( new Attribute ( "stateBeginId", //$NON-NLS-1$
         getStateBeginId () ) );
     newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
+    if ( this.pushDownWordRead != null )
+    {
+      Element pushDownWordReadElement = this.pushDownWordRead.getElement ();
+      pushDownWordReadElement.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+      newElement.addElement ( pushDownWordReadElement );
+    }
+    if ( this.pushDownWordWrite != null )
+    {
+      Element pushDownWordWriteElement = this.pushDownWordWrite.getElement ();
+      pushDownWordWriteElement.setName ( "PushDownWordWrite" ); //$NON-NLS-1$
+      newElement.addElement ( pushDownWordWriteElement );
+    }
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );
@@ -646,6 +699,28 @@ public final class DefaultTransition implements Transition
   public final Alphabet getPushDownAlphabet ()
   {
     return this.pushDownAlphabet;
+  }
+
+
+  /**
+   * Returns the {@link Word} which is read from the {@link Stack}.
+   * 
+   * @return The {@link Word} which is read from the {@link Stack}.
+   */
+  public final Word getPushDownWordRead ()
+  {
+    return this.pushDownWordRead;
+  }
+
+
+  /**
+   * Returns the {@link Word} which should be written on the {@link Stack}.
+   * 
+   * @return The {@link Word} which should be written on the {@link Stack}.
+   */
+  public final Word getPushDownWordWrite ()
+  {
+    return this.pushDownWordWrite;
   }
 
 
@@ -946,6 +1021,28 @@ public final class DefaultTransition implements Transition
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
     this.pushDownAlphabet = pushDownAlphabet;
+  }
+
+
+  /**
+   * Sets the {@link Word} which is read from the {@link Stack}.
+   * 
+   * @param pushDownWordRead The {@link Word} to set.
+   */
+  public final void setPushDownWordRead ( Word pushDownWordRead )
+  {
+    this.pushDownWordRead = pushDownWordRead;
+  }
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   * 
+   * @param pushDownWordWrite The {@link Word} to set.
+   */
+  public final void setPushDownWordWrite ( Word pushDownWordWrite )
+  {
+    this.pushDownWordWrite = pushDownWordWrite;
   }
 
 

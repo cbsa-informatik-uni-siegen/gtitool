@@ -157,7 +157,7 @@ public class NFATest extends MachineTest
   {
     initEntities ();
 
-    NFA nfa = new DefaultNFA ( alphabet, pushDownAlphabet );
+    NFA nfa = new DefaultNFA ( alphabet, pushDownAlphabet, true );
     nfa.addState ( z0, z1, z2, z3 );
     nfa.addTransition ( t0, t1, t2, t3, t4 );
 

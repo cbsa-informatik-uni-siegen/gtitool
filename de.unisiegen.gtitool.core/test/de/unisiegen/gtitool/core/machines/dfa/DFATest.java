@@ -153,7 +153,7 @@ public class DFATest extends MachineTest
   {
     initEntities ();
 
-    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet, true );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 

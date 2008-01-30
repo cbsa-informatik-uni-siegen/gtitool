@@ -27,11 +27,14 @@ public final class DefaultDFA extends AbstractMachine implements DFA
    * @param alphabet The {@link Alphabet} of this <code>DFA</code>.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DFA</code>.
+   * @param usePushDownAlphabet The use push down {@link Alphabet}.
    */
-  public DefaultDFA ( Alphabet alphabet, Alphabet pushDownAlphabet )
+  public DefaultDFA ( Alphabet alphabet, Alphabet pushDownAlphabet,
+      boolean usePushDownAlphabet )
   {
-    super ( alphabet, pushDownAlphabet, ValidationElement.ALL_SYMBOLS,
-        ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,
+    super ( alphabet, pushDownAlphabet, usePushDownAlphabet,
+        ValidationElement.ALL_SYMBOLS, ValidationElement.EPSILON_TRANSITION,
+        ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.STATE_NOT_REACHABLE,

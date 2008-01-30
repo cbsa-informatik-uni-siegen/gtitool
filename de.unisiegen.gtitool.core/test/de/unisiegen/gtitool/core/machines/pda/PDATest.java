@@ -153,7 +153,7 @@ public class PDATest extends MachineTest
   {
     initEntities ();
 
-    PDA pda = new DefaultPDA ( alphabet, pushDownAlphabet );
+    PDA pda = new DefaultPDA ( alphabet, pushDownAlphabet, true );
     pda.addState ( z0, z1, z2 );
     pda.addTransition ( t0, t1, t2, t3, t4 );
 

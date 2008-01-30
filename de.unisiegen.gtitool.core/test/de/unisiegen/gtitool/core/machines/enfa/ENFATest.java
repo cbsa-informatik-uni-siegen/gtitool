@@ -143,7 +143,7 @@ public class ENFATest extends MachineTest
   {
     initEntities ();
 
-    ENFA enfa = new DefaultENFA ( alphabet, pushDownAlphabet );
+    ENFA enfa = new DefaultENFA ( alphabet, pushDownAlphabet, true );
     enfa.addState ( z0, z1, z2 );
     enfa.addTransition ( t0, t1, t2, t3 );
 

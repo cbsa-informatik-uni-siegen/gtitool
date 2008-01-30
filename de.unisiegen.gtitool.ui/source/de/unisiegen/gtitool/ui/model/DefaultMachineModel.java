@@ -51,7 +51,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
   /**
    * The {@link Machine} version.
    */
-  private static final int MACHINE_VERSION = 483;
+  private static final int MACHINE_VERSION = 505;
 
 
   /**
@@ -132,15 +132,17 @@ public final class DefaultMachineModel implements Storable, Modifyable
     // Attribute
     boolean foundMachineType = false;
     boolean foundMachineVersion = false;
-    String machineType = ""; //$NON-NLS-1$
+    boolean foundUsePushDownAlphabet = false;
+    String machineType = null;
+    boolean usePushDownAlphabet = true;
     for ( Attribute attribute : element.getAttribute () )
     {
-      if ( attribute.getName ().equals ( "MachineType" ) ) //$NON-NLS-1$
+      if ( attribute.getName ().equals ( "machineType" ) ) //$NON-NLS-1$
       {
         foundMachineType = true;
         machineType = attribute.getValue ();
       }
-      else if ( attribute.getName ().equals ( "MachineVersion" ) ) //$NON-NLS-1$
+      else if ( attribute.getName ().equals ( "machineVersion" ) ) //$NON-NLS-1$
       {
         foundMachineVersion = true;
         if ( MACHINE_VERSION != attribute.getValueInt () )
@@ -149,6 +151,11 @@ public final class DefaultMachineModel implements Storable, Modifyable
               .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
         }
       }
+      else if ( attribute.getName ().equals ( "usePushDownAlphabet" ) ) //$NON-NLS-1$
+      {
+        foundUsePushDownAlphabet = true;
+        usePushDownAlphabet = attribute.getValueBoolean ();
+      }
       else
       {
         throw new StoreException ( Messages
@@ -156,7 +163,8 @@ public final class DefaultMachineModel implements Storable, Modifyable
       }
     }
 
-    if ( ( !foundMachineType ) || ( !foundMachineVersion ) )
+    if ( ( !foundMachineType ) || ( !foundMachineVersion )
+        || ( !foundUsePushDownAlphabet ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -194,7 +202,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
     }
     // initialize this model elements
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
-        pushDownAlphabet );
+        pushDownAlphabet, usePushDownAlphabet );
     initializeModifyStatusChangedListener ();
     initializeGraph ();
 
@@ -425,10 +433,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
   public final Element getElement ()
   {
     Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "MachineType", this.machine //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "machineType", this.machine //$NON-NLS-1$
         .getMachineType () ) );
-    newElement.addAttribute ( new Attribute ( "MachineVersion", //$NON-NLS-1$
+    newElement.addAttribute ( new Attribute ( "machineVersion", //$NON-NLS-1$
         MACHINE_VERSION ) );
+    newElement.addAttribute ( new Attribute ( "usePushDownAlphabet", //$NON-NLS-1$
+        this.machine.isUsePushDownAlphabet () ) );
     newElement.addElement ( this.machine.getAlphabet ().getElement () );
     Element newPushDownAlphabet = this.machine.getPushDownAlphabet ()
         .getElement ();

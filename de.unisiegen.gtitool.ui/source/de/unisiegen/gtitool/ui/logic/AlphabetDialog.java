@@ -91,6 +91,9 @@ public final class AlphabetDialog
             setButtonStatus ();
           }
         } );
+
+    this.gui.jCheckBoxPushDownAlphabet.setSelected ( this.machine
+        .isUsePushDownAlphabet () );
   }
 
 
@@ -179,6 +182,8 @@ public final class AlphabetDialog
         this.gui.styledAlphabetParserPanelInput.getAlphabet () );
     performAlphabetChange ( this.machine.getPushDownAlphabet (),
         this.gui.styledAlphabetParserPanelPushDown.getAlphabet () );
+    this.machine.setUsePushDownAlphabet ( this.gui.jCheckBoxPushDownAlphabet
+        .isSelected () );
     this.gui.dispose ();
   }
 

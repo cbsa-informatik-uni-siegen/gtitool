@@ -155,11 +155,10 @@ public final class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.DFA ) )
       {
-        this.newPanel = new MachinePanel (
-            this.parent,
+        this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
-            null );
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
+                this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
         this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -167,11 +166,10 @@ public final class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.NFA ) )
       {
-        this.newPanel = new MachinePanel (
-            this.parent,
+        this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
-            null );
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
+                this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
         this.fileEnding = ".nfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -179,11 +177,10 @@ public final class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.ENFA ) )
       {
-        this.newPanel = new MachinePanel (
-            this.parent,
+        this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
-            null );
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
+                this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
         this.fileEnding = ".enfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
@@ -191,11 +188,10 @@ public final class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.PDA ) )
       {
-        this.newPanel = new MachinePanel (
-            this.parent,
+        this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
-                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet () ) ),
-            null );
+                .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
+                this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
         this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }

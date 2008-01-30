@@ -116,27 +116,29 @@ public abstract class AbstractMachine implements Machine
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>DefaultTransition</code>.
+   * @param usePushDownAlphabet The use push down {@link Alphabet}.
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
    */
   public static Machine createMachine ( String machineType, Alphabet alphabet,
-      Alphabet pushDownAlphabet ) throws StoreException
+      Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
+      throws StoreException
   {
     if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultDFA ( alphabet, pushDownAlphabet );
+      return new DefaultDFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     }
     if ( machineType.equals ( ( "NFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultNFA ( alphabet, pushDownAlphabet );
+      return new DefaultNFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     }
     if ( machineType.equals ( ( "ENFA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultENFA ( alphabet, pushDownAlphabet );
+      return new DefaultENFA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     }
     if ( machineType.equals ( ( "PDA" ) ) ) //$NON-NLS-1$
     {
-      return new DefaultPDA ( alphabet, pushDownAlphabet );
+      return new DefaultPDA ( alphabet, pushDownAlphabet, usePushDownAlphabet );
     }
     throw new StoreException ( Messages
         .getString ( "StoreException.WrongMachineType" ) ); //$NON-NLS-1$
@@ -158,7 +160,20 @@ public abstract class AbstractMachine implements Machine
   /**
    * The push down {@link Alphabet} of this <code>AbstractMachine</code>.
    */
-  private Alphabet pushDownAlphabet = null;
+  private Alphabet pushDownAlphabet;
+
+
+  /**
+   * The use push down {@link Alphabet} of this <code>AbstractMachine</code>.
+   */
+  private boolean usePushDownAlphabet;
+
+
+  /**
+   * The initial use push down {@link Alphabet} of this
+   * <code>AbstractMachine</code>.
+   */
+  private boolean initialUsePushDownAlphabet;
 
 
   /**
@@ -257,11 +272,12 @@ public abstract class AbstractMachine implements Machine
    * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          <code>AbstractMachine</code>.
+   * @param usePushDownAlphabet The use push down {@link Alphabet}.
    * @param validationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
    */
   public AbstractMachine ( Alphabet alphabet, Alphabet pushDownAlphabet,
-      ValidationElement ... validationElements )
+      boolean usePushDownAlphabet, ValidationElement ... validationElements )
   {
     // Alphabet
     if ( alphabet == null )
@@ -275,6 +291,8 @@ public abstract class AbstractMachine implements Machine
       throw new NullPointerException ( "push down alphabet is null" ); //$NON-NLS-1$
     }
     this.pushDownAlphabet = pushDownAlphabet;
+    // UsePushDownAlphabet
+    this.usePushDownAlphabet = usePushDownAlphabet;
     // Validation elements
     if ( validationElements == null )
     {
@@ -1173,6 +1191,10 @@ public abstract class AbstractMachine implements Machine
     {
       return true;
     }
+    if ( this.usePushDownAlphabet != this.initialUsePushDownAlphabet )
+    {
+      return true;
+    }
     for ( State current : this.stateList )
     {
       if ( current.isModified () )
@@ -1245,6 +1267,18 @@ public abstract class AbstractMachine implements Machine
     }
     // TODO Implement this
     return true;
+  }
+
+
+  /**
+   * Returns the use push down {@link Alphabet}.
+   * 
+   * @return The use push down {@link Alphabet}.
+   * @see #usePushDownAlphabet
+   */
+  public final boolean isUsePushDownAlphabet ()
+  {
+    return this.usePushDownAlphabet;
   }
 
 
@@ -1666,6 +1700,7 @@ public abstract class AbstractMachine implements Machine
     this.initialTransitionList.addAll ( this.transitionList );
     this.alphabet.resetModify ();
     this.pushDownAlphabet.resetModify ();
+    this.initialUsePushDownAlphabet = this.usePushDownAlphabet;
     for ( State current : this.stateList )
     {
       current.resetModify ();
@@ -1675,6 +1710,19 @@ public abstract class AbstractMachine implements Machine
       current.resetModify ();
     }
     this.oldModifyStatus = false;
+  }
+
+
+  /**
+   * Sets the use push down {@link Alphabet}.
+   * 
+   * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
+   * @see #usePushDownAlphabet
+   */
+  public final void setUsePushDownAlphabet ( boolean usePushDownAlphabet )
+  {
+    this.usePushDownAlphabet = usePushDownAlphabet;
+    fireModifyStatusChanged ( false );
   }
 
 

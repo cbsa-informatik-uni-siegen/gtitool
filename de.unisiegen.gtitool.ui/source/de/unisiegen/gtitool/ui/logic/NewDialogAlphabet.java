@@ -54,6 +54,8 @@ public final class NewDialogAlphabet
         .getInstance ().getAlphabetItem ().getAlphabet () );
     this.gui.styledAlphabetParserPanelPushDown.setAlphabet ( PreferenceManager
         .getInstance ().getPushDownAlphabetItem ().getAlphabet () );
+    this.gui.jCheckBoxPushDownAlphabet.setSelected ( PreferenceManager
+        .getInstance ().getUsePushDownAlphabet () );
 
     /*
      * Alphabet changed listener
@@ -106,13 +108,24 @@ public final class NewDialogAlphabet
 
 
   /**
-   * Returns the {@link Alphabet} of the new file.
+   * Returns the push down {@link Alphabet} of the new file.
    * 
-   * @return The {@link Alphabet} of the new file.
+   * @return The push down {@link Alphabet} of the new file.
    */
   public final Alphabet getPushDownAlphabet ()
   {
     return this.gui.styledAlphabetParserPanelPushDown.getAlphabet ();
+  }
+
+
+  /**
+   * Returns the use push down {@link Alphabet} of the new file.
+   * 
+   * @return The use push down {@link Alphabet} of the new file.
+   */
+  public final boolean getUsePushDownAlphabet ()
+  {
+    return this.gui.jCheckBoxPushDownAlphabet.isSelected ();
   }
 
 

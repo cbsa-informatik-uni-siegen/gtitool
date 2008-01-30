@@ -275,6 +275,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Returns the use push down {@link Alphabet}.
+   * 
+   * @return The use push down {@link Alphabet}.
+   */
+  public boolean isUsePushDownAlphabet ();
+
+
+  /**
    * Returns true if one of the active {@link State}s is a final {@link State},
    * otherwise false.
    * 
@@ -368,6 +376,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @param transitions The {@link Transition}s to remove.
    */
   public void removeTransition ( Transition ... transitions );
+
+
+  /**
+   * Sets the use push down {@link Alphabet}.
+   * 
+   * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
+   */
+  public void setUsePushDownAlphabet ( boolean usePushDownAlphabet );
 
 
   /**

@@ -161,7 +161,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet, true );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -295,7 +295,7 @@ public class StorageTest
       System.exit ( 1 );
     }
 
-    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet );
+    DFA dfa = new DefaultDFA ( alphabet, pushDownAlphabet, true );
     dfa.addState ( z0, z1, z2 );
     dfa.addTransition ( t0, t1, t2, t3, t4 );
 
@@ -350,7 +350,7 @@ public class StorageTest
           new File ( "test/de/unisiegen/gtitool/ui/storage/t4.xml" ),
           Transition.class );
 
-      DFA dfaloaded = new DefaultDFA ( alphabet, pushDownAlphabet );
+      DFA dfaloaded = new DefaultDFA ( alphabet, pushDownAlphabet, true );
       dfaloaded.addState ( z0loaded, z1loaded, z2loaded );
       dfaloaded.addTransition ( t0loaded, t1loaded, t2loaded, t3loaded,
           t4loaded );

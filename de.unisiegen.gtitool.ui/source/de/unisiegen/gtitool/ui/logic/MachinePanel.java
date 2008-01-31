@@ -382,88 +382,64 @@ public final class MachinePanel implements EditorPanel
   {
     this.parent = parent;
     this.model = model;
-    this.machine = model.getMachine ();
     this.file = file;
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
-    this.graph = this.model.getJGraph ();
-    this.graphModel = this.model.getGraphModel ();
-    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
-        .getZoomFactorItem ().getFactor () ) / 100;
+
     intitializeMouseAdapter ();
-    if ( activeMouseAdapter == null )
-    {
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
-    }
-    switch ( activeMouseAdapter )
-    {
 
-      case MOUSE :
-      {
-        handleToolbarMouse ( true );
-        break;
-      }
-      case ADD_STATE :
-      {
-        handleToolbarAddState ( true );
-        break;
-      }
-      case ADD_START_STATE :
-      {
-        handleToolbarStart ( true );
-        break;
-      }
-      case ADD_FINAL_STATE :
-      {
-        handleToolbarEnd ( true );
-        break;
-      }
-      case ADD_TRANSITION :
-      {
-        handleToolbarTransition ( true );
-        break;
-      }
-
-    }
-
-    this.gui.diagrammContentPanel.setViewportView ( this.graph );
-
-    this.errorTableModel = new ConsoleTableModel ();
-    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
-    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableErrors
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
+    /*
+     * Divider Location
+     */
+    this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationConsole () );
+    setVisibleConsole ( this.parent.jCheckBoxMenuItemConsole.getState () );
+    this.gui.jSplitPaneConsole.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          public void valueChanged ( ListSelectionEvent event )
+          @SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( PropertyChangeEvent event )
           {
-            handleConsoleTableValueChanged ( event );
+            if ( MachinePanel.this.setDividerLocationConsole )
+            {
+              PreferenceManager.getInstance ().setDividerLocationConsole (
+                  ( ( Integer ) event.getNewValue () ).intValue () );
+            }
           }
-
         } );
-    this.warningTableModel = new ConsoleTableModel ();
-    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
-    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableWarnings
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
+    this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationTable () );
+    setVisibleTable ( this.parent.jCheckBoxMenuItemTable.getState () );
+    this.gui.jSplitPaneTable.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          public void valueChanged ( ListSelectionEvent event )
+          @SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( PropertyChangeEvent event )
           {
-            handleConsoleTableValueChanged ( event );
+            if ( MachinePanel.this.setDividerLocationTable )
+            {
+              PreferenceManager.getInstance ().setDividerLocationTable (
+                  ( ( Integer ) event.getNewValue () ).intValue () );
+            }
           }
-
         } );
-    this.gui.jGTITableMachine.setModel ( this.machine );
-    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableMachine
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    initialize ();
+    addListener ();
+    addGraphListener ();
+
+    // Reset modify
+    resetModify ();
+  }
+
+
+  /**
+   * Add all needed listener
+   */
+  private void addListener ()
+  {
     this.gui.jGTITableMachine.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {
@@ -604,47 +580,104 @@ public final class MachinePanel implements EditorPanel
           }
 
         } );
-    /*
-     * Divider Location
-     */
-    this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationConsole () );
-    setVisibleConsole ( this.parent.jCheckBoxMenuItemConsole.getState () );
-    this.gui.jSplitPaneConsole.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+  }
+
+
+  /**
+   * Initialize the machine panel
+   */
+  private void initialize ()
+  {
+    this.machine = this.model.getMachine ();
+    this.graph = this.model.getJGraph ();
+    this.graphModel = this.model.getGraphModel ();
+    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
+        .getZoomFactorItem ().getFactor () ) / 100;
+
+    if ( activeMouseAdapter == null )
+    {
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
+    }
+    switch ( activeMouseAdapter )
+    {
+
+      case MOUSE :
+      {
+        handleToolbarMouse ( true );
+        break;
+      }
+      case ADD_STATE :
+      {
+        handleToolbarAddState ( true );
+        break;
+      }
+      case ADD_START_STATE :
+      {
+        handleToolbarStart ( true );
+        break;
+      }
+      case ADD_FINAL_STATE :
+      {
+        handleToolbarEnd ( true );
+        break;
+      }
+      case ADD_TRANSITION :
+      {
+        handleToolbarTransition ( true );
+        break;
+      }
+
+    }
+
+    this.gui.diagrammContentPanel.setViewportView ( this.graph );
+
+    this.errorTableModel = new ConsoleTableModel ();
+    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
+    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableErrors
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent event )
+          public void valueChanged ( ListSelectionEvent event )
           {
-            if ( MachinePanel.this.setDividerLocationConsole )
-            {
-              PreferenceManager.getInstance ().setDividerLocationConsole (
-                  ( ( Integer ) event.getNewValue () ).intValue () );
-            }
+            handleConsoleTableValueChanged ( event );
           }
+
         } );
-    this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationTable () );
-    setVisibleTable ( this.parent.jCheckBoxMenuItemTable.getState () );
-    this.gui.jSplitPaneTable.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+    this.warningTableModel = new ConsoleTableModel ();
+    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
+    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableWarnings
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void propertyChange ( PropertyChangeEvent event )
+          public void valueChanged ( ListSelectionEvent event )
           {
-            if ( MachinePanel.this.setDividerLocationTable )
-            {
-              PreferenceManager.getInstance ().setDividerLocationTable (
-                  ( ( Integer ) event.getNewValue () ).intValue () );
-            }
+            handleConsoleTableValueChanged ( event );
           }
+
         } );
+    this.gui.jGTITableMachine.setModel ( this.machine );
+    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
+  }
 
+
+  /**
+   * Add all needed listener to the JGraph
+   */
+  private void addGraphListener ()
+  {
     this.graph.addKeyListener ( new KeyListener ()
     {
 
@@ -691,9 +724,6 @@ public final class MachinePanel implements EditorPanel
     };
     this.model
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-
-    // Reset modify
-    resetModify ();
   }
 
 
@@ -1048,7 +1078,7 @@ public final class MachinePanel implements EditorPanel
   {
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
-    
+
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
@@ -1714,7 +1744,7 @@ public final class MachinePanel implements EditorPanel
       public void mouseClicked ( MouseEvent event )
       {
         // return if we are in enter word mode
-        if (MachinePanel.this.enterWordMode)
+        if ( MachinePanel.this.enterWordMode )
           return;
         // open configuration
         if ( event.getButton () == MouseEvent.BUTTON1
@@ -1815,8 +1845,10 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode, return
-        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
+        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // return
+        if ( ( event.getButton () == MouseEvent.BUTTON2 )
+            || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -1845,13 +1877,13 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
-        
+
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-        .getFirstCellForLocation ( event.getPoint ().getX (), event
-            .getPoint ().getY () );
-        
-        if (object instanceof DefaultStateView)
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
+
+        if ( object instanceof DefaultStateView )
           return;
 
         try
@@ -1894,8 +1926,10 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode, return
-        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
+        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // return
+        if ( ( event.getButton () == MouseEvent.BUTTON2 )
+            || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2111,7 +2145,7 @@ public final class MachinePanel implements EditorPanel
       public void mouseDragged ( MouseEvent event )
       {
         // Return if we are in word enter mode
-        if (  MachinePanel.this.enterWordMode )
+        if ( MachinePanel.this.enterWordMode )
           return;
         if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
             TransitionItem.CLICK_MODE ) )
@@ -2195,8 +2229,10 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode, return
-        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
+        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // return
+        if ( ( event.getButton () == MouseEvent.BUTTON2 )
+            || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2225,13 +2261,13 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
-        
+
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-        .getFirstCellForLocation ( event.getPoint ().getX (), event
-            .getPoint ().getY () );
-        
-        if (object instanceof DefaultStateView)
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
+
+        if ( object instanceof DefaultStateView )
           return;
 
         try
@@ -2277,8 +2313,10 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode, return
-        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
+        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // return
+        if ( ( event.getButton () == MouseEvent.BUTTON2 )
+            || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2307,13 +2345,13 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
-        
+
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-        .getFirstCellForLocation ( event.getPoint ().getX (), event
-            .getPoint ().getY () );
-        
-        if (object instanceof DefaultStateView)
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
+
+        if ( object instanceof DefaultStateView )
           return;
 
         try

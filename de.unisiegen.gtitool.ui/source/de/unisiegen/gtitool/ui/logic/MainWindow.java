@@ -69,6 +69,12 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * List contains the recently used files
+   */
+  private ArrayList < RecentlyUsedMenuItem > recentlyUsedFiles = new ArrayList < RecentlyUsedMenuItem > ();
+
+
+  /**
    * Creates new form <code>MainWindow</code>.
    */
   public MainWindow ()
@@ -126,6 +132,11 @@ public final class MainWindow implements LanguageChangedListener
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
+    for ( File file : PreferenceManager.getInstance ()
+        .getRecentlyUsedFilesItem ().getFiles () )
+    {
+      this.recentlyUsedFiles.add ( new RecentlyUsedMenuItem ( this, file ) );
+    }
     organizeRecentlyUsedFilesMenu ();
 
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -615,6 +626,14 @@ public final class MainWindow implements LanguageChangedListener
     PreferenceManager.getInstance ().setOpenedFilesItem (
         new OpenedFilesItem ( openedFiles, activeFile ) );
 
+    ArrayList < File > files = new ArrayList < File > ();
+    for ( RecentlyUsedMenuItem item : this.recentlyUsedFiles )
+    {
+      files.add ( item.getFile () );
+    }
+    PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
+        new RecentlyUsedFilesItem ( files ) );
+
     // System exit
     System.exit ( 0 );
   }
@@ -631,6 +650,10 @@ public final class MainWindow implements LanguageChangedListener
     {
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
+        RecentlyUsedMenuItem item = new RecentlyUsedMenuItem(this, file);
+        this.recentlyUsedFiles.remove ( item );
+        this.recentlyUsedFiles.add ( 0, item );
+        organizeRecentlyUsedFilesMenu ();
         if ( ( !current.equals ( this.gui.jGTITabbedPaneMain
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
@@ -651,9 +674,13 @@ public final class MainWindow implements LanguageChangedListener
     File file = panel.handleSaveAs ();
     if ( file != null )
     {
+      RecentlyUsedMenuItem item = new RecentlyUsedMenuItem(this, file);
+      this.recentlyUsedFiles.remove ( item );
+      this.recentlyUsedFiles.add ( 0, item );
+      organizeRecentlyUsedFilesMenu ();
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        if ( ! ( current.equals ( this.gui.jGTITabbedPaneMain
+        if (  ( ! current.equals ( this.gui.jGTITabbedPaneMain
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
           this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );
@@ -1195,21 +1222,11 @@ public final class MainWindow implements LanguageChangedListener
         // reorganize recently used files
         if ( addToRecentlyUsed )
         {
-          ArrayList < File > fileList = PreferenceManager.getInstance ()
-              .getRecentlyUsedFilesItem ().getFiles ();
-          fileList.remove ( file );
-          fileList.add ( 0, file );
-          if ( fileList.size () > 10 )
-          {
-            fileList.remove ( 10 );
-          }
-          if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
-          {
-            this.gui.jMenuRecentlyUsed.setEnabled ( true );
-          }
-
-          PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
-              new RecentlyUsedFilesItem ( fileList ) );
+          RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
+          this.recentlyUsedFiles.remove ( item );
+          this.recentlyUsedFiles.add ( 0, item );
+          if ( this.recentlyUsedFiles.size () > 10 )
+            this.recentlyUsedFiles.remove ( 10 );
           organizeRecentlyUsedFilesMenu ();
         }
 
@@ -1235,21 +1252,11 @@ public final class MainWindow implements LanguageChangedListener
       // reorganize recently used files
       if ( addToRecentlyUsed )
       {
-        ArrayList < File > fileList = PreferenceManager.getInstance ()
-            .getRecentlyUsedFilesItem ().getFiles ();
-        fileList.remove ( file );
-        fileList.add ( 0, file );
-        if ( fileList.size () > 10 )
-        {
-          fileList.remove ( 10 );
-        }
-        if ( !this.gui.jMenuRecentlyUsed.isEnabled () )
-        {
-          this.gui.jMenuRecentlyUsed.setEnabled ( true );
-        }
-
-        PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
-            new RecentlyUsedFilesItem ( fileList ) );
+        RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
+        this.recentlyUsedFiles.remove ( item );
+        this.recentlyUsedFiles.add ( 0, item );
+        if ( this.recentlyUsedFiles.size () > 10 )
+          this.recentlyUsedFiles.remove ( 10 );
         organizeRecentlyUsedFilesMenu ();
       }
     }
@@ -1268,18 +1275,30 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void organizeRecentlyUsedFilesMenu ()
   {
-    ArrayList < File > fileList = PreferenceManager.getInstance ()
-        .getRecentlyUsedFilesItem ().getFiles ();
+    ArrayList<RecentlyUsedMenuItem> notExistingFiles = new ArrayList<RecentlyUsedMenuItem>();
 
     this.gui.jMenuRecentlyUsed.removeAll ();
 
-    for ( File file : fileList )
+    for ( RecentlyUsedMenuItem item : this.recentlyUsedFiles )
     {
-      if ( file.exists () )
+      if ( item.getFile ().exists () )
       {
-        this.gui.jMenuRecentlyUsed
-            .add ( new RecentlyUsedMenuItem ( this, file ) );
+        this.gui.jMenuRecentlyUsed.add ( item );
       }
+      else{
+        notExistingFiles.add ( item );
+      }
+    }
+    
+    this.recentlyUsedFiles.removeAll ( notExistingFiles );
+    
+    if ( this.recentlyUsedFiles.size () > 0 )
+    {
+      this.gui.jMenuRecentlyUsed.setEnabled ( true );
+    }
+    else
+    {
+      this.gui.jMenuRecentlyUsed.setEnabled ( false );
     }
   }
 

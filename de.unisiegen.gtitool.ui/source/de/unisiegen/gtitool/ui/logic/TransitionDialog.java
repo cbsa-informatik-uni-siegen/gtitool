@@ -303,6 +303,12 @@ public final class TransitionDialog
         .setTransition ( new DefaultTransition () );
     setOverChangeSet ( overChangeSymbolSet );
 
+    // Set the push down alphabet
+    this.gui.styledAlphabetParserPanelPushDownAlphabet
+        .setAlphabet ( this.pushDownAlphabet );
+    this.gui.styledWordParserPanelRead.setAlphabet ( this.pushDownAlphabet );
+    this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
+
     /*
      * Word changed listener
      */

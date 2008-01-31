@@ -5,6 +5,3 @@ CF		- History über die Zustände führen
 BM		- Routing der Transitionen
 BM		- Die Recently Used Files einmal am Ende speichern
 BM		- Farbverlauf bei Transitionen beseitigen
-BM		- Der Automat muss im Wort-Eingeben-Modus readonly sein
-BM		- Beim Ändern des Modus nach "Automat Editieren" muss das
-		  Highlighten verschwinden

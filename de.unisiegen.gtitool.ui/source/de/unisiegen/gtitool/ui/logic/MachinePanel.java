@@ -1048,6 +1048,23 @@ public final class MachinePanel implements EditorPanel
   {
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
+    
+    // Reset all highlightings
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemTransition ()
+              .getColor () );
+    }
+
+    for ( DefaultStateView current : this.model.getStateViewList () )
+    {
+      GraphConstants.setGradientColor ( current.getAttributes (),
+          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+    }
+
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -1057,7 +1074,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleEnterWord ()
   {
     this.gui.wordPanel.setVisible ( true );
-    // this.model.getJGraph ().setEnabled ( false );
+    this.model.getJGraph ().setEnabled ( false );
   }
 
 
@@ -1696,6 +1713,9 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
+        // return if we are in enter word mode
+        if (MachinePanel.this.enterWordMode)
+          return;
         // open configuration
         if ( event.getButton () == MouseEvent.BUTTON1
             && event.getClickCount () == 2 )
@@ -1795,8 +1815,8 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed return
-        if ( event.getButton () == MouseEvent.BUTTON2 )
+        // if Middle Mouse Button was pressed, or we are in word enter mode, return
+        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -1825,6 +1845,14 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
+        
+        // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event
+            .getPoint ().getY () );
+        
+        if (object instanceof DefaultStateView)
+          return;
 
         try
         {
@@ -1866,8 +1894,8 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed return
-        if ( event.getButton () == MouseEvent.BUTTON2 )
+        // if Middle Mouse Button was pressed, or we are in word enter mode, return
+        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2082,6 +2110,9 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseDragged ( MouseEvent event )
       {
+        // Return if we are in word enter mode
+        if (  MachinePanel.this.enterWordMode )
+          return;
         if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
             TransitionItem.CLICK_MODE ) )
           return;
@@ -2164,8 +2195,8 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed return
-        if ( event.getButton () == MouseEvent.BUTTON2 )
+        // if Middle Mouse Button was pressed, or we are in word enter mode, return
+        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2194,6 +2225,14 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
+        
+        // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event
+            .getPoint ().getY () );
+        
+        if (object instanceof DefaultStateView)
+          return;
 
         try
         {
@@ -2238,8 +2277,8 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed return
-        if ( event.getButton () == MouseEvent.BUTTON2 )
+        // if Middle Mouse Button was pressed, or we are in word enter mode, return
+        if ( (event.getButton () == MouseEvent.BUTTON2) || MachinePanel.this.enterWordMode )
           return;
 
         // if an popup menu is open close it and do nothing more
@@ -2268,6 +2307,14 @@ public final class MachinePanel implements EditorPanel
                 event.getX (), event.getY () );
           return;
         }
+        
+        // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event
+            .getPoint ().getY () );
+        
+        if (object instanceof DefaultStateView)
+          return;
 
         try
         {

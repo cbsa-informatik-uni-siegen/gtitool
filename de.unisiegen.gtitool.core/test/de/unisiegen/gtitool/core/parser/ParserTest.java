@@ -3,8 +3,10 @@ package de.unisiegen.gtitool.core.parser;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
+import de.unisiegen.gtitool.core.parser.word.WordParseable;
 
 
 /**
@@ -39,10 +41,10 @@ public class ParserTest
      * Symbol
      */
     SymbolParseable symbolParseable = new SymbolParseable ();
-    String symbolText = "{a,b,c}";
+    String symbolText = "a";
     try
     {
-      Symbol symbol = ( Symbol ) alphabetParseable.newParser ( symbolText )
+      Symbol symbol = ( Symbol ) symbolParseable.newParser ( symbolText )
           .parse ();
       System.out.println ( symbol );
     }
@@ -50,6 +52,19 @@ public class ParserTest
     {
       e.printStackTrace ();
     }
+    /*
+     * Word
+     */
+    WordParseable wordParseable = new WordParseable ();
+    String wordText = "abba";
+    try
+    {
+      Word word = ( Word ) wordParseable.newParser ( wordText ).parse ();
+      System.out.println ( word );
+    }
+    catch ( Exception e )
+    {
+      e.printStackTrace ();
+    }
   }
-
 }

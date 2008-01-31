@@ -588,7 +588,6 @@ public abstract class StyledParserPanel extends JPanel
 
     }, KeyStroke.getKeyStroke ( KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK ),
         JComponent.WHEN_FOCUSED );
-    this.document.parse ();
   }
 
 

@@ -329,14 +329,14 @@ public final class DefaultMachineModel implements Storable, Modifyable
     // Set fill color
     if ( state.isStartState () )
     {
-      GraphConstants.setGradientColor ( stateView.getAttributes (),
+      GraphConstants.setBackground ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemStartState ()
               .getColor () );
       GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }
     else
     {
-      GraphConstants.setGradientColor ( stateView.getAttributes (),
+      GraphConstants.setBackground ( stateView.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
       GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }

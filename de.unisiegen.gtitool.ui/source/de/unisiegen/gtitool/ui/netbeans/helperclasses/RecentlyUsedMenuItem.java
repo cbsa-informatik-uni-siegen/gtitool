@@ -67,6 +67,33 @@ public class RecentlyUsedMenuItem extends JMenuItem
     return this.file;
   }
 
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public boolean equals ( Object other )
+  {
+    if ( other instanceof RecentlyUsedMenuItem )
+    {
+      RecentlyUsedMenuItem item = ( RecentlyUsedMenuItem ) other;
+      return this.file.getAbsolutePath ().equals ( item.getFile ().getAbsolutePath () );
+    }
+    return false;
+      
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#hashCode()
+   */
+  @Override
+  public final int hashCode ()
+  {
+    return this.file.hashCode ();
+  }
 
 
 }

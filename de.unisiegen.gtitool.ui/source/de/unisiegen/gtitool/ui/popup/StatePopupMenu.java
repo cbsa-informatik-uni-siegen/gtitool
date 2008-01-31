@@ -152,11 +152,11 @@ public final class StatePopupMenu extends JPopupMenu
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
         if ( StatePopupMenu.this.state.getState ().isStartState () )
-          GraphConstants.setGradientColor ( StatePopupMenu.this.state
+          GraphConstants.setBackground ( StatePopupMenu.this.state
               .getAttributes (), PreferenceManager.getInstance ()
               .getColorItemStartState ().getColor () );
         else
-          GraphConstants.setGradientColor ( StatePopupMenu.this.state
+          GraphConstants.setBackground ( StatePopupMenu.this.state
               .getAttributes (), PreferenceManager.getInstance ()
               .getColorItemState ().getColor () );
 

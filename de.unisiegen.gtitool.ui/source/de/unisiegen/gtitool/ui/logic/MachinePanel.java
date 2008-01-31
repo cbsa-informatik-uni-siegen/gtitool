@@ -473,7 +473,7 @@ public final class MachinePanel implements EditorPanel
               {
                 DefaultStateView state = ( DefaultStateView ) object;
                 if ( state.getState ().isStartState () )
-                  GraphConstants.setGradientColor ( state.getAttributes (),
+                  GraphConstants.setBackground ( state.getAttributes (),
                       newColor );
 
               }
@@ -504,7 +504,7 @@ public final class MachinePanel implements EditorPanel
               {
                 DefaultStateView state = ( DefaultStateView ) object;
                 if ( !state.getState ().isStartState () )
-                  GraphConstants.setGradientColor ( state.getAttributes (),
+                  GraphConstants.setBackground ( state.getAttributes (),
                       newColor );
 
               }
@@ -775,12 +775,12 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
-        GraphConstants.setGradientColor ( view.getAttributes (),
+        GraphConstants.setBackground ( view.getAttributes (),
             PreferenceManager.getInstance ().getColorItemStartState ()
                 .getColor () );
       else
       {
-        GraphConstants.setGradientColor ( view.getAttributes (),
+        GraphConstants.setBackground ( view.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
     }
@@ -1082,14 +1082,14 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setLineColor ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemTransition ()
               .getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setBackground ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
@@ -1461,7 +1461,7 @@ public final class MachinePanel implements EditorPanel
       {
         DefaultTransitionView transitionView = this.model
             .getTransitionViewForTransition ( current );
-        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+        GraphConstants.setLineColor ( transitionView.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveTransition ()
                 .getColor () );
         inactiveTransitions.remove ( transitionView );
@@ -1469,7 +1469,7 @@ public final class MachinePanel implements EditorPanel
 
       for ( DefaultTransitionView current : inactiveTransitions )
       {
-        GraphConstants.setGradientColor ( current.getAttributes (),
+        GraphConstants.setLineColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemTransition ()
                 .getColor () );
       }
@@ -1480,7 +1480,7 @@ public final class MachinePanel implements EditorPanel
       for ( State current : this.machine.getActiveState () )
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setGradientColor ( state.getAttributes (),
+        GraphConstants.setBackground ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveState ()
                 .getColor () );
         inactiveStates.remove ( state );
@@ -1488,7 +1488,7 @@ public final class MachinePanel implements EditorPanel
 
       for ( DefaultStateView current : inactiveStates )
       {
-        GraphConstants.setGradientColor ( current.getAttributes (),
+        GraphConstants.setBackground ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
 
@@ -1540,7 +1540,7 @@ public final class MachinePanel implements EditorPanel
       {
         DefaultTransitionView transitionView = this.model
             .getTransitionViewForTransition ( current );
-        GraphConstants.setGradientColor ( transitionView.getAttributes (),
+        GraphConstants.setLineColor ( transitionView.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveTransition ()
                 .getColor () );
         inactiveTransitions.remove ( transitionView );
@@ -1548,7 +1548,7 @@ public final class MachinePanel implements EditorPanel
 
       for ( DefaultTransitionView current : inactiveTransitions )
       {
-        GraphConstants.setGradientColor ( current.getAttributes (),
+        GraphConstants.setLineColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemTransition ()
                 .getColor () );
       }
@@ -1559,14 +1559,14 @@ public final class MachinePanel implements EditorPanel
       for ( State current : this.machine.getActiveState () )
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setGradientColor ( state.getAttributes (),
+        GraphConstants.setBackground ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemActiveState ()
                 .getColor () );
         inactiveStates.remove ( state );
       }
       for ( DefaultStateView current : inactiveStates )
       {
-        GraphConstants.setGradientColor ( current.getAttributes (),
+        GraphConstants.setBackground ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
       this.graphModel.cellsChanged ( DefaultGraphModel
@@ -1616,14 +1616,14 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setLineColor ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemTransition ()
               .getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setBackground ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
@@ -1633,7 +1633,7 @@ public final class MachinePanel implements EditorPanel
 
     DefaultStateView state = this.model.getStateViewForState ( this.machine
         .getActiveState ( 0 ) );
-    GraphConstants.setGradientColor ( state.getAttributes (), PreferenceManager
+    GraphConstants.setBackground ( state.getAttributes (), PreferenceManager
         .getInstance ().getColorItemActiveState ().getColor () );
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1649,14 +1649,14 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setLineColor ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemTransition ()
               .getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
-      GraphConstants.setGradientColor ( current.getAttributes (),
+      GraphConstants.setBackground ( current.getAttributes (),
           PreferenceManager.getInstance ().getColorItemState ().getColor () );
     }
 
@@ -1678,12 +1678,12 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
-        GraphConstants.setGradientColor ( view.getAttributes (),
+        GraphConstants.setBackground ( view.getAttributes (),
             PreferenceManager.getInstance ().getColorItemStartState ()
                 .getColor () );
       else
       {
-        GraphConstants.setGradientColor ( view.getAttributes (),
+        GraphConstants.setBackground ( view.getAttributes (),
             PreferenceManager.getInstance ().getColorItemState ().getColor () );
       }
     }
@@ -1692,7 +1692,7 @@ public final class MachinePanel implements EditorPanel
     {
       DefaultStateView view = this.model.getStateViewForState ( state );
       this.oldErrorStates.add ( view );
-      GraphConstants.setGradientColor ( view.getAttributes (),
+      GraphConstants.setBackground ( view.getAttributes (),
           PreferenceManager.getInstance ().getColorItemErrorState ()
               .getColor () );
     }

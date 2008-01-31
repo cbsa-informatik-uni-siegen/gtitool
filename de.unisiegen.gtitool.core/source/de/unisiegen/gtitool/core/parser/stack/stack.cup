@@ -30,6 +30,13 @@ non terminal Stack			stack;
 
 
 /*********
+ * Error *
+ *********/
+
+non terminal 				epsilon;
+
+
+/*********
  * Stack *
  *********/
 
@@ -37,6 +44,11 @@ stack							::= symbol_list:sl
 									{:
 									   RESULT = new DefaultStack(sl);
 									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultStack();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
 									:}
 								;
 
@@ -64,4 +76,8 @@ symbol_list						::= symbol_list:sl symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
 									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
 								;

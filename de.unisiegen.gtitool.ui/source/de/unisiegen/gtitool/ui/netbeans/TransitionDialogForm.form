@@ -101,6 +101,7 @@
       <SubComponents>
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIList" name="jGTIListAlphabet">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTIListAlphabetFocusLost"/>
             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jGTIListAlphabetValueChanged"/>
           </Events>
         </Component>
@@ -199,6 +200,7 @@
       <SubComponents>
         <Component class="de.unisiegen.gtitool.ui.swing.JGTIList" name="jGTIListChangeOverSet">
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTIListChangeOverSetFocusLost"/>
             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jGTIListChangeOverSetValueChanged"/>
           </Events>
         </Component>

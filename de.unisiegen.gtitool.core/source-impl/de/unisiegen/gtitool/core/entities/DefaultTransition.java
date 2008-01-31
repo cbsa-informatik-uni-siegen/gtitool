@@ -1151,6 +1151,27 @@ public final class DefaultTransition implements Transition
       }
       result.append ( "}" ); //$NON-NLS-1$
     }
+    if ( ( this.pushDownWordRead != null ) || ( this.pushDownWordWrite != null ) )
+    {
+      result.append ( ": " ); //$NON-NLS-1$
+      if ( this.pushDownWordRead == null )
+      {
+        result.append ( "\u03B5" ); //$NON-NLS-1$
+      }
+      else
+      {
+        result.append ( this.pushDownWordRead );
+      }
+      result.append ( " -> " ); //$NON-NLS-1$
+      if ( this.pushDownWordWrite == null )
+      {
+        result.append ( "\u03B5" ); //$NON-NLS-1$
+      }
+      else
+      {
+        result.append ( this.pushDownWordWrite );
+      }
+    }
     return result.toString ();
   }
 

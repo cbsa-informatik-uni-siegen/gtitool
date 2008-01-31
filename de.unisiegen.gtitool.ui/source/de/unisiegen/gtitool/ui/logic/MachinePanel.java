@@ -462,6 +462,8 @@ public final class MachinePanel implements EditorPanel
         } );
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
     this.gui.jGTITableMachine.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
         {

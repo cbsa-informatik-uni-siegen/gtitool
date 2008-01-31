@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,6 +17,8 @@ import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
@@ -299,6 +302,32 @@ public final class TransitionDialog
     this.gui.styledTransitionParserPanel
         .setTransition ( new DefaultTransition () );
     setOverChangeSet ( overChangeSymbolSet );
+
+    /*
+     * Word changed listener
+     */
+    this.gui.styledWordParserPanelRead
+        .addWordChangedListener ( new WordChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void wordChanged ( @SuppressWarnings ( "unused" )
+          Word newWord )
+          {
+            setButtonStatus ();
+          }
+        } );
+    this.gui.styledWordParserPanelWrite
+        .addWordChangedListener ( new WordChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void wordChanged ( @SuppressWarnings ( "unused" )
+          Word newWord )
+          {
+            setButtonStatus ();
+          }
+        } );
   }
 
 
@@ -372,6 +401,19 @@ public final class TransitionDialog
   public final void handleCancel ()
   {
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the focus lost event on the {@link JGTIList}s.
+   * 
+   * @param event The {@link FocusEvent}.
+   */
+  public final void handleListFocusLost ( FocusEvent event )
+  {
+    ( ( JGTIList ) event.getSource () ).clearSelection ();
+    this.gui.jButtonMoveLeft.setEnabled ( false );
+    this.gui.jButtonMoveRight.setEnabled ( false );
   }
 
 
@@ -500,6 +542,23 @@ public final class TransitionDialog
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * Sets the status of the buttons.
+   */
+  private final void setButtonStatus ()
+  {
+    if ( ( this.gui.styledWordParserPanelRead.getWord () == null )
+        || ( this.gui.styledWordParserPanelWrite.getWord () == null ) )
+    {
+      this.gui.jGTIButtonOk.setEnabled ( false );
+    }
+    else
+    {
+      this.gui.jGTIButtonOk.setEnabled ( true );
     }
   }
 

@@ -243,6 +243,18 @@ public final class TransitionDialog
 
 
   /**
+   * The {@link Word} which is read from the {@link Stack}.
+   */
+  private Word pushDownWordRead = new DefaultWord ();
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   */
+  private Word pushDownWordWrite = new DefaultWord ();
+
+
+  /**
    * Creates a new {@link TransitionDialog}.
    * 
    * @param parent The parent frame.
@@ -282,6 +294,10 @@ public final class TransitionDialog
     this.parent = parent;
     this.alphabet = alphabet;
     this.pushDownAlphabet = pushDownAlphabet;
+    // PushDownWordRead
+    setPushDownWordRead ( pushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( pushDownWordWrite );
     this.stateBegin = stateBegin;
     this.stateEnd = stateEnd;
     this.transition = null;
@@ -334,9 +350,18 @@ public final class TransitionDialog
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void wordChanged ( @SuppressWarnings ( "unused" )
-          Word newWord )
+          public void wordChanged ( Word newWord )
           {
+            if ( newWord != null )
+            {
+              setPushDownWordRead ( newWord );
+              updateResultingTransition ();
+            }
+            else
+            {
+              TransitionDialog.this.gui.styledTransitionParserPanel
+                  .setTransition ( null );
+            }
             setButtonStatus ();
           }
         } );
@@ -345,9 +370,18 @@ public final class TransitionDialog
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void wordChanged ( @SuppressWarnings ( "unused" )
-          Word newWord )
+          public void wordChanged ( Word newWord )
           {
+            if ( newWord != null )
+            {
+              setPushDownWordWrite ( newWord );
+              updateResultingTransition ();
+            }
+            else
+            {
+              TransitionDialog.this.gui.styledTransitionParserPanel
+                  .setTransition ( null );
+            }
             setButtonStatus ();
           }
         } );
@@ -366,17 +400,22 @@ public final class TransitionDialog
       this.modelChangeOverSet.add ( current );
       this.modelAlphabet.remove ( current );
     }
-    ArrayList < Symbol > changeOverSymbols = new ArrayList < Symbol > ();
-    for ( Symbol current : this.modelChangeOverSet )
-    {
-      changeOverSymbols.add ( current );
-    }
     this.gui.jGTIListAlphabet.clearSelection ();
     this.gui.jButtonMoveRight.setEnabled ( false );
+    updateResultingTransition ();
+  }
+
+
+  /**
+   * Updates the current resulting {@link Transition}.
+   */
+  private void updateResultingTransition ()
+  {
     try
     {
       this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( changeOverSymbols ) );
+          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
+              this.pushDownWordWrite, this.modelChangeOverSet ) );
     }
     catch ( TransitionException exc )
     {
@@ -519,14 +558,10 @@ public final class TransitionDialog
       {
         symbols.add ( symbol );
       }
-      this.transition = new DefaultTransition ( symbols );
+      this.transition = new DefaultTransition ( this.pushDownWordRead,
+          this.pushDownWordWrite, symbols );
       this.transition.setAlphabet ( this.alphabet );
       this.transition.setPushDownAlphabet ( this.pushDownAlphabet );
-      this.transition.setPushDownWordRead ( this.gui.styledWordParserPanelRead
-          .getWord () );
-      this.transition
-          .setPushDownWordWrite ( this.gui.styledWordParserPanelWrite
-              .getWord () );
       this.transition.setStateBegin ( this.stateBegin );
       if ( this.stateEnd != null )
       {
@@ -554,23 +589,9 @@ public final class TransitionDialog
       this.modelAlphabet.add ( current );
       this.modelChangeOverSet.remove ( current );
     }
-    ArrayList < Symbol > changeOverSymbols = new ArrayList < Symbol > ();
-    for ( Symbol current : this.modelChangeOverSet )
-    {
-      changeOverSymbols.add ( current );
-    }
     this.gui.jGTIListChangeOverSet.clearSelection ();
     this.gui.jButtonMoveLeft.setEnabled ( false );
-    try
-    {
-      this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( changeOverSymbols ) );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    updateResultingTransition ();
   }
 
 
@@ -610,13 +631,44 @@ public final class TransitionDialog
     try
     {
       this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( overChangeSymbolSet ) );
+          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
+              this.pushDownWordWrite, overChangeSymbolSet ) );
     }
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * Sets the {@link Word} which is read from the {@link Stack}.
+   * 
+   * @param pushDownWordRead The {@link Word} to set.
+   */
+  public final void setPushDownWordRead ( Word pushDownWordRead )
+  {
+    if ( pushDownWordRead == null )
+    {
+      throw new NullPointerException ( "push down word read is null" ); //$NON-NLS-1$
+    }
+    this.pushDownWordRead = pushDownWordRead;
+  }
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   * 
+   * @param pushDownWordWrite The {@link Word} to set.
+   */
+  public final void setPushDownWordWrite ( Word pushDownWordWrite )
+  {
+    if ( pushDownWordWrite == null )
+    {
+      throw new NullPointerException ( "push down word write is null" ); //$NON-NLS-1$
+    }
+    this.pushDownWordWrite = pushDownWordWrite;
   }
 
 

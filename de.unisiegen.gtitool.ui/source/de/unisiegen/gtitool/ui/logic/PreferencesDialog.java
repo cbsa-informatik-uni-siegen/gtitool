@@ -1042,6 +1042,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   public final void handleRestore ()
   {
     logger.debug ( "handle restore" ); //$NON-NLS-1$
+ 
     /*
      * General
      */
@@ -1049,6 +1050,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
     this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM
         .getFactor () );
+   
     /*
      * View
      */
@@ -1061,6 +1063,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jSliderAutoStep
         .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
             .getAutoStepInterval () );
+ 
     /*
      * Color
      */
@@ -1078,6 +1081,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserHighlighting.restore ();
     this.colorItemParserState.restore ();
     this.colorItemParserSymbol.restore ();
+    this.gui.jListColor.repaint ();
+  
     /*
      * Alphabet
      */

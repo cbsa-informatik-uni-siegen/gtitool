@@ -77,6 +77,8 @@ Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 	"{"					{ return symbol(LCBRACE); }
 	"}"					{ return symbol(RCBRACE); }
 	"\u03B5"			{ return symbol(EPSILON); }
+	"\u2191"			{ return symbol(ARROWUP); }
+	"\u2193"			{ return symbol(ARROWDOWN); }
 	{Symbol}			{ return symbol(SYMBOL, yytext()); }
 	{WhiteSpace}		{ }
 }

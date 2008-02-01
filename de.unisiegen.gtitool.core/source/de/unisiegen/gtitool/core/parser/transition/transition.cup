@@ -6,8 +6,10 @@
  */
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.ParseableEntity.ParserOffset;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
@@ -25,6 +27,8 @@ terminal					COMMA;
 terminal					LCBRACE;
 terminal					RCBRACE;
 terminal					EPSILON;
+terminal					ARROWUP;
+terminal					ARROWDOWN;
 
 
 /****************
@@ -34,6 +38,9 @@ terminal					EPSILON;
 non terminal Transition		transition;
 non terminal Symbol			symbol;
 non terminal Symbol[]		symbol_list;
+non terminal Word			word;
+non terminal Word			word_read;
+non terminal Word			word_write;
 
 
 /*********
@@ -54,11 +61,16 @@ transition						::= EPSILON:e
 									   RESULT = new DefaultTransition();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
 									:}
+								|	EPSILON:e word_read:r word_write:w
+									{:
+									   RESULT = new DefaultTransition(r, w);
+									   RESULT.setParserOffset(new ParserOffset(eleft,wright));
+									:}
 								|	LCBRACE:l symbol_list:sl RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(sl);
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), sl);
 									   }
 									   catch (TransitionException ecx)
 									   {
@@ -66,11 +78,23 @@ transition						::= EPSILON:e
 									   }
 									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}
+								|	LCBRACE:l symbol_list:sl RCBRACE word_read:r word_write:w
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(r, w, sl);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft,wright));
+									:}
 								|	symbol_list:sl
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(sl);
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), sl);
 									   }
 									   catch (TransitionException ecx)
 									   {
@@ -78,8 +102,42 @@ transition						::= EPSILON:e
 									   }
 									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
 									:}
+								|	symbol_list:sl word_read:r word_write:w
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTransition(r, w, sl);
+									   }
+									   catch (TransitionException ecx)
+									   {
+									     ParserMultiException.throwTransitionException(ecx.getSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(slleft,wright));
+									:}
 								|	transition_error
 									{: :}
+								;
+
+word_read						::= word:w ARROWUP
+									{:
+									   RESULT = w;
+									:}
+								|	EPSILON:e ARROWUP
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+word_write						::= word:w ARROWDOWN
+									{:
+									   RESULT = w;
+									:}
+								|	EPSILON:e ARROWDOWN
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
 								;
 
 transition_error				::= LCBRACE:l epsilon
@@ -145,6 +203,18 @@ symbol_list_error				::= symbol_list:sl COMMA:c epsilon
 								|	symbol_list:sl SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Transition", ", ", slleft, slright, "," );
+									:}
+								;
+
+word							::= symbol_list:sl
+									{:
+									   RESULT = new DefaultWord(sl);
+									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
 									:}
 								;
 

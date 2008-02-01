@@ -159,6 +159,13 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    */
   public final void setTransition ( Transition transition )
   {
-    getEditor ().setText ( transition.toString () );
+    if ( transition == null )
+    {
+      getEditor ().setText ( "" ); //$NON-NLS-1$
+    }
+    else
+    {
+      getEditor ().setText ( transition.toString () );
+    }
   }
 }

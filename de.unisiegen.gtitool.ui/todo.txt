@@ -1,6 +1,5 @@
 BM		- Fehlerhafte Symbole highlighten
-CF		- Stack und Kelleralphabet implementieren
+CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 BM		- Routing der Transitionen
-

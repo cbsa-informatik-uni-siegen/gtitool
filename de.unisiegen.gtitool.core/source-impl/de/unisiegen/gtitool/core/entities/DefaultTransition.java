@@ -176,6 +176,9 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -193,8 +196,6 @@ public final class DefaultTransition implements Transition
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    this.symbolSet = new TreeSet < Symbol > ();
-    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
 
     // Reset modify
@@ -228,6 +229,9 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
     // Alphabet
     setAlphabet ( alphabet );
     // PushDownAlphabet
@@ -245,8 +249,6 @@ public final class DefaultTransition implements Transition
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    this.symbolSet = new TreeSet < Symbol > ();
-    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
 
     // Reset modify
@@ -359,23 +361,33 @@ public final class DefaultTransition implements Transition
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
+   * @param pushDownWordRead The {@link Word} which is read from the
+   *          {@link Stack}.
+   * @param pushDownWordWrite The {@link Word} which should be written on the
+   *          {@link Stack}.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Iterable < Symbol > symbols )
+  public DefaultTransition ( Word pushDownWordRead, Word pushDownWordWrite,
+      Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
+    // PushDownWordRead
+    setPushDownWordRead ( pushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( pushDownWordWrite );
     // Symbols
     if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    this.symbolSet = new TreeSet < Symbol > ();
-    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
 
     // Reset modify
@@ -386,23 +398,32 @@ public final class DefaultTransition implements Transition
   /**
    * Allocates a new <code>DefaultTransition</code>.
    * 
+   * @param pushDownWordRead The {@link Word} which is read from the
+   *          {@link Stack}.
+   * @param pushDownWordWrite The {@link Word} which should be written on the
+   *          {@link Stack}.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
    *           <code>DefaultTransition</code> is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           <code>DefaultTransition</code> is not correct.
    */
-  public DefaultTransition ( Symbol ... symbols )
-      throws TransitionSymbolNotInAlphabetException,
+  public DefaultTransition ( Word pushDownWordRead, Word pushDownWordWrite,
+      Symbol ... symbols ) throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.symbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet = new TreeSet < Symbol > ();
+
+    // PushDownWordRead
+    setPushDownWordRead ( pushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( pushDownWordWrite );
     // Symbols
     if ( symbols == null )
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    this.symbolSet = new TreeSet < Symbol > ();
-    this.initialSymbolSet = new TreeSet < Symbol > ();
     add ( symbols );
 
     // Reset modify
@@ -1185,7 +1206,7 @@ public final class DefaultTransition implements Transition
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )
     {
-      result.append ( ": " ); //$NON-NLS-1$
+      result.append ( " " ); //$NON-NLS-1$
       if ( this.pushDownWordRead.size () == 0 )
       {
         result.append ( "\u03B5" ); //$NON-NLS-1$
@@ -1194,7 +1215,7 @@ public final class DefaultTransition implements Transition
       {
         result.append ( this.pushDownWordRead );
       }
-      result.append ( " -> " ); //$NON-NLS-1$
+      result.append ( "\u2191 " ); //$NON-NLS-1$
       if ( this.pushDownWordWrite.size () == 0 )
       {
         result.append ( "\u03B5" ); //$NON-NLS-1$
@@ -1203,6 +1224,7 @@ public final class DefaultTransition implements Transition
       {
         result.append ( this.pushDownWordWrite );
       }
+      result.append ( "\u2193" ); //$NON-NLS-1$
     }
     return result.toString ();
   }

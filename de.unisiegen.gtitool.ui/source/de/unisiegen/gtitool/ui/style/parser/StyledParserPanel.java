@@ -610,7 +610,7 @@ public abstract class StyledParserPanel extends JPanel
    */
   private final void fireParseableChanged ( Object newObject )
   {
-    if ( ( newObject == null ) && ( this.editable ) )
+    if ( newObject == null )
     {
       this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
     }

@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Symbol extends ParseableEntity, Storable, Comparable < Symbol >
+public interface Symbol extends Entity, Storable, Comparable < Symbol >
 {
 
   /**

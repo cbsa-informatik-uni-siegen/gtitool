@@ -5,6 +5,11 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -185,6 +190,19 @@ public final class DefaultSymbol implements Symbol
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#getPrettyString()
+   */
+  public final PrettyString getPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyChar ( new PrettyToken ( this.name, Style.SYMBOL ) );
+    return prettyString;
   }
 
 

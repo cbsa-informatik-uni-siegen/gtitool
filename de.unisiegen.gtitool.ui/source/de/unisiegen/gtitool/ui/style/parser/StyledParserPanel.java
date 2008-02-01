@@ -22,7 +22,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
-import de.unisiegen.gtitool.core.entities.ParseableEntity;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.Messages;
@@ -884,41 +884,36 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * Sets the {@linkEntity}s which should be highlighted.
    * 
-   * @param parseableEntities The {@link ParseableEntity}s which should be
-   *          highlighted.
+   * @param entities The {@link Entity}s which should be highlighted.
    */
   protected final void setHighlightedParseableEntity (
-      Iterable < ? extends ParseableEntity > parseableEntities )
+      Iterable < ? extends Entity > entities )
   {
-    this.document.setHighlightedParseableEntity ( parseableEntities );
+    this.document.setHighlightedParseableEntity ( entities );
   }
 
 
   /**
-   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * Sets the {@link Entity}s which should be highlighted.
    * 
-   * @param parseableEntities The {@link ParseableEntity}s which should be
-   *          highlighted.
+   * @param entities The {@link Entity}s which should be highlighted.
    */
-  protected final void setHighlightedParseableEntity (
-      ParseableEntity ... parseableEntities )
+  protected final void setHighlightedParseableEntity ( Entity ... entities )
   {
-    this.document.setHighlightedParseableEntity ( parseableEntities );
+    this.document.setHighlightedParseableEntity ( entities );
   }
 
 
   /**
-   * Sets the {@link ParseableEntity} which should be highlighted.
+   * Sets the {@link Entity} which should be highlighted.
    * 
-   * @param parseableEntity The {@link ParseableEntity} which should be
-   *          highlighted.
+   * @param entity The {@link Entity} which should be highlighted.
    */
-  protected final void setHighlightedParseableEntity (
-      ParseableEntity parseableEntity )
+  protected final void setHighlightedParseableEntity ( Entity entity )
   {
-    this.document.setHighlightedParseableEntity ( parseableEntity );
+    this.document.setHighlightedParseableEntity ( entity );
   }
 
 

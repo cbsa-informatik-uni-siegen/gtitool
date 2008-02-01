@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.ui.style;
 
 
-import de.unisiegen.gtitool.core.entities.ParseableEntity;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
@@ -132,7 +132,7 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    */
   public final void setHighlightedSymbol ( Symbol ... symbols )
   {
-    ParseableEntity [] entities = new ParseableEntity [ symbols.length ];
+    Entity [] entities = new Entity [ symbols.length ];
     for ( int i = 0 ; i < symbols.length ; i++ )
     {
       entities [ i ] = symbols [ i ];

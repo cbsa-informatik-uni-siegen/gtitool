@@ -12,6 +12,11 @@ import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -605,6 +610,19 @@ public final class DefaultState implements State
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#getPrettyString()
+   */
+  public final PrettyString getPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyChar ( new PrettyToken ( this.name, Style.STATE ) );
+    return prettyString;
   }
 
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.ParseableEntity;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
@@ -195,7 +195,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
    */
   public final void setHighlightedSymbol ( Symbol ... symbols )
   {
-    ParseableEntity [] entities = new ParseableEntity [ symbols.length ];
+    Entity [] entities = new Entity [ symbols.length ];
     for ( int i = 0 ; i < symbols.length ; i++ )
     {
       entities [ i ] = symbols [ i ];

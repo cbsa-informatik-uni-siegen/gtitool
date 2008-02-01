@@ -34,6 +34,9 @@ import org.jgraph.JGraph;
 import org.jgraph.util.Bezier;
 import org.jgraph.util.Spline2D;
 
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+
 
 /**
  * This renderer displays entries that implement the CellView interface.
@@ -788,8 +791,12 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         if ( labels != null )
         {
           for ( int i = 0 ; i < labels.length ; i++ )
-            paintLabel ( g, graph.convertValueToString ( labels [ i ] ),
-                getExtraLabelPosition ( view, i ), false || !simpleExtraLabels );
+          {
+            Transition transition = ( ( DefaultTransitionView ) view.getCell () )
+                .getTransition ();
+            paintTransition ( g, transition, getExtraLabelPosition ( view, i ),
+                false || !simpleExtraLabels );
+          }
         }
         if ( graph.getEditingCell () != view.getCell () )
         {
@@ -797,7 +804,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
           Object label = graph.convertValueToString ( view );
           if ( label != null )
           {
-            paintLabel ( g, label.toString (), getLabelPosition ( view ), true );
+            Transition transition = ( ( DefaultTransitionView ) view.getCell () )
+                .getTransition ();
+            paintTransition ( g, transition, getLabelPosition ( view ), true );
           }
         }
       }
@@ -836,6 +845,73 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   protected void translateGraphics ( Graphics g )
   {
     g.translate ( -getX (), -getY () );
+  }
+
+
+  /**
+   * Paint the specified transition for the current edgeview.
+   */
+  protected void paintTransition ( Graphics g, Transition transition,
+      Point2D p, boolean mainLabel )
+  {
+    if ( p != null && transition.toString () != null
+        && transition.toString ().length () > 0 && metrics != null )
+    {
+      int sw = metrics.stringWidth ( transition.toString () );
+      int sh = metrics.getHeight ();
+      Graphics2D g2 = ( Graphics2D ) g;
+
+      // Manipulate the clipping area
+      int width = new Double ( g2.getClip ().getBounds ().getWidth () )
+          .intValue ();
+      int height = new Double ( g2.getClip ().getBounds ().getHeight () )
+          .intValue ();
+      int x = new Double ( g2.getClip ().getBounds ().getX () ).intValue ();
+      int y = new Double ( g2.getClip ().getBounds ().getY () ).intValue ();
+      g2.setClip ( x - 20, y - 20, width + 40, height + 40 );
+      boolean applyTransform = isLabelTransform ( transition.toString () );
+      double angle = 0;
+      int dx = -sw / 2;
+      int offset = isMoveBelowZero || applyTransform ? 0 : Math.min ( 0,
+          ( int ) ( dx + p.getX () ) );
+
+      g2.translate ( p.getX () - offset + 3, p.getY () - 10 );
+      if ( applyTransform )
+      {
+        angle = angle + 10;
+        g2.rotate ( angle );
+      }
+      if ( isOpaque () && mainLabel )
+      {
+        g.setColor ( getBackground () );
+        g.fillRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
+      }
+      if ( borderColor != null && mainLabel )
+      {
+        g.setColor ( borderColor );
+        g.drawRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
+      }
+
+      int dy = +sh / 4;
+      g.setColor ( this.labelColor );
+      if ( applyTransform && borderColor == null && !isOpaque () )
+      {
+        // Shift label perpendicularly by the descent so it
+        // doesn't cross the line.
+        dy = -metrics.getDescent ();
+      }
+
+      // TODOChristian Use the pretty string
+
+      g.drawString ( transition.toString (), dx, dy );
+
+      if ( applyTransform )
+      {
+        // Undo the transform
+        g2.rotate ( -angle );
+      }
+      g2.translate ( -p.getX () + offset, -p.getY () );
+    }
   }
 
 

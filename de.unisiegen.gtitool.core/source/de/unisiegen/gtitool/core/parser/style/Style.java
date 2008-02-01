@@ -26,5 +26,15 @@ public enum Style
   /**
    * Style of {@link Symbol}s.
    */
-  SYMBOL
+  SYMBOL,
+
+  /**
+   * Style of keywords.
+   */
+  KEYWORD,
+
+  /**
+   * Style of error {@link Symbol}s.
+   */
+  ERROR_SYMBOL;
 }

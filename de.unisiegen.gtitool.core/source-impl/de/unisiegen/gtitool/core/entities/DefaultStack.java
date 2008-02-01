@@ -4,6 +4,10 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+
 
 /**
  * The <code>DefaultStack</code> entity.
@@ -163,6 +167,22 @@ public final class DefaultStack implements Stack
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#getPrettyString()
+   */
+  public final PrettyString getPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    for ( Symbol current : this.symbolList )
+    {
+      prettyString.addPrettyPrintable ( current );
+    }
+    return prettyString;
   }
 
 

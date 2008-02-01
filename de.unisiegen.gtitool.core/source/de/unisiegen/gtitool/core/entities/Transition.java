@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Transition extends ParseableEntity, Storable, Modifyable,
+public interface Transition extends Entity, Storable, Modifyable,
     Comparable < Transition >, Iterable < Symbol >
 {
 

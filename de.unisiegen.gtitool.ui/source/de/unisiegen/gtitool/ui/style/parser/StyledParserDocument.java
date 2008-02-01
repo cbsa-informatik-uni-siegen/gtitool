@@ -20,7 +20,7 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.ParseableEntity;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.GTIParser;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -112,9 +112,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The highlighted {@link ParseableEntity} list.
+   * The highlighted {@link Entity} list.
    */
-  private ArrayList < ParseableEntity > highlightedParseableEntityList;
+  private ArrayList < Entity > highlightedParseableEntityList;
 
 
   /**
@@ -134,7 +134,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
     this.parseable = parseable;
-    this.highlightedParseableEntityList = new ArrayList < ParseableEntity > ();
+    this.highlightedParseableEntityList = new ArrayList < Entity > ();
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
     SimpleAttributeSet stateSet = new SimpleAttributeSet ();
@@ -265,9 +265,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Returns the highlighted {@link ParseableEntity} set.
+   * Returns the highlighted {@link Entity} set.
    * 
-   * @return The highlighted {@link ParseableEntity} set.
+   * @return The highlighted {@link Entity} set.
    */
   private final SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
   {
@@ -316,14 +316,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Highlights the {@link ParseableEntity}s.
+   * Highlights the {@link Entity}s.
    */
   private final void highlightedParseableEntities ()
   {
     ArrayList < ScannerException > tmpList = this.exceptionList;
     parse ();
     setException ( tmpList );
-    for ( ParseableEntity current : this.highlightedParseableEntityList )
+    for ( Entity current : this.highlightedParseableEntityList )
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
       highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
@@ -634,16 +634,15 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * Sets the {@link Entity}s which should be highlighted.
    * 
-   * @param parseableEntities The {@link ParseableEntity}s which should be
-   *          highlighted.
+   * @param entities The {@link Entity}s which should be highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable < ? extends ParseableEntity > parseableEntities )
+      Iterable < ? extends Entity > entities )
   {
     this.highlightedParseableEntityList.clear ();
-    for ( ParseableEntity current : parseableEntities )
+    for ( Entity current : entities )
     {
       this.highlightedParseableEntityList.add ( current );
     }
@@ -652,16 +651,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the {@link ParseableEntity}s which should be highlighted.
+   * Sets the {@link Entity}s which should be highlighted.
    * 
-   * @param parseableEntities The {@link ParseableEntity}s which should be
-   *          highlighted.
+   * @param entities The {@linkEntity}s which should be highlighted.
    */
-  public final void setHighlightedParseableEntity (
-      ParseableEntity ... parseableEntities )
+  public final void setHighlightedParseableEntity ( Entity ... entities )
   {
     this.highlightedParseableEntityList.clear ();
-    for ( ParseableEntity current : parseableEntities )
+    for ( Entity current : entities )
     {
       this.highlightedParseableEntityList.add ( current );
     }
@@ -670,16 +667,14 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the {@link ParseableEntity} which should be highlighted.
+   * Sets the {@link Entity} which should be highlighted.
    * 
-   * @param parseableEntity The {@link ParseableEntity} which should be
-   *          highlighted.
+   * @param entity The {@link Entity} which should be highlighted.
    */
-  public final void setHighlightedParseableEntity (
-      ParseableEntity parseableEntity )
+  public final void setHighlightedParseableEntity ( Entity entity )
   {
-    ArrayList < ParseableEntity > parseableEntities = new ArrayList < ParseableEntity > ();
-    parseableEntities.add ( parseableEntity );
-    setHighlightedParseableEntity ( parseableEntities );
+    ArrayList < Entity > entities = new ArrayList < Entity > ();
+    entities.add ( entity );
+    setHighlightedParseableEntity ( entities );
   }
 }

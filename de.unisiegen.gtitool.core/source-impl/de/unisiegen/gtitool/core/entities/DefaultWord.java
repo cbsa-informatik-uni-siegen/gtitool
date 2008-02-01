@@ -8,6 +8,9 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -316,6 +319,22 @@ public final class DefaultWord implements Word
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#getPrettyString()
+   */
+  public final PrettyString getPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    for ( Symbol current : this.symbolList )
+    {
+      prettyString.addPrettyPrintable ( current );
+    }
+    return prettyString;
   }
 
 

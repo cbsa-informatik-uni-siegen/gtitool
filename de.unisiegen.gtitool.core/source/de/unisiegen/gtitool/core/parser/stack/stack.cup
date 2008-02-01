@@ -8,8 +8,8 @@ import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.ParseableEntity.ParserOffset;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
 

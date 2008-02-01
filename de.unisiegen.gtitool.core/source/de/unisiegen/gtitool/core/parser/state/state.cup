@@ -6,7 +6,7 @@
  */
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.ParseableEntity.ParserOffset;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
 
 /************
  * Terminal *

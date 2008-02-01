@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Word extends ParseableEntity, Storable, Iterable < Symbol >
+public interface Word extends Entity, Storable, Iterable < Symbol >
 {
 
   /**

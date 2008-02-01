@@ -152,6 +152,18 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final Word parse ()
+  {
+    return ( Word ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link WordChangedListener}.
    * 
    * @param listener The {@link WordChangedListener}.

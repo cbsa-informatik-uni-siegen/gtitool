@@ -154,6 +154,18 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final Stack parse ()
+  {
+    return ( Stack ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link StackChangedListener}.
    * 
    * @param listener The {@link StackChangedListener}.

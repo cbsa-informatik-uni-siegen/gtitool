@@ -88,6 +88,18 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final Symbol parse ()
+  {
+    return ( Symbol ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link SymbolChangedListener}.
    * 
    * @param listener The {@link SymbolChangedListener}.

@@ -175,6 +175,9 @@ public final class TransitionPopupMenu extends JPopupMenu
         TransitionDialog dialog = new TransitionDialog ( window,
             TransitionPopupMenu.this.alphabet,
             TransitionPopupMenu.this.pushDownAlphabet,
+            TransitionPopupMenu.this.transition.getTransition ()
+                .getPushDownWordRead (), TransitionPopupMenu.this.transition
+                .getTransition ().getPushDownWordWrite (),
             TransitionPopupMenu.this.transition.getTransition ().getSymbol (),
             TransitionPopupMenu.this.transition.getSourceView ().getState (),
             TransitionPopupMenu.this.transition.getTargetView ().getState () );
@@ -191,6 +194,10 @@ public final class TransitionPopupMenu extends JPopupMenu
           try
           {
             oldTransition.add ( newTransition );
+            oldTransition.setPushDownWordRead ( newTransition
+                .getPushDownWordRead () );
+            oldTransition.setPushDownWordWrite ( newTransition
+                .getPushDownWordWrite () );
           }
           catch ( TransitionException exc )
           {

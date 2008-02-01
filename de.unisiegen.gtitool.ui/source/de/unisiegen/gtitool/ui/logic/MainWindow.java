@@ -371,6 +371,8 @@ public final class MainWindow implements LanguageChangedListener
 
       newEditorPanel.setName ( name );
       this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
 
       setGeneralStates ( true );
@@ -648,9 +650,10 @@ public final class MainWindow implements LanguageChangedListener
     File file = panel.handleSave ();
     if ( file != null )
     {
+      // TODOBenny Different code?
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        RecentlyUsedMenuItem item = new RecentlyUsedMenuItem(this, file);
+        RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
         this.recentlyUsedFiles.remove ( item );
         this.recentlyUsedFiles.add ( 0, item );
         organizeRecentlyUsedFilesMenu ();
@@ -674,13 +677,14 @@ public final class MainWindow implements LanguageChangedListener
     File file = panel.handleSaveAs ();
     if ( file != null )
     {
-      RecentlyUsedMenuItem item = new RecentlyUsedMenuItem(this, file);
+      // TODOBenny Different code?
+      RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
       this.recentlyUsedFiles.remove ( item );
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        if (  ( ! current.equals ( this.gui.jGTITabbedPaneMain
+        if ( ( !current.equals ( this.gui.jGTITabbedPaneMain
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
           this.gui.jGTITabbedPaneMain.removeEditorPanel ( current );
@@ -688,7 +692,6 @@ public final class MainWindow implements LanguageChangedListener
       }
       this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, file.getName () );
     }
-
   }
 
 
@@ -732,12 +735,6 @@ public final class MainWindow implements LanguageChangedListener
         setToolBarEditItemState ( false );
         setToolBarEnterWordItemState ( false );
       }
-      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
-      {
-        current
-            .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      }
-      panel.addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     }
     // Save status
     setSaveState ();
@@ -1240,6 +1237,8 @@ public final class MainWindow implements LanguageChangedListener
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
       this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
       this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
           .getName () );
@@ -1275,7 +1274,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void organizeRecentlyUsedFilesMenu ()
   {
-    ArrayList<RecentlyUsedMenuItem> notExistingFiles = new ArrayList<RecentlyUsedMenuItem>();
+    ArrayList < RecentlyUsedMenuItem > notExistingFiles = new ArrayList < RecentlyUsedMenuItem > ();
 
     this.gui.jMenuRecentlyUsed.removeAll ();
 
@@ -1285,13 +1284,14 @@ public final class MainWindow implements LanguageChangedListener
       {
         this.gui.jMenuRecentlyUsed.add ( item );
       }
-      else{
+      else
+      {
         notExistingFiles.add ( item );
       }
     }
-    
+
     this.recentlyUsedFiles.removeAll ( notExistingFiles );
-    
+
     if ( this.recentlyUsedFiles.size () > 0 )
     {
       this.gui.jMenuRecentlyUsed.setEnabled ( true );
@@ -1394,14 +1394,20 @@ public final class MainWindow implements LanguageChangedListener
     {
       if ( state )
       {
+        logger.debug ( "set modify star" ); //$NON-NLS-1$
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
             + panel.getName () );
       }
       else
       {
+        logger.debug ( "reset modify star" ); //$NON-NLS-1$
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, panel
             .getName () );
       }
+    }
+    else if ( state == true )
+    {
+      throw new IllegalArgumentException ( "save button error" ); //$NON-NLS-1$
     }
 
     this.gui.jButtonSave.setEnabled ( state );

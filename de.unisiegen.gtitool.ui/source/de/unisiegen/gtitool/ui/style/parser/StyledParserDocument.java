@@ -164,7 +164,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           public void colorChangedParserHighlighting ( Color newColor )
           {
             StyledParserDocument.this.parserHighlightingColor = newColor;
-            processChanged ();
+            parse ();
           }
 
 
@@ -177,7 +177,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           Color newColor )
           {
             initAttributes ();
-            processChanged ();
+            parse ();
           }
 
 
@@ -189,7 +189,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           public void colorChangedParserWarning ( Color newColor )
           {
             StyledParserDocument.this.parserWarningColor = newColor;
-            processChanged ();
+            parse ();
           }
         } );
   }
@@ -308,9 +308,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * Throws an exception if a parsing error occurred.
    * 
    * @return The {@link Object} for the program text.
-   * @throws Exception If a parsing error occurred.
    */
-  public final Object getParsedObject () throws Exception
+  public final Object getParsedObject ()
   {
     return this.parsedObject;
   }
@@ -322,7 +321,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private final void highlightedParseableEntities ()
   {
     ArrayList < ScannerException > tmpList = this.exceptionList;
-    processChanged ();
+    parse ();
     setException ( tmpList );
     for ( ParseableEntity current : this.highlightedParseableEntityList )
     {
@@ -369,7 +368,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       AttributeSet attributeSet ) throws BadLocationException
   {
     super.insertString ( offset, string, attributeSet );
-    fireParseableChanged ( processChanged () );
+    fireParseableChanged ( parse () );
   }
 
 
@@ -385,21 +384,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Parses the document.
-   */
-  public final void parse ()
-  {
-    fireParseableChanged ( processChanged () );
-  }
-
-
-  /**
    * Processes the document content after a change and returns the parsed object
    * or null, if the text could not be parsed.
    * 
    * @return The parsed object or null, if the text could not be parsed.
    */
-  protected final Object processChanged ()
+  public final Object parse ()
   {
     this.parsedObject = null;
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
@@ -557,7 +547,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       throws BadLocationException
   {
     super.remove ( offset, length );
-    fireParseableChanged ( processChanged () );
+    fireParseableChanged ( parse () );
   }
 
 

@@ -8,7 +8,6 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
-import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -99,26 +98,10 @@ public final class DefaultWord implements Word
     }
 
     // Attribute
-    boolean foundCurrentPosition = false;
-    for ( Attribute current : element.getAttribute () )
-    {
-      if ( current.getName ().equals ( "currentPosition" ) ) //$NON-NLS-1$
-      {
-        setCurrentPosition ( current.getValueInt () );
-        foundCurrentPosition = true;
-      }
-      else
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Not all attribute values found
-    if ( !foundCurrentPosition )
+    if ( element.getAttribute ().size () > 0 )
     {
       throw new StoreException ( Messages
-          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+          .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
   }
 
@@ -319,8 +302,6 @@ public final class DefaultWord implements Word
   public final Element getElement ()
   {
     Element newElement = new Element ( "Word" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "currentPosition", //$NON-NLS-1$
-        this.currentPosition ) );
     for ( Symbol current : this.symbolList )
     {
       newElement.addElement ( current );
@@ -462,7 +443,7 @@ public final class DefaultWord implements Word
    * 
    * @param currentPosition The current position.
    */
-  private final void setCurrentPosition ( int currentPosition )
+  public final void setCurrentPosition ( int currentPosition )
   {
     if ( this.currentPosition < START_INDEX )
     {

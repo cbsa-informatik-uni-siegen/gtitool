@@ -91,6 +91,18 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final Transition parse ()
+  {
+    return ( Transition ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link TransitionChangedListener}.
    * 
    * @param listener The {@link TransitionChangedListener}.

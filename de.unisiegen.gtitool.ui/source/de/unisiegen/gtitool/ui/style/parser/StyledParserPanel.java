@@ -675,9 +675,8 @@ public abstract class StyledParserPanel extends JPanel
    * an exception if a parsing error occurred.
    * 
    * @return The {@link Object} for the program text.
-   * @throws Exception If a parsing error occurred.
    */
-  protected final Object getParsedObject () throws Exception
+  protected final Object getParsedObject ()
   {
     return this.document.getParsedObject ();
   }
@@ -749,6 +748,18 @@ public abstract class StyledParserPanel extends JPanel
   public final boolean isSideBarVisible ()
   {
     return this.sideBarVisible;
+  }
+
+
+  /**
+   * Parses the document and returns the parsed object or null, if the text
+   * could not be parsed.
+   * 
+   * @return The parsed object or null, if the text could not be parsed.
+   */
+  protected Object parse ()
+  {
+    return this.document.parse ();
   }
 
 

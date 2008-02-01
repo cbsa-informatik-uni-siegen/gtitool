@@ -88,6 +88,18 @@ public final class StyledStateParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final State parse ()
+  {
+    return ( State ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link StateChangedListener}.
    * 
    * @param listener The {@link StateChangedListener}.

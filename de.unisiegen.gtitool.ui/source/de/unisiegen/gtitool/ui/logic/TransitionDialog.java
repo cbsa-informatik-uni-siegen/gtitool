@@ -14,6 +14,8 @@ import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
+import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -253,8 +255,8 @@ public final class TransitionDialog
   public TransitionDialog ( JFrame parent, Alphabet alphabet,
       Alphabet pushDownAlphabet, State stateBegin, State stateEnd )
   {
-    this ( parent, alphabet, pushDownAlphabet, new TreeSet < Symbol > (),
-        stateBegin, stateEnd );
+    this ( parent, alphabet, pushDownAlphabet, new DefaultWord (),
+        new DefaultWord (), new TreeSet < Symbol > (), stateBegin, stateEnd );
   }
 
 
@@ -265,13 +267,17 @@ public final class TransitionDialog
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
+   * @param pushDownWordRead The {@link Word} which is read from the
+   *          {@link Stack}.
+   * @param pushDownWordWrite The {@link Word} which should be written on the
+   *          {@link Stack}.
    * @param overChangeSymbolSet The change over {@link Symbol} set.
    * @param stateBegin The {@link State} where the {@link Transition} begins.
    * @param stateEnd The {@link State} where the {@link Transition} ends.
    */
   public TransitionDialog ( JFrame parent, Alphabet alphabet,
-      Alphabet pushDownAlphabet, TreeSet < Symbol > overChangeSymbolSet,
-      State stateBegin, State stateEnd )
+      Alphabet pushDownAlphabet, Word pushDownWordRead, Word pushDownWordWrite,
+      TreeSet < Symbol > overChangeSymbolSet, State stateBegin, State stateEnd )
   {
     this.parent = parent;
     this.alphabet = alphabet;
@@ -283,7 +289,6 @@ public final class TransitionDialog
     String targetName = this.stateEnd == null ? Messages
         .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
         .getName ();
-
     this.gui.JLabelHeadline.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
     this.transferHandler = new SymbolTransferHandler ( this );
@@ -308,6 +313,18 @@ public final class TransitionDialog
         .setAlphabet ( this.pushDownAlphabet );
     this.gui.styledWordParserPanelRead.setAlphabet ( this.pushDownAlphabet );
     this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
+
+    // Set the push down read and write word
+    if ( pushDownWordRead != null )
+    {
+      this.gui.styledWordParserPanelRead.setWord ( pushDownWordRead );
+    }
+    this.gui.styledWordParserPanelRead.parse ();
+    if ( pushDownWordWrite != null )
+    {
+      this.gui.styledWordParserPanelWrite.setWord ( pushDownWordWrite );
+    }
+    this.gui.styledWordParserPanelWrite.parse ();
 
     /*
      * Word changed listener
@@ -505,15 +522,20 @@ public final class TransitionDialog
       this.transition = new DefaultTransition ( symbols );
       this.transition.setAlphabet ( this.alphabet );
       this.transition.setPushDownAlphabet ( this.pushDownAlphabet );
+      this.transition.setPushDownWordRead ( this.gui.styledWordParserPanelRead
+          .getWord () );
+      this.transition
+          .setPushDownWordWrite ( this.gui.styledWordParserPanelWrite
+              .getWord () );
       this.transition.setStateBegin ( this.stateBegin );
       if ( this.stateEnd != null )
       {
         this.transition.setStateEnd ( this.stateEnd );
       }
     }
-    catch ( TransitionException e )
+    catch ( TransitionException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
     }
     this.gui.dispose ();

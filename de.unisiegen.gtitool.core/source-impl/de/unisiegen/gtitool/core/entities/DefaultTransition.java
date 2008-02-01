@@ -109,13 +109,25 @@ public final class DefaultTransition implements Transition
   /**
    * The {@link Word} which is read from the {@link Stack}.
    */
-  private Word pushDownWordRead = null;
+  private Word pushDownWordRead = new DefaultWord ();
+
+
+  /**
+   * The initial {@link Word} which is read from the {@link Stack}.
+   */
+  private Word initialPushDownWordRead = new DefaultWord ();
 
 
   /**
    * The {@link Word} which should be written on the {@link Stack}.
    */
-  private Word pushDownWordWrite = null;
+  private Word pushDownWordWrite = new DefaultWord ();
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   */
+  private Word initialPushDownWordWrite = new DefaultWord ();
 
 
   /**
@@ -301,10 +313,12 @@ public final class DefaultTransition implements Transition
     if ( ( !foundId ) || ( !foundStateBeginId ) || ( !foundStateEndId ) )
     {
       throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
 
     // Element
+    boolean foundPushDownWordRead = false;
+    boolean foundPushDownWordWrite = false;
     for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
@@ -313,19 +327,28 @@ public final class DefaultTransition implements Transition
       }
       else if ( current.getName ().equals ( "PushDownWordRead" ) ) //$NON-NLS-1$
       {
-        current.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+        current.setName ( "Word" ); //$NON-NLS-1$
         setPushDownWordRead ( new DefaultWord ( current ) );
+        foundPushDownWordRead = true;
       }
       else if ( current.getName ().equals ( "PushDownWordWrite" ) ) //$NON-NLS-1$
       {
-        current.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+        current.setName ( "Word" ); //$NON-NLS-1$
         setPushDownWordWrite ( new DefaultWord ( current ) );
+        foundPushDownWordWrite = true;
       }
       else
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
+    }
+
+    // Not all element values found
+    if ( ( !foundPushDownWordRead ) || ( !foundPushDownWordWrite ) )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
     }
 
     // Reset modify
@@ -649,18 +672,12 @@ public final class DefaultTransition implements Transition
     newElement.addAttribute ( new Attribute ( "stateBeginId", //$NON-NLS-1$
         getStateBeginId () ) );
     newElement.addAttribute ( new Attribute ( "stateEndId", getStateEndId () ) ); //$NON-NLS-1$
-    if ( this.pushDownWordRead != null )
-    {
-      Element pushDownWordReadElement = this.pushDownWordRead.getElement ();
-      pushDownWordReadElement.setName ( "PushDownWordRead" ); //$NON-NLS-1$
-      newElement.addElement ( pushDownWordReadElement );
-    }
-    if ( this.pushDownWordWrite != null )
-    {
-      Element pushDownWordWriteElement = this.pushDownWordWrite.getElement ();
-      pushDownWordWriteElement.setName ( "PushDownWordWrite" ); //$NON-NLS-1$
-      newElement.addElement ( pushDownWordWriteElement );
-    }
+    Element pushDownWordReadElement = this.pushDownWordRead.getElement ();
+    pushDownWordReadElement.setName ( "PushDownWordRead" ); //$NON-NLS-1$
+    newElement.addElement ( pushDownWordReadElement );
+    Element pushDownWordWriteElement = this.pushDownWordWrite.getElement ();
+    pushDownWordWriteElement.setName ( "PushDownWordWrite" ); //$NON-NLS-1$
+    newElement.addElement ( pushDownWordWriteElement );
     for ( Symbol current : this.symbolSet )
     {
       newElement.addElement ( current );
@@ -858,7 +875,9 @@ public final class DefaultTransition implements Transition
    */
   public final boolean isModified ()
   {
-    return ( !this.symbolSet.equals ( this.initialSymbolSet ) );
+    return ( ( !this.symbolSet.equals ( this.initialSymbolSet ) )
+        || ( !this.pushDownWordRead.equals ( this.initialPushDownWordRead ) ) || ( !this.pushDownWordWrite
+        .equals ( this.initialPushDownWordWrite ) ) );
   }
 
 
@@ -961,6 +980,8 @@ public final class DefaultTransition implements Transition
   {
     this.initialSymbolSet.clear ();
     this.initialSymbolSet.addAll ( this.symbolSet );
+    this.initialPushDownWordRead = this.pushDownWordRead.clone ();
+    this.initialPushDownWordWrite = this.pushDownWordWrite.clone ();
     this.oldModifyStatus = false;
   }
 
@@ -1031,7 +1052,12 @@ public final class DefaultTransition implements Transition
    */
   public final void setPushDownWordRead ( Word pushDownWordRead )
   {
+    if ( pushDownWordRead == null )
+    {
+      throw new NullPointerException ( "push down word read is null" ); //$NON-NLS-1$
+    }
     this.pushDownWordRead = pushDownWordRead;
+    fireModifyStatusChanged ();
   }
 
 
@@ -1042,7 +1068,12 @@ public final class DefaultTransition implements Transition
    */
   public final void setPushDownWordWrite ( Word pushDownWordWrite )
   {
+    if ( pushDownWordWrite == null )
+    {
+      throw new NullPointerException ( "push down word write is null" ); //$NON-NLS-1$
+    }
     this.pushDownWordWrite = pushDownWordWrite;
+    fireModifyStatusChanged ();
   }
 
 
@@ -1151,10 +1182,11 @@ public final class DefaultTransition implements Transition
       }
       result.append ( "}" ); //$NON-NLS-1$
     }
-    if ( ( this.pushDownWordRead != null ) || ( this.pushDownWordWrite != null ) )
+    if ( ( this.pushDownWordRead.size () > 0 )
+        || ( this.pushDownWordWrite.size () > 0 ) )
     {
       result.append ( ": " ); //$NON-NLS-1$
-      if ( this.pushDownWordRead == null )
+      if ( this.pushDownWordRead.size () == 0 )
       {
         result.append ( "\u03B5" ); //$NON-NLS-1$
       }
@@ -1163,7 +1195,7 @@ public final class DefaultTransition implements Transition
         result.append ( this.pushDownWordRead );
       }
       result.append ( " -> " ); //$NON-NLS-1$
-      if ( this.pushDownWordWrite == null )
+      if ( this.pushDownWordWrite.size () == 0 )
       {
         result.append ( "\u03B5" ); //$NON-NLS-1$
       }

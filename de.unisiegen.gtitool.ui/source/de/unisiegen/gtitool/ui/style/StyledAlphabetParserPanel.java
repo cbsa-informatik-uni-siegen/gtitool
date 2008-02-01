@@ -90,6 +90,18 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#parse()
+   */
+  @Override
+  public final Alphabet parse ()
+  {
+    return ( Alphabet ) super.parse ();
+  }
+
+
+  /**
    * Removes the given {@link AlphabetChangedListener}.
    * 
    * @param listener The {@link AlphabetChangedListener}.

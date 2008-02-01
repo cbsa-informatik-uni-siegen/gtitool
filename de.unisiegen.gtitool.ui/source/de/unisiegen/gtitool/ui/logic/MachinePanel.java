@@ -775,13 +775,12 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
-        GraphConstants.setBackground ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStartState ()
-                .getColor () );
+        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
+            .getInstance ().getColorItemStartState ().getColor () );
       else
       {
-        GraphConstants.setBackground ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
+            .getInstance ().getColorItemState ().getColor () );
       }
     }
     this.graphModel
@@ -1082,9 +1081,8 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setLineColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemTransition ()
-              .getColor () );
+      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
@@ -1616,9 +1614,8 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setLineColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemTransition ()
-              .getColor () );
+      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
@@ -1649,9 +1646,8 @@ public final class MachinePanel implements EditorPanel
     // Reset all highlightings
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setLineColor ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemTransition ()
-              .getColor () );
+      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
     }
 
     for ( DefaultStateView current : this.model.getStateViewList () )
@@ -1678,13 +1674,12 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
-        GraphConstants.setBackground ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStartState ()
-                .getColor () );
+        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
+            .getInstance ().getColorItemStartState ().getColor () );
       else
       {
-        GraphConstants.setBackground ( view.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
+            .getInstance ().getColorItemState ().getColor () );
       }
     }
     this.oldErrorStates.clear ();
@@ -1692,9 +1687,8 @@ public final class MachinePanel implements EditorPanel
     {
       DefaultStateView view = this.model.getStateViewForState ( state );
       this.oldErrorStates.add ( view );
-      GraphConstants.setBackground ( view.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemErrorState ()
-              .getColor () );
+      GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemErrorState ().getColor () );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1759,12 +1753,15 @@ public final class MachinePanel implements EditorPanel
           {
             // open transition config dialog
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
+            Transition usedTransition = transitionView.getTransition ();
             TransitionDialog dialog = new TransitionDialog (
                 MachinePanel.this.parent, MachinePanel.this.machine
                     .getAlphabet (), MachinePanel.this.machine
-                    .getPushDownAlphabet (), transitionView.getTransition ()
-                    .getSymbol (), transitionView.getSourceView ().getState (),
-                transitionView.getTargetView ().getState () );
+                    .getPushDownAlphabet (), usedTransition
+                    .getPushDownWordRead (), usedTransition
+                    .getPushDownWordWrite (), usedTransition.getSymbol (),
+                transitionView.getSourceView ().getState (), transitionView
+                    .getTargetView ().getState () );
             dialog.show ();
             if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
             {
@@ -1776,6 +1773,10 @@ public final class MachinePanel implements EditorPanel
               try
               {
                 oldTransition.add ( newTransition );
+                oldTransition.setPushDownWordRead ( newTransition
+                    .getPushDownWordRead () );
+                oldTransition.setPushDownWordWrite ( newTransition
+                    .getPushDownWordWrite () );
               }
               catch ( TransitionException exc )
               {

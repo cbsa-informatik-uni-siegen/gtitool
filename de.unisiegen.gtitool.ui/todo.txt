@@ -1,4 +1,4 @@
-BM		- Fehlerhafte Symbole highlighten
+CF		- Fehlerhafte Symbole highlighten
 CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen

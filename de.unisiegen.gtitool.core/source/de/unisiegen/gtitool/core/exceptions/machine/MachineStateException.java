@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.exceptions.machine;
 import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 
 
 /**
@@ -13,7 +14,8 @@ import de.unisiegen.gtitool.core.entities.State;
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class MachineStateException extends MachineException
+public abstract class MachineStateException extends MachineException implements
+    StatesInvolvedException
 {
 
   /**
@@ -39,27 +41,13 @@ public abstract class MachineStateException extends MachineException
 
 
   /**
-   * Returns the {@link State} list.
+   * {@inheritDoc}
    * 
-   * @return The {@link State} list.
+   * @see StatesInvolvedException#getState()
    */
   public final ArrayList < State > getState ()
   {
     return this.stateList;
-  }
-
-
-  /**
-   * Returns the {@link State} at the specified position in the list of
-   * {@link State}s.
-   * 
-   * @param index The index of the {@link State} to return.
-   * @return The {@link State} at the specified position in the list of
-   *         {@link State}s.
-   */
-  public final State getState ( int index )
-  {
-    return this.stateList.get ( index );
   }
 
 

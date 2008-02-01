@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -48,6 +49,11 @@ public interface Machine extends Serializable, TableModel, Modifyable
     EPSILON_TRANSITION,
 
     /**
+     * There is a {@link Transition} with {@link Stack} operations.
+     */
+    TRANSITION_STACK_OPERATION,
+
+    /**
      * There is no final state defined.
      */
     FINAL_STATE,
@@ -76,7 +82,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
      * There is a {@link State} with {@link Transition}s with the same
      * {@link Symbol}.
      */
-    SYMBOL_ONLY_ONE_TIME
+    SYMBOL_ONLY_ONE_TIME;
   }
 
 

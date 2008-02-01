@@ -8,6 +8,9 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
 
 
 /**
@@ -19,6 +22,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  *          fehler $
  */
 public final class MachineSymbolOnlyOneTimeException extends MachineException
+    implements StatesInvolvedException, TransitionsInvolvedException,
+    SymbolsInvolvedException
 {
 
   /**
@@ -88,26 +93,28 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
 
 
   /**
-   * Returns the {@link State}.
+   * {@inheritDoc}
    * 
-   * @return The {@link State}.
-   * @see #state
+   * @see StatesInvolvedException#getState()
    */
-  public final State getState ()
+  public final ArrayList < State > getState ()
   {
-    return this.state;
+    ArrayList < State > result = new ArrayList < State > ( 1 );
+    result.add ( this.state );
+    return result;
   }
 
 
   /**
-   * Returns the {@link Symbol}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol}.
-   * @see #symbol
+   * @see TransitionsInvolvedException#getTransition()
    */
-  public final Symbol getSymbol ()
+  public final ArrayList < Symbol > getSymbol ()
   {
-    return this.symbol;
+    ArrayList < Symbol > result = new ArrayList < Symbol > ( 1 );
+    result.add ( this.symbol );
+    return result;
   }
 
 

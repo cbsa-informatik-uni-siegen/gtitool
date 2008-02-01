@@ -33,7 +33,9 @@ public final class DefaultNFA extends AbstractMachine implements NFA
       boolean usePushDownAlphabet )
   {
     super ( alphabet, pushDownAlphabet, usePushDownAlphabet,
-        ValidationElement.EPSILON_TRANSITION, ValidationElement.FINAL_STATE,
+        ValidationElement.EPSILON_TRANSITION,
+        ValidationElement.TRANSITION_STACK_OPERATION,
+        ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,
         ValidationElement.STATE_NOT_REACHABLE );

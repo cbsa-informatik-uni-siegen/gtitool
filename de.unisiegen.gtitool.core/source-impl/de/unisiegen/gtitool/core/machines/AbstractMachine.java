@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -29,6 +30,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNameException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperationsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
@@ -792,6 +794,28 @@ public abstract class AbstractMachine implements Machine
           machineExceptionList.add ( new MachineSymbolOnlyOneTimeException (
               currentState, currentSymbol, transitions ) );
         }
+      }
+    }
+    return machineExceptionList;
+  }
+
+
+  /**
+   * Checks if there is a {@link Transition} with {@link Stack} operations.
+   * 
+   * @return The list of {@link MachineException}.
+   */
+  private final ArrayList < MachineException > checkTransitionStackOperation ()
+  {
+    ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
+    for ( Transition currentTransition : this.getTransition () )
+    {
+      if ( ( currentTransition.getPushDownWordRead ().size () > 0 )
+          || ( currentTransition.getPushDownWordWrite ().size () > 0 ) )
+      {
+        machineExceptionList
+            .add ( new MachineTransitionStackOperationsException (
+                currentTransition ) );
       }
     }
     return machineExceptionList;
@@ -1786,6 +1810,12 @@ public abstract class AbstractMachine implements Machine
         .contains ( ValidationElement.EPSILON_TRANSITION ) )
     {
       machineExceptionList.addAll ( checkEpsilonTransition () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.TRANSITION_STACK_OPERATION ) )
+    {
+      machineExceptionList.addAll ( checkTransitionStackOperation () );
     }
 
     if ( this.validationElementList.contains ( ValidationElement.FINAL_STATE ) )

@@ -33,6 +33,7 @@ public final class DefaultENFA extends AbstractMachine implements ENFA
       boolean usePushDownAlphabet )
   {
     super ( alphabet, pushDownAlphabet, usePushDownAlphabet,
+        ValidationElement.TRANSITION_STACK_OPERATION,
         ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,

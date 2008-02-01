@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.exceptions.machine;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -9,6 +10,8 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
 
 
 /**
@@ -19,6 +22,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * @version $Id$
  */
 public final class MachineAllSymbolsException extends MachineException
+    implements StatesInvolvedException, SymbolsInvolvedException
 {
 
   /**
@@ -106,44 +110,29 @@ public final class MachineAllSymbolsException extends MachineException
 
 
   /**
-   * Returns the {@link State}.
+   * {@inheritDoc}
    * 
-   * @return The {@link State}.
-   * @see #state
+   * @see StatesInvolvedException#getState()
    */
-  public final State getState ()
+  public final ArrayList < State > getState ()
   {
-    return this.state;
+    ArrayList < State > result = new ArrayList < State > ( 1 );
+    result.add ( this.state );
+    return result;
   }
 
 
   /**
-   * Returns the symbolSet.
+   * {@inheritDoc}
    * 
-   * @return The symbolSet.
-   * @see #symbolSet
+   * @see SymbolsInvolvedException#getSymbol()
    */
-  public final TreeSet < Symbol > getSymbol ()
+  public final ArrayList < Symbol > getSymbol ()
   {
-    return this.symbolSet;
-  }
-
-
-  /**
-   * Returns the {@link Symbol} with the given index.
-   * 
-   * @param index The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolSet
-   */
-  public final Symbol getSymbol ( int index )
-  {
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    for ( int i = 0 ; i < index ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
+    ArrayList < Symbol > result = new ArrayList < Symbol > ( this.symbolSet
+        .size () );
+    result.addAll ( this.symbolSet );
+    return result;
   }
 
 
@@ -171,16 +160,18 @@ public final class MachineAllSymbolsException extends MachineException
     StringBuilder result = new StringBuilder ( super.toString () );
     result.append ( lineBreak );
     result.append ( "State:       " ); //$NON-NLS-1$
-    result.append ( getState ().getName () );
+    result.append ( this.state.getName () );
     result.append ( lineBreak );
     result.append ( "Symbol:      " ); //$NON-NLS-1$
-    for ( int i = 0 ; i < this.symbolSet.size () ; i++ )
+    boolean first = true;
+    for ( Symbol current : this.symbolSet )
     {
-      if ( i > 0 )
+      if ( !first )
       {
         result.append ( ", " ); //$NON-NLS-1$
       }
-      result.append ( getSymbol ( i ).getName () );
+      first = false;
+      result.append ( current );
     }
     return result.toString ();
   }

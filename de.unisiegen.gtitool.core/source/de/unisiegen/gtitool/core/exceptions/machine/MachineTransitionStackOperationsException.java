@@ -18,14 +18,14 @@ import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
  * @version $Id: MachineEpsilonTransitionException.java 90 2007-11-04 16:20:27Z
  *          fehler $
  */
-public final class MachineEpsilonTransitionException extends MachineException
-    implements TransitionsInvolvedException
+public final class MachineTransitionStackOperationsException extends
+    MachineException implements TransitionsInvolvedException
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -7273516723544742004L;
+  private static final long serialVersionUID = -4864373653454376481L;
 
 
   /**
@@ -35,11 +35,11 @@ public final class MachineEpsilonTransitionException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineEpsilonTransitionException</code>.
+   * Allocates a new {@link MachineTransitionStackOperationsException}.
    * 
    * @param transition The {@link Transition}.
    */
-  public MachineEpsilonTransitionException ( Transition transition )
+  public MachineTransitionStackOperationsException ( Transition transition )
   {
     super ();
     // Transition
@@ -50,11 +50,10 @@ public final class MachineEpsilonTransitionException extends MachineException
     this.transition = transition;
     // Message and Description
     setMessage ( Messages
-        .getString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
+        .getString ( "MachineTransitionStackOperationsException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
-        "MachineEpsilonTransitionException.Description", this.transition //$NON-NLS-1$
-            .getStateBegin ().getName (), this.transition.getStateEnd ()
-            .getName () ) );
+        "MachineTransitionStackOperationsException.Description", //$NON-NLS-1$
+        this.transition ) );
   }
 
 
@@ -95,9 +94,7 @@ public final class MachineEpsilonTransitionException extends MachineException
     StringBuilder result = new StringBuilder ( super.toString () );
     result.append ( lineBreak );
     result.append ( "Transition:  " ); //$NON-NLS-1$
-    result.append ( this.transition.getStateBegin ().getName () );
-    result.append ( " -> " ); //$NON-NLS-1$
-    result.append ( this.transition.getStateEnd ().getName () );
+    result.append ( this.transition );
     return result.toString ();
   }
 }

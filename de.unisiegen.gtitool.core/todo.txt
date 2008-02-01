@@ -1,2 +1,2 @@
-CF		- Stack
-CF		- Epsilon Übergänge anpassen
+CF		- Stack in der Machine implementieren
+CF		- MachineStateException löschen

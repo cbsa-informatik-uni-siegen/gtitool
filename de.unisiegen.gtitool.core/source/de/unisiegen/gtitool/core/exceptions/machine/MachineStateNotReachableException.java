@@ -1,9 +1,12 @@
 package de.unisiegen.gtitool.core.exceptions.machine;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 
 
 /**
@@ -15,6 +18,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  *          fehler $
  */
 public final class MachineStateNotReachableException extends MachineException
+    implements StatesInvolvedException
 {
 
   /**
@@ -52,14 +56,15 @@ public final class MachineStateNotReachableException extends MachineException
 
 
   /**
-   * Returns the {@link State}.
+   * {@inheritDoc}
    * 
-   * @return The {@link State}.
-   * @see #state
+   * @see StatesInvolvedException#getState()
    */
-  public final State getState ()
+  public final ArrayList < State > getState ()
   {
-    return this.state;
+    ArrayList < State > result = new ArrayList < State > ( 1 );
+    result.add ( this.state );
+    return result;
   }
 
 
@@ -87,7 +92,7 @@ public final class MachineStateNotReachableException extends MachineException
     StringBuilder result = new StringBuilder ( super.toString () );
     result.append ( lineBreak );
     result.append ( "State:       " ); //$NON-NLS-1$
-    result.append ( getState ().getName () );
+    result.append ( this.state.getName () );
     return result.toString ();
   }
 }

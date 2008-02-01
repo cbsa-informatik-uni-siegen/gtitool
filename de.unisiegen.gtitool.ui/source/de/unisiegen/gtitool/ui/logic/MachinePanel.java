@@ -66,6 +66,7 @@ import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
+import de.unisiegen.gtitool.ui.popup.EnterWordModePopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -253,7 +254,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /** The {@link MouseAdapter} for the mouse icon in the toolbar */
-  private MouseAdapter mouse;
+  private MouseAdapter normalMouse;
 
 
   /** The {@link MouseAdapter} for the add State icon in the toolbar */
@@ -261,7 +262,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /** The {@link MouseAdapter} for the transition icon in the toolbar */
-  private MouseAdapter transition;
+  private MouseAdapter addTransition;
 
 
   /** The {@link MouseAdapter} for the transition icon in the toolbar */
@@ -269,11 +270,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /** The {@link MouseAdapter} for the start icon in the toolbar */
-  private MouseAdapter start;
+  private MouseAdapter addStartState;
 
 
   /** The {@link MouseAdapter} for the end icon in the toolbar */
-  private MouseAdapter end;
+  private MouseAdapter addEndState;
+
+
+  /** The {@link MouseAdapter} for the enter word mode */
+  private MouseAdapter enterWordModeMouse;
 
 
   /** The source state for a new Transition */
@@ -356,6 +361,11 @@ public final class MachinePanel implements EditorPanel
    * Flag signals if we are in the enter word mode
    */
   private boolean enterWordMode = false;
+  
+  /**
+   * Flag signals if word navigation is in progress
+   */
+  private boolean wordNavigation = false;
 
 
   /**
@@ -797,6 +807,16 @@ public final class MachinePanel implements EditorPanel
     this.warningTableModel.clearData ();
   }
 
+  
+  /**
+   * Create a enter word mode Popup Menu
+   * 
+   * @return the new created Popup Menu
+   */
+  private final EnterWordModePopupMenu createEnterWordModePopupMenu ()
+  {
+    return new EnterWordModePopupMenu ( this, this.parent );
+  }
 
   /**
    * Create a standard Popup Menu
@@ -1075,6 +1095,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleEditMachine ()
   {
+    this.graph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
 
@@ -1101,8 +1122,10 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleEnterWord ()
   {
+    this.graph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
+    this.graph.addMouseListener ( this.enterWordModeMouse );
   }
 
 
@@ -1354,11 +1377,11 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.end );
+      this.graph.addMouseListener ( this.addEndState );
       activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_FINAL_STATE;
     }
     else
-      this.graph.removeMouseListener ( this.end );
+      this.graph.removeMouseListener ( this.addEndState );
   }
 
 
@@ -1371,11 +1394,11 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.mouse );
+      this.graph.addMouseListener ( this.normalMouse );
       activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
     }
     else
-      this.graph.removeMouseListener ( this.mouse );
+      this.graph.removeMouseListener ( this.normalMouse );
   }
 
 
@@ -1388,11 +1411,11 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.start );
+      this.graph.addMouseListener ( this.addStartState );
       activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_START_STATE;
     }
     else
-      this.graph.removeMouseListener ( this.start );
+      this.graph.removeMouseListener ( this.addStartState );
   }
 
 
@@ -1405,14 +1428,14 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.transition );
+      this.graph.addMouseListener ( this.addTransition );
       this.graph.addMouseMotionListener ( this.transitionMove );
       activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_TRANSITION;
 
     }
     else
     {
-      this.graph.removeMouseListener ( this.transition );
+      this.graph.removeMouseListener ( this.addTransition );
       this.graph.removeMouseMotionListener ( this.transitionMove );
     }
   }
@@ -1634,6 +1657,7 @@ public final class MachinePanel implements EditorPanel
         .getInstance ().getColorItemActiveState ().getColor () );
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    this.wordNavigation = true;
     return true;
   }
 
@@ -1661,6 +1685,7 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
+    this.wordNavigation = false;
   }
 
 
@@ -1728,7 +1753,7 @@ public final class MachinePanel implements EditorPanel
   @SuppressWarnings ( "synthetic-access" )
   private final void intitializeMouseAdapter ()
   {
-    this.mouse = new MouseAdapter ()
+    this.normalMouse = new MouseAdapter ()
     {
 
       /**
@@ -1921,7 +1946,7 @@ public final class MachinePanel implements EditorPanel
       }
     };
 
-    this.transition = new MouseAdapter ()
+    this.addTransition = new MouseAdapter ()
     {
 
       @Override
@@ -2220,7 +2245,7 @@ public final class MachinePanel implements EditorPanel
       }
     };
 
-    this.start = new MouseAdapter ()
+    this.addStartState = new MouseAdapter ()
     {
 
       /**
@@ -2304,7 +2329,7 @@ public final class MachinePanel implements EditorPanel
       }
     };
 
-    this.end = new MouseAdapter ()
+    this.addEndState = new MouseAdapter ()
     {
 
       /**
@@ -2385,6 +2410,43 @@ public final class MachinePanel implements EditorPanel
           }
         }
 
+      }
+    };
+    
+    this.enterWordModeMouse = new MouseAdapter ()
+    {
+
+      /**
+       * Invoked when the mouse button has been clicked (pressed and released)
+       * on a component.
+       */
+      @Override
+      public void mouseClicked ( MouseEvent event )
+      {
+        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // return
+        if ( ( event.getButton () != MouseEvent.BUTTON3 )
+            || !MachinePanel.this.enterWordMode )
+          return;
+
+        // if an popup menu is open close it and do nothing more
+        if ( event.getButton () == MouseEvent.BUTTON1
+            && MachinePanel.this.popup != null )
+        {
+          MachinePanel.this.popup = null;
+          return;
+        }
+
+        // Open popup menu if left button was pressed
+        if ( event.getButton () == MouseEvent.BUTTON3 )
+        {
+          MachinePanel.this.popup = createEnterWordModePopupMenu ();
+
+          if ( MachinePanel.this.popup != null )
+            MachinePanel.this.popup.show ( ( Component ) event.getSource (),
+                event.getX (), event.getY () );
+          return;
+        }
       }
     };
   }
@@ -2566,5 +2628,16 @@ public final class MachinePanel implements EditorPanel
   public EditorPanelForm getGui ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Getter for this word navigation flag 
+   * 
+   * @return true if word navigation is in progress, else false
+   */
+  public boolean isWordNavigation ()
+  {
+    return this.wordNavigation;
   }
 }

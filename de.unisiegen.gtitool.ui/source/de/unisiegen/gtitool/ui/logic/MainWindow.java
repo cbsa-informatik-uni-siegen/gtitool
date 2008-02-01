@@ -650,13 +650,13 @@ public final class MainWindow implements LanguageChangedListener
     File file = panel.handleSave ();
     if ( file != null )
     {
-      // TODOBenny Different code?
+      RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
+      this.recentlyUsedFiles.remove ( item );
+      this.recentlyUsedFiles.add ( 0, item );
+      organizeRecentlyUsedFilesMenu ();
+      
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
-        RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
-        this.recentlyUsedFiles.remove ( item );
-        this.recentlyUsedFiles.add ( 0, item );
-        organizeRecentlyUsedFilesMenu ();
         if ( ( !current.equals ( this.gui.jGTITabbedPaneMain
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
@@ -677,7 +677,6 @@ public final class MainWindow implements LanguageChangedListener
     File file = panel.handleSaveAs ();
     if ( file != null )
     {
-      // TODOBenny Different code?
       RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
       this.recentlyUsedFiles.remove ( item );
       this.recentlyUsedFiles.add ( 0, item );

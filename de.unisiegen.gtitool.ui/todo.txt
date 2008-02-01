@@ -3,4 +3,4 @@ CF		- Stack und Kelleralphabet implementieren
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 BM		- Routing der Transitionen
-BM		- Aktiven Zustand im word enter mode ausblenden
+

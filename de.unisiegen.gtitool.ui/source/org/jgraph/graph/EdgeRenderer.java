@@ -793,10 +793,14 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         {
           for ( int i = 0 ; i < labels.length ; i++ )
           {
-            Transition transition = ( ( DefaultTransitionView ) view.getCell () )
-                .getTransition ();
-            paintTransition ( g, transition, getExtraLabelPosition ( view, i ),
-                false || !simpleExtraLabels );
+            if ( view.getCell () instanceof DefaultTransitionView )
+            {
+              Transition transition = ( ( DefaultTransitionView ) view
+                  .getCell () ).getTransition ();
+              paintTransition ( g, transition,
+                  getExtraLabelPosition ( view, i ),
+                  false || !simpleExtraLabels );
+            }
           }
         }
         if ( graph.getEditingCell () != view.getCell () )
@@ -805,9 +809,12 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
           Object label = graph.convertValueToString ( view );
           if ( label != null )
           {
-            Transition transition = ( ( DefaultTransitionView ) view.getCell () )
-                .getTransition ();
-            paintTransition ( g, transition, getLabelPosition ( view ), true );
+            if ( view.getCell () instanceof DefaultTransitionView )
+            {
+              Transition transition = ( ( DefaultTransitionView ) view
+                  .getCell () ).getTransition ();
+              paintTransition ( g, transition, getLabelPosition ( view ), true );
+            }
           }
         }
       }

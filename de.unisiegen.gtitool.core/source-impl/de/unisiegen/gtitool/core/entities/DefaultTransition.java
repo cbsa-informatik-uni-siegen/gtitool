@@ -16,9 +16,9 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlph
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
-import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -743,47 +743,51 @@ public final class DefaultTransition implements Transition
     PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
     {
-      prettyString.addPrettyChar ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
     }
     else
     {
-      prettyString.addPrettyChar ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
       Iterator < Symbol > iterator = this.symbolSet.iterator ();
       boolean first = true;
       while ( iterator.hasNext () )
       {
         if ( !first )
         {
-          prettyString.addPrettyChar ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
         prettyString.addPrettyPrintable ( iterator.next () );
       }
-      prettyString.addPrettyChar ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )
     {
-      prettyString.addPrettyChar ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
       if ( this.pushDownWordRead.size () == 0 )
       {
-        prettyString.addPrettyChar ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
         prettyString.addPrettyPrintable ( this.pushDownWordRead );
       }
-      prettyString.addPrettyChar ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
-      prettyString.addPrettyChar ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString
+          .addPrettyToken ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
       if ( this.pushDownWordWrite.size () == 0 )
       {
-        prettyString.addPrettyChar ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
       }
       else
       {
         prettyString.addPrettyPrintable ( this.pushDownWordWrite );
       }
-      prettyString.addPrettyChar ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
+      prettyString
+          .addPrettyToken ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
     }
     return prettyString;
   }

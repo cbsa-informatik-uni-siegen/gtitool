@@ -24,13 +24,12 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.preferences.DefaultValues;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.core.preferences.item.ColorItem;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
-import de.unisiegen.gtitool.ui.preferences.item.ColorItem;
 import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
@@ -38,13 +37,12 @@ import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
-import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 
 
 /**
- * Manages the preferences for the user interface.
+ * Manages the preferences for the ui project.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -275,7 +273,8 @@ public final class PreferenceManager
   public final synchronized void addColorChangedListener (
       ColorChangedListener listener )
   {
-    this.listenerList.add ( ColorChangedListener.class, listener );
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .addColorChangedListener ( listener );
   }
 
 
@@ -311,12 +310,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedActiveState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedActiveState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedActiveState ( newColor );
   }
 
 
@@ -328,12 +323,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedActiveTransition ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedActiveTransition ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedActiveTransition ( newColor );
   }
 
 
@@ -345,12 +336,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedErrorState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedErrorState ( newColor );
   }
 
 
@@ -362,12 +349,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorSymbol ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedErrorSymbol ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedErrorSymbol ( newColor );
   }
 
 
@@ -379,12 +362,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedErrorTransition ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedErrorTransition ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedErrorTransition ( newColor );
   }
 
 
@@ -396,12 +375,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserHighlighting ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedParserHighlighting ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedParserHighlighting ( newColor );
   }
 
 
@@ -413,12 +388,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedParserState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedParserState ( newColor );
   }
 
 
@@ -430,12 +401,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserSymbol ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedParserSymbol ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedParserSymbol ( newColor );
   }
 
 
@@ -446,12 +413,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedParserWarning ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedParserWarning ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedParserWarning ( newColor );
   }
 
 
@@ -463,12 +426,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedSelectedState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedSelectedState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedSelectedState ( newColor );
   }
 
 
@@ -480,12 +439,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedStartState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedStartState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedStartState ( newColor );
   }
 
 
@@ -496,12 +451,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedState ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedState ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedState ( newColor );
   }
 
 
@@ -512,12 +463,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedSymbol ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedSymbol ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedSymbol ( newColor );
   }
 
 
@@ -529,12 +476,8 @@ public final class PreferenceManager
    */
   public final void fireColorChangedTransition ( Color newColor )
   {
-    ColorChangedListener [] listeners = this.listenerList
-        .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].colorChangedTransition ( newColor );
-    }
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .fireColorChangedTransition ( newColor );
   }
 
 
@@ -638,18 +581,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemActiveState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorActiveStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorActiveStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_ACTIVE_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemActiveState ();
   }
 
 
@@ -660,21 +593,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemActiveTransition ()
   {
-    int r = this.preferences.getInt (
-        "PreferencesDialog.ColorActiveTransitionR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getRed () );
-    int g = this.preferences.getInt (
-        "PreferencesDialog.ColorActiveTransitionG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getGreen () );
-    int b = this.preferences.getInt (
-        "PreferencesDialog.ColorActiveTransitionB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorActiveTransitionCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorActiveTransitionDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_ACTIVE_TRANSITION_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemActiveTransition ();
   }
 
 
@@ -685,18 +605,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemErrorState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorErrorStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorErrorStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_ERROR_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemErrorState ();
   }
 
 
@@ -707,18 +617,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemErrorSymbol ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorErrorSymbolB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorErrorSymbolCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorErrorSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_ERROR_SYMBOL_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemErrorSymbol ();
   }
 
 
@@ -729,21 +629,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemErrorTransition ()
   {
-    int r = this.preferences.getInt (
-        "PreferencesDialog.ColorErrorTransitionR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getRed () );
-    int g = this.preferences.getInt (
-        "PreferencesDialog.ColorErrorTransitionG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getGreen () );
-    int b = this.preferences.getInt (
-        "PreferencesDialog.ColorErrorTransitionB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorErrorTransitionCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorErrorTransitionDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_ERROR_TRANSITION_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemErrorTransition ();
   }
 
 
@@ -754,21 +641,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemParserHighlighting ()
   {
-    int r = this.preferences.getInt (
-        "PreferencesDialog.ColorParserHighlightingR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getRed () );
-    int g = this.preferences.getInt (
-        "PreferencesDialog.ColorParserHighlightingG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getGreen () );
-    int b = this.preferences.getInt (
-        "PreferencesDialog.ColorParserHighlightingB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorParserHighlightingCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorParserHighlightingDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_PARSER_HIGHLIGHTING_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemParserHighlighting ();
   }
 
 
@@ -779,18 +653,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemParserState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorParserStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorParserStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_PARSER_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemParserState ();
   }
 
 
@@ -801,18 +665,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemParserSymbol ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorParserSymbolCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorParserSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemParserSymbol ();
   }
 
 
@@ -823,18 +677,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemParserWarning ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorParserWarningB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_WARNING_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorParserWarningCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorParserWarningDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_PARSER_WARNING_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemParserWarning ();
   }
 
 
@@ -845,18 +689,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemSelectedState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SELECTED_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorSelectedStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorSelectedStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_SELECTED_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemSelectedState ();
   }
 
 
@@ -867,18 +701,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemStartState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_START_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_START_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_START_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorStartStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorStartStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_START_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemStartState ();
   }
 
 
@@ -889,18 +713,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemState ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorStateR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorStateG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorStateB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_STATE_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorStateCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_STATE_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemState ();
   }
 
 
@@ -911,18 +725,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemSymbol ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorSymbolR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorSymbolG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorSymbolB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_SYMBOL_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorSymbolCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_SYMBOL_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemSymbol ();
   }
 
 
@@ -933,18 +737,8 @@ public final class PreferenceManager
    */
   public final ColorItem getColorItemTransition ()
   {
-    int r = this.preferences.getInt ( "PreferencesDialog.ColorTransitionR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_TRANSITION_COLOR.getRed () );
-    int g = this.preferences.getInt ( "PreferencesDialog.ColorTransitionG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_TRANSITION_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "PreferencesDialog.ColorTransitionB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_TRANSITION_COLOR.getBlue () );
-    String caption = Messages
-        .getString ( "PreferencesDialog.ColorTransitionCaption" );//$NON-NLS-1$
-    String description = Messages
-        .getString ( "PreferencesDialog.ColorTransitionDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
-        DefaultValues.DEFAULT_TRANSITION_COLOR );
+    return de.unisiegen.gtitool.core.preferences.PreferenceManager
+        .getInstance ().getColorItemTransition ();
   }
 
 
@@ -1253,7 +1047,8 @@ public final class PreferenceManager
   public final synchronized void removeColorChangedListener (
       ColorChangedListener listener )
   {
-    this.listenerList.remove ( ColorChangedListener.class, listener );
+    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
+        .removeColorChangedListener ( listener );
   }
 
 

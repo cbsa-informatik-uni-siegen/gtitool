@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.preferences.listener;
+package de.unisiegen.gtitool.core.preferences.listener;
 
 
 import java.awt.Color;

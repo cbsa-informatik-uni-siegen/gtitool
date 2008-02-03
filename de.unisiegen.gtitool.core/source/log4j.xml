@@ -17,6 +17,12 @@
 
 	<!-- core project -->
 
+	<logger
+		name="de.unisiegen.gtitool.core.preferences.PreferenceManager">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="de.unisiegen.gtitool.core.Messages">
 		<level value="all" />
 		<appender-ref ref="console" />

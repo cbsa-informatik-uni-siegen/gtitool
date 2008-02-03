@@ -36,6 +36,17 @@ public final class PrettyToken
 
 
   /**
+   * Returns the char array.
+   * 
+   * @return The char array.
+   */
+  public final char [] getChar ()
+  {
+    return this.text.toCharArray ();
+  }
+
+
+  /**
    * Returns the {@link Style}.
    * 
    * @return The {@link Style}.

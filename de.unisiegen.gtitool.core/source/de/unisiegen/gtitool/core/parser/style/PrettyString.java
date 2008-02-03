@@ -18,7 +18,7 @@ public final class PrettyString implements Iterable < PrettyToken >
   /**
    * The {@link PrettyToken} list.
    */
-  private ArrayList < PrettyToken > prettyCharList;
+  private ArrayList < PrettyToken > prettyTokenList;
 
 
   /**
@@ -26,18 +26,7 @@ public final class PrettyString implements Iterable < PrettyToken >
    */
   public PrettyString ()
   {
-    this.prettyCharList = new ArrayList < PrettyToken > ();
-  }
-
-
-  /**
-   * Adds the given {@link PrettyToken} to the list of {@link PrettyToken}s.
-   * 
-   * @param prettyToken The {@link PrettyToken} to add.
-   */
-  public final void addPrettyChar ( PrettyToken prettyToken )
-  {
-    this.prettyCharList.add ( prettyToken );
+    this.prettyTokenList = new ArrayList < PrettyToken > ();
   }
 
 
@@ -50,8 +39,19 @@ public final class PrettyString implements Iterable < PrettyToken >
   {
     for ( PrettyToken current : prettyPrintable.getPrettyString () )
     {
-      this.prettyCharList.add ( current );
+      this.prettyTokenList.add ( current );
     }
+  }
+
+
+  /**
+   * Adds the given {@link PrettyToken} to the list of {@link PrettyToken}s.
+   * 
+   * @param prettyToken The {@link PrettyToken} to add.
+   */
+  public final void addPrettyToken ( PrettyToken prettyToken )
+  {
+    this.prettyTokenList.add ( prettyToken );
   }
 
 
@@ -60,9 +60,9 @@ public final class PrettyString implements Iterable < PrettyToken >
    * 
    * @return The {@link PrettyToken} list.
    */
-  public final ArrayList < PrettyToken > getPrettyChar ()
+  public final ArrayList < PrettyToken > getPrettyToken ()
   {
-    return this.prettyCharList;
+    return this.prettyTokenList;
   }
 
 
@@ -72,9 +72,9 @@ public final class PrettyString implements Iterable < PrettyToken >
    * @param index The index of the {@link PrettyToken} to return.
    * @return The {@link PrettyToken} with the given index.
    */
-  public final PrettyToken getPrettyChar ( int index )
+  public final PrettyToken getPrettyToken ( int index )
   {
-    return this.prettyCharList.get ( index );
+    return this.prettyTokenList.get ( index );
   }
 
 
@@ -85,6 +85,6 @@ public final class PrettyString implements Iterable < PrettyToken >
    */
   public final Iterator < PrettyToken > iterator ()
   {
-    return this.prettyCharList.iterator ();
+    return this.prettyTokenList.iterator ();
   }
 }

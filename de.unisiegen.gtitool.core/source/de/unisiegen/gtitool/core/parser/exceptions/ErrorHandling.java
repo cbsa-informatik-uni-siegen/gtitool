@@ -6,7 +6,7 @@ import java.util.prefs.Preferences;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.preferences.DefaultValues;
+import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 
 
 /**
@@ -52,16 +52,16 @@ public abstract class ErrorHandling
    * @param right The right position in the source code.
    * @param tokenSequence The token sequence which should be added.
    */
-  public static final void expect ( String symbol, String insertText,
-      int left, int right, String ... tokenSequence )
+  public static final void expect ( String symbol, String insertText, int left,
+      int right, String ... tokenSequence )
   {
     Preferences preferences = Preferences.userRoot ();
     int r = preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
+        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
     int g = preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
+        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
     int b = preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
-        DefaultValues.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
+        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
     symbolColor = getHexadecimalColor ( new Color ( r, g, b ) );
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();

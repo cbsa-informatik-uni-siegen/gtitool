@@ -15,9 +15,9 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolEx
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
-import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -498,19 +498,19 @@ public final class DefaultAlphabet implements Alphabet
   public final PrettyString getPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyChar ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
     Iterator < Symbol > iterator = this.symbolSet.iterator ();
     boolean first = true;
     while ( iterator.hasNext () )
     {
       if ( !first )
       {
-        prettyString.addPrettyChar ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       }
       first = false;
       prettyString.addPrettyPrintable ( iterator.next () );
     }
-    prettyString.addPrettyChar ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     return prettyString;
   }
 

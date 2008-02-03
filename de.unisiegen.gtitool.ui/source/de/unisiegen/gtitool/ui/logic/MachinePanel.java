@@ -51,6 +51,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -71,7 +72,6 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
-import de.unisiegen.gtitool.ui.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
@@ -446,6 +446,71 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Add a new Error
+   * 
+   * @param machineException The {@link MachineException} containing the data
+   */
+  public final void addError ( MachineException machineException )
+  {
+    this.errorTableModel.addRow ( machineException );
+  }
+
+
+  /**
+   * Add all needed listener to the JGraph
+   */
+  private void addGraphListener ()
+  {
+    this.graph.addKeyListener ( new KeyListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void keyPressed ( KeyEvent event )
+      {
+        if ( event.getKeyCode () == 27 )
+        {
+          MachinePanel.this.graphModel.remove ( new Object []
+          { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
+          MachinePanel.this.firstState = null;
+          MachinePanel.this.tmpTransition = null;
+          MachinePanel.this.tmpState = null;
+          MachinePanel.this.dragged = false;
+        }
+
+      }
+
+
+      public void keyReleased ( @SuppressWarnings ( "unused" )
+      KeyEvent event )
+      {
+        // Nothing to do here
+      }
+
+
+      public void keyTyped ( @SuppressWarnings ( "unused" )
+      KeyEvent event )
+      {
+        // Nothing to do here
+      }
+
+    } );
+
+    // ModifyStatusChangedListener
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( boolean modified )
+      {
+        fireModifyStatusChanged ( modified );
+      }
+    };
+    this.model
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+  }
+
+
+  /**
    * Add all needed listener
    */
   private void addListener ()
@@ -466,6 +531,21 @@ public final class MachinePanel implements EditorPanel
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedSymbol ( Color )
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
+          }
+
 
           /**
            * {@inheritDoc}
@@ -496,8 +576,6 @@ public final class MachinePanel implements EditorPanel
                 .getAll ( MachinePanel.this.graphModel ) );
 
           }
-
-
           /**
            * {@inheritDoc}
            * 
@@ -527,7 +605,6 @@ public final class MachinePanel implements EditorPanel
                 .getAll ( MachinePanel.this.graphModel ) );
 
           }
-
 
           /**
            * {@inheritDoc}
@@ -594,161 +671,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Initialize the machine panel
-   */
-  private void initialize ()
-  {
-    this.machine = this.model.getMachine ();
-    this.graph = this.model.getJGraph ();
-    this.graphModel = this.model.getGraphModel ();
-    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
-        .getZoomFactorItem ().getFactor () ) / 100;
-
-    if ( activeMouseAdapter == null )
-    {
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
-    }
-    switch ( activeMouseAdapter )
-    {
-
-      case MOUSE :
-      {
-        handleToolbarMouse ( true );
-        break;
-      }
-      case ADD_STATE :
-      {
-        handleToolbarAddState ( true );
-        break;
-      }
-      case ADD_START_STATE :
-      {
-        handleToolbarStart ( true );
-        break;
-      }
-      case ADD_FINAL_STATE :
-      {
-        handleToolbarEnd ( true );
-        break;
-      }
-      case ADD_TRANSITION :
-      {
-        handleToolbarTransition ( true );
-        break;
-      }
-
-    }
-
-    this.gui.diagrammContentPanel.setViewportView ( this.graph );
-
-    this.errorTableModel = new ConsoleTableModel ();
-    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
-    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableErrors
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
-        {
-
-          public void valueChanged ( ListSelectionEvent event )
-          {
-            handleConsoleTableValueChanged ( event );
-          }
-
-        } );
-    this.warningTableModel = new ConsoleTableModel ();
-    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
-    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
-    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableWarnings
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
-        new ListSelectionListener ()
-        {
-
-          public void valueChanged ( ListSelectionEvent event )
-          {
-            handleConsoleTableValueChanged ( event );
-          }
-
-        } );
-    this.gui.jGTITableMachine.setModel ( this.machine );
-    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
-    this.gui.jGTITableMachine
-        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-
-    this.gui.wordPanel.setVisible ( false );
-    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
-  }
-
-
-  /**
-   * Add all needed listener to the JGraph
-   */
-  private void addGraphListener ()
-  {
-    this.graph.addKeyListener ( new KeyListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void keyPressed ( KeyEvent event )
-      {
-        if ( event.getKeyCode () == 27 )
-        {
-          MachinePanel.this.graphModel.remove ( new Object []
-          { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-          MachinePanel.this.firstState = null;
-          MachinePanel.this.tmpTransition = null;
-          MachinePanel.this.tmpState = null;
-          MachinePanel.this.dragged = false;
-        }
-
-      }
-
-
-      public void keyReleased ( @SuppressWarnings ( "unused" )
-      KeyEvent event )
-      {
-        // Nothing to do here
-      }
-
-
-      public void keyTyped ( @SuppressWarnings ( "unused" )
-      KeyEvent event )
-      {
-        // Nothing to do here
-      }
-
-    } );
-
-    // ModifyStatusChangedListener
-    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void modifyStatusChanged ( boolean modified )
-      {
-        fireModifyStatusChanged ( modified );
-      }
-    };
-    this.model
-        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-  }
-
-
-  /**
-   * Add a new Error
-   * 
-   * @param machineException The {@link MachineException} containing the data
-   */
-  public final void addError ( MachineException machineException )
-  {
-    this.errorTableModel.addRow ( machineException );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -807,7 +729,7 @@ public final class MachinePanel implements EditorPanel
     this.warningTableModel.clearData ();
   }
 
-  
+
   /**
    * Create a enter word mode Popup Menu
    * 
@@ -818,6 +740,7 @@ public final class MachinePanel implements EditorPanel
     return new EnterWordModePopupMenu ( this, this.parent );
   }
 
+  
   /**
    * Create a standard Popup Menu
    * 
@@ -828,7 +751,6 @@ public final class MachinePanel implements EditorPanel
     int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
     return new DefaultPopupMenu ( this, this.machine, factor );
   }
-
 
   /**
    * Create a new Popup Menu for the given State
@@ -927,6 +849,17 @@ public final class MachinePanel implements EditorPanel
   public final File getFile ()
   {
     return this.file;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
+   */
+  public EditorPanelForm getGui ()
+  {
+    return this.gui;
   }
 
 
@@ -1748,6 +1681,96 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Initialize the machine panel
+   */
+  private void initialize ()
+  {
+    this.machine = this.model.getMachine ();
+    this.graph = this.model.getJGraph ();
+    this.graphModel = this.model.getGraphModel ();
+    this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
+        .getZoomFactorItem ().getFactor () ) / 100;
+
+    if ( activeMouseAdapter == null )
+    {
+      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
+    }
+    switch ( activeMouseAdapter )
+    {
+
+      case MOUSE :
+      {
+        handleToolbarMouse ( true );
+        break;
+      }
+      case ADD_STATE :
+      {
+        handleToolbarAddState ( true );
+        break;
+      }
+      case ADD_START_STATE :
+      {
+        handleToolbarStart ( true );
+        break;
+      }
+      case ADD_FINAL_STATE :
+      {
+        handleToolbarEnd ( true );
+        break;
+      }
+      case ADD_TRANSITION :
+      {
+        handleToolbarTransition ( true );
+        break;
+      }
+
+    }
+
+    this.gui.diagrammContentPanel.setViewportView ( this.graph );
+
+    this.errorTableModel = new ConsoleTableModel ();
+    this.gui.jGTITableErrors.setModel ( this.errorTableModel );
+    this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableErrors
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableErrors.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent event )
+          {
+            handleConsoleTableValueChanged ( event );
+          }
+
+        } );
+    this.warningTableModel = new ConsoleTableModel ();
+    this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
+    this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
+    this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableWarnings
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.gui.jGTITableWarnings.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent event )
+          {
+            handleConsoleTableValueChanged ( event );
+          }
+
+        } );
+    this.gui.jGTITableMachine.setModel ( this.machine );
+    this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableMachine
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    this.gui.wordPanel.setVisible ( false );
+    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
+  }
+
+
+  /**
    * Initialize the Mouse Adapter of the Toolbar
    */
   @SuppressWarnings ( "synthetic-access" )
@@ -2475,6 +2498,17 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Getter for this word navigation flag 
+   * 
+   * @return true if word navigation is in progress, else false
+   */
+  public boolean isWordNavigation ()
+  {
+    return this.wordNavigation;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LanguageChangedListener#languageChanged()
@@ -2617,27 +2651,5 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
-   */
-  public EditorPanelForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
-   * Getter for this word navigation flag 
-   * 
-   * @return true if word navigation is in progress, else false
-   */
-  public boolean isWordNavigation ()
-  {
-    return this.wordNavigation;
   }
 }

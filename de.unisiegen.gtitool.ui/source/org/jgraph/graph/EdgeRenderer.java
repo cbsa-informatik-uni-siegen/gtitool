@@ -35,6 +35,7 @@ import org.jgraph.util.Bezier;
 import org.jgraph.util.Spline2D;
 
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 
 
@@ -901,9 +902,17 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         dy = -metrics.getDescent ();
       }
 
-      // TODOChristian Use the pretty string
-
-      g.drawString ( transition.toString (), dx, dy );
+      for ( PrettyToken currentToken : transition.getPrettyString ()
+          .getPrettyToken () )
+      {
+        g.setColor ( currentToken.getStyle ().getColor () );
+        char [] chars = currentToken.getChar ();
+        for ( int i = 0 ; i < chars.length ; i++ )
+        {
+          g.drawChars ( chars, i, 1, dx, dy );
+          dx += metrics.charWidth ( chars [ i ] );
+        }
+      }
 
       if ( applyTransform )
       {

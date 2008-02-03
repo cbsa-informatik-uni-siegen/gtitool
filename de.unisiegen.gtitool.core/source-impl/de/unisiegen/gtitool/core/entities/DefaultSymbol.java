@@ -38,6 +38,12 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
+   * This {@link Symbol} is a error {@link Symbol}.
+   */
+  private boolean error = false;
+
+
+  /**
    * The offset of this {@link DefaultSymbol} in the source code.
    * 
    * @see #getParserOffset()
@@ -196,25 +202,38 @@ public final class DefaultSymbol implements Symbol
   /**
    * {@inheritDoc}
    * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
-    return prettyString;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Entity#hashCode()
    */
   @Override
   public final int hashCode ()
   {
     return this.name.hashCode ();
+  }
+
+
+  /**
+   * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
+   * false.
+   * 
+   * @return True if this {@link Symbol} is a error {@link Symbol}, otherwise
+   *         false.
+   * @see #error
+   */
+  public final boolean isError ()
+  {
+    return this.error;
+  }
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   * @see #error
+   */
+  public final void setError ( boolean error )
+  {
+    this.error = error;
   }
 
 
@@ -280,6 +299,28 @@ public final class DefaultSymbol implements Symbol
   public final void setParserOffset ( ParserOffset parserOffset )
   {
     this.parserOffset = parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    if ( this.error )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.ERROR_SYMBOL ) );
+    }
+    else
+    {
+      prettyString
+          .addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
+    }
+    return prettyString;
   }
 
 

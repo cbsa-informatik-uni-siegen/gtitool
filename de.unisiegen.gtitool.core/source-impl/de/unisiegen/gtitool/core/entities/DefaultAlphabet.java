@@ -493,31 +493,6 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-    Iterator < Symbol > iterator = this.symbolSet.iterator ();
-    boolean first = true;
-    while ( iterator.hasNext () )
-    {
-      if ( !first )
-      {
-        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-      }
-      first = false;
-      prettyString.addPrettyPrintable ( iterator.next () );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-    return prettyString;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Entity#hashCode()
    */
   @Override
@@ -662,6 +637,31 @@ public final class DefaultAlphabet implements Alphabet
   public final int size ()
   {
     return this.symbolSet.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    Iterator < Symbol > iterator = this.symbolSet.iterator ();
+    boolean first = true;
+    while ( iterator.hasNext () )
+    {
+      if ( !first )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      }
+      first = false;
+      prettyString.addPrettyPrintable ( iterator.next () );
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+    return prettyString;
   }
 
 

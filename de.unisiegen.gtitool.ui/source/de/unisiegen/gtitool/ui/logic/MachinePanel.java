@@ -42,6 +42,7 @@ import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -361,7 +362,8 @@ public final class MachinePanel implements EditorPanel
    * Flag signals if we are in the enter word mode
    */
   private boolean enterWordMode = false;
-  
+
+
   /**
    * Flag signals if word navigation is in progress
    */
@@ -576,6 +578,8 @@ public final class MachinePanel implements EditorPanel
                 .getAll ( MachinePanel.this.graphModel ) );
 
           }
+
+
           /**
            * {@inheritDoc}
            * 
@@ -605,6 +609,7 @@ public final class MachinePanel implements EditorPanel
                 .getAll ( MachinePanel.this.graphModel ) );
 
           }
+
 
           /**
            * {@inheritDoc}
@@ -694,10 +699,24 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Remove all highlighting
+   * Remove all highlightings.
    */
   public final void clearHighlight ()
   {
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
+      {
+        currentSymbol.setError ( false );
+      }
+    }
+
+    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    {
+      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemTransition ().getColor () );
+    }
+
     for ( DefaultTransitionView view : this.oldErrorTransitions )
     {
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
@@ -740,7 +759,7 @@ public final class MachinePanel implements EditorPanel
     return new EnterWordModePopupMenu ( this, this.parent );
   }
 
-  
+
   /**
    * Create a standard Popup Menu
    * 
@@ -751,6 +770,7 @@ public final class MachinePanel implements EditorPanel
     int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
     return new DefaultPopupMenu ( this, this.machine, factor );
   }
+
 
   /**
    * Create a new Popup Menu for the given State
@@ -1015,10 +1035,19 @@ public final class MachinePanel implements EditorPanel
     }
     else
     {
+      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+      {
+        for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
+        {
+          currentSymbol.setError ( false );
+        }
+      }
       highlightStates ( ( ( ConsoleTableModel ) table.getModel () )
           .getStates ( index ) );
       highlightTransitions ( ( ( ConsoleTableModel ) table.getModel () )
           .getTransitions ( index ) );
+      highlightSymbols ( ( ( ConsoleTableModel ) table.getModel () )
+          .getSymbols ( index ) );
     }
   }
 
@@ -1654,9 +1683,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Highlight the affected transitions
+   * Highlight the affected {@link Transition}s.
    * 
-   * @param transitions list with all transitions that are affected
+   * @param transitions List with all {@link Transition}s that are affected.
    */
   private final void highlightTransitions ( ArrayList < Transition > transitions )
   {
@@ -1674,6 +1703,22 @@ public final class MachinePanel implements EditorPanel
       this.oldErrorTransitions.add ( view );
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemErrorTransition ().getColor () );
+    }
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+  }
+
+
+  /**
+   * Highlight the affected {@link Symbol}s.
+   * 
+   * @param symbols List with all {@link Symbol}s that are affected.
+   */
+  private final void highlightSymbols ( ArrayList < Symbol > symbols )
+  {
+    for ( Symbol current : symbols )
+    {
+      current.setError ( true );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -2435,7 +2480,7 @@ public final class MachinePanel implements EditorPanel
 
       }
     };
-    
+
     this.enterWordModeMouse = new MouseAdapter ()
     {
 
@@ -2498,7 +2543,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Getter for this word navigation flag 
+   * Getter for this word navigation flag
    * 
    * @return true if word navigation is in progress, else false
    */

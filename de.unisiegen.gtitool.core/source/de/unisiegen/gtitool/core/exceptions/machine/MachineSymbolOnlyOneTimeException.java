@@ -39,26 +39,26 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
 
 
   /**
-   * The {@link Symbol}.
+   * The {@link Symbol}s.
    */
-  private Symbol symbol;
+  private ArrayList < Symbol > symbols;
 
 
   /**
-   * The {@link Transition} list.
+   * The {@link Transition}s.
    */
-  private ArrayList < Transition > transitionList;
+  private ArrayList < Transition > transitions;
 
 
   /**
    * Allocates a new <code>MachineEpsilonTransitionException</code>.
    * 
    * @param state The {@link State}.
-   * @param symbol The {@link Symbol}.
-   * @param transitionList The {@link Transition} list.
+   * @param symbols The {@link Symbol} list.
+   * @param transitions The {@link Transition} list.
    */
-  public MachineSymbolOnlyOneTimeException ( State state, Symbol symbol,
-      ArrayList < Transition > transitionList )
+  public MachineSymbolOnlyOneTimeException ( State state,
+      ArrayList < Symbol > symbols, ArrayList < Transition > transitions )
   {
     super ();
     // State
@@ -67,28 +67,28 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
     this.state = state;
-    // Symbol
-    if ( symbol == null )
+    // Symbols
+    if ( symbols == null )
     {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    this.symbol = symbol;
-    // TransitionList
-    if ( transitionList == null )
+    this.symbols = symbols;
+    // Transitions
+    if ( transitions == null )
     {
-      throw new NullPointerException ( "transition list is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "transitions is null" ); //$NON-NLS-1$
     }
-    if ( transitionList.size () < 2 )
+    if ( transitions.size () < 2 )
     {
-      throw new IllegalArgumentException ( "transition list size is too small" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "transitions size is too small" ); //$NON-NLS-1$
     }
-    this.transitionList = transitionList;
+    this.transitions = transitions;
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
     setDescription ( Messages.getString (
         "MachineSymbolOnlyOneTimeException.Description", state.getName (), //$NON-NLS-1$
-        symbol.getName () ) );
+        symbols.get ( 0 ).getName () ) );
   }
 
 
@@ -108,38 +108,22 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
   /**
    * {@inheritDoc}
    * 
-   * @see TransitionsInvolvedException#getTransition()
+   * @see SymbolsInvolvedException#getSymbol()
    */
   public final ArrayList < Symbol > getSymbol ()
   {
-    ArrayList < Symbol > result = new ArrayList < Symbol > ( 1 );
-    result.add ( this.symbol );
-    return result;
+    return this.symbols;
   }
 
 
   /**
-   * Returns the {@link Transition} list.
+   * {@inheritDoc}
    * 
-   * @return The {@link Transition} list.
+   * @see TransitionsInvolvedException#getTransition()
    */
   public final ArrayList < Transition > getTransition ()
   {
-    return this.transitionList;
-  }
-
-
-  /**
-   * Returns the {@link Transition} at the specified position in the list of
-   * {@link Transition}s.
-   * 
-   * @param index The index of the {@link Transition} to return.
-   * @return The {@link Transition} at the specified position in the list of
-   *         {@link Transition}s.
-   */
-  public final Transition getTransition ( int index )
-  {
-    return this.transitionList.get ( index );
+    return this.transitions;
   }
 
 
@@ -170,19 +154,25 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
     result.append ( this.state.getName () );
     result.append ( lineBreak );
     result.append ( "Symbol:      " ); //$NON-NLS-1$
-    result.append ( this.symbol.getName () );
-    result.append ( lineBreak );
-    result.append ( "Transition:  " ); //$NON-NLS-1$
-    for ( int i = 0 ; i < this.transitionList.size () ; i++ )
+    for ( int i = 0 ; i < this.transitions.size () ; i++ )
     {
       if ( i > 0 )
       {
         result.append ( ", " ); //$NON-NLS-1$
       }
-      result
-          .append ( this.transitionList.get ( i ).getStateBegin ().getName () );
+      result.append ( this.symbols.get ( i ) );
+    }
+    result.append ( lineBreak );
+    result.append ( "Transition:  " ); //$NON-NLS-1$
+    for ( int i = 0 ; i < this.transitions.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( ", " ); //$NON-NLS-1$
+      }
+      result.append ( this.transitions.get ( i ).getStateBegin ().getName () );
       result.append ( " -> " ); //$NON-NLS-1$
-      result.append ( this.transitionList.get ( i ).getStateEnd ().getName () );
+      result.append ( this.transitions.get ( i ).getStateEnd ().getName () );
     }
     return result.toString ();
   }

@@ -909,7 +909,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         dy = -metrics.getDescent ();
       }
 
-      for ( PrettyToken currentToken : transition.getPrettyString ()
+      for ( PrettyToken currentToken : transition.toPrettyString ()
           .getPrettyToken () )
       {
         g.setColor ( currentToken.getStyle ().getColor () );

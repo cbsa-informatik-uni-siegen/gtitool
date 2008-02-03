@@ -37,7 +37,7 @@ public final class PrettyString implements Iterable < PrettyToken >
    */
   public final void addPrettyPrintable ( PrettyPrintable prettyPrintable )
   {
-    for ( PrettyToken current : prettyPrintable.getPrettyString () )
+    for ( PrettyToken current : prettyPrintable.toPrettyString () )
     {
       this.prettyTokenList.add ( current );
     }

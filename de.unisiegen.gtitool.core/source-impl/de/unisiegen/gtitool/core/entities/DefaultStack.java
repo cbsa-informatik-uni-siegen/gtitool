@@ -173,22 +173,6 @@ public final class DefaultStack implements Stack
   /**
    * {@inheritDoc}
    * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    for ( Symbol current : this.symbolList )
-    {
-      prettyString.addPrettyPrintable ( current );
-    }
-    return prettyString;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Entity#hashCode()
    */
   @Override
@@ -307,6 +291,22 @@ public final class DefaultStack implements Stack
   public final int size ()
   {
     return this.symbolList.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    for ( Symbol current : this.symbolList )
+    {
+      prettyString.addPrettyPrintable ( current );
+    }
+    return prettyString;
   }
 
 

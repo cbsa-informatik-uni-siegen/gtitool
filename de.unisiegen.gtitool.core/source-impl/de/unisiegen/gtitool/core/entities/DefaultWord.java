@@ -323,22 +323,6 @@ public final class DefaultWord implements Word
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    for ( Symbol current : this.symbolList )
-    {
-      prettyString.addPrettyPrintable ( current );
-    }
-    return prettyString;
-  }
-
-
-  /**
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
@@ -505,6 +489,22 @@ public final class DefaultWord implements Word
   public final void start ()
   {
     this.currentPosition = START_INDEX;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    for ( Symbol current : this.symbolList )
+    {
+      prettyString.addPrettyPrintable ( current );
+    }
+    return prettyString;
   }
 
 

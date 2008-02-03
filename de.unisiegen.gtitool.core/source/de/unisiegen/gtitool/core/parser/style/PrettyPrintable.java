@@ -15,5 +15,5 @@ public interface PrettyPrintable
    * 
    * @return The {@link PrettyString}.
    */
-  public PrettyString getPrettyString ();
+  public PrettyString toPrettyString ();
 }

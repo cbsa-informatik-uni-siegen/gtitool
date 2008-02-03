@@ -782,17 +782,25 @@ public abstract class AbstractMachine implements Machine
       for ( Symbol currentSymbol : this.getAlphabet () )
       {
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
+        ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
         for ( Transition currentTransition : currentState.getTransitionBegin () )
         {
           if ( currentTransition.contains ( currentSymbol ) )
           {
             transitions.add ( currentTransition );
+            for ( Symbol addSymbol : currentTransition.getSymbol ())
+            {
+              if (addSymbol.equals ( currentSymbol ) )
+              {
+                symbols.add ( addSymbol );
+              }
+            }
           }
         }
         if ( transitions.size () > 1 )
         {
           machineExceptionList.add ( new MachineSymbolOnlyOneTimeException (
-              currentState, currentSymbol, transitions ) );
+              currentState, symbols, transitions ) );
         }
       }
     }

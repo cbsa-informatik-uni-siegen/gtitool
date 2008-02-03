@@ -66,4 +66,15 @@ public final class PrettyToken
   {
     return this.text;
   }
+
+
+  /**
+   * Sets the {@link Style}.
+   * 
+   * @param style The {@link Style} to set.
+   */
+  public final void setStyle ( Style style )
+  {
+    this.style = style;
+  }
 }

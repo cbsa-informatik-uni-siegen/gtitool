@@ -734,66 +734,6 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    if ( this.symbolSet.size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      Iterator < Symbol > iterator = this.symbolSet.iterator ();
-      boolean first = true;
-      while ( iterator.hasNext () )
-      {
-        if ( !first )
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-        }
-        first = false;
-        prettyString.addPrettyPrintable ( iterator.next () );
-      }
-      prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
-    }
-    if ( ( this.pushDownWordRead.size () > 0 )
-        || ( this.pushDownWordWrite.size () > 0 ) )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-      if ( this.pushDownWordRead.size () == 0 )
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-      }
-      else
-      {
-        prettyString.addPrettyPrintable ( this.pushDownWordRead );
-      }
-      prettyString
-          .addPrettyToken ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
-      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-      if ( this.pushDownWordWrite.size () == 0 )
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-      }
-      else
-      {
-        prettyString.addPrettyPrintable ( this.pushDownWordWrite );
-      }
-      prettyString
-          .addPrettyToken ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
-    }
-    return prettyString;
-  }
-
-
-  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -1236,6 +1176,66 @@ public final class DefaultTransition implements Transition
   public final int size ()
   {
     return this.symbolSet.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    if ( this.symbolSet.size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+      Iterator < Symbol > iterator = this.symbolSet.iterator ();
+      boolean first = true;
+      while ( iterator.hasNext () )
+      {
+        if ( !first )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+        }
+        first = false;
+        prettyString.addPrettyPrintable ( iterator.next () );
+      }
+      prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+    }
+    if ( ( this.pushDownWordRead.size () > 0 )
+        || ( this.pushDownWordWrite.size () > 0 ) )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      if ( this.pushDownWordRead.size () == 0 )
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        prettyString.addPrettyPrintable ( this.pushDownWordRead );
+      }
+      prettyString
+          .addPrettyToken ( new PrettyToken ( "\u2191", Style.KEYWORD ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+      if ( this.pushDownWordWrite.size () == 0 )
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        prettyString.addPrettyPrintable ( this.pushDownWordWrite );
+      }
+      prettyString
+          .addPrettyToken ( new PrettyToken ( "\u2193", Style.KEYWORD ) ); //$NON-NLS-1$
+    }
+    return prettyString;
   }
 
 

@@ -614,19 +614,6 @@ public final class DefaultState implements State
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see PrettyPrintable#getPrettyString()
-   */
-  public final PrettyString getPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
-    return prettyString;
-  }
-
-
-  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -1025,6 +1012,19 @@ public final class DefaultState implements State
   {
     this.startState = startState;
     fireModifyStatusChanged ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see PrettyPrintable#toPrettyString()
+   */
+  public final PrettyString toPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+    return prettyString;
   }
 
 

@@ -36,4 +36,22 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
    */
   public String getName ();
 
+
+  /**
+   * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
+   * false.
+   * 
+   * @return True if this {@link Symbol} is a error {@link Symbol}, otherwise
+   *         false.
+   */
+  public boolean isError ();
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   */
+  public void setError ( boolean error );
+
 }

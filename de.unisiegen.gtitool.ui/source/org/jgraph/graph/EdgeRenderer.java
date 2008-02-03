@@ -745,7 +745,16 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         setOpaque ( false );
         super.paint ( g );
         translateGraphics ( g );
-        g.setColor ( getForeground () );
+        
+        // Use the highlight color if the transition is selected
+        if ( selected )
+        {
+          g2.setColor ( highlightColor );
+        }
+        else
+        {
+          g.setColor ( getForeground () );
+        }
         if ( lineWidth > 0 )
         {
           g2.setStroke ( new BasicStroke ( lineWidth, c, j ) );
@@ -773,17 +782,6 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
             g2.draw ( view.lineShape );
         }
 
-        if ( selected )
-        { // Paint Selected
-          g2.setStroke ( GraphConstants.SELECTION_STROKE );
-          g2.setColor ( highlightColor );
-          if ( view.beginShape != null )
-            g2.draw ( view.beginShape );
-          if ( view.lineShape != null )
-            g2.draw ( view.lineShape );
-          if ( view.endShape != null )
-            g2.draw ( view.endShape );
-        }
         g2.setStroke ( new BasicStroke ( 1 ) );
         g.setFont ( ( extraLabelFont != null ) ? extraLabelFont : getFont () );
         Object [] labels = GraphConstants.getExtraLabels ( view

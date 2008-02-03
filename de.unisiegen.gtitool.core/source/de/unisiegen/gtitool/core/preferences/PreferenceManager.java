@@ -70,6 +70,13 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of the selected {@link Transition}.
+   */
+  public static final Color DEFAULT_TRANSITION_SELECTED_COLOR = new Color (
+      255, 0, 0 );
+
+
+  /**
    * The default {@link Color} of the start {@link State}.
    */
   public static final Color DEFAULT_STATE_START_COLOR = new Color ( 255, 255,
@@ -432,6 +439,23 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the selected {@link Transition}
+   * has changed.
+   * 
+   * @param newColor The new color of the selected {@link Transition}.
+   */
+  public final void fireColorChangedTransitionSelected ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].colorChangedTransitionSelected ( newColor );
+    }
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the parser highlighting.
    * 
    * @return The {@link ColorItem} of the parser highlighting.
@@ -713,6 +737,28 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the selected {@link Transition}.
+   * 
+   * @return The {@link ColorItem} of the selected {@link Transition}.
+   */
+  public final ColorItem getColorItemTransitionSelected ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorTransitionSelectedR", //$NON-NLS-1$
+        DEFAULT_TRANSITION_SELECTED_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorTransitionSelectedG", //$NON-NLS-1$
+        DEFAULT_TRANSITION_SELECTED_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorTransitionSelectedB", //$NON-NLS-1$
+        DEFAULT_TRANSITION_SELECTED_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorTransitionSelectedCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTransitionSelectedDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_TRANSITION_SELECTED_COLOR );
+  }
+
+
+  /**
    * Removes the given {@link ColorChangedListener}.
    * 
    * @param listener The {@link ColorChangedListener}.
@@ -981,5 +1027,25 @@ public class PreferenceManager
         .getColor ().getGreen () );
     this.preferences.putInt ( "Preferences.ColorTransitionErrorB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the selected {@link Transition}.
+   * 
+   * @param colorItem The {@link ColorItem} of the selected {@link Transition}.
+   */
+  public final void setColorItemTransitionSelected ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the selected transition to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorTransitionSelectedR", //$NON-NLS-1$
+        colorItem.getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorTransitionSelectedG", //$NON-NLS-1$
+        colorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorTransitionSelectedB", //$NON-NLS-1$
+        colorItem.getColor ().getBlue () );
   }
 }

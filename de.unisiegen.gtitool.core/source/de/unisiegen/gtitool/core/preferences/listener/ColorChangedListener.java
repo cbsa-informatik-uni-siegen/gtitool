@@ -120,4 +120,12 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the error {@link Transition}.
    */
   public void colorChangedTransitionError ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the selected {@link Transition} changed.
+   * 
+   * @param newColor The new color of the selected {@link Transition}.
+   */
+  public void colorChangedTransitionSelected ( Color newColor );
 }

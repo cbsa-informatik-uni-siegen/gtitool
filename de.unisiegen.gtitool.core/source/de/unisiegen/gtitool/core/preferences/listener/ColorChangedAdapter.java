@@ -171,4 +171,16 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   {
     // Override this method if needed.
   }
+
+
+  /**
+   * Invoked when the color of the selected {@link Transition} changed.
+   * 
+   * @param newColor The new color of the selected {@link Transition}.
+   */
+  public void colorChangedTransitionSelected ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
 }

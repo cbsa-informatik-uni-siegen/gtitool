@@ -576,6 +576,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the selected {@link Transition}.
+   */
+  private ColorItem colorItemTransitionSelected;
+
+
+  /**
    * The {@link ColorItem} of the active {@link State}.
    */
   private ColorItem colorItemStateActive;
@@ -693,6 +699,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the selected {@link State}.
    */
   private ColorItem initialColorItemStateSelected;
+
+
+  /**
+   * The initial {@link ColorItem} of the selected {@link Transition}.
+   */
+  private ColorItem initialColorItemTransitionSelected;
 
 
   /**
@@ -1063,6 +1075,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemStateError.restore ();
     this.colorItemSymbolError.restore ();
     this.colorItemTransition.restore ();
+    this.colorItemTransitionSelected.restore ();
     this.colorItemTransitionError.restore ();
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
@@ -1296,6 +1309,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ();
     this.initialColorItemTransition = this.colorItemTransition.clone ();
+    // Transition selected
+    this.colorItemTransitionSelected = PreferenceManager.getInstance ()
+        .getColorItemTransitionSelected ();
+    this.initialColorItemTransitionSelected = this.colorItemTransitionSelected
+        .clone ();
     // Transition error
     this.colorItemTransitionError = PreferenceManager.getInstance ()
         .getColorItemTransitionError ();
@@ -1313,7 +1331,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     // State
     this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
     this.initialColorItemState = this.colorItemState.clone ();
-    // Parser symbol
+    // Symbol
     this.colorItemSymbol = PreferenceManager.getInstance ()
         .getColorItemSymbol ();
     this.initialColorItemSymbol = this.colorItemSymbol.clone ();
@@ -1420,6 +1438,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorListModel.add ( this.colorItemStateError );
 
     this.colorListModel.add ( this.colorItemTransition );
+    this.colorListModel.add ( this.colorItemTransitionSelected );
     this.colorListModel.add ( this.colorItemTransitionActive );
     this.colorListModel.add ( this.colorItemTransitionError );
 
@@ -1985,15 +2004,20 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
     this.gui.jTabbedPane.setToolTipTextAt ( 0, Messages
         .getString ( "PreferencesDialog.TabGeneralToolTip" ) ); //$NON-NLS-1$
-    // Colors
+    // View
     this.gui.jTabbedPane.setTitleAt ( 1, Messages
-        .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
+        .getString ( "PreferencesDialog.TabView" ) ); //$NON-NLS-1$
     this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
+        .getString ( "PreferencesDialog.TabViewToolTip" ) ); //$NON-NLS-1$
+    // Colors
+    this.gui.jTabbedPane.setTitleAt ( 2, Messages
+        .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
+    this.gui.jTabbedPane.setToolTipTextAt ( 2, Messages
         .getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
     // Alphabet
-    this.gui.jTabbedPane.setTitleAt ( 2, Messages
+    this.gui.jTabbedPane.setTitleAt ( 3, Messages
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( 3, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
     this.gui.jLabelInputAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
@@ -2102,6 +2126,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorTransitionCaption" ) ); //$NON-NLS-1$
     this.colorItemTransition.setDescription ( Messages
         .getString ( "Preferences.ColorTransitionDescription" ) ); //$NON-NLS-1$
+    // Transition selected
+    this.colorItemTransitionSelected.setCaption ( Messages
+        .getString ( "Preferences.ColorTransitionSelectedCaption" ) ); //$NON-NLS-1$
+    this.colorItemTransitionSelected.setDescription ( Messages
+        .getString ( "Preferences.ColorTransitionSelectedDescription" ) ); //$NON-NLS-1$
     // Transition error
     this.colorItemTransitionError.setCaption ( Messages
         .getString ( "Preferences.ColorTransitionErrorCaption" ) ); //$NON-NLS-1$
@@ -2317,6 +2346,22 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemTransition );
       PreferenceManager.getInstance ().fireColorChangedTransition (
           this.colorItemTransition.getColor () );
+    }
+    // Transition selected
+    if ( !this.initialColorItemTransitionSelected
+        .equals ( this.colorItemTransitionSelected ) )
+    {
+      logger
+          .debug ( "color of the selected transition changed to \"" //$NON-NLS-1$
+              + "r=" + this.colorItemTransitionSelected.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "g=" + this.colorItemTransitionSelected.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "b=" + this.colorItemTransitionSelected.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemTransitionSelected = this.colorItemTransitionSelected
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemTransitionSelected (
+          this.colorItemTransitionSelected );
+      PreferenceManager.getInstance ().fireColorChangedTransitionSelected (
+          this.colorItemTransitionSelected.getColor () );
     }
     // Transition error
     if ( !this.initialColorItemTransitionError

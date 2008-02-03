@@ -27,6 +27,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -598,6 +599,24 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
     // Set states to not editable
     this.jGraph.setEditable ( false );
+
+    // The Handles of the transitions are not visible
+    this.jGraph.setHandleSize ( 0 );
+
+    this.jGraph.setHighlightColor ( PreferenceManager.getInstance ()
+        .getColorItemTransitionSelected ().getColor () );
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedTransitionSelected ( Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.setHighlightColor ( newColor );
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+        } );
 
     double zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;

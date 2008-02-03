@@ -537,37 +537,6 @@ public final class MachinePanel implements EditorPanel
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedStateStart ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedStateStart ( Color newColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultStateView state = ( DefaultStateView ) object;
-                if ( state.getState ().isStartState () )
-                  GraphConstants.setBackground ( state.getAttributes (),
-                      newColor );
-
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
            * @see ColorChangedAdapter#colorChangedStateBackground ( Color )
            */
           @SuppressWarnings ( "synthetic-access" )
@@ -592,7 +561,37 @@ public final class MachinePanel implements EditorPanel
             }
             MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) );
+          }
 
+
+          /**
+           * {@inheritDoc}
+           * 
+           * @see ColorChangedAdapter#colorChangedStateStart ( Color )
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedStateStart ( Color newColor )
+          {
+            for ( Object object : DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) )
+            {
+              try
+              {
+                DefaultStateView state = ( DefaultStateView ) object;
+                if ( state.getState ().isStartState () )
+                {
+                  GraphConstants.setBackground ( state.getAttributes (),
+                      newColor );
+                }
+              }
+              catch ( ClassCastException e )
+              {
+                // Do nothing
+              }
+            }
+            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
+                .getAll ( MachinePanel.this.graphModel ) );
           }
 
 
@@ -621,9 +620,7 @@ public final class MachinePanel implements EditorPanel
             }
             MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) );
-
           }
-
         } );
   }
 

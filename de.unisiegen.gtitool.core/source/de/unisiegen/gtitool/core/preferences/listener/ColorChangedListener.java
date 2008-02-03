@@ -91,6 +91,14 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the active {@link Symbol} changed.
+   * 
+   * @param newColor The new color of the active {@link Symbol}.
+   */
+  public void colorChangedSymbolActive ( Color newColor );
+
+
+  /**
    * Invoked when the color of the error {@link Symbol} changed.
    * 
    * @param newColor The new color of the error {@link Symbol}.

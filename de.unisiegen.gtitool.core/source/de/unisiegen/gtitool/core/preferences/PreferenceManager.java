@@ -46,14 +46,20 @@ public class PreferenceManager
   /**
    * The default {@link Color} of the active {@link State}.
    */
-  public static final Color DEFAULT_STATE_ACTIVE_COLOR = new Color ( 0, 0, 255 );
+  public static final Color DEFAULT_STATE_ACTIVE_COLOR = new Color ( 0, 255, 0 );
 
 
   /**
    * The default {@link Color} of the active {@link Transition}.
    */
-  public static final Color DEFAULT_TRANSITION_ACTIVE_COLOR = new Color ( 0, 0,
-      255 );
+  public static final Color DEFAULT_TRANSITION_ACTIVE_COLOR = new Color ( 0,
+      255, 0 );
+
+
+  /**
+   * The default {@link Color} of the active {@link Symbol}.
+   */
+  public static final Color DEFAULT_SYMBOL_ACTIVE_COLOR = new Color ( 0, 255, 0 );
 
 
   /**
@@ -371,6 +377,23 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the active {@link Symbol} has
+   * changed.
+   * 
+   * @param newColor The new color of the active {@link Symbol}.
+   */
+  public final void fireColorChangedSymbolActive ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].colorChangedSymbolActive ( newColor );
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the error {@link Symbol} has
    * changed.
    * 
@@ -646,6 +669,28 @@ public class PreferenceManager
         .getString ( "Preferences.ColorSymbolDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the active {@link Symbol}.
+   * 
+   * @return The {@link ColorItem} of the active {@link Symbol}.
+   */
+  public final ColorItem getColorItemSymbolActive ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorSymbolActiveR", //$NON-NLS-1$
+        DEFAULT_SYMBOL_ACTIVE_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorSymbolActiveG", //$NON-NLS-1$
+        DEFAULT_SYMBOL_ACTIVE_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorSymbolActiveB", //$NON-NLS-1$
+        DEFAULT_SYMBOL_ACTIVE_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorSymbolActiveCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorSymbolActiveDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_SYMBOL_ACTIVE_COLOR );
   }
 
 
@@ -947,6 +992,26 @@ public class PreferenceManager
         .getColor ().getGreen () );
     this.preferences.putInt ( "Preferences.ColorSymbolB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the active {@link Symbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the active {@link Symbol}.
+   */
+  public final void setColorItemSymbolActive ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the active symbol to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorSymbolActiveR", //$NON-NLS-1$
+        colorItem.getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorSymbolActiveG", //$NON-NLS-1$
+        colorItem.getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorSymbolActiveB", //$NON-NLS-1$
+        colorItem.getColor ().getBlue () );
   }
 
 

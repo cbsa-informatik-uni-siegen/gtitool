@@ -1,7 +1,9 @@
-CF		- Fehlerhafte Symbole highlighten
 CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 BM		- Routing der Transitionen
-CF		- Dynamische Änderung des selektierten Zustandes
 CF		- Initiale Werte überprüfen
+CF		- Die beiden PreferenceManager besser trennen
+CF		- Bei dem State auch den PrettyString verwenden
+CF		- Die aktiven Symbole aus dem core liefern
+BM		- Die Gradient-Farbe wieder bei Zuständen einbauen

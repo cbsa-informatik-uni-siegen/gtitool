@@ -31,16 +31,16 @@ public enum Style
    * Style of {@link Symbol}s.
    */
   SYMBOL,
+  
+  /**
+   * Style of error {@link Symbol}s.
+   */
+  SYMBOL_ERROR,
 
   /**
    * Style of keywords.
    */
-  KEYWORD,
-
-  /**
-   * Style of error {@link Symbol}s.
-   */
-  ERROR_SYMBOL;
+  KEYWORD;
 
   /**
    * The {@link State} color.
@@ -57,7 +57,7 @@ public enum Style
   /**
    * The error {@link Symbol} color.
    */
-  private Color errorSymbol;
+  private Color symbolError;
 
 
   /**
@@ -66,7 +66,7 @@ public enum Style
   private Style ()
   {
     // State
-    this.state = PreferenceManager.getInstance ().getColorItemParserState ()
+    this.state = PreferenceManager.getInstance ().getColorItemState ()
         .getColor ();
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
@@ -74,13 +74,13 @@ public enum Style
 
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserState ( Color newColor )
+          public void colorChangedState ( Color newColor )
           {
             Style.this.state = newColor;
           }
         } );
     // Symbol
-    this.symbol = PreferenceManager.getInstance ().getColorItemParserSymbol ()
+    this.symbol = PreferenceManager.getInstance ().getColorItemSymbol ()
         .getColor ();
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
@@ -88,23 +88,23 @@ public enum Style
 
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserSymbol ( Color newColor )
+          public void colorChangedSymbol ( Color newColor )
           {
             Style.this.symbol = newColor;
           }
         } );
     // Error symbol
-    this.errorSymbol = PreferenceManager.getInstance ()
-        .getColorItemErrorSymbol ().getColor ();
+    this.symbolError = PreferenceManager.getInstance ()
+        .getColorItemSymbolError ().getColor ();
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedErrorSymbol ( Color newColor )
+          public void colorChangedSymbolError ( Color newColor )
           {
-            Style.this.errorSymbol = newColor;
+            Style.this.symbolError = newColor;
           }
         } );
   }
@@ -135,9 +135,9 @@ public enum Style
       {
         return Color.BLACK;
       }
-      case ERROR_SYMBOL :
+      case SYMBOL_ERROR :
       {
-        return this.errorSymbol;
+        return this.symbolError;
       }
       default :
       {

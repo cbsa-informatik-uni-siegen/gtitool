@@ -566,49 +566,43 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The {@link ColorItem} of the {@link State}.
    */
-  private ColorItem colorItemState;
+  private ColorItem colorItemStateBackground;
 
 
   /**
    * The {@link ColorItem} of the selected {@link State}.
    */
-  private ColorItem colorItemSelectedState;
+  private ColorItem colorItemStateSelected;
 
 
   /**
    * The {@link ColorItem} of the active {@link State}.
    */
-  private ColorItem colorItemActiveState;
+  private ColorItem colorItemStateActive;
 
 
   /**
    * The {@link ColorItem} of the active {@link Transition}.
    */
-  private ColorItem colorItemActiveTransition;
+  private ColorItem colorItemTransitionActive;
 
 
   /**
    * The {@link ColorItem} of the start {@link State}.
    */
-  private ColorItem colorItemStartState;
+  private ColorItem colorItemStateStart;
 
 
   /**
    * The {@link ColorItem} of the error {@link State}.
    */
-  private ColorItem colorItemErrorState;
-
-
-  /**
-   * The {@link ColorItem} of the {@link Symbol}.
-   */
-  private ColorItem colorItemSymbol;
+  private ColorItem colorItemStateError;
 
 
   /**
    * The {@link ColorItem} of the error {@link Symbol}.
    */
-  private ColorItem colorItemErrorSymbol;
+  private ColorItem colorItemSymbolError;
 
 
   /**
@@ -620,7 +614,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The {@link ColorItem} of the error {@link Transition}.
    */
-  private ColorItem colorItemErrorTransition;
+  private ColorItem colorItemTransitionError;
 
 
   /**
@@ -638,13 +632,13 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The {@link ColorItem} of the parser {@link State}.
    */
-  private ColorItem colorItemParserState;
+  private ColorItem colorItemState;
 
 
   /**
    * The {@link ColorItem} of the parser {@link Symbol}.
    */
-  private ColorItem colorItemParserSymbol;
+  private ColorItem colorItemSymbol;
 
 
   /**
@@ -692,49 +686,43 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The initial {@link ColorItem} of the {@link State}.
    */
-  private ColorItem initialColorItemState;
+  private ColorItem initialColorItemStateBackground;
 
 
   /**
    * The initial {@link ColorItem} of the selected {@link State}.
    */
-  private ColorItem initialColorItemSelectedState;
+  private ColorItem initialColorItemStateSelected;
 
 
   /**
    * The initial {@link ColorItem} of the active {@link State}.
    */
-  private ColorItem initialColorItemActiveState;
+  private ColorItem initialColorItemStateActive;
 
 
   /**
    * The initial {@link ColorItem} of the active {@link Transition}.
    */
-  private ColorItem initialColorItemActiveTransition;
+  private ColorItem initialColorItemTransitionActive;
 
 
   /**
    * The initial {@link ColorItem} of the start {@link State}.
    */
-  private ColorItem initialColorItemStartState;
+  private ColorItem initialColorItemStateStart;
 
 
   /**
    * The initial {@link ColorItem} of the error {@link State}.
    */
-  private ColorItem initialColorItemErrorState;
-
-
-  /**
-   * The initial {@link ColorItem} of the {@link Symbol}.
-   */
-  private ColorItem initialColorItemSymbol;
+  private ColorItem initialColorItemStateError;
 
 
   /**
    * The initial {@link ColorItem} of the error {@link Symbol}.
    */
-  private ColorItem initialColorItemErrorSymbol;
+  private ColorItem initialColorItemSymbolError;
 
 
   /**
@@ -746,7 +734,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The initial {@link ColorItem} of the error {@link Transition}.
    */
-  private ColorItem initialColorItemErrorTransition;
+  private ColorItem initialColorItemTransitionError;
 
 
   /**
@@ -764,13 +752,13 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The initial {@link ColorItem} of the parser {@link State}.
    */
-  private ColorItem initialColorItemParserState;
+  private ColorItem initialColorItemState;
 
 
   /**
    * The initial {@link ColorItem} of the parser {@link Symbol}.
    */
-  private ColorItem initialColorItemParserSymbol;
+  private ColorItem initialColorItemSymbol;
 
 
   /**
@@ -1042,7 +1030,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   public final void handleRestore ()
   {
     logger.debug ( "handle restore" ); //$NON-NLS-1$
- 
+
     /*
      * General
      */
@@ -1050,7 +1038,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
     this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM
         .getFactor () );
-   
+
     /*
      * View
      */
@@ -1063,26 +1051,25 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jSliderAutoStep
         .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
             .getAutoStepInterval () );
- 
+
     /*
      * Color
      */
-    this.colorItemState.restore ();
-    this.colorItemSelectedState.restore ();
-    this.colorItemActiveState.restore ();
-    this.colorItemActiveTransition.restore ();
-    this.colorItemStartState.restore ();
-    this.colorItemErrorState.restore ();
-    this.colorItemSymbol.restore ();
-    this.colorItemErrorSymbol.restore ();
+    this.colorItemStateBackground.restore ();
+    this.colorItemStateSelected.restore ();
+    this.colorItemStateActive.restore ();
+    this.colorItemTransitionActive.restore ();
+    this.colorItemStateStart.restore ();
+    this.colorItemStateError.restore ();
+    this.colorItemSymbolError.restore ();
     this.colorItemTransition.restore ();
-    this.colorItemErrorTransition.restore ();
+    this.colorItemTransitionError.restore ();
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
-    this.colorItemParserState.restore ();
-    this.colorItemParserSymbol.restore ();
+    this.colorItemState.restore ();
+    this.colorItemSymbol.restore ();
     this.gui.jListColor.repaint ();
-  
+
     /*
      * Alphabet
      */
@@ -1275,46 +1262,44 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void initColorList ()
   {
-    // State
-    this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
-    this.initialColorItemState = this.colorItemState.clone ();
-    // Selected state
-    this.colorItemSelectedState = PreferenceManager.getInstance ()
-        .getColorItemSelectedState ();
-    this.initialColorItemSelectedState = this.colorItemSelectedState.clone ();
-    // Active state
-    this.colorItemActiveState = PreferenceManager.getInstance ()
-        .getColorItemActiveState ();
-    this.initialColorItemActiveState = this.colorItemActiveState.clone ();
-    // Active transition
-    this.colorItemActiveTransition = PreferenceManager.getInstance ()
-        .getColorItemActiveTransition ();
-    this.initialColorItemActiveTransition = this.colorItemActiveTransition
+    // StateBackground
+    this.colorItemStateBackground = PreferenceManager.getInstance ()
+        .getColorItemStateBackground ();
+    this.initialColorItemStateBackground = this.colorItemStateBackground
         .clone ();
-    // Start state
-    this.colorItemStartState = PreferenceManager.getInstance ()
-        .getColorItemStartState ();
-    this.initialColorItemStartState = this.colorItemStartState.clone ();
-    // Error state
-    this.colorItemErrorState = PreferenceManager.getInstance ()
-        .getColorItemErrorState ();
-    this.initialColorItemErrorState = this.colorItemErrorState.clone ();
-    // Symbol
-    this.colorItemSymbol = PreferenceManager.getInstance ()
-        .getColorItemSymbol ();
-    this.initialColorItemSymbol = this.colorItemSymbol.clone ();
-    // Error symbol
-    this.colorItemErrorSymbol = PreferenceManager.getInstance ()
-        .getColorItemErrorSymbol ();
-    this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
+    // Selected state
+    this.colorItemStateSelected = PreferenceManager.getInstance ()
+        .getColorItemStateSelected ();
+    this.initialColorItemStateSelected = this.colorItemStateSelected.clone ();
+    // Active state
+    this.colorItemStateActive = PreferenceManager.getInstance ()
+        .getColorItemStateActive ();
+    this.initialColorItemStateActive = this.colorItemStateActive.clone ();
+    // Active transition
+    this.colorItemTransitionActive = PreferenceManager.getInstance ()
+        .getColorItemTransitionActive ();
+    this.initialColorItemTransitionActive = this.colorItemTransitionActive
+        .clone ();
+    // State start
+    this.colorItemStateStart = PreferenceManager.getInstance ()
+        .getColorItemStateStart ();
+    this.initialColorItemStateStart = this.colorItemStateStart.clone ();
+    // State error
+    this.colorItemStateError = PreferenceManager.getInstance ()
+        .getColorItemStateError ();
+    this.initialColorItemStateError = this.colorItemStateError.clone ();
+    // Symbol error
+    this.colorItemSymbolError = PreferenceManager.getInstance ()
+        .getColorItemSymbolError ();
+    this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
     // Transition
     this.colorItemTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ();
     this.initialColorItemTransition = this.colorItemTransition.clone ();
-    // Error transition
-    this.colorItemErrorTransition = PreferenceManager.getInstance ()
-        .getColorItemErrorTransition ();
-    this.initialColorItemErrorTransition = this.colorItemErrorTransition
+    // Transition error
+    this.colorItemTransitionError = PreferenceManager.getInstance ()
+        .getColorItemTransitionError ();
+    this.initialColorItemTransitionError = this.colorItemTransitionError
         .clone ();
     // Parser warning
     this.colorItemParserWarning = PreferenceManager.getInstance ()
@@ -1325,14 +1310,13 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getColorItemParserHighlighting ();
     this.initialColorItemParserHighlighting = this.colorItemParserHighlighting
         .clone ();
-    // Parser state
-    this.colorItemParserState = PreferenceManager.getInstance ()
-        .getColorItemParserState ();
-    this.initialColorItemParserState = this.colorItemParserState.clone ();
+    // State
+    this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
+    this.initialColorItemState = this.colorItemState.clone ();
     // Parser symbol
-    this.colorItemParserSymbol = PreferenceManager.getInstance ()
-        .getColorItemParserSymbol ();
-    this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
+    this.colorItemSymbol = PreferenceManager.getInstance ()
+        .getColorItemSymbol ();
+    this.initialColorItemSymbol = this.colorItemSymbol.clone ();
     // Renderer
     this.colorItemCellRenderer = new ColorItemCellRenderer ();
     this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
@@ -1429,19 +1413,22 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // Items
     this.colorListModel.add ( this.colorItemState );
-    this.colorListModel.add ( this.colorItemSelectedState );
-    this.colorListModel.add ( this.colorItemActiveState );
-    this.colorListModel.add ( this.colorItemActiveTransition );
-    this.colorListModel.add ( this.colorItemStartState );
-    this.colorListModel.add ( this.colorItemErrorState );
-    this.colorListModel.add ( this.colorItemSymbol );
-    this.colorListModel.add ( this.colorItemErrorSymbol );
+    this.colorListModel.add ( this.colorItemStateBackground );
+    this.colorListModel.add ( this.colorItemStateSelected );
+    this.colorListModel.add ( this.colorItemStateStart );
+    this.colorListModel.add ( this.colorItemStateActive );
+    this.colorListModel.add ( this.colorItemStateError );
+
     this.colorListModel.add ( this.colorItemTransition );
-    this.colorListModel.add ( this.colorItemErrorTransition );
+    this.colorListModel.add ( this.colorItemTransitionActive );
+    this.colorListModel.add ( this.colorItemTransitionError );
+
+    this.colorListModel.add ( this.colorItemSymbol );
+    this.colorListModel.add ( this.colorItemSymbolError );
+
     this.colorListModel.add ( this.colorItemParserWarning );
     this.colorListModel.add ( this.colorItemParserHighlighting );
-    this.colorListModel.add ( this.colorItemParserState );
-    this.colorListModel.add ( this.colorItemParserSymbol );
+
     this.gui.jListColor.setModel ( this.colorListModel );
   }
 
@@ -2075,76 +2062,71 @@ public final class PreferencesDialog implements LanguageChangedListener
         "PreferencesDialog.RestoreMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIButtonRestore.setToolTipText ( Messages
         .getString ( "PreferencesDialog.RestoreToolTip" ) ); //$NON-NLS-1$
-    // State
-    this.colorItemState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorStateDescription" ) ); //$NON-NLS-1$
-    // Selected state
-    this.colorItemSelectedState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorSelectedStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemSelectedState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorSelectedStateDescription" ) ); //$NON-NLS-1$
-    // Active state
-    this.colorItemActiveState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorActiveStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemActiveState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorActiveStateDescription" ) ); //$NON-NLS-1$
-    // Active transition
-    this.colorItemActiveTransition.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorActiveTransitionCaption" ) ); //$NON-NLS-1$
-    this.colorItemActiveTransition.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorActiveTransitionDescription" ) ); //$NON-NLS-1$
-    // Start state
-    this.colorItemStartState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorStartStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemStartState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorStartStateDescription" ) ); //$NON-NLS-1$
-    // Error state
-    this.colorItemErrorState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorErrorStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemErrorState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorErrorStateDescription" ) ); //$NON-NLS-1$
-    // Symbol
-    this.colorItemSymbol.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorSymbolCaption" ) ); //$NON-NLS-1$
-    this.colorItemSymbol.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorSymbolDescription" ) ); //$NON-NLS-1$
-    // Error symbol
-    this.colorItemErrorSymbol.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorErrorSymbolCaption" ) ); //$NON-NLS-1$
-    this.colorItemErrorSymbol.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorErrorSymbolDescription" ) ); //$NON-NLS-1$
+    // State background
+    this.colorItemStateBackground.setCaption ( Messages
+        .getString ( "Preferences.ColorStateBackgroundCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateBackground.setDescription ( Messages
+        .getString ( "Preferences.ColorStateBackgroundDescription" ) ); //$NON-NLS-1$
+    // State selected
+    this.colorItemStateSelected.setCaption ( Messages
+        .getString ( "Preferences.ColorStateSelectedCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateSelected.setDescription ( Messages
+        .getString ( "Preferences.ColorStateSelectedDescription" ) ); //$NON-NLS-1$
+    // State active
+    this.colorItemStateActive.setCaption ( Messages
+        .getString ( "Preferences.ColorStateActiveCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateActive.setDescription ( Messages
+        .getString ( "Preferences.ColorStateActiveDescription" ) ); //$NON-NLS-1$
+    // Transition active
+    this.colorItemTransitionActive.setCaption ( Messages
+        .getString ( "Preferences.ColorTransitionActiveCaption" ) ); //$NON-NLS-1$
+    this.colorItemTransitionActive.setDescription ( Messages
+        .getString ( "Preferences.ColorTransitionActiveDescription" ) ); //$NON-NLS-1$
+    // State start
+    this.colorItemStateStart.setCaption ( Messages
+        .getString ( "Preferences.ColorStateStartCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateStart.setDescription ( Messages
+        .getString ( "Preferences.ColorStateStartDescription" ) ); //$NON-NLS-1$
+    // State error
+    this.colorItemStateError.setCaption ( Messages
+        .getString ( "Preferences.ColorStateErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateError.setDescription ( Messages
+        .getString ( "Preferences.ColorStateErrorDescription" ) ); //$NON-NLS-1$
+    // Symbol error
+    this.colorItemSymbolError.setCaption ( Messages
+        .getString ( "Preferences.ColorSymbolErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemSymbolError.setDescription ( Messages
+        .getString ( "Preferences.ColorSymbolErrorDescription" ) ); //$NON-NLS-1$
     // Transition
     this.colorItemTransition.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorTransitionCaption" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorTransitionCaption" ) ); //$NON-NLS-1$
     this.colorItemTransition.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorTransitionDescription" ) ); //$NON-NLS-1$
-    // Error transition
-    this.colorItemErrorTransition.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorErrorTransitionCaption" ) ); //$NON-NLS-1$
-    this.colorItemErrorTransition.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorErrorTransitionDescription" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorTransitionDescription" ) ); //$NON-NLS-1$
+    // Transition error
+    this.colorItemTransitionError.setCaption ( Messages
+        .getString ( "Preferences.ColorTransitionErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemTransitionError.setDescription ( Messages
+        .getString ( "Preferences.ColorTransitionErrorDescription" ) ); //$NON-NLS-1$
     // Parser warning
     this.colorItemParserWarning.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorParserWarningCaption" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorParserWarningCaption" ) ); //$NON-NLS-1$
     this.colorItemParserWarning.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorParserWarningDescription" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorParserWarningDescription" ) ); //$NON-NLS-1$
     // Parser highlighting
     this.colorItemParserHighlighting.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
     this.colorItemParserHighlighting.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
-    // Parser state
-    this.colorItemParserState.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorParserStateCaption" ) ); //$NON-NLS-1$
-    this.colorItemParserState.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorParserStateDescription" ) ); //$NON-NLS-1$
-    // Parser symbol
-    this.colorItemParserSymbol.setCaption ( Messages
-        .getString ( "PreferencesDialog.ColorParserSymbolCaption" ) ); //$NON-NLS-1$
-    this.colorItemParserSymbol.setDescription ( Messages
-        .getString ( "PreferencesDialog.ColorParserSymbolDescription" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
+    // State
+    this.colorItemState.setCaption ( Messages
+        .getString ( "Preferences.ColorStateCaption" ) ); //$NON-NLS-1$
+    this.colorItemState.setDescription ( Messages
+        .getString ( "Preferences.ColorStateDescription" ) ); //$NON-NLS-1$
+    // Symbol
+    this.colorItemSymbol.setCaption ( Messages
+        .getString ( "Preferences.ColorSymbolCaption" ) ); //$NON-NLS-1$
+    this.colorItemSymbol.setDescription ( Messages
+        .getString ( "Preferences.ColorSymbolDescription" ) ); //$NON-NLS-1$
     // Update description
     ColorItem colorItem = ( ColorItem ) this.gui.jListColor.getSelectedValue ();
     if ( colorItem != null )
@@ -2226,112 +2208,102 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveColor ()
   {
-    // State
-    if ( !this.initialColorItemState.equals ( this.colorItemState ) )
+    // StateBackground
+    if ( !this.initialColorItemStateBackground
+        .equals ( this.colorItemStateBackground ) )
     {
-      logger.debug ( "color of the state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemState = this.colorItemState.clone ();
-      PreferenceManager.getInstance ().setColorItemState ( this.colorItemState );
-      PreferenceManager.getInstance ().fireColorChangedState (
-          this.colorItemState.getColor () );
+      logger.debug ( "color of the state background changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemStateBackground.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemStateBackground.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemStateBackground.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemStateBackground = this.colorItemStateBackground
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemStateBackground (
+          this.colorItemStateBackground );
+      PreferenceManager.getInstance ().fireColorChangedStateBackground (
+          this.colorItemStateBackground.getColor () );
     }
     // Selected state
-    if ( !this.initialColorItemSelectedState
-        .equals ( this.colorItemSelectedState ) )
+    if ( !this.initialColorItemStateSelected
+        .equals ( this.colorItemStateSelected ) )
     {
       logger.debug ( "color of the selected state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemSelectedState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemSelectedState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemSelectedState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemSelectedState = this.colorItemSelectedState.clone ();
-      PreferenceManager.getInstance ().setColorItemSelectedState (
-          this.colorItemSelectedState );
-      PreferenceManager.getInstance ().fireColorChangedSelectedState (
-          this.colorItemSelectedState.getColor () );
+          + "r=" + this.colorItemStateSelected.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemStateSelected.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemStateSelected.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemStateSelected = this.colorItemStateSelected.clone ();
+      PreferenceManager.getInstance ().setColorItemStateSelected (
+          this.colorItemStateSelected );
+      PreferenceManager.getInstance ().fireColorChangedStateSelected (
+          this.colorItemStateSelected.getColor () );
     }
     // Active state
-    if ( !this.initialColorItemActiveState.equals ( this.colorItemActiveState ) )
+    if ( !this.initialColorItemStateActive.equals ( this.colorItemStateActive ) )
     {
       logger.debug ( "color of the active state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemActiveState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemActiveState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemActiveState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemActiveState = this.colorItemActiveState.clone ();
-      PreferenceManager.getInstance ().setColorItemActiveState (
-          this.colorItemActiveState );
-      PreferenceManager.getInstance ().fireColorChangedActiveState (
-          this.colorItemActiveState.getColor () );
+          + "r=" + this.colorItemStateActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemStateActive.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemStateActive.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemStateActive = this.colorItemStateActive.clone ();
+      PreferenceManager.getInstance ().setColorItemStateActive (
+          this.colorItemStateActive );
+      PreferenceManager.getInstance ().fireColorChangedStateActive (
+          this.colorItemStateActive.getColor () );
     }
     // Active transition
-    if ( !this.initialColorItemActiveTransition
-        .equals ( this.colorItemActiveTransition ) )
+    if ( !this.initialColorItemTransitionActive
+        .equals ( this.colorItemTransitionActive ) )
     {
       logger
           .debug ( "color of the active transition changed to \"" //$NON-NLS-1$
-              + "r=" + this.colorItemActiveTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "g=" + this.colorItemActiveTransition.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "b=" + this.colorItemActiveTransition.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemActiveTransition = this.colorItemActiveTransition
+              + "r=" + this.colorItemTransitionActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "g=" + this.colorItemTransitionActive.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "b=" + this.colorItemTransitionActive.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemTransitionActive = this.colorItemTransitionActive
           .clone ();
-      PreferenceManager.getInstance ().setColorItemActiveTransition (
-          this.colorItemActiveTransition );
-      PreferenceManager.getInstance ().fireColorChangedActiveTransition (
-          this.colorItemActiveTransition.getColor () );
+      PreferenceManager.getInstance ().setColorItemTransitionActive (
+          this.colorItemTransitionActive );
+      PreferenceManager.getInstance ().fireColorChangedTransitionActive (
+          this.colorItemTransitionActive.getColor () );
     }
-    // Start state
-    if ( !this.initialColorItemStartState.equals ( this.colorItemStartState ) )
+    // State start
+    if ( !this.initialColorItemStateStart.equals ( this.colorItemStateStart ) )
     {
       logger.debug ( "color of the start state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStartState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStartState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStartState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemStartState = this.colorItemStartState.clone ();
-      PreferenceManager.getInstance ().setColorItemStartState (
-          this.colorItemStartState );
-      PreferenceManager.getInstance ().fireColorChangedStartState (
-          this.colorItemStartState.getColor () );
+          + "r=" + this.colorItemStateStart.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemStateStart.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemStateStart.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemStateStart = this.colorItemStateStart.clone ();
+      PreferenceManager.getInstance ().setColorItemStateStart (
+          this.colorItemStateStart );
+      PreferenceManager.getInstance ().fireColorChangedStateStart (
+          this.colorItemStateStart.getColor () );
     }
-    // Error state
-    if ( !this.initialColorItemErrorState.equals ( this.colorItemErrorState ) )
+    // State error
+    if ( !this.initialColorItemStateError.equals ( this.colorItemStateError ) )
     {
       logger.debug ( "color of the error state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemErrorState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemErrorState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemErrorState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemErrorState = this.colorItemErrorState.clone ();
-      PreferenceManager.getInstance ().setColorItemErrorState (
-          this.colorItemErrorState );
-      PreferenceManager.getInstance ().fireColorChangedErrorState (
-          this.colorItemErrorState.getColor () );
+          + "r=" + this.colorItemStateError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemStateError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemStateError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemStateError = this.colorItemStateError.clone ();
+      PreferenceManager.getInstance ().setColorItemStateError (
+          this.colorItemStateError );
+      PreferenceManager.getInstance ().fireColorChangedStateError (
+          this.colorItemStateError.getColor () );
     }
-    // Symbol
-    if ( !this.initialColorItemSymbol.equals ( this.colorItemSymbol ) )
-    {
-      logger.debug ( "color of the symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemSymbol = this.colorItemSymbol.clone ();
-      PreferenceManager.getInstance ().setColorItemSymbol (
-          this.colorItemSymbol );
-      PreferenceManager.getInstance ().fireColorChangedSymbol (
-          this.colorItemSymbol.getColor () );
-    }
-    // Error symbol
-    if ( !this.initialColorItemErrorSymbol.equals ( this.colorItemErrorSymbol ) )
+    // Symbol error
+    if ( !this.initialColorItemSymbolError.equals ( this.colorItemSymbolError ) )
     {
       logger.debug ( "color of the error symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemErrorSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemErrorSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemErrorSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemErrorSymbol = this.colorItemErrorSymbol.clone ();
-      PreferenceManager.getInstance ().setColorItemErrorSymbol (
-          this.colorItemErrorSymbol );
-      PreferenceManager.getInstance ().fireColorChangedErrorSymbol (
-          this.colorItemErrorSymbol.getColor () );
+          + "r=" + this.colorItemSymbolError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemSymbolError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemSymbolError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
+      PreferenceManager.getInstance ().setColorItemSymbolError (
+          this.colorItemSymbolError );
+      PreferenceManager.getInstance ().fireColorChangedSymbolError (
+          this.colorItemSymbolError.getColor () );
     }
     // Transition
     if ( !this.initialColorItemTransition.equals ( this.colorItemTransition ) )
@@ -2346,20 +2318,20 @@ public final class PreferencesDialog implements LanguageChangedListener
       PreferenceManager.getInstance ().fireColorChangedTransition (
           this.colorItemTransition.getColor () );
     }
-    // Error transition
-    if ( !this.initialColorItemErrorTransition
-        .equals ( this.colorItemErrorTransition ) )
+    // Transition error
+    if ( !this.initialColorItemTransitionError
+        .equals ( this.colorItemTransitionError ) )
     {
       logger.debug ( "color of the error transition changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemErrorTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemErrorTransition.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemErrorTransition.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemErrorTransition = this.colorItemErrorTransition
+          + "r=" + this.colorItemTransitionError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemTransitionError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemTransitionError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemTransitionError = this.colorItemTransitionError
           .clone ();
-      PreferenceManager.getInstance ().setColorItemErrorTransition (
-          this.colorItemErrorTransition );
-      PreferenceManager.getInstance ().fireColorChangedErrorTransition (
-          this.colorItemErrorTransition.getColor () );
+      PreferenceManager.getInstance ().setColorItemTransitionError (
+          this.colorItemTransitionError );
+      PreferenceManager.getInstance ().fireColorChangedTransitionError (
+          this.colorItemTransitionError.getColor () );
     }
     // Parser warning
     if ( !this.initialColorItemParserWarning
@@ -2391,32 +2363,30 @@ public final class PreferencesDialog implements LanguageChangedListener
       PreferenceManager.getInstance ().fireColorChangedParserHighlighting (
           this.colorItemParserHighlighting.getColor () );
     }
-    // Parser state
-    if ( !this.initialColorItemParserState.equals ( this.colorItemParserState ) )
+    // State
+    if ( !this.initialColorItemState.equals ( this.colorItemState ) )
     {
-      logger.debug ( "color of the parser state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemParserState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemParserState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemParserState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemParserState = this.colorItemParserState.clone ();
-      PreferenceManager.getInstance ().setColorItemParserState (
-          this.colorItemParserState );
-      PreferenceManager.getInstance ().fireColorChangedParserState (
-          this.colorItemParserState.getColor () );
+      logger.debug ( "color of the state changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemState = this.colorItemState.clone ();
+      PreferenceManager.getInstance ().setColorItemState ( this.colorItemState );
+      PreferenceManager.getInstance ().fireColorChangedState (
+          this.colorItemState.getColor () );
     }
     // Parser symbol
-    if ( !this.initialColorItemParserSymbol
-        .equals ( this.colorItemParserSymbol ) )
+    if ( !this.initialColorItemSymbol.equals ( this.colorItemSymbol ) )
     {
       logger.debug ( "color of the parser symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemParserSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemParserSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemParserSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-      this.initialColorItemParserSymbol = this.colorItemParserSymbol.clone ();
-      PreferenceManager.getInstance ().setColorItemParserSymbol (
-          this.colorItemParserSymbol );
-      PreferenceManager.getInstance ().fireColorChangedParserSymbol (
-          this.colorItemParserSymbol.getColor () );
+          + "r=" + this.colorItemSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemSymbol = this.colorItemSymbol.clone ();
+      PreferenceManager.getInstance ().setColorItemSymbol (
+          this.colorItemSymbol );
+      PreferenceManager.getInstance ().fireColorChangedSymbol (
+          this.colorItemSymbol.getColor () );
     }
   }
 

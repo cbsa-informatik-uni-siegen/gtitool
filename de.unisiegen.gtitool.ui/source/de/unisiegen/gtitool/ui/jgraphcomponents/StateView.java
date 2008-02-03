@@ -131,7 +131,7 @@ public class StateView extends VertexView
       {
 
         g.setColor ( PreferenceManager.getInstance ()
-            .getColorItemSelectedState ().getColor () );
+            .getColorItemStateSelected ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
 
       }

@@ -19,67 +19,11 @@ public interface ColorChangedListener extends EventListener
 {
 
   /**
-   * Invoked when the color of the active {@link State} changed.
-   * 
-   * @param newColor The new color of the active {@link State}.
-   */
-  public void colorChangedActiveState ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the active {@link Transition} changed.
-   * 
-   * @param newColor The new color of the active {@link Transition}.
-   */
-  public void colorChangedActiveTransition ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the error {@link State} changed.
-   * 
-   * @param newColor The new color of the error {@link State}.
-   */
-  public void colorChangedErrorState ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the error {@link Symbol} changed.
-   * 
-   * @param newColor The new color of the error {@link Symbol}.
-   */
-  public void colorChangedErrorSymbol ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the error {@link Transition} changed.
-   * 
-   * @param newColor The new color of the error {@link Transition}.
-   */
-  public void colorChangedErrorTransition ( Color newColor );
-
-
-  /**
    * Invoked when the color of the parser highlighting changed.
    * 
    * @param newColor The new color of the parser highlighting.
    */
   public void colorChangedParserHighlighting ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the parser {@link State} changed.
-   * 
-   * @param newColor The new color of the parser {@link State}.
-   */
-  public void colorChangedParserState ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the parser {@link Symbol} changed.
-   * 
-   * @param newColor The new color of the parser {@link Symbol}.
-   */
-  public void colorChangedParserSymbol ( Color newColor );
 
 
   /**
@@ -91,11 +35,43 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the {@link State} changed.
+   * 
+   * @param newColor The new color of the {@link State}.
+   */
+  public void colorChangedState ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the active {@link State} changed.
+   * 
+   * @param newColor The new color of the active {@link State}.
+   */
+  public void colorChangedStateActive ( Color newColor );
+
+
+  /**
+   * Invoked when the background color of the {@link State} changed.
+   * 
+   * @param newColor The new color of the {@link State}.
+   */
+  public void colorChangedStateBackground ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the error {@link State} changed.
+   * 
+   * @param newColor The new color of the error {@link State}.
+   */
+  public void colorChangedStateError ( Color newColor );
+
+
+  /**
    * Invoked when the color of the selected {@link State} changed.
    * 
    * @param newColor The new color of the selected {@link State}.
    */
-  public void colorChangedSelectedState ( Color newColor );
+  public void colorChangedStateSelected ( Color newColor );
 
 
   /**
@@ -103,15 +79,7 @@ public interface ColorChangedListener extends EventListener
    * 
    * @param newColor The new color of the start {@link State}.
    */
-  public void colorChangedStartState ( Color newColor );
-
-
-  /**
-   * Invoked when the color of the {@link State} changed.
-   * 
-   * @param newColor The new color of the {@link State}.
-   */
-  public void colorChangedState ( Color newColor );
+  public void colorChangedStateStart ( Color newColor );
 
 
   /**
@@ -123,9 +91,33 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the error {@link Symbol} changed.
+   * 
+   * @param newColor The new color of the error {@link Symbol}.
+   */
+  public void colorChangedSymbolError ( Color newColor );
+
+
+  /**
    * Invoked when the color of the {@link Transition} changed.
    * 
    * @param newColor The new color of the {@link Transition}.
    */
   public void colorChangedTransition ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the active {@link Transition} changed.
+   * 
+   * @param newColor The new color of the active {@link Transition}.
+   */
+  public void colorChangedTransitionActive ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the error {@link Transition} changed.
+   * 
+   * @param newColor The new color of the error {@link Transition}.
+   */
+  public void colorChangedTransitionError ( Color newColor );
 }

@@ -173,7 +173,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
+          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
             initAttributes ();
@@ -349,12 +349,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private final void initAttributes ()
   {
-    StyleConstants
-        .setForeground ( this.attributes.get ( Style.STATE ), PreferenceManager
-            .getInstance ().getColorItemParserState ().getColor () );
+    StyleConstants.setForeground ( this.attributes.get ( Style.STATE ),
+        PreferenceManager.getInstance ().getColorItemState ().getColor () );
     StyleConstants.setForeground ( this.attributes.get ( Style.SYMBOL ),
-        PreferenceManager.getInstance ().getColorItemParserSymbol ()
-            .getColor () );
+        PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
   }
 
 

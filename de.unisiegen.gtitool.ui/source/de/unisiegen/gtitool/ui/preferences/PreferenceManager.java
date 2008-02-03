@@ -1,14 +1,12 @@
 package de.unisiegen.gtitool.ui.preferences;
 
 
-import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -19,13 +17,9 @@ import org.apache.log4j.Logger;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.preferences.item.ColorItem;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
@@ -47,20 +41,9 @@ import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class PreferenceManager
+public final class PreferenceManager extends
+    de.unisiegen.gtitool.core.preferences.PreferenceManager
 {
-
-  /**
-   * The default {@link Alphabet}.
-   */
-  public static Alphabet DEFAULT_ALPHABET;
-
-
-  /**
-   * The default push down {@link Alphabet}.
-   */
-  public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
-
 
   /**
    * The default use push down {@link Alphabet}.
@@ -198,27 +181,6 @@ public final class PreferenceManager
    */
   private static PreferenceManager singlePreferenceManager;
 
-  static
-  {
-    try
-    {
-      DEFAULT_ALPHABET = new DefaultAlphabet (
-          new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-      DEFAULT_PUSH_DOWN_ALPHABET = new DefaultAlphabet ( new DefaultSymbol (
-          "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-  }
-
 
   /**
    * Returns the single instance of the <code>PreferenceManager</code>.
@@ -236,15 +198,6 @@ public final class PreferenceManager
 
 
   /**
-   * The {@link Preferences} object for the node where the settings are stored
-   * and loaded.
-   * 
-   * @see Preferences
-   */
-  private Preferences preferences;
-
-
-  /**
    * The system {@link Locale}.
    */
   private Locale systemLocale;
@@ -259,22 +212,9 @@ public final class PreferenceManager
   /**
    * Allocates a new <code>PreferencesManager</code>.
    */
-  private PreferenceManager ()
+  protected PreferenceManager ()
   {
-    this.preferences = Preferences.userRoot ();
-  }
-
-
-  /**
-   * Adds the given {@link ColorChangedListener}.
-   * 
-   * @param listener The {@link ColorChangedListener}.
-   */
-  public final synchronized void addColorChangedListener (
-      ColorChangedListener listener )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .addColorChangedListener ( listener );
+    super ();
   }
 
 
@@ -299,185 +239,6 @@ public final class PreferenceManager
       ZoomFactorChangedListener listener )
   {
     this.listenerList.add ( ZoomFactorChangedListener.class, listener );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the active {@link State} has
-   * changed.
-   * 
-   * @param newColor The new color of the active {@link State}.
-   */
-  public final void fireColorChangedActiveState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedActiveState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the active {@link Transition} has
-   * changed.
-   * 
-   * @param newColor The new color of the active {@link Transition}.
-   */
-  public final void fireColorChangedActiveTransition ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedActiveTransition ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the error {@link State} has
-   * changed.
-   * 
-   * @param newColor The new color of the error {@link State}.
-   */
-  public final void fireColorChangedErrorState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedErrorState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the error {@link Symbol} has
-   * changed.
-   * 
-   * @param newColor The new color of the error {@link Symbol}.
-   */
-  public final void fireColorChangedErrorSymbol ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedErrorSymbol ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the error {@link Transition} has
-   * changed.
-   * 
-   * @param newColor The new color of the error {@link Transition}.
-   */
-  public final void fireColorChangedErrorTransition ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedErrorTransition ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the parser highlighting has
-   * changed.
-   * 
-   * @param newColor The new color of the parser warning.
-   */
-  public final void fireColorChangedParserHighlighting ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedParserHighlighting ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the parser {@link State} has
-   * changed.
-   * 
-   * @param newColor The new color of the parser {@link State}.
-   */
-  public final void fireColorChangedParserState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedParserState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the parser {@link Symbol} has
-   * changed.
-   * 
-   * @param newColor The new color of the parser {@link Symbol}.
-   */
-  public final void fireColorChangedParserSymbol ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedParserSymbol ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the parser warning has changed.
-   * 
-   * @param newColor The new color of the parser warning.
-   */
-  public final void fireColorChangedParserWarning ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedParserWarning ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the selected {@link State} has
-   * changed.
-   * 
-   * @param newColor The new color of the selected {@link State}.
-   */
-  public final void fireColorChangedSelectedState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedSelectedState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the start {@link State} has
-   * changed.
-   * 
-   * @param newColor The new color of the start {@link State}.
-   */
-  public final void fireColorChangedStartState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedStartState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the {@link State} has changed.
-   * 
-   * @param newColor The new color of the {@link State}.
-   */
-  public final void fireColorChangedState ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedState ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the {@link Symbol} has changed.
-   * 
-   * @param newColor The new color of the {@link Symbol}.
-   */
-  public final void fireColorChangedSymbol ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedSymbol ( newColor );
-  }
-
-
-  /**
-   * Let the listeners know that the color of the {@link Transition} has
-   * changed.
-   * 
-   * @param newColor The new color of the {@link Transition}.
-   */
-  public final void fireColorChangedTransition ( Color newColor )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .fireColorChangedTransition ( newColor );
   }
 
 
@@ -571,174 +332,6 @@ public final class PreferenceManager
   {
     return AutoStepItem.create ( this.preferences.getInt (
         "AutoStep", DEFAULT_AUTO_STEP_INTERVAL_ITEM.getAutoStepInterval () ) ); //$NON-NLS-1$
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the active {@link State}.
-   * 
-   * @return The {@link ColorItem} of the active {@link State}.
-   */
-  public final ColorItem getColorItemActiveState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemActiveState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the active {@link Transition}.
-   * 
-   * @return The {@link ColorItem} of the active {@link Transition}.
-   */
-  public final ColorItem getColorItemActiveTransition ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemActiveTransition ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the error {@link State}.
-   * 
-   * @return The {@link ColorItem} of the error {@link State}.
-   */
-  public final ColorItem getColorItemErrorState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemErrorState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the error {@link Symbol}.
-   * 
-   * @return The {@link ColorItem} of the error {@link Symbol}.
-   */
-  public final ColorItem getColorItemErrorSymbol ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemErrorSymbol ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the error {@link Transition}.
-   * 
-   * @return The {@link ColorItem} of the error {@link Transition}.
-   */
-  public final ColorItem getColorItemErrorTransition ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemErrorTransition ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the parser highlighting.
-   * 
-   * @return The {@link ColorItem} of the parser highlighting.
-   */
-  public final ColorItem getColorItemParserHighlighting ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemParserHighlighting ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the parser {State}.
-   * 
-   * @return The {@link ColorItem} of the parser {State}.
-   */
-  public final ColorItem getColorItemParserState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemParserState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the parser {Symbol}.
-   * 
-   * @return The {@link ColorItem} of the parser {Symbol}.
-   */
-  public final ColorItem getColorItemParserSymbol ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemParserSymbol ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the parser warning.
-   * 
-   * @return The {@link ColorItem} of the parser warning.
-   */
-  public final ColorItem getColorItemParserWarning ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemParserWarning ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the selected {@link State}.
-   * 
-   * @return The {@link ColorItem} of the selected {@link State}.
-   */
-  public final ColorItem getColorItemSelectedState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemSelectedState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the start {@link State}.
-   * 
-   * @return The {@link ColorItem} of the start {@link State}.
-   */
-  public final ColorItem getColorItemStartState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemStartState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the {@link State}.
-   * 
-   * @return The {@link ColorItem} of the {@link State}.
-   */
-  public final ColorItem getColorItemState ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemState ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the {@link Symbol}.
-   * 
-   * @return The {@link ColorItem} of the {@link Symbol}.
-   */
-  public final ColorItem getColorItemSymbol ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemSymbol ();
-  }
-
-
-  /**
-   * Returns the {@link ColorItem} of the {@link Transition}.
-   * 
-   * @return The {@link ColorItem} of the {@link Transition}.
-   */
-  public final ColorItem getColorItemTransition ()
-  {
-    return de.unisiegen.gtitool.core.preferences.PreferenceManager
-        .getInstance ().getColorItemTransition ();
   }
 
 
@@ -1040,19 +633,6 @@ public final class PreferenceManager
 
 
   /**
-   * Removes the given {@link ColorChangedListener}.
-   * 
-   * @param listener The {@link ColorChangedListener}.
-   */
-  public final synchronized void removeColorChangedListener (
-      ColorChangedListener listener )
-  {
-    de.unisiegen.gtitool.core.preferences.PreferenceManager.getInstance ()
-        .removeColorChangedListener ( listener );
-  }
-
-
-  /**
    * Removes the given {@link LanguageChangedListener}.
    * 
    * @param listener The {@link LanguageChangedListener}.
@@ -1107,295 +687,6 @@ public final class PreferenceManager
         + autoStepInterval.getAutoStepInterval () + "\"" ); //$NON-NLS-1$
     this.preferences.putInt ( "AutoStep", autoStepInterval //$NON-NLS-1$
         .getAutoStepInterval () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the active {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the active {@link State}.
-   */
-  public final void setColorItemActiveState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the avtive state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveStateB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the active {@link Transition}.
-   * 
-   * @param colorItem The {@link ColorItem} of the active {@link Transition}.
-   */
-  public final void setColorItemActiveTransition ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the active transition to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorActiveTransitionB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the error {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the error {@link State}.
-   */
-  public final void setColorItemErrorState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the error state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorStateB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the error {@link Symbol}.
-   * 
-   * @param colorItem The {@link ColorItem} of the error {@link Symbol}.
-   */
-  public final void setColorItemErrorSymbol ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the error symbol to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorErrorSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the error {@link Transition}.
-   * 
-   * @param colorItem The {@link ColorItem} of the error {@link Transition}.
-   */
-  public final void setColorItemErrorTransition ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the error transition to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionR", colorItem //$NON-NLS-1$
-            .getColor ().getRed () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionG", colorItem //$NON-NLS-1$
-            .getColor ().getGreen () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorErrorTransitionB", colorItem //$NON-NLS-1$
-            .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the parser highlighting.
-   * 
-   * @param colorItem The {@link ColorItem} of the parser highlighting.
-   */
-  public final void setColorItemParserHighlighting ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the parser highlighting to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingR", colorItem //$NON-NLS-1$
-            .getColor ().getRed () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingG", colorItem //$NON-NLS-1$
-            .getColor ().getGreen () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserHighlightingB", colorItem //$NON-NLS-1$
-            .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the parser {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the parser {@link State}.
-   */
-  public final void setColorItemParserState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the parser state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserStateB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the parser {@link Symbol}.
-   * 
-   * @param colorItem The {@link ColorItem} of the parser {@link Symbol}.
-   */
-  public final void setColorItemParserSymbol ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the parser symbol to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorParserSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the parser warning.
-   * 
-   * @param colorItem The {@link ColorItem} of the parser warning.
-   */
-  public final void setColorItemParserWarning ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the parser warning to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningR", colorItem //$NON-NLS-1$
-            .getColor ().getRed () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningG", colorItem //$NON-NLS-1$
-            .getColor ().getGreen () );
-    this.preferences.putInt (
-        "PreferencesDialog.ColorParserWarningB", colorItem //$NON-NLS-1$
-            .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the selected {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the selected {@link State}.
-   */
-  public final void setColorItemSelectedState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the selected state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSelectedStateB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the start {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the start {@link State}.
-   */
-  public final void setColorItemStartState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the start state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorStartStateR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStartStateG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStartStateB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the {@link State}.
-   * 
-   * @param colorItem The {@link ColorItem} of the {@link State}.
-   */
-  public final void setColorItemState ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the state to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorStateR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStateG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorStateB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the {@link Symbol}.
-   * 
-   * @param colorItem The {@link ColorItem} of the {@link Symbol}.
-   */
-  public final void setColorItemSymbol ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the symbol to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
-  }
-
-
-  /**
-   * Sets the {@link ColorItem} of the {@link Transition}.
-   * 
-   * @param colorItem The {@link ColorItem} of the {@link Transition}.
-   */
-  public final void setColorItemTransition ( ColorItem colorItem )
-  {
-    logger.debug ( "set color of the transition to \"" //$NON-NLS-1$
-        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "PreferencesDialog.ColorTransitionB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
   }
 
 

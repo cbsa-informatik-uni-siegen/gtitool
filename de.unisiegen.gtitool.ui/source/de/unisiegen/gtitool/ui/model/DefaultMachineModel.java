@@ -330,14 +330,15 @@ public final class DefaultMachineModel implements Storable, Modifyable
     if ( state.isStartState () )
     {
       GraphConstants.setBackground ( stateView.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStartState ()
+          PreferenceManager.getInstance ().getColorItemStateStart ()
               .getColor () );
       GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }
     else
     {
       GraphConstants.setBackground ( stateView.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+          PreferenceManager.getInstance ().getColorItemStateBackground ()
+              .getColor () );
       GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }
 
@@ -384,7 +385,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setLineColor ( newEdge.getAttributes (), PreferenceManager
         .getInstance ().getColorItemTransition ().getColor () );
     GraphConstants.setLabelColor ( newEdge.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemSymbol ().getColor () );
+        .getInstance ().getColorItemTransition ().getColor () );
 
     this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );

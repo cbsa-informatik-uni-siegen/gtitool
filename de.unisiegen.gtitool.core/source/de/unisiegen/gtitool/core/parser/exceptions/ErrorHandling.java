@@ -57,11 +57,11 @@ public abstract class ErrorHandling
   {
     Preferences preferences = Preferences.userRoot ();
     int r = preferences.getInt ( "PreferencesDialog.ColorParserSymbolR", //$NON-NLS-1$
-        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getRed () );
+        PreferenceManager.DEFAULT_SYMBOL_COLOR.getRed () );
     int g = preferences.getInt ( "PreferencesDialog.ColorParserSymbolG", //$NON-NLS-1$
-        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getGreen () );
+        PreferenceManager.DEFAULT_SYMBOL_COLOR.getGreen () );
     int b = preferences.getInt ( "PreferencesDialog.ColorParserSymbolB", //$NON-NLS-1$
-        PreferenceManager.DEFAULT_PARSER_SYMBOL_COLOR.getBlue () );
+        PreferenceManager.DEFAULT_SYMBOL_COLOR.getBlue () );
     symbolColor = getHexadecimalColor ( new Color ( r, g, b ) );
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();

@@ -313,7 +313,7 @@ public final class DefaultSymbol implements Symbol
     if ( this.error )
     {
       prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.ERROR_SYMBOL ) );
+          Style.SYMBOL_ERROR ) );
     }
     else
     {

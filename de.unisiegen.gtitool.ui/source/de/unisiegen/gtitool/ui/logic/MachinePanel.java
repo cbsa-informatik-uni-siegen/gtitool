@@ -537,26 +537,11 @@ public final class MachinePanel implements EditorPanel
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedSymbol ( Color )
+           * @see ColorChangedAdapter#colorChangedStateStart ( Color )
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserSymbol ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedStartState ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedStartState ( Color newColor )
+          public void colorChangedStateStart ( Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -583,11 +568,11 @@ public final class MachinePanel implements EditorPanel
           /**
            * {@inheritDoc}
            * 
-           * @see ColorChangedAdapter#colorChangedState ( Color )
+           * @see ColorChangedAdapter#colorChangedStateBackground ( Color )
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedState ( Color newColor )
+          public void colorChangedStateBackground ( Color newColor )
           {
             for ( Object object : DefaultGraphModel
                 .getAll ( MachinePanel.this.graphModel ) )
@@ -598,38 +583,6 @@ public final class MachinePanel implements EditorPanel
                 if ( !state.getState ().isStartState () )
                   GraphConstants.setBackground ( state.getAttributes (),
                       newColor );
-
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedSymbol ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultTransitionView t = ( DefaultTransitionView ) object;
-                GraphConstants.setLabelColor ( t.getAttributes (),
-                    PreferenceManager.getInstance ().getColorItemSymbol ()
-                        .getColor () );
 
               }
               catch ( ClassCastException e )
@@ -727,11 +680,11 @@ public final class MachinePanel implements EditorPanel
     {
       if ( view.getState ().isStartState () )
         GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStartState ().getColor () );
+            .getInstance ().getColorItemStateStart ().getColor () );
       else
       {
         GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemState ().getColor () );
+            .getInstance ().getColorItemStateBackground ().getColor () );
       }
     }
     this.graphModel
@@ -1071,7 +1024,8 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
       GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+          PreferenceManager.getInstance ().getColorItemStateBackground ()
+              .getColor () );
     }
 
     this.graphModel
@@ -1445,7 +1399,7 @@ public final class MachinePanel implements EditorPanel
         DefaultTransitionView transitionView = this.model
             .getTransitionViewForTransition ( current );
         GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveTransition ()
+            PreferenceManager.getInstance ().getColorItemTransitionActive ()
                 .getColor () );
         inactiveTransitions.remove ( transitionView );
       }
@@ -1464,7 +1418,7 @@ public final class MachinePanel implements EditorPanel
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
         GraphConstants.setBackground ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveState ()
+            PreferenceManager.getInstance ().getColorItemStateActive ()
                 .getColor () );
         inactiveStates.remove ( state );
       }
@@ -1472,7 +1426,8 @@ public final class MachinePanel implements EditorPanel
       for ( DefaultStateView current : inactiveStates )
       {
         GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+            PreferenceManager.getInstance ().getColorItemStateBackground ()
+                .getColor () );
       }
 
       this.graphModel.cellsChanged ( DefaultGraphModel
@@ -1524,7 +1479,7 @@ public final class MachinePanel implements EditorPanel
         DefaultTransitionView transitionView = this.model
             .getTransitionViewForTransition ( current );
         GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveTransition ()
+            PreferenceManager.getInstance ().getColorItemTransitionActive ()
                 .getColor () );
         inactiveTransitions.remove ( transitionView );
       }
@@ -1543,14 +1498,15 @@ public final class MachinePanel implements EditorPanel
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
         GraphConstants.setBackground ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemActiveState ()
+            PreferenceManager.getInstance ().getColorItemStateActive ()
                 .getColor () );
         inactiveStates.remove ( state );
       }
       for ( DefaultStateView current : inactiveStates )
       {
         GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemState ().getColor () );
+            PreferenceManager.getInstance ().getColorItemStateBackground ()
+                .getColor () );
       }
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
@@ -1606,7 +1562,8 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
       GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+          PreferenceManager.getInstance ().getColorItemStateBackground ()
+              .getColor () );
     }
 
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
@@ -1616,7 +1573,7 @@ public final class MachinePanel implements EditorPanel
     DefaultStateView state = this.model.getStateViewForState ( this.machine
         .getActiveState ( 0 ) );
     GraphConstants.setBackground ( state.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemActiveState ().getColor () );
+        .getInstance ().getColorItemStateActive ().getColor () );
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
     this.wordNavigation = true;
@@ -1639,7 +1596,8 @@ public final class MachinePanel implements EditorPanel
     for ( DefaultStateView current : this.model.getStateViewList () )
     {
       GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemState ().getColor () );
+          PreferenceManager.getInstance ().getColorItemStateBackground ()
+              .getColor () );
     }
 
     this.graphModel
@@ -1662,11 +1620,11 @@ public final class MachinePanel implements EditorPanel
     {
       if ( view.getState ().isStartState () )
         GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStartState ().getColor () );
+            .getInstance ().getColorItemStateStart ().getColor () );
       else
       {
         GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemState ().getColor () );
+            .getInstance ().getColorItemStateBackground ().getColor () );
       }
     }
     this.oldErrorStates.clear ();
@@ -1675,7 +1633,7 @@ public final class MachinePanel implements EditorPanel
       DefaultStateView view = this.model.getStateViewForState ( state );
       this.oldErrorStates.add ( view );
       GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemErrorState ().getColor () );
+          .getInstance ().getColorItemStateError ().getColor () );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1702,7 +1660,7 @@ public final class MachinePanel implements EditorPanel
           .getTransitionViewForTransition ( t );
       this.oldErrorTransitions.add ( view );
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemErrorTransition ().getColor () );
+          .getInstance ().getColorItemTransitionError ().getColor () );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );

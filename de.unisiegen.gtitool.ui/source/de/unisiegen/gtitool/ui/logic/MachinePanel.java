@@ -658,6 +658,16 @@ public final class MachinePanel implements EditorPanel
       {
         currentSymbol.setError ( false );
       }
+      for ( Symbol currentSymbol : current.getTransition ()
+          .getPushDownWordRead () )
+      {
+        currentSymbol.setError ( false );
+      }
+      for ( Symbol currentSymbol : current.getTransition ()
+          .getPushDownWordWrite () )
+      {
+        currentSymbol.setError ( false );
+      }
     }
 
     for ( DefaultTransitionView view : this.oldErrorTransitions )
@@ -984,9 +994,20 @@ public final class MachinePanel implements EditorPanel
     }
     else
     {
+      this.model.getJGraph ().clearSelection ();
       for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
         for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
+        {
+          currentSymbol.setError ( false );
+        }
+        for ( Symbol currentSymbol : current.getTransition ()
+            .getPushDownWordRead () )
+        {
+          currentSymbol.setError ( false );
+        }
+        for ( Symbol currentSymbol : current.getTransition ()
+            .getPushDownWordWrite () )
         {
           currentSymbol.setError ( false );
         }
@@ -1637,6 +1658,22 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Highlight the affected {@link Symbol}s.
+   * 
+   * @param symbols List with all {@link Symbol}s that are affected.
+   */
+  private final void highlightSymbols ( ArrayList < Symbol > symbols )
+  {
+    for ( Symbol current : symbols )
+    {
+      current.setError ( true );
+    }
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+  }
+
+
+  /**
    * Highlight the affected {@link Transition}s.
    * 
    * @param transitions List with all {@link Transition}s that are affected.
@@ -1657,22 +1694,6 @@ public final class MachinePanel implements EditorPanel
       this.oldErrorTransitions.add ( view );
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemTransitionError ().getColor () );
-    }
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
-  }
-
-
-  /**
-   * Highlight the affected {@link Symbol}s.
-   * 
-   * @param symbols List with all {@link Symbol}s that are affected.
-   */
-  private final void highlightSymbols ( ArrayList < Symbol > symbols )
-  {
-    for ( Symbol current : symbols )
-    {
-      current.setError ( true );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );

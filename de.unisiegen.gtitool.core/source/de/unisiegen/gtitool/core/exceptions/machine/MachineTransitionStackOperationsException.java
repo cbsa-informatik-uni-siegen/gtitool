@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
 
 
@@ -19,7 +20,8 @@ import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
  *          fehler $
  */
 public final class MachineTransitionStackOperationsException extends
-    MachineException implements TransitionsInvolvedException
+    MachineException implements TransitionsInvolvedException,
+    SymbolsInvolvedException
 {
 
   /**
@@ -54,6 +56,20 @@ public final class MachineTransitionStackOperationsException extends
     setDescription ( Messages.getString (
         "MachineTransitionStackOperationsException.Description", //$NON-NLS-1$
         this.transition ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see SymbolsInvolvedException#getSymbol()
+   */
+  public final ArrayList < Symbol > getSymbol ()
+  {
+    ArrayList < Symbol > result = new ArrayList < Symbol > ();
+    result.addAll ( this.transition.getPushDownWordRead ().get () );
+    result.addAll ( this.transition.getPushDownWordWrite ().get () );
+    return result;
   }
 
 

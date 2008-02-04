@@ -606,12 +606,12 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if the {@link Alphabet} of this <code>DefaultTransition</code>
-   * contains the given {@link Symbol}. Otherwise false.
+   * Returns true if this <code>DefaultTransition</code> contains the given
+   * {@link Symbol}. Otherwise false.
    * 
    * @param symbol The {@link Symbol}.
-   * @return True if the {@link Alphabet} of this <code>DefaultTransition</code>
-   *         contains the given {@link Symbol}. Otherwise false.
+   * @return True if this <code>DefaultTransition</code> contains the given
+   *         {@link Symbol}. Otherwise false.
    */
   public final boolean contains ( Symbol symbol )
   {

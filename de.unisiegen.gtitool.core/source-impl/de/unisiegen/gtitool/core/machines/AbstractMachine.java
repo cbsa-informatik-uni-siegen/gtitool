@@ -1319,7 +1319,7 @@ public abstract class AbstractMachine implements Machine
    *         {@link Alphabet} of this <code>AbstractMachine</code>, otherwise
    *         false.
    */
-  public boolean isSymbolRemoveableFromAlphabet ( Symbol symbol )
+  public final boolean isSymbolRemoveableFromAlphabet ( Symbol symbol )
   {
     if ( !this.alphabet.contains ( symbol ) )
     {
@@ -1344,14 +1344,24 @@ public abstract class AbstractMachine implements Machine
    * @return True if the given {@link Symbol} can be removed from the push down
    *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
    */
-  public boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol )
+  public final boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol )
   {
     if ( !this.pushDownAlphabet.contains ( symbol ) )
     {
       throw new IllegalArgumentException (
           "symbol is not in the push down alphabet" ); //$NON-NLS-1$
     }
-    // TODO Implement this
+    for ( Transition current : this.transitionList )
+    {
+      if ( current.getPushDownWordRead ().contains ( symbol ) )
+      {
+        return false;
+      }
+      if ( current.getPushDownWordWrite ().contains ( symbol ) )
+      {
+        return false;
+      }
+    }
     return true;
   }
 

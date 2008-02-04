@@ -221,6 +221,20 @@ public final class DefaultWord implements Word
 
 
   /**
+   * Returns true if this <code>DefaultWord</code> contains the given
+   * {@link Symbol}. Otherwise false.
+   * 
+   * @param symbol The {@link Symbol}.
+   * @return True if this <code>DefaultWord</code> contains the given
+   *         {@link Symbol}. Otherwise false.
+   */
+  public final boolean contains ( Symbol symbol )
+  {
+    return this.symbolList.contains ( symbol );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)

@@ -105,12 +105,12 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns true if the {@link Alphabet} of this <code>Transition</code>
-   * contains the given {@link Symbol}. Otherwise false.
+   * Returns true if this <code>Transition</code> contains the given
+   * {@link Symbol}. Otherwise false.
    * 
    * @param symbol The {@link Symbol}.
-   * @return True if the {@link Alphabet} of this <code>Transition</code>
-   *         contains the given {@link Symbol}. Otherwise false.
+   * @return True if this <code>Transition</code> contains the given
+   *         {@link Symbol}. Otherwise false.
    */
   public boolean contains ( Symbol symbol );
 

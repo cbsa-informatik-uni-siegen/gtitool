@@ -52,6 +52,17 @@ public interface Word extends Entity, Storable, Iterable < Symbol >
 
 
   /**
+   * Returns true if this <code>Word</code> contains the given {@link Symbol}.
+   * Otherwise false.
+   * 
+   * @param symbol The {@link Symbol}.
+   * @return True if this <code>Word</code> contains the given {@link Symbol}.
+   *         Otherwise false.
+   */
+  public boolean contains ( Symbol symbol );
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)

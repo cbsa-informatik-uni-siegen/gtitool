@@ -282,7 +282,7 @@ public final class AlphabetDialog
       {
         AlphabetDialog.this.gui.jGTIButtonOk.setEnabled ( false );
         ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-        for ( Symbol current : notRemoveableSymbolsFromAlphabet )
+        for ( Symbol current : notRemoveableSymbolsFromPushDownAlphabet )
         {
           exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
               "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$

@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>Attribute</code> class.
+ * The {@link Attribute} class.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -27,10 +27,10 @@ public final class Attribute
 
 
   /**
-   * Allocates a new <code>Attribute</code>.
+   * Allocates a new {@link Attribute}.
    * 
-   * @param name The name of this <code>Attribute</code>.
-   * @param value The value of this <code>Attribute</code>.
+   * @param name The name of this {@link Attribute}.
+   * @param value The value of this {@link Attribute}.
    */
   public Attribute ( String name, boolean value )
   {
@@ -42,10 +42,10 @@ public final class Attribute
 
 
   /**
-   * Allocates a new <code>Attribute</code>.
+   * Allocates a new {@link Attribute}.
    * 
-   * @param name The name of this <code>Attribute</code>.
-   * @param value The value of this <code>Attribute</code>.
+   * @param name The name of this {@link Attribute}.
+   * @param value The value of this {@link Attribute}.
    */
   public Attribute ( String name, double value )
   {
@@ -57,10 +57,10 @@ public final class Attribute
 
 
   /**
-   * Allocates a new <code>Attribute</code>.
+   * Allocates a new {@link Attribute}.
    * 
-   * @param name The name of this <code>Attribute</code>.
-   * @param value The value of this <code>Attribute</code>.
+   * @param name The name of this {@link Attribute}.
+   * @param value The value of this {@link Attribute}.
    */
   public Attribute ( String name, int value )
   {
@@ -72,10 +72,10 @@ public final class Attribute
 
 
   /**
-   * Allocates a new <code>Attribute</code>.
+   * Allocates a new {@link Attribute}.
    * 
-   * @param name The name of this <code>Attribute</code>.
-   * @param value The value of this <code>Attribute</code>.
+   * @param name The name of this {@link Attribute}.
+   * @param value The value of this {@link Attribute}.
    */
   public Attribute ( String name, String value )
   {

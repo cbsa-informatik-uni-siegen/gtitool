@@ -73,7 +73,7 @@ public enum MouseSelectionItem
 
 
   /**
-   * Allocates a new <code>MouseSelectionItem</code>.
+   * Allocates a new {@link MouseSelectionItem}.
    * 
    * @param index The index.
    * @param title The title.

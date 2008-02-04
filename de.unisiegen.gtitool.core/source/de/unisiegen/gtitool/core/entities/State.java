@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * The <code>State</code> entity.
+ * The {@link State} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -36,7 +36,7 @@ public interface State extends Entity, Storable, Modifyable,
 
   /**
    * Adds the {@link Transition} to the list of {@link Transition}s, which
-   * begin in this <code>State</code>.
+   * begin in this {@link State}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -45,7 +45,7 @@ public interface State extends Entity, Storable, Modifyable,
 
   /**
    * Adds the {@link Transition} to the list of {@link Transition}s, which end
-   * in this <code>State</code>.
+   * in this {@link State}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -201,11 +201,9 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns true if the id of this <code>State</code> is defined, otherwise
-   * false.
+   * Returns true if the id of this {@link State} is defined, otherwise false.
    * 
-   * @return True if the id of this <code>State</code> is defined, otherwise
-   *         false.
+   * @return True if the id of this {@link State} is defined, otherwise false.
    */
   public boolean isIdDefined ();
 
@@ -228,7 +226,7 @@ public interface State extends Entity, Storable, Modifyable,
 
   /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * begin in this <code>State</code>.
+   * begin in this {@link State}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -237,7 +235,7 @@ public interface State extends Entity, Storable, Modifyable,
 
   /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * end in this <code>State</code>.
+   * end in this {@link State}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -245,7 +243,7 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the {@link Alphabet} of this <code>State</code>.
+   * Sets the {@link Alphabet} of this {@link State}.
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
@@ -253,7 +251,7 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the default name of this <code>State</code>.
+   * Sets the default name of this {@link State}.
    */
   public void setDefaultName ();
 
@@ -275,17 +273,16 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the name of this <code>State</code>.
+   * Sets the name of this {@link State}.
    * 
    * @param name The name to set.
-   * @throws StateException If something with the <code>State</code> is not
-   *           correct.
+   * @throws StateException If something with the {@link State} is not correct.
    */
   public void setName ( String name ) throws StateException;
 
 
   /**
-   * Sets the push down {@link Alphabet} of this <code>State</code>.
+   * Sets the push down {@link Alphabet} of this {@link State}.
    * 
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */

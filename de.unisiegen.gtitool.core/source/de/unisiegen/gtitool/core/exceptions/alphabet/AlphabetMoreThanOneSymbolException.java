@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>AlphabetMoreThanOneSymbolException</code> is used if the
+ * The {@link AlphabetMoreThanOneSymbolException} is used if the
  * {@link Alphabet} is not correct.
  * 
  * @author Christian Fehler
@@ -27,7 +27,7 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
 
 
   /**
-   * Allocates a new <code>AlphabetMoreThanOneSymbolException</code>.
+   * Allocates a new {@link AlphabetMoreThanOneSymbolException}.
    * 
    * @param alphabet The {@link Alphabet}.
    * @param symbolList The {@link Symbol}s.

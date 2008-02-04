@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
 
 
 /**
- * The <code>AboutDialogForm</code>.
+ * The {@link AboutDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -25,14 +25,14 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private AboutDialog logic ;
     
     /**
-     * Creates new form <code>AboutDialog</code>.
+     * Creates new form {@link AboutDialog}.
      * 
-     * @param pLogic The {@link AboutDialog}.
-     * @param pParent The parent {@link Frame}.
+     * @param logic The {@link AboutDialog}.
+     * @param parent The parent {@link Frame}.
      */
-    public AboutDialogForm(AboutDialog pLogic, java.awt.Frame pParent) {
-        super(pParent, true);
-        this.logic = pLogic ;
+    public AboutDialogForm(AboutDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic ;
         initComponents();
     }
     

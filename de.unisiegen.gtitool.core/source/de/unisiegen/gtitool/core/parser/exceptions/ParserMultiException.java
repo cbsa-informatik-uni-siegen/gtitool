@@ -25,8 +25,8 @@ public class ParserMultiException extends ParserException
 
 
   /**
-   * Throws a <code>ParserMultiException</code> if the {@link Alphabet}
-   * consist of {@link Symbol}s with the same name.
+   * Throws a {@link ParserMultiException} if the {@link Alphabet} consist of
+   * {@link Symbol}s with the same name.
    * 
    * @param negativeSymbols The input list of {@link Symbol}s.
    */
@@ -49,8 +49,8 @@ public class ParserMultiException extends ParserException
 
 
   /**
-   * Throws a <code>ParserMultiException</code> if the {@link Transition}
-   * consist of {@link Symbol}s with the same name.
+   * Throws a {@link ParserMultiException} if the {@link Transition} consist of
+   * {@link Symbol}s with the same name.
    * 
    * @param negativeSymbols The input list of {@link Symbol}s.
    */

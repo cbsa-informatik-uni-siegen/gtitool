@@ -22,11 +22,10 @@ public final class DefaultDFA extends AbstractMachine implements DFA
 
 
   /**
-   * Allocates a new <code>DFA</code>.
+   * Allocates a new {@link DFA}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>DFA</code>.
-   * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DFA</code>.
+   * @param alphabet The {@link Alphabet} of this {@link DFA}.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this {@link DFA}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    */
   public DefaultDFA ( Alphabet alphabet, Alphabet pushDownAlphabet,

@@ -17,7 +17,7 @@ public final class WordParser extends WordAbstractParser
 {
 
   /**
-   * Allocates a new <code>WordParser</code>.
+   * Allocates a new {@link WordParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

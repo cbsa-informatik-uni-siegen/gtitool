@@ -64,7 +64,7 @@ public final class ConsoleTableModel extends AbstractTableModel
 
 
     /**
-     * Allocates a new <code>ConsoleTableEntry</code>.
+     * Allocates a new {@link ConsoleTableEntry}.
      * 
      * @param message The message.
      * @param descrition The description.
@@ -134,7 +134,7 @@ public final class ConsoleTableModel extends AbstractTableModel
 
 
   /**
-   * Allocates a new <code>ConsoleTableModel</code>.
+   * Allocates a new {@link ConsoleTableModel}.
    */
   public ConsoleTableModel ()
   {

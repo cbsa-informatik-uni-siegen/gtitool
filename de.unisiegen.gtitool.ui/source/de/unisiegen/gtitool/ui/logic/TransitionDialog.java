@@ -60,7 +60,7 @@ public final class TransitionDialog
 
 
     /**
-     * Allocates a new <code>ColorListModel</code>.
+     * Allocates a new {@link SymbolListModel}.
      */
     public SymbolListModel ()
     {
@@ -95,17 +95,17 @@ public final class TransitionDialog
     /**
      * Returns the value at the specified index.
      * 
-     * @param pIndex The requested index.
-     * @return The value at <code>pIndex</code>
+     * @param index The requested index.
+     * @return The value at the specified index.
      * @see ListModel#getElementAt(int)
      */
-    public final Object getElementAt ( int pIndex )
+    public final Object getElementAt ( int index )
     {
-      if ( pIndex < 0 || pIndex >= this.list.size () )
+      if ( index < 0 || index >= this.list.size () )
       {
         throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
       }
-      return this.list.get ( pIndex );
+      return this.list.get ( index );
     }
 
 
@@ -135,12 +135,12 @@ public final class TransitionDialog
     /**
      * Removes the item with the given index.
      * 
-     * @param pIndex The item index.
+     * @param index The item index.
      */
-    public final void remove ( int pIndex )
+    public final void remove ( int index )
     {
-      this.list.remove ( pIndex );
-      fireIntervalRemoved ( this, pIndex, pIndex );
+      this.list.remove ( index );
+      fireIntervalRemoved ( this, index, index );
     }
 
 

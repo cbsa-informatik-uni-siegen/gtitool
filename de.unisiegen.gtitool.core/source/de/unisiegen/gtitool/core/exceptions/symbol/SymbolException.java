@@ -6,8 +6,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>SymbolException</code> is used if the {@link Symbol} is not
- * correct.
+ * The {@link SymbolException} is used if the {@link Symbol} is not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -16,7 +15,7 @@ public abstract class SymbolException extends CoreException
 {
 
   /**
-   * Allocates a new <code>SymbolException</code>.
+   * Allocates a new {@link SymbolException}.
    */
   public SymbolException ()
   {

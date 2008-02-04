@@ -35,21 +35,21 @@ public final class Clipboard implements ClipboardOwner
 
 
   /**
-   * The unused string for the <code>SuppressWarnings</code>.
+   * The unused string for the {@link SuppressWarnings}.
    */
   private static final String UNUSED = "unused"; //$NON-NLS-1$
 
 
   /**
-   * The single object of the <code>Clipboard</code>.
+   * The single object of the {@link Clipboard}.
    */
   private static Clipboard singleClipboard = null;
 
 
   /**
-   * Returns the single object of <code>OutlineClipboard</code>.
+   * Returns the single object of {@link Clipboard}.
    * 
-   * @return The single object of <code>OutlineClipboard</code>.
+   * @return The single object of {@link Clipboard}.
    */
   public final static Clipboard getInstance ()
   {
@@ -68,7 +68,7 @@ public final class Clipboard implements ClipboardOwner
 
 
   /**
-   * Initializes the <code>OutlineClipboard</code>.
+   * Initializes the {@link Clipboard}.
    */
   private Clipboard ()
   {

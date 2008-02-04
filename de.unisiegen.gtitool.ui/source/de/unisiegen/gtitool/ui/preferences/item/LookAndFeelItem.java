@@ -24,7 +24,7 @@ public final class LookAndFeelItem implements Cloneable,
 
 
   /**
-   * Allocates a new <code>LookAndFeelItem</code>.
+   * Allocates a new {@link LookAndFeelItem}.
    * 
    * @param name The name of this item.
    * @param className The className of this item.

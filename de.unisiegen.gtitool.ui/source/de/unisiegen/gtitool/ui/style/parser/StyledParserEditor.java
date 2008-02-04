@@ -28,7 +28,7 @@ public final class StyledParserEditor extends JEditorPane
 
 
   /**
-   * Allocates a new <code>StyledParserEditor</code> instance.
+   * Allocates a new {@link StyledParserEditor} instance.
    * 
    * @see JEditorPane#JEditorPane()
    */

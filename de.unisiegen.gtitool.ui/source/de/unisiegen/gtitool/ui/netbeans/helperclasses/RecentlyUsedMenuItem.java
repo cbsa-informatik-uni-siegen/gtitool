@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.ui.netbeans.helperclasses;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,34 +9,36 @@ import javax.swing.JMenuItem;
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 
+
 /**
- * 
  * An Subclass of JMenuItem with a linked File
- *
+ * 
  * @author Benjamin Mies
- *
  */
-public class RecentlyUsedMenuItem extends JMenuItem
+public final class RecentlyUsedMenuItem extends JMenuItem
 {
+
   /**
    * The serial version uid.
    */
   private static final long serialVersionUID = -5681726447551310852L;
 
+
   /**
    * The {@link MainWindow}
    */
-  MainWindow mainWindow;
-  
+  private MainWindow mainWindow;
+
+
   /**
    * The File this RecentlyUsedItem is associated with
    */
-  File file;
-  
+  private File file;
+
+
   /**
+   * Allocate a new {@link RecentlyUsedMenuItem}.
    * 
-   * Allocate a new <code>RecentlyUsedItem</code>
-   *
    * @param mainWindow The {@link MainWindow}
    * @param file The File this RecentlyUsedItem is associated with
    */
@@ -43,29 +46,24 @@ public class RecentlyUsedMenuItem extends JMenuItem
   {
     this.mainWindow = mainWindow;
     this.file = file;
-    this.setText(this.file.getName());
-    
-    this.setText(this.file.getName());
-    this.addActionListener(new ActionListener(){
-      public void actionPerformed(@SuppressWarnings("unused")
-      ActionEvent arg0) {
-        RecentlyUsedMenuItem.this.mainWindow.openFile(RecentlyUsedMenuItem.this.file, true ); 
+    this.setText ( this.file.getName () );
+
+    this.setText ( this.file.getName () );
+    this.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent arg0 )
+      {
+        RecentlyUsedMenuItem.this.mainWindow.openFile (
+            RecentlyUsedMenuItem.this.file, true );
       }
-      
-    });
-    
+
+    } );
+
   }
 
-  /**
-   * 
-   * Getter for the {@link File}
-   *
-   * @return the file of this RecentlyUsedItem
-   */
-  public File getFile ()
-  {
-    return this.file;
-  }
 
   /**
    * {@inheritDoc}
@@ -73,17 +71,30 @@ public class RecentlyUsedMenuItem extends JMenuItem
    * @see Object#equals(Object)
    */
   @Override
-  public boolean equals ( Object other )
+  public final boolean equals ( Object other )
   {
     if ( other instanceof RecentlyUsedMenuItem )
     {
       RecentlyUsedMenuItem item = ( RecentlyUsedMenuItem ) other;
-      return this.file.getAbsolutePath ().equals ( item.getFile ().getAbsolutePath () );
+      return this.file.getAbsolutePath ().equals (
+          item.getFile ().getAbsolutePath () );
     }
     return false;
-      
+
   }
-  
+
+
+  /**
+   * Getter for the {@link File}
+   * 
+   * @return the file of this RecentlyUsedItem
+   */
+  public final File getFile ()
+  {
+    return this.file;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -94,6 +105,4 @@ public class RecentlyUsedMenuItem extends JMenuItem
   {
     return this.file.hashCode ();
   }
-
-
 }

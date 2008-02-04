@@ -17,7 +17,7 @@ public final class StateParser extends StateAbstractParser
 {
 
   /**
-   * Allocates a new <code>StateParser</code>.
+   * Allocates a new {@link StateParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

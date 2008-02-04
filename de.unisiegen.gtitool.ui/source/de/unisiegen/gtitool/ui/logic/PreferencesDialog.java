@@ -58,7 +58,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
- * The <code>PreferencesDialog</code>.
+ * The {@link PreferencesDialog}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -123,7 +123,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
     /**
-     * Allocates a new <code>ColorListModel</code>.
+     * Allocates a new {@link ColorListModel}.
      */
     public ColorListModel ()
     {
@@ -146,7 +146,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      * Returns the value at the specified index.
      * 
      * @param index The requested index.
-     * @return The value at <code>pIndex</code>
+     * @return The value at the specified index.
      * @see ListModel#getElementAt(int)
      */
     public final Object getElementAt ( int index )
@@ -384,7 +384,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
     /**
-     * Initilizes the <code>SleepTimerTask</code>.
+     * Initilizes the {@link SleepTimerTask}.
      * 
      * @param colorList The color list.
      * @param index The index.
@@ -870,7 +870,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Allocates a new <code>PreferencesDialog</code>.
+   * Allocates a new {@link PreferencesDialog}.
    * 
    * @param parent The parent {@link JFrame}.
    */
@@ -885,7 +885,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Handles the action on the <code>Accept</code> button.
+   * Handles the action on the accept button.
    */
   public final void handleAccept ()
   {
@@ -895,7 +895,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Handles the action on the <code>Cancel</code> button.
+   * Handles the action on the cancel button.
    */
   public final void handleCancel ()
   {
@@ -1013,7 +1013,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Handles the action on the <code>OK</code> button.
+   * Handles the action on the ok button.
    */
   public final void handleOk ()
   {
@@ -1049,7 +1049,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Handles the action on the <code>Restore defaults</code> button.
+   * Handles the action on the restore defaults button.
    */
   public final void handleRestore ()
   {

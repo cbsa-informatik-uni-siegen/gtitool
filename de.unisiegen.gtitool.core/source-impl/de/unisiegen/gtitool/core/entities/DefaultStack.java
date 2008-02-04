@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
- * The <code>DefaultStack</code> entity.
+ * The {@link DefaultStack} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -40,7 +40,7 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Allocates a new <code>DefaultStack</code>.
+   * Allocates a new {@link DefaultStack}.
    */
   public DefaultStack ()
   {
@@ -50,7 +50,7 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Allocates a new <code>DefaultStack</code>.
+   * Allocates a new {@link DefaultStack}.
    * 
    * @param symbols The array of {@link Symbol}s.
    */
@@ -67,7 +67,7 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Allocates a new <code>DefaultStack</code>.
+   * Allocates a new {@link DefaultStack}.
    * 
    * @param symbols The array of {@link Symbol}s.
    */
@@ -101,13 +101,12 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns <tt>true</tt> if this <code>DefaultStack</code> contains the
-   * specified {@link Symbol}.
+   * Returns true if this {@link DefaultStack} contains the specified
+   * {@link Symbol}.
    * 
-   * @param symbol {@link Symbol} whose presence in this
-   *          <code>DefaultStack</code> is to be tested.
-   * @return <code>true</code> if the specified {@link Symbol} is present;
-   *         <code>false</code> otherwise.
+   * @param symbol {@link Symbol} whose presence in this {@link DefaultStack} is
+   *          to be tested.
+   * @return true if the specified {@link Symbol} is present; false otherwise.
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -183,11 +182,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this
-   * <code>DefaultStack</code>.
+   * Returns an iterator over the {@link Symbol}s in this {@link DefaultStack}.
    * 
-   * @return An iterator over the {@link Symbol}s in this
-   *         <code>DefaultStack</code>.
+   * @return An iterator over the {@link Symbol}s in this {@link DefaultStack}.
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -196,10 +193,10 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Looks at the {@link Symbol} at the top of this <code>DefaultStack</code>
-   * without removing it.
+   * Looks at the {@link Symbol} at the top of this {@link DefaultStack} without
+   * removing it.
    * 
-   * @return The {@link Symbol} at the top of this <code>DefaultStack</code>.
+   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
    */
   public final Symbol peak ()
   {
@@ -208,10 +205,10 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Removes the {@link Symbol} at the top of this <code>DefaultStack</code>
-   * and returns that {@link Symbol}.
+   * Removes the {@link Symbol} at the top of this {@link DefaultStack} and
+   * returns that {@link Symbol}.
    * 
-   * @return The {@link Symbol} at the top of this <code>DefaultStack</code>.
+   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
    */
   public final Symbol pop ()
   {
@@ -220,10 +217,10 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this <code>DefaultStack</code>.
+   * Pushes the {@link Symbol}s onto the top of this {@link DefaultStack}.
    * 
    * @param symbols The {@link Symbol}s to be pushed onto this
-   *          <code>DefaultStack</code>.
+   *          {@link DefaultStack}.
    */
   public final void push ( Iterable < Symbol > symbols )
   {
@@ -239,10 +236,10 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol} onto the top of this <code>DefaultStack</code>.
+   * Pushes the {@link Symbol} onto the top of this {@link DefaultStack}.
    * 
    * @param symbol The {@link Symbol} to be pushed onto this
-   *          <code>DefaultStack</code>.
+   *          {@link DefaultStack}.
    */
   public final void push ( Symbol symbol )
   {
@@ -256,10 +253,10 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this <code>DefaultStack</code>.
+   * Pushes the {@link Symbol}s onto the top of this {@link DefaultStack}.
    * 
    * @param symbols The {@link Symbol}s to be pushed onto this
-   *          <code>DefaultStack</code>.
+   *          {@link DefaultStack}.
    */
   public final void push ( Symbol ... symbols )
   {
@@ -284,9 +281,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>DefaultStack</code>.
+   * Returns the number of {@link Symbol}s in this {@link DefaultStack}.
    * 
-   * @return The number of {@link Symbol}s in this <code>DefaultStack</code>.
+   * @return The number of {@link Symbol}s in this {@link DefaultStack}.
    */
   public final int size ()
   {

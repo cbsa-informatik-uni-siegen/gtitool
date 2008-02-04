@@ -188,7 +188,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   /**
    * Configure and return the renderer based on the passed in components. The
    * value is typically set from messaging the graph with
-   * <code>convertValueToString</code>.
+   * {@link convertValueToString}.
    * 
    * @param graph the graph that that defines the rendering context.
    * @param view the cell view that should be rendered.
@@ -745,7 +745,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         setOpaque ( false );
         super.paint ( g );
         translateGraphics ( g );
-        
+
         // Use the highlight color if the transition is selected
         if ( selected )
         {

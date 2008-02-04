@@ -36,9 +36,9 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Returns the <code>Grammar</code> type.
+   * Returns the {@link Grammar} type.
    * 
-   * @return The <code>Grammar</code> type.
+   * @return The {@link Grammar} type.
    */
   public abstract String getGrammarType ();
 

@@ -24,14 +24,14 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
     private AlphabetDialog logic;
     
     /**
-     * Creates new form <code>AlphabetDialogForm</code>.
+     * Creates new form {@link AlphabetDialogForm}.
      * 
-     * @param pLogic The {@link AlphabetDialogForm}.
-     * @param pParent The parent {@link Frame}.
+     * @param logic The {@link AlphabetDialogForm}.
+     * @param parent The parent {@link Frame}.
      */
-    public AlphabetDialogForm(AlphabetDialog pLogic, java.awt.Frame pParent) {
-        super(pParent, true);
-        this.logic = pLogic;
+    public AlphabetDialogForm(AlphabetDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
     

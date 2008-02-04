@@ -6,8 +6,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>MachineStateFinalException</code> is used, if no final state is
- * defined.
+ * The {@link MachineStateFinalException} is used, if no final state is defined.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -22,7 +21,7 @@ public final class MachineStateFinalException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineStateFinalException</code>.
+   * Allocates a new {@link MachineStateFinalException}.
    */
   public MachineStateFinalException ()
   {

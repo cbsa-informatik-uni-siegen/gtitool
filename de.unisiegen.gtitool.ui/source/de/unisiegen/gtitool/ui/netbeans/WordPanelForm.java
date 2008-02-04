@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 
 /**
- * The <code>WordPanelForm</code>.
+ * The {@link WordPanelForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -21,21 +21,23 @@ public class WordPanelForm extends javax.swing.JPanel {
      */
     private Alphabet alphabet = null ;
     
-    /** Creates new form WordPanelForm */
+    /**
+     * Creates new form WordPanelForm.
+     */
     public WordPanelForm() {
         initComponents();
     }
     
     /**
-     * Sets the {@link Alphabet} of this <code>WordPanelForm</code>.
+     * Sets the {@link Alphabet} of this {@link WordPanelForm}.
      *
-     * @param pAlphabet The {@link Alphabet} to set.
+     * @param alphabet The {@link Alphabet} to set.
      */
-    public void setAlphabet (Alphabet pAlphabet)
+    public void setAlphabet (Alphabet alphabet)
     {
-      this.alphabet = pAlphabet;
-      this.styledAlphabetParserPanel.setAlphabet ( pAlphabet );
-      this.styledWordParserPanel.setAlphabet ( pAlphabet );
+      this.alphabet = alphabet;
+      this.styledAlphabetParserPanel.setAlphabet ( alphabet );
+      this.styledWordParserPanel.setAlphabet ( alphabet );
     }
     
     /**

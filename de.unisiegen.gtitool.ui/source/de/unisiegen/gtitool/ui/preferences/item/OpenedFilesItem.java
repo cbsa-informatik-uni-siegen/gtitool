@@ -22,7 +22,7 @@ public final class OpenedFilesItem extends RecentlyUsedFilesItem
 
 
   /**
-   * Allocates a new <code>RecentlyUsedItem</code>.
+   * Allocates a new {@link OpenedFilesItem}.
    * 
    * @param files The opened files.
    * @param activeFile The last active {@link File}.

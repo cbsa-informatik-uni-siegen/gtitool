@@ -25,7 +25,7 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * Allocates a new <code>GrammarPanel</code>
+   * Allocates a new {@link GrammarPanel}
    * 
    * @param parent The parent frame
    * @param alphabet the {@link Alphabet}

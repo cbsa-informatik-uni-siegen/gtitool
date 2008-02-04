@@ -22,11 +22,10 @@ public final class DefaultPDA extends AbstractMachine implements PDA
 
 
   /**
-   * Allocates a new <code>PDA</code>.
+   * Allocates a new {@link PDA}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>PDA</code>.
-   * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>PDA</code>.
+   * @param alphabet The {@link Alphabet} of this {@link PDA}.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this {@link PDA}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    */
   public DefaultPDA ( Alphabet alphabet, Alphabet pushDownAlphabet,

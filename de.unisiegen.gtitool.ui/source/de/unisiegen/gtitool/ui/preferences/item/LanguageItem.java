@@ -27,7 +27,7 @@ public final class LanguageItem implements Cloneable,
 
 
   /**
-   * Allocates a new <code>LanguageItem</code>.
+   * Allocates a new {@link LanguageItem}.
    * 
    * @param title The title of this item.
    * @param locale The {@link Locale} of this item.

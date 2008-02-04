@@ -16,7 +16,9 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
      */
     private static final long serialVersionUID = -1303990739783698131L;
 
-    /** Creates new form NewDialogMachineChoiceForm */
+    /**
+     * Creates new form NewDialogMachineChoiceForm
+     */
     public NewDialogMachineChoiceForm() {
         initComponents();
     }

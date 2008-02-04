@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.storage.exceptions;
 
 
 /**
- * The <code>StoreException</code> is used if the store or load fails.
+ * The {@link StoreException} is used if the store or load fails.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,7 +23,7 @@ public class StoreException extends Exception
 
 
   /**
-   * Allocates a new <code>StoreException</code>.
+   * Allocates a new {@link StoreException}.
    * 
    * @param message The detail message.
    */

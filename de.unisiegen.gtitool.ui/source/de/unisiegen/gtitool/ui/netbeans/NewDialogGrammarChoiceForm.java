@@ -16,7 +16,9 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
      */
     private static final long serialVersionUID = 5573593212620914155L;
 
-    /** Creates new form NewDialogGrammarChoiceForm */
+    /**
+     * Creates new form NewDialogGrammarChoiceForm 
+     */
     public NewDialogGrammarChoiceForm() {
         initComponents();
     }

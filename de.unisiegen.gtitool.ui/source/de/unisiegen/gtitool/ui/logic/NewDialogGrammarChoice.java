@@ -8,7 +8,7 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogGrammarChoiceForm;
 
 
 /**
- * The <code>NewDialogChoice</code>.
+ * The {@link NewDialogChoice}.
  * 
  * @author Benjamin Mies
  * @version $Id$

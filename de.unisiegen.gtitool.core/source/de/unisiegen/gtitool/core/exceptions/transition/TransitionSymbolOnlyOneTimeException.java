@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>TransitionSymbolOnlyOneTimeException</code> is used, if the
+ * The {@link TransitionSymbolOnlyOneTimeException} is used, if the
  * {@link Symbol} which should be added to the {@link Transition} is already a
  * {@link Symbol} in the {@link Transition}.
  * 
@@ -29,7 +29,7 @@ public final class TransitionSymbolOnlyOneTimeException extends
 
 
   /**
-   * Allocates a new <code>TransitionSymbolOnlyOneTimeException</code>.
+   * Allocates a new {@link TransitionSymbolOnlyOneTimeException}.
    * 
    * @param transition The {@link Transition}.
    * @param symbolList The {@link Symbol}s.

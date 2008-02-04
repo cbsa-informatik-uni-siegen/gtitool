@@ -28,10 +28,10 @@ public class MainWindowForm extends javax.swing.JFrame {
     /**
      * Creates new form MainWindow
      * 
-     * @param pLogic The {@link MainWindow}.
+     * @param logic The {@link MainWindow}.
      */
-    public MainWindowForm(MainWindow pLogic) {
-        this.logic = pLogic;
+    public MainWindowForm(MainWindow logic) {
+        this.logic = logic;
         initComponents();
     }
     

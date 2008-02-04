@@ -41,7 +41,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledStackParserPanel</code>.
+   * Allocates a new {@link StyledStackParserPanel}.
    */
   public StyledStackParserPanel ()
   {

@@ -42,7 +42,7 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
 
 
   /**
-   * Allocates a new <code>ColorItem</code>.
+   * Allocates a new {@link ColorItem}.
    * 
    * @param color The {@link Color} of this item.
    * @param caption The caption of this item.

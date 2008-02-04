@@ -70,7 +70,7 @@ public abstract class StyledParserPanel extends JPanel
 
 
     /**
-     * Allocates a new <code>History</code>.
+     * Allocates a new {@link History}.
      */
     public History ()
     {
@@ -264,20 +264,19 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * The {@link ParseableChangedListener} for the other
-   * <code>StyledParserPanel</code>.
+   * {@link StyledParserPanel}.
    */
   private ParseableChangedListener parseableChangedListenerOther;
 
 
   /**
-   * The {@link ParseableChangedListener} for this
-   * <code>StyledParserPanel</code>.
+   * The {@link ParseableChangedListener} for this {@link StyledParserPanel}.
    */
   private ParseableChangedListener parseableChangedListenerThis;
 
 
   /**
-   * Allocates a new <code>StyledPanel</code>.
+   * Allocates a new {@link StyledParserPanel}.
    * 
    * @param parseable The input {@link Parseable}.
    */
@@ -814,7 +813,7 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * Sets the specified boolean to indicate whether or not this
-   * <code>StyledParserPanel</code> should be copyable.
+   * {@link StyledParserPanel} should be copyable.
    * 
    * @param copyable The boolean to be set.
    */
@@ -827,7 +826,7 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * Sets the specified boolean to indicate whether or not this
-   * <code>StyledParserPanel</code> should be editable.
+   * {@link StyledParserPanel} should be editable.
    * 
    * @param editable The boolean to be set.
    */
@@ -840,7 +839,7 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * Sets the specified boolean to indicate whether or not this
-   * <code>StyledParserPanel</code> should be enabled.
+   * {@link StyledParserPanel} should be enabled.
    * 
    * @param enabled The boolean to be set.
    */
@@ -998,11 +997,11 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Synchronizes this <code>StyledParserPanel</code> with the given
-   * <code>StyledParserPanel</code>.
+   * Synchronizes this {@link StyledParserPanel} with the given
+   * {@link StyledParserPanel}.
    * 
-   * @param styledParserPanel The other <code>StyledParserPanel</code> which
-   *          should be synchronized.
+   * @param styledParserPanel The other {@link StyledParserPanel} which should
+   *          be synchronized.
    */
   public final void synchronize ( StyledParserPanel styledParserPanel )
   {

@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
 
 
 /**
- * The <code>MachineSymbolOnlyOneTimeException</code> is used, if there is a
+ * The {@link MachineSymbolOnlyOneTimeException} is used, if there is a
  * {@link State} with {@link Transition}s with the same {@link Symbol}.
  * 
  * @author Christian Fehler
@@ -51,7 +51,7 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineEpsilonTransitionException</code>.
+   * Allocates a new {@link MachineEpsilonTransitionException}.
    * 
    * @param state The {@link State}.
    * @param symbols The {@link Symbol} list.

@@ -29,7 +29,7 @@ public class ScannerException extends RuntimeException
 
 
   /**
-   * Allocates a new <code>ScannerException</code>.
+   * Allocates a new {@link ScannerException}.
    * 
    * @param left The left parser index.
    * @param right The right parser index.
@@ -44,7 +44,7 @@ public class ScannerException extends RuntimeException
 
 
   /**
-   * Allocates a new <code>ScannerException</code>.
+   * Allocates a new {@link ScannerException}.
    * 
    * @param left The left parser index.
    * @param right The right parser index.

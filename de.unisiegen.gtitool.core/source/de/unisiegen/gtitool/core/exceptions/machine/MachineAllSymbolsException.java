@@ -15,8 +15,8 @@ import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
 
 
 /**
- * The <code>MachineAllSymbolsException</code> is used, if there is a
- * {@link State}, which {@link Transition}s do not contain all {@link Symbol}s.
+ * The {@link MachineAllSymbolsException} is used, if there is a {@link State},
+ * which {@link Transition}s do not contain all {@link Symbol}s.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -45,7 +45,7 @@ public final class MachineAllSymbolsException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineAllSymbolsException</code>.
+   * Allocates a new {@link MachineAllSymbolsException}.
    * 
    * @param state The {@link State}.
    * @param symbolSet The set of {@link Symbol}s which are not member of a

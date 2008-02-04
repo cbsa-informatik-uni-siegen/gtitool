@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
+
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -47,10 +48,13 @@ public enum ZoomFactorItem
    * The zoom factor for 200 percent.
    */
   ZOOM_200 ( 200 );
+
   /**
    * The {@link Logger} for this enum.
    */
   private static final Logger logger = Logger.getLogger ( ZoomFactorItem.class );
+
+
   /**
    * Creates a new {@link ZoomFactorItem} of the given zoom factor value, or
    * throws an exception if the zoom factor is not supported.
@@ -106,7 +110,7 @@ public enum ZoomFactorItem
 
 
   /**
-   * Creates a new <code>ZoomFactorItem</code>.
+   * Creates a new {@link ZoomFactorItem}.
    * 
    * @param factor The zoom factor.
    */

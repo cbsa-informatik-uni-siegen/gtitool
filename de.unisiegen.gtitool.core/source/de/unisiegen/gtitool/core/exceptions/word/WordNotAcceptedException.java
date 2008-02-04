@@ -7,8 +7,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>WordNotAcceptedException</code> is used if the {@link Word} is
- * not accepted.
+ * The {@link WordNotAcceptedException} is used if the {@link Word} is not
+ * accepted.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,7 +23,7 @@ public final class WordNotAcceptedException extends WordException
 
 
   /**
-   * Allocates a new <code>WordNotAcceptedException</code>.
+   * Allocates a new {@link WordNotAcceptedException}.
    * 
    * @param word The {@link Word}.
    */

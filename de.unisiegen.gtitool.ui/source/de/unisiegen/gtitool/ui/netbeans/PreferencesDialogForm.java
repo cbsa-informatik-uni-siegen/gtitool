@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 
 
 /**
- * The <code>PreferencesDialogForm</code>.
+ * The {@link PreferencesDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$

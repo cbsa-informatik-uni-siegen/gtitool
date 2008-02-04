@@ -136,7 +136,7 @@ public abstract class AbstractMachine implements Machine
    * @param machineType The {@link Machine} type.
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>.
+   *          {@link Transition}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
@@ -185,26 +185,25 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * The {@link Alphabet} of this <code>AbstractMachine</code>.
+   * The {@link Alphabet} of this {@link AbstractMachine}.
    */
   private Alphabet alphabet;
 
 
   /**
-   * The push down {@link Alphabet} of this <code>AbstractMachine</code>.
+   * The push down {@link Alphabet} of this {@link AbstractMachine}.
    */
   private Alphabet pushDownAlphabet;
 
 
   /**
-   * The use push down {@link Alphabet} of this <code>AbstractMachine</code>.
+   * The use push down {@link Alphabet} of this {@link AbstractMachine}.
    */
   private boolean usePushDownAlphabet;
 
 
   /**
-   * The initial use push down {@link Alphabet} of this
-   * <code>AbstractMachine</code>.
+   * The initial use push down {@link Alphabet} of this {@link AbstractMachine}.
    */
   private boolean initialUsePushDownAlphabet;
 
@@ -300,11 +299,11 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Allocates a new <code>AbstractMachine</code>.
+   * Allocates a new {@link AbstractMachine}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>AbstractMachine</code>.
+   * @param alphabet The {@link Alphabet} of this {@link AbstractMachine}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>AbstractMachine</code>.
+   *          {@link AbstractMachine}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    * @param validationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
@@ -420,7 +419,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link State}s to this <code>AbstractMachine</code>.
+   * Adds the {@link State}s to this {@link AbstractMachine}.
    * 
    * @param states The {@link State}s to add.
    */
@@ -442,7 +441,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link State} to this <code>AbstractMachine</code>.
+   * Adds the {@link State} to this {@link AbstractMachine}.
    * 
    * @param state The {@link State} to add.
    */
@@ -487,7 +486,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link State}s to this <code>AbstractMachine</code>.
+   * Adds the {@link State}s to this {@link AbstractMachine}.
    * 
    * @param states The {@link State}s to add.
    */
@@ -520,7 +519,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link Transition}s to this <code>AbstractMachine</code>.
+   * Adds the {@link Transition}s to this {@link AbstractMachine}.
    * 
    * @param transitions The {@link Transition}s to add.
    */
@@ -542,7 +541,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link Transition} to this <code>AbstractMachine</code>.
+   * Adds the {@link Transition} to this {@link AbstractMachine}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -588,7 +587,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Adds the {@link Transition}s to this <code>AbstractMachine</code>.
+   * Adds the {@link Transition}s to this {@link AbstractMachine}.
    * 
    * @param transitions The {@link Transition}s to add.
    */
@@ -880,7 +879,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Clears the history of this <code>AbstractMachine</code>.
+   * Clears the history of this {@link AbstractMachine}.
    */
   private final void clearHistory ()
   {
@@ -921,9 +920,8 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Forwards the given notification event to all
-   * <code>TableModelListeners</code> that registered themselves as listeners
-   * for this table model.
+   * Forwards the given notification event to all {@link TableModelListener}s
+   * that registered themselves as listeners for this table model.
    * 
    * @param event The event to be forwarded
    * @see #addTableModelListener
@@ -943,9 +941,9 @@ public abstract class AbstractMachine implements Machine
 
   /**
    * Notifies all listeners that all cell values in the table's rows may have
-   * changed. The number of rows may also have changed and the
-   * <code>JTable</code> should redraw the table from scratch. The structure
-   * of the table (as in the order of the columns) is assumed to be the same.
+   * changed. The number of rows may also have changed and the {@link JTable}
+   * should redraw the table from scratch. The structure of the table (as in the
+   * order of the columns) is assumed to be the same.
    * 
    * @see TableModelEvent
    * @see EventListenerList
@@ -958,13 +956,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Notifies all listeners that the table's structure has changed. The number
-   * of columns in the table, and the names and types of the new columns may be
-   * different from the previous state. If the <code>JTable</code> receives
-   * this event and its <code>autoCreateColumnsFromModel</code> flag is set it
-   * discards any table columns that it had and reallocates default columns in
-   * the order they appear in the model. This is the same as calling
-   * <code>setModel(TableModel)</code> on the <code>JTable</code>.
+   * Notifies all listeners that the table's structure has changed.
    * 
    * @see TableModelEvent
    * @see EventListenerList
@@ -1066,10 +1058,10 @@ public abstract class AbstractMachine implements Machine
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
    */
   public final Symbol getCurrentSymbol () throws WordFinishedException,
       WordResetedException
@@ -1079,9 +1071,9 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Returns the <code>Machine</code> type.
+   * Returns the {@link Machine} type.
    * 
-   * @return The <code>Machine</code> type.
+   * @return The {@link Machine} type.
    */
   public abstract String getMachineType ();
 
@@ -1102,10 +1094,10 @@ public abstract class AbstractMachine implements Machine
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
    */
   public final ArrayList < Symbol > getReadedSymbols ()
       throws WordFinishedException, WordResetedException
@@ -1312,12 +1304,11 @@ public abstract class AbstractMachine implements Machine
 
   /**
    * Returns true if the given {@link Symbol} can be removed from the
-   * {@link Alphabet} of this <code>AbstractMachine</code>, otherwise false.
+   * {@link Alphabet} of this {@link AbstractMachine}, otherwise false.
    * 
    * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the
-   *         {@link Alphabet} of this <code>AbstractMachine</code>, otherwise
-   *         false.
+   *         {@link Alphabet} of this {@link AbstractMachine}, otherwise false.
    */
   public final boolean isSymbolRemoveableFromAlphabet ( Symbol symbol )
   {
@@ -1338,11 +1329,11 @@ public abstract class AbstractMachine implements Machine
 
   /**
    * Returns true if the given {@link Symbol} can be removed from the push down
-   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * {@link Alphabet} of this {@link Machine}, otherwise false.
    * 
    * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the push down
-   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   *         {@link Alphabet} of this {@link Machine}, otherwise false.
    */
   public final boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol )
   {
@@ -1656,7 +1647,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link State}s from this <code>AbstractMachine</code>.
+   * Removes the given {@link State}s from this {@link AbstractMachine}.
    * 
    * @param states The {@link State}s to remove.
    */
@@ -1678,7 +1669,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link State} from this <code>AbstractMachine</code>.
+   * Removes the given {@link State} from this {@link AbstractMachine}.
    * 
    * @param state The {@link State} to remove.
    */
@@ -1701,7 +1692,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link State}s from this <code>AbstractMachine</code>.
+   * Removes the given {@link State}s from this {@link AbstractMachine}.
    * 
    * @param states The {@link State}s to remove.
    */
@@ -1723,7 +1714,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>AbstractMachine</code>.
+   * Removes the given {@link Symbol} from this {@link AbstractMachine}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -1749,8 +1740,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link Transition}s from this
-   * <code>AbstractMachine</code>.
+   * Removes the given {@link Transition}s from this {@link AbstractMachine}.
    * 
    * @param transitions The {@link Transition}s to remove.
    */
@@ -1772,7 +1762,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link Transition} from this <code>AbstractMachine</code>.
+   * Removes the given {@link Transition} from this {@link AbstractMachine}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -1794,8 +1784,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Removes the given {@link Transition}s from this
-   * <code>AbstractMachine</code>.
+   * Removes the given {@link Transition}s from this {@link AbstractMachine}.
    * 
    * @param transitions The {@link Transition}s to remove.
    */
@@ -1870,7 +1859,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Starts the <code>AbstractMachine</code> after a validation with the given
+   * Starts the {@link AbstractMachine} after a validation with the given
    * {@link Word}.
    * 
    * @param startWord The {@link Word} to start with.
@@ -1898,7 +1887,7 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Validates that everything in the <code>AbstractMachine</code> is correct.
+   * Validates that everything in the {@link AbstractMachine} is correct.
    * 
    * @throws MachineValidationException If the validation fails.
    */

@@ -21,7 +21,7 @@ public class RecentlyUsedFilesItem
 
 
   /**
-   * Allocates a new <code>RecentlyUsedItem</code>.
+   * Allocates a new {@link RecentlyUsedFilesItem}.
    * 
    * @param files The recently used files.
    */

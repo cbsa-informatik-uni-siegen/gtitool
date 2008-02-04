@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
 
 /**
- * The <code>NewStateNameDialogForm</code>.
+ * The {@link NewStateNameDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -25,14 +25,14 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
     private NewStateNameDialog logic ;
     
     /**
-     * Creates new form <code>NewStateNameDialogForm</code>
+     * Creates new form {@link NewStateNameDialogForm}
      * 
-     * @param pLogic The {@link AboutDialog}.
-     * @param pParent The parent {@link Frame}.
+     * @param logic The {@link AboutDialog}.
+     * @param parent The parent {@link Frame}.
      */
-    public NewStateNameDialogForm(NewStateNameDialog pLogic, java.awt.Frame pParent) {
-        super(pParent, true);
-        this.logic = pLogic;
+    public NewStateNameDialogForm(NewStateNameDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
     

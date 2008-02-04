@@ -6,7 +6,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>WordException</code> is used if the {@link Word} is not correct.
+ * The {@link WordException} is used if the {@link Word} is not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -21,7 +21,7 @@ public abstract class WordException extends CoreException
 
 
   /**
-   * Allocates a new <code>WordException</code>.
+   * Allocates a new {@link WordException}.
    * 
    * @param word The {@link Word}.
    */

@@ -7,8 +7,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>SymbolIllegalNameException</code> is used if the {@link Symbol}
- * is not correct.
+ * The {@link SymbolIllegalNameException} is used if the {@link Symbol} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -29,7 +29,7 @@ public final class SymbolIllegalNameException extends SymbolException
 
 
   /**
-   * Allocates a new <code>SymbolIllegalNameException</code>.
+   * Allocates a new {@link SymbolIllegalNameException}.
    * 
    * @param illegalName The illegal name of the {@link Symbol}.
    */

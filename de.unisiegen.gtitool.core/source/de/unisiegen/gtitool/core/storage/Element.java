@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 /**
- * The <code>Element</code> class.
+ * The {@link Element} class.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -20,7 +20,7 @@ public final class Element
 
 
   /**
-   * The <code>Element</code> list.
+   * The {@link Element} list.
    */
   private ArrayList < Element > elementList;
 
@@ -32,9 +32,9 @@ public final class Element
 
 
   /**
-   * Allocates a new <code>Element</code>.
+   * Allocates a new {@link Element}.
    * 
-   * @param name The name of this <code>Attribute</code>.
+   * @param name The name of this {@link Attribute}.
    */
   public Element ( String name )
   {
@@ -57,9 +57,9 @@ public final class Element
 
 
   /**
-   * Adds the <code>Element</code>.
+   * Adds the {@link Element}.
    * 
-   * @param element The <code>Element</code> to add.
+   * @param element The {@link Element} to add.
    */
   public final void addElement ( Element element )
   {

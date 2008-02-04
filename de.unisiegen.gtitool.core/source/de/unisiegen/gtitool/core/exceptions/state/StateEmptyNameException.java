@@ -7,8 +7,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>StateEmptyNameException</code> is used if the {@link State} is
- * not correct.
+ * The {@link StateEmptyNameException} is used if the {@link State} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,7 +23,7 @@ public final class StateEmptyNameException extends StateException
 
 
   /**
-   * Allocates a new <code>StateEmptyNameException</code>.
+   * Allocates a new {@link StateEmptyNameException}.
    */
   public StateEmptyNameException ()
   {

@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.storage;
 
 
 /**
- * The <code>Storable</code> interface.
+ * The {@link Storable} interface.
  * 
  * @author Christian Fehler
  * @version $Id$

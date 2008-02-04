@@ -146,7 +146,7 @@ public enum AutoStepItem
 
 
   /**
-   * Creates a new <code>AutoStepItem</code>.
+   * Creates a new {@link AutoStepItem}.
    * 
    * @param autoStepInterval The auto step interval.
    */

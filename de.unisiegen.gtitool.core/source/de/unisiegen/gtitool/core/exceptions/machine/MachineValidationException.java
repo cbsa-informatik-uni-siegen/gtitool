@@ -8,8 +8,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>MachineValidationException</code> is thrown, if the validation of
- * a machine fails.
+ * The {@link MachineValidationException} is thrown, if the validation of a
+ * machine fails.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -31,7 +31,7 @@ public final class MachineValidationException extends CoreException implements
 
 
   /**
-   * Allocates a new <code>MachineValidationException</code>.
+   * Allocates a new {@link MachineValidationException}.
    * 
    * @param machineExceptionList The list of {@link MachineException}s.
    */

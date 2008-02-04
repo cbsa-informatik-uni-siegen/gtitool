@@ -7,8 +7,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>StateIllegalNameException</code> is used if the {@link State} is
- * not correct.
+ * The {@link StateIllegalNameException} is used if the {@link State} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -29,7 +29,7 @@ public final class StateIllegalNameException extends StateException
 
 
   /**
-   * Allocates a new <code>StateIllegalNameException</code>.
+   * Allocates a new {@link StateIllegalNameException}.
    * 
    * @param illegalName The illegal name of the {@link State}.
    */

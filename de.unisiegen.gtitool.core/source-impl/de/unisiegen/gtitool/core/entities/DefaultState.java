@@ -25,7 +25,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>DefaultState</code> entity.
+ * The {@link DefaultState} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -46,13 +46,13 @@ public final class DefaultState implements State
 
 
   /**
-   * The {@link Alphabet} of this <code>DefaultState</code>.
+   * The {@link Alphabet} of this {@link DefaultState}.
    */
   private Alphabet alphabet = null;
 
 
   /**
-   * The push down {@link Alphabet} of this <code>DefaultState</code>.
+   * The push down {@link Alphabet} of this {@link DefaultState}.
    */
   private Alphabet pushDownAlphabet = null;
 
@@ -64,31 +64,31 @@ public final class DefaultState implements State
 
 
   /**
-   * This <code>DefaultState</code> is a final <code>DefaultState</code>.
+   * This {@link DefaultState} is a final {@link DefaultState}.
    */
   private boolean finalState = false;
 
 
   /**
-   * The initial final <code>DefaultState</code>.
+   * The initial final {@link DefaultState}.
    */
   private boolean initialFinalState = false;
 
 
   /**
-   * The id of this <code>DefaultState</code>.
+   * The id of this {@link DefaultState}.
    */
   private int id = ID_NOT_DEFINED;
 
 
   /**
-   * The name of this <code>DefaultState</code>.
+   * The name of this {@link DefaultState}.
    */
   private String name;
 
 
   /**
-   * The initial name of this <code>DefaultState</code>.
+   * The initial name of this {@link DefaultState}.
    */
   private String initialName = null;
 
@@ -103,41 +103,38 @@ public final class DefaultState implements State
 
 
   /**
-   * This <code>DefaultState</code> is a start <code>DefaultState</code>.
+   * This {@link DefaultState} is a start {@link DefaultState}.
    */
   private boolean startState = false;
 
 
   /**
-   * The initial start <code>DefaultState</code>.
+   * The initial start {@link DefaultState}.
    */
   private boolean initialStartState = false;
 
 
   /**
-   * The list of {@link Transition}s, which begin in this
-   * <code>DefaultState</code>.
+   * The list of {@link Transition}s, which begin in this {@link DefaultState}.
    */
   private ArrayList < Transition > transitionBeginList;
 
 
   /**
    * The list of {@link Transition} ids, which begin in this
-   * <code>DefaultState</code>.
+   * {@link DefaultState}.
    */
   private ArrayList < Integer > transitionBeginIdList;
 
 
   /**
-   * The list of {@link Transition}s, which end in this
-   * <code>DefaultState</code>.
+   * The list of {@link Transition}s, which end in this {@link DefaultState}.
    */
   private ArrayList < Transition > transitionEndList;
 
 
   /**
-   * The list of {@link Transition} ids, which end in this
-   * <code>DefaultState</code>.
+   * The list of {@link Transition} ids, which end in this {@link DefaultState}.
    */
   private ArrayList < Integer > transitionEndIdList;
 
@@ -149,17 +146,15 @@ public final class DefaultState implements State
 
 
   /**
-   * Allocates a new <code>DefaultState</code>.
+   * Allocates a new {@link DefaultState}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultState</code>.
-   * @param startState This <code>DefaultState</code> is a start
-   *          <code>DefaultState</code>.
-   * @param finalState This <code>DefaultState</code> is a final
-   *          <code>DefaultState</code>.
-   * @throws StateException If something with the <code>DefaultState</code> is
-   *           not correct.
+   *          {@link DefaultState}.
+   * @param startState This {@link DefaultState} is a start {@link DefaultState}.
+   * @param finalState This {@link DefaultState} is a final {@link DefaultState}.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    */
   public DefaultState ( Alphabet alphabet, Alphabet pushDownAlphabet,
       boolean startState, boolean finalState ) throws StateException
@@ -173,18 +168,16 @@ public final class DefaultState implements State
 
 
   /**
-   * Allocates a new <code>DefaultState</code>.
+   * Allocates a new {@link DefaultState}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>DefaultState</code>.
+   * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultState</code>.
-   * @param name The name of this <code>DefaultState</code>.
-   * @param startState This <code>DefaultState</code> is a start
-   *          <code>DefaultState</code>.
-   * @param finalState This <code>DefaultState</code> is a final
-   *          <code>DefaultState</code>.
-   * @throws StateException If something with the <code>DefaultState</code> is
-   *           not correct.
+   *          {@link DefaultState}.
+   * @param name The name of this {@link DefaultState}.
+   * @param startState This {@link DefaultState} is a start {@link DefaultState}.
+   * @param finalState This {@link DefaultState} is a final {@link DefaultState}.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    */
   public DefaultState ( Alphabet alphabet, Alphabet pushDownAlphabet,
       String name, boolean startState, boolean finalState )
@@ -206,11 +199,11 @@ public final class DefaultState implements State
 
 
   /**
-   * Allocates a new <code>DefaultState</code>.
+   * Allocates a new {@link DefaultState}.
    * 
    * @param element The {@link Element}.
-   * @throws StateException If something with the <code>DefaultState</code> is
-   *           not correct.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultState ( Element element ) throws StateException, StoreException
@@ -340,11 +333,11 @@ public final class DefaultState implements State
 
 
   /**
-   * Allocates a new <code>DefaultState</code>.
+   * Allocates a new {@link DefaultState}.
    * 
-   * @param name The name of this <code>DefaultState</code>.
-   * @throws StateException If something with the <code>DefaultState</code> is
-   *           not correct.
+   * @param name The name of this {@link DefaultState}.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    */
   public DefaultState ( String name ) throws StateException
   {
@@ -393,7 +386,7 @@ public final class DefaultState implements State
 
   /**
    * Adds the {@link Transition} to the list of {@link Transition}s, which
-   * begin in this <code>DefaultState</code>.
+   * begin in this {@link DefaultState}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -419,7 +412,7 @@ public final class DefaultState implements State
 
   /**
    * Adds the {@link Transition} to the list of {@link Transition}s, which end
-   * in this <code>DefaultState</code>.
+   * in this {@link DefaultState}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -754,11 +747,11 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if the id of this <code>DefaultState</code> is defined,
-   * otherwise false.
+   * Returns true if the id of this {@link DefaultState} is defined, otherwise
+   * false.
    * 
-   * @return True if the id of this <code>DefaultState</code> is defined,
-   *         otherwise false.
+   * @return True if the id of this {@link DefaultState} is defined, otherwise
+   *         false.
    */
   public final boolean isIdDefined ()
   {
@@ -821,7 +814,7 @@ public final class DefaultState implements State
 
   /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * begin in this <code>DefaultState</code>.
+   * begin in this {@link DefaultState}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -842,7 +835,7 @@ public final class DefaultState implements State
 
   /**
    * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * end in this <code>DefaultState</code>.
+   * end in this {@link DefaultState}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -875,7 +868,7 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the {@link Alphabet} of this <code>DefaultState</code>.
+   * Sets the {@link Alphabet} of this {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
@@ -894,7 +887,7 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the default name of this <code>DefaultState</code>.
+   * Sets the default name of this {@link DefaultState}.
    */
   public final void setDefaultName ()
   {
@@ -946,11 +939,11 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the name of this <code>DefaultState</code>.
+   * Sets the name of this {@link DefaultState}.
    * 
    * @param name The name to set.
-   * @throws StateException If something with the <code>DefaultState</code> is
-   *           not correct.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    */
   public final void setName ( String name ) throws StateException
   {
@@ -989,7 +982,7 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the push down {@link Alphabet} of this <code>DefaultState</code>.
+   * Sets the push down {@link Alphabet} of this {@link DefaultState}.
    * 
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */

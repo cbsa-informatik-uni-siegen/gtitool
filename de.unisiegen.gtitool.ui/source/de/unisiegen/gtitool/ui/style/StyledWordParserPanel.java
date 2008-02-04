@@ -40,7 +40,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledWordParserPanel</code>.
+   * Allocates a new {@link StyledWordParserPanel}.
    */
   public StyledWordParserPanel ()
   {

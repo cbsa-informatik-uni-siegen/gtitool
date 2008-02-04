@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>DefaultSymbol</code> entity.
+ * The {@link DefaultSymbol} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -59,11 +59,11 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new <code>DefaultSymbol</code>.
+   * Allocates a new {@link DefaultSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the <code>DefaultSymbol</code>
-   *           is not correct.
+   * @throws SymbolException If something with the {@link DefaultSymbol} is not
+   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultSymbol ( Element element ) throws SymbolException,
@@ -109,11 +109,11 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new <code>DefaultSymbol</code>.
+   * Allocates a new {@link DefaultSymbol}.
    * 
    * @param name The name of this symbol.
-   * @throws SymbolException If something with the <code>DefaultSymbol</code>
-   *           is not correct.
+   * @throws SymbolException If something with the {@link DefaultSymbol} is not
+   *           correct.
    */
   public DefaultSymbol ( String name ) throws SymbolException
   {
@@ -271,8 +271,8 @@ public final class DefaultSymbol implements Symbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws SymbolException If something with the <code>DefaultSymbol</code>
-   *           is not correct.
+   * @throws SymbolException If something with the {@link DefaultSymbol} is not
+   *           correct.
    */
   private final void setName ( String name ) throws SymbolException
   {

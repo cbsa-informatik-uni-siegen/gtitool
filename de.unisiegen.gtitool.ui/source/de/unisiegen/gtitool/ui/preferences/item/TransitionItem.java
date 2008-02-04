@@ -73,7 +73,7 @@ public enum TransitionItem
 
 
   /**
-   * Allocates a new <code>TransitionItem</code>.
+   * Allocates a new {@link TransitionItem}.
    * 
    * @param index The index.
    * @param title The title.

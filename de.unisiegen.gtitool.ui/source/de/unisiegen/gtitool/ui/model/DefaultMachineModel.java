@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -74,13 +75,13 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * A list of all <code>DefaultStateView</code>s
+   * A list of all {@link DefaultStateView}s
    */
   private ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
 
 
   /**
-   * A list of all <code>DefaultTransitionView</code>s
+   * A list of all {@link DefaultTransitionView}s
    */
   private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
 
@@ -104,20 +105,20 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * Allocates a new <code>DefaultMachineModel</code>.
+   * Allocates a new {@link DefaultMachineModel}.
    * 
    * @param element The {@link Element}.
    * @throws StoreException If the {@link Element} can not be parsed.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
-   *           correct.
-   * @throws StateException If something with the <code>DefaultState</code> is
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
    *           not correct.
+   * @throws SymbolException If something with the {@link Symbol} is not
+   *           correct.
+   * @throws StateException If something with the {@link DefaultState} is not
+   *           correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
-   * @throws TransitionException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
+   * @throws TransitionException If something with the {@link DefaultTransition}
+   *           is not correct.
    */
   public DefaultMachineModel ( Element element ) throws StoreException,
       StateException, SymbolException, AlphabetException, TransitionException,

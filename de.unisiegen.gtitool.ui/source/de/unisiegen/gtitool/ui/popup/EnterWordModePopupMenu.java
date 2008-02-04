@@ -29,10 +29,12 @@ public final class EnterWordModePopupMenu extends JPopupMenu
    */
   private static final long serialVersionUID = 706578962258712542L;
 
+
   /**
    * The {@link MachinePanel}
    */
   MachinePanel machinePanel;
+
 
   /**
    * The start item
@@ -57,6 +59,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
    */
   private JMenuItem jMenuItemStop;
 
+
   /**
    * The {@link MainWindowForm}
    */
@@ -64,12 +67,13 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
 
   /**
-   * Allocates a new <code>StatePopupMenu</code>.
+   * Allocates a new {@link StatePopupMenu}.
    * 
    * @param machinePanel The {@link MachinePanel}
    * @param mainWindow The {@link MainWindow}
    */
-  public EnterWordModePopupMenu ( MachinePanel machinePanel, MainWindowForm mainWindow)
+  public EnterWordModePopupMenu ( MachinePanel machinePanel,
+      MainWindowForm mainWindow )
   {
     this.machinePanel = machinePanel;
     this.mainWindow = mainWindow;
@@ -83,9 +87,13 @@ public final class EnterWordModePopupMenu extends JPopupMenu
   private final void populateMenues ()
   {
 
-    this.jMenuItemStart = new JMenuItem ( Messages.getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
-    this.jMenuItemStart.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_start.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemStart = new JMenuItem ( Messages
+        .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
+    this.jMenuItemStart
+        .setIcon ( new ImageIcon (
+            getClass ()
+                .getResource (
+                    "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_start.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStart.addActionListener ( new ActionListener ()
     {
 
@@ -95,10 +103,14 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       {
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
-          EnterWordModePopupMenu.this.mainWindow.jButtonStart.setEnabled ( false );
-          EnterWordModePopupMenu.this.mainWindow.jButtonNextStep.setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jButtonPrevious.setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep.setEnabled ( true );
+          EnterWordModePopupMenu.this.mainWindow.jButtonStart
+              .setEnabled ( false );
+          EnterWordModePopupMenu.this.mainWindow.jButtonNextStep
+              .setEnabled ( true );
+          EnterWordModePopupMenu.this.mainWindow.jButtonPrevious
+              .setEnabled ( true );
+          EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep
+              .setEnabled ( true );
           EnterWordModePopupMenu.this.mainWindow.jButtonStop.setEnabled ( true );
         }
       }
@@ -108,8 +120,11 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
     this.jMenuItemPreviousStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
-     this.jMenuItemPreviousStep.setIcon ( new ImageIcon ( getClass ().getResource (
-     "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_previous.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemPreviousStep
+        .setIcon ( new ImageIcon (
+            getClass ()
+                .getResource (
+                    "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_previous.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
@@ -120,13 +135,14 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         EnterWordModePopupMenu.this.machinePanel.handleWordPreviousStep ();
       }
     } );
-    this.jMenuItemPreviousStep.setEnabled ( this.machinePanel.isWordNavigation () );
+    this.jMenuItemPreviousStep.setEnabled ( this.machinePanel
+        .isWordNavigation () );
     add ( this.jMenuItemPreviousStep );
 
     this.jMenuItemNextStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
-     this.jMenuItemNextStep.setIcon ( new ImageIcon ( getClass ().getResource (
-     "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_next.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemNextStep.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_next.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
@@ -140,7 +156,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemNextStep.setEnabled ( this.machinePanel.isWordNavigation () );
     add ( this.jMenuItemNextStep );
 
-    this.jMenuItemStop = new JMenuItem ( Messages.getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
+    this.jMenuItemStop = new JMenuItem ( Messages
+        .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     this.jMenuItemStop.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_stop.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStop.addActionListener ( new ActionListener ()
@@ -151,9 +168,12 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       ActionEvent event )
       {
         EnterWordModePopupMenu.this.mainWindow.jButtonStart.setEnabled ( true );
-        EnterWordModePopupMenu.this.mainWindow.jButtonNextStep.setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jButtonPrevious.setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep.setEnabled ( false );
+        EnterWordModePopupMenu.this.mainWindow.jButtonNextStep
+            .setEnabled ( false );
+        EnterWordModePopupMenu.this.mainWindow.jButtonPrevious
+            .setEnabled ( false );
+        EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep
+            .setEnabled ( false );
         EnterWordModePopupMenu.this.mainWindow.jButtonStop.setEnabled ( false );
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }

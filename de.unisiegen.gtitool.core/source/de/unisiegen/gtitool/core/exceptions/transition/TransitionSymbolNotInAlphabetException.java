@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>TransitionSymbolNotInAlphabetException</code> is used, if the
+ * The {@link TransitionSymbolNotInAlphabetException} is used, if the
  * {@link Symbol} which should be added to the {@link Transition} is not in the
  * {@link Alphabet} of the {@link Transition}.
  * 
@@ -36,7 +36,7 @@ public final class TransitionSymbolNotInAlphabetException extends
 
 
   /**
-   * Allocates a new <code>TransitionSymbolNotInAlphabetException</code>.
+   * Allocates a new {@link TransitionSymbolNotInAlphabetException}.
    * 
    * @param transition The {@link Transition}.
    * @param alphabet The {@link Alphabet}.

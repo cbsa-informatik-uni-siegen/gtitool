@@ -22,11 +22,10 @@ public final class DefaultNFA extends AbstractMachine implements NFA
 
 
   /**
-   * Allocates a new <code>NFA</code>.
+   * Allocates a new {@link NFA}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>NFA</code>.
-   * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>NFA</code>.
+   * @param alphabet The {@link Alphabet} of this {@link NFA}.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this {@link NFA}.
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    */
   public DefaultNFA ( Alphabet alphabet, Alphabet pushDownAlphabet,

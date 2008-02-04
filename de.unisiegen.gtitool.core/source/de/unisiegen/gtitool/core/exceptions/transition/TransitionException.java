@@ -9,8 +9,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>TransitionException</code> is used if the {@link Transition} is
- * not correct.
+ * The {@link TransitionException} is used if the {@link Transition} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -31,7 +31,7 @@ public abstract class TransitionException extends CoreException
 
 
   /**
-   * Allocates a new <code>TransitionException</code>.
+   * Allocates a new {@link TransitionException}.
    * 
    * @param transition The {@link Transition}.
    * @param symbolList The {@link Symbol}s.

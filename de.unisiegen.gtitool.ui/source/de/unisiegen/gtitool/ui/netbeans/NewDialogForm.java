@@ -22,11 +22,11 @@ public class NewDialogForm extends javax.swing.JDialog {
   //
   
   /**
-   * Allocates a new <code>FileWizard</code> instance.
+   * Allocates a new {@link NewDialogForm} instance.
    *
    * @param parent the parent frame.
-   * @param modal <code>true</code> to display the wizard modal
-   *              for the <code>parent</code>.
+   * @param modal true to display the wizard modal
+   *              for the parent.
    */
   public NewDialogForm(java.awt.Frame parent, boolean modal) {
     super(parent, modal);
@@ -60,12 +60,6 @@ public class NewDialogForm extends javax.swing.JDialog {
         setTitle(bundle.getString("NewDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
-
         jPanelHeader.setLayout(new java.awt.GridBagLayout());
 
         jPanelHeader.setBackground(new java.awt.Color(255, 255, 255));
@@ -113,10 +107,6 @@ public class NewDialogForm extends javax.swing.JDialog {
 
         setSize(new java.awt.Dimension(480, 300));
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-// NOTICE Ihre Ereignisbehandlung hier einfügen:
-    }//GEN-LAST:event_formWindowClosing
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel jPanelBody;

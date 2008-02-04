@@ -6,8 +6,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>StateException</code> is used if the {@link Symbol} is not
- * correct.
+ * The {@link StateException} is used if the {@link Symbol} is not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -16,7 +15,7 @@ public abstract class StateException extends CoreException
 {
 
   /**
-   * Allocates a new <code>StateException</code>.
+   * Allocates a new {@link StateException}.
    */
   public StateException ()
   {

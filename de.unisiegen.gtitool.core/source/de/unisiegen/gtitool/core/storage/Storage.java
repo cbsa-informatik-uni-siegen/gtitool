@@ -27,7 +27,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>Storage</code> class.
+ * The {@link Storage} class.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -36,7 +36,7 @@ public final class Storage
 {
 
   /**
-   * The single instance of the <code>Storage<code>
+   * The single instance of the {@link Storage}.
    */
   private static Storage singleStorage;
 
@@ -48,9 +48,9 @@ public final class Storage
 
 
   /**
-   * Returns the single instance of the <code>Storage</code>.
+   * Returns the single instance of the {@link Storage}.
    * 
-   * @return The single instance of the <code>Storage</code>.
+   * @return The single instance of the {@link Storage}.
    */
   public final static Storage getInstance ()
   {
@@ -69,7 +69,7 @@ public final class Storage
 
 
   /**
-   * Allocates a new <code>Storage</code>.
+   * Allocates a new {@link Storage}.
    */
   private Storage ()
   {

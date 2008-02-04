@@ -26,7 +26,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledAlphabetParserPanel</code>.
+   * Allocates a new {@link StyledAlphabetParserPanel}.
    */
   public StyledAlphabetParserPanel ()
   {

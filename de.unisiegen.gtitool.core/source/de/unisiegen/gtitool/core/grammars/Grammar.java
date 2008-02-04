@@ -23,9 +23,9 @@ public interface Grammar extends Serializable, Modifyable
 
 
   /**
-   * Returns the <code>Grammar</code> type.
+   * Returns the {@link Grammar} type.
    * 
-   * @return The <code>Grammar</code> type.
+   * @return The {@link Grammar} type.
    */
   public String getGrammarType ();
 }

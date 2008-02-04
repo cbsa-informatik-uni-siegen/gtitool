@@ -38,7 +38,7 @@ public class PreferenceManager
 
 
   /**
-   * The single instance of the <code>PreferenceManager<code>
+   * The single instance of the {@link PreferenceManager}.
    */
   private static PreferenceManager singlePreferenceManager;
 
@@ -175,9 +175,9 @@ public class PreferenceManager
 
 
   /**
-   * Returns the single instance of the <code>PreferenceManager</code>.
+   * Returns the single instance of the {@link PreferenceManager}.
    * 
-   * @return The single instance of the <code>PreferenceManager</code>.
+   * @return The single instance of the {@link PreferenceManager}.
    */
   public static PreferenceManager getInstance ()
   {
@@ -205,7 +205,7 @@ public class PreferenceManager
 
 
   /**
-   * Allocates a new <code>PreferencesManager</code>.
+   * Allocates a new {@link PreferenceManager}.
    */
   protected PreferenceManager ()
   {

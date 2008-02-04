@@ -24,7 +24,7 @@ public final class StyledStateParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledStateParserPanel</code>.
+   * Allocates a new {@link StyledStateParserPanel}.
    */
   public StyledStateParserPanel ()
   {

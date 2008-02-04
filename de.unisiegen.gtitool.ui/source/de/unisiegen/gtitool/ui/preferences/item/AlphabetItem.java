@@ -26,7 +26,7 @@ public final class AlphabetItem implements Cloneable
 
 
   /**
-   * Allocates a new <code>ColorItem</code>.
+   * Allocates a new {@link AlphabetItem}.
    * 
    * @param alphabet The {@link Alphabet} of this item.
    * @param standardAlphabet The standard {@link Alphabet} of this item.

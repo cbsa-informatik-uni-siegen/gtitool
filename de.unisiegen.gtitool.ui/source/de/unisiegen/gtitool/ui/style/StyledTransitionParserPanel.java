@@ -27,7 +27,7 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledTransitionParserPanel</code>.
+   * Allocates a new {@link StyledTransitionParserPanel}.
    */
   public StyledTransitionParserPanel ()
   {

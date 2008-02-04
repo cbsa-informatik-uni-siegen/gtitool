@@ -88,7 +88,7 @@ public final class StatePopupMenu extends JPopupMenu
 
 
   /**
-   * Allocates a new <code>StatePopupMenu</code>.
+   * Allocates a new {@link StatePopupMenu}.
    * 
    * @param parent The parent {@link JFrame}.
    * @param graph the JGraph containing the state

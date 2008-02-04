@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * The <code>Alphabet</code> entity.
+ * The {@link Alphabet} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -20,37 +20,31 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 {
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * <code>Alphabet</code>.
+   * Appends the specified {@link Symbol}s to the end of this {@link Alphabet}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>Alphabet</code>.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
+   * @param symbols The {@link Symbol}s to be appended to this {@link Alphabet}.
+   * @throws AlphabetException If something with the {@link Alphabet} is not
+   *           correct.
    */
   public void add ( Iterable < Symbol > symbols ) throws AlphabetException;
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
-   * <code>Alphabet</code>.
+   * Appends the specified {@link Symbol} to the end of this {@link Alphabet}.
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          <code>Alphabet</code>.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
+   * @param symbol The {@link Symbol} to be appended to this {@link Alphabet}.
+   * @throws AlphabetException If something with the {@link Alphabet} is not
+   *           correct.
    */
   public void add ( Symbol symbol ) throws AlphabetException;
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * <code>Alphabet</code>.
+   * Appends the specified {@link Symbol}s to the end of this {@link Alphabet}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>Alphabet</code>.
-   * @throws AlphabetException If something with the <code>Alphabet</code> is
-   *           not correct.
+   * @param symbols The {@link Symbol}s to be appended to this {@link Alphabet}.
+   * @throws AlphabetException If something with the {@link Alphabet} is not
+   *           correct.
    */
   public void add ( Symbol ... symbols ) throws AlphabetException;
 
@@ -78,13 +72,11 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns <tt>true</tt> if this <code>Alphabet</code> contains the
-   * specified {@link Symbol}.
+   * Returns true if this {@link Alphabet} contains the specified {@link Symbol}.
    * 
-   * @param symbol {@link Symbol} whose presence in this <code>Alphabet</code>
-   *          is to be tested.
-   * @return <code>true</code> if the specified {@link Symbol} is present;
-   *         <code>false</code> otherwise.
+   * @param symbol {@link Symbol} whose presence in this {@link Alphabet} is to
+   *          be tested.
+   * @return true if the specified {@link Symbol} is present; false otherwise.
    */
   public boolean contains ( Symbol symbol );
 
@@ -107,7 +99,7 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
+   * Remove the given {@link Symbol}s from this {@link Alphabet}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -115,7 +107,7 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>Alphabet</code>.
+   * Removes the given {@link Symbol} from this {@link Alphabet}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -123,7 +115,7 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>Alphabet</code>.
+   * Remove the given {@link Symbol}s from this {@link Alphabet}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -139,9 +131,9 @@ public interface Alphabet extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>Alphabet</code>.
+   * Returns the number of {@link Symbol}s in this {@link Alphabet}.
    * 
-   * @return The number of {@link Symbol}s in this <code>Alphabet</code>.
+   * @return The number of {@link Symbol}s in this {@link Alphabet}.
    */
   public int size ();
 }

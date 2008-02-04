@@ -118,14 +118,13 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Allocates a new <code>StyledParserDocument</code> for the given
-   * <code>pParseable</code>, where the <code>pParseable</code> is used to
-   * determine the scanner for the documents content and thereby dictates the
-   * syntax highlighting.
+   * Allocates a new {@link StyledParserDocument} for the given
+   * {@link Parseable}, where the {@link Parseable} is used to determine the
+   * scanner for the documents content and thereby dictates the syntax
+   * highlighting.
    * 
    * @param parseable The {@link Parseable} for which to allocate a document.
-   * @throws NullPointerException if the <code>pParseable</code> is
-   *           <code>null</code>.
+   * @throws NullPointerException if the {@link Parseable} is null.
    */
   public StyledParserDocument ( Parseable parseable )
   {

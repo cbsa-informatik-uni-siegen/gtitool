@@ -89,7 +89,7 @@ public final class TransitionPopupMenu extends JPopupMenu
 
 
   /**
-   * Allocates a new <code>StatePopupMenu</code>.
+   * Allocates a new {@link StatePopupMenu}.
    * 
    * @param jGraph The {@link JGraph}.
    * @param parent The parent panel.

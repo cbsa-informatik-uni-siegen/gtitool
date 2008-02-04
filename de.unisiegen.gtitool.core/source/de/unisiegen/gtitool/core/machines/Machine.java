@@ -94,7 +94,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link State}s to this <code>Machine</code>.
+   * Adds the {@link State}s to this {@link Machine}.
    * 
    * @param states The {@link State}s to add.
    */
@@ -102,7 +102,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link State} to this <code>Machine</code>.
+   * Adds the {@link State} to this {@link Machine}.
    * 
    * @param state The {@link State} to add.
    */
@@ -110,7 +110,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link State}s to this <code>Machine</code>.
+   * Adds the {@link State}s to this {@link Machine}.
    * 
    * @param states The {@link State}s to add.
    */
@@ -118,7 +118,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link Transition}s to this <code>Machine</code>.
+   * Adds the {@link Transition}s to this {@link Machine}.
    * 
    * @param transitions The {@link Transition}s to add.
    */
@@ -126,7 +126,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link Transition} to this <code>Machine</code>.
+   * Adds the {@link Transition} to this {@link Machine}.
    * 
    * @param transition The {@link Transition} to add.
    */
@@ -134,7 +134,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Adds the {@link Transition}s to this <code>Machine</code>.
+   * Adds the {@link Transition}s to this {@link Machine}.
    * 
    * @param transitions The {@link Transition}s to add.
    */
@@ -177,19 +177,19 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
    */
   public Symbol getCurrentSymbol () throws WordFinishedException,
       WordResetedException;
 
 
   /**
-   * Returns the <code>Machine</code> type.
+   * Returns the {@link Machine} type.
    * 
-   * @return The <code>Machine</code> type.
+   * @return The {@link Machine} type.
    */
   public String getMachineType ();
 
@@ -206,10 +206,10 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link Word} is not
+   *           correct.
+   * @throws WordResetedException If something with the {@link Word} is not
+   *           correct.
    */
   public ArrayList < Symbol > getReadedSymbols () throws WordFinishedException,
       WordResetedException;
@@ -267,22 +267,22 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
   /**
    * Returns true if the given {@link Symbol} can be removed from the
-   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * {@link Alphabet} of this {@link Machine}, otherwise false.
    * 
    * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the
-   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   *         {@link Alphabet} of this {@link Machine}, otherwise false.
    */
   public boolean isSymbolRemoveableFromAlphabet ( Symbol symbol );
 
 
   /**
    * Returns true if the given {@link Symbol} can be removed from the push down
-   * {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   * {@link Alphabet} of this {@link Machine}, otherwise false.
    * 
    * @param symbol The {@link Symbol} which should be checked.
    * @return True if the given {@link Symbol} can be removed from the push down
-   *         {@link Alphabet} of this <code>Machine</code>, otherwise false.
+   *         {@link Alphabet} of this {@link Machine}, otherwise false.
    */
   public boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol );
 
@@ -334,7 +334,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link State}s from this <code>Machine</code>.
+   * Removes the given {@link State}s from this {@link Machine}.
    * 
    * @param states The {@link State}s to remove.
    */
@@ -342,7 +342,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link State} from this <code>Machine</code>.
+   * Removes the given {@link State} from this {@link Machine}.
    * 
    * @param state The {@link State} to remove.
    */
@@ -350,7 +350,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link State}s from this <code>Machine</code>.
+   * Removes the given {@link State}s from this {@link Machine}.
    * 
    * @param states The {@link State}s to remove.
    */
@@ -358,7 +358,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>Machine</code>.
+   * Removes the given {@link Symbol} from this {@link Machine}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -366,7 +366,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link Transition}s from this <code>Machine</code>.
+   * Removes the given {@link Transition}s from this {@link Machine}.
    * 
    * @param transitions The {@link Transition}s to remove.
    */
@@ -374,7 +374,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link Transition} from this <code>Machine</code>.
+   * Removes the given {@link Transition} from this {@link Machine}.
    * 
    * @param transition The {@link Transition} to remove.
    */
@@ -382,7 +382,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Removes the given {@link Transition}s from this <code>Machine</code>.
+   * Removes the given {@link Transition}s from this {@link Machine}.
    * 
    * @param transitions The {@link Transition}s to remove.
    */
@@ -398,8 +398,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Starts the <code>Machine</code> after a validation with the given
-   * {@link Word}.
+   * Starts the {@link Machine} after a validation with the given {@link Word}.
    * 
    * @param word The {@link Word} to start with.
    */
@@ -407,7 +406,7 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Validates that everything in the <code>Machine</code> is correct.
+   * Validates that everything in the {@link Machine} is correct.
    * 
    * @throws MachineValidationException If the validation fails.
    */

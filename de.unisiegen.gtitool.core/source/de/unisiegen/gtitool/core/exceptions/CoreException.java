@@ -2,8 +2,8 @@ package de.unisiegen.gtitool.core.exceptions;
 
 
 /**
- * The <code>CoreException</code> is as parent class for all other exceptions
- * in the core project.
+ * The {@link CoreException} is as parent class for all other exceptions in the
+ * core project.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -48,7 +48,7 @@ public abstract class CoreException extends Exception
 
 
   /**
-   * Allocates a new <code>CoreException</code>.
+   * Allocates a new {@link CoreException}.
    */
   public CoreException ()
   {
@@ -57,7 +57,7 @@ public abstract class CoreException extends Exception
 
 
   /**
-   * Allocates a new <code>CoreException</code>.
+   * Allocates a new {@link CoreException}.
    * 
    * @param message The detail message.
    * @param description The detail description.

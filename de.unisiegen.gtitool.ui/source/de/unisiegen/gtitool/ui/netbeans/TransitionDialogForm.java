@@ -25,14 +25,14 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private TransitionDialog logic;
     
     /**
-     * Creates new form <code>TransitionDialog</code>.
+     * Creates new form {@link TransitionDialog}.
      * 
-     * @param pLogic The {@link TransitionDialog}.
-     * @param pParent The parent {@link Frame}.
+     * @param logic The {@link TransitionDialog}.
+     * @param parent The parent {@link Frame}.
      */
-    public TransitionDialogForm(TransitionDialog pLogic, java.awt.Frame pParent) {
-        super(pParent, true);
-        this.logic = pLogic;
+    public TransitionDialogForm(TransitionDialog logic, java.awt.Frame parent) {
+        super(parent, true);
+        this.logic = logic;
         initComponents();
     }
     

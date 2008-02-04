@@ -28,7 +28,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>DefaultTransition</code> entity.
+ * The {@link DefaultTransition} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -58,43 +58,43 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The {@link Alphabet} of this <code>DefaultTransition</code>.
+   * The {@link Alphabet} of this {@link DefaultTransition}.
    */
   private Alphabet alphabet = null;
 
 
   /**
-   * The push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   * The push down {@link Alphabet} of this {@link DefaultTransition}.
    */
   private Alphabet pushDownAlphabet;
 
 
   /**
-   * The id of this <code>DefaultTransition</code>.
+   * The id of this {@link DefaultTransition}.
    */
   private int id = ID_NOT_DEFINED;
 
 
   /**
-   * The {@link State} where the <code>DefaultTransition</code> begins.
+   * The {@link State} where the {@link DefaultTransition} begins.
    */
   private State stateBegin;
 
 
   /**
-   * The {@link State} id where the <code>DefaultTransition</code> begins.
+   * The {@link State} id where the {@link DefaultTransition} begins.
    */
   private int stateBeginId;
 
 
   /**
-   * The {@link State} where the <code>DefaultTransition</code> ends.
+   * The {@link State} where the {@link DefaultTransition} ends.
    */
   private State stateEnd;
 
 
   /**
-   * The {@link State} id where the <code>DefaultTransition</code> ends.
+   * The {@link State} id where the {@link DefaultTransition} ends.
    */
   private int stateEndId;
 
@@ -142,7 +142,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    */
   public DefaultTransition ()
   {
@@ -156,24 +156,23 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
+   * @param alphabet The {@link Alphabet} of this {@link DefaultTransition}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>.
+   *          {@link DefaultTransition}.
    * @param pushDownWordRead The {@link Word} which is read from the
    *          {@link Stack}.
    * @param pushDownWordWrite The {@link Word} which should be written on the
    *          {@link Stack}.
-   * @param stateBegin The {@link State} where the
-   *          <code>DefaultTransition</code> begins.
-   * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
-   *          ends.
+   * @param stateBegin The {@link State} where the {@link DefaultTransition}
+   *          begins.
+   * @param stateEnd The {@link State} where the {@link DefaultTransition} ends.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
       Word pushDownWordRead, Word pushDownWordWrite, State stateBegin,
@@ -209,24 +208,23 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    * 
-   * @param alphabet The {@link Alphabet} of this <code>DefaultTransition</code>.
+   * @param alphabet The {@link Alphabet} of this {@link DefaultTransition}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
-   *          <code>DefaultTransition</code>. *
+   *          {@link DefaultTransition}. *
    * @param pushDownWordRead The {@link Word} which is read from the
    *          {@link Stack}.
    * @param pushDownWordWrite The {@link Word} which should be written on the
    *          {@link Stack}.
-   * @param stateBegin The {@link State} where the
-   *          <code>DefaultTransition</code> begins.
-   * @param stateEnd The {@link State} where the <code>DefaultTransition</code>
-   *          ends.
+   * @param stateBegin The {@link State} where the {@link DefaultTransition}
+   *          begins.
+   * @param stateEnd The {@link State} where the {@link DefaultTransition} ends.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public DefaultTransition ( Alphabet alphabet, Alphabet pushDownAlphabet,
       Word pushDownWordRead, Word pushDownWordWrite, State stateBegin,
@@ -262,14 +260,14 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    * 
    * @param element The {@link Element}. *
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
+   *           {@link DefaultTransition} is not correct.
+   * @throws SymbolException If something with the {@link Symbol} is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
@@ -364,7 +362,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    * 
    * @param pushDownWordRead The {@link Word} which is read from the
    *          {@link Stack}.
@@ -372,9 +370,9 @@ public final class DefaultTransition implements Transition
    *          {@link Stack}.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public DefaultTransition ( Word pushDownWordRead, Word pushDownWordWrite,
       Iterable < Symbol > symbols )
@@ -401,7 +399,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Allocates a new <code>DefaultTransition</code>.
+   * Allocates a new {@link DefaultTransition}.
    * 
    * @param pushDownWordRead The {@link Word} which is read from the
    *          {@link Stack}.
@@ -409,9 +407,9 @@ public final class DefaultTransition implements Transition
    *          {@link Stack}.
    * @param symbols The array of {@link Symbol}s.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public DefaultTransition ( Word pushDownWordRead, Word pushDownWordWrite,
       Symbol ... symbols ) throws TransitionSymbolNotInAlphabetException,
@@ -438,14 +436,14 @@ public final class DefaultTransition implements Transition
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultTransition</code>.
+   * {@link DefaultTransition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultTransition</code>.
+   *          {@link DefaultTransition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public final void add ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -464,14 +462,14 @@ public final class DefaultTransition implements Transition
 
   /**
    * Appends the specified {@link Symbol} to the end of this
-   * <code>DefaultTransition</code>.
+   * {@link DefaultTransition}.
    * 
    * @param symbol The {@link Symbol} to be appended to this
-   *          <code>DefaultTransition</code>.
+   *          {@link DefaultTransition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public final void add ( Symbol symbol )
       throws TransitionSymbolNotInAlphabetException,
@@ -506,14 +504,14 @@ public final class DefaultTransition implements Transition
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultTransition</code>.
+   * {@link DefaultTransition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultTransition</code>.
+   *          {@link DefaultTransition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>DefaultTransition</code> is not correct.
+   *           {@link DefaultTransition} is not correct.
    */
   public final void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -606,11 +604,11 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if this <code>DefaultTransition</code> contains the given
+   * Returns true if this {@link DefaultTransition} contains the given
    * {@link Symbol}. Otherwise false.
    * 
    * @param symbol The {@link Symbol}.
-   * @return True if this <code>DefaultTransition</code> contains the given
+   * @return True if this {@link DefaultTransition} contains the given
    *         {@link Symbol}. Otherwise false.
    */
   public final boolean contains ( Symbol symbol )
@@ -768,11 +766,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} where the <code>DefaultTransition</code>
-   * begins.
+   * Returns the {@link State} where the {@link DefaultTransition} begins.
    * 
-   * @return The {@link State} where the <code>DefaultTransition</code>
-   *         begins.
+   * @return The {@link State} where the {@link DefaultTransition} begins.
    * @see #stateBegin
    */
   public final State getStateBegin ()
@@ -782,11 +778,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} id where the <code>DefaultTransition</code>
-   * begins.
+   * Returns the {@link State} id where the {@link DefaultTransition} begins.
    * 
-   * @return The {@link State} id where the <code>DefaultTransition</code>
-   *         begins.
+   * @return The {@link State} id where the {@link DefaultTransition} begins.
    * @see #stateBeginId
    */
   public final int getStateBeginId ()
@@ -797,9 +791,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} where the <code>DefaultTransition</code> ends.
+   * Returns the {@link State} where the {@link DefaultTransition} ends.
    * 
-   * @return The {@link State} where the <code>DefaultTransition</code> ends.
+   * @return The {@link State} where the {@link DefaultTransition} ends.
    * @see #stateEnd
    */
   public final State getStateEnd ()
@@ -809,11 +803,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} id where the <code>DefaultTransition</code>
-   * ends.
+   * Returns the {@link State} id where the {@link DefaultTransition} ends.
    * 
-   * @return The {@link State} id where the <code>DefaultTransition</code>
-   *         ends.
+   * @return The {@link State} id where the {@link DefaultTransition} ends.
    * @see #stateEndId
    */
   public final int getStateEndId ()
@@ -869,11 +861,11 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true, if this <code>DefaultTransition</code> is a epsilon
-   * <code>DefaultTransition</code>, otherwise false.
+   * Returns true, if this {@link DefaultTransition} is a epsilon
+   * {@link DefaultTransition}, otherwise false.
    * 
-   * @return True, if this <code>DefaultTransition</code> is a epsilon
-   *         <code>DefaultTransition</code>, otherwise false.
+   * @return True, if this {@link DefaultTransition} is a epsilon
+   *         {@link DefaultTransition}, otherwise false.
    */
   public final boolean isEpsilonTransition ()
   {
@@ -882,10 +874,10 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if the id of this <code>DefaultTransition</code> is defined,
+   * Returns true if the id of this {@link DefaultTransition} is defined,
    * otherwise false.
    * 
-   * @return True if the id of this <code>DefaultTransition</code> is defined,
+   * @return True if the id of this {@link DefaultTransition} is defined,
    *         otherwise false.
    */
   public final boolean isIdDefined ()
@@ -909,10 +901,10 @@ public final class DefaultTransition implements Transition
 
   /**
    * Returns an iterator over the {@link Symbol}s in this
-   * <code>DefaultTransition</code>.
+   * {@link DefaultTransition}.
    * 
    * @return An iterator over the {@link Symbol}s in this
-   *         <code>DefaultTransition</code>.
+   *         {@link DefaultTransition}.
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -921,7 +913,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>DefaultTransition</code>.
+   * Remove the given {@link Symbol}s from this {@link DefaultTransition}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -939,7 +931,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>DefaultTransition</code>.
+   * Removes the given {@link Symbol} from this {@link DefaultTransition}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -956,7 +948,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>DefaultTransition</code>.
+   * Remove the given {@link Symbol}s from this {@link DefaultTransition}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -1013,7 +1005,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link Alphabet} of this <code>DefaultTransition</code>.
+   * Sets the {@link Alphabet} of this {@link DefaultTransition}.
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
@@ -1057,7 +1049,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   * Sets the push down {@link Alphabet} of this {@link DefaultTransition}.
    * 
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
@@ -1104,7 +1096,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} where the <code>DefaultTransition</code> begins.
+   * Sets the {@link State} where the {@link DefaultTransition} begins.
    * 
    * @param stateBegin The {@link State} to set.
    */
@@ -1119,8 +1111,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} id where the <code>DefaultTransition</code>
-   * begins.
+   * Sets the {@link State} id where the {@link DefaultTransition} begins.
    * 
    * @param stateBeginId The {@link State} id to set.
    */
@@ -1136,7 +1127,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} where the <code>DefaultTransition</code> ends.
+   * Sets the {@link State} where the {@link DefaultTransition} ends.
    * 
    * @param stateEnd The {@link State} to set.
    */
@@ -1151,7 +1142,7 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} id where the <code>DefaultTransition</code> ends.
+   * Sets the {@link State} id where the {@link DefaultTransition} ends.
    * 
    * @param stateEndId The {@link State} id to set.
    */
@@ -1167,11 +1158,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the number of {@link Symbol}s in this
-   * <code>DefaultTransition</code>.
+   * Returns the number of {@link Symbol}s in this {@link DefaultTransition}.
    * 
-   * @return The number of {@link Symbol}s in this
-   *         <code>DefaultTransition</code>.
+   * @return The number of {@link Symbol}s in this {@link DefaultTransition}.
    */
   public final int size ()
   {

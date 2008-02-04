@@ -17,7 +17,7 @@ public final class StackParser extends StackAbstractParser
 {
 
   /**
-   * Allocates a new <code>StackParser</code>.
+   * Allocates a new {@link StackParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

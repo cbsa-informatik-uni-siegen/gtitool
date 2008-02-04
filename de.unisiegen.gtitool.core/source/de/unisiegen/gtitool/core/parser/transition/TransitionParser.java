@@ -17,7 +17,7 @@ public final class TransitionParser extends TransitionAbstractParser
 {
 
   /**
-   * Allocates a new <code>TransitionParser</code>.
+   * Allocates a new {@link TransitionParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

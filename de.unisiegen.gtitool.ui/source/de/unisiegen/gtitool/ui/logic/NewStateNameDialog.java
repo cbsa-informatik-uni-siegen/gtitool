@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.netbeans.NewStateNameDialogForm;
 
 
 /**
- * The <code>NewStateNameDialog</code>.
+ * The {@link NewStateNameDialog}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -46,7 +46,7 @@ public final class NewStateNameDialog
 
 
   /**
-   * Allocates a new <code>NewStateNameDialog</code>.
+   * Allocates a new {@link NewStateNameDialog}.
    * 
    * @param pParent The parent {@link JFrame}.
    * @param pState The {@link State}.
@@ -97,7 +97,7 @@ public final class NewStateNameDialog
 
 
   /**
-   * Handles the action on the <code>Cancel</code> button.
+   * Handles the action on the cancel button.
    */
   public final void handleCancel ()
   {
@@ -109,7 +109,7 @@ public final class NewStateNameDialog
 
 
   /**
-   * Handles the action on the <code>OK</code> button.
+   * Handles the action on the ok button.
    */
   public final void handleOk ()
   {

@@ -9,8 +9,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>AlphabetException</code> is used if the {@link Alphabet} is not
- * correct.
+ * The {@link AlphabetException} is used if the {@link Alphabet} is not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -31,13 +30,12 @@ public abstract class AlphabetException extends CoreException
 
 
   /**
-   * Allocates a new <code>AlphabetException</code>.
+   * Allocates a new {@link AlphabetException}.
    * 
    * @param alphabet The {@link Alphabet}.
    * @param symbolList The {@link Symbol}s.
    */
-  public AlphabetException ( Alphabet alphabet,
-      ArrayList < Symbol > symbolList )
+  public AlphabetException ( Alphabet alphabet, ArrayList < Symbol > symbolList )
   {
     super ();
     // Alphabet

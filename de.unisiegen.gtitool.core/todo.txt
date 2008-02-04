@@ -1,3 +1,2 @@
 CF		- Stack in der Machine implementieren
-CF		- MachineStateException löschen
 CF		- isActive für alle Entities implementieren

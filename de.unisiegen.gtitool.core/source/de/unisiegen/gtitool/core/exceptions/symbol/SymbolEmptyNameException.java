@@ -7,8 +7,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>SymbolEmptyNameException</code> is used if the {@link Symbol} is
- * not correct.
+ * The {@link SymbolEmptyNameException} is used if the {@link Symbol} is not
+ * correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,7 +23,7 @@ public final class SymbolEmptyNameException extends SymbolException
 
 
   /**
-   * Allocates a new <code>SymbolEmptyNameException</code>.
+   * Allocates a new {@link SymbolEmptyNameException}.
    */
   public SymbolEmptyNameException ()
   {

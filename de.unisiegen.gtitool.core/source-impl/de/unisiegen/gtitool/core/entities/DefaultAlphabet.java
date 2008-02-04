@@ -26,7 +26,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>DefaultAlphabet</code> entity.
+ * The {@link DefaultAlphabet} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -74,7 +74,7 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Allocates a new <code>DefaultAlphabet</code>.
+   * Allocates a new {@link DefaultAlphabet}.
    */
   public DefaultAlphabet ()
   {
@@ -88,12 +88,12 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Allocates a new <code>DefaultAlphabet</code>.
+   * Allocates a new {@link DefaultAlphabet}.
    * 
    * @param element The {@link Element}.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
+   * @throws SymbolException If something with the {@link Symbol} is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
@@ -135,11 +135,11 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Allocates a new <code>DefaultAlphabet</code>.
+   * Allocates a new {@link DefaultAlphabet}.
    * 
    * @param symbols The array of {@link Symbol}s.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
    */
   public DefaultAlphabet ( Iterable < Symbol > symbols )
       throws AlphabetException
@@ -158,11 +158,11 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Allocates a new <code>DefaultAlphabet</code>.
+   * Allocates a new {@link DefaultAlphabet}.
    * 
    * @param symbols The array of {@link Symbol}s.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
    */
   public DefaultAlphabet ( Symbol ... symbols ) throws AlphabetException
   {
@@ -181,12 +181,12 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultAlphabet</code>.
+   * {@link DefaultAlphabet}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultAlphabet</code>.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
+   *          {@link DefaultAlphabet}.
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
    */
   public final void add ( Iterable < Symbol > symbols )
       throws AlphabetException
@@ -210,12 +210,12 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * Appends the specified {@link Symbol} to the end of this
-   * <code>DefaultAlphabet</code>.
+   * {@link DefaultAlphabet}.
    * 
    * @param symbol The {@link Symbol} to be appended to this
-   *          <code>DefaultAlphabet</code>.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
+   *          {@link DefaultAlphabet}.
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
    */
   public final void add ( Symbol symbol ) throws AlphabetException
   {
@@ -249,12 +249,12 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultAlphabet</code>.
+   * {@link DefaultAlphabet}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultAlphabet</code>.
-   * @throws AlphabetException If something with the
-   *           <code>DefaultAlphabet</code> is not correct.
+   *          {@link DefaultAlphabet}.
+   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
+   *           not correct.
    */
   public final void add ( Symbol ... symbols ) throws AlphabetException
   {
@@ -372,13 +372,12 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns <tt>true</tt> if this <code>DefaultAlphabet</code> contains the
-   * specified {@link Symbol}.
+   * Returns true if this {@link DefaultAlphabet} contains the specified
+   * {@link Symbol}.
    * 
-   * @param symbol {@link Symbol} whose presence in this
-   *          <code>DefaultAlphabet</code> is to be tested.
-   * @return <code>true</code> if the specified {@link Symbol} is present;
-   *         <code>false</code> otherwise.
+   * @param symbol {@link Symbol} whose presence in this {@link DefaultAlphabet}
+   *          is to be tested.
+   * @return true if the specified {@link Symbol} is present; false otherwise.
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -515,10 +514,10 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * Returns an iterator over the {@link Symbol}s in this
-   * <code>DefaultAlphabet</code>.
+   * {@link DefaultAlphabet}.
    * 
    * @return An iterator over the {@link Symbol}s in this
-   *         <code>DefaultAlphabet</code>.
+   *         {@link DefaultAlphabet}.
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -527,7 +526,7 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>DefaultAlphabet</code>.
+   * Remove the given {@link Symbol}s from this {@link DefaultAlphabet}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -545,7 +544,7 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>DefaultAlphabet</code>.
+   * Removes the given {@link Symbol} from this {@link DefaultAlphabet}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -566,7 +565,7 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>DefaultAlphabet</code>.
+   * Remove the given {@link Symbol}s from this {@link DefaultAlphabet}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -630,9 +629,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>DefaultAlphabet</code>.
+   * Returns the number of {@link Symbol}s in this {@link DefaultAlphabet}.
    * 
-   * @return The number of {@link Symbol}s in this <code>DefaultAlphabet</code>.
+   * @return The number of {@link Symbol}s in this {@link DefaultAlphabet}.
    */
   public final int size ()
   {

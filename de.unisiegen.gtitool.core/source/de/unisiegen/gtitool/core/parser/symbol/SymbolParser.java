@@ -17,7 +17,7 @@ public final class SymbolParser extends SymbolAbstractParser
 {
 
   /**
-   * Allocates a new <code>SymbolParser</code>.
+   * Allocates a new {@link SymbolParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

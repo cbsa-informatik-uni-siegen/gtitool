@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 
 /**
- * The <code>Stack</code> entity.
+ * The {@link Stack} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,13 +23,11 @@ public interface Stack extends Entity, Iterable < Symbol >
 
 
   /**
-   * Returns <tt>true</tt> if this <code>Stack</code> contains the specified
-   * {@link Symbol}.
+   * Returns true if this {@link Stack} contains the specified {@link Symbol}.
    * 
-   * @param symbol {@link Symbol} whose presence in this <code>Stack</code> is
-   *          to be tested.
-   * @return <code>true</code> if the specified {@link Symbol} is present;
-   *         <code>false</code> otherwise.
+   * @param symbol {@link Symbol} whose presence in this {@link Stack} is to be
+   *          tested.
+   * @return true if the specified {@link Symbol} is present; false otherwise.
    */
   public boolean contains ( Symbol symbol );
 
@@ -52,61 +50,59 @@ public interface Stack extends Entity, Iterable < Symbol >
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this <code>Stack</code>.
+   * Returns an iterator over the {@link Symbol}s in this {@link Stack}.
    * 
-   * @return An iterator over the {@link Symbol}s in this <code>Stack</code>.
+   * @return An iterator over the {@link Symbol}s in this {@link Stack}.
    */
   public Iterator < Symbol > iterator ();
 
 
   /**
-   * Looks at the {@link Symbol} at the top of this <code>Stack</code> without
+   * Looks at the {@link Symbol} at the top of this {@link Stack} without
    * removing it.
    * 
-   * @return The {@link Symbol} at the top of this <code>Stack</code>.
+   * @return The {@link Symbol} at the top of this {@link Stack}.
    */
   public Symbol peak ();
 
 
   /**
-   * Removes the {@link Symbol} at the top of this <code>Stack</code> and
-   * returns that {@link Symbol}.
+   * Removes the {@link Symbol} at the top of this {@link Stack} and returns
+   * that {@link Symbol}.
    * 
-   * @return The {@link Symbol} at the top of this <code>Stack</code>.
+   * @return The {@link Symbol} at the top of this {@link Stack}.
    */
   public Symbol pop ();
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this <code>Stack</code>.
+   * Pushes the {@link Symbol}s onto the top of this {@link Stack}.
    * 
-   * @param symbols The {@link Symbol}s to be pushed onto this
-   *          <code>Stack</code>.
+   * @param symbols The {@link Symbol}s to be pushed onto this {@link Stack}.
    */
   public void push ( Iterable < Symbol > symbols );
 
 
   /**
-   * Pushes the {@link Symbol} onto the top of this <code>Stack</code>.
+   * Pushes the {@link Symbol} onto the top of this {@link Stack}.
    * 
-   * @param symbol The {@link Symbol} to be pushed onto this <code>Stack</code>.
+   * @param symbol The {@link Symbol} to be pushed onto this {@link Stack}.
    */
   public void push ( Symbol symbol );
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this <code>Stack</code>.
+   * Pushes the {@link Symbol}s onto the top of this {@link Stack}.
    * 
-   * @param symbols The {@link Symbol}s to be pushed onto this
-   *          <code>Stack</code>.
+   * @param symbols The {@link Symbol}s to be pushed onto this {@link Stack}.
    */
   public void push ( Symbol ... symbols );
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>Stack</code>.
+   * Returns the number of {@link Symbol}s in this {@link Stack}.
    * 
-   * @return The number of {@link Symbol}s in this <code>Stack</code>.
+   * @return The number of {@link Symbol}s in this {@link Stack}.
    */
   public int size ();
 

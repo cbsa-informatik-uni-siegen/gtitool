@@ -75,7 +75,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Creates new form <code>MainWindow</code>.
+   * Creates new form {@link MainWindow}.
    */
   public MainWindow ()
   {
@@ -654,7 +654,7 @@ public final class MainWindow implements LanguageChangedListener
       this.recentlyUsedFiles.remove ( item );
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
-      
+
       for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
       {
         if ( ( !current.equals ( this.gui.jGTITabbedPaneMain

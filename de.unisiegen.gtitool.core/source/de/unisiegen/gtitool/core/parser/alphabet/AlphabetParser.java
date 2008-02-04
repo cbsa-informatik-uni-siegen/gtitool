@@ -17,7 +17,7 @@ public final class AlphabetParser extends AlphabetAbstractParser
 {
 
   /**
-   * Allocates a new <code>AlphabetParser</code>.
+   * Allocates a new {@link AlphabetParser}.
    * 
    * @param gtiScanner The {@link GTIScanner}.
    */

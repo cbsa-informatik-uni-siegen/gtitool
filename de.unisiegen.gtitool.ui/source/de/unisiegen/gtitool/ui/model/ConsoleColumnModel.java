@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
- * The <code>ConsoleColumnModel</code> for the error and warning tables
+ * The {@link ConsoleColumnModel} for the error and warning tables
  * 
  * @author Benjamin Mies
  * @version $Id:ConsoleColumnModel.java 305 2007-12-06 19:55:14Z mies $
@@ -38,7 +38,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
 
 
   /**
-   * Allocates a new <code>ConsoleColumnModel</code>.
+   * Allocates a new {@link ConsoleColumnModel}.
    */
   public ConsoleColumnModel ()
   {

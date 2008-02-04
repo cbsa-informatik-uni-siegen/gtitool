@@ -5,7 +5,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * The <code>Symbol</code> entity.
+ * The {@link Symbol} entity.
  * 
  * @author Christian Fehler
  * @version $Id$

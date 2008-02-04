@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.ui.utils.Clipboard;
 
 
 /**
- * The <code>AboutDialog</code>.
+ * The {@link AboutDialog}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -41,7 +41,7 @@ public final class AboutDialog
 
 
   /**
-   * Allocates a new <code>AboutDialog</code>.
+   * Allocates a new {@link AboutDialog}.
    * 
    * @param pParent The parent {@link JFrame}.
    */

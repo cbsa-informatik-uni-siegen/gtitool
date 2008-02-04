@@ -39,7 +39,7 @@ public final class SymbolTransferHandler extends TransferHandler
 
 
     /**
-     * Allocates a new <code>ArrayListTransferable</code>.
+     * Allocates a new {@link ArrayListTransferable}.
      * 
      * @param data The data.
      */
@@ -127,7 +127,7 @@ public final class SymbolTransferHandler extends TransferHandler
 
 
   /**
-   * Allocates a new <code>SymbolTransferHandler</code>.
+   * Allocates a new {@link SymbolTransferHandler}.
    * 
    * @param transitionDialog
    */

@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The <code>DefaultWord</code> entity.
+ * The {@link DefaultWord} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -53,13 +53,13 @@ public final class DefaultWord implements Word
 
 
   /**
-   * The current position in this <code>DefaultWord</code>.
+   * The current position in this {@link DefaultWord}.
    */
   private int currentPosition = START_INDEX;
 
 
   /**
-   * Allocates a new <code>DefaultWord</code>.
+   * Allocates a new {@link DefaultWord}.
    */
   public DefaultWord ()
   {
@@ -69,10 +69,10 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Allocates a new <code>DefaultWord</code>.
+   * Allocates a new {@link DefaultWord}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the <code>Symbol</code> is not
+   * @throws SymbolException If something with the {@link Symbol} is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
@@ -110,7 +110,7 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Allocates a new <code>DefaultWord</code>.
+   * Allocates a new {@link DefaultWord}.
    * 
    * @param symbols The array of {@link Symbol}s.
    */
@@ -127,7 +127,7 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Allocates a new <code>DefaultWord</code>.
+   * Allocates a new {@link DefaultWord}.
    * 
    * @param symbols The array of {@link Symbol}s.
    */
@@ -145,10 +145,10 @@ public final class DefaultWord implements Word
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultWord</code>.
+   * {@link DefaultWord}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultWord</code>.
+   *          {@link DefaultWord}.
    */
   public final void add ( Iterable < Symbol > symbols )
   {
@@ -164,11 +164,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
-   * <code>DefaultWord</code>.
+   * Appends the specified {@link Symbol} to the end of this {@link DefaultWord}.
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          <code>DefaultWord</code>.
+   * @param symbol The {@link Symbol} to be appended to this {@link DefaultWord}.
    */
   public final void add ( Symbol symbol )
   {
@@ -183,10 +181,10 @@ public final class DefaultWord implements Word
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>DefaultWord</code>.
+   * {@link DefaultWord}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>DefaultWord</code>.
+   *          {@link DefaultWord}.
    */
   public final void add ( Symbol ... symbols )
   {
@@ -221,12 +219,12 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns true if this <code>DefaultWord</code> contains the given
-   * {@link Symbol}. Otherwise false.
+   * Returns true if this {@link DefaultWord} contains the given {@link Symbol}.
+   * Otherwise false.
    * 
    * @param symbol The {@link Symbol}.
-   * @return True if this <code>DefaultWord</code> contains the given
-   *         {@link Symbol}. Otherwise false.
+   * @return True if this {@link DefaultWord} contains the given {@link Symbol}.
+   *         Otherwise false.
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -291,10 +289,10 @@ public final class DefaultWord implements Word
    * Returns the current {@link Symbol}.
    * 
    * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link DefaultWord} is
+   *           not correct.
+   * @throws WordResetedException If something with the {@link DefaultWord} is
+   *           not correct.
    */
   public final Symbol getCurrentSymbol () throws WordFinishedException,
       WordResetedException
@@ -340,10 +338,10 @@ public final class DefaultWord implements Word
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link DefaultWord} is
+   *           not correct.
+   * @throws WordResetedException If something with the {@link DefaultWord} is
+   *           not correct.
    */
   public final ArrayList < Symbol > getReadedSymbols ()
       throws WordFinishedException, WordResetedException
@@ -400,11 +398,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this
-   * <code>DefaultWord</code>.
+   * Returns an iterator over the {@link Symbol}s in this {@link DefaultWord}.
    * 
-   * @return An iterator over the {@link Symbol}s in this
-   *         <code>DefaultWord</code>.
+   * @return An iterator over the {@link Symbol}s in this {@link DefaultWord}.
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -416,10 +412,10 @@ public final class DefaultWord implements Word
    * Returns the next {@link Symbol} and increments the current position.
    * 
    * @return The next {@link Symbol}.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link DefaultWord} is
+   *           not correct.
+   * @throws WordResetedException If something with the {@link DefaultWord} is
+   *           not correct.
    */
   public final Symbol nextSymbol () throws WordFinishedException,
       WordResetedException
@@ -437,10 +433,10 @@ public final class DefaultWord implements Word
    * Returns the previous {@link Symbol} and decrements the current position.
    * 
    * @return The previous {@link Symbol}.
-   * @throws WordFinishedException If something with the
-   *           <code>DefaultWord</code> is not correct.
-   * @throws WordResetedException If something with the <code>DefaultWord</code>
-   *           is not correct.
+   * @throws WordFinishedException If something with the {@link DefaultWord} is
+   *           not correct.
+   * @throws WordResetedException If something with the {@link DefaultWord} is
+   *           not correct.
    */
   public final Symbol previousSymbol () throws WordFinishedException,
       WordResetedException
@@ -487,9 +483,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>DefaultWord</code>.
+   * Returns the number of {@link Symbol}s in this {@link DefaultWord}.
    * 
-   * @return The number of {@link Symbol}s in this <code>DefaultWord</code>.
+   * @return The number of {@link Symbol}s in this {@link DefaultWord}.
    */
   public final int size ()
   {
@@ -498,7 +494,7 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Resets the current position of this <code>DefaultWord</code>.
+   * Resets the current position of this {@link DefaultWord}.
    */
   public final void start ()
   {

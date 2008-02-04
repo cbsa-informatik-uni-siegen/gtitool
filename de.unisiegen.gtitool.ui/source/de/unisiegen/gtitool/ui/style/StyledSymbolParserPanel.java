@@ -24,7 +24,7 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
 
 
   /**
-   * Allocates a new <code>StyledSymbolParserPanel</code>.
+   * Allocates a new {@link StyledSymbolParserPanel}.
    */
   public StyledSymbolParserPanel ()
   {

@@ -10,8 +10,8 @@ import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 
 
 /**
- * The <code>MachineStateNotReachableException</code> is used, if a
- * {@link State} is not reachable.
+ * The {@link MachineStateNotReachableException} is used, if a {@link State} is
+ * not reachable.
  * 
  * @author Christian Fehler
  * @version $Id: MachineStateNotReachableException.java 239 2007-11-27 23:13:57Z
@@ -34,7 +34,7 @@ public final class MachineStateNotReachableException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineStateNotReachableException</code>.
+   * Allocates a new {@link MachineStateNotReachableException}.
    * 
    * @param state The {@link State}.
    */

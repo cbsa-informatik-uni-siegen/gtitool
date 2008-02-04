@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
 
 
 /**
- * The <code>MachineEpsilonTransitionException</code> is used, if there is a
+ * The {@link MachineEpsilonTransitionException} is used, if there is a
  * {@link Transition} without a {@link Symbol}.
  * 
  * @author Christian Fehler
@@ -35,7 +35,7 @@ public final class MachineEpsilonTransitionException extends MachineException
 
 
   /**
-   * Allocates a new <code>MachineEpsilonTransitionException</code>.
+   * Allocates a new {@link MachineEpsilonTransitionException}.
    * 
    * @param transition The {@link Transition}.
    */

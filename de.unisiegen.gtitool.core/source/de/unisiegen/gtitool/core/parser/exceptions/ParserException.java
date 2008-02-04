@@ -21,8 +21,7 @@ public class ParserException extends ScannerException
 
 
   /**
-   * Throws a <code>ParserException</code> if the {@link Symbol} name is not
-   * correct.
+   * Throws a {@link ParserException} if the {@link Symbol} name is not correct.
    * 
    * @param left The left parser index.
    * @param right The right parser index.
@@ -37,7 +36,7 @@ public class ParserException extends ScannerException
 
 
   /**
-   * Allocates a new <code>ParserException</code>.
+   * Allocates a new {@link ParserException}.
    * 
    * @param left The left parser index.
    * @param right The right parser index.

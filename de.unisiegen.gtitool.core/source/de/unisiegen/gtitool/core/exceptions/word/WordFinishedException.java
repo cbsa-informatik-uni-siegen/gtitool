@@ -7,8 +7,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
 
 
 /**
- * The <code>WordFinishedException</code> is used if the {@link Word} is not
- * correct.
+ * The {@link WordFinishedException} is used if the {@link Word} is not correct.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -23,7 +22,7 @@ public final class WordFinishedException extends WordException
 
 
   /**
-   * Allocates a new <code>WordFinishedException</code>.
+   * Allocates a new {@link WordFinishedException}.
    * 
    * @param word The {@link Word}.
    */

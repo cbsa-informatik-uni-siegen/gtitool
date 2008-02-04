@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 
 
 /**
- * The <code>Transition</code> entity.
+ * The {@link Transition} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -28,14 +28,14 @@ public interface Transition extends Entity, Storable, Modifyable,
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>Transition</code>.
+   * {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>Transition</code>.
+   *          {@link Transition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    */
   public void add ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -43,15 +43,13 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
-   * <code>Transition</code>.
+   * Appends the specified {@link Symbol} to the end of this {@link Transition}.
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          <code>Transition</code>.
+   * @param symbol The {@link Symbol} to be appended to this {@link Transition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    */
   public void add ( Symbol symbol )
       throws TransitionSymbolNotInAlphabetException,
@@ -60,14 +58,14 @@ public interface Transition extends Entity, Storable, Modifyable,
 
   /**
    * Appends the specified {@link Symbol}s to the end of this
-   * <code>Transition</code>.
+   * {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
-   *          <code>Transition</code>.
+   *          {@link Transition}.
    * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           <code>Transition</code> is not correct.
+   *           {@link Transition} is not correct.
    */
   public void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -105,12 +103,12 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns true if this <code>Transition</code> contains the given
-   * {@link Symbol}. Otherwise false.
+   * Returns true if this {@link Transition} contains the given {@link Symbol}.
+   * Otherwise false.
    * 
    * @param symbol The {@link Symbol}.
-   * @return True if this <code>Transition</code> contains the given
-   *         {@link Symbol}. Otherwise false.
+   * @return True if this {@link Transition} contains the given {@link Symbol}.
+   *         Otherwise false.
    */
   public boolean contains ( Symbol symbol );
 
@@ -164,33 +162,33 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns the {@link State} where the <code>Transition</code> begins.
+   * Returns the {@link State} where the {@link Transition} begins.
    * 
-   * @return The {@link State} where the <code>Transition</code> begins.
+   * @return The {@link State} where the {@link Transition} begins.
    */
   public State getStateBegin ();
 
 
   /**
-   * Returns the {@link State} id where the <code>Transition</code> begins.
+   * Returns the {@link State} id where the {@link Transition} begins.
    * 
-   * @return The {@link State} id where the <code>Transition</code> begins.
+   * @return The {@link State} id where the {@link Transition} begins.
    */
   public int getStateBeginId ();
 
 
   /**
-   * Returns the {@link State} where the <code>Transition</code> ends.
+   * Returns the {@link State} where the {@link Transition} ends.
    * 
-   * @return The {@link State} where the <code>Transition</code> ends.
+   * @return The {@link State} where the {@link Transition} ends.
    */
   public State getStateEnd ();
 
 
   /**
-   * Returns the {@link State} id where the <code>Transition</code> ends.
+   * Returns the {@link State} id where the {@link Transition} ends.
    * 
-   * @return The {@link State} id where the <code>Transition</code> ends.
+   * @return The {@link State} id where the {@link Transition} ends.
    */
   public int getStateEndId ();
 
@@ -213,27 +211,27 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns true, if this <code>Transition</code> is a epsilon
-   * <code>Transition</code>, otherwise false.
+   * Returns true, if this {@link Transition} is a epsilon {@link Transition},
+   * otherwise false.
    * 
-   * @return True, if this <code>Transition</code> is a epsilon
-   *         <code>Transition</code>, otherwise false.
+   * @return True, if this {@link Transition} is a epsilon {@link Transition},
+   *         otherwise false.
    */
   public boolean isEpsilonTransition ();
 
 
   /**
-   * Returns true if the id of this <code>Transition</code> is defined,
-   * otherwise false.
+   * Returns true if the id of this {@link Transition} is defined, otherwise
+   * false.
    * 
-   * @return True if the id of this <code>Transition</code> is defined,
-   *         otherwise false.
+   * @return True if the id of this {@link Transition} is defined, otherwise
+   *         false.
    */
   public boolean isIdDefined ();
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>Transition</code>.
+   * Remove the given {@link Symbol}s from this {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -241,7 +239,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Removes the given {@link Symbol} from this <code>Transition</code>.
+   * Removes the given {@link Symbol} from this {@link Transition}.
    * 
    * @param symbol The {@link Symbol} to remove.
    */
@@ -249,7 +247,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Remove the given {@link Symbol}s from this <code>Transition</code>.
+   * Remove the given {@link Symbol}s from this {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to remove.
    */
@@ -266,7 +264,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the {@link Alphabet} of this <code>Transition</code>.
+   * Sets the {@link Alphabet} of this {@link Transition}.
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
@@ -282,7 +280,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the push down {@link Alphabet} of this <code>DefaultTransition</code>.
+   * Sets the push down {@link Alphabet} of this {@link DefaultTransition}.
    * 
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
@@ -306,7 +304,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the {@link State} where the <code>Transition</code> begins.
+   * Sets the {@link State} where the {@link Transition} begins.
    * 
    * @param stateBegin The {@link State} to set.
    */
@@ -314,7 +312,7 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Sets the {@link State} where the <code>Transition</code> ends.
+   * Sets the {@link State} where the {@link Transition} ends.
    * 
    * @param stateEnd The {@link State} to set.
    */
@@ -322,9 +320,9 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
-   * Returns the number of {@link Symbol}s in this <code>Transition</code>.
+   * Returns the number of {@link Symbol}s in this {@link Transition}.
    * 
-   * @return The number of {@link Symbol}s in this <code>Transition</code>.
+   * @return The number of {@link Symbol}s in this {@link Transition}.
    */
   public int size ();
 }

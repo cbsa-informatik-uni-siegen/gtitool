@@ -31,7 +31,12 @@ public enum Style
    * Style of {@link Symbol}s.
    */
   SYMBOL,
-  
+
+  /**
+   * Style of active {@link Symbol}s.
+   */
+  SYMBOL_ACTIVE,
+
   /**
    * Style of error {@link Symbol}s.
    */
@@ -52,6 +57,12 @@ public enum Style
    * The {@link Symbol} color.
    */
   private Color symbol;
+
+
+  /**
+   * The active {@link Symbol} color.
+   */
+  private Color symbolActive;
 
 
   /**
@@ -93,7 +104,21 @@ public enum Style
             Style.this.symbol = newColor;
           }
         } );
-    // Error symbol
+    // Symbol active
+    this.symbolActive = PreferenceManager.getInstance ()
+        .getColorItemSymbolActive ().getColor ();
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedSymbolActive ( Color newColor )
+          {
+            Style.this.symbolActive = newColor;
+          }
+        } );
+    // Symbol error
     this.symbolError = PreferenceManager.getInstance ()
         .getColorItemSymbolError ().getColor ();
     PreferenceManager.getInstance ().addColorChangedListener (
@@ -134,6 +159,10 @@ public enum Style
       case KEYWORD :
       {
         return Color.BLACK;
+      }
+      case SYMBOL_ACTIVE :
+      {
+        return this.symbolActive;
       }
       case SYMBOL_ERROR :
       {

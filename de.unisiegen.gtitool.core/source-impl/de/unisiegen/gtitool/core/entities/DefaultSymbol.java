@@ -44,6 +44,12 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
+   * This {@link Symbol} is a active {@link Symbol}.
+   */
+  private boolean active = false;
+
+
+  /**
    * The offset of this {@link DefaultSymbol} in the source code.
    * 
    * @see #getParserOffset()
@@ -212,6 +218,19 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
+   * Returns true if this {@link Symbol} is a active {@link Symbol}, otherwise
+   * false.
+   * 
+   * @return True if this {@link Symbol} is a active {@link Symbol}, otherwise
+   *         false.
+   */
+  public final boolean isActive ()
+  {
+    return this.active;
+  }
+
+
+  /**
    * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
    * false.
    * 
@@ -222,6 +241,17 @@ public final class DefaultSymbol implements Symbol
   public final boolean isError ()
   {
     return this.error;
+  }
+
+
+  /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public final void setActive ( boolean active )
+  {
+    this.active = active;
   }
 
 
@@ -314,6 +344,11 @@ public final class DefaultSymbol implements Symbol
     {
       prettyString.addPrettyToken ( new PrettyToken ( this.name,
           Style.SYMBOL_ERROR ) );
+    }
+    else if ( this.active )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.SYMBOL_ACTIVE ) );
     }
     else
     {

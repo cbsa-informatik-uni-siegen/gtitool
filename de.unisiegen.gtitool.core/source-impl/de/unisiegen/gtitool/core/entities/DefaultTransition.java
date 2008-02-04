@@ -1194,16 +1194,15 @@ public final class DefaultTransition implements Transition
     else
     {
       prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      Iterator < Symbol > iterator = this.symbolSet.iterator ();
       boolean first = true;
-      while ( iterator.hasNext () )
+      for ( Symbol current : this.symbolSet )
       {
         if ( !first )
         {
           prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         first = false;
-        prettyString.addPrettyPrintable ( iterator.next () );
+        prettyString.addPrettyPrintable ( current );
       }
       prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
@@ -1255,16 +1254,15 @@ public final class DefaultTransition implements Transition
     else
     {
       result.append ( "{" ); //$NON-NLS-1$
-      Iterator < Symbol > iterator = this.symbolSet.iterator ();
       boolean first = true;
-      while ( iterator.hasNext () )
+      for ( Symbol current : this.symbolSet )
       {
         if ( !first )
         {
           result.append ( ", " ); //$NON-NLS-1$
         }
         first = false;
-        result.append ( iterator.next () );
+        result.append ( current );
       }
       result.append ( "}" ); //$NON-NLS-1$
     }

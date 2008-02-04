@@ -18,7 +18,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -1407,43 +1406,38 @@ public final class MachinePanel implements EditorPanel
   {
     try
     {
-      TreeSet < Transition > activeTransitions = this.machine.nextSymbol ();
-      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
-      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
-
-      for ( Transition current : activeTransitions )
-      {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransitionActive ()
-                .getColor () );
-        inactiveTransitions.remove ( transitionView );
-      }
-
-      for ( DefaultTransitionView current : inactiveTransitions )
+      // Clear the highlight
+      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
         GraphConstants.setLineColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemTransition ()
                 .getColor () );
       }
 
-      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
-      inactiveStates.addAll ( this.model.getStateViewList () );
+      this.machine.nextSymbol ();
 
+      // Clear the highlight
+      for ( DefaultStateView current : this.model.getStateViewList () )
+      {
+        GraphConstants.setBackground ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStateBackground ()
+                .getColor () );
+      }
+
+      // Highlight
+      for ( Transition current : this.machine.getActiveTransition () )
+      {
+        DefaultTransitionView transitionView = this.model
+            .getTransitionViewForTransition ( current );
+        GraphConstants.setLineColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransitionActive ()
+                .getColor () );
+      }
       for ( State current : this.machine.getActiveState () )
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
         GraphConstants.setBackground ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemStateActive ()
-                .getColor () );
-        inactiveStates.remove ( state );
-      }
-
-      for ( DefaultStateView current : inactiveStates )
-      {
-        GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateBackground ()
                 .getColor () );
       }
 
@@ -1463,17 +1457,24 @@ public final class MachinePanel implements EditorPanel
     catch ( WordFinishedException exc )
     {
       this.parent.getLogic ().handleAutoStepStopped ();
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
     catch ( WordResetedException exc )
     {
+      this.parent.getLogic ().handleAutoStepStopped ();
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
     catch ( WordNotAcceptedException exc )
     {
       this.parent.getLogic ().handleAutoStepStopped ();
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
@@ -1487,44 +1488,41 @@ public final class MachinePanel implements EditorPanel
   {
     try
     {
-      TreeSet < Transition > activeTransitions = this.machine.previousSymbol ();
-      ArrayList < DefaultTransitionView > inactiveTransitions = new ArrayList < DefaultTransitionView > ();
-      inactiveTransitions.addAll ( this.model.getTransitionViewList () );
-
-      for ( Transition current : activeTransitions )
-      {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransitionActive ()
-                .getColor () );
-        inactiveTransitions.remove ( transitionView );
-      }
-
-      for ( DefaultTransitionView current : inactiveTransitions )
+      // Clear the highlight
+      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
         GraphConstants.setLineColor ( current.getAttributes (),
             PreferenceManager.getInstance ().getColorItemTransition ()
                 .getColor () );
       }
 
-      ArrayList < DefaultStateView > inactiveStates = new ArrayList < DefaultStateView > ();
-      inactiveStates.addAll ( this.model.getStateViewList () );
+      this.machine.previousSymbol ();
 
+      // Clear the highlight
+      for ( DefaultStateView current : this.model.getStateViewList () )
+      {
+        GraphConstants.setBackground ( current.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemStateBackground ()
+                .getColor () );
+      }
+
+      // Highlight
+      for ( Transition current : this.machine.getActiveTransition () )
+      {
+        DefaultTransitionView transitionView = this.model
+            .getTransitionViewForTransition ( current );
+        GraphConstants.setLineColor ( transitionView.getAttributes (),
+            PreferenceManager.getInstance ().getColorItemTransitionActive ()
+                .getColor () );
+      }
       for ( State current : this.machine.getActiveState () )
       {
         DefaultStateView state = this.model.getStateViewForState ( current );
         GraphConstants.setBackground ( state.getAttributes (),
             PreferenceManager.getInstance ().getColorItemStateActive ()
                 .getColor () );
-        inactiveStates.remove ( state );
       }
-      for ( DefaultStateView current : inactiveStates )
-      {
-        GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateBackground ()
-                .getColor () );
-      }
+
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
 
@@ -1543,11 +1541,15 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( WordFinishedException exc )
     {
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
     catch ( WordResetedException exc )
     {
+      this.graphModel.cellsChanged ( DefaultGraphModel
+          .getAll ( this.graphModel ) );
       JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
           .getMessage (), JOptionPane.INFORMATION_MESSAGE );
     }
@@ -1587,10 +1589,13 @@ public final class MachinePanel implements EditorPanel
 
     this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
 
-    DefaultStateView state = this.model.getStateViewForState ( this.machine
-        .getActiveState ( 0 ) );
-    GraphConstants.setBackground ( state.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemStateActive ().getColor () );
+    for ( State current : this.machine.getActiveState () )
+    {
+      DefaultStateView state = this.model.getStateViewForState ( current );
+      GraphConstants.setBackground ( state.getAttributes (), PreferenceManager
+          .getInstance ().getColorItemStateActive ().getColor () );
+    }
+
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
     this.wordNavigation = true;

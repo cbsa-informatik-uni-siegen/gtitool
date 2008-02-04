@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.core.machines;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.swing.JTable;
@@ -61,28 +60,36 @@ public abstract class AbstractMachine implements Machine
   {
 
     /**
-     * The {@link Transition} set.
-     */
-    private TreeSet < Transition > transitionSet;
-
-
-    /**
      * The {@link State} set.
      */
     private TreeSet < State > stateSet;
 
 
     /**
+     * The {@link Transition} set.
+     */
+    private TreeSet < Transition > transitionSet;
+
+
+    /**
+     * The {@link Symbol} list.
+     */
+    private ArrayList < Symbol > symbolList;
+
+
+    /**
      * Allocates a new {@link HistoryItem}.
      * 
-     * @param transitionSet
-     * @param stateSet
+     * @param stateSet The {@link State} set.
+     * @param transitionSet The {@link Transition} set.
+     * @param symbolList The {@link Symbol} list.
      */
-    public HistoryItem ( TreeSet < Transition > transitionSet,
-        TreeSet < State > stateSet )
+    public HistoryItem ( TreeSet < State > stateSet,
+        TreeSet < Transition > transitionSet, ArrayList < Symbol > symbolList )
     {
       this.transitionSet = transitionSet;
       this.stateSet = stateSet;
+      this.symbolList = symbolList;
     }
 
 
@@ -95,6 +102,18 @@ public abstract class AbstractMachine implements Machine
     public final TreeSet < State > getStateSet ()
     {
       return this.stateSet;
+    }
+
+
+    /**
+     * Returns the {@link Symbol} list.
+     * 
+     * @return The {@link Symbol} list.
+     * @see #symbolList
+     */
+    public final ArrayList < Symbol > getSymbolSet ()
+    {
+      return this.symbolList;
     }
 
 
@@ -151,6 +170,18 @@ public abstract class AbstractMachine implements Machine
    * The active {@link State}s.
    */
   private TreeSet < State > activeStateSet;
+
+
+  /**
+   * The active {@link Transition}s.
+   */
+  private TreeSet < Transition > activeTransitionSet;
+
+
+  /**
+   * The active {@link Symbol}s.
+   */
+  private ArrayList < Symbol > activeSymbolList;
 
 
   /**
@@ -311,8 +342,10 @@ public abstract class AbstractMachine implements Machine
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
     this.initialTransitionList = new ArrayList < Transition > ();
-    // ActiveStateSet
+    // Active
     this.activeStateSet = new TreeSet < State > ();
+    this.activeTransitionSet = new TreeSet < Transition > ();
+    this.activeSymbolList = new ArrayList < Symbol > ();
     // History
     this.history = new ArrayList < HistoryItem > ();
 
@@ -788,9 +821,9 @@ public abstract class AbstractMachine implements Machine
           if ( currentTransition.contains ( currentSymbol ) )
           {
             transitions.add ( currentTransition );
-            for ( Symbol addSymbol : currentTransition.getSymbol ())
+            for ( Symbol addSymbol : currentTransition.getSymbol () )
             {
-              if (addSymbol.equals ( currentSymbol ) )
+              if ( addSymbol.equals ( currentSymbol ) )
               {
                 symbols.add ( addSymbol );
               }
@@ -827,6 +860,22 @@ public abstract class AbstractMachine implements Machine
       }
     }
     return machineExceptionList;
+  }
+
+
+  /**
+   * Clears the active {@link Symbol}s.
+   */
+  private void clearActiveSymbol ()
+  {
+    this.activeSymbolList.clear ();
+    for ( Transition currentTransition : this.transitionList )
+    {
+      for ( Symbol currentSymbol : currentTransition )
+      {
+        currentSymbol.setActive ( false );
+      }
+    }
   }
 
 
@@ -938,19 +987,24 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Returns the active {@link State} with the given index.
+   * Returns the active {@link Symbol}s.
    * 
-   * @param index The index.
-   * @return The active {@link State} with the given index.
+   * @return The active {@link Symbol}s.
    */
-  public final State getActiveState ( int index )
+  public final ArrayList < Symbol > getActiveSymbol ()
   {
-    Iterator < State > iterator = this.activeStateSet.iterator ();
-    for ( int i = 0 ; i < index ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
+    return this.activeSymbolList;
+  }
+
+
+  /**
+   * Returns the active {@link Transition}s.
+   * 
+   * @return The active {@link Transition}s.
+   */
+  public final TreeSet < Transition > getActiveTransition ()
+  {
+    return this.activeTransitionSet;
   }
 
 
@@ -1417,7 +1471,6 @@ public abstract class AbstractMachine implements Machine
    * Performs the next step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
-   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
@@ -1425,12 +1478,13 @@ public abstract class AbstractMachine implements Machine
    * @throws WordNotAcceptedException If something with the {@link Word} is not
    *           correct.
    */
-  public final TreeSet < Transition > nextSymbol ()
-      throws WordFinishedException, WordResetedException,
-      WordNotAcceptedException
+  public final void nextSymbol () throws WordFinishedException,
+      WordResetedException, WordNotAcceptedException
   {
     if ( getActiveState ().size () == 0 )
     {
+      this.activeTransitionSet.clear ();
+      clearActiveSymbol ();
       throw new WordNotAcceptedException ( this.word );
     }
     // Check for epsilon transitions
@@ -1447,8 +1501,9 @@ public abstract class AbstractMachine implements Machine
         }
       }
     }
-    TreeSet < Transition > transitions = new TreeSet < Transition > ();
     TreeSet < State > newActiveStateSet = new TreeSet < State > ();
+    TreeSet < Transition > newActiveTransitionSet = new TreeSet < Transition > ();
+    ArrayList < Symbol > newActiveSymbolList = new ArrayList < Symbol > ();
     // Epsilon transition found
     if ( epsilonTransitionFound )
     {
@@ -1460,7 +1515,7 @@ public abstract class AbstractMachine implements Machine
           {
             newActiveStateSet.add ( activeState );
             newActiveStateSet.add ( current.getStateEnd () );
-            transitions.add ( current );
+            newActiveTransitionSet.add ( current );
           }
         }
       }
@@ -1468,24 +1523,48 @@ public abstract class AbstractMachine implements Machine
     // No epsilon transition found
     else
     {
-      Symbol symbol = this.word.nextSymbol ();
+      Symbol symbol;
+      try
+      {
+        symbol = this.word.nextSymbol ();
+      }
+      catch ( WordFinishedException exc )
+      {
+        this.activeTransitionSet.clear ();
+        clearActiveSymbol ();
+        throw exc;
+      }
       for ( State activeState : getActiveState () )
       {
-        for ( Transition current : activeState.getTransitionBegin () )
+        transitionLoop : for ( Transition currentTransition : activeState
+            .getTransitionBegin () )
         {
-          if ( current.contains ( symbol ) )
+          for ( Symbol currentSymbol : currentTransition )
           {
-            newActiveStateSet.add ( current.getStateEnd () );
-            transitions.add ( current );
+            if ( currentSymbol.equals ( symbol ) )
+            {
+              newActiveStateSet.add ( currentTransition.getStateEnd () );
+              newActiveTransitionSet.add ( currentTransition );
+              newActiveSymbolList.add ( currentSymbol );
+              break transitionLoop;
+            }
           }
         }
       }
     }
-    // Set sctive state set
+    // Set sctive sets
     TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
     oldActiveStateSet.addAll ( this.activeStateSet );
     this.activeStateSet.clear ();
     this.activeStateSet.addAll ( newActiveStateSet );
+    this.activeTransitionSet.clear ();
+    this.activeTransitionSet.addAll ( newActiveTransitionSet );
+    clearActiveSymbol ();
+    for ( Symbol current : newActiveSymbolList )
+    {
+      current.setActive ( true );
+      this.activeSymbolList.add ( current );
+    }
     // No transition is found
     if ( this.activeStateSet.size () == 0 )
     {
@@ -1493,10 +1572,12 @@ public abstract class AbstractMachine implements Machine
       {
         this.word.previousSymbol ();
       }
+      this.activeTransitionSet.clear ();
+      clearActiveSymbol ();
       throw new WordNotAcceptedException ( this.word );
     }
-    this.history.add ( new HistoryItem ( transitions, oldActiveStateSet ) );
-    return transitions;
+    this.history.add ( new HistoryItem ( oldActiveStateSet,
+        newActiveTransitionSet, newActiveSymbolList ) );
   }
 
 
@@ -1504,26 +1585,28 @@ public abstract class AbstractMachine implements Machine
    * Removes the last step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
-   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public final TreeSet < Transition > previousSymbol ()
-      throws WordFinishedException, WordResetedException
+  public final void previousSymbol () throws WordFinishedException,
+      WordResetedException
   {
     if ( this.history.size () == 0 )
     {
+      this.activeTransitionSet.clear ();
+      clearActiveSymbol ();
       throw new WordResetedException ( this.word );
     }
     HistoryItem item = this.history.remove ( this.history.size () - 1 );
-    TreeSet < Transition > transitions = item.getTransitionSet ();
-    TreeSet < State > states = item.getStateSet ();
+    TreeSet < Transition > newActiveTransitionSet = item.getTransitionSet ();
+    TreeSet < State > newActiveStateSet = item.getStateSet ();
+    ArrayList < Symbol > newActiveSymbolList = item.getSymbolSet ();
 
     // Check for epsilon transitions
     boolean epsilonTransitionFound = false;
-    for ( Transition current : transitions )
+    for ( Transition current : newActiveTransitionSet )
     {
       if ( current.isEpsilonTransition () )
       {
@@ -1536,13 +1619,17 @@ public abstract class AbstractMachine implements Machine
     {
       this.word.previousSymbol ();
     }
-    // Set sctive state set
+    // Set sctive sets
     this.activeStateSet.clear ();
-    for ( State current : states )
+    this.activeStateSet.addAll ( newActiveStateSet );
+    this.activeTransitionSet.clear ();
+    this.activeTransitionSet.addAll ( newActiveTransitionSet );
+    clearActiveSymbol ();
+    for ( Symbol current : newActiveSymbolList )
     {
-      this.activeStateSet.add ( current );
+      current.setActive ( true );
+      this.activeSymbolList.add ( current );
     }
-    return transitions;
   }
 
 

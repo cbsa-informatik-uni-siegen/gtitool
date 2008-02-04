@@ -150,12 +150,19 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns the active {@link State} with the given index.
+   * Returns the active {@link Symbol}s.
    * 
-   * @param index The index.
-   * @return The active {@link State} with the given index.
+   * @return The active {@link Symbol}s.
    */
-  public State getActiveState ( int index );
+  public ArrayList < Symbol > getActiveSymbol ();
+
+
+  /**
+   * Returns the active {@link Transition}s.
+   * 
+   * @return The active {@link Transition}s.
+   */
+  public TreeSet < Transition > getActiveTransition ();
 
 
   /**
@@ -302,7 +309,6 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * Performs the next step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
-   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
@@ -310,21 +316,20 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @throws WordNotAcceptedException If something with the {@link Word} is not
    *           correct.
    */
-  public TreeSet < Transition > nextSymbol () throws WordFinishedException,
-      WordResetedException, WordNotAcceptedException;
+  public void nextSymbol () throws WordFinishedException, WordResetedException,
+      WordNotAcceptedException;
 
 
   /**
    * Removes the last step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
-   * @return The list of {@link Transition}s, which contains the {@link Symbol}.
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public TreeSet < Transition > previousSymbol () throws WordFinishedException,
+  public void previousSymbol () throws WordFinishedException,
       WordResetedException;
 
 

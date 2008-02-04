@@ -374,10 +374,14 @@ public class StorageTest
       {
         while ( !word_loaded.isFinished () )
         {
-          out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
-          out ( "Transition: " + dfaloaded.nextSymbol ().first ().getSymbol () );
+          out ( "State:      "
+              + dfaloaded.getActiveState ().first ().getName () );
+          dfaloaded.nextSymbol ();
+          out ( "Transition: "
+              + dfaloaded.getActiveTransition ().first ().getSymbol () );
           out ( "Symbol:     " + dfaloaded.getCurrentSymbol () );
-          out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
+          out ( "State:      "
+              + dfaloaded.getActiveState ().first ().getName () );
           out ( "Accepted:   " + dfaloaded.isWordAccepted () );
           out ();
         }
@@ -393,11 +397,14 @@ public class StorageTest
       {
         while ( !word_loaded.isReseted () )
         {
-          out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
+          out ( "State:      "
+              + dfaloaded.getActiveState ().first ().getName () );
           out ( "Symbol:     " + dfaloaded.getCurrentSymbol () );
+          dfaloaded.previousSymbol ();
           out ( "Transition: "
-              + dfaloaded.previousSymbol ().first ().getSymbol () );
-          out ( "State:      " + dfaloaded.getActiveState ( 0 ).getName () );
+              + dfaloaded.getActiveTransition ().first ().getSymbol () );
+          out ( "State:      "
+              + dfaloaded.getActiveState ().first ().getName () );
           out ();
         }
       }

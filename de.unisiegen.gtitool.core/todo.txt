@@ -1,3 +1,5 @@
 CF		- Stack in der Machine implementieren
 CF		- MachineStateException löschen
-CF		- PushDownAlphabet darf nur geändert werden, wenn ...
+CF		- PushDownAlphabet darf nur geändert werden, wenn kein
+		  Symbol betroffen ist
+CF		- isActive für alle Entities implementieren

@@ -38,6 +38,16 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
 
 
   /**
+   * Returns true if this {@link Symbol} is a active {@link Symbol}, otherwise
+   * false.
+   * 
+   * @return True if this {@link Symbol} is a active {@link Symbol}, otherwise
+   *         false.
+   */
+  public boolean isActive ();
+
+
+  /**
    * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
    * false.
    * 
@@ -45,6 +55,14 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
    *         false.
    */
   public boolean isError ();
+
+
+  /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public void setActive ( boolean active );
 
 
   /**

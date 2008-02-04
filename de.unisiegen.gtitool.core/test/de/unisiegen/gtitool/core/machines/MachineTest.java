@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.machines;
 
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
@@ -50,18 +51,21 @@ public abstract class MachineTest
       while ( !machine.isFinished () )
       {
         print ( "States:      " );
-        for ( int i = 0 ; i < machine.getActiveState ().size () ; i++ )
+        boolean first = true;
+        for ( State current : machine.getActiveState () )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( machine.getActiveState ( i ) );
+          first = false;
+          print ( current );
         }
         println ();
         print ( "Transitions: " );
-        TreeSet < Transition > transitions = machine.nextSymbol ();
-        boolean first = false;
+        machine.nextSymbol ();
+        TreeSet < Transition > transitions = machine.getActiveTransition ();
+        first = false;
         for ( Transition current : transitions )
         {
           if ( !first )
@@ -85,13 +89,14 @@ public abstract class MachineTest
           println ( "Symbol:      FINISHED" );
         }
         print ( "States:      " );
-        for ( int i = 0 ; i < machine.getActiveState ().size () ; i++ )
+        for ( State current : machine.getActiveState () )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( machine.getActiveState ( i ) );
+          first = false;
+          print ( current );
         }
         println ();
         println ( "Accepted:    " + machine.isWordAccepted () );
@@ -111,13 +116,15 @@ public abstract class MachineTest
       while ( !machine.isReseted () )
       {
         print ( "States:      " );
-        for ( int i = 0 ; i < machine.getActiveState ().size () ; i++ )
+        boolean first = true;
+        for ( State current : machine.getActiveState () )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( machine.getActiveState ( i ) );
+          first = false;
+          print ( current );
         }
         println ();
         try
@@ -133,8 +140,9 @@ public abstract class MachineTest
           println ( "Symbol:      FINISHED" );
         }
         print ( "Transitions: " );
-        TreeSet < Transition > transitions = machine.previousSymbol ();
-        boolean first = false;
+        machine.previousSymbol ();
+        TreeSet < Transition > transitions = machine.getActiveTransition ();
+        first = false;
         for ( Transition current : transitions )
         {
           if ( !first )
@@ -146,13 +154,14 @@ public abstract class MachineTest
         }
         println ();
         print ( "States:      " );
-        for ( int i = 0 ; i < machine.getActiveState ().size () ; i++ )
+        for ( State current : machine.getActiveState () )
         {
-          if ( i > 0 )
+          if ( !first )
           {
             print ( ", " );
           }
-          print ( machine.getActiveState ( i ) );
+          first = false;
+          print ( current );
         }
         println ();
         println ();

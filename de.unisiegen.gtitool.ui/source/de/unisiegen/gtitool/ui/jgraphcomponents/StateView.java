@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -84,7 +85,9 @@ public class StateView extends VertexView
     {
       State state = null;
       if ( this.stateView.getCell () instanceof DefaultStateView )
+      {
         state = ( ( DefaultStateView ) this.stateView.getCell () ).getState ();
+      }
       int b = this.borderWidth;
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
@@ -103,14 +106,30 @@ public class StateView extends VertexView
           g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
         }
         else
+        {
           g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+        }
       }
       try
       {
         setBorder ( null );
         setOpaque ( false );
         this.selected = false;
-        super.paint ( g );
+
+        if ( state == null )
+        {
+          super.paint ( g );
+        }
+        else
+        {
+          g.setColor ( PreferenceManager.getInstance ().getColorItemState ()
+              .getColor () );
+          g.setFont ( getFont () );
+          FontMetrics metrics = getFontMetrics ( getFont () );
+          g.drawString ( state.toString (), ( d.width / 2 )
+              - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1,
+              ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3 );
+        }
       }
       finally
       {
@@ -129,11 +148,9 @@ public class StateView extends VertexView
       }
       if ( this.selected )
       {
-
         g.setColor ( PreferenceManager.getInstance ()
             .getColorItemStateSelected ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
-
       }
       if ( state != null && state.isStartState () && !this.preview )
       {
@@ -172,7 +189,6 @@ public class StateView extends VertexView
   {
     super ();
     this.ellipseRenderer = new JGraphEllipseRenderer ( this );
-
   }
 
 

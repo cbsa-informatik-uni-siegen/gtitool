@@ -552,7 +552,6 @@ public final class MachinePanel implements EditorPanel
                 if ( !state.getState ().isStartState () )
                   GraphConstants.setBackground ( state.getAttributes (),
                       newColor );
-
               }
               catch ( ClassCastException e )
               {
@@ -1651,10 +1650,10 @@ public final class MachinePanel implements EditorPanel
     }
     this.oldErrorTransitions.clear ();
 
-    for ( Transition t : transitions )
+    for ( Transition current : transitions )
     {
       DefaultTransitionView view = this.model
-          .getTransitionViewForTransition ( t );
+          .getTransitionViewForTransition ( current );
       this.oldErrorTransitions.add ( view );
       GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
           .getInstance ().getColorItemTransitionError ().getColor () );

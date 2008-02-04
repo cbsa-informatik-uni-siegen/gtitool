@@ -4,6 +4,5 @@ CF		- History über die Zustände führen
 BM		- Routing der Transitionen
 CF		- Initiale Werte überprüfen
 CF		- Die beiden PreferenceManager besser trennen
-CF		- Bei dem State auch den PrettyString verwenden
 CF		- Die aktiven Symbole aus dem core liefern
 BM		- Die Gradient-Farbe wieder bei Zuständen einbauen

@@ -611,6 +611,15 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
           @SuppressWarnings ( "synthetic-access" )
           @Override
+          public void colorChangedState ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
           public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
           Color newColor )
           {

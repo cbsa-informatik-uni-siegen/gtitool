@@ -5,5 +5,3 @@ BM		- Routing der Transitionen
 CF		- Initiale Werte überprüfen
 CF		- Die beiden PreferenceManager besser trennen
 BM		- Die Gradient-Farbe wieder bei Zuständen einbauen
-CF		- Die Fehler und Warnungen müssen entfernt werden, wenn sich
-		  etwas ändert, da es sonst zu einer Exception kommt

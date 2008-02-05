@@ -232,7 +232,6 @@ public final class DefaultPopupMenu extends JPopupMenu
         {
           DefaultPopupMenu.this.panel.clearValidationMessages ();
           DefaultPopupMenu.this.machine.validate ();
-
         }
         catch ( MachineValidationException e1 )
         {

@@ -74,12 +74,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The old modify status.
-   */
-  private boolean oldModifyStatus = false;
-
-
-  /**
    * Creates a new {@link DefaultStateView}.
    * 
    * @param graphModel The {@link DefaultGraphModel}.
@@ -157,13 +151,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    if ( newModifyStatus != this.oldModifyStatus )
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      this.oldModifyStatus = newModifyStatus;
-      for ( int n = 0 ; n < listeners.length ; ++n )
-      {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
-      }
+      listeners [ n ].modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -272,6 +262,5 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     this.initialXPosition = getXPosition ();
     this.initialYPosition = getYPosition ();
-    this.oldModifyStatus = false;
   }
 }

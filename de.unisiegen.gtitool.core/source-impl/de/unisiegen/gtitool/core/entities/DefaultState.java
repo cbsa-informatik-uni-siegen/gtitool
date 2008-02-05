@@ -140,12 +140,6 @@ public final class DefaultState implements State
 
 
   /**
-   * The old modify status.
-   */
-  private boolean oldModifyStatus = false;
-
-
-  /**
    * Allocates a new {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
@@ -508,13 +502,9 @@ public final class DefaultState implements State
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    if ( newModifyStatus != this.oldModifyStatus )
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      this.oldModifyStatus = newModifyStatus;
-      for ( int n = 0 ; n < listeners.length ; ++n )
-      {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
-      }
+      listeners [ n ].modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -863,7 +853,6 @@ public final class DefaultState implements State
     this.initialName = this.name;
     this.initialStartState = this.startState;
     this.initialFinalState = this.finalState;
-    this.oldModifyStatus = false;
   }
 
 

@@ -1393,13 +1393,11 @@ public final class MainWindow implements LanguageChangedListener
     {
       if ( state )
       {
-        logger.debug ( "set modify star" ); //$NON-NLS-1$
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
             + panel.getName () );
       }
       else
       {
-        logger.debug ( "reset modify star" ); //$NON-NLS-1$
         this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, panel
             .getName () );
       }

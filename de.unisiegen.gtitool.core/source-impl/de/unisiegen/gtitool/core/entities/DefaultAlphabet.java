@@ -68,12 +68,6 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * The old modify status.
-   */
-  private boolean oldModifyStatus = false;
-
-
-  /**
    * Allocates a new {@link DefaultAlphabet}.
    */
   public DefaultAlphabet ()
@@ -424,13 +418,9 @@ public final class DefaultAlphabet implements Alphabet
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    if ( newModifyStatus != this.oldModifyStatus )
+    for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      this.oldModifyStatus = newModifyStatus;
-      for ( int n = 0 ; n < listeners.length ; ++n )
-      {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
-      }
+      listeners [ n ].modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -615,7 +605,6 @@ public final class DefaultAlphabet implements Alphabet
   {
     this.initialSymbolSet.clear ();
     this.initialSymbolSet.addAll ( this.symbolSet );
-    this.oldModifyStatus = false;
   }
 
 

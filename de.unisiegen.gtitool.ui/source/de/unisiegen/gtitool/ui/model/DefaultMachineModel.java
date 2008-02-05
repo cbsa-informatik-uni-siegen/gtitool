@@ -99,12 +99,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
   /**
-   * The old modify status.
-   */
-  private boolean oldModifyStatus = false;
-
-
-  /**
    * Allocates a new {@link DefaultMachineModel}.
    * 
    * @param element The {@link Element}.
@@ -407,7 +401,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      this.oldModifyStatus = true;
       for ( int n = 0 ; n < listeners.length ; ++n )
       {
         listeners [ n ].modifyStatusChanged ( true );
@@ -416,13 +409,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     else
     {
       boolean newModifyStatus = isModified ();
-      if ( newModifyStatus != this.oldModifyStatus )
+      for ( int n = 0 ; n < listeners.length ; ++n )
       {
-        this.oldModifyStatus = newModifyStatus;
-        for ( int n = 0 ; n < listeners.length ; ++n )
-        {
-          listeners [ n ].modifyStatusChanged ( newModifyStatus );
-        }
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -767,6 +756,5 @@ public final class DefaultMachineModel implements Storable, Modifyable
       current.resetModify ();
     }
     this.machine.resetModify ();
-    this.oldModifyStatus = false;
   }
 }

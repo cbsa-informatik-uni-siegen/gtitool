@@ -6,8 +6,8 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -84,8 +84,10 @@ import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 public final class MachinePanel implements EditorPanel
 {
 
-  /** Signals the active mouse adapter */
-  public enum ACTIVE_MOUSE_ADAPTER
+  /**
+   * Signals the active mouse adapter.
+   */
+  public enum ActiveMouseAdapter
   {
     /**
      * Mouse is choosen.
@@ -216,8 +218,10 @@ public final class MachinePanel implements EditorPanel
   }
 
 
-  /** The actual active MouseAdapter */
-  private static ACTIVE_MOUSE_ADAPTER activeMouseAdapter;
+  /**
+   * The actual active MouseAdapter
+   */
+  private static ActiveMouseAdapter activeMouseAdapter;
 
 
   /**
@@ -226,98 +230,141 @@ public final class MachinePanel implements EditorPanel
   private EventListenerList listenerList = new EventListenerList ();
 
 
-  //
-  // Attributes
-  //
-  /** the parent window */
+  /**
+   * The parent window.
+   */
   private MainWindowForm parent;
 
 
-  /** The {@link MachinesPanelForm} */
+  /**
+   * The {@link MachinesPanelForm}.
+   */
   private MachinesPanelForm gui;
 
 
-  /** The {@link DefaultMachineModel} */
+  /**
+   * The {@link DefaultMachineModel}.
+   */
   private DefaultMachineModel model;
 
 
-  /** The {@link Machine} */
+  /**
+   * The {@link Machine}.
+   */
   private Machine machine;
 
 
-  /** The {@link JGraph} containing the diagramm */
+  /**
+   * The {@link JGraph} containing the diagramm.
+   */
   private JGraph graph;
 
 
-  /** The {@link DefaultGraphModel} for this graph */
+  /**
+   * The {@link DefaultGraphModel} for this graph.
+   */
   private DefaultGraphModel graphModel;
 
 
-  /** The {@link MouseAdapter} for the mouse icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the mouse icon in the toolbar.
+   */
   private MouseAdapter normalMouse;
 
 
-  /** The {@link MouseAdapter} for the add State icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the add State icon in the toolbar.
+   */
   private MouseAdapter addState;
 
 
-  /** The {@link MouseAdapter} for the transition icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the transition icon in the toolbar.
+   */
   private MouseAdapter addTransition;
 
 
-  /** The {@link MouseAdapter} for the transition icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the transition icon in the toolbar.
+   */
   private MouseMotionAdapter transitionMove;
 
 
-  /** The {@link MouseAdapter} for the start icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the start icon in the toolbar.
+   */
   private MouseAdapter addStartState;
 
 
-  /** The {@link MouseAdapter} for the end icon in the toolbar */
+  /**
+   * The {@link MouseAdapter} for the end icon in the toolbar.
+   */
   private MouseAdapter addEndState;
 
 
-  /** The {@link MouseAdapter} for the enter word mode */
+  /**
+   * The {@link MouseAdapter} for the enter word mode.
+   */
   private MouseAdapter enterWordModeMouse;
 
 
-  /** The source state for a new Transition */
+  /**
+   * The source state for a new {@link Transition}.
+   */
   private DefaultStateView firstState;
 
 
-  /** The tmp state for a new Transition */
+  /**
+   * The tmp state for a new Transition.
+   */
   private DefaultGraphCell tmpState;
 
 
-  /** The tmp transition */
+  /**
+   * The tmp transition.
+   */
   private DefaultEdge tmpTransition;
 
 
-  /** Signals if drag in progress */
+  /**
+   * Signals if drag in progress.
+   */
   private boolean dragged;
 
 
-  /** The zoom factor for this graph */
+  /**
+   * The zoom factor for this graph .
+   */
   private double zoomFactor;
 
 
-  /** The {@link ConsoleTableModel} for the warning table */
+  /**
+   * The {@link ConsoleTableModel} for the warning table.
+   */
   private ConsoleTableModel warningTableModel;
 
 
-  /** The {@link ConsoleTableModel} for the error table */
+  /**
+   * The {@link ConsoleTableModel} for the error table.
+   */
   private ConsoleTableModel errorTableModel;
 
 
-  /** The actual highlighted error states */
+  /**
+   * The actual highlighted error states.
+   */
   private ArrayList < DefaultStateView > oldErrorStates = new ArrayList < DefaultStateView > ();
 
 
-  /** The actual highlighted error transitions */
+  /**
+   * The actual highlighted error transitions.
+   */
   private ArrayList < DefaultTransitionView > oldErrorTransitions = new ArrayList < DefaultTransitionView > ();
 
 
-  /** The {@link JPopupMenu} */
+  /**
+   * The {@link JPopupMenu}.
+   */
   private JPopupMenu popup;
 
 
@@ -340,7 +387,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The File for this MachinePanel
+   * The {@link File} for this {@link MachinePanel}.
    */
   private File file;
 
@@ -460,15 +507,16 @@ public final class MachinePanel implements EditorPanel
   /**
    * Add all needed listener to the JGraph
    */
-  private void addGraphListener ()
+  private final void addGraphListener ()
   {
-    this.graph.addKeyListener ( new KeyListener ()
+    this.graph.addKeyListener ( new KeyAdapter ()
     {
 
+      @Override
       @SuppressWarnings ( "synthetic-access" )
       public void keyPressed ( KeyEvent event )
       {
-        if ( event.getKeyCode () == 27 )
+        if ( event.getKeyCode () == KeyEvent.VK_ESCAPE )
         {
           MachinePanel.this.graphModel.remove ( new Object []
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
@@ -477,23 +525,7 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.tmpState = null;
           MachinePanel.this.dragged = false;
         }
-
       }
-
-
-      public void keyReleased ( @SuppressWarnings ( "unused" )
-      KeyEvent event )
-      {
-        // Nothing to do here
-      }
-
-
-      public void keyTyped ( @SuppressWarnings ( "unused" )
-      KeyEvent event )
-      {
-        // Nothing to do here
-      }
-
     } );
 
     // ModifyStatusChangedListener
@@ -514,7 +546,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * Add all needed listener
    */
-  private void addListener ()
+  private final void addListener ()
   {
     this.gui.jGTITableMachine.getSelectionModel ().addListSelectionListener (
         new ListSelectionListener ()
@@ -675,12 +707,6 @@ public final class MachinePanel implements EditorPanel
           .getInstance ().getColorItemTransition ().getColor () );
     }
 
-    for ( DefaultTransitionView view : this.oldErrorTransitions )
-    {
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
-
     for ( DefaultStateView view : this.oldErrorStates )
     {
       if ( view.getState ().isStartState () )
@@ -799,6 +825,9 @@ public final class MachinePanel implements EditorPanel
    */
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
+    // Clear the validation messages
+    clearValidationMessages ();
+
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
@@ -835,7 +864,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
    */
-  public EditorPanelForm getGui ()
+  public final EditorPanelForm getGui ()
   {
     return this.gui;
   }
@@ -1282,7 +1311,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.addState );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_STATE;
+      activeMouseAdapter = ActiveMouseAdapter.ADD_STATE;
     }
     else
       this.graph.removeMouseListener ( this.addState );
@@ -1310,7 +1339,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.addEndState );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_FINAL_STATE;
+      activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
       this.graph.removeMouseListener ( this.addEndState );
@@ -1327,7 +1356,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.normalMouse );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
+      activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     else
       this.graph.removeMouseListener ( this.normalMouse );
@@ -1344,7 +1373,7 @@ public final class MachinePanel implements EditorPanel
     if ( state )
     {
       this.graph.addMouseListener ( this.addStartState );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_START_STATE;
+      activeMouseAdapter = ActiveMouseAdapter.ADD_START_STATE;
     }
     else
       this.graph.removeMouseListener ( this.addStartState );
@@ -1362,7 +1391,7 @@ public final class MachinePanel implements EditorPanel
     {
       this.graph.addMouseListener ( this.addTransition );
       this.graph.addMouseMotionListener ( this.transitionMove );
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.ADD_TRANSITION;
+      activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
 
     }
     else
@@ -1708,7 +1737,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * Initialize the machine panel
    */
-  private void initialize ()
+  private final void initialize ()
   {
     this.machine = this.model.getMachine ();
     this.graph = this.model.getJGraph ();
@@ -1718,7 +1747,7 @@ public final class MachinePanel implements EditorPanel
 
     if ( activeMouseAdapter == null )
     {
-      activeMouseAdapter = ACTIVE_MOUSE_ADAPTER.MOUSE;
+      activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     switch ( activeMouseAdapter )
     {
@@ -2527,7 +2556,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @return true if word navigation is in progress, else false
    */
-  public boolean isWordNavigation ()
+  public final boolean isWordNavigation ()
   {
     return this.wordNavigation;
   }

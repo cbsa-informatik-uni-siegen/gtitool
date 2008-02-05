@@ -293,12 +293,6 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * The old modify status.
-   */
-  private boolean oldModifyStatus = false;
-
-
-  /**
    * Allocates a new {@link AbstractMachine}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link AbstractMachine}.
@@ -625,9 +619,10 @@ public abstract class AbstractMachine implements Machine
         currentSymbolSet.addAll ( currentTransition.getSymbol () );
       }
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
-      for ( Symbol currentSymbol : this.getAlphabet () )
+      for ( Symbol currentSymbol : this.alphabet )
       {
-        notUsedSymbolSet.add ( currentSymbol );
+        // The symbols must be cloned
+        notUsedSymbolSet.add ( currentSymbol.clone () );
       }
       for ( Symbol currentSymbol : currentSymbolSet )
       {
@@ -672,7 +667,7 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     boolean found = false;
-    loop : for ( State currentState : this.getState () )
+    loop : for ( State currentState : this.stateList )
     {
       if ( currentState.isFinalState () )
       {
@@ -697,10 +692,9 @@ public abstract class AbstractMachine implements Machine
   {
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     ArrayList < State > startStateList = new ArrayList < State > ();
-    for ( State current : this.getState () )
+    for ( State current : this.stateList )
     {
       if ( current.isStartState () )
-
       {
         startStateList.add ( current );
       }
@@ -726,7 +720,6 @@ public abstract class AbstractMachine implements Machine
     for ( State current : this.getState () )
     {
       if ( current.isStartState () )
-
       {
         startStateList.add ( current );
       }
@@ -811,7 +804,7 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( State currentState : this.getState () )
     {
-      for ( Symbol currentSymbol : this.getAlphabet () )
+      for ( Symbol currentSymbol : this.alphabet )
       {
         ArrayList < Transition > transitions = new ArrayList < Transition > ();
         ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
@@ -898,7 +891,6 @@ public abstract class AbstractMachine implements Machine
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      this.oldModifyStatus = true;
       for ( int n = 0 ; n < listeners.length ; ++n )
       {
         listeners [ n ].modifyStatusChanged ( true );
@@ -907,13 +899,9 @@ public abstract class AbstractMachine implements Machine
     else
     {
       boolean newModifyStatus = isModified ();
-      if ( newModifyStatus != this.oldModifyStatus )
+      for ( int n = 0 ; n < listeners.length ; ++n )
       {
-        this.oldModifyStatus = newModifyStatus;
-        for ( int n = 0 ; n < listeners.length ; ++n )
-        {
-          listeners [ n ].modifyStatusChanged ( newModifyStatus );
-        }
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -1827,7 +1815,6 @@ public abstract class AbstractMachine implements Machine
     {
       current.resetModify ();
     }
-    this.oldModifyStatus = false;
   }
 
 

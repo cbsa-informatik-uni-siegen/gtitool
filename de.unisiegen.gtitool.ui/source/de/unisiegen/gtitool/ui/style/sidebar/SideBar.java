@@ -20,7 +20,7 @@ import javax.swing.text.JTextComponent;
 
 import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
-import de.unisiegen.gtitool.ui.preferences.listener.ExceptionsChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ExceptionsChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserDocument;
 
 

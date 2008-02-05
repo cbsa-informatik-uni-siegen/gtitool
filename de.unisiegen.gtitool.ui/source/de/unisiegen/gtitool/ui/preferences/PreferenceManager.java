@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -14,24 +13,15 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
-import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
-import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
-import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
-import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 
 
@@ -44,37 +34,6 @@ import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 public final class PreferenceManager extends
     de.unisiegen.gtitool.core.preferences.PreferenceManager
 {
-
-  /**
-   * The default use push down {@link Alphabet}.
-   */
-  public static boolean DEFAULT_USE_PUSH_DOWN_ALPHABET = false;
-
-
-  /**
-   * The default console divider location.
-   */
-  public static int DEFAULT_DIVIDER_LOCATION_CONSOLE = -1;
-
-
-  /**
-   * The default table divider location.
-   */
-  public static int DEFAULT_DIVIDER_LOCATION_TABLE = -1;
-
-
-  /**
-   * The default language language.
-   */
-  public static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
-      .getLanguage ();
-
-
-  /**
-   * The default language title.
-   */
-  public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
-
 
   /**
    * The default {@link MouseSelectionItem}.
@@ -104,69 +63,81 @@ public final class PreferenceManager extends
   /**
    * The default maximized state of the {@link MainWindow}.
    */
-  public static boolean DEFAULT_MAXIMIZED = false;
+  public static final boolean DEFAULT_MAXIMIZED = false;
 
 
   /**
    * The default width of the {@link MainWindow}.
    */
-  public static int DEFAULT_WIDTH = 960;
+  public static final int DEFAULT_WIDTH = 960;
 
 
   /**
    * The default hight of the {@link MainWindow}.
    */
-  public static int DEFAULT_HEIGHT = 600;
+  public static final int DEFAULT_HEIGHT = 600;
 
 
   /**
    * The default x position of the {@link MainWindow}.
    */
-  public static int DEFAULT_POSITION_X = ( Toolkit.getDefaultToolkit ()
+  public static final int DEFAULT_POSITION_X = ( Toolkit.getDefaultToolkit ()
       .getScreenSize ().width - DEFAULT_WIDTH ) / 2;
 
 
   /**
    * The default y position of the {@link MainWindow}.
    */
-  public static int DEFAULT_POSITION_Y = ( Toolkit.getDefaultToolkit ()
+  public static final int DEFAULT_POSITION_Y = ( Toolkit.getDefaultToolkit ()
       .getScreenSize ().height - DEFAULT_HEIGHT ) / 2;
+
+
+  /**
+   * The default console divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_CONSOLE = DEFAULT_HEIGHT / 2;
+
+
+  /**
+   * The default table divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_TABLE = ( DEFAULT_WIDTH / 4 ) * 3;
 
 
   /**
    * The default preference dialog last active tab.
    */
-  public static int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
+  public static final int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
 
 
   /**
    * The visible console value.
    */
-  public static boolean DEFAULT_VISIBLE_CONSOLE = true;
+  public static final boolean DEFAULT_VISIBLE_CONSOLE = true;
 
 
   /**
    * The visible table value.
    */
-  public static boolean DEFAULT_VISIBLE_TABLE = true;
+  public static final boolean DEFAULT_VISIBLE_TABLE = true;
 
 
   /**
    * The default working path.
    */
-  public static String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
+  public static final String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
 
 
   /**
    * The default zoom factor value.
    */
-  public static ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
+  public static final ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
 
 
   /**
    * The default {@link AutoStepItem}.
    */
-  public static AutoStepItem DEFAULT_AUTO_STEP_INTERVAL_ITEM = AutoStepItem.AUTO_STEP_2000;
+  public static final AutoStepItem DEFAULT_AUTO_STEP_INTERVAL_ITEM = AutoStepItem.AUTO_STEP_2000;
 
 
   /**
@@ -179,7 +150,7 @@ public final class PreferenceManager extends
   /**
    * The single instance of the {@link PreferenceManager}.
    */
-  private static PreferenceManager singlePreferenceManager;
+  private static PreferenceManager preferenceManager;
 
 
   /**
@@ -189,18 +160,12 @@ public final class PreferenceManager extends
    */
   public final static PreferenceManager getInstance ()
   {
-    if ( singlePreferenceManager == null )
+    if ( preferenceManager == null )
     {
-      singlePreferenceManager = new PreferenceManager ();
+      preferenceManager = new PreferenceManager ();
     }
-    return singlePreferenceManager;
+    return preferenceManager;
   }
-
-
-  /**
-   * The system {@link Locale}.
-   */
-  private Locale systemLocale;
 
 
   /**
@@ -219,18 +184,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Adds the given {@link LanguageChangedListener}.
-   * 
-   * @param listener The {@link LanguageChangedListener}.
-   */
-  public final synchronized void addLanguageChangedListener (
-      LanguageChangedListener listener )
-  {
-    this.listenerList.add ( LanguageChangedListener.class, listener );
-  }
-
-
-  /**
    * Adds the given {@link ZoomFactorChangedListener}.
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
@@ -239,23 +192,6 @@ public final class PreferenceManager extends
       ZoomFactorChangedListener listener )
   {
     this.listenerList.add ( ZoomFactorChangedListener.class, listener );
-  }
-
-
-  /**
-   * Let the listeners know that the language has changed.
-   * 
-   * @param newLocale The new {@link Locale}.
-   */
-  public final void fireLanguageChanged ( Locale newLocale )
-  {
-    Locale.setDefault ( newLocale );
-    LanguageChangedListener [] listeners = this.listenerList
-        .getListeners ( LanguageChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].languageChanged ();
-    }
   }
 
 
@@ -271,54 +207,6 @@ public final class PreferenceManager extends
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].zoomFactorChanged ( zoomFactor );
-    }
-  }
-
-
-  /**
-   * Returns the {@link AlphabetItem}.
-   * 
-   * @return The {@link AlphabetItem}.
-   */
-  public final AlphabetItem getAlphabetItem ()
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    int count = this.preferences.getInt ( "DefaultAlphabetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
-    String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
-    {
-      String symbol = this.preferences.get ( "DefaultAlphabet" + i, //$NON-NLS-1$
-          end );
-      if ( symbol.equals ( end ) )
-      {
-        break loop;
-      }
-      try
-      {
-        symbols.add ( new DefaultSymbol ( symbol ) );
-      }
-      catch ( SymbolException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    // Return the default alphabet if no alphabet is found.
-    if ( symbols.size () == 0 )
-    {
-      return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
-    }
-    try
-    {
-      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
-          DEFAULT_ALPHABET );
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-      return null;
     }
   }
 
@@ -356,21 +244,6 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "MachinePanel.DividerTable", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_TABLE );
-  }
-
-
-  /**
-   * Returns the {@link LanguageItem}.
-   * 
-   * @return The {@link LanguageItem}.
-   */
-  public final LanguageItem getLanguageItem ()
-  {
-    String title = this.preferences.get ( "PreferencesDialog.Language.Title", //$NON-NLS-1$
-        DEFAULT_LANGUAGE_TITLE );
-    String language = this.preferences.get (
-        "PreferencesDialog.Language.Language", DEFAULT_LANGUAGE_LANGUAGE ); //$NON-NLS-1$
-    return new LanguageItem ( title, new Locale ( language ) );
   }
 
 
@@ -475,55 +348,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Returns the {@link AlphabetItem}.
-   * 
-   * @return The push down {@link AlphabetItem}.
-   */
-  public final AlphabetItem getPushDownAlphabetItem ()
-  {
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    int count = this.preferences.getInt ( "DefaultPushDownAlphabetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
-    String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
-    {
-      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
-          end );
-      if ( symbol.equals ( end ) )
-      {
-        break loop;
-      }
-      try
-      {
-        symbols.add ( new DefaultSymbol ( symbol ) );
-      }
-      catch ( SymbolException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    // Return the default alphabet if no alphabet is found.
-    if ( symbols.size () == 0 )
-    {
-      return new AlphabetItem ( DEFAULT_PUSH_DOWN_ALPHABET,
-          DEFAULT_PUSH_DOWN_ALPHABET );
-    }
-    try
-    {
-      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
-          DEFAULT_PUSH_DOWN_ALPHABET );
-    }
-    catch ( AlphabetException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-  }
-
-
-  /**
    * Returns the recently used files.
    * 
    * @return The recently used files.
@@ -549,17 +373,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Returns the system {@link Locale}.
-   * 
-   * @return The system {@link Locale}.
-   */
-  public final Locale getSystemLocale ()
-  {
-    return this.systemLocale;
-  }
-
-
-  /**
    * Returns the {@link TransitionItem}.
    * 
    * @return The {@link TransitionItem}.
@@ -570,18 +383,6 @@ public final class PreferenceManager extends
         "PreferencesDialog.TransitionItem.Index", //$NON-NLS-1$
         DEFAULT_TRANSITION_ITEM.getIndex () );
     return TransitionItem.create ( index );
-  }
-
-
-  /**
-   * Returns the use push down {@link Alphabet} value.
-   * 
-   * @return The use push down {@link Alphabet} value.
-   */
-  public final boolean getUsePushDownAlphabet ()
-  {
-    return this.preferences.getBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
-        DEFAULT_USE_PUSH_DOWN_ALPHABET );
   }
 
 
@@ -633,18 +434,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Removes the given {@link LanguageChangedListener}.
-   * 
-   * @param listener The {@link LanguageChangedListener}.
-   */
-  public final synchronized void removeLanguageChangedListener (
-      LanguageChangedListener listener )
-  {
-    this.listenerList.remove ( LanguageChangedListener.class, listener );
-  }
-
-
-  /**
    * Removes the given {@link ZoomFactorChangedListener}.
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
@@ -653,26 +442,6 @@ public final class PreferenceManager extends
       ZoomFactorChangedListener listener )
   {
     this.listenerList.remove ( ZoomFactorChangedListener.class, listener );
-  }
-
-
-  /**
-   * Sets the {@link AlphabetItem}.
-   * 
-   * @param alphabetItem The {@link AlphabetItem}.
-   */
-  public final void setAlphabetItem ( AlphabetItem alphabetItem )
-  {
-    logger
-        .debug ( "set the alphabet to \"" + alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$//$NON-NLS-2$
-    for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
-    {
-      this.preferences.put (
-          "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
-              .getName () );
-    }
-    this.preferences.putInt ( "DefaultAlphabetCount", alphabetItem //$NON-NLS-1$
-        .getAlphabet ().size () );
   }
 
 
@@ -711,22 +480,6 @@ public final class PreferenceManager extends
   {
     logger.debug ( "set table divider location to \"" + location + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "MachinePanel.DividerTable", location ); //$NON-NLS-1$
-  }
-
-
-  /**
-   * Sets the {@link LanguageItem}.
-   * 
-   * @param languageItem The {@link LanguageItem}.
-   */
-  public final void setLanguageItem ( LanguageItem languageItem )
-  {
-    logger.debug ( "set language to \"" //$NON-NLS-1$
-        + languageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
-    this.preferences.put ( "PreferencesDialog.Language.Title", languageItem //$NON-NLS-1$
-        .getTitle () );
-    this.preferences.put ( "PreferencesDialog.Language.Language", languageItem //$NON-NLS-1$
-        .getLocale ().getLanguage () );
   }
 
 
@@ -834,26 +587,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Sets the push down {@link AlphabetItem}.
-   * 
-   * @param pushDownAlphabetItem The push down {@link AlphabetItem}.
-   */
-  public final void setPushDownAlphabetItem ( AlphabetItem pushDownAlphabetItem )
-  {
-    logger.debug ( "set the push down alphabet to \"" //$NON-NLS-1$
-        + pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
-    for ( int i = 0 ; i < pushDownAlphabetItem.getAlphabet ().size () ; i++ )
-    {
-      this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
-          pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
-    }
-    this.preferences.putInt (
-        "DefaultPushDownAlphabetCount", pushDownAlphabetItem //$NON-NLS-1$
-            .getAlphabet ().size () );
-  }
-
-
-  /**
    * Sets the recently used files.
    * 
    * @param recentlyUsedFilesItem The {@link RecentlyUsedFilesItem}.
@@ -876,17 +609,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Sets the system {@link Locale}.
-   * 
-   * @param locale The system {@link Locale}.
-   */
-  public final void setSystemLocale ( Locale locale )
-  {
-    this.systemLocale = locale;
-  }
-
-
-  /**
    * Sets the {@link TransitionItem}.
    * 
    * @param transitionItem The {@link TransitionItem}.
@@ -897,18 +619,6 @@ public final class PreferenceManager extends
         + transitionItem.getIndex () + "\"" ); //$NON-NLS-1$
     this.preferences.putInt ( "PreferencesDialog.TransitionItem.Index", //$NON-NLS-1$
         transitionItem.getIndex () );
-  }
-
-
-  /**
-   * Sets the use push down {@link Alphabet} value.
-   * 
-   * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
-   */
-  public final void setUsePushDownAlphabet ( boolean usePushDownAlphabet )
-  {
-    this.preferences.putBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
-        usePushDownAlphabet );
   }
 
 

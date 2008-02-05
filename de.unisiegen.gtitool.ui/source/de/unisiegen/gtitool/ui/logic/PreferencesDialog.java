@@ -42,19 +42,19 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
+import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
-import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
-import de.unisiegen.gtitool.ui.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -1107,7 +1107,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.alphabetItem
         .getAlphabet () );
     this.gui.jCheckBoxPushDownAlphabet
-        .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
+        .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
@@ -1834,7 +1834,7 @@ public final class PreferencesDialog implements LanguageChangedListener
           ActionEvent event )
           {
             PreferencesDialog.this.gui.jCheckBoxPushDownAlphabet
-                .setSelected ( PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
+                .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
           }
         } );
     this.jPopupMenuUsePushDownAlphabet

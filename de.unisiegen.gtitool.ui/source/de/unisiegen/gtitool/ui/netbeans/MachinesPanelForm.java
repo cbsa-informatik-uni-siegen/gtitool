@@ -52,6 +52,7 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         jSplitPaneConsole.setResizeWeight(1.0);
         jPanelTop.setLayout(new java.awt.GridBagLayout());
 
+        jSplitPaneTable.setDividerLocation(400);
         jSplitPaneTable.setDividerSize(3);
         jSplitPaneTable.setResizeWeight(1.0);
         jPanelDiagramm.setLayout(new java.awt.GridBagLayout());

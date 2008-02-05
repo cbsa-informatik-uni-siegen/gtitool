@@ -145,6 +145,15 @@ public final class NewDialog
 
 
   /**
+   * Handle the cancel event.
+   */
+  public final void handleCancel ()
+  {
+    this.gui.dispose ();
+  }
+
+
+  /**
    * Handle finish button pressed for the {@link NewDialogAlphabet}.
    */
   public final void handleFinish ()

@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import de.unisiegen.gtitool.ui.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
 
 
 /**

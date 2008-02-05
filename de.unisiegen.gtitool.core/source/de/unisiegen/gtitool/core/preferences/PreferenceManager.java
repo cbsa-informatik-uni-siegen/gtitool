@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.core.preferences;
 
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.event.EventListenerList;
@@ -17,8 +19,11 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
+import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
+import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 
 
 /**
@@ -38,55 +43,28 @@ public class PreferenceManager
 
 
   /**
+   * The default language language.
+   */
+  public static final String DEFAULT_LANGUAGE_LANGUAGE = Locale.getDefault ()
+      .getLanguage ();
+
+
+  /**
+   * The default language title.
+   */
+  public static final String DEFAULT_LANGUAGE_TITLE = "Default"; //$NON-NLS-1$
+
+
+  /**
    * The single instance of the {@link PreferenceManager}.
    */
-  private static PreferenceManager singlePreferenceManager;
+  private static PreferenceManager preferenceManager;
 
 
   /**
-   * The default {@link Color} of the active {@link State}.
+   * The default {@link Color} of a parser warning.
    */
-  public static final Color DEFAULT_STATE_ACTIVE_COLOR = new Color ( 0, 255, 0 );
-
-
-  /**
-   * The default {@link Color} of the active {@link Transition}.
-   */
-  public static final Color DEFAULT_TRANSITION_ACTIVE_COLOR = new Color ( 0,
-      255, 0 );
-
-
-  /**
-   * The default {@link Color} of the active {@link Symbol}.
-   */
-  public static final Color DEFAULT_SYMBOL_ACTIVE_COLOR = new Color ( 0, 255, 0 );
-
-
-  /**
-   * The default {@link Color} of the error {@link State}.
-   */
-  public static final Color DEFAULT_STATE_ERROR_COLOR = new Color ( 255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of the selected {@link State}.
-   */
-  public static final Color DEFAULT_STATE_SELECTED_COLOR = new Color ( 255, 0,
-      0 );
-
-
-  /**
-   * The default {@link Color} of the selected {@link Transition}.
-   */
-  public static final Color DEFAULT_TRANSITION_SELECTED_COLOR = new Color (
-      255, 0, 0 );
-
-
-  /**
-   * The default {@link Color} of the start {@link State}.
-   */
-  public static final Color DEFAULT_STATE_START_COLOR = new Color ( 255, 255,
-      255 );
+  public static final Color DEFAULT_STATE_COLOR = new Color ( 0, 0, 127 );
 
 
   /**
@@ -97,15 +75,49 @@ public class PreferenceManager
 
 
   /**
-   * The default {@link Color} of a error {@link Symbol}.
+   * The default {@link Color} of the selected {@link State}.
    */
-  public static final Color DEFAULT_SYMBOL_ERROR_COLOR = new Color ( 255, 0, 0 );
+  public static final Color DEFAULT_STATE_SELECTED_COLOR = new Color ( 255, 0,
+      0 );
+
+
+  /**
+   * The default {@link Color} of the start {@link State}.
+   */
+  public static final Color DEFAULT_STATE_START_COLOR = new Color ( 255, 255,
+      255 );
+
+
+  /**
+   * The default {@link Color} of the active {@link State}.
+   */
+  public static final Color DEFAULT_STATE_ACTIVE_COLOR = new Color ( 0, 255, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link State}.
+   */
+  public static final Color DEFAULT_STATE_ERROR_COLOR = new Color ( 255, 0, 0 );
 
 
   /**
    * The default {@link Color} of a {@link Transition}.
    */
   public static final Color DEFAULT_TRANSITION_COLOR = new Color ( 0, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the selected {@link Transition}.
+   */
+  public static final Color DEFAULT_TRANSITION_SELECTED_COLOR = new Color (
+      255, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the active {@link Transition}.
+   */
+  public static final Color DEFAULT_TRANSITION_ACTIVE_COLOR = new Color ( 0,
+      255, 0 );
 
 
   /**
@@ -118,13 +130,19 @@ public class PreferenceManager
   /**
    * The default {@link Color} of a parser warning.
    */
-  public static final Color DEFAULT_STATE_COLOR = new Color ( 0, 0, 127 );
+  public static final Color DEFAULT_SYMBOL_COLOR = new Color ( 0, 0, 127 );
 
 
   /**
-   * The default {@link Color} of a parser warning.
+   * The default {@link Color} of the active {@link Symbol}.
    */
-  public static final Color DEFAULT_SYMBOL_COLOR = new Color ( 0, 0, 127 );
+  public static final Color DEFAULT_SYMBOL_ACTIVE_COLOR = new Color ( 0, 255, 0 );
+
+
+  /**
+   * The default {@link Color} of a error {@link Symbol}.
+   */
+  public static final Color DEFAULT_SYMBOL_ERROR_COLOR = new Color ( 255, 0, 0 );
 
 
   /**
@@ -151,6 +169,12 @@ public class PreferenceManager
    * The default push down {@link Alphabet}.
    */
   public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
+
+
+  /**
+   * The default use push down {@link Alphabet}.
+   */
+  public static final boolean DEFAULT_USE_PUSH_DOWN_ALPHABET = false;
 
   static
   {
@@ -181,12 +205,18 @@ public class PreferenceManager
    */
   public static PreferenceManager getInstance ()
   {
-    if ( singlePreferenceManager == null )
+    if ( preferenceManager == null )
     {
-      singlePreferenceManager = new PreferenceManager ();
+      preferenceManager = new PreferenceManager ();
     }
-    return singlePreferenceManager;
+    return preferenceManager;
   }
+
+
+  /**
+   * The system {@link Locale}.
+   */
+  private Locale systemLocale;
 
 
   /**
@@ -223,6 +253,18 @@ public class PreferenceManager
       ColorChangedListener listener )
   {
     this.listenerList.add ( ColorChangedListener.class, listener );
+  }
+
+
+  /**
+   * Adds the given {@link LanguageChangedListener}.
+   * 
+   * @param listener The {@link LanguageChangedListener}.
+   */
+  public final synchronized void addLanguageChangedListener (
+      LanguageChangedListener listener )
+  {
+    this.listenerList.add ( LanguageChangedListener.class, listener );
   }
 
 
@@ -474,6 +516,71 @@ public class PreferenceManager
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].colorChangedTransitionSelected ( newColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the language has changed.
+   * 
+   * @param newLocale The new {@link Locale}.
+   */
+  public final void fireLanguageChanged ( Locale newLocale )
+  {
+    Locale.setDefault ( newLocale );
+    LanguageChangedListener [] listeners = this.listenerList
+        .getListeners ( LanguageChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].languageChanged ();
+    }
+  }
+
+
+  /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The {@link AlphabetItem}.
+   */
+  public final AlphabetItem getAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    int count = this.preferences.getInt ( "DefaultAlphabetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    loop : for ( int i = 0 ; i < count ; i++ )
+    {
+      String symbol = this.preferences.get ( "DefaultAlphabet" + i, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      try
+      {
+        symbols.add ( new DefaultSymbol ( symbol ) );
+      }
+      catch ( SymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_ALPHABET, DEFAULT_ALPHABET );
+    }
+    try
+    {
+      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+          DEFAULT_ALPHABET );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
     }
   }
 
@@ -804,6 +911,93 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link LanguageItem}.
+   * 
+   * @return The {@link LanguageItem}.
+   */
+  public final LanguageItem getLanguageItem ()
+  {
+    String title = this.preferences.get ( "PreferencesDialog.Language.Title", //$NON-NLS-1$
+        DEFAULT_LANGUAGE_TITLE );
+    String language = this.preferences.get (
+        "PreferencesDialog.Language.Language", DEFAULT_LANGUAGE_LANGUAGE ); //$NON-NLS-1$
+    return new LanguageItem ( title, new Locale ( language ) );
+  }
+
+
+  /**
+   * Returns the {@link AlphabetItem}.
+   * 
+   * @return The push down {@link AlphabetItem}.
+   */
+  public final AlphabetItem getPushDownAlphabetItem ()
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    int count = this.preferences.getInt ( "DefaultPushDownAlphabetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    loop : for ( int i = 0 ; i < count ; i++ )
+    {
+      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      try
+      {
+        symbols.add ( new DefaultSymbol ( symbol ) );
+      }
+      catch ( SymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+    // Return the default alphabet if no alphabet is found.
+    if ( symbols.size () == 0 )
+    {
+      return new AlphabetItem ( DEFAULT_PUSH_DOWN_ALPHABET,
+          DEFAULT_PUSH_DOWN_ALPHABET );
+    }
+    try
+    {
+      return new AlphabetItem ( new DefaultAlphabet ( symbols ),
+          DEFAULT_PUSH_DOWN_ALPHABET );
+    }
+    catch ( AlphabetException e )
+    {
+      e.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
+
+
+  /**
+   * Returns the system {@link Locale}.
+   * 
+   * @return The system {@link Locale}.
+   */
+  public final Locale getSystemLocale ()
+  {
+    return this.systemLocale;
+  }
+
+
+  /**
+   * Returns the use push down {@link Alphabet} value.
+   * 
+   * @return The use push down {@link Alphabet} value.
+   */
+  public final boolean getUsePushDownAlphabet ()
+  {
+    return this.preferences.getBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
+        DEFAULT_USE_PUSH_DOWN_ALPHABET );
+  }
+
+
+  /**
    * Removes the given {@link ColorChangedListener}.
    * 
    * @param listener The {@link ColorChangedListener}.
@@ -812,6 +1006,38 @@ public class PreferenceManager
       ColorChangedListener listener )
   {
     this.listenerList.remove ( ColorChangedListener.class, listener );
+  }
+
+
+  /**
+   * Removes the given {@link LanguageChangedListener}.
+   * 
+   * @param listener The {@link LanguageChangedListener}.
+   */
+  public final synchronized void removeLanguageChangedListener (
+      LanguageChangedListener listener )
+  {
+    this.listenerList.remove ( LanguageChangedListener.class, listener );
+  }
+
+
+  /**
+   * Sets the {@link AlphabetItem}.
+   * 
+   * @param alphabetItem The {@link AlphabetItem}.
+   */
+  public final void setAlphabetItem ( AlphabetItem alphabetItem )
+  {
+    logger.debug ( "set the alphabet to \"" + alphabetItem.getAlphabet () //$NON-NLS-1$
+        + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
+    {
+      this.preferences.put (
+          "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
+              .getName () );
+    }
+    this.preferences.putInt ( "DefaultAlphabetCount", alphabetItem //$NON-NLS-1$
+        .getAlphabet ().size () );
   }
 
 
@@ -1112,5 +1338,64 @@ public class PreferenceManager
         colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "Preferences.ColorTransitionSelectedB", //$NON-NLS-1$
         colorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link LanguageItem}.
+   * 
+   * @param languageItem The {@link LanguageItem}.
+   */
+  public final void setLanguageItem ( LanguageItem languageItem )
+  {
+    logger.debug ( "set language to \"" //$NON-NLS-1$
+        + languageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
+    this.preferences.put ( "PreferencesDialog.Language.Title", languageItem //$NON-NLS-1$
+        .getTitle () );
+    this.preferences.put ( "PreferencesDialog.Language.Language", languageItem //$NON-NLS-1$
+        .getLocale ().getLanguage () );
+  }
+
+
+  /**
+   * Sets the push down {@link AlphabetItem}.
+   * 
+   * @param pushDownAlphabetItem The push down {@link AlphabetItem}.
+   */
+  public final void setPushDownAlphabetItem ( AlphabetItem pushDownAlphabetItem )
+  {
+    logger.debug ( "set the push down alphabet to \"" //$NON-NLS-1$
+        + pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < pushDownAlphabetItem.getAlphabet ().size () ; i++ )
+    {
+      this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
+          pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
+    }
+    this.preferences.putInt (
+        "DefaultPushDownAlphabetCount", pushDownAlphabetItem //$NON-NLS-1$
+            .getAlphabet ().size () );
+  }
+
+
+  /**
+   * Sets the system {@link Locale}.
+   * 
+   * @param locale The system {@link Locale}.
+   */
+  public final void setSystemLocale ( Locale locale )
+  {
+    this.systemLocale = locale;
+  }
+
+
+  /**
+   * Sets the use push down {@link Alphabet} value.
+   * 
+   * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
+   */
+  public final void setUsePushDownAlphabet ( boolean usePushDownAlphabet )
+  {
+    this.preferences.putBoolean ( "UsePushDownAlphabet", //$NON-NLS-1$
+        usePushDownAlphabet );
   }
 }

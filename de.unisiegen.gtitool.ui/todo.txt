@@ -2,5 +2,3 @@ CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 BM		- Routing der Transitionen
-CF		- Initiale Werte überprüfen
-CF		- Die beiden PreferenceManager besser trennen

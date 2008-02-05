@@ -56,9 +56,21 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The puplished x position.
+   */
+  private double puplishedXPosition = POSITION_NOT_DEFINED;
+
+
+  /**
    * The initial y position.
    */
   private double initialYPosition = POSITION_NOT_DEFINED;
+
+
+  /**
+   * The puplished y position.
+   */
+  private double puplishedYPosition = POSITION_NOT_DEFINED;
 
 
   /**
@@ -150,10 +162,17 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    double x = getXPosition ();
+    double y = getYPosition ();
+    if ( ( this.puplishedXPosition != x ) || ( this.puplishedYPosition != y ) )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      this.puplishedXPosition = x;
+      this.puplishedYPosition = y;
+      boolean newModifyStatus = isModified ();
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      }
     }
   }
 

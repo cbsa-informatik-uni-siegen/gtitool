@@ -4,4 +4,3 @@ CF		- History über die Zustände führen
 BM		- Routing der Transitionen
 CF		- Initiale Werte überprüfen
 CF		- Die beiden PreferenceManager besser trennen
-BM		- Die Gradient-Farbe wieder bei Zuständen einbauen

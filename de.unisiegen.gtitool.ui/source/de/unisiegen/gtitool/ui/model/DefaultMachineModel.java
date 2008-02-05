@@ -337,6 +337,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
               .getColor () );
       GraphConstants.setOpaque ( stateView.getAttributes (), true );
     }
+    
+    GraphConstants.setGradientColor ( stateView.getAttributes (),
+        Color.white );
 
     // Set black border
     GraphConstants.setBorderColor ( stateView.getAttributes (), Color.black );

@@ -872,6 +872,19 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Clears the active {@link Transition}s.
+   */
+  private void clearActiveTransition ()
+  {
+    this.activeTransitionSet.clear ();
+    for ( Transition currentTransition : this.transitionList )
+    {
+      currentTransition.setActive ( false );
+    }
+  }
+
+
+  /**
    * Clears the history of this {@link AbstractMachine}.
    */
   private final void clearHistory ()
@@ -1472,7 +1485,7 @@ public abstract class AbstractMachine implements Machine
   {
     if ( getActiveState ().size () == 0 )
     {
-      this.activeTransitionSet.clear ();
+      clearActiveTransition ();
       clearActiveSymbol ();
       throw new WordNotAcceptedException ( this.word );
     }
@@ -1519,7 +1532,7 @@ public abstract class AbstractMachine implements Machine
       }
       catch ( WordFinishedException exc )
       {
-        this.activeTransitionSet.clear ();
+        clearActiveTransition ();
         clearActiveSymbol ();
         throw exc;
       }
@@ -1544,16 +1557,27 @@ public abstract class AbstractMachine implements Machine
     // Set sctive sets
     TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
     oldActiveStateSet.addAll ( this.activeStateSet );
+
+    // State
     this.activeStateSet.clear ();
     this.activeStateSet.addAll ( newActiveStateSet );
-    this.activeTransitionSet.clear ();
-    this.activeTransitionSet.addAll ( newActiveTransitionSet );
+
+    // Transition
+    clearActiveTransition ();
+    for ( Transition current : newActiveTransitionSet )
+    {
+      current.setActive ( true );
+      this.activeTransitionSet.add ( current );
+    }
+
+    // Symbol
     clearActiveSymbol ();
     for ( Symbol current : newActiveSymbolList )
     {
       current.setActive ( true );
       this.activeSymbolList.add ( current );
     }
+
     // No transition is found
     if ( this.activeStateSet.size () == 0 )
     {
@@ -1561,7 +1585,7 @@ public abstract class AbstractMachine implements Machine
       {
         this.word.previousSymbol ();
       }
-      this.activeTransitionSet.clear ();
+      clearActiveTransition ();
       clearActiveSymbol ();
       throw new WordNotAcceptedException ( this.word );
     }
@@ -1584,7 +1608,7 @@ public abstract class AbstractMachine implements Machine
   {
     if ( this.history.size () == 0 )
     {
-      this.activeTransitionSet.clear ();
+      clearActiveTransition ();
       clearActiveSymbol ();
       throw new WordResetedException ( this.word );
     }
@@ -1608,11 +1632,20 @@ public abstract class AbstractMachine implements Machine
     {
       this.word.previousSymbol ();
     }
-    // Set sctive sets
+
+    // State
     this.activeStateSet.clear ();
     this.activeStateSet.addAll ( newActiveStateSet );
-    this.activeTransitionSet.clear ();
-    this.activeTransitionSet.addAll ( newActiveTransitionSet );
+
+    // Transition
+    clearActiveTransition ();
+    for ( Transition current : newActiveTransitionSet )
+    {
+      current.setActive ( true );
+      this.activeTransitionSet.add ( current );
+    }
+
+    // Symbol
     clearActiveSymbol ();
     for ( Symbol current : newActiveSymbolList )
     {

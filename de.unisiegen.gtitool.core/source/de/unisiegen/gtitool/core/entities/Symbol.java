@@ -71,5 +71,4 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
    * @param error The error value to set.
    */
   public void setError ( boolean error );
-
 }

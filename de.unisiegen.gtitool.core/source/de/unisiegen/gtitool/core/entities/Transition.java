@@ -211,6 +211,16 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
+   * Returns true if this {@link Transition} is a active {@link Transition},
+   * otherwise false.
+   * 
+   * @return True if this {@link Transition} is a active {@link Transition},
+   *         otherwise false.
+   */
+  public boolean isActive ();
+
+
+  /**
    * Returns true, if this {@link Transition} is a epsilon {@link Transition},
    * otherwise false.
    * 
@@ -218,6 +228,16 @@ public interface Transition extends Entity, Storable, Modifyable,
    *         otherwise false.
    */
   public boolean isEpsilonTransition ();
+
+
+  /**
+   * Returns true if this {@link Transition} is a error {@link Transition},
+   * otherwise false.
+   * 
+   * @return True if this {@link Transition} is a error {@link Transition},
+   *         otherwise false.
+   */
+  public boolean isError ();
 
 
   /**
@@ -264,11 +284,27 @@ public interface Transition extends Entity, Storable, Modifyable,
 
 
   /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public void setActive ( boolean active );
+
+
+  /**
    * Sets the {@link Alphabet} of this {@link Transition}.
    * 
    * @param alphabet The {@link Alphabet} to set.
    */
   public void setAlphabet ( Alphabet alphabet );
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   */
+  public void setError ( boolean error );
 
 
   /**

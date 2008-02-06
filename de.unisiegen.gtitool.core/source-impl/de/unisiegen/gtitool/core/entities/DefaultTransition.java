@@ -136,6 +136,18 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * This {@link Transition} is a error {@link Transition}.
+   */
+  private boolean error = false;
+
+
+  /**
+   * This {@link Transition} is a active {@link Transition}.
+   */
+  private boolean active = false;
+
+
+  /**
    * Allocates a new {@link DefaultTransition}.
    */
   public DefaultTransition ()
@@ -851,6 +863,19 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Returns true if this {@link Transition} is a active {@link Transition},
+   * otherwise false.
+   * 
+   * @return True if this {@link Transition} is a active {@link Transition},
+   *         otherwise false.
+   */
+  public final boolean isActive ()
+  {
+    return this.active;
+  }
+
+
+  /**
    * Returns true, if this {@link DefaultTransition} is a epsilon
    * {@link DefaultTransition}, otherwise false.
    * 
@@ -860,6 +885,20 @@ public final class DefaultTransition implements Transition
   public final boolean isEpsilonTransition ()
   {
     return this.symbolSet.size () == 0;
+  }
+
+
+  /**
+   * Returns true if this {@link Transition} is a error {@link Transition},
+   * otherwise false.
+   * 
+   * @return True if this {@link Transition} is a error {@link Transition},
+   *         otherwise false.
+   * @see #error
+   */
+  public final boolean isError ()
+  {
+    return this.error;
   }
 
 
@@ -994,6 +1033,17 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public final void setActive ( boolean active )
+  {
+    this.active = active;
+  }
+
+
+  /**
    * Sets the {@link Alphabet} of this {@link DefaultTransition}.
    * 
    * @param alphabet The {@link Alphabet} to set.
@@ -1009,6 +1059,18 @@ public final class DefaultTransition implements Transition
       throw new IllegalArgumentException ( "alphabet is already set" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
+  }
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   * @see #error
+   */
+  public final void setError ( boolean error )
+  {
+    this.error = error;
   }
 
 
@@ -1167,7 +1229,21 @@ public final class DefaultTransition implements Transition
     PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      if ( this.error )
+      {
+        prettyString.addPrettyToken ( new PrettyToken (
+            "\u03B5", Style.SYMBOL_ERROR ) ); //$NON-NLS-1$
+      }
+      else if ( this.active )
+      {
+        prettyString.addPrettyToken ( new PrettyToken (
+            "\u03B5", Style.SYMBOL_ACTIVE ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
     }
     else
     {

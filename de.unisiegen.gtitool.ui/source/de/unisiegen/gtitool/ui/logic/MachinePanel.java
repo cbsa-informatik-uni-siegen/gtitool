@@ -685,6 +685,7 @@ public final class MachinePanel implements EditorPanel
   {
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
+      current.getTransition ().setError ( false );
       for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
       {
         currentSymbol.setError ( false );
@@ -1025,6 +1026,7 @@ public final class MachinePanel implements EditorPanel
       this.model.getJGraph ().clearSelection ();
       for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
+        current.getTransition ().setError ( false );
         for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
         {
           currentSymbol.setError ( false );
@@ -1723,6 +1725,7 @@ public final class MachinePanel implements EditorPanel
 
     for ( Transition current : transitions )
     {
+      current.setError ( true );
       DefaultTransitionView view = this.model
           .getTransitionViewForTransition ( current );
       this.oldErrorTransitions.add ( view );

@@ -32,7 +32,7 @@ terminal					RCBRACE;
  
 non terminal Alphabet		alphabet;
 non terminal Symbol			symbol;
-non terminal Symbol[]		symbol_list;
+non terminal Symbol[]		symbol_list_comma;
 
 
 /*********
@@ -41,36 +41,36 @@ non terminal Symbol[]		symbol_list;
 
 non terminal 				epsilon;
 non terminal				alphabet_error;
-non terminal				symbol_list_error;
+non terminal				symbol_list_comma_error;
 
 
 /************
  * Alphabet *
  ************/
 
-alphabet						::= LCBRACE:l symbol_list:sl RCBRACE:r
+alphabet						::= LCBRACE:l symbol_list_comma:slc RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new DefaultAlphabet(sl);
+									     RESULT = new DefaultAlphabet(slc);
 									   }
 									   catch (AlphabetException ecx)
 									   {
 									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}
-								|	symbol_list:sl
+								|	symbol_list_comma:slc
 									{:
 									   try
 									   {
-									     RESULT = new DefaultAlphabet(sl);
+									     RESULT = new DefaultAlphabet(slc);
 									   }
 									   catch (AlphabetException ecx)
 									   {
 									     ParserMultiException.throwAlphabetException(ecx.getSymbol());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									   RESULT.setParserOffset(new ParserOffset(slcleft,slcright));
 									:}
 								|	alphabet_error
 									{: :}
@@ -80,18 +80,18 @@ alphabet_error					::= LCBRACE:l epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
-								|	LCBRACE:l symbol_list:sl epsilon
+								|	LCBRACE:l symbol_list_comma:slc epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", "}", lleft, slright, "}" );
+									   ErrorHandling.expect ( "Alphabet", "}", lleft, slcright, "}" );
 									:}
-								|	LCBRACE:l symbol_list:sl COMMA:c epsilon
+								|	LCBRACE:l symbol_list_comma:slc COMMA:c epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
 								/* one missing token */
-								|	LCBRACE:l symbol_list:sl SYMBOL:s
+								|	LCBRACE:l symbol_list_comma:slc SYMBOL:s
 									{:
-									   ErrorHandling.expect ( "Alphabet", ", ", lleft, slright, "," );
+									   ErrorHandling.expect ( "Alphabet", ", ", lleft, slcright, "," );
 									:}
 								|	LCBRACE:l COMMA:c
 									{:
@@ -117,28 +117,28 @@ symbol							::= SYMBOL:s
 									:}
 								;
 
-symbol_list						::= symbol_list:sl COMMA:c symbol:s
+symbol_list_comma				::= symbol_list_comma:slc COMMA:c symbol:s
 								    {:
-								       RESULT = new Symbol[sl.length + 1];
-									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
-									   RESULT[sl.length] = s;
+								       RESULT = new Symbol[slc.length + 1];
+									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
+									   RESULT[slc.length] = s;
 								    :}
 								|	symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
 									:}
-								|	symbol_list_error
+								|	symbol_list_comma_error
 									{: :}
 								;
 
-symbol_list_error				::= symbol_list:sl COMMA:c epsilon
+symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
 									{:
-									   ErrorHandling.expect ( "Alphabet", " s", slleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
 									:}
 								/* one missing token */
-								|	symbol_list:sl SYMBOL:s
+								|	symbol_list_comma:slc SYMBOL:s
 									{:
-									   ErrorHandling.expect ( "Alphabet", ", ", slleft, slright, "," );
+									   ErrorHandling.expect ( "Alphabet", ", ", slcleft, slcright, "," );
 									:}
 								;
 

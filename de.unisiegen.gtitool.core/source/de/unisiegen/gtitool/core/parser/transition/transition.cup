@@ -38,6 +38,7 @@ terminal					ARROWDOWN;
 non terminal Transition		transition;
 non terminal Symbol			symbol;
 non terminal Symbol[]		symbol_list;
+non terminal Symbol[]		symbol_list_comma;
 non terminal Word			word;
 non terminal Word			word_read;
 non terminal Word			word_write;
@@ -48,8 +49,8 @@ non terminal Word			word_write;
  *********/
 
 non terminal 				epsilon;
-non terminal				transition_error;
 non terminal				symbol_list_error;
+non terminal				symbol_list_comma_error;
 
 
 /**************
@@ -66,11 +67,11 @@ transition						::= EPSILON:e
 									   RESULT = new DefaultTransition(r, w);
 									   RESULT.setParserOffset(new ParserOffset(eleft,wright));
 									:}
-								|	LCBRACE:l symbol_list:sl RCBRACE:r
+								|	LCBRACE:l symbol_list_comma:slc RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), sl);
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), slc);
 									   }
 									   catch (TransitionException ecx)
 									   {
@@ -78,11 +79,11 @@ transition						::= EPSILON:e
 									   }
 									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
 									:}
-								|	LCBRACE:l symbol_list:sl RCBRACE word_read:r word_write:w
+								|	LCBRACE:l symbol_list_comma:slc RCBRACE word_read:r word_write:w
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(r, w, sl);
+									     RESULT = new DefaultTransition(r, w, slc);
 									   }
 									   catch (TransitionException ecx)
 									   {
@@ -90,32 +91,30 @@ transition						::= EPSILON:e
 									   }
 									   RESULT.setParserOffset(new ParserOffset(lleft,wright));
 									:}
-								|	symbol_list:sl
+								|	symbol_list_comma:slc
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), sl);
+									     RESULT = new DefaultTransition(new DefaultWord(), new DefaultWord(), slc);
 									   }
 									   catch (TransitionException ecx)
 									   {
 									     ParserMultiException.throwTransitionException(ecx.getSymbol());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									   RESULT.setParserOffset(new ParserOffset(slcleft,slcright));
 									:}
-								|	symbol_list:sl word_read:r word_write:w
+								|	symbol_list_comma:slc word_read:r word_write:w
 									{:
 									   try
 									   {
-									     RESULT = new DefaultTransition(r, w, sl);
+									     RESULT = new DefaultTransition(r, w, slc);
 									   }
 									   catch (TransitionException ecx)
 									   {
 									     ParserMultiException.throwTransitionException(ecx.getSymbol());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(slleft,wright));
+									   RESULT.setParserOffset(new ParserOffset(slcleft,wright));
 									:}
-								|	transition_error
-									{: :}
 								;
 
 word_read						::= word:w ARROWUP
@@ -140,30 +139,17 @@ word_write						::= word:w ARROWDOWN
 									:}
 								;
 
-transition_error				::= LCBRACE:l epsilon
+symbol							::= SYMBOL:s
 									{:
-									   ErrorHandling.expect ( "Transition", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
-									:}
-								|	LCBRACE:l symbol_list:sl epsilon
-									{:
-									   ErrorHandling.expect ( "Transition", "}", lleft, slright, "}" );
-									:}
-								|	LCBRACE:l symbol_list:sl COMMA:c epsilon
-									{:
-									   ErrorHandling.expect ( "Transition", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
-									:}
-								/* one missing token */
-								|	LCBRACE:l symbol_list:sl SYMBOL:s
-									{:
-									   ErrorHandling.expect ( "Transition", ", ", lleft, slright, "," );
-									:}
-								|	LCBRACE:l COMMA:c
-									{:
-									   ErrorHandling.expect ( "Transition", "s", lleft, lright, "s" );
-									:}
-								|	LCBRACE:l RCBRACE:r
-									{:
-									   ErrorHandling.expect ( "Transition", "s", lleft, lright, "s" );
+									   try
+									   {
+									     RESULT = new DefaultSymbol(s);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(sleft, sright, s);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;
 
@@ -181,7 +167,7 @@ symbol							::= SYMBOL:s
 									:}
 								;
 
-symbol_list						::= symbol_list:sl COMMA:c symbol:s
+symbol_list						::= symbol_list:sl symbol:s
 								    {:
 								       RESULT = new Symbol[sl.length + 1];
 									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
@@ -190,19 +176,6 @@ symbol_list						::= symbol_list:sl COMMA:c symbol:s
 								|	symbol:s
 									{:
 									   RESULT = new Symbol[] { s };
-									:}
-								|	symbol_list_error
-									{: :}
-								;
-
-symbol_list_error				::= symbol_list:sl COMMA:c epsilon
-									{:
-									   ErrorHandling.expect ( "Transition", " s", slleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
-									:}
-								/* one missing token */
-								|	symbol_list:sl SYMBOL:s
-									{:
-									   ErrorHandling.expect ( "Transition", ", ", slleft, slright, "," );
 									:}
 								;
 
@@ -215,6 +188,31 @@ word							::= symbol_list:sl
 									{:
 									   RESULT = new DefaultWord();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+symbol_list_comma				::= symbol_list_comma:slc COMMA:c symbol:s
+								    {:
+								       RESULT = new Symbol[slc.length + 1];
+									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
+									   RESULT[slc.length] = s;
+								    :}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								|	symbol_list_comma_error
+									{: :}
+								;
+
+symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	symbol_list_comma:slc SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Alphabet", ", ", slcleft, slcright, "," );
 									:}
 								;
 

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.jgraphcomponents;
 
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.GradientPaint;
@@ -51,12 +52,12 @@ public class StateView extends VertexView
     /**
      * Allocate a new {@link JGraphEllipseRenderer}
      * 
-     * @param pStateView the {@link StateView}
+     * @param stateView the {@link StateView}
      */
-    public JGraphEllipseRenderer ( StateView pStateView )
+    public JGraphEllipseRenderer ( StateView stateView )
     {
       super ();
-      this.stateView = pStateView;
+      this.stateView = stateView;
     }
 
 
@@ -88,20 +89,51 @@ public class StateView extends VertexView
       {
         state = ( ( DefaultStateView ) this.stateView.getCell () ).getState ();
       }
+      else
+      {
+        throw new RuntimeException ( "not a state view" ); //$NON-NLS-1$
+      }
       int b = this.borderWidth;
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
       boolean tmp = this.selected;
       if ( super.isOpaque () )
       {
-        g.setColor ( super.getBackground () );
+        Color background = null;
+        // Error
+        if ( state.isError () )
+        {
+          background = PreferenceManager.getInstance ()
+              .getColorItemStateError ().getColor ();
+        }
+        // Active
+        else if ( state.isActive () )
+        {
+          background = PreferenceManager.getInstance ()
+              .getColorItemStateActive ().getColor ();
+        }
+        // Start
+        else if ( state.isStartState () )
+        {
+          background = PreferenceManager.getInstance ()
+              .getColorItemStateStart ().getColor ();
+        }
+        // Normal
+        else
+        {
+          background = PreferenceManager.getInstance ()
+              .getColorItemStateBackground ().getColor ();
+        }
+
+        g.setColor ( background );
+
         if ( this.gradientColor != null && !this.preview )
         {
           setOpaque ( false );
-          g2.setPaint ( new GradientPaint ( 0, 0, getBackground (),
-              getWidth (), getHeight (), this.gradientColor, true ) );
+          g2.setPaint ( new GradientPaint ( 0, 0, background, getWidth (),
+              getHeight (), this.gradientColor, true ) );
         }
-        if ( state != null && state.isFinalState () )
+        if ( state.isFinalState () )
         {
           g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
         }
@@ -116,20 +148,13 @@ public class StateView extends VertexView
         setOpaque ( false );
         this.selected = false;
 
-        if ( state == null )
-        {
-          super.paint ( g );
-        }
-        else
-        {
-          g.setColor ( PreferenceManager.getInstance ().getColorItemState ()
-              .getColor () );
-          g.setFont ( getFont () );
-          FontMetrics metrics = getFontMetrics ( getFont () );
-          g.drawString ( state.toString (), ( d.width / 2 )
-              - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1,
-              ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3 );
-        }
+        g.setColor ( PreferenceManager.getInstance ().getColorItemState ()
+            .getColor () );
+        g.setFont ( getFont () );
+        FontMetrics metrics = getFontMetrics ( getFont () );
+        g.drawString ( state.toString (), ( d.width / 2 )
+            - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1,
+            ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3 );
       }
       finally
       {
@@ -140,8 +165,7 @@ public class StateView extends VertexView
         g.setColor ( this.bordercolor );
         g2.setStroke ( new BasicStroke ( b ) );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
-
-        if ( state != null && state.isFinalState () )
+        if ( state.isFinalState () )
         {
           g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
         }
@@ -151,8 +175,12 @@ public class StateView extends VertexView
         g.setColor ( PreferenceManager.getInstance ()
             .getColorItemStateSelected ().getColor () );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+        if ( state.isFinalState () )
+        {
+          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+        }
       }
-      if ( state != null && state.isStartState () && !this.preview )
+      if ( state.isStartState () )
       {
         g.setColor ( PreferenceManager.getInstance ().getColorItemTransition ()
             .getColor () );

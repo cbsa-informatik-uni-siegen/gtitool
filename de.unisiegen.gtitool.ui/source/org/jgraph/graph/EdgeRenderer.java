@@ -37,6 +37,7 @@ import org.jgraph.util.Spline2D;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -44,6 +45,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
  * 
  * @version 1.0 1/1/02
  * @author Gaudenz Alder
+ * @author Christian Fehler
  */
 @SuppressWarnings (
 { "all", "unchecked" } )
@@ -746,15 +748,35 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         super.paint ( g );
         translateGraphics ( g );
 
-        // Use the highlight color if the transition is selected
-        if ( selected )
+        // Error
+        if ( ( view.getCell () instanceof DefaultTransitionView )
+            && ( ( ( DefaultTransitionView ) view.getCell () ).getTransition ()
+                .isError () ) )
         {
-          g2.setColor ( highlightColor );
+          g2.setColor ( PreferenceManager.getInstance ()
+              .getColorItemTransitionError ().getColor () );
         }
+        // Active
+        else if ( ( view.getCell () instanceof DefaultTransitionView )
+            && ( ( ( DefaultTransitionView ) view.getCell () ).getTransition ()
+                .isActive () ) )
+        {
+          g2.setColor ( PreferenceManager.getInstance ()
+              .getColorItemTransitionActive ().getColor () );
+        }
+        // Selected
+        else if ( selected )
+        {
+          g2.setColor ( PreferenceManager.getInstance ()
+              .getColorItemTransitionSelected ().getColor () );
+        }
+        // Normal
         else
         {
-          g.setColor ( getForeground () );
+          g2.setColor ( PreferenceManager.getInstance ()
+              .getColorItemTransition ().getColor () );
         }
+
         if ( lineWidth > 0 )
         {
           g2.setStroke ( new BasicStroke ( lineWidth, c, j ) );

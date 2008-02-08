@@ -28,7 +28,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -322,24 +322,11 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setBounds ( stateView.getAttributes (),
         new Rectangle2D.Double ( xPosition - 35, yPostition - 35, 70, 70 ) );
 
-    // Set fill color
-    if ( state.isStartState () )
-    {
-      GraphConstants.setBackground ( stateView.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStateStart ()
-              .getColor () );
-      GraphConstants.setOpaque ( stateView.getAttributes (), true );
-    }
-    else
-    {
-      GraphConstants.setBackground ( stateView.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStateBackground ()
-              .getColor () );
-      GraphConstants.setOpaque ( stateView.getAttributes (), true );
-    }
-    
-    GraphConstants.setGradientColor ( stateView.getAttributes (),
-        Color.white );
+    // Opaque
+    GraphConstants.setOpaque ( stateView.getAttributes (), true );
+
+    // Gradient
+    GraphConstants.setGradientColor ( stateView.getAttributes (), Color.white );
 
     // Set black border
     GraphConstants.setBorderColor ( stateView.getAttributes (), Color.black );
@@ -347,7 +334,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
     // Set the line width
     GraphConstants.setLineWidth ( stateView.getAttributes (), 1 );
 
-    // Add a Floating Port
+    // Add a floating port
     stateView.addPort ();
 
     this.jGraph.getGraphLayoutCache ().insert ( stateView );
@@ -380,11 +367,6 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setLineEnd ( newEdge.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
     GraphConstants.setEndFill ( newEdge.getAttributes (), true );
-
-    GraphConstants.setLineColor ( newEdge.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemTransition ().getColor () );
-    GraphConstants.setLabelColor ( newEdge.getAttributes (), PreferenceManager
-        .getInstance ().getColorItemTransition ().getColor () );
 
     this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
@@ -563,47 +545,42 @@ public final class DefaultMachineModel implements Storable, Modifyable
    */
   private final void initializeGraph ()
   {
-    // Construct Model and Graph
     this.graphModel = new DefaultGraphModel ();
 
     this.jGraph = new JGraph ( this.graphModel );
-
+    this.jGraph.setDoubleBuffered ( true );
     this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
-
-    // Control-drag should clone selection
-    this.jGraph.setCloneable ( true );
-
-    // Enable edit without final RETURN keystroke
     this.jGraph.setInvokesStopCellEditing ( true );
-
-    // When over a cell, jump to its default port (we only have one, anyway)
     this.jGraph.setJumpToDefaultPort ( true );
-
-    // Set states to not sizeable
     this.jGraph.setSizeable ( false );
-
-    // Set states to not connectable and disconnectable
-    // So Transitions are not moveable
     this.jGraph.setConnectable ( false );
     this.jGraph.setDisconnectable ( false );
-
-    // Set the labels of the Transitions to not moveable
     this.jGraph.setEdgeLabelsMovable ( false );
-
-    // Set states to not editable
     this.jGraph.setEditable ( false );
-
-    // The Handles of the transitions are not visible
     this.jGraph.setHandleSize ( 0 );
 
-    this.jGraph.setHighlightColor ( PreferenceManager.getInstance ()
-        .getColorItemTransitionSelected ().getColor () );
     PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
+        new ColorChangedListener ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          @Override
+          public void colorChangedParserHighlighting (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedState ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
@@ -612,7 +589,31 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
           @SuppressWarnings ( "synthetic-access" )
-          @Override
+          public void colorChangedStateActive ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateBackground (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateError ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
@@ -621,10 +622,68 @@ public final class DefaultMachineModel implements Storable, Modifyable
 
 
           @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedTransitionSelected ( Color newColor )
+          public void colorChangedStateStart ( @SuppressWarnings ( "unused" )
+          Color newColor )
           {
-            DefaultMachineModel.this.jGraph.setHighlightColor ( newColor );
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedSymbolActive ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransition ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionActive (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionError (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionSelected (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
             DefaultMachineModel.this.jGraph.repaint ();
           }
         } );

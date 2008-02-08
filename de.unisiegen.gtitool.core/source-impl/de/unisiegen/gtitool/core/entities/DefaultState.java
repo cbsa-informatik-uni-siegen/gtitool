@@ -140,6 +140,18 @@ public final class DefaultState implements State
 
 
   /**
+   * This {@link DefaultState} is a error {@link DefaultState}.
+   */
+  private boolean error = false;
+
+
+  /**
+   * This {@link DefaultState} is a active {@link DefaultState}.
+   */
+  private boolean active = false;
+
+
+  /**
    * Allocates a new {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
@@ -725,6 +737,33 @@ public final class DefaultState implements State
 
 
   /**
+   * Returns true if this {@link DefaultState} is a active {@link DefaultState},
+   * otherwise false.
+   * 
+   * @return True if this {@link DefaultState} is a active {@link DefaultState},
+   *         otherwise false.
+   */
+  public final boolean isActive ()
+  {
+    return this.active;
+  }
+
+
+  /**
+   * Returns true if this {@link DefaultState} is a error {@link DefaultState},
+   * otherwise false.
+   * 
+   * @return True if this {@link DefaultState} is a error {@link DefaultState},
+   *         otherwise false.
+   * @see #error
+   */
+  public final boolean isError ()
+  {
+    return this.error;
+  }
+
+
+  /**
    * Returns the finalState.
    * 
    * @return The finalState.
@@ -857,6 +896,17 @@ public final class DefaultState implements State
 
 
   /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public final void setActive ( boolean active )
+  {
+    this.active = active;
+  }
+
+
+  /**
    * Sets the {@link Alphabet} of this {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} to set.
@@ -896,6 +946,18 @@ public final class DefaultState implements State
         System.exit ( 1 );
       }
     }
+  }
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   * @see #error
+   */
+  public final void setError ( boolean error )
+  {
+    this.error = error;
   }
 
 

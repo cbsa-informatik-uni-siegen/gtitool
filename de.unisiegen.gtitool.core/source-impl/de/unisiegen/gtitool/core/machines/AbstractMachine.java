@@ -856,9 +856,22 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Clears the active {@link State}s.
+   */
+  private final void clearActiveState ()
+  {
+    this.activeStateSet.clear ();
+    for ( State current : this.stateList )
+    {
+      current.setActive ( false );
+    }
+  }
+
+
+  /**
    * Clears the active {@link Symbol}s.
    */
-  private void clearActiveSymbol ()
+  private final void clearActiveSymbol ()
   {
     this.activeSymbolList.clear ();
     for ( Transition currentTransition : this.transitionList )
@@ -874,12 +887,12 @@ public abstract class AbstractMachine implements Machine
   /**
    * Clears the active {@link Transition}s.
    */
-  private void clearActiveTransition ()
+  private final void clearActiveTransition ()
   {
     this.activeTransitionSet.clear ();
-    for ( Transition currentTransition : this.transitionList )
+    for ( Transition current : this.transitionList )
     {
-      currentTransition.setActive ( false );
+      current.setActive ( false );
     }
   }
 
@@ -1559,8 +1572,12 @@ public abstract class AbstractMachine implements Machine
     oldActiveStateSet.addAll ( this.activeStateSet );
 
     // State
-    this.activeStateSet.clear ();
-    this.activeStateSet.addAll ( newActiveStateSet );
+    clearActiveState ();
+    for ( State current : newActiveStateSet )
+    {
+      current.setActive ( true );
+      this.activeStateSet.add ( current );
+    }
 
     // Transition
     clearActiveTransition ();
@@ -1634,8 +1651,12 @@ public abstract class AbstractMachine implements Machine
     }
 
     // State
-    this.activeStateSet.clear ();
-    this.activeStateSet.addAll ( newActiveStateSet );
+    clearActiveState ();
+    for ( State current : newActiveStateSet )
+    {
+      current.setActive ( true );
+      this.activeStateSet.add ( current );
+    }
 
     // Transition
     clearActiveTransition ();

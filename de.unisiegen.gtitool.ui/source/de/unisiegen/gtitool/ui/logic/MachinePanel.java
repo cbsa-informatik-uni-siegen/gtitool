@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.FocusEvent;
@@ -51,7 +50,6 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storage;
@@ -162,19 +160,19 @@ public final class MachinePanel implements EditorPanel
     /**
      * The {@link JTable}.
      */
-    protected JTable table;
+    protected JTable jTable;
 
 
     /**
      * Initilizes the {@link HighlightTimerTask}.
      * 
-     * @param table The {@link JTable}.
+     * @param jTable The {@link JTable}.
      * @param index The index.
      */
-    public HighlightTimerTask ( JTable table, int index )
+    public HighlightTimerTask ( JTable jTable, int index )
     {
       this.index = index;
-      this.table = table;
+      this.jTable = jTable;
     }
 
 
@@ -194,9 +192,9 @@ public final class MachinePanel implements EditorPanel
 
           public void run ()
           {
-            HighlightTimerTask.this.table.getSelectionModel ()
+            HighlightTimerTask.this.jTable.getSelectionModel ()
                 .clearSelection ();
-            HighlightTimerTask.this.table.repaint ();
+            HighlightTimerTask.this.jTable.repaint ();
           }
         } );
       }
@@ -207,10 +205,10 @@ public final class MachinePanel implements EditorPanel
 
           public void run ()
           {
-            HighlightTimerTask.this.table.getSelectionModel ()
+            HighlightTimerTask.this.jTable.getSelectionModel ()
                 .setSelectionInterval ( HighlightTimerTask.this.index,
                     HighlightTimerTask.this.index );
-            HighlightTimerTask.this.table.repaint ();
+            HighlightTimerTask.this.jTable.repaint ();
           }
         } );
       }
@@ -351,18 +349,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The actual highlighted error states.
-   */
-  private ArrayList < DefaultStateView > oldErrorStates = new ArrayList < DefaultStateView > ();
-
-
-  /**
-   * The actual highlighted error transitions.
-   */
-  private ArrayList < DefaultTransitionView > oldErrorTransitions = new ArrayList < DefaultTransitionView > ();
-
-
-  /**
    * The {@link JPopupMenu}.
    */
   private JPopupMenu popup;
@@ -488,6 +474,8 @@ public final class MachinePanel implements EditorPanel
     addListener ();
     addGraphListener ();
 
+    this.gui.wordPanel.styledWordParserPanel.parse ();
+    
     // Reset modify
     resetModify ();
   }
@@ -560,98 +548,6 @@ public final class MachinePanel implements EditorPanel
         } );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
-
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedStateBackground ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedStateBackground ( Color newColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultStateView state = ( DefaultStateView ) object;
-                if ( !state.getState ().isStartState () )
-                  GraphConstants.setBackground ( state.getAttributes (),
-                      newColor );
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedStateStart ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedStateStart ( Color newColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultStateView state = ( DefaultStateView ) object;
-                if ( state.getState ().isStartState () )
-                {
-                  GraphConstants.setBackground ( state.getAttributes (),
-                      newColor );
-                }
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-          }
-
-
-          /**
-           * {@inheritDoc}
-           * 
-           * @see ColorChangedAdapter#colorChangedTransition ( Color )
-           */
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedTransition ( Color newColor )
-          {
-            for ( Object object : DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) )
-            {
-              try
-              {
-                DefaultTransitionView t = ( DefaultTransitionView ) object;
-                GraphConstants.setLineColor ( t.getAttributes (), newColor );
-
-              }
-              catch ( ClassCastException e )
-              {
-                // Do nothing
-              }
-            }
-            MachinePanel.this.graphModel.cellsChanged ( DefaultGraphModel
-                .getAll ( MachinePanel.this.graphModel ) );
-          }
-        } );
   }
 
 
@@ -679,46 +575,41 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Remove all highlightings.
+   * Clears the highlight.
    */
   public final void clearHighlight ()
   {
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      current.getTransition ().setError ( false );
-      for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
+      Transition transition = current.getTransition ();
+      transition.setError ( false );
+      transition.setActive ( false );
+
+      // Reset the symbols
+      for ( Symbol currentSymbol : transition.getSymbol () )
       {
         currentSymbol.setError ( false );
+        currentSymbol.setActive ( false );
       }
-      for ( Symbol currentSymbol : current.getTransition ()
-          .getPushDownWordRead () )
+      for ( Symbol currentSymbol : transition.getPushDownWordRead () )
       {
         currentSymbol.setError ( false );
+        currentSymbol.setActive ( false );
       }
-      for ( Symbol currentSymbol : current.getTransition ()
-          .getPushDownWordWrite () )
+      for ( Symbol currentSymbol : transition.getPushDownWordWrite () )
       {
         currentSymbol.setError ( false );
+        currentSymbol.setActive ( false );
       }
     }
 
-    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    for ( DefaultStateView current : this.model.getStateViewList () )
     {
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
+      State state = current.getState ();
+      state.setError ( false );
+      state.setActive ( false );
     }
 
-    for ( DefaultStateView view : this.oldErrorStates )
-    {
-      if ( view.getState ().isStartState () )
-        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStateStart ().getColor () );
-      else
-      {
-        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStateBackground ().getColor () );
-      }
-    }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
@@ -826,7 +717,6 @@ public final class MachinePanel implements EditorPanel
    */
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
-    // Clear the validation messages
     clearValidationMessages ();
 
     ModifyStatusChangedListener [] listeners = this.listenerList
@@ -930,7 +820,7 @@ public final class MachinePanel implements EditorPanel
     }
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
-    this.clearHighlight ();
+    clearHighlight ();
   }
 
 
@@ -949,7 +839,7 @@ public final class MachinePanel implements EditorPanel
     }
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
-    this.clearHighlight ();
+    clearHighlight ();
   }
 
 
@@ -1016,37 +906,18 @@ public final class MachinePanel implements EditorPanel
     {
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
     }
+
+    this.model.getJGraph ().clearSelection ();
+    clearHighlight ();
+
     int index = table.getSelectedRow ();
-    if ( index == -1 )
+    if ( index != -1 )
     {
-      clearHighlight ();
-    }
-    else
-    {
-      this.model.getJGraph ().clearSelection ();
-      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-      {
-        current.getTransition ().setError ( false );
-        for ( Symbol currentSymbol : current.getTransition ().getSymbol () )
-        {
-          currentSymbol.setError ( false );
-        }
-        for ( Symbol currentSymbol : current.getTransition ()
-            .getPushDownWordRead () )
-        {
-          currentSymbol.setError ( false );
-        }
-        for ( Symbol currentSymbol : current.getTransition ()
-            .getPushDownWordWrite () )
-        {
-          currentSymbol.setError ( false );
-        }
-      }
-      highlightStates ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightStateError ( ( ( ConsoleTableModel ) table.getModel () )
           .getStates ( index ) );
-      highlightTransitions ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightTransitionError ( ( ( ConsoleTableModel ) table.getModel () )
           .getTransitions ( index ) );
-      highlightSymbols ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightSymbolError ( ( ( ConsoleTableModel ) table.getModel () )
           .getSymbols ( index ) );
     }
   }
@@ -1061,19 +932,7 @@ public final class MachinePanel implements EditorPanel
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
 
-    // Reset all highlightings
-    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-    {
-      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
-
-    for ( DefaultStateView current : this.model.getStateViewList () )
-    {
-      GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStateBackground ()
-              .getColor () );
-    }
+    clearHighlight ();
 
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1105,7 +964,7 @@ public final class MachinePanel implements EditorPanel
       this.machineTimer.cancel ();
     }
     this.gui.jGTITableMachine.clearSelection ();
-    this.clearHighlight ();
+    clearHighlight ();
   }
 
 
@@ -1123,7 +982,7 @@ public final class MachinePanel implements EditorPanel
       this.machineTimer.cancel ();
     }
     this.gui.jGTITableMachine.clearSelection ();
-    this.clearHighlight ();
+    clearHighlight ();
   }
 
 
@@ -1165,16 +1024,14 @@ public final class MachinePanel implements EditorPanel
       @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
   {
+    clearHighlight ();
+
     int index = this.gui.jGTITableMachine.getSelectedRow ();
-    if ( index == -1 )
-    {
-      clearHighlight ();
-    }
-    else
+    if ( index != -1 )
     {
       ArrayList < State > stateList = new ArrayList < State > ( 1 );
       stateList.add ( this.machine.getState ( index ) );
-      highlightStates ( stateList );
+      highlightStateError ( stateList );
     }
   }
 
@@ -1193,11 +1050,6 @@ public final class MachinePanel implements EditorPanel
     try
     {
       Storage.getInstance ().store ( this.model, this.file );
-      /*
-       * JOptionPane.showMessageDialog ( this.parent, Messages .getString (
-       * "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$ .getString (
-       * "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
-       */
     }
     catch ( StoreException e )
     {
@@ -1270,8 +1122,9 @@ public final class MachinePanel implements EditorPanel
                     "MachinePanel.Save" ), JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
 
         if ( choice == JOptionPane.NO_OPTION )
+        {
           return null;
-
+        }
       }
 
       String filename = chooser.getSelectedFile ().toString ().matches (
@@ -1282,11 +1135,7 @@ public final class MachinePanel implements EditorPanel
           + this.machine.getMachineType ().toLowerCase ();
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
-      /*
-       * JOptionPane.showMessageDialog ( this.parent, Messages .getString (
-       * "MachinePanel.DataSaved" ), Messages //$NON-NLS-1$ .getString (
-       * "MachinePanel.Save" ), JOptionPane.INFORMATION_MESSAGE ); //$NON-NLS-1$
-       */
+
       prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
           .getAbsolutePath () );
       this.file = new File ( filename );
@@ -1316,7 +1165,9 @@ public final class MachinePanel implements EditorPanel
       activeMouseAdapter = ActiveMouseAdapter.ADD_STATE;
     }
     else
+    {
       this.graph.removeMouseListener ( this.addState );
+    }
   }
 
 
@@ -1344,7 +1195,9 @@ public final class MachinePanel implements EditorPanel
       activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
+    {
       this.graph.removeMouseListener ( this.addEndState );
+    }
   }
 
 
@@ -1361,7 +1214,9 @@ public final class MachinePanel implements EditorPanel
       activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     else
+    {
       this.graph.removeMouseListener ( this.normalMouse );
+    }
   }
 
 
@@ -1378,7 +1233,9 @@ public final class MachinePanel implements EditorPanel
       activeMouseAdapter = ActiveMouseAdapter.ADD_START_STATE;
     }
     else
+    {
       this.graph.removeMouseListener ( this.addStartState );
+    }
   }
 
 
@@ -1394,7 +1251,6 @@ public final class MachinePanel implements EditorPanel
       this.graph.addMouseListener ( this.addTransition );
       this.graph.addMouseMotionListener ( this.transitionMove );
       activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
-
     }
     else
     {
@@ -1431,45 +1287,39 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Handle Next Step Action in the Word Enter Mode
+   * Handles next step action in the word enter mode.
    */
   public final void handleWordNextStep ()
   {
     try
     {
-      // Clear the highlight
+      // Clear highlight
       for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
-        GraphConstants.setLineColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransition ()
-                .getColor () );
+        Transition transition = current.getTransition ();
+        transition.setError ( false );
+        transition.setActive ( false );
       }
 
       this.machine.nextSymbol ();
 
-      // Clear the highlight
+      // Clear highlight
       for ( DefaultStateView current : this.model.getStateViewList () )
       {
-        GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateBackground ()
-                .getColor () );
+        State state = current.getState ();
+        state.setError ( false );
+        state.setActive ( false );
       }
 
       // Highlight
       for ( Transition current : this.machine.getActiveTransition () )
       {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransitionActive ()
-                .getColor () );
+        current.setActive ( true );
       }
+
       for ( State current : this.machine.getActiveState () )
       {
-        DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setBackground ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateActive ()
-                .getColor () );
+        current.setActive ( true );
       }
 
       this.graphModel.cellsChanged ( DefaultGraphModel
@@ -1513,45 +1363,39 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Handle Previous Step Action in the Word Enter Mode
+   * Handles previous step action in the word enter mode.
    */
   public final void handleWordPreviousStep ()
   {
     try
     {
-      // Clear the highlight
+      // Clear highlight
       for ( DefaultTransitionView current : this.model.getTransitionViewList () )
       {
-        GraphConstants.setLineColor ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransition ()
-                .getColor () );
+        Transition transition = current.getTransition ();
+        transition.setError ( false );
+        transition.setActive ( false );
       }
 
       this.machine.previousSymbol ();
 
-      // Clear the highlight
+      // Clear highlight
       for ( DefaultStateView current : this.model.getStateViewList () )
       {
-        GraphConstants.setBackground ( current.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateBackground ()
-                .getColor () );
+        State state = current.getState ();
+        state.setError ( false );
+        state.setActive ( false );
       }
 
       // Highlight
       for ( Transition current : this.machine.getActiveTransition () )
       {
-        DefaultTransitionView transitionView = this.model
-            .getTransitionViewForTransition ( current );
-        GraphConstants.setLineColor ( transitionView.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemTransitionActive ()
-                .getColor () );
+        current.setActive ( true );
       }
+
       for ( State current : this.machine.getActiveState () )
       {
-        DefaultStateView state = this.model.getStateViewForState ( current );
-        GraphConstants.setBackground ( state.getAttributes (),
-            PreferenceManager.getInstance ().getColorItemStateActive ()
-                .getColor () );
+        current.setActive ( true );
       }
 
       this.graphModel.cellsChanged ( DefaultGraphModel
@@ -1602,19 +1446,8 @@ public final class MachinePanel implements EditorPanel
           JOptionPane.ERROR_MESSAGE );
       return false;
     }
-    // Reset all highlightings
-    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-    {
-      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
 
-    for ( DefaultStateView current : this.model.getStateViewList () )
-    {
-      GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStateBackground ()
-              .getColor () );
-    }
+    clearHighlight ();
 
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
 
@@ -1622,13 +1455,12 @@ public final class MachinePanel implements EditorPanel
 
     for ( State current : this.machine.getActiveState () )
     {
-      DefaultStateView state = this.model.getStateViewForState ( current );
-      GraphConstants.setBackground ( state.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemStateActive ().getColor () );
+      current.setActive ( true );
     }
 
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+
     this.wordNavigation = true;
     return true;
   }
@@ -1639,19 +1471,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleWordStop ()
   {
-    // Reset all highlightings
-    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
-    {
-      GraphConstants.setLineColor ( current.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
-    }
-
-    for ( DefaultStateView current : this.model.getStateViewList () )
-    {
-      GraphConstants.setBackground ( current.getAttributes (),
-          PreferenceManager.getInstance ().getColorItemStateBackground ()
-              .getColor () );
-    }
+    clearHighlight ();
 
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1663,30 +1483,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Highlight the affected states
+   * Highlight the affected {@link State}s.
    * 
-   * @param states list with all states that are affected
+   * @param states list with all {@link State}s that are affected.
    */
-  private final void highlightStates ( ArrayList < State > states )
+  private final void highlightStateError ( ArrayList < State > states )
   {
-    for ( DefaultStateView view : this.oldErrorStates )
+    for ( State current : states )
     {
-      if ( view.getState ().isStartState () )
-        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStateStart ().getColor () );
-      else
-      {
-        GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-            .getInstance ().getColorItemStateBackground ().getColor () );
-      }
-    }
-    this.oldErrorStates.clear ();
-    for ( State state : states )
-    {
-      DefaultStateView view = this.model.getStateViewForState ( state );
-      this.oldErrorStates.add ( view );
-      GraphConstants.setBackground ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemStateError ().getColor () );
+      current.setError ( true );
     }
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
@@ -1698,7 +1503,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param symbols List with all {@link Symbol}s that are affected.
    */
-  private final void highlightSymbols ( ArrayList < Symbol > symbols )
+  private final void highlightSymbolError ( ArrayList < Symbol > symbols )
   {
     for ( Symbol current : symbols )
     {
@@ -1714,24 +1519,21 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param transitions List with all {@link Transition}s that are affected.
    */
-  private final void highlightTransitions ( ArrayList < Transition > transitions )
+  private final void highlightTransitionError (
+      ArrayList < Transition > transitions )
   {
-    for ( DefaultTransitionView view : this.oldErrorTransitions )
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransition ().getColor () );
+      Transition transition = current.getTransition ();
+      transition.setError ( false );
+      transition.setActive ( false );
     }
-    this.oldErrorTransitions.clear ();
 
     for ( Transition current : transitions )
     {
       current.setError ( true );
-      DefaultTransitionView view = this.model
-          .getTransitionViewForTransition ( current );
-      this.oldErrorTransitions.add ( view );
-      GraphConstants.setLineColor ( view.getAttributes (), PreferenceManager
-          .getInstance ().getColorItemTransitionError ().getColor () );
     }
+
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
@@ -1780,7 +1582,6 @@ public final class MachinePanel implements EditorPanel
         handleToolbarTransition ( true );
         break;
       }
-
     }
 
     this.gui.diagrammContentPanel.setViewportView ( this.graph );
@@ -1830,7 +1631,6 @@ public final class MachinePanel implements EditorPanel
   /**
    * Initialize the Mouse Adapter of the Toolbar
    */
-  @SuppressWarnings ( "synthetic-access" )
   private final void intitializeMouseAdapter ()
   {
     this.normalMouse = new MouseAdapter ()
@@ -1839,6 +1639,7 @@ public final class MachinePanel implements EditorPanel
       /**
        * Invoked when the mouse has been clicked on a component.
        */
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2029,6 +1830,7 @@ public final class MachinePanel implements EditorPanel
     this.addTransition = new MouseAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2159,6 +1961,7 @@ public final class MachinePanel implements EditorPanel
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseReleased ( MouseEvent event )
       {
@@ -2247,6 +2050,7 @@ public final class MachinePanel implements EditorPanel
     this.transitionMove = new MouseMotionAdapter ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
@@ -2294,6 +2098,7 @@ public final class MachinePanel implements EditorPanel
        * Invoked when the mouse button has been moved on a component (with no
        * buttons no down).
        */
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseMoved ( MouseEvent event )
       {
@@ -2332,6 +2137,7 @@ public final class MachinePanel implements EditorPanel
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2416,6 +2222,7 @@ public final class MachinePanel implements EditorPanel
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2500,6 +2307,7 @@ public final class MachinePanel implements EditorPanel
        * Invoked when the mouse button has been clicked (pressed and released)
        * on a component.
        */
+      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseClicked ( MouseEvent event )
       {
@@ -2681,7 +2489,13 @@ public final class MachinePanel implements EditorPanel
   public final void setWordEnterMode ( boolean wordEnterMode )
   {
     this.enterWordMode = wordEnterMode;
-    if ( !wordEnterMode )
+    if ( wordEnterMode )
+    {
+      this.setDividerLocationConsole = false;
+      this.gui.jSplitPaneConsole.setRightComponent ( null );
+      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+    }
+    else
     {
       this.gui.jSplitPaneConsole
           .setRightComponent ( this.gui.jTabbedPaneConsole );
@@ -2689,12 +2503,6 @@ public final class MachinePanel implements EditorPanel
       this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationConsole () );
       this.setDividerLocationConsole = true;
-    }
-    else
-    {
-      this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole.setRightComponent ( null );
-      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
     }
   }
 

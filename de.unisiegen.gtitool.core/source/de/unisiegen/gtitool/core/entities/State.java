@@ -193,6 +193,26 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
+   * Returns true if this {@link State} is a active {@link State}, otherwise
+   * false.
+   * 
+   * @return True if this {@link State} is a active {@link State}, otherwise
+   *         false.
+   */
+  public boolean isActive ();
+
+
+  /**
+   * Returns true if this {@link State} is a error {@link State}, otherwise
+   * false.
+   * 
+   * @return True if this {@link State} is a error {@link State}, otherwise
+   *         false.
+   */
+  public boolean isError ();
+
+
+  /**
    * Returns the State.
    * 
    * @return The State.
@@ -243,6 +263,14 @@ public interface State extends Entity, Storable, Modifyable,
 
 
   /**
+   * Sets the active value.
+   * 
+   * @param active The active value to set.
+   */
+  public void setActive ( boolean active );
+
+
+  /**
    * Sets the {@link Alphabet} of this {@link State}.
    * 
    * @param alphabet The {@link Alphabet} to set.
@@ -254,6 +282,14 @@ public interface State extends Entity, Storable, Modifyable,
    * Sets the default name of this {@link State}.
    */
   public void setDefaultName ();
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   */
+  public void setError ( boolean error );
 
 
   /**

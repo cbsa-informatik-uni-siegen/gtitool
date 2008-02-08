@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -369,7 +368,7 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -820,7 +819,7 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )

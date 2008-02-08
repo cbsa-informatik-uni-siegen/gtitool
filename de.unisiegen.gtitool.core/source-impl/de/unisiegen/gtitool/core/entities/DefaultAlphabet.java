@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -284,7 +283,7 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -587,7 +586,7 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )

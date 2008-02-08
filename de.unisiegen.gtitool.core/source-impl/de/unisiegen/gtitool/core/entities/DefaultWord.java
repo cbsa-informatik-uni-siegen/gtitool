@@ -210,9 +210,7 @@ public final class DefaultWord implements Word
     DefaultWord newDefaultWord = new DefaultWord ();
     for ( Symbol current : this.symbolList )
     {
-
       newDefaultWord.add ( current.clone () );
-
     }
     return newDefaultWord;
   }

@@ -14,7 +14,6 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -537,7 +536,7 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
@@ -997,7 +996,7 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
   public final synchronized void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )

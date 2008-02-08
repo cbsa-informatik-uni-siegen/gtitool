@@ -17,18 +17,18 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The {@link DefaultSymbol} entity.
+ * The {@link DefaultNonterminalSymbol} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultSymbol implements Symbol
+public final class DefaultNonterminalSymbol implements Symbol
 {
 
   /**
-   * the serial verion uid.
+   * The serial verion uid.
    */
-  private static final long serialVersionUID = 121593210993378021L;
+  private static final long serialVersionUID = -2275760321646867333L;
 
 
   /**
@@ -50,7 +50,7 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * The offset of this {@link DefaultSymbol} in the source code.
+   * The offset of this {@link DefaultNonterminalSymbol} in the source code.
    * 
    * @see #getParserOffset()
    * @see #setParserOffset(ParserOffset)
@@ -59,21 +59,21 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new {@link DefaultSymbol}.
+   * Allocates a new {@link DefaultNonterminalSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @throws SymbolException If something with the
+   *           {@link DefaultNonterminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultSymbol ( Element element ) throws SymbolException,
+  public DefaultNonterminalSymbol ( Element element ) throws SymbolException,
       StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a symbol" ); //$NON-NLS-1$
+          + "\" is not a nonterminal symbol" ); //$NON-NLS-1$
     }
 
     // Attribute
@@ -109,13 +109,13 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new {@link DefaultSymbol}.
+   * Allocates a new {@link DefaultNonterminalSymbol}.
    * 
-   * @param name The name of this {@link DefaultSymbol}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @param name The name of this {@link DefaultNonterminalSymbol}.
+   * @throws SymbolException If something with the
+   *           {@link DefaultNonterminalSymbol} is not correct.
    */
-  public DefaultSymbol ( String name ) throws SymbolException
+  public DefaultNonterminalSymbol ( String name ) throws SymbolException
   {
     // Name
     setName ( name );
@@ -128,11 +128,11 @@ public final class DefaultSymbol implements Symbol
    * @see Entity#clone()
    */
   @Override
-  public final DefaultSymbol clone ()
+  public final DefaultNonterminalSymbol clone ()
   {
     try
     {
-      return new DefaultSymbol ( this.name );
+      return new DefaultNonterminalSymbol ( this.name );
     }
     catch ( SymbolException e )
     {
@@ -162,9 +162,9 @@ public final class DefaultSymbol implements Symbol
   @Override
   public final boolean equals ( Object other )
   {
-    if ( other instanceof DefaultSymbol )
+    if ( other instanceof DefaultNonterminalSymbol )
     {
-      DefaultSymbol defaultSymbol = ( DefaultSymbol ) other;
+      DefaultNonterminalSymbol defaultSymbol = ( DefaultNonterminalSymbol ) other;
       return this.name.equals ( defaultSymbol.name );
     }
     return false;
@@ -178,7 +178,7 @@ public final class DefaultSymbol implements Symbol
    */
   public final Element getElement ()
   {
-    Element newElement = new Element ( "Symbol" ); //$NON-NLS-1$
+    Element newElement = new Element ( "NonterminalSymbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
     return newElement;
   }
@@ -271,8 +271,8 @@ public final class DefaultSymbol implements Symbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @throws SymbolException If something with the
+   *           {@link DefaultNonterminalSymbol} is not correct.
    */
   private final void setName ( String name ) throws SymbolException
   {

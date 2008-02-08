@@ -30,9 +30,9 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
 
 
   /**
-   * Returns the name of this symbol.
+   * Returns the name of this {@link Symbol}.
    * 
-   * @return The name of this symbol.
+   * @return The name of this {@link Symbol}.
    */
   public String getName ();
 

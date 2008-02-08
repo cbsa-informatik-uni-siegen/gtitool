@@ -17,18 +17,18 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
- * The {@link DefaultSymbol} entity.
+ * The {@link DefaultTerminalSymbol} entity.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultSymbol implements Symbol
+public final class DefaultTerminalSymbol implements TerminalSymbol
 {
 
   /**
-   * the serial verion uid.
+   * The serial verion uid.
    */
-  private static final long serialVersionUID = 121593210993378021L;
+  private static final long serialVersionUID = -5069749430451559892L;
 
 
   /**
@@ -38,19 +38,20 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * This {@link Symbol} is a error {@link Symbol}.
+   * This {@link DefaultTerminalSymbol} is a error {@link DefaultTerminalSymbol}.
    */
   private boolean error = false;
 
 
   /**
-   * This {@link Symbol} is a active {@link Symbol}.
+   * This {@link DefaultTerminalSymbol} is a active
+   * {@link DefaultTerminalSymbol}.
    */
   private boolean active = false;
 
 
   /**
-   * The offset of this {@link DefaultSymbol} in the source code.
+   * The offset of this {@link DefaultTerminalSymbol} in the source code.
    * 
    * @see #getParserOffset()
    * @see #setParserOffset(ParserOffset)
@@ -59,21 +60,21 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new {@link DefaultSymbol}.
+   * Allocates a new {@link DefaultTerminalSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
+   *           is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultSymbol ( Element element ) throws SymbolException,
+  public DefaultTerminalSymbol ( Element element ) throws SymbolException,
       StoreException
   {
     // Check if the element is correct
-    if ( !element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+    if ( !element.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
     {
       throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a symbol" ); //$NON-NLS-1$
+          + "\" is not a terminal symbol" ); //$NON-NLS-1$
     }
 
     // Attribute
@@ -109,13 +110,13 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Allocates a new {@link DefaultSymbol}.
+   * Allocates a new {@link DefaultTerminalSymbol}.
    * 
-   * @param name The name of this {@link DefaultSymbol}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @param name The name of this {@link DefaultTerminalSymbol}.
+   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
+   *           is not correct.
    */
-  public DefaultSymbol ( String name ) throws SymbolException
+  public DefaultTerminalSymbol ( String name ) throws SymbolException
   {
     // Name
     setName ( name );
@@ -128,11 +129,11 @@ public final class DefaultSymbol implements Symbol
    * @see Entity#clone()
    */
   @Override
-  public final DefaultSymbol clone ()
+  public final DefaultTerminalSymbol clone ()
   {
     try
     {
-      return new DefaultSymbol ( this.name );
+      return new DefaultTerminalSymbol ( this.name );
     }
     catch ( SymbolException e )
     {
@@ -148,7 +149,7 @@ public final class DefaultSymbol implements Symbol
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Symbol other )
+  public final int compareTo ( TerminalSymbol other )
   {
     return this.name.compareTo ( other.getName () );
   }
@@ -162,9 +163,9 @@ public final class DefaultSymbol implements Symbol
   @Override
   public final boolean equals ( Object other )
   {
-    if ( other instanceof DefaultSymbol )
+    if ( other instanceof DefaultTerminalSymbol )
     {
-      DefaultSymbol defaultSymbol = ( DefaultSymbol ) other;
+      DefaultTerminalSymbol defaultSymbol = ( DefaultTerminalSymbol ) other;
       return this.name.equals ( defaultSymbol.name );
     }
     return false;
@@ -178,7 +179,7 @@ public final class DefaultSymbol implements Symbol
    */
   public final Element getElement ()
   {
-    Element newElement = new Element ( "Symbol" ); //$NON-NLS-1$
+    Element newElement = new Element ( "TerminalSymbol" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
     return newElement;
   }
@@ -271,8 +272,8 @@ public final class DefaultSymbol implements Symbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
+   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
+   *           is not correct.
    */
   private final void setName ( String name ) throws SymbolException
   {

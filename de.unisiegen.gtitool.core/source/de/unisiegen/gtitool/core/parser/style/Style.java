@@ -6,7 +6,6 @@ import java.awt.Color;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.preferences.PreferenceManager;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 
 
 /**
@@ -48,90 +47,11 @@ public enum Style
   KEYWORD;
 
   /**
-   * The {@link State} color.
-   */
-  private Color state;
-
-
-  /**
-   * The {@link Symbol} color.
-   */
-  private Color symbol;
-
-
-  /**
-   * The active {@link Symbol} color.
-   */
-  private Color symbolActive;
-
-
-  /**
-   * The error {@link Symbol} color.
-   */
-  private Color symbolError;
-
-
-  /**
    * Allocates a new {@link Style}.
    */
   private Style ()
   {
-    // State
-    this.state = PreferenceManager.getInstance ().getColorItemState ()
-        .getColor ();
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedState ( Color newColor )
-          {
-            Style.this.state = newColor;
-          }
-        } );
-    // Symbol
-    this.symbol = PreferenceManager.getInstance ().getColorItemSymbol ()
-        .getColor ();
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedSymbol ( Color newColor )
-          {
-            Style.this.symbol = newColor;
-          }
-        } );
-    // Symbol active
-    this.symbolActive = PreferenceManager.getInstance ()
-        .getColorItemSymbolActive ().getColor ();
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedSymbolActive ( Color newColor )
-          {
-            Style.this.symbolActive = newColor;
-          }
-        } );
-    // Symbol error
-    this.symbolError = PreferenceManager.getInstance ()
-        .getColorItemSymbolError ().getColor ();
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedSymbolError ( Color newColor )
-          {
-            Style.this.symbolError = newColor;
-          }
-        } );
+    // Do nothing
   }
 
 
@@ -150,11 +70,13 @@ public enum Style
       }
       case STATE :
       {
-        return this.state;
+        return PreferenceManager.getInstance ().getColorItemState ()
+            .getColor ();
       }
       case SYMBOL :
       {
-        return this.symbol;
+        return PreferenceManager.getInstance ().getColorItemSymbol ()
+            .getColor ();
       }
       case KEYWORD :
       {
@@ -162,11 +84,13 @@ public enum Style
       }
       case SYMBOL_ACTIVE :
       {
-        return this.symbolActive;
+        return PreferenceManager.getInstance ().getColorItemSymbolActive ()
+            .getColor ();
       }
       case SYMBOL_ERROR :
       {
-        return this.symbolError;
+        return PreferenceManager.getInstance ().getColorItemSymbolError ()
+            .getColor ();
       }
       default :
       {

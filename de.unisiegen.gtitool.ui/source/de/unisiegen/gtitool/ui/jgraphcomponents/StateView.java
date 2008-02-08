@@ -19,6 +19,8 @@ import org.jgraph.graph.VertexRenderer;
 import org.jgraph.graph.VertexView;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -50,6 +52,48 @@ public class StateView extends VertexView
 
 
     /**
+     * The {@link State} background color.
+     */
+    private Color preferenceStateBackground;
+
+
+    /**
+     * The {@link State} color.
+     */
+    private Color preferenceState;
+
+
+    /**
+     * The error {@link State} color.
+     */
+    private Color preferenceStateError;
+
+
+    /**
+     * The active {@link State} color.
+     */
+    private Color preferenceStateActive;
+
+
+    /**
+     * The slected {@link State} color.
+     */
+    private Color preferenceStateSelected;
+
+
+    /**
+     * The start {@link State} color.
+     */
+    private Color preferenceStateStart;
+
+
+    /**
+     * The normal {@link Transition} color.
+     */
+    private Color preferenceTransition;
+
+
+    /**
      * Allocate a new {@link JGraphEllipseRenderer}
      * 
      * @param stateView the {@link StateView}
@@ -58,6 +102,81 @@ public class StateView extends VertexView
     {
       super ();
       this.stateView = stateView;
+
+      this.preferenceState = PreferenceManager.getInstance ()
+          .getColorItemState ().getColor ();
+      this.preferenceStateBackground = PreferenceManager.getInstance ()
+          .getColorItemStateBackground ().getColor ();
+      this.preferenceStateError = PreferenceManager.getInstance ()
+          .getColorItemStateError ().getColor ();
+      this.preferenceStateActive = PreferenceManager.getInstance ()
+          .getColorItemStateActive ().getColor ();
+      this.preferenceStateSelected = PreferenceManager.getInstance ()
+          .getColorItemStateSelected ().getColor ();
+      this.preferenceStateStart = PreferenceManager.getInstance ()
+          .getColorItemStateStart ().getColor ();
+      this.preferenceTransition = PreferenceManager.getInstance ()
+      .getColorItemTransition ().getColor ();
+
+      PreferenceManager.getInstance ().addColorChangedListener (
+          new ColorChangedAdapter ()
+          {
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedState ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceState = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateActive ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateActive = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateBackground ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateBackground = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateError ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateError = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateSelected ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateSelected = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateStart ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateStart = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedTransition ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceTransition = newColor;
+            }
+          } );
     }
 
 
@@ -103,26 +222,22 @@ public class StateView extends VertexView
         // Error
         if ( state.isError () )
         {
-          background = PreferenceManager.getInstance ()
-              .getColorItemStateError ().getColor ();
+          background = this.preferenceStateError;
         }
         // Active
         else if ( state.isActive () )
         {
-          background = PreferenceManager.getInstance ()
-              .getColorItemStateActive ().getColor ();
+          background = this.preferenceStateActive;
         }
         // Start
         else if ( state.isStartState () )
         {
-          background = PreferenceManager.getInstance ()
-              .getColorItemStateStart ().getColor ();
+          background = this.preferenceStateStart;
         }
         // Normal
         else
         {
-          background = PreferenceManager.getInstance ()
-              .getColorItemStateBackground ().getColor ();
+          background = this.preferenceStateBackground;
         }
 
         g.setColor ( background );
@@ -148,8 +263,7 @@ public class StateView extends VertexView
         setOpaque ( false );
         this.selected = false;
 
-        g.setColor ( PreferenceManager.getInstance ().getColorItemState ()
-            .getColor () );
+        g.setColor ( this.preferenceState );
         g.setFont ( getFont () );
         FontMetrics metrics = getFontMetrics ( getFont () );
         g.drawString ( state.toString (), ( d.width / 2 )
@@ -172,8 +286,7 @@ public class StateView extends VertexView
       }
       if ( this.selected )
       {
-        g.setColor ( PreferenceManager.getInstance ()
-            .getColorItemStateSelected ().getColor () );
+        g.setColor ( this.preferenceStateSelected );
         g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
         if ( state.isFinalState () )
         {
@@ -182,8 +295,7 @@ public class StateView extends VertexView
       }
       if ( state.isStartState () )
       {
-        g.setColor ( PreferenceManager.getInstance ().getColorItemTransition ()
-            .getColor () );
+        g.setColor ( this.preferenceTransition );
         // Manipulate the clipping area
         g2.setClip ( -100, 0, 150, 70 );
 

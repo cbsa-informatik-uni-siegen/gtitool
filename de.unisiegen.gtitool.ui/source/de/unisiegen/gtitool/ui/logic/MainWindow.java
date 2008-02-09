@@ -72,7 +72,7 @@ public final class MainWindow implements LanguageChangedListener
    * List contains the recently used files
    */
   private ArrayList < RecentlyUsedMenuItem > recentlyUsedFiles = new ArrayList < RecentlyUsedMenuItem > ();
-
+  
 
   /**
    * Creates new form {@link MainWindow}.
@@ -1355,9 +1355,9 @@ public final class MainWindow implements LanguageChangedListener
     // this.gui.jMenuItemPaste.setEnabled ( pState );
     this.gui.jMenuItemPaste.setVisible ( false );
     // Undo
-    this.gui.jMenuItemUndo.setVisible ( false );
+    this.gui.jMenuItemUndo.setEnabled ( false );
     // Redo
-    this.gui.jMenuItemRedo.setVisible ( false );
+    this.gui.jMenuItemRedo.setEnabled ( false );
     // Separator
     this.gui.jSeparatorEdit1.setVisible ( false );
     this.gui.jSeparatorEdit2.setVisible ( false );
@@ -1441,4 +1441,30 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonAutoStep.setEnabled ( state );
     this.gui.jButtonStop.setEnabled ( state );
   }
+
+  /**
+   * Handle redo button pressed
+   */
+  public void handleRedo ()
+  {
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    if ( panel != null )
+    {
+      panel.handleRedo ();
+    }
+  }
+
+  /**
+   * Handle undo button pressed
+   */
+  public void handleUndo ()
+  {
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    if ( panel != null )
+    {
+      panel.handleUndo ();
+    }
+  }
+
+
 }

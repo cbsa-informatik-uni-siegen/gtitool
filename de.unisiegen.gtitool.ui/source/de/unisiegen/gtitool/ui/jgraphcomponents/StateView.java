@@ -210,7 +210,8 @@ public class StateView extends VertexView
       }
       else
       {
-        throw new RuntimeException ( "not a state view" ); //$NON-NLS-1$
+        //throw new RuntimeException ( "not a state view" ); //$NON-NLS-1$
+        return;
       }
       int b = this.borderWidth;
       Graphics2D g2 = ( Graphics2D ) g;

@@ -80,4 +80,14 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @return The {@link EditorPanelForm} for this logic class
    */
   public EditorPanelForm getGui();
+  
+  /**
+   * Redo last step
+   */
+  public void handleRedo();
+  
+  /**
+   * Undo last step
+   */
+  public void handleUndo();
 }

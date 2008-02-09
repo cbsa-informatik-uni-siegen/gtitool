@@ -478,12 +478,24 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
         jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
         jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
+        jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleUndo(evt);
+            }
+        });
+
         jMenuEdit.add(jMenuItemUndo);
 
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo16.gif")));
         jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
         jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
+        jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleRedo(evt);
+            }
+        });
+
         jMenuEdit.add(jMenuItemRedo);
 
         jMenuEdit.add(jSeparatorEdit1);
@@ -599,6 +611,14 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setBounds(0, 0, 600, 450);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleRedo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleRedo
+         this.logic.handleRedo();
+    }//GEN-LAST:event_handleRedo
+
+    private void handleUndo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleUndo
+        this.logic.handleUndo();
+    }//GEN-LAST:event_handleUndo
 
     private void jGTITabbedPaneMainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTITabbedPaneMainStateChanged
         this.logic.handleTabbedPaneStateChanged();

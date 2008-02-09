@@ -71,6 +71,7 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
 
 
 /**
@@ -412,6 +413,11 @@ public final class MachinePanel implements EditorPanel
    * The name of this {@link MachinePanel}.
    */
   private String name = null;
+  
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -429,6 +435,9 @@ public final class MachinePanel implements EditorPanel
     this.file = file;
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
+    
+    this.redoUndoHandler = new RedoUndoHandler ( model, parent );
+    this.model.setRedoUndoHandler ( this.redoUndoHandler );
 
     intitializeMouseAdapter ();
 
@@ -1801,7 +1810,7 @@ public final class MachinePanel implements EditorPanel
 
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
-              / MachinePanel.this.zoomFactor, newState );
+              / MachinePanel.this.zoomFactor, newState, true );
         }
         catch ( StateException e1 )
         {
@@ -1923,7 +1932,7 @@ public final class MachinePanel implements EditorPanel
                 target = MachinePanel.this.model.createStateView ( event
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, event.getPoint ().y
-                    / MachinePanel.this.zoomFactor, newState );
+                    / MachinePanel.this.zoomFactor, newState, true );
                 newTransition.setStateEnd ( target.getState () );
 
               }
@@ -1937,7 +1946,7 @@ public final class MachinePanel implements EditorPanel
             }
 
             MachinePanel.this.model.createTransitionView ( newTransition,
-                MachinePanel.this.firstState, target );
+                MachinePanel.this.firstState, target, true );
             dialog.dispose ();
           }
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
@@ -2009,7 +2018,7 @@ public final class MachinePanel implements EditorPanel
               target = MachinePanel.this.model.createStateView ( event
                   .getPoint ().x
                   / MachinePanel.this.zoomFactor, event.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState );
+                  / MachinePanel.this.zoomFactor, newState, true );
               newTransition.setStateEnd ( target.getState () );
             }
             catch ( StateException e1 )
@@ -2021,7 +2030,7 @@ public final class MachinePanel implements EditorPanel
           }
 
           MachinePanel.this.model.createTransitionView ( newTransition,
-              MachinePanel.this.firstState, target );
+              MachinePanel.this.firstState, target, true );
           dialog.dispose ();
 
         }
@@ -2189,7 +2198,7 @@ public final class MachinePanel implements EditorPanel
               MachinePanel.this.machine.getPushDownAlphabet (), true, false );
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
-              / MachinePanel.this.zoomFactor, newState );
+              / MachinePanel.this.zoomFactor, newState, true );
         }
         catch ( StateException e1 )
         {
@@ -2274,7 +2283,7 @@ public final class MachinePanel implements EditorPanel
               MachinePanel.this.machine.getPushDownAlphabet (), false, true );
           MachinePanel.this.model.createStateView ( event.getPoint ().x
               / MachinePanel.this.zoomFactor, event.getPoint ().y
-              / MachinePanel.this.zoomFactor, newState );
+              / MachinePanel.this.zoomFactor, newState, true );
         }
         catch ( StateException e1 )
         {
@@ -2516,5 +2525,23 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+  
+  /**
+   * Handle redo button pressed
+   */
+  public void handleRedo ()
+  {
+    this.redoUndoHandler.redo ();
+    
+  }
+
+  /**
+   * Handle undo button pressed
+   */
+  public void handleUndo ()
+  {
+    this.redoUndoHandler.undo ();
+    
   }
 }

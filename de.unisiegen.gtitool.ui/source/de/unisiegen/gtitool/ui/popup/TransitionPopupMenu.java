@@ -153,7 +153,7 @@ public final class TransitionPopupMenu extends JPopupMenu
         if ( choice == JOptionPane.YES_OPTION )
         {
           TransitionPopupMenu.this.model
-              .removeTransition ( TransitionPopupMenu.this.transition );
+              .removeTransition ( TransitionPopupMenu.this.transition, true );
         }
       }
     } );

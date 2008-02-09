@@ -38,6 +38,8 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.utils.RedoUndoItem;
 
 
 /**
@@ -96,6 +98,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -233,7 +241,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
           if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
             state = new DefaultState ( childElement );
         }
-        createStateView ( x + 35, y + 35, state );
+        createStateView ( x + 35, y + 35, state, false );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
@@ -252,7 +260,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
-        createTransitionView ( transition, source, target );
+        createTransitionView ( transition, source, target, false );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
@@ -305,7 +313,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    */
   @SuppressWarnings ( "unchecked" )
   public final DefaultStateView createStateView ( double x, double y,
-      State state )
+      State state, boolean createUndoStep )
   {
     this.machine.addState ( state );
     String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
@@ -346,6 +354,13 @@ public final class DefaultMachineModel implements Storable, Modifyable
     stateView
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new RedoUndoItem (
+          RedoUndoItem.REDO_UNDO_ACTION.STATE_ADDED, stateView );
+      this.redoUndoHandler.addUndo ( item );
+    }
+
     return stateView;
   }
 
@@ -358,20 +373,27 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * @param target The target of the new {@link Transition}.
    */
   public final void createTransitionView ( Transition transition,
-      DefaultStateView source, DefaultStateView target )
+      DefaultStateView source, DefaultStateView target, boolean createUndoStep )
   {
     this.machine.addTransition ( transition );
-    DefaultTransitionView newEdge = new DefaultTransitionView ( transition,
-        source, target );
+    DefaultTransitionView transitionView = new DefaultTransitionView (
+        transition, source, target );
 
-    GraphConstants.setLineEnd ( newEdge.getAttributes (),
+    GraphConstants.setLineEnd ( transitionView.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
-    GraphConstants.setEndFill ( newEdge.getAttributes (), true );
+    GraphConstants.setEndFill ( transitionView.getAttributes (), true );
 
-    this.jGraph.getGraphLayoutCache ().insertEdge ( newEdge,
+    this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
-    this.transitionViewList.add ( newEdge );
+    this.transitionViewList.add ( transitionView );
+
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new RedoUndoItem (
+          RedoUndoItem.REDO_UNDO_ACTION.TRANSITION_ADDED, transitionView );
+      this.redoUndoHandler.addUndo ( item );
+    }
   }
 
 
@@ -756,7 +778,8 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * 
    * @param stateView The {@link DefaultStateView} that should be removed.
    */
-  public final void removeState ( DefaultStateView stateView )
+  public final void removeState ( DefaultStateView stateView,
+      boolean createUndoStep )
   {
     ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
     for ( DefaultTransitionView current : this.transitionViewList )
@@ -788,6 +811,13 @@ public final class DefaultMachineModel implements Storable, Modifyable
     this.stateViewList.remove ( stateView );
     stateView
         .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
+
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new RedoUndoItem (
+          RedoUndoItem.REDO_UNDO_ACTION.STATE_REMOVED, stateView, removeList );
+      this.redoUndoHandler.addUndo ( item );
+    }
   }
 
 
@@ -797,12 +827,20 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * @param transitionView The {@link DefaultTransitionView} that should be
    *          removed.
    */
-  public final void removeTransition ( DefaultTransitionView transitionView )
+  public final void removeTransition ( DefaultTransitionView transitionView,
+      boolean createUndoStep )
   {
     this.graphModel.remove ( new Object []
     { transitionView } );
     this.machine.removeTransition ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
+
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new RedoUndoItem (
+          RedoUndoItem.REDO_UNDO_ACTION.TRANSITION_REMOVED, transitionView );
+      this.redoUndoHandler.addUndo ( item );
+    }
   }
 
 
@@ -818,5 +856,16 @@ public final class DefaultMachineModel implements Storable, Modifyable
       current.resetModify ();
     }
     this.machine.resetModify ();
+  }
+
+
+  /**
+   * Set a new {@link RedoUndoHandler}
+   * 
+   * @param redoUndoHandler the new {@link RedoUndoHandler}
+   */
+  public void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
+  {
+    this.redoUndoHandler = redoUndoHandler;
   }
 }

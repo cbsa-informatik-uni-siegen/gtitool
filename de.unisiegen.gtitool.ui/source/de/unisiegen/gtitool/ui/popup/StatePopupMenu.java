@@ -131,7 +131,7 @@ public final class StatePopupMenu extends JPopupMenu
             JOptionPane.YES_NO_OPTION );
         if ( choice == JOptionPane.YES_OPTION )
         {
-          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state );
+          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state, true );
         }
 
       }

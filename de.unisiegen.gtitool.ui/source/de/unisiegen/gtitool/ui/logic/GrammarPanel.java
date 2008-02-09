@@ -121,4 +121,18 @@ public class GrammarPanel implements EditorPanel
     // TODO Auto-generated method stub
     return null;
   }
+
+
+  public void handleRedo ()
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+
+  public void handleUndo ()
+  {
+    // TODO Auto-generated method stub
+    
+  }
 }

@@ -34,7 +34,7 @@ public class ParallelEdgeRouter extends LoopRouting
   /**
    * Singleton to reach parallel edge router
    */
-  protected static final ParallelEdgeRouter sharedInstance = new ParallelEdgeRouter ();
+  public static final ParallelEdgeRouter sharedInstance = new ParallelEdgeRouter ();
 
 
   /**

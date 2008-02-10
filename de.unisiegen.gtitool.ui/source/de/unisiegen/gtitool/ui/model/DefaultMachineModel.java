@@ -11,6 +11,7 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.util.ParallelEdgeRouter;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -384,6 +385,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setLineEnd ( transitionView.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
     GraphConstants.setEndFill ( transitionView.getAttributes (), true );
+    
+    // Set the parallel routing
+    ParallelEdgeRouter.setEdgeSeparation ( 20 );
+    ParallelEdgeRouter.setEdgeDeparture ( 10 );
+    GraphConstants.setRouting (  transitionView.getAttributes (),
+        ParallelEdgeRouter.sharedInstance );
     
     this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );

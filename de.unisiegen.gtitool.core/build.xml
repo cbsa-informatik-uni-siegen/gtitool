@@ -123,7 +123,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-stack,parser-state,parser-symbol,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -136,12 +136,24 @@
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/alphabet/alphabet.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/alphabet" package="de.unisiegen.gtitool.core.parser.alphabet" parser="AlphabetAbstractParser" symbols="AlphabetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
+	<!-- parser nonterminal symbol -->
+	<target name="parser-nonterminal-symbol">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol/nonterminalsymbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol/nonterminalsymbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol" package="de.unisiegen.gtitool.core.parser.nonterminalsymbol" parser="NonterminalSymbolAbstractParser" symbols="NonterminalSymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+	
+	<!-- parser production word -->
+	<target name="parser-production-word">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/productionword/productionword.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/productionword/productionword.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/productionword" package="de.unisiegen.gtitool.core.parser.productionword" parser="ProductionWordAbstractParser" symbols="ProductionWordTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
 	<!-- parser stack -->
 	<target name="parser-stack">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/stack/stack.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/stack/stack.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/stack" package="de.unisiegen.gtitool.core.parser.stack" parser="StackAbstractParser" symbols="StackTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
-		
+
 	<!-- parser state -->
 	<target name="parser-state">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex" destdir="${sourcegenerateddir}" nobak="yes" />
@@ -152,6 +164,12 @@
 	<target name="parser-symbol">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/symbol/symbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/symbol" package="de.unisiegen.gtitool.core.parser.symbol" parser="SymbolAbstractParser" symbols="SymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser terminal symbol -->
+	<target name="parser-terminal-symbol">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbol/terminalsymbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbol/terminalsymbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/terminalsymbol" package="de.unisiegen.gtitool.core.parser.terminalsymbol" parser="TerminalSymbolAbstractParser" symbols="TerminalSymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser transition -->

@@ -30,8 +30,8 @@ public class StyledStackParserPanelTest
       Alphabet pushDownalphabet = new DefaultAlphabet (
           new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ),
           new DefaultSymbol ( "2" ) );
-      JFrame jFrame = new JFrame ( "WordPanelFormTest" );
-      final StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
+      JFrame jFrame = new JFrame ( "StackPanelTest" );
+      StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
       styledStackParserPanel.setPushDownAlphabet ( pushDownalphabet );
       styledStackParserPanel
           .addStackChangedListener ( new StackChangedListener ()
@@ -41,8 +41,7 @@ public class StyledStackParserPanelTest
             {
               if ( newStack != null )
               {
-                styledStackParserPanel.setHighlightedSymbol ( newStack
-                    .get ( 0 ) );
+                System.out.println ( newStack );
               }
             }
           } );

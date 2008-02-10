@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * The abstract class for all grammars.
  * 
  * @author Christian Fehler
- * @version $Id: AbstractMachine.java 398 2008-01-02 23:13:39Z fehler $
+ * @version $Id$
  */
 public abstract class AbstractGrammar implements Grammar
 {

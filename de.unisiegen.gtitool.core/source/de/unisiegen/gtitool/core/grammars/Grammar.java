@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * The interface for all grammars.
  * 
  * @author Christian Fehler
- * @version $Id: Machine.java 398 2008-01-02 23:13:39Z fehler $
+ * @version $Id$
  */
 public interface Grammar extends Serializable, Modifyable
 {

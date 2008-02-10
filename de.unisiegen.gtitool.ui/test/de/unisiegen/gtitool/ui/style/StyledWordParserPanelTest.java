@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.netbeans;
+package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
@@ -13,14 +13,14 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 
 
 /**
- * The test class of the {@link WordPanelForm}.
+ * The test class of the {@link StyledStackParserPanel}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings (
 { "all" } )
-public class WordPanelFormTest
+public class StyledWordParserPanelTest
 {
 
   public static void main ( String [] arguments )
@@ -29,22 +29,21 @@ public class WordPanelFormTest
     {
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
           new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
-      JFrame jFrame = new JFrame ( "WordPanelFormTest" );
-      WordPanelForm wordPanelForm = new WordPanelForm ();
-      wordPanelForm.setAlphabet ( alphabet );
-      wordPanelForm.styledWordParserPanel
-          .addWordChangedListener ( new WordChangedListener ()
-          {
+      JFrame jFrame = new JFrame ( "WordPanelTest" );
+      StyledWordParserPanel styledWordParserPanel = new StyledWordParserPanel ();
+      styledWordParserPanel.setAlphabet ( alphabet );
+      styledWordParserPanel.addWordChangedListener ( new WordChangedListener ()
+      {
 
-            public void wordChanged ( Word newWord )
-            {
-              if ( newWord != null )
-              {
-                System.out.println ( newWord );
-              }
-            }
-          } );
-      jFrame.add ( wordPanelForm );
+        public void wordChanged ( Word newWord )
+        {
+          if ( newWord != null )
+          {
+            System.out.println ( newWord );
+          }
+        }
+      } );
+      jFrame.add ( styledWordParserPanel );
       jFrame.setBounds ( 300, 300, 400, 300 );
       jFrame.setVisible ( true );
     }

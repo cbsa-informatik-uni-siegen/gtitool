@@ -19,7 +19,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * A Popup Menu for {@link State}s
  * 
  * @author Benjamin Mies
- * @version $Id: StatePopupMenu.java 506 2008-01-30 23:57:09Z fehler $
+ * @version $Id$
  */
 public final class EnterWordModePopupMenu extends JPopupMenu
 {

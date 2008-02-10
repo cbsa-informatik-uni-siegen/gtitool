@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.core.preferences.PreferenceManager;
  * A helper class for the parser.
  * 
  * @author Christian Fehler
- * @version $Id: ParserException.java 136 2007-11-12 21:38:49Z fehler $
+ * @version $Id$
  */
 public abstract class ErrorHandling
 {

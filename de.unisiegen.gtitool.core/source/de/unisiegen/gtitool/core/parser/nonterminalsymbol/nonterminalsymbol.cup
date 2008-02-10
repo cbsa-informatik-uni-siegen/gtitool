@@ -1,0 +1,44 @@
+/**
+ * The cup file of the terminal symbol parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String					NONTERMINAL_SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal NonterminalSymbol	nonterminal_symbol;
+
+
+/*********************
+ * NonterminalSymbol *
+ *********************/
+
+nonterminal_symbol				::= NONTERMINAL_SYMBOL:n
+									{:
+									   try
+									   {
+									     RESULT = new DefaultNonterminalSymbol(n);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(nleft, nright, n);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(nleft,nright));
+									:}
+								;

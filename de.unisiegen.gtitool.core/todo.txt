@@ -1,2 +1,1 @@
 CF		- Stack in der Machine implementieren
-CF		- isActive und isError für alle Entities implementieren

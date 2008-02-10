@@ -96,6 +96,18 @@
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger
+		name="de.unisiegen.gtitool.ui.style.StyledProductionWordParserPanel">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<logger
+		name="de.unisiegen.gtitool.ui.style.StyledWordParserPanel">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="de.unisiegen.gtitool.ui.utils.Clipboard">
 		<level value="all" />
 		<appender-ref ref="console" />

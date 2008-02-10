@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
  * The class for context sensitiv grammars.
  * 
  * @author Christian Fehler
- * @version $Id: DefaultDFA.java 394 2007-12-31 12:55:46Z fehler $
+ * @version $Id$
  */
 public final class DefaultCSG extends AbstractGrammar implements CSG
 {

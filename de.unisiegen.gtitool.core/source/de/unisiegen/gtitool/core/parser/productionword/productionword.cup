@@ -1,0 +1,83 @@
+/**
+ * The cup file of the production word parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String					SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal Symbol				symbol;
+non terminal Symbol[]			symbol_list;
+non terminal ProductionWord		production_word;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 					epsilon;
+
+
+/******************
+ * ProductionWord *
+ ******************/
+
+production_word					::= symbol_list:sl
+									{:
+									   RESULT = new DefaultProductionWord(sl);
+									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultProductionWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+symbol							::= SYMBOL:s
+									{:
+									   try
+									   {
+									     RESULT = new DefaultSymbol(s);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(sleft, sright, s);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
+									:}
+								;
+
+symbol_list						::= symbol_list:sl symbol:s
+								    {:
+								       RESULT = new Symbol[sl.length + 1];
+									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
+									   RESULT[sl.length] = s;
+								    :}
+								|	symbol:s
+									{:
+									   RESULT = new Symbol[] { s };
+									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

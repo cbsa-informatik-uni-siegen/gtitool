@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.core.machines.MachineTest;
  * The test class of the {@link DefaultDFA}.
  * 
  * @author Christian Fehler
- * @version $Id: MachinesTest.java 318 2007-12-07 15:37:08Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings (
 { "all" } )
@@ -130,16 +130,16 @@ public class DFATest extends MachineTest
     // Transitions
     try
     {
-      t0 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
-          z0, b, c );
-      t1 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z0,
-          z1, a );
-      t2 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z1,
-          z1, a, c );
-      t3 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z1,
-          z2, b );
-      t4 = new DefaultTransition ( alphabet, pushDownAlphabet, null, null, z2,
-          z2, a, b, c );
+      t0 = new DefaultTransition ( alphabet, pushDownAlphabet,
+          new DefaultWord (), new DefaultWord (), z0, z0, b, c );
+      t1 = new DefaultTransition ( alphabet, pushDownAlphabet,
+          new DefaultWord (), new DefaultWord (), z0, z1, a );
+      t2 = new DefaultTransition ( alphabet, pushDownAlphabet,
+          new DefaultWord (), new DefaultWord (), z1, z1, a, c );
+      t3 = new DefaultTransition ( alphabet, pushDownAlphabet,
+          new DefaultWord (), new DefaultWord (), z1, z2, b );
+      t4 = new DefaultTransition ( alphabet, pushDownAlphabet,
+          new DefaultWord (), new DefaultWord (), z2, z2, a, b, c );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {

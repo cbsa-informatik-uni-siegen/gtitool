@@ -11,7 +11,7 @@ import javax.swing.JComponent;
  * Special {@link JButton}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 465 2008-01-23 00:52:59Z fehler $
+ * @version $Id$
  */
 public class JGTIButton extends JButton
 {

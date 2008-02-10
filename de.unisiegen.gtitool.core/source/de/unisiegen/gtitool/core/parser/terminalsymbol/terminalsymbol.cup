@@ -1,0 +1,44 @@
+/**
+ * The cup file of the terminal symbol parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String					TERMINAL_SYMBOL;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal TerminalSymbol		terminal_symbol;
+
+
+/******************
+ * TerminalSymbol *
+ ******************/
+
+terminal_symbol					::= TERMINAL_SYMBOL:t
+									{:
+									   try
+									   {
+									     RESULT = new DefaultTerminalSymbol(t);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(tleft, tright, t);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(tleft,tright));
+									:}
+								;

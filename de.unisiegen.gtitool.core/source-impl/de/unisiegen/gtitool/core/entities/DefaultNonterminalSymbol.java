@@ -22,7 +22,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultNonterminalSymbol implements Symbol
+public final class DefaultNonterminalSymbol implements NonterminalSymbol
 {
 
   /**
@@ -148,7 +148,7 @@ public final class DefaultNonterminalSymbol implements Symbol
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Symbol other )
+  public final int compareTo ( NonterminalSymbol other )
   {
     return this.name.compareTo ( other.getName () );
   }

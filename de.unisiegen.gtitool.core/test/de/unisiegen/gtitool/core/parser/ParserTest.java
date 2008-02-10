@@ -37,6 +37,7 @@ public class ParserTest
     {
       e.printStackTrace ();
     }
+
     /*
      * Symbol
      */
@@ -52,6 +53,7 @@ public class ParserTest
     {
       e.printStackTrace ();
     }
+
     /*
      * Word
      */

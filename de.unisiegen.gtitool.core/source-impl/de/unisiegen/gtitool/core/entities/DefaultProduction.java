@@ -43,16 +43,28 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * The {@link NonterminalSymbol}
+   */
+  NonterminalSymbol nonTerminalSymbol;
+
+
+  /**
+   * The {@link ProductionWord}
+   */
+  ProductionWord productionWord;
+
+
+  /**
    * Allocates a new {@link DefaultProduction}.
    * 
    * @param nonterminalSymbol The {@link NonterminalSymbol}.
    * @param productionWord The {@link ProductionWord}.
    */
-  public DefaultProduction ( @SuppressWarnings ( "unused" )
-  NonterminalSymbol nonterminalSymbol, @SuppressWarnings ( "unused" )
-  ProductionWord productionWord )
+  public DefaultProduction ( NonterminalSymbol nonterminalSymbol,
+      ProductionWord productionWord )
   {
-    // Implement this
+    this.nonTerminalSymbol = nonterminalSymbol;
+    this.productionWord = productionWord;
   }
 
 
@@ -76,7 +88,9 @@ public final class DefaultProduction implements Production
   @Override
   public final DefaultProduction clone ()
   {
-    return null;
+    DefaultProduction newDefaultProduction = new DefaultProduction (
+        this.nonTerminalSymbol.clone (), this.productionWord.clone () );
+    return newDefaultProduction;
   }
 
 
@@ -88,6 +102,7 @@ public final class DefaultProduction implements Production
   public final int compareTo ( @SuppressWarnings ( "unused" )
   Production other )
   {
+    // TODO implement me
     return 0;
   }
 
@@ -101,6 +116,16 @@ public final class DefaultProduction implements Production
   public final boolean equals ( @SuppressWarnings ( "unused" )
   Object other )
   {
+    if ( other instanceof DefaultProduction )
+    {
+      DefaultProduction defaultProduction = ( DefaultProduction ) other;
+      if ( this.productionWord.equals ( defaultProduction.getProductionWord () )
+          && this.nonTerminalSymbol.equals ( defaultProduction
+              .getNonterminalSymbol () ) )
+      {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -128,7 +153,14 @@ public final class DefaultProduction implements Production
    */
   public final Element getElement ()
   {
-    return null;
+    Element newElement = new Element ( "DefaultProduction" ); //$NON-NLS-1$
+    Element nonTerminalSymbolElement = this.nonTerminalSymbol.getElement ();
+    nonTerminalSymbolElement.setName ( "NonTerminalSymbol" ); //$NON-NLS-1$
+    newElement.addElement ( nonTerminalSymbolElement );
+    Element productionWordElement = this.productionWord.getElement ();
+    productionWordElement.setName ( "ProductionWord" ); //$NON-NLS-1$
+    newElement.addElement ( productionWordElement );
+    return newElement;
   }
 
 
@@ -149,6 +181,7 @@ public final class DefaultProduction implements Production
   @Override
   public final int hashCode ()
   {
+    // TODO implement me
     return 0;
   }
 
@@ -160,6 +193,7 @@ public final class DefaultProduction implements Production
    */
   public final boolean isModified ()
   {
+    // TODO implement me
     return false;
   }
 
@@ -183,7 +217,7 @@ public final class DefaultProduction implements Production
    */
   public final void resetModify ()
   {
-    // Implement this
+    // TODO implement me
   }
 
 
@@ -203,6 +237,7 @@ public final class DefaultProduction implements Production
    */
   public final PrettyString toPrettyString ()
   {
+    // TODO implement me
     return null;
   }
 
@@ -215,7 +250,7 @@ public final class DefaultProduction implements Production
   @Override
   public final String toString ()
   {
-
+    // TODO implement me
     return null;
   }
 
@@ -227,6 +262,25 @@ public final class DefaultProduction implements Production
    */
   public final String toStringDebug ()
   {
+    // TODO implement me
     return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public NonterminalSymbol getNonterminalSymbol ()
+  {
+    return this.nonTerminalSymbol;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public ProductionWord getProductionWord ()
+  {
+    return this.productionWord;
   }
 }

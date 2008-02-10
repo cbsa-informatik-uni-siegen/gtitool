@@ -37,4 +37,18 @@ public interface Production extends Entity, Storable, Modifyable,
    * @see Object#equals(Object)
    */
   public boolean equals ( Object other );
+  
+  /**
+   * Returns the {@link NonterminalSymbol} for this {@link Production}
+   * 
+   * @return the {@link NonterminalSymbol} for this {@link Production}
+   */
+  public NonterminalSymbol getNonterminalSymbol();
+  
+  /**
+   * Returns the {@link ProductionWord} of this {@link Production}
+   * 
+   * @return the {@link ProductionWord} of this {@link Production}
+   */
+  public ProductionWord getProductionWord();
 }

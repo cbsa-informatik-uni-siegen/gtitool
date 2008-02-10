@@ -310,6 +310,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * @param y The y position of the new state view.
    * @param state The state represented via this view.
    * @return The new created {@link DefaultStateView}.
+   * @param createUndoStep Flag signals if an undo step should be created.
    */
   @SuppressWarnings ( "unchecked" )
   public final DefaultStateView createStateView ( double x, double y,
@@ -360,7 +361,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
           RedoUndoItem.REDO_UNDO_ACTION.STATE_ADDED, stateView );
       this.redoUndoHandler.addUndo ( item );
     }
-
+    
     return stateView;
   }
 
@@ -371,6 +372,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * @param transition The {@link Transition}.
    * @param source The source of the new {@link Transition}.
    * @param target The target of the new {@link Transition}.
+   * @param createUndoStep Flag signals if an undo step should be created,
    */
   public final void createTransitionView ( Transition transition,
       DefaultStateView source, DefaultStateView target, boolean createUndoStep )
@@ -382,7 +384,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setLineEnd ( transitionView.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
     GraphConstants.setEndFill ( transitionView.getAttributes (), true );
-
+    
     this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
@@ -777,6 +779,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * Removes a {@link DefaultStateView}.
    * 
    * @param stateView The {@link DefaultStateView} that should be removed.
+   * @param createUndoStep Flag signals if an undo step should be created
    */
   public final void removeState ( DefaultStateView stateView,
       boolean createUndoStep )
@@ -784,25 +787,17 @@ public final class DefaultMachineModel implements Storable, Modifyable
     ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
     for ( DefaultTransitionView current : this.transitionViewList )
     {
-      if ( current.getTransition ().getStateBegin ().equals (
-          stateView.getState () ) )
+      if ( (current.getTransition ().getStateBegin ().equals (
+          stateView.getState () ) ) || ( current.getTransition ().getStateEnd ().equals (
+              stateView.getState () ) ) )
       {
-        this.graphModel.remove ( new Object []
-        { current } );
-        removeList.add ( current );
-      }
-      else if ( current.getTransition ().getStateEnd ().equals (
-          stateView.getState () ) )
-      {
-        this.graphModel.remove ( new Object []
-        { current } );
         removeList.add ( current );
       }
     }
 
     for ( DefaultTransitionView current : removeList )
     {
-      this.transitionViewList.remove ( current );
+      removeTransition ( current, false );
     }
 
     this.graphModel.remove ( new Object []
@@ -826,6 +821,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * 
    * @param transitionView The {@link DefaultTransitionView} that should be
    *          removed.
+   * @param createUndoStep Flag signals if an undo step should be created
    */
   public final void removeTransition ( DefaultTransitionView transitionView,
       boolean createUndoStep )

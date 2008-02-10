@@ -73,6 +73,9 @@ public class RedoUndoHandler
       {
         // remove state
         this.model.removeState ( step.getStateView (), false );
+
+        
+        
         break;
       }
 
@@ -87,9 +90,11 @@ public class RedoUndoHandler
       case STATE_REMOVED :
       {
         // add state
-        this.model.createStateView ( step.getStateView ().getXPosition (), step
-            .getStateView ().getYPosition (), step.getStateView ().getState (), false );
-
+        step.getStateView ().addPort ();
+        this.model.getMachine().addState ( step.getStateView ().getState () );
+        this.model.getJGraph ().getGraphLayoutCache ().insert ( step.getStateView () );
+        this.model.getStateViewList ().add ( step.getStateView () );
+        
         // add transitions
         for ( DefaultTransitionView current : step.getTransitions () )
         {
@@ -130,8 +135,11 @@ public class RedoUndoHandler
       case STATE_ADDED :
       {
         // add state
-        this.model.createStateView ( step.getStateView ().getXPosition (), step
-            .getStateView ().getYPosition (), step.getStateView ().getState (), false );
+
+        step.getStateView ().addPort ();
+      this.model.getMachine().addState ( step.getStateView ().getState () );
+      this.model.getJGraph ().getGraphLayoutCache ().insert ( step.getStateView () );
+      this.model.getStateViewList ().add ( step.getStateView () );
 
         // add transitions
         for ( DefaultTransitionView current : step.getTransitions () )

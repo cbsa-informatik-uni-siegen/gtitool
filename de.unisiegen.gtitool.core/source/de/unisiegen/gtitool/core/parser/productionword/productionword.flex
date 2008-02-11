@@ -51,7 +51,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
-		case SYMBOL:
+		case MEMBER:
 		  return Style.SYMBOL;
 		default:
 		  return Style.NONE;
@@ -74,7 +74,7 @@ Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 <YYINITIAL>
 {
-	{Symbol}			{ return symbol(SYMBOL, yytext()); }
+	{Symbol}			{ return symbol(MEMBER, yytext()); }
 }
 
 .|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

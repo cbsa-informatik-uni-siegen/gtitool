@@ -12,37 +12,37 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @version $Id$
  */
 public interface ProductionWord extends Entity, Storable, Modifyable,
-    Iterable < Symbol >
+    Iterable < ProductionWordMember >
 {
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
+   * Appends the specified {@link ProductionWordMember}s to the end of this
    * {@link ProductionWord}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link ProductionWord}.
+   * @param productionWordMembers The {@link ProductionWordMember}s to be
+   *          appended to this {@link ProductionWord}.
    */
-  public void add ( Iterable < Symbol > symbols );
+  public void add ( Iterable < ProductionWordMember > productionWordMembers );
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
+   * Appends the specified {@link ProductionWordMember} to the end of this
    * {@link ProductionWord}.
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          {@link ProductionWord}.
+   * @param productionWordMember The {@link ProductionWordMember} to be appended
+   *          to this {@link ProductionWord}.
    */
-  public void add ( Symbol symbol );
+  public void add ( ProductionWordMember productionWordMember );
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
+   * Appends the specified {@link ProductionWordMember}s to the end of this
    * {@link ProductionWord}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link ProductionWord}.
+   * @param productionWordMembers The {@link ProductionWordMember}s to be
+   *          appended to this {@link ProductionWord}.
    */
-  public void add ( Symbol ... symbols );
+  public void add ( ProductionWordMember ... productionWordMembers );
 
 
   /**

@@ -4,10 +4,10 @@
  * @author Christian Fehler
  * @version $Id$
  */
-import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -17,16 +17,16 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
  * Terminal *
  ************/
  
-terminal String					SYMBOL;
+terminal String					MEMBER;
 
 
 /****************
  * Non Terminal *
  ****************/
  
-non terminal Symbol				symbol;
-non terminal Symbol[]			symbol_list;
-non terminal ProductionWord		production_word;
+non terminal ProductionWordMember		member;
+non terminal ProductionWordMember[]		member_list;
+non terminal ProductionWord				production_word;
 
 
 /*********
@@ -40,10 +40,10 @@ non terminal 					epsilon;
  * ProductionWord *
  ******************/
 
-production_word					::= symbol_list:sl
+production_word					::= member_list:ml
 									{:
-									   RESULT = new DefaultProductionWord(sl);
-									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
+									   RESULT = new DefaultProductionWord(ml);
+									   RESULT.setParserOffset(new ParserOffset(mlleft,mlright));
 									:}
 								|	epsilon:e
 									{:
@@ -52,29 +52,29 @@ production_word					::= symbol_list:sl
 									:}
 								;
 
-symbol							::= SYMBOL:s
+member							::= MEMBER:m
 									{:
 									   try
 									   {
-									     RESULT = new DefaultSymbol(s);
+									     RESULT = new DefaultNonterminalSymbol(m);
 									   }
 									   catch (SymbolException exc)
 									   {
-									     ParserException.throwSymbolException(sleft, sright, s);
+									     ParserException.throwSymbolException(mleft, mright, m);
 									   }
-									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
+									   RESULT.setParserOffset(new ParserOffset(mleft,mright));
 									:}
 								;
 
-symbol_list						::= symbol_list:sl symbol:s
+member_list						::= member_list:ml member:m
 								    {:
-								       RESULT = new Symbol[sl.length + 1];
-									   System.arraycopy(sl, 0, RESULT, 0, sl.length);
-									   RESULT[sl.length] = s;
+								       RESULT = new DefaultNonterminalSymbol[ml.length + 1];
+									   System.arraycopy(ml, 0, RESULT, 0, ml.length);
+									   RESULT[ml.length] = m;
 								    :}
-								|	symbol:s
+								|	member:m
 									{:
-									   RESULT = new Symbol[] { s };
+									   RESULT = new ProductionWordMember[] { m };
 									:}
 								;
 

@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface TerminalSymbol extends Entity, Storable,
+public interface TerminalSymbol extends Entity, ProductionWordMember, Storable,
     Comparable < TerminalSymbol >
 {
 

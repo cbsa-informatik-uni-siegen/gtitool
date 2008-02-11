@@ -186,9 +186,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns the name of this symbol.
+   * Returns the name of this {@link DefaultTerminalSymbol}.
    * 
-   * @return The name of this symbol.
+   * @return The name of this {@link DefaultTerminalSymbol}.
    * @see #name
    */
   public final String getName ()

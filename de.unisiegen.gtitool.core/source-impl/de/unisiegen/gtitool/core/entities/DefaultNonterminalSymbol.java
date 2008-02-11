@@ -185,9 +185,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns the name of this symbol.
+   * Returns the name of this {@link DefaultNonterminalSymbol}.
    * 
-   * @return The name of this symbol.
+   * @return The name of this {@link DefaultNonterminalSymbol}.
    * @see #name
    */
   public final String getName ()

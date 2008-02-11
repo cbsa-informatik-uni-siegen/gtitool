@@ -49,9 +49,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * The {@link Symbol} list.
+   * The {@link ProductionWordMember} list.
    */
-  private ArrayList < Symbol > symbolList;
+  private ArrayList < ProductionWordMember > productionWordMemberList;
 
 
   /**
@@ -59,8 +59,8 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public DefaultProductionWord ()
   {
-    // SymbolList
-    this.symbolList = new ArrayList < Symbol > ();
+    // ProductionWordMember
+    this.productionWordMemberList = new ArrayList < ProductionWordMember > ();
   }
 
 
@@ -86,9 +86,13 @@ public final class DefaultProductionWord implements ProductionWord
     // Element
     for ( Element current : element.getElement () )
     {
-      if ( current.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
+      if ( current.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
       {
-        add ( new DefaultSymbol ( current ) );
+        add ( new DefaultTerminalSymbol ( current ) );
+      }
+      else if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
+      {
+        add ( new DefaultNonterminalSymbol ( current ) );
       }
       else
       {
@@ -109,51 +113,53 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * Allocates a new {@link DefaultProductionWord}.
    * 
-   * @param symbols The array of {@link Symbol}s.
+   * @param productionWordMembers The array of {@link ProductionWordMember}s.
    */
-  public DefaultProductionWord ( Iterable < Symbol > symbols )
+  public DefaultProductionWord (
+      Iterable < ProductionWordMember > productionWordMembers )
   {
     this ();
-    // Symbols
-    if ( symbols == null )
+    // ProductionWordMember
+    if ( productionWordMembers == null )
     {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
-    add ( symbols );
+    add ( productionWordMembers );
   }
 
 
   /**
    * Allocates a new {@link DefaultProductionWord}.
    * 
-   * @param symbols The array of {@link Symbol}s.
+   * @param productionWordMembers The array of {@link ProductionWordMember}s.
    */
-  public DefaultProductionWord ( Symbol ... symbols )
+  public DefaultProductionWord ( ProductionWordMember ... productionWordMembers )
   {
     this ();
-    // Symbols
-    if ( symbols == null )
+    // ProductionWordMember
+    if ( productionWordMembers == null )
     {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
-    add ( symbols );
+    add ( productionWordMembers );
   }
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
+   * Appends the specified {@link ProductionWordMember}s to the end of this
    * {@link DefaultProductionWord}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultProductionWord}.
+   * @param productionWordMembers The {@link ProductionWordMember}s to be
+   *          appended to this {@link DefaultProductionWord}.
    */
-  public final void add ( Iterable < Symbol > symbols )
+  public final void add (
+      Iterable < ProductionWordMember > productionWordMembers )
   {
-    if ( symbols == null )
+    if ( productionWordMembers == null )
     {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : symbols )
+    for ( ProductionWordMember current : productionWordMembers )
     {
       add ( current );
     }
@@ -161,37 +167,37 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
+   * Appends the specified {@link ProductionWordMember} to the end of this
    * {@link DefaultProductionWord}.
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          {@link DefaultProductionWord}.
+   * @param productionWordMember The {@link ProductionWordMember} to be appended
+   *          to this {@link DefaultProductionWord}.
    */
-  public final void add ( Symbol symbol )
+  public final void add ( ProductionWordMember productionWordMember )
   {
-    // Symbol
-    if ( symbol == null )
+    // ProductionWordMember
+    if ( productionWordMember == null )
     {
-      throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production word member is null" ); //$NON-NLS-1$
     }
-    this.symbolList.add ( symbol );
+    this.productionWordMemberList.add ( productionWordMember );
   }
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
+   * Appends the specified {@link ProductionWordMember}s to the end of this
    * {@link DefaultProductionWord}.
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultProductionWord}.
+   * @param productionWordMembers The {@link ProductionWordMember}s to be
+   *          appended to this {@link DefaultProductionWord}.
    */
-  public final void add ( Symbol ... symbols )
+  public final void add ( ProductionWordMember ... productionWordMembers )
   {
-    if ( symbols == null )
+    if ( productionWordMembers == null )
     {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : symbols )
+    for ( ProductionWordMember current : productionWordMembers )
     {
       add ( current );
     }
@@ -218,12 +224,12 @@ public final class DefaultProductionWord implements ProductionWord
   @Override
   public final DefaultProductionWord clone ()
   {
-    DefaultProductionWord newDefaultWord = new DefaultProductionWord ();
-    for ( Symbol current : this.symbolList )
+    DefaultProductionWord newDefaultProductionWord = new DefaultProductionWord ();
+    for ( ProductionWordMember current : this.productionWordMemberList )
     {
-      newDefaultWord.add ( current.clone () );
+      newDefaultProductionWord.add ( current.clone () );
     }
-    return newDefaultWord;
+    return newDefaultProductionWord;
   }
 
 
@@ -238,7 +244,8 @@ public final class DefaultProductionWord implements ProductionWord
     if ( other instanceof DefaultProductionWord )
     {
       DefaultProductionWord defaultWord = ( DefaultProductionWord ) other;
-      return this.symbolList.equals ( defaultWord.symbolList );
+      return this.productionWordMemberList
+          .equals ( defaultWord.productionWordMemberList );
     }
     return false;
   }
@@ -268,7 +275,7 @@ public final class DefaultProductionWord implements ProductionWord
   public final Element getElement ()
   {
     Element newElement = new Element ( "ProductionWord" ); //$NON-NLS-1$
-    for ( Symbol current : this.symbolList )
+    for ( ProductionWordMember current : this.productionWordMemberList )
     {
       newElement.addElement ( current );
     }
@@ -293,7 +300,7 @@ public final class DefaultProductionWord implements ProductionWord
   @Override
   public final int hashCode ()
   {
-    return this.symbolList.hashCode ();
+    return this.productionWordMemberList.hashCode ();
   }
 
 
@@ -309,15 +316,15 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this
+   * Returns an iterator over the {@link ProductionWordMember}s in this
    * {@link DefaultProductionWord}.
    * 
-   * @return An iterator over the {@link Symbol}s in this
+   * @return An iterator over the {@link ProductionWordMember}s in this
    *         {@link DefaultProductionWord}.
    */
-  public final Iterator < Symbol > iterator ()
+  public final Iterator < ProductionWordMember > iterator ()
   {
-    return this.symbolList.iterator ();
+    return this.productionWordMemberList.iterator ();
   }
 
 
@@ -340,7 +347,7 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final void resetModify ()
   {
-    // Implement this
+    // TODO Implement this
   }
 
 
@@ -361,7 +368,7 @@ public final class DefaultProductionWord implements ProductionWord
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    for ( Symbol current : this.symbolList )
+    for ( ProductionWordMember current : this.productionWordMemberList )
     {
       prettyString.addPrettyPrintable ( current );
     }
@@ -378,7 +385,7 @@ public final class DefaultProductionWord implements ProductionWord
   public final String toString ()
   {
     StringBuilder result = new StringBuilder ();
-    for ( Symbol current : this.symbolList )
+    for ( ProductionWordMember current : this.productionWordMemberList )
     {
       result.append ( current.getName () );
     }
@@ -394,7 +401,7 @@ public final class DefaultProductionWord implements ProductionWord
   public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
-    for ( Symbol current : this.symbolList )
+    for ( ProductionWordMember current : this.productionWordMemberList )
     {
       result.append ( current.getName () );
     }

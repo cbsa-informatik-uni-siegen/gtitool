@@ -1,0 +1,117 @@
+/**
+ * The cup file of the nonterminal symbol set parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String						NONTERMINAL_SYMBOL;
+terminal							COMMA;
+terminal							LCBRACE;
+terminal							RCBRACE;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal NonterminalSymbolSet	nonterminal_symbol_set;
+non terminal NonterminalSymbol		nonterminal_symbol;
+non terminal NonterminalSymbol[]	nonterminal_symbol_list_comma;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 						epsilon;
+non terminal						nonterminal_symbol_list_comma_error;
+
+
+/**************************
+ * Nonterminal Symbol Set *
+ **************************/
+
+nonterminal_symbol_set			::= LCBRACE:l nonterminal_symbol_list_comma:nslc RCBRACE:r
+									{:
+									   try
+									   {
+									     RESULT = new DefaultNonterminalSymbolSet(nslc);
+									   }
+									   catch (NonterminalSymbolSetException ecx)
+									   {
+									     ParserMultiException.throwNonterminalSymbolSetException(ecx.getNonterminalSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft,rright));
+									:}
+								|	nonterminal_symbol_list_comma:nslc
+									{:
+									   try
+									   {
+									     RESULT = new DefaultNonterminalSymbolSet(nslc);
+									   }
+									   catch (NonterminalSymbolSetException ecx)
+									   {
+									     ParserMultiException.throwNonterminalSymbolSetException(ecx.getNonterminalSymbol());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(nslcleft,nslcright));
+									:}
+								;
+
+nonterminal_symbol				::= NONTERMINAL_SYMBOL:n
+									{:
+									   try
+									   {
+									     RESULT = new DefaultNonterminalSymbol(n);
+									   }
+									   catch (SymbolException exc)
+									   {
+									     ParserException.throwSymbolException(nleft, nright, n);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(nleft,nright));
+									:}
+								;
+
+nonterminal_symbol_list_comma	::= nonterminal_symbol_list_comma:nslc COMMA:c nonterminal_symbol:n
+								    {:
+								       RESULT = new NonterminalSymbol[nslc.length + 1];
+									   System.arraycopy(nslc, 0, RESULT, 0, nslc.length);
+									   RESULT[nslc.length] = n;
+								    :}
+								|	nonterminal_symbol:n
+									{:
+									   RESULT = new NonterminalSymbol[] { n };
+									:}
+								|	nonterminal_symbol_list_comma_error
+									{: :}
+								;
+
+nonterminal_symbol_list_comma_error	::= nonterminal_symbol_list_comma:nslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", " s", nslcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	nonterminal_symbol_list_comma:nslc NONTERMINAL_SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", ", ", nslcleft, nslcright, "," );
+									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

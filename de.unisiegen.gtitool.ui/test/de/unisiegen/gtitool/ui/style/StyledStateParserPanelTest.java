@@ -8,7 +8,7 @@ import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
 
 
 /**
- * The test class of the {@link StyledStackParserPanel}.
+ * The test class of the {@link StyledStateParserPanel}.
  * 
  * @author Christian Fehler
  * @version $Id$

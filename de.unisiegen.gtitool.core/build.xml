@@ -123,7 +123,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -141,7 +141,13 @@
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol/nonterminalsymbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol/nonterminalsymbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/nonterminalsymbol" package="de.unisiegen.gtitool.core.parser.nonterminalsymbol" parser="NonterminalSymbolAbstractParser" symbols="NonterminalSymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
-	
+
+	<!-- parser nonterminal symbol set -->
+	<target name="parser-nonterminal-symbol-set">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset/nonterminalsymbolset.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset/nonterminalsymbolset.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset" package="de.unisiegen.gtitool.core.parser.nonterminalsymbolset" parser="NonterminalSymbolSetAbstractParser" symbols="NonterminalSymbolSetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
 	<!-- parser production word -->
 	<target name="parser-production-word">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/productionword/productionword.flex" destdir="${sourcegenerateddir}" nobak="yes" />
@@ -170,6 +176,12 @@
 	<target name="parser-terminal-symbol">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbol/terminalsymbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbol/terminalsymbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/terminalsymbol" package="de.unisiegen.gtitool.core.parser.terminalsymbol" parser="TerminalSymbolAbstractParser" symbols="TerminalSymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser terminal symbol set -->
+	<target name="parser-terminal-symbol-set">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbolset/terminalsymbolset.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/terminalsymbolset/terminalsymbolset.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/terminalsymbolset" package="de.unisiegen.gtitool.core.parser.terminalsymbolset" parser="TerminalSymbolSetAbstractParser" symbols="TerminalSymbolSetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser transition -->

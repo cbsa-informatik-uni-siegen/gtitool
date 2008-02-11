@@ -13,7 +13,7 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 
 
 /**
- * The test class of the {@link StyledStackParserPanel}.
+ * The test class of the {@link StyledWordParserPanel}.
  * 
  * @author Christian Fehler
  * @version $Id$

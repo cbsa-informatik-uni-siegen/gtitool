@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 
 
@@ -43,6 +47,58 @@ public class ParserMultiException extends ParserException
       startOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ()
           .getStart ();
       endOffset [ j ] = negativeSymbols.get ( j ).getParserOffset ().getEnd ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
+
+
+  /**
+   * Throws a {@link ParserMultiException} if the {@link NonterminalSymbolSet}
+   * consist of {@link NonterminalSymbol}s with the same name.
+   * 
+   * @param negativeNonterminalSymbols The input list of
+   *          {@link NonterminalSymbol}s.
+   */
+  public static void throwNonterminalSymbolSetException (
+      ArrayList < NonterminalSymbol > negativeNonterminalSymbols )
+  {
+    String [] message = new String [ negativeNonterminalSymbols.size () ];
+    int [] startOffset = new int [ negativeNonterminalSymbols.size () ];
+    int [] endOffset = new int [ negativeNonterminalSymbols.size () ];
+    for ( int j = 0 ; j < negativeNonterminalSymbols.size () ; j++ )
+    {
+      message [ j ] = Messages.getString (
+          "Parser.7", negativeNonterminalSymbols //$NON-NLS-1$
+              .get ( j ) );
+      startOffset [ j ] = negativeNonterminalSymbols.get ( j )
+          .getParserOffset ().getStart ();
+      endOffset [ j ] = negativeNonterminalSymbols.get ( j ).getParserOffset ()
+          .getEnd ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
+
+
+  /**
+   * Throws a {@link ParserMultiException} if the {@link TerminalSymbolSet}
+   * consist of {@link TerminalSymbol}s with the same name.
+   * 
+   * @param negativeTerminalSymbols The input list of {@link TerminalSymbol}s.
+   */
+  public static void throwTerminalSymbolSetException (
+      ArrayList < TerminalSymbol > negativeTerminalSymbols )
+  {
+    String [] message = new String [ negativeTerminalSymbols.size () ];
+    int [] startOffset = new int [ negativeTerminalSymbols.size () ];
+    int [] endOffset = new int [ negativeTerminalSymbols.size () ];
+    for ( int j = 0 ; j < negativeTerminalSymbols.size () ; j++ )
+    {
+      message [ j ] = Messages.getString ( "Parser.8", negativeTerminalSymbols //$NON-NLS-1$
+          .get ( j ) );
+      startOffset [ j ] = negativeTerminalSymbols.get ( j ).getParserOffset ()
+          .getStart ();
+      endOffset [ j ] = negativeTerminalSymbols.get ( j ).getParserOffset ()
+          .getEnd ();
     }
     throw new ParserMultiException ( startOffset, endOffset, message );
   }

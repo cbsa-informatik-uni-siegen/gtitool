@@ -1,5 +1,1 @@
 CF		- Stack in der Machine implementieren
-BM		- Alle Symbole eines ProductionWord werden durch den Parser als
-		  Nonterminals angelegt. Auf dem ProductionWord muss gegebenfalls
-		  dann eine Umwandlung in ein Terminal passieren, falls es sich bei
-		  dem Symbol um ein Terminal handelt.

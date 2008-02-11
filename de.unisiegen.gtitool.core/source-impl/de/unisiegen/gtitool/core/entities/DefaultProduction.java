@@ -45,13 +45,13 @@ public final class DefaultProduction implements Production
   /**
    * The {@link NonterminalSymbol}
    */
-  NonterminalSymbol nonTerminalSymbol;
+  private NonterminalSymbol nonterminalSymbol;
 
 
   /**
    * The {@link ProductionWord}
    */
-  ProductionWord productionWord;
+  private ProductionWord productionWord;
 
 
   /**
@@ -63,7 +63,7 @@ public final class DefaultProduction implements Production
   public DefaultProduction ( NonterminalSymbol nonterminalSymbol,
       ProductionWord productionWord )
   {
-    this.nonTerminalSymbol = nonterminalSymbol;
+    this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
   }
 
@@ -89,7 +89,7 @@ public final class DefaultProduction implements Production
   public final DefaultProduction clone ()
   {
     DefaultProduction newDefaultProduction = new DefaultProduction (
-        this.nonTerminalSymbol.clone (), this.productionWord.clone () );
+        this.nonterminalSymbol.clone (), this.productionWord.clone () );
     return newDefaultProduction;
   }
 
@@ -120,7 +120,7 @@ public final class DefaultProduction implements Production
     {
       DefaultProduction defaultProduction = ( DefaultProduction ) other;
       if ( this.productionWord.equals ( defaultProduction.getProductionWord () )
-          && this.nonTerminalSymbol.equals ( defaultProduction
+          && this.nonterminalSymbol.equals ( defaultProduction
               .getNonterminalSymbol () ) )
       {
         return true;
@@ -153,14 +153,19 @@ public final class DefaultProduction implements Production
    */
   public final Element getElement ()
   {
-    Element newElement = new Element ( "DefaultProduction" ); //$NON-NLS-1$
-    Element nonTerminalSymbolElement = this.nonTerminalSymbol.getElement ();
-    nonTerminalSymbolElement.setName ( "NonTerminalSymbol" ); //$NON-NLS-1$
-    newElement.addElement ( nonTerminalSymbolElement );
-    Element productionWordElement = this.productionWord.getElement ();
-    productionWordElement.setName ( "ProductionWord" ); //$NON-NLS-1$
-    newElement.addElement ( productionWordElement );
+    Element newElement = new Element ( "Production" ); //$NON-NLS-1$
+    newElement.addElement ( this.nonterminalSymbol.getElement () );
+    newElement.addElement ( this.productionWord.getElement () );
     return newElement;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public NonterminalSymbol getNonterminalSymbol ()
+  {
+    return this.nonterminalSymbol;
   }
 
 
@@ -170,6 +175,15 @@ public final class DefaultProduction implements Production
   public final ParserOffset getParserOffset ()
   {
     return this.parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  public final ProductionWord getProductionWord ()
+  {
+    return this.productionWord;
   }
 
 
@@ -264,23 +278,5 @@ public final class DefaultProduction implements Production
   {
     // TODO implement me
     return null;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public NonterminalSymbol getNonterminalSymbol ()
-  {
-    return this.nonTerminalSymbol;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public ProductionWord getProductionWord ()
-  {
-    return this.productionWord;
   }
 }

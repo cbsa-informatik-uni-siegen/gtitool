@@ -758,7 +758,16 @@ public abstract class StyledParserPanel extends JPanel
    */
   protected Object parse ()
   {
-    return this.document.parse ();
+    Object newObject = this.document.parse ();
+    if ( newObject == null )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+    }
+    else
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+    }
+    return newObject;
   }
 
 

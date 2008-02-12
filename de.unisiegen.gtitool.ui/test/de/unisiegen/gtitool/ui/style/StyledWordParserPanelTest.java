@@ -29,6 +29,7 @@ public class StyledWordParserPanelTest
     {
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
           new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
+      
       JFrame jFrame = new JFrame ( "WordPanelTest" );
       StyledWordParserPanel styledWordParserPanel = new StyledWordParserPanel ();
       styledWordParserPanel.setAlphabet ( alphabet );

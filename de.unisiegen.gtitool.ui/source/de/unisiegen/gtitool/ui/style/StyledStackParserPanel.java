@@ -79,8 +79,13 @@ public final class StyledStackParserPanel extends StyledParserPanel
    */
   private final Stack checkStack ( Stack stack )
   {
+    if ( this.pushDownAlphabet == null )
+    {
+      throw new RuntimeException ( "push down alphabet is not set" ); //$NON-NLS-1$
+    }
+
     Stack checkedStack = stack;
-    if ( ( checkedStack != null ) && ( this.pushDownAlphabet != null ) )
+    if ( checkedStack != null )
     {
       ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
       for ( Symbol current : checkedStack )
@@ -124,17 +129,6 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
-   * Returns the push down {@link Alphabet}.
-   * 
-   * @return The push down {@link Alphabet}.
-   */
-  public final Alphabet getPushDownAlphabet ()
-  {
-    return this.pushDownAlphabet;
-  }
-
-
-  /**
    * Returns the {@link Stack} for the program text within the document.
    * 
    * @return The {@link Stack} for the program text.
@@ -161,7 +155,8 @@ public final class StyledStackParserPanel extends StyledParserPanel
   @Override
   public final Stack parse ()
   {
-    return ( Stack ) super.parse ();
+    Stack stack = ( Stack ) super.parse ();
+    return checkStack ( stack );
   }
 
 

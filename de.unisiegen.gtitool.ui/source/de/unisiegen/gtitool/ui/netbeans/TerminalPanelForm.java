@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 
 
 /**
@@ -11,7 +13,8 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings ({ "all" } )
+@SuppressWarnings (
+{ "all" } )
 public class TerminalPanelForm extends javax.swing.JPanel
 {
 
@@ -44,6 +47,8 @@ public class TerminalPanelForm extends javax.swing.JPanel
     this.nonterminalSymbolSet = nonterminalSymbolSet;
     this.styledNonterminalSymbolSetParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
+    this.styledTerminalSymbolSetParserPanel
+        .setNonterminalSymbolSet ( nonterminalSymbolSet );
   }
 
 
@@ -56,6 +61,8 @@ public class TerminalPanelForm extends javax.swing.JPanel
   {
     this.terminalSymbolSet = terminalSymbolSet;
     this.styledTerminalSymbolSetParserPanel
+        .setTerminalSymbolSet ( terminalSymbolSet );
+    this.styledNonterminalSymbolSetParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
   }
 
@@ -88,6 +95,38 @@ public class TerminalPanelForm extends javax.swing.JPanel
   public TerminalPanelForm ()
   {
     initComponents ();
+
+    styledNonterminalSymbolSetParserPanel
+        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        {
+
+          public void nonterminalSymbolSetChanged (
+              NonterminalSymbolSet newNonterminalSymbolSet )
+          {
+            styledTerminalSymbolSetParserPanel
+                .setNonterminalSymbolSet ( newNonterminalSymbolSet );
+
+            // Parse both symbol sets
+            styledNonterminalSymbolSetParserPanel.parse ();
+            styledTerminalSymbolSetParserPanel.parse ();
+          }
+        } );
+
+    styledTerminalSymbolSetParserPanel
+        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        {
+
+          public void terminalSymbolSetChanged (
+              TerminalSymbolSet newTerminalSymbolSet )
+          {
+            styledNonterminalSymbolSetParserPanel
+                .setTerminalSymbolSet ( newTerminalSymbolSet );
+
+            // Parse both symbol sets
+            styledNonterminalSymbolSetParserPanel.parse ();
+            styledTerminalSymbolSetParserPanel.parse ();
+          }
+        } );
   }
 
 
@@ -98,64 +137,77 @@ public class TerminalPanelForm extends javax.swing.JPanel
    */
   // <editor-fold defaultstate="collapsed" desc=" Generated Code
   // <editor-fold defaultstate="collapsed" desc=" Generated Code
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+  // <editor-fold defaultstate="collapsed" desc=" Generated Code
+  // ">//GEN-BEGIN:initComponents
+  private void initComponents ()
+  {
+    java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabelNonterminalSymbols = new javax.swing.JLabel();
-        styledNonterminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel();
-        jLabelTerminalSymbols = new javax.swing.JLabel();
-        styledTerminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel();
+    jLabelNonterminalSymbols = new javax.swing.JLabel ();
+    styledNonterminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel ();
+    jLabelTerminalSymbols = new javax.swing.JLabel ();
+    styledTerminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel ();
 
-        setLayout(new java.awt.GridBagLayout());
+    setLayout ( new java.awt.GridBagLayout () );
 
-        jLabelNonterminalSymbols.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jLabelNonterminalSymbols.setText(bundle.getString("TerminalPanel.NonterminalSymbols")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        add(jLabelNonterminalSymbols, gridBagConstraints);
+    jLabelNonterminalSymbols
+        .setHorizontalAlignment ( javax.swing.SwingConstants.CENTER );
+    java.util.ResourceBundle bundle = java.util.ResourceBundle
+        .getBundle ( "de/unisiegen/gtitool/ui/messages" ); // NOI18N
+    jLabelNonterminalSymbols.setText ( bundle
+        .getString ( "TerminalPanel.NonterminalSymbols" ) ); // NOI18N
+    gridBagConstraints = new java.awt.GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.insets = new java.awt.Insets ( 16, 16, 5, 16 );
+    add ( jLabelNonterminalSymbols, gridBagConstraints );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
-        add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
+    gridBagConstraints = new java.awt.GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    gridBagConstraints.insets = new java.awt.Insets ( 5, 0, 5, 16 );
+    add ( styledNonterminalSymbolSetParserPanel, gridBagConstraints );
 
-        jLabelTerminalSymbols.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTerminalSymbols.setText(bundle.getString("TerminalPanel.TerminalSymbols")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jLabelTerminalSymbols, gridBagConstraints);
+    jLabelTerminalSymbols
+        .setHorizontalAlignment ( javax.swing.SwingConstants.CENTER );
+    jLabelTerminalSymbols.setText ( bundle
+        .getString ( "TerminalPanel.TerminalSymbols" ) ); // NOI18N
+    gridBagConstraints = new java.awt.GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.insets = new java.awt.Insets ( 5, 16, 5, 16 );
+    add ( jLabelTerminalSymbols, gridBagConstraints );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
-        add(styledTerminalSymbolSetParserPanel, gridBagConstraints);
+    gridBagConstraints = new java.awt.GridBagConstraints ();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 3;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    gridBagConstraints.insets = new java.awt.Insets ( 5, 0, 16, 16 );
+    add ( styledTerminalSymbolSetParserPanel, gridBagConstraints );
 
-    }// </editor-fold>//GEN-END:initComponents
+  }// </editor-fold>//GEN-END:initComponents
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel jLabelNonterminalSymbols;
-    public javax.swing.JLabel jLabelTerminalSymbols;
-    public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
-    public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
-    // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  public javax.swing.JLabel jLabelNonterminalSymbols;
+
+
+  public javax.swing.JLabel jLabelTerminalSymbols;
+
+
+  public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
+
+
+  public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
+  // End of variables declaration//GEN-END:variables
 
 }

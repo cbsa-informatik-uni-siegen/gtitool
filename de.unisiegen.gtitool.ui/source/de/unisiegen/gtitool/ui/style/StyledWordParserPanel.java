@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.border.LineBorder;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -33,13 +31,6 @@ public final class StyledWordParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = 2677286061045400139L;
-
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( StyledWordParserPanel.class );
 
 
   /**
@@ -89,8 +80,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
   {
     if ( this.alphabet == null )
     {
-      logger.error ( "error: the alphabet is not set" ); //$NON-NLS-1$
-      return word;
+      throw new RuntimeException ( "alphabet is not set" ); //$NON-NLS-1$
     }
 
     Word checkedWord = word;
@@ -137,17 +127,6 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * Returns the {@link Alphabet}.
-   * 
-   * @return The {@link Alphabet}.
-   */
-  public final Alphabet getAlphabet ()
-  {
-    return this.alphabet;
-  }
-
-
-  /**
    * Returns the {@link Word} for the program text within the document.
    * 
    * @return The {@link Word} for the program text.
@@ -174,7 +153,8 @@ public final class StyledWordParserPanel extends StyledParserPanel
   @Override
   public final Word parse ()
   {
-    return ( Word ) super.parse ();
+    Word word = ( Word ) super.parse ();
+    return checkWord ( word );
   }
 
 

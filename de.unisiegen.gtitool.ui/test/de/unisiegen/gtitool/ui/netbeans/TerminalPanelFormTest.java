@@ -31,34 +31,20 @@ public class TerminalPanelFormTest
   {
     try
     {
-      JFrame jFrame = new JFrame ( "TerminalPanelFormTest" );
-
       NonterminalSymbolSet nonterminalSymbolSet = new DefaultNonterminalSymbolSet (
           new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol (
               "F" ), new DefaultNonterminalSymbol ( "G" ) );
-
+      
       TerminalSymbolSet terminalSymbolSet = new DefaultTerminalSymbolSet (
           new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ),
           new DefaultTerminalSymbol ( "c" ) );
+      
+      JFrame jFrame = new JFrame ( "TerminalPanelFormTest" );
 
       TerminalPanelForm terminalPanelForm = new TerminalPanelForm ();
 
       terminalPanelForm.setNonterminalSymbolSet ( nonterminalSymbolSet );
       terminalPanelForm.setTerminalSymbolSet ( terminalSymbolSet );
-
-      terminalPanelForm.styledNonterminalSymbolSetParserPanel
-          .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
-          {
-
-            public void nonterminalSymbolSetChanged (
-                NonterminalSymbolSet newNonterminalSymbolSet )
-            {
-              if ( newNonterminalSymbolSet != null )
-              {
-                System.out.println ( newNonterminalSymbolSet );
-              }
-            }
-          } );
 
       jFrame.add ( terminalPanelForm );
       jFrame.setBounds ( 300, 300, 400, 300 );

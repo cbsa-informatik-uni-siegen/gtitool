@@ -1,11 +1,20 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import java.util.ArrayList;
+
+import javax.swing.border.LineBorder;
+
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.terminalsymbolset.TerminalSymbolSetParseable;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
@@ -24,6 +33,13 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = -928492541925565704L;
+
+
+  /**
+   * Every {@link TerminalSymbol} in the {@link TerminalSymbolSet} can not be be
+   * in the {@link NonterminalSymbolSet}.
+   */
+  private NonterminalSymbolSet nonterminalSymbolSet = null;
 
 
   /**
@@ -57,6 +73,53 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
 
 
   /**
+   * Checks the given {@link TerminalSymbolSet}.
+   * 
+   * @param terminalSymbolSet The {@link TerminalSymbolSet} to check.
+   * @return The input {@link TerminalSymbolSet} or null, if a
+   *         {@link TerminalSymbol} in the {@link TerminalSymbolSet} is in the
+   *         {@link NonterminalSymbolSet}.
+   */
+  private final TerminalSymbolSet checkTerminalSymbolSet (
+      TerminalSymbolSet terminalSymbolSet )
+  {
+    if ( this.nonterminalSymbolSet == null )
+    {
+      return terminalSymbolSet;
+    }
+
+    TerminalSymbolSet checkedTerminalSymbolSet = terminalSymbolSet;
+    if ( checkedTerminalSymbolSet != null )
+    {
+      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      for ( TerminalSymbol currentTerminal : checkedTerminalSymbolSet )
+      {
+        for ( NonterminalSymbol currentNonterminal : this.nonterminalSymbolSet )
+        {
+          if ( currentTerminal.getName ().equals (
+              currentNonterminal.getName () ) )
+          {
+            exceptionList.add ( new ParserException ( currentTerminal
+                .getParserOffset ().getStart (), currentTerminal
+                .getParserOffset ().getEnd (), Messages.getString (
+                "TerminalPanel.AlreadyNonterminalSymbol", //$NON-NLS-1$
+                currentTerminal.getName (), this.nonterminalSymbolSet ) ) );
+          }
+        }
+      }
+      // Check for exceptions
+      if ( exceptionList.size () > 0 )
+      {
+        checkedTerminalSymbolSet = null;
+        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+        getDocument ().setException ( exceptionList );
+      }
+    }
+    return checkedTerminalSymbolSet;
+  }
+
+
+  /**
    * Let the listeners know that the {@link TerminalSymbolSet} has changed.
    * 
    * @param newTerminalSymbolSet The new {@link TerminalSymbolSet}.
@@ -64,11 +127,12 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   private final void fireTerminalSymbolSetChanged (
       TerminalSymbolSet newTerminalSymbolSet )
   {
+    TerminalSymbolSet checkedTerminalSymbolSet = checkTerminalSymbolSet ( newTerminalSymbolSet );
     TerminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( TerminalSymbolSetChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].terminalSymbolSetChanged ( newTerminalSymbolSet );
+      listeners [ n ].terminalSymbolSetChanged ( checkedTerminalSymbolSet );
     }
   }
 
@@ -83,7 +147,8 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   {
     try
     {
-      return ( TerminalSymbolSet ) getParsedObject ();
+      TerminalSymbolSet terminalSymbolSet = ( TerminalSymbolSet ) getParsedObject ();
+      return checkTerminalSymbolSet ( terminalSymbolSet );
     }
     catch ( Exception exc )
     {
@@ -100,7 +165,8 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   @Override
   public final TerminalSymbolSet parse ()
   {
-    return ( TerminalSymbolSet ) super.parse ();
+    TerminalSymbolSet terminalSymbolSet = ( TerminalSymbolSet ) super.parse ();
+    return checkTerminalSymbolSet ( terminalSymbolSet );
   }
 
 
@@ -157,6 +223,19 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   public final void setHighlightedTerminalSymbol ( TerminalSymbol terminalSymbol )
   {
     setHighlightedParseableEntity ( terminalSymbol );
+  }
+
+
+  /**
+   * Sets the {@link NonterminalSymbolSet}. Every {@link TerminalSymbol} in the
+   * {@link TerminalSymbolSet} can not be be in the {@link NonterminalSymbolSet}.
+   * 
+   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
+   */
+  public final void setNonterminalSymbolSet (
+      NonterminalSymbolSet nonterminalSymbolSet )
+  {
+    this.nonterminalSymbolSet = nonterminalSymbolSet;
   }
 
 

@@ -3,8 +3,13 @@ package de.unisiegen.gtitool.ui.style;
 
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 
 
 /**
@@ -21,24 +26,41 @@ public class StyledNonterminalSymbolSetParserPanelTest
 
   public static void main ( String [] arguments )
   {
-    JFrame jFrame = new JFrame ( "NonterminalSymbolSetPanelTest" );
-    StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel = new StyledNonterminalSymbolSetParserPanel ();
-    styledNonterminalSymbolSetParserPanel
-        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
-        {
+    try
+    {
+      TerminalSymbolSet terminalSymbolSet = new DefaultTerminalSymbolSet (
+          new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ),
+          new DefaultTerminalSymbol ( "c" ) );
 
-          public void nonterminalSymbolSetChanged (
-              NonterminalSymbolSet newNonterminalSymbolSet )
+      JFrame jFrame = new JFrame ( "NonterminalSymbolSetPanelTest" );
+      StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel = new StyledNonterminalSymbolSetParserPanel ();
+      styledNonterminalSymbolSetParserPanel
+          .setTerminalSymbolSet ( terminalSymbolSet );
+      styledNonterminalSymbolSetParserPanel
+          .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
           {
-            if ( newNonterminalSymbolSet != null )
+
+            public void nonterminalSymbolSetChanged (
+                NonterminalSymbolSet newNonterminalSymbolSet )
             {
-              System.out.println ( newNonterminalSymbolSet );
+              if ( newNonterminalSymbolSet != null )
+              {
+                System.out.println ( newNonterminalSymbolSet );
+              }
             }
-          }
-        } );
-    jFrame.add ( styledNonterminalSymbolSetParserPanel );
-    jFrame.setBounds ( 300, 300, 400, 300 );
-    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
-    jFrame.setVisible ( true );
+          } );
+      jFrame.add ( styledNonterminalSymbolSetParserPanel );
+      jFrame.setBounds ( 300, 300, 400, 300 );
+      jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+      jFrame.setVisible ( true );
+    }
+    catch ( TerminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
   }
 }

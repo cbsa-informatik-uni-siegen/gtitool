@@ -1326,6 +1326,9 @@ public final class MachinePanel implements EditorPanel
         current.setActive ( true );
       }
 
+      System.out.println ( this.machine.getActiveState ().size ()) ;
+      
+      
       for ( State current : this.machine.getActiveState () )
       {
         current.setActive ( true );

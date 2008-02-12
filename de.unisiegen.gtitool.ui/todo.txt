@@ -1,7 +1,6 @@
 CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
-CF		- Fehlerhafte aktive Symbole
 BM		- Die ToolBar Icons müssen überarbeitet werden. Alle 32x32 Pixel.
 		  Am besten ein ScreenShot von einem Normal-, einem Start- und
 		  einem Final-Zustand. Die Icons zum Navigieren im Wort sollten alle
@@ -22,3 +21,8 @@ BM		- Aus einem DFA eine Datei erstellen wie zum Beispiel "newFile0.nfa",
 		  Validierung. Müssen wir nur noch einen guten Namen finden, damit man
 		  die beiden Arten der Umwandlung unterscheiden kann.
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
+BM		- Bug: Stati der Word Buttons nicht richtig gesetzt: Zwei Dateien sind
+		  offen, beide gehen in den "Enter word" Modus. In der einen Datei wird
+		  ein Wort eingeben und auf Starten geklickt. Nach einem Tab-Wechsel
+		  zur zweiten Datei hat man hier alle Button aktiv, und kann eine
+		  Exception auslösen.

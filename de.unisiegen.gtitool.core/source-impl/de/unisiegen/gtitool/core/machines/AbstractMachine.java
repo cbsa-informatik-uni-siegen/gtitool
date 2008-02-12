@@ -1551,7 +1551,7 @@ public abstract class AbstractMachine implements Machine
       }
       for ( State activeState : getActiveState () )
       {
-        transitionLoop : for ( Transition currentTransition : activeState
+        for ( Transition currentTransition : activeState
             .getTransitionBegin () )
         {
           for ( Symbol currentSymbol : currentTransition )
@@ -1561,7 +1561,6 @@ public abstract class AbstractMachine implements Machine
               newActiveStateSet.add ( currentTransition.getStateEnd () );
               newActiveTransitionSet.add ( currentTransition );
               newActiveSymbolList.add ( currentSymbol );
-              break transitionLoop;
             }
           }
         }

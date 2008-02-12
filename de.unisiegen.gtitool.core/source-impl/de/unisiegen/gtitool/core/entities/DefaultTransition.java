@@ -501,7 +501,8 @@ public final class DefaultTransition implements Transition
       tmpList.add ( symbol );
       throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
-    this.symbolSet.add ( symbol );
+    // The symbol must be cloned because of the different possible styles
+    this.symbolSet.add ( symbol.clone () );
     fireTransitionChanged ();
     fireModifyStatusChanged ();
   }

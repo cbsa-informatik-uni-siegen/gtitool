@@ -10,7 +10,7 @@ import javax.swing.event.EventListenerList;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
@@ -86,12 +86,13 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    * @param element The {@link Element}.
    * @throws TerminalSymbolSetException If something with the
    *           {@link DefaultTerminalSymbolSet} is not correct.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
+   * @throws TerminalSymbolException If something with the
+   *           {@link TerminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultTerminalSymbolSet ( Element element )
-      throws TerminalSymbolSetException, SymbolException, StoreException
+      throws TerminalSymbolSetException, TerminalSymbolException,
+      StoreException
   {
     this ();
     // Check if the element is correct

@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.parser.exceptions;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 
 
 /**
@@ -21,6 +22,22 @@ public class ParserException extends ScannerException
 
 
   /**
+   * Throws a {@link ParserException} if the {@link TerminalSymbol} name is not
+   * correct.
+   * 
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param illegalName The illegal name.
+   */
+  public static void throwNonterminalSymbolException ( int left, int right,
+      String illegalName )
+  {
+    throw new ParserException ( left, right, Messages.getString ( "Parser.9", //$NON-NLS-1$
+        illegalName ) );
+  }
+
+
+  /**
    * Throws a {@link ParserException} if the {@link Symbol} name is not correct.
    * 
    * @param left The left parser index.
@@ -31,6 +48,22 @@ public class ParserException extends ScannerException
       String illegalName )
   {
     throw new ParserException ( left, right, Messages.getString ( "Parser.6", //$NON-NLS-1$
+        illegalName ) );
+  }
+
+
+  /**
+   * Throws a {@link ParserException} if the {@link TerminalSymbol} name is not
+   * correct.
+   * 
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param illegalName The illegal name.
+   */
+  public static void throwTerminalSymbolException ( int left, int right,
+      String illegalName )
+  {
+    throw new ParserException ( left, right, Messages.getString ( "Parser.10", //$NON-NLS-1$
         illegalName ) );
   }
 

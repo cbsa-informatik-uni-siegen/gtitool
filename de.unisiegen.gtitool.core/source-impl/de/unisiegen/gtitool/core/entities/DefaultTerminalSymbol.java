@@ -2,9 +2,9 @@ package de.unisiegen.gtitool.core.entities;
 
 
 import de.unisiegen.gtitool.core.Messages;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolEmptyNameException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolIllegalNameException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -63,12 +63,12 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Allocates a new {@link DefaultTerminalSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
-   *           is not correct.
+   * @throws TerminalSymbolException If something with the
+   *           {@link DefaultTerminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultTerminalSymbol ( Element element ) throws SymbolException,
-      StoreException
+  public DefaultTerminalSymbol ( Element element )
+      throws TerminalSymbolException, StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
@@ -113,10 +113,10 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Allocates a new {@link DefaultTerminalSymbol}.
    * 
    * @param name The name of this {@link DefaultTerminalSymbol}.
-   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
-   *           is not correct.
+   * @throws TerminalSymbolException If something with the
+   *           {@link DefaultTerminalSymbol} is not correct.
    */
-  public DefaultTerminalSymbol ( String name ) throws SymbolException
+  public DefaultTerminalSymbol ( String name ) throws TerminalSymbolException
   {
     // Name
     setName ( name );
@@ -135,7 +135,7 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     {
       return new DefaultTerminalSymbol ( this.name );
     }
-    catch ( SymbolException e )
+    catch ( TerminalSymbolException e )
     {
       e.printStackTrace ();
       System.exit ( 1 );
@@ -272,10 +272,10 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws SymbolException If something with the {@link DefaultTerminalSymbol}
-   *           is not correct.
+   * @throws TerminalSymbolException If something with the
+   *           {@link DefaultTerminalSymbol} is not correct.
    */
-  private final void setName ( String name ) throws SymbolException
+  private final void setName ( String name ) throws TerminalSymbolException
   {
     // Name
     if ( name == null )
@@ -284,24 +284,24 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     }
     if ( name.equals ( "" ) ) //$NON-NLS-1$
     {
-      throw new SymbolEmptyNameException ();
+      throw new TerminalSymbolEmptyNameException ();
     }
     if ( name.startsWith ( "\"" ) ) //$NON-NLS-1$
     {
       if ( !name.endsWith ( "\"" ) ) //$NON-NLS-1$
       {
-        throw new SymbolIllegalNameException ( name );
+        throw new TerminalSymbolIllegalNameException ( name );
       }
       if ( name.length () <= 2 )
       {
-        throw new SymbolIllegalNameException ( name );
+        throw new TerminalSymbolIllegalNameException ( name );
       }
       String tmpName = name.substring ( 1, name.length () - 1 );
       for ( int i = 0 ; i < tmpName.length () ; i++ )
       {
         if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
         {
-          throw new SymbolIllegalNameException ( name );
+          throw new TerminalSymbolIllegalNameException ( name );
         }
       }
     }
@@ -309,16 +309,16 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     {
       if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
       {
-        throw new SymbolIllegalNameException ( name );
+        throw new TerminalSymbolIllegalNameException ( name );
       }
       if ( !Character.isJavaIdentifierPart ( name.charAt ( 0 ) ) )
       {
-        throw new SymbolIllegalNameException ( name );
+        throw new TerminalSymbolIllegalNameException ( name );
       }
     }
     else
     {
-      throw new SymbolIllegalNameException ( name );
+      throw new TerminalSymbolIllegalNameException ( name );
     }
     this.name = name;
   }

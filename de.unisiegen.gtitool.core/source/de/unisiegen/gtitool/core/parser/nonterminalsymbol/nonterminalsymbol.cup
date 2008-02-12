@@ -6,7 +6,7 @@
  */
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
@@ -35,9 +35,9 @@ nonterminal_symbol				::= NONTERMINAL_SYMBOL:n
 									   {
 									     RESULT = new DefaultNonterminalSymbol(n);
 									   }
-									   catch (SymbolException exc)
+									   catch (NonterminalSymbolException exc)
 									   {
-									     ParserException.throwSymbolException(nleft, nright, n);
+									     ParserException.throwNonterminalSymbolException(nleft, nright, n);
 									   }
 									   RESULT.setParserOffset(new ParserOffset(nleft,nright));
 									:}

@@ -6,7 +6,7 @@
  */
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
@@ -35,9 +35,9 @@ terminal_symbol					::= TERMINAL_SYMBOL:t
 									   {
 									     RESULT = new DefaultTerminalSymbol(t);
 									   }
-									   catch (SymbolException exc)
+									   catch (TerminalSymbolException exc)
 									   {
-									     ParserException.throwSymbolException(tleft, tright, t);
+									     ParserException.throwTerminalSymbolException(tleft, tright, t);
 									   }
 									   RESULT.setParserOffset(new ParserOffset(tleft,tright));
 									:}

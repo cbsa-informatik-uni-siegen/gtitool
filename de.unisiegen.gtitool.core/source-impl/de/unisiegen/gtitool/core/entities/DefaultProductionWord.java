@@ -8,7 +8,8 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -68,11 +69,16 @@ public final class DefaultProductionWord implements ProductionWord
    * Allocates a new {@link DefaultProductionWord}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link Symbol} is not
+   * @throws NonterminalSymbolException If something with the 
+   * {@link NonterminalSymbol} is not
+   *           correct.
+   * @throws TerminalSymbolException If something with the 
+   * {@link TerminalSymbol} is not
    *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultProductionWord ( Element element ) throws SymbolException,
+  public DefaultProductionWord ( Element element ) throws 
+  NonterminalSymbolException,TerminalSymbolException,
       StoreException
   {
     this ();

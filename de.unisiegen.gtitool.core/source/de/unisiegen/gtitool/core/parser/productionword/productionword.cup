@@ -8,7 +8,7 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 
@@ -58,7 +58,7 @@ member							::= MEMBER:m
 									   {
 									     RESULT = new DefaultNonterminalSymbol(m);
 									   }
-									   catch (SymbolException exc)
+									   catch (NonterminalSymbolException exc)
 									   {
 									     ParserException.throwSymbolException(mleft, mright, m);
 									   }

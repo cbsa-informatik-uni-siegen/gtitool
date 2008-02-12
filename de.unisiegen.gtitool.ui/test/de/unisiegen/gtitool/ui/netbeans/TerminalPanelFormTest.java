@@ -10,8 +10,9 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 
 
@@ -63,15 +64,20 @@ public class TerminalPanelFormTest
       jFrame.setBounds ( 300, 300, 400, 300 );
       jFrame.setVisible ( true );
     }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-    }
+
     catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
     }
     catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+    }
+    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
     }

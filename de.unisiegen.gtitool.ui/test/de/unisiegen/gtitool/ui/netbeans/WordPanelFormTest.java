@@ -28,14 +28,14 @@ public class WordPanelFormTest
     try
     {
       JFrame jFrame = new JFrame ( "WordPanelFormTest" );
-      
+
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
           new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
-      
+
       WordPanelForm wordPanelForm = new WordPanelForm ();
-      
+
       wordPanelForm.setAlphabet ( alphabet );
-      
+
       wordPanelForm.styledWordParserPanel
           .addWordChangedListener ( new WordChangedListener ()
           {
@@ -48,9 +48,10 @@ public class WordPanelFormTest
               }
             }
           } );
-      
+
       jFrame.add ( wordPanelForm );
       jFrame.setBounds ( 300, 300, 400, 300 );
+      jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
       jFrame.setVisible ( true );
     }
     catch ( AlphabetException exc )

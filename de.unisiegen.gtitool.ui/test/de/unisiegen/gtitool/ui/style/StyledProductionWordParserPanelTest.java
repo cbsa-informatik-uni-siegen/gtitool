@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener
  * The test class of the {@link StyledProductionWordParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledProductionWordParserPanelTest.java 547 2008-02-10
+ *          22:24:57Z fehler $
  */
 @SuppressWarnings (
 { "all" } )
@@ -36,6 +37,7 @@ public class StyledProductionWordParserPanelTest
         } );
     jFrame.add ( styledProductionWordParserPanel );
     jFrame.setBounds ( 300, 300, 400, 300 );
+    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
     jFrame.setVisible ( true );
   }
 }

@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolChangedListe
  * The test class of the {@link StyledNonterminalSymbolParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledNonterminalSymbolParserPanelTest.java 547 2008-02-10
+ *          22:24:57Z fehler $
  */
 @SuppressWarnings (
 { "all" } )
@@ -37,6 +38,7 @@ public class StyledNonterminalSymbolParserPanelTest
         } );
     jFrame.add ( styledNonterminalSymbolParserPanel );
     jFrame.setBounds ( 300, 300, 400, 300 );
+    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
     jFrame.setVisible ( true );
   }
 }

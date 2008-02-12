@@ -36,6 +36,7 @@ public class StyledStateParserPanelTest
         } );
     jFrame.add ( styledStackParserPanel );
     jFrame.setBounds ( 300, 300, 400, 300 );
+    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
     jFrame.setVisible ( true );
   }
 }

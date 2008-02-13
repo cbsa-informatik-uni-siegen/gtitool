@@ -7,7 +7,7 @@ package de.unisiegen.gtitool.core.parser;
  * @author Christian Fehler
  * @version $Id$
  */
-public class ParserOffset
+public final class ParserOffset
 {
 
   /**
@@ -36,6 +36,18 @@ public class ParserOffset
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#clone()
+   */
+  @Override
+  public final ParserOffset clone ()
+  {
+    return new ParserOffset ( this.start, this.end );
+  }
+
+
+  /**
    * Returns the parser end offset.
    * 
    * @return Theparser end offset.
@@ -56,5 +68,17 @@ public class ParserOffset
   public final int getStart ()
   {
     return this.start;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    return this.start + "->" + this.end; //$NON-NLS-1$
   }
 }

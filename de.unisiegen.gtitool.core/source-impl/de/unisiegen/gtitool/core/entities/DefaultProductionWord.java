@@ -69,16 +69,14 @@ public final class DefaultProductionWord implements ProductionWord
    * Allocates a new {@link DefaultProductionWord}.
    * 
    * @param element The {@link Element}.
-   * @throws NonterminalSymbolException If something with the 
-   * {@link NonterminalSymbol} is not
-   *           correct.
-   * @throws TerminalSymbolException If something with the 
-   * {@link TerminalSymbol} is not
-   *           correct.
+   * @throws NonterminalSymbolException If something with the
+   *           {@link NonterminalSymbol} is not correct.
+   * @throws TerminalSymbolException If something with the
+   *           {@link TerminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultProductionWord ( Element element ) throws 
-  NonterminalSymbolException,TerminalSymbolException,
+  public DefaultProductionWord ( Element element )
+      throws NonterminalSymbolException, TerminalSymbolException,
       StoreException
   {
     this ();
@@ -410,6 +408,18 @@ public final class DefaultProductionWord implements ProductionWord
     for ( ProductionWordMember current : this.productionWordMemberList )
     {
       result.append ( current.getName () );
+      if ( current instanceof NonterminalSymbol )
+      {
+        result.append ( "{N:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
+      else if ( current instanceof TerminalSymbol )
+      {
+        result.append ( "{T:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
+      else
+      {
+        throw new RuntimeException ( "unknown member" ); //$NON-NLS-1$
+      }
     }
     return result.toString ();
   }

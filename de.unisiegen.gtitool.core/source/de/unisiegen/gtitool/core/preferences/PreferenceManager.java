@@ -13,15 +13,29 @@ import org.apache.log4j.Logger;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
+import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 
@@ -176,14 +190,34 @@ public class PreferenceManager
    */
   public static final boolean DEFAULT_USE_PUSH_DOWN_ALPHABET = false;
 
+
+  /**
+   * The default {@link NonterminalSymbolSet}.
+   */
+  public static NonterminalSymbolSet DEFAULT_NONTERMINAL_SYMBOL_SET;
+
+
+  /**
+   * The default {@link TerminalSymbolSet}.
+   */
+  public static TerminalSymbolSet DEFAULT_TERMINAL_SYMBOL_SET;
+
   static
   {
     try
     {
       DEFAULT_ALPHABET = new DefaultAlphabet (
           new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
       DEFAULT_PUSH_DOWN_ALPHABET = new DefaultAlphabet ( new DefaultSymbol (
           "0" ), new DefaultSymbol ( "1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      DEFAULT_NONTERMINAL_SYMBOL_SET = new DefaultNonterminalSymbolSet (
+          new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol ( //$NON-NLS-1$
+              "F" ) ); //$NON-NLS-1$
+
+      DEFAULT_TERMINAL_SYMBOL_SET = new DefaultTerminalSymbolSet (
+          new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     catch ( AlphabetException exc )
     {
@@ -191,6 +225,26 @@ public class PreferenceManager
       System.exit ( 1 );
     }
     catch ( SymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -926,6 +980,60 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link NonterminalSymbolSet}.
+   * 
+   * @return The {@link NonterminalSymbolSetItem}.
+   */
+  public final NonterminalSymbolSetItem getNonterminalSymbolSetItem ()
+  {
+    ArrayList < NonterminalSymbol > nonterminalSymbols = new ArrayList < NonterminalSymbol > ();
+    int count = this.preferences.getInt ( "DefaultNonterminalSymbolSetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    loop : for ( int i = 0 ; i < count ; i++ )
+    {
+      String nonterminalSymbol = this.preferences.get (
+          "DefaultNonterminalSymbolSet" + i, //$NON-NLS-1$
+          end );
+      if ( nonterminalSymbol.equals ( end ) )
+      {
+        break loop;
+      }
+      try
+      {
+        nonterminalSymbols.add ( new DefaultNonterminalSymbol (
+            nonterminalSymbol ) );
+      }
+      catch ( NonterminalSymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+    /*
+     * Return the default nonterminal symbol set if no nonterminal symbol set is
+     * found.
+     */
+    if ( nonterminalSymbols.size () == 0 )
+    {
+      return new NonterminalSymbolSetItem ( DEFAULT_NONTERMINAL_SYMBOL_SET,
+          DEFAULT_NONTERMINAL_SYMBOL_SET );
+    }
+    try
+    {
+      return new NonterminalSymbolSetItem ( new DefaultNonterminalSymbolSet (
+          nonterminalSymbols ), DEFAULT_NONTERMINAL_SYMBOL_SET );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
+
+
+  /**
    * Returns the {@link AlphabetItem}.
    * 
    * @return The push down {@link AlphabetItem}.
@@ -982,6 +1090,59 @@ public class PreferenceManager
   public final Locale getSystemLocale ()
   {
     return this.systemLocale;
+  }
+
+
+  /**
+   * Returns the {@link TerminalSymbolSet}.
+   * 
+   * @return The {@link TerminalSymbolSetItem}.
+   */
+  public final TerminalSymbolSetItem getTerminalSymbolSetItem ()
+  {
+    ArrayList < TerminalSymbol > terminalSymbols = new ArrayList < TerminalSymbol > ();
+    int count = this.preferences.getInt ( "DefaultTerminalSymbolSetCount", //$NON-NLS-1$
+        Integer.MAX_VALUE );
+    String end = "no item found"; //$NON-NLS-1$
+    loop : for ( int i = 0 ; i < count ; i++ )
+    {
+      String terminalSymbol = this.preferences.get (
+          "DefaultTerminalSymbolSet" + i, //$NON-NLS-1$
+          end );
+      if ( terminalSymbol.equals ( end ) )
+      {
+        break loop;
+      }
+      try
+      {
+        terminalSymbols.add ( new DefaultTerminalSymbol ( terminalSymbol ) );
+      }
+      catch ( TerminalSymbolException e )
+      {
+        e.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+    /*
+     * Return the default terminal symbol set if no terminal symbol set is
+     * found.
+     */
+    if ( terminalSymbols.size () == 0 )
+    {
+      return new TerminalSymbolSetItem ( DEFAULT_TERMINAL_SYMBOL_SET,
+          DEFAULT_TERMINAL_SYMBOL_SET );
+    }
+    try
+    {
+      return new TerminalSymbolSetItem ( new DefaultTerminalSymbolSet (
+          terminalSymbols ), DEFAULT_TERMINAL_SYMBOL_SET );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
   }
 
 
@@ -1358,6 +1519,28 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link NonterminalSymbolSetItem}.
+   * 
+   * @param nonterminalSymbolSetItem The {@link NonterminalSymbolSetItem}.
+   */
+  public final void setNonterminalSymbolSetItem (
+      NonterminalSymbolSetItem nonterminalSymbolSetItem )
+  {
+    logger.debug ( "set the nonterminal symbol set to \"" //$NON-NLS-1$
+        + nonterminalSymbolSetItem.getNonterminalSymbolSet () + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < nonterminalSymbolSetItem.getNonterminalSymbolSet ()
+        .size () ; i++ )
+    {
+      this.preferences.put ( "DefaultNonterminalSymbolSet" + i, //$NON-NLS-1$
+          nonterminalSymbolSetItem.getNonterminalSymbolSet ().get ( i )
+              .getName () );
+    }
+    this.preferences.putInt ( "DefaultNonterminalSymbolSetCount", //$NON-NLS-1$
+        nonterminalSymbolSetItem.getNonterminalSymbolSet ().size () );
+  }
+
+
+  /**
    * Sets the push down {@link AlphabetItem}.
    * 
    * @param pushDownAlphabetItem The push down {@link AlphabetItem}.
@@ -1385,6 +1568,26 @@ public class PreferenceManager
   public final void setSystemLocale ( Locale locale )
   {
     this.systemLocale = locale;
+  }
+
+
+  /**
+   * Sets the {@link TerminalSymbolSetItem}.
+   * 
+   * @param terminalSymbolSetItem The {@link TerminalSymbolSetItem}.
+   */
+  public final void setTerminalSymbolSetItem (
+      TerminalSymbolSetItem terminalSymbolSetItem )
+  {
+    logger.debug ( "set the terminal symbol set to \"" //$NON-NLS-1$
+        + terminalSymbolSetItem.getTerminalSymbolSet () + "\"" ); //$NON-NLS-1$
+    for ( int i = 0 ; i < terminalSymbolSetItem.getTerminalSymbolSet ().size () ; i++ )
+    {
+      this.preferences.put ( "DefaultTerminalSymbolSet" + i, //$NON-NLS-1$
+          terminalSymbolSetItem.getTerminalSymbolSet ().get ( i ).getName () );
+    }
+    this.preferences.putInt ( "DefaultTerminalSymbolSetCount", //$NON-NLS-1$
+        terminalSymbolSetItem.getTerminalSymbolSet ().size () );
   }
 
 

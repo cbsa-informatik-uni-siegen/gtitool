@@ -140,7 +140,7 @@ public final class AlphabetItem implements Cloneable
   {
     if ( standardAlphabet == null )
     {
-      throw new NullPointerException ( "standardalphabet is null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "standard alphabet is null" ); //$NON-NLS-1$
     }
     this.standardAlphabet = standardAlphabet;
   }

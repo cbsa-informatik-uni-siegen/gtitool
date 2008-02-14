@@ -38,13 +38,19 @@ import javax.swing.event.ListSelectionEvent;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
+import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
@@ -151,7 +157,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     public final Object getElementAt ( int index )
     {
-      if ( index < 0 || index >= this.list.size () )
+      if ( ( index < 0 ) || ( index >= this.list.size () ) )
       {
         throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
       }
@@ -510,9 +516,33 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The index of the general tab.
+   */
+  private static final int GENERAL_TAB_INDEX = 0;
+
+
+  /**
+   * The index of the view tab.
+   */
+  private static final int VIEW_TAB_INDEX = 1;
+
+
+  /**
+   * The index of the colors tab.
+   */
+  private static final int COLOR_TAB_INDEX = 2;
+
+
+  /**
    * The index of the alphabet tab.
    */
   private static final int ALPHABET_TAB_INDEX = 3;
+
+
+  /**
+   * The index of the grammar tab.
+   */
+  private static final int GRAMMAR_TAB_INDEX = 4;
 
 
   /**
@@ -666,6 +696,18 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link NonterminalSymbolSetItem}.
+   */
+  private NonterminalSymbolSetItem nonterminalSymbolSetItem;
+
+
+  /**
+   * The {@link TerminalSymbolSetItem}.
+   */
+  private TerminalSymbolSetItem terminalSymbolSetItem;
+
+
+  /**
    * The initial last active tab.
    */
   private int initialLastActiveTab;
@@ -813,6 +855,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial use push down {@link Alphabet}.
    */
   private boolean initialUsePushDownAlphabet;
+
+
+  /**
+   * The initial {@link NonterminalSymbolSetItem}.
+   */
+  private NonterminalSymbolSetItem initialNonterminalSymbolSetItem;
+
+
+  /**
+   * The initial {@link TerminalSymbolSetItem}.
+   */
+  private TerminalSymbolSetItem initialTerminalSymbolSetItem;
 
 
   /**
@@ -1111,6 +1165,18 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.pushDownAlphabetItem.restore ();
     this.gui.styledAlphabetParserPanelPushDown
         .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+
+    /*
+     * Grammar
+     */
+    this.nonterminalSymbolSetItem.restore ();
+    this.gui.terminalPanelForm
+        .setNonterminalSymbolSet ( this.nonterminalSymbolSetItem
+            .getNonterminalSymbolSet () );
+    this.terminalSymbolSetItem.restore ();
+    this.gui.terminalPanelForm
+        .setTerminalSymbolSet ( this.terminalSymbolSetItem
+            .getTerminalSymbolSet () );
   }
 
 
@@ -1141,6 +1207,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     initAlphabet ();
     initPushDownAlphabet ();
     /*
+     * Grammar
+     */
+    initNonterminalSymbolSet ();
+    initTerminalSymbolSet ();
+    /*
      * Tab
      */
     initLastActiveTab ();
@@ -1148,7 +1219,7 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Initializes the alphabet.
+   * Initializes the {@link Alphabet}.
    */
   private final void initAlphabet ()
   {
@@ -1745,6 +1816,81 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Initializes the {@link NonterminalSymbolSet}.
+   */
+  private final void initNonterminalSymbolSet ()
+  {
+    this.nonterminalSymbolSetItem = PreferenceManager.getInstance ()
+        .getNonterminalSymbolSetItem ();
+    this.initialNonterminalSymbolSetItem = this.nonterminalSymbolSetItem
+        .clone ();
+    this.gui.terminalPanelForm
+        .setNonterminalSymbolSet ( this.nonterminalSymbolSetItem
+            .getNonterminalSymbolSet () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+        .getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    final JMenuItem jMenuItemRestoreNonterminalSymbolSet = new JMenuItem (
+        Messages.getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreNonterminalSymbolSet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreNonterminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreNonterminalSymbolSet
+        .addActionListener ( new ActionListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void actionPerformed ( @SuppressWarnings ( "unused" )
+          ActionEvent event )
+          {
+            PreferencesDialog.this.nonterminalSymbolSetItem.restore ();
+            PreferencesDialog.this.gui.terminalPanelForm
+                .setNonterminalSymbolSet ( PreferencesDialog.this.nonterminalSymbolSetItem
+                    .getNonterminalSymbolSet () );
+          }
+        } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreNonterminalSymbolSet.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreNonterminalSymbolSet
+                .setMnemonic ( Messages.getString (
+                    "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+    jPopupMenu.add ( jMenuItemRestoreNonterminalSymbolSet );
+
+    /*
+     * NonterminalSymbolSet changed listener
+     */
+    this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void nonterminalSymbolSetChanged (
+              NonterminalSymbolSet newNonterminalSymbolSet )
+          {
+            setButtonStatus ();
+            if ( newNonterminalSymbolSet != null )
+            {
+              PreferencesDialog.this.nonterminalSymbolSetItem
+                  .setNonterminalSymbolSet ( newNonterminalSymbolSet );
+            }
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the push down alphabet.
    */
   private final void initPushDownAlphabet ()
@@ -1865,6 +2011,78 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
       }
     } );
+  }
+
+
+  /**
+   * Initializes the {@link TerminalSymbolSet}.
+   */
+  private final void initTerminalSymbolSet ()
+  {
+    this.terminalSymbolSetItem = PreferenceManager.getInstance ()
+        .getTerminalSymbolSetItem ();
+    this.initialTerminalSymbolSetItem = this.terminalSymbolSetItem.clone ();
+    this.gui.terminalPanelForm
+        .setTerminalSymbolSet ( this.terminalSymbolSetItem
+            .getTerminalSymbolSet () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+        .getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    final JMenuItem jMenuItemRestoreTerminalSymbolSet = new JMenuItem (
+        Messages.getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PreferencesDialog.this.terminalSymbolSetItem.restore ();
+        PreferencesDialog.this.gui.terminalPanelForm
+            .setTerminalSymbolSet ( PreferencesDialog.this.terminalSymbolSetItem
+                .getTerminalSymbolSet () );
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreTerminalSymbolSet.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+    jPopupMenu.add ( jMenuItemRestoreTerminalSymbolSet );
+
+    /*
+     * TerminalSymbolSet changed listener
+     */
+    this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void terminalSymbolSetChanged (
+              TerminalSymbolSet newTerminalSymbolSet )
+          {
+            setButtonStatus ();
+            if ( newTerminalSymbolSet != null )
+            {
+              PreferencesDialog.this.terminalSymbolSetItem
+                  .setTerminalSymbolSet ( newTerminalSymbolSet );
+            }
+          }
+        } );
   }
 
 
@@ -2026,29 +2244,38 @@ public final class PreferencesDialog implements LanguageChangedListener
     // Title
     this.gui.setTitle ( Messages.getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
     // General
-    this.gui.jTabbedPane.setTitleAt ( 0, Messages
+    this.gui.jTabbedPane.setTitleAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( 0, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneralToolTip" ) ); //$NON-NLS-1$
     // View
-    this.gui.jTabbedPane.setTitleAt ( 1, Messages
+    this.gui.jTabbedPane.setTitleAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabView" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( 1, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabViewToolTip" ) ); //$NON-NLS-1$
     // Colors
-    this.gui.jTabbedPane.setTitleAt ( 2, Messages
+    this.gui.jTabbedPane.setTitleAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( 2, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
     // Alphabet
-    this.gui.jTabbedPane.setTitleAt ( 3, Messages
+    this.gui.jTabbedPane.setTitleAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( 3, Messages
+    this.gui.jTabbedPane.setToolTipTextAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
     this.gui.jLabelInputAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
     this.gui.jCheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
+    // Grammar
+    this.gui.jTabbedPane.setTitleAt ( GRAMMAR_TAB_INDEX, Messages
+        .getString ( "PreferencesDialog.TabGrammar" ) ); //$NON-NLS-1$
+    this.gui.jTabbedPane.setToolTipTextAt ( GRAMMAR_TAB_INDEX, Messages
+        .getString ( "PreferencesDialog.TabGrammarToolTip" ) ); //$NON-NLS-1$
+    this.gui.terminalPanelForm.jLabelNonterminalSymbols.setText ( Messages
+        .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
+    this.gui.terminalPanelForm.jLabelTerminalSymbols.setText ( Messages
+        .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
     // Accept
     this.gui.jGTIButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$
@@ -2223,6 +2450,11 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     saveAlphabet ();
     savePushDownAlphabet ();
+    /*
+     * Grammar
+     */
+    saveNonterminalSymbolSet ();
+    saveTerminalSymbolSet ();
     /*
      * Tab
      */
@@ -2545,7 +2777,9 @@ public final class PreferencesDialog implements LanguageChangedListener
           {
             SwingUtilities.updateComponentTreeUI ( current );
             for ( Window w : current.getOwnedWindows () )
+            {
               SwingUtilities.updateComponentTreeUI ( w );
+            }
           }
         }
         catch ( ClassNotFoundException e )
@@ -2589,6 +2823,24 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Saves the data of the {@link NonterminalSymbolSetItem}.
+   */
+  private final void saveNonterminalSymbolSet ()
+  {
+    if ( !this.initialNonterminalSymbolSetItem
+        .equals ( this.nonterminalSymbolSetItem ) )
+    {
+      logger.debug ( "nonterminal symbol set changed to \"" //$NON-NLS-1$
+          + this.nonterminalSymbolSetItem.getNonterminalSymbolSet () + "\"" ); //$NON-NLS-1$
+      this.initialNonterminalSymbolSetItem = this.nonterminalSymbolSetItem
+          .clone ();
+      PreferenceManager.getInstance ().setNonterminalSymbolSetItem (
+          this.nonterminalSymbolSetItem );
+    }
+  }
+
+
+  /**
    * Saves the data of the push down {@link AlphabetItem}.
    */
   private final void savePushDownAlphabet ()
@@ -2610,6 +2862,23 @@ public final class PreferencesDialog implements LanguageChangedListener
           .isSelected ();
       PreferenceManager.getInstance ().setUsePushDownAlphabet (
           this.gui.jCheckBoxPushDownAlphabet.isSelected () );
+    }
+  }
+
+
+  /**
+   * Saves the data of the {@link TerminalSymbolSetItem}.
+   */
+  private final void saveTerminalSymbolSet ()
+  {
+    if ( !this.initialTerminalSymbolSetItem
+        .equals ( this.terminalSymbolSetItem ) )
+    {
+      logger.debug ( "terminal symbol set changed to \"" //$NON-NLS-1$
+          + this.terminalSymbolSetItem.getTerminalSymbolSet () + "\"" ); //$NON-NLS-1$
+      this.initialTerminalSymbolSetItem = this.terminalSymbolSetItem.clone ();
+      PreferenceManager.getInstance ().setTerminalSymbolSetItem (
+          this.terminalSymbolSetItem );
     }
   }
 
@@ -2657,19 +2926,37 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void setButtonStatus ()
   {
+    boolean enabled = true;
+
+    // Alphabet
     if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
         || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
     {
-      this.gui.jGTIButtonOk.setEnabled ( false );
-      this.gui.jGTIButtonAccept.setEnabled ( false );
+      enabled = false;
       this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
     }
     else
     {
-      this.gui.jGTIButtonOk.setEnabled ( true );
-      this.gui.jGTIButtonAccept.setEnabled ( true );
       this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
     }
+
+    // Grammar
+    if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+        .getNonterminalSymbolSet () == null )
+        || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+            .getTerminalSymbolSet () == null ) )
+    {
+      enabled = false;
+      this.gui.jTabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, Color.RED );
+    }
+    else
+    {
+      this.gui.jTabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, null );
+    }
+
+    // Enable or disable the buttons
+    this.gui.jGTIButtonOk.setEnabled ( enabled );
+    this.gui.jGTIButtonAccept.setEnabled ( enabled );
   }
 
 

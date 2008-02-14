@@ -71,6 +71,8 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
         jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jPanelGrammar = new javax.swing.JPanel();
+        terminalPanelForm = new de.unisiegen.gtitool.ui.netbeans.TerminalPanelForm();
         jGTIButtonRestore = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonAccept = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -315,7 +317,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         jPanelAlphabet.add(styledAlphabetParserPanelInput, gridBagConstraints);
 
         jCheckBoxPushDownAlphabet.setSelected(true);
@@ -342,10 +344,22 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
         jPanelAlphabet.add(styledAlphabetParserPanelPushDown, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N
+
+        jPanelGrammar.setLayout(new java.awt.GridBagLayout());
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanelGrammar.add(terminalPanelForm, gridBagConstraints);
+
+        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGrammar"), null, jPanelGrammar, bundle.getString("PreferencesDialog.TabGrammarToolTip")); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -359,7 +373,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jGTIButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
         jGTIButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
         jGTIButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
-        jGTIButtonRestore.setFocusPainted(false);
         jGTIButtonRestore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonRestoreActionPerformed(evt);
@@ -376,7 +389,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
-        jGTIButtonOk.setFocusPainted(false);
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -394,7 +406,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jGTIButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
         jGTIButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
         jGTIButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
-        jGTIButtonAccept.setFocusPainted(false);
         jGTIButtonAccept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonAcceptActionPerformed(evt);
@@ -411,7 +422,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("PreferencesDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.setFocusPainted(false);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
@@ -490,6 +500,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JPanel jPanelColors;
     public javax.swing.JPanel jPanelGeneral;
     public javax.swing.JPanel jPanelGeneralSpace;
+    public javax.swing.JPanel jPanelGrammar;
     public javax.swing.JPanel jPanelView;
     public javax.swing.JPanel jPanelViewSpace;
     public javax.swing.JScrollPane jScrollPaneColor;
@@ -499,6 +510,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JTextPane jTextPaneDescription;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
+    public de.unisiegen.gtitool.ui.netbeans.TerminalPanelForm terminalPanelForm;
     // End of variables declaration//GEN-END:variables
     
 }

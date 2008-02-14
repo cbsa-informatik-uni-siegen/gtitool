@@ -16,7 +16,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabelNonterminalSymbols">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="TerminalPanel.NonterminalSymbols" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
@@ -36,7 +36,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelTerminalSymbols">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="TerminalPanel.TerminalSymbols" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>

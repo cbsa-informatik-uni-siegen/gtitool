@@ -11,8 +11,6 @@ BM		- Das Icon für das Alphabet sollte umgebaut werden, so dass damit die
 		  Einstellungen des aktuellen Dokuments verändert werden können. Ich
 		  würde "document-properties.png" vorschlagen
 BM		- Die Redo/Undo Icons auch in der ToolBar
-BM		- "File" - "Save all" implementieren
-BM		- "File" - "Close all" anlegen und implementieren
 BM		- Den "NewStateNameDialog" umbauen zu einem "StateDialog". In dem
 		  man nebem dem neuen Namen auch einstellen kann, ob es sich um einen
 		  Start- und einen Final-Zustand handelt

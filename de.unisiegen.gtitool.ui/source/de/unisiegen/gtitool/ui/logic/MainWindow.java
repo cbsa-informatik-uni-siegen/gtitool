@@ -184,10 +184,11 @@ public final class MainWindow implements LanguageChangedListener
 
   /**
    * Closes the selected {@link EditorPanel}.
+   * 
+   * @param panel The {@link EditorPanel} to be saved
    */
-  public final void handleClose ()
+  public final void handleClose (EditorPanel panel)
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
 
     if ( panel.isModified () )
     {
@@ -199,7 +200,7 @@ public final class MainWindow implements LanguageChangedListener
           JOptionPane.YES_NO_CANCEL_OPTION );
       if ( choice == JOptionPane.YES_OPTION )
       {
-        handleSave ();
+        handleSave (panel);
       }
       else if ( choice == JOptionPane.CANCEL_OPTION )
       {
@@ -639,14 +640,39 @@ public final class MainWindow implements LanguageChangedListener
     // System exit
     System.exit ( 0 );
   }
+  
+  /**
+   * Handle the close all files event
+   */
+  public final void handleCloseAll(){
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    {
+      handleClose (current);
+    }
+  }
+  
+  
+  /**
+   * Handle the save all files event
+   */
+  public final void handleSaveAll(){
+    EditorPanel active = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    {
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
+      handleSave (current);
+    }
+    this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( active );
+  }
 
 
   /**
    * Handle the save file event
+   * 
+   * @param panel The {@link EditorPanel} to be saved
    */
-  public final void handleSave ()
+  public final void handleSave (EditorPanel panel)
   {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     File file = panel.handleSave ();
     if ( file != null )
     {

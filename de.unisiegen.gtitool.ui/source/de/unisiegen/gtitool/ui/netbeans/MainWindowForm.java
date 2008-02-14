@@ -82,6 +82,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemNew = new javax.swing.JMenuItem();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemClose = new javax.swing.JMenuItem();
+        jMenuItemCloseAll = new javax.swing.JMenuItem();
         jSeparatorFile1 = new javax.swing.JSeparator();
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
@@ -418,6 +419,17 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuFile.add(jMenuItemClose);
 
+        jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
+        jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleCloseAll(evt);
+            }
+        });
+
+        jMenuFile.add(jMenuItemCloseAll);
+
         jMenuFile.add(jSeparatorFile1);
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -447,6 +459,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
         jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
         jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
+        jMenuItemSaveAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleSaveAll(evt);
+            }
+        });
+
         jMenuFile.add(jMenuItemSaveAll);
 
         jMenuFile.add(jSeparatorFile2);
@@ -612,6 +630,14 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 600, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleCloseAll(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCloseAll
+        this.logic.handleCloseAll();
+    }//GEN-LAST:event_handleCloseAll
+
+    private void handleSaveAll(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSaveAll
+        this.logic.handleSaveAll();
+    }//GEN-LAST:event_handleSaveAll
+
     private void handleRedo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleRedo
          this.logic.handleRedo();
     }//GEN-LAST:event_handleRedo
@@ -653,7 +679,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleWordAutoStep
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose
-        this.logic.handleClose();
+        this.logic.handleClose(this.jGTITabbedPaneMain.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleClose
 
     private void jCheckBoxMenuItemTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemTableItemStateChanged
@@ -689,7 +715,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleToolbarMouse
 
     private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
-        logic.handleSave();
+        logic.handleSave(this.jGTITabbedPaneMain.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleSave
 
     private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
@@ -750,6 +776,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenu jMenuHelp;
     public javax.swing.JMenuItem jMenuItemAbout;
     public javax.swing.JMenuItem jMenuItemClose;
+    public javax.swing.JMenuItem jMenuItemCloseAll;
     public javax.swing.JMenuItem jMenuItemCopy;
     public javax.swing.JMenuItem jMenuItemCut;
     public javax.swing.JMenuItem jMenuItemEditMachine;

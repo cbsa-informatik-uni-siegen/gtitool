@@ -149,15 +149,13 @@ public class TerminalPanelForm extends javax.swing.JPanel
 
         setLayout(new java.awt.GridBagLayout());
 
-        jLabelNonterminalSymbols.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jLabelNonterminalSymbols.setText(bundle.getString("TerminalPanel.NonterminalSymbols")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 5, 0);
         add(jLabelNonterminalSymbols, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -166,17 +164,15 @@ public class TerminalPanelForm extends javax.swing.JPanel
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
 
-        jLabelTerminalSymbols.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabelTerminalSymbols.setText(bundle.getString("TerminalPanel.TerminalSymbols")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 0);
         add(jLabelTerminalSymbols, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -185,7 +181,7 @@ public class TerminalPanelForm extends javax.swing.JPanel
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         add(styledTerminalSymbolSetParserPanel, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents

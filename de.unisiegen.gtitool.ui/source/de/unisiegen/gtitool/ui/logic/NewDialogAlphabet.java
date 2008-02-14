@@ -1,10 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.event.ItemEvent;
-
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
@@ -12,7 +8,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
- * The Panel used to enter the {@link Alphabet} for the new file
+ * The panel used to enter the {@link Alphabet} for the new file.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
@@ -20,13 +16,6 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  */
 public final class NewDialogAlphabet
 {
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( PreferencesDialog.class );
-
 
   /**
    * The {@link NewDialogAlphabetForm}
@@ -50,17 +39,20 @@ public final class NewDialogAlphabet
     this.parent = parent;
     this.gui = new NewDialogAlphabetForm ();
     this.gui.setLogic ( this );
-    this.gui.styledAlphabetParserPanelInput.setAlphabet ( PreferenceManager
-        .getInstance ().getAlphabetItem ().getAlphabet () );
-    this.gui.styledAlphabetParserPanelPushDown.setAlphabet ( PreferenceManager
-        .getInstance ().getPushDownAlphabetItem ().getAlphabet () );
-    this.gui.jCheckBoxPushDownAlphabet.setSelected ( PreferenceManager
-        .getInstance ().getUsePushDownAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .setAlphabet ( PreferenceManager.getInstance ().getAlphabetItem ()
+            .getAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .setAlphabet ( PreferenceManager.getInstance ()
+            .getPushDownAlphabetItem ().getAlphabet () );
+    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+        .setSelected ( PreferenceManager.getInstance ()
+            .getUsePushDownAlphabet () );
 
     /*
      * Alphabet changed listener
      */
-    this.gui.styledAlphabetParserPanelInput
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
@@ -71,7 +63,7 @@ public final class NewDialogAlphabet
             setButtonStatus ();
           }
         } );
-    this.gui.styledAlphabetParserPanelPushDown
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
@@ -92,7 +84,8 @@ public final class NewDialogAlphabet
    */
   public final Alphabet getAlphabet ()
   {
-    return this.gui.styledAlphabetParserPanelInput.getAlphabet ();
+    return this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .getAlphabet ();
   }
 
 
@@ -114,7 +107,8 @@ public final class NewDialogAlphabet
    */
   public final Alphabet getPushDownAlphabet ()
   {
-    return this.gui.styledAlphabetParserPanelPushDown.getAlphabet ();
+    return this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .getAlphabet ();
   }
 
 
@@ -125,7 +119,7 @@ public final class NewDialogAlphabet
    */
   public final boolean getUsePushDownAlphabet ()
   {
-    return this.gui.jCheckBoxPushDownAlphabet.isSelected ();
+    return this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.isSelected ();
   }
 
 
@@ -158,36 +152,14 @@ public final class NewDialogAlphabet
 
 
   /**
-   * Handles the push down {@link Alphabet} item state changed.
-   * 
-   * @param event The item event.
-   */
-  public final void handlePushDownAlphabetItemStateChanged (
-      @SuppressWarnings ( "unused" )
-      ItemEvent event )
-  {
-    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
-    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
-      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
-    }
-    else
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
-      this.gui.styledAlphabetParserPanelPushDown
-          .synchronize ( this.gui.styledAlphabetParserPanelInput );
-    }
-  }
-
-
-  /**
    * Sets the status of the buttons.
    */
   private final void setButtonStatus ()
   {
-    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
-        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
+    if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .getAlphabet () == null )
+        || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .getAlphabet () == null ) )
     {
       this.gui.jGTIButtonFinished.setEnabled ( false );
     }

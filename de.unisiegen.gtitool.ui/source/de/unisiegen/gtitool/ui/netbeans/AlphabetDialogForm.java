@@ -45,10 +45,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         JLabelHeadline = new javax.swing.JLabel();
-        jLabelInputAlphabet = new javax.swing.JLabel();
-        styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
-        styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        alphabetPanelForm = new de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm();
         jPanelButtons = new javax.swing.JPanel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -75,49 +72,14 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(JLabelHeadline, gridBagConstraints);
 
-        jLabelInputAlphabet.setText(bundle.getString("PreferencesDialog.InputAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jLabelInputAlphabet, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
-        getContentPane().add(styledAlphabetParserPanelInput, gridBagConstraints);
-
-        jCheckBoxPushDownAlphabet.setSelected(true);
-        jCheckBoxPushDownAlphabet.setText(bundle.getString("PreferencesDialog.PushDownAlphabet")); // NOI18N
-        jCheckBoxPushDownAlphabet.setToolTipText(bundle.getString("PreferencesDialog.PushDownAlphabetToolTip")); // NOI18N
-        jCheckBoxPushDownAlphabet.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jCheckBoxPushDownAlphabet.setFocusPainted(false);
-        jCheckBoxPushDownAlphabet.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBoxPushDownAlphabetItemStateChanged(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jCheckBoxPushDownAlphabet, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
-        getContentPane().add(styledAlphabetParserPanelPushDown, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(alphabetPanelForm, gridBagConstraints);
 
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
@@ -156,7 +118,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
@@ -165,10 +127,6 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-480)/2, (screenSize.height-300)/2, 480, 300);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
-        this.logic.handlePushDownAlphabetItemStateChanged(evt);
-    }//GEN-LAST:event_jCheckBoxPushDownAlphabetItemStateChanged
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
         this.logic.handleCancel();
@@ -184,13 +142,10 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel JLabelHeadline;
-    public javax.swing.JCheckBox jCheckBoxPushDownAlphabet;
+    public de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm alphabetPanelForm;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JPanel jPanelButtons;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     // End of variables declaration//GEN-END:variables
  
 }

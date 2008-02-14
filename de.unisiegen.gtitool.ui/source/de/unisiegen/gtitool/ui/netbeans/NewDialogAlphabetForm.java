@@ -31,10 +31,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabelInputAlphabet = new javax.swing.JLabel();
-        styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jCheckBoxPushDownAlphabet = new javax.swing.JCheckBox();
-        styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        alphabetPanelForm = new de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm();
         jPanelButtons = new javax.swing.JPanel();
         jGTIButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonFinished = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -42,56 +39,19 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jLabelInputAlphabet.setText(bundle.getString("PreferencesDialog.InputAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        add(jLabelInputAlphabet, gridBagConstraints);
-
-        styledAlphabetParserPanelInput.setPreferredSize(new java.awt.Dimension(300, 150));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
-        add(styledAlphabetParserPanelInput, gridBagConstraints);
-
-        jCheckBoxPushDownAlphabet.setSelected(true);
-        jCheckBoxPushDownAlphabet.setText(bundle.getString("PreferencesDialog.PushDownAlphabet")); // NOI18N
-        jCheckBoxPushDownAlphabet.setToolTipText(bundle.getString("PreferencesDialog.PushDownAlphabetToolTip")); // NOI18N
-        jCheckBoxPushDownAlphabet.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jCheckBoxPushDownAlphabet.setFocusPainted(false);
-        jCheckBoxPushDownAlphabet.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jCheckBoxPushDownAlphabetItemStateChanged(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jCheckBoxPushDownAlphabet, gridBagConstraints);
-
-        styledAlphabetParserPanelPushDown.setPreferredSize(new java.awt.Dimension(300, 150));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
-        add(styledAlphabetParserPanelPushDown, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 16);
+        add(alphabetPanelForm, gridBagConstraints);
 
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
         jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
         jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
@@ -142,7 +102,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
@@ -161,21 +121,14 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
     private void jGTIButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPreviousActionPerformed
         logic.handlePrevious();
     }//GEN-LAST:event_jGTIButtonPreviousActionPerformed
-
-    private void jCheckBoxPushDownAlphabetItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxPushDownAlphabetItemStateChanged
-        this.logic.handlePushDownAlphabetItemStateChanged(evt);
-    }//GEN-LAST:event_jCheckBoxPushDownAlphabetItemStateChanged
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JCheckBox jCheckBoxPushDownAlphabet;
+    public de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm alphabetPanelForm;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonFinished;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrevious;
-    public javax.swing.JLabel jLabelInputAlphabet;
     public javax.swing.JPanel jPanelButtons;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     // End of variables declaration//GEN-END:variables
     
     private NewDialogAlphabet logic;

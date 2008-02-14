@@ -1,13 +1,10 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
-
-import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -28,12 +25,6 @@ import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
  */
 public final class AlphabetDialog
 {
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger.getLogger ( AlphabetDialog.class );
-
 
   /**
    * The {@link AlphabetDialogForm}.
@@ -64,9 +55,9 @@ public final class AlphabetDialog
     this.parent = parent;
     this.machine = machine;
     this.gui = new AlphabetDialogForm ( this, parent );
-    this.gui.styledAlphabetParserPanelInput.setAlphabet ( this.machine
-        .getAlphabet () );
-    this.gui.styledAlphabetParserPanelInput
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .setAlphabet ( this.machine.getAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
@@ -78,9 +69,9 @@ public final class AlphabetDialog
           }
         } );
 
-    this.gui.styledAlphabetParserPanelPushDown.setAlphabet ( this.machine
-        .getPushDownAlphabet () );
-    this.gui.styledAlphabetParserPanelPushDown
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .setAlphabet ( this.machine.getPushDownAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
 
@@ -92,8 +83,8 @@ public final class AlphabetDialog
           }
         } );
 
-    this.gui.jCheckBoxPushDownAlphabet.setSelected ( this.machine
-        .isUsePushDownAlphabet () );
+    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+        .setSelected ( this.machine.isUsePushDownAlphabet () );
   }
 
 
@@ -179,36 +170,15 @@ public final class AlphabetDialog
   {
     this.gui.setVisible ( false );
     performAlphabetChange ( this.machine.getAlphabet (),
-        this.gui.styledAlphabetParserPanelInput.getAlphabet () );
+        this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+            .getAlphabet () );
     performAlphabetChange ( this.machine.getPushDownAlphabet (),
-        this.gui.styledAlphabetParserPanelPushDown.getAlphabet () );
-    this.machine.setUsePushDownAlphabet ( this.gui.jCheckBoxPushDownAlphabet
-        .isSelected () );
+        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .getAlphabet () );
+    this.machine
+        .setUsePushDownAlphabet ( this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+            .isSelected () );
     this.gui.dispose ();
-  }
-
-
-  /**
-   * Handles the push down {@link Alphabet} item state changed.
-   * 
-   * @param event The item event.
-   */
-  public final void handlePushDownAlphabetItemStateChanged (
-      @SuppressWarnings ( "unused" )
-      ItemEvent event )
-  {
-    logger.debug ( "handle push down alphabet state changed" ); //$NON-NLS-1$
-    if ( this.gui.jCheckBoxPushDownAlphabet.isSelected () )
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( true );
-      this.gui.styledAlphabetParserPanelPushDown.synchronize ( null );
-    }
-    else
-    {
-      this.gui.styledAlphabetParserPanelPushDown.setEnabled ( false );
-      this.gui.styledAlphabetParserPanelPushDown
-          .synchronize ( this.gui.styledAlphabetParserPanelInput );
-    }
   }
 
 
@@ -255,16 +225,18 @@ public final class AlphabetDialog
    */
   private final void setButtonStatus ()
   {
-    if ( ( this.gui.styledAlphabetParserPanelInput.getAlphabet () == null )
-        || ( this.gui.styledAlphabetParserPanelPushDown.getAlphabet () == null ) )
+    if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .getAlphabet () == null )
+        || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .getAlphabet () == null ) )
     {
       this.gui.jGTIButtonOk.setEnabled ( false );
     }
     else
     {
-      TreeSet < Symbol > notRemoveableSymbolsFromAlphabet = getNotRemoveableSymbolsFromAlphabet ( this.gui.styledAlphabetParserPanelInput
+      TreeSet < Symbol > notRemoveableSymbolsFromAlphabet = getNotRemoveableSymbolsFromAlphabet ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
           .getAlphabet () );
-      TreeSet < Symbol > notRemoveableSymbolsFromPushDownAlphabet = getNotRemoveableSymbolsFromPushDownAlphabet ( this.gui.styledAlphabetParserPanelPushDown
+      TreeSet < Symbol > notRemoveableSymbolsFromPushDownAlphabet = getNotRemoveableSymbolsFromPushDownAlphabet ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
           .getAlphabet () );
       if ( notRemoveableSymbolsFromAlphabet.size () > 0 )
       {
@@ -275,7 +247,7 @@ public final class AlphabetDialog
           exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
               "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
         }
-        AlphabetDialog.this.gui.styledAlphabetParserPanelInput
+        AlphabetDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
             .setException ( exceptionList );
       }
       else if ( notRemoveableSymbolsFromPushDownAlphabet.size () > 0 )
@@ -287,7 +259,7 @@ public final class AlphabetDialog
           exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
               "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
         }
-        AlphabetDialog.this.gui.styledAlphabetParserPanelPushDown
+        AlphabetDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
             .setException ( exceptionList );
       }
       else

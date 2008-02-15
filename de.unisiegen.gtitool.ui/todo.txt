@@ -1,15 +1,6 @@
 CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
-BM		- Die ToolBar Icons müssen überarbeitet werden. Alle 32x32 Pixel.
-		  Am besten ein ScreenShot von einem Normal-, einem Start- und
-		  einem Final-Zustand. Die Icons zum Navigieren im Wort sollten alle
-		  gleich sein, entweder alle weiß oder alle grün. Am besten den
-		  automatisch mit einem kleinen Timer in der Ecke, ansonsten wie den
-		  normalen vorwärts
-BM		- Das Icon für das Alphabet sollte umgebaut werden, so dass damit die
-		  Einstellungen des aktuellen Dokuments verändert werden können. Ich
-		  würde "document-properties.png" vorschlagen
 BM		- Die Redo/Undo Icons auch in der ToolBar
 BM		- Den "NewStateNameDialog" umbauen zu einem "StateDialog". In dem
 		  man nebem dem neuen Namen auch einstellen kann, ob es sich um einen

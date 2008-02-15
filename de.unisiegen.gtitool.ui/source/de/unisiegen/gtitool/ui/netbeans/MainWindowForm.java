@@ -71,8 +71,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonFinalState = new javax.swing.JToggleButton();
         jButtonEditAlphabet = new javax.swing.JButton();
         jSeparatorMain1 = new javax.swing.JSeparator();
-        jButtonPrevious = new javax.swing.JButton();
         jButtonStart = new javax.swing.JButton();
+        jButtonPrevious = new javax.swing.JButton();
         jButtonNextStep = new javax.swing.JButton();
         jButtonAutoStep = new javax.swing.JToggleButton();
         jButtonStop = new javax.swing.JButton();
@@ -210,7 +210,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonMouse);
 
         toolbarButton.add(jButtonAddState);
-        jButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_add.gif")));
+        jButtonAddState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/state.png")));
         jButtonAddState.setToolTipText(bundle.getString("MachinePanel.AddState")); // NOI18N
         jButtonAddState.setBorderPainted(false);
         jButtonAddState.setFocusPainted(false);
@@ -228,7 +228,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonAddState);
 
         toolbarButton.add(jButtonAddTransition);
-        jButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_transition.gif")));
+        jButtonAddTransition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/transition.png")));
         jButtonAddTransition.setToolTipText(bundle.getString("MachinePanel.AddTransition")); // NOI18N
         jButtonAddTransition.setBorderPainted(false);
         jButtonAddTransition.setFocusPainted(false);
@@ -246,7 +246,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonAddTransition);
 
         toolbarButton.add(jButtonStartState);
-        jButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_start.gif")));
+        jButtonStartState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/startState.png")));
         jButtonStartState.setToolTipText(bundle.getString("MachinePanel.StartState")); // NOI18N
         jButtonStartState.setBorderPainted(false);
         jButtonStartState.setFocusPainted(false);
@@ -264,7 +264,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarEdit.add(jButtonStartState);
 
         toolbarButton.add(jButtonFinalState);
-        jButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_final.gif")));
+        jButtonFinalState.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/finalState.png")));
         jButtonFinalState.setToolTipText(bundle.getString("MachinePanel.FinalState")); // NOI18N
         jButtonFinalState.setBorderPainted(false);
         jButtonFinalState.setFocusPainted(false);
@@ -281,11 +281,14 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBarEdit.add(jButtonFinalState);
 
-        jButtonEditAlphabet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_alphabet.png")));
+        jButtonEditAlphabet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
         jButtonEditAlphabet.setToolTipText(bundle.getString("MachinePanel.EditAlphabet")); // NOI18N
         jButtonEditAlphabet.setBorderPainted(false);
         jButtonEditAlphabet.setFocusable(false);
+        jButtonEditAlphabet.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonEditAlphabet.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonEditAlphabet.setOpaque(false);
+        jButtonEditAlphabet.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonEditAlphabet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleToolbarEditAlphabet(evt);
@@ -298,24 +301,14 @@ public class MainWindowForm extends javax.swing.JFrame {
         jSeparatorMain1.setMaximumSize(new java.awt.Dimension(5, 32));
         jToolBarEdit.add(jSeparatorMain1);
 
-        jButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_previous.png")));
-        jButtonPrevious.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
-        jButtonPrevious.setBorderPainted(false);
-        jButtonPrevious.setFocusable(false);
-        jButtonPrevious.setOpaque(false);
-        jButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                handleWordPreviousStep(evt);
-            }
-        });
-
-        jToolBarEdit.add(jButtonPrevious);
-
-        jButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_start.png")));
+        jButtonStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-start.png")));
         jButtonStart.setToolTipText(bundle.getString("MachinePanel.WordModeStart")); // NOI18N
         jButtonStart.setBorderPainted(false);
         jButtonStart.setFocusable(false);
+        jButtonStart.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonStart.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonStart.setOpaque(false);
+        jButtonStart.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleWordStart(evt);
@@ -324,11 +317,30 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBarEdit.add(jButtonStart);
 
-        jButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_next.png")));
+        jButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
+        jButtonPrevious.setToolTipText(bundle.getString("MachinePanel.WordModePreviousStep")); // NOI18N
+        jButtonPrevious.setBorderPainted(false);
+        jButtonPrevious.setFocusable(false);
+        jButtonPrevious.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonPrevious.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonPrevious.setOpaque(false);
+        jButtonPrevious.setPreferredSize(new java.awt.Dimension(36, 36));
+        jButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handleWordPreviousStep(evt);
+            }
+        });
+
+        jToolBarEdit.add(jButtonPrevious);
+
+        jButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png")));
         jButtonNextStep.setToolTipText(bundle.getString("MachinePanel.WordModeNextStep")); // NOI18N
         jButtonNextStep.setBorderPainted(false);
         jButtonNextStep.setFocusable(false);
+        jButtonNextStep.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonNextStep.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonNextStep.setOpaque(false);
+        jButtonNextStep.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleWordNextStep(evt);
@@ -337,7 +349,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBarEdit.add(jButtonNextStep);
 
-        jButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_autostep.png")));
+        jButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png")));
         jButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
         jButtonAutoStep.setBorderPainted(false);
         jButtonAutoStep.setEnabled(false);
@@ -355,11 +367,14 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBarEdit.add(jButtonAutoStep);
 
-        jButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/toolbar_stop.png")));
+        jButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png")));
         jButtonStop.setToolTipText(bundle.getString("MachinePanel.WordModeStop")); // NOI18N
         jButtonStop.setBorderPainted(false);
         jButtonStop.setFocusable(false);
+        jButtonStop.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonStop.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonStop.setOpaque(false);
+        jButtonStop.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleWordStop(evt);

@@ -63,9 +63,8 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         jSliderAutoStep = new javax.swing.JSlider();
         jPanelViewSpace = new javax.swing.JPanel();
         jPanelColors = new javax.swing.JPanel();
-        jScrollPaneColor = new javax.swing.JScrollPane();
-        jListColor = new javax.swing.JList();
-        jTextPaneDescription = new javax.swing.JTextPane();
+        jScrollPaneColors = new javax.swing.JScrollPane();
+        jTreeColors = new javax.swing.JTree();
         jPanelAlphabet = new javax.swing.JPanel();
         alphabetPanelForm = new de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm();
         jPanelGrammar = new javax.swing.JPanel();
@@ -249,28 +248,16 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
 
         jPanelColors.setLayout(new java.awt.GridBagLayout());
 
-        jScrollPaneColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jListColor.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListColor.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jListColorMouseMoved(evt);
-            }
-        });
-        jListColor.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                jListColorValueChanged(evt);
-            }
-        });
-        jListColor.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jListColorMouseExited(evt);
-            }
+        jScrollPaneColors.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTreeColors.setRootVisible(false);
+        jTreeColors.setShowsRootHandles(true);
+        jTreeColors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jListColorMouseReleased(evt);
+                jTreeColorsMouseReleased(evt);
             }
         });
 
-        jScrollPaneColor.setViewportView(jListColor);
+        jScrollPaneColors.setViewportView(jTreeColors);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -278,22 +265,8 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        jPanelColors.add(jScrollPaneColor, gridBagConstraints);
-
-        jTextPaneDescription.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTextPaneDescription.setEditable(false);
-        jTextPaneDescription.setFocusable(false);
-        jTextPaneDescription.setMaximumSize(new java.awt.Dimension(6, 46));
-        jTextPaneDescription.setMinimumSize(new java.awt.Dimension(6, 46));
-        jTextPaneDescription.setPreferredSize(new java.awt.Dimension(6, 46));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        jPanelColors.add(jTextPaneDescription, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 16, 16);
+        jPanelColors.add(jScrollPaneColors, gridBagConstraints);
 
         jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabColors"), null, jPanelColors, bundle.getString("PreferencesDialog.TabColorsToolTip")); // NOI18N
 
@@ -400,6 +373,10 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         setBounds(0, 0, 480, 300);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTreeColorsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTreeColorsMouseReleased
+       this.logic.handleColorTreeMouseReleased(evt);
+    }//GEN-LAST:event_jTreeColorsMouseReleased
+
     private void jGTIButtonRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonRestoreActionPerformed
        this.logic.handleRestore();
     }//GEN-LAST:event_jGTIButtonRestoreActionPerformed
@@ -415,22 +392,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
        this.logic.handleCancel();
     }//GEN-LAST:event_jGTIButtonCancelActionPerformed
-
-    private void jListColorMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseExited
-       this.logic.handleColorListMouseExited(evt);
-    }//GEN-LAST:event_jListColorMouseExited
-
-    private void jListColorValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListColorValueChanged
-       this.logic.handleColorListValueChanged(evt);
-    }//GEN-LAST:event_jListColorValueChanged
-
-    private void jListColorMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseMoved
-        this.logic.handleColorListMouseMoved(evt);
-    }//GEN-LAST:event_jListColorMouseMoved
-
-    private void jListColorMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListColorMouseReleased
-        this.logic.handleColorListMouseReleased(evt);
-    }//GEN-LAST:event_jListColorMouseReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         this.logic.handleCancel();
@@ -452,7 +413,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JLabel jLabelMouseSelection;
     public javax.swing.JLabel jLabelTransition;
     public javax.swing.JLabel jLabelZoom;
-    public javax.swing.JList jListColor;
     public javax.swing.JPanel jPanelAlphabet;
     public javax.swing.JPanel jPanelColors;
     public javax.swing.JPanel jPanelGeneral;
@@ -460,11 +420,11 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JPanel jPanelGrammar;
     public javax.swing.JPanel jPanelView;
     public javax.swing.JPanel jPanelViewSpace;
-    public javax.swing.JScrollPane jScrollPaneColor;
+    public javax.swing.JScrollPane jScrollPaneColors;
     public javax.swing.JSlider jSliderAutoStep;
     public javax.swing.JSlider jSliderZoom;
     public javax.swing.JTabbedPane jTabbedPane;
-    public javax.swing.JTextPane jTextPaneDescription;
+    public javax.swing.JTree jTreeColors;
     public de.unisiegen.gtitool.ui.netbeans.TerminalPanelForm terminalPanelForm;
     // End of variables declaration//GEN-END:variables
     

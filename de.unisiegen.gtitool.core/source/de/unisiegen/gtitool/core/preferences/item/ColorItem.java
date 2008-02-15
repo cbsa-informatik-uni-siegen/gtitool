@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -14,31 +15,38 @@ import javax.swing.ImageIcon;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class ColorItem implements Cloneable, Comparable < ColorItem >
+public final class ColorItem extends DefaultMutableTreeNode implements
+    Cloneable, Comparable < ColorItem >
 {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -2610306920052697585L;
+
 
   /**
    * The {@link Color} of this item.
    */
-  private Color color;
+  private Color color = null;
 
 
   /**
    * The caption of this item.
    */
-  private String caption;
+  private String caption = null;
 
 
   /**
    * The description of this item.
    */
-  private String description;
+  private String description = null;
 
 
   /**
    * The standard {@link Color} of this item.
    */
-  private Color standardColor;
+  private Color standardColor = null;
 
 
   /**
@@ -52,6 +60,7 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
   public ColorItem ( Color color, String caption, String description,
       Color standardColor )
   {
+    super ( caption );
     // Color
     setColor ( color );
     // Caption
@@ -60,6 +69,19 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
     setDescription ( description );
     // StandardColor
     setStandardColor ( standardColor );
+  }
+
+
+  /**
+   * Allocates a new {@link ColorItem}.
+   * 
+   * @param caption The caption of this item.
+   */
+  public ColorItem ( String caption )
+  {
+    super ( caption );
+    // Caption
+    setCaption ( caption );
   }
 
 
@@ -84,24 +106,6 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
   public final int compareTo ( ColorItem other )
   {
     return this.caption.compareTo ( other.caption );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  @Override
-  public final boolean equals ( Object other )
-  {
-    if ( other instanceof ColorItem )
-    {
-      ColorItem colorItem = ( ColorItem ) other;
-      return ( ( this.color.equals ( colorItem.color ) ) && ( this.standardColor
-          .equals ( colorItem.standardColor ) ) );
-    }
-    return false;
   }
 
 
@@ -172,18 +176,6 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#hashCode()
-   */
-  @Override
-  public final int hashCode ()
-  {
-    return this.color.hashCode () + this.standardColor.hashCode ();
-  }
-
-
-  /**
    * Restores the default {@link Color} of this item.
    */
   public final void restore ()
@@ -218,10 +210,6 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
    */
   public final void setColor ( Color color )
   {
-    if ( color == null )
-    {
-      throw new NullPointerException ( "color is null" ); //$NON-NLS-1$
-    }
     this.color = color;
   }
 
@@ -233,14 +221,6 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
    */
   public final void setDescription ( String description )
   {
-    if ( description == null )
-    {
-      throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
-    }
-    if ( description.equals ( "" ) ) //$NON-NLS-1$
-    {
-      throw new IllegalArgumentException ( "description is empty" ); //$NON-NLS-1$
-    }
     this.description = description;
   }
 
@@ -252,10 +232,6 @@ public final class ColorItem implements Cloneable, Comparable < ColorItem >
    */
   public final void setStandardColor ( Color standardColor )
   {
-    if ( standardColor == null )
-    {
-      throw new NullPointerException ( "standard color is null" ); //$NON-NLS-1$
-    }
     this.standardColor = standardColor;
   }
 

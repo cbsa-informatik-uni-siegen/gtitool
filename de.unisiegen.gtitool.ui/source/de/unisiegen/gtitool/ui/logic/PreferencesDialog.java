@@ -3,36 +3,32 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Frame;
-import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
+import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
 
@@ -52,7 +48,6 @@ import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
@@ -72,107 +67,54 @@ public final class PreferencesDialog implements LanguageChangedListener
 {
 
   /**
-   * The color {@link ListCellRenderer}.
+   * The {@link Color} tree cell renderer.
    * 
    * @author Christian Fehler
    */
-  protected final class ColorItemCellRenderer extends ModifiedListCellRenderer
+  protected class ColorTreeCellRenderer extends DefaultTreeCellRenderer
   {
 
     /**
      * The serial version uid.
      */
-    private static final long serialVersionUID = 7412269853613306482L;
+    private static final long serialVersionUID = -989208191259975641L;
+
+
+    /**
+     * Allocates a new {@link ColorTreeCellRenderer}.
+     */
+    public ColorTreeCellRenderer ()
+    {
+      // Do nothing
+    }
 
 
     /**
      * {@inheritDoc}
      * 
-     * @see DefaultListCellRenderer#getListCellRendererComponent( JList, Object,
-     *      int, boolean, boolean)
+     * @see DefaultTreeCellRenderer#getTreeCellRendererComponent(JTree, Object,
+     *      boolean, boolean, boolean, int, boolean)
      */
     @Override
-    public Component getListCellRendererComponent ( JList jList, Object value,
-        int index, boolean isSelected, boolean cellHasFocus )
+    public final Component getTreeCellRendererComponent ( JTree tree,
+        Object value, boolean sel, boolean expanded, boolean leaf, int row,
+        @SuppressWarnings ( "unused" )
+        boolean focus )
     {
-      // The cell has focus value is not used any more
-      JLabel label = ( JLabel ) super.getListCellRendererComponent ( jList,
-          value, index, isSelected, cellHasFocus );
-      ColorItem colorItem = ( ColorItem ) value;
-      label.setIcon ( colorItem.getIcon () );
-      label.setText ( colorItem.getCaption () );
-      label.setToolTipText ( colorItem.getDescription () );
-      return label;
-    }
-  }
-
-
-  /**
-   * The color {@link ListModel}.
-   * 
-   * @author Christian Fehler
-   */
-  protected final class ColorListModel extends AbstractListModel
-  {
-
-    /**
-     * The serial version uid.
-     */
-    private static final long serialVersionUID = -4310954235069928120L;
-
-
-    /**
-     * The item list.
-     */
-    private ArrayList < ColorItem > list;
-
-
-    /**
-     * Allocates a new {@link ColorListModel}.
-     */
-    public ColorListModel ()
-    {
-      this.list = new ArrayList < ColorItem > ();
-    }
-
-
-    /**
-     * Adds the given item.
-     * 
-     * @param item The item to add.
-     */
-    public final void add ( ColorItem item )
-    {
-      this.list.add ( item );
-    }
-
-
-    /**
-     * Returns the value at the specified index.
-     * 
-     * @param index The requested index.
-     * @return The value at the specified index.
-     * @see ListModel#getElementAt(int)
-     */
-    public final Object getElementAt ( int index )
-    {
-      if ( ( index < 0 ) || ( index >= this.list.size () ) )
+      super.getTreeCellRendererComponent ( tree, value, sel, expanded, leaf,
+          row, sel );
+      if ( leaf )
       {
-        throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
+        ColorItem colorItem = ( ColorItem ) value;
+        setIcon ( colorItem.getIcon () );
+        setToolTipText ( colorItem.getDescription () );
       }
-      return this.list.get ( index );
-    }
-
-
-    /**
-     * Returns the length of the list.
-     * 
-     * @return The length of the list.
-     * @see ListModel#getSize()
-     */
-    public final int getSize ()
-    {
-      return this.list.size ();
+      else
+      {
+        setIcon ( null );
+        setToolTipText ( null );
+      }
+      return this;
     }
   }
 
@@ -368,83 +310,6 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Selects the item with the given index in the color list or clears the
-   * selection after a delay.
-   * 
-   * @author Christian Fehler
-   */
-  protected final class SleepTimerTask extends TimerTask
-  {
-
-    /**
-     * The index.
-     */
-    protected int index;
-
-
-    /**
-     * The color list.
-     */
-    protected JList colorList;
-
-
-    /**
-     * Initilizes the {@link SleepTimerTask}.
-     * 
-     * @param colorList The color list.
-     * @param index The index.
-     */
-    public SleepTimerTask ( JList colorList, int index )
-    {
-      this.colorList = colorList;
-      this.index = index;
-    }
-
-
-    /**
-     * Selects the item with the given index in the color list or clears the
-     * selection after a delay.
-     * 
-     * @see TimerTask#run()
-     */
-    @Override
-    public final void run ()
-    {
-      if ( this.index == -1 )
-      {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void run ()
-          {
-            PreferencesDialog.this.jPopupMenuColorList.setVisible ( false );
-            SleepTimerTask.this.colorList.getSelectionModel ()
-                .clearSelection ();
-            SleepTimerTask.this.colorList.repaint ();
-          }
-        } );
-      }
-      else
-      {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void run ()
-          {
-            PreferencesDialog.this.jPopupMenuColorList.setVisible ( false );
-            SleepTimerTask.this.colorList
-                .setSelectedIndex ( SleepTimerTask.this.index );
-            SleepTimerTask.this.colorList.repaint ();
-          }
-        } );
-      }
-    }
-  }
-
-
-  /**
    * The transition {@link ComboBoxModel}.
    * 
    * @author Christian Fehler
@@ -578,18 +443,6 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The {@link DefaultComboBoxModel} of the languages.
    */
   private LookAndFeelComboBoxModel lookAndFeelComboBoxModel;
-
-
-  /**
-   * The {@link ColorListModel}.
-   */
-  private ColorListModel colorListModel;
-
-
-  /**
-   * The {@link ColorItemCellRenderer}.
-   */
-  private ColorItemCellRenderer colorItemCellRenderer;
 
 
   /**
@@ -869,12 +722,6 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link Timer} of the color list.
-   */
-  private Timer colorTimer = null;
-
-
-  /**
    * The language {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuLanguage;
@@ -923,6 +770,36 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The color tree root node.
+   */
+  private DefaultMutableTreeNode rootNode;
+
+
+  /**
+   * The color tree {@link State} node.
+   */
+  private DefaultMutableTreeNode stateNode;
+
+
+  /**
+   * The color tree {@link Transition} node.
+   */
+  private DefaultMutableTreeNode transitionNode;
+
+
+  /**
+   * The color tree {@link Symbol} node.
+   */
+  private DefaultMutableTreeNode symbolNode;
+
+
+  /**
+   * The color tree parser node.
+   */
+  private DefaultMutableTreeNode parserNode;
+
+
+  /**
    * Allocates a new {@link PreferencesDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -965,102 +842,32 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Handles the mouse exited event on the color list.
+   * Handles the {@link MouseEvent} on the color tree.
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleColorListMouseExited ( @SuppressWarnings ( "unused" )
-  MouseEvent event )
+  public final void handleColorTreeMouseReleased ( MouseEvent event )
   {
-    logger.debug ( "handle color list mouse exited" ); //$NON-NLS-1$
-    if ( this.colorTimer != null )
+    if ( ( event.getButton () == MouseEvent.BUTTON1 )
+        && ( event.getClickCount () > 1 ) )
     {
-      this.colorTimer.cancel ();
-    }
-  }
-
-
-  /**
-   * Handles the mouse moved event on the color list.
-   * 
-   * @param event The {@link MouseEvent}.
-   */
-  public final void handleColorListMouseMoved ( MouseEvent event )
-  {
-    int index = this.gui.jListColor.locationToIndex ( event.getPoint () );
-    Rectangle rect = this.gui.jListColor.getCellBounds ( index, index );
-    // Mouse is not over an item
-    if ( this.colorTimer != null )
-    {
-      this.colorTimer.cancel ();
-    }
-    this.colorTimer = new Timer ();
-    if ( event.getY () > rect.y + rect.height )
-    {
-      this.gui.jListColor.setCursor ( new Cursor ( Cursor.DEFAULT_CURSOR ) );
-      this.colorTimer.schedule (
-          new SleepTimerTask ( this.gui.jListColor, -1 ), 250 );
-    }
-    else
-    {
-      this.gui.jListColor.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
-      this.colorTimer.schedule ( new SleepTimerTask ( this.gui.jListColor,
-          index ), 250 );
-    }
-  }
-
-
-  /**
-   * Handles the {@link MouseEvent} on the color list.
-   * 
-   * @param event The {@link MouseEvent}.
-   */
-  public final void handleColorListMouseReleased ( MouseEvent event )
-  {
-    logger.debug ( "handle color list mouse released" ); //$NON-NLS-1$
-    if ( event.getButton () == MouseEvent.BUTTON1 )
-    {
-      int index = this.gui.jListColor.locationToIndex ( event.getPoint () );
-      Rectangle rect = this.gui.jListColor.getCellBounds ( index, index );
-      // Mouse is not over an item
-      if ( event.getY () > rect.y + rect.height )
+      logger.debug ( "handle color tree mouse released" ); //$NON-NLS-1$ 
+      TreePath selectedPath = this.gui.jTreeColors.getSelectionModel ()
+          .getSelectionPath ();
+      if ( ( selectedPath != null )
+          && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
       {
-        return;
-      }
-      ColorItem selectedColorItem = ( ColorItem ) this.gui.jListColor
-          .getSelectedValue ();
-      if ( selectedColorItem != null )
-      {
+        ColorItem selectedColorItem = ( ColorItem ) selectedPath
+            .getLastPathComponent ();
         Color color = JColorChooser.showDialog ( this.gui, Messages
             .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
             selectedColorItem.getColor () );
         if ( color != null )
         {
           selectedColorItem.setColor ( color );
-          this.gui.jListColor.repaint ();
+          this.gui.jTreeColors.repaint ();
         }
       }
-    }
-  }
-
-
-  /**
-   * Handles {@link ListSelectionEvent}s on the color list.
-   * 
-   * @param event The {@link ListSelectionEvent}.
-   */
-  public final void handleColorListValueChanged ( @SuppressWarnings ( "unused" )
-  ListSelectionEvent event )
-  {
-    logger.debug ( "handle color list value changed" ); //$NON-NLS-1$
-    ColorItem colorItem = ( ColorItem ) this.gui.jListColor.getSelectedValue ();
-    if ( colorItem == null )
-    {
-      this.gui.jTextPaneDescription.setText ( "" ); //$NON-NLS-1$
-    }
-    else
-    {
-      this.gui.jTextPaneDescription.setText ( colorItem.getDescription () );
     }
   }
 
@@ -1127,7 +934,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
 
-    this.gui.jListColor.repaint ();
+    this.gui.jTreeColors.repaint ();
 
     /*
      * Alphabet
@@ -1175,7 +982,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     /*
      * Color
      */
-    initColorList ();
+    initColor ();
     /*
      * Alphabet
      */
@@ -1334,9 +1141,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * Initializes the color list.
+   * Initializes the color.
    */
-  private final void initColorList ()
+  private final void initColor ()
   {
     // State
     this.colorItemState = PreferenceManager.getInstance ().getColorItemState ();
@@ -1406,12 +1213,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.initialColorItemParserHighlighting = this.colorItemParserHighlighting
         .clone ();
 
-    // Renderer
-    this.colorItemCellRenderer = new ColorItemCellRenderer ();
-    this.gui.jListColor.setCellRenderer ( this.colorItemCellRenderer );
-    // Model
-    this.colorListModel = new ColorListModel ();
-
     // PopupMenu
     this.jPopupMenuColorList = new JPopupMenu ();
     final JMenuItem jMenuItemRestoreColorList = new JMenuItem ( Messages
@@ -1427,12 +1228,20 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        ( ( ColorItem ) PreferencesDialog.this.gui.jListColor
-            .getSelectedValue () ).restore ();
+        TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+            .getSelectionModel ().getSelectionPath ();
+        if ( ( selectedPath != null )
+            && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
+        {
+          ColorItem selectedColorItem = ( ColorItem ) selectedPath
+              .getLastPathComponent ();
+          selectedColorItem.restore ();
+        }
       }
     } );
     this.jPopupMenuColorList.add ( jMenuItemRestoreColorList );
-    this.gui.jListColor.addMouseListener ( new MouseAdapter ()
+
+    this.gui.jTreeColors.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1441,22 +1250,16 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-          if ( PreferencesDialog.this.colorTimer != null )
+          TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+              .getPathForLocation ( event.getX (), event.getY () );
+          if ( ( selectedPath != null )
+              && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
           {
-            PreferencesDialog.this.colorTimer.cancel ();
+            PreferencesDialog.this.gui.jTreeColors
+                .setSelectionPath ( selectedPath );
+            PreferencesDialog.this.jPopupMenuColorList.show ( event
+                .getComponent (), event.getX (), event.getY () );
           }
-          int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( event.getPoint () );
-          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
-              index, index );
-          // Mouse is not over an item
-          if ( event.getY () > rect.y + rect.height )
-          {
-            return;
-          }
-          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( event
-              .getComponent (), event.getX (), event.getY () );
         }
       }
 
@@ -1467,25 +1270,20 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-          if ( PreferencesDialog.this.colorTimer != null )
+          TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+              .getPathForLocation ( event.getX (), event.getY () );
+          if ( ( selectedPath != null )
+              && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
           {
-            PreferencesDialog.this.colorTimer.cancel ();
+            PreferencesDialog.this.gui.jTreeColors
+                .setSelectionPath ( selectedPath );
+            PreferencesDialog.this.jPopupMenuColorList.show ( event
+                .getComponent (), event.getX (), event.getY () );
           }
-          int index = PreferencesDialog.this.gui.jListColor
-              .locationToIndex ( event.getPoint () );
-          Rectangle rect = PreferencesDialog.this.gui.jListColor.getCellBounds (
-              index, index );
-          // Mouse is not over an item
-          if ( event.getY () > rect.y + rect.height )
-          {
-            return;
-          }
-          PreferencesDialog.this.gui.jListColor.setSelectedIndex ( index );
-          PreferencesDialog.this.jPopupMenuColorList.show ( event
-              .getComponent (), event.getX (), event.getY () );
         }
       }
     } );
+
     PreferenceManager.getInstance ().addLanguageChangedListener (
         new LanguageChangedListener ()
         {
@@ -1501,26 +1299,48 @@ public final class PreferencesDialog implements LanguageChangedListener
         } );
 
     // Items
-    this.colorListModel.add ( this.colorItemState );
-    this.colorListModel.add ( this.colorItemStateBackground );
-    this.colorListModel.add ( this.colorItemStateSelected );
-    this.colorListModel.add ( this.colorItemStateStart );
-    this.colorListModel.add ( this.colorItemStateActive );
-    this.colorListModel.add ( this.colorItemStateError );
+    this.rootNode = new DefaultMutableTreeNode ( null );
 
-    this.colorListModel.add ( this.colorItemTransition );
-    this.colorListModel.add ( this.colorItemTransitionSelected );
-    this.colorListModel.add ( this.colorItemTransitionActive );
-    this.colorListModel.add ( this.colorItemTransitionError );
+    this.stateNode = new DefaultMutableTreeNode ( Messages
+        .getString ( "PreferencesDialog.ColorTreeState" ) ); //$NON-NLS-1$
+    this.stateNode.add ( this.colorItemState );
+    this.stateNode.add ( this.colorItemStateBackground );
+    this.stateNode.add ( this.colorItemStateSelected );
+    this.stateNode.add ( this.colorItemStateStart );
+    this.stateNode.add ( this.colorItemStateActive );
+    this.stateNode.add ( this.colorItemStateError );
 
-    this.colorListModel.add ( this.colorItemSymbol );
-    this.colorListModel.add ( this.colorItemSymbolActive );
-    this.colorListModel.add ( this.colorItemSymbolError );
+    this.transitionNode = new DefaultMutableTreeNode ( Messages
+        .getString ( "PreferencesDialog.ColorTreeTransition" ) ); //$NON-NLS-1$
+    this.transitionNode.add ( this.colorItemTransition );
+    this.transitionNode.add ( this.colorItemTransitionSelected );
+    this.transitionNode.add ( this.colorItemTransitionActive );
+    this.transitionNode.add ( this.colorItemTransitionError );
 
-    this.colorListModel.add ( this.colorItemParserWarning );
-    this.colorListModel.add ( this.colorItemParserHighlighting );
+    this.symbolNode = new DefaultMutableTreeNode ( Messages
+        .getString ( "PreferencesDialog.ColorTreeSymbol" ) ); //$NON-NLS-1$
+    this.symbolNode.add ( this.colorItemSymbol );
+    this.symbolNode.add ( this.colorItemSymbolActive );
+    this.symbolNode.add ( this.colorItemSymbolError );
 
-    this.gui.jListColor.setModel ( this.colorListModel );
+    this.parserNode = new DefaultMutableTreeNode ( Messages
+        .getString ( "PreferencesDialog.ColorTreeParser" ) ); //$NON-NLS-1$
+    this.parserNode.add ( this.colorItemParserWarning );
+    this.parserNode.add ( this.colorItemParserHighlighting );
+
+    this.rootNode.add ( this.stateNode );
+    this.rootNode.add ( this.transitionNode );
+    this.rootNode.add ( this.symbolNode );
+    this.rootNode.add ( this.parserNode );
+
+    DefaultTreeModel model = new DefaultTreeModel ( this.rootNode );
+    this.gui.jTreeColors.setModel ( model );
+    this.gui.jTreeColors.setRowHeight ( 0 );
+    this.gui.jTreeColors.getSelectionModel ().setSelectionMode (
+        TreeSelectionModel.SINGLE_TREE_SELECTION );
+    this.gui.jTreeColors.setCellRenderer ( new ColorTreeCellRenderer () );
+
+    ToolTipManager.sharedInstance ().registerComponent ( this.gui.jTreeColors );
   }
 
 
@@ -1537,7 +1357,6 @@ public final class PreferencesDialog implements LanguageChangedListener
       this.languageComboBoxModel.addElement ( current );
     }
     this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
-    this.gui.jComboBoxLanguage.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
     this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
@@ -1640,8 +1459,6 @@ public final class PreferencesDialog implements LanguageChangedListener
           .getName (), current.getClassName () ) );
     }
     this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
-    this.gui.jComboBoxLookAndFeel
-        .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();
     this.gui.jComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
@@ -1720,8 +1537,6 @@ public final class PreferencesDialog implements LanguageChangedListener
         .create ( 1 ) );
     this.gui.jComboBoxMouseSelection
         .setModel ( this.mouseSelectionComboBoxModel );
-    this.gui.jComboBoxMouseSelection.setCursor ( new Cursor (
-        Cursor.HAND_CURSOR ) );
     this.initialMouseSelectionItem = PreferenceManager.getInstance ()
         .getMouseSelectionItem ();
     this.gui.jComboBoxMouseSelection
@@ -2071,7 +1886,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.transitionComboBoxModel.addElement ( TransitionItem.create ( 0 ) );
     this.transitionComboBoxModel.addElement ( TransitionItem.create ( 1 ) );
     this.gui.jComboBoxTransition.setModel ( this.transitionComboBoxModel );
-    this.gui.jComboBoxTransition.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
     this.initialTransitionItem = PreferenceManager.getInstance ()
         .getTransitionItem ();
     this.gui.jComboBoxTransition.setSelectedItem ( this.initialTransitionItem );
@@ -2390,11 +2204,31 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
     this.colorItemParserHighlighting.setDescription ( Messages
         .getString ( "Preferences.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
-    // Update description
-    ColorItem colorItem = ( ColorItem ) this.gui.jListColor.getSelectedValue ();
-    if ( colorItem != null )
+    // Color tree
+    this.stateNode.setUserObject ( Messages
+        .getString ( "PreferencesDialog.ColorTreeState" ) ); //$NON-NLS-1$
+    this.transitionNode.setUserObject ( Messages
+        .getString ( "PreferencesDialog.ColorTreeTransition" ) ); //$NON-NLS-1$
+    this.symbolNode.setUserObject ( Messages
+        .getString ( "PreferencesDialog.ColorTreeSymbol" ) ); //$NON-NLS-1$
+    this.parserNode.setUserObject ( Messages
+        .getString ( "PreferencesDialog.ColorTreeParser" ) ); //$NON-NLS-1$
+    nodeChanged ( this.rootNode );
+  }
+
+
+  /**
+   * Calls the node changed method on the given node and all child nodes.
+   * 
+   * @param node The changed node.
+   */
+  private final void nodeChanged ( TreeNode node )
+  {
+    ( ( DefaultTreeModel ) this.gui.jTreeColors.getModel () )
+        .nodeChanged ( node );
+    for ( int i = 0 ; i < node.getChildCount () ; i++ )
     {
-      this.gui.jTextPaneDescription.setText ( colorItem.getDescription () );
+      nodeChanged ( node.getChildAt ( i ) );
     }
   }
 
@@ -2477,7 +2311,8 @@ public final class PreferencesDialog implements LanguageChangedListener
   private final void saveColor ()
   {
     // State
-    if ( !this.initialColorItemState.equals ( this.colorItemState ) )
+    if ( !this.initialColorItemState.getColor ().equals (
+        this.colorItemState.getColor () ) )
     {
       logger.debug ( "color of the state changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2489,8 +2324,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemState.getColor () );
     }
     // State background
-    if ( !this.initialColorItemStateBackground
-        .equals ( this.colorItemStateBackground ) )
+    if ( !this.initialColorItemStateBackground.getColor ().equals (
+        this.colorItemStateBackground.getColor () ) )
     {
       logger.debug ( "color of the state background changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemStateBackground.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2504,8 +2339,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemStateBackground.getColor () );
     }
     // State selected
-    if ( !this.initialColorItemStateSelected
-        .equals ( this.colorItemStateSelected ) )
+    if ( !this.initialColorItemStateSelected.getColor ().equals (
+        this.colorItemStateSelected.getColor () ) )
     {
       logger.debug ( "color of the selected state changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemStateSelected.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2518,7 +2353,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemStateSelected.getColor () );
     }
     // State start
-    if ( !this.initialColorItemStateStart.equals ( this.colorItemStateStart ) )
+    if ( !this.initialColorItemStateStart.getColor ().equals (
+        this.colorItemStateStart.getColor () ) )
     {
       logger.debug ( "color of the start state changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemStateStart.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2531,7 +2367,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemStateStart.getColor () );
     }
     // State active
-    if ( !this.initialColorItemStateActive.equals ( this.colorItemStateActive ) )
+    if ( !this.initialColorItemStateActive.getColor ().equals (
+        this.colorItemStateActive.getColor () ) )
     {
       logger.debug ( "color of the active state changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemStateActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2544,7 +2381,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemStateActive.getColor () );
     }
     // State error
-    if ( !this.initialColorItemStateError.equals ( this.colorItemStateError ) )
+    if ( !this.initialColorItemStateError.getColor ().equals (
+        this.colorItemStateError.getColor () ) )
     {
       logger.debug ( "color of the error state changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemStateError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2558,7 +2396,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Transition
-    if ( !this.initialColorItemTransition.equals ( this.colorItemTransition ) )
+    if ( !this.initialColorItemTransition.getColor ().equals (
+        this.colorItemTransition.getColor () ) )
     {
       logger.debug ( "color of the transition changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2571,8 +2410,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemTransition.getColor () );
     }
     // Transition selected
-    if ( !this.initialColorItemTransitionSelected
-        .equals ( this.colorItemTransitionSelected ) )
+    if ( !this.initialColorItemTransitionSelected.getColor ().equals (
+        this.colorItemTransitionSelected.getColor () ) )
     {
       logger
           .debug ( "color of the selected transition changed to \"" //$NON-NLS-1$
@@ -2587,8 +2426,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemTransitionSelected.getColor () );
     }
     // Transition active
-    if ( !this.initialColorItemTransitionActive
-        .equals ( this.colorItemTransitionActive ) )
+    if ( !this.initialColorItemTransitionActive.getColor ().equals (
+        this.colorItemTransitionActive.getColor () ) )
     {
       logger
           .debug ( "color of the active transition changed to \"" //$NON-NLS-1$
@@ -2603,8 +2442,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemTransitionActive.getColor () );
     }
     // Transition error
-    if ( !this.initialColorItemTransitionError
-        .equals ( this.colorItemTransitionError ) )
+    if ( !this.initialColorItemTransitionError.getColor ().equals (
+        this.colorItemTransitionError.getColor () ) )
     {
       logger.debug ( "color of the error transition changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemTransitionError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2619,7 +2458,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Symbol
-    if ( !this.initialColorItemSymbol.equals ( this.colorItemSymbol ) )
+    if ( !this.initialColorItemSymbol.getColor ().equals (
+        this.colorItemSymbol.getColor () ) )
     {
       logger.debug ( "color of the symbol changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2632,8 +2472,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemSymbol.getColor () );
     }
     // Symbol active
-    if ( !this.initialColorItemSymbolActive
-        .equals ( this.colorItemSymbolActive ) )
+    if ( !this.initialColorItemSymbolActive.getColor ().equals (
+        this.colorItemSymbolActive.getColor () ) )
     {
       logger.debug ( "color of the active symbol changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemSymbolActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2646,7 +2486,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemSymbolActive.getColor () );
     }
     // Symbol error
-    if ( !this.initialColorItemSymbolError.equals ( this.colorItemSymbolError ) )
+    if ( !this.initialColorItemSymbolError.getColor ().equals (
+        this.colorItemSymbolError.getColor () ) )
     {
       logger.debug ( "color of the error symbol changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemSymbolError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2660,8 +2501,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Parser warning
-    if ( !this.initialColorItemParserWarning
-        .equals ( this.colorItemParserWarning ) )
+    if ( !this.initialColorItemParserWarning.getColor ().equals (
+        this.colorItemParserWarning.getColor () ) )
     {
       logger.debug ( "color of the parser warning changed to \"" //$NON-NLS-1$
           + "r=" + this.colorItemParserWarning.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
@@ -2674,8 +2515,8 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemParserWarning.getColor () );
     }
     // Parser highlighting
-    if ( !this.initialColorItemParserHighlighting
-        .equals ( this.colorItemParserHighlighting ) )
+    if ( !this.initialColorItemParserHighlighting.getColor ().equals (
+        this.colorItemParserHighlighting.getColor () ) )
     {
       logger
           .debug ( "color of the parser highlighting changed to \"" //$NON-NLS-1$

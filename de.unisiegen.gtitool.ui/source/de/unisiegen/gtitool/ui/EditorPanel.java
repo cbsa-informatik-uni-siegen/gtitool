@@ -90,4 +90,18 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * Undo last step
    */
   public void handleUndo();
+
+  /**
+   * Signals if this panel is undo able
+   * 
+   * @return true, if is undo able, false else
+   */
+  public boolean isUndoAble ();
+
+  /**
+   * Signals if this panel is redo able
+   * 
+   * @return true, if is redo able, false else
+   */
+  public boolean isRedoAble ();
 }

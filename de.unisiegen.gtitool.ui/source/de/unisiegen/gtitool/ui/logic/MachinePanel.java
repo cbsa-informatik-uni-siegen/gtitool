@@ -2547,4 +2547,24 @@ public final class MachinePanel implements EditorPanel
     this.redoUndoHandler.undo ();
     
   }
+
+  /**
+   * Signals if this panel is redo able
+   * 
+   * @return true, if is redo able, false else
+   */
+  public boolean isRedoAble ()
+  {
+    return this.redoUndoHandler.isRedoAble();
+  }
+
+  /**
+   * Signals if this panel is undo able
+   * 
+   * @return true, if is undo able, false else
+   */
+  public boolean isUndoAble ()
+  {
+    return this.redoUndoHandler.isUndoAble();
+  }
 }

@@ -748,7 +748,15 @@ public final class MainWindow implements LanguageChangedListener
             .isWordEnterMode () );
         this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
             .isWordEnterMode () );
-
+        
+        //Set the status of the word navigation icons
+        this.gui.jButtonStart.setEnabled ( machinePanel.isWordEnterMode () && !machinePanel.isWordNavigation () );
+        this.gui.jButtonPrevious.setEnabled ( machinePanel.isWordNavigation () );
+        this.gui.jButtonNextStep.setEnabled ( machinePanel.isWordNavigation () );
+        this.gui.jButtonAutoStep.setEnabled ( machinePanel.isWordNavigation () );
+        this.gui.jButtonStop.setEnabled ( machinePanel.isWordNavigation () );
+        
+        
       }
       else
       {
@@ -760,6 +768,12 @@ public final class MainWindow implements LanguageChangedListener
         setToolBarEditItemState ( false );
         setToolBarEnterWordItemState ( false );
       }
+      // Undo
+      this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble() );
+      this.gui.jButtonUndo.setEnabled ( panel.isUndoAble() );
+      // Redo
+      this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble() );
+      this.gui.jButtonRedo.setEnabled ( panel.isRedoAble() );
     }
     // Save status
     setSaveState ();
@@ -1382,8 +1396,10 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemPaste.setVisible ( false );
     // Undo
     this.gui.jMenuItemUndo.setEnabled ( false );
+    this.gui.jButtonUndo.setEnabled ( false );
     // Redo
     this.gui.jMenuItemRedo.setEnabled ( false );
+    this.gui.jButtonRedo.setEnabled ( false );
     // Separator
     this.gui.jSeparatorEdit1.setVisible ( false );
     this.gui.jSeparatorEdit2.setVisible ( false );

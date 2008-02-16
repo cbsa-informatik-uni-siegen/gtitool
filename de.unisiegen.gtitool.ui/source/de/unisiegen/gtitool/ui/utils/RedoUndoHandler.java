@@ -54,7 +54,9 @@ public class RedoUndoHandler
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
     this.mainWindow.jMenuItemRedo.setEnabled ( false );
+    this.mainWindow.jButtonRedo.setEnabled ( false );
     this.mainWindow.jMenuItemUndo.setEnabled ( true );
+    this.mainWindow.jButtonUndo.setEnabled ( true );
   }
 
   /**
@@ -64,7 +66,9 @@ public class RedoUndoHandler
   {
     RedoUndoItem step = this.undoSteps.pop ();
     this.mainWindow.jMenuItemRedo.setEnabled ( true );
+    this.mainWindow.jButtonRedo.setEnabled ( true );
     this.mainWindow.jMenuItemUndo.setEnabled ( !this.undoSteps.isEmpty () );
+    this.mainWindow.jButtonUndo.setEnabled ( !this.undoSteps.isEmpty () );
     this.redoSteps.push ( step );
 
     switch ( step.getAction () )
@@ -127,7 +131,9 @@ public class RedoUndoHandler
     RedoUndoItem step = this.redoSteps.pop ();
 
     this.mainWindow.jMenuItemRedo.setEnabled ( !this.redoSteps.isEmpty () );
+    this.mainWindow.jButtonRedo.setEnabled ( !this.redoSteps.isEmpty () );
     this.mainWindow.jMenuItemUndo.setEnabled ( true );
+    this.mainWindow.jButtonUndo.setEnabled ( true );
     this.undoSteps.push ( step );
 
     switch ( step.getAction () )
@@ -180,6 +186,26 @@ public class RedoUndoHandler
 
       }
     }
+  }
+
+  /**
+   * Signal if there are any undo steps.
+   * 
+   * @return true if there are any undo steps, false else.
+   */
+  public boolean isRedoAble ()
+  {
+    return !this.redoSteps.empty ();
+  }
+
+  /**
+   * Signal if there are any undo steps.
+   * 
+   * @return true if there are any undo steps, false else.
+   */
+  public boolean isUndoAble ()
+  {
+    return !this.undoSteps.isEmpty ();
   }
 
 }

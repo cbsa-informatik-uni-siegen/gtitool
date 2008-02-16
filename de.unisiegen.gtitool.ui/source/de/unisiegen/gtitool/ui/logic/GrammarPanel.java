@@ -135,4 +135,18 @@ public class GrammarPanel implements EditorPanel
     // TODO Auto-generated method stub
     
   }
+
+
+  public boolean isRedoAble ()
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+
+  public boolean isUndoAble ()
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

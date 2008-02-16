@@ -1707,8 +1707,8 @@ public final class MachinePanel implements EditorPanel
           {
             // open transition config dialog
             DefaultStateView state = ( DefaultStateView ) object;
-            NewStateNameDialog dialog = new NewStateNameDialog (
-                MachinePanel.this.parent, state.getState () );
+            StateConfigDialog dialog = new StateConfigDialog (
+                MachinePanel.this.parent, state.getState (), MachinePanel.this.model );
             dialog.show ();
             if ( ( dialog.getStateName () != null )
                 && ( !dialog.getStateName ().equals (

@@ -3,16 +3,17 @@ package de.unisiegen.gtitool.ui.netbeans;
 import java.awt.Frame;
 
 import de.unisiegen.gtitool.ui.logic.AboutDialog;
-import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
+import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 
 /**
- * The {@link NewStateNameDialogForm}.
+ * The {@link StateConfigDialogForm}.
+ * 
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NStateConfigDialogFormjava 532 2008-02-04 23:54:55Z fehler $
  */
 @SuppressWarnings({ "all" })
-public class NewStateNameDialogForm extends javax.swing.JDialog {
+public class StateConfigDialogForm extends javax.swing.JDialog {
     
     /**
      * The serial version uid.
@@ -20,17 +21,18 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
     private static final long serialVersionUID = 7000984653787618329L;
 
     /**
-     * The {@link NewStateNameDialog}.
+     * The {@link StateConfigDialog}.
      */
-    private NewStateNameDialog logic ;
+    private StateConfigDialog logic ;
     
     /**
-     * Creates new form {@link NewStateNameDialogForm}
+     * Creates new form {@link StateConfigDialogForm}
+     * 
      * 
      * @param logic The {@link AboutDialog}.
      * @param parent The parent {@link Frame}.
      */
-    public NewStateNameDialogForm(NewStateNameDialog logic, java.awt.Frame parent) {
+    public StateConfigDialogForm(StateConfigDialog logic, java.awt.Frame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
@@ -47,6 +49,8 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
 
         jLabelRename = new javax.swing.JLabel();
         styledStateParserPanel = new de.unisiegen.gtitool.ui.style.StyledStateParserPanel();
+        jCheckBoxStartState = new javax.swing.JCheckBox();
+        jCheckBoxFinalState = new javax.swing.JCheckBox();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -83,6 +87,44 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(styledStateParserPanel, gridBagConstraints);
 
+        jCheckBoxStartState.setText(bundle.getString("NewStateNameDialog.StartState")); // NOI18N
+        jCheckBoxStartState.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jCheckBoxStartState.setFocusPainted(false);
+        jCheckBoxStartState.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jCheckBoxStartState.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startStateValueChanged(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jCheckBoxStartState, gridBagConstraints);
+
+        jCheckBoxFinalState.setText(bundle.getString("NewStateNameDialog.FinalState")); // NOI18N
+        jCheckBoxFinalState.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jCheckBoxFinalState.setFocusPainted(false);
+        jCheckBoxFinalState.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jCheckBoxFinalState.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finalStateValueChanged(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jCheckBoxFinalState, gridBagConstraints);
+
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("NewStateNameDialog.OkToolTip")); // NOI18N
@@ -95,7 +137,7 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
@@ -112,7 +154,7 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
@@ -120,6 +162,14 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-250)/2, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void finalStateValueChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finalStateValueChanged
+        logic.finalStateValueChanged(this.jCheckBoxFinalState.isSelected());
+    }//GEN-LAST:event_finalStateValueChanged
+
+    private void startStateValueChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startStateValueChanged
+        logic.startStateValueChanged(this.jCheckBoxStartState.isSelected());
+    }//GEN-LAST:event_startStateValueChanged
 
     private void jGTIButtonCanceljGTIButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCanceljGTIButton1ActionPerformed
       this.logic.handleCancel();
@@ -138,6 +188,8 @@ public class NewStateNameDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JCheckBox jCheckBoxFinalState;
+    public javax.swing.JCheckBox jCheckBoxStartState;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public javax.swing.JLabel jLabelRename;

@@ -19,7 +19,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.logic.NewStateNameDialog;
+import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -78,7 +78,7 @@ public final class StatePopupMenu extends JPopupMenu
   /**
    * The rename checkbox item
    */
-  private JMenuItem rename;
+  private JMenuItem configurate;
 
 
   /**
@@ -187,10 +187,10 @@ public final class StatePopupMenu extends JPopupMenu
     this.finalState.setSelected ( this.state.getState ().isFinalState () );
     add ( this.finalState );
 
-    this.rename = new JMenuItem ( Messages.getString ( "MachinePanel.Rename" ) ); //$NON-NLS-1$
-    this.rename.setIcon ( new ImageIcon ( getClass ().getResource (
+    this.configurate = new JMenuItem ( Messages.getString ( "MachinePanel.Configurate" ) ); //$NON-NLS-1$
+    this.configurate.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
-    this.rename.addActionListener ( new ActionListener ()
+    this.configurate.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -198,8 +198,8 @@ public final class StatePopupMenu extends JPopupMenu
       ActionEvent event )
       {
 
-        NewStateNameDialog dialog = new NewStateNameDialog (
-            StatePopupMenu.this.parent, StatePopupMenu.this.state.getState () );
+        StateConfigDialog dialog = new StateConfigDialog (
+            StatePopupMenu.this.parent, StatePopupMenu.this.state.getState (), StatePopupMenu.this.model );
         dialog.show ();
         if ( ( dialog.getStateName () != null )
             && ( !dialog.getStateName ().equals (
@@ -220,6 +220,6 @@ public final class StatePopupMenu extends JPopupMenu
         }
       }
     } );
-    add ( this.rename );
+    add ( this.configurate );
   }
 }

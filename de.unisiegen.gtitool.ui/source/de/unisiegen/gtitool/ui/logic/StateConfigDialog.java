@@ -7,31 +7,34 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.netbeans.NewStateNameDialogForm;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
 
 
 /**
- * The {@link NewStateNameDialog}.
+ * The {@link StateConfigDialog}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class NewStateNameDialog
+public final class StateConfigDialog
 {
 
   /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
-      .getLogger ( NewStateNameDialog.class );
+      .getLogger ( StateConfigDialog.class );
 
 
   /**
-   * The {@link NewStateNameDialogForm}.
-   */
-  private NewStateNameDialogForm gui;
+     * The {@link StateConfigDialogForm}.
+     */
+  private StateConfigDialogForm gui;
 
+  
 
   /**
    * The parent {@link JFrame}.
@@ -43,23 +46,38 @@ public final class NewStateNameDialog
    * The result stateName ;
    */
   private String stateName;
+  
+  /**
+   * The {@link State}
+   */
+  private State state;
+  
+  /**
+   * The {@link DefaultMachineModel}
+   */
+  private DefaultMachineModel model;
 
 
   /**
-   * Allocates a new {@link NewStateNameDialog}.
+   * Allocates a new {@link StateConfigDialog}.
    * 
-   * @param pParent The parent {@link JFrame}.
-   * @param pState The {@link State}.
+   * @param parent The parent {@link JFrame}.
+   * @param state The {@link State}.
+   * @param model The {@link Machine}
    */
-  public NewStateNameDialog ( JFrame pParent, State pState )
+  public StateConfigDialog ( JFrame parent, State state, DefaultMachineModel model )
   {
     logger.debug ( "allocate a new new state name dialog" ); //$NON-NLS-1$
-    this.parent = pParent;
+    this.parent = parent;
+    this.state = state;
+    this.model = model;
     this.stateName = null;
-    this.gui = new NewStateNameDialogForm ( this, pParent );
-    this.gui.styledStateParserPanel.setState ( pState );
+    this.gui = new StateConfigDialogForm ( this, parent );
+    this.gui.jCheckBoxFinalState.setSelected ( this.state.isFinalState () );
+    this.gui.jCheckBoxStartState.setSelected ( this.state.isStartState () );
+    this.gui.styledStateParserPanel.setState ( state );
     this.gui.jLabelRename.setText ( Messages.getString (
-        "NewStateNameDialog.RenameText", pState ) ); //$NON-NLS-1$
+        "NewStateNameDialog.RenameText", state ) ); //$NON-NLS-1$
 
     /*
      * State changed listener
@@ -73,11 +91,11 @@ public final class NewStateNameDialog
           {
             if ( pNewState == null )
             {
-              NewStateNameDialog.this.gui.jGTIButtonOk.setEnabled ( false );
+              StateConfigDialog.this.gui.jGTIButtonOk.setEnabled ( false );
             }
             else
             {
-              NewStateNameDialog.this.gui.jGTIButtonOk.setEnabled ( true );
+              StateConfigDialog.this.gui.jGTIButtonOk.setEnabled ( true );
             }
           }
         } );
@@ -115,15 +133,15 @@ public final class NewStateNameDialog
   {
     logger.debug ( "handle ok" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
-    State state = this.gui.styledStateParserPanel.getState ();
-    this.stateName = ( state == null ? null : state.getName () );
+    State activeState = this.gui.styledStateParserPanel.getState ();
+    this.stateName = ( activeState == null ? null : activeState.getName () );
     this.gui.dispose ();
   }
 
 
   /**
-   * Shows the {@link NewStateNameDialogForm}.
-   */
+     * Shows the {@link StateConfigDialogForm}.
+     */
   public final void show ()
   {
     logger.debug ( "show the new state name dialog" ); //$NON-NLS-1$
@@ -133,5 +151,31 @@ public final class NewStateNameDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+  /**
+   * Handle status of the final state checkbox changed
+   * 
+   * @param status the new final state status
+   */
+  public void finalStateValueChanged ( boolean status )
+  {
+    this.state.setFinalState ( status );
+    this.model.getGraphModel ().cellsChanged ( new Object []
+    { this.state } );
+    
+  }
+
+  /**
+   * Handle status of the start state checkbox changed
+   * 
+   * @param status the new start state status
+   */
+  public void startStateValueChanged ( boolean status )
+  {
+    this.state.setStartState ( status );
+    this.model.getGraphModel ().cellsChanged ( new Object []
+    { this.state } );
+    
   }
 }

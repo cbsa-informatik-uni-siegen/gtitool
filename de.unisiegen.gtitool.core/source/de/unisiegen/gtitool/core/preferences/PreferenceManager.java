@@ -739,17 +739,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemNonterminalSymbol ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolR", //$NON-NLS-1$
-        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolG", //$NON-NLS-1$
-        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolB", //$NON-NLS-1$
-        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorNonterminalSymbol", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorNonterminalSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorNonterminalSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_NONTERMINAL_SYMBOL_COLOR );
   }
 
@@ -776,17 +772,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemParserError ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorParserErrorR", //$NON-NLS-1$
-        DEFAULT_PARSER_ERROR_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorParserErrorG", //$NON-NLS-1$
-        DEFAULT_PARSER_ERROR_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorParserErrorB", //$NON-NLS-1$
-        DEFAULT_PARSER_ERROR_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorParserError", //$NON-NLS-1$
+        DEFAULT_PARSER_ERROR_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorParserErrorCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorParserErrorDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_ERROR_COLOR );
   }
 
@@ -812,17 +804,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemParserHighlighting ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorParserHighlightingR", //$NON-NLS-1$
-        DEFAULT_PARSER_HIGHLIGHTING_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorParserHighlightingG", //$NON-NLS-1$
-        DEFAULT_PARSER_HIGHLIGHTING_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorParserHighlightingB", //$NON-NLS-1$
-        DEFAULT_PARSER_HIGHLIGHTING_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorParserHighlighting", //$NON-NLS-1$
+        DEFAULT_PARSER_HIGHLIGHTING_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorParserHighlightingCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorParserHighlightingDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_HIGHLIGHTING_COLOR );
   }
 
@@ -834,17 +822,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemParserKeyword ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorParserKeywordR", //$NON-NLS-1$
-        DEFAULT_PARSER_KEYWORD_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorParserKeywordG", //$NON-NLS-1$
-        DEFAULT_PARSER_KEYWORD_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorParserKeywordB", //$NON-NLS-1$
-        DEFAULT_PARSER_KEYWORD_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorParserKeyword", //$NON-NLS-1$
+        DEFAULT_PARSER_KEYWORD_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorParserKeywordCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorParserKeywordDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_KEYWORD_COLOR );
   }
 
@@ -856,17 +840,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemParserWarning ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorParserWarningR", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorParserWarningG", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorParserWarningB", //$NON-NLS-1$
-        DEFAULT_PARSER_WARNING_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorParserWarning", //$NON-NLS-1$
+        DEFAULT_PARSER_WARNING_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorParserWarningCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorParserWarningDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_WARNING_COLOR );
   }
 
@@ -878,16 +858,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemState ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateR", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateG", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateB", //$NON-NLS-1$
-        DEFAULT_STATE_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorState", //$NON-NLS-1$
+        DEFAULT_STATE_COLOR.getRGB () );
     String caption = Messages.getString ( "Preferences.ColorStateCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_COLOR );
   }
 
@@ -899,17 +875,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateActive ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateActiveR", //$NON-NLS-1$
-        DEFAULT_STATE_ACTIVE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateActiveG", //$NON-NLS-1$
-        DEFAULT_STATE_ACTIVE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateActiveB", //$NON-NLS-1$
-        DEFAULT_STATE_ACTIVE_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateActive", //$NON-NLS-1$
+        DEFAULT_STATE_ACTIVE_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorStateActiveCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateActiveDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_ACTIVE_COLOR );
   }
 
@@ -921,17 +893,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateBackground ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateBackgroundR", //$NON-NLS-1$
-        DEFAULT_STATE_BACKGROUND_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateBackgroundG", //$NON-NLS-1$
-        DEFAULT_STATE_BACKGROUND_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateBackgroundB", //$NON-NLS-1$
-        DEFAULT_STATE_BACKGROUND_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateBackground", //$NON-NLS-1$
+        DEFAULT_STATE_BACKGROUND_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorStateBackgroundCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateBackgroundDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_BACKGROUND_COLOR );
   }
 
@@ -943,16 +911,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateError ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateErrorR", //$NON-NLS-1$
-        DEFAULT_STATE_ERROR_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateErrorG", //$NON-NLS-1$
-        DEFAULT_STATE_ERROR_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateErrorB", //$NON-NLS-1$
-        DEFAULT_STATE_ERROR_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateError", //$NON-NLS-1$
+        DEFAULT_STATE_ERROR_COLOR.getRGB () );
     String caption = Messages.getString ( "Preferences.ColorStateErrorCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateErrorDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_ERROR_COLOR );
   }
 
@@ -978,17 +942,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateSelected ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateSelectedR", //$NON-NLS-1$
-        DEFAULT_STATE_SELECTED_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateSelectedG", //$NON-NLS-1$
-        DEFAULT_STATE_SELECTED_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateSelectedB", //$NON-NLS-1$
-        DEFAULT_STATE_SELECTED_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateSelected", //$NON-NLS-1$
+        DEFAULT_STATE_SELECTED_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorStateSelectedCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateSelectedDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_SELECTED_COLOR );
   }
 
@@ -1000,16 +960,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateStart ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorStateStartR", //$NON-NLS-1$
-        DEFAULT_STATE_START_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorStateStartG", //$NON-NLS-1$
-        DEFAULT_STATE_START_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorStateStartB", //$NON-NLS-1$
-        DEFAULT_STATE_START_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateStart", //$NON-NLS-1$
+        DEFAULT_STATE_START_COLOR.getRGB () );
     String caption = Messages.getString ( "Preferences.ColorStateStartCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorStateStartDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_START_COLOR );
   }
 
@@ -1021,16 +977,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemSymbol ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorSymbolR", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorSymbolG", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorSymbolB", //$NON-NLS-1$
-        DEFAULT_SYMBOL_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorSymbol", //$NON-NLS-1$
+        DEFAULT_SYMBOL_COLOR.getRGB () );
     String caption = Messages.getString ( "Preferences.ColorSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_SYMBOL_COLOR );
   }
 
@@ -1042,17 +994,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemSymbolActive ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorSymbolActiveR", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ACTIVE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorSymbolActiveG", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ACTIVE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorSymbolActiveB", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ACTIVE_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorSymbolActive", //$NON-NLS-1$
+        DEFAULT_SYMBOL_ACTIVE_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorSymbolActiveCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorSymbolActiveDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_SYMBOL_ACTIVE_COLOR );
   }
 
@@ -1064,17 +1012,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemSymbolError ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorSymbolErrorR", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ERROR_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorSymbolErrorG", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ERROR_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorSymbolErrorB", //$NON-NLS-1$
-        DEFAULT_SYMBOL_ERROR_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorSymbolError", //$NON-NLS-1$
+        DEFAULT_SYMBOL_ERROR_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorSymbolErrorCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorSymbolErrorDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_SYMBOL_ERROR_COLOR );
   }
 
@@ -1100,17 +1044,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTerminalSymbol ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorTerminalSymbolR", //$NON-NLS-1$
-        DEFAULT_TERMINAL_SYMBOL_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorTerminalSymbolG", //$NON-NLS-1$
-        DEFAULT_TERMINAL_SYMBOL_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorTerminalSymbolB", //$NON-NLS-1$
-        DEFAULT_TERMINAL_SYMBOL_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorTerminalSymbol", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorTerminalSymbolCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorTerminalSymbolDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_TERMINAL_SYMBOL_COLOR );
   }
 
@@ -1137,16 +1077,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTransition ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorTransitionR", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorTransitionG", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorTransitionB", //$NON-NLS-1$
-        DEFAULT_TRANSITION_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorTransition", //$NON-NLS-1$
+        DEFAULT_TRANSITION_COLOR.getRGB () );
     String caption = Messages.getString ( "Preferences.ColorTransitionCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorTransitionDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_TRANSITION_COLOR );
   }
 
@@ -1158,17 +1094,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTransitionActive ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorTransitionActiveR", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ACTIVE_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorTransitionActiveG", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ACTIVE_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorTransitionActiveB", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ACTIVE_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorTransitionActive", //$NON-NLS-1$
+        DEFAULT_TRANSITION_ACTIVE_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorTransitionActiveCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorTransitionActiveDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_TRANSITION_ACTIVE_COLOR );
   }
 
@@ -1180,17 +1112,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTransitionError ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorTransitionErrorR", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ERROR_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorTransitionErrorG", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ERROR_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorTransitionErrorB", //$NON-NLS-1$
-        DEFAULT_TRANSITION_ERROR_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorTransitionError", //$NON-NLS-1$
+        DEFAULT_TRANSITION_ERROR_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorTransitionErrorCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorTransitionErrorDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_TRANSITION_ERROR_COLOR );
   }
 
@@ -1216,17 +1144,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTransitionSelected ()
   {
-    int r = this.preferences.getInt ( "Preferences.ColorTransitionSelectedR", //$NON-NLS-1$
-        DEFAULT_TRANSITION_SELECTED_COLOR.getRed () );
-    int g = this.preferences.getInt ( "Preferences.ColorTransitionSelectedG", //$NON-NLS-1$
-        DEFAULT_TRANSITION_SELECTED_COLOR.getGreen () );
-    int b = this.preferences.getInt ( "Preferences.ColorTransitionSelectedB", //$NON-NLS-1$
-        DEFAULT_TRANSITION_SELECTED_COLOR.getBlue () );
+    int rgb = this.preferences.getInt ( "Preferences.ColorTransitionSelected", //$NON-NLS-1$
+        DEFAULT_TRANSITION_SELECTED_COLOR.getRGB () );
     String caption = Messages
         .getString ( "Preferences.ColorTransitionSelectedCaption" );//$NON-NLS-1$
     String description = Messages
         .getString ( "Preferences.ColorTransitionSelectedDescription" );//$NON-NLS-1$
-    return new ColorItem ( new Color ( r, g, b ), caption, description,
+    return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_TRANSITION_SELECTED_COLOR );
   }
 
@@ -1499,12 +1423,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbol", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1535,12 +1455,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorParserErrorR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorParserErrorG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorParserErrorB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorParserError", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1551,11 +1467,10 @@ public class PreferenceManager
    */
   public final void setColorItemParserGroup ( ColorItem colorItem )
   {
-    logger
-        .debug ( "set expanded value of the parser group to \"" + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putBoolean (
-        "Preferences.ColorParserGroupExpanded", colorItem //$NON-NLS-1$
-            .isExpanded () );
+    logger.debug ( "set expanded value of the parser group to \"" //$NON-NLS-1$
+        + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$
+    this.preferences.putBoolean ( "Preferences.ColorParserGroupExpanded", //$NON-NLS-1$
+        colorItem.isExpanded () );
   }
 
 
@@ -1570,12 +1485,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorParserHighlightingR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorParserHighlightingG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorParserHighlightingB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorParserHighlighting", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1590,12 +1501,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorParserKeywordR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorParserKeywordG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorParserKeywordB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorParserKeyword", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1610,12 +1517,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorParserWarningR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorParserWarningG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorParserWarningB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorParserWarning", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1630,12 +1533,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorState", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1650,12 +1549,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateActiveR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateActiveG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateActiveB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorStateActive", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1670,12 +1565,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateBackgroundR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateBackgroundG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateBackgroundB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorStateBackground", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1690,12 +1581,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateErrorR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateErrorG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateErrorB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorStateError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1725,12 +1612,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateSelectedR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateSelectedG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateSelectedB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorStateSelected", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1745,12 +1628,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorStateStartR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorStateStartG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorStateStartB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorStateStart", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1765,12 +1644,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorSymbol", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1785,12 +1660,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorSymbolActiveR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorSymbolActiveG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorSymbolActiveB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorSymbolActive", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1805,12 +1676,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorSymbolErrorR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorSymbolErrorG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorSymbolErrorB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorSymbolError", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1839,12 +1706,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorTerminalSymbolR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorTerminalSymbolG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorTerminalSymbolB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbol", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1874,12 +1737,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorTransitionR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorTransitionG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorTransitionB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorTransition", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1894,12 +1753,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorTransitionActiveR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorTransitionActiveG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorTransitionActiveB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorTransitionActive", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1914,12 +1769,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorTransitionErrorR", colorItem //$NON-NLS-1$
-        .getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorTransitionErrorG", colorItem //$NON-NLS-1$
-        .getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorTransitionErrorB", colorItem //$NON-NLS-1$
-        .getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorTransitionError", colorItem //$NON-NLS-1$
+        .getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1949,12 +1800,8 @@ public class PreferenceManager
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putInt ( "Preferences.ColorTransitionSelectedR", //$NON-NLS-1$
-        colorItem.getColor ().getRed () );
-    this.preferences.putInt ( "Preferences.ColorTransitionSelectedG", //$NON-NLS-1$
-        colorItem.getColor ().getGreen () );
-    this.preferences.putInt ( "Preferences.ColorTransitionSelectedB", //$NON-NLS-1$
-        colorItem.getColor ().getBlue () );
+    this.preferences.putInt ( "Preferences.ColorTransitionSelected", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 

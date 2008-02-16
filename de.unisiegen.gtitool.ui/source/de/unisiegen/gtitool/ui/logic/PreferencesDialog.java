@@ -2404,7 +2404,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void save ()
   {
-    logger.debug ( "save data" ); //$NON-NLS-1$
+    logger.debug ( "save" ); //$NON-NLS-1$
     /*
      * General
      */
@@ -2445,8 +2445,6 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     if ( !this.initialAlphabetItem.equals ( this.alphabetItem ) )
     {
-      logger.debug ( "alphabet changed to \"" //$NON-NLS-1$
-          + this.alphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
       this.initialAlphabetItem = this.alphabetItem.clone ();
       PreferenceManager.getInstance ().setAlphabetItem ( this.alphabetItem );
     }
@@ -2461,8 +2459,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.initialAutoStepItem.getAutoStepInterval () != this.gui.jSliderAutoStep
         .getValue () )
     {
-      logger.debug ( "auto step changed to \"" //$NON-NLS-1$
-          + this.gui.jSliderAutoStep.getValue () + "\"" ); //$NON-NLS-1$
       this.initialAutoStepItem = AutoStepItem.create ( this.gui.jSliderAutoStep
           .getValue () );
       PreferenceManager.getInstance ().setAutoStepItem (
@@ -2488,10 +2484,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemState.getColor ().equals (
         this.colorItemState.getColor () ) )
     {
-      logger.debug ( "color of the state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemState.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemState.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemState.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemState = this.colorItemState.clone ();
       PreferenceManager.getInstance ().setColorItemState ( this.colorItemState );
       PreferenceManager.getInstance ().fireColorChangedState (
@@ -2501,10 +2493,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemStateBackground.getColor ().equals (
         this.colorItemStateBackground.getColor () ) )
     {
-      logger.debug ( "color of the state background changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStateBackground.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStateBackground.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStateBackground.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemStateBackground = this.colorItemStateBackground
           .clone ();
       PreferenceManager.getInstance ().setColorItemStateBackground (
@@ -2516,10 +2504,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemStateSelected.getColor ().equals (
         this.colorItemStateSelected.getColor () ) )
     {
-      logger.debug ( "color of the selected state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStateSelected.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStateSelected.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStateSelected.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemStateSelected = this.colorItemStateSelected.clone ();
       PreferenceManager.getInstance ().setColorItemStateSelected (
           this.colorItemStateSelected );
@@ -2530,10 +2514,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemStateStart.getColor ().equals (
         this.colorItemStateStart.getColor () ) )
     {
-      logger.debug ( "color of the start state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStateStart.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStateStart.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStateStart.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemStateStart = this.colorItemStateStart.clone ();
       PreferenceManager.getInstance ().setColorItemStateStart (
           this.colorItemStateStart );
@@ -2544,10 +2524,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemStateActive.getColor ().equals (
         this.colorItemStateActive.getColor () ) )
     {
-      logger.debug ( "color of the active state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStateActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStateActive.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStateActive.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemStateActive = this.colorItemStateActive.clone ();
       PreferenceManager.getInstance ().setColorItemStateActive (
           this.colorItemStateActive );
@@ -2558,10 +2534,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemStateError.getColor ().equals (
         this.colorItemStateError.getColor () ) )
     {
-      logger.debug ( "color of the error state changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemStateError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemStateError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemStateError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemStateError = this.colorItemStateError.clone ();
       PreferenceManager.getInstance ().setColorItemStateError (
           this.colorItemStateError );
@@ -2582,10 +2554,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemTransition.getColor ().equals (
         this.colorItemTransition.getColor () ) )
     {
-      logger.debug ( "color of the transition changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemTransition.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemTransition.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemTransition.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemTransition = this.colorItemTransition.clone ();
       PreferenceManager.getInstance ().setColorItemTransition (
           this.colorItemTransition );
@@ -2596,11 +2564,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemTransitionSelected.getColor ().equals (
         this.colorItemTransitionSelected.getColor () ) )
     {
-      logger
-          .debug ( "color of the selected transition changed to \"" //$NON-NLS-1$
-              + "r=" + this.colorItemTransitionSelected.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "g=" + this.colorItemTransitionSelected.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "b=" + this.colorItemTransitionSelected.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemTransitionSelected = this.colorItemTransitionSelected
           .clone ();
       PreferenceManager.getInstance ().setColorItemTransitionSelected (
@@ -2612,11 +2575,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemTransitionActive.getColor ().equals (
         this.colorItemTransitionActive.getColor () ) )
     {
-      logger
-          .debug ( "color of the active transition changed to \"" //$NON-NLS-1$
-              + "r=" + this.colorItemTransitionActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "g=" + this.colorItemTransitionActive.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "b=" + this.colorItemTransitionActive.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemTransitionActive = this.colorItemTransitionActive
           .clone ();
       PreferenceManager.getInstance ().setColorItemTransitionActive (
@@ -2628,10 +2586,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemTransitionError.getColor ().equals (
         this.colorItemTransitionError.getColor () ) )
     {
-      logger.debug ( "color of the error transition changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemTransitionError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemTransitionError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemTransitionError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemTransitionError = this.colorItemTransitionError
           .clone ();
       PreferenceManager.getInstance ().setColorItemTransitionError (
@@ -2653,10 +2607,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemSymbol.getColor ().equals (
         this.colorItemSymbol.getColor () ) )
     {
-      logger.debug ( "color of the symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemSymbol = this.colorItemSymbol.clone ();
       PreferenceManager.getInstance ().setColorItemSymbol (
           this.colorItemSymbol );
@@ -2667,10 +2617,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemSymbolActive.getColor ().equals (
         this.colorItemSymbolActive.getColor () ) )
     {
-      logger.debug ( "color of the active symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemSymbolActive.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemSymbolActive.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemSymbolActive.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemSymbolActive = this.colorItemSymbolActive.clone ();
       PreferenceManager.getInstance ().setColorItemSymbolActive (
           this.colorItemSymbolActive );
@@ -2681,10 +2627,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemSymbolError.getColor ().equals (
         this.colorItemSymbolError.getColor () ) )
     {
-      logger.debug ( "color of the error symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemSymbolError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemSymbolError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemSymbolError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
       PreferenceManager.getInstance ().setColorItemSymbolError (
           this.colorItemSymbolError );
@@ -2707,11 +2649,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemNonterminalSymbol.getColor ().equals (
         this.colorItemNonterminalSymbol.getColor () ) )
     {
-      logger
-          .debug ( "color of the nonterminal symbol changed to \"" //$NON-NLS-1$
-              + "r=" + this.colorItemNonterminalSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "g=" + this.colorItemNonterminalSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "b=" + this.colorItemNonterminalSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemNonterminalSymbol = this.colorItemNonterminalSymbol
           .clone ();
       PreferenceManager.getInstance ().setColorItemNonterminalSymbol (
@@ -2734,10 +2671,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemTerminalSymbol.getColor ().equals (
         this.colorItemTerminalSymbol.getColor () ) )
     {
-      logger.debug ( "color of the terminal symbol changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemTerminalSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemTerminalSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemTerminalSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemTerminalSymbol = this.colorItemTerminalSymbol
           .clone ();
       PreferenceManager.getInstance ().setColorItemTerminalSymbol (
@@ -2759,10 +2692,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemParserKeyword.getColor ().equals (
         this.colorItemParserKeyword.getColor () ) )
     {
-      logger.debug ( "color of the parser keyword changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemParserKeyword.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemParserKeyword.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemParserKeyword.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemParserKeyword = this.colorItemParserKeyword.clone ();
       PreferenceManager.getInstance ().setColorItemParserKeyword (
           this.colorItemParserKeyword );
@@ -2773,10 +2702,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemParserError.getColor ().equals (
         this.colorItemParserError.getColor () ) )
     {
-      logger.debug ( "color of the parser error changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemParserError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemParserError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemParserError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemParserError = this.colorItemParserError.clone ();
       PreferenceManager.getInstance ().setColorItemParserError (
           this.colorItemParserError );
@@ -2787,10 +2712,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemParserWarning.getColor ().equals (
         this.colorItemParserWarning.getColor () ) )
     {
-      logger.debug ( "color of the parser warning changed to \"" //$NON-NLS-1$
-          + "r=" + this.colorItemParserWarning.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "g=" + this.colorItemParserWarning.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-          + "b=" + this.colorItemParserWarning.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemParserWarning = this.colorItemParserWarning.clone ();
       PreferenceManager.getInstance ().setColorItemParserWarning (
           this.colorItemParserWarning );
@@ -2801,11 +2722,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialColorItemParserHighlighting.getColor ().equals (
         this.colorItemParserHighlighting.getColor () ) )
     {
-      logger
-          .debug ( "color of the parser highlighting changed to \"" //$NON-NLS-1$
-              + "r=" + this.colorItemParserHighlighting.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "g=" + this.colorItemParserHighlighting.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
-              + "b=" + this.colorItemParserHighlighting.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
       this.initialColorItemParserHighlighting = this.colorItemParserHighlighting
           .clone ();
       PreferenceManager.getInstance ().setColorItemParserHighlighting (
@@ -2829,8 +2745,6 @@ public final class PreferencesDialog implements LanguageChangedListener
       if ( !this.initialLanguageItem.getLocale ().getLanguage ().equals (
           selectedLanguageItem.getLocale ().getLanguage () ) )
       {
-        logger.debug ( "language changed to \"" //$NON-NLS-1$
-            + selectedLanguageItem.getLocale ().getLanguage () + "\"" ); //$NON-NLS-1$
         PreferenceManager.getInstance ().fireLanguageChanged (
             selectedLanguageItem.getLocale () );
       }
@@ -2867,8 +2781,6 @@ public final class PreferencesDialog implements LanguageChangedListener
       if ( !this.initialLookAndFeel.getClassName ().equals (
           selectedLookAndFeelItem.getClassName () ) )
       {
-        logger.debug ( "look and feel changed to \"" //$NON-NLS-1$
-            + selectedLookAndFeelItem.getName () + "\"" ); //$NON-NLS-1$
         try
         {
           UIManager.setLookAndFeel ( selectedLookAndFeelItem.getClassName () );
@@ -2912,8 +2824,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.initialMouseSelectionItem.getIndex () != this.gui.jComboBoxMouseSelection
         .getSelectedIndex () )
     {
-      logger.debug ( "mouse selection item changed to \"" //$NON-NLS-1$
-          + this.gui.jComboBoxMouseSelection.getSelectedIndex () + "\"" ); //$NON-NLS-1$
       this.initialMouseSelectionItem = MouseSelectionItem
           .create ( this.gui.jComboBoxMouseSelection.getSelectedIndex () );
       PreferenceManager.getInstance ().setMouseSelectionItem (
@@ -2930,8 +2840,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialNonterminalSymbolSetItem
         .equals ( this.nonterminalSymbolSetItem ) )
     {
-      logger.debug ( "nonterminal symbol set changed to \"" //$NON-NLS-1$
-          + this.nonterminalSymbolSetItem.getNonterminalSymbolSet () + "\"" ); //$NON-NLS-1$
       this.initialNonterminalSymbolSetItem = this.nonterminalSymbolSetItem
           .clone ();
       PreferenceManager.getInstance ().setNonterminalSymbolSetItem (
@@ -2947,8 +2855,6 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     if ( !this.initialPushDownAlphabetItem.equals ( this.pushDownAlphabetItem ) )
     {
-      logger.debug ( "push down alphabet changed to \"" //$NON-NLS-1$
-          + this.pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
       this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
       PreferenceManager.getInstance ().setPushDownAlphabetItem (
           this.pushDownAlphabetItem );
@@ -2956,9 +2862,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.initialUsePushDownAlphabet != this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
         .isSelected () )
     {
-      logger.debug ( "use push down alphabet changed to \"" //$NON-NLS-1$
-          + this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.isSelected ()
-          + "\"" ); //$NON-NLS-1$
       this.initialUsePushDownAlphabet = this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
           .isSelected ();
       PreferenceManager.getInstance ().setUsePushDownAlphabet (
@@ -2975,8 +2878,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( !this.initialTerminalSymbolSetItem
         .equals ( this.terminalSymbolSetItem ) )
     {
-      logger.debug ( "terminal symbol set changed to \"" //$NON-NLS-1$
-          + this.terminalSymbolSetItem.getTerminalSymbolSet () + "\"" ); //$NON-NLS-1$
       this.initialTerminalSymbolSetItem = this.terminalSymbolSetItem.clone ();
       PreferenceManager.getInstance ().setTerminalSymbolSetItem (
           this.terminalSymbolSetItem );
@@ -2992,8 +2893,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.initialTransitionItem.getIndex () != this.gui.jComboBoxTransition
         .getSelectedIndex () )
     {
-      logger.debug ( "transition item changed to \"" //$NON-NLS-1$
-          + this.gui.jComboBoxTransition.getSelectedIndex () + "\"" ); //$NON-NLS-1$
       this.initialTransitionItem = TransitionItem
           .create ( this.gui.jComboBoxTransition.getSelectedIndex () );
       PreferenceManager.getInstance ().setTransitionItem (
@@ -3010,8 +2909,6 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.initialZoomFactorItem.getFactor () != this.gui.jSliderZoom
         .getValue () )
     {
-      logger.debug ( "zoom factor changed to \"" //$NON-NLS-1$
-          + this.gui.jSliderZoom.getValue () + "\"" ); //$NON-NLS-1$
       this.initialZoomFactorItem = ZoomFactorItem.create ( this.gui.jSliderZoom
           .getValue () );
       PreferenceManager.getInstance ().setZoomFactorItem (

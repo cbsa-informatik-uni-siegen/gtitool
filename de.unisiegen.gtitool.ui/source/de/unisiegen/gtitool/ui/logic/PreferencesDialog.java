@@ -23,7 +23,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -71,7 +70,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    * 
    * @author Christian Fehler
    */
-  protected class ColorTreeCellRenderer extends DefaultTreeCellRenderer
+  protected final class ColorTreeCellRenderer extends DefaultTreeCellRenderer
   {
 
     /**
@@ -512,6 +511,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the parser error.
+   */
+  private ColorItem colorItemParserError;
+
+
+  /**
    * The {@link ColorItem} of the parser warning.
    */
   private ColorItem colorItemParserWarning;
@@ -656,6 +661,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial {@link ColorItem} of the parser error.
+   */
+  private ColorItem initialColorItemParserError;
+
+
+  /**
    * The initial {@link ColorItem} of the parser warning.
    */
   private ColorItem initialColorItemParserWarning;
@@ -772,31 +783,31 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The color tree root node.
    */
-  private DefaultMutableTreeNode rootNode;
+  private ColorItem rootNode;
 
 
   /**
    * The color tree {@link State} node.
    */
-  private DefaultMutableTreeNode stateNode;
+  private ColorItem stateNode;
 
 
   /**
    * The color tree {@link Transition} node.
    */
-  private DefaultMutableTreeNode transitionNode;
+  private ColorItem transitionNode;
 
 
   /**
    * The color tree {@link Symbol} node.
    */
-  private DefaultMutableTreeNode symbolNode;
+  private ColorItem symbolNode;
 
 
   /**
    * The color tree parser node.
    */
-  private DefaultMutableTreeNode parserNode;
+  private ColorItem parserNode;
 
 
   /**
@@ -851,21 +862,23 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( ( event.getButton () == MouseEvent.BUTTON1 )
         && ( event.getClickCount () > 1 ) )
     {
-      logger.debug ( "handle color tree mouse released" ); //$NON-NLS-1$ 
       TreePath selectedPath = this.gui.jTreeColors.getSelectionModel ()
           .getSelectionPath ();
-      if ( ( selectedPath != null )
-          && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
+      if ( selectedPath != null )
       {
         ColorItem selectedColorItem = ( ColorItem ) selectedPath
             .getLastPathComponent ();
-        Color color = JColorChooser.showDialog ( this.gui, Messages
-            .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
-            selectedColorItem.getColor () );
-        if ( color != null )
+        if ( selectedColorItem.isLeaf () )
         {
-          selectedColorItem.setColor ( color );
-          this.gui.jTreeColors.repaint ();
+          logger.debug ( "handle color tree mouse released" ); //$NON-NLS-1$ 
+          Color color = JColorChooser.showDialog ( this.gui, Messages
+              .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
+              selectedColorItem.getColor () );
+          if ( color != null )
+          {
+            selectedColorItem.setColor ( color );
+            this.gui.jTreeColors.repaint ();
+          }
         }
       }
     }
@@ -931,6 +944,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemSymbolActive.restore ();
     this.colorItemSymbolError.restore ();
 
+    this.colorItemParserError.restore ();
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
 
@@ -1203,6 +1217,10 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getColorItemSymbolError ();
     this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
 
+    // Parser error
+    this.colorItemParserError = PreferenceManager.getInstance ()
+        .getColorItemParserError ();
+    this.initialColorItemParserError = this.colorItemParserError.clone ();
     // Parser warning
     this.colorItemParserWarning = PreferenceManager.getInstance ()
         .getColorItemParserWarning ();
@@ -1230,8 +1248,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
             .getSelectionModel ().getSelectionPath ();
-        if ( ( selectedPath != null )
-            && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
+        if ( selectedPath != null )
         {
           ColorItem selectedColorItem = ( ColorItem ) selectedPath
               .getLastPathComponent ();
@@ -1252,13 +1269,17 @@ public final class PreferencesDialog implements LanguageChangedListener
         {
           TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
               .getPathForLocation ( event.getX (), event.getY () );
-          if ( ( selectedPath != null )
-              && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
+          if ( selectedPath != null )
           {
-            PreferencesDialog.this.gui.jTreeColors
-                .setSelectionPath ( selectedPath );
-            PreferencesDialog.this.jPopupMenuColorList.show ( event
-                .getComponent (), event.getX (), event.getY () );
+            ColorItem selectedColorItem = ( ColorItem ) selectedPath
+                .getLastPathComponent ();
+            if ( selectedColorItem.isLeaf () )
+            {
+              PreferencesDialog.this.gui.jTreeColors
+                  .setSelectionPath ( selectedPath );
+              PreferencesDialog.this.jPopupMenuColorList.show ( event
+                  .getComponent (), event.getX (), event.getY () );
+            }
           }
         }
       }
@@ -1272,13 +1293,17 @@ public final class PreferencesDialog implements LanguageChangedListener
         {
           TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
               .getPathForLocation ( event.getX (), event.getY () );
-          if ( ( selectedPath != null )
-              && ( selectedPath.getLastPathComponent () instanceof ColorItem ) )
+          if ( selectedPath != null )
           {
-            PreferencesDialog.this.gui.jTreeColors
-                .setSelectionPath ( selectedPath );
-            PreferencesDialog.this.jPopupMenuColorList.show ( event
-                .getComponent (), event.getX (), event.getY () );
+            ColorItem selectedColorItem = ( ColorItem ) selectedPath
+                .getLastPathComponent ();
+            if ( selectedColorItem.isLeaf () )
+            {
+              PreferencesDialog.this.gui.jTreeColors
+                  .setSelectionPath ( selectedPath );
+              PreferencesDialog.this.jPopupMenuColorList.show ( event
+                  .getComponent (), event.getX (), event.getY () );
+            }
           }
         }
       }
@@ -1299,10 +1324,9 @@ public final class PreferencesDialog implements LanguageChangedListener
         } );
 
     // Items
-    this.rootNode = new DefaultMutableTreeNode ( null );
+    this.rootNode = new ColorItem ( "root", true ); //$NON-NLS-1$
 
-    this.stateNode = new DefaultMutableTreeNode ( Messages
-        .getString ( "PreferencesDialog.ColorTreeState" ) ); //$NON-NLS-1$
+    this.stateNode = PreferenceManager.getInstance ().getColorItemStateGroup ();
     this.stateNode.add ( this.colorItemState );
     this.stateNode.add ( this.colorItemStateBackground );
     this.stateNode.add ( this.colorItemStateSelected );
@@ -1310,21 +1334,22 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.stateNode.add ( this.colorItemStateActive );
     this.stateNode.add ( this.colorItemStateError );
 
-    this.transitionNode = new DefaultMutableTreeNode ( Messages
-        .getString ( "PreferencesDialog.ColorTreeTransition" ) ); //$NON-NLS-1$
+    this.transitionNode = PreferenceManager.getInstance ()
+        .getColorItemTransitionGroup ();
     this.transitionNode.add ( this.colorItemTransition );
     this.transitionNode.add ( this.colorItemTransitionSelected );
     this.transitionNode.add ( this.colorItemTransitionActive );
     this.transitionNode.add ( this.colorItemTransitionError );
 
-    this.symbolNode = new DefaultMutableTreeNode ( Messages
-        .getString ( "PreferencesDialog.ColorTreeSymbol" ) ); //$NON-NLS-1$
+    this.symbolNode = PreferenceManager.getInstance ()
+        .getColorItemSymbolGroup ();
     this.symbolNode.add ( this.colorItemSymbol );
     this.symbolNode.add ( this.colorItemSymbolActive );
     this.symbolNode.add ( this.colorItemSymbolError );
 
-    this.parserNode = new DefaultMutableTreeNode ( Messages
-        .getString ( "PreferencesDialog.ColorTreeParser" ) ); //$NON-NLS-1$
+    this.parserNode = PreferenceManager.getInstance ()
+        .getColorItemParserGroup ();
+    this.parserNode.add ( this.colorItemParserError );
     this.parserNode.add ( this.colorItemParserWarning );
     this.parserNode.add ( this.colorItemParserHighlighting );
 
@@ -1335,6 +1360,28 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     DefaultTreeModel model = new DefaultTreeModel ( this.rootNode );
     this.gui.jTreeColors.setModel ( model );
+    // Expand the items
+    if ( this.stateNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath ( this.stateNode
+          .getPath () ) );
+    }
+    if ( this.transitionNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath ( this.transitionNode
+          .getPath () ) );
+    }
+    if ( this.symbolNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath ( this.symbolNode
+          .getPath () ) );
+    }
+    if ( this.parserNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath ( this.parserNode
+          .getPath () ) );
+    }
+
     this.gui.jTreeColors.setRowHeight ( 0 );
     this.gui.jTreeColors.getSelectionModel ().setSelectionMode (
         TreeSelectionModel.SINGLE_TREE_SELECTION );
@@ -2194,6 +2241,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorSymbolErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemSymbolError.setDescription ( Messages
         .getString ( "Preferences.ColorSymbolErrorDescription" ) ); //$NON-NLS-1$
+    // Parser error
+    this.colorItemParserError.setCaption ( Messages
+        .getString ( "Preferences.ColorParserErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemParserError.setDescription ( Messages
+        .getString ( "Preferences.ColorParserErrorDescription" ) ); //$NON-NLS-1$
     // Parser warning
     this.colorItemParserWarning.setCaption ( Messages
         .getString ( "Preferences.ColorParserWarningCaption" ) ); //$NON-NLS-1$
@@ -2311,6 +2363,14 @@ public final class PreferencesDialog implements LanguageChangedListener
   private final void saveColor ()
   {
     // State
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.stateNode
+        .getPath () ) ) != this.stateNode.isExpanded () )
+    {
+      this.stateNode.setExpanded ( this.gui.jTreeColors
+          .isExpanded ( new TreePath ( this.stateNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemStateGroup ( this.stateNode );
+    }
+    // State normal
     if ( !this.initialColorItemState.getColor ().equals (
         this.colorItemState.getColor () ) )
     {
@@ -2396,6 +2456,15 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Transition
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.transitionNode
+        .getPath () ) ) != this.transitionNode.isExpanded () )
+    {
+      this.transitionNode.setExpanded ( this.gui.jTreeColors
+          .isExpanded ( new TreePath ( this.transitionNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemTransitionGroup (
+          this.transitionNode );
+    }
+    // Transition normal
     if ( !this.initialColorItemTransition.getColor ().equals (
         this.colorItemTransition.getColor () ) )
     {
@@ -2458,6 +2527,15 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Symbol
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.symbolNode
+        .getPath () ) ) != this.symbolNode.isExpanded () )
+    {
+      this.symbolNode.setExpanded ( this.gui.jTreeColors
+          .isExpanded ( new TreePath ( this.symbolNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemSymbolGroup (
+          this.symbolNode );
+    }
+    // Symbol normal
     if ( !this.initialColorItemSymbol.getColor ().equals (
         this.colorItemSymbol.getColor () ) )
     {
@@ -2500,6 +2578,29 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemSymbolError.getColor () );
     }
 
+    // Parser
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.parserNode
+        .getPath () ) ) != this.parserNode.isExpanded () )
+    {
+      this.parserNode.setExpanded ( this.gui.jTreeColors
+          .isExpanded ( new TreePath ( this.parserNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemParserGroup (
+          this.parserNode );
+    }
+    // Parser error
+    if ( !this.initialColorItemParserError.getColor ().equals (
+        this.colorItemParserError.getColor () ) )
+    {
+      logger.debug ( "color of the parser error changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemParserError.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemParserError.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemParserError.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserError = this.colorItemParserError.clone ();
+      PreferenceManager.getInstance ().setColorItemParserError (
+          this.colorItemParserError );
+      PreferenceManager.getInstance ().fireColorChangedParserError (
+          this.colorItemParserError.getColor () );
+    }
     // Parser warning
     if ( !this.initialColorItemParserWarning.getColor ().equals (
         this.colorItemParserWarning.getColor () ) )

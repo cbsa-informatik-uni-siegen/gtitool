@@ -50,6 +50,12 @@ public final class ColorItem extends DefaultMutableTreeNode implements
 
 
   /**
+   * The expanded value.
+   */
+  private boolean expanded = false;
+
+
+  /**
    * Allocates a new {@link ColorItem}.
    * 
    * @param color The {@link Color} of this item.
@@ -76,12 +82,15 @@ public final class ColorItem extends DefaultMutableTreeNode implements
    * Allocates a new {@link ColorItem}.
    * 
    * @param caption The caption of this item.
+   * @param expanded The expanded value.
    */
-  public ColorItem ( String caption )
+  public ColorItem ( String caption, boolean expanded )
   {
     super ( caption );
     // Caption
     setCaption ( caption );
+    // Expanded
+    setExpanded ( expanded );
   }
 
 
@@ -93,8 +102,12 @@ public final class ColorItem extends DefaultMutableTreeNode implements
   @Override
   public final ColorItem clone ()
   {
-    return new ColorItem ( this.color, this.caption, this.description,
-        this.standardColor );
+    if ( this.color != null )
+    {
+      return new ColorItem ( this.color, this.caption, this.description,
+          this.standardColor );
+    }
+    return new ColorItem ( this.caption, this.expanded );
   }
 
 
@@ -176,6 +189,18 @@ public final class ColorItem extends DefaultMutableTreeNode implements
 
 
   /**
+   * Returns true if this {@link ColorItem} is expanded.
+   * 
+   * @return True if this {@link ColorItem} is expanded.
+   * @see #expanded
+   */
+  public final boolean isExpanded ()
+  {
+    return this.expanded;
+  }
+
+
+  /**
    * Restores the default {@link Color} of this item.
    */
   public final void restore ()
@@ -222,6 +247,18 @@ public final class ColorItem extends DefaultMutableTreeNode implements
   public final void setDescription ( String description )
   {
     this.description = description;
+  }
+
+
+  /**
+   * Sets the expanded value.
+   * 
+   * @param expanded The expanded value to set.
+   * @see #expanded
+   */
+  public final void setExpanded ( boolean expanded )
+  {
+    this.expanded = expanded;
   }
 
 

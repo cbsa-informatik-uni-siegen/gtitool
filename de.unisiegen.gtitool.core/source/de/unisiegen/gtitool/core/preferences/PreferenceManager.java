@@ -167,6 +167,12 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of a error warning.
+   */
+  public static final Color DEFAULT_PARSER_ERROR_COLOR = new Color ( 255, 0, 0 );
+
+
+  /**
    * The default {@link Color} of a parser highlighting.
    */
   public static final Color DEFAULT_PARSER_HIGHLIGHTING_COLOR = new Color (
@@ -319,6 +325,22 @@ public class PreferenceManager
       LanguageChangedListener listener )
   {
     this.listenerList.add ( LanguageChangedListener.class, listener );
+  }
+
+
+  /**
+   * Let the listeners know that the color of the parser error has changed.
+   * 
+   * @param newColor The new color of the parser error.
+   */
+  public final void fireColorChangedParserError ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( int n = 0 ; n < listeners.length ; ++n )
+    {
+      listeners [ n ].colorChangedParserError ( newColor );
+    }
   }
 
 
@@ -599,16 +621,15 @@ public class PreferenceManager
   public final AlphabetItem getAlphabetItem ()
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    int count = this.preferences.getInt ( "DefaultAlphabetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
-      String symbol = this.preferences.get ( "DefaultAlphabet" + i, //$NON-NLS-1$
+      String symbol = this.preferences.get ( "DefaultAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
       {
-        break loop;
+        break;
       }
       try
       {
@@ -619,6 +640,7 @@ public class PreferenceManager
         e.printStackTrace ();
         System.exit ( 1 );
       }
+      count++ ;
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
@@ -640,6 +662,38 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the parser error.
+   * 
+   * @return The {@link ColorItem} of the parser error.
+   */
+  public final ColorItem getColorItemParserError ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorParserErrorR", //$NON-NLS-1$
+        DEFAULT_PARSER_ERROR_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorParserErrorG", //$NON-NLS-1$
+        DEFAULT_PARSER_ERROR_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorParserErrorB", //$NON-NLS-1$
+        DEFAULT_PARSER_ERROR_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorParserErrorCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorParserErrorDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_PARSER_ERROR_COLOR );
+  }
+  /**
+   * Returns the {@link ColorItem} of the parser group.
+   * 
+   * @return The {@link ColorItem} of the parser group.
+   */
+  public final ColorItem getColorItemParserGroup ()
+  {
+    String caption = Messages.getString ( "Preferences.ColorParserGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorParserGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
+  }
+  /**
    * Returns the {@link ColorItem} of the parser highlighting.
    * 
    * @return The {@link ColorItem} of the parser highlighting.
@@ -659,8 +713,6 @@ public class PreferenceManager
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_PARSER_HIGHLIGHTING_COLOR );
   }
-
-
   /**
    * Returns the {@link ColorItem} of the parser warning.
    * 
@@ -681,7 +733,6 @@ public class PreferenceManager
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_PARSER_WARNING_COLOR );
   }
-
 
   /**
    * Returns the {@link ColorItem} of the {State}.
@@ -766,6 +817,20 @@ public class PreferenceManager
         .getString ( "Preferences.ColorStateErrorDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_STATE_ERROR_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link State} group.
+   * 
+   * @return The {@link ColorItem} of the {@link State} group.
+   */
+  public final ColorItem getColorItemStateGroup ()
+  {
+    String caption = Messages.getString ( "Preferences.ColorStateGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorStateGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
   }
 
 
@@ -878,6 +943,20 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the {@link Symbol} group.
+   * 
+   * @return The {@link ColorItem} of the {@link Symbol} group.
+   */
+  public final ColorItem getColorItemSymbolGroup ()
+  {
+    String caption = Messages.getString ( "Preferences.ColorSymbolGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorSymbolGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the {@link Transition}.
    * 
    * @return The {@link ColorItem} of the {@link Transition}.
@@ -943,6 +1022,20 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the {@link Transition} group.
+   * 
+   * @return The {@link ColorItem} of the {@link Transition} group.
+   */
+  public final ColorItem getColorItemTransitionGroup ()
+  {
+    String caption = Messages.getString ( "Preferences.ColorTransitionGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorTransitionGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the selected {@link Transition}.
    * 
    * @return The {@link ColorItem} of the selected {@link Transition}.
@@ -987,17 +1080,16 @@ public class PreferenceManager
   public final NonterminalSymbolSetItem getNonterminalSymbolSetItem ()
   {
     ArrayList < NonterminalSymbol > nonterminalSymbols = new ArrayList < NonterminalSymbol > ();
-    int count = this.preferences.getInt ( "DefaultNonterminalSymbolSetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
       String nonterminalSymbol = this.preferences.get (
-          "DefaultNonterminalSymbolSet" + i, //$NON-NLS-1$
+          "DefaultNonterminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( nonterminalSymbol.equals ( end ) )
       {
-        break loop;
+        break;
       }
       try
       {
@@ -1009,6 +1101,7 @@ public class PreferenceManager
         e.printStackTrace ();
         System.exit ( 1 );
       }
+      count++ ;
     }
     /*
      * Return the default nonterminal symbol set if no nonterminal symbol set is
@@ -1041,16 +1134,15 @@ public class PreferenceManager
   public final AlphabetItem getPushDownAlphabetItem ()
   {
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    int count = this.preferences.getInt ( "DefaultPushDownAlphabetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
-      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
+      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + count, //$NON-NLS-1$
           end );
       if ( symbol.equals ( end ) )
       {
-        break loop;
+        break;
       }
       try
       {
@@ -1061,6 +1153,7 @@ public class PreferenceManager
         e.printStackTrace ();
         System.exit ( 1 );
       }
+      count++ ;
     }
     // Return the default alphabet if no alphabet is found.
     if ( symbols.size () == 0 )
@@ -1101,17 +1194,16 @@ public class PreferenceManager
   public final TerminalSymbolSetItem getTerminalSymbolSetItem ()
   {
     ArrayList < TerminalSymbol > terminalSymbols = new ArrayList < TerminalSymbol > ();
-    int count = this.preferences.getInt ( "DefaultTerminalSymbolSetCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    loop : for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
       String terminalSymbol = this.preferences.get (
-          "DefaultTerminalSymbolSet" + i, //$NON-NLS-1$
+          "DefaultTerminalSymbolSet" + count, //$NON-NLS-1$
           end );
       if ( terminalSymbol.equals ( end ) )
       {
-        break loop;
+        break;
       }
       try
       {
@@ -1122,6 +1214,7 @@ public class PreferenceManager
         e.printStackTrace ();
         System.exit ( 1 );
       }
+      count++ ;
     }
     /*
      * Return the default terminal symbol set if no terminal symbol set is
@@ -1191,17 +1284,66 @@ public class PreferenceManager
   {
     logger.debug ( "set the alphabet to \"" + alphabetItem.getAlphabet () //$NON-NLS-1$
         + "\"" ); //$NON-NLS-1$
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultAlphabet" + i ); //$NON-NLS-1$
+    }
+
+    // Set the new data
     for ( int i = 0 ; i < alphabetItem.getAlphabet ().size () ; i++ )
     {
       this.preferences.put (
           "DefaultAlphabet" + i, alphabetItem.getAlphabet ().get ( i ) //$NON-NLS-1$
               .getName () );
     }
-    this.preferences.putInt ( "DefaultAlphabetCount", alphabetItem //$NON-NLS-1$
-        .getAlphabet ().size () );
   }
 
 
+  /**
+   * Sets the {@link ColorItem} of the parser error.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser error.
+   */
+  public final void setColorItemParserError ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the parser error to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorParserErrorR", colorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorParserErrorG", colorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorParserErrorB", colorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+  /**
+   * Sets the {@link ColorItem} of the parser group.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser group.
+   */
+  public final void setColorItemParserGroup (ColorItem colorItem)
+  {
+    logger.debug ( "set expanded value of the parser group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "Preferences.ColorParserGroupExpanded", colorItem //$NON-NLS-1$
+        .isExpanded () );
+  }
+  
   /**
    * Sets the {@link ColorItem} of the parser highlighting.
    * 
@@ -1220,8 +1362,7 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorParserHighlightingB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
-
-
+  
   /**
    * Sets the {@link ColorItem} of the parser warning.
    * 
@@ -1240,8 +1381,7 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorParserWarningB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
-
-
+  
   /**
    * Sets the {@link ColorItem} of the {@link State}.
    * 
@@ -1260,8 +1400,6 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorStateB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
-
-
   /**
    * Sets the {@link ColorItem} of the active {@link State}.
    * 
@@ -1319,6 +1457,19 @@ public class PreferenceManager
         colorItem.getColor ().getGreen () );
     this.preferences.putInt ( "Preferences.ColorStateErrorB", //$NON-NLS-1$
         colorItem.getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link State} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link State} group.
+   */
+  public final void setColorItemStateGroup (ColorItem colorItem)
+  {
+    logger.debug ( "set expanded value of the state group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "Preferences.ColorStateGroupExpanded", colorItem //$NON-NLS-1$
+        .isExpanded () );
   }
 
 
@@ -1423,6 +1574,19 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link ColorItem} of the {@link Symbol} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link Symbol} group.
+   */
+  public final void setColorItemSymbolGroup (ColorItem colorItem)
+  {
+    logger.debug ( "set expanded value of the symbol group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "Preferences.ColorSymbolGroupExpanded", colorItem //$NON-NLS-1$
+        .isExpanded () );
+  }
+
+
+  /**
    * Sets the {@link ColorItem} of the {@link Transition}.
    * 
    * @param colorItem The {@link ColorItem} of the {@link Transition}.
@@ -1483,6 +1647,19 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link ColorItem} of the {@link Transition} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link Transition} group.
+   */
+  public final void setColorItemTransitionGroup (ColorItem colorItem)
+  {
+    logger.debug ( "set expanded value of the transition group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "Preferences.ColorTransitionGroupExpanded", colorItem //$NON-NLS-1$
+        .isExpanded () );
+  }
+
+
+  /**
    * Sets the {@link ColorItem} of the selected {@link Transition}.
    * 
    * @param colorItem The {@link ColorItem} of the selected {@link Transition}.
@@ -1528,6 +1705,27 @@ public class PreferenceManager
   {
     logger.debug ( "set the nonterminal symbol set to \"" //$NON-NLS-1$
         + nonterminalSymbolSetItem.getNonterminalSymbolSet () + "\"" ); //$NON-NLS-1$
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get (
+          "DefaultNonterminalSymbolSet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultNonterminalSymbolSet" + i ); //$NON-NLS-1$
+    }
+
+    // Set new data
     for ( int i = 0 ; i < nonterminalSymbolSetItem.getNonterminalSymbolSet ()
         .size () ; i++ )
     {
@@ -1535,8 +1733,6 @@ public class PreferenceManager
           nonterminalSymbolSetItem.getNonterminalSymbolSet ().get ( i )
               .getName () );
     }
-    this.preferences.putInt ( "DefaultNonterminalSymbolSetCount", //$NON-NLS-1$
-        nonterminalSymbolSetItem.getNonterminalSymbolSet ().size () );
   }
 
 
@@ -1549,14 +1745,31 @@ public class PreferenceManager
   {
     logger.debug ( "set the push down alphabet to \"" //$NON-NLS-1$
         + pushDownAlphabetItem.getAlphabet () + "\"" ); //$NON-NLS-1$
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get ( "DefaultPushDownAlphabet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultPushDownAlphabet" + i ); //$NON-NLS-1$
+    }
+
+    // Set new data
     for ( int i = 0 ; i < pushDownAlphabetItem.getAlphabet ().size () ; i++ )
     {
       this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
           pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
     }
-    this.preferences.putInt (
-        "DefaultPushDownAlphabetCount", pushDownAlphabetItem //$NON-NLS-1$
-            .getAlphabet ().size () );
   }
 
 
@@ -1581,13 +1794,32 @@ public class PreferenceManager
   {
     logger.debug ( "set the terminal symbol set to \"" //$NON-NLS-1$
         + terminalSymbolSetItem.getTerminalSymbolSet () + "\"" ); //$NON-NLS-1$
+
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get (
+          "DefaultTerminalSymbolSet" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "DefaultTerminalSymbolSet" + i ); //$NON-NLS-1$
+    }
+
+    // Set new data
     for ( int i = 0 ; i < terminalSymbolSetItem.getTerminalSymbolSet ().size () ; i++ )
     {
       this.preferences.put ( "DefaultTerminalSymbolSet" + i, //$NON-NLS-1$
           terminalSymbolSetItem.getTerminalSymbolSet ().get ( i ).getName () );
     }
-    this.preferences.putInt ( "DefaultTerminalSymbolSetCount", //$NON-NLS-1$
-        terminalSymbolSetItem.getTerminalSymbolSet ().size () );
   }
 
 

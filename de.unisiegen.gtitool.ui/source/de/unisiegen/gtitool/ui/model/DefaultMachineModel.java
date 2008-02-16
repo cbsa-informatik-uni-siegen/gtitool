@@ -362,7 +362,7 @@ public final class DefaultMachineModel implements Storable, Modifyable
           RedoUndoItem.REDO_UNDO_ACTION.STATE_ADDED, stateView );
       this.redoUndoHandler.addUndo ( item );
     }
-    
+
     return stateView;
   }
 
@@ -385,13 +385,13 @@ public final class DefaultMachineModel implements Storable, Modifyable
     GraphConstants.setLineEnd ( transitionView.getAttributes (),
         GraphConstants.ARROW_CLASSIC );
     GraphConstants.setEndFill ( transitionView.getAttributes (), true );
-    
+
     // Set the parallel routing
     ParallelEdgeRouter.setEdgeSeparation ( 20 );
     ParallelEdgeRouter.setEdgeDeparture ( 10 );
-    GraphConstants.setRouting (  transitionView.getAttributes (),
+    GraphConstants.setRouting ( transitionView.getAttributes (),
         ParallelEdgeRouter.sharedInstance );
-    
+
     this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
@@ -595,6 +595,14 @@ public final class DefaultMachineModel implements Storable, Modifyable
         {
 
           @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedParserError ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedParserHighlighting (
               @SuppressWarnings ( "unused" )
               Color newColor )
@@ -794,9 +802,10 @@ public final class DefaultMachineModel implements Storable, Modifyable
     ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
     for ( DefaultTransitionView current : this.transitionViewList )
     {
-      if ( (current.getTransition ().getStateBegin ().equals (
-          stateView.getState () ) ) || ( current.getTransition ().getStateEnd ().equals (
-              stateView.getState () ) ) )
+      if ( ( current.getTransition ().getStateBegin ().equals ( stateView
+          .getState () ) )
+          || ( current.getTransition ().getStateEnd ().equals ( stateView
+              .getState () ) ) )
       {
         removeList.add ( current );
       }

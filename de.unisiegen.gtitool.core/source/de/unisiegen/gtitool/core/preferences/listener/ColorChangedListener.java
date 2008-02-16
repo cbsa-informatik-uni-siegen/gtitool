@@ -19,6 +19,14 @@ public interface ColorChangedListener extends EventListener
 {
 
   /**
+   * Invoked when the color of the parser error changed.
+   * 
+   * @param newColor The new color of the error warning.
+   */
+  public void colorChangedParserError ( Color newColor );
+
+
+  /**
    * Invoked when the color of the parser highlighting changed.
    * 
    * @param newColor The new color of the parser highlighting.

@@ -314,18 +314,18 @@ public final class PreferenceManager extends
   public final OpenedFilesItem getOpenedFilesItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
-    int count = this.preferences.getInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
-      String file = this.preferences.get ( "MainWindow.OpenedFiles" + i, //$NON-NLS-1$
+      String file = this.preferences.get ( "MainWindow.OpenedFiles" + count, //$NON-NLS-1$
           end );
       if ( file.equals ( end ) )
       {
         break;
       }
       files.add ( new File ( file ) );
+      count++ ;
     }
     String activeFileName = this.preferences.get (
         "MainWindow.OpenedActiveFile", "" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -355,18 +355,18 @@ public final class PreferenceManager extends
   public final RecentlyUsedFilesItem getRecentlyUsedFilesItem ()
   {
     ArrayList < File > files = new ArrayList < File > ();
-    int count = this.preferences.getInt ( "MainWindow.RecentlyUsedFilesCount", //$NON-NLS-1$
-        Integer.MAX_VALUE );
     String end = "no item found"; //$NON-NLS-1$
-    for ( int i = 0 ; i < count ; i++ )
+    int count = 0;
+    while ( true )
     {
-      String file = this.preferences.get ( "MainWindow.RecentlyUsedFiles" + i, //$NON-NLS-1$
-          end );
+      String file = this.preferences.get ( "MainWindow.RecentlyUsedFiles" //$NON-NLS-1$
+          + count, end );
       if ( file.equals ( end ) )
       {
         break;
       }
       files.add ( new File ( file ) );
+      count++ ;
     }
     return new RecentlyUsedFilesItem ( files );
   }
@@ -549,6 +549,25 @@ public final class PreferenceManager extends
    */
   public final void setOpenedFilesItem ( OpenedFilesItem openedFilesItem )
   {
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get ( "MainWindow.OpenedFiles" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "MainWindow.OpenedFiles" + i ); //$NON-NLS-1$
+    }
+
+    // Set the new data
     for ( int i = 0 ; i < openedFilesItem.getFiles ().size () ; i++ )
     {
       logger.debug ( "set opened file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
@@ -556,8 +575,6 @@ public final class PreferenceManager extends
       this.preferences.put ( "MainWindow.OpenedFiles" + i, openedFilesItem //$NON-NLS-1$
           .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "MainWindow.OpenedFilesCount", //$NON-NLS-1$
-        openedFilesItem.getFiles ().size () );
 
     if ( openedFilesItem.getActiveFile () == null )
     {
@@ -594,6 +611,26 @@ public final class PreferenceManager extends
   public final void setRecentlyUsedFilesItem (
       RecentlyUsedFilesItem recentlyUsedFilesItem )
   {
+    // Delete old data
+    String end = "no item found"; //$NON-NLS-1$
+    int count = 0;
+    loop : while ( true )
+    {
+      String symbol = this.preferences.get (
+          "MainWindow.RecentlyUsedFiles" + count, //$NON-NLS-1$
+          end );
+      if ( symbol.equals ( end ) )
+      {
+        break loop;
+      }
+      count++ ;
+    }
+    for ( int i = 0 ; i < count ; i++ )
+    {
+      this.preferences.remove ( "MainWindow.RecentlyUsedFiles" + i ); //$NON-NLS-1$
+    }
+
+    // Set the new data
     for ( int i = 0 ; i < recentlyUsedFilesItem.getFiles ().size () ; i++ )
     {
       logger.debug ( "set recently used file \"" + i + "\" to \"" //$NON-NLS-1$//$NON-NLS-2$
@@ -603,8 +640,6 @@ public final class PreferenceManager extends
           "MainWindow.RecentlyUsedFiles" + i, recentlyUsedFilesItem //$NON-NLS-1$
               .getFiles ().get ( i ).getAbsolutePath () );
     }
-    this.preferences.putInt ( "MainWindow.RecentlyUsedFilesCount", //$NON-NLS-1$
-        recentlyUsedFilesItem.getFiles ().size () );
   }
 
 

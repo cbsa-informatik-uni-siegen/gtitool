@@ -94,6 +94,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * The parser error color.
+   */
+  private Color parserErrorColor;
+
+
+  /**
    * The parser warning highlighting.
    */
   private Color parserHighlightingColor;
@@ -143,6 +149,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
     StyleConstants.setBold ( symbolSet, true );
     this.attributes.put ( Style.SYMBOL, symbolSet );
     initAttributes ();
+    this.parserErrorColor = PreferenceManager.getInstance ()
+        .getColorItemParserError ().getColor ();
     this.parserWarningColor = PreferenceManager.getInstance ()
         .getColorItemParserWarning ().getColor ();
     this.parserHighlightingColor = PreferenceManager.getInstance ()
@@ -154,6 +162,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
         {
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChangedParserError ( Color newColor )
+          {
+            StyledParserDocument.this.parserErrorColor = newColor;
+            parse ();
+          }
+
 
           /**
            * {@inheritDoc}
@@ -172,10 +192,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
-          Color newColor )
+          public void colorChangedParserWarning ( Color newColor )
           {
-            initAttributes ();
+            StyledParserDocument.this.parserWarningColor = newColor;
             parse ();
           }
 
@@ -185,9 +204,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
            */
           @SuppressWarnings ( "synthetic-access" )
           @Override
-          public void colorChangedParserWarning ( Color newColor )
+          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
+          Color newColor )
           {
-            StyledParserDocument.this.parserWarningColor = newColor;
+            initAttributes ();
             parse ();
           }
         } );
@@ -256,7 +276,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private final SimpleAttributeSet getAttributeSetError ()
   {
     SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-    StyleConstants.setForeground ( errorSet, Color.RED );
+    StyleConstants.setForeground ( errorSet, this.parserErrorColor );
     StyleConstants.setBold ( errorSet, true );
     StyleConstants.setUnderline ( errorSet, true );
     return errorSet;
@@ -633,23 +653,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * Sets the {@link Entity}s which should be highlighted.
    * 
-   * @param entities The {@link Entity}s which should be highlighted.
-   */
-  public final void setHighlightedParseableEntity (
-      Iterable < ? extends Entity > entities )
-  {
-    this.highlightedParseableEntityList.clear ();
-    for ( Entity current : entities )
-    {
-      this.highlightedParseableEntityList.add ( current );
-    }
-    highlightedParseableEntities ();
-  }
-
-
-  /**
-   * Sets the {@link Entity}s which should be highlighted.
-   * 
    * @param entities The {@linkEntity}s which should be highlighted.
    */
   public final void setHighlightedParseableEntity ( Entity ... entities )
@@ -673,5 +676,22 @@ public final class StyledParserDocument extends DefaultStyledDocument
     ArrayList < Entity > entities = new ArrayList < Entity > ();
     entities.add ( entity );
     setHighlightedParseableEntity ( entities );
+  }
+
+
+  /**
+   * Sets the {@link Entity}s which should be highlighted.
+   * 
+   * @param entities The {@link Entity}s which should be highlighted.
+   */
+  public final void setHighlightedParseableEntity (
+      Iterable < ? extends Entity > entities )
+  {
+    this.highlightedParseableEntityList.clear ();
+    for ( Entity current : entities )
+    {
+      this.highlightedParseableEntityList.add ( current );
+    }
+    highlightedParseableEntities ();
   }
 }

@@ -4,8 +4,10 @@ package de.unisiegen.gtitool.core.preferences.listener;
 import java.awt.Color;
 import java.util.EventListener;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 
 
@@ -17,6 +19,14 @@ import de.unisiegen.gtitool.core.entities.Transition;
  */
 public interface ColorChangedListener extends EventListener
 {
+
+  /**
+   * Invoked when the color of the {@link NonterminalSymbol} changed.
+   * 
+   * @param newColor The new color of the {@link NonterminalSymbol}.
+   */
+  public void colorChangedNonterminalSymbol ( Color newColor );
+
 
   /**
    * Invoked when the color of the parser error changed.
@@ -32,6 +42,14 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the parser highlighting.
    */
   public void colorChangedParserHighlighting ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the parser keyword changed.
+   * 
+   * @param newColor The new color of the parser keyword.
+   */
+  public void colorChangedParserKeyword ( Color newColor );
 
 
   /**
@@ -112,6 +130,14 @@ public interface ColorChangedListener extends EventListener
    * @param newColor The new color of the error {@link Symbol}.
    */
   public void colorChangedSymbolError ( Color newColor );
+
+
+  /**
+   * Invoked when the color of the {@link TerminalSymbol} changed.
+   * 
+   * @param newColor The new color of the {@link TerminalSymbol}.
+   */
+  public void colorChangedTerminalSymbol ( Color newColor );
 
 
   /**

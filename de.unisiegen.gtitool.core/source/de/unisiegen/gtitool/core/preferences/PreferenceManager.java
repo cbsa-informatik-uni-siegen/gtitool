@@ -142,9 +142,23 @@ public class PreferenceManager
 
 
   /**
-   * The default {@link Color} of a parser warning.
+   * The default {@link Color} of a {@link Symbol}.
    */
   public static final Color DEFAULT_SYMBOL_COLOR = new Color ( 0, 0, 127 );
+
+
+  /**
+   * The default {@link Color} of a {@link NonterminalSymbol}.
+   */
+  public static final Color DEFAULT_NONTERMINAL_SYMBOL_COLOR = new Color ( 0,
+      0, 127 );
+
+
+  /**
+   * The default {@link Color} of a {@link TerminalSymbol}.
+   */
+  public static final Color DEFAULT_TERMINAL_SYMBOL_COLOR = new Color ( 0, 0,
+      127 );
 
 
   /**
@@ -157,6 +171,13 @@ public class PreferenceManager
    * The default {@link Color} of a error {@link Symbol}.
    */
   public static final Color DEFAULT_SYMBOL_ERROR_COLOR = new Color ( 255, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of a parser keyword.
+   */
+  public static final Color DEFAULT_PARSER_KEYWORD_COLOR = new Color ( 127, 0,
+      0 );
 
 
   /**
@@ -329,6 +350,23 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the {@link NonterminalSymbol} has
+   * changed.
+   * 
+   * @param newColor The new color of the {@link NonterminalSymbol}.
+   */
+  public final void fireColorChangedNonterminalSymbol ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedNonterminalSymbol ( newColor );
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the parser error has changed.
    * 
    * @param newColor The new color of the parser error.
@@ -337,9 +375,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedParserError ( newColor );
+      current.colorChangedParserError ( newColor );
     }
   }
 
@@ -354,9 +392,25 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedParserHighlighting ( newColor );
+      current.colorChangedParserHighlighting ( newColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the parser keyword has changed.
+   * 
+   * @param newColor The new color of the parser keyword.
+   */
+  public final void fireColorChangedParserKeyword ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedParserKeyword ( newColor );
     }
   }
 
@@ -370,9 +424,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedParserWarning ( newColor );
+      current.colorChangedParserWarning ( newColor );
     }
   }
 
@@ -386,9 +440,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedState ( newColor );
+      current.colorChangedState ( newColor );
     }
   }
 
@@ -403,9 +457,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedStateActive ( newColor );
+      current.colorChangedStateActive ( newColor );
     }
   }
 
@@ -420,9 +474,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedStateBackground ( newColor );
+      current.colorChangedStateBackground ( newColor );
     }
   }
 
@@ -437,9 +491,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedStateError ( newColor );
+      current.colorChangedStateError ( newColor );
     }
   }
 
@@ -454,9 +508,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedStateSelected ( newColor );
+      current.colorChangedStateSelected ( newColor );
     }
   }
 
@@ -471,9 +525,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedStateStart ( newColor );
+      current.colorChangedStateStart ( newColor );
     }
   }
 
@@ -487,9 +541,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedSymbol ( newColor );
+      current.colorChangedSymbol ( newColor );
     }
   }
 
@@ -504,9 +558,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedSymbolActive ( newColor );
+      current.colorChangedSymbolActive ( newColor );
     }
   }
 
@@ -521,9 +575,26 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedSymbolError ( newColor );
+      current.colorChangedSymbolError ( newColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the {@link TerminalSymbol} has
+   * changed.
+   * 
+   * @param newColor The new color of the {@link TerminalSymbol}.
+   */
+  public final void fireColorChangedTerminalSymbol ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedTerminalSymbol ( newColor );
     }
   }
 
@@ -538,9 +609,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedTransition ( newColor );
+      current.colorChangedTransition ( newColor );
     }
   }
 
@@ -555,9 +626,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedTransitionActive ( newColor );
+      current.colorChangedTransitionActive ( newColor );
     }
   }
 
@@ -572,9 +643,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedTransitionError ( newColor );
+      current.colorChangedTransitionError ( newColor );
     }
   }
 
@@ -589,9 +660,9 @@ public class PreferenceManager
   {
     ColorChangedListener [] listeners = this.listenerList
         .getListeners ( ColorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ColorChangedListener current : listeners )
     {
-      listeners [ n ].colorChangedTransitionSelected ( newColor );
+      current.colorChangedTransitionSelected ( newColor );
     }
   }
 
@@ -606,9 +677,9 @@ public class PreferenceManager
     Locale.setDefault ( newLocale );
     LanguageChangedListener [] listeners = this.listenerList
         .getListeners ( LanguageChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( LanguageChangedListener current : listeners )
     {
-      listeners [ n ].languageChanged ();
+      current.languageChanged ();
     }
   }
 
@@ -662,6 +733,43 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the {NonterminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the {NonterminalSymbol}.
+   */
+  public final ColorItem getColorItemNonterminalSymbol ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolR", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolG", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorNonterminalSymbolB", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_NONTERMINAL_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link NonterminalSymbol} group.
+   * 
+   * @return The {@link ColorItem} of the {@link NonterminalSymbol} group.
+   */
+  public final ColorItem getColorItemNonterminalSymbolGroup ()
+  {
+    String caption = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorNonterminalSymbolGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the parser error.
    * 
    * @return The {@link ColorItem} of the parser error.
@@ -681,6 +789,8 @@ public class PreferenceManager
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_PARSER_ERROR_COLOR );
   }
+
+
   /**
    * Returns the {@link ColorItem} of the parser group.
    * 
@@ -693,6 +803,8 @@ public class PreferenceManager
         "Preferences.ColorParserGroupExpanded", false ); //$NON-NLS-1$
     return new ColorItem ( caption, expanded );
   }
+
+
   /**
    * Returns the {@link ColorItem} of the parser highlighting.
    * 
@@ -713,6 +825,30 @@ public class PreferenceManager
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_PARSER_HIGHLIGHTING_COLOR );
   }
+
+
+  /**
+   * Returns the {@link ColorItem} of the parser keyword.
+   * 
+   * @return The {@link ColorItem} of the parser keyword.
+   */
+  public final ColorItem getColorItemParserKeyword ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorParserKeywordR", //$NON-NLS-1$
+        DEFAULT_PARSER_KEYWORD_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorParserKeywordG", //$NON-NLS-1$
+        DEFAULT_PARSER_KEYWORD_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorParserKeywordB", //$NON-NLS-1$
+        DEFAULT_PARSER_KEYWORD_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorParserKeywordCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorParserKeywordDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_PARSER_KEYWORD_COLOR );
+  }
+
+
   /**
    * Returns the {@link ColorItem} of the parser warning.
    * 
@@ -733,6 +869,7 @@ public class PreferenceManager
     return new ColorItem ( new Color ( r, g, b ), caption, description,
         DEFAULT_PARSER_WARNING_COLOR );
   }
+
 
   /**
    * Returns the {@link ColorItem} of the {State}.
@@ -952,6 +1089,43 @@ public class PreferenceManager
     String caption = Messages.getString ( "Preferences.ColorSymbolGroup" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorSymbolGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, expanded );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the {TerminalSymbol}.
+   */
+  public final ColorItem getColorItemTerminalSymbol ()
+  {
+    int r = this.preferences.getInt ( "Preferences.ColorTerminalSymbolR", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_COLOR.getRed () );
+    int g = this.preferences.getInt ( "Preferences.ColorTerminalSymbolG", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_COLOR.getGreen () );
+    int b = this.preferences.getInt ( "Preferences.ColorTerminalSymbolB", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_COLOR.getBlue () );
+    String caption = Messages
+        .getString ( "Preferences.ColorTerminalSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTerminalSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( r, g, b ), caption, description,
+        DEFAULT_TERMINAL_SYMBOL_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link TerminalSymbol} group.
+   * 
+   * @return The {@link ColorItem} of the {@link TerminalSymbol} group.
+   */
+  public final ColorItem getColorItemTerminalSymbolGroup ()
+  {
+    String caption = Messages
+        .getString ( "Preferences.ColorTerminalSymbolGroup" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorTerminalSymbolGroupExpanded", false ); //$NON-NLS-1$
     return new ColorItem ( caption, expanded );
   }
 
@@ -1314,6 +1488,43 @@ public class PreferenceManager
 
 
   /**
+   * Sets the {@link ColorItem} of the parser {@link NonterminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser
+   *          {@link NonterminalSymbol}.
+   */
+  public final void setColorItemNonterminalSymbol ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the nonterminal symbol to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolR", colorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolG", colorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolB", colorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link NonterminalSymbol} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link NonterminalSymbol}
+   *          group.
+   */
+  public final void setColorItemNonterminalSymbolGroup ( ColorItem colorItem )
+  {
+    logger.debug ( "set expanded value of the nonterminal symbol group to \"" //$NON-NLS-1$
+        + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$
+    this.preferences.putBoolean (
+        "Preferences.ColorNonterminalSymbolGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
+  }
+
+
+  /**
    * Sets the {@link ColorItem} of the parser error.
    * 
    * @param colorItem The {@link ColorItem} of the parser error.
@@ -1332,18 +1543,22 @@ public class PreferenceManager
         .getColor ().getBlue () );
   }
 
+
   /**
    * Sets the {@link ColorItem} of the parser group.
    * 
    * @param colorItem The {@link ColorItem} of the parser group.
    */
-  public final void setColorItemParserGroup (ColorItem colorItem)
+  public final void setColorItemParserGroup ( ColorItem colorItem )
   {
-    logger.debug ( "set expanded value of the parser group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putBoolean ( "Preferences.ColorParserGroupExpanded", colorItem //$NON-NLS-1$
-        .isExpanded () );
+    logger
+        .debug ( "set expanded value of the parser group to \"" + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean (
+        "Preferences.ColorParserGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
   }
-  
+
+
   /**
    * Sets the {@link ColorItem} of the parser highlighting.
    * 
@@ -1362,7 +1577,28 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorParserHighlightingB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
-  
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser keyword.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser keyword.
+   */
+  public final void setColorItemParserKeyword ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the parser keyword to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorParserKeywordR", colorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorParserKeywordG", colorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorParserKeywordB", colorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
   /**
    * Sets the {@link ColorItem} of the parser warning.
    * 
@@ -1381,7 +1617,8 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorParserWarningB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
-  
+
+
   /**
    * Sets the {@link ColorItem} of the {@link State}.
    * 
@@ -1400,6 +1637,8 @@ public class PreferenceManager
     this.preferences.putInt ( "Preferences.ColorStateB", colorItem //$NON-NLS-1$
         .getColor ().getBlue () );
   }
+
+
   /**
    * Sets the {@link ColorItem} of the active {@link State}.
    * 
@@ -1465,11 +1704,13 @@ public class PreferenceManager
    * 
    * @param colorItem The {@link ColorItem} of the {@link State} group.
    */
-  public final void setColorItemStateGroup (ColorItem colorItem)
+  public final void setColorItemStateGroup ( ColorItem colorItem )
   {
-    logger.debug ( "set expanded value of the state group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putBoolean ( "Preferences.ColorStateGroupExpanded", colorItem //$NON-NLS-1$
-        .isExpanded () );
+    logger
+        .debug ( "set expanded value of the state group to \"" + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean (
+        "Preferences.ColorStateGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
   }
 
 
@@ -1578,11 +1819,47 @@ public class PreferenceManager
    * 
    * @param colorItem The {@link ColorItem} of the {@link Symbol} group.
    */
-  public final void setColorItemSymbolGroup (ColorItem colorItem)
+  public final void setColorItemSymbolGroup ( ColorItem colorItem )
   {
-    logger.debug ( "set expanded value of the symbol group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putBoolean ( "Preferences.ColorSymbolGroupExpanded", colorItem //$NON-NLS-1$
-        .isExpanded () );
+    logger.debug ( "set expanded value of the symbol group to \"" //$NON-NLS-1$
+        + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$
+    this.preferences.putBoolean ( "Preferences.ColorSymbolGroupExpanded", //$NON-NLS-1$
+        colorItem.isExpanded () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser {@link TerminalSymbol}.
+   */
+  public final void setColorItemTerminalSymbol ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the terminal symbol to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbolR", colorItem //$NON-NLS-1$
+        .getColor ().getRed () );
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbolG", colorItem //$NON-NLS-1$
+        .getColor ().getGreen () );
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbolB", colorItem //$NON-NLS-1$
+        .getColor ().getBlue () );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link TerminalSymbol} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link TerminalSymbol} group.
+   */
+  public final void setColorItemTerminalSymbolGroup ( ColorItem colorItem )
+  {
+    logger.debug ( "set expanded value of the terminal symbol group to \"" //$NON-NLS-1$
+        + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$
+    this.preferences.putBoolean (
+        "Preferences.ColorTerminalSymbolGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
   }
 
 
@@ -1651,11 +1928,13 @@ public class PreferenceManager
    * 
    * @param colorItem The {@link ColorItem} of the {@link Transition} group.
    */
-  public final void setColorItemTransitionGroup (ColorItem colorItem)
+  public final void setColorItemTransitionGroup ( ColorItem colorItem )
   {
-    logger.debug ( "set expanded value of the transition group to \"" +colorItem.isExpanded ()+"\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.preferences.putBoolean ( "Preferences.ColorTransitionGroupExpanded", colorItem //$NON-NLS-1$
-        .isExpanded () );
+    logger
+        .debug ( "set expanded value of the transition group to \"" + colorItem.isExpanded () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean (
+        "Preferences.ColorTransitionGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
   }
 
 

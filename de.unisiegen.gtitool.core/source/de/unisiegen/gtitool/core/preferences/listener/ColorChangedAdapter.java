@@ -3,8 +3,10 @@ package de.unisiegen.gtitool.core.preferences.listener;
 
 import java.awt.Color;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 
 
@@ -16,6 +18,18 @@ import de.unisiegen.gtitool.core.entities.Transition;
  */
 public abstract class ColorChangedAdapter implements ColorChangedListener
 {
+
+  /**
+   * Invoked when the color of the {@link NonterminalSymbol} changed.
+   * 
+   * @param newColor The new color of the {@link NonterminalSymbol}.
+   */
+  public void colorChangedNonterminalSymbol ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
 
   /**
    * Invoked when the color of the parser error changed.
@@ -35,6 +49,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @param newColor The new color of the parser highlighting.
    */
   public void colorChangedParserHighlighting ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * Invoked when the color of the parser keyword changed.
+   * 
+   * @param newColor The new color of the parser keyword.
+   */
+  public void colorChangedParserKeyword ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.
@@ -155,6 +181,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @param newColor The new color of the error {@link Symbol}.
    */
   public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * Invoked when the color of the {@link TerminalSymbol} changed.
+   * 
+   * @param newColor The new color of the {@link TerminalSymbol}.
+   */
+  public void colorChangedTerminalSymbol ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.

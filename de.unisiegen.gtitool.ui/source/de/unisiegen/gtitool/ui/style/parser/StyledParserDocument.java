@@ -3,9 +3,7 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import java_cup.runtime.Symbol;
 
@@ -30,7 +28,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.style.listener.ExceptionsChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -76,36 +74,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * The attributes default style.
-   */
-  private SimpleAttributeSet normalSet = new SimpleAttributeSet ();
-
-
-  /**
-   * The attributes for the various {@link Style}s.
-   */
-  private HashMap < Style, SimpleAttributeSet > attributes = new HashMap < Style, SimpleAttributeSet > ();
-
-
-  /**
-   * The parser warning color.
-   */
-  private Color parserWarningColor;
-
-
-  /**
-   * The parser error color.
-   */
-  private Color parserErrorColor;
-
-
-  /**
-   * The parser warning highlighting.
-   */
-  private Color parserHighlightingColor;
-
-
-  /**
    * Flag that indicates if the panel is read only.
    */
   private boolean editable = true;
@@ -121,6 +89,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * The highlighted {@link Entity} list.
    */
   private ArrayList < Entity > highlightedParseableEntityList;
+
+
+  /**
+   * The attributes default style.
+   */
+  private SimpleAttributeSet normalSet = new SimpleAttributeSet ();
 
 
   /**
@@ -140,37 +114,25 @@ public final class StyledParserDocument extends DefaultStyledDocument
     }
     this.parseable = parseable;
     this.highlightedParseableEntityList = new ArrayList < Entity > ();
+
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
-    SimpleAttributeSet stateSet = new SimpleAttributeSet ();
-    StyleConstants.setBold ( stateSet, true );
-    this.attributes.put ( Style.STATE, stateSet );
-    SimpleAttributeSet symbolSet = new SimpleAttributeSet ();
-    StyleConstants.setBold ( symbolSet, true );
-    this.attributes.put ( Style.SYMBOL, symbolSet );
-    initAttributes ();
-    this.parserErrorColor = PreferenceManager.getInstance ()
-        .getColorItemParserError ().getColor ();
-    this.parserWarningColor = PreferenceManager.getInstance ()
-        .getColorItemParserWarning ().getColor ();
-    this.parserHighlightingColor = PreferenceManager.getInstance ()
-        .getColorItemParserHighlighting ().getColor ();
 
     /*
      * ColorChangedListener
      */
     PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
+        new ColorChangedListener ()
         {
 
           /**
            * {@inheritDoc}
            */
           @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedParserError ( Color newColor )
+          public void colorChangedNonterminalSymbol (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
           {
-            StyledParserDocument.this.parserErrorColor = newColor;
             parse ();
           }
 
@@ -179,10 +141,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
            * {@inheritDoc}
            */
           @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedParserHighlighting ( Color newColor )
+          public void colorChangedParserError ( @SuppressWarnings ( "unused" )
+          Color newColor )
           {
-            StyledParserDocument.this.parserHighlightingColor = newColor;
             parse ();
           }
 
@@ -191,10 +152,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
            * {@inheritDoc}
            */
           @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChangedParserWarning ( Color newColor )
+          public void colorChangedParserHighlighting (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
           {
-            StyledParserDocument.this.parserWarningColor = newColor;
             parse ();
           }
 
@@ -203,11 +164,179 @@ public final class StyledParserDocument extends DefaultStyledDocument
            * {@inheritDoc}
            */
           @SuppressWarnings ( "synthetic-access" )
-          @Override
+          public void colorChangedParserKeyword ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedState ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateActive ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateBackground (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateError ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateStart ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
-            initAttributes ();
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedSymbolActive ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTerminalSymbol (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransition ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionActive (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionError (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTransitionSelected (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
             parse ();
           }
         } );
@@ -245,9 +374,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     ExceptionsChangedListener [] listeners = this.listenerList
         .getListeners ( ExceptionsChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ExceptionsChangedListener current : listeners )
     {
-      listeners [ n ].exceptionsChanged ();
+      current.exceptionsChanged ();
     }
   }
 
@@ -261,9 +390,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ParseableChangedListener current : listeners )
     {
-      listeners [ n ].parseableChanged ( newObject );
+      current.parseableChanged ( newObject );
     }
   }
 
@@ -276,7 +405,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private final SimpleAttributeSet getAttributeSetError ()
   {
     SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-    StyleConstants.setForeground ( errorSet, this.parserErrorColor );
+    StyleConstants.setForeground ( errorSet, PreferenceManager.getInstance ()
+        .getColorItemParserError ().getColor () );
     StyleConstants.setBold ( errorSet, true );
     StyleConstants.setUnderline ( errorSet, true );
     return errorSet;
@@ -292,7 +422,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     SimpleAttributeSet highlightedParseableEntitySet = new SimpleAttributeSet ();
     StyleConstants.setBackground ( highlightedParseableEntitySet,
-        this.parserHighlightingColor );
+        PreferenceManager.getInstance ().getColorItemParserHighlighting ()
+            .getColor () );
     return highlightedParseableEntitySet;
   }
 
@@ -305,7 +436,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
   private final SimpleAttributeSet getAttributeSetWarning ()
   {
     SimpleAttributeSet warningSet = new SimpleAttributeSet ();
-    StyleConstants.setBackground ( warningSet, this.parserWarningColor );
+    StyleConstants.setBackground ( warningSet, PreferenceManager.getInstance ()
+        .getColorItemParserWarning ().getColor () );
     return warningSet;
   }
 
@@ -346,8 +478,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
       highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
-      if ( current.getParserOffset ().getStart () < 0
-          && current.getParserOffset ().getEnd () < 0 )
+      if ( ( current.getParserOffset ().getStart () < 0 )
+          && ( current.getParserOffset ().getEnd () < 0 ) )
       {
         setCharacterAttributes ( getLength (), getLength (),
             highlightedParseableEntitySet, false );
@@ -360,18 +492,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
             highlightedParseableEntitySet, false );
       }
     }
-  }
-
-
-  /**
-   * Initializes the attributes.
-   */
-  private final void initAttributes ()
-  {
-    StyleConstants.setForeground ( this.attributes.get ( Style.STATE ),
-        PreferenceManager.getInstance ().getColorItemState ().getColor () );
-    StyleConstants.setForeground ( this.attributes.get ( Style.SYMBOL ),
-        PreferenceManager.getInstance ().getColorItemSymbol ().getColor () );
   }
 
 
@@ -419,7 +539,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       int offset = 0;
       String content = getText ( offset, getLength () );
       final GTIScanner scanner = this.parseable.newScanner ( content );
-      final LinkedList < Symbol > symbols = new LinkedList < Symbol > ();
+      final ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
       while ( true )
       {
         try
@@ -430,12 +550,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
             break;
           }
           symbols.add ( symbol );
-          SimpleAttributeSet set = this.attributes.get ( scanner
-              .getStyleBySymbol ( symbol ) );
-          if ( set == null )
-          {
-            set = this.normalSet;
-          }
+          Style style = scanner.getStyleBySymbol ( symbol );
+          SimpleAttributeSet set = new SimpleAttributeSet ();
+          StyleConstants.setForeground ( set, style.getColor () );
+          StyleConstants.setBold ( set, style.isBold () );
+          StyleConstants.setItalic ( set, style.isItalic () );
+          StyleConstants.setUnderline ( set, style.isUnderline () );
           setCharacterAttributes ( offset + symbol.left, symbol.right
               - symbol.left, set, true );
         }
@@ -471,7 +591,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
           public Symbol nextSymbol () throws ScannerException
           {
-            return ( !symbols.isEmpty () ) ? symbols.poll () : null;
+            if ( symbols.isEmpty () )
+            {
+              return null;
+            }
+            return symbols.remove ( 0 );
           }
 
 
@@ -507,7 +631,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
           {
             SimpleAttributeSet warningSet = getAttributeSetWarning ();
             warningSet.addAttribute ( "warning", ecx ); //$NON-NLS-1$
-            if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
+            if ( ( ecx.getLeft () < 0 ) && ( ecx.getRight () < 0 ) )
             {
               setCharacterAttributes ( getLength (), getLength (), warningSet,
                   false );
@@ -526,7 +650,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
         {
           SimpleAttributeSet errorSet = getAttributeSetError ();
           errorSet.addAttribute ( "exception", ecx ); //$NON-NLS-1$
-          if ( ecx.getLeft () < 0 && ecx.getRight () < 0 )
+          if ( ( ecx.getLeft () < 0 ) && ( ecx.getRight () < 0 ) )
           {
             setCharacterAttributes ( getLength (), getLength (), errorSet,
                 false );
@@ -622,7 +746,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       {
         SimpleAttributeSet errorSet = getAttributeSetError ();
         errorSet.addAttribute ( "exception", current ); //$NON-NLS-1$
-        if ( current.getLeft () < 0 && current.getRight () < 0 )
+        if ( ( current.getLeft () < 0 ) && ( current.getRight () < 0 ) )
         {
           setCharacterAttributes ( getLength (), getLength (), errorSet, false );
         }

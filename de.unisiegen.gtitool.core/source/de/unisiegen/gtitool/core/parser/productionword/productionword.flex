@@ -52,7 +52,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  switch (id)
 	  {
 		case MEMBER:
-		  return Style.SYMBOL;
+		  return Style.NONTERMINAL_SYMBOL;
 		default:
 		  return Style.NONE;
 	  }

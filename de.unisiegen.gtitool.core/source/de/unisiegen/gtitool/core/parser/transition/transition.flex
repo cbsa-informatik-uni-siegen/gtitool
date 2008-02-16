@@ -50,6 +50,9 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  {
 		case SYMBOL:
 		  return Style.SYMBOL;
+		case ARROWUP:
+		case ARROWDOWN:
+		  return Style.KEYWORD;
 		default:
 		  return Style.NONE;
 	  }

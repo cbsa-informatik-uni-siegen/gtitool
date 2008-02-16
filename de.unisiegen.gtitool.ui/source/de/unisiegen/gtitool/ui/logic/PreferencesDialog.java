@@ -32,9 +32,11 @@ import javax.swing.tree.TreeSelectionModel;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
@@ -517,6 +519,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the parser keyword.
+   */
+  private ColorItem colorItemParserKeyword;
+
+
+  /**
    * The {@link ColorItem} of the parser warning.
    */
   private ColorItem colorItemParserWarning;
@@ -538,6 +546,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The {@link ColorItem} of the parser {@link Symbol}.
    */
   private ColorItem colorItemSymbol;
+
+
+  /**
+   * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
+   */
+  private ColorItem colorItemNonterminalSymbol;
+
+
+  /**
+   * The {@link ColorItem} of the parser {@link TerminalSymbol}.
+   */
+  private ColorItem colorItemTerminalSymbol;
 
 
   /**
@@ -661,6 +681,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial {@link ColorItem} of the parser keyword.
+   */
+  private ColorItem initialColorItemParserKeyword;
+
+
+  /**
    * The initial {@link ColorItem} of the parser error.
    */
   private ColorItem initialColorItemParserError;
@@ -688,6 +714,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the parser {@link Symbol}.
    */
   private ColorItem initialColorItemSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link NonterminalSymbol}.
+   */
+  private ColorItem initialColorItemNonterminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link TerminalSymbol}.
+   */
+  private ColorItem initialColorItemTerminalSymbol;
 
 
   /**
@@ -802,6 +840,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The color tree {@link Symbol} node.
    */
   private ColorItem symbolNode;
+
+
+  /**
+   * The color tree {@link NonterminalSymbol} node.
+   */
+  private ColorItem nonterminalSymbolNode;
+
+
+  /**
+   * The color tree {@link TerminalSymbol} node.
+   */
+  private ColorItem terminalSymbolNode;
 
 
   /**
@@ -944,6 +994,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemSymbolActive.restore ();
     this.colorItemSymbolError.restore ();
 
+    this.colorItemNonterminalSymbol.restore ();
+
+    this.colorItemTerminalSymbol.restore ();
+
+    this.colorItemParserKeyword.restore ();
     this.colorItemParserError.restore ();
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
@@ -1217,6 +1272,21 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getColorItemSymbolError ();
     this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
 
+    // NonterminalSymbol
+    this.colorItemNonterminalSymbol = PreferenceManager.getInstance ()
+        .getColorItemNonterminalSymbol ();
+    this.initialColorItemNonterminalSymbol = this.colorItemNonterminalSymbol
+        .clone ();
+
+    // TerminalSymbol
+    this.colorItemTerminalSymbol = PreferenceManager.getInstance ()
+        .getColorItemTerminalSymbol ();
+    this.initialColorItemTerminalSymbol = this.colorItemTerminalSymbol.clone ();
+
+    // Parser keyword
+    this.colorItemParserKeyword = PreferenceManager.getInstance ()
+        .getColorItemParserKeyword ();
+    this.initialColorItemParserKeyword = this.colorItemParserKeyword.clone ();
     // Parser error
     this.colorItemParserError = PreferenceManager.getInstance ()
         .getColorItemParserError ();
@@ -1347,8 +1417,17 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.symbolNode.add ( this.colorItemSymbolActive );
     this.symbolNode.add ( this.colorItemSymbolError );
 
+    this.nonterminalSymbolNode = PreferenceManager.getInstance ()
+        .getColorItemNonterminalSymbolGroup ();
+    this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbol );
+
+    this.terminalSymbolNode = PreferenceManager.getInstance ()
+        .getColorItemTerminalSymbolGroup ();
+    this.terminalSymbolNode.add ( this.colorItemTerminalSymbol );
+
     this.parserNode = PreferenceManager.getInstance ()
         .getColorItemParserGroup ();
+    this.parserNode.add ( this.colorItemParserKeyword );
     this.parserNode.add ( this.colorItemParserError );
     this.parserNode.add ( this.colorItemParserWarning );
     this.parserNode.add ( this.colorItemParserHighlighting );
@@ -1356,6 +1435,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.rootNode.add ( this.stateNode );
     this.rootNode.add ( this.transitionNode );
     this.rootNode.add ( this.symbolNode );
+    this.rootNode.add ( this.nonterminalSymbolNode );
+    this.rootNode.add ( this.terminalSymbolNode );
     this.rootNode.add ( this.parserNode );
 
     DefaultTreeModel model = new DefaultTreeModel ( this.rootNode );
@@ -1374,6 +1455,16 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.symbolNode.isExpanded () )
     {
       this.gui.jTreeColors.expandPath ( new TreePath ( this.symbolNode
+          .getPath () ) );
+    }
+    if ( this.nonterminalSymbolNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath (
+          this.nonterminalSymbolNode.getPath () ) );
+    }
+    if ( this.terminalSymbolNode.isExpanded () )
+    {
+      this.gui.jTreeColors.expandPath ( new TreePath ( this.terminalSymbolNode
           .getPath () ) );
     }
     if ( this.parserNode.isExpanded () )
@@ -2241,6 +2332,24 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorSymbolErrorCaption" ) ); //$NON-NLS-1$
     this.colorItemSymbolError.setDescription ( Messages
         .getString ( "Preferences.ColorSymbolErrorDescription" ) ); //$NON-NLS-1$
+
+    // NonterminalSymbol
+    this.colorItemNonterminalSymbol.setCaption ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolCaption" ) ); //$NON-NLS-1$
+    this.colorItemNonterminalSymbol.setDescription ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolDescription" ) ); //$NON-NLS-1$
+
+    // TerminalSymbol
+    this.colorItemTerminalSymbol.setCaption ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolCaption" ) ); //$NON-NLS-1$
+    this.colorItemTerminalSymbol.setDescription ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolDescription" ) ); //$NON-NLS-1$
+
+    // Parser keyword
+    this.colorItemParserKeyword.setCaption ( Messages
+        .getString ( "Preferences.ColorParserKeywordCaption" ) ); //$NON-NLS-1$
+    this.colorItemParserKeyword.setDescription ( Messages
+        .getString ( "Preferences.ColorParserKeywordDescription" ) ); //$NON-NLS-1$
     // Parser error
     this.colorItemParserError.setCaption ( Messages
         .getString ( "Preferences.ColorParserErrorCaption" ) ); //$NON-NLS-1$
@@ -2256,15 +2365,20 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorParserHighlightingCaption" ) ); //$NON-NLS-1$
     this.colorItemParserHighlighting.setDescription ( Messages
         .getString ( "Preferences.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
+
     // Color tree
     this.stateNode.setUserObject ( Messages
-        .getString ( "PreferencesDialog.ColorTreeState" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorStateGroup" ) ); //$NON-NLS-1$
     this.transitionNode.setUserObject ( Messages
-        .getString ( "PreferencesDialog.ColorTreeTransition" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorTransitionGroup" ) ); //$NON-NLS-1$
     this.symbolNode.setUserObject ( Messages
-        .getString ( "PreferencesDialog.ColorTreeSymbol" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorSymbolGroup" ) ); //$NON-NLS-1$
+    this.nonterminalSymbolNode.setUserObject ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolGroup" ) ); //$NON-NLS-1$
+    this.terminalSymbolNode.setUserObject ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolGroup" ) ); //$NON-NLS-1$
     this.parserNode.setUserObject ( Messages
-        .getString ( "PreferencesDialog.ColorTreeParser" ) ); //$NON-NLS-1$
+        .getString ( "Preferences.ColorParserGroup" ) ); //$NON-NLS-1$
     nodeChanged ( this.rootNode );
   }
 
@@ -2578,6 +2692,60 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemSymbolError.getColor () );
     }
 
+    // NonterminalSymbol
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath (
+        this.nonterminalSymbolNode.getPath () ) ) != this.nonterminalSymbolNode
+        .isExpanded () )
+    {
+      this.nonterminalSymbolNode
+          .setExpanded ( this.gui.jTreeColors.isExpanded ( new TreePath (
+              this.nonterminalSymbolNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemNonterminalSymbolGroup (
+          this.nonterminalSymbolNode );
+    }
+    // NonterminalSymbol normal
+    if ( !this.initialColorItemNonterminalSymbol.getColor ().equals (
+        this.colorItemNonterminalSymbol.getColor () ) )
+    {
+      logger
+          .debug ( "color of the nonterminal symbol changed to \"" //$NON-NLS-1$
+              + "r=" + this.colorItemNonterminalSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "g=" + this.colorItemNonterminalSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+              + "b=" + this.colorItemNonterminalSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemNonterminalSymbol = this.colorItemNonterminalSymbol
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemNonterminalSymbol (
+          this.colorItemNonterminalSymbol );
+      PreferenceManager.getInstance ().fireColorChangedNonterminalSymbol (
+          this.colorItemNonterminalSymbol.getColor () );
+    }
+
+    // TerminalSymbol
+    if ( this.gui.jTreeColors.isExpanded ( new TreePath (
+        this.terminalSymbolNode.getPath () ) ) != this.terminalSymbolNode
+        .isExpanded () )
+    {
+      this.terminalSymbolNode.setExpanded ( this.gui.jTreeColors
+          .isExpanded ( new TreePath ( this.terminalSymbolNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemTerminalSymbolGroup (
+          this.terminalSymbolNode );
+    }
+    // TerminalSymbol normal
+    if ( !this.initialColorItemTerminalSymbol.getColor ().equals (
+        this.colorItemTerminalSymbol.getColor () ) )
+    {
+      logger.debug ( "color of the terminal symbol changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemTerminalSymbol.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemTerminalSymbol.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemTerminalSymbol.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemTerminalSymbol = this.colorItemTerminalSymbol
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemTerminalSymbol (
+          this.colorItemTerminalSymbol );
+      PreferenceManager.getInstance ().fireColorChangedTerminalSymbol (
+          this.colorItemTerminalSymbol.getColor () );
+    }
+
     // Parser
     if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.parserNode
         .getPath () ) ) != this.parserNode.isExpanded () )
@@ -2586,6 +2754,20 @@ public final class PreferencesDialog implements LanguageChangedListener
           .isExpanded ( new TreePath ( this.parserNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemParserGroup (
           this.parserNode );
+    }
+    // Parser keyword
+    if ( !this.initialColorItemParserKeyword.getColor ().equals (
+        this.colorItemParserKeyword.getColor () ) )
+    {
+      logger.debug ( "color of the parser keyword changed to \"" //$NON-NLS-1$
+          + "r=" + this.colorItemParserKeyword.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "g=" + this.colorItemParserKeyword.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+          + "b=" + this.colorItemParserKeyword.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+      this.initialColorItemParserKeyword = this.colorItemParserKeyword.clone ();
+      PreferenceManager.getInstance ().setColorItemParserKeyword (
+          this.colorItemParserKeyword );
+      PreferenceManager.getInstance ().fireColorChangedParserKeyword (
+          this.colorItemParserKeyword.getColor () );
     }
     // Parser error
     if ( !this.initialColorItemParserError.getColor ().equals (

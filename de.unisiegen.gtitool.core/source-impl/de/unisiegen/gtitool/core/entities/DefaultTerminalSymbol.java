@@ -341,21 +341,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    if ( this.error )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.SYMBOL_ERROR ) );
-    }
-    else if ( this.active )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.SYMBOL_ACTIVE ) );
-    }
-    else
-    {
-      prettyString
-          .addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
-    }
+    prettyString.addPrettyToken ( new PrettyToken ( this.name,
+        Style.TERMINAL_SYMBOL ) );
     return prettyString;
   }
 

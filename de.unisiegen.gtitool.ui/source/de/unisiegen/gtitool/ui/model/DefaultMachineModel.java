@@ -240,7 +240,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
         for ( Element childElement : current.getElement () )
         {
           if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
+          {
             state = new DefaultState ( childElement );
+          }
         }
         createStateView ( x + 35, y + 35, state, false );
       }
@@ -417,17 +419,17 @@ public final class DefaultMachineModel implements Storable, Modifyable
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( true );
+        current.modifyStatusChanged ( true );
       }
     }
     else
     {
       boolean newModifyStatus = isModified ();
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        current.modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -508,7 +510,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     for ( DefaultStateView view : this.stateViewList )
     {
       if ( view.getState ().getId () == id )
+      {
         return view;
+      }
     }
     return null;
   }
@@ -525,7 +529,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     for ( DefaultStateView view : this.stateViewList )
     {
       if ( view.getState ().equals ( state ) )
+      {
         return view;
+      }
     }
     return null;
   }
@@ -554,7 +560,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
     for ( DefaultTransitionView view : this.transitionViewList )
     {
       if ( view.getTransition ().equals ( transition ) )
+      {
         return view;
+      }
     }
     return null;
   }
@@ -595,6 +603,15 @@ public final class DefaultMachineModel implements Storable, Modifyable
         {
 
           @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedNonterminalSymbol (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedParserError ( @SuppressWarnings ( "unused" )
           Color newColor )
           {
@@ -606,6 +623,14 @@ public final class DefaultMachineModel implements Storable, Modifyable
           public void colorChangedParserHighlighting (
               @SuppressWarnings ( "unused" )
               Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedParserKeyword ( @SuppressWarnings ( "unused" )
+          Color newColor )
           {
             DefaultMachineModel.this.jGraph.repaint ();
           }
@@ -687,6 +712,15 @@ public final class DefaultMachineModel implements Storable, Modifyable
           @SuppressWarnings ( "synthetic-access" )
           public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
           Color newColor )
+          {
+            DefaultMachineModel.this.jGraph.repaint ();
+          }
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedTerminalSymbol (
+              @SuppressWarnings ( "unused" )
+              Color newColor )
           {
             DefaultMachineModel.this.jGraph.repaint ();
           }

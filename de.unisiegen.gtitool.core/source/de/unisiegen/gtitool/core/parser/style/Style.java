@@ -21,69 +21,73 @@ public enum Style
   /**
    * No style.
    */
-  NONE,
+  NONE ( false, false, false ),
 
   /**
    * Style of {@link State}s.
    */
-  STATE,
+  STATE ( true, false, false ),
 
   /**
    * Style of {@link Symbol}s.
    */
-  SYMBOL,
+  SYMBOL ( true, false, false ),
 
   /**
    * Style of active {@link Symbol}s.
    */
-  SYMBOL_ACTIVE,
+  SYMBOL_ACTIVE ( true, false, false ),
 
   /**
    * Style of error {@link Symbol}s.
    */
-  SYMBOL_ERROR,
+  SYMBOL_ERROR ( true, false, false ),
 
   /**
    * Style of {@link NonterminalSymbol}s.
    */
-  NONTERMINAL_SYMBOL,
-
-  /**
-   * Style of active {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL_ACTIVE,
-
-  /**
-   * Style of error {@link NonterminalSymbol}s.
-   */
-  NONTERMINAL_SYMBOL_ERROR,
+  NONTERMINAL_SYMBOL ( true, false, false ),
 
   /**
    * Style of {@link TerminalSymbol}s.
    */
-  TERMINAL_SYMBOL,
-
-  /**
-   * Style of active {@link TerminalSymbol}s.
-   */
-  TERMINAL_SYMBOL_ACTIVE,
-
-  /**
-   * Style of error {@link TerminalSymbol}s.
-   */
-  TERMINAL_SYMBOL_ERROR,
+  TERMINAL_SYMBOL ( true, false, false ),
 
   /**
    * Style of keywords.
    */
-  KEYWORD;
+  KEYWORD ( true, false, false );
+
+  /**
+   * The bold value.
+   */
+  private boolean bold;
+
+
+  /**
+   * The italic value.
+   */
+  private boolean italic;
+
+
+  /**
+   * The underline value.
+   */
+  private boolean underline;
+
 
   /**
    * Allocates a new {@link Style}.
+   * 
+   * @param bold The bold value.
+   * @param italic The italic value.
+   * @param underline The underline value.
    */
-  private Style ()
+  private Style ( boolean bold, boolean italic, boolean underline )
   {
-    // Do nothing
+    this.bold = bold;
+    this.italic = italic;
+    this.underline = underline;
   }
 
 
@@ -110,10 +114,6 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemSymbol ()
             .getColor ();
       }
-      case KEYWORD :
-      {
-        return Color.BLACK;
-      }
       case SYMBOL_ACTIVE :
       {
         return PreferenceManager.getInstance ().getColorItemSymbolActive ()
@@ -124,10 +124,61 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemSymbolError ()
             .getColor ();
       }
+      case NONTERMINAL_SYMBOL :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemNonterminalSymbol ().getColor ();
+      }
+      case TERMINAL_SYMBOL :
+      {
+        return PreferenceManager.getInstance ().getColorItemTerminalSymbol ()
+            .getColor ();
+      }
+      case KEYWORD :
+      {
+        return PreferenceManager.getInstance ().getColorItemParserKeyword ()
+            .getColor ();
+      }
       default :
       {
         throw new IllegalArgumentException ( "enum value not supported" ); //$NON-NLS-1$
       }
     }
+  }
+
+
+  /**
+   * Returns the bold value.
+   * 
+   * @return The bold value.
+   * @see #bold
+   */
+  public final boolean isBold ()
+  {
+    return this.bold;
+  }
+
+
+  /**
+   * Returns the italic value.
+   * 
+   * @return The italic value.
+   * @see #italic
+   */
+  public final boolean isItalic ()
+  {
+    return this.italic;
+  }
+
+
+  /**
+   * Returns the underline value.
+   * 
+   * @return The underline value.
+   * @see #underline
+   */
+  public final boolean isUnderline ()
+  {
+    return this.underline;
   }
 }

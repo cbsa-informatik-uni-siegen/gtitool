@@ -101,7 +101,7 @@ public final class TransitionDialog
      */
     public final Object getElementAt ( int index )
     {
-      if ( index < 0 || index >= this.list.size () )
+      if ( ( index < 0 ) || ( index >= this.list.size () ) )
       {
         throw new IllegalArgumentException ( "index incorrect" ); //$NON-NLS-1$
       }
@@ -159,27 +159,9 @@ public final class TransitionDialog
 
 
   /**
-   * result value if dialog was canceled.
-   */
-  public static int DIALOG_CANCELED = -1;
-
-
-  /**
-   * result value if dialog was confirmed.
-   */
-  public static int DIALOG_CONFIRMED = 1;
-
-
-  /**
    * The epsilon {@link Symbol}.
    */
   public final static String EPSILON = "\u03B5"; //$NON-NLS-1$
-
-
-  /**
-   * result value of this dialog.
-   */
-  public int DIALOG_RESULT = DIALOG_CANCELED;
 
 
   /**
@@ -252,6 +234,12 @@ public final class TransitionDialog
    * The {@link Word} which should be written on the {@link Stack}.
    */
   private Word pushDownWordWrite = new DefaultWord ();
+
+
+  /**
+   * True if this dialog was confirmed.
+   */
+  private boolean confirmed = false;
 
 
   /**
@@ -407,25 +395,6 @@ public final class TransitionDialog
 
 
   /**
-   * Updates the current resulting {@link Transition}.
-   */
-  private void updateResultingTransition ()
-  {
-    try
-    {
-      this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
-              this.pushDownWordWrite, this.modelChangeOverSet ) );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-  }
-
-
-  /**
    * Disposes the dialog.
    */
   public final void dispose ()
@@ -549,7 +518,7 @@ public final class TransitionDialog
    */
   public final void handleOk ()
   {
-    this.DIALOG_RESULT = DIALOG_CONFIRMED;
+    this.confirmed = true;
     this.gui.setVisible ( false );
     try
     {
@@ -574,6 +543,18 @@ public final class TransitionDialog
       System.exit ( 1 );
     }
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Returns the confirmed value.
+   * 
+   * @return The confirmed value.
+   * @see #confirmed
+   */
+  public final boolean isConfirmed ()
+  {
+    return this.confirmed;
   }
 
 
@@ -683,5 +664,24 @@ public final class TransitionDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * Updates the current resulting {@link Transition}.
+   */
+  private void updateResultingTransition ()
+  {
+    try
+    {
+      this.gui.styledTransitionParserPanel
+          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
+              this.pushDownWordWrite, this.modelChangeOverSet ) );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 }

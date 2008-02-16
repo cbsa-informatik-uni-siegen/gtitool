@@ -413,7 +413,8 @@ public final class MachinePanel implements EditorPanel
    * The name of this {@link MachinePanel}.
    */
   private String name = null;
-  
+
+
   /**
    * The {@link RedoUndoHandler}
    */
@@ -435,7 +436,7 @@ public final class MachinePanel implements EditorPanel
     this.file = file;
     this.gui = new MachinesPanelForm ();
     this.gui.setMachinePanel ( this );
-    
+
     this.redoUndoHandler = new RedoUndoHandler ( model, parent );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
 
@@ -484,7 +485,7 @@ public final class MachinePanel implements EditorPanel
     addGraphListener ();
 
     this.gui.wordPanel.styledWordParserPanel.parse ();
-    
+
     // Reset modify
     resetModify ();
   }
@@ -732,17 +733,17 @@ public final class MachinePanel implements EditorPanel
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( true );
+        current.modifyStatusChanged ( true );
       }
     }
     else
     {
       boolean newModifyStatus = isModified ();
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        current.modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -1116,9 +1117,11 @@ public final class MachinePanel implements EditorPanel
         }
       } );
       int n = chooser.showSaveDialog ( this.parent );
-      if ( n == JFileChooser.CANCEL_OPTION
-          || chooser.getSelectedFile () == null )
+      if ( ( n == JFileChooser.CANCEL_OPTION )
+          || ( chooser.getSelectedFile () == null ) )
+      {
         return null;
+      }
       if ( chooser.getSelectedFile ().exists () )
       {
 
@@ -1326,9 +1329,8 @@ public final class MachinePanel implements EditorPanel
         current.setActive ( true );
       }
 
-      System.out.println ( this.machine.getActiveState ().size ()) ;
-      
-      
+      System.out.println ( this.machine.getActiveState ().size () );
+
       for ( State current : this.machine.getActiveState () )
       {
         current.setActive ( true );
@@ -1657,22 +1659,26 @@ public final class MachinePanel implements EditorPanel
       {
         // return if we are in enter word mode
         if ( MachinePanel.this.enterWordMode )
+        {
           return;
+        }
         // open configuration
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && event.getClickCount () == 2 )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( event.getClickCount () == 2 ) )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
+          {
             return;
+          }
           else if ( object instanceof DefaultTransitionView )
           {
             // open transition config dialog
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
             Transition usedTransition = transitionView.getTransition ();
-            TransitionDialog dialog = new TransitionDialog (
+            TransitionDialog transitionDialog = new TransitionDialog (
                 MachinePanel.this.parent, MachinePanel.this.machine
                     .getAlphabet (), MachinePanel.this.machine
                     .getPushDownAlphabet (), usedTransition
@@ -1680,10 +1686,10 @@ public final class MachinePanel implements EditorPanel
                     .getPushDownWordWrite (), usedTransition.getSymbol (),
                 transitionView.getSourceView ().getState (), transitionView
                     .getTargetView ().getState () );
-            dialog.show ();
-            if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+            transitionDialog.show ();
+            if ( transitionDialog.isConfirmed () )
             {
-              Transition newTransition = dialog.getTransition ();
+              Transition newTransition = transitionDialog.getTransition ();
               MachinePanel.this.graph.getGraphLayoutCache ()
                   .valueForCellChanged ( transitionView, newTransition );
               Transition oldTransition = transitionView.getTransition ();
@@ -1708,7 +1714,8 @@ public final class MachinePanel implements EditorPanel
             // open transition config dialog
             DefaultStateView state = ( DefaultStateView ) object;
             StateConfigDialog dialog = new StateConfigDialog (
-                MachinePanel.this.parent, state.getState (), MachinePanel.this.model );
+                MachinePanel.this.parent, state.getState (),
+                MachinePanel.this.model );
             dialog.show ();
             if ( ( dialog.getStateName () != null )
                 && ( !dialog.getStateName ().equals (
@@ -1741,15 +1748,23 @@ public final class MachinePanel implements EditorPanel
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
         if ( object == null )
+        {
           MachinePanel.this.popup = createPopupMenu ();
+        }
         else if ( object instanceof DefaultTransitionView )
+        {
           MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+        }
         else
+        {
           MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+        }
 
         if ( MachinePanel.this.popup != null )
+        {
           MachinePanel.this.popup.show ( ( Component ) event.getSource (),
               event.getX (), event.getY () );
+        }
       }
     };
 
@@ -1768,11 +1783,13 @@ public final class MachinePanel implements EditorPanel
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
+        {
           return;
+        }
 
         // if an popup menu is open close it and do nothing more
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && MachinePanel.this.popup != null )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( MachinePanel.this.popup != null ) )
         {
           MachinePanel.this.popup = null;
           return;
@@ -1785,15 +1802,23 @@ public final class MachinePanel implements EditorPanel
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
+          {
             MachinePanel.this.popup = createPopupMenu ();
+          }
           else if ( object instanceof DefaultTransitionView )
+          {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          }
           else
+          {
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          }
 
           if ( MachinePanel.this.popup != null )
+          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
+          }
           return;
         }
 
@@ -1803,7 +1828,9 @@ public final class MachinePanel implements EditorPanel
                 .getPoint ().getY () );
 
         if ( object instanceof DefaultStateView )
+        {
           return;
+        }
 
         try
         {
@@ -1850,33 +1877,43 @@ public final class MachinePanel implements EditorPanel
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
+        {
           return;
+        }
 
         // if an popup menu is open close it and do nothing more
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && MachinePanel.this.popup != null )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( MachinePanel.this.popup != null ) )
         {
           MachinePanel.this.popup = null;
           return;
         }
 
         // Open popup menu if left button was pressed
-        if ( event.getButton () == MouseEvent.BUTTON3
-            && MachinePanel.this.firstState == null )
+        if ( ( event.getButton () == MouseEvent.BUTTON3 )
+            && ( MachinePanel.this.firstState == null ) )
         {
           DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
+          {
             MachinePanel.this.popup = createPopupMenu ();
+          }
           else if ( object instanceof DefaultTransitionView )
+          {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          }
           else
+          {
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          }
 
           if ( MachinePanel.this.popup != null )
+          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
+          }
           return;
         }
 
@@ -1886,14 +1923,18 @@ public final class MachinePanel implements EditorPanel
         // if drag in progress return
         if ( MachinePanel.this.dragged
             || transitionItem.equals ( TransitionItem.DRAG_MODE ) )
+        {
           return;
+        }
 
         if ( MachinePanel.this.firstState == null )
         {
           MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
               .getSelectionCellAt ( event.getPoint () );
           if ( MachinePanel.this.firstState == null )
+          {
             return;
+          }
         }
         else
         {
@@ -1915,15 +1956,15 @@ public final class MachinePanel implements EditorPanel
             MachinePanel.this.graphModel.remove ( new Object []
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           }
-          TransitionDialog dialog = new TransitionDialog (
+          TransitionDialog transitionDialog = new TransitionDialog (
               MachinePanel.this.parent, MachinePanel.this.machine
                   .getAlphabet (), MachinePanel.this.machine
                   .getPushDownAlphabet (), MachinePanel.this.firstState
                   .getState (), target == null ? null : target.getState () );
-          dialog.show ();
-          if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+          transitionDialog.show ();
+          if ( transitionDialog.isConfirmed () )
           {
-            Transition newTransition = dialog.getTransition ();
+            Transition newTransition = transitionDialog.getTransition ();
             if ( target == null )
             {
 
@@ -1950,7 +1991,6 @@ public final class MachinePanel implements EditorPanel
 
             MachinePanel.this.model.createTransitionView ( newTransition,
                 MachinePanel.this.firstState, target, true );
-            dialog.dispose ();
           }
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
@@ -1978,10 +2018,15 @@ public final class MachinePanel implements EditorPanel
       public void mouseReleased ( MouseEvent event )
       {
         if ( event.getButton () != MouseEvent.BUTTON1 )
+        {
           return;
+        }
 
-        if ( !MachinePanel.this.dragged || MachinePanel.this.firstState == null )
+        if ( !MachinePanel.this.dragged
+            || ( MachinePanel.this.firstState == null ) )
+        {
           return;
+        }
 
         DefaultStateView target = null;
 
@@ -2001,15 +2046,15 @@ public final class MachinePanel implements EditorPanel
           { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
         }
 
-        TransitionDialog dialog = new TransitionDialog (
+        TransitionDialog transitionDialog = new TransitionDialog (
             MachinePanel.this.parent, MachinePanel.this.machine.getAlphabet (),
             MachinePanel.this.machine.getPushDownAlphabet (),
             MachinePanel.this.firstState.getState (), target == null ? null
                 : target.getState () );
-        dialog.show ();
-        if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+        transitionDialog.show ();
+        if ( transitionDialog.isConfirmed () )
         {
-          Transition newTransition = dialog.getTransition ();
+          Transition newTransition = transitionDialog.getTransition ();
           if ( target == null )
           {
             try
@@ -2034,8 +2079,6 @@ public final class MachinePanel implements EditorPanel
 
           MachinePanel.this.model.createTransitionView ( newTransition,
               MachinePanel.this.firstState, target, true );
-          dialog.dispose ();
-
         }
         switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
@@ -2068,10 +2111,14 @@ public final class MachinePanel implements EditorPanel
       {
         // Return if we are in word enter mode
         if ( MachinePanel.this.enterWordMode )
+        {
           return;
+        }
         if ( PreferenceManager.getInstance ().getTransitionItem ().equals (
             TransitionItem.CLICK_MODE ) )
+        {
           return;
+        }
         double x, y;
         if ( MachinePanel.this.firstState == null )
         {
@@ -2157,11 +2204,13 @@ public final class MachinePanel implements EditorPanel
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
+        {
           return;
+        }
 
         // if an popup menu is open close it and do nothing more
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && MachinePanel.this.popup != null )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( MachinePanel.this.popup != null ) )
         {
           MachinePanel.this.popup = null;
           return;
@@ -2174,15 +2223,23 @@ public final class MachinePanel implements EditorPanel
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
+          {
             MachinePanel.this.popup = createPopupMenu ();
+          }
           else if ( object instanceof DefaultTransitionView )
+          {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          }
           else
+          {
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          }
 
           if ( MachinePanel.this.popup != null )
+          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
+          }
           return;
         }
 
@@ -2192,7 +2249,9 @@ public final class MachinePanel implements EditorPanel
                 .getPoint ().getY () );
 
         if ( object instanceof DefaultStateView )
+        {
           return;
+        }
 
         try
         {
@@ -2242,11 +2301,13 @@ public final class MachinePanel implements EditorPanel
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
+        {
           return;
+        }
 
         // if an popup menu is open close it and do nothing more
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && MachinePanel.this.popup != null )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( MachinePanel.this.popup != null ) )
         {
           MachinePanel.this.popup = null;
           return;
@@ -2259,15 +2320,23 @@ public final class MachinePanel implements EditorPanel
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
+          {
             MachinePanel.this.popup = createPopupMenu ();
+          }
           else if ( object instanceof DefaultTransitionView )
+          {
             MachinePanel.this.popup = createTransitionPopupMenu ( ( DefaultTransitionView ) object );
+          }
           else
+          {
             MachinePanel.this.popup = createStatePopupMenu ( ( DefaultStateView ) object );
+          }
 
           if ( MachinePanel.this.popup != null )
+          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
+          }
           return;
         }
 
@@ -2277,7 +2346,9 @@ public final class MachinePanel implements EditorPanel
                 .getPoint ().getY () );
 
         if ( object instanceof DefaultStateView )
+        {
           return;
+        }
 
         try
         {
@@ -2327,11 +2398,13 @@ public final class MachinePanel implements EditorPanel
         // return
         if ( ( event.getButton () != MouseEvent.BUTTON3 )
             || !MachinePanel.this.enterWordMode )
+        {
           return;
+        }
 
         // if an popup menu is open close it and do nothing more
-        if ( event.getButton () == MouseEvent.BUTTON1
-            && MachinePanel.this.popup != null )
+        if ( ( event.getButton () == MouseEvent.BUTTON1 )
+            && ( MachinePanel.this.popup != null ) )
         {
           MachinePanel.this.popup = null;
           return;
@@ -2343,8 +2416,10 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = createEnterWordModePopupMenu ();
 
           if ( MachinePanel.this.popup != null )
+          {
             MachinePanel.this.popup.show ( ( Component ) event.getSource (),
                 event.getX (), event.getY () );
+          }
           return;
         }
       }
@@ -2529,15 +2604,17 @@ public final class MachinePanel implements EditorPanel
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
   }
-  
+
+
   /**
    * Handle redo button pressed
    */
   public void handleRedo ()
   {
     this.redoUndoHandler.redo ();
-    
+
   }
+
 
   /**
    * Handle undo button pressed
@@ -2545,8 +2622,9 @@ public final class MachinePanel implements EditorPanel
   public void handleUndo ()
   {
     this.redoUndoHandler.undo ();
-    
+
   }
+
 
   /**
    * Signals if this panel is redo able
@@ -2555,8 +2633,9 @@ public final class MachinePanel implements EditorPanel
    */
   public boolean isRedoAble ()
   {
-    return this.redoUndoHandler.isRedoAble();
+    return this.redoUndoHandler.isRedoAble ();
   }
+
 
   /**
    * Signals if this panel is undo able
@@ -2565,6 +2644,6 @@ public final class MachinePanel implements EditorPanel
    */
   public boolean isUndoAble ()
   {
-    return this.redoUndoHandler.isUndoAble();
+    return this.redoUndoHandler.isUndoAble ();
   }
 }

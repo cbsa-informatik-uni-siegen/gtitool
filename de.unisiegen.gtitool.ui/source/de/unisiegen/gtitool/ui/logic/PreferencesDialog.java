@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -920,13 +919,13 @@ public final class PreferencesDialog implements LanguageChangedListener
             .getLastPathComponent ();
         if ( selectedColorItem.isLeaf () )
         {
-          logger.debug ( "handle color tree mouse released" ); //$NON-NLS-1$ 
-          Color color = JColorChooser.showDialog ( this.gui, Messages
-              .getString ( "PreferencesDialog.ColorChooser.Title" ), //$NON-NLS-1$
-              selectedColorItem.getColor () );
-          if ( color != null )
+          logger.debug ( "handle color chooser dialog" ); //$NON-NLS-1$ 
+          ColorChooserDialog colorChooserDialog = new ColorChooserDialog (
+              this.parent, selectedColorItem.getColor () );
+          colorChooserDialog.show ();
+          if ( colorChooserDialog.isConfirmed () )
           {
-            selectedColorItem.setColor ( color );
+            selectedColorItem.setColor ( colorChooserDialog.getColor () );
             this.gui.jTreeColors.repaint ();
           }
         }

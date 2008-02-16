@@ -152,8 +152,8 @@ public final class TransitionPopupMenu extends JPopupMenu
             JOptionPane.YES_NO_OPTION );
         if ( choice == JOptionPane.YES_OPTION )
         {
-          TransitionPopupMenu.this.model
-              .removeTransition ( TransitionPopupMenu.this.transition, true );
+          TransitionPopupMenu.this.model.removeTransition (
+              TransitionPopupMenu.this.transition, true );
         }
       }
     } );
@@ -172,7 +172,7 @@ public final class TransitionPopupMenu extends JPopupMenu
       {
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
-        TransitionDialog dialog = new TransitionDialog ( window,
+        TransitionDialog transitionDialog = new TransitionDialog ( window,
             TransitionPopupMenu.this.alphabet,
             TransitionPopupMenu.this.pushDownAlphabet,
             TransitionPopupMenu.this.transition.getTransition ()
@@ -181,10 +181,10 @@ public final class TransitionPopupMenu extends JPopupMenu
             TransitionPopupMenu.this.transition.getTransition ().getSymbol (),
             TransitionPopupMenu.this.transition.getSourceView ().getState (),
             TransitionPopupMenu.this.transition.getTargetView ().getState () );
-        dialog.show ();
-        if ( dialog.DIALOG_RESULT == TransitionDialog.DIALOG_CONFIRMED )
+        transitionDialog.show ();
+        if ( transitionDialog.isConfirmed () )
         {
-          Transition newTransition = dialog.getTransition ();
+          Transition newTransition = transitionDialog.getTransition ();
           TransitionPopupMenu.this.graph.getGraphLayoutCache ()
               .valueForCellChanged ( TransitionPopupMenu.this.transition,
                   newTransition );

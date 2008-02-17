@@ -47,6 +47,12 @@ public final class ColorChooserDialog
 
 
   /**
+   * The old {@link Color}.
+   */
+  private Color oldColor;
+
+
+  /**
    * Creates a new {@link ColorChooserDialog}.
    * 
    * @param parent The parent frame.
@@ -57,6 +63,9 @@ public final class ColorChooserDialog
     this.parent = parent;
     this.gui = new ColorChooserDialogForm ( this, parent );
     this.gui.setColor ( color );
+    this.oldColor = color;
+    this.gui.jLabelOldColorColor.setBackground ( this.oldColor );
+    this.gui.jLabelOldColorText.setForeground ( this.oldColor );
     updatePreview ();
 
     this.gui.jGTIColorChooser.getSelectionModel ().addChangeListener (
@@ -107,6 +116,16 @@ public final class ColorChooserDialog
 
 
   /**
+   * Handle reset button pressed.
+   */
+  public final void handleReset ()
+  {
+    logger.debug ( "handle reset" ); //$NON-NLS-1$
+    this.gui.setColor ( this.oldColor );
+  }
+
+
+  /**
    * Returns the confirmed value.
    * 
    * @return The confirmed value.
@@ -137,7 +156,7 @@ public final class ColorChooserDialog
    */
   private final void updatePreview ()
   {
-    this.gui.jLabelPreviewColor.setBackground ( this.gui.getColor () );
-    this.gui.jLabelPreviewText.setForeground ( this.gui.getColor () );
+    this.gui.jLabelNewColorColor.setBackground ( this.gui.getColor () );
+    this.gui.jLabelNewColorText.setForeground ( this.gui.getColor () );
   }
 }

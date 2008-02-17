@@ -192,7 +192,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     defaultBackground = UIManager.getColor ( "Tree.textBackground" );
 
     this.preferenceTransition = PreferenceManager.getInstance ()
-    .getColorItemTransition ().getColor ();
+        .getColorItemTransition ().getColor ();
     this.preferenceTransitionError = PreferenceManager.getInstance ()
         .getColorItemTransitionError ().getColor ();
     this.preferenceTransitionActive = PreferenceManager.getInstance ()
@@ -207,28 +207,28 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
           @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransition ( Color newColor )
           {
-            preferenceTransition = newColor;
+            EdgeRenderer.this.preferenceTransition = newColor;
           }
 
 
           @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionActive ( Color newColor )
           {
-            preferenceTransitionActive = newColor;
+            EdgeRenderer.this.preferenceTransitionActive = newColor;
           }
 
 
           @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionError ( Color newColor )
           {
-            preferenceTransitionError = newColor;
+            EdgeRenderer.this.preferenceTransitionError = newColor;
           }
 
 
           @SuppressWarnings ( "synthetic-access" )
           public void colorChangedTransitionSelected ( Color newColor )
           {
-            preferenceTransitionSelected = newColor;
+            EdgeRenderer.this.preferenceTransitionSelected = newColor;
           }
         } );
   }

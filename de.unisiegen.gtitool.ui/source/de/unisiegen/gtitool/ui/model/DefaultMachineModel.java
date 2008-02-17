@@ -29,7 +29,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -599,171 +599,12 @@ public final class DefaultMachineModel implements Storable, Modifyable
     this.jGraph.setHandleSize ( 0 );
 
     PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedListener ()
+        new ColorChangedAdapter ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedNonterminalSymbol (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedParserError ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedParserHighlighting (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedParserKeyword ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedState ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateActive ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateBackground (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateError ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateFinal ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedStateStart ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedSymbolActive ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedTerminalSymbol (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedTransition ( @SuppressWarnings ( "unused" )
-          Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedTransitionActive (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedTransitionError (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
-          {
-            DefaultMachineModel.this.jGraph.repaint ();
-          }
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void colorChangedTransitionSelected (
-              @SuppressWarnings ( "unused" )
-              Color newColor )
+          @Override
+          public void colorChanged ()
           {
             DefaultMachineModel.this.jGraph.repaint ();
           }

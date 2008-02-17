@@ -369,6 +369,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedNonterminalSymbol ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -385,6 +386,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserError ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -402,6 +404,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserHighlighting ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -418,6 +421,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserKeyword ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -434,6 +438,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserWarning ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -450,6 +455,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedState ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -467,6 +473,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateActive ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -484,6 +491,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateBackground ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -501,6 +509,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateError ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -518,6 +527,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateFinal ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -535,6 +545,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateSelected ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -552,6 +563,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateStart ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -568,6 +580,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedSymbol ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -585,6 +598,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedSymbolActive ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -602,6 +616,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedSymbolError ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -619,6 +634,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedTerminalSymbol ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -636,6 +652,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedTransition ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -653,6 +670,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedTransitionActive ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -670,6 +688,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedTransitionError ( newColor );
+      current.colorChanged ();
     }
   }
 
@@ -687,6 +706,7 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedTransitionSelected ( newColor );
+      current.colorChanged ();
     }
   }
 

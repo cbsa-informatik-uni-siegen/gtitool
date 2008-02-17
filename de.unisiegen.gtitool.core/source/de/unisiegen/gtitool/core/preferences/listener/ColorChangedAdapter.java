@@ -3,12 +3,6 @@ package de.unisiegen.gtitool.core.preferences.listener;
 
 import java.awt.Color;
 
-import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.entities.Transition;
-
 
 /**
  * An abstract adapter class for receiving color changes.
@@ -20,9 +14,20 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 {
 
   /**
-   * Invoked when the color of the {@link NonterminalSymbol} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link NonterminalSymbol}.
+   * @see ColorChangedListener#colorChanged()
+   */
+  public void colorChanged ()
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedNonterminalSymbol(Color)
    */
   public void colorChangedNonterminalSymbol ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -32,9 +37,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the parser error changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the error warning.
+   * @see ColorChangedListener#colorChangedParserError(Color)
    */
   public void colorChangedParserError ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -44,9 +49,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the parser highlighting changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the parser highlighting.
+   * @see ColorChangedListener#colorChangedParserHighlighting(Color)
    */
   public void colorChangedParserHighlighting ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -56,9 +61,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the parser keyword changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the parser keyword.
+   * @see ColorChangedListener#colorChangedParserKeyword(Color)
    */
   public void colorChangedParserKeyword ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -68,9 +73,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the parser warning changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the parser warning.
+   * @see ColorChangedListener#colorChangedParserWarning(Color)
    */
   public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -80,9 +85,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link State}.
+   * @see ColorChangedListener#colorChangedState(Color)
    */
   public void colorChangedState ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -92,9 +97,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the active {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the active {@link State}.
+   * @see ColorChangedListener#colorChangedStateActive(Color)
    */
   public void colorChangedStateActive ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -104,9 +109,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the background color of the {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link State}.
+   * @see ColorChangedListener#colorChangedStateBackground(Color)
    */
   public void colorChangedStateBackground ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -116,9 +121,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the error {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the error {@link State}.
+   * @see ColorChangedListener#colorChangedStateError(Color)
    */
   public void colorChangedStateError ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -128,9 +133,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the final {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the final {@link State}.
+   * @see ColorChangedListener#colorChangedStateFinal(Color)
    */
   public void colorChangedStateFinal ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -140,9 +145,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the selected {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the selected {@link State}.
+   * @see ColorChangedListener#colorChangedStateSelected(Color)
    */
   public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -152,9 +157,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the start {@link State} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the start {@link State}.
+   * @see ColorChangedListener#colorChangedStateStart(Color)
    */
   public void colorChangedStateStart ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -164,9 +169,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the {@link Symbol} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link Symbol}.
+   * @see ColorChangedListener#colorChangedSymbol(Color)
    */
   public void colorChangedSymbol ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -176,9 +181,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the active {@link Symbol} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the active {@link Symbol}.
+   * @see ColorChangedListener#colorChangedSymbolActive(Color)
    */
   public void colorChangedSymbolActive ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -188,9 +193,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the error {@link Symbol} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the error {@link Symbol}.
+   * @see ColorChangedListener#colorChangedSymbolError(Color)
    */
   public void colorChangedSymbolError ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -200,9 +205,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the {@link TerminalSymbol} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link TerminalSymbol}.
+   * @see ColorChangedListener#colorChangedTerminalSymbol(Color)
    */
   public void colorChangedTerminalSymbol ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -212,9 +217,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the {@link Transition} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the {@link Transition}.
+   * @see ColorChangedListener#colorChangedTransition(Color)
    */
   public void colorChangedTransition ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -224,9 +229,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the active {@link Transition} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the active {@link Transition}.
+   * @see ColorChangedListener#colorChangedTransitionActive(Color)
    */
   public void colorChangedTransitionActive ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -236,9 +241,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the error {@link Transition} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the error {@link Transition}.
+   * @see ColorChangedListener#colorChangedTransitionError(Color)
    */
   public void colorChangedTransitionError ( @SuppressWarnings ( "unused" )
   Color newColor )
@@ -248,9 +253,9 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
-   * Invoked when the color of the selected {@link Transition} changed.
+   * {@inheritDoc}
    * 
-   * @param newColor The new color of the selected {@link Transition}.
+   * @see ColorChangedListener#colorChangedTransitionSelected(Color)
    */
   public void colorChangedTransitionSelected ( @SuppressWarnings ( "unused" )
   Color newColor )

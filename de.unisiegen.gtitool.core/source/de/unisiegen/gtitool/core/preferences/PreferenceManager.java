@@ -103,6 +103,13 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of the final {@link State}.
+   */
+  public static final Color DEFAULT_STATE_FINAL_COLOR = new Color ( 255, 255,
+      255 );
+
+
+  /**
    * The default {@link Color} of the active {@link State}.
    */
   public static final Color DEFAULT_STATE_ACTIVE_COLOR = new Color ( 0, 255, 0 );
@@ -494,6 +501,23 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedStateError ( newColor );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the final {@link State} has
+   * changed.
+   * 
+   * @param newColor The new color of the final {@link State}.
+   */
+  public final void fireColorChangedStateFinal ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedStateFinal ( newColor );
     }
   }
 
@@ -918,6 +942,23 @@ public class PreferenceManager
         .getString ( "Preferences.ColorStateErrorDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_STATE_ERROR_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the final {@link State}.
+   * 
+   * @return The {@link ColorItem} of the final {@link State}.
+   */
+  public final ColorItem getColorItemStateFinal ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorStateFinal", //$NON-NLS-1$
+        DEFAULT_STATE_FINAL_COLOR.getRGB () );
+    String caption = Messages.getString ( "Preferences.ColorStateFinalCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorStateFinalDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_STATE_FINAL_COLOR );
   }
 
 
@@ -1582,6 +1623,22 @@ public class PreferenceManager
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "Preferences.ColorStateError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the final {@link State}.
+   * 
+   * @param colorItem The {@link ColorItem} of the final {@link State}.
+   */
+  public final void setColorItemStateFinal ( ColorItem colorItem )
+  {
+    logger.debug ( "set color of the final state to \"" //$NON-NLS-1$
+        + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+        + "b=" + colorItem.getColor ().getBlue () + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Preferences.ColorStateFinal", //$NON-NLS-1$
         colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 

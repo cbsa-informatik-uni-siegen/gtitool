@@ -128,6 +128,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
 
 
   /**
+   * Invoked when the color of the final {@link State} changed.
+   * 
+   * @param newColor The new color of the final {@link State}.
+   */
+  public void colorChangedStateFinal ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
    * Invoked when the color of the selected {@link State} changed.
    * 
    * @param newColor The new color of the selected {@link State}.

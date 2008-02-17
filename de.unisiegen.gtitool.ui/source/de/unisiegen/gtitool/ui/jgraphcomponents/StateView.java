@@ -88,6 +88,12 @@ public class StateView extends VertexView
 
 
     /**
+     * The final {@link State} color.
+     */
+    private Color preferenceStateFinal;
+
+
+    /**
      * The normal {@link Transition} color.
      */
     private Color preferenceTransition;
@@ -115,8 +121,10 @@ public class StateView extends VertexView
           .getColorItemStateSelected ().getColor ();
       this.preferenceStateStart = PreferenceManager.getInstance ()
           .getColorItemStateStart ().getColor ();
+      this.preferenceStateFinal = PreferenceManager.getInstance ()
+          .getColorItemStateFinal ().getColor ();
       this.preferenceTransition = PreferenceManager.getInstance ()
-      .getColorItemTransition ().getColor ();
+          .getColorItemTransition ().getColor ();
 
       PreferenceManager.getInstance ().addColorChangedListener (
           new ColorChangedAdapter ()
@@ -167,6 +175,14 @@ public class StateView extends VertexView
             public void colorChangedStateStart ( Color newColor )
             {
               JGraphEllipseRenderer.this.preferenceStateStart = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
+            public void colorChangedStateFinal ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateFinal = newColor;
             }
 
 
@@ -233,6 +249,11 @@ public class StateView extends VertexView
         else if ( state.isStartState () )
         {
           background = this.preferenceStateStart;
+        }
+        // Final
+        else if ( state.isFinalState () )
+        {
+          background = this.preferenceStateFinal;
         }
         // Normal
         else

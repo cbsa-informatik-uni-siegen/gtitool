@@ -485,7 +485,10 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The {@link ColorItem} of the start {@link State}.
    */
   private ColorItem colorItemStateStart;
-
+  /**
+   * The {@link ColorItem} of the final {@link State}.
+   */
+  private ColorItem colorItemStateFinal;
 
   /**
    * The {@link ColorItem} of the error {@link State}.
@@ -654,7 +657,10 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private ColorItem initialColorItemStateStart;
 
-
+  /**
+   * The initial {@link ColorItem} of the final {@link State}.
+   */
+  private ColorItem initialColorItemStateFinal;
   /**
    * The initial {@link ColorItem} of the error {@link State}.
    */
@@ -981,6 +987,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemStateBackground.restore ();
     this.colorItemStateSelected.restore ();
     this.colorItemStateStart.restore ();
+    this.colorItemStateFinal.restore ();
     this.colorItemStateActive.restore ();
     this.colorItemStateError.restore ();
 
@@ -1229,6 +1236,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemStateStart = PreferenceManager.getInstance ()
         .getColorItemStateStart ();
     this.initialColorItemStateStart = this.colorItemStateStart.clone ();
+    // State final
+    this.colorItemStateFinal = PreferenceManager.getInstance ()
+        .getColorItemStateFinal ();
+    this.initialColorItemStateFinal = this.colorItemStateFinal.clone ();
     // State active
     this.colorItemStateActive = PreferenceManager.getInstance ()
         .getColorItemStateActive ();
@@ -1400,6 +1411,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.stateNode.add ( this.colorItemStateBackground );
     this.stateNode.add ( this.colorItemStateSelected );
     this.stateNode.add ( this.colorItemStateStart );
+    this.stateNode.add ( this.colorItemStateFinal );
     this.stateNode.add ( this.colorItemStateActive );
     this.stateNode.add ( this.colorItemStateError );
 
@@ -2286,6 +2298,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorStateStartCaption" ) ); //$NON-NLS-1$
     this.colorItemStateStart.setDescription ( Messages
         .getString ( "Preferences.ColorStateStartDescription" ) ); //$NON-NLS-1$
+    // State final
+    this.colorItemStateFinal.setCaption ( Messages
+        .getString ( "Preferences.ColorStateFinalCaption" ) ); //$NON-NLS-1$
+    this.colorItemStateFinal.setDescription ( Messages
+        .getString ( "Preferences.ColorStateFinalDescription" ) ); //$NON-NLS-1$
     // State active
     this.colorItemStateActive.setCaption ( Messages
         .getString ( "Preferences.ColorStateActiveCaption" ) ); //$NON-NLS-1$
@@ -2518,6 +2535,16 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemStateStart );
       PreferenceManager.getInstance ().fireColorChangedStateStart (
           this.colorItemStateStart.getColor () );
+    }
+    // State final
+    if ( !this.initialColorItemStateFinal.getColor ().equals (
+        this.colorItemStateFinal.getColor () ) )
+    {
+      this.initialColorItemStateFinal = this.colorItemStateFinal.clone ();
+      PreferenceManager.getInstance ().setColorItemStateFinal (
+          this.colorItemStateFinal );
+      PreferenceManager.getInstance ().fireColorChangedStateFinal (
+          this.colorItemStateFinal.getColor () );
     }
     // State active
     if ( !this.initialColorItemStateActive.getColor ().equals (

@@ -231,6 +231,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
            * {@inheritDoc}
            */
           @SuppressWarnings ( "synthetic-access" )
+          public void colorChangedStateFinal ( @SuppressWarnings ( "unused" )
+          Color newColor )
+          {
+            parse ();
+          }
+
+
+          /**
+           * {@inheritDoc}
+           */
+          @SuppressWarnings ( "synthetic-access" )
           public void colorChangedStateSelected ( @SuppressWarnings ( "unused" )
           Color newColor )
           {

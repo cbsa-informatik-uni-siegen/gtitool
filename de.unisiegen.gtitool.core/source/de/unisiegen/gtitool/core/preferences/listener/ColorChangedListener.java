@@ -93,6 +93,14 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the final {@link State} changed.
+   * 
+   * @param newColor The new color of the final {@link State}.
+   */
+  public void colorChangedStateFinal ( Color newColor );
+
+
+  /**
    * Invoked when the color of the selected {@link State} changed.
    * 
    * @param newColor The new color of the selected {@link State}.

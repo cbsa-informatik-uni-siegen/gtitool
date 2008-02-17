@@ -1639,6 +1639,7 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
+    this.gui.wordPanel.setPushDownAlphabet ( this.machine.getPushDownAlphabet () );
   }
 
 

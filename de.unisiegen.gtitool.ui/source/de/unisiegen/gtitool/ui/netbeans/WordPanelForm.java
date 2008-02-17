@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 /**
  * The {@link WordPanelForm}.
@@ -9,7 +12,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class WordPanelForm extends javax.swing.JPanel {
+public class WordPanelForm extends javax.swing.JPanel implements LanguageChangedListener{
     
     /**
      * The serial version uid.
@@ -22,10 +25,16 @@ public class WordPanelForm extends javax.swing.JPanel {
     private Alphabet alphabet = null ;
     
     /**
+     * The push down {@link Alphabet}.
+     */
+    private Alphabet pushDownAlphabet = null ;
+    
+    /**
      * Creates new form WordPanelForm.
      */
     public WordPanelForm() {
         initComponents();
+        PreferenceManager.getInstance ().addLanguageChangedListener ( this );
     }
     
     /**
@@ -36,8 +45,20 @@ public class WordPanelForm extends javax.swing.JPanel {
     public void setAlphabet (Alphabet alphabet)
     {
       this.alphabet = alphabet;
-      this.styledAlphabetParserPanel.setAlphabet ( alphabet );
+      this.styledAlphabetParserPanelInput.setAlphabet ( alphabet );
       this.styledWordParserPanel.setAlphabet ( alphabet );
+    }
+    
+    /**
+     * Sets the push down {@link Alphabet} of this {@link WordPanelForm}.
+     *
+     * @param pushDownAlphabet The push down {@link Alphabet} to set.
+     */
+    public void setPushDownAlphabet (Alphabet pushDownAlphabet)
+    {
+      this.pushDownAlphabet = pushDownAlphabet;
+      this.styledAlphabetParserPanelPushDown.setAlphabet ( pushDownAlphabet );
+      this.styledStackParserPanel.setPushDownAlphabet ( pushDownAlphabet );
     }
     
     /**
@@ -50,6 +71,29 @@ public class WordPanelForm extends javax.swing.JPanel {
       return this.alphabet;
     }
     
+    /**
+     * Returns the push down {@link Alphabet}.
+     *
+     * @return The push down {@link Alphabet}.
+     */
+    public Alphabet getPushDownAlphabet ()
+    {
+      return this.pushDownAlphabet;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see LanguageChangedListener#languageChanged()
+     */
+    public final void languageChanged ()
+    {
+      this.jLabelWord.setText ( Messages.getString ( "StyledWordParserPanel.Word" ) );
+      this.jLabelStack.setText ( Messages.getString ( "StyledWordParserPanel.Stack" ) );
+      this.JLabelAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.Alphabet" ) );
+      this.jLabelPushDownAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.PushDownAlphabet" ) );
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -59,54 +103,117 @@ public class WordPanelForm extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jLabelWord = new javax.swing.JLabel();
         styledWordParserPanel = new de.unisiegen.gtitool.ui.style.StyledWordParserPanel();
+        jLabelStack = new javax.swing.JLabel();
+        styledStackParserPanel = new de.unisiegen.gtitool.ui.style.StyledStackParserPanel();
         JLabelAlphabet = new javax.swing.JLabel();
-        styledAlphabetParserPanel = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jLabelPushDownAlphabet = new javax.swing.JLabel();
+        styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
+        jLabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jLabelWord.setText(bundle.getString("StyledWordParserPanel.Word")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 0, 5, 16);
-        add(styledWordParserPanel, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(jLabelWord, gridBagConstraints);
 
-        JLabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        JLabelAlphabet.setText(bundle.getString("StyledWordParserPanel.Alphabet")); // NOI18N
+        styledWordParserPanel.setMinimumSize(new java.awt.Dimension(200, 53));
+        styledWordParserPanel.setPreferredSize(new java.awt.Dimension(200, 53));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        add(styledWordParserPanel, gridBagConstraints);
+
+        jLabelStack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelStack.setText(bundle.getString("StyledWordParserPanel.Stack")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(jLabelStack, gridBagConstraints);
+
+        styledStackParserPanel.setMinimumSize(new java.awt.Dimension(200, 53));
+        styledStackParserPanel.setPreferredSize(new java.awt.Dimension(200, 53));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
+        add(styledStackParserPanel, gridBagConstraints);
+
+        JLabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabelAlphabet.setText(bundle.getString("StyledWordParserPanel.Alphabet")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(JLabelAlphabet, gridBagConstraints);
 
-        styledAlphabetParserPanel.setCopyable(true);
-        styledAlphabetParserPanel.setEditable(false);
-        styledAlphabetParserPanel.setMinimumSize(new java.awt.Dimension(100, 60));
-        styledAlphabetParserPanel.setPreferredSize(new java.awt.Dimension(100, 60));
-        styledAlphabetParserPanel.setSideBarVisible(false);
+        styledAlphabetParserPanelInput.setCopyable(true);
+        styledAlphabetParserPanelInput.setEditable(false);
+        styledAlphabetParserPanelInput.setMinimumSize(new java.awt.Dimension(100, 53));
+        styledAlphabetParserPanelInput.setPreferredSize(new java.awt.Dimension(100, 53));
+        styledAlphabetParserPanelInput.setSideBarVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(styledAlphabetParserPanelInput, gridBagConstraints);
+
+        jLabelPushDownAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelPushDownAlphabet.setText(bundle.getString("StyledWordParserPanel.PushDownAlphabet")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(jLabelPushDownAlphabet, gridBagConstraints);
+
+        styledAlphabetParserPanelPushDown.setCopyable(true);
+        styledAlphabetParserPanelPushDown.setEditable(false);
+        styledAlphabetParserPanelPushDown.setMinimumSize(new java.awt.Dimension(100, 53));
+        styledAlphabetParserPanelPushDown.setPreferredSize(new java.awt.Dimension(100, 53));
+        styledAlphabetParserPanelPushDown.setSideBarVisible(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        add(styledAlphabetParserPanel, gridBagConstraints);
+        add(styledAlphabetParserPanelPushDown, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLabelAlphabet;
-    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanel;
+    private javax.swing.JLabel jLabelPushDownAlphabet;
+    private javax.swing.JLabel jLabelStack;
+    private javax.swing.JLabel jLabelWord;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
+    public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
+    private de.unisiegen.gtitool.ui.style.StyledStackParserPanel styledStackParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledWordParserPanel styledWordParserPanel;
     // End of variables declaration//GEN-END:variables
     

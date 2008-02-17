@@ -31,10 +31,14 @@ public class WordPanelFormTest
 
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
           new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
+      
+      Alphabet pushDownAlphabet = new DefaultAlphabet ( new DefaultSymbol ( "a" ),
+          new DefaultSymbol ( "b" ) );
 
       WordPanelForm wordPanelForm = new WordPanelForm ();
 
       wordPanelForm.setAlphabet ( alphabet );
+      wordPanelForm.setPushDownAlphabet ( pushDownAlphabet );
 
       wordPanelForm.styledWordParserPanel
           .addWordChangedListener ( new WordChangedListener ()

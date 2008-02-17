@@ -788,6 +788,24 @@ public abstract class AbstractMachine implements Machine
         machineExceptionList.add ( new MachineStateNotReachableException (
             current ) );
       }
+      else
+      {
+        boolean warning = true;
+        for ( Transition currentTransition : current.getTransitionEnd () )
+        {
+          if ( ! ( ( currentTransition.getStateBegin () == current ) && ( currentTransition
+              .getStateEnd () == current ) ) )
+          {
+            warning = false;
+            break;
+          }
+        }
+        if ( warning && ( !current.isStartState () ) )
+        {
+          machineExceptionList.add ( new MachineStateNotReachableException (
+              current ) );
+        }
+      }
     }
     return machineExceptionList;
   }
@@ -917,17 +935,17 @@ public abstract class AbstractMachine implements Machine
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener element : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( true );
+        element.modifyStatusChanged ( true );
       }
     }
     else
     {
       boolean newModifyStatus = isModified ();
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener element : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        element.modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -946,9 +964,9 @@ public abstract class AbstractMachine implements Machine
   {
     TableModelListener [] listeners = this.listenerList
         .getListeners ( TableModelListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( TableModelListener element : listeners )
     {
-      listeners [ n ].tableChanged ( event );
+      element.tableChanged ( event );
     }
   }
 
@@ -1551,8 +1569,7 @@ public abstract class AbstractMachine implements Machine
       }
       for ( State activeState : getActiveState () )
       {
-        for ( Transition currentTransition : activeState
-            .getTransitionBegin () )
+        for ( Transition currentTransition : activeState.getTransitionBegin () )
         {
           for ( Symbol currentSymbol : currentTransition )
           {

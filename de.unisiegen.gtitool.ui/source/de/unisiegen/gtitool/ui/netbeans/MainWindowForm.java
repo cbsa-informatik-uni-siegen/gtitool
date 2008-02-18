@@ -550,7 +550,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMnemonic").charAt(0));
         jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
         jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/undo16.gif")));
+        jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-undo.png")));
         jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
         jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
         jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
@@ -562,7 +562,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemUndo);
 
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/redo16.gif")));
+        jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-redo.png")));
         jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
         jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
         jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {

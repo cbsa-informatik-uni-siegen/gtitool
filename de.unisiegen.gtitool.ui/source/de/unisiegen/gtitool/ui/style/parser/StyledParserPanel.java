@@ -296,7 +296,7 @@ public abstract class StyledParserPanel extends JPanel
     this.jMenuItemUndo.setMnemonic ( Messages.getString (
         "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/undo16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/edit-undo.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemUndo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemUndo.addActionListener ( new ActionListener ()
@@ -317,7 +317,7 @@ public abstract class StyledParserPanel extends JPanel
     this.jMenuItemRedo.setMnemonic ( Messages.getString (
         "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/redo16.gif" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/edit-redo.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemRedo.setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_X,
         InputEvent.CTRL_MASK ) );
     this.jMenuItemRedo.addActionListener ( new ActionListener ()

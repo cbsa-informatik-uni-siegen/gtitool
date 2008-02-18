@@ -235,7 +235,7 @@
                   <KeyStroke key="Ctrl+Z"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/undo16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-undo.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="MainWindow.UndoMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
@@ -257,7 +257,7 @@
                   <KeyStroke key="Ctrl+Y"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/redo16.gif"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-redo.png"/>
                 </Property>
                 <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="MainWindow.RedoMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

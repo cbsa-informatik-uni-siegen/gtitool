@@ -6,4 +6,3 @@ BM		- Aus einem DFA eine Datei erstellen wie zum Beispiel "newFile0.nfa",
 		  Validierung. Müssen wir nur noch einen guten Namen finden, damit man
 		  die beiden Arten der Umwandlung unterscheiden kann.
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Behandlung für UnsupportedFlavorException bei Clipboard 

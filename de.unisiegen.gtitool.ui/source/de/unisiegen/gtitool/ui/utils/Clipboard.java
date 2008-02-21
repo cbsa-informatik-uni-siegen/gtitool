@@ -90,7 +90,7 @@ public final class Clipboard implements ClipboardOwner
     }
     catch ( IllegalStateException e )
     {
-      logger.error ( "illegal state exception", e ); //$NON-NLS-1$
+      // Do nothing
     }
   }
 
@@ -123,11 +123,11 @@ public final class Clipboard implements ClipboardOwner
     }
     catch ( UnsupportedFlavorException e )
     {
-      logger.error ( "unsupported flavor exception", e ); //$NON-NLS-1$
+      // Do nothing
     }
     catch ( IOException e )
     {
-      logger.error ( "I/O exception", e ); //$NON-NLS-1$
+      // Do nothing
     }
     return EMPTY;
   }

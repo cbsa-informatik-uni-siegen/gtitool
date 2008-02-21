@@ -43,13 +43,13 @@ public final class AboutDialog
   /**
    * Allocates a new {@link AboutDialog}.
    * 
-   * @param pParent The parent {@link JFrame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public AboutDialog ( JFrame pParent )
+  public AboutDialog ( JFrame parent )
   {
     logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
-    this.parent = pParent;
-    this.gui = new AboutDialogForm ( this, pParent );
+    this.parent = parent;
+    this.gui = new AboutDialogForm ( this, parent );
     this.gui.jLabelName.setText ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.jLabelWebpageEntry.setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
   }

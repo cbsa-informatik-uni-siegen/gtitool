@@ -64,7 +64,6 @@ import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.EnterWordModePopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
@@ -765,7 +764,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
    */
-  public final EditorPanelForm getGui ()
+  public final MachinesPanelForm getGui ()
   {
     return this.gui;
   }
@@ -813,6 +812,18 @@ public final class MachinePanel implements EditorPanel
   public final JPanel getPanel ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the parent.
+   * 
+   * @return The parent.
+   * @see #parent
+   */
+  public final MainWindowForm getParent ()
+  {
+    return this.parent;
   }
 
 
@@ -1047,6 +1058,16 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Handle redo button pressed
+   */
+  public void handleRedo ()
+  {
+    this.redoUndoHandler.redo ();
+
+  }
+
+
+  /**
    * Handle save as operation
    * 
    * @return filename
@@ -1063,8 +1084,9 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
-          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      infoDialog.show ();
     }
     resetModify ();
     fireModifyStatusChanged ( false );
@@ -1125,13 +1147,10 @@ public final class MachinePanel implements EditorPanel
       if ( chooser.getSelectedFile ().exists () )
       {
 
-        int choice = JOptionPane
-            .showConfirmDialog (
-                this.parent,
-                Messages
-                    .getString (
-                        "MachinePanel.FileExists", chooser.getSelectedFile ().getName () ), Messages.getString ( //$NON-NLS-1$
-                    "MachinePanel.Save" ), JOptionPane.YES_NO_OPTION ); //$NON-NLS-1$
+        int choice = JOptionPane.showConfirmDialog ( this.parent, Messages
+            .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+            JOptionPane.YES_NO_OPTION );
 
         if ( choice == JOptionPane.NO_OPTION )
         {
@@ -1143,8 +1162,7 @@ public final class MachinePanel implements EditorPanel
           ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
           .getSelectedFile ().toString () : chooser.getSelectedFile ()
           .toString ()
-          + "." //$NON-NLS-1$
-          + this.machine.getMachineType ().toLowerCase ();
+          + "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 
@@ -1155,8 +1173,9 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      JOptionPane.showMessageDialog ( this.parent, e.getMessage (), Messages
-          .getString ( "MachinePanel.Save" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      infoDialog.show ();
     }
     resetModify ();
     fireModifyStatusChanged ( false );
@@ -1273,6 +1292,16 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Handle undo button pressed
+   */
+  public void handleUndo ()
+  {
+    this.redoUndoHandler.undo ();
+
+  }
+
+
+  /**
    * Handle Auto Step Action in the Word Enter Mode
    * 
    * @param event
@@ -1354,24 +1383,27 @@ public final class MachinePanel implements EditorPanel
       this.parent.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+          .getDescription (), exc.getMessage () );
+      infoDialog.show ();
     }
     catch ( WordResetedException exc )
     {
       this.parent.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+          .getDescription (), exc.getMessage () );
+      infoDialog.show ();
     }
     catch ( WordNotAcceptedException exc )
     {
       this.parent.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+          .getDescription (), exc.getMessage () );
+      infoDialog.show ();
     }
   }
 
@@ -1432,15 +1464,17 @@ public final class MachinePanel implements EditorPanel
     {
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+          .getDescription (), exc.getMessage () );
+      infoDialog.show ();
     }
     catch ( WordResetedException exc )
     {
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      JOptionPane.showMessageDialog ( this.parent, exc.getDescription (), exc
-          .getMessage (), JOptionPane.INFORMATION_MESSAGE );
+      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+          .getDescription (), exc.getMessage () );
+      infoDialog.show ();
     }
   }
 
@@ -1454,10 +1488,10 @@ public final class MachinePanel implements EditorPanel
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
-      JOptionPane.showMessageDialog ( this.parent, Messages
+      InfoDialog infoDialog = new InfoDialog ( this.parent, Messages
           .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
-          .getString ( "MachinePanel.WordModeError" ), //$NON-NLS-1$
-          JOptionPane.ERROR_MESSAGE );
+          .getString ( "MachinePanel.WordModeError" ) ); //$NON-NLS-1$
+      infoDialog.show ();
       return false;
     }
 
@@ -1639,7 +1673,8 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
-    this.gui.wordPanel.setPushDownAlphabet ( this.machine.getPushDownAlphabet () );
+    this.gui.wordPanel.setPushDownAlphabet ( this.machine
+        .getPushDownAlphabet () );
   }
 
 
@@ -2440,6 +2475,28 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Signals if this panel is redo able
+   * 
+   * @return true, if is redo able, false else
+   */
+  public boolean isRedoAble ()
+  {
+    return this.redoUndoHandler.isRedoAble ();
+  }
+
+
+  /**
+   * Signals if this panel is undo able
+   * 
+   * @return true, if is undo able, false else
+   */
+  public boolean isUndoAble ()
+  {
+    return this.redoUndoHandler.isUndoAble ();
+  }
+
+
+  /**
    * Getter for the flag if we are in word enter mode
    * 
    * @return true if we are in word enter mode, else false
@@ -2604,47 +2661,5 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
-  }
-
-
-  /**
-   * Handle redo button pressed
-   */
-  public void handleRedo ()
-  {
-    this.redoUndoHandler.redo ();
-
-  }
-
-
-  /**
-   * Handle undo button pressed
-   */
-  public void handleUndo ()
-  {
-    this.redoUndoHandler.undo ();
-
-  }
-
-
-  /**
-   * Signals if this panel is redo able
-   * 
-   * @return true, if is redo able, false else
-   */
-  public boolean isRedoAble ()
-  {
-    return this.redoUndoHandler.isRedoAble ();
-  }
-
-
-  /**
-   * Signals if this panel is undo able
-   * 
-   * @return true, if is undo able, false else
-   */
-  public boolean isUndoAble ()
-  {
-    return this.redoUndoHandler.isUndoAble ();
   }
 }

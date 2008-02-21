@@ -14,6 +14,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.InfoDialog;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
@@ -228,6 +230,8 @@ public final class DefaultPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
+        int errorCount = 0;
+        int warningCount = 0;
         try
         {
           DefaultPopupMenu.this.panel.clearValidationMessages ();
@@ -240,13 +244,29 @@ public final class DefaultPopupMenu extends JPopupMenu
             if ( error.getType ().equals ( ErrorType.ERROR ) )
             {
               DefaultPopupMenu.this.panel.addError ( error );
+              errorCount++ ;
             }
             else if ( error.getType ().equals ( ErrorType.WARNING ) )
             {
               DefaultPopupMenu.this.panel.addWarning ( error );
+              warningCount++ ;
             }
           }
         }
+        String message;
+        if ( errorCount == 1 )
+        {
+          message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+        }
+        else
+        {
+          message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+              .valueOf ( errorCount ) );
+        }
+        InfoDialog infoDialog = new InfoDialog ( DefaultPopupMenu.this.panel
+            .getParent (), message, Messages
+            .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+        infoDialog.show ();
       }
     } );
     add ( this.validate );

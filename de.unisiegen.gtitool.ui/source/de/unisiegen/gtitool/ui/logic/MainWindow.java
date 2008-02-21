@@ -72,7 +72,7 @@ public final class MainWindow implements LanguageChangedListener
    * List contains the recently used files
    */
   private ArrayList < RecentlyUsedMenuItem > recentlyUsedFiles = new ArrayList < RecentlyUsedMenuItem > ();
-  
+
 
   /**
    * Creates new form {@link MainWindow}.
@@ -187,7 +187,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param panel The {@link EditorPanel} to be saved
    */
-  public final void handleClose (EditorPanel panel)
+  public final void handleClose ( EditorPanel panel )
   {
 
     if ( panel.isModified () )
@@ -200,7 +200,7 @@ public final class MainWindow implements LanguageChangedListener
           JOptionPane.YES_NO_CANCEL_OPTION );
       if ( choice == JOptionPane.YES_OPTION )
       {
-        handleSave (panel);
+        handleSave ( panel );
       }
       else if ( choice == JOptionPane.CANCEL_OPTION )
       {
@@ -235,8 +235,8 @@ public final class MainWindow implements LanguageChangedListener
     if ( ( panel instanceof MachinePanel ) )
     {
 
-      if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
-          .getState ()
+      if ( ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
+          .getState () )
           && this.saveConsolePreferences )
       {
         PreferenceManager.getInstance ().setVisibleConsole (
@@ -321,11 +321,19 @@ public final class MainWindow implements LanguageChangedListener
     }
     if ( errorCount > 0 )
     {
-      JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
-          .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages //$NON-NLS-1$
-          .getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-              .valueOf ( errorCount ) ), Messages
-          .getString ( "MainWindow.ErrorMachine" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      String message;
+      if ( errorCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+      }
+      else
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+            .valueOf ( errorCount ) );
+      }
+      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+      infoDialog.show ();
       return;
     }
     setToolBarEditItemState ( false );
@@ -554,8 +562,11 @@ public final class MainWindow implements LanguageChangedListener
     chooser.setFileFilter ( sourceFileFilter );
 
     int n = chooser.showOpenDialog ( this.gui );
-    if ( n == JFileChooser.CANCEL_OPTION || chooser.getSelectedFile () == null )
+    if ( ( n == JFileChooser.CANCEL_OPTION )
+        || ( chooser.getSelectedFile () == null ) )
+    {
       return;
+    }
 
     for ( File file : chooser.getSelectedFiles () )
     {
@@ -640,27 +651,30 @@ public final class MainWindow implements LanguageChangedListener
     // System exit
     System.exit ( 0 );
   }
-  
+
+
   /**
    * Handle the close all files event
    */
-  public final void handleCloseAll(){
+  public final void handleCloseAll ()
+  {
     for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
     {
-      handleClose (current);
+      handleClose ( current );
     }
   }
-  
-  
+
+
   /**
    * Handle the save all files event
    */
-  public final void handleSaveAll(){
+  public final void handleSaveAll ()
+  {
     EditorPanel active = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
     {
       this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
-      handleSave (current);
+      handleSave ( current );
     }
     this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( active );
   }
@@ -671,7 +685,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param panel The {@link EditorPanel} to be saved
    */
-  public final void handleSave (EditorPanel panel)
+  public final void handleSave ( EditorPanel panel )
   {
     File file = panel.handleSave ();
     if ( file != null )
@@ -748,15 +762,15 @@ public final class MainWindow implements LanguageChangedListener
             .isWordEnterMode () );
         this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
             .isWordEnterMode () );
-        
-        //Set the status of the word navigation icons
-        this.gui.jButtonStart.setEnabled ( machinePanel.isWordEnterMode () && !machinePanel.isWordNavigation () );
+
+        // Set the status of the word navigation icons
+        this.gui.jButtonStart.setEnabled ( machinePanel.isWordEnterMode ()
+            && !machinePanel.isWordNavigation () );
         this.gui.jButtonPrevious.setEnabled ( machinePanel.isWordNavigation () );
         this.gui.jButtonNextStep.setEnabled ( machinePanel.isWordNavigation () );
         this.gui.jButtonAutoStep.setEnabled ( machinePanel.isWordNavigation () );
         this.gui.jButtonStop.setEnabled ( machinePanel.isWordNavigation () );
-        
-        
+
       }
       else
       {
@@ -769,11 +783,11 @@ public final class MainWindow implements LanguageChangedListener
         setToolBarEnterWordItemState ( false );
       }
       // Undo
-      this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble() );
-      this.gui.jButtonUndo.setEnabled ( panel.isUndoAble() );
+      this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
+      this.gui.jButtonUndo.setEnabled ( panel.isUndoAble () );
       // Redo
-      this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble() );
-      this.gui.jButtonRedo.setEnabled ( panel.isRedoAble() );
+      this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble () );
+      this.gui.jButtonRedo.setEnabled ( panel.isRedoAble () );
     }
     // Save status
     setSaveState ();
@@ -933,11 +947,19 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
-    JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
-        .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages.getString ( //$NON-NLS-1$
-        "MainWindow.ErrorMachineCount", String.valueOf ( errorCount ) ), //$NON-NLS-1$
-        Messages.getString ( "MainWindow.ErrorMachine" ), //$NON-NLS-1$
-        JOptionPane.ERROR_MESSAGE );
+    String message;
+    if ( errorCount == 1 )
+    {
+      message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+    }
+    else
+    {
+      message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+          .valueOf ( errorCount ) );
+    }
+    InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+        .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+    infoDialog.show ();
   }
 
 
@@ -1028,11 +1050,19 @@ public final class MainWindow implements LanguageChangedListener
     }
     if ( errorCount > 0 )
     {
-      JOptionPane.showMessageDialog ( this.gui, errorCount == 1 ? Messages
-          .getString ( "MainWindow.ErrorMachineCountOne" ) : Messages //$NON-NLS-1$
-          .getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-              .valueOf ( errorCount ) ), Messages
-          .getString ( "MainWindow.ErrorMachine" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      String message;
+      if ( errorCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+      }
+      else
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+            .valueOf ( errorCount ) );
+      }
+      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+      infoDialog.show ();
       return;
     }
 
@@ -1262,7 +1292,9 @@ public final class MainWindow implements LanguageChangedListener
           this.recentlyUsedFiles.remove ( item );
           this.recentlyUsedFiles.add ( 0, item );
           if ( this.recentlyUsedFiles.size () > 10 )
+          {
             this.recentlyUsedFiles.remove ( 10 );
+          }
           organizeRecentlyUsedFilesMenu ();
         }
 
@@ -1294,14 +1326,17 @@ public final class MainWindow implements LanguageChangedListener
         this.recentlyUsedFiles.remove ( item );
         this.recentlyUsedFiles.add ( 0, item );
         if ( this.recentlyUsedFiles.size () > 10 )
+        {
           this.recentlyUsedFiles.remove ( 10 );
+        }
         organizeRecentlyUsedFilesMenu ();
       }
     }
     catch ( StoreException exc )
     {
-      JOptionPane.showMessageDialog ( this.gui, exc.getMessage (), Messages
-          .getString ( "MainWindow.ErrorLoad" ), JOptionPane.ERROR_MESSAGE ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
+          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
+      infoDialog.show ();
     }
     PreferenceManager.getInstance ().setWorkingPath (
         file.getParentFile ().getAbsolutePath () );
@@ -1484,6 +1519,7 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonStop.setEnabled ( state );
   }
 
+
   /**
    * Handle redo button pressed
    */
@@ -1496,6 +1532,7 @@ public final class MainWindow implements LanguageChangedListener
     }
   }
 
+
   /**
    * Handle undo button pressed
    */
@@ -1507,6 +1544,5 @@ public final class MainWindow implements LanguageChangedListener
       panel.handleUndo ();
     }
   }
-
 
 }

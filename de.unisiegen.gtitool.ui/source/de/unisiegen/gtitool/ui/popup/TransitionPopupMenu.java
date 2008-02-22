@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
@@ -19,6 +18,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
@@ -143,14 +143,14 @@ public final class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        int choice = JOptionPane.NO_OPTION;
-        String message = Messages.getString (
-            "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
-            TransitionPopupMenu.this.transition );
-        choice = JOptionPane.showConfirmDialog ( null, message, Messages
-            .getString ( "TransitionDialog.DeleteTransitionTitle" ), //$NON-NLS-1$
-            JOptionPane.YES_NO_OPTION );
-        if ( choice == JOptionPane.YES_OPTION )
+        ConfirmDialog confirmedDialog = new ConfirmDialog (
+            TransitionPopupMenu.this.parent.getLogic ().getParent (), Messages
+                .getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
+                    TransitionPopupMenu.this.transition ), Messages
+                .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$
+            true, false );
+        confirmedDialog.show ();
+        if ( confirmedDialog.isConfirmed () )
         {
           TransitionPopupMenu.this.model.removeTransition (
               TransitionPopupMenu.this.transition, true );

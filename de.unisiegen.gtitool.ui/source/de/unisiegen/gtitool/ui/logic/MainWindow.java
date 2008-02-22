@@ -9,7 +9,6 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
@@ -186,25 +185,27 @@ public final class MainWindow implements LanguageChangedListener
    * Closes the selected {@link EditorPanel}.
    * 
    * @param panel The {@link EditorPanel} to be saved
+   * @return True if the panel is closed, false if the close was canceled.
    */
-  public final void handleClose ( EditorPanel panel )
+  public final boolean handleClose ( EditorPanel panel )
   {
-
     if ( panel.isModified () )
     {
       String fileName = panel.getFile () == null ? this.gui.jGTITabbedPaneMain
           .getEditorPanelTitle ( panel ) : panel.getFile ().getName ();
-      int choice = JOptionPane.showConfirmDialog ( this.gui, Messages
+
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
           .getString ( "MainWindow.CloseModifyMessage", fileName ), Messages //$NON-NLS-1$
-          .getString ( "MainWindow.CloseModifyTitle" ), //$NON-NLS-1$
-          JOptionPane.YES_NO_CANCEL_OPTION );
-      if ( choice == JOptionPane.YES_OPTION )
+          .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
+      confirmDialog.show ();
+
+      if ( confirmDialog.isConfirmed () )
       {
         handleSave ( panel );
       }
-      else if ( choice == JOptionPane.CANCEL_OPTION )
+      else if ( confirmDialog.isCanceled () )
       {
-        return;
+        return false;
       }
     }
 
@@ -222,6 +223,23 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonMouse.setEnabled ( false );
       this.gui.jButtonStartState.setEnabled ( false );
       this.gui.jButtonEditAlphabet.setEnabled ( false );
+    }
+    return true;
+  }
+
+
+  /**
+   * Handle the close all files event
+   */
+  public final void handleCloseAll ()
+  {
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    {
+      // Check if the close was canceled
+      if ( !handleClose ( current ) )
+      {
+        break;
+      }
     }
   }
 
@@ -616,11 +634,13 @@ public final class MainWindow implements LanguageChangedListener
         String fileName = current.getFile () == null ? this.gui.jGTITabbedPaneMain
             .getEditorPanelTitle ( current )
             : current.getFile ().getName ();
-        int choice = JOptionPane.showConfirmDialog ( this.gui, Messages
+
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
             .getString ( "MainWindow.CloseModifyMessage", fileName ), Messages //$NON-NLS-1$
-            .getString ( "MainWindow.CloseModifyTitle" ), //$NON-NLS-1$
-            JOptionPane.YES_NO_CANCEL_OPTION );
-        if ( choice == JOptionPane.YES_OPTION )
+            .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
+        confirmDialog.show ();
+
+        if ( confirmDialog.isConfirmed () )
         {
           File file = current.handleSave ();
           if ( file != null )
@@ -629,7 +649,7 @@ public final class MainWindow implements LanguageChangedListener
                 .getName () );
           }
         }
-        else if ( choice == JOptionPane.CANCEL_OPTION )
+        else if ( confirmDialog.isCanceled () )
         {
           return;
         }
@@ -654,29 +674,15 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle the close all files event
+   * Handle redo button pressed
    */
-  public final void handleCloseAll ()
+  public final void handleRedo ()
   {
-    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    if ( panel != null )
     {
-      handleClose ( current );
+      panel.handleRedo ();
     }
-  }
-
-
-  /**
-   * Handle the save all files event
-   */
-  public final void handleSaveAll ()
-  {
-    EditorPanel active = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
-    {
-      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
-      handleSave ( current );
-    }
-    this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( active );
   }
 
 
@@ -705,6 +711,21 @@ public final class MainWindow implements LanguageChangedListener
       }
       this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( panel, file.getName () );
     }
+  }
+
+
+  /**
+   * Handle the save all files event
+   */
+  public final void handleSaveAll ()
+  {
+    EditorPanel active = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+    {
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( current );
+      handleSave ( current );
+    }
+    this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( active );
   }
 
 
@@ -908,6 +929,19 @@ public final class MainWindow implements LanguageChangedListener
 
         machinePanel.handleToolbarTransition ( state );
       }
+    }
+  }
+
+
+  /**
+   * Handle undo button pressed
+   */
+  public final void handleUndo ()
+  {
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    if ( panel != null )
+    {
+      panel.handleUndo ();
     }
   }
 
@@ -1518,31 +1552,4 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonAutoStep.setEnabled ( state );
     this.gui.jButtonStop.setEnabled ( state );
   }
-
-
-  /**
-   * Handle redo button pressed
-   */
-  public void handleRedo ()
-  {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( panel != null )
-    {
-      panel.handleRedo ();
-    }
-  }
-
-
-  /**
-   * Handle undo button pressed
-   */
-  public void handleUndo ()
-  {
-    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( panel != null )
-    {
-      panel.handleUndo ();
-    }
-  }
-
 }

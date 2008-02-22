@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.jgraph.JGraph;
@@ -19,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -122,18 +122,18 @@ public final class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        int choice = JOptionPane.NO_OPTION;
-        String message = Messages.getString (
-            "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
-            StatePopupMenu.this.state );
-        choice = JOptionPane.showConfirmDialog ( null, message, Messages
-            .getString ( "TransitionDialog.DeleteStateTitle" ), //$NON-NLS-1$
-            JOptionPane.YES_NO_OPTION );
-        if ( choice == JOptionPane.YES_OPTION )
+        ConfirmDialog confirmDialog = new ConfirmDialog (
+            StatePopupMenu.this.parent, Messages.getString (
+                "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
+                StatePopupMenu.this.state ), Messages
+                .getString ( "TransitionDialog.DeleteStateTitle" ), true, true, //$NON-NLS-1$
+            false );
+        confirmDialog.show ();
+        if ( confirmDialog.isConfirmed () )
         {
-          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state, true );
+          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state,
+              true );
         }
-
       }
     } );
     add ( this.delete );
@@ -187,7 +187,8 @@ public final class StatePopupMenu extends JPopupMenu
     this.finalState.setSelected ( this.state.getState ().isFinalState () );
     add ( this.finalState );
 
-    this.configurate = new JMenuItem ( Messages.getString ( "MachinePanel.Configurate" ) ); //$NON-NLS-1$
+    this.configurate = new JMenuItem ( Messages
+        .getString ( "MachinePanel.Configurate" ) ); //$NON-NLS-1$
     this.configurate.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
     this.configurate.addActionListener ( new ActionListener ()
@@ -199,7 +200,8 @@ public final class StatePopupMenu extends JPopupMenu
       {
 
         StateConfigDialog dialog = new StateConfigDialog (
-            StatePopupMenu.this.parent, StatePopupMenu.this.state.getState (), StatePopupMenu.this.model );
+            StatePopupMenu.this.parent, StatePopupMenu.this.state.getState (),
+            StatePopupMenu.this.model );
         dialog.show ();
         if ( ( dialog.getStateName () != null )
             && ( !dialog.getStateName ().equals (

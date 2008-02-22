@@ -3,12 +3,11 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import java.awt.Frame;
 
-import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.InfoDialog;
 
 
 /**
- * The {@link AboutDialogForm}.
+ * The {@link InfoDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -25,13 +24,13 @@ public class InfoDialogForm extends javax.swing.JDialog
 
 
   /**
-   * The {@link AboutDialog}.
+   * The {@link InfoDialog}.
    */
   private InfoDialog logic;
 
 
   /**
-   * Creates new form InfoDialogForm
+   * Creates new form {@link InfoDialogForm}.
    * 
    * @param logic The {@link InfoDialog}.
    * @param parent The parent {@link Frame}.
@@ -56,7 +55,7 @@ public class InfoDialogForm extends javax.swing.JDialog
 
         jScrollPaneInfo = new javax.swing.JScrollPane();
         jTextAreaInfo = new javax.swing.JTextArea();
-        jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -85,12 +84,12 @@ public class InfoDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jScrollPaneInfo, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jGTIButtonOk.setText(bundle.getString("InfoDialog.Close")); // NOI18N
-        jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonClose.setText(bundle.getString("InfoDialog.Close")); // NOI18N
+        jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonOkActionPerformed(evt);
+                jGTIButtonCloseActionPerformed(evt);
             }
         });
 
@@ -98,22 +97,22 @@ public class InfoDialogForm extends javax.swing.JDialog
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        getContentPane().add(jGTIButtonOk, gridBagConstraints);
+        getContentPane().add(jGTIButtonClose, gridBagConstraints);
 
         setSize(new java.awt.Dimension(240, 130));
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-    this.logic.handleClose();
+      this.logic.handleClose();
     }//GEN-LAST:event_formWindowClosing
 
-  private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
-    this.logic.handleClose();
-  }//GEN-LAST:event_jGTIButtonOkActionPerformed
+    private void jGTIButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCloseActionPerformed
+      this.logic.handleClose();
+    }//GEN-LAST:event_jGTIButtonCloseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
     public javax.swing.JScrollPane jScrollPaneInfo;
     public javax.swing.JTextArea jTextAreaInfo;
     // End of variables declaration//GEN-END:variables

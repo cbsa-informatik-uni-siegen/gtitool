@@ -7,4 +7,3 @@ BM		- Aus einem DFA eine Datei erstellen wie zum Beispiel "newFile0.nfa",
 		  die beiden Arten der Umwandlung unterscheiden kann.
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 BM		- MachinesPanelForm in MachinePanelForm umbenennen
-CF		- Einen Confirm Dialog bauen

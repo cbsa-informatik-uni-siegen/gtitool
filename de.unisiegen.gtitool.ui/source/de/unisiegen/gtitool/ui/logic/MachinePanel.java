@@ -20,7 +20,6 @@ import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
@@ -1146,13 +1145,12 @@ public final class MachinePanel implements EditorPanel
       }
       if ( chooser.getSelectedFile ().exists () )
       {
-
-        int choice = JOptionPane.showConfirmDialog ( this.parent, Messages
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.parent, Messages
             .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
                 .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
-            JOptionPane.YES_NO_OPTION );
-
-        if ( choice == JOptionPane.NO_OPTION )
+            true, true, false );
+        confirmDialog.show ();
+        if ( confirmDialog.isNotConfirmed () )
         {
           return null;
         }

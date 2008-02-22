@@ -244,7 +244,7 @@ public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanel
         logic = window;
     }
     
-    public EditorPanel getLogic(){
+    public MachinePanel getLogic(){
       return this.logic;
     }
 }

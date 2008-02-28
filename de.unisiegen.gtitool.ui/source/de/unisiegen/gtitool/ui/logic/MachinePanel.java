@@ -61,7 +61,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
 import de.unisiegen.gtitool.ui.popup.EnterWordModePopupMenu;
@@ -234,9 +234,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link MachinesPanelForm}.
+   * The {@link MachinePanelForm}.
    */
-  private MachinesPanelForm gui;
+  private MachinePanelForm gui;
 
 
   /**
@@ -432,7 +432,7 @@ public final class MachinePanel implements EditorPanel
     this.parent = parent;
     this.model = model;
     this.file = file;
-    this.gui = new MachinesPanelForm ();
+    this.gui = new MachinePanelForm ();
     this.gui.setMachinePanel ( this );
 
     this.redoUndoHandler = new RedoUndoHandler ( model, parent );
@@ -763,7 +763,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
    */
-  public final MachinesPanelForm getGui ()
+  public final MachinePanelForm getGui ()
   {
     return this.gui;
   }

@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
@@ -148,5 +149,12 @@ public class GrammarPanel implements EditorPanel
   {
     // TODO Auto-generated method stub
     return false;
+  }
+
+
+  public DefaultMachineModel getModel ()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

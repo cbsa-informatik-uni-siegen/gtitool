@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
 
@@ -104,4 +105,11 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @return true, if is redo able, false else
    */
   public boolean isRedoAble ();
+  
+  /**
+   * Returns the {@link DefaultMachineModel}
+   * 
+   * @return the {@link DefaultMachineModel}
+   */
+  public DefaultMachineModel getModel();
 }

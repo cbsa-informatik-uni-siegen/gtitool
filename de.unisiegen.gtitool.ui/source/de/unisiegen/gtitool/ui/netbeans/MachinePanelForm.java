@@ -11,10 +11,10 @@ import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class MachinesPanelForm extends javax.swing.JPanel implements EditorPanelForm{
+public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelForm{
     
     /** Creates new form MachinesPanelForm */
-    public MachinesPanelForm() {
+    public MachinePanelForm() {
         initComponents();
     }
     

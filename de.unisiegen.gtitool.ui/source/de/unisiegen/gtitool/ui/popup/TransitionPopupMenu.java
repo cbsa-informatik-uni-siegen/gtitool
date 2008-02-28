@@ -21,7 +21,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.netbeans.MachinesPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -47,9 +47,9 @@ public final class TransitionPopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link MachinesPanelForm}.
+   * The {@link MachinePanelForm}.
    */
-  private MachinesPanelForm parent;
+  private MachinePanelForm parent;
 
 
   /**
@@ -98,7 +98,7 @@ public final class TransitionPopupMenu extends JPopupMenu
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet}.
    */
-  public TransitionPopupMenu ( JGraph jGraph, MachinesPanelForm parent,
+  public TransitionPopupMenu ( JGraph jGraph, MachinePanelForm parent,
       DefaultMachineModel model, DefaultTransitionView transition,
       Alphabet alphabet, Alphabet pushDownAlphabet )
   {

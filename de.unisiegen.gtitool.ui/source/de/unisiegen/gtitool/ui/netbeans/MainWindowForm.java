@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  *
@@ -91,6 +92,11 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
         jMenuItemSaveAll = new javax.swing.JMenuItem();
+        jMenuDraft = new javax.swing.JMenu();
+        jMenuItemDFA = new javax.swing.JMenuItem();
+        jMenuItemNFA = new javax.swing.JMenuItem();
+        jMenuItemENFA = new javax.swing.JMenuItem();
+        jMenuItemPDA = new javax.swing.JMenuItem();
         jSeparatorFile2 = new javax.swing.JSeparator();
         jMenuRecentlyUsed = new javax.swing.JMenu();
         jSeparatorFile3 = new javax.swing.JSeparator();
@@ -200,7 +206,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonUndo.setBorderPainted(false);
         jButtonUndo.setFocusPainted(false);
         jButtonUndo.setFocusable(false);
+        jButtonUndo.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonUndo.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonUndo.setOpaque(false);
+        jButtonUndo.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleUndo(evt);
@@ -214,7 +223,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonRedo.setBorderPainted(false);
         jButtonRedo.setFocusPainted(false);
         jButtonRedo.setFocusable(false);
+        jButtonRedo.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonRedo.setMinimumSize(new java.awt.Dimension(36, 36));
         jButtonRedo.setOpaque(false);
+        jButtonRedo.setPreferredSize(new java.awt.Dimension(36, 36));
         jButtonRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleRedo(evt);
@@ -524,6 +536,47 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuFile.add(jMenuItemSaveAll);
 
+        jMenuDraft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
+        jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemDFA);
+
+        jMenuItemNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        jMenuItemNFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemNFA);
+
+        jMenuItemENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        jMenuItemENFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemENFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemENFA);
+
+        jMenuItemPDA.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
+        jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPDAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemPDA);
+
+        jMenuFile.add(jMenuDraft);
+
         jMenuFile.add(jSeparatorFile2);
 
         jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
@@ -687,6 +740,22 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 600, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItemDFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDFAhandleDraftFor
+        logic.handleDraftFor(DefaultMachineModel.MachineType.DFA);
+    }//GEN-LAST:event_jMenuItemDFAhandleDraftFor
+
+    private void jMenuItemNFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNFAhandleDraftFor
+        logic.handleDraftFor(DefaultMachineModel.MachineType.NFA);
+    }//GEN-LAST:event_jMenuItemNFAhandleDraftFor
+
+    private void jMenuItemPDAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPDAhandleDraftFor
+        logic.handleDraftFor(DefaultMachineModel.MachineType.PDA);
+    }//GEN-LAST:event_jMenuItemPDAhandleDraftFor
+
+    private void jMenuItemENFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemENFAhandleDraftFor
+        logic.handleDraftFor(DefaultMachineModel.MachineType.ENFA);
+    }//GEN-LAST:event_jMenuItemENFAhandleDraftFor
+
     private void handleCloseAll(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCloseAll
         this.logic.handleCloseAll();
     }//GEN-LAST:event_handleCloseAll
@@ -829,6 +898,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneMain;
     public javax.swing.JMenuBar jMenuBarMain;
+    public javax.swing.JMenu jMenuDraft;
     public javax.swing.JMenu jMenuEdit;
     public javax.swing.JMenu jMenuExecute;
     public javax.swing.JMenu jMenuFile;
@@ -838,10 +908,14 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemCloseAll;
     public javax.swing.JMenuItem jMenuItemCopy;
     public javax.swing.JMenuItem jMenuItemCut;
+    public javax.swing.JMenuItem jMenuItemDFA;
+    public javax.swing.JMenuItem jMenuItemENFA;
     public javax.swing.JMenuItem jMenuItemEditMachine;
     public javax.swing.JMenuItem jMenuItemEnterWord;
+    public javax.swing.JMenuItem jMenuItemNFA;
     public javax.swing.JMenuItem jMenuItemNew;
     public javax.swing.JMenuItem jMenuItemOpen;
+    public javax.swing.JMenuItem jMenuItemPDA;
     public javax.swing.JMenuItem jMenuItemPaste;
     public javax.swing.JMenuItem jMenuItemPreferences;
     public javax.swing.JMenuItem jMenuItemQuit;

@@ -1,9 +1,6 @@
 CF		- WordPanel anpassen (Stack, PushDownAlphabet)
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
-BM		- Aus einem DFA eine Datei erstellen wie zum Beispiel "newFile0.nfa",
-		  also keine Umwandlung, sondern einfach ein anderes Ergebnis bei der
-		  Validierung. Müssen wir nur noch einen guten Namen finden, damit man
-		  die beiden Arten der Umwandlung unterscheiden kann.
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-BM		- MachinesPanelForm in MachinePanelForm umbenennen
+CF		- Behandlung für UnsupportedFlavorException bei Clipboard 
+BM		- Tooltip und Button von Edit Document überarbeiten

@@ -15,8 +15,13 @@ import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
@@ -26,6 +31,7 @@ import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -1182,6 +1188,20 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.SaveAll" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemSaveAll.setMnemonic ( Messages.getString (
         "MainWindow.SaveAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Draft for
+    MainWindow.this.gui.jMenuDraft.setText ( Messages
+        .getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuDraft.setMnemonic ( Messages.getString (
+    "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    
+    MainWindow.this.gui.jMenuItemDFA.setText ( Messages
+        .getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemNFA.setText ( Messages
+        .getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemENFA.setText ( Messages
+        .getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemPDA.setText ( Messages
+        .getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
     // RecentlyUsed
     MainWindow.this.gui.jMenuRecentlyUsed.setText ( Messages
         .getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
@@ -1551,5 +1571,79 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonNextStep.setEnabled ( state );
     this.gui.jButtonAutoStep.setEnabled ( state );
     this.gui.jButtonStop.setEnabled ( state );
+  }
+
+  /**
+   * Use the active Editor Panel as draf for a new file
+   * 
+   * @param type Type of the new file
+   */
+  public void handleDraftFor ( MachineType type )
+  {
+    try
+    {
+      DefaultMachineModel model = new DefaultMachineModel( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getModel().getElement (), type.toString ());
+      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
+
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+      + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+           + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+      setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+
+    }
+    catch ( StoreException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
+          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException e )
+    {
+      // Do nothing
+    }
+    catch ( StateException e )
+    {
+      // Dot nothing
+    }
+    catch ( SymbolException e )
+    {
+      // Do nothing
+    }
+    catch ( AlphabetException e )
+    {
+      // Do nothing
+    }
+    catch ( TransitionException e )
+    {
+      // Do nothing
+    }
+    
   }
 }

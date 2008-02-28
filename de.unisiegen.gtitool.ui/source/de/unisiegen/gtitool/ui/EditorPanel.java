@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
@@ -22,11 +23,27 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 {
 
   /**
-   * Get the file of this {@link EditorPanel}.
+   * Returns the {@link File} of this {@link EditorPanel}.
    * 
-   * @return the File of this {@link EditorPanel}.
+   * @return The {@link File} of this {@link EditorPanel}.
    */
   public File getFile ();
+
+
+  /**
+   * Returns the {@link File} ending.
+   * 
+   * @return The {@link File} ending.
+   */
+  public String getFileEnding ();
+
+
+  /**
+   * Getter for the gui element of this logic class
+   * 
+   * @return The {@link EditorPanelForm} for this logic class
+   */
+  public EditorPanelForm getGui ();
 
 
   /**
@@ -43,6 +60,18 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @return The {@link JPanel}.
    */
   public JPanel getPanel ();
+
+
+  /**
+   * Handles the {@link Exchange}.
+   */
+  public void handleExchange ();
+
+
+  /**
+   * Redo last step
+   */
+  public void handleRedo ();
 
 
   /**
@@ -68,29 +97,18 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Sets the name of this {@link EditorPanel}.
-   * 
-   * @param name The name to set;
-   */
-  public void setName ( String name );
-  
-  /**
-   * 
-   * Getter for the gui element of this logic class
-   *
-   * @return The {@link EditorPanelForm} for this logic class
-   */
-  public EditorPanelForm getGui();
-  
-  /**
-   * Redo last step
-   */
-  public void handleRedo();
-  
-  /**
    * Undo last step
    */
-  public void handleUndo();
+  public void handleUndo ();
+
+
+  /**
+   * Signals if this panel is redo able
+   * 
+   * @return true, if is redo able, false else
+   */
+  public boolean isRedoAble ();
+
 
   /**
    * Signals if this panel is undo able
@@ -99,17 +117,19 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    */
   public boolean isUndoAble ();
 
+
   /**
-   * Signals if this panel is redo able
+   * Sets the name of this {@link EditorPanel}.
    * 
-   * @return true, if is redo able, false else
+   * @param name The name to set;
    */
-  public boolean isRedoAble ();
-  
+  public void setName ( String name );
+
+
   /**
    * Returns the {@link DefaultMachineModel}
    * 
    * @return the {@link DefaultMachineModel}
    */
-  public DefaultMachineModel getModel();
+  public DefaultMachineModel getModel ();
 }

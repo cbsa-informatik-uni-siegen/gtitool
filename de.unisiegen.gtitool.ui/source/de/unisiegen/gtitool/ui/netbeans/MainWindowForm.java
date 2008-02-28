@@ -6,6 +6,7 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
+ * The {@link MainWindowForm}.
  *
  * @author Benjamin Mies
  * @author Christian Fehler
@@ -117,6 +118,8 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemValidate = new javax.swing.JMenuItem();
         jMenuItemEnterWord = new javax.swing.JMenuItem();
         jMenuItemEditMachine = new javax.swing.JMenuItem();
+        jMenuExtras = new javax.swing.JMenu();
+        jMenuItemExchange = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -488,7 +491,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuFile.add(jMenuItemClose);
 
-        jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
         jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
         jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
@@ -537,6 +540,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemSaveAll);
 
         jMenuDraft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
         jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
         jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
         jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
@@ -565,7 +569,6 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuDraft.add(jMenuItemENFA);
 
-        jMenuItemPDA.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
         jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
         jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -709,6 +712,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuExecute.add(jMenuItemEnterWord);
 
+        jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
         jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
         jMenuItemEditMachine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -719,6 +723,20 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuExecute.add(jMenuItemEditMachine);
 
         jMenuBarMain.add(jMenuExecute);
+
+        jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
+        jMenuExtras.setText(bundle.getString("MainWindow.Extras")); // NOI18N
+        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExchangeMnemonic").charAt(0));
+        jMenuItemExchange.setText(bundle.getString("MainWindow.Exchange")); // NOI18N
+        jMenuItemExchange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExchangeActionPerformed(evt);
+            }
+        });
+
+        jMenuExtras.add(jMenuItemExchange);
+
+        jMenuBarMain.add(jMenuExtras);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
         jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
@@ -737,23 +755,27 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBarMain);
 
-        setBounds(0, 0, 600, 450);
+        setBounds(0, 0, 662, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItemExchangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExchangeActionPerformed
+        this.logic.handleExchange();
+    }//GEN-LAST:event_jMenuItemExchangeActionPerformed
+
     private void jMenuItemDFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDFAhandleDraftFor
-        logic.handleDraftFor(DefaultMachineModel.MachineType.DFA);
+        this.logic.handleDraftFor(DefaultMachineModel.MachineType.DFA);
     }//GEN-LAST:event_jMenuItemDFAhandleDraftFor
 
     private void jMenuItemNFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNFAhandleDraftFor
-        logic.handleDraftFor(DefaultMachineModel.MachineType.NFA);
+        this.logic.handleDraftFor(DefaultMachineModel.MachineType.NFA);
     }//GEN-LAST:event_jMenuItemNFAhandleDraftFor
 
     private void jMenuItemPDAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPDAhandleDraftFor
-        logic.handleDraftFor(DefaultMachineModel.MachineType.PDA);
+        this.logic.handleDraftFor(DefaultMachineModel.MachineType.PDA);
     }//GEN-LAST:event_jMenuItemPDAhandleDraftFor
 
     private void jMenuItemENFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemENFAhandleDraftFor
-        logic.handleDraftFor(DefaultMachineModel.MachineType.ENFA);
+        this.logic.handleDraftFor(DefaultMachineModel.MachineType.ENFA);
     }//GEN-LAST:event_jMenuItemENFAhandleDraftFor
 
     private void handleCloseAll(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCloseAll
@@ -765,7 +787,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleSaveAll
 
     private void handleRedo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleRedo
-         this.logic.handleRedo();
+        this.logic.handleRedo();
     }//GEN-LAST:event_handleRedo
 
     private void handleUndo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleUndo
@@ -901,6 +923,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenu jMenuDraft;
     public javax.swing.JMenu jMenuEdit;
     public javax.swing.JMenu jMenuExecute;
+    public javax.swing.JMenu jMenuExtras;
     public javax.swing.JMenu jMenuFile;
     public javax.swing.JMenu jMenuHelp;
     public javax.swing.JMenuItem jMenuItemAbout;
@@ -912,6 +935,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemENFA;
     public javax.swing.JMenuItem jMenuItemEditMachine;
     public javax.swing.JMenuItem jMenuItemEnterWord;
+    public javax.swing.JMenuItem jMenuItemExchange;
     public javax.swing.JMenuItem jMenuItemNFA;
     public javax.swing.JMenuItem jMenuItemNew;
     public javax.swing.JMenuItem jMenuItemOpen;

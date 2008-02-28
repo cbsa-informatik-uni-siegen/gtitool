@@ -55,6 +55,7 @@ import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
@@ -76,6 +77,7 @@ import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
  * The Panel containing the diagramm and table representing a machine
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public final class MachinePanel implements EditorPanel
@@ -761,6 +763,17 @@ public final class MachinePanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
+   * @see EditorPanel#getFileEnding()
+   */
+  public String getFileEnding ()
+  {
+    return "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
    */
   public final MachinePanelForm getGui ()
@@ -968,6 +981,17 @@ public final class MachinePanel implements EditorPanel
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
     this.graph.addMouseListener ( this.enterWordModeMouse );
+  }
+
+
+  /**
+   * Handles the {@link Exchange}.
+   */
+  public final void handleExchange ()
+  {
+    ExchangeDialog exchangeDialog = new ExchangeDialog ( this.parent
+        .getLogic (), this.model.getElement () );
+    exchangeDialog.show ();
   }
 
 

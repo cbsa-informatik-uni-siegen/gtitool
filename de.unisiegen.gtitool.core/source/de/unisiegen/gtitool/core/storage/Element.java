@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.storage;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -10,8 +11,14 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Element
+public final class Element implements Serializable
 {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 574828409775987118L;
+
 
   /**
    * The {@link Attribute} list.

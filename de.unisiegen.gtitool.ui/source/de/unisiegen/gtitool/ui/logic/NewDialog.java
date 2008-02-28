@@ -75,12 +75,6 @@ public final class NewDialog
 
 
   /**
-   * The ending of the new file name.
-   */
-  private String fileEnding;
-
-
-  /**
    * Creates a new {@link NewDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -100,17 +94,6 @@ public final class NewDialog
   public final EditorPanel getEditorPanel ()
   {
     return this.newPanel;
-  }
-
-
-  /**
-   * Get the file ending for the new file
-   * 
-   * @return file ending for the new file
-   */
-  public final String getFileEnding ()
-  {
-    return this.fileEnding;
   }
 
 
@@ -168,46 +151,39 @@ public final class NewDialog
             new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
-        this.fileEnding = ".dfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
-
-      if ( this.machineChoice.getUserChoice ().equals (
+      else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.NFA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
-        this.fileEnding = ".nfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
-
-      if ( this.machineChoice.getUserChoice ().equals (
+      else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.ENFA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
-        this.fileEnding = ".enfa"; //$NON-NLS-1$
         this.gui.dispose ();
       }
-
-      if ( this.machineChoice.getUserChoice ().equals (
+      else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.PDA ) )
       {
         this.newPanel = new MachinePanel ( this.parent,
             new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
-        this.fileEnding = ".pda"; //$NON-NLS-1$
         this.gui.dispose ();
       }
     }
     else
     {
-      // TODO Implement this grammar
+      // TODO Implement this
     }
   }
 

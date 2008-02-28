@@ -4,3 +4,4 @@ CF		- History über die Zustände führen
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Behandlung für UnsupportedFlavorException bei Clipboard 
 BM		- Tooltip und Button von Edit Document überarbeiten
+BM		- Draft for... nur wenn eine Datei offen ist

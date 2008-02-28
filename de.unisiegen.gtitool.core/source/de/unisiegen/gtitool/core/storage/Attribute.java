@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.storage;
 
 
+import java.io.Serializable;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -11,8 +13,14 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Attribute
+public final class Attribute implements Serializable
 {
+
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -7909860204639971864L;
+
 
   /**
    * The name.

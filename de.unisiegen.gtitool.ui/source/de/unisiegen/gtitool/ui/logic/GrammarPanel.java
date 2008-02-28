@@ -51,6 +51,18 @@ public class GrammarPanel implements EditorPanel
   }
 
 
+  public String getFileEnding ()
+  {
+    return null;
+  }
+
+
+  public EditorPanelForm getGui ()
+  {
+    return null;
+  }
+
+
   public String getName ()
   {
     return null;
@@ -65,6 +77,17 @@ public class GrammarPanel implements EditorPanel
   public JPanel getPanel ()
   {
     return this.gui;
+  }
+
+
+  public void handleExchange ()
+  {
+  }
+
+
+  public void handleRedo ()
+  {
+
   }
 
 
@@ -86,7 +109,25 @@ public class GrammarPanel implements EditorPanel
   }
 
 
+  public void handleUndo ()
+  {
+
+  }
+
+
   public boolean isModified ()
+  {
+    return false;
+  }
+
+
+  public boolean isRedoAble ()
+  {
+    return false;
+  }
+
+
+  public boolean isUndoAble ()
   {
     return false;
   }
@@ -114,41 +155,6 @@ public class GrammarPanel implements EditorPanel
   public void setName ( String name )
   {
 
-  }
-
-
-  public EditorPanelForm getGui ()
-  {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-
-  public void handleRedo ()
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
-
-  public void handleUndo ()
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
-
-  public boolean isRedoAble ()
-  {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-
-  public boolean isUndoAble ()
-  {
-    // TODO Auto-generated method stub
-    return false;
   }
 
 

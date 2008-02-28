@@ -25,11 +25,13 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
+import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -372,7 +374,25 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle the open event.
+   * Handles the {@link Exchange}.
+   */
+  public final void handleExchange ()
+  {
+    EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
+    if ( panel == null )
+    {
+      ExchangeDialog exchangeDialog = new ExchangeDialog ( this, null );
+      exchangeDialog.show ();
+    }
+    else
+    {
+      panel.handleExchange ();
+    }
+  }
+
+
+  /**
+   * Handle the new event.
    */
   public final void handleNew ()
   {
@@ -394,12 +414,94 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + newDialog.getFileEnding ();
+          + newDialog.getEditorPanel ().getFileEnding ();
       while ( nameList.contains ( name ) )
       {
         count++ ;
         name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-            + newDialog.getFileEnding ();
+            + newDialog.getEditorPanel ().getFileEnding ();
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+
+      setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+    }
+  }
+
+
+  /**
+   * Handle the new event with a given {@link Element}.
+   * 
+   * @param element The {@link Element}.
+   */
+  public final void handleNew ( Element element )
+  {
+    DefaultMachineModel model = null;
+    try
+    {
+      model = new DefaultMachineModel ( element );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( SymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( StoreException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    if ( model != null )
+    {
+      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + newEditorPanel.getFileEnding ();
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + newEditorPanel.getFileEnding ();
       }
 
       newEditorPanel.setName ( name );
@@ -1169,6 +1271,11 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Close" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemClose.setMnemonic ( Messages.getString (
         "MainWindow.CloseMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // CloseAll
+    MainWindow.this.gui.jMenuItemCloseAll.setText ( Messages
+        .getString ( "MainWindow.CloseAll" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemCloseAll.setMnemonic ( Messages.getString (
+        "MainWindow.CloseAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Save
     MainWindow.this.gui.jMenuItemSave.setText ( Messages
         .getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
@@ -1192,8 +1299,8 @@ public final class MainWindow implements LanguageChangedListener
     MainWindow.this.gui.jMenuDraft.setText ( Messages
         .getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuDraft.setMnemonic ( Messages.getString (
-    "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    
+        "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+
     MainWindow.this.gui.jMenuItemDFA.setText ( Messages
         .getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemNFA.setText ( Messages
@@ -1277,6 +1384,21 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.EnterWord" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemEnterWord.setMnemonic ( Messages.getString (
         "MainWindow.EnterWordMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // EnterWord
+    MainWindow.this.gui.jMenuItemEditMachine.setText ( Messages
+        .getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemEditMachine.setMnemonic ( Messages.getString (
+        "MainWindow.EditMachineMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Extras
+    MainWindow.this.gui.jMenuExtras.setText ( Messages
+        .getString ( "MainWindow.Extras" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuExtras.setMnemonic ( Messages.getString (
+        "MainWindow.ExtrasMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Exchange
+    MainWindow.this.gui.jMenuItemExchange.setText ( Messages
+        .getString ( "MainWindow.Exchange" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemExchange.setMnemonic ( Messages.getString (
+        "MainWindow.ExchangeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Help
     MainWindow.this.gui.jMenuHelp.setText ( Messages
         .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
@@ -1573,6 +1695,7 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonStop.setEnabled ( state );
   }
 
+
   /**
    * Use the active Editor Panel as draf for a new file
    * 
@@ -1582,9 +1705,10 @@ public final class MainWindow implements LanguageChangedListener
   {
     try
     {
-      DefaultMachineModel model = new DefaultMachineModel( this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getModel().getElement (), type.toString ());
+      DefaultMachineModel model = new DefaultMachineModel (
+          this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getModel ()
+              .getElement (), type.toString () );
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
-
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
@@ -1598,12 +1722,12 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-      + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
       while ( nameList.contains ( name ) )
       {
         count++ ;
         name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-           + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
       }
 
       newEditorPanel.setName ( name );
@@ -1644,6 +1768,6 @@ public final class MainWindow implements LanguageChangedListener
     {
       // Do nothing
     }
-    
+
   }
 }

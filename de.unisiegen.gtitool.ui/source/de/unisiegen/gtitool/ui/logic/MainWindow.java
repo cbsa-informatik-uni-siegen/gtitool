@@ -26,7 +26,6 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
-import de.unisiegen.gtitool.core.storage.Storage;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
@@ -39,6 +38,7 @@ import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
+import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -447,7 +447,7 @@ public final class MainWindow implements LanguageChangedListener
     DefaultMachineModel model = null;
     try
     {
-      model = new DefaultMachineModel ( element );
+      model = new DefaultMachineModel ( element, null );
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
     {
@@ -1480,7 +1480,7 @@ public final class MainWindow implements LanguageChangedListener
     try
     {
       DefaultMachineModel model = ( DefaultMachineModel ) Storage
-          .getInstance ().load ( file, DefaultMachineModel.class );
+          .getInstance ().load ( file );
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
       this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
@@ -1701,7 +1701,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param type Type of the new file
    */
-  public void handleDraftFor ( MachineType type )
+  public final void handleDraftFor ( MachineType type )
   {
     try
     {

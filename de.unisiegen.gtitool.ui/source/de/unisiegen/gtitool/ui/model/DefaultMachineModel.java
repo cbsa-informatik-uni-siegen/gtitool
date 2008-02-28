@@ -52,7 +52,7 @@ import de.unisiegen.gtitool.ui.utils.RedoUndoItem;
  */
 public final class DefaultMachineModel implements Storable, Modifyable
 {
-  
+
   /**
    * Signals the machine type.
    */
@@ -133,12 +133,13 @@ public final class DefaultMachineModel implements Storable, Modifyable
    */
   private RedoUndoHandler redoUndoHandler;
 
-  
+
   /**
    * Allocates a new {@link DefaultMachineModel}.
    * 
    * @param element The {@link Element}.
-   * @param machineType The type of the {@link Machine}
+   * @param overwrittenMachineType The overwritten machine type which is used
+   *          instead of the loaded machine type if it is not null.
    * @throws StoreException If the {@link Element} can not be parsed.
    * @throws AlphabetException If something with the {@link DefaultAlphabet} is
    *           not correct.
@@ -151,176 +152,9 @@ public final class DefaultMachineModel implements Storable, Modifyable
    * @throws TransitionException If something with the {@link DefaultTransition}
    *           is not correct.
    */
-  public DefaultMachineModel ( Element element, String machineType ) throws StoreException,
-      StateException, SymbolException, AlphabetException, TransitionException,
-      TransitionSymbolOnlyOneTimeException
-  {
-    // Check if the element is correct
-    if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
-    {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a machine model" ); //$NON-NLS-1$
-    }
-
-    // Attribute
-    boolean foundMachineType = true;
-    boolean foundMachineVersion = false;
-    boolean foundUsePushDownAlphabet = false;
-    boolean usePushDownAlphabet = true;
-    for ( Attribute attribute : element.getAttribute () )
-    {
-      if ( attribute.getName ().equals ( "machineType" ) ) //$NON-NLS-1$
-      {
-        //Do nothing
-      }
-      else if ( attribute.getName ().equals ( "machineVersion" ) ) //$NON-NLS-1$
-      {
-        foundMachineVersion = true;
-        if ( MACHINE_VERSION != attribute.getValueInt () )
-        {
-          throw new StoreException ( Messages
-              .getString ( "StoreException.IncompatibleVersion" ) ); //$NON-NLS-1$
-        }
-      }
-      else if ( attribute.getName ().equals ( "usePushDownAlphabet" ) ) //$NON-NLS-1$
-      {
-        foundUsePushDownAlphabet = true;
-        usePushDownAlphabet = attribute.getValueBoolean ();
-      }
-      else
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
-      }
-    }
-
-    if ( ( !foundMachineType ) || ( !foundMachineVersion )
-        || ( !foundUsePushDownAlphabet ) )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
-
-    // Element
-    Alphabet alphabet = null;
-    Alphabet pushDownAlphabet = null;
-    boolean foundAlphabet = false;
-    boolean foundPushDownAlphabet = false;
-    for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-      {
-        alphabet = new DefaultAlphabet ( current );
-        foundAlphabet = true;
-      }
-      else if ( current.getName ().equals ( "PushDownAlphabet" ) ) //$NON-NLS-1$
-      {
-        current.setName ( "Alphabet" ); //$NON-NLS-1$
-        pushDownAlphabet = new DefaultAlphabet ( current );
-        foundPushDownAlphabet = true;
-      }
-      else if ( ( !current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
-    if ( ( !foundAlphabet ) || ( !foundPushDownAlphabet ) )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingElement" ) ); //$NON-NLS-1$
-    }
-    // initialize this model elements
-    this.machine = AbstractMachine.createMachine ( machineType, alphabet,
-        pushDownAlphabet, usePushDownAlphabet );
-    initializeModifyStatusChangedListener ();
-    initializeGraph ();
-
-    // Load the states
-    for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "StateView" ) ) //$NON-NLS-1$
-      {
-        double x = 0;
-        double y = 0;
-        State state = null;
-        boolean xValueLoaded = false;
-        boolean yValueLoaded = false;
-        for ( Attribute attribute : current.getAttribute () )
-        {
-          if ( attribute.getName ().equals ( "x" ) ) { //$NON-NLS-1$
-            x = attribute.getValueDouble ();
-            xValueLoaded = true;
-          }
-          if ( attribute.getName ().equals ( "y" ) ) { //$NON-NLS-1$
-            y = attribute.getValueDouble ();
-            yValueLoaded = true;
-          }
-        }
-        if ( ! ( xValueLoaded && yValueLoaded ) )
-        {
-          throw new StoreException ( Messages
-              .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-        }
-        for ( Element childElement : current.getElement () )
-        {
-          if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
-          {
-            state = new DefaultState ( childElement );
-          }
-        }
-        createStateView ( x + 35, y + 35, state, false );
-      }
-      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "TransitionView" ) ) ) //$NON-NLS-1$
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Load the transitions
-    for ( Element current : element.getElement () )
-    {
-      if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
-      {
-        Transition transition = new DefaultTransition ( current.getElement ( 0 ) );
-        DefaultStateView source = getStateById ( transition.getStateBeginId () );
-        DefaultStateView target = getStateById ( transition.getStateEndId () );
-
-        createTransitionView ( transition, source, target, false );
-      }
-      else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
-      {
-        throw new StoreException ( Messages
-            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
-      }
-    }
-
-    // Reset modify
-    resetModify ();
-  }
-
-  /**
-   * Allocates a new {@link DefaultMachineModel}.
-   * 
-   * @param element The {@link Element}.
-   * @throws StoreException If the {@link Element} can not be parsed.
-   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
-   *           not correct.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
-   * @throws StateException If something with the {@link DefaultState} is not
-   *           correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           {@link DefaultTransition} is not correct.
-   * @throws TransitionException If something with the {@link DefaultTransition}
-   *           is not correct.
-   */
-  public DefaultMachineModel ( Element element ) throws StoreException,
-      StateException, SymbolException, AlphabetException, TransitionException,
+  public DefaultMachineModel ( Element element, String overwrittenMachineType )
+      throws StoreException, StateException, SymbolException,
+      AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
     // Check if the element is correct
@@ -341,7 +175,14 @@ public final class DefaultMachineModel implements Storable, Modifyable
       if ( attribute.getName ().equals ( "machineType" ) ) //$NON-NLS-1$
       {
         foundMachineType = true;
-        machineType = attribute.getValue ();
+        if ( overwrittenMachineType == null )
+        {
+          machineType = attribute.getValue ();
+        }
+        else
+        {
+          machineType = overwrittenMachineType;
+        }
       }
       else if ( attribute.getName ().equals ( "machineVersion" ) ) //$NON-NLS-1$
       {

@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.storage;
+package de.unisiegen.gtitool.ui.storage;
 
 
 import java.io.BufferedWriter;
@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 
@@ -23,7 +22,11 @@ import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
+import de.unisiegen.gtitool.core.storage.Attribute;
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
@@ -117,12 +120,10 @@ public final class Storage
    * Loads the {@link Storable} from the given file name.
    * 
    * @param file The {@link File}.
-   * @param fileClass The {@link File} class.
    * @return The {@link Storable} from the given file name.
    * @throws StoreException If the file could not be loaded.
    */
-  public final Storable load ( File file, Class < ? extends Storable > fileClass )
-      throws StoreException
+  public final Storable load ( File file ) throws StoreException
   {
     try
     {
@@ -130,12 +131,12 @@ public final class Storage
       DocumentBuilder builder = factory.newDocumentBuilder ();
       Document document = builder.parse ( file );
       Element element = getElement ( document.getDocumentElement () );
-      Constructor < ? extends Storable > constructor = fileClass
-          .getConstructor ( new Class []
-          { Element.class } );
-      return constructor.newInstance ( new Object []
-      { element } );
 
+      if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
+      {
+        return new DefaultMachineModel ( element, null );
+      }
+      throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( ParserConfigurationException exc )
     {

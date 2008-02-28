@@ -204,9 +204,9 @@ public final class PreferenceManager extends
   {
     ZoomFactorChangedListener [] listeners = this.listenerList
         .getListeners ( ZoomFactorChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ZoomFactorChangedListener current : listeners )
     {
-      listeners [ n ].zoomFactorChanged ( zoomFactor );
+      current.zoomFactorChanged ( zoomFactor );
     }
   }
 

@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  * 
  * @author Christian Fehler
  */
-public class JGTIColorChooser extends JColorChooser
+public final class JGTIColorChooser extends JColorChooser
 {
 
   /**

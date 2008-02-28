@@ -17,7 +17,7 @@ import javax.swing.JViewport;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTITable extends JTable
+public final class JGTITable extends JTable
 {
 
   /**

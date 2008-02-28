@@ -13,7 +13,7 @@ import javax.swing.JComponent;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIButton extends JButton
+public final class JGTIButton extends JButton
 {
 
   /**
@@ -25,7 +25,7 @@ public class JGTIButton extends JButton
   /**
    * The minimal width of this {@link JGTIButton}.
    */
-  private static int MIN_WIDTH = 80;
+  private static final int MIN_WIDTH = 80;
 
 
   /**

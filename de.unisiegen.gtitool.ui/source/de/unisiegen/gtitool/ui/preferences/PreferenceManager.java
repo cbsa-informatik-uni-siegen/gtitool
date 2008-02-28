@@ -129,6 +129,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default host.
+   */
+  public static final String DEFAULT_HOST = "localhost"; //$NON-NLS-1$
+
+
+  /**
+   * The default port.
+   */
+  public static final int DEFAULT_PORT = 64528;
+
+
+  /**
    * The default zoom factor value.
    */
   public static final ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
@@ -248,6 +260,17 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the host.
+   * 
+   * @return The host.
+   */
+  public final String getHost ()
+  {
+    return this.preferences.get ( "Host", DEFAULT_HOST ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Returns the {@link LookAndFeelItem}.
    * 
    * @return The {@link LookAndFeelItem}.
@@ -332,6 +355,22 @@ public final class PreferenceManager extends
     File activeFile = activeFileName.equals ( "" ) ? null //$NON-NLS-1$
         : new File ( activeFileName );
     return new OpenedFilesItem ( files, activeFile );
+  }
+
+
+  /**
+   * Returns the port.
+   * 
+   * @return The port.
+   */
+  public final int getPort ()
+  {
+    int port = this.preferences.getInt ( "Port", DEFAULT_PORT ); //$NON-NLS-1$
+    if ( ( port < 0 ) || ( port > 65535 ) )
+    {
+      port = DEFAULT_PORT;
+    }
+    return port;
   }
 
 
@@ -484,6 +523,18 @@ public final class PreferenceManager extends
 
 
   /**
+   * Sets the host.
+   * 
+   * @param host The host.
+   */
+  public final void setHost ( String host )
+  {
+    logger.debug ( "set the host to \"" + host + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.put ( "Host", host ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Sets the {@link LookAndFeelItem}.
    * 
    * @param lookAndFeelItem The {@link LookAndFeelItem}.
@@ -588,6 +639,18 @@ public final class PreferenceManager extends
       this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
           openedFilesItem.getActiveFile ().getAbsolutePath () );
     }
+  }
+
+
+  /**
+   * Sets the port.
+   * 
+   * @param port The port.
+   */
+  public final void setPort ( int port )
+  {
+    logger.debug ( "set port to \"" + port + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "Port", port ); //$NON-NLS-1$
   }
 
 

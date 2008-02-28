@@ -48,19 +48,26 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        buttonGroupPreferences = new javax.swing.ButtonGroup();
         jScrollPaneStatus = new javax.swing.JScrollPane();
         jTextPaneStatus = new javax.swing.JTextPane();
-        jLabel1 = new javax.swing.JLabel();
-        jTextFieldHost = new javax.swing.JTextField();
+        jPanelChoice = new javax.swing.JPanel();
+        jRadioButtonReceive = new javax.swing.JRadioButton();
+        jRadioButtonSend = new javax.swing.JRadioButton();
+        jPanelPreferences = new javax.swing.JPanel();
+        jLabelPort = new javax.swing.JLabel();
+        jGTITextFieldPort = new de.unisiegen.gtitool.ui.swing.JGTITextField();
+        jLabelHost = new javax.swing.JLabel();
+        jGTITextFieldHost = new de.unisiegen.gtitool.ui.swing.JGTITextField();
         jPanelButtons = new javax.swing.JPanel();
-        jGTIButtonSend = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        jGTIButtonReceive = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonExecute = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("*Title*");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        setTitle(bundle.getString("ExchangeDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -85,54 +92,111 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jScrollPaneStatus, gridBagConstraints);
 
-        jLabel1.setText("*Host*");
+        jPanelChoice.setLayout(new java.awt.GridBagLayout());
+
+        buttonGroupPreferences.add(jRadioButtonReceive);
+        jRadioButtonReceive.setSelected(true);
+        jRadioButtonReceive.setText(bundle.getString("ExchangeDialog.Receive")); // NOI18N
+        jRadioButtonReceive.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonReceive.setFocusPainted(false);
+        jRadioButtonReceive.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButtonReceiveItemStateChanged(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jPanelChoice.add(jRadioButtonReceive, gridBagConstraints);
+
+        buttonGroupPreferences.add(jRadioButtonSend);
+        jRadioButtonSend.setText(bundle.getString("ExchangeDialog.Send")); // NOI18N
+        jRadioButtonSend.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jRadioButtonSend.setFocusPainted(false);
+        jRadioButtonSend.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButtonSendItemStateChanged(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        jPanelChoice.add(jRadioButtonSend, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
-        getContentPane().add(jLabel1, gridBagConstraints);
+        getContentPane().add(jPanelChoice, gridBagConstraints);
 
-        jTextFieldHost.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelPreferences.setLayout(new java.awt.GridBagLayout());
+
+        jLabelPort.setText(bundle.getString("ExchangeDialog.Port")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
+        jPanelPreferences.add(jLabelPort, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 5, 0);
+        jPanelPreferences.add(jGTITextFieldPort, gridBagConstraints);
+
+        jLabelHost.setText(bundle.getString("ExchangeDialog.Host")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 5);
+        jPanelPreferences.add(jLabelHost, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
+        jPanelPreferences.add(jGTITextFieldHost, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
-        getContentPane().add(jTextFieldHost, gridBagConstraints);
+        getContentPane().add(jPanelPreferences, gridBagConstraints);
 
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
-        jGTIButtonSend.setText("*Send*");
-        jGTIButtonSend.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.ExecuteMnemonic").charAt(0));
+        jGTIButtonExecute.setText(bundle.getString("ExchangeDialog.Execute")); // NOI18N
+        jGTIButtonExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonSendActionPerformed(evt);
+                jGTIButtonExecuteActionPerformed(evt);
             }
         });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jGTIButtonSend, gridBagConstraints);
+        jPanelButtons.add(jGTIButtonExecute, gridBagConstraints);
 
-        jGTIButtonReceive.setText("*Receive*");
-        jGTIButtonReceive.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonReceiveActionPerformed(evt);
-            }
-        });
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanelButtons.add(jGTIButtonReceive, gridBagConstraints);
-
-        jGTIButtonClose.setText("*Close*");
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.Close").charAt(0));
+        jGTIButtonClose.setText(bundle.getString("ExchangeDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCloseActionPerformed(evt);
@@ -141,14 +205,14 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jPanelButtons.add(jGTIButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
@@ -158,13 +222,17 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         setBounds(0, 0, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jGTIButtonReceiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonReceiveActionPerformed
-      this.logic.handleReceive();
-    }//GEN-LAST:event_jGTIButtonReceiveActionPerformed
+    private void jGTIButtonExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonExecuteActionPerformed
+      this.logic.handleExecute();
+    }//GEN-LAST:event_jGTIButtonExecuteActionPerformed
 
-    private void jGTIButtonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonSendActionPerformed
-      this.logic.handleSend();
-    }//GEN-LAST:event_jGTIButtonSendActionPerformed
+    private void jRadioButtonSendItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButtonSendItemStateChanged
+      this.logic.handleItemStateChanged(evt);
+    }//GEN-LAST:event_jRadioButtonSendItemStateChanged
+
+    private void jRadioButtonReceiveItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButtonReceiveItemStateChanged
+      this.logic.handleItemStateChanged(evt);
+    }//GEN-LAST:event_jRadioButtonReceiveItemStateChanged
 
     private void jGTIButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCloseActionPerformed
       this.logic.handleClose();
@@ -175,13 +243,19 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.ButtonGroup buttonGroupPreferences;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonReceive;
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonSend;
-    public javax.swing.JLabel jLabel1;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonExecute;
+    public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldHost;
+    public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldPort;
+    public javax.swing.JLabel jLabelHost;
+    public javax.swing.JLabel jLabelPort;
     public javax.swing.JPanel jPanelButtons;
+    public javax.swing.JPanel jPanelChoice;
+    public javax.swing.JPanel jPanelPreferences;
+    public javax.swing.JRadioButton jRadioButtonReceive;
+    public javax.swing.JRadioButton jRadioButtonSend;
     public javax.swing.JScrollPane jScrollPaneStatus;
-    public javax.swing.JTextField jTextFieldHost;
     public javax.swing.JTextPane jTextPaneStatus;
     // End of variables declaration//GEN-END:variables
 }

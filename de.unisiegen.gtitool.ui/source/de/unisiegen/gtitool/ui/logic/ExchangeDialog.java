@@ -1,7 +1,8 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
 
 import org.apache.log4j.Logger;
 
@@ -11,6 +12,7 @@ import de.unisiegen.gtitool.ui.exchange.ExchangeReceivedListener;
 import de.unisiegen.gtitool.ui.exchange.Network;
 import de.unisiegen.gtitool.ui.exchange.NetworkConnectedListener;
 import de.unisiegen.gtitool.ui.netbeans.ExchangeDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -26,12 +28,6 @@ public final class ExchangeDialog
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( ExchangeDialog.class );
-
-
-  /**
-   * The used port.
-   */
-  private static final int PORT = 44444;
 
 
   /**
@@ -77,13 +73,12 @@ public final class ExchangeDialog
     this.element = element;
     this.gui = new ExchangeDialogForm ( this, this.mainWindow.getGui () );
 
-    // No file to send is opened
-    if ( element == null )
-    {
-      this.gui.jTextFieldHost.setEnabled ( false );
-      this.gui.jTextFieldHost.setBackground ( new Color ( 240, 240, 240 ) );
-      this.gui.jGTIButtonSend.setEnabled ( false );
-    }
+    this.gui.jGTITextFieldPort.setText ( String.valueOf ( PreferenceManager
+        .getInstance ().getPort () ) );
+    this.gui.jGTITextFieldHost.setText ( PreferenceManager.getInstance ()
+        .getHost () );
+
+    setComponentStatus ();
   }
 
 
@@ -101,11 +96,54 @@ public final class ExchangeDialog
 
 
   /**
+   * Returns the port.
+   * 
+   * @return The port.
+   */
+  private final int getPort ()
+  {
+    int port = -1;
+    try
+    {
+      port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
+    }
+    catch ( NumberFormatException exc )
+    {
+      // TODOChristian
+    }
+    return port;
+  }
+
+
+  /**
+   * Handles the execute.
+   */
+  public final void handleExecute ()
+  {
+    if ( this.gui.jRadioButtonReceive.isSelected () )
+    {
+      handleReceive ();
+    }
+    else
+    {
+      handleSend ();
+    }
+
+    this.gui.jRadioButtonReceive.setEnabled ( false );
+    this.gui.jRadioButtonSend.setEnabled ( false );
+    this.gui.jGTITextFieldPort.setEnabled ( false );
+    this.gui.jGTITextFieldHost.setEnabled ( false );
+    this.gui.jGTIButtonExecute.setEnabled ( false );
+  }
+
+
+  /**
    * Closes the {@link ExchangeDialogForm}.
    */
   public final void handleClose ()
   {
     logger.debug ( "handle close" ); //$NON-NLS-1$
+    this.gui.setVisible ( false );
 
     if ( this.networkServer != null )
     {
@@ -117,20 +155,39 @@ public final class ExchangeDialog
       this.networkClient.close ();
       this.networkClient = null;
     }
+
+    PreferenceManager.getInstance ().setPort ( getPort () );
+    PreferenceManager.getInstance ().setHost (
+        this.gui.jGTITextFieldHost.getText () );
+
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the item state changed.
+   * 
+   * @param event The {@link ItemEvent}.
+   */
+  public final void handleItemStateChanged ( ItemEvent event )
+  {
+    if ( event.getStateChange () == ItemEvent.SELECTED )
+    {
+      setComponentStatus ();
+    }
   }
 
 
   /**
    * Handles the receive.
    */
-  public final void handleReceive ()
+  private final void handleReceive ()
   {
     if ( this.networkServer != null )
     {
       this.networkServer.close ();
     }
-    this.networkServer = new Network ( null, PORT );
+    this.networkServer = new Network ( null, getPort () );
     this.networkServer.listen ();
 
     this.networkServer
@@ -144,21 +201,22 @@ public final class ExchangeDialog
             ExchangeDialog.this.mainWindow.handleNew ( exchange.getElement () );
           }
         } );
-    this.gui.jGTIButtonReceive.setEnabled ( false );
-    appendMessage ( "*Listening on port*: " + PORT ); //$NON-NLS-1$
+
+    appendMessage ( "*Listening on port*: " + getPort () ); //$NON-NLS-1$
   }
 
 
   /**
    * Handles the send.
    */
-  public final void handleSend ()
+  private final void handleSend ()
   {
     if ( this.networkClient != null )
     {
       this.networkClient.close ();
     }
-    this.networkClient = new Network ( this.gui.jTextFieldHost.getText (), PORT );
+    this.networkClient = new Network ( this.gui.jGTITextFieldHost.getText (),
+        getPort () );
     this.networkClient.connect ();
 
     this.networkClient
@@ -171,11 +229,36 @@ public final class ExchangeDialog
             ExchangeDialog.this.networkClient.send ( new Exchange (
                 ExchangeDialog.this.element ) );
             appendMessage ( "*Sending to: *: " //$NON-NLS-1$
-                + ExchangeDialog.this.gui.jTextFieldHost.getText () + "/" //$NON-NLS-1$
-                + PORT );
+                + ExchangeDialog.this.gui.jGTITextFieldHost.getText () + "/" //$NON-NLS-1$
+                + getPort () );
           }
         } );
-    this.gui.jGTIButtonSend.setEnabled ( false );
+  }
+
+
+  /**
+   * Sets the {@link Component} status.
+   */
+  private final void setComponentStatus ()
+  {
+    // No file to send is opened
+    if ( this.element == null )
+    {
+      this.gui.jRadioButtonSend.setEnabled ( false );
+      this.gui.jGTITextFieldHost.setEnabled ( false );
+      return;
+    }
+
+    // Receive
+    if ( this.gui.jRadioButtonReceive.isSelected () )
+    {
+      this.gui.jGTITextFieldHost.setEnabled ( false );
+    }
+    // Send
+    else
+    {
+      this.gui.jGTITextFieldHost.setEnabled ( true );
+    }
   }
 
 

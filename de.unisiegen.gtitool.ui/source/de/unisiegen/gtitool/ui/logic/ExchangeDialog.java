@@ -7,7 +7,9 @@ import java.awt.event.ItemEvent;
 import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
+import de.unisiegen.gtitool.ui.exchange.ExchangeException;
 import de.unisiegen.gtitool.ui.exchange.ExchangeReceivedListener;
 import de.unisiegen.gtitool.ui.exchange.Network;
 import de.unisiegen.gtitool.ui.exchange.NetworkConnectedListener;
@@ -109,7 +111,7 @@ public final class ExchangeDialog
     }
     catch ( NumberFormatException exc )
     {
-      // TODOChristian
+      // Do nothing
     }
     return port;
   }
@@ -188,21 +190,30 @@ public final class ExchangeDialog
       this.networkServer.close ();
     }
     this.networkServer = new Network ( null, getPort () );
-    this.networkServer.listen ();
-
-    this.networkServer
-        .addExchangeReceivedListener ( new ExchangeReceivedListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void exchangeReceived ( Exchange exchange )
+    try
+    {
+      this.networkServer.listen ();
+      this.networkServer
+          .addExchangeReceivedListener ( new ExchangeReceivedListener ()
           {
-            appendMessage ( "*Received*" ); //$NON-NLS-1$
-            ExchangeDialog.this.mainWindow.handleNew ( exchange.getElement () );
-          }
-        } );
 
-    appendMessage ( "*Listening on port*: " + getPort () ); //$NON-NLS-1$
+            @SuppressWarnings ( "synthetic-access" )
+            public void exchangeReceived ( Exchange exchange )
+            {
+              appendMessage ( Messages
+                  .getString ( "ExchangeDialog.ReceiveFile" ) ); //$NON-NLS-1$
+              ExchangeDialog.this.mainWindow
+                  .handleNew ( exchange.getElement () );
+            }
+          } );
+
+      appendMessage ( Messages.getString ( "ExchangeDialog.Listening", String //$NON-NLS-1$
+          .valueOf ( getPort () ) ) );
+    }
+    catch ( ExchangeException exc )
+    {
+      appendMessage ( exc.getMessage () );
+    }
   }
 
 
@@ -217,22 +228,27 @@ public final class ExchangeDialog
     }
     this.networkClient = new Network ( this.gui.jGTITextFieldHost.getText (),
         getPort () );
-    this.networkClient.connect ();
-
-    this.networkClient
-        .addNetworkConnectedListener ( new NetworkConnectedListener ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void networkConnected ()
+    try
+    {
+      this.networkClient.connect ();
+      this.networkClient
+          .addNetworkConnectedListener ( new NetworkConnectedListener ()
           {
-            ExchangeDialog.this.networkClient.send ( new Exchange (
-                ExchangeDialog.this.element ) );
-            appendMessage ( "*Sending to: *: " //$NON-NLS-1$
-                + ExchangeDialog.this.gui.jGTITextFieldHost.getText () + "/" //$NON-NLS-1$
-                + getPort () );
-          }
-        } );
+
+            @SuppressWarnings ( "synthetic-access" )
+            public void networkConnected ()
+            {
+              ExchangeDialog.this.networkClient.send ( new Exchange (
+                  ExchangeDialog.this.element ) );
+              appendMessage ( Messages.getString ( "ExchangeDialog.Sending", //$NON-NLS-1$
+                  ExchangeDialog.this.gui.jGTITextFieldHost.getText () ) );
+            }
+          } );
+    }
+    catch ( ExchangeException exc )
+    {
+      appendMessage ( exc.getMessage () );
+    }
   }
 
 

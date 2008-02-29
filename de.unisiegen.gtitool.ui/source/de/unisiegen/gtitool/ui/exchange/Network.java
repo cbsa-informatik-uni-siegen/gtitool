@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.ui.Messages;
+
 
 /**
  * The {@link Network}.
@@ -21,7 +23,7 @@ public final class Network
   /**
    * The {@link Connection}.
    */
-  private Connection connection;
+  private Connection connection = null;
 
 
   /**
@@ -45,7 +47,7 @@ public final class Network
   /**
    * The {@link ServerSocket}.
    */
-  private ServerSocket serverSocket;
+  private ServerSocket serverSocket = null;
 
 
   /**
@@ -56,7 +58,14 @@ public final class Network
    */
   public Network ( String host, int port )
   {
+    // Host
     this.host = host;
+
+    // Port
+    if ( ( port < 0 ) || ( port > 65535 ) )
+    {
+      throw new IllegalArgumentException ( "port is out of range" ); //$NON-NLS-1$
+    }
     this.port = port;
   }
 
@@ -95,13 +104,29 @@ public final class Network
       this.connection.close ();
       this.connection = null;
     }
+    if ( this.serverSocket != null )
+    {
+      try
+      {
+        this.serverSocket.close ();
+      }
+      catch ( IOException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+      this.serverSocket = null;
+    }
   }
 
 
   /**
    * Connect the {@link Network} to the server.
+   * 
+   * @throws ExchangeException If the {@link Connection} could not be
+   *           established.
    */
-  public final void connect ()
+  public final void connect () throws ExchangeException
   {
     if ( this.host == null )
     {
@@ -115,13 +140,16 @@ public final class Network
     }
     catch ( UnknownHostException exc )
     {
-      exc.printStackTrace ();
       close ();
+      throw new ExchangeException ( Messages.getString (
+          "ExchangeDialog.ExceptionConnectUnknownHost", this.host ) ); //$NON-NLS-1$
     }
     catch ( IOException exc )
     {
-      exc.printStackTrace ();
       close ();
+      throw new ExchangeException ( Messages.getString (
+          "ExchangeDialog.ExceptionConnectServer", this.host, String //$NON-NLS-1$
+              .valueOf ( this.port ) ) );
     }
   }
 
@@ -182,8 +210,11 @@ public final class Network
 
   /**
    * Listen for incoming {@link Connection}s.
+   * 
+   * @throws ExchangeException If the {@link Network} could not listen on the
+   *           port.
    */
-  public final void listen ()
+  public final void listen () throws ExchangeException
   {
     try
     {
@@ -193,8 +224,9 @@ public final class Network
     }
     catch ( IOException exc )
     {
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      close ();
+      throw new ExchangeException ( Messages.getString (
+          "ExchangeDialog.ExceptionListen", String.valueOf ( this.port ) ) ); //$NON-NLS-1$
     }
   }
 

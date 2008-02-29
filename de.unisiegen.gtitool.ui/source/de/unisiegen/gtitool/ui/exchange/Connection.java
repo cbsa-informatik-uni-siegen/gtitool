@@ -169,8 +169,8 @@ public class Connection extends Thread
       }
       catch ( IOException exc )
       {
-        exc.printStackTrace ();
-        System.exit ( 1 );
+        this.network.close ();
+        return ;
       }
     }
     createStreams ();
@@ -184,13 +184,13 @@ public class Connection extends Thread
       }
       catch ( IOException exc )
       {
-        exc.printStackTrace ();
         Connection.this.network.close ();
+        return ;
       }
       catch ( ClassNotFoundException exc )
       {
-        exc.printStackTrace ();
         Connection.this.network.close ();
+        return ;
       }
       final Exchange exchange = tmpExchange;
 
@@ -221,7 +221,7 @@ public class Connection extends Thread
     catch ( IOException exc )
     {
       exc.printStackTrace ();
-      this.network.close ();
+      System.exit ( 1 );
     }
   }
 }

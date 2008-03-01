@@ -40,6 +40,11 @@
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger name="de.unisiegen.gtitool.ui.logic.ExchangeDialog">
+		<level value="all" />
+		<appender-ref ref="console" />
+	</logger>
+
 	<logger name="de.unisiegen.gtitool.ui.logic.MainWindow">
 		<level value="all" />
 		<appender-ref ref="console" />

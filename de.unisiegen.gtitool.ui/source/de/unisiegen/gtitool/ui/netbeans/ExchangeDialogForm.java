@@ -61,6 +61,7 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         jGTITextFieldHost = new de.unisiegen.gtitool.ui.swing.JGTITextField();
         jPanelButtons = new javax.swing.JPanel();
         jGTIButtonExecute = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -195,6 +196,20 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jPanelButtons.add(jGTIButtonExecute, gridBagConstraints);
 
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("ExchangeDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIButtonCancelActionPerformed(evt);
+            }
+        });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+
         jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.Close").charAt(0));
         jGTIButtonClose.setText(bundle.getString("ExchangeDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
@@ -222,6 +237,10 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         setBounds(0, 0, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
+      this.logic.handleCancel();
+    }//GEN-LAST:event_jGTIButtonCancelActionPerformed
+
     private void jGTIButtonExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonExecuteActionPerformed
       this.logic.handleExecute();
     }//GEN-LAST:event_jGTIButtonExecuteActionPerformed
@@ -244,6 +263,7 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.ButtonGroup buttonGroupPreferences;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonExecute;
     public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldHost;

@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Component;
 import java.awt.event.ItemEvent;
 
 import org.apache.log4j.Logger;
@@ -80,7 +79,7 @@ public final class ExchangeDialog
     this.gui.jGTITextFieldHost.setText ( PreferenceManager.getInstance ()
         .getHost () );
 
-    setComponentStatus ();
+    setNormalMode ( true );
   }
 
 
@@ -118,29 +117,30 @@ public final class ExchangeDialog
 
 
   /**
-   * Handles the execute.
+   * Handles the cancel event.
    */
-  public final void handleExecute ()
+  public final void handleCancel ()
   {
-    if ( this.gui.jRadioButtonReceive.isSelected () )
+    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    if ( this.networkServer != null )
     {
-      handleReceive ();
+      this.networkServer.close ();
+      this.networkServer = null;
     }
-    else
+    if ( this.networkClient != null )
     {
-      handleSend ();
+      this.networkClient.close ();
+      this.networkClient = null;
     }
 
-    this.gui.jRadioButtonReceive.setEnabled ( false );
-    this.gui.jRadioButtonSend.setEnabled ( false );
-    this.gui.jGTITextFieldPort.setEnabled ( false );
-    this.gui.jGTITextFieldHost.setEnabled ( false );
-    this.gui.jGTIButtonExecute.setEnabled ( false );
+    setNormalMode ( true );
+
+    appendMessage ( Messages.getString ( "ExchangeDialog.ExchangeCanceled" ) ); //$NON-NLS-1$
   }
 
 
   /**
-   * Closes the {@link ExchangeDialogForm}.
+   * Handles the close event.
    */
   public final void handleClose ()
   {
@@ -167,6 +167,22 @@ public final class ExchangeDialog
 
 
   /**
+   * Handles the execute.
+   */
+  public final void handleExecute ()
+  {
+    if ( this.gui.jRadioButtonReceive.isSelected () )
+    {
+      handleReceive ();
+    }
+    else
+    {
+      handleSend ();
+    }
+  }
+
+
+  /**
    * Handles the item state changed.
    * 
    * @param event The {@link ItemEvent}.
@@ -175,7 +191,7 @@ public final class ExchangeDialog
   {
     if ( event.getStateChange () == ItemEvent.SELECTED )
     {
-      setComponentStatus ();
+      setNormalMode ( true );
     }
   }
 
@@ -185,6 +201,8 @@ public final class ExchangeDialog
    */
   private final void handleReceive ()
   {
+    setNormalMode ( false );
+
     if ( this.networkServer != null )
     {
       this.networkServer.close ();
@@ -204,6 +222,11 @@ public final class ExchangeDialog
                   .getString ( "ExchangeDialog.ReceiveFile" ) ); //$NON-NLS-1$
               ExchangeDialog.this.mainWindow
                   .handleNew ( exchange.getElement () );
+              
+              // Close the network
+              ExchangeDialog.this.networkServer.close ();
+              ExchangeDialog.this.networkServer = null;
+              setNormalMode ( true );
             }
           } );
 
@@ -213,6 +236,8 @@ public final class ExchangeDialog
     catch ( ExchangeException exc )
     {
       appendMessage ( exc.getMessage () );
+
+      setNormalMode ( true );
     }
   }
 
@@ -222,6 +247,8 @@ public final class ExchangeDialog
    */
   private final void handleSend ()
   {
+    setNormalMode ( false );
+
     if ( this.networkClient != null )
     {
       this.networkClient.close ();
@@ -242,39 +269,42 @@ public final class ExchangeDialog
                   ExchangeDialog.this.element ) );
               appendMessage ( Messages.getString ( "ExchangeDialog.Sending", //$NON-NLS-1$
                   ExchangeDialog.this.gui.jGTITextFieldHost.getText () ) );
+
+              // Close the network
+              ExchangeDialog.this.networkClient.close ();
+              ExchangeDialog.this.networkClient = null;
+              setNormalMode ( true );
             }
           } );
     }
     catch ( ExchangeException exc )
     {
       appendMessage ( exc.getMessage () );
+      if ( this.networkClient != null )
+      {
+        this.networkClient.close ();
+        this.networkClient = null;
+      }
+
+      setNormalMode ( true );
     }
   }
 
 
   /**
-   * Sets the {@link Component} status.
+   * Sets the normal button mode.
+   * 
+   * @param enabled The enable flag.
    */
-  private final void setComponentStatus ()
+  private final void setNormalMode ( boolean enabled )
   {
-    // No file to send is opened
-    if ( this.element == null )
-    {
-      this.gui.jRadioButtonSend.setEnabled ( false );
-      this.gui.jGTITextFieldHost.setEnabled ( false );
-      return;
-    }
-
-    // Receive
-    if ( this.gui.jRadioButtonReceive.isSelected () )
-    {
-      this.gui.jGTITextFieldHost.setEnabled ( false );
-    }
-    // Send
-    else
-    {
-      this.gui.jGTITextFieldHost.setEnabled ( true );
-    }
+    this.gui.jRadioButtonReceive.setEnabled ( enabled );
+    this.gui.jRadioButtonSend.setEnabled ( enabled && ( this.element != null ) );
+    this.gui.jGTITextFieldPort.setEnabled ( enabled );
+    this.gui.jGTITextFieldHost.setEnabled ( enabled && ( this.element != null )
+        && ( this.gui.jRadioButtonSend.isSelected () ) );
+    this.gui.jGTIButtonExecute.setEnabled ( enabled );
+    this.gui.jGTIButtonCancel.setEnabled ( !enabled );
   }
 
 

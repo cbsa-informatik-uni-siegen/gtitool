@@ -57,6 +57,7 @@ public class Connection extends Thread
    */
   public Connection ( Network network, Socket socket )
   {
+    super ( "Connection-Client" ); //$NON-NLS-1$
     this.network = network;
     this.socket = socket;
   }
@@ -70,6 +71,7 @@ public class Connection extends Thread
    */
   public Connection ( Network network, ServerSocket serverSocket )
   {
+    super ( "Connection-Server" ); //$NON-NLS-1$
     this.network = network;
     this.serverSocket = serverSocket;
   }
@@ -169,12 +171,28 @@ public class Connection extends Thread
       }
       catch ( IOException exc )
       {
-        this.network.close ();
-        return ;
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void run ()
+          {
+            Connection.this.network.close ();
+          }
+        } );
+        return;
       }
     }
     createStreams ();
-    this.network.fireNetworkConnected ();
+    SwingUtilities.invokeLater ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        Connection.this.network.fireNetworkConnected ();
+      }
+    } );
     while ( true )
     {
       Exchange tmpExchange = null;
@@ -184,13 +202,29 @@ public class Connection extends Thread
       }
       catch ( IOException exc )
       {
-        Connection.this.network.close ();
-        return ;
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void run ()
+          {
+            Connection.this.network.close ();
+          }
+        } );
+        return;
       }
       catch ( ClassNotFoundException exc )
       {
-        Connection.this.network.close ();
-        return ;
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void run ()
+          {
+            Connection.this.network.close ();
+          }
+        } );
+        return;
       }
       final Exchange exchange = tmpExchange;
 

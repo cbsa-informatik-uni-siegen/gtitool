@@ -146,6 +146,12 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 5);
         jPanelPreferences.add(jLabelPort, gridBagConstraints);
 
+        jGTITextFieldPort.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jGTITextFieldPortKeyReleased(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -161,6 +167,12 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 5);
         jPanelPreferences.add(jLabelHost, gridBagConstraints);
+
+        jGTITextFieldHost.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jGTITextFieldHostKeyReleased(evt);
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -236,6 +248,14 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
 
         setBounds(0, 0, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTITextFieldPortKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jGTITextFieldPortKeyReleased
+      this.logic.handlePortChanged();
+    }//GEN-LAST:event_jGTITextFieldPortKeyReleased
+
+    private void jGTITextFieldHostKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jGTITextFieldHostKeyReleased
+      this.logic.handleHostChanged();
+    }//GEN-LAST:event_jGTITextFieldHostKeyReleased
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
       this.logic.handleCancel();

@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Color;
 import java.awt.event.ItemEvent;
 
 import org.apache.log4j.Logger;
@@ -97,26 +98,6 @@ public final class ExchangeDialog
 
 
   /**
-   * Returns the port.
-   * 
-   * @return The port.
-   */
-  private final int getPort ()
-  {
-    int port = -1;
-    try
-    {
-      port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
-    }
-    catch ( NumberFormatException exc )
-    {
-      // Do nothing
-    }
-    return port;
-  }
-
-
-  /**
    * Handles the cancel event.
    */
   public final void handleCancel ()
@@ -158,10 +139,6 @@ public final class ExchangeDialog
       this.networkClient = null;
     }
 
-    PreferenceManager.getInstance ().setPort ( getPort () );
-    PreferenceManager.getInstance ().setHost (
-        this.gui.jGTITextFieldHost.getText () );
-
     this.gui.dispose ();
   }
 
@@ -183,6 +160,15 @@ public final class ExchangeDialog
 
 
   /**
+   * Handles the host changed event.
+   */
+  public final void handleHostChanged ()
+  {
+    setNormalMode ( true );
+  }
+
+
+  /**
    * Handles the item state changed.
    * 
    * @param event The {@link ItemEvent}.
@@ -197,6 +183,15 @@ public final class ExchangeDialog
 
 
   /**
+   * Handles the port changed event.
+   */
+  public final void handlePortChanged ()
+  {
+    setNormalMode ( true );
+  }
+
+
+  /**
    * Handles the receive.
    */
   private final void handleReceive ()
@@ -207,7 +202,8 @@ public final class ExchangeDialog
     {
       this.networkServer.close ();
     }
-    this.networkServer = new Network ( null, getPort () );
+    final int port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
+    this.networkServer = new Network ( null, port );
     try
     {
       this.networkServer.listen ();
@@ -222,16 +218,18 @@ public final class ExchangeDialog
                   .getString ( "ExchangeDialog.ReceiveFile" ) ); //$NON-NLS-1$
               ExchangeDialog.this.mainWindow
                   .handleNew ( exchange.getElement () );
-              
+
               // Close the network
               ExchangeDialog.this.networkServer.close ();
               ExchangeDialog.this.networkServer = null;
               setNormalMode ( true );
+
+              PreferenceManager.getInstance ().setPort ( port );
             }
           } );
 
       appendMessage ( Messages.getString ( "ExchangeDialog.Listening", String //$NON-NLS-1$
-          .valueOf ( getPort () ) ) );
+          .valueOf ( port ) ) );
     }
     catch ( ExchangeException exc )
     {
@@ -253,8 +251,9 @@ public final class ExchangeDialog
     {
       this.networkClient.close ();
     }
+    final int port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
     this.networkClient = new Network ( this.gui.jGTITextFieldHost.getText (),
-        getPort () );
+        port );
     try
     {
       this.networkClient.connect ();
@@ -274,6 +273,10 @@ public final class ExchangeDialog
               ExchangeDialog.this.networkClient.close ();
               ExchangeDialog.this.networkClient = null;
               setNormalMode ( true );
+
+              PreferenceManager.getInstance ().setPort ( port );
+              PreferenceManager.getInstance ().setHost (
+                  ExchangeDialog.this.gui.jGTITextFieldHost.getText () );
             }
           } );
     }
@@ -298,12 +301,47 @@ public final class ExchangeDialog
    */
   private final void setNormalMode ( boolean enabled )
   {
+    // Port
+    boolean portOkay = true;
+    int port = -1;
+    try
+    {
+      port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
+    }
+    catch ( NumberFormatException exc )
+    {
+      // Do nothing
+    }
+    if ( ( port < 0 ) || ( port > 65535 ) )
+    {
+      this.gui.jLabelPort.setForeground ( Color.RED );
+      portOkay = false;
+    }
+    else
+    {
+      this.gui.jLabelPort.setForeground ( Color.BLACK );
+    }
+
+    // Host
+    boolean hostOkay = true;
+    if ( ( this.gui.jGTITextFieldHost.getText ().length () == 0 )
+        && ( this.gui.jRadioButtonSend.isSelected () ) )
+    {
+      this.gui.jLabelHost.setForeground ( Color.RED );
+      hostOkay = false;
+    }
+    else
+    {
+      this.gui.jLabelHost.setForeground ( Color.BLACK );
+    }
+
+    // Set status
     this.gui.jRadioButtonReceive.setEnabled ( enabled );
     this.gui.jRadioButtonSend.setEnabled ( enabled && ( this.element != null ) );
     this.gui.jGTITextFieldPort.setEnabled ( enabled );
     this.gui.jGTITextFieldHost.setEnabled ( enabled && ( this.element != null )
         && ( this.gui.jRadioButtonSend.isSelected () ) );
-    this.gui.jGTIButtonExecute.setEnabled ( enabled );
+    this.gui.jGTIButtonExecute.setEnabled ( enabled && portOkay && hostOkay );
     this.gui.jGTIButtonCancel.setEnabled ( !enabled );
   }
 

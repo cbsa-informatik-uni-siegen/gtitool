@@ -230,7 +230,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jButtonFinalState.setEnabled ( false );
       this.gui.jButtonMouse.setEnabled ( false );
       this.gui.jButtonStartState.setEnabled ( false );
-      this.gui.jButtonEditAlphabet.setEnabled ( false );
+      this.gui.jButtonEditDocument.setEnabled ( false );
     }
     return true;
   }
@@ -1425,7 +1425,7 @@ public final class MainWindow implements LanguageChangedListener
     MainWindow.this.gui.jButtonFinalState.setToolTipText ( Messages
         .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
     // Edit Alphabet
-    MainWindow.this.gui.jButtonEditAlphabet.setToolTipText ( Messages
+    MainWindow.this.gui.jButtonEditDocument.setToolTipText ( Messages
         .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
     // Previous Step
     MainWindow.this.gui.jButtonPrevious.setToolTipText ( Messages
@@ -1677,7 +1677,7 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonFinalState.setEnabled ( state );
     this.gui.jButtonMouse.setEnabled ( state );
     this.gui.jButtonStartState.setEnabled ( state );
-    this.gui.jButtonEditAlphabet.setEnabled ( state );
+    this.gui.jButtonEditDocument.setEnabled ( state );
   }
 
 

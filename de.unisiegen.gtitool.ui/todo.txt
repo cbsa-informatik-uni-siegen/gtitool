@@ -3,5 +3,5 @@ CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Behandlung für UnsupportedFlavorException bei Clipboard 
-BM		- Tooltip und Button von Edit Document überarbeiten
+CF		- Reflection bei Storage umbauen
 BM		- Draft for... nur wenn eine Datei offen ist

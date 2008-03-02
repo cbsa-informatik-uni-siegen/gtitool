@@ -75,7 +75,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jButtonAddTransition = new javax.swing.JToggleButton();
         jButtonStartState = new javax.swing.JToggleButton();
         jButtonFinalState = new javax.swing.JToggleButton();
-        jButtonEditAlphabet = new javax.swing.JButton();
+        jButtonEditDocument = new javax.swing.JButton();
         jSeparatorMain1 = new javax.swing.JSeparator();
         jButtonStart = new javax.swing.JButton();
         jButtonPrevious = new javax.swing.JButton();
@@ -338,21 +338,21 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jToolBar.add(jButtonFinalState);
 
-        jButtonEditAlphabet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
-        jButtonEditAlphabet.setToolTipText(bundle.getString("MachinePanel.EditAlphabet")); // NOI18N
-        jButtonEditAlphabet.setBorderPainted(false);
-        jButtonEditAlphabet.setFocusable(false);
-        jButtonEditAlphabet.setMaximumSize(new java.awt.Dimension(36, 36));
-        jButtonEditAlphabet.setMinimumSize(new java.awt.Dimension(36, 36));
-        jButtonEditAlphabet.setOpaque(false);
-        jButtonEditAlphabet.setPreferredSize(new java.awt.Dimension(36, 36));
-        jButtonEditAlphabet.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
+        jButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
+        jButtonEditDocument.setBorderPainted(false);
+        jButtonEditDocument.setFocusable(false);
+        jButtonEditDocument.setMaximumSize(new java.awt.Dimension(36, 36));
+        jButtonEditDocument.setMinimumSize(new java.awt.Dimension(36, 36));
+        jButtonEditDocument.setOpaque(false);
+        jButtonEditDocument.setPreferredSize(new java.awt.Dimension(36, 36));
+        jButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 handleToolbarEditAlphabet(evt);
             }
         });
 
-        jToolBar.add(jButtonEditAlphabet);
+        jToolBar.add(jButtonEditDocument);
 
         jSeparatorMain1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparatorMain1.setMaximumSize(new java.awt.Dimension(5, 32));
@@ -902,7 +902,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JToggleButton jButtonAddState;
     public javax.swing.JToggleButton jButtonAddTransition;
     public javax.swing.JToggleButton jButtonAutoStep;
-    public javax.swing.JButton jButtonEditAlphabet;
+    public javax.swing.JButton jButtonEditDocument;
     public javax.swing.JToggleButton jButtonFinalState;
     public javax.swing.JToggleButton jButtonMouse;
     public javax.swing.JButton jButtonNew;

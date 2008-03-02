@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
 
@@ -131,5 +132,5 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * 
    * @return the {@link DefaultMachineModel}
    */
-  public DefaultMachineModel getModel ();
+  public DefaultModel getModel ();
 }

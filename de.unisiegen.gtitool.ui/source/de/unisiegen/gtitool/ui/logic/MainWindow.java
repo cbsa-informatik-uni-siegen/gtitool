@@ -931,20 +931,20 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleTableStateChanged ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if (  ( panel instanceof MachinePanel ) )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
+      MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    if ( PreferenceManager.getInstance ().getVisibleTable () != this.gui.jCheckBoxMenuItemTable
-        .getState () )
-    {
-      PreferenceManager.getInstance ().setVisibleTable (
-          this.gui.jCheckBoxMenuItemTable.getState () );
-      machinePanel.setVisibleTable ( this.gui.jCheckBoxMenuItemTable
-          .getState () );
+      if ( PreferenceManager.getInstance ().getVisibleTable () != this.gui.jCheckBoxMenuItemTable
+          .getState () )
+      {
+        PreferenceManager.getInstance ().setVisibleTable (
+            this.gui.jCheckBoxMenuItemTable.getState () );
+        machinePanel.setVisibleTable ( this.gui.jCheckBoxMenuItemTable
+            .getState () );
+      }
     }
+   
   }
 
 

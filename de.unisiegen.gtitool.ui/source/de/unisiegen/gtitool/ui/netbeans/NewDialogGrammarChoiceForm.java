@@ -62,7 +62,6 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jRadioButtonRegularGrammar.setSelected(true);
         jRadioButtonRegularGrammar.setText(bundle.getString("NewDialog.RegularGrammar")); // NOI18N
         jRadioButtonRegularGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonRegularGrammar.setEnabled(false);
         jRadioButtonRegularGrammar.setFocusPainted(false);
         jRadioButtonRegularGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jRadioButtonRegularGrammar.addItemListener(new java.awt.event.ItemListener() {

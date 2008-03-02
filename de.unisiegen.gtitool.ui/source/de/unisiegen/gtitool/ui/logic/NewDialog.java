@@ -6,11 +6,13 @@ import java.awt.GridBagConstraints;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -60,6 +62,11 @@ public final class NewDialog
    * The {@link NewDialogAlphabet}.
    */
   private NewDialogAlphabet newDialogAlphabet;
+  
+  /**
+   * The {@link NewDialogTerminal}
+   */
+  private NewDialogTerminal newDialogTerminal;
 
 
   /**
@@ -123,6 +130,7 @@ public final class NewDialog
       this.grammarChoice.getGui ().setVisible ( true );
     }
     this.newDialogAlphabet.getGui ().setVisible ( false );
+    this.newDialogTerminal.getGui ().setVisible ( false );
 
   }
 
@@ -183,7 +191,12 @@ public final class NewDialog
     }
     else
     {
-      // TODO Implement this
+      if ( this.grammarChoice.getUserChoice ().equals ( NewDialogGrammarChoice.Choice.CONTEXT_FREE )){
+        this.newPanel = new GrammarPanel ( this.parent,
+            new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
+                .getNonterminalSymbolSet (), this.newDialogTerminal.geTerminalSymbolSet () ) ) );
+        this.gui.dispose ();
+      }
     }
   }
 
@@ -193,7 +206,7 @@ public final class NewDialog
    */
   public final void handleNextGrammarChoice ()
   {
-    this.newDialogAlphabet.getGui ().setVisible ( true );
+    this.newDialogTerminal.getGui ().setVisible ( true );
     this.grammarChoice.getGui ().setVisible ( false );
   }
 
@@ -259,6 +272,7 @@ public final class NewDialog
     this.machineChoice = new NewDialogMachineChoice ( this );
     this.grammarChoice = new NewDialogGrammarChoice ( this );
     this.newDialogAlphabet = new NewDialogAlphabet ( this );
+    this.newDialogTerminal = new NewDialogTerminal (this);
 
     this.gridBagConstraints = new GridBagConstraints ();
     this.gridBagConstraints.gridx = 0;
@@ -278,6 +292,9 @@ public final class NewDialog
     this.gui.jPanelBody.add ( this.newDialogAlphabet.getGui (),
         this.gridBagConstraints );
     this.newDialogAlphabet.getGui ().setVisible ( false );
+    this.gui.jPanelBody.add ( this.newDialogTerminal.getGui (),
+        this.gridBagConstraints );
+    this.newDialogTerminal.getGui ().setVisible ( false );
   }
 
 

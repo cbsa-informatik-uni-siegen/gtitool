@@ -50,7 +50,7 @@ import de.unisiegen.gtitool.ui.utils.RedoUndoItem;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultMachineModel implements Storable, Modifyable
+public final class DefaultMachineModel implements DefaultModel, Storable, Modifyable
 {
 
   /**

@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.grammars.cfg;
 
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 
@@ -19,6 +21,16 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
    */
   private static final long serialVersionUID = -5466164968184903366L;
 
+  
+  /**
+   * Allocate a new {@link DefaultCFG}.
+   * 
+   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
+   * @param terminalSymbolSet The {@link TerminalSymbolSet}.
+   */
+  public DefaultCFG ( NonterminalSymbolSet nonterminalSymbolSet, TerminalSymbolSet terminalSymbolSet ){
+    super(nonterminalSymbolSet, terminalSymbolSet);
+  }
 
   /**
    * Returns the {@link Grammar} type.

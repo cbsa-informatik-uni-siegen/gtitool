@@ -77,7 +77,6 @@ public class NewDialogChoiceForm extends javax.swing.JPanel {
         buttonGroup.add(jRadioButtonContextFreeGrammar);
         jRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.Grammar")); // NOI18N
         jRadioButtonContextFreeGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonContextFreeGrammar.setEnabled(false);
         jRadioButtonContextFreeGrammar.setFocusPainted(false);
         jRadioButtonContextFreeGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jRadioButtonContextFreeGrammar.addItemListener(new java.awt.event.ItemListener() {

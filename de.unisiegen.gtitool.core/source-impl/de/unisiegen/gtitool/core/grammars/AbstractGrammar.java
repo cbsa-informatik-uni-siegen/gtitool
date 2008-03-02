@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.grammars;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -24,6 +26,30 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * The {@link NonterminalSymbolSet}.
+   */
+  private NonterminalSymbolSet nonterminalSymbolSet;
+
+
+  /**
+   * The {@link TerminalSymbolSet}.
+   */
+  private TerminalSymbolSet terminalSymbolSet;
+
+
+  /**
+   * Allocate a new {@link AbstractGrammar}.
+   * 
+   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
+   * @param terminalSymbolSet The {@link TerminalSymbolSet}.
+   */
+  public AbstractGrammar ( NonterminalSymbolSet nonterminalSymbolSet, TerminalSymbolSet terminalSymbolSet ){
+    this.nonterminalSymbolSet = nonterminalSymbolSet;
+    this.terminalSymbolSet = terminalSymbolSet;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -41,8 +67,28 @@ public abstract class AbstractGrammar implements Grammar
    * @return The {@link Grammar} type.
    */
   public abstract String getGrammarType ();
-
-
+  
+  /**
+   * Returns the {@link NonterminalSymbolSet}.
+   * 
+   * @return the {@link NonterminalSymbolSet}.
+   */
+  public NonterminalSymbolSet getNonterminalSymbolSet ()
+  {
+    return this.nonterminalSymbolSet;
+  }
+  
+  /**
+   * Returns the {@link TerminalSymbolSet}.
+   * 
+   * @return the {@link TerminalSymbolSet}.
+   */
+  public TerminalSymbolSet getTerminalSymbolSet ()
+  {
+    return this.terminalSymbolSet;
+  }
+  
+  
   /**
    * {@inheritDoc}
    * 
@@ -67,6 +113,7 @@ public abstract class AbstractGrammar implements Grammar
   }
 
 
+  
   /**
    * {@inheritDoc}
    * 

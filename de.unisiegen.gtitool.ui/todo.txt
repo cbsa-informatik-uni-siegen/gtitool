@@ -4,4 +4,3 @@ CF		- History über die Zustände führen
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Behandlung für UnsupportedFlavorException bei Clipboard 
 CF		- Reflection bei Storage umbauen
-BM		- Draft for... nur wenn eine Datei offen ist

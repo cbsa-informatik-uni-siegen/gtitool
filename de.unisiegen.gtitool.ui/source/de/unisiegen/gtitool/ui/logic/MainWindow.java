@@ -114,6 +114,8 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemPreferences.setEnabled ( true );
     // RecentlyUsed
     this.gui.jMenuRecentlyUsed.setEnabled ( false );
+    // Draft for
+    this.gui.jMenuDraft.setEnabled ( false );
 
     // Toolbar items
     setToolBarEditItemState ( false );
@@ -1614,6 +1616,8 @@ public final class MainWindow implements LanguageChangedListener
     // Separator
     this.gui.jSeparatorEdit1.setVisible ( false );
     this.gui.jSeparatorEdit2.setVisible ( false );
+    // Edit document
+    this.gui.jMenuDraft.setEnabled ( state );
   }
 
 

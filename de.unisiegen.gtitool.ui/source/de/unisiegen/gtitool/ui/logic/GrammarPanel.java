@@ -136,7 +136,7 @@ public class GrammarPanel implements EditorPanel
   }
 
 
-  public void handleToolbarAlphabet ()
+  public void handleToolbarEditDocument ()
   {
     //TODO implement me
   }

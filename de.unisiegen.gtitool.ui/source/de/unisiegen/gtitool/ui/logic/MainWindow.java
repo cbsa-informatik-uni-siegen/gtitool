@@ -283,7 +283,7 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleEditAlphabet ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    panel.handleToolbarAlphabet ();
+    panel.handleToolbarEditDocument ();
   }
 
 
@@ -873,6 +873,8 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
+      activateMachineButtons(panel instanceof MachinePanel);
+      activateGrammarButtons(panel instanceof GrammarPanel);
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -922,6 +924,33 @@ public final class MainWindow implements LanguageChangedListener
     }
     // Save status
     setSaveState ();
+  }
+
+
+  private void activateGrammarButtons ( boolean state )
+  {
+   // TODO implement me
+    
+  }
+
+
+  private void activateMachineButtons ( boolean state )
+  {
+    this.gui.jSeparatorMain1.setVisible ( state );
+    this.gui.jButtonMouse.setVisible ( state );
+    this.gui.jButtonAddState.setVisible ( state );
+    this.gui.jButtonStartState.setVisible ( state );
+    this.gui.jButtonFinalState.setVisible ( state );
+    this.gui.jButtonAddTransition.setVisible ( state );
+    this.gui.jButtonEditDocument.setVisible ( state );
+    
+    this.gui.jSeparatorMain2.setVisible ( state );
+    this.gui.jButtonStart.setVisible ( state );
+    this.gui.jButtonPrevious.setVisible ( state );
+    this.gui.jButtonNextStep.setVisible ( state );
+    this.gui.jButtonAutoStep.setVisible ( state );
+    this.gui.jButtonStop.setVisible ( state );
+    
   }
 
 

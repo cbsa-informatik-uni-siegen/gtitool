@@ -1227,7 +1227,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * Handle Toolbar Alphabet button action event
    */
-  public final void handleToolbarAlphabet ()
+  public final void handleToolbarEditDocument ()
   {
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
         this.machine );

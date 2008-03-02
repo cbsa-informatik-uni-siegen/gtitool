@@ -94,7 +94,7 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
   /**
    * Handle toolbar {@link Alphabet} button action event.
    */
-  public void handleToolbarAlphabet ();
+  public void handleToolbarEditDocument ();
 
 
   /**

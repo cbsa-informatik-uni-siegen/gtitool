@@ -873,8 +873,8 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
-      activateMachineButtons(panel instanceof MachinePanel);
-      activateGrammarButtons(panel instanceof GrammarPanel);
+      activateMachineButtons ( panel instanceof MachinePanel );
+      activateGrammarButtons ( panel instanceof GrammarPanel );
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -927,13 +927,23 @@ public final class MainWindow implements LanguageChangedListener
   }
 
 
+  /**
+   * Show or hide the buttons needed in the GrammarPanel
+   * 
+   * @param state the visible state of the buttons
+   */
   private void activateGrammarButtons ( boolean state )
   {
-   // TODO implement me
-    
+    // TODO implement me
+
   }
 
 
+  /**
+   * Show or hide the buttons needed in the MachinePanel
+   * 
+   * @param state the visible state of the buttons
+   */
   private void activateMachineButtons ( boolean state )
   {
     this.gui.jSeparatorMain1.setVisible ( state );
@@ -943,14 +953,14 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonFinalState.setVisible ( state );
     this.gui.jButtonAddTransition.setVisible ( state );
     this.gui.jButtonEditDocument.setVisible ( state );
-    
+
     this.gui.jSeparatorMain2.setVisible ( state );
     this.gui.jButtonStart.setVisible ( state );
     this.gui.jButtonPrevious.setVisible ( state );
     this.gui.jButtonNextStep.setVisible ( state );
     this.gui.jButtonAutoStep.setVisible ( state );
     this.gui.jButtonStop.setVisible ( state );
-    
+
   }
 
 
@@ -960,7 +970,7 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleTableStateChanged ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
-    if (  ( panel instanceof MachinePanel ) )
+    if ( ( panel instanceof MachinePanel ) )
     {
       MachinePanel machinePanel = ( MachinePanel ) panel;
 
@@ -973,7 +983,7 @@ public final class MainWindow implements LanguageChangedListener
             .getState () );
       }
     }
-   
+
   }
 
 

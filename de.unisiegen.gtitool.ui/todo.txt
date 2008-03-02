@@ -4,3 +4,5 @@ CF		- History über die Zustände führen
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Behandlung für UnsupportedFlavorException bei Clipboard 
 CF		- Reflection bei Storage umbauen
+BM		- GrammarPanel vorbereiten
+BM		- Dialog zum Anlegen von Produktionen

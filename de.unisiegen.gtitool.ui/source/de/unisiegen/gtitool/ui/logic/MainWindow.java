@@ -1341,7 +1341,6 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuDraft.setMnemonic ( Messages.getString (
         "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-
     MainWindow.this.gui.jMenuItemDFA.setText ( Messages
         .getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemNFA.setText ( Messages
@@ -1465,9 +1464,9 @@ public final class MainWindow implements LanguageChangedListener
     // Final state
     MainWindow.this.gui.jButtonFinalState.setToolTipText ( Messages
         .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
-    // Edit Alphabet
+    // Edit Document
     MainWindow.this.gui.jButtonEditDocument.setToolTipText ( Messages
-        .getString ( "MachinePanel.EditAlphabet" ) ); //$NON-NLS-1$
+        .getString ( "MachinePanel.EditDocument" ) ); //$NON-NLS-1$
     // Previous Step
     MainWindow.this.gui.jButtonPrevious.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$

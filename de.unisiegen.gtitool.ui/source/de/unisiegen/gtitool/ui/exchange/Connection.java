@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.exchange;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.SwingUtilities;
@@ -16,7 +15,7 @@ import javax.swing.SwingUtilities;
  * @author Christian Fehler
  * @version $Id$
  */
-public class Connection extends Thread
+public abstract class Connection extends Thread
 {
 
   /**
@@ -44,36 +43,14 @@ public class Connection extends Thread
 
 
   /**
-   * The {@link ServerSocket}.
-   */
-  private ServerSocket serverSocket = null;
-
-
-  /**
    * Allocates a new {@link Connection}.
    * 
    * @param network The {@link Network}.
-   * @param socket The {@link Socket}.
    */
-  public Connection ( Network network, Socket socket )
+  public Connection ( Network network )
   {
-    super ( "Connection-Client" ); //$NON-NLS-1$
+    super ( "Connection" ); //$NON-NLS-1$
     this.network = network;
-    this.socket = socket;
-  }
-
-
-  /**
-   * Allocates a new {@link Connection}.
-   * 
-   * @param network The {@link Network}.
-   * @param serverSocket The {@link ServerSocket}.
-   */
-  public Connection ( Network network, ServerSocket serverSocket )
-  {
-    super ( "Connection-Server" ); //$NON-NLS-1$
-    this.network = network;
-    this.serverSocket = serverSocket;
   }
 
 
@@ -109,9 +86,26 @@ public class Connection extends Thread
 
 
   /**
+   * Closes the {@link Network}.
+   */
+  protected final void closeNetwork ()
+  {
+    SwingUtilities.invokeLater ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        Connection.this.network.close ();
+      }
+    } );
+  }
+
+
+  /**
    * Create the streams.
    */
-  private final void createStreams ()
+  protected final void createStreams ()
   {
     boolean first = false;
     try
@@ -156,36 +150,29 @@ public class Connection extends Thread
 
 
   /**
-   * Executes the {@link Connection} {@link Thread}.
+   * Let the listeners know that a {@link Exchange} was received.
    * 
-   * @see Thread#run()
+   * @param exchange The received {@link Exchange}.
    */
-  @Override
-  public final void run ()
+  protected final void fireExchangeReceived ( final Exchange exchange )
   {
-    // Server
-    if ( this.socket == null )
+    SwingUtilities.invokeLater ( new Runnable ()
     {
-      try
-      {
-        this.socket = this.serverSocket.accept ();
-      }
-      catch ( IOException exc )
-      {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
 
-          @SuppressWarnings ( "synthetic-access" )
-          public void run ()
-          {
-            Connection.this.network.close ();
-          }
-        } );
-        return;
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        Connection.this.network.fireExchangeReceived ( exchange );
       }
-    }
+    } );
+  }
 
-    createStreams ();
+
+  /**
+   * Let the listeners know that the {@link Network} is connected.
+   */
+  protected final void fireNetworkConnected ()
+  {
     SwingUtilities.invokeLater ( new Runnable ()
     {
 
@@ -195,10 +182,43 @@ public class Connection extends Thread
         Connection.this.network.fireNetworkConnected ();
       }
     } );
-    Exchange tmpExchange = null;
+  }
+
+
+  /**
+   * Returns the {@link Network}.
+   * 
+   * @return The {@link Network}.
+   * @see #network
+   */
+  protected final Network getNetwork ()
+  {
+    return this.network;
+  }
+
+
+  /**
+   * Returns the {@link Socket}.
+   * 
+   * @return The {@link Socket}.
+   * @see #socket
+   */
+  protected final Socket getSocket ()
+  {
+    return this.socket;
+  }
+
+
+  /**
+   * Receives the {@link Exchange}.
+   * 
+   * @return The {@link Exchange}.
+   */
+  protected final Exchange receive ()
+  {
     try
     {
-      tmpExchange = ( Exchange ) Connection.this.input.readObject ();
+      return ( Exchange ) Connection.this.input.readObject ();
     }
     catch ( Exception exc )
     {
@@ -211,19 +231,8 @@ public class Connection extends Thread
           Connection.this.network.close ();
         }
       } );
-      return;
+      return null;
     }
-    final Exchange exchange = tmpExchange;
-
-    SwingUtilities.invokeLater ( new Runnable ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void run ()
-      {
-        Connection.this.network.fireExchangeReceived ( exchange );
-      }
-    } );
   }
 
 
@@ -243,5 +252,17 @@ public class Connection extends Thread
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * Sets the {@link Socket}.
+   * 
+   * @param socket The {@link Socket} to set.
+   * @see #socket
+   */
+  protected final void setSocket ( Socket socket )
+  {
+    this.socket = socket;
   }
 }

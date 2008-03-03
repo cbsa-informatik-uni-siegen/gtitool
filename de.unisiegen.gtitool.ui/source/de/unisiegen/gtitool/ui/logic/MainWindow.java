@@ -201,12 +201,10 @@ public final class MainWindow implements LanguageChangedListener
   {
     if ( panel.isModified () )
     {
-      String fileName = panel.getFile () == null ? this.gui.jGTITabbedPaneMain
-          .getEditorPanelTitle ( panel ) : panel.getFile ().getName ();
-
-      ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui, Messages
-          .getString ( "MainWindow.CloseModifyMessage", fileName ), Messages //$NON-NLS-1$
-          .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
+          Messages.getString (
+              "MainWindow.CloseModifyMessage", panel.getName () ), Messages //$NON-NLS-1$
+              .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
       confirmDialog.show ();
 
       if ( confirmDialog.isConfirmed () )

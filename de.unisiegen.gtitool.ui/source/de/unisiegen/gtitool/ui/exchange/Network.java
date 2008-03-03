@@ -1,14 +1,7 @@
 package de.unisiegen.gtitool.ui.exchange;
 
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 import javax.swing.event.EventListenerList;
-
-import de.unisiegen.gtitool.ui.Messages;
 
 
 /**
@@ -42,12 +35,6 @@ public final class Network
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
-
-
-  /**
-   * The {@link ServerSocket}.
-   */
-  private ServerSocket serverSocket = null;
 
 
   /**
@@ -104,19 +91,6 @@ public final class Network
       this.connection.close ();
       this.connection = null;
     }
-    if ( this.serverSocket != null )
-    {
-      try
-      {
-        this.serverSocket.close ();
-      }
-      catch ( IOException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-      this.serverSocket = null;
-    }
   }
 
 
@@ -132,25 +106,8 @@ public final class Network
     {
       throw new RuntimeException ( "host is null" ); //$NON-NLS-1$
     }
-    try
-    {
-      Socket socket = new Socket ( this.host, this.port );
-      this.connection = new Connection ( this, socket );
-      this.connection.start ();
-    }
-    catch ( UnknownHostException exc )
-    {
-      close ();
-      throw new ExchangeException ( Messages.getString (
-          "ExchangeDialog.ExceptionConnectUnknownHost", this.host ) ); //$NON-NLS-1$
-    }
-    catch ( IOException exc )
-    {
-      close ();
-      throw new ExchangeException ( Messages.getString (
-          "ExchangeDialog.ExceptionConnectServer", this.host, String //$NON-NLS-1$
-              .valueOf ( this.port ) ) );
-    }
+    this.connection = new ConnectionClient ( this );
+    this.connection.start ();
   }
 
 
@@ -216,18 +173,8 @@ public final class Network
    */
   public final void listen () throws ExchangeException
   {
-    try
-    {
-      this.serverSocket = new ServerSocket ( this.port );
-      this.connection = new Connection ( this, this.serverSocket );
-      this.connection.start ();
-    }
-    catch ( IOException exc )
-    {
-      close ();
-      throw new ExchangeException ( Messages.getString (
-          "ExchangeDialog.ExceptionListen", String.valueOf ( this.port ) ) ); //$NON-NLS-1$
-    }
+    this.connection = new ConnectionServer ( this );
+    this.connection.start ();
   }
 
 

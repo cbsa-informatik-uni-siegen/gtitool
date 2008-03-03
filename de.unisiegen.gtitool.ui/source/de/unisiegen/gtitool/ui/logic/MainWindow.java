@@ -383,7 +383,7 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel == null )
     {
-      ExchangeDialog exchangeDialog = new ExchangeDialog ( this, null );
+      ExchangeDialog exchangeDialog = new ExchangeDialog ( this, null, null );
       exchangeDialog.show ();
     }
     else

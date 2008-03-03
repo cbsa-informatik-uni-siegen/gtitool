@@ -28,13 +28,44 @@ public final class Exchange implements Serializable
 
 
   /**
+   * The description.
+   */
+  private String description;
+
+
+  /**
    * Allocates a new {@link Exchange}.
    * 
    * @param element The {@link Element}.
+   * @param description The description.
    */
-  public Exchange ( Element element )
+  public Exchange ( Element element, String description )
   {
+    // Element
+    if ( element == null )
+    {
+      throw new IllegalArgumentException ( "element is null" ); //$NON-NLS-1$
+    }
     this.element = element;
+
+    // Description
+    if ( description == null )
+    {
+      throw new IllegalArgumentException ( "description is null" ); //$NON-NLS-1$
+    }
+    this.description = description;
+  }
+
+
+  /**
+   * Returns the description.
+   * 
+   * @return The description.
+   * @see #description
+   */
+  public final String getDescription ()
+  {
+    return this.description;
   }
 
 

@@ -59,6 +59,9 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         jGTITextFieldPort = new de.unisiegen.gtitool.ui.swing.JGTITextField();
         jLabelHost = new javax.swing.JLabel();
         jGTITextFieldHost = new de.unisiegen.gtitool.ui.swing.JGTITextField();
+        jPanelDescription = new javax.swing.JPanel();
+        jLabelHostDescription = new javax.swing.JLabel();
+        jGTITextFieldDescription = new de.unisiegen.gtitool.ui.swing.JGTITextField();
         jPanelButtons = new javax.swing.JPanel();
         jGTIButtonExecute = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -133,6 +136,7 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
         getContentPane().add(jPanelChoice, gridBagConstraints);
 
@@ -179,8 +183,35 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
         jPanelPreferences.add(jGTITextFieldHost, gridBagConstraints);
+
+        jPanelDescription.setLayout(new java.awt.GridBagLayout());
+
+        jLabelHostDescription.setText(bundle.getString("ExchangeDialog.Description")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jPanelDescription.add(jLabelHostDescription, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jPanelDescription.add(jGTITextFieldDescription, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
+        jPanelPreferences.add(jPanelDescription, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -239,7 +270,7 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
@@ -286,12 +317,15 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonExecute;
+    public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldDescription;
     public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldHost;
     public de.unisiegen.gtitool.ui.swing.JGTITextField jGTITextFieldPort;
     public javax.swing.JLabel jLabelHost;
+    public javax.swing.JLabel jLabelHostDescription;
     public javax.swing.JLabel jLabelPort;
     public javax.swing.JPanel jPanelButtons;
     public javax.swing.JPanel jPanelChoice;
+    public javax.swing.JPanel jPanelDescription;
     public javax.swing.JPanel jPanelPreferences;
     public javax.swing.JRadioButton jRadioButtonReceive;
     public javax.swing.JRadioButton jRadioButtonSend;

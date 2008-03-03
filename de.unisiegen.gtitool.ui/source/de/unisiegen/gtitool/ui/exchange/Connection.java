@@ -40,13 +40,13 @@ public class Connection extends Thread
   /**
    * The {@link Socket}.
    */
-  private Socket socket;
+  private Socket socket = null;
 
 
   /**
    * The {@link ServerSocket}.
    */
-  private ServerSocket serverSocket;
+  private ServerSocket serverSocket = null;
 
 
   /**
@@ -163,6 +163,7 @@ public class Connection extends Thread
   @Override
   public final void run ()
   {
+    // Server
     if ( this.socket == null )
     {
       try
@@ -183,6 +184,7 @@ public class Connection extends Thread
         return;
       }
     }
+
     createStreams ();
     SwingUtilities.invokeLater ( new Runnable ()
     {
@@ -193,51 +195,35 @@ public class Connection extends Thread
         Connection.this.network.fireNetworkConnected ();
       }
     } );
-    while ( true )
+    Exchange tmpExchange = null;
+    try
     {
-      Exchange tmpExchange = null;
-      try
-      {
-        tmpExchange = ( Exchange ) Connection.this.input.readObject ();
-      }
-      catch ( IOException exc )
-      {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void run ()
-          {
-            Connection.this.network.close ();
-          }
-        } );
-        return;
-      }
-      catch ( ClassNotFoundException exc )
-      {
-        SwingUtilities.invokeLater ( new Runnable ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void run ()
-          {
-            Connection.this.network.close ();
-          }
-        } );
-        return;
-      }
-      final Exchange exchange = tmpExchange;
-
+      tmpExchange = ( Exchange ) Connection.this.input.readObject ();
+    }
+    catch ( Exception exc )
+    {
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
         @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
-          Connection.this.network.fireExchangeReceived ( exchange );
+          Connection.this.network.close ();
         }
       } );
+      return;
     }
+    final Exchange exchange = tmpExchange;
+
+    SwingUtilities.invokeLater ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        Connection.this.network.fireExchangeReceived ( exchange );
+      }
+    } );
   }
 
 

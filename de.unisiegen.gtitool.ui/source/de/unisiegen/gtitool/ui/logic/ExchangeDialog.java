@@ -3,6 +3,13 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Color;
 import java.awt.event.ItemEvent;
+import java.io.File;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledEditorKit;
 
 import org.apache.log4j.Logger;
 
@@ -67,11 +74,13 @@ public final class ExchangeDialog
    * 
    * @param mainWindow The {@link MainWindow}.
    * @param element The {@link Element}.
+   * @param file The file which is used for the description.
    */
-  public ExchangeDialog ( MainWindow mainWindow, Element element )
+  public ExchangeDialog ( MainWindow mainWindow, Element element, File file )
   {
     logger.debug ( "allocate a new exchange dialog" ); //$NON-NLS-1$
     this.mainWindow = mainWindow;
+
     this.element = element;
     this.gui = new ExchangeDialogForm ( this, this.mainWindow.getGui () );
 
@@ -80,20 +89,56 @@ public final class ExchangeDialog
     this.gui.jGTITextFieldHost.setText ( PreferenceManager.getInstance ()
         .getHost () );
 
+    if ( file != null )
+    {
+      this.gui.jGTITextFieldDescription.setText ( file.getName () );
+    }
+
+    this.gui.jTextPaneStatus.setEditorKit ( new StyledEditorKit () );
+    this.document = new DefaultStyledDocument ();
+    this.gui.jTextPaneStatus.setDocument ( this.document );
+
     setNormalMode ( true );
   }
+
+
+  /**
+   * The {@link DefaultStyledDocument}
+   */
+  private DefaultStyledDocument document;
 
 
   /**
    * Appends the given message.
    * 
    * @param message The message to append.
+   * @param error Flag that indicates if the message should be a error message.
    */
-  private final void appendMessage ( String message )
+  private final void appendMessage ( String message, boolean error )
   {
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    if ( error )
+    {
+      StyleConstants.setForeground ( set, Color.RED );
+      StyleConstants.setBold ( set, true );
+    }
+    else
+    {
+      StyleConstants.setForeground ( set, Color.BLACK );
+      StyleConstants.setBold ( set, true );
+    }
+
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
-    this.gui.jTextPaneStatus.setText ( this.gui.jTextPaneStatus.getText ()
-        + message + lineBreak );
+    try
+    {
+      this.document.insertString ( this.document.getLength (), message
+          + lineBreak, set );
+    }
+    catch ( BadLocationException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 
@@ -116,7 +161,8 @@ public final class ExchangeDialog
 
     setNormalMode ( true );
 
-    appendMessage ( Messages.getString ( "ExchangeDialog.ExchangeCanceled" ) ); //$NON-NLS-1$
+    appendMessage (
+        Messages.getString ( "ExchangeDialog.ExchangeCanceled" ), false ); //$NON-NLS-1$
   }
 
 
@@ -214,8 +260,17 @@ public final class ExchangeDialog
             @SuppressWarnings ( "synthetic-access" )
             public void exchangeReceived ( Exchange exchange )
             {
-              appendMessage ( Messages
-                  .getString ( "ExchangeDialog.ReceiveFile" ) ); //$NON-NLS-1$
+              if ( exchange.getDescription ().equals ( "" ) ) //$NON-NLS-1$
+              {
+                appendMessage ( Messages
+                    .getString ( "ExchangeDialog.ReceiveFile" ), false ); //$NON-NLS-1$
+              }
+              else
+              {
+                appendMessage ( Messages.getString (
+                    "ExchangeDialog.ReceiveFileDescription", exchange //$NON-NLS-1$
+                        .getDescription () ), false );
+              }
               ExchangeDialog.this.mainWindow
                   .handleNew ( exchange.getElement () );
 
@@ -229,11 +284,11 @@ public final class ExchangeDialog
           } );
 
       appendMessage ( Messages.getString ( "ExchangeDialog.Listening", String //$NON-NLS-1$
-          .valueOf ( port ) ) );
+          .valueOf ( port ) ), false );
     }
     catch ( ExchangeException exc )
     {
-      appendMessage ( exc.getMessage () );
+      appendMessage ( exc.getMessage (), true );
 
       setNormalMode ( true );
     }
@@ -264,10 +319,12 @@ public final class ExchangeDialog
             @SuppressWarnings ( "synthetic-access" )
             public void networkConnected ()
             {
-              ExchangeDialog.this.networkClient.send ( new Exchange (
-                  ExchangeDialog.this.element ) );
+              ExchangeDialog.this.networkClient
+                  .send ( new Exchange ( ExchangeDialog.this.element,
+                      ExchangeDialog.this.gui.jGTITextFieldDescription
+                          .getText () ) );
               appendMessage ( Messages.getString ( "ExchangeDialog.Sending", //$NON-NLS-1$
-                  ExchangeDialog.this.gui.jGTITextFieldHost.getText () ) );
+                  ExchangeDialog.this.gui.jGTITextFieldHost.getText () ), false );
 
               // Close the network
               ExchangeDialog.this.networkClient.close ();
@@ -282,7 +339,7 @@ public final class ExchangeDialog
     }
     catch ( ExchangeException exc )
     {
-      appendMessage ( exc.getMessage () );
+      appendMessage ( exc.getMessage (), true );
       if ( this.networkClient != null )
       {
         this.networkClient.close ();
@@ -312,14 +369,17 @@ public final class ExchangeDialog
     {
       // Do nothing
     }
-    if ( ( port < 0 ) || ( port > 65535 ) )
+    if ( ( port < 1024 ) || ( port > 65535 ) )
     {
       this.gui.jLabelPort.setForeground ( Color.RED );
+      this.gui.jLabelPort.setToolTipText ( Messages
+          .getString ( "ExchangeDialog.PortException" ) ); //$NON-NLS-1$
       portOkay = false;
     }
     else
     {
       this.gui.jLabelPort.setForeground ( Color.BLACK );
+      this.gui.jLabelPort.setToolTipText ( null );
     }
 
     // Host
@@ -328,11 +388,14 @@ public final class ExchangeDialog
         && ( this.gui.jRadioButtonSend.isSelected () ) )
     {
       this.gui.jLabelHost.setForeground ( Color.RED );
+      this.gui.jLabelHost.setToolTipText ( Messages
+          .getString ( "ExchangeDialog.HostException" ) ); //$NON-NLS-1$
       hostOkay = false;
     }
     else
     {
       this.gui.jLabelHost.setForeground ( Color.BLACK );
+      this.gui.jLabelHost.setToolTipText ( null );
     }
 
     // Set status
@@ -340,6 +403,9 @@ public final class ExchangeDialog
     this.gui.jRadioButtonSend.setEnabled ( enabled && ( this.element != null ) );
     this.gui.jGTITextFieldPort.setEnabled ( enabled );
     this.gui.jGTITextFieldHost.setEnabled ( enabled && ( this.element != null )
+        && ( this.gui.jRadioButtonSend.isSelected () ) );
+    this.gui.jGTITextFieldDescription.setEnabled ( enabled
+        && ( this.element != null )
         && ( this.gui.jRadioButtonSend.isSelected () ) );
     this.gui.jGTIButtonExecute.setEnabled ( enabled && portOkay && hostOkay );
     this.gui.jGTIButtonCancel.setEnabled ( !enabled );

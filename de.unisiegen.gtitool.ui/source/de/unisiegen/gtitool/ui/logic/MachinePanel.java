@@ -990,7 +990,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleExchange ()
   {
     ExchangeDialog exchangeDialog = new ExchangeDialog ( this.parent
-        .getLogic (), this.model.getElement () );
+        .getLogic (), this.model.getElement (), this.file );
     exchangeDialog.show ();
   }
 

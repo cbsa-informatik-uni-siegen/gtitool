@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
  * 
  * 
  * @author Christian Fehler
- * @version $Id: NStateConfigDialogFormjava 532 2008-02-04 23:54:55Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class StateConfigDialogForm extends javax.swing.JDialog {

@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id: NewDialogAlphabet.java 563 2008-02-14 22:24:33Z fehler $
+ * @version $Id$
  */
 public final class NewDialogTerminal
 {

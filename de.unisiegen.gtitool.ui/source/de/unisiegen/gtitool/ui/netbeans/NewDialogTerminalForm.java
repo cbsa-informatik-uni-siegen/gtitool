@@ -7,7 +7,7 @@ import de.unisiegen.gtitool.ui.logic.NewDialogTerminal;
  *
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id: NewDialogAlphabetForm.java 563 2008-02-14 22:24:33Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class NewDialogTerminalForm extends javax.swing.JPanel {

@@ -214,7 +214,7 @@
 	</target>
 
 	<!-- svn-version -->
-	<target name="svn-version" description="svn version">
+	<target name="svn-version">
 		<delete dir="${tmpdir}" includeemptydirs="true" />
 		<mkdir dir="${tmpdir}" />
 		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${tmpdir}" encoding="UTF-8" optimize="on">
@@ -226,7 +226,6 @@
 			</classpath>
 		</java>
 		<delete dir="${tmpdir}" includeemptydirs="true" />
-		<echo message="svn version finished" />
 	</target>
 
 	<!-- javadoc -->
@@ -258,7 +257,7 @@
 
 
 /**
- * Automatically generated interface for the project version.
+ * Automatically generated interface for the project versions.
  * 
  * @author Christian Fehler
  */

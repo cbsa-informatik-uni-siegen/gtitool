@@ -1,3 +1,9 @@
+<?xml version="1.0"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2007 Christian Fehler
+-->
 <project name="gtitool.jflex" default="dist">
 
 	<property name="sourcedir" value="${basedir}/source" />

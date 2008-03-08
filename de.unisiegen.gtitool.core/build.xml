@@ -13,6 +13,7 @@
 
 	<!-- property -->
 	<property file="${basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />

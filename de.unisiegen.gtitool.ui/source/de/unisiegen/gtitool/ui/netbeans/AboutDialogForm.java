@@ -54,9 +54,11 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jPanelSouth = new javax.swing.JPanel();
         jLabelWebpage = new javax.swing.JLabel();
         jLabelWebpageEntry = new javax.swing.JLabel();
+        jLabelVersion = new javax.swing.JLabel();
+        jLabelVersionEntry = new javax.swing.JLabel();
         jLabelDeveloper = new javax.swing.JLabel();
+        jLabelDeveloper0 = new javax.swing.JLabel();
         jLabelDeveloper1 = new javax.swing.JLabel();
-        jLabelDeveloper2 = new javax.swing.JLabel();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -86,7 +88,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
 
         jLabelName.setFont(new java.awt.Font("Dialog", 1, 24));
         jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelName.setText("GTI Tool x.y.z");
+        jLabelName.setText("GTI Tool ?.?.?");
         jLabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -110,7 +112,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         jPanelMain.add(jPanelNorth, gridBagConstraints);
 
@@ -127,8 +129,9 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jLabelWebpage.setText(bundle.getString("AboutDialog.Webpage")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 5, 10);
         jPanelSouth.add(jLabelWebpage, gridBagConstraints);
 
         jLabelWebpageEntry.setForeground(java.awt.Color.blue);
@@ -142,41 +145,61 @@ public class AboutDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 10);
         jPanelSouth.add(jLabelWebpageEntry, gridBagConstraints);
+
+        jLabelVersion.setText(bundle.getString("AboutDialog.Version")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 10);
+        jPanelSouth.add(jLabelVersion, gridBagConstraints);
+
+        jLabelVersionEntry.setText("?.?.?.????");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanelSouth.add(jLabelVersionEntry, gridBagConstraints);
 
         jLabelDeveloper.setText(bundle.getString("AboutDialog.Developer")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 10);
         jPanelSouth.add(jLabelDeveloper, gridBagConstraints);
 
-        jLabelDeveloper1.setText("Christian Fehler");
+        jLabelDeveloper0.setText("Christian Fehler");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        jPanelSouth.add(jLabelDeveloper0, gridBagConstraints);
+
+        jLabelDeveloper1.setText("Benjamin Mies");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 20, 0, 0);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 0);
         jPanelSouth.add(jLabelDeveloper1, gridBagConstraints);
-
-        jLabelDeveloper2.setText("Benjamin Mies");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 20, 0, 0);
-        jPanelSouth.add(jLabelDeveloper2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
         jPanelMain.add(jPanelSouth, gridBagConstraints);
 
         jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
@@ -189,8 +212,10 @@ public class AboutDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 16);
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         jPanelMain.add(jGTIButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -201,7 +226,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jPanelMain, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(400, 250));
+        setSize(new java.awt.Dimension(448, 280));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTIButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCloseActionPerformed
@@ -220,10 +245,12 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
     public javax.swing.JLabel jLabelCopyright;
     public javax.swing.JLabel jLabelDeveloper;
+    private javax.swing.JLabel jLabelDeveloper0;
     private javax.swing.JLabel jLabelDeveloper1;
-    private javax.swing.JLabel jLabelDeveloper2;
     private javax.swing.JLabel jLabelIcon;
     public javax.swing.JLabel jLabelName;
+    public javax.swing.JLabel jLabelVersion;
+    public javax.swing.JLabel jLabelVersionEntry;
     public javax.swing.JLabel jLabelWebpage;
     public javax.swing.JLabel jLabelWebpageEntry;
     private javax.swing.JPanel jPanelMain;

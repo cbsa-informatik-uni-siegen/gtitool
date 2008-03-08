@@ -19,6 +19,7 @@
 	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
 	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
 	<property file="${core.basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 
 	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
 	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
@@ -31,6 +32,7 @@
 
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
+	<property name="tmpdir" value="${basedir}/tmp" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 	<property name="sourcedir" value="${basedir}/source" />
@@ -212,9 +214,19 @@
 	</target>
 
 	<!-- svn-version -->
-	<target name="svn-version" description="Calculate svn version">
-		<java jar="dist/de.unisiegen.gtitool.ui-0.3.0.jar" fork="true" />
-		<echo message="Calculate svn version finished" />
+	<target name="svn-version" description="svn version">
+		<delete dir="${tmpdir}" includeemptydirs="true" />
+		<mkdir dir="${tmpdir}" />
+		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${tmpdir}" encoding="UTF-8" optimize="on">
+			<src path="${sourcedir}" />
+		</javac>
+		<java classname="de.unisiegen.gtitool.ui.utils.SVNVersion" dir="${basedir}" fork="true" outputproperty="gtitool.version.build">
+			<classpath>
+				<pathelement path="${tmpdir}" />
+			</classpath>
+		</java>
+		<delete dir="${tmpdir}" includeemptydirs="true" />
+		<echo message="svn version finished" />
 	</target>
 
 	<!-- javadoc -->
@@ -240,7 +252,7 @@
 	</target>
 
 	<!-- version -->
-	<target name="version" description="Generate the version interface">
+	<target name="version" depends="svn-version" description="Generate the version interface">
 		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
 		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
 
@@ -254,9 +266,27 @@ public interface Version
 {
 
   /** 
-   * The version of the project.
+   * The major version of the project.
    */
-  public static final String VERSION = "${gtitool.version}"; //$NON-NLS-1$
+  public static final int MAJOR = ${gtitool.version.major};
+
+
+  /** 
+   * The minor version of the project.
+   */
+  public static final int MINOR = ${gtitool.version.minor};
+
+
+  /** 
+   * The micro version of the project.
+   */
+  public static final int MICRO = ${gtitool.version.micro};
+
+
+  /**
+   * The build version of the project.
+   */
+  public static final int BUILD = ${gtitool.version.build};
 }
 </echo>
 	</target>

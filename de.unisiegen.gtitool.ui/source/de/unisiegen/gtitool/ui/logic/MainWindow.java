@@ -96,7 +96,8 @@ public final class MainWindow implements LanguageChangedListener
     {
       exc.printStackTrace ();
     }
-    this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
+    this.gui.setTitle ( "GTI Tool " + Version.MAJOR + "." + Version.MINOR + "."  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+        + Version.MICRO );
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
     // Setting the default states

@@ -99,6 +99,15 @@ public final class ExchangeDialog
     this.gui.jTextPaneStatus.setDocument ( this.document );
 
     setNormalMode ( true );
+
+    if ( PreferenceManager.getInstance ().getReceiveModus () )
+    {
+      this.gui.jRadioButtonReceive.setSelected ( true );
+    }
+    else
+    {
+      this.gui.jRadioButtonSend.setSelected ( true );
+    }
   }
 
 
@@ -184,6 +193,9 @@ public final class ExchangeDialog
       this.networkClient.close ();
       this.networkClient = null;
     }
+
+    PreferenceManager.getInstance ().setReceiveModus (
+        this.gui.jRadioButtonReceive.isSelected () );
 
     this.gui.dispose ();
   }

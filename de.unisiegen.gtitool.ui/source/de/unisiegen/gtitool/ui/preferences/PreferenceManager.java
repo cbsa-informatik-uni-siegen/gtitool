@@ -141,6 +141,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default received modus.
+   */
+  public static final boolean DEFAULT_RECEIVED_MODUS = true;
+
+
+  /**
    * The default zoom factor value.
    */
   public static final ZoomFactorItem DEFAULT_ZOOM_FACTOR_ITEM = ZoomFactorItem.ZOOM_100;
@@ -383,6 +389,18 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "PreferencesDialog.LastActiveTab", //$NON-NLS-1$
         DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB );
+  }
+
+
+  /**
+   * Returns the receive flag.
+   * 
+   * @return True if the receive modus is active, otherwise false.
+   */
+  public final boolean getReceiveModus ()
+  {
+    return this.preferences.getBoolean ( "ReceivedModus", //$NON-NLS-1$
+        DEFAULT_RECEIVED_MODUS );
   }
 
 
@@ -663,6 +681,18 @@ public final class PreferenceManager extends
   {
     logger.debug ( "set last active tab to \"" + index + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.LastActiveTab", index ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the receive flag.
+   * 
+   * @param enabled True if the receive modus is active, otherwise false.
+   */
+  public final void setReceiveModus ( boolean enabled )
+  {
+    logger.debug ( "set the receive modus to \"" + enabled + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putBoolean ( "ReceivedModus", enabled ); //$NON-NLS-1$
   }
 
 

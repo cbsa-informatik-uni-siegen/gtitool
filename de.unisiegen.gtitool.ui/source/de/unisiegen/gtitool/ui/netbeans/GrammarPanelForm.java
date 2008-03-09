@@ -33,13 +33,47 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jScrollPane = new javax.swing.JScrollPane();
+        jGTITable = new de.unisiegen.gtitool.ui.swing.JGTITable();
+
         setLayout(new java.awt.GridBagLayout());
 
+        jGTITable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jGTITable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mouseClickedEvent(evt);
+            }
+        });
+
+        jScrollPane.setViewportView(jGTITable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jScrollPane, gridBagConstraints);
+
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseClickedEvent
+        this.logic.handleTableMouseClickedEvent(evt);
+    }//GEN-LAST:event_mouseClickedEvent
 
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITable;
+    public javax.swing.JScrollPane jScrollPane;
     // End of variables declaration//GEN-END:variables
     
 

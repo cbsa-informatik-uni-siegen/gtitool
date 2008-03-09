@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.core.grammars;
 
 import java.io.Serializable;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -28,4 +30,18 @@ public interface Grammar extends Serializable, Modifyable
    * @return The {@link Grammar} type.
    */
   public String getGrammarType ();
+  
+  /**
+   * Returns the {@link NonterminalSymbolSet}.
+   * 
+   * @return the {@link NonterminalSymbolSet}.
+   */
+  public NonterminalSymbolSet getNonterminalSymbolSet();
+  
+  /**
+   * Returns the {@link TerminalSymbolSet}.
+   * 
+   * @return the {@link TerminalSymbolSet}.
+   */
+  public TerminalSymbolSet getTerminalSymbolSet ();
 }

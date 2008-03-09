@@ -5,7 +5,6 @@ CF		- Probleme beim Tabwechsel zwischen MachinePanel und GrammarPanel
 		  (Konsolengröße passt sich nicht an)
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 BM		- GrammarPanel vorbereiten
-BM		- Dialog zum Anlegen von Produktionen
 CF		- Production Parser anlegen zur Information auf dem ProductionDialog
 CF		- Nicht die Farbe von Fehlern verwenden bei der Tabelle
 CF		- Um zwischen verschiedenen Versionen vom GTI Tool Daten auszutauschen,

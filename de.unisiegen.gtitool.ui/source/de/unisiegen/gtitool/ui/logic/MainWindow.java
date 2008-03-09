@@ -892,6 +892,8 @@ public final class MainWindow implements LanguageChangedListener
             .isWordEnterMode () );
         this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
             .isWordEnterMode () );
+        this.gui.jCheckBoxMenuItemConsole.setVisible ( true );
+        this.gui.jCheckBoxMenuItemTable.setVisible ( true );
 
         // Set the status of the word navigation icons
         this.gui.jButtonStart.setEnabled ( machinePanel.isWordEnterMode ()
@@ -904,11 +906,8 @@ public final class MainWindow implements LanguageChangedListener
       }
       else
       {
-        this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
-        this.saveConsolePreferences = false;
-        this.gui.jCheckBoxMenuItemConsole.setState ( false );
-        this.saveConsolePreferences = true;
-        this.gui.jCheckBoxMenuItemTable.setState ( false );
+        this.gui.jCheckBoxMenuItemConsole.setVisible ( false );
+        this.gui.jCheckBoxMenuItemTable.setVisible ( false );
         setToolBarEditItemState ( false );
         setToolBarEnterWordItemState ( false );
       }

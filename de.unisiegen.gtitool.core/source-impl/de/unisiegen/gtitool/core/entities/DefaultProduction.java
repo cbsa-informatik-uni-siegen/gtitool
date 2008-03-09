@@ -7,6 +7,8 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -251,8 +253,10 @@ public final class DefaultProduction implements Production
    */
   public final PrettyString toPrettyString ()
   {
-    // TODO implement me
-    return null;
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( this.nonterminalSymbol.toString (),
+        Style.NONTERMINAL_SYMBOL ) );
+    return prettyString;
   }
 
 
@@ -265,7 +269,7 @@ public final class DefaultProduction implements Production
   public final String toString ()
   {
     // TODO implement me
-    return null;
+    return this.nonterminalSymbol.toString () + " -> " + this.productionWord.toString ();
   }
 
 

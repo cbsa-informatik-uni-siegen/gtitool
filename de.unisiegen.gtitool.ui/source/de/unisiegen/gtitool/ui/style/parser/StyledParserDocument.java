@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import java_cup.runtime.Symbol;
@@ -15,8 +16,6 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import org.apache.log4j.Logger;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.GTIParser;
@@ -48,15 +47,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * The serial version uid.
    */
   private static final long serialVersionUID = -2546142812930077554L;
-
-
-  /**
-   * The {@link Logger} for this class.
-   * 
-   * @see Logger
-   */
-  private static final Logger logger = Logger
-      .getLogger ( StyledParserDocument.class );
 
 
   /**
@@ -95,6 +85,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * The attributes default style.
    */
   private SimpleAttributeSet normalSet = new SimpleAttributeSet ();
+
+
+  /**
+   * The overwritten {@link Style}.
+   */
+  private HashMap < String, Style > overwrittenStyle = new HashMap < String, Style > ();
 
 
   /**
@@ -151,6 +147,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
+   * Adds the given style.
+   * 
+   * @param token The token.
+   * @param style The {@link Style}.
+   */
+  public final void addOverwrittenStyle ( String token, Style style )
+  {
+    this.overwrittenStyle.put ( token, style );
+  }
+
+
+  /**
    * Adds the given {@link ParseableChangedListener}.
    * 
    * @param listener The {@link ParseableChangedListener}.
@@ -159,6 +167,15 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ParseableChangedListener listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
+  }
+
+
+  /**
+   * Clears the overwritten {@link Style}.
+   */
+  public final void clearOverwrittenStyle ()
+  {
+    this.overwrittenStyle.clear ();
   }
 
 
@@ -316,8 +333,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Processes the document content after a change and returns the parsed object
-   * or null, if the text could not be parsed.
+   * Parses the document and returns the parsed object or null, if the text
+   * could not be parsed.
    * 
    * @return The parsed object or null, if the text could not be parsed.
    */
@@ -347,10 +364,25 @@ public final class StyledParserDocument extends DefaultStyledDocument
           symbols.add ( symbol );
           Style style = scanner.getStyleBySymbol ( symbol );
           SimpleAttributeSet set = new SimpleAttributeSet ();
-          StyleConstants.setForeground ( set, style.getColor () );
-          StyleConstants.setBold ( set, style.isBold () );
-          StyleConstants.setItalic ( set, style.isItalic () );
-          StyleConstants.setUnderline ( set, style.isUnderline () );
+
+          // Use the overwritten
+          if ( this.overwrittenStyle.containsKey ( symbol.value.toString () ) )
+          {
+            Style newStyle = this.overwrittenStyle.get ( symbol.value
+                .toString () );
+            StyleConstants.setForeground ( set, newStyle.getColor () );
+            StyleConstants.setBold ( set, newStyle.isBold () );
+            StyleConstants.setItalic ( set, newStyle.isItalic () );
+            StyleConstants.setUnderline ( set, newStyle.isUnderline () );
+          }
+          // Use the normal scanner style
+          else
+          {
+            StyleConstants.setForeground ( set, style.getColor () );
+            StyleConstants.setBold ( set, style.isBold () );
+            StyleConstants.setItalic ( set, style.isItalic () );
+            StyleConstants.setUnderline ( set, style.isUnderline () );
+          }
           setCharacterAttributes ( offset + symbol.left, symbol.right
               - symbol.left, set, true );
         }
@@ -461,7 +493,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
     }
     catch ( Exception exc )
     {
-      logger.error ( "failed to process changes", exc ); //$NON-NLS-1$
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
 
     if ( !collectedExceptions.equals ( this.exceptionList ) )
@@ -496,6 +529,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ExceptionsChangedListener listener )
   {
     this.listenerList.remove ( ExceptionsChangedListener.class, listener );
+  }
+
+
+  /**
+   * Removes the given token.
+   * 
+   * @param token The token to remove.
+   */
+  public final void removeOverwrittenStyle ( String token )
+  {
+    this.overwrittenStyle.remove ( token );
   }
 
 

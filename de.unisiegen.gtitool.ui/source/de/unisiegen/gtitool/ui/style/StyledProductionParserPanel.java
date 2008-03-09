@@ -22,6 +22,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.production.ProductionParseable;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
@@ -282,6 +283,13 @@ public final class StyledProductionParserPanel extends StyledParserPanel
       }
     }
     this.nonterminalSymbolSet = nonterminalSymbolSet;
+
+    // Set the overwritten style
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      getDocument ().addOverwrittenStyle ( current.getName (),
+          Style.NONTERMINAL_SYMBOL );
+    }
   }
 
 
@@ -320,5 +328,12 @@ public final class StyledProductionParserPanel extends StyledParserPanel
       }
     }
     this.terminalSymbolSet = terminalSymbolSet;
+
+    // Set the overwritten style
+    for ( TerminalSymbol current : this.terminalSymbolSet )
+    {
+      getDocument ().addOverwrittenStyle ( current.getName (),
+          Style.TERMINAL_SYMBOL );
+    }
   }
 }

@@ -24,7 +24,7 @@ import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
  * The logic class for the create new production dialog.
  * 
  * @author Benjamin Mies
- * @version $Id: TransitionDialog.java 572 2008-02-16 19:31:20Z fehler $
+ * @version $Id$
  */
 public final class ProductionDialog
 {

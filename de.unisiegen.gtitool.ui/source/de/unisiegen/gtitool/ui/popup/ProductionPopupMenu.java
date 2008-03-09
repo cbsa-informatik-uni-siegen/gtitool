@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
  * A Popup Menu for {@link Transition}s
  * 
  * @author Benjamin Mies
- * @version $Id: TransitionPopupMenu.java 584 2008-02-28 11:31:03Z mies $
+ * @version $Id$
  */
 public final class ProductionPopupMenu extends JPopupMenu
 {

@@ -124,7 +124,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -147,6 +147,12 @@
 	<target name="parser-nonterminal-symbol-set">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset/nonterminalsymbolset.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset/nonterminalsymbolset.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/nonterminalsymbolset" package="de.unisiegen.gtitool.core.parser.nonterminalsymbolset" parser="NonterminalSymbolSetAbstractParser" symbols="NonterminalSymbolSetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser production -->
+	<target name="parser-production">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/production/production.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/production/production.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/production" package="de.unisiegen.gtitool.core.parser.production" parser="ProductionAbstractParser" symbols="ProductionTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser production word -->

@@ -1,2 +1,5 @@
 CF		- Stack in der Machine implementieren
 CF		- Style in die Parser integrieren
+BM		- Die toPrettyString der DefaultProduction ist fehlerhaft
+		  implementiert.
+CF		- Eingabe des Production Parsers überprüfen

@@ -254,8 +254,9 @@ public final class DefaultProduction implements Production
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.nonterminalSymbol.toString (),
-        Style.NONTERMINAL_SYMBOL ) );
+    // TODOBenny Use the addPrettyPrintable method for pretty printables
+    prettyString.addPrettyToken ( new PrettyToken ( this.nonterminalSymbol
+        .toString (), Style.NONTERMINAL_SYMBOL ) );
     return prettyString;
   }
 
@@ -268,8 +269,8 @@ public final class DefaultProduction implements Production
   @Override
   public final String toString ()
   {
-    // TODO implement me
-    return this.nonterminalSymbol.toString () + " -> " + this.productionWord.toString ();
+    return this.nonterminalSymbol.toString () + " \u2192 " //$NON-NLS-1$
+        + this.productionWord.toString ();
   }
 
 
@@ -280,7 +281,7 @@ public final class DefaultProduction implements Production
    */
   public final String toStringDebug ()
   {
-    // TODO implement me
-    return null;
+    return this.nonterminalSymbol.toString () + " \u2192 " + //$NON-NLS-1$
+        this.productionWord.toString ();
   }
 }

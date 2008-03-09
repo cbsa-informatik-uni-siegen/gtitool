@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.ui.logic.TransitionDialog;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id: TransitionDialogForm.java 532 2008-02-04 23:54:55Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class ProductionDialogForm extends javax.swing.JDialog {

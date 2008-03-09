@@ -1,10 +1,10 @@
 /**
- * The lexer file of the production word scanner.
+ * The lexer file of the production scanner.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-package de.unisiegen.gtitool.core.parser.productionword;
+package de.unisiegen.gtitool.core.parser.production;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
@@ -14,13 +14,13 @@ import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
 /**
- * This is the lexer class for a production word.
+ * This is the lexer class for a production.
  */
 %%
 
-%class ProductionWordScanner
+%class ProductionScanner
 %extends AbstractScanner
-%implements ProductionWordTerminals
+%implements ProductionTerminals
 
 %function nextSymbol
 %type Symbol
@@ -68,12 +68,16 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
+LineTerminator	= \r|\n|\r\n
+WhiteSpace		= {LineTerminator} | [ \t\f]
 Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 %%
 
 <YYINITIAL>
 {
+	"->"|"\u2192"		{ return symbol(ARROW); }
+	{WhiteSpace}		{ return symbol(WHITESPACE); }
 	{Symbol}			{ return symbol(MEMBER, yytext()); }
 }
 

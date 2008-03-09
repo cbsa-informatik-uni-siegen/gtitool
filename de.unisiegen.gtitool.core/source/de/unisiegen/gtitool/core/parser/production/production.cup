@@ -1,0 +1,108 @@
+/**
+ * The cup file of the production parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
+import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWord;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+
+
+/************
+ * Terminal *
+ ************/
+
+terminal						ARROW;
+terminal						WHITESPACE;
+terminal String					MEMBER;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+
+non terminal 							white_space;
+non terminal 							white_space_list;
+non terminal ProductionWordMember		member;
+non terminal ProductionWordMember[]		member_list;
+non terminal ProductionWord				production_word;
+non terminal Production					production;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 					epsilon;
+
+
+/**************
+ * Production *
+ **************/
+
+production						::= member:m white_space_list ARROW white_space_list production_word:pw
+									{:
+									   NonterminalSymbol nonterminal = new DefaultNonterminalSymbol(m.getName());
+									   nonterminal.setParserOffset(new ParserOffset(mleft,mright));
+									   RESULT = new DefaultProduction(nonterminal, pw);
+									   RESULT.setParserOffset(new ParserOffset(mleft,pwright));
+									:}
+								;
+
+production_word					::= member_list:ml
+									{:
+									   RESULT = new DefaultProductionWord(ml);
+									   RESULT.setParserOffset(new ParserOffset(mlleft,mlright));
+									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultProductionWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								;
+
+member							::= MEMBER:m
+									{:
+									   try
+									   {
+									     RESULT = new DefaultNonterminalSymbol(m);
+									   }
+									   catch (NonterminalSymbolException exc)
+									   {
+									     ParserException.throwSymbolException(mleft, mright, m);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(mleft,mright));
+									:}
+								;
+
+member_list						::= member_list:ml member:m
+								    {:
+								       RESULT = new DefaultNonterminalSymbol[ml.length + 1];
+									   System.arraycopy(ml, 0, RESULT, 0, ml.length);
+									   RESULT[ml.length] = m;
+								    :}
+								|	member:m
+									{:
+									   RESULT = new ProductionWordMember[] { m };
+									:}
+								;
+
+white_space_list				::= white_space_list WHITESPACE
+									{: :}
+								|   WHITESPACE
+									{: :}
+								|   epsilon
+									{: :}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

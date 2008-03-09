@@ -1,1 +1,2 @@
 CF		- Stack in der Machine implementieren
+CF		- Style in die Parser integrieren

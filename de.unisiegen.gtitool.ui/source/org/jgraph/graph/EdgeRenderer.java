@@ -188,8 +188,8 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public EdgeRenderer ()
   {
-    defaultForeground = UIManager.getColor ( "Tree.textForeground" );
-    defaultBackground = UIManager.getColor ( "Tree.textBackground" );
+    this.defaultForeground = UIManager.getColor ( "Tree.textForeground" );
+    this.defaultBackground = UIManager.getColor ( "Tree.textBackground" );
 
     this.preferenceTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ().getColor ();
@@ -241,8 +241,10 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   protected Shape createLineEnd ( int size, int style, Point2D src, Point2D dst )
   {
-    if ( src == null || dst == null )
+    if ( ( src == null ) || ( dst == null ) )
+    {
       return null;
+    }
     int d = ( int ) Math.max ( 1, dst.distance ( src ) );
     int ax = ( int ) - ( size * ( dst.getX () - src.getX () ) / d );
     int ay = ( int ) - ( size * ( dst.getY () - src.getY () ) / d );
@@ -261,8 +263,8 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       return poly;
 
     }
-    else if ( style == GraphConstants.ARROW_TECHNICAL
-        || style == GraphConstants.ARROW_CLASSIC )
+    else if ( ( style == GraphConstants.ARROW_TECHNICAL )
+        || ( style == GraphConstants.ARROW_CLASSIC ) )
     {
       Polygon poly = new Polygon ();
       poly.addPoint ( ( int ) dst.getX (), ( int ) dst.getY () );
@@ -282,8 +284,10 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         poly.addPoint ( ( int ) dst.getX (), ( int ) dst.getY () );
       }
       else
+      {
         dst.setLocation ( ( int ) ( dst.getX () + ax ),
             ( int ) ( dst.getY () + ay ) );
+      }
       poly.addPoint ( ( int ) ( last.getX () + ax - ay / 2 ), ( int ) ( last
           .getY ()
           + ay + ax / 2 ) );
@@ -312,8 +316,8 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       return ellipse;
 
     }
-    else if ( style == GraphConstants.ARROW_LINE
-        || style == GraphConstants.ARROW_DOUBLELINE )
+    else if ( ( style == GraphConstants.ARROW_LINE )
+        || ( style == GraphConstants.ARROW_DOUBLELINE ) )
     {
       GeneralPath path = new GeneralPath ( GeneralPath.WIND_NON_ZERO, 4 );
       path.moveTo ( ( float ) ( dst.getX () + ax / 2 + ay / 2 ),
@@ -340,53 +344,55 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Shape createShape ()
   {
-    int n = view.getPointCount ();
+    int n = this.view.getPointCount ();
     if ( n > 1 )
     {
       // Following block may modify static vars as side effect (Flyweight
       // Design)
-      EdgeView tmp = view;
+      EdgeView tmp = this.view;
       Point2D [] p = null;
       p = new Point2D [ n ];
       for ( int i = 0 ; i < n ; i++ )
       {
         Point2D pt = tmp.getPoint ( i );
         if ( pt == null )
+        {
           return null; // exit
+        }
         p [ i ] = new Point2D.Double ( pt.getX (), pt.getY () );
       }
 
       // End of Side-Effect Block
       // Undo Possible MT-Side Effects
-      if ( view != tmp )
+      if ( this.view != tmp )
       {
-        view = tmp;
-        installAttributes ( view );
+        this.view = tmp;
+        installAttributes ( this.view );
       }
       // End of Undo
-      if ( view.sharedPath == null )
+      if ( this.view.sharedPath == null )
       {
-        view.sharedPath = new GeneralPath ( GeneralPath.WIND_NON_ZERO, n );
+        this.view.sharedPath = new GeneralPath ( GeneralPath.WIND_NON_ZERO, n );
       }
       else
       {
-        view.sharedPath.reset ();
+        this.view.sharedPath.reset ();
       }
-      view.beginShape = view.lineShape = view.endShape = null;
+      this.view.beginShape = this.view.lineShape = this.view.endShape = null;
       Point2D p0 = p [ 0 ];
       Point2D pe = p [ n - 1 ];
       Point2D p1 = p [ 1 ];
       Point2D p2 = p [ n - 2 ];
 
-      if ( lineStyle == GraphConstants.STYLE_BEZIER && n > 2 )
+      if ( ( this.lineStyle == GraphConstants.STYLE_BEZIER ) && ( n > 2 ) )
       {
-        bezier = new Bezier ( p );
-        p2 = bezier.getPoint ( bezier.getPointCount () - 1 );
+        this.bezier = new Bezier ( p );
+        p2 = this.bezier.getPoint ( this.bezier.getPointCount () - 1 );
       }
-      else if ( lineStyle == GraphConstants.STYLE_SPLINE && n > 2 )
+      else if ( ( this.lineStyle == GraphConstants.STYLE_SPLINE ) && ( n > 2 ) )
       {
-        spline = new Spline2D ( p );
-        double [] point = spline.getPoint ( 0.9875 );
+        this.spline = new Spline2D ( p );
+        double [] point = this.spline.getPoint ( 0.9875 );
         // Extrapolate p2 away from the end point, pe, to avoid integer
         // rounding errors becoming too large when creating the line end
         double scaledX = pe.getX () - ( ( pe.getX () - point [ 0 ] ) * 128 );
@@ -394,65 +400,74 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         p2.setLocation ( scaledX, scaledY );
       }
 
-      if ( beginDeco != GraphConstants.ARROW_NONE )
+      if ( this.beginDeco != GraphConstants.ARROW_NONE )
       {
-        view.beginShape = createLineEnd ( beginSize, beginDeco, p1, p0 );
+        this.view.beginShape = createLineEnd ( this.beginSize, this.beginDeco,
+            p1, p0 );
       }
-      if ( endDeco != GraphConstants.ARROW_NONE )
+      if ( this.endDeco != GraphConstants.ARROW_NONE )
       {
-        view.endShape = createLineEnd ( endSize, endDeco, p2, pe );
+        this.view.endShape = createLineEnd ( this.endSize, this.endDeco, p2, pe );
       }
-      view.sharedPath.moveTo ( ( float ) p0.getX (), ( float ) p0.getY () );
+      this.view.sharedPath.moveTo ( ( float ) p0.getX (), ( float ) p0.getY () );
       /* THIS CODE WAS ADDED BY MARTIN KRUEGER 10/20/2003 */
-      if ( lineStyle == GraphConstants.STYLE_BEZIER && n > 2 )
+      if ( ( this.lineStyle == GraphConstants.STYLE_BEZIER ) && ( n > 2 ) )
       {
-        Point2D [] b = bezier.getPoints ();
-        view.sharedPath.quadTo ( ( float ) b [ 0 ].getX (), ( float ) b [ 0 ]
-            .getY (), ( float ) p1.getX (), ( float ) p1.getY () );
+        Point2D [] b = this.bezier.getPoints ();
+        this.view.sharedPath.quadTo ( ( float ) b [ 0 ].getX (),
+            ( float ) b [ 0 ].getY (), ( float ) p1.getX (), ( float ) p1
+                .getY () );
         for ( int i = 2 ; i < n - 1 ; i++ )
         {
           Point2D b0 = b [ 2 * i - 3 ];
           Point2D b1 = b [ 2 * i - 2 ];
-          view.sharedPath.curveTo ( ( float ) b0.getX (), ( float ) b0.getY (),
-              ( float ) b1.getX (), ( float ) b1.getY (), ( float ) p [ i ]
-                  .getX (), ( float ) p [ i ].getY () );
+          this.view.sharedPath.curveTo ( ( float ) b0.getX (), ( float ) b0
+              .getY (), ( float ) b1.getX (), ( float ) b1.getY (),
+              ( float ) p [ i ].getX (), ( float ) p [ i ].getY () );
         }
-        view.sharedPath.quadTo ( ( float ) b [ b.length - 1 ].getX (),
+        this.view.sharedPath.quadTo ( ( float ) b [ b.length - 1 ].getX (),
             ( float ) b [ b.length - 1 ].getY (),
             ( float ) p [ n - 1 ].getX (), ( float ) p [ n - 1 ].getY () );
       }
-      else if ( lineStyle == GraphConstants.STYLE_SPLINE && n > 2 )
+      else if ( ( this.lineStyle == GraphConstants.STYLE_SPLINE ) && ( n > 2 ) )
       {
         for ( double t = 0 ; t <= 1 ; t += 0.0125 )
         {
-          double [] xy = spline.getPoint ( t );
-          view.sharedPath.lineTo ( ( float ) xy [ 0 ], ( float ) xy [ 1 ] );
+          double [] xy = this.spline.getPoint ( t );
+          this.view.sharedPath.lineTo ( ( float ) xy [ 0 ], ( float ) xy [ 1 ] );
         }
       }
       /* END */
       else
       {
         for ( int i = 1 ; i < n - 1 ; i++ )
-          view.sharedPath.lineTo ( ( float ) p [ i ].getX (), ( float ) p [ i ]
-              .getY () );
-        view.sharedPath.lineTo ( ( float ) pe.getX (), ( float ) pe.getY () );
+        {
+          this.view.sharedPath.lineTo ( ( float ) p [ i ].getX (),
+              ( float ) p [ i ].getY () );
+        }
+        this.view.sharedPath.lineTo ( ( float ) pe.getX (), ( float ) pe
+            .getY () );
       }
-      view.sharedPath.moveTo ( ( float ) pe.getX (), ( float ) pe.getY () );
-      if ( view.endShape == null && view.beginShape == null )
+      this.view.sharedPath.moveTo ( ( float ) pe.getX (), ( float ) pe.getY () );
+      if ( ( this.view.endShape == null ) && ( this.view.beginShape == null ) )
       {
         // With no end decorations the line shape is the same as the
         // shared path and memory
-        view.lineShape = view.sharedPath;
+        this.view.lineShape = this.view.sharedPath;
       }
       else
       {
-        view.lineShape = ( GeneralPath ) view.sharedPath.clone ();
-        if ( view.endShape != null )
-          view.sharedPath.append ( view.endShape, true );
-        if ( view.beginShape != null )
-          view.sharedPath.append ( view.beginShape, true );
+        this.view.lineShape = ( GeneralPath ) this.view.sharedPath.clone ();
+        if ( this.view.endShape != null )
+        {
+          this.view.sharedPath.append ( this.view.endShape, true );
+        }
+        if ( this.view.beginShape != null )
+        {
+          this.view.sharedPath.append ( this.view.beginShape, true );
+        }
       }
-      return view.sharedPath;
+      return this.view.sharedPath;
     }
     return null;
   }
@@ -537,7 +552,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   {
     // Strings get interned...
     if ( propertyName == "text" )
+    {
       super.firePropertyChange ( propertyName, oldValue, newValue );
+    }
   }
 
 
@@ -556,31 +573,35 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Rectangle2D getBounds ( CellView value )
   {
-    if ( value instanceof EdgeView && value != null )
+    if ( ( value instanceof EdgeView ) && ( value != null ) )
     {
       // No need to call setView as getPaintBounds will
-      view = ( EdgeView ) value;
-      Rectangle2D r = getPaintBounds ( view );
+      this.view = ( EdgeView ) value;
+      Rectangle2D r = getPaintBounds ( this.view );
       JGraph graph = null;
       if ( this.graph != null )
       {
         graph = ( JGraph ) this.graph.get ();
       }
-      Rectangle2D rect = getLabelBounds ( graph, view );
+      Rectangle2D rect = getLabelBounds ( graph, this.view );
       if ( rect != null )
+      {
         Rectangle2D.union ( r, rect, r );
-      Object [] labels = GraphConstants.getExtraLabels ( view
+      }
+      Object [] labels = GraphConstants.getExtraLabels ( this.view
           .getAllAttributes () );
       if ( labels != null )
       {
         for ( int i = 0 ; i < labels.length ; i++ )
         {
-          rect = getExtraLabelBounds ( graph, view, i );
+          rect = getExtraLabelBounds ( graph, this.view, i );
           if ( rect != null )
+          {
             Rectangle2D.union ( r, rect, r );
+          }
         }
       }
-      int b = ( int ) Math.ceil ( lineWidth );
+      int b = ( int ) Math.ceil ( this.lineWidth );
       r.setFrame ( r.getX () - b, r.getY () - b, r.getWidth () + 2 * b, r
           .getHeight ()
           + 2 * b );
@@ -598,7 +619,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   public Rectangle2D getExtraLabelBounds ( JGraph paintingContext,
       EdgeView view, int index )
   {
-    if ( paintingContext == null && graph != null )
+    if ( ( paintingContext == null ) && ( this.graph != null ) )
     {
       JGraph graph = ( JGraph ) this.graph.get ();
       paintingContext = graph;
@@ -606,7 +627,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     setView ( view );
     Object [] labels = GraphConstants
         .getExtraLabels ( view.getAllAttributes () );
-    if ( labels != null && index < labels.length )
+    if ( ( labels != null ) && ( index < labels.length ) )
     {
       Point2D p = getExtraLabelPosition ( this.view, index );
       Dimension d = getExtraLabelSize ( paintingContext, this.view, index );
@@ -627,8 +648,10 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     setView ( view );
     Point2D [] pts = GraphConstants.getExtraLabelPositions ( view
         .getAllAttributes () );
-    if ( pts != null && index < pts.length )
+    if ( ( pts != null ) && ( index < pts.length ) )
+    {
       return getLabelPosition ( pts [ index ] );
+    }
     return null;
   }
 
@@ -641,7 +664,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   {
     Object [] labels = GraphConstants
         .getExtraLabels ( view.getAllAttributes () );
-    if ( labels != null && index < labels.length )
+    if ( ( labels != null ) && ( index < labels.length ) )
     {
       String label = ( paintingContext != null ) ? paintingContext
           .convertValueToString ( labels [ index ] ) : String
@@ -657,7 +680,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Color getGradientColor ()
   {
-    return gradientColor;
+    return this.gradientColor;
   }
 
 
@@ -671,20 +694,20 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   private double getLabelAngle ( String label )
   {
-    Point2D p = getLabelPosition ( view );
+    Point2D p = getLabelPosition ( this.view );
     double angle = 0;
-    if ( p != null && label != null && label.length () > 0 )
+    if ( ( p != null ) && ( label != null ) && ( label.length () > 0 ) )
     {
-      int sw = metrics.stringWidth ( label );
+      int sw = this.metrics.stringWidth ( label );
       // Note: For control points you may want to choose other
       // points depending on the segment the label is in.
-      Point2D p1 = view.getPoint ( 0 );
-      Point2D p2 = view.getPoint ( view.getPointCount () - 1 );
+      Point2D p1 = this.view.getPoint ( 0 );
+      Point2D p2 = this.view.getPoint ( this.view.getPointCount () - 1 );
       // Length of the edge
       double length = Math.sqrt ( ( p2.getX () - p1.getX () )
           * ( p2.getX () - p1.getX () ) + ( p2.getY () - p1.getY () )
           * ( p2.getY () - p1.getY () ) );
-      if ( ! ( length <= Double.NaN || length < sw ) )
+      if ( ! ( ( length <= Double.NaN ) || ( length < sw ) ) )
       { // Label fits into
         // edge's length
 
@@ -699,7 +722,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
           angle = 2 * Math.PI - angle;
         }
       }
-      if ( angle > Math.PI / 2 && angle <= Math.PI * 3 / 2 )
+      if ( ( angle > Math.PI / 2 ) && ( angle <= Math.PI * 3 / 2 ) )
       {
         angle -= Math.PI;
       }
@@ -713,7 +736,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Rectangle2D getLabelBounds ( JGraph paintingContext, EdgeView view )
   {
-    if ( paintingContext == null && graph != null )
+    if ( ( paintingContext == null ) && ( this.graph != null ) )
     {
       JGraph graph = ( JGraph ) this.graph.get ();
       paintingContext = graph;
@@ -739,16 +762,20 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Rectangle2D getLabelBounds ( Point2D p, Dimension d, String label )
   {
-    if ( label != null && isLabelTransform ( label ) )
+    if ( ( label != null ) && isLabelTransform ( label ) )
     {
       // With transform label is rotated, so we should
       // rotate the rectangle (sw, sh) and return the
       // bounding rectangle
       double angle = getLabelAngle ( label );
       if ( angle < 0 )
+      {
         angle = -angle;
+      }
       if ( angle > Math.PI / 2 )
+      {
         angle %= Math.PI / 2;
+      }
       double yside = Math.abs ( Math.cos ( angle ) * d.height
           + Math.sin ( angle ) * d.width );
       double xside = Math.abs ( d.width * Math.cos ( angle ) + d.height
@@ -756,9 +783,13 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       // Getting maximum is not good, but I don't want to be
       // drown in calculations
       if ( xside > yside )
+      {
         yside = xside;
+      }
       if ( yside > xside )
+      {
         xside = yside;
+      }
       angle = getLabelAngle ( label );
 
       // Increasing by height is safe, but I think the precise
@@ -767,7 +798,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       d.width = ( int ) xside + d.height;
       d.height = ( int ) yside + d.height;
     }
-    if ( p != null && d != null )
+    if ( ( p != null ) && ( d != null ) )
     {
       double x = Math.max ( 0, p.getX () - ( d.width / 2 ) );
       double y = Math.max ( 0, p.getY () - ( d.height / 2 ) );
@@ -792,18 +823,18 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   protected Point2D getLabelPosition ( Point2D pos )
   {
-    Rectangle2D tmp = getPaintBounds ( view );
+    Rectangle2D tmp = getPaintBounds ( this.view );
     int unit = GraphConstants.PERMILLE;
-    Point2D p0 = view.getPoint ( 0 );
-    if ( pos != null && tmp != null )
+    Point2D p0 = this.view.getPoint ( 0 );
+    if ( ( pos != null ) && ( tmp != null ) )
     {
       if ( !isLabelTransformEnabled () )
       {
-        return getRelativeLabelPosition ( view, pos );
+        return getRelativeLabelPosition ( this.view, pos );
       }
       else
       {
-        Point2D vector = view.getLabelVector ();
+        Point2D vector = this.view.getLabelVector ();
         double dx = vector.getX ();
         double dy = vector.getY ();
         double len = Math.sqrt ( dx * dx + dy * dy );
@@ -831,13 +862,13 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public Dimension getLabelSize ( EdgeView view, String label )
   {
-    if ( label != null && fontGraphics != null )
+    if ( ( label != null ) && ( fontGraphics != null ) )
     {
       fontGraphics
           .setFont ( GraphConstants.getFont ( view.getAllAttributes () ) );
-      metrics = fontGraphics.getFontMetrics ();
-      int sw = metrics.stringWidth ( label );
-      int sh = metrics.getHeight ();
+      this.metrics = fontGraphics.getFontMetrics ();
+      int sw = this.metrics.stringWidth ( label );
+      int sh = this.metrics.getHeight ();
       return new Dimension ( sw, sh );
     }
     return null;
@@ -852,9 +883,13 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     Rectangle2D rec = null;
     setView ( view );
     if ( view.getShape () != null )
+    {
       rec = view.getShape ().getBounds ();
+    }
     else
+    {
       rec = new Rectangle2D.Double ( 0, 0, 0, 0 );
+    }
     return rec;
   }
 
@@ -895,7 +930,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       int index = 1;
       double segment = segments [ 0 ];
 
-      while ( dist > length + segment && index < pointCount - 1 )
+      while ( ( dist > length + segment ) && ( index < pointCount - 1 ) )
       {
         length += segment;
         segment = segments [ index++ ];
@@ -906,7 +941,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       Point2D p0 = edge.getPoint ( index - 1 );
       Point2D pe = edge.getPoint ( index );
 
-      if ( p0 != null && pe != null )
+      if ( ( p0 != null ) && ( pe != null ) )
       {
         double dx = pe.getX () - p0.getX ();
         double dy = pe.getY () - p0.getY ();
@@ -951,7 +986,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   public Component getRendererComponent ( JGraph graph, CellView view,
       boolean sel, boolean focus, boolean preview )
   {
-    if ( view instanceof EdgeView && graph != null )
+    if ( ( view instanceof EdgeView ) && ( graph != null ) )
     {
       this.gridColor = graph.getGridColor ();
       this.lockedHandleColor = graph.getLockedHandleColor ();
@@ -980,34 +1015,40 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   protected void installAttributes ( CellView view )
   {
     Map map = view.getAllAttributes ();
-    beginDeco = GraphConstants.getLineBegin ( map );
-    beginSize = GraphConstants.getBeginSize ( map );
-    beginFill = GraphConstants.isBeginFill ( map ) && isFillable ( beginDeco );
-    endDeco = GraphConstants.getLineEnd ( map );
-    endSize = GraphConstants.getEndSize ( map );
-    endFill = GraphConstants.isEndFill ( map ) && isFillable ( endDeco );
-    lineWidth = GraphConstants.getLineWidth ( map );
+    this.beginDeco = GraphConstants.getLineBegin ( map );
+    this.beginSize = GraphConstants.getBeginSize ( map );
+    this.beginFill = GraphConstants.isBeginFill ( map )
+        && isFillable ( this.beginDeco );
+    this.endDeco = GraphConstants.getLineEnd ( map );
+    this.endSize = GraphConstants.getEndSize ( map );
+    this.endFill = GraphConstants.isEndFill ( map )
+        && isFillable ( this.endDeco );
+    this.lineWidth = GraphConstants.getLineWidth ( map );
     Edge.Routing routing = GraphConstants.getRouting ( map );
-    lineStyle = ( routing != null && view instanceof EdgeView ) ? routing
+    this.lineStyle = ( ( routing != null ) && ( view instanceof EdgeView ) ) ? routing
         .getPreferredLineStyle ( ( EdgeView ) view )
         : Edge.Routing.NO_PREFERENCE;
-    if ( lineStyle == Edge.Routing.NO_PREFERENCE )
-      lineStyle = GraphConstants.getLineStyle ( map );
-    lineDash = GraphConstants.getDashPattern ( map );
-    dashOffset = GraphConstants.getDashOffset ( map );
-    borderColor = GraphConstants.getBorderColor ( map );
+    if ( this.lineStyle == Edge.Routing.NO_PREFERENCE )
+    {
+      this.lineStyle = GraphConstants.getLineStyle ( map );
+    }
+    this.lineDash = GraphConstants.getDashPattern ( map );
+    this.dashOffset = GraphConstants.getDashOffset ( map );
+    this.borderColor = GraphConstants.getBorderColor ( map );
     Color foreground = GraphConstants.getLineColor ( map );
-    setForeground ( ( foreground != null ) ? foreground : defaultForeground );
+    setForeground ( ( foreground != null ) ? foreground
+        : this.defaultForeground );
     Color background = GraphConstants.getBackground ( map );
-    setBackground ( ( background != null ) ? background : defaultBackground );
+    setBackground ( ( background != null ) ? background
+        : this.defaultBackground );
     this.labelColor = GraphConstants.getLabelColor ( map );
     Color gradientColor = GraphConstants.getGradientColor ( map );
     setGradientColor ( gradientColor );
     setOpaque ( GraphConstants.isOpaque ( map ) );
     setFont ( GraphConstants.getFont ( map ) );
     Color tmp = GraphConstants.getForeground ( map );
-    fontColor = ( tmp != null ) ? tmp : getForeground ();
-    labelTransformEnabled = GraphConstants.isLabelAlongEdge ( map );
+    this.fontColor = ( tmp != null ) ? tmp : getForeground ();
+    this.labelTransformEnabled = GraphConstants.isLabelAlongEdge ( map );
   }
 
 
@@ -1016,7 +1057,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public boolean intersects ( JGraph graph, CellView value, Rectangle rect )
   {
-    if ( value instanceof EdgeView && graph != null && value != null )
+    if ( ( value instanceof EdgeView ) && ( graph != null ) && ( value != null ) )
     {
       setView ( value );
 
@@ -1030,26 +1071,34 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         Point2D p1 = edgeView.getPoint ( 1 );
         if ( rect.intersectsLine ( p0.getX (), p0.getY (), p1.getX (), p1
             .getY () ) )
+        {
           return true;
+        }
       }
       else
       {
         Graphics2D g2 = ( Graphics2D ) graph.getGraphics ();
-        if ( g2.hit ( rect, view.getShape (), true ) )
+        if ( g2.hit ( rect, this.view.getShape (), true ) )
+        {
           return true;
+        }
       }
-      Rectangle2D r = getLabelBounds ( graph, view );
-      if ( r != null && r.intersects ( rect ) )
+      Rectangle2D r = getLabelBounds ( graph, this.view );
+      if ( ( r != null ) && r.intersects ( rect ) )
+      {
         return true;
-      Object [] labels = GraphConstants.getExtraLabels ( view
+      }
+      Object [] labels = GraphConstants.getExtraLabels ( this.view
           .getAllAttributes () );
       if ( labels != null )
       {
         for ( int i = 0 ; i < labels.length ; i++ )
         {
-          r = getExtraLabelBounds ( graph, view, i );
-          if ( r != null && r.intersects ( rect ) )
+          r = getExtraLabelBounds ( graph, this.view, i );
+          if ( ( r != null ) && r.intersects ( rect ) )
+          {
             return true;
+          }
         }
       }
     }
@@ -1059,8 +1108,8 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 
   protected boolean isFillable ( int decoration )
   {
-    return ! ( decoration == GraphConstants.ARROW_SIMPLE
-        || decoration == GraphConstants.ARROW_LINE || decoration == GraphConstants.ARROW_DOUBLELINE );
+    return ! ( ( decoration == GraphConstants.ARROW_SIMPLE )
+        || ( decoration == GraphConstants.ARROW_LINE ) || ( decoration == GraphConstants.ARROW_DOUBLELINE ) );
   }
 
 
@@ -1077,16 +1126,16 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     {
       return false;
     }
-    Point2D p = getLabelPosition ( view );
-    if ( p != null && label != null && label.length () > 0 )
+    Point2D p = getLabelPosition ( this.view );
+    if ( ( p != null ) && ( label != null ) && ( label.length () > 0 ) )
     {
-      int sw = metrics.stringWidth ( label );
-      Point2D p1 = view.getPoint ( 0 );
-      Point2D p2 = view.getPoint ( view.getPointCount () - 1 );
+      int sw = this.metrics.stringWidth ( label );
+      Point2D p1 = this.view.getPoint ( 0 );
+      Point2D p2 = this.view.getPoint ( this.view.getPointCount () - 1 );
       double length = Math.sqrt ( ( p2.getX () - p1.getX () )
           * ( p2.getX () - p1.getX () ) + ( p2.getY () - p1.getY () )
           * ( p2.getY () - p1.getY () ) );
-      if ( ! ( length <= Double.NaN || length < sw ) )
+      if ( ! ( ( length <= Double.NaN ) || ( length < sw ) ) )
       {
         return true;
       }
@@ -1097,7 +1146,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 
   private boolean isLabelTransformEnabled ()
   {
-    return labelTransformEnabled;
+    return this.labelTransformEnabled;
   }
 
 
@@ -1106,9 +1155,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    */
   public void paint ( Graphics g )
   {
-    if ( view.isLeaf () )
+    if ( this.view.isLeaf () )
     {
-      Shape edgeShape = view.getShape ();
+      Shape edgeShape = this.view.getShape ();
       // Sideeffect: beginShape, lineShape, endShape
       if ( edgeShape != null )
       {
@@ -1122,87 +1171,96 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         translateGraphics ( g );
 
         // Error
-        if ( ( view.getCell () instanceof DefaultTransitionView )
-            && ( ( ( DefaultTransitionView ) view.getCell () ).getTransition ()
-                .isError () ) )
+        if ( ( this.view.getCell () instanceof DefaultTransitionView )
+            && ( ( ( DefaultTransitionView ) this.view.getCell () )
+                .getTransition ().isError () ) )
         {
-          g2.setColor ( preferenceTransitionError );
+          g2.setColor ( this.preferenceTransitionError );
         }
         // Active
-        else if ( ( view.getCell () instanceof DefaultTransitionView )
-            && ( ( ( DefaultTransitionView ) view.getCell () ).getTransition ()
-                .isActive () ) )
+        else if ( ( this.view.getCell () instanceof DefaultTransitionView )
+            && ( ( ( DefaultTransitionView ) this.view.getCell () )
+                .getTransition ().isActive () ) )
         {
-          g2.setColor ( preferenceTransitionActive );
+          g2.setColor ( this.preferenceTransitionActive );
         }
         // Selected
-        else if ( selected )
+        else if ( this.selected )
         {
-          g2.setColor ( preferenceTransitionSelected );
+          g2.setColor ( this.preferenceTransitionSelected );
         }
         // Normal
         else
         {
-          g2.setColor ( preferenceTransition );
+          g2.setColor ( this.preferenceTransition );
         }
 
-        if ( lineWidth > 0 )
+        if ( this.lineWidth > 0 )
         {
-          g2.setStroke ( new BasicStroke ( lineWidth, c, j ) );
-          if ( gradientColor != null && !preview )
+          g2.setStroke ( new BasicStroke ( this.lineWidth, c, j ) );
+          if ( ( this.gradientColor != null ) && !this.preview )
           {
             g2.setPaint ( new GradientPaint ( 0, 0, getBackground (),
-                getWidth (), getHeight (), gradientColor, true ) );
+                getWidth (), getHeight (), this.gradientColor, true ) );
           }
-          if ( view.beginShape != null )
+          if ( this.view.beginShape != null )
           {
-            if ( beginFill )
-              g2.fill ( view.beginShape );
-            g2.draw ( view.beginShape );
+            if ( this.beginFill )
+            {
+              g2.fill ( this.view.beginShape );
+            }
+            g2.draw ( this.view.beginShape );
           }
-          if ( view.endShape != null )
+          if ( this.view.endShape != null )
           {
-            if ( endFill )
-              g2.fill ( view.endShape );
-            g2.draw ( view.endShape );
+            if ( this.endFill )
+            {
+              g2.fill ( this.view.endShape );
+            }
+            g2.draw ( this.view.endShape );
           }
-          if ( lineDash != null ) // Dash For Line Only
-            g2.setStroke ( new BasicStroke ( lineWidth, c, j, 10.0f, lineDash,
-                dashOffset ) );
-          if ( view.lineShape != null )
-            g2.draw ( view.lineShape );
+          if ( this.lineDash != null )
+          {
+            g2.setStroke ( new BasicStroke ( this.lineWidth, c, j, 10.0f,
+                this.lineDash, this.dashOffset ) );
+          }
+          if ( this.view.lineShape != null )
+          {
+            g2.draw ( this.view.lineShape );
+          }
         }
 
         g2.setStroke ( new BasicStroke ( 1 ) );
-        g.setFont ( ( extraLabelFont != null ) ? extraLabelFont : getFont () );
-        Object [] labels = GraphConstants.getExtraLabels ( view
+        g.setFont ( ( this.extraLabelFont != null ) ? this.extraLabelFont
+            : getFont () );
+        Object [] labels = GraphConstants.getExtraLabels ( this.view
             .getAllAttributes () );
         JGraph graph = ( JGraph ) this.graph.get ();
         if ( labels != null )
         {
           for ( int i = 0 ; i < labels.length ; i++ )
           {
-            if ( view.getCell () instanceof DefaultTransitionView )
+            if ( this.view.getCell () instanceof DefaultTransitionView )
             {
-              Transition transition = ( ( DefaultTransitionView ) view
+              Transition transition = ( ( DefaultTransitionView ) this.view
                   .getCell () ).getTransition ();
-              paintTransition ( g, transition,
-                  getExtraLabelPosition ( view, i ),
-                  false || !simpleExtraLabels );
+              paintTransition ( g, transition, getExtraLabelPosition (
+                  this.view, i ), false || !this.simpleExtraLabels );
             }
           }
         }
-        if ( graph.getEditingCell () != view.getCell () )
+        if ( graph.getEditingCell () != this.view.getCell () )
         {
           g.setFont ( getFont () );
-          Object label = graph.convertValueToString ( view );
+          Object label = graph.convertValueToString ( this.view );
           if ( label != null )
           {
-            if ( view.getCell () instanceof DefaultTransitionView )
+            if ( this.view.getCell () instanceof DefaultTransitionView )
             {
-              Transition transition = ( ( DefaultTransitionView ) view
+              Transition transition = ( ( DefaultTransitionView ) this.view
                   .getCell () ).getTransition ();
-              paintTransition ( g, transition, getLabelPosition ( view ), true );
+              paintTransition ( g, transition, getLabelPosition ( this.view ),
+                  true );
             }
           }
         }
@@ -1221,10 +1279,11 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   protected void paintLabel ( Graphics g, String label, Point2D p,
       boolean mainLabel )
   {
-    if ( p != null && label != null && label.length () > 0 && metrics != null )
+    if ( ( p != null ) && ( label != null ) && ( label.length () > 0 )
+        && ( this.metrics != null ) )
     {
-      int sw = metrics.stringWidth ( label );
-      int sh = metrics.getHeight ();
+      int sw = this.metrics.stringWidth ( label );
+      int sh = this.metrics.getHeight ();
       Graphics2D g2 = ( Graphics2D ) g;
 
       // Manipulate the clipping area
@@ -1238,7 +1297,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       boolean applyTransform = isLabelTransform ( label );
       double angle = 0;
       int dx = -sw / 2;
-      int offset = isMoveBelowZero || applyTransform ? 0 : Math.min ( 0,
+      int offset = this.isMoveBelowZero || applyTransform ? 0 : Math.min ( 0,
           ( int ) ( dx + p.getX () ) );
 
       g2.translate ( p.getX () - offset + 3, p.getY () - 10 );
@@ -1252,19 +1311,19 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         g.setColor ( getBackground () );
         g.fillRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
       }
-      if ( borderColor != null && mainLabel )
+      if ( ( this.borderColor != null ) && mainLabel )
       {
-        g.setColor ( borderColor );
+        g.setColor ( this.borderColor );
         g.drawRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
       }
 
       int dy = +sh / 4;
       g.setColor ( this.labelColor );
-      if ( applyTransform && borderColor == null && !isOpaque () )
+      if ( applyTransform && ( this.borderColor == null ) && !isOpaque () )
       {
         // Shift label perpendicularly by the descent so it
         // doesn't cross the line.
-        dy = -metrics.getDescent ();
+        dy = -this.metrics.getDescent ();
       }
       g.drawString ( label, dx, dy );
       if ( applyTransform )
@@ -1283,13 +1342,19 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   protected void paintSelectionBorder ( Graphics g )
   {
     ( ( Graphics2D ) g ).setStroke ( GraphConstants.SELECTION_STROKE );
-    if ( childrenSelected )
-      g.setColor ( gridColor );
-    else if ( focus && selected )
-      g.setColor ( lockedHandleColor );
-    else if ( selected )
-      g.setColor ( highlightColor );
-    if ( childrenSelected || selected )
+    if ( this.childrenSelected )
+    {
+      g.setColor ( this.gridColor );
+    }
+    else if ( this.focus && this.selected )
+    {
+      g.setColor ( this.lockedHandleColor );
+    }
+    else if ( this.selected )
+    {
+      g.setColor ( this.highlightColor );
+    }
+    if ( this.childrenSelected || this.selected )
     {
       Dimension d = getSize ();
       g.drawRect ( 0, 0, d.width - 1, d.height - 1 );
@@ -1303,11 +1368,11 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   protected void paintTransition ( Graphics g, Transition transition,
       Point2D p, boolean mainLabel )
   {
-    if ( p != null && transition.toString () != null
-        && transition.toString ().length () > 0 && metrics != null )
+    if ( ( p != null ) && ( transition.toString () != null )
+        && ( transition.toString ().length () > 0 ) && ( this.metrics != null ) )
     {
-      int sw = metrics.stringWidth ( transition.toString () );
-      int sh = metrics.getHeight ();
+      int sw = this.metrics.stringWidth ( transition.toString () );
+      int sh = this.metrics.getHeight ();
       Graphics2D g2 = ( Graphics2D ) g;
 
       // Manipulate the clipping area
@@ -1321,7 +1386,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
       boolean applyTransform = isLabelTransform ( transition.toString () );
       double angle = 0;
       int dx = -sw / 2;
-      int offset = isMoveBelowZero || applyTransform ? 0 : Math.min ( 0,
+      int offset = this.isMoveBelowZero || applyTransform ? 0 : Math.min ( 0,
           ( int ) ( dx + p.getX () ) );
 
       g2.translate ( p.getX () - offset + 3, p.getY () - 10 );
@@ -1335,30 +1400,52 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         g.setColor ( getBackground () );
         g.fillRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
       }
-      if ( borderColor != null && mainLabel )
+      if ( ( this.borderColor != null ) && mainLabel )
       {
-        g.setColor ( borderColor );
+        g.setColor ( this.borderColor );
         g.drawRect ( -sw / 2 - 1, -sh / 2 - 1, sw + 2, sh + 2 );
       }
 
       int dy = +sh / 4;
       g.setColor ( this.labelColor );
-      if ( applyTransform && borderColor == null && !isOpaque () )
+      if ( applyTransform && ( this.borderColor == null ) && !isOpaque () )
       {
         // Shift label perpendicularly by the descent so it
         // doesn't cross the line.
-        dy = -metrics.getDescent ();
+        dy = -this.metrics.getDescent ();
       }
 
       for ( PrettyToken currentToken : transition.toPrettyString ()
           .getPrettyToken () )
       {
+        Font font = null;
+
+        if ( !currentToken.getStyle ().isBold ()
+            && !currentToken.getStyle ().isItalic () )
+        {
+          font = g.getFont ().deriveFont ( Font.PLAIN );
+        }
+        else if ( currentToken.getStyle ().isBold ()
+            && currentToken.getStyle ().isItalic () )
+        {
+          font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
+        }
+        else if ( currentToken.getStyle ().isBold () )
+        {
+          font = g.getFont ().deriveFont ( Font.BOLD );
+        }
+        else if ( currentToken.getStyle ().isItalic () )
+        {
+          font = g.getFont ().deriveFont ( Font.ITALIC );
+        }
+
+        g.setFont ( font );
         g.setColor ( currentToken.getStyle ().getColor () );
         char [] chars = currentToken.getChar ();
         for ( int i = 0 ; i < chars.length ; i++ )
         {
           g.drawChars ( chars, i, 1, dx, dy );
-          dx += metrics.charWidth ( chars [ i ] );
+          dx += this.metrics.charWidth ( chars [ i ] );
         }
       }
 
@@ -1417,12 +1504,12 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
   {
     if ( value instanceof EdgeView )
     {
-      view = ( EdgeView ) value;
-      installAttributes ( view );
+      this.view = ( EdgeView ) value;
+      installAttributes ( this.view );
     }
     else
     {
-      view = null;
+      this.view = null;
     }
   }
 

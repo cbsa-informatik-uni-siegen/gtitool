@@ -21,42 +21,42 @@ public enum Style
   /**
    * No style.
    */
-  NONE ( false, false, false ),
+  NONE ( false, false ),
 
   /**
    * Style of {@link State}s.
    */
-  STATE ( true, false, false ),
+  STATE ( true, false ),
 
   /**
    * Style of {@link Symbol}s.
    */
-  SYMBOL ( true, false, false ),
+  SYMBOL ( true, false ),
 
   /**
    * Style of active {@link Symbol}s.
    */
-  SYMBOL_ACTIVE ( true, false, false ),
+  SYMBOL_ACTIVE ( true, false ),
 
   /**
    * Style of error {@link Symbol}s.
    */
-  SYMBOL_ERROR ( true, false, false ),
+  SYMBOL_ERROR ( true, false ),
 
   /**
    * Style of {@link NonterminalSymbol}s.
    */
-  NONTERMINAL_SYMBOL ( true, false, false ),
+  NONTERMINAL_SYMBOL ( true, false ),
 
   /**
    * Style of {@link TerminalSymbol}s.
    */
-  TERMINAL_SYMBOL ( true, false, false ),
+  TERMINAL_SYMBOL ( true, false ),
 
   /**
    * Style of keywords.
    */
-  KEYWORD ( true, false, false );
+  KEYWORD ( true, false );
 
   /**
    * The bold value.
@@ -71,23 +71,15 @@ public enum Style
 
 
   /**
-   * The underline value.
-   */
-  private boolean underline;
-
-
-  /**
    * Allocates a new {@link Style}.
    * 
    * @param bold The bold value.
    * @param italic The italic value.
-   * @param underline The underline value.
    */
-  private Style ( boolean bold, boolean italic, boolean underline )
+  private Style ( boolean bold, boolean italic )
   {
     this.bold = bold;
     this.italic = italic;
-    this.underline = underline;
   }
 
 
@@ -168,17 +160,5 @@ public enum Style
   public final boolean isItalic ()
   {
     return this.italic;
-  }
-
-
-  /**
-   * Returns the underline value.
-   * 
-   * @return The underline value.
-   * @see #underline
-   */
-  public final boolean isUnderline ()
-  {
-    return this.underline;
   }
 }

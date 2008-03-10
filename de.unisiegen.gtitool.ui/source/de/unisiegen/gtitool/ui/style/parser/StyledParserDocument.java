@@ -373,7 +373,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
             StyleConstants.setForeground ( set, newStyle.getColor () );
             StyleConstants.setBold ( set, newStyle.isBold () );
             StyleConstants.setItalic ( set, newStyle.isItalic () );
-            StyleConstants.setUnderline ( set, newStyle.isUnderline () );
           }
           // Use the normal scanner style
           else
@@ -381,7 +380,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
             StyleConstants.setForeground ( set, style.getColor () );
             StyleConstants.setBold ( set, style.isBold () );
             StyleConstants.setItalic ( set, style.isItalic () );
-            StyleConstants.setUnderline ( set, style.isUnderline () );
           }
           setCharacterAttributes ( offset + symbol.left, symbol.right
               - symbol.left, set, true );

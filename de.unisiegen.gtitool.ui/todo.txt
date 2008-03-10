@@ -1,7 +1,5 @@
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
-CF		- Probleme beim Tabwechsel zwischen MachinePanel und GrammarPanel
-		  (Konsolengröße passt sich nicht an)
 CF		- Nicht die Farbe von Fehlern verwenden bei der Tabelle
 CF		- Um zwischen verschiedenen Versionen vom GTI Tool Daten auszutauschen,
 		  darf der Austausch nicht per ObjectOutputStream erfolgen.
@@ -18,4 +16,7 @@ BM		- Header von Tabelle entfernen
 BM		- Pretty String in Tabelle verwenden (siehe EdgeRenderer)
 BM		- Entfernen von NonTerminal und Terminals
 BM		- Toolbar Icons beim Wechsel zwischen MachinePanel und GrammarPanel
+BM		- Das Ausblenden der ToolBar Icons verursachte den Devider Location
+		  Bug. Ich habe das Ausblenden rausgenommen und ein TODOBenny
+		  hinzugefügt
 		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht

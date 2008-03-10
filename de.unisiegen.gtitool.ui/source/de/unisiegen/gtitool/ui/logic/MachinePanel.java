@@ -542,7 +542,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Add all needed listener
+   * Add all needed listener.
    */
   private final void addListener ()
   {
@@ -2606,8 +2606,10 @@ public final class MachinePanel implements EditorPanel
    */
   public final void setVisibleConsole ( boolean visible )
   {
+    System.out.println ( "test" );
     if ( visible )
     {
+      this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole
           .setRightComponent ( this.gui.jTabbedPaneConsole );
       this.gui.jSplitPaneConsole.setDividerSize ( 3 );
@@ -2620,6 +2622,7 @@ public final class MachinePanel implements EditorPanel
       this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole.setRightComponent ( null );
       this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+      this.setDividerLocationConsole = true;
     }
   }
 
@@ -2633,6 +2636,7 @@ public final class MachinePanel implements EditorPanel
   {
     if ( visible )
     {
+      this.setDividerLocationTable = false;
       this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneMachine );
       this.gui.jSplitPaneTable.setDividerSize ( 3 );
       this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
@@ -2644,6 +2648,7 @@ public final class MachinePanel implements EditorPanel
       this.setDividerLocationTable = false;
       this.gui.jSplitPaneTable.setRightComponent ( null );
       this.gui.jSplitPaneTable.setDividerSize ( 0 );
+      this.setDividerLocationTable = true;
     }
   }
 
@@ -2661,9 +2666,11 @@ public final class MachinePanel implements EditorPanel
       this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole.setRightComponent ( null );
       this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+      this.setDividerLocationConsole = true;
     }
     else
     {
+      this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole
           .setRightComponent ( this.gui.jTabbedPaneConsole );
       this.gui.jSplitPaneConsole.setDividerSize ( 3 );

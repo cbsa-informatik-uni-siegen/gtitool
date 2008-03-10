@@ -64,12 +64,6 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Flag signals if Console Preferences should be saved
-   */
-  private boolean saveConsolePreferences = true;
-
-
-  /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
@@ -96,7 +90,7 @@ public final class MainWindow implements LanguageChangedListener
     {
       exc.printStackTrace ();
     }
-    this.gui.setTitle ( "GTI Tool " + Version.MAJOR + "." + Version.MINOR + "."  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    this.gui.setTitle ( "GTI Tool " + Version.MAJOR + "." + Version.MINOR + "." //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
         + Version.MICRO );
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
@@ -158,6 +152,41 @@ public final class MainWindow implements LanguageChangedListener
         setSaveState ( modified );
       }
     };
+  }
+
+
+  /**
+   * Show or hide the buttons needed in the GrammarPanel
+   * 
+   * @param state the visible state of the buttons
+   */
+  private void activateGrammarButtons ( boolean state )
+  {
+    // TODO implement me
+  }
+
+
+  /**
+   * Show or hide the buttons needed in the MachinePanel
+   * 
+   * @param state the visible state of the buttons
+   */
+  private void activateMachineButtons ( boolean state )
+  {
+    this.gui.jSeparatorMain1.setVisible ( state );
+    this.gui.jButtonMouse.setVisible ( state );
+    this.gui.jButtonAddState.setVisible ( state );
+    this.gui.jButtonStartState.setVisible ( state );
+    this.gui.jButtonFinalState.setVisible ( state );
+    this.gui.jButtonAddTransition.setVisible ( state );
+    this.gui.jButtonEditDocument.setVisible ( state );
+
+    this.gui.jSeparatorMain2.setVisible ( state );
+    this.gui.jButtonStart.setVisible ( state );
+    this.gui.jButtonPrevious.setVisible ( state );
+    this.gui.jButtonNextStep.setVisible ( state );
+    this.gui.jButtonAutoStep.setVisible ( state );
+    this.gui.jButtonStop.setVisible ( state );
   }
 
 
@@ -262,9 +291,8 @@ public final class MainWindow implements LanguageChangedListener
     if ( ( panel instanceof MachinePanel ) )
     {
 
-      if ( ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
+      if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
           .getState () )
-          && this.saveConsolePreferences )
       {
         PreferenceManager.getInstance ().setVisibleConsole (
             this.gui.jCheckBoxMenuItemConsole.getState () );
@@ -273,6 +301,82 @@ public final class MainWindow implements LanguageChangedListener
             .getState () );
       }
     }
+  }
+
+
+  /**
+   * Use the active Editor Panel as draf for a new file
+   * 
+   * @param type Type of the new file
+   */
+  public final void handleDraftFor ( MachineType type )
+  {
+    try
+    {
+      DefaultMachineModel model = new DefaultMachineModel (
+          this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getModel ()
+              .getElement (), type.toString () );
+      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+      setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+
+    }
+    catch ( StoreException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
+          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    catch ( TransitionSymbolOnlyOneTimeException e )
+    {
+      // Do nothing
+    }
+    catch ( StateException e )
+    {
+      // Dot nothing
+    }
+    catch ( SymbolException e )
+    {
+      // Do nothing
+    }
+    catch ( AlphabetException e )
+    {
+      // Do nothing
+    }
+    catch ( TransitionException e )
+    {
+      // Do nothing
+    }
+
   }
 
 
@@ -870,15 +974,15 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
-      activateMachineButtons ( panel instanceof MachinePanel );
-      activateGrammarButtons ( panel instanceof GrammarPanel );
+      // TODOBenny This removed the divider location bug.
+      // activateMachineButtons ( panel instanceof MachinePanel );
+      // activateGrammarButtons ( panel instanceof GrammarPanel );
+      // MachinePanel
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
         this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
             .isWordEnterMode () );
-        this.saveConsolePreferences = false;
-        this.saveConsolePreferences = true;
         machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
             .getState ()
             && !machinePanel.isWordEnterMode () );
@@ -904,6 +1008,7 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.jButtonStop.setEnabled ( machinePanel.isWordNavigation () );
 
       }
+      // Grammar Panel
       else
       {
         this.gui.jCheckBoxMenuItemConsole.setVisible ( false );
@@ -920,43 +1025,6 @@ public final class MainWindow implements LanguageChangedListener
     }
     // Save status
     setSaveState ();
-  }
-
-
-  /**
-   * Show or hide the buttons needed in the GrammarPanel
-   * 
-   * @param state the visible state of the buttons
-   */
-  private void activateGrammarButtons ( boolean state )
-  {
-    // TODO implement me
-
-  }
-
-
-  /**
-   * Show or hide the buttons needed in the MachinePanel
-   * 
-   * @param state the visible state of the buttons
-   */
-  private void activateMachineButtons ( boolean state )
-  {
-    this.gui.jSeparatorMain1.setVisible ( state );
-    this.gui.jButtonMouse.setVisible ( state );
-    this.gui.jButtonAddState.setVisible ( state );
-    this.gui.jButtonStartState.setVisible ( state );
-    this.gui.jButtonFinalState.setVisible ( state );
-    this.gui.jButtonAddTransition.setVisible ( state );
-    this.gui.jButtonEditDocument.setVisible ( state );
-
-    this.gui.jSeparatorMain2.setVisible ( state );
-    this.gui.jButtonStart.setVisible ( state );
-    this.gui.jButtonPrevious.setVisible ( state );
-    this.gui.jButtonNextStep.setVisible ( state );
-    this.gui.jButtonAutoStep.setVisible ( state );
-    this.gui.jButtonStop.setVisible ( state );
-
   }
 
 
@@ -1731,81 +1799,5 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jButtonNextStep.setEnabled ( state );
     this.gui.jButtonAutoStep.setEnabled ( state );
     this.gui.jButtonStop.setEnabled ( state );
-  }
-
-
-  /**
-   * Use the active Editor Panel as draf for a new file
-   * 
-   * @param type Type of the new file
-   */
-  public final void handleDraftFor ( MachineType type )
-  {
-    try
-    {
-      DefaultMachineModel model = new DefaultMachineModel (
-          this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ().getModel ()
-              .getElement (), type.toString () );
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
-
-      TreeSet < String > nameList = new TreeSet < String > ();
-      int count = 0;
-      for ( EditorPanel current : this.gui.jGTITabbedPaneMain )
-      {
-        if ( current.getFile () == null )
-        {
-          nameList.add ( current.getName () );
-          count++ ;
-        }
-      }
-
-      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
-      while ( nameList.contains ( name ) )
-      {
-        count++ ;
-        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
-      }
-
-      newEditorPanel.setName ( name );
-      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
-      newEditorPanel
-          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
-
-      // toolbar items
-      setToolBarEditItemState ( true );
-
-    }
-    catch ( StoreException exc )
-    {
-      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
-          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
-      infoDialog.show ();
-    }
-    catch ( TransitionSymbolOnlyOneTimeException e )
-    {
-      // Do nothing
-    }
-    catch ( StateException e )
-    {
-      // Dot nothing
-    }
-    catch ( SymbolException e )
-    {
-      // Do nothing
-    }
-    catch ( AlphabetException e )
-    {
-      // Do nothing
-    }
-    catch ( TransitionException e )
-    {
-      // Do nothing
-    }
-
   }
 }

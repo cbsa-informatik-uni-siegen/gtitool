@@ -2606,7 +2606,6 @@ public final class MachinePanel implements EditorPanel
    */
   public final void setVisibleConsole ( boolean visible )
   {
-    System.out.println ( "test" );
     if ( visible )
     {
       this.setDividerLocationConsole = false;

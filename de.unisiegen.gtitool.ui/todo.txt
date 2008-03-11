@@ -1,8 +1,6 @@
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 CF		- Nicht die Farbe von Fehlern verwenden bei der Tabelle
-CF		- Um zwischen verschiedenen Versionen vom GTI Tool Daten auszutauschen,
-		  darf der Austausch nicht per ObjectOutputStream erfolgen.
 BM		- In den Production Dialog das neue StyledProductionParserPanel
 		  einbauen
 BM		- Beim Neu-Dialog im Grammatik Teil stimmen die Abstände nicht:

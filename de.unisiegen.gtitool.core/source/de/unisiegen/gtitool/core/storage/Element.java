@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.storage;
 
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -144,6 +145,75 @@ public final class Element implements Serializable
   public final String getName ()
   {
     return this.name;
+  }
+
+
+  /**
+   * Returns the string to store.
+   * 
+   * @return The string to store.
+   * @throws IOException If an I/O error occurs.
+   */
+  public final String getStoreString () throws IOException
+  {
+    StringBuilder result = new StringBuilder ();
+    result.append ( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ); //$NON-NLS-1$
+    result.append ( System.getProperty ( "line.separator" ) ); //$NON-NLS-1$
+    result.append ( System.getProperty ( "line.separator" ) ); //$NON-NLS-1$
+    result.append ( getStoreString ( 0 ) );
+    return result.toString ();
+  }
+
+
+  /**
+   * Returns the string to store.
+   * 
+   * @param indent The used indent.
+   * @return The string to store.
+   * @throws IOException If an I/O error occurs.
+   */
+  private final String getStoreString ( int indent ) throws IOException
+  {
+    StringBuilder result = new StringBuilder ();
+    StringBuilder indentText = new StringBuilder ();
+    for ( int i = 0 ; i < indent ; i++ )
+    {
+      indentText.append ( " " ); //$NON-NLS-1$
+    }
+    result.append ( indentText.toString () );
+    result.append ( "<" ); //$NON-NLS-1$
+    result.append ( this.name );
+    for ( Attribute current : this.attributeList )
+    {
+      result.append ( " " ); //$NON-NLS-1$
+      result.append ( current.getName () );
+      result.append ( "=" ); //$NON-NLS-1$
+      result.append ( "\"" ); //$NON-NLS-1$
+      result.append ( current.getValue () );
+      result.append ( "\"" ); //$NON-NLS-1$
+    }
+    if ( this.elementList.size () == 0 )
+    {
+      result.append ( "/>" ); //$NON-NLS-1$
+    }
+    else
+    {
+      result.append ( ">" ); //$NON-NLS-1$
+      result.append ( System.getProperty ( "line.separator" ) ); //$NON-NLS-1$
+      for ( Element current : this.elementList )
+      {
+        result.append ( current.getStoreString ( indent + 2 ) );
+      }
+      result.append ( indentText.toString () );
+      result.append ( "</" ); //$NON-NLS-1$
+      result.append ( this.name );
+      result.append ( ">" ); //$NON-NLS-1$
+    }
+    if ( indent != 0 )
+    {
+      result.append ( System.getProperty ( "line.separator" ) ); //$NON-NLS-1$
+    }
+    return result.toString ();
   }
 
 

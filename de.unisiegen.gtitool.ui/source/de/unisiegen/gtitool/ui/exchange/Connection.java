@@ -1,12 +1,19 @@
 package de.unisiegen.gtitool.ui.exchange;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import javax.swing.SwingUtilities;
+
+import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -25,15 +32,15 @@ public abstract class Connection extends Thread
 
 
   /**
-   * The {@link ObjectInputStream}.
+   * The {@link BufferedReader}.
    */
-  private ObjectInputStream input;
+  private BufferedReader input;
 
 
   /**
-   * The {@link ObjectOutputStream}.
+   * The {@link OutputStream}.
    */
-  private ObjectOutputStream output;
+  private BufferedWriter output;
 
 
   /**
@@ -132,13 +139,17 @@ public abstract class Connection extends Thread
       }
       if ( first )
       {
-        this.input = new ObjectInputStream ( this.socket.getInputStream () );
-        this.output = new ObjectOutputStream ( this.socket.getOutputStream () );
+        this.input = new BufferedReader ( new InputStreamReader ( this.socket
+            .getInputStream () ) );
+        this.output = new BufferedWriter ( new OutputStreamWriter ( this.socket
+            .getOutputStream () ) );
       }
       else
       {
-        this.output = new ObjectOutputStream ( this.socket.getOutputStream () );
-        this.input = new ObjectInputStream ( this.socket.getInputStream () );
+        this.output = new BufferedWriter ( new OutputStreamWriter ( this.socket
+            .getOutputStream () ) );
+        this.input = new BufferedReader ( new InputStreamReader ( this.socket
+            .getInputStream () ) );
       }
     }
     catch ( IOException exc )
@@ -218,10 +229,22 @@ public abstract class Connection extends Thread
   {
     try
     {
-      return ( Exchange ) Connection.this.input.readObject ();
+      String description = Connection.this.input.readLine ();
+
+      StringBuilder elementText = new StringBuilder ();
+      String line = null;
+      while ( ( line = Connection.this.input.readLine () ) != null )
+      {
+        elementText.append ( line );
+        elementText.append ( System.getProperty ( "line.separator" ) ); //$NON-NLS-1$
+      }
+      Element element = Storage.getInstance ().load ( elementText.toString () );
+
+      return new Exchange ( element, description );
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
@@ -245,12 +268,24 @@ public abstract class Connection extends Thread
   {
     try
     {
-      this.output.writeObject ( exchange );
+      this.output.write ( exchange.getDescription () );
+      this.output.newLine ();
+      this.output.write ( exchange.getElement ().getStoreString () );
+      this.output.newLine ();
+      this.output.flush ();
     }
-    catch ( IOException exc )
+    catch ( Exception exc )
     {
       exc.printStackTrace ();
-      System.exit ( 1 );
+      SwingUtilities.invokeLater ( new Runnable ()
+      {
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
+        {
+          Connection.this.network.close ();
+        }
+      } );
     }
   }
 

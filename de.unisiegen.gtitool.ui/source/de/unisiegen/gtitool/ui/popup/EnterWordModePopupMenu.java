@@ -103,15 +103,16 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       {
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
-          EnterWordModePopupMenu.this.mainWindow.jButtonStart
+          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStart
               .setEnabled ( false );
-          EnterWordModePopupMenu.this.mainWindow.jButtonNextStep
+          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonNextStep
               .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jButtonPrevious
+          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonPrevious
               .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep
+          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarToggleButtonAutoStep
               .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jButtonStop.setEnabled ( true );
+          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStop
+              .setEnabled ( true );
         }
       }
     } );
@@ -167,14 +168,16 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        EnterWordModePopupMenu.this.mainWindow.jButtonStart.setEnabled ( true );
-        EnterWordModePopupMenu.this.mainWindow.jButtonNextStep
+        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStart
+            .setEnabled ( true );
+        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonNextStep
             .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jButtonPrevious
+        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonPrevious
             .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jButtonAutoStep
+        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarToggleButtonAutoStep
             .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jButtonStop.setEnabled ( false );
+        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStop
+            .setEnabled ( false );
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }
     } );

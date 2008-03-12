@@ -116,10 +116,10 @@ public final class MainWindow implements LanguageChangedListener
     setToolBarEditItemState ( false );
     setToolBarEnterWordItemState ( false );
 
-    this.gui.jButtonNextStep.setEnabled ( false );
-    this.gui.jButtonPrevious.setEnabled ( false );
-    this.gui.jButtonAutoStep.setEnabled ( false );
-    this.gui.jButtonStop.setEnabled ( false );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
+    this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
+    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
 
     // Console and table visibility
     this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
@@ -173,20 +173,20 @@ public final class MainWindow implements LanguageChangedListener
    */
   private void activateMachineButtons ( boolean state )
   {
-    this.gui.jSeparatorMain1.setVisible ( state );
-    this.gui.jButtonMouse.setVisible ( state );
-    this.gui.jButtonAddState.setVisible ( state );
-    this.gui.jButtonStartState.setVisible ( state );
-    this.gui.jButtonFinalState.setVisible ( state );
-    this.gui.jButtonAddTransition.setVisible ( state );
-    this.gui.jButtonEditDocument.setVisible ( state );
+    this.gui.jSeparatorNavigation.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonMouse.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonAddState.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonStartState.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonFinalState.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonAddTransition.setVisible ( state );
+    this.gui.jGTIToolBarButtonEditDocument.setVisible ( state );
 
-    this.gui.jSeparatorMain2.setVisible ( state );
-    this.gui.jButtonStart.setVisible ( state );
-    this.gui.jButtonPrevious.setVisible ( state );
-    this.gui.jButtonNextStep.setVisible ( state );
-    this.gui.jButtonAutoStep.setVisible ( state );
-    this.gui.jButtonStop.setVisible ( state );
+    this.gui.jSeparatorEditNavigation.setVisible ( state );
+    this.gui.jGTIToolBarButtonStart.setVisible ( state );
+    this.gui.jGTIToolBarButtonPrevious.setVisible ( state );
+    this.gui.jGTIToolBarButtonNextStep.setVisible ( state );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setVisible ( state );
+    this.gui.jGTIToolBarButtonStop.setVisible ( state );
   }
 
 
@@ -217,7 +217,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleAutoStepStopped ()
   {
-    this.gui.jButtonAutoStep.setSelected ( false );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
   }
 
 
@@ -255,12 +255,12 @@ public final class MainWindow implements LanguageChangedListener
       setSaveState ( false );
 
       // Toolbar items
-      this.gui.jButtonAddState.setEnabled ( false );
-      this.gui.jButtonAddTransition.setEnabled ( false );
-      this.gui.jButtonFinalState.setEnabled ( false );
-      this.gui.jButtonMouse.setEnabled ( false );
-      this.gui.jButtonStartState.setEnabled ( false );
-      this.gui.jButtonEditDocument.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonAddState.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonAddTransition.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonFinalState.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonMouse.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonStartState.setEnabled ( false );
+      this.gui.jGTIToolBarButtonEditDocument.setEnabled ( false );
     }
     return true;
   }
@@ -376,14 +376,13 @@ public final class MainWindow implements LanguageChangedListener
     {
       // Do nothing
     }
-
   }
 
 
   /**
-   * Handle Edit Alphabet Action in the Toolbar
+   * Handle edit document action in the toolbar.
    */
-  public final void handleEditAlphabet ()
+  public final void handleEditDocument ()
   {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     panel.handleToolbarEditDocument ();
@@ -468,7 +467,7 @@ public final class MainWindow implements LanguageChangedListener
       return;
     }
     setToolBarEditItemState ( false );
-    this.gui.jButtonStart.setEnabled ( true );
+    this.gui.jGTIToolBarButtonStart.setEnabled ( true );
     machinePanel.handleEnterWord ();
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
     machinePanel.setWordEnterMode ( true );
@@ -999,12 +998,17 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.jCheckBoxMenuItemTable.setVisible ( true );
 
         // Set the status of the word navigation icons
-        this.gui.jButtonStart.setEnabled ( machinePanel.isWordEnterMode ()
+        this.gui.jGTIToolBarButtonStart.setEnabled ( machinePanel
+            .isWordEnterMode ()
             && !machinePanel.isWordNavigation () );
-        this.gui.jButtonPrevious.setEnabled ( machinePanel.isWordNavigation () );
-        this.gui.jButtonNextStep.setEnabled ( machinePanel.isWordNavigation () );
-        this.gui.jButtonAutoStep.setEnabled ( machinePanel.isWordNavigation () );
-        this.gui.jButtonStop.setEnabled ( machinePanel.isWordNavigation () );
+        this.gui.jGTIToolBarButtonPrevious.setEnabled ( machinePanel
+            .isWordNavigation () );
+        this.gui.jGTIToolBarButtonNextStep.setEnabled ( machinePanel
+            .isWordNavigation () );
+        this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( machinePanel
+            .isWordNavigation () );
+        this.gui.jGTIToolBarButtonStop.setEnabled ( machinePanel
+            .isWordNavigation () );
 
       }
       // Grammar Panel
@@ -1017,10 +1021,10 @@ public final class MainWindow implements LanguageChangedListener
       }
       // Undo
       this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
-      this.gui.jButtonUndo.setEnabled ( panel.isUndoAble () );
+      this.gui.jGTIToolBarButtonUndo.setEnabled ( panel.isUndoAble () );
       // Redo
       this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble () );
-      this.gui.jButtonRedo.setEnabled ( panel.isRedoAble () );
+      this.gui.jGTIToolBarButtonRedo.setEnabled ( panel.isRedoAble () );
     }
     // Save status
     setSaveState ();
@@ -1314,11 +1318,11 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( machinePanel.handleWordStart () )
     {
-      this.gui.jButtonStart.setEnabled ( false );
-      this.gui.jButtonNextStep.setEnabled ( true );
-      this.gui.jButtonPrevious.setEnabled ( true );
-      this.gui.jButtonAutoStep.setEnabled ( true );
-      this.gui.jButtonStop.setEnabled ( true );
+      this.gui.jGTIToolBarButtonStart.setEnabled ( false );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
+      this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
     }
   }
 
@@ -1335,11 +1339,11 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    this.gui.jButtonStart.setEnabled ( true );
-    this.gui.jButtonNextStep.setEnabled ( false );
-    this.gui.jButtonPrevious.setEnabled ( false );
-    this.gui.jButtonAutoStep.setEnabled ( false );
-    this.gui.jButtonStop.setEnabled ( false );
+    this.gui.jGTIToolBarButtonStart.setEnabled ( true );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
+    this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
+    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
     machinePanel.handleWordStop ();
   }
 
@@ -1368,7 +1372,7 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemOpen.setMnemonic ( Messages.getString (
         "MainWindow.OpenMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jButtonOpen.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonOpen.setToolTipText ( Messages
         .getString ( "MainWindow.OpenToolTip" ) ); //$NON-NLS-1$
     // Close
     MainWindow.this.gui.jMenuItemClose.setText ( Messages
@@ -1385,14 +1389,14 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemSave.setMnemonic ( Messages.getString (
         "MainWindow.SaveMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jButtonSave.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonSave.setToolTipText ( Messages
         .getString ( "MainWindow.SaveToolTip" ) ); //$NON-NLS-1$
     // SaveAs
     MainWindow.this.gui.jMenuItemSaveAs.setText ( Messages
         .getString ( "MainWindow.SaveAs" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemSaveAs.setMnemonic ( Messages.getString (
         "MainWindow.SaveAsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jButtonSaveAs.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonSaveAs.setToolTipText ( Messages
         .getString ( "MainWindow.SaveAsToolTip" ) ); //$NON-NLS-1$
     // SaveAll
     MainWindow.this.gui.jMenuItemSaveAll.setText ( Messages
@@ -1513,37 +1517,37 @@ public final class MainWindow implements LanguageChangedListener
     MainWindow.this.gui.jMenuItemAbout.setMnemonic ( Messages.getString (
         "MainWindow.AboutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Mouse
-    MainWindow.this.gui.jButtonMouse.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarToggleButtonMouse.setToolTipText ( Messages
         .getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
     // Add state
-    MainWindow.this.gui.jButtonAddState.setToolTipText ( Messages
-        .getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarToggleButtonAddState
+        .setToolTipText ( Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
     // Add transition
-    MainWindow.this.gui.jButtonAddTransition.setToolTipText ( Messages
-        .getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarToggleButtonAddTransition
+        .setToolTipText ( Messages.getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
     // Start state
-    MainWindow.this.gui.jButtonStartState.setToolTipText ( Messages
-        .getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarToggleButtonStartState
+        .setToolTipText ( Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
     // Final state
-    MainWindow.this.gui.jButtonFinalState.setToolTipText ( Messages
-        .getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarToggleButtonFinalState
+        .setToolTipText ( Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
     // Edit Document
-    MainWindow.this.gui.jButtonEditDocument.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonEditDocument.setToolTipText ( Messages
         .getString ( "MachinePanel.EditDocument" ) ); //$NON-NLS-1$
     // Previous Step
-    MainWindow.this.gui.jButtonPrevious.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonPrevious.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
     // Start Word
-    MainWindow.this.gui.jButtonStart.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonStart.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
     // Next Step
-    MainWindow.this.gui.jButtonNextStep.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonNextStep.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
     // Auto Step
-    MainWindow.this.gui.jButtonAutoStep.setToolTipText ( Messages
-        .getString ( "MachinePanel.WordModeAutoStep" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarToggleButtonAutoStep
+        .setToolTipText ( Messages.getString ( "MachinePanel.WordModeAutoStep" ) ); //$NON-NLS-1$
     // Stop Word
-    MainWindow.this.gui.jButtonStop.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonStop.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
   }
 
@@ -1691,7 +1695,7 @@ public final class MainWindow implements LanguageChangedListener
   private final void setGeneralStates ( boolean state )
   {
     // SaveAs
-    this.gui.jButtonSaveAs.setEnabled ( state );
+    this.gui.jGTIToolBarButtonSaveAs.setEnabled ( state );
     this.gui.jMenuItemSaveAs.setEnabled ( state );
     // SaveAll
     this.gui.jMenuItemSaveAll.setEnabled ( state );
@@ -1710,10 +1714,10 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemPaste.setVisible ( false );
     // Undo
     this.gui.jMenuItemUndo.setEnabled ( false );
-    this.gui.jButtonUndo.setEnabled ( false );
+    this.gui.jGTIToolBarButtonUndo.setEnabled ( false );
     // Redo
     this.gui.jMenuItemRedo.setEnabled ( false );
-    this.gui.jButtonRedo.setEnabled ( false );
+    this.gui.jGTIToolBarButtonRedo.setEnabled ( false );
     // Separator
     this.gui.jSeparatorEdit1.setVisible ( false );
     this.gui.jSeparatorEdit2.setVisible ( false );
@@ -1765,7 +1769,7 @@ public final class MainWindow implements LanguageChangedListener
       throw new IllegalArgumentException ( "save button error" ); //$NON-NLS-1$
     }
 
-    this.gui.jButtonSave.setEnabled ( state );
+    this.gui.jGTIToolBarButtonSave.setEnabled ( state );
     this.gui.jMenuItemSave.setEnabled ( state );
   }
 
@@ -1777,12 +1781,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setToolBarEditItemState ( boolean state )
   {
-    this.gui.jButtonAddState.setEnabled ( state );
-    this.gui.jButtonAddTransition.setEnabled ( state );
-    this.gui.jButtonFinalState.setEnabled ( state );
-    this.gui.jButtonMouse.setEnabled ( state );
-    this.gui.jButtonStartState.setEnabled ( state );
-    this.gui.jButtonEditDocument.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonAddState.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonAddTransition.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonFinalState.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonMouse.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonStartState.setEnabled ( state );
+    this.gui.jGTIToolBarButtonEditDocument.setEnabled ( state );
   }
 
 
@@ -1793,10 +1797,10 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setToolBarEnterWordItemState ( boolean state )
   {
-    this.gui.jButtonPrevious.setEnabled ( state );
-    this.gui.jButtonStart.setEnabled ( state );
-    this.gui.jButtonNextStep.setEnabled ( state );
-    this.gui.jButtonAutoStep.setEnabled ( state );
-    this.gui.jButtonStop.setEnabled ( state );
+    this.gui.jGTIToolBarButtonPrevious.setEnabled ( state );
+    this.gui.jGTIToolBarButtonStart.setEnabled ( state );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( state );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( state );
+    this.gui.jGTIToolBarButtonStop.setEnabled ( state );
   }
 }

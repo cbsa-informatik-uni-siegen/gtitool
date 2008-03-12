@@ -1916,7 +1916,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+                .setSelected ( true );
             break;
           }
         }
@@ -2060,7 +2061,8 @@ public final class MachinePanel implements EditorPanel
             case WITH_RETURN_TO_MOUSE :
             {
               // Return to the normal Mouse after every click
-              MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+              MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+                  .setSelected ( true );
               break;
             }
           }
@@ -2148,7 +2150,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+                .setSelected ( true );
             break;
           }
         }
@@ -2336,7 +2339,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+                .setSelected ( true );
             break;
           }
         }
@@ -2433,7 +2437,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jButtonMouse.setSelected ( true );
+            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+                .setSelected ( true );
             break;
           }
         }

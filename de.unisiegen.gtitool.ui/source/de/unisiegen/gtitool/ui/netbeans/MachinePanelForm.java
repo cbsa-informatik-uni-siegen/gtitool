@@ -70,19 +70,14 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jPanelTable.setLayout(new java.awt.GridBagLayout());
 
         jGTITableMachine.setFocusable(false);
-        jGTITableMachine.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jGTITableMachineMouseMoved(evt);
+        jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableMachineMouseExited(evt);
             }
         });
         jGTITableMachine.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableMachineFocusLost(evt);
-            }
-        });
-        jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jGTITableMachineMouseExited(evt);
             }
         });
 
@@ -112,19 +107,14 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
         jTabbedPaneConsole.setFocusable(false);
         jGTITableErrors.setFocusable(false);
-        jGTITableErrors.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jGTITableErrorsMouseMoved(evt);
+        jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableErrorsMouseExited(evt);
             }
         });
         jGTITableErrors.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableErrorsFocusLost(evt);
-            }
-        });
-        jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jGTITableErrorsMouseExited(evt);
             }
         });
 
@@ -134,19 +124,14 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jScrollPaneErrors); // NOI18N
 
         jGTITableWarnings.setFocusable(false);
-        jGTITableWarnings.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jGTITableWarningsMouseMoved(evt);
+        jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableWarningsMouseExited(evt);
             }
         });
         jGTITableWarnings.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jGTITableWarningsFocusLost(evt);
-            }
-        });
-        jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jGTITableWarningsMouseExited(evt);
             }
         });
 
@@ -181,10 +166,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jGTITableMachineMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseMoved
-      this.logic.handleMachineTableMouseMoved(evt);
-    }//GEN-LAST:event_jGTITableMachineMouseMoved
-
     private void jGTITableMachineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseExited
       this.logic.handleMachineTableMouseExited(evt);
     }//GEN-LAST:event_jGTITableMachineMouseExited
@@ -204,14 +185,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
     private void jGTITableWarningsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableWarningsFocusLost
       this.logic.handleConsoleTableFocusLost(evt);
     }//GEN-LAST:event_jGTITableWarningsFocusLost
-
-    private void jGTITableWarningsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableWarningsMouseMoved
-      this.logic.handleConsoleTableMouseMoved(evt);
-    }//GEN-LAST:event_jGTITableWarningsMouseMoved
-
-    private void jGTITableErrorsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableErrorsMouseMoved
-      this.logic.handleConsoleTableMouseMoved(evt);
-    }//GEN-LAST:event_jGTITableErrorsMouseMoved
 
     private void jGTITableErrorsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableErrorsFocusLost
       this.logic.handleConsoleTableFocusLost(evt);

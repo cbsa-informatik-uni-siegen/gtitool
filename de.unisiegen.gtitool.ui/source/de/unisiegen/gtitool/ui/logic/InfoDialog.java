@@ -47,8 +47,10 @@ public final class InfoDialog
     logger.debug ( "allocate a new info dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new InfoDialogForm ( this, parent );
+    this.gui.jTextAreaInfo.setCursor ( null );
     this.gui.jTextAreaInfo.setText ( text );
     this.gui.setTitle ( title );
+    this.gui.pack ();
   }
 
 

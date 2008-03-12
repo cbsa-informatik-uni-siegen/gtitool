@@ -111,9 +111,8 @@
                             <Property name="focusable" type="boolean" value="false"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jGTITableMachineMouseMoved"/>
-                            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableMachineFocusLost"/>
                             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableMachineMouseExited"/>
+                            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableMachineFocusLost"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -169,9 +168,8 @@
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseMoved"/>
-                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableErrorsFocusLost"/>
                         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseExited"/>
+                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableErrorsFocusLost"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -200,9 +198,8 @@
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarningsMouseMoved"/>
-                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableWarningsFocusLost"/>
                         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarningsMouseExited"/>
+                        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableWarningsFocusLost"/>
                       </Events>
                     </Component>
                   </SubComponents>

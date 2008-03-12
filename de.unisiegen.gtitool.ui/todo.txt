@@ -1,6 +1,5 @@
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
-CF		- Nicht die Farbe von Fehlern verwenden bei der Tabelle
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 BM		- In den Production Dialog das neue StyledProductionParserPanel
 		  einbauen

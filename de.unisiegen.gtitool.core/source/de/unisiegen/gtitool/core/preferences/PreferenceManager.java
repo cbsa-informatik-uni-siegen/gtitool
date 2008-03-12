@@ -158,7 +158,7 @@ public class PreferenceManager
    * The default {@link Color} of a {@link NonterminalSymbol}.
    */
   public static final Color DEFAULT_NONTERMINAL_SYMBOL_COLOR = new Color ( 0,
-      0, 127 );
+      127, 255 );
 
 
   /**

@@ -60,7 +60,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         toolbarButton = new javax.swing.ButtonGroup();
         jToolBarMain = new javax.swing.JToolBar();
         jToolBarFile = new javax.swing.JToolBar();
-        jButtonNew = new javax.swing.JButton();
+        jGTIToolBarButtonNew = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jButtonOpen = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonSaveAs = new javax.swing.JButton();
@@ -137,20 +137,16 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarFile.setFloatable(false);
         jToolBarFile.setBorderPainted(false);
         jToolBarFile.setOpaque(false);
-        jButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
-        jButtonNew.setBorderPainted(false);
-        jButtonNew.setFocusPainted(false);
-        jButtonNew.setFocusable(false);
-        jButtonNew.setOpaque(false);
-        jButtonNew.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
+        jGTIToolBarButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                handleNew(evt);
+                jGTIToolBarButtonNewActionPerformed(evt);
             }
         });
 
-        jToolBarFile.add(jButtonNew);
+        jToolBarFile.add(jGTIToolBarButtonNew);
 
         jButtonOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open24.png")));
         jButtonOpen.setToolTipText(bundle.getString("MainWindow.OpenToolTip")); // NOI18N
@@ -244,6 +240,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jSeparatorMain2.setMaximumSize(new java.awt.Dimension(5, 32));
         jToolBarMain.add(jSeparatorMain2);
 
+        jToolBar.setBorder(null);
         jToolBar.setFloatable(false);
         jToolBar.setBorderPainted(false);
         jToolBar.setOpaque(false);
@@ -755,8 +752,12 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBarMain);
 
-        setBounds(0, 0, 662, 450);
+        setBounds(0, 0, 708, 450);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIToolBarButtonNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonNewActionPerformed
+        this.logic.handleNew();
+    }//GEN-LAST:event_jGTIToolBarButtonNewActionPerformed
 
     private void jMenuItemExchangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExchangeActionPerformed
         this.logic.handleExchange();
@@ -905,7 +906,6 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JButton jButtonEditDocument;
     public javax.swing.JToggleButton jButtonFinalState;
     public javax.swing.JToggleButton jButtonMouse;
-    public javax.swing.JButton jButtonNew;
     public javax.swing.JButton jButtonNextStep;
     public javax.swing.JButton jButtonOpen;
     public javax.swing.JButton jButtonPrevious;
@@ -919,6 +919,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneMain;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
     public javax.swing.JMenuBar jMenuBarMain;
     public javax.swing.JMenu jMenuDraft;
     public javax.swing.JMenu jMenuEdit;

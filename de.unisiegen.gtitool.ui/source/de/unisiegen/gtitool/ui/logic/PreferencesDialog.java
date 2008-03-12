@@ -373,22 +373,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link Logger} for this class.
+   * The index of the alphabet tab.
    */
-  private static final Logger logger = Logger
-      .getLogger ( PreferencesDialog.class );
-
-
-  /**
-   * The index of the general tab.
-   */
-  private static final int GENERAL_TAB_INDEX = 0;
-
-
-  /**
-   * The index of the view tab.
-   */
-  private static final int VIEW_TAB_INDEX = 1;
+  private static final int ALPHABET_TAB_INDEX = 3;
 
 
   /**
@@ -398,9 +385,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The index of the alphabet tab.
+   * The index of the general tab.
    */
-  private static final int ALPHABET_TAB_INDEX = 3;
+  private static final int GENERAL_TAB_INDEX = 0;
 
 
   /**
@@ -410,114 +397,40 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link PreferencesDialogForm}.
+   * The {@link Logger} for this class.
    */
-  private PreferencesDialogForm gui;
+  private static final Logger logger = Logger
+      .getLogger ( PreferencesDialog.class );
 
 
   /**
-   * The parent {@link JFrame}.
+   * The index of the view tab.
    */
-  private JFrame parent;
+  private static final int VIEW_TAB_INDEX = 1;
 
 
   /**
-   * The {@link LanguageComboBoxModel}.
+   * The {@link AlphabetItem}.
    */
-  private LanguageComboBoxModel languageComboBoxModel;
+  private AlphabetItem alphabetItem;
 
 
   /**
-   * The {@link MouseSelectionComboBoxModel}.
+   * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
-  private MouseSelectionComboBoxModel mouseSelectionComboBoxModel;
-
-
-  /**
-   * The {@link TransitionComboBoxModel}.
-   */
-  private TransitionComboBoxModel transitionComboBoxModel;
-
-
-  /**
-   * The {@link DefaultComboBoxModel} of the languages.
-   */
-  private LookAndFeelComboBoxModel lookAndFeelComboBoxModel;
-
-
-  /**
-   * The {@link ColorItem} of the {@link State}.
-   */
-  private ColorItem colorItemStateBackground;
-
-
-  /**
-   * The {@link ColorItem} of the selected {@link State}.
-   */
-  private ColorItem colorItemStateSelected;
-
-
-  /**
-   * The {@link ColorItem} of the selected {@link Transition}.
-   */
-  private ColorItem colorItemTransitionSelected;
-
-
-  /**
-   * The {@link ColorItem} of the active {@link State}.
-   */
-  private ColorItem colorItemStateActive;
-
-
-  /**
-   * The {@link ColorItem} of the active {@link Symbol}.
-   */
-  private ColorItem colorItemSymbolActive;
-
-
-  /**
-   * The {@link ColorItem} of the active {@link Transition}.
-   */
-  private ColorItem colorItemTransitionActive;
-
-
-  /**
-   * The {@link ColorItem} of the start {@link State}.
-   */
-  private ColorItem colorItemStateStart;
-  /**
-   * The {@link ColorItem} of the final {@link State}.
-   */
-  private ColorItem colorItemStateFinal;
-
-  /**
-   * The {@link ColorItem} of the error {@link State}.
-   */
-  private ColorItem colorItemStateError;
-
-
-  /**
-   * The {@link ColorItem} of the error {@link Symbol}.
-   */
-  private ColorItem colorItemSymbolError;
-
-
-  /**
-   * The {@link ColorItem} of the {@link Transition}.
-   */
-  private ColorItem colorItemTransition;
-
-
-  /**
-   * The {@link ColorItem} of the error {@link Transition}.
-   */
-  private ColorItem colorItemTransitionError;
+  private ColorItem colorItemNonterminalSymbol;
 
 
   /**
    * The {@link ColorItem} of the parser error.
    */
   private ColorItem colorItemParserError;
+
+
+  /**
+   * The {@link ColorItem} of the parser highlighting.
+   */
+  private ColorItem colorItemParserHighlighting;
 
 
   /**
@@ -533,15 +446,45 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link ColorItem} of the parser highlighting.
-   */
-  private ColorItem colorItemParserHighlighting;
-
-
-  /**
    * The {@link ColorItem} of the parser {@link State}.
    */
   private ColorItem colorItemState;
+
+
+  /**
+   * The {@link ColorItem} of the active {@link State}.
+   */
+  private ColorItem colorItemStateActive;
+
+
+  /**
+   * The {@link ColorItem} of the {@link State}.
+   */
+  private ColorItem colorItemStateBackground;
+
+
+  /**
+   * The {@link ColorItem} of the error {@link State}.
+   */
+  private ColorItem colorItemStateError;
+
+
+  /**
+   * The {@link ColorItem} of the final {@link State}.
+   */
+  private ColorItem colorItemStateFinal;
+
+
+  /**
+   * The {@link ColorItem} of the selected {@link State}.
+   */
+  private ColorItem colorItemStateSelected;
+
+
+  /**
+   * The {@link ColorItem} of the start {@link State}.
+   */
+  private ColorItem colorItemStateStart;
 
 
   /**
@@ -551,9 +494,15 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
+   * The {@link ColorItem} of the active {@link Symbol}.
    */
-  private ColorItem colorItemNonterminalSymbol;
+  private ColorItem colorItemSymbolActive;
+
+
+  /**
+   * The {@link ColorItem} of the error {@link Symbol}.
+   */
+  private ColorItem colorItemSymbolError;
 
 
   /**
@@ -563,186 +512,33 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The {@link AlphabetItem}.
+   * The {@link ColorItem} of the {@link Transition}.
    */
-  private AlphabetItem alphabetItem;
+  private ColorItem colorItemTransition;
 
 
   /**
-   * The push down {@link AlphabetItem}.
+   * The {@link ColorItem} of the active {@link Transition}.
    */
-  private AlphabetItem pushDownAlphabetItem;
+  private ColorItem colorItemTransitionActive;
 
 
   /**
-   * The {@link NonterminalSymbolSetItem}.
+   * The {@link ColorItem} of the error {@link Transition}.
    */
-  private NonterminalSymbolSetItem nonterminalSymbolSetItem;
+  private ColorItem colorItemTransitionError;
 
 
   /**
-   * The {@link TerminalSymbolSetItem}.
+   * The {@link ColorItem} of the selected {@link Transition}.
    */
-  private TerminalSymbolSetItem terminalSymbolSetItem;
+  private ColorItem colorItemTransitionSelected;
 
 
   /**
-   * The initial last active tab.
+   * The {@link PreferencesDialogForm}.
    */
-  private int initialLastActiveTab;
-
-
-  /**
-   * The initial {@link LanguageItem}.
-   */
-  private LanguageItem initialLanguageItem;
-
-
-  /**
-   * The initial {@link MouseSelectionItem}.
-   */
-  private MouseSelectionItem initialMouseSelectionItem;
-
-
-  /**
-   * The initial {@link MouseSelectionItem}.
-   */
-  private TransitionItem initialTransitionItem;
-
-
-  /**
-   * The initial {@link LookAndFeelItem}.
-   */
-  private LookAndFeelItem initialLookAndFeel;
-
-
-  /**
-   * The initial {@link ColorItem} of the {@link State}.
-   */
-  private ColorItem initialColorItemStateBackground;
-
-
-  /**
-   * The initial {@link ColorItem} of the selected {@link State}.
-   */
-  private ColorItem initialColorItemStateSelected;
-
-
-  /**
-   * The initial {@link ColorItem} of the selected {@link Transition}.
-   */
-  private ColorItem initialColorItemTransitionSelected;
-
-
-  /**
-   * The initial {@link ColorItem} of the active {@link State}.
-   */
-  private ColorItem initialColorItemStateActive;
-
-
-  /**
-   * The initial {@link ColorItem} of the active {@link Symbol}.
-   */
-  private ColorItem initialColorItemSymbolActive;
-
-
-  /**
-   * The initial {@link ColorItem} of the active {@link Transition}.
-   */
-  private ColorItem initialColorItemTransitionActive;
-
-
-  /**
-   * The initial {@link ColorItem} of the start {@link State}.
-   */
-  private ColorItem initialColorItemStateStart;
-
-  /**
-   * The initial {@link ColorItem} of the final {@link State}.
-   */
-  private ColorItem initialColorItemStateFinal;
-  /**
-   * The initial {@link ColorItem} of the error {@link State}.
-   */
-  private ColorItem initialColorItemStateError;
-
-
-  /**
-   * The initial {@link ColorItem} of the error {@link Symbol}.
-   */
-  private ColorItem initialColorItemSymbolError;
-
-
-  /**
-   * The initial {@link ColorItem} of the {@link Transition}.
-   */
-  private ColorItem initialColorItemTransition;
-
-
-  /**
-   * The initial {@link ColorItem} of the error {@link Transition}.
-   */
-  private ColorItem initialColorItemTransitionError;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser keyword.
-   */
-  private ColorItem initialColorItemParserKeyword;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser error.
-   */
-  private ColorItem initialColorItemParserError;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser warning.
-   */
-  private ColorItem initialColorItemParserWarning;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser highlighting.
-   */
-  private ColorItem initialColorItemParserHighlighting;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser {@link State}.
-   */
-  private ColorItem initialColorItemState;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser {@link Symbol}.
-   */
-  private ColorItem initialColorItemSymbol;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser {@link NonterminalSymbol}.
-   */
-  private ColorItem initialColorItemNonterminalSymbol;
-
-
-  /**
-   * The initial {@link ColorItem} of the parser {@link TerminalSymbol}.
-   */
-  private ColorItem initialColorItemTerminalSymbol;
-
-
-  /**
-   * The initial {@link ZoomFactorItem}.
-   */
-  private ZoomFactorItem initialZoomFactorItem;
-
-
-  /**
-   * The initial {@link AutoStepItem}.
-   */
-  private AutoStepItem initialAutoStepItem;
+  private PreferencesDialogForm gui;
 
 
   /**
@@ -752,15 +548,153 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The initial push down {@link AlphabetItem}.
+   * The initial {@link AutoStepItem}.
    */
-  private AlphabetItem initialPushDownAlphabetItem;
+  private AutoStepItem initialAutoStepItem;
 
 
   /**
-   * The initial use push down {@link Alphabet}.
+   * The initial {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
-  private boolean initialUsePushDownAlphabet;
+  private ColorItem initialColorItemNonterminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser error.
+   */
+  private ColorItem initialColorItemParserError;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser highlighting.
+   */
+  private ColorItem initialColorItemParserHighlighting;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser keyword.
+   */
+  private ColorItem initialColorItemParserKeyword;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser warning.
+   */
+  private ColorItem initialColorItemParserWarning;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link State}.
+   */
+  private ColorItem initialColorItemState;
+
+
+  /**
+   * The initial {@link ColorItem} of the active {@link State}.
+   */
+  private ColorItem initialColorItemStateActive;
+
+
+  /**
+   * The initial {@link ColorItem} of the {@link State}.
+   */
+  private ColorItem initialColorItemStateBackground;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link State}.
+   */
+  private ColorItem initialColorItemStateError;
+
+
+  /**
+   * The initial {@link ColorItem} of the final {@link State}.
+   */
+  private ColorItem initialColorItemStateFinal;
+
+
+  /**
+   * The initial {@link ColorItem} of the selected {@link State}.
+   */
+  private ColorItem initialColorItemStateSelected;
+
+
+  /**
+   * The initial {@link ColorItem} of the start {@link State}.
+   */
+  private ColorItem initialColorItemStateStart;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link Symbol}.
+   */
+  private ColorItem initialColorItemSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the active {@link Symbol}.
+   */
+  private ColorItem initialColorItemSymbolActive;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link Symbol}.
+   */
+  private ColorItem initialColorItemSymbolError;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser {@link TerminalSymbol}.
+   */
+  private ColorItem initialColorItemTerminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the {@link Transition}.
+   */
+  private ColorItem initialColorItemTransition;
+
+
+  /**
+   * The initial {@link ColorItem} of the active {@link Transition}.
+   */
+  private ColorItem initialColorItemTransitionActive;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link Transition}.
+   */
+  private ColorItem initialColorItemTransitionError;
+
+
+  /**
+   * The initial {@link ColorItem} of the selected {@link Transition}.
+   */
+  private ColorItem initialColorItemTransitionSelected;
+
+
+  /**
+   * The initial {@link LanguageItem}.
+   */
+  private LanguageItem initialLanguageItem;
+
+
+  /**
+   * The initial last active tab.
+   */
+  private int initialLastActiveTab;
+
+
+  /**
+   * The initial {@link LookAndFeelItem}.
+   */
+  private LookAndFeelItem initialLookAndFeel;
+
+
+  /**
+   * The initial {@link MouseSelectionItem}.
+   */
+  private MouseSelectionItem initialMouseSelectionItem;
 
 
   /**
@@ -770,9 +704,45 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial push down {@link AlphabetItem}.
+   */
+  private AlphabetItem initialPushDownAlphabetItem;
+
+
+  /**
    * The initial {@link TerminalSymbolSetItem}.
    */
   private TerminalSymbolSetItem initialTerminalSymbolSetItem;
+
+
+  /**
+   * The initial {@link MouseSelectionItem}.
+   */
+  private TransitionItem initialTransitionItem;
+
+
+  /**
+   * The initial use push down {@link Alphabet}.
+   */
+  private boolean initialUsePushDownAlphabet;
+
+
+  /**
+   * The initial {@link ZoomFactorItem}.
+   */
+  private ZoomFactorItem initialZoomFactorItem;
+
+
+  /**
+   * The auto interval {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuAutoStep;
+
+
+  /**
+   * The color list {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuColorList;
 
 
   /**
@@ -788,9 +758,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The zoom factor {@link JPopupMenu}.
+   * The mouse selection {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuZoomFactor;
+  private JPopupMenu jPopupMenuMouseSelection;
 
 
   /**
@@ -800,27 +770,63 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The mouse selection {@link JPopupMenu}.
-   */
-  private JPopupMenu jPopupMenuMouseSelection;
-
-
-  /**
-   * The auto interval {@link JPopupMenu}.
-   */
-  private JPopupMenu jPopupMenuAutoStep;
-
-
-  /**
    * The push down {@link Alphabet} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuUsePushDownAlphabet;
 
 
   /**
-   * The color list {@link JPopupMenu}.
+   * The zoom factor {@link JPopupMenu}.
    */
-  private JPopupMenu jPopupMenuColorList;
+  private JPopupMenu jPopupMenuZoomFactor;
+
+
+  /**
+   * The {@link LanguageComboBoxModel}.
+   */
+  private LanguageComboBoxModel languageComboBoxModel;
+
+
+  /**
+   * The {@link DefaultComboBoxModel} of the languages.
+   */
+  private LookAndFeelComboBoxModel lookAndFeelComboBoxModel;
+
+
+  /**
+   * The {@link MouseSelectionComboBoxModel}.
+   */
+  private MouseSelectionComboBoxModel mouseSelectionComboBoxModel;
+
+
+  /**
+   * The color tree {@link NonterminalSymbol} node.
+   */
+  private ColorItem nonterminalSymbolNode;
+
+
+  /**
+   * The {@link NonterminalSymbolSetItem}.
+   */
+  private NonterminalSymbolSetItem nonterminalSymbolSetItem;
+
+
+  /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+
+
+  /**
+   * The color tree parser node.
+   */
+  private ColorItem parserNode;
+
+
+  /**
+   * The push down {@link AlphabetItem}.
+   */
+  private AlphabetItem pushDownAlphabetItem;
 
 
   /**
@@ -836,21 +842,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The color tree {@link Transition} node.
-   */
-  private ColorItem transitionNode;
-
-
-  /**
    * The color tree {@link Symbol} node.
    */
   private ColorItem symbolNode;
-
-
-  /**
-   * The color tree {@link NonterminalSymbol} node.
-   */
-  private ColorItem nonterminalSymbolNode;
 
 
   /**
@@ -860,9 +854,21 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
-   * The color tree parser node.
+   * The {@link TerminalSymbolSetItem}.
    */
-  private ColorItem parserNode;
+  private TerminalSymbolSetItem terminalSymbolSetItem;
+
+
+  /**
+   * The {@link TransitionComboBoxModel}.
+   */
+  private TransitionComboBoxModel transitionComboBoxModel;
+
+
+  /**
+   * The color tree {@link Transition} node.
+   */
+  private ColorItem transitionNode;
 
 
   /**
@@ -2214,7 +2220,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.terminalPanelForm.jLabelNonterminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
     this.gui.terminalPanelForm.jLabelTerminalSymbols.setText ( Messages
-        .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
+        .getString ( "TerminalPanel.TerminalSymbols" ) ); //$NON-NLS-1$
     // Accept
     this.gui.jGTIButtonAccept.setText ( Messages
         .getString ( "PreferencesDialog.Accept" ) ); //$NON-NLS-1$

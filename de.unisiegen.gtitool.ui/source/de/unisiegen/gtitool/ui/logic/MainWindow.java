@@ -974,9 +974,8 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )
     {
-      // TODOBenny This removed the divider location bug.
-      // activateMachineButtons ( panel instanceof MachinePanel );
-      // activateGrammarButtons ( panel instanceof GrammarPanel );
+      activateMachineButtons ( panel instanceof MachinePanel );
+      activateGrammarButtons ( panel instanceof GrammarPanel );
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
@@ -1362,7 +1361,7 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.New" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemNew.setMnemonic ( Messages.getString (
         "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jButtonNew.setToolTipText ( Messages
+    MainWindow.this.gui.jGTIToolBarButtonNew.setToolTipText ( Messages
         .getString ( "MainWindow.NewToolTip" ) ); //$NON-NLS-1$
     // Open
     MainWindow.this.gui.jMenuItemOpen.setText ( Messages

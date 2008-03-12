@@ -1,7 +1,8 @@
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 CF		- Nicht die Farbe von Fehlern verwenden bei der Tabelle
-CF		- Toolbar Icons beim Wechsel zwischen MachinePanel und GrammarPanel
+CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
+CF		- Es besteht ein Problem beim Setzen der Sprache
 BM		- In den Production Dialog das neue StyledProductionParserPanel
 		  einbauen
 BM		- Beim Neu-Dialog im Grammatik Teil stimmen die Abstände nicht:
@@ -14,4 +15,3 @@ BM		- Toolbar für Grammar
 BM		- Header von Tabelle entfernen
 BM		- Pretty String in Tabelle verwenden (siehe EdgeRenderer)
 BM		- Entfernen von NonTerminal und Terminals
-		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht

@@ -17,9 +17,10 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.exchange.ExchangeException;
-import de.unisiegen.gtitool.ui.exchange.ExchangeReceivedListener;
 import de.unisiegen.gtitool.ui.exchange.Network;
-import de.unisiegen.gtitool.ui.exchange.NetworkConnectedListener;
+import de.unisiegen.gtitool.ui.exchange.listener.ExchangeFinishedListener;
+import de.unisiegen.gtitool.ui.exchange.listener.ExchangeReceivedListener;
+import de.unisiegen.gtitool.ui.exchange.listener.NetworkConnectedListener;
 import de.unisiegen.gtitool.ui.netbeans.ExchangeDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -261,7 +262,7 @@ public final class ExchangeDialog
       this.networkServer.close ();
     }
     final int port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
-    this.networkServer = new Network ( null, port );
+    this.networkServer = new Network ( port );
     try
     {
       this.networkServer.listen ();
@@ -287,7 +288,6 @@ public final class ExchangeDialog
                   .handleNew ( exchange.getElement () );
 
               // Close the network
-              ExchangeDialog.this.networkServer.close ();
               ExchangeDialog.this.networkServer = null;
               setNormalMode ( true );
 
@@ -320,7 +320,8 @@ public final class ExchangeDialog
     }
     final int port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
     this.networkClient = new Network ( this.gui.jGTITextFieldHost.getText (),
-        port );
+        port, new Exchange ( this.element, this.gui.jGTITextFieldDescription
+            .getText () ) );
     try
     {
       this.networkClient.connect ();
@@ -331,15 +332,21 @@ public final class ExchangeDialog
             @SuppressWarnings ( "synthetic-access" )
             public void networkConnected ()
             {
-              ExchangeDialog.this.networkClient
-                  .send ( new Exchange ( ExchangeDialog.this.element,
-                      ExchangeDialog.this.gui.jGTITextFieldDescription
-                          .getText () ) );
               appendMessage ( Messages.getString ( "ExchangeDialog.Sending", //$NON-NLS-1$
                   ExchangeDialog.this.gui.jGTITextFieldHost.getText () ), false );
+            }
+          } );
+      this.networkClient
+          .addExchangeFinishedListener ( new ExchangeFinishedListener ()
+          {
+
+            @SuppressWarnings ( "synthetic-access" )
+            public void exchangeFinished ()
+            {
+              appendMessage ( Messages
+                  .getString ( "ExchangeDialog.ExchangeFinished" ), false ); //$NON-NLS-1$
 
               // Close the network
-              ExchangeDialog.this.networkClient.close ();
               ExchangeDialog.this.networkClient = null;
               setNormalMode ( true );
 

@@ -3,6 +3,10 @@ package de.unisiegen.gtitool.ui.exchange;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.ui.exchange.listener.ExchangeFinishedListener;
+import de.unisiegen.gtitool.ui.exchange.listener.ExchangeReceivedListener;
+import de.unisiegen.gtitool.ui.exchange.listener.NetworkConnectedListener;
+
 
 /**
  * The {@link Network}.
@@ -38,12 +42,35 @@ public final class Network
 
 
   /**
+   * The {@link Exchange}.
+   */
+  private Exchange exchange;
+
+
+  /**
+   * Allocates a new {@link Network}.
+   * 
+   * @param port The used port.
+   */
+  public Network ( int port )
+  {
+    // Port
+    if ( ( port < 0 ) || ( port > 65535 ) )
+    {
+      throw new IllegalArgumentException ( "port is out of range" ); //$NON-NLS-1$
+    }
+    this.port = port;
+  }
+
+
+  /**
    * Allocates a new {@link Network}.
    * 
    * @param host The used host.
    * @param port The used port.
+   * @param exchange The {@link Exchange}.
    */
-  public Network ( String host, int port )
+  public Network ( String host, int port, Exchange exchange )
   {
     // Host
     this.host = host;
@@ -54,6 +81,21 @@ public final class Network
       throw new IllegalArgumentException ( "port is out of range" ); //$NON-NLS-1$
     }
     this.port = port;
+
+    // Exchange
+    this.exchange = exchange;
+  }
+
+
+  /**
+   * Adds the given {@link ExchangeFinishedListener}.
+   * 
+   * @param listener The {@link ExchangeFinishedListener}.
+   */
+  public final synchronized void addExchangeFinishedListener (
+      ExchangeFinishedListener listener )
+  {
+    this.listenerList.add ( ExchangeFinishedListener.class, listener );
   }
 
 
@@ -106,23 +148,37 @@ public final class Network
     {
       throw new RuntimeException ( "host is null" ); //$NON-NLS-1$
     }
-    this.connection = new ConnectionClient ( this );
+    this.connection = new ConnectionClient ( this, this.exchange );
     this.connection.start ();
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Exchange} is finished.
+   */
+  public final void fireExchangeFinished ()
+  {
+    ExchangeFinishedListener [] listeners = this.listenerList
+        .getListeners ( ExchangeFinishedListener.class );
+    for ( ExchangeFinishedListener current : listeners )
+    {
+      current.exchangeFinished ();
+    }
   }
 
 
   /**
    * Let the listeners know that a {@link Exchange} was received.
    * 
-   * @param exchange The received {@link Exchange}.
+   * @param newExchange The received {@link Exchange}.
    */
-  public final void fireExchangeReceived ( Exchange exchange )
+  public final void fireExchangeReceived ( Exchange newExchange )
   {
     ExchangeReceivedListener [] listeners = this.listenerList
         .getListeners ( ExchangeReceivedListener.class );
     for ( ExchangeReceivedListener current : listeners )
     {
-      current.exchangeReceived ( exchange );
+      current.exchangeReceived ( newExchange );
     }
   }
 
@@ -179,6 +235,18 @@ public final class Network
 
 
   /**
+   * Removes the given {@link ExchangeFinishedListener}.
+   * 
+   * @param listener The {@link ExchangeFinishedListener}.
+   */
+  public final synchronized void removeExchangeFinishedListener (
+      ExchangeFinishedListener listener )
+  {
+    this.listenerList.remove ( ExchangeFinishedListener.class, listener );
+  }
+
+
+  /**
    * Removes the given {@link ExchangeReceivedListener}.
    * 
    * @param listener The {@link ExchangeReceivedListener}.
@@ -203,15 +271,13 @@ public final class Network
 
 
   /**
-   * Sends the given {@link Exchange}.
-   * 
-   * @param exchange The {@link Exchange} to send.
+   * Sends the {@link Exchange}.
    */
-  public final void send ( Exchange exchange )
+  public final void send ()
   {
     if ( this.connection != null )
     {
-      this.connection.sendExchange ( exchange );
+      this.connection.send ();
     }
     else
     {

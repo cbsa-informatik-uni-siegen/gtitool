@@ -73,6 +73,12 @@ public abstract class Connection extends Thread
 
 
   /**
+   * The {@link Exchange}.
+   */
+  private Exchange exchange;
+
+
+  /**
    * The {@link InputStream}.
    */
   private InputStream input;
@@ -121,15 +127,31 @@ public abstract class Connection extends Thread
    */
   public Connection ( Network network )
   {
-    super ( "Connection" ); //$NON-NLS-1$
+    super ( "Connection-Server" ); //$NON-NLS-1$
     this.network = network;
+  }
+
+
+  /**
+   * Allocates a new {@link Connection}.
+   * 
+   * @param network The {@link Network}.
+   * @param exchange The {@link Exchange}.
+   */
+  public Connection ( Network network, Exchange exchange )
+  {
+    super ( "Connection-Client" ); //$NON-NLS-1$
+    this.network = network;
+
+    // Exchange
+    this.exchange = exchange;
   }
 
 
   /**
    * Closes the {@link Connection}.
    */
-  public final void close ()
+  protected final void close ()
   {
     try
     {
@@ -157,25 +179,7 @@ public abstract class Connection extends Thread
     catch ( IOException exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
     }
-  }
-
-
-  /**
-   * Closes the {@link Network}.
-   */
-  protected final void closeNetwork ()
-  {
-    SwingUtilities.invokeLater ( new Runnable ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void run ()
-      {
-        Connection.this.network.close ();
-      }
-    } );
   }
 
 
@@ -192,7 +196,7 @@ public abstract class Connection extends Thread
     catch ( IOException exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
@@ -286,11 +290,9 @@ public abstract class Connection extends Thread
 
 
   /**
-   * Let the listeners know that a {@link Exchange} was received.
-   * 
-   * @param exchange The received {@link Exchange}.
+   * Let the listeners know that the {@link Exchange} is finished.
    */
-  protected final void fireExchangeReceived ( final Exchange exchange )
+  protected final void fireExchangeFinished ()
   {
     SwingUtilities.invokeLater ( new Runnable ()
     {
@@ -298,7 +300,26 @@ public abstract class Connection extends Thread
       @SuppressWarnings ( "synthetic-access" )
       public void run ()
       {
-        Connection.this.network.fireExchangeReceived ( exchange );
+        Connection.this.network.fireExchangeFinished ();
+      }
+    } );
+  }
+
+
+  /**
+   * Let the listeners know that a {@link Exchange} was received.
+   * 
+   * @param newExchange The received {@link Exchange}.
+   */
+  protected final void fireExchangeReceived ( final Exchange newExchange )
+  {
+    SwingUtilities.invokeLater ( new Runnable ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void run ()
+      {
+        Connection.this.network.fireExchangeReceived ( newExchange );
       }
     } );
   }
@@ -428,7 +449,7 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
       return null;
     }
   }
@@ -452,7 +473,7 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
@@ -476,17 +497,15 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
 
   /**
-   * Sends the given {@link Exchange} to the {@link OutputStream}.
-   * 
-   * @param exchange The {@link Exchange} to send.
+   * Sends the the {@link Exchange} to the {@link OutputStream}.
    */
-  public final void sendExchange ( Exchange exchange )
+  protected final void send ()
   {
     if ( this.secretKeyAES == null )
     {
@@ -495,18 +514,16 @@ public abstract class Connection extends Thread
     try
     {
       // Description
-      String description = exchange.getDescription ();
+      String description = this.exchange.getDescription ();
       byte [] descriptionBytes = description.getBytes ( ENCODING );
       descriptionBytes = encryptAES ( descriptionBytes );
-      this.output.write ( getByteValue ( descriptionBytes.length ), 0, 4 );
-      this.output.write ( descriptionBytes, 0, descriptionBytes.length );
+      writeBytes ( descriptionBytes );
 
       // Element
-      String element = exchange.getElement ().getStoreString ();
+      String element = this.exchange.getElement ().getStoreString ();
       byte [] elementBytes = element.getBytes ( ENCODING );
       elementBytes = encryptAES ( elementBytes );
-      this.output.write ( getByteValue ( elementBytes.length ), 0, 4 );
-      this.output.write ( elementBytes, 0, elementBytes.length );
+      writeBytes ( elementBytes );
 
       // Flush
       this.output.flush ();
@@ -514,7 +531,7 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
@@ -539,14 +556,13 @@ public abstract class Connection extends Thread
       }
       catch ( NoSuchAlgorithmException exc )
       {
-        closeNetwork ();
+        close ();
         return;
       }
 
       // PublicKey
       byte [] publicKeyBytes = keyPair.getPublic ().getEncoded ();
-      this.output.write ( getByteValue ( publicKeyBytes.length ), 0, 4 );
-      this.output.write ( publicKeyBytes, 0, publicKeyBytes.length );
+      writeBytes ( publicKeyBytes );
 
       // Flush
       this.output.flush ();
@@ -554,7 +570,7 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
@@ -575,15 +591,14 @@ public abstract class Connection extends Thread
       }
       catch ( NoSuchAlgorithmException exc )
       {
-        closeNetwork ();
+        close ();
         return;
       }
 
       // SecretKey
       byte [] secretKeyBytes = this.secretKeyAES.getEncoded ();
       secretKeyBytes = encryptRSA ( secretKeyBytes );
-      this.output.write ( getByteValue ( secretKeyBytes.length ), 0, 4 );
-      this.output.write ( secretKeyBytes, 0, secretKeyBytes.length );
+      writeBytes ( secretKeyBytes );
 
       // Flush
       this.output.flush ();
@@ -591,7 +606,7 @@ public abstract class Connection extends Thread
     catch ( Exception exc )
     {
       exc.printStackTrace ();
-      closeNetwork ();
+      close ();
     }
   }
 
@@ -617,5 +632,18 @@ public abstract class Connection extends Thread
   protected final void setSocket ( Socket socket )
   {
     this.socket = socket;
+  }
+
+
+  /**
+   * Writes the given bytes and the length of the bytes.
+   * 
+   * @param bytes The bytes to write.
+   * @throws IOException If an I/O error occurs.
+   */
+  private final void writeBytes ( byte [] bytes ) throws IOException
+  {
+    this.output.write ( getByteValue ( bytes.length ), 0, 4 );
+    this.output.write ( bytes, 0, bytes.length );
   }
 }

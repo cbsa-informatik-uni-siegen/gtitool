@@ -32,7 +32,7 @@ public final class ConnectionServer extends Connection
     }
     catch ( IOException exc )
     {
-      closeNetwork ();
+      close ();
       throw new ExchangeException ( Messages.getString (
           "ExchangeDialog.ExceptionListen", String.valueOf ( getNetwork () //$NON-NLS-1$
               .getPort () ) ) );
@@ -55,7 +55,7 @@ public final class ConnectionServer extends Connection
     }
     catch ( IOException exc )
     {
-      closeNetwork ();
+      close ();
       return;
     }
 
@@ -71,5 +71,8 @@ public final class ConnectionServer extends Connection
     // Receive the file and fire the event
     Exchange exchange = receiveExchange ();
     fireExchangeReceived ( exchange );
+
+    // Close the open connection
+    close ();
   }
 }

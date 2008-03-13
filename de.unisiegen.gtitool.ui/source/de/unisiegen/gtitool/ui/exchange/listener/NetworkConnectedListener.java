@@ -1,7 +1,9 @@
-package de.unisiegen.gtitool.ui.exchange;
+package de.unisiegen.gtitool.ui.exchange.listener;
 
 
 import java.util.EventListener;
+
+import de.unisiegen.gtitool.ui.exchange.Network;
 
 
 /**

@@ -7,7 +7,6 @@ BM		- Grammar Panel is modified
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Verknüpfung mit Core
 BM		- Toolbar für Grammar
-BM		- Pretty String in Tabelle verwenden (siehe EdgeRenderer)
 BM		- Entfernen von NonTerminal und Terminals
 
 		

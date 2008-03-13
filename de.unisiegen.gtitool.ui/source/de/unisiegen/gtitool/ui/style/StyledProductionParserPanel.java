@@ -300,7 +300,14 @@ public final class StyledProductionParserPanel extends StyledParserPanel
    */
   public final void setProduction ( Production word )
   {
-    getEditor ().setText ( word.toString () );
+    if ( word == null )
+    {
+      getEditor ().setText ( "" ); //$NON-NLS-1$
+    }
+    else
+    {
+      getEditor ().setText ( word.toString () );
+    }
   }
 
 

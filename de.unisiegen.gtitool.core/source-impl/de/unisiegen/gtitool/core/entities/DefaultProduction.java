@@ -258,6 +258,7 @@ public final class DefaultProduction implements Production
     prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
     prettyString.addPrettyToken ( new PrettyToken ( "\u2192", Style.NONE ) ); //$NON-NLS-1$
     prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+    prettyString.addPrettyPrintable ( this.productionWord );
     return prettyString;
   }
 

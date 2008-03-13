@@ -238,14 +238,19 @@ public final class ProductionDialog
           public void productionWordChanged ( ProductionWord newProductionWord )
           {
             if ( newProductionWord == null )
+            {
               setButtonStatus ( false );
-            else
-              setButtonStatus ( true );
-            getGui ().styledProductionParserPanel
-                .setProduction ( new DefaultProduction (
-                    ( NonterminalSymbol ) getGui ().jGTIList
-                        .getSelectedValue (), newProductionWord ) );
+              getGui ().styledProductionParserPanel.setProduction ( null );
+            }
 
+            else
+            {
+              setButtonStatus ( true );
+              getGui ().styledProductionParserPanel
+                  .setProduction ( new DefaultProduction (
+                      ( NonterminalSymbol ) getGui ().jGTIList
+                          .getSelectedValue (), newProductionWord ) );
+            }
           }
         } );
 

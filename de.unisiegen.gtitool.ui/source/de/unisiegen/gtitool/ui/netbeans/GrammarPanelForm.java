@@ -38,17 +38,6 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
 
         setLayout(new java.awt.GridBagLayout());
 
-        jGTITable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         jGTITable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 mouseClickedEvent(evt);

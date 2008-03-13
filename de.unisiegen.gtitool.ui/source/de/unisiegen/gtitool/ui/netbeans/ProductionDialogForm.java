@@ -61,10 +61,10 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         jLabelProductionWord = new javax.swing.JLabel();
         styledProductionWordParserPanel = new de.unisiegen.gtitool.ui.style.StyledProductionWordParserPanel();
         JLabelResultingProduction = new javax.swing.JLabel();
-        styledTransitionParserPanel = new de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel();
         jPanelButtons = new javax.swing.JPanel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        styledProductionParserPanel = new de.unisiegen.gtitool.ui.style.StyledProductionParserPanel();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -225,19 +225,6 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(JLabelResultingProduction, gridBagConstraints);
 
-        styledTransitionParserPanel.setEditable(false);
-        styledTransitionParserPanel.setMinimumSize(new java.awt.Dimension(40, 40));
-        styledTransitionParserPanel.setPreferredSize(new java.awt.Dimension(40, 40));
-        styledTransitionParserPanel.setSideBarVisible(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(styledTransitionParserPanel, gridBagConstraints);
-
         jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
@@ -282,6 +269,16 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         getContentPane().add(jPanelButtons, gridBagConstraints);
 
+        styledProductionParserPanel.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(styledProductionParserPanel, gridBagConstraints);
+
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-500)/2, 400, 500);
     }// </editor-fold>//GEN-END:initComponents
@@ -315,9 +312,9 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     public javax.swing.JPanel jPanelWord;
     public javax.swing.JScrollPane jScrollPane;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledProductionParserPanel styledProductionParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledProductionWordParserPanel styledProductionWordParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
-    public de.unisiegen.gtitool.ui.style.StyledTransitionParserPanel styledTransitionParserPanel;
     // End of variables declaration//GEN-END:variables
  
 }

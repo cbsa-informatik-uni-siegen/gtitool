@@ -39,8 +39,6 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
   {
     // Message
     this.productionColumn = new TableColumn ( ConsoleTableModel.MESSAGE_COLUMN );
-    this.productionColumn.setHeaderValue ( Messages
-        .getString ( "GrammarPanel.Productions" ) ); //$NON-NLS-1$
     this.productionColumn.setPreferredWidth ( 200 );
     this.productionColumn.setMinWidth ( 200 );
     this.addColumn ( this.productionColumn );

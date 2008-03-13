@@ -148,7 +148,6 @@ public final class ProductionDialog
     }
 
 
-    
     /**
      * Returns the list of {@link NonterminalSymbol}s.
      * 
@@ -220,6 +219,11 @@ public final class ProductionDialog
     this.gui.styledProductionWordParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
 
+    this.gui.styledProductionParserPanel
+        .setNonterminalSymbolSet ( nonterminalSymbolSet );
+    this.gui.styledProductionParserPanel
+        .setTerminalSymbolSet ( terminalSymbolSet );
+
     for ( NonterminalSymbol current : nonterminalSymbolSet )
     {
       this.listModel.add ( current );
@@ -237,6 +241,10 @@ public final class ProductionDialog
               setButtonStatus ( false );
             else
               setButtonStatus ( true );
+            getGui ().styledProductionParserPanel
+                .setProduction ( new DefaultProduction (
+                    ( NonterminalSymbol ) getGui ().jGTIList
+                        .getSelectedValue (), newProductionWord ) );
 
           }
         } );
@@ -245,14 +253,18 @@ public final class ProductionDialog
     {
       this.gui.styledProductionWordParserPanel
           .setProductionWord ( this.oldProduction.getProductionWord () );
-      
-      for (NonterminalSymbol current : this.listModel.getList ()){
-        if (current.equals ( this.oldProduction.getNonterminalSymbol () )){
-          this.gui.jGTIList.setSelectedIndex ( this.listModel.getList ().indexOf ( current ) );
+
+      for ( NonterminalSymbol current : this.listModel.getList () )
+      {
+        if ( current.equals ( this.oldProduction.getNonterminalSymbol () ) )
+        {
+          this.gui.jGTIList.setSelectedIndex ( this.listModel.getList ()
+              .indexOf ( current ) );
         }
       }
     }
     this.gui.jGTIButtonOk.setEnabled ( this.oldProduction != null );
+
   }
 
 
@@ -313,7 +325,16 @@ public final class ProductionDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-
   }
 
+
+  /**
+   * Returns the {@link ProductionDialogForm}.
+   * 
+   * @return the {@link ProductionDialogForm}.
+   */
+  public ProductionDialogForm getGui ()
+  {
+    return this.gui;
+  }
 }

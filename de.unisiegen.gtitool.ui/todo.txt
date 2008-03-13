@@ -1,15 +1,13 @@
 CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-BM		- In den Production Dialog das neue StyledProductionParserPanel
-		  einbauen
-BM		- Beim Neu-Dialog im Grammatik Teil stimmen die Abstände nicht:
-		  Nach außen 16 Pixel, zwischen den Komponenten 10 Pixel.
+
 BM		- Grammar Panel laden/speichern
 BM		- Grammar Panel is modified
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Verknüpfung mit Core
 BM		- Toolbar für Grammar
-BM		- Header von Tabelle entfernen
 BM		- Pretty String in Tabelle verwenden (siehe EdgeRenderer)
 BM		- Entfernen von NonTerminal und Terminals
+
+		

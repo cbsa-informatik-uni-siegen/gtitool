@@ -60,8 +60,11 @@ public final class ConnectionClient extends Connection
     // Create the streams
     createStreams ();
 
-    // Receive the public key
-    receivePublicKey ();
+    // Receive the public RSA key
+    receivePublicKeyRSA ();
+    
+    // Send the AES key encrypted with RSA
+    sendSecretKeyAES ();
     
     // Fire the event
     fireNetworkConnected ();

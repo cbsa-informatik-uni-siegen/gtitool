@@ -62,8 +62,11 @@ public final class ConnectionServer extends Connection
     // Create the streams
     createStreams ();
 
-    // Send public key
-    sendPublicKey ();
+    // Send the public RSA key
+    sendPublicKeyRSA ();
+
+    // Receive the AES key encrypted with RSA
+    receiveSecretKeyAES ();
 
     // Receive the file and fire the event
     Exchange exchange = receiveExchange ();

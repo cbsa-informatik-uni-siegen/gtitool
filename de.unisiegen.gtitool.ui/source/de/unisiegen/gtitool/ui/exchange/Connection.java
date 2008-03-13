@@ -16,7 +16,10 @@ import java.security.PublicKey;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.SwingUtilities;
 
 import sun.security.rsa.RSAPublicKeyImpl;
@@ -32,6 +35,36 @@ import de.unisiegen.gtitool.ui.storage.Storage;
  */
 public abstract class Connection extends Thread
 {
+
+  /**
+   * The RSA key length.
+   */
+  private static final int RSA_KEY_LENGTH = 1024;
+
+
+  /**
+   * The RSA algorithmus.
+   */
+  private static final String RSA = "RSA"; //$NON-NLS-1$
+
+
+  /**
+   * The AES key length.
+   */
+  private static final int AES_KEY_LENGTH = 128;
+
+
+  /**
+   * The AES algorithmus.
+   */
+  private static final String AES = "AES"; //$NON-NLS-1$
+
+
+  /**
+   * The encoding.
+   */
+  private static final String ENCODING = "UTF-8"; //$NON-NLS-1$
+
 
   /**
    * The {@link Network}.
@@ -64,15 +97,21 @@ public abstract class Connection extends Thread
 
 
   /**
-   * The {@link PublicKey}.
+   * The rsa {@link PublicKey}.
    */
-  private PublicKey publicKey = null;
+  private PublicKey publicKeyRSA = null;
 
 
   /**
-   * The {@link PrivateKey}.
+   * The RSA {@link PrivateKey}.
    */
-  private PrivateKey privateKey = null;
+  private PrivateKey privateKeyRSA = null;
+
+
+  /**
+   * The AES {@link SecretKey}.
+   */
+  private SecretKey secretKeyAES = null;
 
 
   /**
@@ -159,45 +198,89 @@ public abstract class Connection extends Thread
 
 
   /**
-   * Decryptes a byte array with a given private key
+   * Decryptes a byte array with the {@link PrivateKey}.
    * 
-   * @param privateKey The PrivatKey
-   * @param cipherText The ciphertext
-   * @return The decrypted ciphertext
-   * @throws NoSuchPaddingException Padding wrong
-   * @throws NoSuchAlgorithmException Algorithm not found
-   * @throws InvalidKeyException Key wrong
-   * @throws BadPaddingException Padding wrong
-   * @throws IllegalBlockSizeException Block size is wrong
+   * @param cipherText The ciphertext.
+   * @return The decrypted ciphertext.
+   * @throws NoSuchPaddingException Padding wrong.
+   * @throws NoSuchAlgorithmException Algorithm not found.
+   * @throws InvalidKeyException Key wrong.
+   * @throws BadPaddingException Padding wrong.
+   * @throws IllegalBlockSizeException Block size is wrong.
    */
-  private final byte [] decrypt ( PrivateKey privateKey, byte [] cipherText )
+  private final byte [] decryptAES ( byte [] cipherText )
       throws NoSuchAlgorithmException, NoSuchPaddingException,
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
-    Cipher cipher = Cipher.getInstance ( "RSA" ); //$NON-NLS-1$
-    cipher.init ( Cipher.DECRYPT_MODE, privateKey );
+    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.secretKeyAES
+        .getEncoded (), AES );
+    Cipher cipher = Cipher.getInstance ( AES );
+    cipher.init ( Cipher.DECRYPT_MODE, secretKeySpec );
     return cipher.doFinal ( cipherText );
   }
 
 
   /**
-   * Encryptes a byte array with a given public key
+   * Decryptes a byte array with the {@link PrivateKey}.
    * 
-   * @param publicKey The PublicKey
-   * @param plainText The plaintext
-   * @return The encrypted plaintext
-   * @throws NoSuchPaddingException Padding wrong
-   * @throws NoSuchAlgorithmException Algorithm not found
-   * @throws InvalidKeyException Key wrong
-   * @throws BadPaddingException Padding wrong
-   * @throws IllegalBlockSizeException Block size is wrong
+   * @param cipherText The ciphertext.
+   * @return The decrypted ciphertext.
+   * @throws NoSuchPaddingException Padding wrong.
+   * @throws NoSuchAlgorithmException Algorithm not found.
+   * @throws InvalidKeyException Key wrong.
+   * @throws BadPaddingException Padding wrong.
+   * @throws IllegalBlockSizeException Block size is wrong.
    */
-  private final byte [] encrypt ( PublicKey publicKey, byte [] plainText )
+  private final byte [] decryptRSA ( byte [] cipherText )
       throws NoSuchAlgorithmException, NoSuchPaddingException,
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
-    Cipher cipher = Cipher.getInstance ( "RSA" ); //$NON-NLS-1$
-    cipher.init ( Cipher.ENCRYPT_MODE, publicKey );
+    Cipher cipher = Cipher.getInstance ( RSA );
+    cipher.init ( Cipher.DECRYPT_MODE, this.privateKeyRSA );
+    return cipher.doFinal ( cipherText );
+  }
+
+
+  /**
+   * Encryptes a byte array with the {@link PublicKey}.
+   * 
+   * @param plainText The plaintext.
+   * @return The encrypted plaintext.
+   * @throws NoSuchPaddingException Padding wrong.
+   * @throws NoSuchAlgorithmException Algorithm not found.
+   * @throws InvalidKeyException Key wrong.
+   * @throws BadPaddingException Padding wrong.
+   * @throws IllegalBlockSizeException Block size is wrong.
+   */
+  private final byte [] encryptAES ( byte [] plainText )
+      throws NoSuchAlgorithmException, NoSuchPaddingException,
+      InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+  {
+    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.secretKeyAES
+        .getEncoded (), AES );
+    Cipher cipher = Cipher.getInstance ( AES );
+    cipher.init ( Cipher.ENCRYPT_MODE, secretKeySpec );
+    return cipher.doFinal ( plainText );
+  }
+
+
+  /**
+   * Encryptes a byte array with the {@link PublicKey}.
+   * 
+   * @param plainText The plaintext.
+   * @return The encrypted plaintext.
+   * @throws NoSuchPaddingException Padding wrong.
+   * @throws NoSuchAlgorithmException Algorithm not found.
+   * @throws InvalidKeyException Key wrong.
+   * @throws BadPaddingException Padding wrong.
+   * @throws IllegalBlockSizeException Block size is wrong.
+   */
+  private final byte [] encryptRSA ( byte [] plainText )
+      throws NoSuchAlgorithmException, NoSuchPaddingException,
+      InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+  {
+    Cipher cipher = Cipher.getInstance ( RSA );
+    cipher.init ( Cipher.ENCRYPT_MODE, this.publicKeyRSA );
     return cipher.doFinal ( plainText );
   }
 
@@ -325,6 +408,7 @@ public abstract class Connection extends Thread
       // Description
       byte [] descriptionBytes = new byte [ descriptionLength ];
       this.input.read ( descriptionBytes, 0, descriptionLength );
+      descriptionBytes = decryptAES ( descriptionBytes );
       String description = new String ( descriptionBytes );
 
       // Element length
@@ -335,6 +419,7 @@ public abstract class Connection extends Thread
       // Element
       byte [] elementBytes = new byte [ elementLength ];
       this.input.read ( elementBytes, 0, elementLength );
+      elementBytes = decryptAES ( elementBytes );
       Element element = Storage.getInstance ().load (
           new String ( elementBytes ) );
 
@@ -350,16 +435,43 @@ public abstract class Connection extends Thread
 
 
   /**
-   * Receives the {@link PublicKey}.
+   * Receives the RSA {@link PublicKey}.
    */
-  protected final void receivePublicKey ()
+  protected final void receivePublicKeyRSA ()
   {
-    // TODO Send the length
     try
     {
-      byte [] publicKeyBytes = new byte [ 165 ];
-      Connection.this.input.read ( publicKeyBytes, 0, 165 );
-      this.publicKey = new RSAPublicKeyImpl ( publicKeyBytes );
+      byte [] publicKeyLengthBytes = new byte [ 4 ];
+      this.input.read ( publicKeyLengthBytes, 0, 4 );
+      int publicKeyLength = getIntValue ( publicKeyLengthBytes );
+
+      byte [] publicKeyBytes = new byte [ publicKeyLength ];
+      Connection.this.input.read ( publicKeyBytes, 0, publicKeyLength );
+      this.publicKeyRSA = new RSAPublicKeyImpl ( publicKeyBytes );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      closeNetwork ();
+    }
+  }
+
+
+  /**
+   * Receives the AES {@link SecretKey}.
+   */
+  protected final void receiveSecretKeyAES ()
+  {
+    try
+    {
+      byte [] secretKeyLengthBytes = new byte [ 4 ];
+      this.input.read ( secretKeyLengthBytes, 0, 4 );
+      int secretKeyLength = getIntValue ( secretKeyLengthBytes );
+
+      byte [] secretKeyBytes = new byte [ secretKeyLength ];
+      Connection.this.input.read ( secretKeyBytes, 0, secretKeyLength );
+      secretKeyBytes = decryptRSA ( secretKeyBytes );
+      this.secretKeyAES = new SecretKeySpec ( secretKeyBytes, AES );
     }
     catch ( Exception exc )
     {
@@ -376,26 +488,24 @@ public abstract class Connection extends Thread
    */
   public final void sendExchange ( Exchange exchange )
   {
-    if ( this.publicKey == null )
+    if ( this.secretKeyAES == null )
     {
-      throw new RuntimeException ( "public key not received" ); //$NON-NLS-1$
+      throw new RuntimeException ( "secret AES key not received" ); //$NON-NLS-1$
     }
     try
     {
-      // Description length
-      String description = exchange.getDescription ();
-      this.output.write ( getByteValue ( description.length () ), 0, 4 );
-
       // Description
-      byte [] descriptionBytes = description.getBytes ( "UTF-8" ); //$NON-NLS-1$
+      String description = exchange.getDescription ();
+      byte [] descriptionBytes = description.getBytes ( ENCODING );
+      descriptionBytes = encryptAES ( descriptionBytes );
+      this.output.write ( getByteValue ( descriptionBytes.length ), 0, 4 );
       this.output.write ( descriptionBytes, 0, descriptionBytes.length );
 
-      // Element length
-      String element = exchange.getElement ().getStoreString ();
-      this.output.write ( getByteValue ( element.length () ), 0, 4 );
-
       // Element
-      byte [] elementBytes = element.getBytes ( "UTF-8" ); //$NON-NLS-1$
+      String element = exchange.getElement ().getStoreString ();
+      byte [] elementBytes = element.getBytes ( ENCODING );
+      elementBytes = encryptAES ( elementBytes );
+      this.output.write ( getByteValue ( elementBytes.length ), 0, 4 );
       this.output.write ( elementBytes, 0, elementBytes.length );
 
       // Flush
@@ -410,9 +520,9 @@ public abstract class Connection extends Thread
 
 
   /**
-   * Sends the given {@link PublicKey} to the {@link OutputStream}.
+   * Sends the given RSA {@link PublicKey} to the {@link OutputStream}.
    */
-  protected final void sendPublicKey ()
+  protected final void sendPublicKeyRSA ()
   {
     try
     {
@@ -420,13 +530,12 @@ public abstract class Connection extends Thread
       KeyPair keyPair = null;
       try
       {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator
-            .getInstance ( "RSA" ); //$NON-NLS-1$
-        keyPairGenerator.initialize ( 1024 );
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance ( RSA );
+        keyPairGenerator.initialize ( RSA_KEY_LENGTH );
         keyPair = keyPairGenerator.genKeyPair ();
 
         // Save the private key
-        this.privateKey = keyPair.getPrivate ();
+        this.privateKeyRSA = keyPair.getPrivate ();
       }
       catch ( NoSuchAlgorithmException exc )
       {
@@ -434,8 +543,49 @@ public abstract class Connection extends Thread
         return;
       }
 
+      // PublicKey
       byte [] publicKeyBytes = keyPair.getPublic ().getEncoded ();
+      this.output.write ( getByteValue ( publicKeyBytes.length ), 0, 4 );
       this.output.write ( publicKeyBytes, 0, publicKeyBytes.length );
+
+      // Flush
+      this.output.flush ();
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      closeNetwork ();
+    }
+  }
+
+
+  /**
+   * Sends the given AES {@link SecretKey} to the {@link OutputStream}.
+   */
+  protected final void sendSecretKeyAES ()
+  {
+    try
+    {
+      // Create keys
+      try
+      {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance ( AES );
+        keyGenerator.init ( AES_KEY_LENGTH );
+        this.secretKeyAES = keyGenerator.generateKey ();
+      }
+      catch ( NoSuchAlgorithmException exc )
+      {
+        closeNetwork ();
+        return;
+      }
+
+      // SecretKey
+      byte [] secretKeyBytes = this.secretKeyAES.getEncoded ();
+      secretKeyBytes = encryptRSA ( secretKeyBytes );
+      this.output.write ( getByteValue ( secretKeyBytes.length ), 0, 4 );
+      this.output.write ( secretKeyBytes, 0, secretKeyBytes.length );
+
+      // Flush
       this.output.flush ();
     }
     catch ( Exception exc )

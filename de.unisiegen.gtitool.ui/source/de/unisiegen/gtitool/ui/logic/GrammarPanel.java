@@ -5,16 +5,20 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
+import javax.swing.filechooser.FileFilter;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
@@ -23,6 +27,8 @@ import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.storage.Storage;
 
 
 /**
@@ -78,11 +84,13 @@ public class GrammarPanel implements EditorPanel
    * 
    * @param parent The parent frame
    * @param model The {@link DefaultGrammarModel}.
+   * @param file The {@link File}
    */
-  public GrammarPanel ( MainWindowForm parent, DefaultGrammarModel model )
+  public GrammarPanel ( MainWindowForm parent, DefaultGrammarModel model, File file )
   {
     this.parent = parent;
     this.model = model;
+    this.file = file;
     this.gui = new GrammarPanelForm ();
     this.gui.setGrammarPanel ( this );
     this.grammar = this.model.getGrammar ();
@@ -175,21 +183,113 @@ public class GrammarPanel implements EditorPanel
    * 
    * @return filename
    */
-  public File handleSave ()
+  public final File handleSave ()
   {
-    // TODO implement me
-    return null;
+    if ( this.file == null )
+    {
+      return handleSaveAs ();
+    }
+    try
+    {
+      Storage.getInstance ().store ( this.model, this.file );
+    }
+    catch ( StoreException e )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    resetModify ();
+    fireModifyStatusChanged ( false );
+    return this.file;
   }
+
 
   /**
    * Handle save as operation
    * 
    * @return filename
    */
-  public File handleSaveAs ()
+  public final File handleSaveAs ()
   {
-    // TODO implement me
-    return null;
+    try
+    {
+      PreferenceManager prefmanager = PreferenceManager.getInstance ();
+      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
+      chooser.setMultiSelectionEnabled ( false );
+      chooser.setAcceptAllFileFilterUsed ( false );
+      chooser.addChoosableFileFilter ( new FileFilter ()
+      {
+
+        @SuppressWarnings ( "synthetic-access" )
+        @Override
+        public boolean accept ( File acceptedFile )
+        {
+          if ( acceptedFile.isDirectory () )
+          {
+            return true;
+          }
+          if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
+              + GrammarPanel.this.grammar.getGrammarType ().toLowerCase () ) )
+          {
+            return true;
+          }
+          return false;
+        }
+
+
+        @SuppressWarnings ( "synthetic-access" )
+        @Override
+        public String getDescription ()
+        {
+          return Messages.getString ( "NewDialog." //$NON-NLS-1$
+              + GrammarPanel.this.grammar.getGrammarType () )
+              + " (*." //$NON-NLS-1$
+              + GrammarPanel.this.grammar.getGrammarType ().toLowerCase ()
+              + ")"; //$NON-NLS-1$
+        }
+      } );
+      int n = chooser.showSaveDialog ( this.parent );
+      if ( ( n == JFileChooser.CANCEL_OPTION )
+          || ( chooser.getSelectedFile () == null ) )
+      {
+        return null;
+      }
+      if ( chooser.getSelectedFile ().exists () )
+      {
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.parent, Messages
+            .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+            true, true, false );
+        confirmDialog.show ();
+        if ( confirmDialog.isNotConfirmed () )
+        {
+          return null;
+        }
+      }
+
+      String filename = chooser.getSelectedFile ().toString ().matches (
+          ".+\\." + this.grammar.getGrammarType ().toLowerCase () ) ? chooser //$NON-NLS-1$
+          .getSelectedFile ().toString () : chooser.getSelectedFile ()
+          .toString ()
+          + "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
+
+      Storage.getInstance ().store ( this.model, new File ( filename ) );
+
+      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
+          .getAbsolutePath () );
+      this.file = new File ( filename );
+
+    }
+    catch ( StoreException e )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    resetModify ();
+    fireModifyStatusChanged ( false );
+    return this.file;
   }
 
   /**
@@ -213,10 +313,9 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see Modifyable#isModified()
    */
-  public boolean isModified ()
+  public final boolean isModified ()
   {
-    // TODO implement me
-    return false;
+    return ( this.model.isModified () ) || ( this.file == null );
   }
 
   /**
@@ -337,5 +436,32 @@ public class GrammarPanel implements EditorPanel
   public JFrame getParent ()
   {
     return this.parent;
+  }
+  
+  /**
+   * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
+   */
+  private final void fireModifyStatusChanged ( boolean forceModify )
+  {
+
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
   }
 }

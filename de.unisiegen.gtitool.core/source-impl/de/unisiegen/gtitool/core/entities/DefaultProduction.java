@@ -3,7 +3,10 @@ package de.unisiegen.gtitool.core.entities;
 
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -12,6 +15,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 
 /**
@@ -67,6 +71,46 @@ public final class DefaultProduction implements Production
   {
     this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
+  }
+
+
+  /**
+   * Allocates a new {@link DefaultProduction}.
+   * 
+   * @param element The {@link Element}.
+   * @throws StoreException If the {@link Element} can not be parsed.
+   * @throws TerminalSymbolException If something with the
+   *           {@link TerminalSymbol} is not correct.
+   * @throws NonterminalSymbolException If something with the
+   *           {@link NonterminalSymbol} is not correct.
+   */
+  public DefaultProduction ( Element element ) throws StoreException,
+      TerminalSymbolException, NonterminalSymbolException
+  {
+
+    for ( Element current : element.getElement () )
+    {
+      if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
+      {
+        this.nonterminalSymbol = new DefaultNonterminalSymbol ( current );
+      }
+
+      else if ( current.getName ().equals ( "ProductionWord" ) ) //$NON-NLS-1$
+      {
+        this.productionWord = new DefaultProductionWord ( current );
+      }
+      else 
+      {
+        throw new StoreException ( Messages
+            .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
+      }
+    }
+
+    if ( this.nonterminalSymbol == null || this.productionWord == null )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+    }
   }
 
 

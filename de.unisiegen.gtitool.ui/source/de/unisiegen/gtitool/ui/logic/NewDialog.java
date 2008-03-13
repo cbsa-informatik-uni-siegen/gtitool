@@ -194,7 +194,7 @@ public final class NewDialog
       if ( this.grammarChoice.getUserChoice ().equals ( NewDialogGrammarChoice.Choice.CONTEXT_FREE )){
         this.newPanel = new GrammarPanel ( this.parent,
             new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
-                .getNonterminalSymbolSet (), this.newDialogTerminal.geTerminalSymbolSet () ) ) );
+                .getNonterminalSymbolSet (), this.newDialogTerminal.geTerminalSymbolSet () ) ), null );
         this.gui.dispose ();
       }
     }

@@ -84,8 +84,7 @@ public class ProductionComponent extends JComponent
       char [] chars = currentToken.getChar ();
       for ( int i = 0 ; i < chars.length ; i++ )
       {
-        int height = metrics.getHeight ();
-        g.drawChars ( chars, i, 1, dx, getHeight () - (( getHeight () - height) / 2) );
+        g.drawChars ( chars, i, 1, dx, getHeight () - 3 );
         dx += metrics.charWidth ( chars [ i ] );
       }
     }

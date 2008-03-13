@@ -31,7 +31,9 @@ import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
+import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
@@ -1586,21 +1588,41 @@ public final class MainWindow implements LanguageChangedListener
     }
     try
     {
-      DefaultMachineModel model = ( DefaultMachineModel ) Storage
-          .getInstance ().load ( file );
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
+      DefaultModel element = ( DefaultModel ) Storage.getInstance ().load (
+          file );
 
-      this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
-      newEditorPanel
-          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
-      this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
-          .getName () );
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
+      if ( element instanceof DefaultMachineModel )
+      {
+        DefaultMachineModel model = ( DefaultMachineModel ) element;
+        EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
-      // toolbar items
-      setToolBarEditItemState ( true );
+        this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+        newEditorPanel
+            .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+        this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+        this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
+            .getName () );
+        setGeneralStates ( true );
+        this.gui.jMenuItemValidate.setEnabled ( true );
+
+        // toolbar items
+        setToolBarEditItemState ( true );
+      }
+
+      else
+      {
+        DefaultGrammarModel model = (DefaultGrammarModel) element;
+        
+        EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, file );
+
+        this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
+        newEditorPanel
+            .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+        this.gui.jGTITabbedPaneMain.setSelectedEditorPanel ( newEditorPanel );
+        this.gui.jGTITabbedPaneMain.setEditorPanelTitle ( newEditorPanel, file
+            .getName () );
+        setGeneralStates ( true );
+      }
 
       // reorganize recently used files
       if ( addToRecentlyUsed )

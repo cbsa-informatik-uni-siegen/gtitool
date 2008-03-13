@@ -27,6 +27,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
@@ -136,6 +137,10 @@ public final class Storage
       if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
         return new DefaultMachineModel ( element, null );
+      }
+      if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
+      {
+        return new DefaultGrammarModel ( element);
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

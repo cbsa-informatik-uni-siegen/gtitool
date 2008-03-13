@@ -60,6 +60,9 @@ public final class ConnectionClient extends Connection
     // Create the streams
     createStreams ();
 
+    // Receive the public key
+    receivePublicKey ();
+    
     // Fire the event
     fireNetworkConnected ();
   }

@@ -211,7 +211,7 @@ public final class Network
   {
     if ( this.connection != null )
     {
-      this.connection.send ( exchange );
+      this.connection.sendExchange ( exchange );
     }
     else
     {

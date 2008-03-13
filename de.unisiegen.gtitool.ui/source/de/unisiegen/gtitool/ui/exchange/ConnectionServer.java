@@ -28,7 +28,7 @@ public final class ConnectionServer extends Connection
     super ( network );
     try
     {
-      this.serverSocket = new ServerSocket ( getNetwork ().getPort () );
+      setServerSocket ( new ServerSocket ( getNetwork ().getPort () ) );
     }
     catch ( IOException exc )
     {
@@ -38,12 +38,6 @@ public final class ConnectionServer extends Connection
               .getPort () ) ) );
     }
   }
-
-
-  /**
-   * The {@link ServerSocket}.
-   */
-  private ServerSocket serverSocket = null;
 
 
   /**
@@ -57,7 +51,7 @@ public final class ConnectionServer extends Connection
     // Accept the server socket connection
     try
     {
-      setSocket ( this.serverSocket.accept () );
+      setSocket ( getServerSocket ().accept () );
     }
     catch ( IOException exc )
     {
@@ -68,8 +62,11 @@ public final class ConnectionServer extends Connection
     // Create the streams
     createStreams ();
 
+    // Send public key
+    sendPublicKey ();
+
     // Receive the file and fire the event
-    Exchange exchange = receive ();
+    Exchange exchange = receiveExchange ();
     fireExchangeReceived ( exchange );
   }
 }

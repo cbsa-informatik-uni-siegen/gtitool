@@ -11,8 +11,8 @@ svn propset svn:keywords 'Author Date Id Rev' `find ../de.unisiegen.gtitool.core
 svn propset svn:keywords 'Author Date Id Rev' `find ../de.unisiegen.gtitool.core/test/ -name '*.java'`
 
 # ui
-svn propset svn:keywords 'Author Date Id Rev' `find ./source/ -name '*.java'`
-svn propset svn:keywords 'Author Date Id Rev' `find ./test/ -name '*.java'`
+svn propset svn:keywords 'Author Date Id Rev' `find ../de.unisiegen.gtitool.ui/source/ -name '*.java'`
+svn propset svn:keywords 'Author Date Id Rev' `find ../de.unisiegen.gtitool.ui/test/ -name '*.java'`
 
 # javacup
 svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.javacup/source/ -name '*.java'`

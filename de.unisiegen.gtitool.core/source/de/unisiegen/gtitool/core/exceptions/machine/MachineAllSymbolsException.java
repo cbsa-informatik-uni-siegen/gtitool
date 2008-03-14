@@ -87,9 +87,15 @@ public final class MachineAllSymbolsException extends MachineException
       while ( iter.hasNext () )
       {
         Symbol current = iter.next ();
-        symbols.append ( Messages.QUOTE );
+        if ( index > 0 )
+        {
+          symbols.append ( Messages.QUOTE );
+        }
         symbols.append ( current.getName () );
-        symbols.append ( Messages.QUOTE );
+        if ( index < this.symbolSet.size () - 1 )
+        {
+          symbols.append ( Messages.QUOTE );
+        }
         if ( index < this.symbolSet.size () - 2 )
         {
           symbols.append ( ", " ); //$NON-NLS-1$

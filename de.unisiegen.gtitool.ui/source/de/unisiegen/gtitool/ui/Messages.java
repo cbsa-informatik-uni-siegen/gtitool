@@ -80,7 +80,7 @@ public final class Messages
       for ( int i = 0 ; i < arguments.length ; i++ )
       {
         message = message.replace ( "{" + i + "}", QUOTE //$NON-NLS-1$ //$NON-NLS-2$
-            + arguments [ i ].toString () + QUOTE );
+            + arguments [ i ] + QUOTE );
       }
       return message;
     }

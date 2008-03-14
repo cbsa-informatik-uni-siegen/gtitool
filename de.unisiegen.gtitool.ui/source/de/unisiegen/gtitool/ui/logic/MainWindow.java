@@ -56,7 +56,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( MainWindow.class );
+  private static final Logger LOGGER = Logger.getLogger ( MainWindow.class );
 
 
   /**
@@ -1199,19 +1199,66 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
-    String message;
-    if ( errorCount == 1 )
+
+    if ( ( errorCount > 0 ) && ( warningCount > 0 ) )
     {
-      message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+      String message = null;
+      if ( errorCount == 1 && warningCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0" ); //$NON-NLS-1$
+      }
+      else if ( errorCount == 1 && warningCount > 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount1", //$NON-NLS-1$
+            String.valueOf ( warningCount ) );
+      }
+      else if ( errorCount > 1 && warningCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount2", //$NON-NLS-1$
+            String.valueOf ( errorCount ) );
+      }
+      else
+      {
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount3", //$NON-NLS-1$
+            String.valueOf ( errorCount ), String.valueOf ( warningCount ) );
+      }
+
+      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+          .getString ( "MainWindow.ErrorWarningMachine" ) ); //$NON-NLS-1$
+      infoDialog.show ();
     }
-    else
+    else if ( errorCount > 0 )
     {
-      message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-          .valueOf ( errorCount ) );
+      String message;
+      if ( errorCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+      }
+      else
+      {
+        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+            .valueOf ( errorCount ) );
+      }
+      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+      infoDialog.show ();
     }
-    InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
-        .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
-    infoDialog.show ();
+    else if ( warningCount > 0 )
+    {
+      String message;
+      if ( warningCount == 1 )
+      {
+        message = Messages.getString ( "MainWindow.WarningMachineCountOne" ); //$NON-NLS-1$
+      }
+      else
+      {
+        message = Messages.getString ( "MainWindow.WarningMachineCount", String //$NON-NLS-1$
+            .valueOf ( warningCount ) );
+      }
+      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+          .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
   }
 
 
@@ -1611,8 +1658,8 @@ public final class MainWindow implements LanguageChangedListener
 
       else
       {
-        DefaultGrammarModel model = (DefaultGrammarModel) element;
-        
+        DefaultGrammarModel model = ( DefaultGrammarModel ) element;
+
         EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, file );
 
         this.gui.jGTITabbedPaneMain.addEditorPanel ( newEditorPanel );
@@ -1770,7 +1817,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setSaveState ( boolean state )
   {
-    logger.debug ( "set save status to \"" + state + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+    LOGGER.debug ( "set save status to " + Messages.QUOTE + state //$NON-NLS-1$
+        + Messages.QUOTE );
 
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( panel != null )

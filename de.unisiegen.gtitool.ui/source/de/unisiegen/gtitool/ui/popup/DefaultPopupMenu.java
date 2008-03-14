@@ -10,12 +10,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
-import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.InfoDialog;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
@@ -34,64 +28,6 @@ public final class DefaultPopupMenu extends JPopupMenu
   private static final long serialVersionUID = 627345294367905600L;
 
 
-  /** The {@link Machine} */
-  private Machine machine;
-
-
-  /**
-   * The zoom item
-   */
-  private JMenu zoom;
-
-
-  /**
-   * The zoom 50 % item
-   */
-  private JCheckBoxMenuItem zoom50;
-
-
-  /**
-   * The zoom 75 % item
-   */
-  private JCheckBoxMenuItem zoom75;
-
-
-  /**
-   * The zoom 100 % item
-   */
-  private JCheckBoxMenuItem zoom100;
-
-
-  /**
-   * The zoom 125 % item
-   */
-  private JCheckBoxMenuItem zoom125;
-
-
-  /**
-   * The zoom 150 % item
-   */
-  private JCheckBoxMenuItem zoom150;
-
-
-  /**
-   * The zoom 175 % item
-   */
-  private JCheckBoxMenuItem zoom175;
-
-
-  /**
-   * The zoom 200 % item
-   */
-  private JCheckBoxMenuItem zoom200;
-
-
-  /**
-   * The validate item
-   */
-  private JMenuItem validate;
-
-
   /**
    * The actual zoom factor
    */
@@ -105,15 +41,67 @@ public final class DefaultPopupMenu extends JPopupMenu
 
 
   /**
+   * The validate item.
+   */
+  private JMenuItem validate;
+
+
+  /**
+   * The zoom item.
+   */
+  private JMenu zoom;
+
+
+  /**
+   * The zoom 100 percent item.
+   */
+  private JCheckBoxMenuItem zoom100;
+
+
+  /**
+   * The zoom 125 percent item.
+   */
+  private JCheckBoxMenuItem zoom125;
+
+
+  /**
+   * The zoom 150 percent item.
+   */
+  private JCheckBoxMenuItem zoom150;
+
+
+  /**
+   * The zoom 175 percent item.
+   */
+  private JCheckBoxMenuItem zoom175;
+
+
+  /**
+   * The zoom 200 percent item.
+   */
+  private JCheckBoxMenuItem zoom200;
+
+
+  /**
+   * The zoom 50 percent item.
+   */
+  private JCheckBoxMenuItem zoom50;
+
+
+  /**
+   * The zoom 75 percent item.
+   */
+  private JCheckBoxMenuItem zoom75;
+
+
+  /**
    * Allocate a new {@link DefaultPopupMenu}
    * 
    * @param panel the machine panel
-   * @param machine The {@link Machine}
    * @param factor the actual zoom factor
    */
-  public DefaultPopupMenu ( MachinePanel panel, Machine machine, int factor )
+  public DefaultPopupMenu ( MachinePanel panel, int factor )
   {
-    this.machine = machine;
     this.factor = factor;
     this.panel = panel;
     populateMenues ();
@@ -230,43 +218,7 @@ public final class DefaultPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        int errorCount = 0;
-        int warningCount = 0;
-        try
-        {
-          DefaultPopupMenu.this.panel.clearValidationMessages ();
-          DefaultPopupMenu.this.machine.validate ();
-        }
-        catch ( MachineValidationException e1 )
-        {
-          for ( MachineException error : e1.getMachineException () )
-          {
-            if ( error.getType ().equals ( ErrorType.ERROR ) )
-            {
-              DefaultPopupMenu.this.panel.addError ( error );
-              errorCount++ ;
-            }
-            else if ( error.getType ().equals ( ErrorType.WARNING ) )
-            {
-              DefaultPopupMenu.this.panel.addWarning ( error );
-              warningCount++ ;
-            }
-          }
-        }
-        String message;
-        if ( errorCount == 1 )
-        {
-          message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
-        }
-        else
-        {
-          message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-              .valueOf ( errorCount ) );
-        }
-        InfoDialog infoDialog = new InfoDialog ( DefaultPopupMenu.this.panel
-            .getParent (), message, Messages
-            .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
-        infoDialog.show ();
+        DefaultPopupMenu.this.panel.getMainWindow ().handleValidate ();
       }
     } );
     add ( this.validate );

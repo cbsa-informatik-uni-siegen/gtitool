@@ -25,7 +25,7 @@ public final class AboutDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( AboutDialog.class );
+  private static final Logger LOGGER = Logger.getLogger ( AboutDialog.class );
 
 
   /**
@@ -47,7 +47,7 @@ public final class AboutDialog
    */
   public AboutDialog ( JFrame parent )
   {
-    logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new AboutDialogForm ( this, parent );
     this.gui.jLabelName.setText ( "GTI Tool " + Version.MAJOR + "." //$NON-NLS-1$//$NON-NLS-2$
@@ -63,7 +63,7 @@ public final class AboutDialog
    */
   public final void handleClose ()
   {
-    logger.debug ( "handle close" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle close" ); //$NON-NLS-1$
     this.gui.dispose ();
   }
 
@@ -73,7 +73,7 @@ public final class AboutDialog
    */
   public final void handleWebpageEntry ()
   {
-    logger.debug ( "handle web page entry" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle web page entry" ); //$NON-NLS-1$
     Clipboard.getInstance ().copy ( this.gui.jLabelWebpageEntry.getText () );
   }
 
@@ -83,7 +83,7 @@ public final class AboutDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the about dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "show the about dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

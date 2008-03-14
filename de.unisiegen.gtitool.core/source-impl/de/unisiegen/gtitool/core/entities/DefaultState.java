@@ -216,8 +216,9 @@ public final class DefaultState implements State
     // Check if the element is correct
     if ( !element.getName ().equals ( "State" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a state" ); //$NON-NLS-1$
+      throw new IllegalArgumentException (
+          "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
+              + Messages.QUOTE + " is not a state" ); //$NON-NLS-1$
     }
 
     // TransitionBegin

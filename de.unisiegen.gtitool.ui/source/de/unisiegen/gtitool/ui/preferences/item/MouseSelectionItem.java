@@ -28,7 +28,7 @@ public enum MouseSelectionItem
   /**
    * The {@link Logger} for this enum.
    */
-  private static final Logger logger = Logger
+  private static final Logger LOGGER = Logger
       .getLogger ( MouseSelectionItem.class );
 
 
@@ -53,7 +53,7 @@ public enum MouseSelectionItem
       }
       default :
       {
-        logger.error ( "mouse selection index not supported" ); //$NON-NLS-1$
+        LOGGER.error ( "mouse selection index not supported" ); //$NON-NLS-1$
         return PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM;
       }
     }

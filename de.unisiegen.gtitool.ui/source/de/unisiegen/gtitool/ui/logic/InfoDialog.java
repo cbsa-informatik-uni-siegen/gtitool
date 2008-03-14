@@ -20,7 +20,7 @@ public final class InfoDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( InfoDialog.class );
+  private static final Logger LOGGER = Logger.getLogger ( InfoDialog.class );
 
 
   /**
@@ -44,7 +44,7 @@ public final class InfoDialog
    */
   public InfoDialog ( JFrame parent, String text, String title )
   {
-    logger.debug ( "allocate a new info dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "allocate a new info dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new InfoDialogForm ( this, parent );
     this.gui.jTextAreaInfo.setCursor ( null );
@@ -59,7 +59,7 @@ public final class InfoDialog
    */
   public final void handleClose ()
   {
-    logger.debug ( "handle close" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle close" ); //$NON-NLS-1$
     this.gui.dispose ();
   }
 
@@ -69,7 +69,7 @@ public final class InfoDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the info dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "show the info dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

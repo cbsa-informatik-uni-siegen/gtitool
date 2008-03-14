@@ -72,7 +72,7 @@ public enum AutoStepItem
   /**
    * The {@link Logger} for this enum.
    */
-  private static final Logger logger = Logger.getLogger ( AutoStepItem.class );
+  private static final Logger LOGGER = Logger.getLogger ( AutoStepItem.class );
 
 
   /**
@@ -132,7 +132,7 @@ public enum AutoStepItem
       }
       default :
       {
-        logger.error ( "auto step interval is not supported" ); //$NON-NLS-1$
+        LOGGER.error ( "auto step interval is not supported" ); //$NON-NLS-1$
         return PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM;
       }
     }

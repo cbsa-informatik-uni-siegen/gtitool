@@ -65,9 +65,9 @@ public final class MachineStateStartException extends MachineException
       StringBuilder states = new StringBuilder ();
       for ( int i = 0 ; i < stateList.size () ; i++ )
       {
-        states.append ( "\"" ); //$NON-NLS-1$
+        states.append ( Messages.QUOTE );
         states.append ( stateList.get ( i ).getName () );
-        states.append ( "\"" ); //$NON-NLS-1$
+        states.append ( Messages.QUOTE );
         if ( i < stateList.size () - 2 )
         {
           states.append ( ", " ); //$NON-NLS-1$

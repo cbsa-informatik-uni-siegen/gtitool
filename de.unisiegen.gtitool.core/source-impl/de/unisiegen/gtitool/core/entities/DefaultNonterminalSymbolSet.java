@@ -28,7 +28,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * The {@link DefaultNonterminalSymbolSet} entity.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultNonterminalSymbolSet.java 555 2008-02-12 00:50:47Z
+ *          fehler $
  */
 public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 {
@@ -86,19 +87,21 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * @param element The {@link Element}.
    * @throws NonterminalSymbolSetException If something with the
    *           {@link DefaultNonterminalSymbolSet} is not correct.
-   * @throws NonterminalSymbolException If something with the {@link Symbol} is not
-   *           correct.
+   * @throws NonterminalSymbolException If something with the {@link Symbol} is
+   *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultNonterminalSymbolSet ( Element element )
-      throws NonterminalSymbolSetException, NonterminalSymbolException, StoreException
+      throws NonterminalSymbolSetException, NonterminalSymbolException,
+      StoreException
   {
     this ();
     // Check if the element is correct
     if ( !element.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a nonterminal symbol set" ); //$NON-NLS-1$
+      throw new IllegalArgumentException (
+          "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
+              + Messages.QUOTE + " is not a nonterminal symbol set" ); //$NON-NLS-1$
     }
 
     // Attribute

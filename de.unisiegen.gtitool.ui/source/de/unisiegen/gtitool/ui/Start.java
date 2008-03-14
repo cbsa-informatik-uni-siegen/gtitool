@@ -26,7 +26,7 @@ public final class Start
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( Start.class );
+  private static final Logger LOGGER = Logger.getLogger ( Start.class );
 
 
   /**
@@ -47,19 +47,19 @@ public final class Start
     }
     catch ( ClassNotFoundException exc )
     {
-      logger.error ( "class not found exception", exc ); //$NON-NLS-1$
+      LOGGER.error ( "class not found exception", exc ); //$NON-NLS-1$
     }
     catch ( InstantiationException exc )
     {
-      logger.error ( "instantiation exception", exc ); //$NON-NLS-1$
+      LOGGER.error ( "instantiation exception", exc ); //$NON-NLS-1$
     }
     catch ( IllegalAccessException exc )
     {
-      logger.error ( "illegal access exception", exc ); //$NON-NLS-1$
+      LOGGER.error ( "illegal access exception", exc ); //$NON-NLS-1$
     }
     catch ( UnsupportedLookAndFeelException exc )
     {
-      logger.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
+      LOGGER.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
     }
     /*
      * Set the last active language

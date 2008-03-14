@@ -25,7 +25,7 @@ public final class ConfirmDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( ConfirmDialog.class );
+  private static final Logger LOGGER = Logger.getLogger ( ConfirmDialog.class );
 
 
   /**
@@ -72,7 +72,7 @@ public final class ConfirmDialog
       boolean yesButtonVisible, boolean noButtonVisible,
       boolean cancelButtonVisible )
   {
-    logger.debug ( "allocate a new confirm dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "allocate a new confirm dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new ConfirmDialogForm ( this, parent );
     this.gui.jTextAreaInfo.setCursor ( null );
@@ -157,7 +157,7 @@ public final class ConfirmDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
     this.canceled = true;
     this.gui.dispose ();
   }
@@ -168,7 +168,7 @@ public final class ConfirmDialog
    */
   public final void handleConfirm ()
   {
-    logger.debug ( "handle confirm" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle confirm" ); //$NON-NLS-1$
     this.confirmed = true;
     this.gui.dispose ();
   }
@@ -179,7 +179,7 @@ public final class ConfirmDialog
    */
   public final void handleNotConfirm ()
   {
-    logger.debug ( "handle not confirm" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle not confirm" ); //$NON-NLS-1$
     this.notConfirmed = true;
     this.gui.dispose ();
   }
@@ -226,7 +226,7 @@ public final class ConfirmDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the confirm dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "show the confirm dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

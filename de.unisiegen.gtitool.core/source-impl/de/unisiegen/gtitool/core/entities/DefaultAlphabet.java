@@ -97,8 +97,8 @@ public final class DefaultAlphabet implements Alphabet
     // Check if the element is correct
     if ( !element.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a alphabet" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
+          + element.getName () + Messages.QUOTE + " is not a alphabet" ); //$NON-NLS-1$
     }
 
     // Attribute

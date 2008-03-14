@@ -50,7 +50,8 @@ import de.unisiegen.gtitool.ui.utils.RedoUndoItem;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultMachineModel implements DefaultModel, Storable, Modifyable
+public final class DefaultMachineModel implements DefaultModel, Storable,
+    Modifyable
 {
 
   /**
@@ -160,8 +161,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable, Modify
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a machine model" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
+          + element.getName () + Messages.QUOTE + " is not a machine model" ); //$NON-NLS-1$
     }
 
     // Attribute

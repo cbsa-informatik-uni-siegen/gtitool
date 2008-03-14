@@ -155,9 +155,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The parent window.
+   * The {@link MainWindowForm}.
    */
-  private MainWindowForm parent;
+  private MainWindowForm mainWindowForm;
 
 
   /**
@@ -337,20 +337,20 @@ public final class MachinePanel implements EditorPanel
   /**
    * Create a new Machine Panel Object
    * 
-   * @param parent The parent frame.
+   * @param mainWindowForm The {@link MainWindowForm}.
    * @param model The {@link DefaultMachineModel} of this panel.
    * @param file The {@link File} of this {@link MachinePanel}.
    */
-  public MachinePanel ( MainWindowForm parent, DefaultMachineModel model,
-      File file )
+  public MachinePanel ( MainWindowForm mainWindowForm,
+      DefaultMachineModel model, File file )
   {
-    this.parent = parent;
+    this.mainWindowForm = mainWindowForm;
     this.model = model;
     this.file = file;
     this.gui = new MachinePanelForm ();
     this.gui.setMachinePanel ( this );
 
-    this.redoUndoHandler = new RedoUndoHandler ( model, parent );
+    this.redoUndoHandler = new RedoUndoHandler ( model, this.mainWindowForm );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
 
     intitializeMouseAdapter ();
@@ -360,7 +360,8 @@ public final class MachinePanel implements EditorPanel
      */
     this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
-    setVisibleConsole ( this.parent.jCheckBoxMenuItemConsole.getState () );
+    setVisibleConsole ( this.mainWindowForm.jCheckBoxMenuItemConsole
+        .getState () );
     this.gui.jSplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
@@ -377,7 +378,7 @@ public final class MachinePanel implements EditorPanel
         } );
     this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationTable () );
-    setVisibleTable ( this.parent.jCheckBoxMenuItemTable.getState () );
+    setVisibleTable ( this.mainWindowForm.jCheckBoxMenuItemTable.getState () );
     this.gui.jSplitPaneTable.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
@@ -555,7 +556,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final EnterWordModePopupMenu createEnterWordModePopupMenu ()
   {
-    return new EnterWordModePopupMenu ( this, this.parent );
+    return new EnterWordModePopupMenu ( this, this.mainWindowForm );
   }
 
 
@@ -567,7 +568,7 @@ public final class MachinePanel implements EditorPanel
   private final DefaultPopupMenu createPopupMenu ()
   {
     int factor = ( new Double ( this.zoomFactor * 100 ) ).intValue ();
-    return new DefaultPopupMenu ( this, this.machine, factor );
+    return new DefaultPopupMenu ( this, factor );
   }
 
 
@@ -579,7 +580,8 @@ public final class MachinePanel implements EditorPanel
    */
   private final StatePopupMenu createStatePopupMenu ( DefaultStateView stateView )
   {
-    return new StatePopupMenu ( this.parent, this.graph, this.model, stateView );
+    return new StatePopupMenu ( this.mainWindowForm, this.graph, this.model,
+        stateView );
   }
 
 
@@ -741,14 +743,26 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Returns the parent.
+   * Returns the {@link MainWindowForm}.
    * 
-   * @return The parent.
-   * @see #parent
+   * @return The {@link MainWindowForm}.
+   * @see #mainWindowForm
    */
-  public final MainWindowForm getParent ()
+  public final MainWindowForm getMainWindowForm ()
   {
-    return this.parent;
+    return this.mainWindowForm;
+  }
+
+
+  /**
+   * Returns the {@link MainWindow}.
+   * 
+   * @return The {@link MainWindow}.
+   * @see #mainWindowForm
+   */
+  public final MainWindow getMainWindow ()
+  {
+    return this.mainWindowForm.getLogic ();
   }
 
 
@@ -854,7 +868,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleExchange ()
   {
-    ExchangeDialog exchangeDialog = new ExchangeDialog ( this.parent
+    ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
         .getLogic (), this.model.getElement (), this.file );
     exchangeDialog.show ();
   }
@@ -935,8 +949,8 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
-          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
+          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -989,7 +1003,7 @@ public final class MachinePanel implements EditorPanel
               + ")"; //$NON-NLS-1$
         }
       } );
-      int n = chooser.showSaveDialog ( this.parent );
+      int n = chooser.showSaveDialog ( this.mainWindowForm );
       if ( ( n == JFileChooser.CANCEL_OPTION )
           || ( chooser.getSelectedFile () == null ) )
       {
@@ -997,9 +1011,10 @@ public final class MachinePanel implements EditorPanel
       }
       if ( chooser.getSelectedFile ().exists () )
       {
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.parent, Messages
-            .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
-                .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+            Messages.getString (
+                "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                    .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
             true, true, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
@@ -1023,8 +1038,8 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
-          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
+          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -1057,7 +1072,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleToolbarEditDocument ()
   {
-    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.parent,
+    AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
         this.machine );
     alphabetDialog.show ();
   }
@@ -1230,28 +1245,28 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( WordFinishedException exc )
     {
-      this.parent.getLogic ().handleAutoStepStopped ();
+      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getDescription (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
     {
-      this.parent.getLogic ().handleAutoStepStopped ();
+      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getDescription (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordNotAcceptedException exc )
     {
-      this.parent.getLogic ().handleAutoStepStopped ();
+      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getDescription (), exc.getMessage () );
       infoDialog.show ();
     }
@@ -1314,7 +1329,7 @@ public final class MachinePanel implements EditorPanel
     {
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getDescription (), exc.getMessage () );
       infoDialog.show ();
     }
@@ -1322,7 +1337,7 @@ public final class MachinePanel implements EditorPanel
     {
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
-      InfoDialog infoDialog = new InfoDialog ( this.parent, exc
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getDescription (), exc.getMessage () );
       infoDialog.show ();
     }
@@ -1338,7 +1353,7 @@ public final class MachinePanel implements EditorPanel
   {
     if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.parent, Messages
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
           .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
           .getString ( "MachinePanel.WordModeError" ) ); //$NON-NLS-1$
       infoDialog.show ();
@@ -1581,7 +1596,7 @@ public final class MachinePanel implements EditorPanel
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
             Transition usedTransition = transitionView.getTransition ();
             TransitionDialog transitionDialog = new TransitionDialog (
-                MachinePanel.this.parent, MachinePanel.this.machine
+                MachinePanel.this.mainWindowForm, MachinePanel.this.machine
                     .getAlphabet (), MachinePanel.this.machine
                     .getPushDownAlphabet (), usedTransition
                     .getPushDownWordRead (), usedTransition
@@ -1616,7 +1631,7 @@ public final class MachinePanel implements EditorPanel
             // open transition config dialog
             DefaultStateView state = ( DefaultStateView ) object;
             StateConfigDialog dialog = new StateConfigDialog (
-                MachinePanel.this.parent, state.getState (),
+                MachinePanel.this.mainWindowForm, state.getState (),
                 MachinePanel.this.model );
             dialog.show ();
             if ( ( dialog.getStateName () != null )
@@ -1760,7 +1775,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
                 .setSelected ( true );
             break;
           }
@@ -1860,7 +1875,7 @@ public final class MachinePanel implements EditorPanel
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           }
           TransitionDialog transitionDialog = new TransitionDialog (
-              MachinePanel.this.parent, MachinePanel.this.machine
+              MachinePanel.this.mainWindowForm, MachinePanel.this.machine
                   .getAlphabet (), MachinePanel.this.machine
                   .getPushDownAlphabet (), MachinePanel.this.firstState
                   .getState (), target == null ? null : target.getState () );
@@ -1905,7 +1920,7 @@ public final class MachinePanel implements EditorPanel
             case WITH_RETURN_TO_MOUSE :
             {
               // Return to the normal Mouse after every click
-              MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+              MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
                   .setSelected ( true );
               break;
             }
@@ -1951,10 +1966,10 @@ public final class MachinePanel implements EditorPanel
         }
 
         TransitionDialog transitionDialog = new TransitionDialog (
-            MachinePanel.this.parent, MachinePanel.this.machine.getAlphabet (),
-            MachinePanel.this.machine.getPushDownAlphabet (),
-            MachinePanel.this.firstState.getState (), target == null ? null
-                : target.getState () );
+            MachinePanel.this.mainWindowForm, MachinePanel.this.machine
+                .getAlphabet (), MachinePanel.this.machine
+                .getPushDownAlphabet (), MachinePanel.this.firstState
+                .getState (), target == null ? null : target.getState () );
         transitionDialog.show ();
         if ( transitionDialog.isConfirmed () )
         {
@@ -1994,7 +2009,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
                 .setSelected ( true );
             break;
           }
@@ -2183,7 +2198,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
                 .setSelected ( true );
             break;
           }
@@ -2281,7 +2296,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal Mouse after every click
-            MachinePanel.this.parent.jGTIToolBarToggleButtonMouse
+            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
                 .setSelected ( true );
             break;
           }

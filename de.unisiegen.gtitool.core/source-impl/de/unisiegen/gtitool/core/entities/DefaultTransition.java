@@ -283,8 +283,9 @@ public final class DefaultTransition implements Transition
     // Check if the element is correct
     if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a transition" ); //$NON-NLS-1$
+      throw new IllegalArgumentException (
+          "element " + Messages.QUOTE + element.getName () //$NON-NLS-1$
+              + Messages.QUOTE + " is not a transition" ); //$NON-NLS-1$
     }
 
     // Symbols

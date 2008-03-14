@@ -29,7 +29,7 @@ public enum TransitionItem
   /**
    * The {@link Logger} for this enum.
    */
-  private static final Logger logger = Logger.getLogger ( TransitionItem.class );
+  private static final Logger LOGGER = Logger.getLogger ( TransitionItem.class );
 
 
   /**
@@ -53,7 +53,7 @@ public enum TransitionItem
       }
       default :
       {
-        logger.error ( "transition mode not supported" ); //$NON-NLS-1$
+        LOGGER.error ( "transition mode not supported" ); //$NON-NLS-1$
         return PreferenceManager.DEFAULT_TRANSITION_ITEM;
       }
     }

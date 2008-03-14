@@ -144,7 +144,7 @@ public final class TransitionPopupMenu extends JPopupMenu
       ActionEvent event )
       {
         ConfirmDialog confirmedDialog = new ConfirmDialog (
-            TransitionPopupMenu.this.parent.getLogic ().getParent (), Messages
+            TransitionPopupMenu.this.parent.getLogic ().getMainWindowForm (), Messages
                 .getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
                     TransitionPopupMenu.this.transition ), Messages
                 .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$

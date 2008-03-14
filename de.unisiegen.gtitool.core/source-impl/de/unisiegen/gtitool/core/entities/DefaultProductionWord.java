@@ -83,8 +83,8 @@ public final class DefaultProductionWord implements ProductionWord
     // Check if the element is correct
     if ( !element.getName ().equals ( "ProductionWord" ) ) //$NON-NLS-1$
     {
-      throw new IllegalArgumentException ( "element \"" + element.getName () //$NON-NLS-1$
-          + "\" is not a production word" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "element " + Messages.QUOTE //$NON-NLS-1$
+          + element.getName () + Messages.QUOTE + " is not a production word" ); //$NON-NLS-1$
     }
 
     // Element

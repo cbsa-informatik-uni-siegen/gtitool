@@ -399,7 +399,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger
+  private static final Logger LOGGER = Logger
       .getLogger ( PreferencesDialog.class );
 
 
@@ -878,7 +878,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public PreferencesDialog ( JFrame parent )
   {
-    logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new PreferencesDialogForm ( this, parent );
     init ();
@@ -891,7 +891,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleAccept ()
   {
-    logger.debug ( "handle accept" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle accept" ); //$NON-NLS-1$
     save ();
   }
 
@@ -901,7 +901,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
     if ( this.initialLastActiveTab != this.gui.jTabbedPane.getSelectedIndex () )
     {
@@ -931,7 +931,7 @@ public final class PreferencesDialog implements LanguageChangedListener
             .getLastPathComponent ();
         if ( selectedColorItem.isLeaf () )
         {
-          logger.debug ( "handle color chooser dialog" ); //$NON-NLS-1$ 
+          LOGGER.debug ( "handle color chooser dialog" ); //$NON-NLS-1$ 
           ColorChooserDialog colorChooserDialog = new ColorChooserDialog (
               this.parent, selectedColorItem.getColor () );
           colorChooserDialog.show ();
@@ -951,7 +951,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleOk ()
   {
-    logger.debug ( "handle ok" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle ok" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
     save ();
     this.gui.dispose ();
@@ -963,7 +963,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleRestore ()
   {
-    logger.debug ( "handle restore" ); //$NON-NLS-1$
+    LOGGER.debug ( "handle restore" ); //$NON-NLS-1$
 
     /*
      * General
@@ -2426,7 +2426,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void save ()
   {
-    logger.debug ( "save" ); //$NON-NLS-1$
+    LOGGER.debug ( "save" ); //$NON-NLS-1$
     /*
      * General
      */
@@ -2828,19 +2828,19 @@ public final class PreferencesDialog implements LanguageChangedListener
         }
         catch ( ClassNotFoundException e )
         {
-          logger.error ( "class not found exception", e ); //$NON-NLS-1$
+          LOGGER.error ( "class not found exception", e ); //$NON-NLS-1$
         }
         catch ( InstantiationException e )
         {
-          logger.error ( "instantiation exception", e ); //$NON-NLS-1$
+          LOGGER.error ( "instantiation exception", e ); //$NON-NLS-1$
         }
         catch ( IllegalAccessException e )
         {
-          logger.error ( "illegal access exception", e ); //$NON-NLS-1$
+          LOGGER.error ( "illegal access exception", e ); //$NON-NLS-1$
         }
         catch ( UnsupportedLookAndFeelException e )
         {
-          logger.error ( "unsupported look and feel exception", e ); //$NON-NLS-1$
+          LOGGER.error ( "unsupported look and feel exception", e ); //$NON-NLS-1$
         }
       }
       this.initialLookAndFeel = selectedLookAndFeelItem;
@@ -2997,7 +2997,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void show ()
   {
-    logger.debug ( "show the preferences dialog" ); //$NON-NLS-1$
+    LOGGER.debug ( "show the preferences dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui;
 
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -24,7 +23,13 @@ public final class Messages
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( Messages.class );
+  private static final Logger LOGGER = Logger.getLogger ( Messages.class );
+
+
+  /**
+   * The quotation mark.
+   */
+  public static final String QUOTE = "'"; //$NON-NLS-1$
 
 
   /**
@@ -71,8 +76,13 @@ public final class Messages
     {
       ResourceBundle resourceBundle = ResourceBundle
           .getBundle ( "de.unisiegen.gtitool.ui.messages" ); //$NON-NLS-1$
-      return MessageFormat
-          .format ( resourceBundle.getString ( key ), arguments );
+      String message = resourceBundle.getString ( key );
+      for ( int i = 0 ; i < arguments.length ; i++ )
+      {
+        message = message.replace ( "{" + i + "}", QUOTE //$NON-NLS-1$ //$NON-NLS-2$
+            + arguments [ i ].toString () + QUOTE );
+      }
+      return message;
     }
     catch ( MissingResourceException exc )
     {
@@ -80,7 +90,7 @@ public final class Messages
     }
     catch ( IllegalArgumentException exc )
     {
-      logger.error ( "illegal argument exception", exc ); //$NON-NLS-1$
+      LOGGER.error ( "illegal argument exception", exc ); //$NON-NLS-1$
       return key;
     }
   }

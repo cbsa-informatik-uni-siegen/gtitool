@@ -60,7 +60,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
 
         buttonGroup.add(jRadioButtonRegularGrammar);
         jRadioButtonRegularGrammar.setSelected(true);
-        jRadioButtonRegularGrammar.setText(bundle.getString("NewDialog.RegularGrammar")); // NOI18N
+        jRadioButtonRegularGrammar.setText(bundle.getString("NewDialog.RG")); // NOI18N
         jRadioButtonRegularGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jRadioButtonRegularGrammar.setFocusPainted(false);
         jRadioButtonRegularGrammar.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -78,7 +78,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jPanelGrammars.add(jRadioButtonRegularGrammar, gridBagConstraints);
 
         buttonGroup.add(jRadioButtonContextFreeGrammar);
-        jRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.ContextFreeGrammar")); // NOI18N
+        jRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.CFG")); // NOI18N
         jRadioButtonContextFreeGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jRadioButtonContextFreeGrammar.setEnabled(false);
         jRadioButtonContextFreeGrammar.setFocusPainted(false);
@@ -98,7 +98,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jPanelGrammars.add(jRadioButtonContextFreeGrammar, gridBagConstraints);
 
         buttonGroup.add(jRadioButtonContextSensitivGrammar);
-        jRadioButtonContextSensitivGrammar.setText(bundle.getString("NewDialog.ContextSensitivGrammar")); // NOI18N
+        jRadioButtonContextSensitivGrammar.setText(bundle.getString("NewDialog.CSG")); // NOI18N
         jRadioButtonContextSensitivGrammar.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         jRadioButtonContextSensitivGrammar.setEnabled(false);
         jRadioButtonContextSensitivGrammar.setFocusPainted(false);

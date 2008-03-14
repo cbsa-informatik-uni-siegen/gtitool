@@ -4,8 +4,6 @@ package de.unisiegen.gtitool.ui.model;
 import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
@@ -35,8 +33,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
-    TableModel
+public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
+
 {
 
   /**
@@ -50,12 +48,10 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
    */
   private Grammar grammar;
 
-
   /**
-   * List containing all {@link Production}s
+   * The {@link ModifyStatusChangedListener}.
    */
-  private ArrayList < Production > productions = new ArrayList < Production > ();
-
+  private ModifyStatusChangedListener modifyStatusChangedListener;
 
   /**
    * List of listeners
@@ -71,6 +67,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
   public DefaultGrammarModel ( Grammar grammar )
   {
     this.grammar = grammar;
+    initializeModifyStatusChangedListener ();
   }
 
 
@@ -92,7 +89,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
       throws NonterminalSymbolSetException, NonterminalSymbolException,
       StoreException, TerminalSymbolSetException, TerminalSymbolException
   {
-    
+
     // Attribute
     boolean foundGrammarVersion = false;
     String grammarType = null;
@@ -100,7 +97,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
     {
       if ( attribute.getName ().equals ( "grammarType" ) ) //$NON-NLS-1$
       {
-          grammarType = attribute.getValue ();
+        grammarType = attribute.getValue ();
       }
       else if ( attribute.getName ().equals ( "grammarVersion" ) ) //$NON-NLS-1$
       {
@@ -117,8 +114,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
             .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
       }
     }
-    
-    
+
     NonterminalSymbolSet nonterminalSymbolSet = null;
     TerminalSymbolSet terminalSymbolSet = null;
 
@@ -135,11 +131,20 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
       }
     }
 
+    if ( nonterminalSymbolSet == null || terminalSymbolSet == null
+        || grammarType == null || !foundGrammarVersion )
+    {
+      throw new StoreException ( Messages
+          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
+    }
+
+    ArrayList < Production > productions = new ArrayList < Production > ();
+
     for ( Element current : element.getElement () )
     {
       if ( current.getName ().equals ( "Production" ) ) //$NON-NLS-1$
       {
-        this.productions.add ( new DefaultProduction ( current ) );
+        productions.add ( new DefaultProduction ( current ) );
       }
 
       else if ( ( !current.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
@@ -149,13 +154,14 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
-
-    if ( nonterminalSymbolSet == null || terminalSymbolSet == null || grammarType == null || !foundGrammarVersion )
-    {
-      throw new StoreException ( Messages
-          .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
-    }
     this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet );
+
+    for ( Production current : productions )
+    {
+      this.grammar.addProduction ( current );
+    }
+    this.grammar.resetModify ();
+    initializeModifyStatusChangedListener ();
   }
 
 
@@ -178,53 +184,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
    */
   public void addProduction ( Production production )
   {
-    this.productions.add ( production );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#addTableModelListener(TableModelListener)
-   */
-  public final void addTableModelListener ( TableModelListener listener )
-  {
-    this.listenerList.add ( TableModelListener.class, listener );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getColumnClass(int)
-   */
-  public Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
-  int columnIndex )
-  {
-    return DefaultProduction.class;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getColumnCount()
-   */
-  public int getColumnCount ()
-  {
-    return 1;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getColumnName(int)
-   */
-  public String getColumnName ( @SuppressWarnings ( "unused" )
-  int columnIndex )
-  {
-    return ""; //$NON-NLS-1$
+    this.grammar.addProduction ( production );
   }
 
 
@@ -243,8 +203,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
     newElement.addElement ( this.grammar.getNonterminalSymbolSet ()
         .getElement () );
     newElement.addElement ( this.grammar.getTerminalSymbolSet ().getElement () );
-    for ( Production current : this.productions )
-    {
+    
+    for (Production current : this.grammar.getProductions()){
       newElement.addElement ( current.getElement () );
     }
     return newElement;
@@ -263,56 +223,6 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
 
 
   /**
-   * Returns the production at the given index.
-   * 
-   * @param index the index of the production of interest.
-   * @return the production at the given index.
-   */
-  public Production getProductionAt ( int index )
-  {
-    if ( this.productions.size () > index )
-      return this.productions.get ( index );
-    return null;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getRowCount()
-   */
-  public int getRowCount ()
-  {
-    return this.productions.size ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getValueAt(int, int)
-   */
-  public Object getValueAt ( int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
-  {
-    return this.productions.get ( rowIndex );
-  }
-
-
-  /**
-   * Signals if cell is editable.
-   * 
-   * @param rowIndex the row index of the cell
-   * @param columnIndex the column index of the cell
-   * @return false (our table is read only)
-   */
-  public boolean isCellEditable ( int rowIndex, int columnIndex )
-  {
-    return false;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#isModified()
@@ -323,27 +233,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
     {
       return true;
     }
-
-    for ( Production current : this.productions )
-    {
-      if ( current.isModified () )
-      {
-        return true;
-      }
-    }
     return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final synchronized void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -354,19 +244,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
    */
   public void removeProduction ( Production production )
   {
-    this.productions.remove ( production );
+    this.grammar.removeProduction ( production );
 
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#removeTableModelListener(TableModelListener)
-   */
-  public final void removeTableModelListener ( TableModelListener listener )
-  {
-    this.listenerList.remove ( TableModelListener.class, listener );
   }
 
 
@@ -377,46 +256,62 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable,
    */
   public void resetModify ()
   {
-    // TODO Auto-generated method stub
-
+   this.grammar.resetModify ();
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see TableModel#setValueAt(Object, int, int)
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final void setValueAt ( @SuppressWarnings ( "unused" )
-  Object value, @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
   {
-    // Do nothing
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
-
-
+  
   /**
-   * Returns the index for the given {@link Production}.
-   * 
-   * @param production The {@link Production}.
-   * @return the index for the given {@link Production}.
+   * Initialize the {@link ModifyStatusChangedListener}.
    */
-  public int getIndexOf ( Production production )
+  private final void initializeModifyStatusChangedListener ()
   {
-    return this.productions.indexOf ( production );
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( boolean modified )
+      {
+        fireModifyStatusChanged ( modified );
+      }
+    };
+    this.grammar
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
   }
-
-
+  
   /**
-   * Add a new production add a specified index to list.
+   * Let the listeners know that the modify status has changed.
    * 
-   * @param index The specified index to add the production.
-   * @param production The production to add.
+   * @param forceModify True if the modify is forced, otherwise false.
    */
-  public void addProduction ( int index, Production production )
+  private final void fireModifyStatusChanged ( boolean forceModify )
   {
-    this.productions.add ( index, production );
-
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
   }
 }

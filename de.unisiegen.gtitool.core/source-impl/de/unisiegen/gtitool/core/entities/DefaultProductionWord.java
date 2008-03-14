@@ -56,12 +56,19 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
+   * The initial {@link ProductionWordMember} list.
+   */
+  private ArrayList < ProductionWordMember > initialProductionWordMemberList;
+
+
+  /**
    * Allocates a new {@link DefaultProductionWord}.
    */
   public DefaultProductionWord ()
   {
     // ProductionWordMember
     this.productionWordMemberList = new ArrayList < ProductionWordMember > ();
+    this.initialProductionWordMemberList = new ArrayList < ProductionWordMember > ();
   }
 
 
@@ -111,6 +118,7 @@ public final class DefaultProductionWord implements ProductionWord
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
+    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
   }
 
 
@@ -129,6 +137,7 @@ public final class DefaultProductionWord implements ProductionWord
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
     add ( productionWordMembers );
+    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
   }
 
 
@@ -315,6 +324,11 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final boolean isModified ()
   {
+    if ( !this.initialProductionWordMemberList
+        .equals ( this.productionWordMemberList ) )
+    {
+      return true;
+    }
     return false;
   }
 
@@ -351,7 +365,8 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final void resetModify ()
   {
-    // TODO Implement this
+    this.initialProductionWordMemberList.clear () ;
+    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
   }
 
 

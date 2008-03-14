@@ -52,6 +52,11 @@ public final class DefaultProduction implements Production
    * The {@link NonterminalSymbol}
    */
   private NonterminalSymbol nonterminalSymbol;
+  
+  /**
+   * The initial {@link NonterminalSymbol}
+   */
+  private NonterminalSymbol initialNonterminalSymbol;
 
 
   /**
@@ -71,6 +76,7 @@ public final class DefaultProduction implements Production
   {
     this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
+    this.initialNonterminalSymbol = nonterminalSymbol;
   }
 
 
@@ -99,7 +105,7 @@ public final class DefaultProduction implements Production
       {
         this.productionWord = new DefaultProductionWord ( current );
       }
-      else 
+      else
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
@@ -253,7 +259,14 @@ public final class DefaultProduction implements Production
    */
   public final boolean isModified ()
   {
-    // TODO implement me
+    if ( this.productionWord.isModified () )
+    {
+      return true;
+    }
+    if (!this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ))
+    {
+      return true;
+    }
     return false;
   }
 
@@ -277,7 +290,8 @@ public final class DefaultProduction implements Production
    */
   public final void resetModify ()
   {
-    // TODO implement me
+   this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
+   this.productionWord.resetModify ();
   }
 
 
@@ -329,5 +343,31 @@ public final class DefaultProduction implements Production
   {
     return this.nonterminalSymbol.toStringDebug () + " \u2192 " + //$NON-NLS-1$
         this.productionWord.toStringDebug ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @param nonterminalSymbol
+   * @see de.unisiegen.gtitool.core.entities.Production#setNonterminalSymbol(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   */
+  public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
+  {
+    this.nonterminalSymbol = nonterminalSymbol;
+    fireModifyStatusChanged ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @param productionWord
+   * @see de.unisiegen.gtitool.core.entities.Production#setProductionWord(de.unisiegen.gtitool.core.entities.ProductionWord)
+   */
+  public void setProductionWord ( ProductionWord productionWord )
+  {
+    this.productionWord = productionWord;
+    fireModifyStatusChanged ();
   }
 }

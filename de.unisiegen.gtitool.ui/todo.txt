@@ -2,9 +2,7 @@ CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 
-BM		- Grammar Panel is modified
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
-BM		- Verknüpfung mit Core
 BM		- Toolbar für Grammar
 BM		- Entfernen von NonTerminal und Terminals
 BM		- EnterWordPopupMenu Icons anpassen

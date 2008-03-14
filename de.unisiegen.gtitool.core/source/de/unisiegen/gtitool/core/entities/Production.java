@@ -51,4 +51,18 @@ public interface Production extends Entity, Storable, Modifyable,
    * @return the {@link ProductionWord} of this {@link Production}
    */
   public ProductionWord getProductionWord();
+  
+  /**
+   * Set the {@link NonterminalSymbol} for this {@link Production}.
+   * 
+   * @param nonterminalSymbol the {@link NonterminalSymbol}.
+   */
+  public void setNonterminalSymbol(NonterminalSymbol nonterminalSymbol);
+  
+  /**
+   * Set the {@link ProductionWord} for this {@link Production}.
+   * 
+   * @param productionWord the {@link ProductionWord}.
+   */
+  public void setProductionWord(ProductionWord productionWord);
 }

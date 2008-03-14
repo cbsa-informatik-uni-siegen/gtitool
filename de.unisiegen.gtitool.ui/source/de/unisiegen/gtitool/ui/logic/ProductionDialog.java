@@ -305,9 +305,8 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
-      int index = this.model.getIndexOf ( this.oldProduction );
-      this.model.removeProduction ( this.oldProduction );
-      this.model.addProduction ( index, production );
+      this.oldProduction.setNonterminalSymbol ( production.getNonterminalSymbol () );
+      this.oldProduction.setProductionWord ( production.getProductionWord () );
     }
     else
     {

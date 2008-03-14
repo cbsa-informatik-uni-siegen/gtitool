@@ -2,8 +2,12 @@ package de.unisiegen.gtitool.core.grammars;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
@@ -14,7 +18,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Grammar extends Serializable, Modifyable
+public interface Grammar extends Serializable, TableModel, Modifyable
 {
 
   /**
@@ -30,18 +34,52 @@ public interface Grammar extends Serializable, Modifyable
    * @return The {@link Grammar} type.
    */
   public String getGrammarType ();
-  
+
+
   /**
    * Returns the {@link NonterminalSymbolSet}.
    * 
    * @return the {@link NonterminalSymbolSet}.
    */
-  public NonterminalSymbolSet getNonterminalSymbolSet();
-  
+  public NonterminalSymbolSet getNonterminalSymbolSet ();
+
+
   /**
    * Returns the {@link TerminalSymbolSet}.
    * 
    * @return the {@link TerminalSymbolSet}.
    */
   public TerminalSymbolSet getTerminalSymbolSet ();
+
+  /**
+   * Add a new production to this grammar. 
+   *
+   * @param production The {@link Production}:
+   */
+  public void addProduction ( Production production );
+
+  /**
+   * Remove a new production from this grammar. 
+   *
+   * @param production The {@link Production}:
+   */
+  public void removeProduction ( Production production );
+
+
+  /**
+   * Get a specified production.
+   * 
+   * @param index the index of the production.
+   * 
+   * @return the specified {@link Production}.
+   */
+  public Production getProductionAt ( int index );
+
+
+  /**
+   * Get all {@link Production}s of this grammar.
+   * 
+   * @return all {@link Production}s of this grammar.
+   */
+  public ArrayList < Production > getProductions ();
 }

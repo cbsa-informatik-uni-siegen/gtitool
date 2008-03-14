@@ -37,7 +37,7 @@ import de.unisiegen.gtitool.ui.storage.Storage;
  */
 public class GrammarPanel implements EditorPanel
 {
-  
+
   /**
    * The {@link GrammarPanelForm}.
    */
@@ -66,7 +66,8 @@ public class GrammarPanel implements EditorPanel
    * The {@link File} for this {@link MachinePanel}.
    */
   private File file;
-  
+
+
   /**
    * The {@link EventListenerList}.
    */
@@ -77,6 +78,11 @@ public class GrammarPanel implements EditorPanel
    * The {@link MainWindowForm}
    */
   private MainWindowForm parent;
+  
+  /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
 
 
   /**
@@ -86,7 +92,8 @@ public class GrammarPanel implements EditorPanel
    * @param model The {@link DefaultGrammarModel}.
    * @param file The {@link File}
    */
-  public GrammarPanel ( MainWindowForm parent, DefaultGrammarModel model, File file )
+  public GrammarPanel ( MainWindowForm parent, DefaultGrammarModel model,
+      File file )
   {
     this.parent = parent;
     this.model = model;
@@ -94,10 +101,24 @@ public class GrammarPanel implements EditorPanel
     this.gui = new GrammarPanelForm ();
     this.gui.setGrammarPanel ( this );
     this.grammar = this.model.getGrammar ();
-    this.gui.jGTITable.setModel ( model );
+    this.gui.jGTITable.setModel ( this.grammar );
     this.gui.jGTITable.setColumnModel ( new GrammarColumnModel () );
 
+    
+    // ModifyStatusChangedListener
+    this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void modifyStatusChanged ( boolean modified )
+      {
+        fireModifyStatusChanged ( modified );
+      }
+    };
+    this.model
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
   }
+
 
   /**
    * {@inheritDoc}
@@ -109,6 +130,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
+
 
   /**
    * {@inheritDoc}
@@ -131,6 +153,7 @@ public class GrammarPanel implements EditorPanel
     return "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -140,6 +163,7 @@ public class GrammarPanel implements EditorPanel
   {
     return this.gui;
   }
+
 
   /**
    * {@inheritDoc}
@@ -162,6 +186,7 @@ public class GrammarPanel implements EditorPanel
     return this.gui;
   }
 
+
   /**
    * Handles the {@link Exchange}.
    */
@@ -170,6 +195,7 @@ public class GrammarPanel implements EditorPanel
     // TODO implement me
   }
 
+
   /**
    * Handle redo button pressed
    */
@@ -177,6 +203,7 @@ public class GrammarPanel implements EditorPanel
   {
     // TODO implement me
   }
+
 
   /**
    * Handle save as operation
@@ -292,6 +319,7 @@ public class GrammarPanel implements EditorPanel
     return this.file;
   }
 
+
   /**
    * Handle Toolbar Alphabet button action event
    */
@@ -300,6 +328,7 @@ public class GrammarPanel implements EditorPanel
     // TODO implement me
   }
 
+
   /**
    * Handle undo button pressed
    */
@@ -307,6 +336,7 @@ public class GrammarPanel implements EditorPanel
   {
     // TODO implement me
   }
+
 
   /**
    * {@inheritDoc}
@@ -317,6 +347,7 @@ public class GrammarPanel implements EditorPanel
   {
     return ( this.model.isModified () ) || ( this.file == null );
   }
+
 
   /**
    * Signals if this panel is redo able
@@ -329,6 +360,7 @@ public class GrammarPanel implements EditorPanel
     return false;
   }
 
+
   /**
    * Signals if this panel is undo able
    * 
@@ -339,6 +371,7 @@ public class GrammarPanel implements EditorPanel
     // TODO implement me
     return false;
   }
+
 
   /**
    * {@inheritDoc}
@@ -362,6 +395,7 @@ public class GrammarPanel implements EditorPanel
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
+
   /**
    * {@inheritDoc}
    * 
@@ -369,8 +403,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void resetModify ()
   {
-    // TODO implement me
+    this.model.resetModify ();
   }
+
 
   /**
    * {@inheritDoc}
@@ -381,6 +416,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.name = name;
   }
+
 
   /**
    * Returns the {@link DefaultModel}.
@@ -393,6 +429,7 @@ public class GrammarPanel implements EditorPanel
     return this.model;
   }
 
+
   /**
    * Handle mouse button event for the JTable.
    * 
@@ -402,20 +439,27 @@ public class GrammarPanel implements EditorPanel
   {
     if ( event.getButton () != MouseEvent.BUTTON3 )
       return;
+
     Production selectedProduction = null;
+
     int index = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+
+    // set the production under the mouse curser selected
     this.gui.jGTITable.getSelectionModel ()
         .setSelectionInterval ( index, index );
 
-    if ( this.model.getRowCount () > 0 && index != -1 )
+    if ( this.grammar.getRowCount () > 0 && index != -1 )
     {
-      selectedProduction = this.model.getProductionAt ( index );
+      selectedProduction = this.grammar.getProductionAt ( index );
     }
+
     ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this.gui,
         this.model, selectedProduction );
+
     popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
         .getY () );
   }
+
 
   /**
    * Add a new {@link Production}.
@@ -437,13 +481,14 @@ public class GrammarPanel implements EditorPanel
   {
     return this.parent;
   }
-  
+
+
   /**
    * Let the listeners know that the modify status has changed.
    * 
    * @param forceModify True if the modify is forced, otherwise false.
    */
-  private final void fireModifyStatusChanged ( boolean forceModify )
+  public final void fireModifyStatusChanged ( boolean forceModify )
   {
 
     ModifyStatusChangedListener [] listeners = this.listenerList

@@ -31,8 +31,16 @@ public final class WordFinishedException extends WordException
     super ( word );
     // Message and Description
     setMessage ( Messages.getString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString ( "WordException.FinishedDescription", //$NON-NLS-1$
-        word ) );
+    if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
+    {
+      setDescription ( Messages
+          .getString ( "WordException.FinishedDescriptionEmpty" ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      setDescription ( Messages.getString (
+          "WordException.FinishedDescription", word ) ); //$NON-NLS-1$
+    }
   }
 
 

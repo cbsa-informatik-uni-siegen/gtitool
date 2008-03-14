@@ -374,6 +374,7 @@ public final class MachinePanel implements EditorPanel
               PreferenceManager.getInstance ().setDividerLocationConsole (
                   ( ( Integer ) event.getNewValue () ).intValue () );
             }
+            MachinePanel.this.setDividerLocationConsole = true;
           }
         } );
     this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
@@ -391,6 +392,7 @@ public final class MachinePanel implements EditorPanel
               PreferenceManager.getInstance ().setDividerLocationTable (
                   ( ( Integer ) event.getNewValue () ).intValue () );
             }
+            MachinePanel.this.setDividerLocationTable = true;
           }
         } );
 
@@ -544,6 +546,11 @@ public final class MachinePanel implements EditorPanel
    */
   public final void clearValidationMessages ()
   {
+    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+
     this.errorTableModel.clearData ();
     this.warningTableModel.clearData ();
   }
@@ -2478,14 +2485,12 @@ public final class MachinePanel implements EditorPanel
       this.gui.jSplitPaneConsole.setDividerSize ( 3 );
       this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationConsole () );
-      this.setDividerLocationConsole = true;
     }
     else
     {
       this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole.setRightComponent ( null );
       this.gui.jSplitPaneConsole.setDividerSize ( 0 );
-      this.setDividerLocationConsole = true;
     }
   }
 
@@ -2504,14 +2509,12 @@ public final class MachinePanel implements EditorPanel
       this.gui.jSplitPaneTable.setDividerSize ( 3 );
       this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationTable () );
-      this.setDividerLocationTable = true;
     }
     else
     {
       this.setDividerLocationTable = false;
       this.gui.jSplitPaneTable.setRightComponent ( null );
       this.gui.jSplitPaneTable.setDividerSize ( 0 );
-      this.setDividerLocationTable = true;
     }
   }
 
@@ -2529,7 +2532,6 @@ public final class MachinePanel implements EditorPanel
       this.setDividerLocationConsole = false;
       this.gui.jSplitPaneConsole.setRightComponent ( null );
       this.gui.jSplitPaneConsole.setDividerSize ( 0 );
-      this.setDividerLocationConsole = true;
     }
     else
     {
@@ -2539,7 +2541,6 @@ public final class MachinePanel implements EditorPanel
       this.gui.jSplitPaneConsole.setDividerSize ( 3 );
       this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationConsole () );
-      this.setDividerLocationConsole = true;
     }
   }
 

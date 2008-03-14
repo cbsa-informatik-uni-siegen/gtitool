@@ -7,3 +7,5 @@ BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Verknüpfung mit Core
 BM		- Toolbar für Grammar
 BM		- Entfernen von NonTerminal und Terminals
+BM		- EnterWordPopupMenu Icons anpassen
+BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)

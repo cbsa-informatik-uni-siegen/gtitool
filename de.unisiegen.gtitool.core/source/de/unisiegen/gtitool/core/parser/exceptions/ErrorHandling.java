@@ -65,7 +65,7 @@ public abstract class ErrorHandling
     symbolColor = getHexadecimalColor ( new Color ( r, g, b ) );
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();
-    result.append ( Messages.QUOTE ); //$NON-NLS-1$
+    result.append ( Messages.QUOTE );
     for ( int i = 0 ; i < tokenSequence.length ; i++ )
     {
       String token = tokenSequence [ i ];
@@ -74,7 +74,7 @@ public abstract class ErrorHandling
       token = token.replaceAll ( ">", "&gt" ); //$NON-NLS-1$ //$NON-NLS-2$
       result.append ( syntaxHighlighting ( token ) );
     }
-    result.append ( Messages.QUOTE ); //$NON-NLS-1$
+    result.append ( Messages.QUOTE );
     throw new ParserWarningException ( left, right, "<html>" //$NON-NLS-1$
         + Messages.getString ( "Parser.2", result.toString (), "<b>" + symbol //$NON-NLS-1$//$NON-NLS-2$
             + "</b>" ) + "<br>" + "(" + Messages.getString ( "Parser.3" ) + ")" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$

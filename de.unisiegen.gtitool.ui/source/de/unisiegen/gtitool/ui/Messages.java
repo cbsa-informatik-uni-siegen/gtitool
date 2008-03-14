@@ -67,10 +67,12 @@ public final class Messages
    * Gets a string for the given key from the resource bundle of the ui project.
    * 
    * @param key The key for the desired string.
+   * @param useQuote Flag that indicates if the quotation marks should be used.
    * @param arguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String key, Object ... arguments )
+  public final static String getString ( String key, boolean useQuote,
+      Object ... arguments )
   {
     try
     {
@@ -79,8 +81,20 @@ public final class Messages
       String message = resourceBundle.getString ( key );
       for ( int i = 0 ; i < arguments.length ; i++ )
       {
-        message = message.replace ( "{" + i + "}", QUOTE //$NON-NLS-1$ //$NON-NLS-2$
-            + arguments [ i ] + QUOTE );
+        if ( arguments [ i ] == null )
+        {
+          continue;
+        }
+        if ( useQuote )
+        {
+          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
+              QUOTE + arguments [ i ].toString () + QUOTE );
+        }
+        else
+        {
+          message = message.replace ( "{" + i + "}", //$NON-NLS-1$ //$NON-NLS-2$
+              arguments [ i ].toString () );
+        }
       }
       return message;
     }
@@ -93,5 +107,18 @@ public final class Messages
       LOGGER.error ( "illegal argument exception", exc ); //$NON-NLS-1$
       return key;
     }
+  }
+
+
+  /**
+   * Gets a string for the given key from the resource bundle of the ui project.
+   * 
+   * @param key The key for the desired string.
+   * @param arguments The optional arguments.
+   * @return The string for the given key.
+   */
+  public final static String getString ( String key, Object ... arguments )
+  {
+    return getString ( key, true, arguments );
   }
 }

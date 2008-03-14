@@ -32,8 +32,16 @@ public final class WordNotAcceptedException extends WordException
     super ( word );
     // Message and Description
     setMessage ( Messages.getString ( "WordException.NotAcceptedMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
-        "WordException.NotAcceptedDescription", word ) ); //$NON-NLS-1$
+    if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
+    {
+      setDescription ( Messages.getString (
+          "WordException.NotAcceptedDescriptionEmpty" ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      setDescription ( Messages.getString (
+          "WordException.NotAcceptedDescription", word ) ); //$NON-NLS-1$
+    }
   }
 
 

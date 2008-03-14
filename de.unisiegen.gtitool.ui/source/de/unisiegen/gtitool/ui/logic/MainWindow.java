@@ -292,15 +292,14 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( ( panel instanceof MachinePanel ) )
     {
-
+      MachinePanel machinePanel = ( MachinePanel ) panel;
       if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
           .getState () )
       {
-        PreferenceManager.getInstance ().setVisibleConsole (
-            this.gui.jCheckBoxMenuItemConsole.getState () );
-        MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
             .getState () );
+        PreferenceManager.getInstance ().setVisibleConsole (
+            this.gui.jCheckBoxMenuItemConsole.getState () );
       }
     }
   }
@@ -428,54 +427,17 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    int errorCount = 0;
-    int warningCount = 0;
-    try
+    if ( handleValidate ( false ) )
     {
-      machinePanel.clearValidationMessages ();
-      machinePanel.getMachine ().validate ();
+      setToolBarEditItemState ( false );
+      this.gui.jGTIToolBarButtonStart.setEnabled ( true );
+      machinePanel.handleEnterWord ();
+      this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
+      machinePanel.setWordEnterMode ( true );
+      this.gui.jMenuItemEnterWord.setEnabled ( false );
+      this.gui.jMenuItemEditMachine.setEnabled ( true );
+      this.gui.jMenuItemValidate.setEnabled ( false );
     }
-    catch ( MachineValidationException exc )
-    {
-      for ( MachineException error : exc.getMachineException () )
-      {
-        if ( error.getType ().equals ( ErrorType.ERROR ) )
-        {
-          machinePanel.addError ( error );
-          errorCount++ ;
-        }
-        else if ( error.getType ().equals ( ErrorType.WARNING ) )
-        {
-          machinePanel.addWarning ( error );
-          warningCount++ ;
-        }
-      }
-    }
-    if ( errorCount > 0 )
-    {
-      String message;
-      if ( errorCount == 1 )
-      {
-        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
-      }
-      else
-      {
-        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-            .valueOf ( errorCount ) );
-      }
-      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
-      infoDialog.show ();
-      return;
-    }
-    setToolBarEditItemState ( false );
-    this.gui.jGTIToolBarButtonStart.setEnabled ( true );
-    machinePanel.handleEnterWord ();
-    this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
-    machinePanel.setWordEnterMode ( true );
-    this.gui.jMenuItemEnterWord.setEnabled ( false );
-    this.gui.jMenuItemEditMachine.setEnabled ( true );
-    this.gui.jMenuItemValidate.setEnabled ( false );
   }
 
 
@@ -1169,6 +1131,19 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleValidate ()
   {
+    handleValidate ( true );
+  }
+
+
+  /**
+   * Handle the action event of the enter word item.
+   * 
+   * @param showDialogIfWarning If true the dialog is shown if there a no errors
+   *          but warnings.
+   * @return True if the validating finished without errors, otherwise false.
+   */
+  public final boolean handleValidate ( boolean showDialogIfWarning )
+  {
     EditorPanel panel = this.gui.jGTITabbedPaneMain.getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1199,33 +1174,36 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
+    if ( !showDialogIfWarning && errorCount == 0 )
+    {
+      return true;
+    }
 
+    InfoDialog infoDialog = null;
     if ( ( errorCount > 0 ) && ( warningCount > 0 ) )
     {
       String message = null;
       if ( errorCount == 1 && warningCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0" ); //$NON-NLS-1$
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0"); //$NON-NLS-1$
       }
       else if ( errorCount == 1 && warningCount > 1 )
       {
         message = Messages.getString ( "MainWindow.ErrorWarningMachineCount1", //$NON-NLS-1$
-            String.valueOf ( warningCount ) );
+            false, String.valueOf ( warningCount ) );
       }
       else if ( errorCount > 1 && warningCount == 1 )
       {
         message = Messages.getString ( "MainWindow.ErrorWarningMachineCount2", //$NON-NLS-1$
-            String.valueOf ( errorCount ) );
+           false, String.valueOf ( errorCount ) );
       }
       else
       {
         message = Messages.getString ( "MainWindow.ErrorWarningMachineCount3", //$NON-NLS-1$
-            String.valueOf ( errorCount ), String.valueOf ( warningCount ) );
+            false,String.valueOf ( errorCount ), String.valueOf ( warningCount ) );
       }
-
-      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+      infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorWarningMachine" ) ); //$NON-NLS-1$
-      infoDialog.show ();
     }
     else if ( errorCount > 0 )
     {
@@ -1236,12 +1214,11 @@ public final class MainWindow implements LanguageChangedListener
       }
       else
       {
-        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
+        message = Messages.getString ( "MainWindow.ErrorMachineCount",false, String //$NON-NLS-1$
             .valueOf ( errorCount ) );
       }
-      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+      infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
-      infoDialog.show ();
     }
     else if ( warningCount > 0 )
     {
@@ -1252,13 +1229,28 @@ public final class MainWindow implements LanguageChangedListener
       }
       else
       {
-        message = Messages.getString ( "MainWindow.WarningMachineCount", String //$NON-NLS-1$
+        message = Messages.getString ( "MainWindow.WarningMachineCount",false, String //$NON-NLS-1$
             .valueOf ( warningCount ) );
       }
-      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
+      infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
-      infoDialog.show ();
     }
+    if ( infoDialog != null )
+    {
+      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+          .getString (
+              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      machinePanel.getGui ().jTabbedPaneConsole
+          .setTitleAt ( 1, Messages.getString (
+              "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+      infoDialog.show ();
+      return false;
+    }
+    machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+    return true;
   }
 
 
@@ -1324,54 +1316,16 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    int errorCount = 0;
-    int warningCount = 0;
-    try
+    if ( handleValidate ( false ) )
     {
-      machinePanel.clearValidationMessages ();
-      machinePanel.getMachine ().validate ();
-    }
-    catch ( MachineValidationException e )
-    {
-      for ( MachineException error : e.getMachineException () )
+      if ( machinePanel.handleWordStart () )
       {
-        if ( error.getType ().equals ( ErrorType.ERROR ) )
-        {
-          machinePanel.addError ( error );
-          errorCount++ ;
-        }
-        else if ( error.getType ().equals ( ErrorType.WARNING ) )
-        {
-          machinePanel.addWarning ( error );
-          warningCount++ ;
-        }
+        this.gui.jGTIToolBarButtonStart.setEnabled ( false );
+        this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
+        this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
+        this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
+        this.gui.jGTIToolBarButtonStop.setEnabled ( true );
       }
-    }
-    if ( errorCount > 0 )
-    {
-      String message;
-      if ( errorCount == 1 )
-      {
-        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
-      }
-      else
-      {
-        message = Messages.getString ( "MainWindow.ErrorMachineCount", String //$NON-NLS-1$
-            .valueOf ( errorCount ) );
-      }
-      InfoDialog infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
-      infoDialog.show ();
-      return;
-    }
-
-    if ( machinePanel.handleWordStart () )
-    {
-      this.gui.jGTIToolBarButtonStart.setEnabled ( false );
-      this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
-      this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
-      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
-      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
     }
   }
 

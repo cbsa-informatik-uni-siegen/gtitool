@@ -230,7 +230,7 @@ public final class MachinePanel implements EditorPanel
    * The {@link MouseAdapter} for the enter word mode.
    */
   private MouseAdapter enterWordModeMouse;
-
+  
 
   /**
    * The source state for a new {@link Transition}.
@@ -847,6 +847,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleEditMachine ()
   {
+    this.enterWordMode = false;
     this.graph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
@@ -863,6 +864,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleEnterWord ()
   {
+    this.enterWordMode = true;
     this.graph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
@@ -1366,6 +1368,7 @@ public final class MachinePanel implements EditorPanel
       infoDialog.show ();
       return false;
     }
+    this.wordNavigation = true;
 
     clearHighlight ();
 
@@ -1391,6 +1394,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleWordStop ()
   {
+    this.wordNavigation = false;
     clearHighlight ();
 
     this.graphModel
@@ -1582,7 +1586,7 @@ public final class MachinePanel implements EditorPanel
       public void mouseClicked ( MouseEvent event )
       {
         // return if we are in enter word mode
-        if ( MachinePanel.this.enterWordMode )
+        if ( isWordEnterMode () || isWordNavigation () )
         {
           return;
         }

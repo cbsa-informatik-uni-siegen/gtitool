@@ -93,7 +93,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         .setIcon ( new ImageIcon (
             getClass ()
                 .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-start.png" ) ) ); //$NON-NLS-1$
+                    "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/start.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStart.addActionListener ( new ActionListener ()
     {
 
@@ -125,7 +125,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         .setIcon ( new ImageIcon (
             getClass ()
                 .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png" ) ) ); //$NON-NLS-1$
+                    "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/backward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
@@ -143,7 +143,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemNextStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/forward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
@@ -160,7 +160,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemStop = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     this.jMenuItemStop.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/stop.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStop.addActionListener ( new ActionListener ()
     {
 

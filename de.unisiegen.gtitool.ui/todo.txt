@@ -6,6 +6,7 @@ BM		- Toolbar für Grammar
 BM		- Entfernen von NonTerminal und Terminals
 BM		- EnterWordPopupMenu Icons anpassen
 BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)
+BM		- Redo / Undo für Grammar Panel und Machine Panel
+BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)
 BM		- Im Enter Word Modus kann man per Popupmenü alles löschen, ebenfalls
 		  per Doppelklick.
-BM		- Undo/Redo komplett implementieren (Verschieben, Editieren)

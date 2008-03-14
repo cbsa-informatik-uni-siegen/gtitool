@@ -2520,32 +2520,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Set the value of the word Enter Mode Flag
-   * 
-   * @param wordEnterMode The new value
-   */
-  public final void setWordEnterMode ( boolean wordEnterMode )
-  {
-    this.enterWordMode = wordEnterMode;
-    if ( wordEnterMode )
-    {
-      this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole.setRightComponent ( null );
-      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
-    }
-    else
-    {
-      this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole
-          .setRightComponent ( this.gui.jTabbedPaneConsole );
-      this.gui.jSplitPaneConsole.setDividerSize ( 3 );
-      this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
-          .getInstance ().getDividerLocationConsole () );
-    }
-  }
-
-
-  /**
    * Set the zoom factor for this panel
    * 
    * @param factor the new zoom factor

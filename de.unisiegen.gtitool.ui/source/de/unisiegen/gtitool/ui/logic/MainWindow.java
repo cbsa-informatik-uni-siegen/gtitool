@@ -408,7 +408,6 @@ public final class MainWindow implements LanguageChangedListener
     machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
         .getState () );
     this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
-    machinePanel.setWordEnterMode ( false );
     this.gui.jMenuItemEnterWord.setEnabled ( true );
     this.gui.jMenuItemEditMachine.setEnabled ( false );
     this.gui.jMenuItemValidate.setEnabled ( true );
@@ -433,7 +432,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jGTIToolBarButtonStart.setEnabled ( true );
       machinePanel.handleEnterWord ();
       this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
-      machinePanel.setWordEnterMode ( true );
+      machinePanel.setVisibleConsole ( false );
       this.gui.jMenuItemEnterWord.setEnabled ( false );
       this.gui.jMenuItemEditMachine.setEnabled ( true );
       this.gui.jMenuItemValidate.setEnabled ( false );
@@ -1174,18 +1173,30 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
+    // Return if only errors should be displayes
     if ( !showDialogIfWarning && errorCount == 0 )
     {
+      if ( warningCount > 0 )
+      {
+        // Select the warning tab
+        machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 1 );
+
+        // Update the title
+        machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+            .getString ( "MachinePanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                warningCount ) ) );
+      }
       return true;
     }
 
     InfoDialog infoDialog = null;
+    // Error and warning
     if ( ( errorCount > 0 ) && ( warningCount > 0 ) )
     {
       String message = null;
       if ( errorCount == 1 && warningCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0"); //$NON-NLS-1$
+        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0" ); //$NON-NLS-1$
       }
       else if ( errorCount == 1 && warningCount > 1 )
       {
@@ -1195,16 +1206,30 @@ public final class MainWindow implements LanguageChangedListener
       else if ( errorCount > 1 && warningCount == 1 )
       {
         message = Messages.getString ( "MainWindow.ErrorWarningMachineCount2", //$NON-NLS-1$
-           false, String.valueOf ( errorCount ) );
+            false, String.valueOf ( errorCount ) );
       }
       else
       {
         message = Messages.getString ( "MainWindow.ErrorWarningMachineCount3", //$NON-NLS-1$
-            false,String.valueOf ( errorCount ), String.valueOf ( warningCount ) );
+            false, String.valueOf ( errorCount ), String
+                .valueOf ( warningCount ) );
       }
+
+      // Update the titles
+      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+          .getString (
+              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      machinePanel.getGui ().jTabbedPaneConsole
+          .setTitleAt ( 1, Messages.getString (
+              "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+
+      // Select the error tab
+      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 0 );
+
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorWarningMachine" ) ); //$NON-NLS-1$
     }
+    // Only error
     else if ( errorCount > 0 )
     {
       String message;
@@ -1214,12 +1239,25 @@ public final class MainWindow implements LanguageChangedListener
       }
       else
       {
-        message = Messages.getString ( "MainWindow.ErrorMachineCount",false, String //$NON-NLS-1$
-            .valueOf ( errorCount ) );
+        message = Messages.getString (
+            "MainWindow.ErrorMachineCount", false, String //$NON-NLS-1$
+                .valueOf ( errorCount ) );
       }
+
+      // Update the titles
+      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+          .getString (
+              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+          .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+
+      // Select the error tab
+      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 0 );
+
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
     }
+    // Only warning
     else if ( warningCount > 0 )
     {
       String message;
@@ -1229,23 +1267,34 @@ public final class MainWindow implements LanguageChangedListener
       }
       else
       {
-        message = Messages.getString ( "MainWindow.WarningMachineCount",false, String //$NON-NLS-1$
-            .valueOf ( warningCount ) );
+        message = Messages.getString (
+            "MainWindow.WarningMachineCount", false, String //$NON-NLS-1$
+                .valueOf ( warningCount ) );
       }
+
+      // Update the titles
+      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+          .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+      machinePanel.getGui ().jTabbedPaneConsole
+          .setTitleAt ( 1, Messages.getString (
+              "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+
+      // Select the warning tab
+      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 1 );
+
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
     }
     if ( infoDialog != null )
     {
-      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
-          .getString (
-              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
-      machinePanel.getGui ().jTabbedPaneConsole
-          .setTitleAt ( 1, Messages.getString (
-              "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+      this.gui.jCheckBoxMenuItemConsole.setSelected ( true );
+      machinePanel.setVisibleConsole ( true );
+
       infoDialog.show ();
       return false;
     }
+
+    // Update the titles
     machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
     machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
@@ -1316,16 +1365,13 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    if ( handleValidate ( false ) )
+    if ( machinePanel.handleWordStart () )
     {
-      if ( machinePanel.handleWordStart () )
-      {
-        this.gui.jGTIToolBarButtonStart.setEnabled ( false );
-        this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
-        this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
-        this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
-        this.gui.jGTIToolBarButtonStop.setEnabled ( true );
-      }
+      this.gui.jGTIToolBarButtonStart.setEnabled ( false );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
+      this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
     }
   }
 

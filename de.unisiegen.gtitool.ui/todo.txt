@@ -1,4 +1,3 @@
-CF		- Meldung über Fehler und Warnungen anzeigen und Console einblenden
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 
@@ -7,3 +6,6 @@ BM		- Toolbar für Grammar
 BM		- Entfernen von NonTerminal und Terminals
 BM		- EnterWordPopupMenu Icons anpassen
 BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)
+BM		- Im Enter Word Modus kann man per Popupmenü alles löschen, ebenfalls
+		  per Doppelklick.
+BM		- Undo/Redo komplett implementieren (Verschieben, Editieren)

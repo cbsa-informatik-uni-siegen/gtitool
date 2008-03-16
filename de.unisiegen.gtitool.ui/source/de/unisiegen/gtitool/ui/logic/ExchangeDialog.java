@@ -92,7 +92,7 @@ public final class ExchangeDialog
 
     if ( file != null )
     {
-      this.gui.jGTITextFieldDescription.setText ( file.getName () );
+      this.gui.jGTITextAreaDescription.setText ( file.getName () );
     }
 
     this.gui.jTextPaneStatus.setEditorKit ( new StyledEditorKit () );
@@ -280,9 +280,11 @@ public final class ExchangeDialog
               }
               else
               {
-                appendMessage ( Messages.getString (
-                    "ExchangeDialog.ReceiveFileDescription", exchange //$NON-NLS-1$
-                        .getDescription () ), false );
+                appendMessage ( Messages
+                    .getString ( "ExchangeDialog.ReceiveFileDescription" ), //$NON-NLS-1$
+                    false );
+                appendMessage ( Messages.QUOTE + exchange.getDescription ()
+                    + Messages.QUOTE, false );
               }
               ExchangeDialog.this.mainWindow
                   .handleNew ( exchange.getElement () );
@@ -320,7 +322,7 @@ public final class ExchangeDialog
     }
     final int port = Integer.parseInt ( this.gui.jGTITextFieldPort.getText () );
     this.networkClient = new Network ( this.gui.jGTITextFieldHost.getText (),
-        port, new Exchange ( this.element, this.gui.jGTITextFieldDescription
+        port, new Exchange ( this.element, this.gui.jGTITextAreaDescription
             .getText () ) );
     try
     {
@@ -423,7 +425,7 @@ public final class ExchangeDialog
     this.gui.jGTITextFieldPort.setEnabled ( enabled );
     this.gui.jGTITextFieldHost.setEnabled ( enabled && ( this.element != null )
         && ( this.gui.jRadioButtonSend.isSelected () ) );
-    this.gui.jGTITextFieldDescription.setEnabled ( enabled
+    this.gui.jGTITextAreaDescription.setEnabled ( enabled
         && ( this.element != null )
         && ( this.gui.jRadioButtonSend.isSelected () ) );
     this.gui.jGTIButtonExecute.setEnabled ( enabled && portOkay && hostOkay );

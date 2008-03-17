@@ -1,5 +1,6 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
+CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Toolbar für Grammar

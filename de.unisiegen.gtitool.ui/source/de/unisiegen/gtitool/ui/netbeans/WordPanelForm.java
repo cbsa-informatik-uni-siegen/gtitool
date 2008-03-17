@@ -1,5 +1,7 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JComponent;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
@@ -83,6 +85,17 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     
     /**
      * {@inheritDoc}
+     *
+     * @see JComponent#requestFocus()
+     */
+    @Override
+    public final void requestFocus()
+    {
+      this.styledWordParserPanel.requestFocus ();
+    }
+    
+    /**
+     * {@inheritDoc}
      * 
      * @see LanguageChangedListener#languageChanged()
      */
@@ -146,6 +159,7 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(jLabelStack, gridBagConstraints);
 
+        styledStackParserPanel.setEditable(false);
         styledStackParserPanel.setMinimumSize(new java.awt.Dimension(200, 53));
         styledStackParserPanel.setPreferredSize(new java.awt.Dimension(200, 53));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -207,13 +221,13 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLabelAlphabet;
-    private javax.swing.JLabel jLabelPushDownAlphabet;
-    private javax.swing.JLabel jLabelStack;
-    private javax.swing.JLabel jLabelWord;
+    public javax.swing.JLabel JLabelAlphabet;
+    public javax.swing.JLabel jLabelPushDownAlphabet;
+    public javax.swing.JLabel jLabelStack;
+    public javax.swing.JLabel jLabelWord;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
-    private de.unisiegen.gtitool.ui.style.StyledStackParserPanel styledStackParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledStackParserPanel styledStackParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledWordParserPanel styledWordParserPanel;
     // End of variables declaration//GEN-END:variables
     

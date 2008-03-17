@@ -36,6 +36,7 @@ import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
 
+import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -230,7 +231,7 @@ public final class MachinePanel implements EditorPanel
    * The {@link MouseAdapter} for the enter word mode.
    */
   private MouseAdapter enterWordModeMouse;
-  
+
 
   /**
    * The source state for a new {@link Transition}.
@@ -869,6 +870,7 @@ public final class MachinePanel implements EditorPanel
     this.gui.wordPanel.setVisible ( true );
     this.model.getJGraph ().setEnabled ( false );
     this.graph.addMouseListener ( this.enterWordModeMouse );
+    this.gui.wordPanel.requestFocus ();
   }
 
 
@@ -891,8 +893,11 @@ public final class MachinePanel implements EditorPanel
   public final void handleMachineTableFocusLost ( @SuppressWarnings ( "unused" )
   FocusEvent event )
   {
-    this.gui.jGTITableMachine.clearSelection ();
-    clearHighlight ();
+    if ( !this.enterWordMode )
+    {
+      this.gui.jGTITableMachine.clearSelection ();
+      clearHighlight ();
+    }
   }
 
 
@@ -905,8 +910,11 @@ public final class MachinePanel implements EditorPanel
       @SuppressWarnings ( "unused" )
       MouseEvent event )
   {
-    this.gui.jGTITableMachine.clearSelection ();
-    clearHighlight ();
+    if ( !this.enterWordMode )
+    {
+      this.gui.jGTITableMachine.clearSelection ();
+      clearHighlight ();
+    }
   }
 
 
@@ -919,14 +927,17 @@ public final class MachinePanel implements EditorPanel
       @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
   {
-    clearHighlight ();
-
-    int index = this.gui.jGTITableMachine.getSelectedRow ();
-    if ( index != -1 )
+    if ( !this.enterWordMode )
     {
-      ArrayList < State > stateList = new ArrayList < State > ( 1 );
-      stateList.add ( this.machine.getState ( index ) );
-      highlightStateActive ( stateList );
+      clearHighlight ();
+
+      int index = this.gui.jGTITableMachine.getSelectedRow ();
+      if ( index != -1 )
+      {
+        ArrayList < State > stateList = new ArrayList < State > ( 1 );
+        stateList.add ( this.machine.getState ( index ) );
+        highlightStateActive ( stateList );
+      }
     }
   }
 
@@ -1218,6 +1229,10 @@ public final class MachinePanel implements EditorPanel
 
       this.machine.nextSymbol ();
 
+      // Stack
+      this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+          .getStack () );
+
       // Clear highlight
       for ( DefaultStateView current : this.model.getStateViewList () )
       {
@@ -1231,8 +1246,6 @@ public final class MachinePanel implements EditorPanel
       {
         current.setActive ( true );
       }
-
-      System.out.println ( this.machine.getActiveState ().size () );
 
       for ( State current : this.machine.getActiveState () )
       {
@@ -1298,6 +1311,10 @@ public final class MachinePanel implements EditorPanel
       }
 
       this.machine.previousSymbol ();
+
+      // Stack
+      this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+          .getStack () );
 
       // Clear highlight
       for ( DefaultStateView current : this.model.getStateViewList () )
@@ -1373,8 +1390,14 @@ public final class MachinePanel implements EditorPanel
     clearHighlight ();
 
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
+    this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( false );
+    this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( false );
 
     this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+
+    // Stack
+    this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+        .getStack () );
 
     for ( State current : this.machine.getActiveState () )
     {
@@ -1397,11 +1420,16 @@ public final class MachinePanel implements EditorPanel
     this.wordNavigation = false;
     clearHighlight ();
 
+    // Stack
+    this.gui.wordPanel.styledStackParserPanel.setStack ( new DefaultStack () );
+
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
+    this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( true );
+    this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( true );
     this.wordNavigation = false;
   }
 

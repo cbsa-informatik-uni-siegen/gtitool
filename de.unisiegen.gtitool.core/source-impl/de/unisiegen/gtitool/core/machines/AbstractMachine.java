@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -78,18 +79,39 @@ public abstract class AbstractMachine implements Machine
 
 
     /**
+     * The {@link Stack}.
+     */
+    private Stack oldStack;
+
+
+    /**
      * Allocates a new {@link HistoryItem}.
      * 
      * @param stateSet The {@link State} set.
      * @param transitionSet The {@link Transition} set.
      * @param symbolList The {@link Symbol} list.
+     * @param oldStack The {@link Stack}.
      */
     public HistoryItem ( TreeSet < State > stateSet,
-        TreeSet < Transition > transitionSet, ArrayList < Symbol > symbolList )
+        TreeSet < Transition > transitionSet, ArrayList < Symbol > symbolList,
+        Stack oldStack )
     {
       this.transitionSet = transitionSet;
       this.stateSet = stateSet;
       this.symbolList = symbolList;
+      this.oldStack = oldStack;
+    }
+
+
+    /**
+     * Returns the {@link Stack}.
+     * 
+     * @return The {@link Stack}.
+     * @see #oldStack
+     */
+    public final Stack getStack ()
+    {
+      return this.oldStack;
     }
 
 
@@ -254,6 +276,12 @@ public abstract class AbstractMachine implements Machine
    * The current {@link Word}.
    */
   private Word word = null;
+
+
+  /**
+   * The current {@link Stack}.
+   */
+  private Stack stack = null;
 
 
   /**
@@ -1150,6 +1178,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Returns the {@link Stack}.
+   * 
+   * @return The {@link Stack}.
+   * @see #stack
+   */
+  public final Stack getStack ()
+  {
+    return this.stack;
+  }
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.
@@ -1537,6 +1577,8 @@ public abstract class AbstractMachine implements Machine
     TreeSet < State > newActiveStateSet = new TreeSet < State > ();
     TreeSet < Transition > newActiveTransitionSet = new TreeSet < Transition > ();
     ArrayList < Symbol > newActiveSymbolList = new ArrayList < Symbol > ();
+    Stack oldStack = this.stack.clone ();
+
     // Epsilon transition found
     if ( epsilonTransitionFound )
     {
@@ -1569,8 +1611,25 @@ public abstract class AbstractMachine implements Machine
       }
       for ( State activeState : getActiveState () )
       {
-        for ( Transition currentTransition : activeState.getTransitionBegin () )
+        transitionLoop : for ( Transition currentTransition : activeState
+            .getTransitionBegin () )
         {
+          // Stack
+          Word readWord = currentTransition.getPushDownWordRead ();
+          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+              .size () );
+          if ( readWord.size () != stackSymbols.size () )
+          {
+            continue transitionLoop;
+          }
+          for ( int i = 0 ; i < readWord.size () ; i++ )
+          {
+            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+            {
+              continue transitionLoop;
+            }
+          }
+
           for ( Symbol currentSymbol : currentTransition )
           {
             if ( currentSymbol.equals ( symbol ) )
@@ -1578,6 +1637,10 @@ public abstract class AbstractMachine implements Machine
               newActiveStateSet.add ( currentTransition.getStateEnd () );
               newActiveTransitionSet.add ( currentTransition );
               newActiveSymbolList.add ( currentSymbol );
+
+              // Stack
+              this.stack.pop ( readWord.size () );
+              this.stack.push ( currentTransition.getPushDownWordWrite () );
             }
           }
         }
@@ -1623,7 +1686,7 @@ public abstract class AbstractMachine implements Machine
       throw new WordNotAcceptedException ( this.word );
     }
     this.history.add ( new HistoryItem ( oldActiveStateSet,
-        newActiveTransitionSet, newActiveSymbolList ) );
+        newActiveTransitionSet, newActiveSymbolList, oldStack ) );
   }
 
 
@@ -1689,6 +1752,10 @@ public abstract class AbstractMachine implements Machine
       current.setActive ( true );
       this.activeSymbolList.add ( current );
     }
+
+    // Stack
+    this.stack.clear ();
+    this.stack.push ( item.getStack () );
   }
 
 
@@ -1930,6 +1997,9 @@ public abstract class AbstractMachine implements Machine
     }
     this.word = startWord;
     this.word.start ();
+
+    this.stack = new DefaultStack ();
+
     clearHistory ();
     // Set active states
     this.activeStateSet.clear ();

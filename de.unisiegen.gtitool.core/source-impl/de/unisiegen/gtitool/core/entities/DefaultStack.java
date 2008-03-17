@@ -84,6 +84,15 @@ public final class DefaultStack implements Stack
 
 
   /**
+   * Removes all {@link Symbol}s.
+   */
+  public final void clear ()
+  {
+    this.symbolList.clear ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Entity#clone()
@@ -205,6 +214,30 @@ public final class DefaultStack implements Stack
 
 
   /**
+   * Looks at the {@link Symbol}s at the top of this {@link DefaultStack}
+   * without removing them.
+   * 
+   * @param size The number of returned symbols.
+   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
+   */
+  public ArrayList < Symbol > peak ( int size )
+  {
+    ArrayList < Symbol > result = new ArrayList < Symbol > ();
+    if ( size > this.symbolList.size () )
+    {
+      result.addAll ( this.symbolList );
+      return result;
+    }
+
+    for ( int i = 0 ; i < size ; i++ )
+    {
+      result.add ( this.symbolList.get ( this.symbolList.size () - size + i ) );
+    }
+    return result;
+  }
+
+
+  /**
    * Removes the {@link Symbol} at the top of this {@link DefaultStack} and
    * returns that {@link Symbol}.
    * 
@@ -213,6 +246,32 @@ public final class DefaultStack implements Stack
   public final Symbol pop ()
   {
     return this.symbolList.remove ( this.symbolList.size () - 1 );
+  }
+
+
+  /**
+   * Removes the {@link Symbol}s at the top of this {@link DefaultStack} and
+   * returns the {@link Symbol}s.
+   * 
+   * @param size The number of returned symbols.
+   * @return The {@link Symbol}s at the top of this {@link DefaultStack}.
+   */
+  public final ArrayList < Symbol > pop ( int size )
+  {
+    ArrayList < Symbol > result = new ArrayList < Symbol > ();
+    if ( size > this.symbolList.size () )
+    {
+      result.addAll ( this.symbolList );
+      this.symbolList.clear ();
+      return result;
+    }
+
+    int oldSize = this.symbolList.size ();
+    for ( int i = 0 ; i < size ; i++ )
+    {
+      result.add ( this.symbolList.remove ( oldSize - size ) );
+    }
+    return result;
   }
 
 

@@ -15,6 +15,12 @@ public interface Stack extends Entity, Iterable < Symbol >
 {
 
   /**
+   * Removes all {@link Symbol}s.
+   */
+  public void clear ();
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Entity#clone()
@@ -67,12 +73,32 @@ public interface Stack extends Entity, Iterable < Symbol >
 
 
   /**
+   * Looks at the {@link Symbol}s at the top of this {@link Stack} without
+   * removing them.
+   * 
+   * @param size The number of returned symbols.
+   * @return The {@link Symbol} at the top of this {@link Stack}.
+   */
+  public ArrayList < Symbol > peak ( int size );
+
+
+  /**
    * Removes the {@link Symbol} at the top of this {@link Stack} and returns
    * that {@link Symbol}.
    * 
    * @return The {@link Symbol} at the top of this {@link Stack}.
    */
   public Symbol pop ();
+
+
+  /**
+   * Removes the {@link Symbol}s at the top of this {@link Stack} and returns
+   * the {@link Symbol}s.
+   * 
+   * @param size The number of returned symbols.
+   * @return The {@link Symbol}s at the top of this {@link Stack}.
+   */
+  public ArrayList < Symbol > pop ( int size );
 
 
   /**

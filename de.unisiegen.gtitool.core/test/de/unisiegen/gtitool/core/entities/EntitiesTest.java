@@ -36,6 +36,18 @@ public class EntitiesTest
       System.exit ( 1 );
     }
 
+    Stack stack = new DefaultStack ();
+
+    stack.push ( a );
+    stack.push ( b );
+    stack.push ( c );
+
+    System.out.println ( stack.peak ( 2 ) );
+    System.out.println ( stack );
+
+    System.out.println ( stack.pop ( 2 ) );
+    System.out.println ( stack );
+
     Alphabet alphabet = null;
     try
     {

@@ -809,6 +809,18 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see JComponent#requestFocus()
+   */
+  @Override
+  public final void requestFocus ()
+  {
+    this.editor.requestFocus ();
+  }
+
+
+  /**
    * Selects the error text.
    * 
    * @param left The left index.
@@ -892,18 +904,6 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Sets the {@linkEntity}s which should be highlighted.
-   * 
-   * @param entities The {@link Entity}s which should be highlighted.
-   */
-  protected final void setHighlightedParseableEntity (
-      Iterable < ? extends Entity > entities )
-  {
-    this.document.setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
    * Sets the {@link Entity}s which should be highlighted.
    * 
    * @param entities The {@link Entity}s which should be highlighted.
@@ -922,6 +922,18 @@ public abstract class StyledParserPanel extends JPanel
   protected final void setHighlightedParseableEntity ( Entity entity )
   {
     this.document.setHighlightedParseableEntity ( entity );
+  }
+
+
+  /**
+   * Sets the {@linkEntity}s which should be highlighted.
+   * 
+   * @param entities The {@link Entity}s which should be highlighted.
+   */
+  protected final void setHighlightedParseableEntity (
+      Iterable < ? extends Entity > entities )
+  {
+    this.document.setHighlightedParseableEntity ( entities );
   }
 
 

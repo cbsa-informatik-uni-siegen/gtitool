@@ -216,6 +216,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Returns the {@link Stack}.
+   * 
+   * @return The {@link Stack}.
+   */
+  public Stack getStack ();
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.

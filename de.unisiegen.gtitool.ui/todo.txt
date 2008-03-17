@@ -6,4 +6,4 @@ BM		- Toolbar für Grammar
 BM		- Entfernen von NonTerminal und Terminals
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)
-
+BM		- In allen Dialogen mit Parsern immer am Anfang ein Parse aufrufen

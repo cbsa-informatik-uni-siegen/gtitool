@@ -394,13 +394,11 @@ public final class DefaultProductionWord implements ProductionWord
     PrettyString prettyString = new PrettyString ();
     if ( this.productionWordMemberList.size () == 0 )
     {
-      System.err.println ( 1 );
       prettyString.addPrettyToken ( new PrettyToken (
           "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
     }
     else
     {
-      System.err.println ( this.productionWordMemberList );
       for ( ProductionWordMember current : this.productionWordMemberList )
       {
         prettyString.addPrettyPrintable ( current );

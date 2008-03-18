@@ -1,6 +1,10 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
+CF		- Transition Dialog: Symbols in der richtigen Farbe darstellen,
+		  auch bei Selektion, siehe TODO BM
+CF		- Exchange für das Grammar Panel anpassen
+CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Toolbar für Grammar
@@ -8,3 +12,5 @@ BM		- Entfernen von NonTerminal und Terminals
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Nicht mehr benötigte Icons entfernen (Ampel etc.)
 BM		- In allen Dialogen mit Parsern immer am Anfang ein Parse aufrufen
+BM		- Production Dialog: Nonterminal Symbols in der richtigen Farbe
+		  darstellen, auch bei Selektion, siehe TODO CF

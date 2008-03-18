@@ -1,2 +1,1 @@
 CF		- Stack in der Machine implementieren
-CF		- Leeres ProductionWord parsen und pretty printen

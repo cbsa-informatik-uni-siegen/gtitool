@@ -53,6 +53,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	  {
 		case MEMBER:
 		  return Style.NONTERMINAL_SYMBOL;
+		case EPSILON:
+		  return Style.TERMINAL_SYMBOL;
 		default:
 		  return Style.NONE;
 	  }
@@ -76,6 +78,7 @@ Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 <YYINITIAL>
 {
+	"\u03B5"			{ return symbol(EPSILON); }
 	"->"|"\u2192"		{ return symbol(ARROW); }
 	{WhiteSpace}		{ return symbol(WHITESPACE); }
 	{Symbol}			{ return symbol(MEMBER, yytext()); }

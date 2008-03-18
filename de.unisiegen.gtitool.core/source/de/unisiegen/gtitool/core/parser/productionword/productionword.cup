@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
  ************/
  
 terminal String					MEMBER;
+terminal						EPSILON;
 
 
 /****************
@@ -46,6 +47,11 @@ production_word					::= member_list:ml
 									   RESULT.setParserOffset(new ParserOffset(mlleft,mlright));
 									:}
 								|	epsilon:e
+									{:
+									   RESULT = new DefaultProductionWord();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								|	EPSILON:e
 									{:
 									   RESULT = new DefaultProductionWord();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));

@@ -13,6 +13,8 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
@@ -118,7 +120,8 @@ public final class DefaultProductionWord implements ProductionWord
       throw new StoreException ( Messages
           .getString ( "StoreException.AdditionalAttribute" ) ); //$NON-NLS-1$
     }
-    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
+    this.initialProductionWordMemberList
+        .addAll ( this.productionWordMemberList );
   }
 
 
@@ -137,7 +140,8 @@ public final class DefaultProductionWord implements ProductionWord
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
     add ( productionWordMembers );
-    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
+    this.initialProductionWordMemberList
+        .addAll ( this.productionWordMemberList );
   }
 
 
@@ -365,8 +369,9 @@ public final class DefaultProductionWord implements ProductionWord
    */
   public final void resetModify ()
   {
-    this.initialProductionWordMemberList.clear () ;
-    this.initialProductionWordMemberList.addAll ( this.productionWordMemberList );
+    this.initialProductionWordMemberList.clear ();
+    this.initialProductionWordMemberList
+        .addAll ( this.productionWordMemberList );
   }
 
 
@@ -387,9 +392,19 @@ public final class DefaultProductionWord implements ProductionWord
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    for ( ProductionWordMember current : this.productionWordMemberList )
+    if ( this.productionWordMemberList.size () == 0 )
     {
-      prettyString.addPrettyPrintable ( current );
+      System.err.println ( 1 );
+      prettyString.addPrettyToken ( new PrettyToken (
+          "\u03B5", Style.TERMINAL_SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      System.err.println ( this.productionWordMemberList );
+      for ( ProductionWordMember current : this.productionWordMemberList )
+      {
+        prettyString.addPrettyPrintable ( current );
+      }
     }
     return prettyString;
   }
@@ -404,9 +419,16 @@ public final class DefaultProductionWord implements ProductionWord
   public final String toString ()
   {
     StringBuilder result = new StringBuilder ();
-    for ( ProductionWordMember current : this.productionWordMemberList )
+    if ( this.productionWordMemberList.size () == 0 )
     {
-      result.append ( current.getName () );
+      result.append ( "\u03B5" ); //$NON-NLS-1$
+    }
+    else
+    {
+      for ( ProductionWordMember current : this.productionWordMemberList )
+      {
+        result.append ( current.getName () );
+      }
     }
     return result.toString ();
   }
@@ -420,20 +442,27 @@ public final class DefaultProductionWord implements ProductionWord
   public final String toStringDebug ()
   {
     StringBuilder result = new StringBuilder ();
-    for ( ProductionWordMember current : this.productionWordMemberList )
+    if ( this.productionWordMemberList.size () == 0 )
     {
-      result.append ( current.getName () );
-      if ( current instanceof NonterminalSymbol )
+      result.append ( "\u03B5" ); //$NON-NLS-1$
+    }
+    else
+    {
+      for ( ProductionWordMember current : this.productionWordMemberList )
       {
-        result.append ( "{N:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
-      }
-      else if ( current instanceof TerminalSymbol )
-      {
-        result.append ( "{T:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
-      }
-      else
-      {
-        throw new RuntimeException ( "unknown member" ); //$NON-NLS-1$
+        result.append ( current.getName () );
+        if ( current instanceof NonterminalSymbol )
+        {
+          result.append ( "{N:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else if ( current instanceof TerminalSymbol )
+        {
+          result.append ( "{T:" + current.getParserOffset () + "}" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else
+        {
+          throw new RuntimeException ( "unknown member" ); //$NON-NLS-1$
+        }
       }
     }
     return result.toString ();

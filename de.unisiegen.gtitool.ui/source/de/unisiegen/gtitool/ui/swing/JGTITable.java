@@ -12,7 +12,7 @@ import javax.swing.JViewport;
 
 
 /**
- * Special {@link JTable}, that supports drag and drop.
+ * Special {@link JTable}.
  * 
  * @author Christian Fehler
  * @version $Id$

@@ -30,7 +30,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
      * @param logic The {@link PreferencesDialog}.
      * @param parent The parent {@link Frame}.
      */
-    public PreferencesDialogForm(PreferencesDialog logic, java.awt.Frame parent) {
+    public PreferencesDialogForm(PreferencesDialog logic, Frame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
@@ -45,7 +45,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jTabbedPane = new javax.swing.JTabbedPane();
+        jGTITabbedPane = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jPanelGeneral = new javax.swing.JPanel();
         jLabelLanguage = new javax.swing.JLabel();
         jComboBoxLanguage = new javax.swing.JComboBox();
@@ -87,7 +87,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jTabbedPane.setFocusable(false);
         jPanelGeneral.setLayout(new java.awt.GridBagLayout());
 
         jLabelLanguage.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.LanguageMnemonic").charAt(0));
@@ -166,7 +165,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanelGeneral.add(jPanelGeneralSpace, gridBagConstraints);
 
-        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
+        jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
 
         jPanelView.setLayout(new java.awt.GridBagLayout());
 
@@ -244,7 +243,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanelView.add(jPanelViewSpace, gridBagConstraints);
 
-        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabView"), null, jPanelView, bundle.getString("PreferencesDialog.TabViewToolTip")); // NOI18N
+        jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabView"), null, jPanelView, bundle.getString("PreferencesDialog.TabViewToolTip")); // NOI18N
 
         jPanelColors.setLayout(new java.awt.GridBagLayout());
 
@@ -268,7 +267,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 16, 16);
         jPanelColors.add(jScrollPaneColors, gridBagConstraints);
 
-        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabColors"), null, jPanelColors, bundle.getString("PreferencesDialog.TabColorsToolTip")); // NOI18N
+        jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabColors"), null, jPanelColors, bundle.getString("PreferencesDialog.TabColorsToolTip")); // NOI18N
 
         jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
 
@@ -281,7 +280,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 16);
         jPanelAlphabet.add(alphabetPanelForm, gridBagConstraints);
 
-        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N
+        jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabAlphabet"), null, jPanelAlphabet, bundle.getString("PreferencesDialog.TabAlphabetToolTip")); // NOI18N
 
         jPanelGrammar.setLayout(new java.awt.GridBagLayout());
 
@@ -294,7 +293,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 16, 16);
         jPanelGrammar.add(terminalPanelForm, gridBagConstraints);
 
-        jTabbedPane.addTab(bundle.getString("PreferencesDialog.TabGrammar"), null, jPanelGrammar, bundle.getString("PreferencesDialog.TabGrammarToolTip")); // NOI18N
+        jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabGrammar"), null, jPanelGrammar, bundle.getString("PreferencesDialog.TabGrammarToolTip")); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -303,7 +302,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jTabbedPane, gridBagConstraints);
+        getContentPane().add(jGTITabbedPane, gridBagConstraints);
 
         jGTIButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
         jGTIButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
@@ -407,6 +406,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonRestore;
+    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPane;
     public javax.swing.JLabel jLabelAutoStep;
     public javax.swing.JLabel jLabelLanguage;
     public javax.swing.JLabel jLabelLookAndFeel;
@@ -423,7 +423,6 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     public javax.swing.JScrollPane jScrollPaneColors;
     public javax.swing.JSlider jSliderAutoStep;
     public javax.swing.JSlider jSliderZoom;
-    public javax.swing.JTabbedPane jTabbedPane;
     public javax.swing.JTree jTreeColors;
     public de.unisiegen.gtitool.ui.netbeans.TerminalPanelForm terminalPanelForm;
     // End of variables declaration//GEN-END:variables

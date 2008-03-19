@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
 
 
 /**
- * Special {@link JList}, that supports drag and drop.
+ * Special {@link JList}.
  * 
  * @author Christian Fehler
  * @version $Id$

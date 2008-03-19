@@ -903,11 +903,12 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
-    if ( this.initialLastActiveTab != this.gui.jTabbedPane.getSelectedIndex () )
+    if ( this.initialLastActiveTab != this.gui.jGTITabbedPane
+        .getSelectedIndex () )
     {
-      this.initialLastActiveTab = this.gui.jTabbedPane.getSelectedIndex ();
+      this.initialLastActiveTab = this.gui.jGTITabbedPane.getSelectedIndex ();
       PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
-          this.gui.jTabbedPane.getSelectedIndex () );
+          this.gui.jGTITabbedPane.getSelectedIndex () );
     }
     this.gui.dispose ();
   }
@@ -1585,7 +1586,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     this.initialLastActiveTab = PreferenceManager.getInstance ()
         .getPreferencesDialogLastActiveTab ();
-    this.gui.jTabbedPane.setSelectedIndex ( this.initialLastActiveTab );
+    this.gui.jGTITabbedPane.setSelectedIndex ( this.initialLastActiveTab );
   }
 
 
@@ -2189,33 +2190,33 @@ public final class PreferencesDialog implements LanguageChangedListener
     // Title
     this.gui.setTitle ( Messages.getString ( "PreferencesDialog.Title" ) ); //$NON-NLS-1$
     // General
-    this.gui.jTabbedPane.setTitleAt ( GENERAL_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setTitleAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneral" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( GENERAL_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setToolTipTextAt ( GENERAL_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGeneralToolTip" ) ); //$NON-NLS-1$
     // View
-    this.gui.jTabbedPane.setTitleAt ( VIEW_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setTitleAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabView" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( VIEW_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setToolTipTextAt ( VIEW_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabViewToolTip" ) ); //$NON-NLS-1$
     // Colors
-    this.gui.jTabbedPane.setTitleAt ( COLOR_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setTitleAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColors" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( COLOR_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setToolTipTextAt ( COLOR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabColorsToolTip" ) ); //$NON-NLS-1$
     // Alphabet
-    this.gui.jTabbedPane.setTitleAt ( ALPHABET_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setTitleAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( ALPHABET_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setToolTipTextAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
     this.gui.alphabetPanelForm.jLabelInputAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
     this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
     // Grammar
-    this.gui.jTabbedPane.setTitleAt ( GRAMMAR_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setTitleAt ( GRAMMAR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGrammar" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPane.setToolTipTextAt ( GRAMMAR_TAB_INDEX, Messages
+    this.gui.jGTITabbedPane.setToolTipTextAt ( GRAMMAR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGrammarToolTip" ) ); //$NON-NLS-1$
     this.gui.terminalPanelForm.jLabelNonterminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
@@ -2790,11 +2791,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveLastActiveTab ()
   {
-    if ( this.initialLastActiveTab != this.gui.jTabbedPane.getSelectedIndex () )
+    if ( this.initialLastActiveTab != this.gui.jGTITabbedPane
+        .getSelectedIndex () )
     {
-      this.initialLastActiveTab = this.gui.jTabbedPane.getSelectedIndex ();
+      this.initialLastActiveTab = this.gui.jGTITabbedPane.getSelectedIndex ();
       PreferenceManager.getInstance ().setPreferencesDialogLastActiveTab (
-          this.gui.jTabbedPane.getSelectedIndex () );
+          this.gui.jGTITabbedPane.getSelectedIndex () );
     }
   }
 
@@ -2965,11 +2967,11 @@ public final class PreferencesDialog implements LanguageChangedListener
             .getAlphabet () == null ) )
     {
       enabled = false;
-      this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
+      this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
     }
     else
     {
-      this.gui.jTabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
+      this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, null );
     }
 
     // Grammar
@@ -2979,11 +2981,11 @@ public final class PreferencesDialog implements LanguageChangedListener
             .getTerminalSymbolSet () == null ) )
     {
       enabled = false;
-      this.gui.jTabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, Color.RED );
+      this.gui.jGTITabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, Color.RED );
     }
     else
     {
-      this.gui.jTabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, null );
+      this.gui.jGTITabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, null );
     }
 
     // Enable or disable the buttons

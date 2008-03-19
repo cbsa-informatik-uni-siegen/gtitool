@@ -84,7 +84,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTITabbedPaneMain = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
+        editorPanelTabbedPane = new de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane();
         jMenuBarMain = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemNew = new javax.swing.JMenuItem();
@@ -352,10 +352,9 @@ public class MainWindowForm extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jToolBarMain, gridBagConstraints);
 
-        jGTITabbedPaneMain.setFocusable(false);
-        jGTITabbedPaneMain.addChangeListener(new javax.swing.event.ChangeListener() {
+        editorPanelTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jGTITabbedPaneMainStateChanged(evt);
+                editorPanelTabbedPaneStateChanged(evt);
             }
         });
 
@@ -365,7 +364,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTITabbedPaneMain, gridBagConstraints);
+        getContentPane().add(editorPanelTabbedPane, gridBagConstraints);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.FileMnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
@@ -672,6 +671,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 700, 450);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void editorPanelTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneStateChanged
+        this.logic.handleTabbedPaneStateChanged();
+    }//GEN-LAST:event_editorPanelTabbedPaneStateChanged
+
     private void jGTIToolBarToggleButtonFinalStateItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonFinalStateItemStateChanged
         this.logic.handleToolbarEnd(this.jGTIToolBarToggleButtonFinalState.isSelected());
     }//GEN-LAST:event_jGTIToolBarToggleButtonFinalStateItemStateChanged
@@ -725,7 +728,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jGTIToolBarButtonUndoActionPerformed
 
     private void jGTIToolBarButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveActionPerformed
-        this.logic.handleSave(this.jGTITabbedPaneMain.getSelectedEditorPanel ());
+        this.logic.handleSave(this.editorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_jGTIToolBarButtonSaveActionPerformed
 
     private void jGTIToolBarButtonSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveAsActionPerformed
@@ -776,16 +779,12 @@ public class MainWindowForm extends javax.swing.JFrame {
         this.logic.handleUndo();
     }//GEN-LAST:event_handleUndo
 
-    private void jGTITabbedPaneMainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTITabbedPaneMainStateChanged
-        this.logic.handleTabbedPaneStateChanged();
-    }//GEN-LAST:event_jGTITabbedPaneMainStateChanged
-
     private void jMenuItemEditMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEditMachineActionPerformed
         this.logic.handleEditMachine();
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose
-        this.logic.handleClose(this.jGTITabbedPaneMain.getSelectedEditorPanel ());
+        this.logic.handleClose(this.editorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleClose
 
     private void jCheckBoxMenuItemTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemTableItemStateChanged
@@ -801,7 +800,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleSaveAs
 
     private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
-        this.logic.handleSave(this.jGTITabbedPaneMain.getSelectedEditorPanel ());
+        this.logic.handleSave(this.editorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleSave
 
     private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
@@ -837,9 +836,9 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleOpen
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane editorPanelTabbedPane;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
-    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneMain;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditDocument;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;

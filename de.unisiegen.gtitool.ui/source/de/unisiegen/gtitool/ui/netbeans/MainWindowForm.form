@@ -945,12 +945,9 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="de.unisiegen.gtitool.ui.swing.JGTITabbedPane" name="jGTITabbedPaneMain">
-      <Properties>
-        <Property name="focusable" type="boolean" value="false"/>
-      </Properties>
+    <Container class="de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane" name="editorPanelTabbedPane">
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jGTITabbedPaneMainStateChanged"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="editorPanelTabbedPaneStateChanged"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

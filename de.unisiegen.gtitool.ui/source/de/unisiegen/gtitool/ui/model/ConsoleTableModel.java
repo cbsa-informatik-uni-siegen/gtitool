@@ -194,11 +194,87 @@ public final class ConsoleTableModel extends AbstractTableModel
   /**
    * {@inheritDoc}
    * 
+   * @see AbstractTableModel#getColumnClass(int)
+   */
+  @Override
+  public final Class < ? > getColumnClass ( int columnIndex )
+  {
+    switch ( columnIndex )
+    {
+      case MESSAGE_COLUMN :
+      {
+        return String.class;
+      }
+      case DESCRIPTION_COLUMN :
+      {
+        return String.class;
+      }
+      case STATES_COLUMN :
+      {
+        return ArrayList.class;
+      }
+      case TRANSITIONS_COLUMN :
+      {
+        return ArrayList.class;
+      }
+      case SYMBOL_COLUMN :
+      {
+        return ArrayList.class;
+      }
+      default :
+      {
+        return Object.class;
+      }
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see TableModel#getColumnCount()
    */
   public final int getColumnCount ()
   {
     return COLUMN_COUNT;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see AbstractTableModel#getColumnName(int)
+   */
+  @Override
+  public final String getColumnName ( int columnIndex )
+  {
+    switch ( columnIndex )
+    {
+      case MESSAGE_COLUMN :
+      {
+        return "Message"; //$NON-NLS-1$
+      }
+      case DESCRIPTION_COLUMN :
+      {
+        return "Description"; //$NON-NLS-1$
+      }
+      case STATES_COLUMN :
+      {
+        return "States"; //$NON-NLS-1$
+      }
+      case TRANSITIONS_COLUMN :
+      {
+        return "Transitions"; //$NON-NLS-1$
+      }
+      case SYMBOL_COLUMN :
+      {
+        return "Symbols"; //$NON-NLS-1$
+      }
+      default :
+      {
+        return ""; //$NON-NLS-1$
+      }
+    }
   }
 
 
@@ -278,7 +354,10 @@ public final class ConsoleTableModel extends AbstractTableModel
       {
         return this.data.get ( rowIndex ).symbols;
       }
+      default :
+      {
+        return null;
+      }
     }
-    return null;
   }
 }

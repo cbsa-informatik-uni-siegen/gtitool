@@ -221,6 +221,7 @@ public final class SVNVersion
               }
               newVersion = Integer.parseInt ( s );
               version = newVersion > version ? newVersion : version;
+              break;
             }
           }
         }

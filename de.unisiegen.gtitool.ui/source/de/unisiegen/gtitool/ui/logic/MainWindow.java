@@ -18,8 +18,12 @@ import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -511,10 +515,17 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleNew ( Element element )
   {
-    DefaultMachineModel model = null;
+    DefaultModel model = null;
     try
     {
-      model = new DefaultMachineModel ( element, null );
+      if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
+      {
+        model = new DefaultMachineModel ( element, null );
+      }
+      else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
+      {
+        model = new DefaultGrammarModel ( element );
+      }
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
     {
@@ -546,10 +557,44 @@ public final class MainWindow implements LanguageChangedListener
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+    catch ( TerminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
 
     if ( model != null )
     {
-      EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
+      EditorPanel newEditorPanel;
+      if ( model instanceof DefaultMachineModel )
+      {
+        newEditorPanel = new MachinePanel ( this.gui,
+            ( DefaultMachineModel ) model, null );
+      }
+      else if ( model instanceof DefaultGrammarModel )
+      {
+        newEditorPanel = new GrammarPanel ( this.gui,
+            ( DefaultGrammarModel ) model, null );
+      }
+      else
+      {
+        throw new RuntimeException ( "incorrect model" ); //$NON-NLS-1$
+      }
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;

@@ -77,8 +77,9 @@ public class GrammarPanel implements EditorPanel
   /**
    * The {@link MainWindowForm}
    */
-  private MainWindowForm parent;
-  
+  private MainWindowForm mainWindowForm;
+
+
   /**
    * The {@link ModifyStatusChangedListener}.
    */
@@ -88,14 +89,14 @@ public class GrammarPanel implements EditorPanel
   /**
    * Allocates a new {@link GrammarPanel}
    * 
-   * @param parent The parent frame
+   * @param mainWindowForm The {@link MainWindowForm}.
    * @param model The {@link DefaultGrammarModel}.
    * @param file The {@link File}
    */
-  public GrammarPanel ( MainWindowForm parent, DefaultGrammarModel model,
-      File file )
+  public GrammarPanel ( MainWindowForm mainWindowForm,
+      DefaultGrammarModel model, File file )
   {
-    this.parent = parent;
+    this.mainWindowForm = mainWindowForm;
     this.model = model;
     this.file = file;
     this.gui = new GrammarPanelForm ();
@@ -104,7 +105,6 @@ public class GrammarPanel implements EditorPanel
     this.gui.jGTITable.setModel ( this.grammar );
     this.gui.jGTITable.setColumnModel ( new GrammarColumnModel () );
 
-    
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
@@ -192,7 +192,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleExchange ()
   {
-    // TODO implement me
+    ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
+        .getLogic (), this.model.getElement (), this.file );
+    exchangeDialog.show ();
   }
 
 
@@ -222,8 +224,8 @@ public class GrammarPanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
-          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
+          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -276,7 +278,7 @@ public class GrammarPanel implements EditorPanel
               + ")"; //$NON-NLS-1$
         }
       } );
-      int n = chooser.showSaveDialog ( this.parent );
+      int n = chooser.showSaveDialog ( this.mainWindowForm );
       if ( ( n == JFileChooser.CANCEL_OPTION )
           || ( chooser.getSelectedFile () == null ) )
       {
@@ -284,9 +286,10 @@ public class GrammarPanel implements EditorPanel
       }
       if ( chooser.getSelectedFile ().exists () )
       {
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.parent, Messages
-            .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
-                .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+            Messages.getString (
+                "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                    .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
             true, true, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
@@ -310,8 +313,8 @@ public class GrammarPanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.parent, e.getMessage (),
-          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
+          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -479,7 +482,7 @@ public class GrammarPanel implements EditorPanel
    */
   public JFrame getParent ()
   {
-    return this.parent;
+    return this.mainWindowForm;
   }
 
 

@@ -39,7 +39,7 @@ public final class TransitionDialog
 {
 
   /**
-   * The color {@link ListModel}.
+   * The {@link Symbol} {@link ListModel}.
    * 
    * @author Christian Fehler
    */
@@ -71,11 +71,11 @@ public final class TransitionDialog
     /**
      * Adds the given item.
      * 
-     * @param pItem The item to add.
+     * @param item The item to add.
      */
-    public final void add ( Symbol pItem )
+    public final void add ( Symbol item )
     {
-      this.list.add ( pItem );
+      this.list.add ( item );
       Collections.sort ( this.list );
       fireContentsChanged ( this, 0, this.list.size () - 1 );
     }
@@ -147,12 +147,12 @@ public final class TransitionDialog
     /**
      * Removes the given item.
      * 
-     * @param pItem The item to remove.
+     * @param item The item to remove.
      */
-    public final void remove ( Symbol pItem )
+    public final void remove ( Symbol item )
     {
-      int index = this.list.indexOf ( pItem );
-      this.list.remove ( pItem );
+      int index = this.list.indexOf ( item );
+      this.list.remove ( item );
       fireIntervalRemoved ( this, index, index );
     }
   }

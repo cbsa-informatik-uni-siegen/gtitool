@@ -208,6 +208,7 @@ public final class ProductionDialog
     this.gui = new ProductionDialogForm ( this, this.parent );
     this.model = model;
     this.oldProduction = production;
+    
 
     this.gui.styledNonterminalSymbolSetParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
@@ -223,7 +224,7 @@ public final class ProductionDialog
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
     this.gui.styledProductionParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
-
+    
     for ( NonterminalSymbol current : nonterminalSymbolSet )
     {
       this.listModel.add ( current );
@@ -270,6 +271,23 @@ public final class ProductionDialog
     }
     this.gui.jGTIButtonOk.setEnabled ( this.oldProduction != null );
 
+   this.gui.styledProductionWordParserPanel.parse ();
+    
+    ProductionWord productionWord = this.gui.styledProductionWordParserPanel.getProductionWord ();
+    if ( productionWord == null )
+    {
+      setButtonStatus ( false );
+      getGui ().styledProductionParserPanel.setProduction ( null );
+    }
+
+    else
+    {
+      setButtonStatus ( true );
+      getGui ().styledProductionParserPanel
+          .setProduction ( new DefaultProduction (
+              ( NonterminalSymbol ) getGui ().jGTIList
+                  .getSelectedValue (), productionWord ) );
+    }
   }
 
 

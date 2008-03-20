@@ -40,7 +40,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   /**
    * The {@link Machine} version.
    */
-  private static final int GRAMMAR_VERSION = 1;
+  private static final int GRAMMAR_VERSION = 658;
 
 
   /**

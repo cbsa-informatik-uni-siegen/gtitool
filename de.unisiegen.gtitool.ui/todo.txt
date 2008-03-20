@@ -7,9 +7,7 @@ CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Redo / Undo für Grammar Panel und Machine Panel
-BM		- In allen Dialogen mit Parsern immer am Anfang ein Parse aufrufen
 BM		- Production Dialog: Nonterminal Symbols in der richtigen Farbe
 		  darstellen, auch bei Selektion, siehe TODO CF
-BM		- Die GrammarVersion des Models sollte immer auf die svn Revisions
-		  Nummer gesetzt werden, mit der sie commited wird, dann kann man besser
-		  nachschauen, was bei dem Commit geandert wurde. z.B. Machine 513
+
+		  

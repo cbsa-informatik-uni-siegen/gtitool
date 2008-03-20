@@ -168,9 +168,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   private void activateGrammarButtons ( boolean state )
   {
-//    this.gui.jGTIToolBarButtonAddProduction.setVisible ( state );
-//    this.gui.jGTIToolBarButtonEditProduction.setVisible ( state );
-//    this.gui.jGTIToolBarButtonDeleteProduction.setVisible ( state );
+    this.gui.jGTIToolBarButtonAddProduction.setVisible ( state );
+    this.gui.jGTIToolBarButtonEditProduction.setVisible ( state );
+    this.gui.jGTIToolBarButtonDeleteProduction.setVisible ( state );
   }
 
 

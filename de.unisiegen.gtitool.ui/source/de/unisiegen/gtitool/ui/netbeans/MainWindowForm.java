@@ -77,6 +77,9 @@ public class MainWindowForm extends javax.swing.JFrame {
         jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
+        jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jSeparatorNavigation = new javax.swing.JSeparator();
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
@@ -277,6 +280,36 @@ public class MainWindowForm extends javax.swing.JFrame {
         });
 
         jToolBarNavigation.add(jGTIToolBarToggleButtonFinalState);
+
+        jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/add-production.png")));
+        jGTIToolBarButtonAddProduction.setToolTipText(bundle.getString("GrammarPanel.AddProduction")); // NOI18N
+        jGTIToolBarButtonAddProduction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonAddProductionActionPerformed(evt);
+            }
+        });
+
+        jToolBarNavigation.add(jGTIToolBarButtonAddProduction);
+
+        jGTIToolBarButtonEditProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-production.png")));
+        jGTIToolBarButtonEditProduction.setToolTipText(bundle.getString("GrammarPanel.ProductionProperties")); // NOI18N
+        jGTIToolBarButtonEditProduction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonEditProductionActionPerformed(evt);
+            }
+        });
+
+        jToolBarNavigation.add(jGTIToolBarButtonEditProduction);
+
+        jGTIToolBarButtonDeleteProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/delete-production.png")));
+        jGTIToolBarButtonDeleteProduction.setToolTipText(bundle.getString("GrammarPanel.DeleteProduction")); // NOI18N
+        jGTIToolBarButtonDeleteProduction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonDeleteProductionActionPerformed(evt);
+            }
+        });
+
+        jToolBarNavigation.add(jGTIToolBarButtonDeleteProduction);
 
         jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
         jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
@@ -668,8 +701,20 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBarMain);
 
-        setBounds(0, 0, 700, 450);
+        setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIToolBarButtonAddProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonAddProductionActionPerformed
+        this.logic.handleAddProduction();
+    }//GEN-LAST:event_jGTIToolBarButtonAddProductionActionPerformed
+
+    private void jGTIToolBarButtonEditProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonEditProductionActionPerformed
+        this.logic.handleEditProduction();
+    }//GEN-LAST:event_jGTIToolBarButtonEditProductionActionPerformed
+
+    private void jGTIToolBarButtonDeleteProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonDeleteProductionActionPerformed
+        this.logic.handleDeleteProduction();
+    }//GEN-LAST:event_jGTIToolBarButtonDeleteProductionActionPerformed
 
     private void editorPanelTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneStateChanged
         this.logic.handleTabbedPaneStateChanged();
@@ -839,7 +884,10 @@ public class MainWindowForm extends javax.swing.JFrame {
     public de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane editorPanelTabbedPane;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
     public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonAddProduction;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditDocument;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditProduction;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonOpen;

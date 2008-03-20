@@ -7,8 +7,10 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -53,10 +55,12 @@ public abstract class AbstractGrammar implements Grammar
    */
   private ArrayList < Production > initialProductions = new ArrayList < Production > ();
 
+
   /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
+
 
   /**
    * Allocate a new {@link AbstractGrammar}.
@@ -69,7 +73,7 @@ public abstract class AbstractGrammar implements Grammar
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
     this.terminalSymbolSet = terminalSymbolSet;
-    
+
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
@@ -301,7 +305,8 @@ public abstract class AbstractGrammar implements Grammar
   public void addProduction ( Production production )
   {
     this.productions.add ( production );
-    production.addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    production
+        .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ( true );
   }
 
@@ -338,7 +343,8 @@ public abstract class AbstractGrammar implements Grammar
   {
     return this.productions;
   }
-  
+
+
   /**
    * Let the listeners know that the modify status has changed.
    * 
@@ -363,5 +369,50 @@ public abstract class AbstractGrammar implements Grammar
         element.modifyStatusChanged ( newModifyStatus );
       }
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Grammar#isSymbolRemoveableFromNonterminalSymbols(NonterminalSymbol)
+   */
+  public boolean isSymbolRemoveableFromNonterminalSymbols (
+      NonterminalSymbol symbol )
+  {
+    if ( !this.nonterminalSymbolSet.contains ( symbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
+    }
+    for ( Production current : this.productions )
+    {
+      if ( current.contains ( symbol ) )
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Grammar#isSymbolRemoveableFromTerminalSymbols(TerminalSymbol)
+   */
+  public boolean isSymbolRemoveableFromTerminalSymbols ( TerminalSymbol symbol )
+  {
+    if ( !this.terminalSymbolSet.contains ( symbol ) )
+    {
+      throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
+    }
+    for ( Production current : this.productions )
+    {
+      if ( current.contains ( symbol ) )
+      {
+        return false;
+      }
+    }
+    return true;
   }
 }

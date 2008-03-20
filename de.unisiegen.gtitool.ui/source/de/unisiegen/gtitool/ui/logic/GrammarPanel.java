@@ -8,6 +8,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
@@ -105,6 +106,11 @@ public class GrammarPanel implements EditorPanel
     this.gui.jGTITable.setModel ( this.grammar );
     this.gui.jGTITable.setColumnModel ( new GrammarColumnModel () );
 
+    if ( this.grammar.getColumnCount () > 0 )
+    {
+      this.gui.jGTITable.getSelectionModel ().setSelectionInterval ( 0, 0 );
+    }
+
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
@@ -190,7 +196,7 @@ public class GrammarPanel implements EditorPanel
   /**
    * Handles the {@link Exchange}.
    */
-  public void handleExchange ()
+  public final void handleExchange ()
   {
     ExchangeDialog exchangeDialog = new ExchangeDialog ( this.mainWindowForm
         .getLogic (), this.model.getElement (), this.file );
@@ -224,8 +230,8 @@ public class GrammarPanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
-          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -286,10 +292,9 @@ public class GrammarPanel implements EditorPanel
       }
       if ( chooser.getSelectedFile ().exists () )
       {
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
-            Messages.getString (
-                "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
-                    .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm, Messages
+            .getString ( "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
             true, true, false );
         confirmDialog.show ();
         if ( confirmDialog.isNotConfirmed () )
@@ -313,8 +318,8 @@ public class GrammarPanel implements EditorPanel
     }
     catch ( StoreException e )
     {
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e
-          .getMessage (), Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
+      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, e.getMessage (),
+          Messages.getString ( "MachinePanel.Save" ) ); //$NON-NLS-1$
       infoDialog.show ();
     }
     resetModify ();
@@ -328,7 +333,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleToolbarEditDocument ()
   {
-    // TODO implement me
+    TerminalDialog alphabetDialog = new TerminalDialog ( this.mainWindowForm,
+        this.grammar );
+    alphabetDialog.show ();
   }
 
 
@@ -383,7 +390,7 @@ public class GrammarPanel implements EditorPanel
    */
   public void languageChanged ()
   {
-    // TODO implement me
+    // Nothing to do so far
   }
 
 
@@ -509,6 +516,61 @@ public class GrammarPanel implements EditorPanel
       for ( ModifyStatusChangedListener current : listeners )
       {
         current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
+  }
+
+
+  /**
+   * Handle add production button pressed.
+   */
+  public void handleAddProduction ()
+  {
+    ProductionDialog dialog = new ProductionDialog ( getParent (), this.grammar
+        .getNonterminalSymbolSet (), this.grammar.getTerminalSymbolSet (),
+        this.model, null );
+    dialog.show ();
+  }
+
+
+  /**
+   * Handle edit production button pressed.
+   */
+  public void handleEditProduction ()
+  {
+
+    if ( this.gui.jGTITable.getSelectedRow () >= 0 )
+    {
+      Production production = this.grammar.getProductionAt ( this.gui.jGTITable
+          .getSelectedRow () );
+      JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
+      ProductionDialog productionDialog = new ProductionDialog ( window,
+          this.grammar.getNonterminalSymbolSet (), this.grammar
+              .getTerminalSymbolSet (), this.model, production );
+      productionDialog.show ();
+    }
+  }
+
+
+  /**
+   * Handle delete production button pressed.
+   */
+  public void handleDeleteProduction ()
+  {
+    if ( this.gui.jGTITable.getSelectedRow () >= 0 )
+    {
+      Production production = this.grammar.getProductionAt ( this.gui.jGTITable
+          .getSelectedRow () );
+      ConfirmDialog confirmedDialog = new ConfirmDialog ( getParent (),
+          Messages.getString ( "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
+              production ), Messages
+              .getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
+          true, false );
+      confirmedDialog.show ();
+      if ( confirmedDialog.isConfirmed () )
+      {
+        this.model.removeProduction ( production );
+        this.gui.repaint ();
       }
     }
   }

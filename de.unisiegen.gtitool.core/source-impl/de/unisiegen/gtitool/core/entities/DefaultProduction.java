@@ -370,4 +370,36 @@ public final class DefaultProduction implements Production
     this.productionWord = productionWord;
     fireModifyStatusChanged ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   */
+  public boolean contains ( NonterminalSymbol symbol )
+  {
+    for (ProductionWordMember current : this.productionWord){
+      if (current.equals ( symbol )){
+        return true;
+      }
+    }
+    return this.nonterminalSymbol.equals ( symbol );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  public boolean contains ( TerminalSymbol symbol )
+  {
+    for (ProductionWordMember current : this.productionWord){
+      if (current.equals ( symbol )){
+        return true;
+      }
+    }
+    return false;
+  }
 }

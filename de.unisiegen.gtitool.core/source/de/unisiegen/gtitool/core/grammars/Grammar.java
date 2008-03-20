@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
@@ -51,16 +53,18 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    */
   public TerminalSymbolSet getTerminalSymbolSet ();
 
+
   /**
-   * Add a new production to this grammar. 
-   *
+   * Add a new production to this grammar.
+   * 
    * @param production The {@link Production}:
    */
   public void addProduction ( Production production );
 
+
   /**
-   * Remove a new production from this grammar. 
-   *
+   * Remove a new production from this grammar.
+   * 
    * @param production The {@link Production}:
    */
   public void removeProduction ( Production production );
@@ -70,7 +74,6 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    * Get a specified production.
    * 
    * @param index the index of the production.
-   * 
    * @return the specified {@link Production}.
    */
   public Production getProductionAt ( int index );
@@ -82,4 +85,29 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    * @return all {@link Production}s of this grammar.
    */
   public ArrayList < Production > getProductions ();
+
+
+  /**
+   * Returns true if the given {@link NonterminalSymbol} can be removed from the
+   * {@link NonterminalSymbolSet} of this {@link Grammar}, otherwise false.
+   * 
+   * @param symbol The {@link NonterminalSymbol} which should be checked.
+   * @return True if the given {@link NonterminalSymbol} can be removed from the
+   *         {@link NonterminalSymbolSet} of this {@link Grammar}, otherwise
+   *         false.
+   */
+  public boolean isSymbolRemoveableFromNonterminalSymbols (
+      NonterminalSymbol symbol );
+
+
+  /**
+   * Returns true if the given {@link TerminalSymbol} can be removed from the
+   * {@link TerminalSymbolSet} of this {@link Grammar}, otherwise false.
+   * 
+   * @param symbol The {@link TerminalSymbol} which should be checked.
+   * @return True if the given {@link TerminalSymbol} can be removed from the
+   *         {@link TerminalSymbolSet} of this {@link Grammar}, otherwise
+   *         false.
+   */
+  public boolean isSymbolRemoveableFromTerminalSymbols ( TerminalSymbol symbol );
 }

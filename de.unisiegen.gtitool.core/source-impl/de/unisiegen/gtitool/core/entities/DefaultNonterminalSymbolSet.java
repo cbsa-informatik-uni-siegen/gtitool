@@ -728,4 +728,5 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
+  
 }

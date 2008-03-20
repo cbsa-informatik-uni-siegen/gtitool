@@ -37,32 +37,58 @@ public interface Production extends Entity, Storable, Modifyable,
    * @see Object#equals(Object)
    */
   public boolean equals ( Object other );
-  
+
+
   /**
    * Returns the {@link NonterminalSymbol} for this {@link Production}
    * 
    * @return the {@link NonterminalSymbol} for this {@link Production}
    */
-  public NonterminalSymbol getNonterminalSymbol();
-  
+  public NonterminalSymbol getNonterminalSymbol ();
+
+
   /**
    * Returns the {@link ProductionWord} of this {@link Production}
    * 
    * @return the {@link ProductionWord} of this {@link Production}
    */
-  public ProductionWord getProductionWord();
-  
+  public ProductionWord getProductionWord ();
+
+
   /**
    * Set the {@link NonterminalSymbol} for this {@link Production}.
    * 
    * @param nonterminalSymbol the {@link NonterminalSymbol}.
    */
-  public void setNonterminalSymbol(NonterminalSymbol nonterminalSymbol);
-  
+  public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol );
+
+
   /**
    * Set the {@link ProductionWord} for this {@link Production}.
    * 
    * @param productionWord the {@link ProductionWord}.
    */
-  public void setProductionWord(ProductionWord productionWord);
+  public void setProductionWord ( ProductionWord productionWord );
+
+
+  /**
+   * Returns true if this {@link Production} contains this
+   * {@link NonterminalSymbol}, else false.
+   * 
+   * @param symbol The {@link NonterminalSymbol}.
+   * @return true if this {@link Production} contains this
+   *         {@link NonterminalSymbol}, else false.
+   */
+  public boolean contains ( NonterminalSymbol symbol );
+
+
+  /**
+   * Returns true if this {@link Production} contains this
+   * {@link TerminalSymbol}, else false.
+   * 
+   * @param symbol The {@link TerminalSymbol}.
+   * @return true if this {@link Production} contains this
+   *         {@link TerminalSymbol}, else false.
+   */
+  public boolean contains ( TerminalSymbol symbol );
 }

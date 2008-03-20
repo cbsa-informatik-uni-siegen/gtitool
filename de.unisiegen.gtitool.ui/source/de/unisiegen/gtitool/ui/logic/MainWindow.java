@@ -168,7 +168,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   private void activateGrammarButtons ( boolean state )
   {
-    // TODO implement me
+//    this.gui.jGTIToolBarButtonAddProduction.setVisible ( state );
+//    this.gui.jGTIToolBarButtonEditProduction.setVisible ( state );
+//    this.gui.jGTIToolBarButtonDeleteProduction.setVisible ( state );
   }
 
 
@@ -185,7 +187,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarToggleButtonStartState.setVisible ( state );
     this.gui.jGTIToolBarToggleButtonFinalState.setVisible ( state );
     this.gui.jGTIToolBarToggleButtonAddTransition.setVisible ( state );
-    this.gui.jGTIToolBarButtonEditDocument.setVisible ( state );
 
     this.gui.jSeparatorEditNavigation.setVisible ( state );
     this.gui.jGTIToolBarButtonStart.setVisible ( state );
@@ -1035,8 +1036,6 @@ public final class MainWindow implements LanguageChangedListener
       {
         this.gui.jCheckBoxMenuItemConsole.setVisible ( false );
         this.gui.jCheckBoxMenuItemTable.setVisible ( false );
-        setToolBarEditItemState ( false );
-        setToolBarEnterWordItemState ( false );
       }
       // Undo
       this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
@@ -1938,5 +1937,47 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarButtonNextStep.setEnabled ( state );
     this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( state );
     this.gui.jGTIToolBarButtonStop.setEnabled ( state );
+  }
+
+
+  /**
+   * Handle delete production button pressed.
+   */
+  public void handleDeleteProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleDeleteProduction();
+    }
+  }
+
+
+  /**
+   * Handle edit production button pressed.
+   */
+  public void handleEditProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleEditProduction();
+    }
+  }
+
+
+  /**
+   * Handle add production button pressed.
+   */
+  public void handleAddProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleAddProduction();
+    }
   }
 }

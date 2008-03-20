@@ -33,15 +33,15 @@ public final class AlphabetDialog
 
 
   /**
-   * The parent {@link JFrame}.
-   */
-  private JFrame parent;
-
-
-  /**
    * The {@link Machine} of this dialog.
    */
   private Machine machine;
+
+
+  /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
 
 
   /**
@@ -250,7 +250,7 @@ public final class AlphabetDialog
         AlphabetDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
             .setException ( exceptionList );
       }
-      else if ( notRemoveableSymbolsFromPushDownAlphabet.size () > 0 )
+      if ( notRemoveableSymbolsFromPushDownAlphabet.size () > 0 )
       {
         AlphabetDialog.this.gui.jGTIButtonOk.setEnabled ( false );
         ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
@@ -262,7 +262,8 @@ public final class AlphabetDialog
         AlphabetDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
             .setException ( exceptionList );
       }
-      else
+      if ( ( notRemoveableSymbolsFromAlphabet.size () == 0 )
+          && ( notRemoveableSymbolsFromPushDownAlphabet.size () == 0 ) )
       {
         this.gui.jGTIButtonOk.setEnabled ( true );
       }

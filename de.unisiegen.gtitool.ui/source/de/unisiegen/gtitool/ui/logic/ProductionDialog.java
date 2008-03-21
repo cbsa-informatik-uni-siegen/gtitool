@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
+import de.unisiegen.gtitool.ui.logic.renderer.SymbolListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 
@@ -288,6 +289,8 @@ public final class ProductionDialog
               ( NonterminalSymbol ) getGui ().jGTIList
                   .getSelectedValue (), productionWord ) );
     }
+    
+    this.gui.jGTIList.setCellRenderer ( new SymbolListCellRenderer() );
   }
 
 

@@ -7,7 +7,6 @@ CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Redo / Undo für Grammar Panel und Machine Panel
-BM		- Production Dialog: Nonterminal Symbols in der richtigen Farbe
-		  darstellen, auch bei Selektion, siehe TODO CF
+
 
 		  

@@ -11,6 +11,11 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
 
+	<!-- dist -->
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
 	<!-- dist preclean -->
 	<target name="dist-preclean">
 		<delete dir="${distdir}" includeemptydirs="true" />
@@ -56,8 +61,13 @@
 		<delete dir="${classesdir}" />
 	</target>
 
-	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
-		<echo message="Distribution ready in ${distdir}" />
+	<!-- javadoc -->
+	<target name="javadoc" description="Generate the javadoc">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+			<fileset dir="${sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
 	</target>
 </project>

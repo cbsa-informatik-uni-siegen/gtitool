@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	$Id$
+	
+	Copyright (c) 2008 Christian Fehler
+-->
+<project name="TinyLaF" default="dist" basedir=".">
 
-<project name="TinyLaF" default="cleanup" basedir=".">
-    <description>
-        build executable jar from tinylaf sources and resources
-    </description>
-  <!-- set global properties for this build -->
-  <property name="src" location="${basedir}/source"/>
-  <property name="build" location="build"/>
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="sourcedir" location="${basedir}/source" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="docdir" value="${basedir}/doc" />
 
-  <target name="init">
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
-  </target>
+	<!-- dist preclean -->
+	<target name="dist-preclean">
+		<delete dir="${distdir}" includeemptydirs="true" />
+		<mkdir dir="${distdir}" />
+	</target>
 
-  <target name="compile" depends="init"
-        description="compile the source " >
-    <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
-  </target>
+	<!-- dist compile -->
+	<target name="dist-compile">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<compilerarg value="-Xlint" />
+			<src path="${sourcedir}" />
+		</javac>
+	</target>
 
-  <target name="copy_resources" depends="compile"
-        description="copy resources" >
-    <!-- Copy icon and html directories from src to build directory -->
-    <copy todir="${build}/de/muntjak/tinylookandfeel/icons">
-      <fileset dir="${src}/de/muntjak/tinylookandfeel/icons"/>
-    </copy>
-    <copy todir="${build}/de/muntjak/tinylookandfeel/html">
-      <fileset dir="${src}/de/muntjak/tinylookandfeel/html"/>
-    </copy>
-  </target>
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}" />
+			<attribute name="Main-Class" value="de/muntjak/tinylookandfeel/controlpanel/ControlPanel" />
+		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
+		<copy todir="${classesdir}/META-INF" file="${docdir}/license.txt" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/TinyLaF.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.gif" />
+				<include name="**/*.png" />
+				<include name="**/*.html" />
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
 
-  <target name="dist" depends="copy_resources"
-        description="generate the distribution" >
-    <!-- Put everything in ${build} into the tinylaf.jar file -->
-    <jar jarfile="${src}/tinylaf.jar" basedir="${build}" manifest="${src}/manifest.txt"/>
-  </target>
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
 
-  <target name="cleanup" depends="dist"
-        description="clean up" >
-    <!-- Delete the ${build} directory trees -->
-    <delete dir="${build}"/>
-  </target>
+	<!-- dist -->
+	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
 </project>

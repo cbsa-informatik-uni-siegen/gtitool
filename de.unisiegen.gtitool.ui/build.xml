@@ -38,6 +38,7 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
+	<!-- dist -->
 	<target name="dist" depends="dist-core,dist-jgraph,version,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->

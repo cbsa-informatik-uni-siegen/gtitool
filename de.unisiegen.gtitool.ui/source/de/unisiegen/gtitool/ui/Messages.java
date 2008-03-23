@@ -23,7 +23,7 @@ public final class Messages
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger.getLogger ( Messages.class );
+  private static final Logger logger = Logger.getLogger ( Messages.class );
 
 
   /**
@@ -104,7 +104,7 @@ public final class Messages
     }
     catch ( IllegalArgumentException exc )
     {
-      LOGGER.error ( "illegal argument exception", exc ); //$NON-NLS-1$
+      logger.error ( "illegal argument exception", exc ); //$NON-NLS-1$
       return key;
     }
   }

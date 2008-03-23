@@ -27,7 +27,7 @@ public final class Clipboard implements ClipboardOwner
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger.getLogger ( Clipboard.class );
+  private static final Logger logger = Logger.getLogger ( Clipboard.class );
 
 
   /**
@@ -87,7 +87,7 @@ public final class Clipboard implements ClipboardOwner
   {
     try
     {
-      LOGGER.debug ( "copy " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
+      logger.debug ( "copy " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
           + " into the clipboard" ); //$NON-NLS-1$
       this.systemClipboard.setContents ( new StringSelection ( text ), this );
     }
@@ -121,7 +121,7 @@ public final class Clipboard implements ClipboardOwner
     {
       String text = ( String ) transfer
           .getTransferData ( DataFlavor.stringFlavor );
-      LOGGER.debug ( "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
+      logger.debug ( "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
           + " from the clipboard" ); //$NON-NLS-1$
       return text;
     }

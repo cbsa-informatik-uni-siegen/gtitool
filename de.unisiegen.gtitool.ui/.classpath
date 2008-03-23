@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/de.unisiegen.gtitool.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gtitool.jgraph"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/gtitool.tinylaf"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -162,7 +162,7 @@ public final class PreferenceManager extends
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger
+  private static final Logger logger = Logger
       .getLogger ( PreferenceManager.class );
 
 
@@ -510,7 +510,7 @@ public final class PreferenceManager extends
    */
   public final void setAutoStepItem ( AutoStepItem autoStepInterval )
   {
-    LOGGER.debug ( "set auto step interval to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set auto step interval to " + Messages.QUOTE //$NON-NLS-1$
         + autoStepInterval.getAutoStepInterval () + "" + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "AutoStep", autoStepInterval //$NON-NLS-1$
         .getAutoStepInterval () );
@@ -524,7 +524,7 @@ public final class PreferenceManager extends
    */
   public final void setDividerLocationConsole ( int location )
   {
-    LOGGER
+    logger
         .debug ( "set console divider location to " + Messages.QUOTE + location + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "MachinePanel.DividerConsole", location ); //$NON-NLS-1$
   }
@@ -537,7 +537,7 @@ public final class PreferenceManager extends
    */
   public final void setDividerLocationTable ( int location )
   {
-    LOGGER
+    logger
         .debug ( "set table divider location to " + Messages.QUOTE + location + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "MachinePanel.DividerTable", location ); //$NON-NLS-1$
   }
@@ -550,7 +550,7 @@ public final class PreferenceManager extends
    */
   public final void setHost ( String host )
   {
-    LOGGER
+    logger
         .debug ( "set the host to " + Messages.QUOTE + host + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.put ( "Host", host ); //$NON-NLS-1$
   }
@@ -563,7 +563,7 @@ public final class PreferenceManager extends
    */
   public final void setLookAndFeelItem ( LookAndFeelItem lookAndFeelItem )
   {
-    LOGGER.debug ( "set look and feel to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set look and feel to " + Messages.QUOTE //$NON-NLS-1$
         + lookAndFeelItem.getName () + "" + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.put (
         "PreferencesDialog.LookAndFeel.Name", lookAndFeelItem.getName () ); //$NON-NLS-1$
@@ -581,11 +581,11 @@ public final class PreferenceManager extends
   {
     if ( ( jFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
     {
-      LOGGER
+      logger
           .debug ( "set main window maximized to " + Messages.QUOTE + "false" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
       this.preferences.putBoolean ( "MainWindow.Maximized", false ); //$NON-NLS-1$
       Rectangle bounds = jFrame.getBounds ();
-      LOGGER.debug ( "set main window bounds to " + Messages.QUOTE + "x=" //$NON-NLS-1$//$NON-NLS-2$
+      logger.debug ( "set main window bounds to " + Messages.QUOTE + "x=" //$NON-NLS-1$//$NON-NLS-2$
           + bounds.x + ", " + "y=" + bounds.y + ", " + "width=" + bounds.width //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
           + ", " + "height=" + bounds.height + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
       this.preferences.putInt ( "MainWindow.XPosition", bounds.x ); //$NON-NLS-1$
@@ -595,7 +595,7 @@ public final class PreferenceManager extends
     }
     else
     {
-      LOGGER.debug ( "set main window maximized to " + Messages.QUOTE + "true" //$NON-NLS-1$ //$NON-NLS-2$
+      logger.debug ( "set main window maximized to " + Messages.QUOTE + "true" //$NON-NLS-1$ //$NON-NLS-2$
           + Messages.QUOTE );
       this.preferences.putBoolean ( "MainWindow.Maximized", true ); //$NON-NLS-1$
     }
@@ -610,7 +610,7 @@ public final class PreferenceManager extends
   public final void setMouseSelectionItem (
       MouseSelectionItem mouseSelectionItem )
   {
-    LOGGER.debug ( "set mouse selection item to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set mouse selection item to " + Messages.QUOTE //$NON-NLS-1$
         + mouseSelectionItem.getIndex () + "" + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "PreferencesDialog.MouseSelectionItem.Index", //$NON-NLS-1$
         mouseSelectionItem.getIndex () );
@@ -645,7 +645,7 @@ public final class PreferenceManager extends
     // Set the new data
     for ( int i = 0 ; i < openedFilesItem.getFiles ().size () ; i++ )
     {
-      LOGGER
+      logger
           .debug ( "set opened file " + Messages.QUOTE + i + Messages.QUOTE + " to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
               + openedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
               + "" + Messages.QUOTE ); //$NON-NLS-1$
@@ -655,13 +655,13 @@ public final class PreferenceManager extends
 
     if ( openedFilesItem.getActiveFile () == null )
     {
-      LOGGER
+      logger
           .debug ( "set last opened file to " + Messages.QUOTE + "null" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
       this.preferences.put ( "MainWindow.OpenedActiveFile", "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
     else
     {
-      LOGGER.debug ( "set last opened file to " + Messages.QUOTE //$NON-NLS-1$
+      logger.debug ( "set last opened file to " + Messages.QUOTE //$NON-NLS-1$
           + openedFilesItem.getActiveFile ().getAbsolutePath ()
           + "" + Messages.QUOTE ); //$NON-NLS-1$
       this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
@@ -677,7 +677,7 @@ public final class PreferenceManager extends
    */
   public final void setPort ( int port )
   {
-    LOGGER
+    logger
         .debug ( "set port to " + Messages.QUOTE + port + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "Port", port ); //$NON-NLS-1$
   }
@@ -690,7 +690,7 @@ public final class PreferenceManager extends
    */
   public final void setPreferencesDialogLastActiveTab ( int index )
   {
-    LOGGER
+    logger
         .debug ( "set last active tab to " + Messages.QUOTE + index + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putInt ( "PreferencesDialog.LastActiveTab", index ); //$NON-NLS-1$
   }
@@ -703,7 +703,7 @@ public final class PreferenceManager extends
    */
   public final void setReceiveModus ( boolean enabled )
   {
-    LOGGER
+    logger
         .debug ( "set the receive modus to " + Messages.QUOTE + enabled + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putBoolean ( "ReceivedModus", enabled ); //$NON-NLS-1$
   }
@@ -739,7 +739,7 @@ public final class PreferenceManager extends
     // Set the new data
     for ( int i = 0 ; i < recentlyUsedFilesItem.getFiles ().size () ; i++ )
     {
-      LOGGER.debug ( "set recently used file " + Messages.QUOTE + i //$NON-NLS-1$
+      logger.debug ( "set recently used file " + Messages.QUOTE + i //$NON-NLS-1$
           + Messages.QUOTE
           + " to " + Messages.QUOTE //$NON-NLS-1$
           + recentlyUsedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
@@ -758,7 +758,7 @@ public final class PreferenceManager extends
    */
   public final void setTransitionItem ( TransitionItem transitionItem )
   {
-    LOGGER.debug ( "set transition item to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set transition item to " + Messages.QUOTE //$NON-NLS-1$
         + transitionItem.getIndex () + "" + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "PreferencesDialog.TransitionItem.Index", //$NON-NLS-1$
         transitionItem.getIndex () );
@@ -772,7 +772,7 @@ public final class PreferenceManager extends
    */
   public final void setVisibleConsole ( boolean visible )
   {
-    LOGGER
+    logger
         .debug ( "set the visible console to " + Messages.QUOTE + visible + "" + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
     this.preferences.putBoolean ( "MachinePanel.ConsoleVisible", //$NON-NLS-1$
         visible );
@@ -786,7 +786,7 @@ public final class PreferenceManager extends
    */
   public final void setVisibleTable ( boolean visible )
   {
-    LOGGER.debug ( "set the visible table to " + Messages.QUOTE + visible + "" //$NON-NLS-1$//$NON-NLS-2$
+    logger.debug ( "set the visible table to " + Messages.QUOTE + visible + "" //$NON-NLS-1$//$NON-NLS-2$
         + Messages.QUOTE );
     this.preferences.putBoolean ( "MachinePanel.TableVisible", //$NON-NLS-1$
         visible );
@@ -800,7 +800,7 @@ public final class PreferenceManager extends
    */
   public final void setWorkingPath ( String path )
   {
-    LOGGER.debug ( "set the working path to " + Messages.QUOTE + path + "" //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "set the working path to " + Messages.QUOTE + path + "" //$NON-NLS-1$ //$NON-NLS-2$
         + Messages.QUOTE );
     this.preferences.put ( "WorkingPath", path ); //$NON-NLS-1$
   }
@@ -813,7 +813,7 @@ public final class PreferenceManager extends
    */
   public final void setZoomFactorItem ( ZoomFactorItem zoomFactor )
   {
-    LOGGER.debug ( "set zoom factor to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set zoom factor to " + Messages.QUOTE //$NON-NLS-1$
         + zoomFactor.getFactor () + "" + Messages.QUOTE ); //$NON-NLS-1$
     this.preferences.putInt ( "ZoomFactor", zoomFactor.getFactor () ); //$NON-NLS-1$
   }

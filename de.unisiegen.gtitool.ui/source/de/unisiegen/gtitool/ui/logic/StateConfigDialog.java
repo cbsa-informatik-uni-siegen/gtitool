@@ -25,7 +25,7 @@ public final class StateConfigDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger
+  private static final Logger logger = Logger
       .getLogger ( StateConfigDialog.class );
 
 
@@ -67,7 +67,7 @@ public final class StateConfigDialog
    */
   public StateConfigDialog ( JFrame parent, State state, DefaultMachineModel model )
   {
-    LOGGER.debug ( "allocate a new new state name dialog" ); //$NON-NLS-1$
+    logger.debug ( "allocate a new new state name dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.state = state;
     this.model = model;
@@ -119,7 +119,7 @@ public final class StateConfigDialog
    */
   public final void handleCancel ()
   {
-    LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handle cancel" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
     this.stateName = null;
     this.gui.dispose ();
@@ -131,7 +131,7 @@ public final class StateConfigDialog
    */
   public final void handleOk ()
   {
-    LOGGER.debug ( "handle ok" ); //$NON-NLS-1$
+    logger.debug ( "handle ok" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
     State activeState = this.gui.styledStateParserPanel.getState ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
@@ -144,7 +144,7 @@ public final class StateConfigDialog
      */
   public final void show ()
   {
-    LOGGER.debug ( "show the new state name dialog" ); //$NON-NLS-1$
+    logger.debug ( "show the new state name dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

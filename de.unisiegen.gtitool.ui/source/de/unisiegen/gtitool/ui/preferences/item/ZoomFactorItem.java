@@ -52,7 +52,7 @@ public enum ZoomFactorItem
   /**
    * The {@link Logger} for this enum.
    */
-  private static final Logger LOGGER = Logger.getLogger ( ZoomFactorItem.class );
+  private static final Logger logger = Logger.getLogger ( ZoomFactorItem.class );
 
 
   /**
@@ -96,7 +96,7 @@ public enum ZoomFactorItem
       }
       default :
       {
-        LOGGER.error ( "zoom factor not supported" ); //$NON-NLS-1$
+        logger.error ( "zoom factor not supported" ); //$NON-NLS-1$
         return PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM;
       }
     }

@@ -24,7 +24,7 @@ public final class ColorChooserDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger
+  private static final Logger logger = Logger
       .getLogger ( ColorChooserDialog.class );
 
 
@@ -99,7 +99,7 @@ public final class ColorChooserDialog
    */
   public final void handleCancel ()
   {
-    LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handle cancel" ); //$NON-NLS-1$
     this.gui.dispose ();
   }
 
@@ -109,7 +109,7 @@ public final class ColorChooserDialog
    */
   public final void handleOk ()
   {
-    LOGGER.debug ( "handle ok" ); //$NON-NLS-1$
+    logger.debug ( "handle ok" ); //$NON-NLS-1$
     this.confirmed = true;
     this.gui.dispose ();
   }
@@ -120,7 +120,7 @@ public final class ColorChooserDialog
    */
   public final void handleReset ()
   {
-    LOGGER.debug ( "handle reset" ); //$NON-NLS-1$
+    logger.debug ( "handle reset" ); //$NON-NLS-1$
     this.gui.setColor ( this.oldColor );
   }
 

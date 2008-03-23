@@ -26,7 +26,7 @@ public final class Start
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger.getLogger ( Start.class );
+  private static final Logger logger = Logger.getLogger ( Start.class );
 
 
   /**
@@ -38,35 +38,55 @@ public final class Start
   public final static void main ( final String [] arguments )
   {
     /*
+     * Install TinyLaF, if it is not the last active look and feel. Otherwise it
+     * will be installed while set it up.
+     */
+    if ( !PreferenceManager.getInstance ().getLookAndFeelItem ()
+        .getClassName ().equals ( "de.muntjak.tinylookandfeel.TinyLookAndFeel" ) ) //$NON-NLS-1$
+    {
+      UIManager.installLookAndFeel ( "TinyLaF", //$NON-NLS-1$
+          "de.muntjak.tinylookandfeel.TinyLookAndFeel" ); //$NON-NLS-1$
+    }
+
+    /*
      * Set the last active look and feel
      */
     try
     {
+      if ( !PreferenceManager.getInstance ().getLookAndFeelItem ()
+          .getClassName ().equals (
+              "de.muntjak.tinylookandfeel.TinyLookAndFeel" ) ) //$NON-NLS-1$
+      {
+        UIManager.installLookAndFeel ( "TinyLaF", //$NON-NLS-1$
+            "de.muntjak.tinylookandfeel.TinyLookAndFeel" ); //$NON-NLS-1$
+      }
       UIManager.setLookAndFeel ( PreferenceManager.getInstance ()
           .getLookAndFeelItem ().getClassName () );
     }
     catch ( ClassNotFoundException exc )
     {
-      LOGGER.error ( "class not found exception", exc ); //$NON-NLS-1$
+      logger.error ( "class not found exception", exc ); //$NON-NLS-1$
     }
     catch ( InstantiationException exc )
     {
-      LOGGER.error ( "instantiation exception", exc ); //$NON-NLS-1$
+      logger.error ( "instantiation exception", exc ); //$NON-NLS-1$
     }
     catch ( IllegalAccessException exc )
     {
-      LOGGER.error ( "illegal access exception", exc ); //$NON-NLS-1$
+      logger.error ( "illegal access exception", exc ); //$NON-NLS-1$
     }
     catch ( UnsupportedLookAndFeelException exc )
     {
-      LOGGER.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
+      logger.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
     }
+
     /*
      * Set the last active language
      */
     PreferenceManager.getInstance ().setSystemLocale ( Locale.getDefault () );
     Locale.setDefault ( PreferenceManager.getInstance ().getLanguageItem ()
         .getLocale () );
+
     /*
      * Start the GTI Tool
      */

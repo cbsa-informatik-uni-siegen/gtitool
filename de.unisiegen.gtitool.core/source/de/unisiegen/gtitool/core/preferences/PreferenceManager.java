@@ -227,7 +227,7 @@ public class PreferenceManager
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger
+  private static final Logger logger = Logger
       .getLogger ( PreferenceManager.class );
 
 
@@ -1441,7 +1441,7 @@ public class PreferenceManager
    */
   public final void setAlphabetItem ( AlphabetItem alphabetItem )
   {
-    LOGGER.debug ( "set the alphabet to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set the alphabet to " + Messages.QUOTE //$NON-NLS-1$
         + alphabetItem.getAlphabet () + Messages.QUOTE );
 
     // Delete old data
@@ -1480,7 +1480,7 @@ public class PreferenceManager
    */
   public final void setColorItemNonterminalSymbol ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the nonterminal symbol to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the nonterminal symbol to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1497,7 +1497,7 @@ public class PreferenceManager
    */
   public final void setColorItemNonterminalSymbolGroup ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set expanded value of the nonterminal symbol group to " //$NON-NLS-1$
+    logger.debug ( "set expanded value of the nonterminal symbol group to " //$NON-NLS-1$
         + Messages.QUOTE + colorItem.isExpanded () + Messages.QUOTE );
     this.preferences.putBoolean (
         "Preferences.ColorNonterminalSymbolGroupExpanded", colorItem //$NON-NLS-1$
@@ -1512,7 +1512,7 @@ public class PreferenceManager
    */
   public final void setColorItemParserError ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the parser error to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the parser error to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1528,7 +1528,7 @@ public class PreferenceManager
    */
   public final void setColorItemParserGroup ( ColorItem colorItem )
   {
-    LOGGER
+    logger
         .debug ( "set expanded value of the parser group to " + Messages.QUOTE //$NON-NLS-1$
             + colorItem.isExpanded () + Messages.QUOTE );
     this.preferences.putBoolean ( "Preferences.ColorParserGroupExpanded", //$NON-NLS-1$
@@ -1543,7 +1543,7 @@ public class PreferenceManager
    */
   public final void setColorItemParserHighlighting ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the parser highlighting to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the parser highlighting to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1559,7 +1559,7 @@ public class PreferenceManager
    */
   public final void setColorItemParserKeyword ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the parser keyword to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the parser keyword to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1575,7 +1575,7 @@ public class PreferenceManager
    */
   public final void setColorItemParserWarning ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the parser warning to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the parser warning to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1591,7 +1591,7 @@ public class PreferenceManager
    */
   public final void setColorItemState ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1607,7 +1607,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateActive ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the avtive state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the avtive state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1623,7 +1623,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateBackground ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set background color of the state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set background color of the state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1639,7 +1639,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateError ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the error state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the error state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1655,7 +1655,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateFinal ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the final state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the final state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1671,7 +1671,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateGroup ( ColorItem colorItem )
   {
-    LOGGER
+    logger
         .debug ( "set expanded value of the state group to " + Messages.QUOTE + colorItem.isExpanded () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putBoolean (
         "Preferences.ColorStateGroupExpanded", colorItem //$NON-NLS-1$
@@ -1686,7 +1686,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateSelected ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the selected state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the selected state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1702,7 +1702,7 @@ public class PreferenceManager
    */
   public final void setColorItemStateStart ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the start state to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the start state to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1718,7 +1718,7 @@ public class PreferenceManager
    */
   public final void setColorItemSymbol ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the symbol to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the symbol to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1734,7 +1734,7 @@ public class PreferenceManager
    */
   public final void setColorItemSymbolActive ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the active symbol to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the active symbol to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1750,7 +1750,7 @@ public class PreferenceManager
    */
   public final void setColorItemSymbolError ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the error symbol to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the error symbol to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1766,7 +1766,7 @@ public class PreferenceManager
    */
   public final void setColorItemSymbolGroup ( ColorItem colorItem )
   {
-    LOGGER
+    logger
         .debug ( "set expanded value of the symbol group to " + Messages.QUOTE //$NON-NLS-1$
             + colorItem.isExpanded () + Messages.QUOTE );
     this.preferences.putBoolean ( "Preferences.ColorSymbolGroupExpanded", //$NON-NLS-1$
@@ -1781,7 +1781,7 @@ public class PreferenceManager
    */
   public final void setColorItemTerminalSymbol ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the terminal symbol to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the terminal symbol to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1797,7 +1797,7 @@ public class PreferenceManager
    */
   public final void setColorItemTerminalSymbolGroup ( ColorItem colorItem )
   {
-    LOGGER
+    logger
         .debug ( "set expanded value of the terminal symbol group to " + Messages.QUOTE //$NON-NLS-1$
             + colorItem.isExpanded () + Messages.QUOTE );
     this.preferences.putBoolean (
@@ -1813,7 +1813,7 @@ public class PreferenceManager
    */
   public final void setColorItemTransition ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the transition to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the transition to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1829,7 +1829,7 @@ public class PreferenceManager
    */
   public final void setColorItemTransitionActive ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the active transition to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the active transition to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1845,7 +1845,7 @@ public class PreferenceManager
    */
   public final void setColorItemTransitionError ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the error transition to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the error transition to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1861,7 +1861,7 @@ public class PreferenceManager
    */
   public final void setColorItemTransitionGroup ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set expanded value of the transition group to " //$NON-NLS-1$
+    logger.debug ( "set expanded value of the transition group to " //$NON-NLS-1$
         + Messages.QUOTE + colorItem.isExpanded () + Messages.QUOTE );
     this.preferences.putBoolean (
         "Preferences.ColorTransitionGroupExpanded", colorItem //$NON-NLS-1$
@@ -1876,7 +1876,7 @@ public class PreferenceManager
    */
   public final void setColorItemTransitionSelected ( ColorItem colorItem )
   {
-    LOGGER.debug ( "set color of the selected transition to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set color of the selected transition to " + Messages.QUOTE //$NON-NLS-1$
         + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
@@ -1892,7 +1892,7 @@ public class PreferenceManager
    */
   public final void setLanguageItem ( LanguageItem languageItem )
   {
-    LOGGER.debug ( "set language to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set language to " + Messages.QUOTE //$NON-NLS-1$
         + languageItem.getLocale ().getLanguage () + Messages.QUOTE );
     this.preferences.put ( "PreferencesDialog.Language.Title", languageItem //$NON-NLS-1$
         .getTitle () );
@@ -1909,7 +1909,7 @@ public class PreferenceManager
   public final void setNonterminalSymbolSetItem (
       NonterminalSymbolSetItem nonterminalSymbolSetItem )
   {
-    LOGGER.debug ( "set the nonterminal symbol set to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set the nonterminal symbol set to " + Messages.QUOTE //$NON-NLS-1$
         + nonterminalSymbolSetItem.getNonterminalSymbolSet ()
         + "" + Messages.QUOTE ); //$NON-NLS-1$
 
@@ -1950,7 +1950,7 @@ public class PreferenceManager
    */
   public final void setPushDownAlphabetItem ( AlphabetItem pushDownAlphabetItem )
   {
-    LOGGER.debug ( "set the push down alphabet to " + Messages.QUOTE //$NON-NLS-1$
+    logger.debug ( "set the push down alphabet to " + Messages.QUOTE //$NON-NLS-1$
         + pushDownAlphabetItem.getAlphabet () + Messages.QUOTE );
 
     // Delete old data
@@ -1999,7 +1999,7 @@ public class PreferenceManager
   public final void setTerminalSymbolSetItem (
       TerminalSymbolSetItem terminalSymbolSetItem )
   {
-    LOGGER.debug ( "set the terminal symbol set to " + Messages.QUOTE + //$NON-NLS-1$
+    logger.debug ( "set the terminal symbol set to " + Messages.QUOTE + //$NON-NLS-1$
         terminalSymbolSetItem.getTerminalSymbolSet () + Messages.QUOTE );
 
     // Delete old data

@@ -60,7 +60,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger.getLogger ( MainWindow.class );
+  private static final Logger logger = Logger.getLogger ( MainWindow.class );
 
 
   /**
@@ -1881,7 +1881,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setSaveState ( boolean state )
   {
-    LOGGER.debug ( "set save status to " + Messages.QUOTE + state //$NON-NLS-1$
+    logger.debug ( "set save status to " + Messages.QUOTE + state //$NON-NLS-1$
         + Messages.QUOTE );
 
     EditorPanel panel = this.gui.editorPanelTabbedPane

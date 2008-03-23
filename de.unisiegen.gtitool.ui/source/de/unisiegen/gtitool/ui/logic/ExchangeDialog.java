@@ -37,7 +37,7 @@ public final class ExchangeDialog
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger LOGGER = Logger.getLogger ( ExchangeDialog.class );
+  private static final Logger logger = Logger.getLogger ( ExchangeDialog.class );
 
 
   /**
@@ -79,7 +79,7 @@ public final class ExchangeDialog
    */
   public ExchangeDialog ( MainWindow mainWindow, Element element, File file )
   {
-    LOGGER.debug ( "allocate a new exchange dialog" ); //$NON-NLS-1$
+    logger.debug ( "allocate a new exchange dialog" ); //$NON-NLS-1$
     this.mainWindow = mainWindow;
 
     this.element = element;
@@ -157,7 +157,7 @@ public final class ExchangeDialog
    */
   public final void handleCancel ()
   {
-    LOGGER.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handle cancel" ); //$NON-NLS-1$
     if ( this.networkServer != null )
     {
       this.networkServer.close ();
@@ -181,7 +181,7 @@ public final class ExchangeDialog
    */
   public final void handleClose ()
   {
-    LOGGER.debug ( "handle close" ); //$NON-NLS-1$
+    logger.debug ( "handle close" ); //$NON-NLS-1$
     this.gui.setVisible ( false );
 
     if ( this.networkServer != null )
@@ -438,7 +438,7 @@ public final class ExchangeDialog
    */
   public final void show ()
   {
-    LOGGER.debug ( "show the exchange dialog" ); //$NON-NLS-1$
+    logger.debug ( "show the exchange dialog" ); //$NON-NLS-1$
     int x = this.mainWindow.getGui ().getBounds ().x
         + ( this.mainWindow.getGui ().getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );

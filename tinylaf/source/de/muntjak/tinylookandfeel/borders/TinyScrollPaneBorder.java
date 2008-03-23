@@ -1,14 +1,12 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*	Tiny Look and Feel                                                         *
-*                                                                              *
-*  (C) Copyright 2003 - 2007 Hans Bickel                                       *
-*                                                                              *
-*   For licensing information and credits, please refer to the                 *
-*   comment in file de.muntjak.tinylookandfeel.TinyLookAndFeel                 *
-*                                                                              *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*******************************************************************************
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Tiny Look and Feel * * (C) Copyright 2003 - 2007 Hans Bickel * * For
+ * licensing information and credits, please refer to the * comment in file
+ * de.muntjak.tinylookandfeel.TinyLookAndFeel * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
 
 package de.muntjak.tinylookandfeel.borders;
+
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -19,25 +17,34 @@ import javax.swing.plaf.UIResource;
 
 import de.muntjak.tinylookandfeel.Theme;
 
+
 /**
  * TinyScrollPaneBorder
  * 
  * @version 1.0
  * @author Hans Bickel
  */
-public class TinyScrollPaneBorder extends AbstractBorder implements UIResource {
+@SuppressWarnings (
+{ "all" } )
+public class TinyScrollPaneBorder extends AbstractBorder implements UIResource
+{
 
-	private static final Insets defaultInsets = new Insets(1, 1, 1, 1);   
+  private static final Insets defaultInsets = new Insets ( 1, 1, 1, 1 );
 
-	public Insets getBorderInsets(Component c) {
-		return defaultInsets;
-	}
 
-	/**
-	 * @see javax.swing.border.Border#paintBorder(Component, Graphics, int, int, int, int)
-	 */
-	public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-        g.setColor(Theme.scrollPaneBorderColor[Theme.style].getColor());
-        g.drawRect(x, y, w - 1, h - 1);
-	}
+  public Insets getBorderInsets ( Component c )
+  {
+    return defaultInsets;
+  }
+
+
+  /**
+   * @see javax.swing.border.Border#paintBorder(Component, Graphics, int, int,
+   *      int, int)
+   */
+  public void paintBorder ( Component c, Graphics g, int x, int y, int w, int h )
+  {
+    g.setColor ( Theme.scrollPaneBorderColor [ Theme.style ].getColor () );
+    g.drawRect ( x, y, w - 1, h - 1 );
+  }
 }

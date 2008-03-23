@@ -8,7 +8,7 @@ import javax.swing.JDialog;
  * Special {@link JDialog}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTIDialog extends JDialog
 {

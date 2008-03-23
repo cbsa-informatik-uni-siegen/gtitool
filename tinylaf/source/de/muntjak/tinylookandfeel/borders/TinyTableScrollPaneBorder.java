@@ -1,21 +1,22 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*	Tiny Look and Feel                                                         *
-*                                                                              *
-*  (C) Copyright 2003 - 2007 Hans Bickel                                       *
-*                                                                              *
-*   For licensing information and credits, please refer to the                 *
-*   comment in file de.muntjak.tinylookandfeel.TinyLookAndFeel                 *
-*                                                                              *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*******************************************************************************
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Tiny Look and Feel * * (C) Copyright 2003 - 2007 Hans Bickel * * For
+ * licensing information and credits, please refer to the * comment in file
+ * de.muntjak.tinylookandfeel.TinyLookAndFeel * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
 
 package de.muntjak.tinylookandfeel.borders;
 
-import java.awt.*;
+
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
-import de.muntjak.tinylookandfeel.*;
-import de.muntjak.tinylookandfeel.controlpanel.*;
+import de.muntjak.tinylookandfeel.Theme;
+
 
 /**
  * TinyTableScrollPaneBorder
@@ -23,21 +24,29 @@ import de.muntjak.tinylookandfeel.controlpanel.*;
  * @version 1.0
  * @author Hans Bickel
  */
-public class TinyTableScrollPaneBorder extends AbstractBorder implements UIResource {
-	
-	private static final Insets insets = new Insets(1, 1, 1, 1);
+@SuppressWarnings (
+{ "all" } )
+public class TinyTableScrollPaneBorder extends AbstractBorder implements
+    UIResource
+{
 
-	public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-		g.setColor(Theme.tableBorderLightColor[Theme.style].getColor());
-		g.drawLine(x + w - 1, y, x + w - 1, y + h - 1);		// right
-		g.drawLine(x, y + h - 1, x + w - 1, y + h - 1);		// bottom
-		
-		g.setColor(Theme.tableBorderDarkColor[Theme.style].getColor());			
-		g.drawLine(x, y, x, y + h - 1);		// left
-		g.drawLine(x, y, x + w - 1, y);		// top
-	}
-	
-	public Insets getBorderInsets(Component c)       {
-        return insets;
-    }
+  private static final Insets insets = new Insets ( 1, 1, 1, 1 );
+
+
+  public void paintBorder ( Component c, Graphics g, int x, int y, int w, int h )
+  {
+    g.setColor ( Theme.tableBorderLightColor [ Theme.style ].getColor () );
+    g.drawLine ( x + w - 1, y, x + w - 1, y + h - 1 ); // right
+    g.drawLine ( x, y + h - 1, x + w - 1, y + h - 1 ); // bottom
+
+    g.setColor ( Theme.tableBorderDarkColor [ Theme.style ].getColor () );
+    g.drawLine ( x, y, x, y + h - 1 ); // left
+    g.drawLine ( x, y, x + w - 1, y ); // top
+  }
+
+
+  public Insets getBorderInsets ( Component c )
+  {
+    return insets;
+  }
 }

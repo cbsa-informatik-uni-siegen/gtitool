@@ -8,7 +8,7 @@ import javax.swing.JTree;
  * Special {@link JTree}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTITree extends JTree
 {

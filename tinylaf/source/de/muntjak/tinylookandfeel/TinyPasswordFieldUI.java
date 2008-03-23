@@ -1,19 +1,16 @@
 /*
- * Created on 12.05.2004
- *
- * To change the template for this generated file go to
+ * Created on 12.05.2004 To change the template for this generated file go to
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 package de.muntjak.tinylookandfeel;
 
+
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPasswordFieldUI;
 
-import de.muntjak.tinylookandfeel.controlpanel.*;
 
 /**
  * TinyPasswordFieldUI
@@ -21,27 +18,38 @@ import de.muntjak.tinylookandfeel.controlpanel.*;
  * @version 1.0
  * @author Hans Bickel
  */
-public class TinyPasswordFieldUI extends BasicPasswordFieldUI {
-	
-	JComponent editor;
+@SuppressWarnings (
+{ "all" } )
+public class TinyPasswordFieldUI extends BasicPasswordFieldUI
+{
 
-	public static ComponentUI createUI(JComponent c) {
-        return new TinyPasswordFieldUI();
+  JComponent editor;
+
+
+  public static ComponentUI createUI ( JComponent c )
+  {
+    return new TinyPasswordFieldUI ();
+  }
+
+
+  public void installUI ( JComponent c )
+  {
+    super.installUI ( c );
+    editor = c;
+  }
+
+
+  protected void paintBackground ( Graphics g )
+  {
+    if ( editor.isEnabled () )
+    {
+      g.setColor ( editor.getBackground () );
     }
-    
-    public void installUI(JComponent c) {
-        super.installUI(c);
-        editor = c;
+    else
+    {
+      g.setColor ( Theme.textDisabledBgColor [ Theme.style ].getColor () );
     }
-    
-    protected void paintBackground(Graphics g) {
-    	if(editor.isEnabled()) {
-    		g.setColor(editor.getBackground());
-    	}
-    	else {
-    		g.setColor(Theme.textDisabledBgColor[Theme.style].getColor());
-    	}
-        
-        g.fillRect(0, 0, editor.getWidth(), editor.getHeight());
-    }
+
+    g.fillRect ( 0, 0, editor.getWidth (), editor.getHeight () );
+  }
 }

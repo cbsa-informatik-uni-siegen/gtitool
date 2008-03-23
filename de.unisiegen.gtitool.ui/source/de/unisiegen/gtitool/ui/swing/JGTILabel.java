@@ -8,7 +8,7 @@ import javax.swing.JLabel;
  * Special {@link JLabel}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTILabel extends JLabel
 {

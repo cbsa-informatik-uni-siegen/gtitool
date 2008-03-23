@@ -9,7 +9,7 @@ import de.unisiegen.gtitool.ui.logic.TerminalDialog;
  * The alphabet edit dialog.
  * 
  * @author Christian Fehler
- * @version $Id: AlphabetDialogForm.java 576 2008-02-17 23:21:44Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class TerminalDialogForm extends javax.swing.JDialog {

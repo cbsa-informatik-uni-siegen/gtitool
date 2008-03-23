@@ -8,7 +8,7 @@ import javax.swing.JSplitPane;
  * Special {@link JSplitPane}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTISplitPane extends JSplitPane
 {

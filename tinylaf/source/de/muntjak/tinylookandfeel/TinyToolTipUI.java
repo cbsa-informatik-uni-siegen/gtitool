@@ -1,22 +1,17 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-*	Tiny Look and Feel                                                         *
-*                                                                              *
-*  (C) Copyright 2003 - 2007 Hans Bickel                                       *
-*                                                                              *
-*   For licensing information and credits, please refer to the                 *
-*   comment in file de.muntjak.tinylookandfeel.TinyLookAndFeel                 *
-*                                                                              *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*******************************************************************************
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Tiny Look and Feel * * (C) Copyright 2003 - 2007 Hans Bickel * * For
+ * licensing information and credits, please refer to the * comment in file
+ * de.muntjak.tinylookandfeel.TinyLookAndFeel * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
 
 package de.muntjak.tinylookandfeel;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.metal.*;
 
-import de.muntjak.tinylookandfeel.controlpanel.*;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.metal.MetalToolTipUI;
+
 
 /**
  * TinyToolTipUI
@@ -24,16 +19,22 @@ import de.muntjak.tinylookandfeel.controlpanel.*;
  * @version 1.0
  * @author Hans Bickel
  */
-public class TinyToolTipUI extends MetalToolTipUI {
+@SuppressWarnings (
+{ "all" } )
+public class TinyToolTipUI extends MetalToolTipUI
+{
 
-	protected static TinyToolTipUI sharedInstance = new TinyToolTipUI();
+  protected static TinyToolTipUI sharedInstance = new TinyToolTipUI ();
 
 
-	public static ComponentUI createUI(JComponent list) {
-		return sharedInstance;
-	}
-	
-	protected void installDefaults(JComponent c) {
-		super.installDefaults(c);
-	}
+  public static ComponentUI createUI ( JComponent list )
+  {
+    return sharedInstance;
+  }
+
+
+  protected void installDefaults ( JComponent c )
+  {
+    super.installDefaults ( c );
+  }
 }

@@ -8,7 +8,7 @@ import javax.swing.JRadioButton;
  * Special {@link JRadioButton}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITextArea.java 646 2008-03-16 20:58:46Z fehler $
+ * @version $Id$
  */
 public final class JGTIRadioButton extends JRadioButton
 {

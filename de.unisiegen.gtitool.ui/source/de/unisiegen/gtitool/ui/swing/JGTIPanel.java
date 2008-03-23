@@ -8,7 +8,7 @@ import javax.swing.JPanel;
  * Special {@link JPanel}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTIPanel extends JPanel
 {

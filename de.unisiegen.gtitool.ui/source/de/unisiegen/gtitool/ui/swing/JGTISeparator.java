@@ -8,7 +8,7 @@ import javax.swing.JSeparator;
  * Special {@link JSeparator}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITable.java 588 2008-02-28 23:42:48Z fehler $
+ * @version $Id$
  */
 public class JGTISeparator extends JSeparator
 {

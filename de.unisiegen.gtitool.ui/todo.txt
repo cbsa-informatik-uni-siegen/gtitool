@@ -12,6 +12,7 @@ BM		- Das Icon der "Production properties" muss ersetzt werden, da dieses
 		  Tooltip ist falsch geschrieben, "properties" schreibt man klein.
 BM		- Zwischen den ToolBars "Redo/Undo" und "Grammar" sollte ein Separator
 		  sein, da dies bei der Machine ToolBar auch der Fall ist.
+BM		- TinyLaF Projekt auschecken (UI ist abhängig davon)
 
 		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
 		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,

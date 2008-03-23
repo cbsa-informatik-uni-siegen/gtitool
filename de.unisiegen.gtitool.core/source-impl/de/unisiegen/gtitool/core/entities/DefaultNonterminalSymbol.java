@@ -150,11 +150,10 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( Symbol other )
+  public final int compareTo ( NonterminalSymbol other )
   {
     return this.name.compareTo ( other.getName () );
   }
-  
 
 
   /**

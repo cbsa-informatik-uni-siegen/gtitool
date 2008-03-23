@@ -1,5 +1,6 @@
 package de.unisiegen.gtitool.ui.logic.renderer;
 
+
 import java.awt.Component;
 
 import javax.swing.JTable;
@@ -8,7 +9,6 @@ import javax.swing.table.TableCellRenderer;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.ui.style.ProductionComponent;
-
 
 
 /**
@@ -27,25 +27,33 @@ public final class ProductionCellRenderer extends DefaultTableCellRenderer
 
 
   /**
+   * Allocates a new {@link ProductionCellRenderer}.
+   */
+  public ProductionCellRenderer ()
+  {
+    // Do nothing
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
-   * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable,
-   *      java.lang.Object, boolean, boolean, int, int)
+   * @see TableCellRenderer#getTableCellRendererComponent(JTable, Object,
+   *      boolean, boolean, int, int)
    */
-  @Override 
+  @Override
   public Component getTableCellRendererComponent ( JTable table,
-      @SuppressWarnings("unused")
-      Object value, boolean isSelected, @SuppressWarnings("unused")
-      boolean hasFocus, int row, @SuppressWarnings("unused")
+      @SuppressWarnings ( "unused" )
+      Object value, boolean isSelected, @SuppressWarnings ( "unused" )
+      boolean hasFocus, int row, @SuppressWarnings ( "unused" )
       int column )
   {
     Production production = ( Production ) table.getValueAt ( row, 0 );
-
     ProductionComponent component = new ProductionComponent ( production );
-
     if ( isSelected )
+    {
       component.setBackground ( table.getSelectionBackground () );
-
-    return component; 
+    }
+    return component;
   }
 }

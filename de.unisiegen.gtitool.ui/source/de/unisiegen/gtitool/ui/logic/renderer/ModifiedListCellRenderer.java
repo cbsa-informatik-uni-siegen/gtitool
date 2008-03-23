@@ -25,6 +25,15 @@ public class ModifiedListCellRenderer extends DefaultListCellRenderer
 
 
   /**
+   * Allocates a new {@link ModifiedListCellRenderer}.
+   */
+  public ModifiedListCellRenderer ()
+  {
+    // Do nothing
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see DefaultListCellRenderer#getListCellRendererComponent( JList, Object,

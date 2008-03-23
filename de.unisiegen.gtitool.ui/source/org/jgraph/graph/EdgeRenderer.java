@@ -54,6 +54,12 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
     Serializable
 {
 
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 2647861638638213248L;
+
+
   /** Static Graphics used for Font Metrics */
   protected static transient Graphics fontGraphics;
 

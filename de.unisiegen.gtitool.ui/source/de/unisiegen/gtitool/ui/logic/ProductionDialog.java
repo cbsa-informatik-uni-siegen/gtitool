@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
-import de.unisiegen.gtitool.ui.logic.renderer.SymbolListCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.NonterminalSymbolListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 
@@ -209,7 +209,6 @@ public final class ProductionDialog
     this.gui = new ProductionDialogForm ( this, this.parent );
     this.model = model;
     this.oldProduction = production;
-    
 
     this.gui.styledNonterminalSymbolSetParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
@@ -225,7 +224,7 @@ public final class ProductionDialog
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
     this.gui.styledProductionParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
-    
+
     for ( NonterminalSymbol current : nonterminalSymbolSet )
     {
       this.listModel.add ( current );
@@ -272,9 +271,10 @@ public final class ProductionDialog
     }
     this.gui.jGTIButtonOk.setEnabled ( this.oldProduction != null );
 
-   this.gui.styledProductionWordParserPanel.parse ();
-    
-    ProductionWord productionWord = this.gui.styledProductionWordParserPanel.getProductionWord ();
+    this.gui.styledProductionWordParserPanel.parse ();
+
+    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
+        .getProductionWord ();
     if ( productionWord == null )
     {
       setButtonStatus ( false );
@@ -286,11 +286,12 @@ public final class ProductionDialog
       setButtonStatus ( true );
       getGui ().styledProductionParserPanel
           .setProduction ( new DefaultProduction (
-              ( NonterminalSymbol ) getGui ().jGTIList
-                  .getSelectedValue (), productionWord ) );
+              ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+              productionWord ) );
     }
-    
-    this.gui.jGTIList.setCellRenderer ( new SymbolListCellRenderer() );
+
+    this.gui.jGTIList
+        .setCellRenderer ( new NonterminalSymbolListCellRenderer () );
   }
 
 
@@ -326,7 +327,8 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
-      this.oldProduction.setNonterminalSymbol ( production.getNonterminalSymbol () );
+      this.oldProduction.setNonterminalSymbol ( production
+          .getNonterminalSymbol () );
       this.oldProduction.setProductionWord ( production.getProductionWord () );
     }
     else

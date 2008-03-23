@@ -6,28 +6,28 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
-import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 
 
 /**
- * The {@link Symbol} list cell renderer.
+ * The {@link TerminalSymbol} list cell renderer.
  * 
- * @author Benjamin Mies
+ * @author Christian Fehler
  */
-public class SymbolListCellRenderer extends DefaultListCellRenderer
+public class TerminalSymbolListCellRenderer extends DefaultListCellRenderer
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 2885770452108333745L;
+  private static final long serialVersionUID = -3440337249454342945L;
 
 
   /**
-   * Allocates a new {@link SymbolListCellRenderer}.
+   * Allocates a new {@link TerminalSymbolListCellRenderer}.
    */
-  public SymbolListCellRenderer ()
+  public TerminalSymbolListCellRenderer ()
   {
     // Do nothing
   }
@@ -47,7 +47,7 @@ public class SymbolListCellRenderer extends DefaultListCellRenderer
     Component component = super.getListCellRendererComponent ( list, value,
         index, isSelected, isSelected );
     component.setForeground ( PreferenceManager.getInstance ()
-        .getColorItemSymbol ().getColor () );
+        .getColorItemTerminalSymbol ().getColor () );
     return component;
   }
 }

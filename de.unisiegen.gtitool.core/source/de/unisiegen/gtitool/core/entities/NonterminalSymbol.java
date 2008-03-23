@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @version $Id$
  */
 public interface NonterminalSymbol extends Entity, ProductionWordMember,
-    Storable, Symbol// Comparable < NonterminalSymbol >
+    Storable, Comparable < NonterminalSymbol >
 {
 
   /**
@@ -22,12 +22,12 @@ public interface NonterminalSymbol extends Entity, ProductionWordMember,
   public NonterminalSymbol clone ();
 
 
-//  /**
-//   * {@inheritDoc}
-//   * 
-//   * @see Comparable#compareTo(Object)
-//   */
-//  public int compareTo ( NonterminalSymbol other );
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public int compareTo ( NonterminalSymbol other );
 
 
   /**

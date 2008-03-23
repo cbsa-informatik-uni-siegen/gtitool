@@ -39,7 +39,7 @@
 		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${docdir}/license.txt" />
 		<!-- jar file -->
-		<jar jarfile="${distdir}/TinyLaF.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/tinylaf-gtitool.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
 				<include name="**/*.gif" />

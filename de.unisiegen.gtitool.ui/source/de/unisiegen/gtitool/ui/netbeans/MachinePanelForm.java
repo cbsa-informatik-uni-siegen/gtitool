@@ -1,6 +1,5 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
@@ -13,6 +12,11 @@ import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 @SuppressWarnings({ "all" })
 public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelForm{
     
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -6408224101983628704L;
+
     /** Creates new form MachinesPanelForm */
     public MachinePanelForm() {
         initComponents();

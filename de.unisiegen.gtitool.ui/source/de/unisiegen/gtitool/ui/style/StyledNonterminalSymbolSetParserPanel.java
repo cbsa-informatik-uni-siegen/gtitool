@@ -3,8 +3,6 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
-import javax.swing.border.LineBorder;
-
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
@@ -113,8 +111,7 @@ public final class StyledNonterminalSymbolSetParserPanel extends
       if ( exceptionList.size () > 0 )
       {
         checkedNonterminalSymbolSet = null;
-        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-        getDocument ().setException ( exceptionList );
+        setException ( exceptionList );
       }
     }
     return checkedNonterminalSymbolSet;

@@ -25,6 +25,7 @@ import javax.swing.text.BadLocationException;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -52,9 +53,9 @@ public abstract class StyledParserPanel extends JPanel
   {
 
     /**
-     * The history list.
+     * Flag that indicates if the neex object should be added.
      */
-    private ArrayList < Object > list;
+    private boolean addNextObject;
 
 
     /**
@@ -64,9 +65,9 @@ public abstract class StyledParserPanel extends JPanel
 
 
     /**
-     * Flag that indicates if the neex object should be added.
+     * The history list.
      */
-    private boolean addNextObject;
+    private ArrayList < Object > list;
 
 
     /**
@@ -161,51 +162,15 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * The normal {@link Color}.
-   */
-  protected static final Color NORMAL_COLOR = Color.BLACK;
-
-
-  /**
    * The error {@link Color}.
    */
-  protected static final Color ERROR_COLOR = Color.RED;
+  private static final Color ERROR_COLOR = Color.RED;
 
 
   /**
-   * The {@link StyledParserEditor}.
+   * The normal {@link Color}.
    */
-  private StyledParserEditor editor;
-
-
-  /**
-   * The {@link StyledParserDocument}.
-   */
-  private StyledParserDocument document;
-
-
-  /**
-   * The {@link JScrollPane}.
-   */
-  protected JScrollPane jScrollPane;
-
-
-  /**
-   * The {@link SideBar}.
-   */
-  private SideBar sideBar;
-
-
-  /**
-   * Flag that indicates if the panel is editable.
-   */
-  private boolean editable;
-
-
-  /**
-   * Flag that indicates if the {@link SideBar} is visible.
-   */
-  private boolean sideBarVisible;
+  private static final Color NORMAL_COLOR = Color.BLACK;
 
 
   /**
@@ -215,39 +180,21 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * The {@link JPopupMenu}.
+   * The {@link StyledParserDocument}.
    */
-  private JPopupMenu jPopupMenu;
+  private StyledParserDocument document;
 
 
   /**
-   * The undo {@link JMenuItem}.
+   * Flag that indicates if the panel is editable.
    */
-  private JMenuItem jMenuItemUndo;
+  private boolean editable;
 
 
   /**
-   * The redo {@link JMenuItem}.
+   * The {@link StyledParserEditor}.
    */
-  private JMenuItem jMenuItemRedo;
-
-
-  /**
-   * The cut {@link JMenuItem}.
-   */
-  private JMenuItem jMenuItemCut;
-
-
-  /**
-   * The copy {@link JMenuItem}.
-   */
-  private JMenuItem jMenuItemCopy;
-
-
-  /**
-   * The paste {@link JMenuItem}.
-   */
-  private JMenuItem jMenuItemPaste;
+  private StyledParserEditor editor;
 
 
   /**
@@ -257,9 +204,45 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * The synchronized {@link StyledParserPanel}.
+   * The copy {@link JMenuItem}.
    */
-  private StyledParserPanel synchronizedStyledParserPanel = null;
+  private JMenuItem jMenuItemCopy;
+
+
+  /**
+   * The cut {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemCut;
+
+
+  /**
+   * The paste {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemPaste;
+
+
+  /**
+   * The redo {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemRedo;
+
+
+  /**
+   * The undo {@link JMenuItem}.
+   */
+  private JMenuItem jMenuItemUndo;
+
+
+  /**
+   * The {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenu;
+
+
+  /**
+   * The {@link JScrollPane}.
+   */
+  protected JScrollPane jScrollPane;
 
 
   /**
@@ -273,6 +256,24 @@ public abstract class StyledParserPanel extends JPanel
    * The {@link ParseableChangedListener} for this {@link StyledParserPanel}.
    */
   private ParseableChangedListener parseableChangedListenerThis;
+
+
+  /**
+   * The {@link SideBar}.
+   */
+  private SideBar sideBar;
+
+
+  /**
+   * Flag that indicates if the {@link SideBar} is visible.
+   */
+  private boolean sideBarVisible;
+
+
+  /**
+   * The synchronized {@link StyledParserPanel}.
+   */
+  private StyledParserPanel synchronizedStyledParserPanel = null;
 
 
   /**
@@ -591,6 +592,18 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Adds the given style.
+   * 
+   * @param token The token.
+   * @param style The {@link Style}.
+   */
+  protected final void addOverwrittenStyle ( String token, Style style )
+  {
+    this.document.addOverwrittenStyle ( token, style );
+  }
+
+
+  /**
    * Adds the given {@link ParseableChangedListener}.
    * 
    * @param listener The {@link ParseableChangedListener}.
@@ -603,20 +616,23 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Clears the extern {@link ScannerException}s.
+   */
+  public final void clearException ()
+  {
+    this.document.clearException ();
+    setErrorIndicator ( false );
+  }
+
+
+  /**
    * Let the listeners know that the {@link Object} has changed.
    * 
    * @param newObject The new {@link Object}.
    */
   private final void fireParseableChanged ( Object newObject )
   {
-    if ( newObject == null )
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-    }
-    else
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
-    }
+    setErrorIndicator ( newObject == null );
 
     // History
     if ( newObject != null )
@@ -630,18 +646,6 @@ public abstract class StyledParserPanel extends JPanel
     {
       listeners [ n ].parseableChanged ( newObject );
     }
-  }
-
-
-  /**
-   * Returns the document.
-   * 
-   * @return The document.
-   * @see #document
-   */
-  protected final StyledParserDocument getDocument ()
-  {
-    return this.document;
   }
 
 
@@ -759,14 +763,7 @@ public abstract class StyledParserPanel extends JPanel
   protected Object parse ()
   {
     Object newObject = this.document.parse ();
-    if ( newObject == null )
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-    }
-    else
-    {
-      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
-    }
+    setErrorIndicator ( newObject == null );
     return newObject;
   }
 
@@ -882,24 +879,32 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Sets the exceptions.
+   * Sets the error indicator of this {@link StyledParserPanel}.
    * 
-   * @param exceptions The exceptions to set.
+   * @param error Flag that indicates if there is an error.
    */
-  public final void setException ( Iterable < ScannerException > exceptions )
+  protected final void setErrorIndicator ( boolean error )
   {
-    this.document.setException ( exceptions );
+    if ( ( getParsedObject () == null ) || error )
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
+    }
+    else
+    {
+      this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
+    }
   }
 
 
   /**
-   * Sets the exception.
+   * Sets the extern {@link ScannerException}s.
    * 
-   * @param exception The exception to set.
+   * @param exceptions The {@link ScannerException}s to set.
    */
-  public final void setException ( ScannerException exception )
+  public final void setException ( Iterable < ScannerException > exceptions )
   {
-    this.document.setException ( exception );
+    this.document.setException ( exceptions );
+    setErrorIndicator ( true );
   }
 
 

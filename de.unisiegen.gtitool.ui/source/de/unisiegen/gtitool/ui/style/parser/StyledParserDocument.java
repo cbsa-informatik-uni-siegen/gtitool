@@ -58,9 +58,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * The current exceptions from the scanner and parser.
    * 
-   * @see #getExceptionList()
+   * @see #getException()
    */
   private ArrayList < ScannerException > exceptionList;
+
+
+  /**
+   * The extern exceptions.
+   * 
+   * @see #getException()
+   */
+  private ArrayList < ScannerException > externExceptionList;
 
 
   /**
@@ -110,6 +118,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
     }
     this.parseable = parseable;
     this.highlightedParseableEntityList = new ArrayList < Entity > ();
+
+    this.externExceptionList = new ArrayList < ScannerException > ();
 
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
     StyleConstants.setBold ( this.normalSet, false );
@@ -167,6 +177,18 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ParseableChangedListener listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
+  }
+
+
+  /**
+   * Clears the extern {@link ScannerException}s.
+   * 
+   * @see #externExceptionList
+   */
+  public final void clearException ()
+  {
+    this.externExceptionList.clear ();
+    fireExceptionsChanged ();
   }
 
 
@@ -256,13 +278,17 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
   /**
    * Returns the current {@link ScannerException}s that were detected while
-   * trying to interpret the token stream.
+   * trying to interpret the token stream and the {@link ScannerException}s
+   * which were set from extern.
    * 
-   * @return The exceptions.
+   * @return The {@link ScannerException}s.
    */
-  public final ArrayList < ScannerException > getExceptionList ()
+  public final ArrayList < ScannerException > getException ()
   {
-    return this.exceptionList;
+    ArrayList < ScannerException > result = new ArrayList < ScannerException > ();
+    result.addAll ( this.exceptionList );
+    result.addAll ( this.externExceptionList );
+    return result;
   }
 
 
@@ -285,7 +311,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   {
     ArrayList < ScannerException > tmpList = this.exceptionList;
     parse ();
-    setException ( tmpList );
+    this.exceptionList = tmpList;
     for ( Entity current : this.highlightedParseableEntityList )
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
@@ -565,49 +591,34 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
 
   /**
-   * Sets the exceptions.
+   * Sets the extern {@link ScannerException}s.
    * 
-   * @param exceptions The exceptions to set.
+   * @param exceptions The {@link ScannerException}s to set.
+   * @see #externExceptionList
    */
   public final void setException ( Iterable < ScannerException > exceptions )
   {
-    if ( !exceptions.equals ( this.exceptionList ) )
+    this.externExceptionList.clear ();
+    Iterator < ScannerException > iterator = exceptions.iterator ();
+    while ( iterator.hasNext () )
     {
-      this.exceptionList.clear ();
-      Iterator < ScannerException > iterator = exceptions.iterator ();
-      while ( iterator.hasNext () )
-      {
-        this.exceptionList.add ( iterator.next () );
-      }
-      for ( ScannerException current : this.exceptionList )
-      {
-        SimpleAttributeSet errorSet = getAttributeSetError ();
-        errorSet.addAttribute ( "exception", current ); //$NON-NLS-1$
-        if ( ( current.getLeft () < 0 ) && ( current.getRight () < 0 ) )
-        {
-          setCharacterAttributes ( getLength (), getLength (), errorSet, false );
-        }
-        else
-        {
-          setCharacterAttributes ( current.getLeft (), current.getRight ()
-              - current.getLeft (), errorSet, false );
-        }
-      }
-      fireExceptionsChanged ();
+      this.externExceptionList.add ( iterator.next () );
     }
-  }
-
-
-  /**
-   * Sets the exception.
-   * 
-   * @param exception The exception to set.
-   */
-  public final void setException ( ScannerException exception )
-  {
-    ArrayList < ScannerException > exceptions = new ArrayList < ScannerException > ();
-    exceptions.add ( exception );
-    setException ( exceptions );
+    for ( ScannerException current : this.externExceptionList )
+    {
+      SimpleAttributeSet errorSet = getAttributeSetError ();
+      errorSet.addAttribute ( "exception", current ); //$NON-NLS-1$
+      if ( ( current.getLeft () < 0 ) && ( current.getRight () < 0 ) )
+      {
+        setCharacterAttributes ( getLength (), getLength (), errorSet, false );
+      }
+      else
+      {
+        setCharacterAttributes ( current.getLeft (), current.getRight ()
+            - current.getLeft (), errorSet, false );
+      }
+    }
+    fireExceptionsChanged ();
   }
 
 

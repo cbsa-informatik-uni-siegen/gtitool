@@ -9,31 +9,33 @@ import javax.swing.JComponent;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 
 
 /**
- * This class implements production which is used in the GrammarPanel.
+ * This class implements production which is used in the {@link GrammarPanel}.
  * 
  * @author Benjamin Mies
  */
-public class ProductionComponent extends JComponent
+public final class ProductionComponent extends JComponent
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -175481337386676439L;
-  
+  private static final long serialVersionUID = -2207151291211161558L;
+
+
   /**
    * The {@link Production} of this component.
    */
-  Production production;
+  private Production production;
 
 
   /**
    * Initializes the {@link ProductionComponent}.
    * 
-   * @param production The {@link Production}. 
+   * @param production The {@link Production}.
    */
   public ProductionComponent ( Production production )
   {
@@ -44,9 +46,11 @@ public class ProductionComponent extends JComponent
 
   /**
    * {@inheritDoc}
+   * 
+   * @see JComponent#paintComponent(Graphics)
    */
   @Override
-  protected void paintComponent ( Graphics g )
+  protected final void paintComponent ( Graphics g )
   {
     g.setColor ( getBackground () );
     g.fillRect ( 0, 0, getWidth (), getHeight () );
@@ -88,7 +92,5 @@ public class ProductionComponent extends JComponent
         dx += metrics.charWidth ( chars [ i ] );
       }
     }
-
   }
-
 }

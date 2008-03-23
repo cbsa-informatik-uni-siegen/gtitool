@@ -3,8 +3,6 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
-import javax.swing.border.LineBorder;
-
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
@@ -156,8 +154,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
         if ( exceptionList.size () > 0 )
         {
           newProductionWord = null;
-          this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-          getDocument ().setException ( exceptionList );
+          setException ( exceptionList );
         }
       }
       catch ( NonterminalSymbolException exc )
@@ -268,8 +265,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
     // Set the overwritten style
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
     {
-      getDocument ().addOverwrittenStyle ( current.getName (),
-          Style.NONTERMINAL_SYMBOL );
+      addOverwrittenStyle ( current.getName (), Style.NONTERMINAL_SYMBOL );
     }
   }
 
@@ -313,8 +309,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
     // Set the overwritten style
     for ( TerminalSymbol current : this.terminalSymbolSet )
     {
-      getDocument ().addOverwrittenStyle ( current.getName (),
-          Style.TERMINAL_SYMBOL );
+      addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );
     }
   }
 }

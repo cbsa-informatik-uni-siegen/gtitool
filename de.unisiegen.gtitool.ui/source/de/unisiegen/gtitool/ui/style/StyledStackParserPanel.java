@@ -3,8 +3,6 @@ package de.unisiegen.gtitool.ui.style;
 
 import java.util.ArrayList;
 
-import javax.swing.border.LineBorder;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Stack;
@@ -103,8 +101,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
       if ( exceptionList.size () > 0 )
       {
         checkedStack = null;
-        this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
-        getDocument ().setException ( exceptionList );
+        setException ( exceptionList );
       }
     }
     return checkedStack;

@@ -194,13 +194,13 @@ public final class SideBar extends JComponent
    */
   private final void buildMarks ()
   {
-    this.exceptionList = this.document.getExceptionList ();
+    this.exceptionList = this.document.getException ();
     this.verticalPositions = new int [ this.exceptionList.size () ];
     for ( int i = 0 ; i < this.exceptionList.size () ; i++ )
     {
       try
       {
-        this.verticalPositions [ i ] = -1;
+        this.verticalPositions [ i ] = 10;
         Rectangle rect = this.textComponent.modelToView ( this.exceptionList
             .get ( i ).getLeft () );
         if ( rect == null )
@@ -209,7 +209,7 @@ public final class SideBar extends JComponent
         }
         this.verticalPositions [ i ] = rect.y + rect.height / 2;
       }
-      catch ( Exception e )
+      catch ( Exception exc )
       {
         continue;
       }

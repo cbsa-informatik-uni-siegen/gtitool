@@ -1,12 +1,21 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
-CF		- Transition Dialog: Symbols in der richtigen Farbe darstellen,
-		  auch bei Selektion, siehe TODO BM
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 
 BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Redo / Undo für Grammar Panel und Machine Panel
+BM		- Im Hauptmenü dürfen keine Eintrage ausgeblendet, sondern nur
+		  ausgegraut werden (View Menü)
+BM		- Das Icon der "Production properties" muss ersetzt werden, da dieses
+		  Icon schon für die Programmeinstellungen verwendet wird. Der englische
+		  Tooltip ist falsch geschrieben, "properties" schreibt man klein.
+BM		- Zwischen den ToolBars "Redo/Undo" und "Grammar" sollte ein Separator
+		  sein, da dies bei der Machine ToolBar auch der Fall ist.
 
-
-		  
+		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
+		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,
+		  dass keine Events verloren gehen, also die alte und die neue
+		  Komponente ganz genau miteinander vergleichen. Es muss erst eine
+		  Absprache erfolgen, wer welche Panel übernimmt, damit es zu keinen
+		  Konflikten kommt.

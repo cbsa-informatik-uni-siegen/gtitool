@@ -1,1 +1,2 @@
 CF		- Stack in der Machine implementieren
+CF		- Fehlerbehandlung der Parser implementieren

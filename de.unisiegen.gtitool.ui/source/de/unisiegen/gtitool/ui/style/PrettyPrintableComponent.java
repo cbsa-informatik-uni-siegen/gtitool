@@ -1,46 +1,53 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
 
-import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
-import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 
 
 /**
- * This class implements production which is used in the {@link GrammarPanel}.
+ * This class implements the {@link PrettyPrintable} {@link Component}.
  * 
- * @author Benjamin Mies
+ * @author Christian Fehler
  */
-public final class ProductionComponent extends JComponent
+public final class PrettyPrintableComponent extends JLabel
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -2207151291211161558L;
+  private static final long serialVersionUID = 6078784158332697414L;
 
 
   /**
-   * The {@link Production} of this component.
+   * The {@link PrettyPrintable} of this component.
    */
-  private Production production;
+  private PrettyPrintable prettyPrintable;
 
 
   /**
-   * Initializes the {@link ProductionComponent}.
+   * Initializes the {@link PrettyPrintableComponent}.
    * 
-   * @param production The {@link Production}.
+   * @param prettyPrintable The {@link Symbol}.
    */
-  public ProductionComponent ( Production production )
+  public PrettyPrintableComponent ( PrettyPrintable prettyPrintable )
   {
     super ();
-    this.production = production;
+    this.prettyPrintable = prettyPrintable;
+    setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
+
+    // Used to calculate the preferered size.
+    setText ( "Component" ); //$NON-NLS-1$
   }
 
 
@@ -55,11 +62,11 @@ public final class ProductionComponent extends JComponent
     g.setColor ( getBackground () );
     g.fillRect ( 0, 0, getWidth (), getHeight () );
 
-    int dx = 5;
+    int dx = 0;
 
     FontMetrics metrics = g.getFontMetrics ();
 
-    for ( PrettyToken currentToken : this.production.toPrettyString ()
+    for ( PrettyToken currentToken : this.prettyPrintable.toPrettyString ()
         .getPrettyToken () )
     {
       Font font = null;

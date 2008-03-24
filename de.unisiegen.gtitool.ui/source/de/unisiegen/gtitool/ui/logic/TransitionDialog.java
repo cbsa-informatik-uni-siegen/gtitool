@@ -23,7 +23,7 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.renderer.SymbolListCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyPrintableListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.dnd.SymbolTransferHandler;
@@ -375,8 +375,8 @@ public final class TransitionDialog
           }
         } );
     
-    this.gui.jGTIListAlphabet.setCellRenderer ( new SymbolListCellRenderer() );
-    this.gui.jGTIListChangeOverSet.setCellRenderer ( new SymbolListCellRenderer() );
+    this.gui.jGTIListAlphabet.setCellRenderer ( new PrettyPrintableListCellRenderer() );
+    this.gui.jGTIListChangeOverSet.setCellRenderer ( new PrettyPrintableListCellRenderer() );
   }
 
 

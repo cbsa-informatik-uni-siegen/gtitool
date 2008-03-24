@@ -250,6 +250,8 @@ public final class SideBar extends JComponent
 
   /**
    * {@inheritDoc}
+   * 
+   * @see JComponent#getPreferredSize()
    */
   @Override
   public final Dimension getPreferredSize ()

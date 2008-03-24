@@ -29,7 +29,7 @@ public class ModifiedListCellRenderer extends DefaultListCellRenderer
    */
   public ModifiedListCellRenderer ()
   {
-    // Do nothing
+    super ();
   }
 
 

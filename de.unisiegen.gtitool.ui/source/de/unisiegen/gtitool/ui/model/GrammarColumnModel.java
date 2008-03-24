@@ -6,7 +6,7 @@ import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.renderer.ProductionCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyPrintableTableCellRenderer;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -43,7 +43,7 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
     this.productionColumn = new TableColumn ( ConsoleTableModel.MESSAGE_COLUMN );
     this.productionColumn.setPreferredWidth ( 200 );
     this.productionColumn.setMinWidth ( 200 );
-    this.productionColumn.setCellRenderer ( new ProductionCellRenderer () );
+    this.productionColumn.setCellRenderer ( new PrettyPrintableTableCellRenderer () );
     this.addColumn ( this.productionColumn );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );

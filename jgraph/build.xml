@@ -27,11 +27,9 @@
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac srcdir="${sourcedir}" debug="false" deprecation="false" optimize="true" destdir="${classesdir}">
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
 			<compilerarg value="-Xlint:deprecation,unchecked" />
-			<classpath>
-				<pathelement path="${classesdir}" />
-			</classpath>
+			<src path="${sourcedir}" />
 		</javac>
 	</target>
 

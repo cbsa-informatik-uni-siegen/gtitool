@@ -48,7 +48,7 @@
 		</copy>
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
 			<compilerarg value="-Xlint:deprecation,unchecked" />
 			<src path="${distsourcedir}" />
 			<classpath>

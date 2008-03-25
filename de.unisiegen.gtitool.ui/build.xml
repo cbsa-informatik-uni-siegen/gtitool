@@ -43,7 +43,7 @@
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,exe,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-exe,dist-clean" description="Build distribution">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
@@ -137,8 +137,8 @@
 	<target name="dist-compile">
 		<delete dir="${classesdir}" includeemptydirs="true" />
 		<mkdir dir="${classesdir}" />
-		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
-			<compilerarg value="-Xlint" />
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.5" target="1.5">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
 			<src path="${sourcedir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
@@ -201,9 +201,9 @@
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
-	<!-- exe -->
+	<!-- dist exe -->
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/executer/windows/launch4j/launch4j.jar:${basedir}/executer/windows/launch4j/lib/xstream.jar" />
-	<target name="exe">
+	<target name="dist-exe">
 		<!-- update config file -->
 		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
 			<filterset>

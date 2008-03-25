@@ -53,13 +53,6 @@ public final class Start
      */
     try
     {
-      if ( !PreferenceManager.getInstance ().getLookAndFeelItem ()
-          .getClassName ().equals (
-              "de.muntjak.tinylookandfeel.TinyLookAndFeel" ) ) //$NON-NLS-1$
-      {
-        UIManager.installLookAndFeel ( "TinyLaF", //$NON-NLS-1$
-            "de.muntjak.tinylookandfeel.TinyLookAndFeel" ); //$NON-NLS-1$
-      }
       UIManager.setLookAndFeel ( PreferenceManager.getInstance ()
           .getLookAndFeelItem ().getClassName () );
     }

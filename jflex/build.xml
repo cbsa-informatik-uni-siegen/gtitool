@@ -2,65 +2,73 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2007 Christian Fehler
+	Copyright (c) 2007-2008 Christian Fehler
 -->
 <project name="gtitool.jflex" default="dist">
 
-	<property name="sourcedir" value="${basedir}/source" />
 	<property name="distdir" value="${basedir}/dist" />
+	<property name="distcupdir" value="${distdir}/cup" />
 	<property name="libdir" value="${basedir}/lib" />
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="docdir" value="${basedir}/doc" />
+	<property name="javadocdir" value="${docdir}/javadoc" />
 
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />
 	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
 
-	<target name="compile" depends="jflex,cup">
-		<javac srcdir="." destdir="${distdir}" target="1.5" classpath="." debug="on">
-			<compilerarg value="-Xlint:deprecation,unchecked" />
-		</javac>
-	</target>
-
-	<target name="jflex">
-		<jflex.jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${libdir}/skeleton.nested" />
-	</target>
-
-	<target name="cup">
-		<jflex.cup file="${sourcedir}/JFlex/LexParse.cup" dir="${sourcedir}/JFlex" interface="true" parser="LexParse" />
-	</target>
-
-	<target name="copy">
-		<copy file="${libdir}/skeleton.default" todir="${distdir}/JFlex" />
-		<copy file="${sourcedir}/JFlex/Messages.properties" todir="${distdir}/JFlex/" />
-	</target>
-
-	<target name="dist" depends="dist-preclean,jar,dist-postclean" description="Build distribution">
+	<!-- dist -->
+	<target name="dist" depends="dist-preclean,dist-jflex,dist-cup,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
+	<!-- dist preclean -->
 	<target name="dist-preclean">
 		<delete dir="${distdir}" includeemptydirs="true" />
 		<mkdir dir="${distdir}" />
-		<delete file="JFlex/LexScan.java" />
-		<delete file="JFlex/LexParse.java" />
-		<delete file="JFlex/sym.java" />
 	</target>
 
-	<target name="jar" depends="compile,copy">
+	<!-- dist jflex -->
+	<target name="dist-jflex">
+		<jflex.jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${libdir}/skeleton.nested" />
+	</target>
+
+	<!-- dist cup -->
+	<target name="dist-cup">
+		<jflex.cup file="${sourcedir}/JFlex/LexParse.cup" dir="${sourcedir}/JFlex" interface="true" parser="LexParse" />
+	</target>
+
+	<!-- dist compile -->
+	<target name="dist-compile" depends="dist-jflex,dist-cup">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+			<src path="${sourcedir}" />
+		</javac>
+	</target>
+
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<copy file="${libdir}/skeleton.default" todir="${classesdir}/JFlex" />
+		<copy file="${sourcedir}/JFlex/Messages.properties" todir="${classesdir}/JFlex" />
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="JFlex.Main" />
 		</manifest>
-		<jar basedir="${distdir}" includes="JFlex/**,java_cup/**,skeleton" jarfile="${distdir}/JFlex-1.4.1-gtitool.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar basedir="${classesdir}" includes="JFlex/**,java_cup/**,skeleton" jarfile="${distdir}/JFlex-1.4.1-gtitool.jar" manifest="${distdir}/MANIFEST.MF">
 		</jar>
 	</target>
 
-	<target name="dist-postclean">
-		<delete dir="${distdir}/java_cup" />
-		<delete dir="${distdir}/JFlex" />
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+		<delete dir="${distcupdir}" />
 		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" classpath="${libdir}/ant.jar; ${libdir}/java-cup.jar; ${libdir}/JFlex.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${libdir}/ant.jar; ${libdir}/java-cup.jar; ${libdir}/JFlex.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

@@ -2,101 +2,97 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2007 Christian Fehler
+	Copyright (c) 2007-2008 Christian Fehler
 -->
 <project name="gtitool.javacup" default="dist" basedir=".">
 
-	<property name="etc" location="etc" />
-	<property name="bin" location="bin" />
-	<property name="lib" location="lib" />
-	<property name="src" location="source" />
-	<property name="java" location="java" />
-	<property name="classes" location="classes" />
-	<property name="dist" location="dist" />
-	<property name="flex" location="flex" />
-	<property name="cup" location="cup" />
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="distsourcedir" value="${distdir}/source" />
+	<property name="libdir" value="${basedir}/lib" />
+	<property name="flexdir" value="${basedir}/flex" />
+	<property name="cupdir" value="${basedir}/cup" />
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="docdir" value="${basedir}/doc" />
+	<property name="javadocdir" value="${docdir}/javadoc" />
 
-	<target name="init" depends="clean">
-		<tstamp />
-		<mkdir dir="${src}" />
-		<mkdir dir="${java}" />
-		<mkdir dir="${classes}" />
-		<mkdir dir="${dist}" />
-	</target>
+	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11.jar" />
+	<taskdef name="javacup.jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex.jar" />
 
-	<property environment="env" />
-
-	<path id="libraries">
-		<pathelement location="${src}" />
-		<fileset dir="${lib}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
-
-	<path id="binaries">
-		<fileset dir="${bin}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
-
-	<target name="clean">
-		<delete dir="${java}" />
-		<delete dir="${classes}" />
-		<delete dir="${dist}" />
-	</target>
-
-	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${lib}/java-cup-11.jar" />
-	<taskdef name="javacup.jflex" classname="JFlex.anttask.JFlexTask" classpath="${lib}/JFlex.jar" />
-
-	<target name="cup" depends="init">
-		<javacup.cup srcfile="${cup}/parser.cup" interface="on" destdir="${java}" parser="parser" symbols="sym" quiet="false" nonterms="true" />
-	</target>
-
-	<target name="jflex" depends="cup">
-		<javacup.jflex file="${flex}/Lexer.jflex" destdir="${java}" />
-	</target>
-
-	<target name="compile" depends="jflex">
-		<copy todir="${java}">
-			<fileset dir="${src}">
-			</fileset>
-		</copy>
-		<javac srcdir="${java}" destdir="${classes}" verbose="off" listfiles="off" debug="off" source="1.5" target="1.5">
-			<compilerarg value="-Xlint:deprecation,unchecked" />
-			<classpath refid="libraries" />
-		</javac>
-	</target>
-
-	<target name="dist" depends="jar">
+	<!-- dist -->
+	<target name="dist" depends="dist-preclean,dist-cup,dist-jflex,dist-compile,dist-jar,dist-clean">
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
-	<target name="jar" depends="compile">
-		<jar jarfile="${dist}/java-cup-11a-gtitool.jar" basedir="${classes}">
+	<!-- dist preclean -->
+	<target name="dist-preclean">
+		<delete dir="${distdir}" includeemptydirs="true" />
+		<mkdir dir="${distdir}" />
+	</target>
+
+	<!-- dist cup -->
+	<target name="dist-cup">
+		<mkdir dir="${distsourcedir}" />
+		<javacup.cup srcfile="${cupdir}/parser.cup" interface="on" destdir="${distsourcedir}" parser="parser" symbols="sym" quiet="false" nonterms="true" />
+	</target>
+
+	<!-- dist jflex -->
+	<target name="dist-jflex" depends="dist-cup">
+		<javacup.jflex file="${flexdir}/Lexer.jflex" destdir="${distsourcedir}" />
+	</target>
+
+	<!-- dist compile -->
+	<target name="dist-compile" depends="dist-cup,dist-jflex">
+		<copy todir="${distsourcedir}">
+			<fileset dir="${sourcedir}" />
+		</copy>
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on" source="1.5" target="1.5">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+			<src path="${distsourcedir}" />
+			<classpath>
+				<pathelement location="${libdir}/ant.jar" />
+				<pathelement location="${libdir}/java-cup-11.jar" />
+				<pathelement location="${libdir}/JFlex.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<!-- normal jar -->
+		<jar jarfile="${distdir}/java-cup-11a-gtitool.jar" basedir="${classesdir}">
 			<manifest>
 				<attribute name="Main-Class" value="java_cup/Main" />
 				<attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
 			</manifest>
 		</jar>
-		<jar jarfile="${dist}/java-cup-11a-gtitool-runtime.jar" basedir="${classes}" includes="java_cup/runtime/*">
+		<!-- runtime jar -->
+		<jar jarfile="${distdir}/java-cup-11a-gtitool-runtime.jar" basedir="${classesdir}" includes="java_cup/runtime/*">
 		</jar>
-		<jar jarfile="${dist}/java-cup-11a-gtitool-src.jar">
+		<!-- src jar -->
+		<jar jarfile="${distdir}/java-cup-11a-gtitool-src.jar">
 			<manifest>
 				<attribute name="Main-Class" value="java_cup/Main" />
 				<attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
 			</manifest>
-			<fileset dir="${basedir}/source">
+			<fileset dir="${distsourcedir}">
 				<include name="**/*.java" />
 			</fileset>
 		</jar>
-		<delete dir="${java}" />
-		<delete dir="${classes}" />
+	</target>
+
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+		<delete dir="${distsourcedir}" />
 	</target>
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" classpath="${lib}/ant.jar; ${lib}/java-cup-11.jar; ${lib}/JFlex.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
-			<fileset dir="${src}">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${lib}/ant.jar; ${lib}/java-cup-11.jar; ${lib}/JFlex.jar" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
+			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>
 			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />

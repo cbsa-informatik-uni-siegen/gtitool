@@ -2,7 +2,7 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2008 Christian Fehler
+	Copyright (c) 2007-2008 Christian Fehler
 -->
 <project name="TinyLaF" default="dist" basedir=".">
 
@@ -10,6 +10,7 @@
 	<property name="sourcedir" location="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
+	<property name="javadocdir" value="${docdir}/javadoc" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
@@ -63,7 +64,7 @@
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

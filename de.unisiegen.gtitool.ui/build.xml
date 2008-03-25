@@ -2,7 +2,7 @@
 <!--
 	$Id$
 	
-	Copyright (c) 2008 Christian Fehler
+	Copyright (c) 2007-2008 Christian Fehler
 -->
 <project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
 
@@ -37,6 +37,7 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="tmpdir" value="${basedir}/tmp" />
 	<property name="docdir" value="${basedir}/doc" />
+	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
@@ -52,7 +53,7 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
-		<!-- sign all jar files -->
+		<!-- sign jar files -->
 		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
 			<fileset dir="${gtitooldir}" includes="*.jar" />
 		</signjar>
@@ -65,7 +66,7 @@
 		<!-- move exe file -->
 		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
 		<!-- tar file -->
-		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.bz2" compression="bzip2" longfile="gnu">
+		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${distdir}">
 				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
 				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
@@ -77,7 +78,7 @@
 			</tarfileset>
 		</tar>
 		<!-- tar file source -->
-		<tar destfile="${distdir}/gtitool-${gtitool.version}-src.tar.bz2" compression="bzip2" longfile="gnu">
+		<tar destfile="${distdir}/gtitool-${gtitool.version}-src.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${distdir}">
 				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
 				<include name="gtitool-${gtitool.version}/*" />
@@ -243,7 +244,7 @@
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="doc/javadoc" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/log4j-1.2.14.jar; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="doc/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/log4j-1.2.14.jar; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

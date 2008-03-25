@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
@@ -296,18 +298,14 @@ public final class MainWindow implements LanguageChangedListener
   {
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();
-    if ( ( panel instanceof MachinePanel ) )
-    {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
       if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
           .getState () )
       {
-        machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+        panel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
             .getState () );
         PreferenceManager.getInstance ().setVisibleConsole (
             this.gui.jCheckBoxMenuItemConsole.getState () );
       }
-    }
   }
 
 
@@ -1014,8 +1012,8 @@ public final class MainWindow implements LanguageChangedListener
             .isWordEnterMode () );
         this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
             .isWordEnterMode () );
-        this.gui.jCheckBoxMenuItemConsole.setVisible ( true );
-        this.gui.jCheckBoxMenuItemTable.setVisible ( true );
+        this.gui.jCheckBoxMenuItemTable.setEnabled ( true );
+        this.gui.jMenuItemEnterWord.setEnabled ( true );
 
         // Set the status of the word navigation icons
         this.gui.jGTIToolBarButtonStart.setEnabled ( machinePanel
@@ -1034,8 +1032,10 @@ public final class MainWindow implements LanguageChangedListener
       // Grammar Panel
       else
       {
-        this.gui.jCheckBoxMenuItemConsole.setVisible ( false );
-        this.gui.jCheckBoxMenuItemTable.setVisible ( false );
+        this.gui.jCheckBoxMenuItemTable.setEnabled ( false );
+        panel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+            .getState ());
+        this.gui.jMenuItemEnterWord.setEnabled ( false );
       }
       // Undo
       this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
@@ -1202,32 +1202,63 @@ public final class MainWindow implements LanguageChangedListener
   {
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
-    {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
-    }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
 
     int errorCount = 0;
     int warningCount = 0;
-    try
+
+    
+    
+    
+    if ( panel instanceof MachinePanel )
     {
-      machinePanel.clearValidationMessages ();
-      machinePanel.getMachine ().validate ();
-    }
-    catch ( MachineValidationException e )
-    {
-      for ( MachineException error : e.getMachineException () )
+      MachinePanel machinePanel = ( MachinePanel ) panel;
+      try
       {
-        if ( error.getType ().equals ( ErrorType.ERROR ) )
+        panel.clearValidationMessages ();
+        machinePanel.getMachine ().validate ();
+      }
+      catch ( MachineValidationException e )
+      {
+
+        for ( MachineException error : e.getMachineException () )
         {
-          machinePanel.addError ( error );
-          errorCount++ ;
+          if ( error.getType ().equals ( ErrorType.ERROR ) )
+          {
+            machinePanel.addError ( error );
+            errorCount++ ;
+          }
+          else if ( error.getType ().equals ( ErrorType.WARNING ) )
+          {
+            machinePanel.addWarning ( error );
+            warningCount++ ;
+          }
         }
-        else if ( error.getType ().equals ( ErrorType.WARNING ) )
+      }
+    }
+    
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      try
+      {
+        panel.clearValidationMessages ();
+        grammarPanel.getGrammar ().validate ();
+      }
+      catch ( GrammarValidationException e )
+      {
+
+        for ( GrammarException error : e.getGrammarException () )
         {
-          machinePanel.addWarning ( error );
-          warningCount++ ;
+          if ( error.getType ().equals ( ErrorType.ERROR ) )
+          {
+            grammarPanel.addError ( error );
+            errorCount++ ;
+          }
+          else if ( error.getType ().equals ( ErrorType.WARNING ) )
+          {
+            grammarPanel.addWarning ( error );
+            warningCount++ ;
+          }
         }
       }
     }
@@ -1237,10 +1268,10 @@ public final class MainWindow implements LanguageChangedListener
       if ( warningCount > 0 )
       {
         // Select the warning tab
-        machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 1 );
+        panel.getJTabbedPaneConsole().setSelectedIndex ( 1 );
 
         // Update the title
-        machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+        panel.getJTabbedPaneConsole().setTitleAt ( 1, Messages
             .getString ( "MachinePanel.WarningFound", false, new Integer ( //$NON-NLS-1$
                 warningCount ) ) );
       }
@@ -1274,15 +1305,15 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       // Update the titles
-      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+      panel.getJTabbedPaneConsole().setTitleAt ( 0, Messages
           .getString (
               "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
-      machinePanel.getGui ().jTabbedPaneConsole
+      panel.getJTabbedPaneConsole()
           .setTitleAt ( 1, Messages.getString (
               "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
 
       // Select the error tab
-      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 0 );
+      panel.getJTabbedPaneConsole().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorWarningMachine" ) ); //$NON-NLS-1$
@@ -1303,14 +1334,13 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       // Update the titles
-      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+      panel.getJTabbedPaneConsole().setTitleAt ( 0, Messages
           .getString (
               "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
-      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+      panel.getJTabbedPaneConsole().setTitleAt ( 1, Messages
           .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
 
-      // Select the error tab
-      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 0 );
+      panel.getJTabbedPaneConsole().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
@@ -1331,14 +1361,14 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       // Update the titles
-      machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+      panel.getJTabbedPaneConsole().setTitleAt ( 0, Messages
           .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-      machinePanel.getGui ().jTabbedPaneConsole
+      panel.getJTabbedPaneConsole()
           .setTitleAt ( 1, Messages.getString (
               "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
 
       // Select the warning tab
-      machinePanel.getGui ().jTabbedPaneConsole.setSelectedIndex ( 1 );
+      panel.getJTabbedPaneConsole().setSelectedIndex ( 1 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
@@ -1346,16 +1376,16 @@ public final class MainWindow implements LanguageChangedListener
     if ( infoDialog != null )
     {
       this.gui.jCheckBoxMenuItemConsole.setSelected ( true );
-      machinePanel.setVisibleConsole ( true );
+      panel.setVisibleConsole ( true );
 
       infoDialog.show ();
       return false;
     }
 
     // Update the titles
-    machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 0, Messages
+    panel.getJTabbedPaneConsole().setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    machinePanel.getGui ().jTabbedPaneConsole.setTitleAt ( 1, Messages
+    panel.getJTabbedPaneConsole().setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
     return true;
   }
@@ -1945,11 +1975,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleDeleteProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleDeleteProduction();
+      grammarPanel.handleDeleteProduction ();
     }
   }
 
@@ -1959,11 +1990,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleEditProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleEditProduction();
+      grammarPanel.handleEditProduction ();
     }
   }
 
@@ -1973,11 +2005,12 @@ public final class MainWindow implements LanguageChangedListener
    */
   public void handleAddProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane.getSelectedEditorPanel ();
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleAddProduction();
+      grammarPanel.handleAddProduction ();
     }
   }
 }

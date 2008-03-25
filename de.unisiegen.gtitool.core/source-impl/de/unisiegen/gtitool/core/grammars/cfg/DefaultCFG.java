@@ -29,7 +29,9 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
    * @param terminalSymbolSet The {@link TerminalSymbolSet}.
    */
   public DefaultCFG ( NonterminalSymbolSet nonterminalSymbolSet, TerminalSymbolSet terminalSymbolSet ){
-    super(nonterminalSymbolSet, terminalSymbolSet);
+    super(nonterminalSymbolSet, terminalSymbolSet,
+        ValidationElement.DUPLICATE_PRODUCTION,
+        ValidationElement.NONTERMINAL_NOT_REACHABLE);
   }
 
   /**

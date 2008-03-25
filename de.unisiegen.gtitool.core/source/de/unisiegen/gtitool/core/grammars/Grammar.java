@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -22,6 +23,26 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  */
 public interface Grammar extends Serializable, TableModel, Modifyable
 {
+  
+  /**
+   * This enum is used to indicate which validation elements should be checked
+   * during a validation.
+   * 
+   * @author Benjamin Mies
+   */
+  public enum ValidationElement
+  {
+    /**
+     * There are duplicate {@link Production}s.
+     */
+    DUPLICATE_PRODUCTION,
+
+    /**
+     * There is a {@link NonterminalSymbol} which is not reachable.
+     */
+    NONTERMINAL_NOT_REACHABLE,
+  }
+
 
   /**
    * The available grammers.
@@ -110,4 +131,11 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    *         false.
    */
   public boolean isSymbolRemoveableFromTerminalSymbols ( TerminalSymbol symbol );
+  
+  /**
+   * Validates that everything in the {@link Grammar} is correct.
+   * 
+   * @throws GrammarValidationException If the validation fails.
+   */
+  public void validate () throws GrammarValidationException;
 }

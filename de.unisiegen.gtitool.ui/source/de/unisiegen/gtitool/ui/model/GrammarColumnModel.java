@@ -40,7 +40,7 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
   public GrammarColumnModel ()
   {
     // Message
-    this.productionColumn = new TableColumn ( ConsoleTableModel.MESSAGE_COLUMN );
+    this.productionColumn = new TableColumn ( MachineConsoleTableModel.MESSAGE_COLUMN );
     this.productionColumn.setPreferredWidth ( 200 );
     this.productionColumn.setMinWidth ( 200 );
     this.productionColumn.setCellRenderer ( new PrettyPrintableTableCellRenderer () );

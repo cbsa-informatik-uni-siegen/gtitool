@@ -22,6 +22,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -59,7 +60,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
-import de.unisiegen.gtitool.ui.model.ConsoleTableModel;
+import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -264,15 +265,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link ConsoleTableModel} for the warning table.
+   * The {@link MachineConsoleTableModel} for the warning table.
    */
-  private ConsoleTableModel warningTableModel;
+  private MachineConsoleTableModel warningTableModel;
 
 
   /**
-   * The {@link ConsoleTableModel} for the error table.
+   * The {@link MachineConsoleTableModel} for the error table.
    */
-  private ConsoleTableModel errorTableModel;
+  private MachineConsoleTableModel errorTableModel;
 
 
   /**
@@ -833,11 +834,11 @@ public final class MachinePanel implements EditorPanel
     int index = table.getSelectedRow ();
     if ( index != -1 )
     {
-      highlightStateError ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightStateError ( ( ( MachineConsoleTableModel ) table.getModel () )
           .getStates ( index ) );
-      highlightTransitionError ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightTransitionError ( ( ( MachineConsoleTableModel ) table.getModel () )
           .getTransitions ( index ) );
-      highlightSymbolError ( ( ( ConsoleTableModel ) table.getModel () )
+      highlightSymbolError ( ( ( MachineConsoleTableModel ) table.getModel () )
           .getSymbols ( index ) );
     }
   }
@@ -1554,7 +1555,7 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.diagrammContentPanel.setViewportView ( this.graph );
 
-    this.errorTableModel = new ConsoleTableModel ();
+    this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
     this.gui.jGTITableErrors.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableErrors.getTableHeader ().setReorderingAllowed ( false );
@@ -1570,7 +1571,7 @@ public final class MachinePanel implements EditorPanel
           }
 
         } );
-    this.warningTableModel = new ConsoleTableModel ();
+    this.warningTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
     this.gui.jGTITableWarnings.setColumnModel ( new ConsoleColumnModel () );
     this.gui.jGTITableWarnings.getTableHeader ().setReorderingAllowed ( false );
@@ -2560,5 +2561,16 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
+   */
+  public JTabbedPane getJTabbedPaneConsole ()
+  {
+    return this.gui.jTabbedPaneConsole;
   }
 }

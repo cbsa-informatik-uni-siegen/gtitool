@@ -22,7 +22,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
  * @author Christian Fehler
  * @version $Id:DefaultTableModel.java 305 2007-12-06 19:55:14Z mies $
  */
-public final class ConsoleTableModel extends AbstractTableModel
+public final class MachineConsoleTableModel extends AbstractTableModel
 {
 
   /**
@@ -134,9 +134,9 @@ public final class ConsoleTableModel extends AbstractTableModel
 
 
   /**
-   * Allocates a new {@link ConsoleTableModel}.
+   * Allocates a new {@link MachineConsoleTableModel}.
    */
-  public ConsoleTableModel ()
+  public MachineConsoleTableModel ()
   {
     this.data = new ArrayList < ConsoleTableEntry > ();
   }

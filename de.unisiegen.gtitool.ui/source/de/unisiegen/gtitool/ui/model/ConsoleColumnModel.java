@@ -43,7 +43,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
   public ConsoleColumnModel ()
   {
     // Message
-    this.messageColumn = new TableColumn ( ConsoleTableModel.MESSAGE_COLUMN );
+    this.messageColumn = new TableColumn ( MachineConsoleTableModel.MESSAGE_COLUMN );
     this.messageColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.Message" ) ); //$NON-NLS-1$
     this.messageColumn.setPreferredWidth ( 200 );
@@ -51,7 +51,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
     this.addColumn ( this.messageColumn );
     // Description
     this.descriptionColumn = new TableColumn (
-        ConsoleTableModel.DESCRIPTION_COLUMN );
+        MachineConsoleTableModel.DESCRIPTION_COLUMN );
     this.descriptionColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.Description" ) ); //$NON-NLS-1$
     this.descriptionColumn.setPreferredWidth ( 800 );

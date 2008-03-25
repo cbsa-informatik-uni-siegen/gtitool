@@ -48,10 +48,12 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    */
   private Grammar grammar;
 
+
   /**
    * The {@link ModifyStatusChangedListener}.
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
+
 
   /**
    * List of listeners
@@ -203,8 +205,9 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     newElement.addElement ( this.grammar.getNonterminalSymbolSet ()
         .getElement () );
     newElement.addElement ( this.grammar.getTerminalSymbolSet ().getElement () );
-    
-    for (Production current : this.grammar.getProductions()){
+
+    for ( Production current : this.grammar.getProductions () )
+    {
       newElement.addElement ( current.getElement () );
     }
     return newElement;
@@ -256,7 +259,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    */
   public void resetModify ()
   {
-   this.grammar.resetModify ();
+    this.grammar.resetModify ();
   }
 
 
@@ -270,7 +273,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
-  
+
+
   /**
    * Initialize the {@link ModifyStatusChangedListener}.
    */
@@ -288,7 +292,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     this.grammar
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
   }
-  
+
+
   /**
    * Let the listeners know that the modify status has changed.
    * 

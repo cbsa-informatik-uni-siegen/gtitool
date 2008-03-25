@@ -6,7 +6,6 @@ CF		- Statename falscher Style
 CF		- Startsymbol einbauen ins Panel
 		- CoreExeption muss PrettyPrintable implementieren
 
-BM		- Verhindern, dass Produktionen doppelt angelegt werden können
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Das Icon der "Production properties" muss ersetzt werden, da dieses
 		  Icon schon für die Programmeinstellungen verwendet wird. Der englische
@@ -21,7 +20,5 @@ BM		- Zwischen den ToolBars "Redo/Undo" und "Grammar" sollte ein Separator
 		  Komponente ganz genau miteinander vergleichen. Es muss erst eine
 		  Absprache erfolgen, wer welche Panel übernimmt, damit es zu keinen
 		  Konflikten kommt.
-		  
-		  
 		  
 		  

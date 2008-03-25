@@ -10,9 +10,15 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
@@ -63,13 +69,22 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * The validation element list.
+   */
+  private ArrayList < ValidationElement > validationElementList;
+
+
+  /**
    * Allocate a new {@link AbstractGrammar}.
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
    * @param terminalSymbolSet The {@link TerminalSymbolSet}.
+   * @param validationElements The validation elements which indicates which
+   *          validation elements should be checked during a validation.
    */
   public AbstractGrammar ( NonterminalSymbolSet nonterminalSymbolSet,
-      TerminalSymbolSet terminalSymbolSet )
+      TerminalSymbolSet terminalSymbolSet,
+      ValidationElement ... validationElements )
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
     this.terminalSymbolSet = terminalSymbolSet;
@@ -84,6 +99,17 @@ public abstract class AbstractGrammar implements Grammar
         fireModifyStatusChanged ( modified );
       }
     };
+
+    // Validation elements
+    if ( validationElements == null )
+    {
+      throw new NullPointerException ( "validation elements is null" ); //$NON-NLS-1$
+    }
+    this.validationElementList = new ArrayList < ValidationElement > ();
+    for ( ValidationElement current : validationElements )
+    {
+      this.validationElementList.add ( current );
+    }
   }
 
 
@@ -414,5 +440,94 @@ public abstract class AbstractGrammar implements Grammar
       }
     }
     return true;
+  }
+
+  /**
+   * 
+   * Check the grammar for duplicate productions
+   *
+   * @return list containing occured errors
+   */
+  private final ArrayList < GrammarException > checkDuplicateProduction ()
+  {
+    ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
+    ArrayList < Production > foundDuplicates = new ArrayList < Production > ();
+
+    for ( Production current : this.productions )
+    {
+      if ( !foundDuplicates.contains ( current ) )
+        for ( Production other : this.productions )
+        {
+          if ( ! ( current == other ) && current.equals ( other ) )
+          {
+            grammarExceptionList.add ( new GrammarDuplicateProductionException(current) );
+            foundDuplicates.add ( current );
+          }
+        }
+    }
+
+    return grammarExceptionList;
+  }
+
+  /**
+   * 
+   * Check the grammar for not reachable nonterminal symbols
+   *
+   * @return list containing occured errors
+   */
+  private final ArrayList < GrammarException > checkNonterminalNotReachable ()
+  {
+    ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
+
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      boolean used = false;
+      loop : for ( Production production : this.productions )
+      {
+        for ( ProductionWordMember symbol : production.getProductionWord () )
+        {
+          if ( current.equals ( symbol ) )
+          {
+            used = true;
+            break loop;
+          }
+        }
+      }
+      if ( !used )
+      {
+        grammarExceptionList.add ( new GrammarNonterminalNotReachableException(current) );
+      }
+    }
+
+    return grammarExceptionList;
+  }
+
+
+  /**
+   * Validates that everything in the {@link AbstractMachine} is correct.
+   * 
+   * @throws GrammarValidationException If the validation fails.
+   */
+  public final void validate () throws GrammarValidationException
+  {
+    ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.DUPLICATE_PRODUCTION ) )
+    {
+      grammarExceptionList.addAll ( checkDuplicateProduction () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.NONTERMINAL_NOT_REACHABLE ) )
+    {
+      grammarExceptionList.addAll ( checkNonterminalNotReachable () );
+    }
+
+    // Throw the exception if a warning or an error has occurred.
+    if ( grammarExceptionList.size () > 0 )
+    {
+      throw new GrammarValidationException ( grammarExceptionList );
+    }
   }
 }

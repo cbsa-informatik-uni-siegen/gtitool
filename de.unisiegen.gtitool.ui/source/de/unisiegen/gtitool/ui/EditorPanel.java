@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui;
 import java.io.File;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
@@ -133,4 +134,29 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @return the {@link DefaultMachineModel}
    */
   public DefaultModel getModel ();
+
+
+  /**
+   * Clear all Error and Warning messages
+   */
+  public void clearValidationMessages ();
+
+
+  /**
+   * Returns the {@link JTabbedPane} containing the console.
+   *
+   * @return the {@link JTabbedPane} containing the console.
+   */
+  public JTabbedPane getJTabbedPaneConsole ();
+
+
+  /**
+   * Sets the visibility of the console.
+   * 
+   * @param visible Visible or not visible.
+   */
+  public void setVisibleConsole ( boolean visible );
+
+
+
 }

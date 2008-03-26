@@ -39,6 +39,8 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintableList;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -1080,7 +1082,7 @@ public abstract class AbstractMachine implements Machine
   public final Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
   int columnIndex )
   {
-    return String.class;
+    return PrettyPrintable.class;
   }
 
 
@@ -1249,10 +1251,10 @@ public abstract class AbstractMachine implements Machine
     // First column
     if ( columnIndex == 0 )
     {
-      return this.stateList.get ( rowIndex ).toString ();
+      return this.stateList.get ( rowIndex );
     }
 
-    ArrayList < State > stateEndList = new ArrayList < State > ();
+    PrettyPrintableList stateEndList = new PrettyPrintableList ();
     State currentState = this.stateList.get ( rowIndex );
 
     // Epsilon column
@@ -1279,17 +1281,7 @@ public abstract class AbstractMachine implements Machine
       }
     }
 
-    // Build the result
-    StringBuilder result = new StringBuilder ();
-    for ( int i = 0 ; i < stateEndList.size () ; i++ )
-    {
-      if ( i > 0 )
-      {
-        result.append ( ", " ); //$NON-NLS-1$
-      }
-      result.append ( stateEndList.get ( i ) );
-    }
-    return result.toString ();
+    return stateEndList;
   }
 
 

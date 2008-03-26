@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.jgraphcomponents;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -20,6 +21,7 @@ import org.jgraph.graph.VertexView;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -28,6 +30,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The state view class.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public class StateView extends VertexView
@@ -47,8 +50,16 @@ public class StateView extends VertexView
     private static final long serialVersionUID = 264864659062743923L;
 
 
-    /** The {@link StateView} */
-    private StateView stateView;
+    /**
+     * The {@link State} color.
+     */
+    private Color preferenceState;
+
+
+    /**
+     * The active {@link State} color.
+     */
+    private Color preferenceStateActive;
 
 
     /**
@@ -58,21 +69,15 @@ public class StateView extends VertexView
 
 
     /**
-     * The {@link State} color.
-     */
-    private Color preferenceState;
-
-
-    /**
      * The error {@link State} color.
      */
     private Color preferenceStateError;
 
 
     /**
-     * The active {@link State} color.
+     * The final {@link State} color.
      */
-    private Color preferenceStateActive;
+    private Color preferenceStateFinal;
 
 
     /**
@@ -88,15 +93,13 @@ public class StateView extends VertexView
 
 
     /**
-     * The final {@link State} color.
-     */
-    private Color preferenceStateFinal;
-
-
-    /**
      * The normal {@link Transition} color.
      */
     private Color preferenceTransition;
+
+
+    /** The {@link StateView} */
+    private StateView stateView;
 
 
     /**
@@ -164,6 +167,14 @@ public class StateView extends VertexView
 
             @SuppressWarnings ( "synthetic-access" )
             @Override
+            public void colorChangedStateFinal ( Color newColor )
+            {
+              JGraphEllipseRenderer.this.preferenceStateFinal = newColor;
+            }
+
+
+            @SuppressWarnings ( "synthetic-access" )
+            @Override
             public void colorChangedStateSelected ( Color newColor )
             {
               JGraphEllipseRenderer.this.preferenceStateSelected = newColor;
@@ -175,14 +186,6 @@ public class StateView extends VertexView
             public void colorChangedStateStart ( Color newColor )
             {
               JGraphEllipseRenderer.this.preferenceStateStart = newColor;
-            }
-
-
-            @SuppressWarnings ( "synthetic-access" )
-            @Override
-            public void colorChangedStateFinal ( Color newColor )
-            {
-              JGraphEllipseRenderer.this.preferenceStateFinal = newColor;
             }
 
 
@@ -263,7 +266,7 @@ public class StateView extends VertexView
 
         g.setColor ( background );
 
-        if ( this.gradientColor != null && !this.preview )
+        if ( ( this.gradientColor != null ) && !this.preview )
         {
           setOpaque ( false );
           g2.setPaint ( new GradientPaint ( 0, 0, background, getWidth (),
@@ -286,10 +289,45 @@ public class StateView extends VertexView
 
         g.setColor ( this.preferenceState );
         g.setFont ( getFont () );
-        FontMetrics metrics = getFontMetrics ( getFont () );
-        g.drawString ( state.toString (), ( d.width / 2 )
-            - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1,
-            ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3 );
+        FontMetrics metrics = g.getFontMetrics ();
+
+        int dx = ( d.width / 2 )
+            - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
+        int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
+
+        for ( PrettyToken currentToken : state.toPrettyString ()
+            .getPrettyToken () )
+        {
+          Font font = null;
+
+          if ( !currentToken.getStyle ().isBold ()
+              && !currentToken.getStyle ().isItalic () )
+          {
+            font = g.getFont ().deriveFont ( Font.PLAIN );
+          }
+          else if ( currentToken.getStyle ().isBold ()
+              && currentToken.getStyle ().isItalic () )
+          {
+            font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
+          }
+          else if ( currentToken.getStyle ().isBold () )
+          {
+            font = g.getFont ().deriveFont ( Font.BOLD );
+          }
+          else if ( currentToken.getStyle ().isItalic () )
+          {
+            font = g.getFont ().deriveFont ( Font.ITALIC );
+          }
+
+          g.setFont ( font );
+          g.setColor ( currentToken.getStyle ().getColor () );
+          char [] chars = currentToken.getChar ();
+          for ( int i = 0 ; i < chars.length ; i++ )
+          {
+            g.drawChars ( chars, i, 1, dx, dy );
+            dx += metrics.charWidth ( chars [ i ] );
+          }
+        }
       }
       finally
       {
@@ -396,7 +434,9 @@ public class StateView extends VertexView
     double dy = y1 - y0;
 
     if ( dx == 0 )
+    {
       return new Point ( ( int ) x0, ( int ) ( y0 + b * dy / Math.abs ( dy ) ) );
+    }
 
     double d = dy / dx;
     double h = y0 - d * x0;

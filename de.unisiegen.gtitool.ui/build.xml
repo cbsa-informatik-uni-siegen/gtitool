@@ -53,10 +53,6 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
-		<!-- sign jar files -->
-		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
-			<fileset dir="${gtitooldir}" includes="*.jar" />
-		</signjar>
 		<!-- copy sh file -->
 		<copy todir="${gtitooldir}" file="${basedir}/executer/linux/gtitool.sh">
 			<filterset>
@@ -65,42 +61,6 @@
 		</copy>
 		<!-- move exe file -->
 		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
-		<!-- tar file -->
-		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${distdir}">
-				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
-				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
-				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" />
-				<include name="gtitool-${gtitool.version}/*" />
-			</tarfileset>
-			<tarfileset dir="${distdir}" mode="755">
-				<include name="gtitool-${gtitool.version}/gtitool.sh" />
-			</tarfileset>
-		</tar>
-		<!-- tar file source -->
-		<tar destfile="${distdir}/gtitool-${gtitool.version}-src.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${distdir}">
-				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
-				<include name="gtitool-${gtitool.version}/*" />
-			</tarfileset>
-			<tarfileset dir="${distdir}" mode="755">
-				<include name="gtitool-${gtitool.version}/gtitool.sh" />
-			</tarfileset>
-		</tar>
-		<!-- zip file -->
-		<zip destfile="${distdir}/gtitool-${gtitool.version}.zip" update="yes">
-			<fileset dir="${distdir}">
-				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
-				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" />
-				<include name="gtitool-${gtitool.version}/*" />
-			</fileset>
-		</zip>
-		<!-- zip file source -->
-		<zip destfile="${distdir}/gtitool-${gtitool.version}-src.zip" update="yes">
-			<fileset dir="${distdir}">
-				<include name="gtitool-${gtitool.version}/*" />
-			</fileset>
-		</zip>
 		<!-- move files -->
 		<move todir="${distdir}">
 			<fileset dir="${gtitooldir}" includes="*" />
@@ -109,6 +69,7 @@
 		<chmod file="${distdir}/gtitool.sh" perm="755" />
 		<!-- delete file -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
+		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
@@ -156,7 +117,7 @@
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
-			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
+			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.GTITool" />
 			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar java-cup-11a-gtitool-runtime.jar jgraph-gtitool.jar tinylaf-gtitool.jar log4j-1.2.14.jar" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />

@@ -15,27 +15,38 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
- * The main starter class for the GTITool project.
+ * The main starter class for the {@link GTITool} project.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class Start
+public final class GTITool
 {
 
   /**
    * The {@link Logger} for this class.
    */
-  private static final Logger logger = Logger.getLogger ( Start.class );
+  private static final Logger logger = Logger.getLogger ( GTITool.class );
 
 
   /**
-   * The main entry point for the GTI Tool project. This method also sets up
-   * look and feel for the platform if possible.
+   * The main entry point for the {@link GTITool} project.
    * 
    * @param arguments The command line arguments.
    */
-  public final static void main ( final String [] arguments )
+  public final static void main ( String [] arguments )
+  {
+    new GTITool ( arguments );
+  }
+
+
+  /**
+   * Allocates a new {@link GTITool}, sets the look and feel and starts the
+   * gui.
+   * 
+   * @param arguments The command line arguments.
+   */
+  public GTITool ( final String [] arguments )
   {
     /*
      * Install TinyLaF, if it is not the last active look and feel. Otherwise it

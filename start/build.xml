@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+	$Id: build.xml 674 2008-03-25 00:53:49Z fehler $
+	
+	Copyright (c) 2007-2008 Christian Fehler
+-->
+<project name="gtitool.start" default="dist" basedir=".">
+
+	<!-- property -->
+	<property name="distdir" value="${basedir}/dist" />
+	<property name="sourcedir" value="${basedir}/source" />
+	<property name="classesdir" value="${distdir}/classes" />
+	<property name="docdir" value="${basedir}/doc" />
+	<property name="javadocdir" value="${docdir}/javadoc" />
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property file="${core.basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
+	<property name="ui.distdir" value="${ui.basedir}/dist" />
+	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
+
+	<!-- dist -->
+	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-clean" description="Clean up and produce all distributions">
+		<mkdir dir="${gtitooldir}" />
+		<!-- copy files -->
+		<copy todir="${gtitooldir}">
+			<fileset dir="${ui.distdir}" includes="*" />
+			<fileset dir="${distdir}" includes="*.jar" />
+		</copy>
+		<!-- sign jar files -->
+		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
+			<fileset dir="${gtitooldir}" includes="*.jar" />
+		</signjar>
+		<!-- tar file -->
+		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
+				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
+				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" />
+				<include name="gtitool-${gtitool.version}/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="gtitool-${gtitool.version}/gtitool.sh" />
+			</tarfileset>
+		</tar>
+		<!-- tar file source -->
+		<tar destfile="${distdir}/gtitool-${gtitool.version}-src.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
+				<include name="gtitool-${gtitool.version}/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="gtitool-${gtitool.version}/gtitool.sh" />
+			</tarfileset>
+		</tar>
+		<!-- zip file -->
+		<zip destfile="${distdir}/gtitool-${gtitool.version}.zip" update="yes">
+			<fileset dir="${distdir}">
+				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
+				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" />
+				<include name="gtitool-${gtitool.version}/*" />
+			</fileset>
+		</zip>
+		<!-- zip file source -->
+		<zip destfile="${distdir}/gtitool-${gtitool.version}-src.zip" update="yes">
+			<fileset dir="${distdir}">
+				<include name="gtitool-${gtitool.version}/*" />
+			</fileset>
+		</zip>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${gtitooldir}" includes="*" />
+		</move>
+		<!-- chmod -->
+		<chmod file="${distdir}/gtitool.sh" perm="755" />
+		<chmod file="${distdir}/gtitool.exe" perm="755" />
+		<!-- delete file -->
+		<delete dir="${gtitooldir}" includeemptydirs="true" />
+		<!-- message -->
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
+	<!-- dist gtitool -->
+	<target name="dist-gtitool">
+		<ant dir="${ui.basedir}" target="dist" inheritall="false" />
+	</target>
+
+	<!-- dist preclean -->
+	<target name="dist-preclean">
+		<delete dir="${distdir}" includeemptydirs="true" />
+		<mkdir dir="${distdir}" />
+	</target>
+
+	<!-- dist compile -->
+	<target name="dist-compile">
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac debug="off" destdir="${classesdir}" encoding="UTF-8" source="1.1" target="1.1">
+			<compilerarg value="-Xlint:deprecation,unchecked" />
+			<src path="${sourcedir}" />
+			<classpath>
+				<pathelement location="${ui.distdir}/de.unisiegen.gtitool.ui-${gtitool.version}.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- dist jar -->
+	<target name="dist-jar" depends="dist-compile">
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.ui-${gtitool.version}.jar" />
+		</manifest>
+		<!-- jar file -->
+		<jar jarfile="${distdir}/gtitool-start-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.properties" />
+			</fileset>
+		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+
+	<!-- dist clean -->
+	<target name="dist-clean">
+		<delete dir="${classesdir}" />
+	</target>
+
+	<!-- javadoc -->
+	<target name="javadoc" description="Generate the javadoc">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.1" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
+			<fileset dir="${sourcedir}">
+				<include name="**/*.java" />
+			</fileset>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
+	</target>
+</project>

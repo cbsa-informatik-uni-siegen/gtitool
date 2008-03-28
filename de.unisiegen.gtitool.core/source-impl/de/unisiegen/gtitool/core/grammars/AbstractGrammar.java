@@ -162,9 +162,16 @@ public abstract class AbstractGrammar implements Grammar
    */
   public final boolean isModified ()
   {
-    if ( !this.productions.equals ( this.initialProductions ) )
-    {
+    if (this.productions.size () != this.initialProductions.size ()){
       return true;
+    }
+    for ( int i = 0 ; i < this.productions.size () ; i++ )
+    {
+      if ( !this.productions.get ( i ).equals (
+          this.initialProductions.get ( i ) ) )
+      {
+        return true;
+      }
     }
     if ( this.nonterminalSymbolSet.isModified () )
     {
@@ -333,7 +340,7 @@ public abstract class AbstractGrammar implements Grammar
     this.productions.add ( production );
     production
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-    fireModifyStatusChanged ( true );
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -345,7 +352,7 @@ public abstract class AbstractGrammar implements Grammar
   public void removeProduction ( Production production )
   {
     this.productions.remove ( production );
-    fireModifyStatusChanged ( true );
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -442,10 +449,10 @@ public abstract class AbstractGrammar implements Grammar
     return true;
   }
 
+
   /**
-   * 
    * Check the grammar for duplicate productions
-   *
+   * 
    * @return list containing occured errors
    */
   private final ArrayList < GrammarException > checkDuplicateProduction ()
@@ -460,7 +467,8 @@ public abstract class AbstractGrammar implements Grammar
         {
           if ( ! ( current == other ) && current.equals ( other ) )
           {
-            grammarExceptionList.add ( new GrammarDuplicateProductionException(current) );
+            grammarExceptionList.add ( new GrammarDuplicateProductionException (
+                current ) );
             foundDuplicates.add ( current );
           }
         }
@@ -469,10 +477,10 @@ public abstract class AbstractGrammar implements Grammar
     return grammarExceptionList;
   }
 
+
   /**
-   * 
    * Check the grammar for not reachable nonterminal symbols
-   *
+   * 
    * @return list containing occured errors
    */
   private final ArrayList < GrammarException > checkNonterminalNotReachable ()
@@ -495,7 +503,8 @@ public abstract class AbstractGrammar implements Grammar
       }
       if ( !used )
       {
-        grammarExceptionList.add ( new GrammarNonterminalNotReachableException(current) );
+        grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
+            current ) );
       }
     }
 

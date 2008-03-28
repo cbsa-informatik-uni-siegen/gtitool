@@ -532,7 +532,12 @@ public class GrammarPanel implements EditorPanel
     }
     else if ( event.getClickCount () == 2 )
     {
+   
       int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+      if (rowIndex == -1)
+      {
+        return;
+      }
       Production production = this.grammar.getProductionAt ( rowIndex );
 
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );

@@ -159,6 +159,8 @@ public final class DefaultProductionWord implements ProductionWord
       throw new NullPointerException ( "production word members is null" ); //$NON-NLS-1$
     }
     add ( productionWordMembers );
+    this.initialProductionWordMemberList
+    .addAll ( this.productionWordMemberList );
   }
 
 

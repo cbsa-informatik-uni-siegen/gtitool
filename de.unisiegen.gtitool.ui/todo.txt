@@ -7,7 +7,6 @@ CF		- Open und Save Dialog neu bauen
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
-BM		- is modified wenn gespeicherter Zustand wiederherstellen
 
 
 		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte

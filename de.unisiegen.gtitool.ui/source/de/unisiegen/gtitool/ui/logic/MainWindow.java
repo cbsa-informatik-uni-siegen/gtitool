@@ -1267,6 +1267,7 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
+
     // Return if only errors should be displayes
     if ( !showDialogIfWarning && errorCount == 0 )
     {
@@ -1276,6 +1277,9 @@ public final class MainWindow implements LanguageChangedListener
         panel.getJTabbedPaneConsole ().setSelectedIndex ( 1 );
 
         // Update the title
+        // Update the titles
+        panel.getJTabbedPaneConsole ().setTitleAt ( 0,
+            Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
         panel.getJTabbedPaneConsole ().setTitleAt (
             1,
             Messages.getString (
@@ -1312,17 +1316,12 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       // Update the titles
-      panel.getJTabbedPaneConsole ().setTitleAt (
-          0,
-          Messages.getString (
-              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
-      panel
-          .getJTabbedPaneConsole ()
-          .setTitleAt (
-              1,
-              Messages
-                  .getString (
-                      "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt ( 0,
+          Messages.getString ( "MachinePanel.ErrorFound", false, new Integer ( //$NON-NLS-1$
+              errorCount ) ) );
+      panel.getJTabbedPaneConsole ().setTitleAt ( 1,
+          Messages.getString ( "MachinePanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+              warningCount ) ) );
 
       // Select the error tab
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 0 );
@@ -1390,21 +1389,25 @@ public final class MainWindow implements LanguageChangedListener
       infoDialog = new InfoDialog ( this.gui, message, Messages
           .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
     }
-    if ( infoDialog != null )
+    // No error and no warning
+    else
     {
-      this.gui.jCheckBoxMenuItemConsole.setSelected ( true );
-      panel.setVisibleConsole ( true );
+      // Update the titles
+      panel.getJTabbedPaneConsole ().setTitleAt ( 0,
+          Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt ( 1,
+          Messages.getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
 
-      infoDialog.show ();
-      return false;
+      infoDialog = new InfoDialog ( this.gui, Messages
+          .getString ( "MainWindow.NoErrorNoWarningMachineCount" ), Messages //$NON-NLS-1$
+          .getString ( "MainWindow.NoErrorNoWarningMachine" ) ); //$NON-NLS-1$
     }
 
-    // Update the titles
-    panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-        Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-        Messages.getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
-    return true;
+    this.gui.jCheckBoxMenuItemConsole.setSelected ( true );
+    panel.setVisibleConsole ( true );
+
+    infoDialog.show ();
+    return false;
   }
 
 

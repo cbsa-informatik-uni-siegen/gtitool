@@ -4,7 +4,6 @@ CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Startsymbol einbauen ins Panel
 CF		- Open und Save Dialog neu bauen
-CF		- Beim Validieren ohne Fehler sollte auch eine Nachricht kommen
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken

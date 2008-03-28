@@ -6,6 +6,7 @@
 -->
 <project name="TinyLaF" default="dist" basedir=".">
 
+	<!-- property -->
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="sourcedir" location="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />

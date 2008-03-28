@@ -6,6 +6,7 @@
 -->
 <project name="gtitool.jgraph" default="dist" basedir=".">
 
+	<!-- property -->
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />

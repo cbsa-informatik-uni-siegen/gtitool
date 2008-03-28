@@ -135,6 +135,10 @@ public final class SVNVersion
     // presentation
     newVersion = getVersion ( new File ( "../gtitool.presentation" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
+    
+    // start
+    newVersion = getVersion ( new File ( "../gtitool.start" ) ); //$NON-NLS-1$
+    version = newVersion > version ? newVersion : version;
 
     // thesis
     newVersion = getVersion ( new File ( "../gtitool.thesis" ) ); //$NON-NLS-1$

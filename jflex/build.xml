@@ -6,6 +6,7 @@
 -->
 <project name="gtitool.jflex" default="dist">
 
+	<!-- property -->
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="distcupdir" value="${distdir}/cup" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -14,6 +15,7 @@
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 
+	<!-- task -->
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />
 	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
 

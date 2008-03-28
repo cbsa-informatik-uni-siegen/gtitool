@@ -6,11 +6,6 @@
 -->
 <project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
 
-	<!-- description -->
-	<description>
-		Buildfile for the de.unisiegen.gtitool.ui subproject.
-	</description>
-
 	<!-- property -->
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
@@ -43,7 +38,7 @@
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-exe,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-core,dist-jgraph,dist-tinylaf,version,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
@@ -53,20 +48,10 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 			<fileset dir="${docdir}" includes="LICENSE" />
 		</copy>
-		<!-- copy sh file -->
-		<copy todir="${gtitooldir}" file="${basedir}/executer/linux/gtitool.sh">
-			<filterset>
-				<filter token="gtitool.version" value="${gtitool.version}" />
-			</filterset>
-		</copy>
-		<!-- move exe file -->
-		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
 		<!-- move files -->
 		<move todir="${distdir}">
 			<fileset dir="${gtitooldir}" includes="*" />
 		</move>
-		<!-- chmod gtitool.sh -->
-		<chmod file="${distdir}/gtitool.sh" perm="755" />
 		<!-- delete file -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 		<!-- message -->
@@ -160,21 +145,6 @@
 		</jar>
 		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
-	</target>
-
-	<!-- dist exe -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/executer/windows/launch4j/launch4j.jar:${basedir}/executer/windows/launch4j/lib/xstream.jar" />
-	<target name="dist-exe">
-		<!-- update config file -->
-		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
-			<filterset>
-				<filter token="gtitool.version" value="${gtitool.version}" />
-			</filterset>
-		</copy>
-		<!-- launch4j -->
-		<launch4j configFile="${basedir}/executer/windows/tmp_launch4j.xml" />
-		<!-- delete config file -->
-		<delete file="${basedir}/executer/windows/tmp_launch4j.xml" />
 	</target>
 
 	<!-- dist clean -->

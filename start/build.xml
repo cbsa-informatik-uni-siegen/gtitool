@@ -20,7 +20,7 @@
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 
 	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-clean" description="Clean up and produce all distributions">
+	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-exe,dist-clean" description="Clean up and produce all distributions">
 		<mkdir dir="${gtitooldir}" />
 		<!-- copy files -->
 		<copy todir="${gtitooldir}">
@@ -31,6 +31,14 @@
 		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
 			<fileset dir="${gtitooldir}" includes="*.jar" />
 		</signjar>
+		<!-- copy sh file -->
+		<copy todir="${gtitooldir}" file="${basedir}/executer/linux/gtitool.sh">
+			<filterset>
+				<filter token="gtitool.version" value="${gtitool.version}" />
+			</filterset>
+		</copy>
+		<!-- move exe file -->
+		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${distdir}">
@@ -73,7 +81,6 @@
 		</move>
 		<!-- chmod -->
 		<chmod file="${distdir}/gtitool.sh" perm="755" />
-		<chmod file="${distdir}/gtitool.exe" perm="755" />
 		<!-- delete file -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 		<!-- message -->
@@ -112,7 +119,7 @@
 			<attribute name="Class-Path" value="de.unisiegen.gtitool.ui-${gtitool.version}.jar" />
 		</manifest>
 		<!-- jar file -->
-		<jar jarfile="${distdir}/gtitool-start-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/gtitool.start-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
 				<include name="**/*.properties" />
@@ -120,6 +127,21 @@
 		</jar>
 		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
+	</target>
+
+	<!-- dist exe -->
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/executer/windows/launch4j/launch4j.jar:${basedir}/executer/windows/launch4j/lib/xstream.jar" />
+	<target name="dist-exe">
+		<!-- update config file -->
+		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
+			<filterset>
+				<filter token="gtitool.version" value="${gtitool.version}" />
+			</filterset>
+		</copy>
+		<!-- launch4j -->
+		<launch4j configFile="${basedir}/executer/windows/tmp_launch4j.xml" />
+		<!-- delete config file -->
+		<delete file="${basedir}/executer/windows/tmp_launch4j.xml" />
 	</target>
 
 	<!-- dist clean -->

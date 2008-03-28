@@ -1,24 +1,24 @@
 <!--
-	$Id$
+	$Id: launch4j.xml 246 2007-11-29 21:34:33Z fehler $
 	
-	Copyright (c) 2007 Christian Fehler
+	Copyright (c) 2007-2008 Christian Fehler
 -->
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>0</headerType>
-  <jar>de.unisiegen.gtitool.ui-@gtitool.version@.jar</jar>
+  <jar>gtitool.start-@gtitool.version@.jar</jar>
   <outfile>gtitool.exe</outfile>
   <errTitle>GTI Tool: Error</errTitle>
   <customProcName>true</customProcName>
   <icon>gtitool.ico</icon>
   <jre>
-    <minVersion>1.5.0</minVersion>
+    <minVersion>1.1.0</minVersion>
   </jre>
   <versionInfo>
     <fileVersion>@gtitool.version@.0</fileVersion>
     <txtFileVersion>@gtitool.version@.0</txtFileVersion>
     <fileDescription>GTI Tool</fileDescription>
-    <copyright>Copyright (c) 2007 C. Fehler, B. Mies</copyright>
+    <copyright>Copyright (c) 2007-2008 C. Fehler, B. Mies</copyright>
     <productVersion>@gtitool.version@.0</productVersion>
     <txtProductVersion>@gtitool.version@.0</txtProductVersion>
     <productName>GTI Tool</productName>

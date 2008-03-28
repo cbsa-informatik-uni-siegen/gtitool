@@ -6,11 +6,6 @@
 -->
 <project name="de.unisiegen.gtitool.core" default="dist" basedir=".">
 
-	<!-- description -->
-	<description>
-		Buildfile for the de.unisiegen.gtitool.core subproject.
-    </description>
-
 	<!-- property -->
 	<property file="${basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />

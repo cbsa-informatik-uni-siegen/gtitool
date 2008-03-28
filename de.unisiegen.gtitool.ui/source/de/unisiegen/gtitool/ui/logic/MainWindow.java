@@ -996,6 +996,13 @@ public final class MainWindow implements LanguageChangedListener
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
+        
+        this.gui.jMenuItemDFA.setEnabled ( true );
+        this.gui.jMenuItemNFA.setEnabled ( true );
+        this.gui.jMenuItemPDA.setEnabled ( true );
+        this.gui.jMenuItemENFA.setEnabled ( true );
+        
+        
         MachinePanel machinePanel = ( MachinePanel ) panel;
         this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
             .isWordEnterMode () );
@@ -1036,6 +1043,10 @@ public final class MainWindow implements LanguageChangedListener
         panel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
             .getState ());
         this.gui.jMenuItemEnterWord.setEnabled ( false );
+        this.gui.jMenuItemDFA.setEnabled ( false );
+        this.gui.jMenuItemNFA.setEnabled ( false );
+        this.gui.jMenuItemPDA.setEnabled ( false );
+        this.gui.jMenuItemENFA.setEnabled ( false );
       }
       // Undo
       this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );

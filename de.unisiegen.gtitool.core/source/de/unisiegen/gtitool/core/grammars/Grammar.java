@@ -48,7 +48,7 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    * The available grammers.
    */
   public static final String [] AVAILABLE_GRAMMARS =
-  { "RG", "CFG", "CSG" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+  { "RG", "CFG" }; //$NON-NLS-1$//$NON-NLS-2$
 
 
   /**

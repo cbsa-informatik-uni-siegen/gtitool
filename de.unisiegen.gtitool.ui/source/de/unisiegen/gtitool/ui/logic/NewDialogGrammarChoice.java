@@ -27,11 +27,6 @@ public final class NewDialogGrammarChoice
     CONTEXT_FREE,
 
     /**
-     * ContextSensitiv is choosen.
-     */
-    CONTEXT_SENSITIV,
-
-    /**
      * Regular is choosen.
      */
     REGULAR;
@@ -108,20 +103,6 @@ public final class NewDialogGrammarChoice
     if ( evt.getStateChange () == ItemEvent.SELECTED )
     {
       this.actualChoice = Choice.CONTEXT_FREE;
-    }
-  }
-
-
-  /**
-   * Handle ContextSensitiv Item State changed.
-   * 
-   * @param evt The {@link ItemEvent}.
-   */
-  public final void handleContextSensitivItemStateChanged ( ItemEvent evt )
-  {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
-    {
-      this.actualChoice = Choice.CONTEXT_SENSITIV;
     }
   }
 

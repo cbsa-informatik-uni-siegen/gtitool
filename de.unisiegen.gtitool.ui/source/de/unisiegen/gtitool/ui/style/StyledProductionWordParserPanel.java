@@ -103,10 +103,12 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
 
     if ( productionWord != null )
     {
-      ProductionWord newProductionWord = new DefaultProductionWord ();
-      newProductionWord.setParserOffset ( productionWord.getParserOffset () );
+      ProductionWord newProductionWord = null;
+
       try
       {
+        ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
+
         ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
         for ( ProductionWordMember current : productionWord )
         {
@@ -121,7 +123,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
                   current.getName () );
               newNonterminalSymbol
                   .setParserOffset ( current.getParserOffset () );
-              newProductionWord.add ( newNonterminalSymbol );
+              memberList.add ( newNonterminalSymbol );
               break nonterminalLoop;
             }
           }
@@ -135,7 +137,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
               TerminalSymbol newTerminalSymbol = new DefaultTerminalSymbol (
                   current.getName () );
               newTerminalSymbol.setParserOffset ( current.getParserOffset () );
-              newProductionWord.add ( newTerminalSymbol );
+              memberList.add ( newTerminalSymbol );
               break terminalLoop;
             }
           }
@@ -153,9 +155,12 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
         // Check for exceptions
         if ( exceptionList.size () > 0 )
         {
-          newProductionWord = null;
           setException ( exceptionList );
+          return null;
         }
+
+        newProductionWord = new DefaultProductionWord ( memberList );
+        newProductionWord.setParserOffset ( productionWord.getParserOffset () );
       }
       catch ( NonterminalSymbolException exc )
       {
@@ -167,6 +172,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
         exc.printStackTrace ();
         System.exit ( 1 );
       }
+
       return newProductionWord;
     }
     return productionWord;

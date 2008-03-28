@@ -21,11 +21,13 @@
 	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
 	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
+	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
+	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 
 	<!-- declare -->
 	<target name="declare">
-		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/JFlex-1.4.1-gtitool.jar" />
-		<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/java-cup-11a-gtitool.jar" />
+		<taskdef name="jflex" classname="JFlex.anttask.JFlexTask" classpath="${jflex.distdir}/${jflexfile}" />
+		<taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${javacup.distdir}/${javacupfile}" />
 	</target>
 
 	<!-- dist -->
@@ -47,7 +49,7 @@
 	<!-- dist javacup -->
 	<target name="dist-javacup">
 		<ant dir="${javacup.basedir}" target="dist" inheritall="false" />
-		<copy file="${javacup.distdir}/java-cup-11a-gtitool-runtime.jar" todir="${distdir}" />
+		<copy file="${javacup.distdir}/${javacupfile}" todir="${distdir}" />
 	</target>
 
 	<!-- dist compile -->
@@ -61,7 +63,7 @@
 			<src path="${sourcegenerateddir}" />
 			<classpath>
 				<pathelement location="${libdir}/log4j-1.2.14.jar" />
-				<pathelement location="${distdir}/java-cup-11a-gtitool-runtime.jar" />
+				<pathelement location="${distdir}/${javacupfile}" />
 			</classpath>
 		</javac>
 	</target>
@@ -91,17 +93,6 @@
 				<include name="**/*.properties" />
 			</fileset>
 			<fileset dir="${sourceimpldir}">
-				<include name="**/*.properties" />
-			</fileset>
-		</jar>
-		<!-- jar file source-->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" manifest="${distdir}/MANIFEST.MF">
-			<fileset dir="${sourcedir}">
-				<include name="**/*.java" />
-				<include name="**/*.properties" />
-			</fileset>
-			<fileset dir="${sourceimpldir}">
-				<include name="**/*.java" />
 				<include name="**/*.properties" />
 			</fileset>
 		</jar>

@@ -18,6 +18,7 @@
 	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
 	<property name="ui.distdir" value="${ui.basedir}/dist" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
+	<property name="startfile" value="gtitool.start-${gtitool.version}.jar" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-exe,dist-clean" description="Clean up and produce all distributions">
@@ -51,27 +52,11 @@
 				<include name="gtitool-${gtitool.version}/gtitool.sh" />
 			</tarfileset>
 		</tar>
-		<!-- tar file source -->
-		<tar destfile="${distdir}/gtitool-${gtitool.version}-src.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${distdir}">
-				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
-				<include name="gtitool-${gtitool.version}/*" />
-			</tarfileset>
-			<tarfileset dir="${distdir}" mode="755">
-				<include name="gtitool-${gtitool.version}/gtitool.sh" />
-			</tarfileset>
-		</tar>
 		<!-- zip file -->
 		<zip destfile="${distdir}/gtitool-${gtitool.version}.zip" update="yes">
 			<fileset dir="${distdir}">
 				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.core-${gtitool.version}-src.jar" />
 				<exclude name="gtitool-${gtitool.version}/de.unisiegen.gtitool.ui-${gtitool.version}-src.jar" />
-				<include name="gtitool-${gtitool.version}/*" />
-			</fileset>
-		</zip>
-		<!-- zip file source -->
-		<zip destfile="${distdir}/gtitool-${gtitool.version}-src.zip" update="yes">
-			<fileset dir="${distdir}">
 				<include name="gtitool-${gtitool.version}/*" />
 			</fileset>
 		</zip>
@@ -119,7 +104,7 @@
 			<attribute name="Class-Path" value="de.unisiegen.gtitool.ui-${gtitool.version}.jar" />
 		</manifest>
 		<!-- jar file -->
-		<jar jarfile="${distdir}/gtitool.start-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/${startfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
 				<include name="**/*.properties" />

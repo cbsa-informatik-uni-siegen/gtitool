@@ -14,7 +14,11 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
-
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property file="${core.basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
+	
 	<!-- task -->
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />
 	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
@@ -57,7 +61,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="JFlex.Main" />
 		</manifest>
-		<jar basedir="${classesdir}" includes="JFlex/**,java_cup/**,skeleton" jarfile="${distdir}/JFlex-1.4.1-gtitool.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar basedir="${classesdir}" includes="JFlex/**,java_cup/**,skeleton" jarfile="${distdir}/${jflexfile}" manifest="${distdir}/MANIFEST.MF">
 		</jar>
 	</target>
 

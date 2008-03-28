@@ -12,6 +12,10 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property file="${core.basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="jgraphfile" value="gtitool.jgraph-${gtitool.version}.jar" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Clean up and produce all distributions">
@@ -36,7 +40,7 @@
 
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
-		<jar jarfile="${distdir}/jgraph-gtitool.jar" basedir="${classesdir}" />
+		<jar jarfile="${distdir}/${jgraphfile}" basedir="${classesdir}" />
 	</target>
 
 	<!-- dist clean -->

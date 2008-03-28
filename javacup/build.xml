@@ -16,6 +16,10 @@
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
+	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property file="${core.basedir}/build.properties" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 
 	<!-- task -->
 	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11.jar" />
@@ -63,25 +67,10 @@
 
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
-		<!-- normal jar -->
-		<jar jarfile="${distdir}/java-cup-11a-gtitool.jar" basedir="${classesdir}">
+		<jar jarfile="${distdir}/${javacupfile}" basedir="${classesdir}">
 			<manifest>
 				<attribute name="Main-Class" value="java_cup/Main" />
-				<attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
 			</manifest>
-		</jar>
-		<!-- runtime jar -->
-		<jar jarfile="${distdir}/java-cup-11a-gtitool-runtime.jar" basedir="${classesdir}" includes="java_cup/runtime/*">
-		</jar>
-		<!-- src jar -->
-		<jar jarfile="${distdir}/java-cup-11a-gtitool-src.jar">
-			<manifest>
-				<attribute name="Main-Class" value="java_cup/Main" />
-				<attribute name="Class-Path" value="java-cup-11a-gtitool-runtime.jar" />
-			</manifest>
-			<fileset dir="${distsourcedir}">
-				<include name="**/*.java" />
-			</fileset>
 		</jar>
 	</target>
 

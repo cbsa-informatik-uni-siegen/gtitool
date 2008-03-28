@@ -6,10 +6,6 @@ CF		- Startsymbol einbauen ins Panel
 CF		- CoreExeption muss PrettyPrintable implementieren
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
-BM		- Die Tabelle des Grammar Panels sollte entweder nicht Multi-Selektion
-		  fähig sein, oder beim Öffnen des Popupmenüs sollte die Selektion so
-		  bleiben und Einträge, die für mehrere Produktionen nicht sinnvoll sind,
-		  ausgegraut werden.
 
 		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
 		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,

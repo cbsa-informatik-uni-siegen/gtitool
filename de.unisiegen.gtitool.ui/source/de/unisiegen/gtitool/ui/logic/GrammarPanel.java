@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -484,21 +485,44 @@ public class GrammarPanel implements EditorPanel
     if ( event.getButton () != MouseEvent.BUTTON3 )
       return;
 
-    Production selectedProduction = null;
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    boolean multiRowChoosen = false;
 
-    int index = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+    int [] rows = this.gui.jGTITable.getSelectedRows ();
+    int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
 
-    // set the production under the mouse curser selected
-    this.gui.jGTITable.getSelectionModel ()
-        .setSelectionInterval ( index, index );
-
-    if ( this.grammar.getRowCount () > 0 && index != -1 )
+    if ( rows.length > 1 )
+      for ( int row : rows )
+      {
+        if ( row == rowIndex )
+          multiRowChoosen = true;
+      }
+    if ( !multiRowChoosen )
     {
-      selectedProduction = this.grammar.getProductionAt ( index );
+      if ( rowIndex == -1 )
+      {
+        // Do nothing
+      }
+      else
+      {
+
+        // Give the user a visual clue which rowIndex he has clicked on
+        this.gui.jGTITable.changeSelection ( rowIndex, 0, false, false );
+
+        productions.add ( this.grammar.getProductionAt ( rowIndex ) );
+      }
+    }
+    else
+    {
+      int [] rowindeces = new int [ rows.length ];
+      for ( int i = 0 ; i < rows.length ; i++ )
+      {
+        productions.add ( this.grammar.getProductionAt ( rowindeces [ i ] ) );
+      }
     }
 
     ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this.gui,
-        this.model, selectedProduction );
+        this.model, productions );
 
     popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
         .getY () );

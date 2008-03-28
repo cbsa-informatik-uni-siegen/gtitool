@@ -30,6 +30,8 @@
 	<property name="tinylaf.basedir" value="${basedir}/../gtitool.tinylaf" />
 	<property name="tinylaf.distdir" value="${tinylaf.basedir}/dist" />
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
+	
+	<property name="log4jfile" value="log4j-1.2.15.jar" />
 
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
@@ -93,7 +95,7 @@
 			<classpath>
 				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" />
 				<pathelement location="${core.distdir}/${javacupfile}" />
-				<pathelement location="${core.distdir}/log4j-1.2.14.jar" />
+				<pathelement location="${core.distdir}/${log4jfile}" />
 				<pathelement location="${jgraph.distdir}/${jgraphfile}" />
 				<pathelement location="${tinylaf.distdir}/${tinylaffile}" />
 			</classpath>
@@ -106,7 +108,7 @@
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}" />
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.GTITool" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar ${javacupfile} ${jgraphfile} ${tinylaffile} log4j-1.2.14.jar" />
+			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar ${javacupfile} ${jgraphfile} ${tinylaffile} ${log4jfile}" />
 			<section name="de.unisiegen.gtitool.ui">
 				<attribute name="Specification-Title" value="GTITool UI" />
 				<attribute name="Specification-Version" value="${gtitool.version}" />
@@ -165,7 +167,7 @@
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/log4j-1.2.14.jar; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/${log4jfile}; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

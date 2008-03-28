@@ -870,7 +870,7 @@
             <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonEditProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-production.png"/>
+                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-production.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="GrammarPanel.ProductionProperties" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>

@@ -43,6 +43,7 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
     this.productionColumn = new TableColumn ( MachineConsoleTableModel.MESSAGE_COLUMN );
     this.productionColumn.setPreferredWidth ( 200 );
     this.productionColumn.setMinWidth ( 200 );
+    this.productionColumn.setHeaderValue ( Messages.getString("GrammarPanel.Productions") ); //$NON-NLS-1$
     this.productionColumn.setCellRenderer ( new PrettyPrintableTableCellRenderer () );
     this.addColumn ( this.productionColumn );
 

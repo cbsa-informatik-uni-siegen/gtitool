@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException;
  * {@link Production} that exists more than one time.
  * 
  * @author Benjamin Mies
- * @version $Id: MachineAllSymbolsException.java 639 2008-03-14 11:43:47Z fehler $
+ * @version $Id$
  */
 public final class GrammarDuplicateProductionException extends GrammarException
     implements ProductionInvolvedException
@@ -46,10 +46,10 @@ public final class GrammarDuplicateProductionException extends GrammarException
       throw new NullPointerException ( "production is null" ); //$NON-NLS-1$
     }
     this.production = production;
-
-    setMessage ( Messages
-        .getString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "GrammarDuplicatProductionException.Description", production ) ); //$NON-NLS-1$
   }
 

@@ -53,18 +53,18 @@ public final class MachineStateStartException extends MachineException
     {
       throw new IllegalArgumentException ( "no exception: one start state" ); //$NON-NLS-1$
     }
-    // Message and Description
+    // Message and description
     if ( stateList.size () == 0 )
     {
-      setMessage ( Messages
-          .getString ( "MachineStateStartException.NoStartStateMessage" ) ); //$NON-NLS-1$
-      setDescription ( Messages
+      setPrettyMessage ( Messages
+          .getPrettyString ( "MachineStateStartException.NoStartStateMessage" ) ); //$NON-NLS-1$
+      setPrettyDescription ( Messages
           .getPrettyString ( "MachineStateStartException.NoStartStateDescription" ) ); //$NON-NLS-1$
     }
     else
     {
-      setMessage ( Messages
-          .getString ( "MachineStateStartException.MoreThanOneStartStateMessage" ) ); //$NON-NLS-1$
+      setPrettyMessage ( Messages
+          .getPrettyString ( "MachineStateStartException.MoreThanOneStartStateMessage" ) ); //$NON-NLS-1$
       PrettyString prettyString = new PrettyString ();
       for ( int i = 0 ; i < stateList.size () ; i++ )
       {
@@ -83,7 +83,7 @@ public final class MachineStateStartException extends MachineException
               + Messages.getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
       }
-      setDescription ( Messages.getPrettyString (
+      setPrettyDescription ( Messages.getPrettyString (
           "MachineStateStartException.MoreThanOneStartStateDescription", true, //$NON-NLS-1$
           prettyString ) );
     }

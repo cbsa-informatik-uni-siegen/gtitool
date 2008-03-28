@@ -48,10 +48,10 @@ public final class MachineEpsilonTransitionException extends MachineException
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
     this.transition = transition;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "MachineEpsilonTransitionException.Description", this.transition //$NON-NLS-1$
             .getStateBegin (), this.transition.getStateEnd () ) );
   }

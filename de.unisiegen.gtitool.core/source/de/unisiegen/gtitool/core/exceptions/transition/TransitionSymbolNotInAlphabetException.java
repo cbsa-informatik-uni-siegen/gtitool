@@ -52,10 +52,10 @@ public final class TransitionSymbolNotInAlphabetException extends
       throw new NullPointerException ( "alphabet is null" ); //$NON-NLS-1$
     }
     this.alphabet = alphabet;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "TransitionSymbolNotInAlphabetException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "TransitionSymbolNotInAlphabetException.Description", symbolList.get ( //$NON-NLS-1$
             0 ), alphabet ) );
   }

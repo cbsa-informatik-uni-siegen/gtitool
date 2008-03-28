@@ -45,9 +45,10 @@ public final class StateIllegalNameException extends StateException
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
     this.illegalName = illegalName;
-    // Message and Description
-    setMessage ( Messages.getString ( "StateException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "StateException.IllegalNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
         "StateException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
   }
 

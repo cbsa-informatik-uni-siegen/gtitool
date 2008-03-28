@@ -38,10 +38,10 @@ public final class NonterminalSymbolSetMoreThanOneSymbolException extends
       ArrayList < NonterminalSymbol > nonterminalSymbolList )
   {
     super ( nonterminalSymbolSet, nonterminalSymbolList );
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "NonterminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "NonterminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "NonterminalSymbolSetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
         nonterminalSymbolList.get ( 0 ), nonterminalSymbolSet ) );
   }

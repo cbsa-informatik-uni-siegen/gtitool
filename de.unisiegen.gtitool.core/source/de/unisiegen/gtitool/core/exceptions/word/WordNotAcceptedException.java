@@ -30,16 +30,16 @@ public final class WordNotAcceptedException extends WordException
   public WordNotAcceptedException ( Word word )
   {
     super ( word );
-    // Message and Description
-    setMessage ( Messages.getString ( "WordException.NotAcceptedMessage" ) ); //$NON-NLS-1$
+    // Message and description
+    setPrettyMessage ( Messages.getPrettyString ( "WordException.NotAcceptedMessage" ) ); //$NON-NLS-1$
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
-      setDescription ( Messages
+      setPrettyDescription ( Messages
           .getPrettyString ( "WordException.NotAcceptedDescriptionEmpty" ) ); //$NON-NLS-1$
     }
     else
     {
-      setDescription ( Messages.getPrettyString (
+      setPrettyDescription ( Messages.getPrettyString (
           "WordException.NotAcceptedDescription", word ) ); //$NON-NLS-1$
     }
   }

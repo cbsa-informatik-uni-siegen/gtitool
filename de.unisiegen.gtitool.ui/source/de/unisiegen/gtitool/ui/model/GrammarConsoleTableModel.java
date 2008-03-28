@@ -34,7 +34,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
     /**
      * The message.
      */
-    public String message;
+    public PrettyString message;
 
 
     /**
@@ -56,7 +56,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
      * @param descrition The description.
      * @param productions The {@link Production}s
      */
-    public ConsoleTableEntry ( String message, PrettyString descrition,
+    public ConsoleTableEntry ( PrettyString message, PrettyString descrition,
         ArrayList < Production > productions )
     {
       this.message = message;
@@ -128,8 +128,9 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
               .getProductions () );
     }
 
-    this.data.add ( new ConsoleTableEntry ( grammarException.getMessage (),
-        grammarException.getDescription (), productions ) );
+    this.data.add ( new ConsoleTableEntry ( grammarException
+        .getPrettyMessage (), grammarException.getPrettyDescription (),
+        productions ) );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 
@@ -156,7 +157,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
     {
       case MESSAGE_COLUMN :
       {
-        return String.class;
+        return PrettyString.class;
       }
       case DESCRIPTION_COLUMN :
       {
@@ -216,17 +217,6 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getRowCount()
-   */
-  public final int getRowCount ()
-  {
-    return this.data.size ();
-  }
-
-
-  /**
    * Returns the {@link State}s of the given row index.
    * 
    * @param rowIndex The given row index.
@@ -235,6 +225,17 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
   public final ArrayList < Production > getProductions ( int rowIndex )
   {
     return this.data.get ( rowIndex ).productions;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getRowCount()
+   */
+  public final int getRowCount ()
+  {
+    return this.data.size ();
   }
 
 

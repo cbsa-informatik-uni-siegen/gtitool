@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.exceptions.NonterminalSymbolInvolvedException;
  * {@link NonterminalSymbol}, which is not reachable.
  * 
  * @author Benjamin Mies
- * @version $Id: MachineAllSymbolsException.java 639 2008-03-14 11:43:47Z fehler $
+ * @version $Id$
  */
 public final class GrammarNonterminalNotReachableException extends
     GrammarException implements NonterminalSymbolInvolvedException
@@ -47,10 +47,10 @@ public final class GrammarNonterminalNotReachableException extends
       throw new NullPointerException ( "nonterminalSymbol is null" ); //$NON-NLS-1$
     }
     this.nonterminalSymbol = nonterminalSymbol;
-
-    setMessage ( Messages
-        .getString ( "GrammarNonterminalNotReachableException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "GrammarNonterminalNotReachableException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "GrammarNonterminalNotReachableException.Description", //$NON-NLS-1$
         nonterminalSymbol ) );
   }

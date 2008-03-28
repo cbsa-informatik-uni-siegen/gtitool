@@ -1274,7 +1274,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1283,7 +1283,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordNotAcceptedException exc )
@@ -1292,7 +1292,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
   }
@@ -1359,7 +1359,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1367,7 +1367,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
   }

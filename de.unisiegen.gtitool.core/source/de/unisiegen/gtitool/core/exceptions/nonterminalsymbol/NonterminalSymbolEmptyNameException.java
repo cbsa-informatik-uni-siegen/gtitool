@@ -30,10 +30,10 @@ public final class NonterminalSymbolEmptyNameException extends
   public NonterminalSymbolEmptyNameException ()
   {
     super ();
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "NonterminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "NonterminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages
         .getPrettyString ( "NonterminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 

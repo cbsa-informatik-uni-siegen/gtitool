@@ -30,10 +30,10 @@ public final class TerminalSymbolEmptyNameException extends
   public TerminalSymbolEmptyNameException ()
   {
     super ();
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "TerminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "TerminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages
         .getPrettyString ( "TerminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 

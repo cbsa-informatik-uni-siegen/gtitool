@@ -83,10 +83,10 @@ public final class MachineSymbolOnlyOneTimeException extends MachineException
       throw new IllegalArgumentException ( "transitions size is too small" ); //$NON-NLS-1$
     }
     this.transitions = transitions;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "MachineSymbolOnlyOneTimeException.Description", state, //$NON-NLS-1$
         symbols.get ( 0 ) ) );
   }

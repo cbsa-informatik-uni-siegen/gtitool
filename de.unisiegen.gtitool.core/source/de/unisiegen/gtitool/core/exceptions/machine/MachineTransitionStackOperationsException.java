@@ -50,10 +50,10 @@ public final class MachineTransitionStackOperationsException extends
       throw new NullPointerException ( "transition is null" ); //$NON-NLS-1$
     }
     this.transition = transition;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "MachineTransitionStackOperationsException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineTransitionStackOperationsException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "MachineTransitionStackOperationsException.Description", //$NON-NLS-1$
         this.transition ) );
   }

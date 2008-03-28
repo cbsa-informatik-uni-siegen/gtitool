@@ -50,9 +50,10 @@ public final class MachineStateNameException extends MachineException implements
     {
       throw new IllegalArgumentException ( "no exception: list size too small" ); //$NON-NLS-1$
     }
-    // Message and Description
-    setMessage ( Messages.getString ( "MachineStateNameException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineStateNameException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "MachineStateNameException.Description", stateList.get ( 0 ) ) ); //$NON-NLS-1$
   }
 

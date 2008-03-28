@@ -47,10 +47,10 @@ public final class MachineStateNotReachableException extends MachineException
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
     }
     this.state = state;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "MachineStateNotReachableException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineStateNotReachableException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "MachineStateNotReachableException.Description", this.state ) ); //$NON-NLS-1$
   }
 

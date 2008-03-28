@@ -37,7 +37,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
     /**
      * The message.
      */
-    public String message;
+    public PrettyString message;
 
 
     /**
@@ -73,7 +73,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
      * @param transitions The {@link Transition}s.
      * @param symbols The {@link Symbol}s.
      */
-    public ConsoleTableEntry ( String message, PrettyString descrition,
+    public ConsoleTableEntry ( PrettyString message, PrettyString descrition,
         ArrayList < State > states, ArrayList < Transition > transitions,
         ArrayList < Symbol > symbols )
     {
@@ -176,8 +176,9 @@ public final class MachineConsoleTableModel extends AbstractTableModel
       symbols.addAll ( exception.getSymbol () );
     }
 
-    this.data.add ( new ConsoleTableEntry ( machineException.getMessage (),
-        machineException.getDescription (), states, transitions, symbols ) );
+    this.data.add ( new ConsoleTableEntry ( machineException
+        .getPrettyMessage (), machineException.getPrettyDescription (), states,
+        transitions, symbols ) );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 
@@ -204,7 +205,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
     {
       case MESSAGE_COLUMN :
       {
-        return String.class;
+        return PrettyString.class;
       }
       case DESCRIPTION_COLUMN :
       {

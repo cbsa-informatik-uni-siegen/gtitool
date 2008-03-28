@@ -73,12 +73,12 @@ public final class MachineAllSymbolsException extends MachineException
       throw new IllegalArgumentException ( "no exception: set size too small" ); //$NON-NLS-1$
     }
     this.symbolSet = symbolSet;
-    // Message and Description
+    // Message and description
     if ( symbolSet.size () == 1 )
     {
-      setMessage ( Messages
-          .getString ( "MachineAllSymbolsException.SingleMessage" ) ); //$NON-NLS-1$
-      setDescription ( Messages.getPrettyString (
+      setPrettyMessage ( Messages
+          .getPrettyString ( "MachineAllSymbolsException.SingleMessage" ) ); //$NON-NLS-1$
+      setPrettyDescription ( Messages.getPrettyString (
           "MachineAllSymbolsException.SingleDescription", //$NON-NLS-1$
           this.state, this.symbolSet.first () ) );
     }
@@ -112,9 +112,9 @@ public final class MachineAllSymbolsException extends MachineException
         }
         index++ ;
       }
-      setMessage ( Messages
-          .getString ( "MachineAllSymbolsException.MultiMessage" ) ); //$NON-NLS-1$
-      setDescription ( Messages.getPrettyString (
+      setPrettyMessage ( Messages
+          .getPrettyString ( "MachineAllSymbolsException.MultiMessage" ) ); //$NON-NLS-1$
+      setPrettyDescription ( Messages.getPrettyString (
           "MachineAllSymbolsException.MultiDescription", true, this.state //$NON-NLS-1$
               .toPrettyString (), prettyString ) );
     }

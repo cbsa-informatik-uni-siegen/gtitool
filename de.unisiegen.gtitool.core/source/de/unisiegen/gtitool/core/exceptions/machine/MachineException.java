@@ -30,7 +30,7 @@ public abstract class MachineException extends CoreException
    * @param message The detail message.
    * @param description The detail description.
    */
-  public MachineException ( String message, PrettyString description )
+  public MachineException ( PrettyString message, PrettyString description )
   {
     super ( message, description );
   }

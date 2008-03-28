@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * The {@link ConsoleColumnModel} for the error and warning tables
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id:ConsoleColumnModel.java 305 2007-12-06 19:55:14Z mies $
  */
 public final class ConsoleColumnModel extends DefaultTableColumnModel implements
@@ -50,6 +51,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
         .getString ( "MachinePanel.Message" ) ); //$NON-NLS-1$
     this.messageColumn.setPreferredWidth ( 200 );
     this.messageColumn.setMinWidth ( 200 );
+    this.messageColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     this.addColumn ( this.messageColumn );
 
     // Description
@@ -62,6 +64,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
         .setCellRenderer ( new PrettyStringTableCellRenderer () );
     this.addColumn ( this.descriptionColumn );
 
+    // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
     /*
@@ -98,7 +101,7 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
    * 
    * @see LanguageChangedListener#languageChanged()
    */
-  public void languageChanged ()
+  public final void languageChanged ()
   {
     this.messageColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.Message" ) ); //$NON-NLS-1$

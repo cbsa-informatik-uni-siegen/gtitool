@@ -26,9 +26,10 @@ public final class MachineStateFinalException extends MachineException
   public MachineStateFinalException ()
   {
     super ();
-    // Message and Description
-    setMessage ( Messages.getString ( "MachineStateFinalException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "MachineStateFinalException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages
         .getPrettyString ( "MachineStateFinalException.Description" ) ); //$NON-NLS-1$
   }
 

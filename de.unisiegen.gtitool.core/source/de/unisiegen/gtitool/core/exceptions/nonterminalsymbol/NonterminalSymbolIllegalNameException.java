@@ -47,10 +47,10 @@ public final class NonterminalSymbolIllegalNameException extends
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
     this.illegalName = illegalName;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "NonterminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "NonterminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
         "NonterminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
         Style.NONE ) ) );
   }

@@ -36,12 +36,12 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
       ArrayList < Symbol > symbolList )
   {
     super ( alphabet, symbolList );
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
-        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( //$NON-NLS-1$
-            0 ), alphabet ) );
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
+        "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( 0 ), //$NON-NLS-1$
+        alphabet ) );
   }
 
 

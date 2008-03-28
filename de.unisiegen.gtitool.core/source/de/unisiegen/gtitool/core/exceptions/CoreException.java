@@ -41,7 +41,7 @@ public abstract class CoreException extends Exception
   /**
    * The detail message
    */
-  private String message;
+  private PrettyString message;
 
 
   /**
@@ -65,7 +65,7 @@ public abstract class CoreException extends Exception
    * @param message The detail message.
    * @param description The detail description.
    */
-  public CoreException ( String message, PrettyString description )
+  public CoreException ( PrettyString message, PrettyString description )
   {
     // Message
     if ( message == null )
@@ -83,18 +83,6 @@ public abstract class CoreException extends Exception
 
 
   /**
-   * Returns the detail description.
-   * 
-   * @return The detail description.
-   * @see #description
-   */
-  public final PrettyString getDescription ()
-  {
-    return this.description;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Throwable#getLocalizedMessage()
@@ -102,7 +90,7 @@ public abstract class CoreException extends Exception
   @Override
   public final String getLocalizedMessage ()
   {
-    return this.message;
+    throw new RuntimeException ( "do not use this method" ); //$NON-NLS-1$
   }
 
 
@@ -113,6 +101,30 @@ public abstract class CoreException extends Exception
    */
   @Override
   public final String getMessage ()
+  {
+    throw new RuntimeException ( "do not use this method" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the pretty description.
+   * 
+   * @return The pretty description.
+   * @see #description
+   */
+  public final PrettyString getPrettyDescription ()
+  {
+    return this.description;
+  }
+
+
+  /**
+   * Returns the pretty message.
+   * 
+   * @return The pretty message.
+   * @see #message
+   */
+  public final PrettyString getPrettyMessage ()
   {
     return this.message;
   }
@@ -127,11 +139,11 @@ public abstract class CoreException extends Exception
 
 
   /**
-   * Sets the detail description.
+   * Sets the pretty description.
    * 
-   * @param description The description to set.
+   * @param description The pretty description to set.
    */
-  protected final void setDescription ( PrettyString description )
+  protected final void setPrettyDescription ( PrettyString description )
   {
     if ( description == null )
     {
@@ -142,11 +154,11 @@ public abstract class CoreException extends Exception
 
 
   /**
-   * Sets the detail message.
+   * Sets the pretty message.
    * 
-   * @param message The message to set.
+   * @param message The pretty message to set.
    */
-  protected final void setMessage ( String message )
+  protected final void setPrettyMessage ( PrettyString message )
   {
     if ( message == null )
     {
@@ -167,7 +179,7 @@ public abstract class CoreException extends Exception
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();
     result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
-    result.append ( "Description: " + getDescription () ); //$NON-NLS-1$
+    result.append ( "Description: " + getPrettyDescription () ); //$NON-NLS-1$
     return result.toString ();
   }
 }

@@ -175,22 +175,22 @@ public final class Storage
       if ( exception instanceof AlphabetException )
       {
         throw new StoreException ( ( ( AlphabetException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof SymbolException )
       {
         throw new StoreException ( ( ( SymbolException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof StateException )
       {
         throw new StoreException ( ( ( StateException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof TransitionException )
       {
         throw new StoreException ( ( ( TransitionException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
@@ -246,22 +246,22 @@ public final class Storage
       if ( exception instanceof AlphabetException )
       {
         throw new StoreException ( ( ( AlphabetException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof SymbolException )
       {
         throw new StoreException ( ( ( SymbolException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof StateException )
       {
         throw new StoreException ( ( ( StateException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       if ( exception instanceof TransitionException )
       {
         throw new StoreException ( ( ( TransitionException ) exception )
-            .getDescription ().toString () );
+            .getPrettyDescription ().toString () );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

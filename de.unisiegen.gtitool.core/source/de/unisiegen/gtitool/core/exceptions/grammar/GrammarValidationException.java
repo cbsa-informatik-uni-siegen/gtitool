@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * grammar fails.
  * 
  * @author Benjamin Mies
- * @version $Id: MachineValidationException.java 532 2008-02-04 23:54:55Z fehler $
+ * @version $Id$
  */
 public final class GrammarValidationException extends CoreException implements
     Iterable < GrammarException >
@@ -22,7 +22,8 @@ public final class GrammarValidationException extends CoreException implements
    * The serial version uid.
    */
   private static final long serialVersionUID = 891334153869124257L;
-  
+
+
   /**
    * The list of {@link GrammarException}s.
    */

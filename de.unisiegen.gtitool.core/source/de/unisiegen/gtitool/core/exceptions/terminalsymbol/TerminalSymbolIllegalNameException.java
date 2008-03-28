@@ -47,10 +47,10 @@ public final class TerminalSymbolIllegalNameException extends
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
     this.illegalName = illegalName;
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "TerminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "TerminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
         "TerminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
         Style.NONE ) ) );
   }

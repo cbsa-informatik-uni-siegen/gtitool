@@ -38,10 +38,10 @@ public final class TerminalSymbolSetMoreThanOneSymbolException extends
       ArrayList < TerminalSymbol > terminalSymbolList )
   {
     super ( terminalSymbolSet, terminalSymbolList );
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "TerminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "TerminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "TerminalSymbolSetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
         terminalSymbolList.get ( 0 ), terminalSymbolSet ) );
   }

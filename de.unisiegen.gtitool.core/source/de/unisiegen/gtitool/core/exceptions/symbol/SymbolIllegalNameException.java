@@ -45,9 +45,10 @@ public final class SymbolIllegalNameException extends SymbolException
       throw new NullPointerException ( "illegal name is null" ); //$NON-NLS-1$
     }
     this.illegalName = illegalName;
-    // Message and Description
-    setMessage ( Messages.getString ( "SymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "SymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
         "SymbolException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
   }
 

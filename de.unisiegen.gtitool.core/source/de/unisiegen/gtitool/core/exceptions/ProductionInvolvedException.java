@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.entities.Production;
  * Involved {@link Production} interface.
  * 
  * @author Christian Fehler
- * @version $Id: MachineAllSymbolsException.java 639 2008-03-14 11:43:47Z fehler $
+ * @version $Id$
  */
 public interface ProductionInvolvedException
 {

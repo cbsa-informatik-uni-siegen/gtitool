@@ -38,10 +38,10 @@ public final class TransitionSymbolOnlyOneTimeException extends
       ArrayList < Symbol > symbolList )
   {
     super ( transition, symbolList );
-    // Message and Description
-    setMessage ( Messages
-        .getString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getPrettyString (
+    // Message and description
+    setPrettyMessage ( Messages
+        .getPrettyString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages.getPrettyString (
         "TransitionSymbolOnlyOneTimeException.Description", symbolList //$NON-NLS-1$
             .get ( 0 ), transition.getStateBegin (), transition.getStateEnd () ) );
   }

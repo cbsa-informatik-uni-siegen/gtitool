@@ -29,16 +29,16 @@ public final class WordFinishedException extends WordException
   public WordFinishedException ( Word word )
   {
     super ( word );
-    // Message and Description
-    setMessage ( Messages.getString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
+    // Message and description
+    setPrettyMessage ( Messages.getPrettyString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
-      setDescription ( Messages
+      setPrettyDescription ( Messages
           .getPrettyString ( "WordException.FinishedDescriptionEmpty" ) ); //$NON-NLS-1$
     }
     else
     {
-      setDescription ( Messages.getPrettyString (
+      setPrettyDescription ( Messages.getPrettyString (
           "WordException.FinishedDescription", word ) ); //$NON-NLS-1$
     }
   }

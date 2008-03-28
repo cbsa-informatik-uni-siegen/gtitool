@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * {@link GrammarValidationException}.
  * 
  * @author Benjamin Mies
- * @version $Id: MachineException.java 532 2008-02-04 23:54:55Z fehler $
+ * @version $Id$
  */
 public abstract class GrammarException extends CoreException
 {
@@ -30,7 +30,7 @@ public abstract class GrammarException extends CoreException
    * @param message The detail message.
    * @param description The detail description.
    */
-  public GrammarException ( String message, PrettyString description )
+  public GrammarException ( PrettyString message, PrettyString description )
   {
     super ( message, description );
   }

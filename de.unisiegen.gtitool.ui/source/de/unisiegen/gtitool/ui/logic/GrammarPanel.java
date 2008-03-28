@@ -617,7 +617,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.gui.jGTITable.setModel ( this.grammar );
     this.gui.jGTITable.setColumnModel ( new GrammarColumnModel () );
-
+    this.gui.jGTITable.getTableHeader ().setReorderingAllowed ( false );
     if ( this.grammar.getColumnCount () > 0 )
     {
       this.gui.jGTITable.getSelectionModel ().setSelectionInterval ( 0, 0 );

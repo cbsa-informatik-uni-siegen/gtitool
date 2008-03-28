@@ -190,7 +190,6 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarToggleButtonFinalState.setVisible ( state );
     this.gui.jGTIToolBarToggleButtonAddTransition.setVisible ( state );
 
-    this.gui.jSeparatorEditNavigation.setVisible ( state );
     this.gui.jGTIToolBarButtonStart.setVisible ( state );
     this.gui.jGTIToolBarButtonPrevious.setVisible ( state );
     this.gui.jGTIToolBarButtonNextStep.setVisible ( state );

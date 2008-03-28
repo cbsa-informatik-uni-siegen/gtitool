@@ -1420,6 +1420,9 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleWordStop ()
   {
+    this.autoStepTimer.cancel ();
+    this.autoStepTimer = null;
+    
     this.wordNavigation = false;
     clearHighlight ();
 

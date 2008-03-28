@@ -6,11 +6,6 @@ CF		- Startsymbol einbauen ins Panel
 CF		- CoreExeption muss PrettyPrintable implementieren
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
-BM		- Das Icon der "Production properties" muss ersetzt werden, da dieses
-		  Icon schon für die Programmeinstellungen verwendet wird. Der englische
-		  Tooltip ist falsch geschrieben, "properties" schreibt man klein.
-BM		- Zwischen den ToolBars "Redo/Undo" und "Grammar" sollte ein Separator
-		  sein, da dies bei der Machine ToolBar auch der Fall ist.
 BM		- Die Tabelle des Grammar Panels sollte entweder nicht Multi-Selektion
 		  fähig sein, oder beim Öffnen des Popupmenüs sollte die Selektion so
 		  bleiben und Einträge, die für mehrere Produktionen nicht sinnvoll sind,
@@ -22,3 +17,4 @@ BM		- Die Tabelle des Grammar Panels sollte entweder nicht Multi-Selektion
 		  Komponente ganz genau miteinander vergleichen. Es muss erst eine
 		  Absprache erfolgen, wer welche Panel übernimmt, damit es zu keinen
 		  Konflikten kommt.
+		  

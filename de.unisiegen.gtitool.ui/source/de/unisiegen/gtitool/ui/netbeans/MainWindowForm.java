@@ -72,6 +72,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jGTIToolBarButtonRedo = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jSeparatorEditNavigation = new javax.swing.JSeparator();
         jToolBarNavigation = new javax.swing.JToolBar();
+        jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarToggleButtonMouse = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonAddState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
@@ -80,7 +81,6 @@ public class MainWindowForm extends javax.swing.JFrame {
         jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jSeparatorNavigation = new javax.swing.JSeparator();
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
@@ -225,6 +225,16 @@ public class MainWindowForm extends javax.swing.JFrame {
         jToolBarNavigation.setFloatable(false);
         jToolBarNavigation.setBorderPainted(false);
         jToolBarNavigation.setOpaque(false);
+        jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
+        jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
+        jGTIToolBarButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonEditDocumentActionPerformed(evt);
+            }
+        });
+
+        jToolBarNavigation.add(jGTIToolBarButtonEditDocument);
+
         toolbarButton.add(jGTIToolBarToggleButtonMouse);
         jGTIToolBarToggleButtonMouse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/toolbar_mouse.gif")));
         jGTIToolBarToggleButtonMouse.setSelected(true);
@@ -310,16 +320,6 @@ public class MainWindowForm extends javax.swing.JFrame {
         });
 
         jToolBarNavigation.add(jGTIToolBarButtonDeleteProduction);
-
-        jGTIToolBarButtonEditDocument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png")));
-        jGTIToolBarButtonEditDocument.setToolTipText(bundle.getString("MachinePanel.EditDocument")); // NOI18N
-        jGTIToolBarButtonEditDocument.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIToolBarButtonEditDocumentActionPerformed(evt);
-            }
-        });
-
-        jToolBarNavigation.add(jGTIToolBarButtonEditDocument);
 
         jSeparatorNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparatorNavigation.setMaximumSize(new java.awt.Dimension(5, 32));

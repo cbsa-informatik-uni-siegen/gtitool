@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
+import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
@@ -36,9 +37,9 @@ public final class ProductionPopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link GrammarPanelForm}.
+   * The {@link GrammarPanel}.
    */
-  private GrammarPanelForm parent;
+  private GrammarPanel grammarPanel;
 
 
   /**
@@ -69,19 +70,24 @@ public final class ProductionPopupMenu extends JPopupMenu
    * The add item.
    */
   private JMenuItem add;
+  
+  /**
+   * The validate item.
+   */
+  private JMenuItem validate;
 
 
   /**
    * Allocates a new {@link StatePopupMenu}.
    * 
-   * @param parent The parent panel.
+   * @param parent The {@link GrammarPanel}.
    * @param model the model containing the production.
    * @param productions the selected {@link Production}s
    */
-  public ProductionPopupMenu ( GrammarPanelForm parent,
+  public ProductionPopupMenu ( GrammarPanel parent,
       DefaultGrammarModel model, ArrayList < Production > productions )
   {
-    this.parent = parent;
+    this.grammarPanel = parent;
     this.model = model;
     this.productions = productions;
     populateMenues ();
@@ -106,7 +112,7 @@ public final class ProductionPopupMenu extends JPopupMenu
       ActionEvent event )
       {
         ProductionDialog dialog = new ProductionDialog (
-            ProductionPopupMenu.this.parent.getLogic ().getParent (),
+            ProductionPopupMenu.this.grammarPanel.getParent (),
             ProductionPopupMenu.this.model.getGrammar ()
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
                 .getGrammar ().getTerminalSymbolSet (),
@@ -119,7 +125,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.config = new JMenuItem ( Messages
         .getString ( "ProductionPopupMenu.Properties" ) ); //$NON-NLS-1$
     this.config.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/properties.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
     this.config.addActionListener ( new ActionListener ()
     {
 
@@ -129,7 +135,7 @@ public final class ProductionPopupMenu extends JPopupMenu
       {
 
         JFrame window = ( JFrame ) SwingUtilities
-            .getWindowAncestor ( ProductionPopupMenu.this.parent );
+            .getWindowAncestor ( (GrammarPanelForm)ProductionPopupMenu.this.grammarPanel.getGui () );
         ProductionDialog productionDialog = new ProductionDialog ( window,
             ProductionPopupMenu.this.model.getGrammar ()
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
@@ -166,7 +172,7 @@ public final class ProductionPopupMenu extends JPopupMenu
         }
           
           ConfirmDialog confirmedDialog = new ConfirmDialog (
-              ProductionPopupMenu.this.parent.getLogic ().getParent (),
+              ProductionPopupMenu.this.grammarPanel.getParent (),
              message,
               Messages.getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
               true, false );
@@ -176,12 +182,25 @@ public final class ProductionPopupMenu extends JPopupMenu
             for (Production production : ProductionPopupMenu.this.productions){
             ProductionPopupMenu.this.model
                 .removeProduction ( production );
-            ProductionPopupMenu.this.parent.repaint ();
+           ((GrammarPanelForm) ProductionPopupMenu.this.grammarPanel.getGui ()).repaint ();
           }
         }
       }
     } );
     this.delete.setEnabled ( this.productions.size () > 0 );
     add ( this.delete );
+    
+    this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
+    this.validate.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        ProductionPopupMenu.this.grammarPanel.getMainWindow ().handleValidate ();
+      }
+    } );
+    add ( this.validate );
   }
 }

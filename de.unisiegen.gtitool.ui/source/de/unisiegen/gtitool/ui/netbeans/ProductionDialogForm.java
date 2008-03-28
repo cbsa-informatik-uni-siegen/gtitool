@@ -46,7 +46,6 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        JLabelHeadline = new javax.swing.JLabel();
         jPanelSubHeadline1 = new javax.swing.JPanel();
         jLabelNonTerminalSymbol = new javax.swing.JLabel();
         jPanelAlphabet = new javax.swing.JPanel();
@@ -70,24 +69,13 @@ public class ProductionDialogForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        setTitle(bundle.getString("TransitionDialog.Title")); // NOI18N
+        setTitle(bundle.getString("ProductionDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
-
-        JLabelHeadline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelHeadline.setText(bundle.getString("ProductionDialog.Title")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(JLabelHeadline, gridBagConstraints);
 
         jPanelSubHeadline1.setLayout(new java.awt.GridBagLayout());
 
@@ -112,6 +100,12 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
 
         jGTIList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jGTIList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                handleSelectionChange(evt);
+            }
+        });
+
         jScrollPane.setViewportView(jGTIList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -165,6 +159,7 @@ public class ProductionDialogForm extends javax.swing.JDialog {
 
         jPanelWord.setLayout(new java.awt.GridBagLayout());
 
+        styledNonterminalSymbolSetParserPanel.setCopyable(true);
         styledNonterminalSymbolSetParserPanel.setEditable(false);
         styledNonterminalSymbolSetParserPanel.setMinimumSize(new java.awt.Dimension(100, 40));
         styledNonterminalSymbolSetParserPanel.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -176,6 +171,7 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
         jPanelWord.add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
 
+        styledTerminalSymbolSetParserPanel.setCopyable(true);
         styledTerminalSymbolSetParserPanel.setEditable(false);
         styledTerminalSymbolSetParserPanel.setMinimumSize(new java.awt.Dimension(100, 40));
         styledTerminalSymbolSetParserPanel.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -283,6 +279,10 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         setBounds((screenSize.width-400)/2, (screenSize.height-500)/2, 400, 500);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void handleSelectionChange(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_handleSelectionChange
+        this.logic.handleListSelectionChanged();
+    }//GEN-LAST:event_handleSelectionChange
+
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
         this.logic.handleCancel();
     }//GEN-LAST:event_jGTIButtonCancelActionPerformed
@@ -296,7 +296,6 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel JLabelHeadline;
     public javax.swing.JLabel JLabelResultingProduction;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;

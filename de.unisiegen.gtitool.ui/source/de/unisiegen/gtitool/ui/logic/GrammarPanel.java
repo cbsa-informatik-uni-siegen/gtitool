@@ -482,50 +482,65 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleTableMouseClickedEvent ( MouseEvent event )
   {
-    if ( event.getButton () != MouseEvent.BUTTON3 )
+    if ( event.getButton () == MouseEvent.BUTTON2 )
       return;
 
-    ArrayList < Production > productions = new ArrayList < Production > ();
-    boolean multiRowChoosen = false;
-
-    int [] rows = this.gui.jGTITable.getSelectedRows ();
-    int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
-
-    if ( rows.length > 1 )
-      for ( int row : rows )
-      {
-        if ( row == rowIndex )
-          multiRowChoosen = true;
-      }
-    if ( !multiRowChoosen )
+    if ( event.getButton () == MouseEvent.BUTTON3 )
     {
-      if ( rowIndex == -1 )
+
+      ArrayList < Production > productions = new ArrayList < Production > ();
+      boolean multiRowChoosen = false;
+
+      int [] rows = this.gui.jGTITable.getSelectedRows ();
+      int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+
+      if ( rows.length > 1 )
+        for ( int row : rows )
+        {
+          if ( row == rowIndex )
+            multiRowChoosen = true;
+        }
+      if ( !multiRowChoosen )
       {
-        // Do nothing
+        if ( rowIndex == -1 )
+        {
+          // Do nothing
+        }
+        else
+        {
+
+          // Give the user a visual clue which rowIndex he has clicked on
+          this.gui.jGTITable.changeSelection ( rowIndex, 0, false, false );
+
+          productions.add ( this.grammar.getProductionAt ( rowIndex ) );
+        }
       }
       else
       {
-
-        // Give the user a visual clue which rowIndex he has clicked on
-        this.gui.jGTITable.changeSelection ( rowIndex, 0, false, false );
-
-        productions.add ( this.grammar.getProductionAt ( rowIndex ) );
+        int [] rowindeces = new int [ rows.length ];
+        for ( int i = 0 ; i < rows.length ; i++ )
+        {
+          productions.add ( this.grammar.getProductionAt ( rowindeces [ i ] ) );
+        }
       }
+
+      ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
+          this.model, productions );
+
+      popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
+          .getY () );
     }
-    else
+    else if ( event.getClickCount () == 2 )
     {
-      int [] rowindeces = new int [ rows.length ];
-      for ( int i = 0 ; i < rows.length ; i++ )
-      {
-        productions.add ( this.grammar.getProductionAt ( rowindeces [ i ] ) );
-      }
+      int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+      Production production = this.grammar.getProductionAt ( rowIndex );
+
+      JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
+      ProductionDialog productionDialog = new ProductionDialog ( window,
+          this.grammar.getNonterminalSymbolSet (), this.grammar
+              .getTerminalSymbolSet (), this.model, production );
+      productionDialog.show ();
     }
-
-    ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this.gui,
-        this.model, productions );
-
-    popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
-        .getY () );
   }
 
 
@@ -696,7 +711,7 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * TODO
+   * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#clearValidationMessages()
    */
@@ -821,5 +836,16 @@ public class GrammarPanel implements EditorPanel
   public final void addError ( GrammarException grammarException )
   {
     this.errorTableModel.addRow ( grammarException );
+  }
+
+
+  /**
+   * Returns the {@link MainWindow}.
+   * 
+   * @return the {@link MainWindow}.
+   */
+  public MainWindow getMainWindow ()
+  {
+    return this.mainWindowForm.getLogic ();
   }
 }

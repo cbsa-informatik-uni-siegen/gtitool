@@ -363,4 +363,31 @@ public final class ProductionDialog
   {
     return this.gui;
   }
+
+  /**
+   * Handle list selected value changed.
+   *
+   */
+  public void handleListSelectionChanged ()
+  {
+
+    this.gui.styledProductionWordParserPanel.parse ();
+
+    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
+        .getProductionWord ();
+    if ( productionWord == null )
+    {
+      setButtonStatus ( false );
+      getGui ().styledProductionParserPanel.setProduction ( null );
+    }
+
+    else
+    {
+      setButtonStatus ( true );
+      getGui ().styledProductionParserPanel
+          .setProduction ( new DefaultProduction (
+              ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+              productionWord ) );
+    }
+  }
 }

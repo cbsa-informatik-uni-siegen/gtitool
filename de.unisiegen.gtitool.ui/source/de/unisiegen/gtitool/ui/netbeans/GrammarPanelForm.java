@@ -168,5 +168,4 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
     public GrammarPanel getLogic(){
       return this.logic;
     }
-    
 }

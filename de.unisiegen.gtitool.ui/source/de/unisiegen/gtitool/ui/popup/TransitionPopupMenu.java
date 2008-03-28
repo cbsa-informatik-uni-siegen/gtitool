@@ -162,7 +162,7 @@ public final class TransitionPopupMenu extends JPopupMenu
     this.config = new JMenuItem ( Messages
         .getString ( "MachinePanel.Properties" ) ); //$NON-NLS-1$
     this.config.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/properties.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
     this.config.addActionListener ( new ActionListener ()
     {
 

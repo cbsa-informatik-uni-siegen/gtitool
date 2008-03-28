@@ -140,7 +140,7 @@ public final class Storage
       }
       if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
-        return new DefaultGrammarModel ( element);
+        return new DefaultGrammarModel ( element );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
@@ -175,22 +175,22 @@ public final class Storage
       if ( exception instanceof AlphabetException )
       {
         throw new StoreException ( ( ( AlphabetException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof SymbolException )
       {
         throw new StoreException ( ( ( SymbolException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof StateException )
       {
         throw new StoreException ( ( ( StateException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof TransitionException )
       {
         throw new StoreException ( ( ( TransitionException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
@@ -246,22 +246,22 @@ public final class Storage
       if ( exception instanceof AlphabetException )
       {
         throw new StoreException ( ( ( AlphabetException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof SymbolException )
       {
         throw new StoreException ( ( ( SymbolException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof StateException )
       {
         throw new StoreException ( ( ( StateException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       if ( exception instanceof TransitionException )
       {
         throw new StoreException ( ( ( TransitionException ) exception )
-            .getDescription () );
+            .getDescription ().toString () );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

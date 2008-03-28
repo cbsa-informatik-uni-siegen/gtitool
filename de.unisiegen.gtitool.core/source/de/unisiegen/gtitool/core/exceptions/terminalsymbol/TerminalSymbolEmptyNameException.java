@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * {@link TerminalSymbol} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: TerminalSymbolEmptyNameException.java 555 2008-02-12 00:50:47Z
+ *          fehler $
  */
 public final class TerminalSymbolEmptyNameException extends
     TerminalSymbolException
@@ -33,7 +34,7 @@ public final class TerminalSymbolEmptyNameException extends
     setMessage ( Messages
         .getString ( "TerminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages
-        .getString ( "TerminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
+        .getPrettyString ( "TerminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 
 

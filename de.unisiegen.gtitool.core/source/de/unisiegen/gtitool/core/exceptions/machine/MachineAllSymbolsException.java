@@ -12,6 +12,9 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -75,13 +78,13 @@ public final class MachineAllSymbolsException extends MachineException
     {
       setMessage ( Messages
           .getString ( "MachineAllSymbolsException.SingleMessage" ) ); //$NON-NLS-1$
-      setDescription ( Messages.getString (
+      setDescription ( Messages.getPrettyString (
           "MachineAllSymbolsException.SingleDescription", //$NON-NLS-1$
-          this.state.getName (), this.symbolSet.first ().getName () ) );
+          this.state, this.symbolSet.first () ) );
     }
     else
     {
-      StringBuilder symbols = new StringBuilder ();
+      PrettyString prettyString = new PrettyString ();
       Iterator < Symbol > iter = this.symbolSet.iterator ();
       int index = 0;
       while ( iter.hasNext () )
@@ -89,28 +92,31 @@ public final class MachineAllSymbolsException extends MachineException
         Symbol current = iter.next ();
         if ( index > 0 )
         {
-          symbols.append ( Messages.QUOTE );
+          prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
+              Style.NONE ) );
         }
-        symbols.append ( current.getName () );
+        prettyString.addPrettyPrintable ( current );
         if ( index < this.symbolSet.size () - 1 )
         {
-          symbols.append ( Messages.QUOTE );
+          prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
+              Style.NONE ) );
         }
         if ( index < this.symbolSet.size () - 2 )
         {
-          symbols.append ( ", " ); //$NON-NLS-1$
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         if ( index == this.symbolSet.size () - 2 )
         {
-          symbols.append ( " " + Messages.getString ( "And" ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+          prettyString.addPrettyToken ( new PrettyToken ( " " //$NON-NLS-1$
+              + Messages.getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         index++ ;
       }
       setMessage ( Messages
           .getString ( "MachineAllSymbolsException.MultiMessage" ) ); //$NON-NLS-1$
-      setDescription ( Messages.getString (
-          "MachineAllSymbolsException.MultiDescription", this.state.getName (), //$NON-NLS-1$
-          symbols.toString () ) );
+      setDescription ( Messages.getPrettyString (
+          "MachineAllSymbolsException.MultiDescription", true, this.state //$NON-NLS-1$
+              .toPrettyString (), prettyString ) );
     }
   }
 

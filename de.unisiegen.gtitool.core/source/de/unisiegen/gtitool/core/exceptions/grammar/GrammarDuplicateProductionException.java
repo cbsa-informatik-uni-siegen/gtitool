@@ -49,9 +49,8 @@ public final class GrammarDuplicateProductionException extends GrammarException
 
     setMessage ( Messages
         .getString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages
-        .getString ( "GrammarDuplicatProductionException.Description", production ) ); //$NON-NLS-1$
-
+    setDescription ( Messages.getPrettyString (
+        "GrammarDuplicatProductionException.Description", production ) ); //$NON-NLS-1$
   }
 
 
@@ -79,12 +78,12 @@ public final class GrammarDuplicateProductionException extends GrammarException
     return ErrorType.ERROR;
   }
 
-  
-   /**
-     * {@inheritDoc}
-     * 
-     * @see Throwable#toString()
-     */
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
   @Override
   public final String toString ()
   {

@@ -34,11 +34,11 @@ public final class WordFinishedException extends WordException
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
       setDescription ( Messages
-          .getString ( "WordException.FinishedDescriptionEmpty" ) ); //$NON-NLS-1$
+          .getPrettyString ( "WordException.FinishedDescriptionEmpty" ) ); //$NON-NLS-1$
     }
     else
     {
-      setDescription ( Messages.getString (
+      setDescription ( Messages.getPrettyString (
           "WordException.FinishedDescription", word ) ); //$NON-NLS-1$
     }
   }

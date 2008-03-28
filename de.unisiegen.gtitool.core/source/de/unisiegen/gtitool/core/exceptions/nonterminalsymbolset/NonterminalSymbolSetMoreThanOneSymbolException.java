@@ -41,10 +41,9 @@ public final class NonterminalSymbolSetMoreThanOneSymbolException extends
     // Message and Description
     setMessage ( Messages
         .getString ( "NonterminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "NonterminalSymbolSetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
-        nonterminalSymbolList.get ( 0 ).getName (), nonterminalSymbolSet
-            .toString () ) );
+        nonterminalSymbolList.get ( 0 ), nonterminalSymbolSet ) );
   }
 
 

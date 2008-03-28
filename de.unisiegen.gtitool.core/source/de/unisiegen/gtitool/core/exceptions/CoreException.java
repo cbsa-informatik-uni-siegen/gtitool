@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.exceptions;
 
 
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+
+
 /**
  * The {@link CoreException} is as parent class for all other exceptions in the
  * core project.
@@ -31,7 +34,7 @@ public abstract class CoreException extends Exception
     /**
      * The collection type.
      */
-    COLLECTION
+    COLLECTION;
   }
 
 
@@ -44,7 +47,7 @@ public abstract class CoreException extends Exception
   /**
    * The detail description.
    */
-  private String description;
+  private PrettyString description;
 
 
   /**
@@ -62,7 +65,7 @@ public abstract class CoreException extends Exception
    * @param message The detail message.
    * @param description The detail description.
    */
-  public CoreException ( String message, String description )
+  public CoreException ( String message, PrettyString description )
   {
     // Message
     if ( message == null )
@@ -85,7 +88,7 @@ public abstract class CoreException extends Exception
    * @return The detail description.
    * @see #description
    */
-  public final String getDescription ()
+  public final PrettyString getDescription ()
   {
     return this.description;
   }
@@ -126,15 +129,15 @@ public abstract class CoreException extends Exception
   /**
    * Sets the detail description.
    * 
-   * @param pDescription The description to set.
+   * @param description The description to set.
    */
-  protected final void setDescription ( String pDescription )
+  protected final void setDescription ( PrettyString description )
   {
-    if ( pDescription == null )
+    if ( description == null )
     {
       throw new NullPointerException ( "description is null" ); //$NON-NLS-1$
     }
-    this.description = pDescription;
+    this.description = description;
   }
 
 

@@ -60,7 +60,7 @@ import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyPrintableTableCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
@@ -1274,7 +1274,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription (), exc.getMessage () );
+          .getDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1283,7 +1283,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription (), exc.getMessage () );
+          .getDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordNotAcceptedException exc )
@@ -1292,7 +1292,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription (), exc.getMessage () );
+          .getDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
   }
@@ -1359,7 +1359,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription (), exc.getMessage () );
+          .getDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1367,7 +1367,7 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getDescription (), exc.getMessage () );
+          .getDescription ().toString (), exc.getMessage () );
       infoDialog.show ();
     }
   }
@@ -1422,7 +1422,7 @@ public final class MachinePanel implements EditorPanel
   {
     this.autoStepTimer.cancel ();
     this.autoStepTimer = null;
-    
+
     this.wordNavigation = false;
     clearHighlight ();
 
@@ -1594,7 +1594,7 @@ public final class MachinePanel implements EditorPanel
         } );
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.setDefaultRenderer ( PrettyPrintable.class,
-        new PrettyPrintableTableCellRenderer () );
+        new PrettyStringTableCellRenderer () );
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );

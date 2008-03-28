@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.core.exceptions.nonterminalsymbol;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -11,7 +14,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * {@link NonterminalSymbol} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NonterminalSymbolIllegalNameException.java 555 2008-02-12
+ *          00:50:47Z fehler $
  */
 public final class NonterminalSymbolIllegalNameException extends
     NonterminalSymbolException
@@ -46,8 +50,9 @@ public final class NonterminalSymbolIllegalNameException extends
     // Message and Description
     setMessage ( Messages
         .getString ( "NonterminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
-        "NonterminalSymbolException.IllegalNameDescription", illegalName ) ); //$NON-NLS-1$
+    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+        "NonterminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
+        Style.NONE ) ) );
   }
 
 

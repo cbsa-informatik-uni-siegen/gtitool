@@ -10,8 +10,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
-import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
@@ -20,7 +20,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyToken;
  * 
  * @author Christian Fehler
  */
-public final class PrettyPrintableComponent extends JLabel
+public final class PrettyStringComponent extends JLabel
 {
 
   /**
@@ -30,20 +30,20 @@ public final class PrettyPrintableComponent extends JLabel
 
 
   /**
-   * The {@link PrettyPrintable} of this component.
+   * The {@link PrettyString} of this component.
    */
-  private PrettyPrintable prettyPrintable;
+  private PrettyString prettyString;
 
 
   /**
-   * Initializes the {@link PrettyPrintableComponent}.
+   * Initializes the {@link PrettyStringComponent}.
    * 
-   * @param prettyPrintable The {@link Symbol}.
+   * @param prettyString The {@link PrettyString}.
    */
-  public PrettyPrintableComponent ( PrettyPrintable prettyPrintable )
+  public PrettyStringComponent ( PrettyString prettyString )
   {
     super ();
-    this.prettyPrintable = prettyPrintable;
+    this.prettyString = prettyString;
     setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
 
     // Used to calculate the preferered size.
@@ -66,8 +66,7 @@ public final class PrettyPrintableComponent extends JLabel
 
     FontMetrics metrics = g.getFontMetrics ();
 
-    for ( PrettyToken currentToken : this.prettyPrintable.toPrettyString ()
-        .getPrettyToken () )
+    for ( PrettyToken currentToken : this.prettyString.getPrettyToken () )
     {
       Font font = null;
 

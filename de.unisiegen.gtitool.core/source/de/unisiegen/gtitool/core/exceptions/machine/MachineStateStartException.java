@@ -7,6 +7,9 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -56,30 +59,33 @@ public final class MachineStateStartException extends MachineException
       setMessage ( Messages
           .getString ( "MachineStateStartException.NoStartStateMessage" ) ); //$NON-NLS-1$
       setDescription ( Messages
-          .getString ( "MachineStateStartException.NoStartStateDescription" ) ); //$NON-NLS-1$
+          .getPrettyString ( "MachineStateStartException.NoStartStateDescription" ) ); //$NON-NLS-1$
     }
     else
     {
       setMessage ( Messages
           .getString ( "MachineStateStartException.MoreThanOneStartStateMessage" ) ); //$NON-NLS-1$
-      StringBuilder states = new StringBuilder ();
+      PrettyString prettyString = new PrettyString ();
       for ( int i = 0 ; i < stateList.size () ; i++ )
       {
-        states.append ( Messages.QUOTE );
-        states.append ( stateList.get ( i ).getName () );
-        states.append ( Messages.QUOTE );
+        prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
+            Style.NONE ) );
+        prettyString.addPrettyPrintable ( stateList.get ( i ) );
+        prettyString.addPrettyToken ( new PrettyToken ( Messages.QUOTE,
+            Style.NONE ) );
         if ( i < stateList.size () - 2 )
         {
-          states.append ( ", " ); //$NON-NLS-1$
+          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
         }
         if ( i == stateList.size () - 2 )
         {
-          states.append ( " " + Messages.getString ( "And" ) + " " ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+          prettyString.addPrettyToken ( new PrettyToken ( " " //$NON-NLS-1$
+              + Messages.getString ( "And" ) + " ", Style.NONE ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
       }
-      setDescription ( Messages.getString (
-          "MachineStateStartException.MoreThanOneStartStateDescription", states //$NON-NLS-1$
-              .toString () ) );
+      setDescription ( Messages.getPrettyString (
+          "MachineStateStartException.MoreThanOneStartStateDescription", true, //$NON-NLS-1$
+          prettyString ) );
     }
   }
 

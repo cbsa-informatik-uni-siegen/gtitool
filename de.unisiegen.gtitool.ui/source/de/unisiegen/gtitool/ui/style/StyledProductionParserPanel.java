@@ -122,11 +122,11 @@ public final class StyledProductionParserPanel extends StyledParserPanel
       /*
        * ProductionWord
        */
-      ProductionWord newProductionWord = new DefaultProductionWord ();
-      newProductionWord.setParserOffset ( production.getProductionWord ()
-          .getParserOffset () );
+      ProductionWord newProductionWord = null;
       try
       {
+        ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
+
         for ( ProductionWordMember current : production.getProductionWord () )
         {
           // Nonterminal
@@ -140,7 +140,7 @@ public final class StyledProductionParserPanel extends StyledParserPanel
                   current.getName () );
               newNonterminalSymbol
                   .setParserOffset ( current.getParserOffset () );
-              newProductionWord.add ( newNonterminalSymbol );
+              memberList.add ( newNonterminalSymbol );
               break nonterminalLoop;
             }
           }
@@ -154,7 +154,7 @@ public final class StyledProductionParserPanel extends StyledParserPanel
               TerminalSymbol newTerminalSymbol = new DefaultTerminalSymbol (
                   current.getName () );
               newTerminalSymbol.setParserOffset ( current.getParserOffset () );
-              newProductionWord.add ( newTerminalSymbol );
+              memberList.add ( newTerminalSymbol );
               break terminalLoop;
             }
           }
@@ -168,6 +168,10 @@ public final class StyledProductionParserPanel extends StyledParserPanel
                 current.getName () ) ) );
           }
         }
+
+        newProductionWord = new DefaultProductionWord ( memberList );
+        newProductionWord.setParserOffset ( production.getProductionWord ()
+            .getParserOffset () );
       }
       catch ( NonterminalSymbolException exc )
       {

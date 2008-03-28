@@ -33,12 +33,12 @@ public final class WordResetedException extends WordException
     setMessage ( Messages.getString ( "WordException.ResetedMessage" ) ); //$NON-NLS-1$
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
-      setDescription ( Messages.getString (
+      setDescription ( Messages.getPrettyString (
           "WordException.ResetedDescriptionEmpty", word ) ); //$NON-NLS-1$
     }
     else
     {
-      setDescription ( Messages.getString (
+      setDescription ( Messages.getPrettyString (
           "WordException.ResetedDescription", word ) ); //$NON-NLS-1$
     }
   }

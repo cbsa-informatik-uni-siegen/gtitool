@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * {@link NonterminalSymbol} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NonterminalSymbolEmptyNameException.java 555 2008-02-12
+ *          00:50:47Z fehler $
  */
 public final class NonterminalSymbolEmptyNameException extends
     NonterminalSymbolException
@@ -33,7 +34,7 @@ public final class NonterminalSymbolEmptyNameException extends
     setMessage ( Messages
         .getString ( "NonterminalSymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setDescription ( Messages
-        .getString ( "NonterminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
+        .getPrettyString ( "NonterminalSymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }
 
 

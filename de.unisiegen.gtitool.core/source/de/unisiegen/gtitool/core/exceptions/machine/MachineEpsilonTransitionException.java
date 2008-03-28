@@ -51,10 +51,9 @@ public final class MachineEpsilonTransitionException extends MachineException
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineEpsilonTransitionException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "MachineEpsilonTransitionException.Description", this.transition //$NON-NLS-1$
-            .getStateBegin ().getName (), this.transition.getStateEnd ()
-            .getName () ) );
+            .getStateBegin (), this.transition.getStateEnd () ) );
   }
 
 

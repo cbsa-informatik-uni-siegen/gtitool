@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.exceptions.grammar;
 
 
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -29,7 +30,7 @@ public abstract class GrammarException extends CoreException
    * @param message The detail message.
    * @param description The detail description.
    */
-  public GrammarException ( String message, String description )
+  public GrammarException ( String message, PrettyString description )
   {
     super ( message, description );
   }

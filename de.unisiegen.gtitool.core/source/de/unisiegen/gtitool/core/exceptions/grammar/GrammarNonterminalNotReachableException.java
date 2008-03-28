@@ -48,9 +48,11 @@ public final class GrammarNonterminalNotReachableException extends
     }
     this.nonterminalSymbol = nonterminalSymbol;
 
-    setMessage ( Messages.getString("GrammarNonterminalNotReachableException.Message") ); //$NON-NLS-1$
-    setDescription ( Messages.getString("GrammarNonterminalNotReachableException.Description", nonterminalSymbol) ); //$NON-NLS-1$
-
+    setMessage ( Messages
+        .getString ( "GrammarNonterminalNotReachableException.Message" ) ); //$NON-NLS-1$
+    setDescription ( Messages.getPrettyString (
+        "GrammarNonterminalNotReachableException.Description", //$NON-NLS-1$
+        nonterminalSymbol ) );
   }
 
 
@@ -79,12 +81,12 @@ public final class GrammarNonterminalNotReachableException extends
     return ErrorType.WARNING;
   }
 
-  
-   /**
-     * {@inheritDoc}
-     * 
-     * @see Throwable#toString()
-     */
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Throwable#toString()
+   */
   @Override
   public final String toString ()
   {

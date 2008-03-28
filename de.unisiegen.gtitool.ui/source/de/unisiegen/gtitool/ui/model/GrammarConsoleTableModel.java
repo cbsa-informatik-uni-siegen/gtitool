@@ -10,6 +10,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -39,7 +40,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
     /**
      * The description.
      */
-    public String description;
+    public PrettyString description;
 
 
     /**
@@ -48,8 +49,6 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
     public ArrayList < Production > productions = new ArrayList < Production > ();
 
 
-    // public NonterminalSymbol nonterminalSymbol;
-
     /**
      * Allocates a new {@link ConsoleTableEntry}.
      * 
@@ -57,7 +56,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
      * @param descrition The description.
      * @param productions The {@link Production}s
      */
-    public ConsoleTableEntry ( String message, String descrition,
+    public ConsoleTableEntry ( String message, PrettyString descrition,
         ArrayList < Production > productions )
     {
       this.message = message;
@@ -129,7 +128,6 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
               .getProductions () );
     }
 
-
     this.data.add ( new ConsoleTableEntry ( grammarException.getMessage (),
         grammarException.getDescription (), productions ) );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
@@ -162,7 +160,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
       }
       case DESCRIPTION_COLUMN :
       {
-        return String.class;
+        return PrettyString.class;
       }
       case PRODUCTION_COLUMN :
       {

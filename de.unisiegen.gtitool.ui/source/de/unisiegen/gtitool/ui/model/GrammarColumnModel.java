@@ -6,7 +6,7 @@ import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyPrintableTableCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -19,8 +19,6 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 public final class GrammarColumnModel extends DefaultTableColumnModel implements
     LanguageChangedListener
 {
-
-
 
   /**
    * The serial version uid.
@@ -39,12 +37,15 @@ public final class GrammarColumnModel extends DefaultTableColumnModel implements
    */
   public GrammarColumnModel ()
   {
-    // Message
-    this.productionColumn = new TableColumn ( MachineConsoleTableModel.MESSAGE_COLUMN );
+    // Production
+    this.productionColumn = new TableColumn (
+        MachineConsoleTableModel.MESSAGE_COLUMN );
     this.productionColumn.setPreferredWidth ( 200 );
     this.productionColumn.setMinWidth ( 200 );
-    this.productionColumn.setHeaderValue ( Messages.getString("GrammarPanel.Productions") ); //$NON-NLS-1$
-    this.productionColumn.setCellRenderer ( new PrettyPrintableTableCellRenderer () );
+    this.productionColumn.setHeaderValue ( Messages
+        .getString ( "GrammarPanel.Productions" ) ); //$NON-NLS-1$
+    this.productionColumn
+        .setCellRenderer ( new PrettyStringTableCellRenderer () );
     this.addColumn ( this.productionColumn );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );

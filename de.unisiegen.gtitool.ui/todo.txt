@@ -3,7 +3,6 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Startsymbol einbauen ins Panel
-CF		- CoreExeption muss PrettyPrintable implementieren
 CF		- Open und Save Dialog neu bauen
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel

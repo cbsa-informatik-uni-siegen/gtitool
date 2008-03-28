@@ -6,6 +6,7 @@ import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -43,38 +44,52 @@ public final class ConsoleColumnModel extends DefaultTableColumnModel implements
   public ConsoleColumnModel ()
   {
     // Message
-    this.messageColumn = new TableColumn ( MachineConsoleTableModel.MESSAGE_COLUMN );
+    this.messageColumn = new TableColumn (
+        MachineConsoleTableModel.MESSAGE_COLUMN );
     this.messageColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.Message" ) ); //$NON-NLS-1$
     this.messageColumn.setPreferredWidth ( 200 );
     this.messageColumn.setMinWidth ( 200 );
     this.addColumn ( this.messageColumn );
+
     // Description
     this.descriptionColumn = new TableColumn (
         MachineConsoleTableModel.DESCRIPTION_COLUMN );
     this.descriptionColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.Description" ) ); //$NON-NLS-1$
     this.descriptionColumn.setPreferredWidth ( 800 );
+    this.descriptionColumn
+        .setCellRenderer ( new PrettyStringTableCellRenderer () );
     this.addColumn ( this.descriptionColumn );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
+
     /*
      * Only for debug
      */
-    /*
-     * // States TableColumn statesColumn; statesColumn = new TableColumn (
-     * ConsoleTableModel.STATES_COLUMN ); statesColumn.setHeaderValue (
-     * Messages.getString ( "MachinePanel.States" ) ); //$NON-NLS-1$
-     * this.addColumn ( statesColumn ); // Transitions TableColumn
-     * transitionsColumn; transitionsColumn = new TableColumn (
-     * ConsoleTableModel.TRANSITIONS_COLUMN ); transitionsColumn.setHeaderValue (
-     * Messages .getString ( "MachinePanel.Transitions" ) ); //$NON-NLS-1$
-     * this.addColumn ( transitionsColumn ); // Symbols TableColumn
-     * symbolsColumn; symbolsColumn = new TableColumn (
-     * ConsoleTableModel.SYMBOL_COLUMN ); symbolsColumn.setHeaderValue (
-     * Messages .getString ( "MachinePanel.Symbols" ) ); //$NON-NLS-1$
-     * this.addColumn ( symbolsColumn );
-     */
+
+    // // States
+    // TableColumn statesColumn;
+    // statesColumn = new TableColumn ( MachineConsoleTableModel.STATES_COLUMN
+    // );
+    // statesColumn.setHeaderValue ( Messages.getString ( "MachinePanel.States"
+    // ) ); //$NON-NLS-1$
+    // this.addColumn ( statesColumn );
+    // // Transitions
+    // TableColumn transitionsColumn;
+    // transitionsColumn = new TableColumn (
+    // MachineConsoleTableModel.TRANSITIONS_COLUMN );
+    // transitionsColumn.setHeaderValue ( Messages
+    // .getString ( "MachinePanel.Transitions" ) ); //$NON-NLS-1$
+    // this.addColumn ( transitionsColumn );
+    // // Symbols
+    // TableColumn symbolsColumn;
+    // symbolsColumn = new TableColumn ( MachineConsoleTableModel.SYMBOL_COLUMN
+    // );
+    // symbolsColumn
+    // .setHeaderValue ( Messages.getString ( "MachinePanel.Symbols" ) );
+    // //$NON-NLS-1$
+    // this.addColumn ( symbolsColumn );
   }
 
 

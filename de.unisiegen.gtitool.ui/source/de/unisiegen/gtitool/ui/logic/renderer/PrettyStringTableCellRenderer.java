@@ -8,7 +8,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
-import de.unisiegen.gtitool.ui.style.PrettyPrintableComponent;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.ui.style.PrettyStringComponent;
 
 
 /**
@@ -17,7 +18,7 @@ import de.unisiegen.gtitool.ui.style.PrettyPrintableComponent;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public final class PrettyPrintableTableCellRenderer extends
+public final class PrettyStringTableCellRenderer extends
     DefaultTableCellRenderer
 {
 
@@ -28,9 +29,9 @@ public final class PrettyPrintableTableCellRenderer extends
 
 
   /**
-   * Allocates a new {@link PrettyPrintableTableCellRenderer}.
+   * Allocates a new {@link PrettyStringTableCellRenderer}.
    */
-  public PrettyPrintableTableCellRenderer ()
+  public PrettyStringTableCellRenderer ()
   {
     super ();
   }
@@ -43,15 +44,28 @@ public final class PrettyPrintableTableCellRenderer extends
    *      boolean, boolean, int, int)
    */
   @Override
-  public Component getTableCellRendererComponent ( JTable table,
-      @SuppressWarnings ( "unused" )
-      Object value, boolean isSelected, @SuppressWarnings ( "unused" )
-      boolean hasFocus, int row, int column )
+  public Component getTableCellRendererComponent ( JTable table, Object value,
+      boolean isSelected, @SuppressWarnings ( "unused" )
+      boolean hasFocus, @SuppressWarnings ( "unused" )
+      int row, @SuppressWarnings ( "unused" )
+      int column )
   {
-    PrettyPrintable prettyPrintable = ( PrettyPrintable ) table.getValueAt (
-        row, column );
-    PrettyPrintableComponent component = new PrettyPrintableComponent (
-        prettyPrintable );
+    PrettyString prettyString = null;
+    if ( value instanceof PrettyPrintable )
+    {
+      prettyString = ( ( PrettyPrintable ) value ).toPrettyString ();
+    }
+    else if ( value instanceof PrettyString )
+    {
+      prettyString = ( PrettyString ) value;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
+    }
+
+    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
+
     if ( isSelected )
     {
       component.setBackground ( table.getSelectionBackground () );

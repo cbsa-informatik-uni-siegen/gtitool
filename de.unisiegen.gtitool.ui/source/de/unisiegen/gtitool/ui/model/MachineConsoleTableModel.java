@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.SymbolsInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.TransitionsInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
@@ -42,7 +43,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
     /**
      * The description.
      */
-    public String description;
+    public PrettyString description;
 
 
     /**
@@ -72,7 +73,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
      * @param transitions The {@link Transition}s.
      * @param symbols The {@link Symbol}s.
      */
-    public ConsoleTableEntry ( String message, String descrition,
+    public ConsoleTableEntry ( String message, PrettyString descrition,
         ArrayList < State > states, ArrayList < Transition > transitions,
         ArrayList < Symbol > symbols )
     {
@@ -207,7 +208,7 @@ public final class MachineConsoleTableModel extends AbstractTableModel
       }
       case DESCRIPTION_COLUMN :
       {
-        return String.class;
+        return PrettyString.class;
       }
       case STATES_COLUMN :
       {

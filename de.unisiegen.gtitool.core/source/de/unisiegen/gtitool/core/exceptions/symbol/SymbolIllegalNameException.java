@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.core.exceptions.symbol;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 
 
 /**
@@ -44,8 +47,8 @@ public final class SymbolIllegalNameException extends SymbolException
     this.illegalName = illegalName;
     // Message and Description
     setMessage ( Messages.getString ( "SymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
-        "SymbolException.IllegalNameDescription", illegalName ) ); //$NON-NLS-1$
+    setDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
+        "SymbolException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
   }
 
 

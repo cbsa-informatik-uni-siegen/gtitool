@@ -41,9 +41,9 @@ public final class TerminalSymbolSetMoreThanOneSymbolException extends
     // Message and Description
     setMessage ( Messages
         .getString ( "TerminalSymbolSetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "TerminalSymbolSetException.MoreThanOneSymbolDescription", //$NON-NLS-1$
-        terminalSymbolList.get ( 0 ).getName (), terminalSymbolSet.toString () ) );
+        terminalSymbolList.get ( 0 ), terminalSymbolSet ) );
   }
 
 

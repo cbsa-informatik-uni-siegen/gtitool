@@ -7,7 +7,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
-import de.unisiegen.gtitool.ui.style.PrettyPrintableComponent;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.ui.style.PrettyStringComponent;
 
 
 /**
@@ -16,7 +17,7 @@ import de.unisiegen.gtitool.ui.style.PrettyPrintableComponent;
  * @author Benjamin Mies
  * @author Christian Fehler
  */
-public class PrettyPrintableListCellRenderer extends DefaultListCellRenderer
+public class PrettyStringListCellRenderer extends DefaultListCellRenderer
 {
 
   /**
@@ -26,9 +27,9 @@ public class PrettyPrintableListCellRenderer extends DefaultListCellRenderer
 
 
   /**
-   * Allocates a new {@link PrettyPrintableListCellRenderer}.
+   * Allocates a new {@link PrettyStringListCellRenderer}.
    */
-  public PrettyPrintableListCellRenderer ()
+  public PrettyStringListCellRenderer ()
   {
     super ();
   }
@@ -46,9 +47,21 @@ public class PrettyPrintableListCellRenderer extends DefaultListCellRenderer
       int index, boolean isSelected, @SuppressWarnings ( "unused" )
       boolean cellHasFocus )
   {
-    PrettyPrintable prettyPrintable = ( PrettyPrintable ) value;
-    PrettyPrintableComponent component = new PrettyPrintableComponent (
-        prettyPrintable );
+    PrettyString prettyString = null;
+    if ( value instanceof PrettyPrintable )
+    {
+      prettyString = ( ( PrettyPrintable ) value ).toPrettyString ();
+    }
+    else if ( value instanceof PrettyString )
+    {
+      prettyString = ( PrettyString ) value;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
+    }
+
+    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
 
     component.setComponentOrientation ( list.getComponentOrientation () );
     if ( isSelected )

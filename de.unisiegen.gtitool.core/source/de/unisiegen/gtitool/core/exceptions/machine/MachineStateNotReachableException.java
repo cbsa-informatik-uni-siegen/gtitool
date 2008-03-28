@@ -50,7 +50,7 @@ public final class MachineStateNotReachableException extends MachineException
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineStateNotReachableException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "MachineStateNotReachableException.Description", this.state ) ); //$NON-NLS-1$
   }
 

@@ -39,9 +39,9 @@ public final class AlphabetMoreThanOneSymbolException extends AlphabetException
     // Message and Description
     setMessage ( Messages
         .getString ( "AlphabetException.MoreThanOneSymbolMessage" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "AlphabetException.MoreThanOneSymbolDescription", symbolList.get ( //$NON-NLS-1$
-            0 ).getName (), alphabet.toString () ) );
+            0 ), alphabet ) );
   }
 
 

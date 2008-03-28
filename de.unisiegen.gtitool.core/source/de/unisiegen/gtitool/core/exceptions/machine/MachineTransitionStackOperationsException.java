@@ -53,7 +53,7 @@ public final class MachineTransitionStackOperationsException extends
     // Message and Description
     setMessage ( Messages
         .getString ( "MachineTransitionStackOperationsException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "MachineTransitionStackOperationsException.Description", //$NON-NLS-1$
         this.transition ) );
   }

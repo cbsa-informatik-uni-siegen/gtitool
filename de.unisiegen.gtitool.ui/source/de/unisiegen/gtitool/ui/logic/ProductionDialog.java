@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyPrintableListCellRenderer;
+import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 
@@ -290,7 +290,7 @@ public final class ProductionDialog
               productionWord ) );
     }
 
-    this.gui.jGTIList.setCellRenderer ( new PrettyPrintableListCellRenderer () );
+    this.gui.jGTIList.setCellRenderer ( new PrettyStringListCellRenderer () );
   }
 
 

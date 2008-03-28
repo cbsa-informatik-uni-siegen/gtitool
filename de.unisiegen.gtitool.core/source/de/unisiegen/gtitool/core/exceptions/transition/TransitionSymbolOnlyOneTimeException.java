@@ -41,10 +41,9 @@ public final class TransitionSymbolOnlyOneTimeException extends
     // Message and Description
     setMessage ( Messages
         .getString ( "TransitionSymbolOnlyOneTimeException.Message" ) ); //$NON-NLS-1$
-    setDescription ( Messages.getString (
+    setDescription ( Messages.getPrettyString (
         "TransitionSymbolOnlyOneTimeException.Description", symbolList //$NON-NLS-1$
-            .get ( 0 ).getName (), transition.getStateBegin ().getName (),
-        transition.getStateEnd ().getName () ) );
+            .get ( 0 ), transition.getStateBegin (), transition.getStateEnd () ) );
   }
 
 

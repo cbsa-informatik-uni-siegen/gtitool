@@ -77,4 +77,16 @@ public final class PrettyToken
   {
     this.style = style;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    return this.text;
+  }
 }

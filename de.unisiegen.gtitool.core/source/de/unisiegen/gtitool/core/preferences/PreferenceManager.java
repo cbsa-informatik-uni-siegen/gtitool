@@ -34,6 +34,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolItem;
 import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedListener;
@@ -112,6 +113,12 @@ public class PreferenceManager
    * The default push down {@link Alphabet}.
    */
   public static Alphabet DEFAULT_PUSH_DOWN_ALPHABET;
+
+
+  /**
+   * The default start {@link NonterminalSymbol}.
+   */
+  public static NonterminalSymbol DEFAULT_START_SYMBOL;
 
 
   /**
@@ -249,6 +256,8 @@ public class PreferenceManager
       DEFAULT_NONTERMINAL_SYMBOL_SET = new DefaultNonterminalSymbolSet (
           new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol ( //$NON-NLS-1$
               "F" ) ); //$NON-NLS-1$
+
+      DEFAULT_START_SYMBOL = new DefaultNonterminalSymbol ( "E" ); //$NON-NLS-1$
 
       DEFAULT_TERMINAL_SYMBOL_SET = new DefaultTerminalSymbolSet (
           new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1335,6 +1344,29 @@ public class PreferenceManager
 
 
   /**
+   * Returns the start {@link NonterminalSymbol}.
+   * 
+   * @return The start {@link NonterminalSymbol}.
+   */
+  public final NonterminalSymbolItem getStartSymbolItem ()
+  {
+    String startSymbol = this.preferences.get ( "DefaultStartSymbol", //$NON-NLS-1$
+        DEFAULT_START_SYMBOL.getName () );
+    try
+    {
+      return new NonterminalSymbolItem ( new DefaultNonterminalSymbol (
+          startSymbol ), DEFAULT_START_SYMBOL );
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return null;
+    }
+  }
+
+
+  /**
    * Returns the system {@link Locale}.
    * 
    * @return The system {@link Locale}.
@@ -1368,9 +1400,9 @@ public class PreferenceManager
       {
         terminalSymbols.add ( new DefaultTerminalSymbol ( terminalSymbol ) );
       }
-      catch ( TerminalSymbolException e )
+      catch ( TerminalSymbolException exc )
       {
-        e.printStackTrace ();
+        exc.printStackTrace ();
         System.exit ( 1 );
       }
       count++ ;
@@ -1977,6 +2009,21 @@ public class PreferenceManager
       this.preferences.put ( "DefaultPushDownAlphabet" + i, //$NON-NLS-1$
           pushDownAlphabetItem.getAlphabet ().get ( i ).getName () );
     }
+  }
+
+
+  /**
+   * Sets the start {@link NonterminalSymbol}.
+   * 
+   * @param nonterminalSymbolItem The start {@link NonterminalSymbol}.
+   */
+  public final void setStartSymbolItem (
+      NonterminalSymbolItem nonterminalSymbolItem )
+  {
+    logger.debug ( "set the start symbol to " + Messages.QUOTE //$NON-NLS-1$
+        + nonterminalSymbolItem.getNonterminalSymbol () + "" + Messages.QUOTE ); //$NON-NLS-1$
+    this.preferences.put ( "DefaultStartSymbol", nonterminalSymbolItem //$NON-NLS-1$
+        .getNonterminalSymbol ().getName () );
   }
 
 

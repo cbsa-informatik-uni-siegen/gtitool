@@ -39,11 +39,13 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolItem;
 import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
@@ -710,6 +712,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The initial start {@link NonterminalSymbolItem}.
+   */
+  private NonterminalSymbolItem initialStartSymbolItem;
+
+
+  /**
    * The initial {@link TerminalSymbolSetItem}.
    */
   private TerminalSymbolSetItem initialTerminalSymbolSetItem;
@@ -833,6 +841,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The color tree root node.
    */
   private ColorItem rootNode;
+
+
+  /**
+   * The start {@link NonterminalSymbolItem}.
+   */
+  private NonterminalSymbolItem startSymbolItem;
 
 
   /**
@@ -1037,6 +1051,9 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.terminalPanelForm
         .setNonterminalSymbolSet ( this.nonterminalSymbolSetItem
             .getNonterminalSymbolSet () );
+    this.startSymbolItem.restore ();
+    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+        .setText ( this.startSymbolItem.getNonterminalSymbol () );
     this.terminalSymbolSetItem.restore ();
     this.gui.terminalPanelForm
         .setTerminalSymbolSet ( this.terminalSymbolSetItem
@@ -1074,6 +1091,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      * Grammar
      */
     initNonterminalSymbolSet ();
+    initStartSymbol ();
     initTerminalSymbolSet ();
     /*
      * Tab
@@ -1962,6 +1980,77 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Initializes the start {@link NonterminalSymbol}.
+   */
+  private final void initStartSymbol ()
+  {
+    this.startSymbolItem = PreferenceManager.getInstance ()
+        .getStartSymbolItem ();
+    this.initialStartSymbolItem = this.startSymbolItem.clone ();
+    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+        .setText ( this.startSymbolItem.getNonterminalSymbol () );
+
+    // PopupMenu
+    JPopupMenu jPopupMenu = this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+        .getJPopupMenu ();
+    jPopupMenu.addSeparator ();
+    final JMenuItem jMenuItemRestoreTerminalSymbolSet = new JMenuItem (
+        Messages.getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestoreTerminalSymbolSet.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PreferencesDialog.this.startSymbolItem.restore ();
+        PreferencesDialog.this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+            .setText ( PreferencesDialog.this.startSymbolItem
+                .getNonterminalSymbol () );
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void languageChanged ()
+          {
+            jMenuItemRestoreTerminalSymbolSet.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestoreTerminalSymbolSet.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+    jPopupMenu.add ( jMenuItemRestoreTerminalSymbolSet );
+
+    /*
+     * TerminalSymbolSet changed listener
+     */
+    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+        .addNonterminalSymbolChangedListener ( new NonterminalSymbolChangedListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void nonterminalSymbolChanged (
+              NonterminalSymbol newNonterminalSymbol )
+          {
+            setButtonStatus ();
+            if ( newNonterminalSymbol != null )
+            {
+              PreferencesDialog.this.startSymbolItem
+                  .setNonterminalSymbol ( newNonterminalSymbol );
+            }
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the {@link TerminalSymbolSet}.
    */
   private final void initTerminalSymbolSet ()
@@ -2220,6 +2309,8 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabGrammarToolTip" ) ); //$NON-NLS-1$
     this.gui.terminalPanelForm.jLabelNonterminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
+    this.gui.terminalPanelForm.jLabelStartSymbol.setText ( Messages
+        .getString ( "TerminalPanel.StartSymbol" ) ); //$NON-NLS-1$
     this.gui.terminalPanelForm.jLabelTerminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.TerminalSymbols" ) ); //$NON-NLS-1$
     // Accept
@@ -2453,6 +2544,7 @@ public final class PreferencesDialog implements LanguageChangedListener
      * Grammar
      */
     saveNonterminalSymbolSet ();
+    saveStartSymbol ();
     saveTerminalSymbolSet ();
     /*
      * Tab
@@ -2905,6 +2997,20 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * Saves the data of the start {@link NonterminalSymbolItem}.
+   */
+  private final void saveStartSymbol ()
+  {
+    if ( !this.initialStartSymbolItem.equals ( this.startSymbolItem ) )
+    {
+      this.initialStartSymbolItem = this.startSymbolItem.clone ();
+      PreferenceManager.getInstance ().setStartSymbolItem (
+          this.startSymbolItem );
+    }
+  }
+
+
+  /**
    * Saves the data of the {@link TerminalSymbolSetItem}.
    */
   private final void saveTerminalSymbolSet ()
@@ -2977,6 +3083,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     // Grammar
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
         .getNonterminalSymbolSet () == null )
+        || ( this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+            .getNonterminalSymbol () == null )
         || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
             .getTerminalSymbolSet () == null ) )
     {

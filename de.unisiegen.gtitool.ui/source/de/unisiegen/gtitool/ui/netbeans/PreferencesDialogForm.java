@@ -369,7 +369,7 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        setBounds(0, 0, 480, 300);
+        setBounds(0, 0, 560, 350);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTreeColorsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTreeColorsMouseReleased

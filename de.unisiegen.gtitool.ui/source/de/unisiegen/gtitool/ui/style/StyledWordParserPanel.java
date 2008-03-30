@@ -222,7 +222,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
    * 
    * @param word The input {@link Word}.
    */
-  public final void setWord ( Word word )
+  public final void setText ( Word word )
   {
     getEditor ().setText ( word.toString () );
   }

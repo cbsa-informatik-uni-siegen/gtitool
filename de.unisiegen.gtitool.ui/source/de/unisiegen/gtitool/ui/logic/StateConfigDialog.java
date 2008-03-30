@@ -75,7 +75,7 @@ public final class StateConfigDialog
     this.gui = new StateConfigDialogForm ( this, parent );
     this.gui.jCheckBoxFinalState.setSelected ( this.state.isFinalState () );
     this.gui.jCheckBoxStartState.setSelected ( this.state.isStartState () );
-    this.gui.styledStateParserPanel.setState ( state );
+    this.gui.styledStateParserPanel.setText ( state );
     this.gui.jLabelRename.setText ( Messages.getString (
         "NewStateNameDialog.RenameText", state ) ); //$NON-NLS-1$
 

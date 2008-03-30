@@ -294,24 +294,6 @@ public final class StyledProductionParserPanel extends StyledParserPanel
 
 
   /**
-   * Sets the {@link Production} of the document.
-   * 
-   * @param word The input {@link Production}.
-   */
-  public final void setProduction ( Production word )
-  {
-    if ( word == null )
-    {
-      getEditor ().setText ( "" ); //$NON-NLS-1$
-    }
-    else
-    {
-      getEditor ().setText ( word.toString () );
-    }
-  }
-
-
-  /**
    * Sets the {@link TerminalSymbolSet}. Every parsed symbol in this set is a
    * {@link TerminalSymbol}.
    * 
@@ -340,6 +322,24 @@ public final class StyledProductionParserPanel extends StyledParserPanel
     for ( TerminalSymbol current : this.terminalSymbolSet )
     {
       addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );
+    }
+  }
+
+
+  /**
+   * Sets the {@link Production} of the document.
+   * 
+   * @param production The input {@link Production}.
+   */
+  public final void setText ( Production production )
+  {
+    if ( production == null )
+    {
+      getEditor ().setText ( "" ); //$NON-NLS-1$
+    }
+    else
+    {
+      getEditor ().setText ( production.toString () );
     }
   }
 }

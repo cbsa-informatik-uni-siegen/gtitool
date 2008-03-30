@@ -310,24 +310,24 @@ public final class TransitionDialog
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledTransitionParserPanel
-        .setTransition ( new DefaultTransition () );
+        .setText ( new DefaultTransition () );
     setOverChangeSet ( overChangeSymbolSet );
 
     // Set the push down alphabet
     this.gui.styledAlphabetParserPanelPushDownAlphabet
-        .setAlphabet ( this.pushDownAlphabet );
+        .setText ( this.pushDownAlphabet );
     this.gui.styledWordParserPanelRead.setAlphabet ( this.pushDownAlphabet );
     this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
 
     // Set the push down read and write word
     if ( pushDownWordRead != null )
     {
-      this.gui.styledWordParserPanelRead.setWord ( pushDownWordRead );
+      this.gui.styledWordParserPanelRead.setText ( pushDownWordRead );
     }
     this.gui.styledWordParserPanelRead.parse ();
     if ( pushDownWordWrite != null )
     {
-      this.gui.styledWordParserPanelWrite.setWord ( pushDownWordWrite );
+      this.gui.styledWordParserPanelWrite.setText ( pushDownWordWrite );
     }
     this.gui.styledWordParserPanelWrite.parse ();
 
@@ -349,7 +349,7 @@ public final class TransitionDialog
             else
             {
               TransitionDialog.this.gui.styledTransitionParserPanel
-                  .setTransition ( null );
+                  .setText ( null );
             }
             setButtonStatus ();
           }
@@ -369,7 +369,7 @@ public final class TransitionDialog
             else
             {
               TransitionDialog.this.gui.styledTransitionParserPanel
-                  .setTransition ( null );
+                  .setText ( null );
             }
             setButtonStatus ();
           }
@@ -616,7 +616,7 @@ public final class TransitionDialog
     try
     {
       this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
+          .setText ( new DefaultTransition ( this.pushDownWordRead,
               this.pushDownWordWrite, overChangeSymbolSet ) );
     }
     catch ( TransitionException exc )
@@ -679,7 +679,7 @@ public final class TransitionDialog
     try
     {
       this.gui.styledTransitionParserPanel
-          .setTransition ( new DefaultTransition ( this.pushDownWordRead,
+          .setText ( new DefaultTransition ( this.pushDownWordRead,
               this.pushDownWordWrite, this.modelChangeOverSet ) );
     }
     catch ( TransitionException exc )

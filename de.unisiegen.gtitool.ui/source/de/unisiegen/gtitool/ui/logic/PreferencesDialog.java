@@ -1023,12 +1023,12 @@ public final class PreferencesDialog implements LanguageChangedListener
      */
     this.alphabetItem.restore ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .setAlphabet ( this.alphabetItem.getAlphabet () );
+        .setText ( this.alphabetItem.getAlphabet () );
     this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
         .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+        .setText ( this.pushDownAlphabetItem.getAlphabet () );
 
     /*
      * Grammar
@@ -1090,7 +1090,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.alphabetItem = PreferenceManager.getInstance ().getAlphabetItem ();
     this.initialAlphabetItem = this.alphabetItem.clone ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .setAlphabet ( this.alphabetItem.getAlphabet () );
+        .setText ( this.alphabetItem.getAlphabet () );
 
     // PopupMenu
     JPopupMenu jPopupMenu = this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -1111,7 +1111,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         PreferencesDialog.this.alphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-            .setAlphabet ( PreferencesDialog.this.alphabetItem.getAlphabet () );
+            .setText ( PreferencesDialog.this.alphabetItem.getAlphabet () );
       }
     } );
     PreferenceManager.getInstance ().addLanguageChangedListener (
@@ -1845,7 +1845,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getPushDownAlphabetItem ();
     this.initialPushDownAlphabetItem = this.pushDownAlphabetItem.clone ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setAlphabet ( this.pushDownAlphabetItem.getAlphabet () );
+        .setText ( this.pushDownAlphabetItem.getAlphabet () );
     this.initialUsePushDownAlphabet = PreferenceManager.getInstance ()
         .getUsePushDownAlphabet ();
     this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
@@ -1870,7 +1870,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         PreferencesDialog.this.pushDownAlphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .setAlphabet ( PreferencesDialog.this.pushDownAlphabetItem
+            .setText ( PreferencesDialog.this.pushDownAlphabetItem
                 .getAlphabet () );
       }
     } );

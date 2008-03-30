@@ -119,6 +119,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
     this.parseable = parseable;
     this.highlightedParseableEntityList = new ArrayList < Entity > ();
 
+    this.exceptionList = new ArrayList < ScannerException > ();
     this.externExceptionList = new ArrayList < ScannerException > ();
 
     StyleConstants.setForeground ( this.normalSet, Color.BLACK );
@@ -177,18 +178,6 @@ public final class StyledParserDocument extends DefaultStyledDocument
       ParseableChangedListener listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
-  }
-
-
-  /**
-   * Clears the extern {@link ScannerException}s.
-   * 
-   * @see #externExceptionList
-   */
-  public final void clearException ()
-  {
-    this.externExceptionList.clear ();
-    fireExceptionsChanged ();
   }
 
 
@@ -309,9 +298,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   private final void highlightedParseableEntities ()
   {
-    ArrayList < ScannerException > tmpList = this.exceptionList;
     parse ();
-    this.exceptionList = tmpList;
     for ( Entity current : this.highlightedParseableEntityList )
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
@@ -366,9 +353,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final Object parse ()
   {
+    this.externExceptionList.clear ();
+
     this.parsedObject = null;
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
-    ArrayList < ScannerException > collectedExceptions = new ArrayList < ScannerException > ();
+    ArrayList < ScannerException > newExceptionList = new ArrayList < ScannerException > ();
     try
     {
       /*
@@ -422,13 +411,13 @@ public final class StyledParserDocument extends DefaultStyledDocument
               - ecx.getLeft (), errorSet, false );
           offset = newOffset;
           scanner.restart ( content );
-          collectedExceptions.add ( ecx );
+          newExceptionList.add ( ecx );
         }
       }
       /*
        * Start parser only if the scanner has no exceptions
        */
-      if ( collectedExceptions.size () == 0 )
+      if ( newExceptionList.size () == 0 )
       {
         GTIParser parser = this.parseable.newParser ( new AbstractScanner ()
         {
@@ -473,7 +462,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
             errorSet.addAttribute ( "exception", newException ); //$NON-NLS-1$
             setCharacterAttributes ( startOffset [ i ], endOffset [ i ]
                 - startOffset [ i ], errorSet, false );
-            collectedExceptions.add ( newException );
+            newExceptionList.add ( newException );
           }
         }
         catch ( ParserWarningException ecx )
@@ -492,9 +481,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
               setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
                   - ecx.getLeft (), warningSet, false );
             }
-            collectedExceptions.add ( new ParserWarningException ( ecx
-                .getRight (), ecx.getRight (), ecx.getMessage (), ecx
-                .getInsertText () ) );
+            newExceptionList.add ( new ParserWarningException (
+                ecx.getRight (), ecx.getRight (), ecx.getMessage (), ecx
+                    .getInsertText () ) );
           }
         }
         catch ( ParserException ecx )
@@ -511,7 +500,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
             setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
                 - ecx.getLeft (), errorSet, false );
           }
-          collectedExceptions.add ( ecx );
+          newExceptionList.add ( ecx );
         }
       }
     }
@@ -521,9 +510,10 @@ public final class StyledParserDocument extends DefaultStyledDocument
       System.exit ( 1 );
     }
 
-    if ( !collectedExceptions.equals ( this.exceptionList ) )
+    if ( !newExceptionList.equals ( this.exceptionList ) )
     {
-      this.exceptionList = collectedExceptions;
+      this.exceptionList.clear ();
+      this.exceptionList.addAll ( newExceptionList );
       fireExceptionsChanged ();
     }
     return this.parsedObject;

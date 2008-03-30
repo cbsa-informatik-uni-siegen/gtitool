@@ -116,7 +116,7 @@ public final class StyledStateParserPanel extends StyledParserPanel
    * 
    * @param state The input {@link State}.
    */
-  public final void setState ( State state )
+  public final void setText ( State state )
   {
     getEditor ().setText ( state.toString () );
   }

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
@@ -38,6 +39,27 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
    * in the {@link NonterminalSymbolSet}.
    */
   private NonterminalSymbolSet nonterminalSymbolSet = null;
+
+
+  /**
+   * The parsed {@link TerminalSymbolSet} can not contain this
+   * {@link TerminalSymbol}s.
+   */
+  private TreeSet < TerminalSymbol > notRemoveableTerminalSymbols = null;
+
+
+  /**
+   * Sets the {@link TerminalSymbol}s which should not be removeable.
+   * 
+   * @param notRemoveableTerminalSymbols The {@link TerminalSymbol}s which
+   *          should not be removeable.
+   * @see #notRemoveableTerminalSymbols
+   */
+  public final void setNotRemoveableTerminalSymbols (
+      TreeSet < TerminalSymbol > notRemoveableTerminalSymbols )
+  {
+    this.notRemoveableTerminalSymbols = notRemoveableTerminalSymbols;
+  }
 
 
   /**
@@ -81,16 +103,16 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   private final TerminalSymbolSet checkTerminalSymbolSet (
       TerminalSymbolSet terminalSymbolSet )
   {
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+
     if ( this.nonterminalSymbolSet == null )
     {
       return terminalSymbolSet;
     }
 
-    TerminalSymbolSet checkedTerminalSymbolSet = terminalSymbolSet;
-    if ( checkedTerminalSymbolSet != null )
+    if ( this.nonterminalSymbolSet != null && terminalSymbolSet != null )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( TerminalSymbol currentTerminal : checkedTerminalSymbolSet )
+      for ( TerminalSymbol currentTerminal : terminalSymbolSet )
       {
         for ( NonterminalSymbol currentNonterminal : this.nonterminalSymbolSet )
         {
@@ -105,12 +127,26 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
           }
         }
       }
-      // Check for exceptions
-      if ( exceptionList.size () > 0 )
+    }
+
+    if ( this.notRemoveableTerminalSymbols != null && terminalSymbolSet != null )
+    {
+      for ( TerminalSymbol current : this.notRemoveableTerminalSymbols )
       {
-        checkedTerminalSymbolSet = null;
-        setException ( exceptionList );
+        if ( !terminalSymbolSet.contains ( current ) )
+        {
+          exceptionList.add ( new ParserException ( current.getParserOffset ()
+              .getStart (), current.getParserOffset ().getEnd (), Messages
+              .getString ( "TerminalPanel.SymbolUsed", current ) ) ); //$NON-NLS-1$
+        }
       }
+    }
+
+    TerminalSymbolSet checkedTerminalSymbolSet = terminalSymbolSet;
+    if ( exceptionList.size () > 0 )
+    {
+      checkedTerminalSymbolSet = null;
+      setException ( exceptionList );
     }
     return checkedTerminalSymbolSet;
   }
@@ -241,7 +277,7 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
    * 
    * @param terminalSymbolSet The input {@link TerminalSymbolSet}.
    */
-  public final void setTerminalSymbolSet ( TerminalSymbolSet terminalSymbolSet )
+  public final void setText ( TerminalSymbolSet terminalSymbolSet )
   {
     getEditor ().setText ( terminalSymbolSet.toString () );
   }

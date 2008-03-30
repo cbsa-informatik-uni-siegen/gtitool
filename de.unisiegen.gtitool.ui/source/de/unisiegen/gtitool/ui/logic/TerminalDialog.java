@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
@@ -16,9 +15,6 @@ import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListe
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
-import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
-import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.TerminalDialogForm;
 
 
@@ -32,6 +28,12 @@ public final class TerminalDialog
 {
 
   /**
+   * The {@link Grammar} of this dialog.
+   */
+  private Grammar grammar;
+
+
+  /**
    * The {@link TerminalDialogForm}.
    */
   private TerminalDialogForm gui;
@@ -41,12 +43,6 @@ public final class TerminalDialog
    * The parent {@link JFrame}.
    */
   private JFrame parent;
-
-
-  /**
-   * The {@link Grammar} of this dialog.
-   */
-  private Grammar grammar;
 
 
   /**
@@ -64,6 +60,12 @@ public final class TerminalDialog
         .getTerminalSymbolSet () );
     this.gui.terminalPanelForm.setNonterminalSymbolSet ( this.grammar
         .getNonterminalSymbolSet () );
+    this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+        .setNotRemoveableNonterminalSymbols ( this.grammar
+            .getNotRemoveableNonterminalSymbolsFromNonterminalSymbol () );
+    this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+        .setNotRemoveableTerminalSymbols ( this.grammar
+            .getNotRemoveableTerminalSymbolsFromTerminalSymbol () );
     this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
         .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
         {
@@ -90,72 +92,6 @@ public final class TerminalDialog
           }
         } );
 
-  }
-
-
-  /**
-   * Returns the set of not removeable {@link NonterminalSymbol}s.
-   * 
-   * @param newNonterminalSymbolSet The new {@link NonterminalSymbolSet}.
-   * @return The set of not removeable {@link NonterminalSymbol}s.
-   */
-  private final TreeSet < NonterminalSymbol > getNotRemoveableSymbolsFromNonterminals (
-      NonterminalSymbolSet newNonterminalSymbolSet )
-  {
-    if ( newNonterminalSymbolSet == null )
-    {
-      throw new IllegalArgumentException ( "new nonterminalSymbolSet is null" ); //$NON-NLS-1$
-    }
-    TreeSet < NonterminalSymbol > notRemoveableSymbols = new TreeSet < NonterminalSymbol > ();
-    TreeSet < NonterminalSymbol > symbolsToRemove = new TreeSet < NonterminalSymbol > ();
-    for ( NonterminalSymbol current : this.grammar.getNonterminalSymbolSet () )
-    {
-      if ( !newNonterminalSymbolSet.contains ( current ) )
-      {
-        symbolsToRemove.add ( current );
-      }
-    }
-    for ( NonterminalSymbol current : symbolsToRemove )
-    {
-      if ( !this.grammar.isSymbolRemoveableFromNonterminalSymbols ( current ) )
-      {
-        notRemoveableSymbols.add ( current );
-      }
-    }
-    return notRemoveableSymbols;
-  }
-
-
-  /**
-   * Returns the set of not removeable {@link TerminalSymbolSet}s.
-   * 
-   * @param newTerminalSymbolSet The new {@link TerminalSymbolSet}.
-   * @return The set of not removeable {@link TerminalSymbolSet}s.
-   */
-  private final TreeSet < TerminalSymbol > getNotRemoveableSymbolsFromTerminals (
-      TerminalSymbolSet newTerminalSymbolSet )
-  {
-    if ( newTerminalSymbolSet == null )
-    {
-      throw new IllegalArgumentException ( "new nonterminalSymbolSet is null" ); //$NON-NLS-1$
-    }
-    TreeSet < TerminalSymbol > notRemoveableSymbols = new TreeSet < TerminalSymbol > ();
-    TreeSet < TerminalSymbol > symbolsToRemove = new TreeSet < TerminalSymbol > ();
-    for ( TerminalSymbol current : this.grammar.getTerminalSymbolSet () )
-    {
-      if ( !newTerminalSymbolSet.contains ( current ) )
-      {
-        symbolsToRemove.add ( current );
-      }
-    }
-    for ( TerminalSymbol current : symbolsToRemove )
-    {
-      if ( !this.grammar.isSymbolRemoveableFromTerminalSymbols ( current ) )
-      {
-        notRemoveableSymbols.add ( current );
-      }
-    }
-    return notRemoveableSymbols;
   }
 
 
@@ -265,59 +201,17 @@ public final class TerminalDialog
    */
   private final void setButtonStatus ()
   {
-    boolean buttonOkEnabled = true;
-
-    this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-        .clearException ();
-    if ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+    if ( ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
         .getTerminalSymbolSet () == null )
+        || ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
+            .getNonterminalSymbolSet () == null ) )
     {
-      buttonOkEnabled = false;
+      this.gui.jGTIButtonOk.setEnabled ( false );
     }
     else
     {
-      TreeSet < TerminalSymbol > notRemoveableSymbolsFromTerminalSymbols = getNotRemoveableSymbolsFromTerminals ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-          .getTerminalSymbolSet () );
-      if ( notRemoveableSymbolsFromTerminalSymbols.size () > 0 )
-      {
-        buttonOkEnabled = false;
-        ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-        for ( TerminalSymbol current : notRemoveableSymbolsFromTerminalSymbols )
-        {
-          exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
-              "TerminalPanel.SymbolUsed", current ) ) ); //$NON-NLS-1$
-        }
-        this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-            .setException ( exceptionList );
-      }
+      this.gui.jGTIButtonOk.setEnabled ( true );
     }
-
-    this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .clearException ();
-    if ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .getNonterminalSymbolSet () == null )
-    {
-      buttonOkEnabled = false;
-    }
-    else
-    {
-      TreeSet < NonterminalSymbol > notRemoveableSymbolsFromNonterminalSymbols = getNotRemoveableSymbolsFromNonterminals ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-          .getNonterminalSymbolSet () );
-      if ( notRemoveableSymbolsFromNonterminalSymbols.size () > 0 )
-      {
-        buttonOkEnabled = false;
-        ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-        for ( NonterminalSymbol current : notRemoveableSymbolsFromNonterminalSymbols )
-        {
-          exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
-              "TerminalPanel.SymbolUsed", current ) ) ); //$NON-NLS-1$
-        }
-        this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-            .setException ( exceptionList );
-      }
-    }
-
-    this.gui.jGTIButtonOk.setEnabled ( buttonOkEnabled );
   }
 
 

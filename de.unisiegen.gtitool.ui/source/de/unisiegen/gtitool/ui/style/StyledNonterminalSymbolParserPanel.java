@@ -1,9 +1,15 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolChangedListener;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.nonterminalsymbol.NonterminalSymbolParseable;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
@@ -22,6 +28,13 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = -238479279154469378L;
+
+
+  /**
+   * The parsed {@link NonterminalSymbol} must be in this
+   * {@link NonterminalSymbolSet}.
+   */
+  private NonterminalSymbolSet nonterminalSymbolSet = null;
 
 
   /**
@@ -55,6 +68,46 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
 
 
   /**
+   * Checks the given {@link NonterminalSymbol}.
+   * 
+   * @param nonterminalSymbol The {@link NonterminalSymbol} to check.
+   * @return The input {@link NonterminalSymbol} or null, if the
+   *         {@link NonterminalSymbol} is not in the
+   *         {@link NonterminalSymbolSet}.
+   */
+  private final NonterminalSymbol checkNonterminalSymbol (
+      NonterminalSymbol nonterminalSymbol )
+  {
+    if ( this.nonterminalSymbolSet == null )
+    {
+      return nonterminalSymbol;
+    }
+
+    NonterminalSymbol checkedNonterminalSymbol = nonterminalSymbol;
+    if ( checkedNonterminalSymbol != null )
+    {
+      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      if ( !this.nonterminalSymbolSet.contains ( nonterminalSymbol ) )
+      {
+        exceptionList.add ( new ParserException ( nonterminalSymbol
+            .getParserOffset ().getStart (), nonterminalSymbol
+            .getParserOffset ().getEnd (), Messages.getString (
+            "TerminalPanel.StartSymbolNoNonterminalSymbol", //$NON-NLS-1$
+            nonterminalSymbol.getName (), this.nonterminalSymbolSet ) ) );
+      }
+
+      // Check for exceptions
+      if ( exceptionList.size () > 0 )
+      {
+        checkedNonterminalSymbol = null;
+        setException ( exceptionList );
+      }
+    }
+    return checkedNonterminalSymbol;
+  }
+
+
+  /**
    * Let the listeners know that the {@link NonterminalSymbol} has changed.
    * 
    * @param newNonterminalSymbol The new {@link NonterminalSymbol}.
@@ -62,11 +115,12 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
   private final void fireNonterminalSymbolChanged (
       NonterminalSymbol newNonterminalSymbol )
   {
+    NonterminalSymbol checkedNonterminalSymbol = checkNonterminalSymbol ( newNonterminalSymbol );
     NonterminalSymbolChangedListener [] listeners = this.listenerList
         .getListeners ( NonterminalSymbolChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].nonterminalSymbolChanged ( newNonterminalSymbol );
+      listeners [ n ].nonterminalSymbolChanged ( checkedNonterminalSymbol );
     }
   }
 
@@ -81,7 +135,8 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
   {
     try
     {
-      return ( NonterminalSymbol ) getParsedObject ();
+      NonterminalSymbol nonterminalSymbol = ( NonterminalSymbol ) getParsedObject ();
+      return checkNonterminalSymbol ( nonterminalSymbol );
     }
     catch ( Exception exc )
     {
@@ -98,7 +153,8 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
   @Override
   public final NonterminalSymbol parse ()
   {
-    return ( NonterminalSymbol ) super.parse ();
+    NonterminalSymbol nonterminalSymbol = ( NonterminalSymbol ) super.parse ();
+    return checkNonterminalSymbol ( nonterminalSymbol );
   }
 
 
@@ -116,11 +172,24 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
 
 
   /**
+   * Sets the {@link NonterminalSymbolSet}. The parsed
+   * {@link NonterminalSymbol} must be in this {@link NonterminalSymbolSet}.
+   * 
+   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
+   */
+  public final void setNonterminalSymbolSet (
+      NonterminalSymbolSet nonterminalSymbolSet )
+  {
+    this.nonterminalSymbolSet = nonterminalSymbolSet;
+  }
+
+
+  /**
    * Sets the {@link NonterminalSymbol} of the document.
    * 
    * @param symbol The input {@link NonterminalSymbol}.
    */
-  public final void setNonterminalSymbol ( NonterminalSymbol symbol )
+  public final void setText ( NonterminalSymbol symbol )
   {
     getEditor ().setText ( symbol.toString () );
   }

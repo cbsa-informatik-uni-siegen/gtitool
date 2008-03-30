@@ -40,10 +40,10 @@ public final class NewDialogAlphabet
     this.gui = new NewDialogAlphabetForm ();
     this.gui.setLogic ( this );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .setAlphabet ( PreferenceManager.getInstance ().getAlphabetItem ()
+        .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
             .getAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setAlphabet ( PreferenceManager.getInstance ()
+        .setText ( PreferenceManager.getInstance ()
             .getPushDownAlphabetItem ().getAlphabet () );
     this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
         .setSelected ( PreferenceManager.getInstance ()

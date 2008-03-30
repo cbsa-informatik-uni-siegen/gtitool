@@ -47,7 +47,7 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     public void setAlphabet (Alphabet alphabet)
     {
       this.alphabet = alphabet;
-      this.styledAlphabetParserPanelInput.setAlphabet ( alphabet );
+      this.styledAlphabetParserPanelInput.setText ( alphabet );
       this.styledWordParserPanel.setAlphabet ( alphabet );
     }
     
@@ -59,7 +59,7 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     public void setPushDownAlphabet (Alphabet pushDownAlphabet)
     {
       this.pushDownAlphabet = pushDownAlphabet;
-      this.styledAlphabetParserPanelPushDown.setAlphabet ( pushDownAlphabet );
+      this.styledAlphabetParserPanelPushDown.setText ( pushDownAlphabet );
       this.styledStackParserPanel.setPushDownAlphabet ( pushDownAlphabet );
     }
     

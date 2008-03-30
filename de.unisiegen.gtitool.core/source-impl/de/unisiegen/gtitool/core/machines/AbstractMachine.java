@@ -1141,6 +1141,49 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Returns the {@link Symbol}s which are not removeable from the
+   * {@link Alphabet}.
+   * 
+   * @return The {@link Symbol}s which are not removeable from the
+   *         {@link Alphabet}.
+   */
+  public final TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ()
+  {
+    TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
+    for ( Transition current : this.transitionList )
+    {
+      notRemoveableSymbols.addAll ( current.getSymbol () );
+    }
+    return notRemoveableSymbols;
+  }
+
+
+  /**
+   * Returns the {@link Symbol}s which are not removeable from the
+   * {@link Alphabet}.
+   * 
+   * @return The {@link Symbol}s which are not removeable from the
+   *         {@link Alphabet}.
+   */
+  public final TreeSet < Symbol > getNotRemoveableSymbolsFromPushDownAlphabet ()
+  {
+    TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
+    for ( Transition current : this.transitionList )
+    {
+      for ( Symbol currentSymbol : current.getPushDownWordRead () )
+      {
+        notRemoveableSymbols.add ( currentSymbol );
+      }
+      for ( Symbol currentSymbol : current.getPushDownWordWrite () )
+      {
+        notRemoveableSymbols.add ( currentSymbol );
+      }
+    }
+    return notRemoveableSymbols;
+  }
+
+
+  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -1363,31 +1406,6 @@ public abstract class AbstractMachine implements Machine
   public final boolean isReseted ()
   {
     return this.word.isReseted () && this.history.isEmpty ();
-  }
-
-
-  /**
-   * Returns true if the given {@link Symbol} can be removed from the
-   * {@link Alphabet} of this {@link AbstractMachine}, otherwise false.
-   * 
-   * @param symbol The {@link Symbol} which should be checked.
-   * @return True if the given {@link Symbol} can be removed from the
-   *         {@link Alphabet} of this {@link AbstractMachine}, otherwise false.
-   */
-  public final boolean isSymbolRemoveableFromAlphabet ( Symbol symbol )
-  {
-    if ( !this.alphabet.contains ( symbol ) )
-    {
-      throw new IllegalArgumentException ( "symbol is not in the alphabet" ); //$NON-NLS-1$
-    }
-    for ( Transition current : this.transitionList )
-    {
-      if ( current.contains ( symbol ) )
-      {
-        return false;
-      }
-    }
-    return true;
   }
 
 
@@ -1837,10 +1855,6 @@ public abstract class AbstractMachine implements Machine
    */
   public final void removeSymbol ( Symbol symbol )
   {
-    if ( !isSymbolRemoveableFromAlphabet ( symbol ) )
-    {
-      throw new IllegalArgumentException ( "symbol is not removeable" ); //$NON-NLS-1$
-    }
     this.alphabet.remove ( symbol );
   }
 

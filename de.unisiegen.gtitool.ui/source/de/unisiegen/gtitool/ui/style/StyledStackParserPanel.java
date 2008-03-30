@@ -224,7 +224,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
    * 
    * @param stack The input {@link Stack}.
    */
-  public final void setStack ( Stack stack )
+  public final void setText ( Stack stack )
   {
     getEditor ().setText ( stack.toString () );
   }

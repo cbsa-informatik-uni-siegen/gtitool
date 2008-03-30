@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
@@ -11,9 +10,6 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
-import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
-import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 
 
@@ -56,7 +52,10 @@ public final class AlphabetDialog
     this.machine = machine;
     this.gui = new AlphabetDialogForm ( this, parent );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .setAlphabet ( this.machine.getAlphabet () );
+        .setText ( this.machine.getAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+        .setNotRemoveableSymbols ( this.machine
+            .getNotRemoveableSymbolsFromAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
@@ -70,7 +69,10 @@ public final class AlphabetDialog
         } );
 
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setAlphabet ( this.machine.getPushDownAlphabet () );
+        .setText ( this.machine.getPushDownAlphabet () );
+    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+        .setNotRemoveableSymbols ( this.machine
+            .getNotRemoveableSymbolsFromPushDownAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
         .addAlphabetChangedListener ( new AlphabetChangedListener ()
         {
@@ -85,72 +87,6 @@ public final class AlphabetDialog
 
     this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
         .setSelected ( this.machine.isUsePushDownAlphabet () );
-  }
-
-
-  /**
-   * Returns the set of not removeable {@link Symbol}s.
-   * 
-   * @param newAlphabet The new {@link Alphabet}.
-   * @return The set of not removeable {@link Symbol}s.
-   */
-  private final TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet (
-      Alphabet newAlphabet )
-  {
-    if ( newAlphabet == null )
-    {
-      throw new IllegalArgumentException ( "new alphabet is null" ); //$NON-NLS-1$
-    }
-    TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
-    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
-    for ( Symbol current : this.machine.getAlphabet () )
-    {
-      if ( !newAlphabet.contains ( current ) )
-      {
-        symbolsToRemove.add ( current );
-      }
-    }
-    for ( Symbol current : symbolsToRemove )
-    {
-      if ( !this.machine.isSymbolRemoveableFromAlphabet ( current ) )
-      {
-        notRemoveableSymbols.add ( current );
-      }
-    }
-    return notRemoveableSymbols;
-  }
-
-
-  /**
-   * Returns the set of not removeable {@link Symbol}s.
-   * 
-   * @param newAlphabet The new {@link Alphabet}.
-   * @return The set of not removeable {@link Symbol}s.
-   */
-  private final TreeSet < Symbol > getNotRemoveableSymbolsFromPushDownAlphabet (
-      Alphabet newAlphabet )
-  {
-    if ( newAlphabet == null )
-    {
-      throw new IllegalArgumentException ( "new alphabet is null" ); //$NON-NLS-1$
-    }
-    TreeSet < Symbol > notRemoveableSymbols = new TreeSet < Symbol > ();
-    TreeSet < Symbol > symbolsToRemove = new TreeSet < Symbol > ();
-    for ( Symbol current : this.machine.getPushDownAlphabet () )
-    {
-      if ( !newAlphabet.contains ( current ) )
-      {
-        symbolsToRemove.add ( current );
-      }
-    }
-    for ( Symbol current : symbolsToRemove )
-    {
-      if ( !this.machine.isSymbolRemoveableFromPushDownAlphabet ( current ) )
-      {
-        notRemoveableSymbols.add ( current );
-      }
-    }
-    return notRemoveableSymbols;
   }
 
 
@@ -225,58 +161,17 @@ public final class AlphabetDialog
    */
   private final void setButtonStatus ()
   {
-    boolean buttonOkEnabled = true;
-
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelInput.clearException ();
-    if ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
+    if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .getAlphabet () == null )
+        || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .getAlphabet () == null ) )
     {
-      buttonOkEnabled = false;
+      this.gui.jGTIButtonOk.setEnabled ( false );
     }
     else
     {
-      TreeSet < Symbol > notRemoveableSymbolsFromAlphabet = getNotRemoveableSymbolsFromAlphabet ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-          .getAlphabet () );
-      if ( notRemoveableSymbolsFromAlphabet.size () > 0 )
-      {
-        buttonOkEnabled = false;
-        ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-        for ( Symbol current : notRemoveableSymbolsFromAlphabet )
-        {
-          exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
-              "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
-        }
-        this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-            .setException ( exceptionList );
-      }
+      this.gui.jGTIButtonOk.setEnabled ( true );
     }
-
-    this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .clearException ();
-    if ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .getAlphabet () == null )
-    {
-      buttonOkEnabled = false;
-    }
-    else
-    {
-      TreeSet < Symbol > notRemoveableSymbolsFromPushDownAlphabet = getNotRemoveableSymbolsFromPushDownAlphabet ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-          .getAlphabet () );
-      if ( notRemoveableSymbolsFromPushDownAlphabet.size () > 0 )
-      {
-        buttonOkEnabled = false;
-        ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-        for ( Symbol current : notRemoveableSymbolsFromPushDownAlphabet )
-        {
-          exceptionList.add ( new ParserException ( 0, 0, Messages.getString (
-              "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
-        }
-        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .setException ( exceptionList );
-      }
-    }
-
-    this.gui.jGTIButtonOk.setEnabled ( buttonOkEnabled );
   }
 
 

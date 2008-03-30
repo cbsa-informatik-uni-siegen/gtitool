@@ -195,6 +195,26 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Returns the {@link Symbol}s which are not removeable from the
+   * {@link Alphabet}.
+   * 
+   * @return The {@link Symbol}s which are not removeable from the
+   *         {@link Alphabet}.
+   */
+  public TreeSet < Symbol > getNotRemoveableSymbolsFromAlphabet ();
+
+
+  /**
+   * Returns the {@link Symbol}s which are not removeable from the
+   * {@link Alphabet}.
+   * 
+   * @return The {@link Symbol}s which are not removeable from the
+   *         {@link Alphabet}.
+   */
+  public TreeSet < Symbol > getNotRemoveableSymbolsFromPushDownAlphabet ();
+
+
+  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -271,28 +291,6 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @return True if this {@link Word} is reseted, otherwise false.
    */
   public boolean isReseted ();
-
-
-  /**
-   * Returns true if the given {@link Symbol} can be removed from the
-   * {@link Alphabet} of this {@link Machine}, otherwise false.
-   * 
-   * @param symbol The {@link Symbol} which should be checked.
-   * @return True if the given {@link Symbol} can be removed from the
-   *         {@link Alphabet} of this {@link Machine}, otherwise false.
-   */
-  public boolean isSymbolRemoveableFromAlphabet ( Symbol symbol );
-
-
-  /**
-   * Returns true if the given {@link Symbol} can be removed from the push down
-   * {@link Alphabet} of this {@link Machine}, otherwise false.
-   * 
-   * @param symbol The {@link Symbol} which should be checked.
-   * @return True if the given {@link Symbol} can be removed from the push down
-   *         {@link Alphabet} of this {@link Machine}, otherwise false.
-   */
-  public boolean isSymbolRemoveableFromPushDownAlphabet ( Symbol symbol );
 
 
   /**

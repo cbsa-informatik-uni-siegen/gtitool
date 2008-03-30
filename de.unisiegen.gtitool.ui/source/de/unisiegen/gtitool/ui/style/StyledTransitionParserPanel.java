@@ -157,7 +157,7 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
    * 
    * @param transition The input {@link Transition}.
    */
-  public final void setTransition ( Transition transition )
+  public final void setText ( Transition transition )
   {
     if ( transition == null )
     {

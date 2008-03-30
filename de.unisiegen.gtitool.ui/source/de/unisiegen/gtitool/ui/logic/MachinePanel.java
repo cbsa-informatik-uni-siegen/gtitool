@@ -1233,7 +1233,7 @@ public final class MachinePanel implements EditorPanel
       this.machine.nextSymbol ();
 
       // Stack
-      this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
           .getStack () );
 
       // Clear highlight
@@ -1274,7 +1274,8 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
+          .toString () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1283,7 +1284,8 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
+          .toString () );
       infoDialog.show ();
     }
     catch ( WordNotAcceptedException exc )
@@ -1292,7 +1294,8 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
+          .toString () );
       infoDialog.show ();
     }
   }
@@ -1316,7 +1319,7 @@ public final class MachinePanel implements EditorPanel
       this.machine.previousSymbol ();
 
       // Stack
-      this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
           .getStack () );
 
       // Clear highlight
@@ -1359,7 +1362,8 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
+          .toString () );
       infoDialog.show ();
     }
     catch ( WordResetedException exc )
@@ -1367,7 +1371,8 @@ public final class MachinePanel implements EditorPanel
       this.graphModel.cellsChanged ( DefaultGraphModel
           .getAll ( this.graphModel ) );
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getMessage () );
+          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
+          .toString () );
       infoDialog.show ();
     }
   }
@@ -1399,7 +1404,7 @@ public final class MachinePanel implements EditorPanel
     this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
 
     // Stack
-    this.gui.wordPanel.styledStackParserPanel.setStack ( this.machine
+    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
     for ( State current : this.machine.getActiveState () )
@@ -1427,7 +1432,7 @@ public final class MachinePanel implements EditorPanel
     clearHighlight ();
 
     // Stack
-    this.gui.wordPanel.styledStackParserPanel.setStack ( new DefaultStack () );
+    this.gui.wordPanel.styledStackParserPanel.setText ( new DefaultStack () );
 
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );

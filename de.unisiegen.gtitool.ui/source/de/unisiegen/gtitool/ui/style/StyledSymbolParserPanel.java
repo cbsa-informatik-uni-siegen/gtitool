@@ -116,7 +116,7 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
    * 
    * @param symbol The input {@link Symbol}.
    */
-  public final void setSymbol ( Symbol symbol )
+  public final void setText ( Symbol symbol )
   {
     getEditor ().setText ( symbol.toString () );
   }

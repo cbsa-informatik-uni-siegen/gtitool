@@ -211,9 +211,9 @@ public final class ProductionDialog
     this.oldProduction = production;
 
     this.gui.styledNonterminalSymbolSetParserPanel
-        .setNonterminalSymbolSet ( nonterminalSymbolSet );
+        .setText ( nonterminalSymbolSet );
     this.gui.styledTerminalSymbolSetParserPanel
-        .setTerminalSymbolSet ( terminalSymbolSet );
+        .setText ( terminalSymbolSet );
 
     this.gui.styledProductionWordParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
@@ -241,14 +241,14 @@ public final class ProductionDialog
             if ( newProductionWord == null )
             {
               setButtonStatus ( false );
-              getGui ().styledProductionParserPanel.setProduction ( null );
+              getGui ().styledProductionParserPanel.setText ( null );
             }
 
             else
             {
               setButtonStatus ( true );
               getGui ().styledProductionParserPanel
-                  .setProduction ( new DefaultProduction (
+                  .setText ( new DefaultProduction (
                       ( NonterminalSymbol ) getGui ().jGTIList
                           .getSelectedValue (), newProductionWord ) );
             }
@@ -258,7 +258,7 @@ public final class ProductionDialog
     if ( this.oldProduction != null )
     {
       this.gui.styledProductionWordParserPanel
-          .setProductionWord ( this.oldProduction.getProductionWord () );
+          .setText ( this.oldProduction.getProductionWord () );
 
       for ( NonterminalSymbol current : this.listModel.getList () )
       {
@@ -278,14 +278,14 @@ public final class ProductionDialog
     if ( productionWord == null )
     {
       setButtonStatus ( false );
-      getGui ().styledProductionParserPanel.setProduction ( null );
+      getGui ().styledProductionParserPanel.setText ( null );
     }
 
     else
     {
       setButtonStatus ( true );
       getGui ().styledProductionParserPanel
-          .setProduction ( new DefaultProduction (
+          .setText ( new DefaultProduction (
               ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
               productionWord ) );
     }
@@ -378,14 +378,14 @@ public final class ProductionDialog
     if ( productionWord == null )
     {
       setButtonStatus ( false );
-      getGui ().styledProductionParserPanel.setProduction ( null );
+      getGui ().styledProductionParserPanel.setText ( null );
     }
 
     else
     {
       setButtonStatus ( true );
       getGui ().styledProductionParserPanel
-          .setProduction ( new DefaultProduction (
+          .setText ( new DefaultProduction (
               ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
               productionWord ) );
     }

@@ -119,7 +119,7 @@ public final class StyledTerminalSymbolParserPanel extends StyledParserPanel
    * 
    * @param terminalSymbol The input {@link TerminalSymbol}.
    */
-  public final void setTerminalSymbol ( TerminalSymbol terminalSymbol )
+  public final void setText ( TerminalSymbol terminalSymbol )
   {
     getEditor ().setText ( terminalSymbol.toString () );
   }

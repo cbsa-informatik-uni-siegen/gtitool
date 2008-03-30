@@ -111,7 +111,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weighty = 10.0;
         getContentPane().add(jPanelBody, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(480, 300));
+        setSize(new java.awt.Dimension(560, 350));
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

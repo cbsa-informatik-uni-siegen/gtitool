@@ -616,16 +616,6 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Clears the extern {@link ScannerException}s.
-   */
-  public final void clearException ()
-  {
-    this.document.clearException ();
-    setErrorIndicator ( false );
-  }
-
-
-  /**
    * Let the listeners know that the {@link Object} has changed.
    * 
    * @param newObject The new {@link Object}.
@@ -901,10 +891,10 @@ public abstract class StyledParserPanel extends JPanel
    * 
    * @param exceptions The {@link ScannerException}s to set.
    */
-  public final void setException ( Iterable < ScannerException > exceptions )
+  protected final void setException ( Iterable < ScannerException > exceptions )
   {
     this.document.setException ( exceptions );
-    setErrorIndicator ( true );
+    setErrorIndicator ( exceptions.iterator ().hasNext () );
   }
 
 

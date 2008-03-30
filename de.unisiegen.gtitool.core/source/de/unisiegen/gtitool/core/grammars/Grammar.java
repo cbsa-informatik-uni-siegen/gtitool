@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.core.grammars;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.swing.table.TableModel;
 
@@ -23,7 +24,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  */
 public interface Grammar extends Serializable, TableModel, Modifyable
 {
-  
+
   /**
    * This enum is used to indicate which validation elements should be checked
    * during a validation.
@@ -52,6 +53,14 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Add a new production to this grammar.
+   * 
+   * @param production The {@link Production}:
+   */
+  public void addProduction ( Production production );
+
+
+  /**
    * Returns the {@link Grammar} type.
    * 
    * @return The {@link Grammar} type.
@@ -68,27 +77,23 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns the {@link TerminalSymbolSet}.
+   * Returns the {@link NonterminalSymbol}s which are not removeable from the
+   * {@link NonterminalSymbolSet}.
    * 
-   * @return the {@link TerminalSymbolSet}.
+   * @return The {@link NonterminalSymbol}s which are not removeable from the
+   *         {@link NonterminalSymbolSet}.
    */
-  public TerminalSymbolSet getTerminalSymbolSet ();
+  public TreeSet < NonterminalSymbol > getNotRemoveableNonterminalSymbolsFromNonterminalSymbol ();
 
 
   /**
-   * Add a new production to this grammar.
+   * Returns the {@link TerminalSymbol}s which are not removeable from the
+   * {@link TerminalSymbolSet}.
    * 
-   * @param production The {@link Production}:
+   * @return The {@link TerminalSymbol}s which are not removeable from the
+   *         {@link TerminalSymbolSet}.
    */
-  public void addProduction ( Production production );
-
-
-  /**
-   * Remove a new production from this grammar.
-   * 
-   * @param production The {@link Production}:
-   */
-  public void removeProduction ( Production production );
+  public TreeSet < TerminalSymbol > getNotRemoveableTerminalSymbolsFromTerminalSymbol ();
 
 
   /**
@@ -109,29 +114,21 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns true if the given {@link NonterminalSymbol} can be removed from the
-   * {@link NonterminalSymbolSet} of this {@link Grammar}, otherwise false.
+   * Returns the {@link TerminalSymbolSet}.
    * 
-   * @param symbol The {@link NonterminalSymbol} which should be checked.
-   * @return True if the given {@link NonterminalSymbol} can be removed from the
-   *         {@link NonterminalSymbolSet} of this {@link Grammar}, otherwise
-   *         false.
+   * @return the {@link TerminalSymbolSet}.
    */
-  public boolean isSymbolRemoveableFromNonterminalSymbols (
-      NonterminalSymbol symbol );
+  public TerminalSymbolSet getTerminalSymbolSet ();
 
 
   /**
-   * Returns true if the given {@link TerminalSymbol} can be removed from the
-   * {@link TerminalSymbolSet} of this {@link Grammar}, otherwise false.
+   * Remove a new production from this grammar.
    * 
-   * @param symbol The {@link TerminalSymbol} which should be checked.
-   * @return True if the given {@link TerminalSymbol} can be removed from the
-   *         {@link TerminalSymbolSet} of this {@link Grammar}, otherwise
-   *         false.
+   * @param production The {@link Production}:
    */
-  public boolean isSymbolRemoveableFromTerminalSymbols ( TerminalSymbol symbol );
-  
+  public void removeProduction ( Production production );
+
+
   /**
    * Validates that everything in the {@link Grammar} is correct.
    * 

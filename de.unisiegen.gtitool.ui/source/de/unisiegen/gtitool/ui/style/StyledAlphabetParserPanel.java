@@ -1,11 +1,17 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import java.util.ArrayList;
+import java.util.TreeSet;
+
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.parser.alphabet.AlphabetParseable;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
@@ -23,6 +29,12 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    * The serial version uid.
    */
   private static final long serialVersionUID = -6870722718951231990L;
+
+
+  /**
+   * The parsed {@link Alphabet} can not contain this {@link Symbol}s.
+   */
+  private TreeSet < Symbol > notRemoveableSymbols = null;
 
 
   /**
@@ -56,17 +68,58 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
 
   /**
+   * Checks the given {@link Alphabet}.
+   * 
+   * @param alphabet The {@link Alphabet} to check.
+   * @return The input {@link Alphabet} or null, if the {@link Alphabet}
+   *         contains symbols which can not be removed.
+   */
+  private final Alphabet checkAlphabet ( Alphabet alphabet )
+  {
+    if ( this.notRemoveableSymbols == null )
+    {
+      return alphabet;
+    }
+
+    Alphabet checkedAlphabet = alphabet;
+    if ( checkedAlphabet != null )
+    {
+      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
+      for ( Symbol current : this.notRemoveableSymbols )
+      {
+        if ( !checkedAlphabet.contains ( current ) )
+        {
+          exceptionList.add ( new ParserException ( current.getParserOffset ()
+              .getStart (), current.getParserOffset ().getEnd (), Messages
+              .getString ( "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
+        }
+      }
+
+      // Check for exceptions
+      if ( exceptionList.size () > 0 )
+      {
+        checkedAlphabet = null;
+        setException ( exceptionList );
+      }
+    }
+    return checkedAlphabet;
+
+  }
+
+
+  /**
    * Let the listeners know that the {@link Alphabet} has changed.
    * 
    * @param newAlphabet The new {@link Alphabet}.
    */
   private final void fireAlphabetChanged ( Alphabet newAlphabet )
   {
+    Alphabet checkedAlphabet = checkAlphabet ( newAlphabet );
     AlphabetChangedListener [] listeners = this.listenerList
         .getListeners ( AlphabetChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].alphabetChanged ( newAlphabet );
+      listeners [ n ].alphabetChanged ( checkedAlphabet );
     }
   }
 
@@ -80,7 +133,8 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   {
     try
     {
-      return ( Alphabet ) getParsedObject ();
+      Alphabet alphabet = ( Alphabet ) getParsedObject ();
+      return checkAlphabet ( alphabet );
     }
     catch ( Exception exc )
     {
@@ -97,7 +151,8 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   @Override
   public final Alphabet parse ()
   {
-    return ( Alphabet ) super.parse ();
+    Alphabet alphabet = ( Alphabet ) super.parse ();
+    return checkAlphabet ( alphabet );
   }
 
 
@@ -110,17 +165,6 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
       AlphabetChangedListener listener )
   {
     this.listenerList.remove ( AlphabetChangedListener.class, listener );
-  }
-
-
-  /**
-   * Sets the {@link Alphabet} of the document.
-   * 
-   * @param alphabet The input {@link Alphabet}.
-   */
-  public final void setAlphabet ( Alphabet alphabet )
-  {
-    getEditor ().setText ( alphabet.toString () );
   }
 
 
@@ -159,5 +203,30 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public final void setHighlightedSymbol ( Symbol symbol )
   {
     setHighlightedParseableEntity ( symbol );
+  }
+
+
+  /**
+   * Sets the {@link Symbol}s which should not be removeable.
+   * 
+   * @param notRemoveableSymbols The {@link Symbol}s which should not be
+   *          removeable.
+   * @see #notRemoveableSymbols
+   */
+  public final void setNotRemoveableSymbols (
+      TreeSet < Symbol > notRemoveableSymbols )
+  {
+    this.notRemoveableSymbols = notRemoveableSymbols;
+  }
+
+
+  /**
+   * Sets the {@link Alphabet} of the document.
+   * 
+   * @param alphabet The input {@link Alphabet}.
+   */
+  public final void setText ( Alphabet alphabet )
+  {
+    getEditor ().setText ( alphabet.toString () );
   }
 }

@@ -1883,6 +1883,8 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemSaveAll.setEnabled ( state );
     // Close
     this.gui.jMenuItemClose.setEnabled ( state );
+    // CloseAll
+    this.gui.jMenuItemCloseAll.setEnabled ( state );
     // Enter word
     this.gui.jMenuItemEnterWord.setEnabled ( state );
     // Cut

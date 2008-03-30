@@ -3,7 +3,6 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
-CF		- Alle Schließen sollte nur bei geöffneter Datei wählbar sein
 CF		- Die Menüeinträge Tabelle und Console sollten nur bei geöffneter Datei
 		  wählbar sein
 
@@ -14,6 +13,8 @@ BM		- Wenn man mit keiner offenen Datei startet, sind die Grammar Buttons
 BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
 		  in die Logik eingebaut werden. Im "Preference Dialog" ist alles
 		  implementiert.
+BM		- Alle Grammar Komponenten müssen die dynamische Sprachänderung
+		  unterstützen (Es fehlen auf jeden Fall die Toolbar Buttons)
 
 		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
 		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,

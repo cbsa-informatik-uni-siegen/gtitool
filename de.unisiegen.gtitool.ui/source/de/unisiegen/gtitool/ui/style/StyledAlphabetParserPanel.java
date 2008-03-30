@@ -76,34 +76,28 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    */
   private final Alphabet checkAlphabet ( Alphabet alphabet )
   {
-    if ( this.notRemoveableSymbols == null )
-    {
-      return alphabet;
-    }
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    Alphabet checkedAlphabet = alphabet;
-    if ( checkedAlphabet != null )
+    if ( alphabet != null )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
       for ( Symbol current : this.notRemoveableSymbols )
       {
-        if ( !checkedAlphabet.contains ( current ) )
+        if ( !alphabet.contains ( current ) )
         {
           exceptionList.add ( new ParserException ( current.getParserOffset ()
               .getStart (), current.getParserOffset ().getEnd (), Messages
               .getString ( "AlphabetDialog.SymbolUsed", current ) ) ); //$NON-NLS-1$
         }
       }
-
-      // Check for exceptions
-      if ( exceptionList.size () > 0 )
-      {
-        checkedAlphabet = null;
-        setException ( exceptionList );
-      }
     }
-    return checkedAlphabet;
 
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    return alphabet;
   }
 
 

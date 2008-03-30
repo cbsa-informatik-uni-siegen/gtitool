@@ -152,7 +152,6 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
           }
         }
 
-        // Check for exceptions
         if ( exceptionList.size () > 0 )
         {
           setException ( exceptionList );

@@ -77,16 +77,11 @@ public final class StyledStackParserPanel extends StyledParserPanel
    */
   private final Stack checkStack ( Stack stack )
   {
-    if ( this.pushDownAlphabet == null )
-    {
-      throw new RuntimeException ( "push down alphabet is not set" ); //$NON-NLS-1$
-    }
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    Stack checkedStack = stack;
-    if ( checkedStack != null )
+    if ( ( this.pushDownAlphabet != null ) && ( stack != null ) )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : checkedStack )
+      for ( Symbol current : stack )
       {
         if ( !this.pushDownAlphabet.contains ( current ) )
         {
@@ -97,14 +92,15 @@ public final class StyledStackParserPanel extends StyledParserPanel
                   current.getName (), this.pushDownAlphabet ) ) );
         }
       }
-      // Check for exceptions
-      if ( exceptionList.size () > 0 )
-      {
-        checkedStack = null;
-        setException ( exceptionList );
-      }
     }
-    return checkedStack;
+
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    return stack;
   }
 
 

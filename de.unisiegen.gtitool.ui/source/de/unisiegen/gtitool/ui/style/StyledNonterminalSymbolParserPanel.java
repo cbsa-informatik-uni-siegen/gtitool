@@ -78,15 +78,10 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
   private final NonterminalSymbol checkNonterminalSymbol (
       NonterminalSymbol nonterminalSymbol )
   {
-    if ( this.nonterminalSymbolSet == null )
-    {
-      return nonterminalSymbol;
-    }
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    NonterminalSymbol checkedNonterminalSymbol = nonterminalSymbol;
-    if ( checkedNonterminalSymbol != null )
+    if ( ( this.nonterminalSymbolSet != null ) && ( nonterminalSymbol != null ) )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
       if ( !this.nonterminalSymbolSet.contains ( nonterminalSymbol ) )
       {
         exceptionList.add ( new ParserException ( nonterminalSymbol
@@ -95,15 +90,15 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
             "TerminalPanel.StartSymbolNoNonterminalSymbol", //$NON-NLS-1$
             nonterminalSymbol.getName (), this.nonterminalSymbolSet ) ) );
       }
-
-      // Check for exceptions
-      if ( exceptionList.size () > 0 )
-      {
-        checkedNonterminalSymbol = null;
-        setException ( exceptionList );
-      }
     }
-    return checkedNonterminalSymbol;
+
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    return nonterminalSymbol;
   }
 
 

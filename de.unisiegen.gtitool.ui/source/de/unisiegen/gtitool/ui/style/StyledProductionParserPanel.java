@@ -184,7 +184,6 @@ public final class StyledProductionParserPanel extends StyledParserPanel
         System.exit ( 1 );
       }
 
-      // Check for exceptions
       if ( exceptionList.size () > 0 )
       {
         setException ( exceptionList );

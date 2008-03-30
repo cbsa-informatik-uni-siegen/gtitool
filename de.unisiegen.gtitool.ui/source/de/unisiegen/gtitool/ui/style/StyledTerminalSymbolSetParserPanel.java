@@ -49,20 +49,6 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
 
 
   /**
-   * Sets the {@link TerminalSymbol}s which should not be removeable.
-   * 
-   * @param notRemoveableTerminalSymbols The {@link TerminalSymbol}s which
-   *          should not be removeable.
-   * @see #notRemoveableTerminalSymbols
-   */
-  public final void setNotRemoveableTerminalSymbols (
-      TreeSet < TerminalSymbol > notRemoveableTerminalSymbols )
-  {
-    this.notRemoveableTerminalSymbols = notRemoveableTerminalSymbols;
-  }
-
-
-  /**
    * Allocates a new {@link StyledTerminalSymbolSetParserPanel}.
    */
   public StyledTerminalSymbolSetParserPanel ()
@@ -105,12 +91,7 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    if ( this.nonterminalSymbolSet == null )
-    {
-      return terminalSymbolSet;
-    }
-
-    if ( this.nonterminalSymbolSet != null && terminalSymbolSet != null )
+    if ( ( this.nonterminalSymbolSet != null ) && ( terminalSymbolSet != null ) )
     {
       for ( TerminalSymbol currentTerminal : terminalSymbolSet )
       {
@@ -129,7 +110,8 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
       }
     }
 
-    if ( this.notRemoveableTerminalSymbols != null && terminalSymbolSet != null )
+    if ( ( this.notRemoveableTerminalSymbols != null )
+        && ( terminalSymbolSet != null ) )
     {
       for ( TerminalSymbol current : this.notRemoveableTerminalSymbols )
       {
@@ -142,13 +124,12 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
       }
     }
 
-    TerminalSymbolSet checkedTerminalSymbolSet = terminalSymbolSet;
     if ( exceptionList.size () > 0 )
     {
-      checkedTerminalSymbolSet = null;
       setException ( exceptionList );
+      return null;
     }
-    return checkedTerminalSymbolSet;
+    return terminalSymbolSet;
   }
 
 
@@ -269,6 +250,20 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
       NonterminalSymbolSet nonterminalSymbolSet )
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
+  }
+
+
+  /**
+   * Sets the {@link TerminalSymbol}s which should not be removeable.
+   * 
+   * @param notRemoveableTerminalSymbols The {@link TerminalSymbol}s which
+   *          should not be removeable.
+   * @see #notRemoveableTerminalSymbols
+   */
+  public final void setNotRemoveableTerminalSymbols (
+      TreeSet < TerminalSymbol > notRemoveableTerminalSymbols )
+  {
+    this.notRemoveableTerminalSymbols = notRemoveableTerminalSymbols;
   }
 
 

@@ -76,16 +76,11 @@ public final class StyledWordParserPanel extends StyledParserPanel
    */
   private final Word checkWord ( Word word )
   {
-    if ( this.alphabet == null )
-    {
-      throw new RuntimeException ( "alphabet is not set" ); //$NON-NLS-1$
-    }
+    ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    Word checkedWord = word;
-    if ( checkedWord != null )
+    if ( ( this.alphabet != null ) && ( word != null ) )
     {
-      ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
-      for ( Symbol current : checkedWord )
+      for ( Symbol current : word )
       {
         if ( !this.alphabet.contains ( current ) )
         {
@@ -95,14 +90,15 @@ public final class StyledWordParserPanel extends StyledParserPanel
                   current.getName (), this.alphabet ) ) );
         }
       }
-      // Check for exceptions
-      if ( exceptionList.size () > 0 )
-      {
-        checkedWord = null;
-        setException ( exceptionList );
-      }
     }
-    return checkedWord;
+
+    if ( exceptionList.size () > 0 )
+    {
+      setException ( exceptionList );
+      return null;
+    }
+
+    return word;
   }
 
 

@@ -36,17 +36,17 @@ public final class StyledNonterminalSymbolSetParserPanel extends
 
 
   /**
-   * Every {@link NonterminalSymbol} in the {@link NonterminalSymbolSet} can not
-   * be be in the {@link TerminalSymbolSet}.
-   */
-  private TerminalSymbolSet terminalSymbolSet = null;
-
-
-  /**
    * The parsed {@link NonterminalSymbolSet} can not contain this
    * {@link NonterminalSymbol}s.
    */
   private TreeSet < NonterminalSymbol > notRemoveableNonterminalSymbols = null;
+
+
+  /**
+   * Every {@link NonterminalSymbol} in the {@link NonterminalSymbolSet} can not
+   * be be in the {@link TerminalSymbolSet}.
+   */
+  private TerminalSymbolSet terminalSymbolSet = null;
 
 
   /**
@@ -93,7 +93,7 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    if ( this.terminalSymbolSet != null && nonterminalSymbolSet != null )
+    if ( ( this.terminalSymbolSet != null ) && ( nonterminalSymbolSet != null ) )
     {
       for ( NonterminalSymbol currentNonterminal : nonterminalSymbolSet )
       {
@@ -112,8 +112,8 @@ public final class StyledNonterminalSymbolSetParserPanel extends
       }
     }
 
-    if ( this.notRemoveableNonterminalSymbols != null
-        && nonterminalSymbolSet != null )
+    if ( ( this.notRemoveableNonterminalSymbols != null )
+        && ( nonterminalSymbolSet != null ) )
     {
       for ( NonterminalSymbol current : this.notRemoveableNonterminalSymbols )
       {
@@ -126,14 +126,13 @@ public final class StyledNonterminalSymbolSetParserPanel extends
       }
     }
 
-    NonterminalSymbolSet checkedNonterminalSymbolSet = nonterminalSymbolSet;
     if ( exceptionList.size () > 0 )
     {
-      checkedNonterminalSymbolSet = null;
       setException ( exceptionList );
+      return null;
     }
 
-    return checkedNonterminalSymbolSet;
+    return nonterminalSymbolSet;
   }
 
 

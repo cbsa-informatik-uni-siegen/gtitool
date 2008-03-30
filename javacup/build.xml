@@ -17,9 +17,11 @@
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="licensefile" value="${core.docdir}/license.txt" />
 
 	<!-- task -->
 	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11.jar" />
@@ -67,11 +69,20 @@
 
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
-		<jar jarfile="${distdir}/${javacupfile}" basedir="${classesdir}">
-			<manifest>
-				<attribute name="Main-Class" value="java_cup/Main" />
-			</manifest>
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+			<attribute name="Main-Class" value="java_cup/Main" />
+		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
+		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/${javacupfile}" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
 		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
 	<!-- dist clean -->

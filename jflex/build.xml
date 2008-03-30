@@ -15,10 +15,12 @@
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
-	
+	<property name="licensefile" value="${core.docdir}/license.txt" />
+
 	<!-- task -->
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />
 	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
@@ -56,13 +58,25 @@
 
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
+		<!-- copy skeleton -->
 		<copy file="${libdir}/skeleton.default" todir="${classesdir}/JFlex" />
-		<copy file="${sourcedir}/JFlex/Messages.properties" todir="${classesdir}/JFlex" />
+		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="JFlex.Main" />
 		</manifest>
-		<jar basedir="${classesdir}" includes="JFlex/**,java_cup/**,skeleton" jarfile="${distdir}/${jflexfile}" manifest="${distdir}/MANIFEST.MF">
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
+		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/${jflexfile}" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.properties" />
+			</fileset>
 		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
 	<!-- dist clean -->

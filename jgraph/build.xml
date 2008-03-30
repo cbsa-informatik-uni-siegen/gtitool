@@ -13,9 +13,11 @@
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="jgraphfile" value="gtitool.jgraph-${gtitool.version}.jar" />
+	<property name="licensefile" value="${core.docdir}/license.txt" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Clean up and produce all distributions">
@@ -40,7 +42,19 @@
 
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
-		<jar jarfile="${distdir}/${jgraphfile}" basedir="${classesdir}" />
+		<!-- manifest -->
+		<manifest file="${distdir}/MANIFEST.MF">
+		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
+		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
+		<!-- jar file -->
+		<jar jarfile="${distdir}/${jgraphfile}" manifest="${distdir}/MANIFEST.MF">
+			<fileset dir="${classesdir}" />
+		</jar>
+		<!-- delete manifest -->
+		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
 	<!-- dist clean -->

@@ -13,12 +13,14 @@
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
+	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
 	<property name="ui.distdir" value="${ui.basedir}/dist" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
 	<property name="startfile" value="gtitool.start-${gtitool.version}.jar" />
+	<property name="licensefile" value="${core.docdir}/license.txt" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-exe,dist-clean" description="Clean up and produce all distributions">
@@ -103,6 +105,10 @@
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
 			<attribute name="Class-Path" value="de.unisiegen.gtitool.ui-${gtitool.version}.jar" />
 		</manifest>
+		<!-- make dir meta-inf -->
+		<mkdir dir="${classesdir}/META-INF" />
+		<!-- copy license -->
+		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${startfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

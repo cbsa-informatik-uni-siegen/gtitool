@@ -24,6 +24,7 @@
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 	<property name="log4jfile" value="log4j-1.2.15.jar" />
+	<property name="licensefile" value="${docdir}/license.txt" />
 
 	<!-- declare -->
 	<target name="declare">
@@ -73,20 +74,11 @@
 	<target name="dist-jar" depends="dist-compile">
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
-			<attribute name="Built-By" value="${user.name}" />
-			<section name="de.unisiegen.gtitool.core">
-				<attribute name="Specification-Title" value="GTITool Core" />
-				<attribute name="Specification-Version" value="${gtitool.version}" />
-				<attribute name="Specification-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
-				<attribute name="Implementation-Title" value="de.unisiegen.gtitool.core" />
-				<attribute name="Implementation-Version" value="${gtitool.version} ${TODAY}" />
-				<attribute name="Implementation-Vendor" value="University of Siegen, Department of Theoretical Computer Science" />
-			</section>
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
 		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${docdir}/LICENSE" />
+		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

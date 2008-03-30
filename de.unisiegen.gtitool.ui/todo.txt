@@ -3,8 +3,6 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
-CF		- Die Menüeinträge Tabelle und Console sollten nur bei geöffneter Datei
-		  wählbar sein
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken

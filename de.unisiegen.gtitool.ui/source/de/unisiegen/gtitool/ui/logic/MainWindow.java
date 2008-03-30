@@ -1885,16 +1885,16 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemClose.setEnabled ( state );
     // CloseAll
     this.gui.jMenuItemCloseAll.setEnabled ( state );
+    // View
+    this.gui.jCheckBoxMenuItemConsole.setEnabled ( state );
+    this.gui.jCheckBoxMenuItemTable.setEnabled ( state );
     // Enter word
     this.gui.jMenuItemEnterWord.setEnabled ( state );
     // Cut
-    // this.gui.jMenuItemCut.setEnabled ( pState );
     this.gui.jMenuItemCut.setVisible ( false );
     // Copy
-    // this.gui.jMenuItemCopy.setEnabled ( pState );
     this.gui.jMenuItemCopy.setVisible ( false );
     // Paste
-    // this.gui.jMenuItemPaste.setEnabled ( pState );
     this.gui.jMenuItemPaste.setVisible ( false );
     // Undo
     this.gui.jMenuItemUndo.setEnabled ( false );

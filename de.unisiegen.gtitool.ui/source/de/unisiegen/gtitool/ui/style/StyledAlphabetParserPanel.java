@@ -78,7 +78,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
-    if ( alphabet != null )
+    if ( ( this.notRemoveableSymbols != null ) && ( alphabet != null ) )
     {
       for ( Symbol current : this.notRemoveableSymbols )
       {

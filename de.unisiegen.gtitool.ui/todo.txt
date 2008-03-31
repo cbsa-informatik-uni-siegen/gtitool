@@ -7,7 +7,8 @@ CF		- Open und Save Dialog neu bauen
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
 BM		- Wenn man mit keiner offenen Datei startet, sind die Grammar Buttons
-		  aktiv.
+		  aktiv, vielleicht ist es sinnvoll, alle Machine und alle Grammar
+		  Buttons auszublenden. Das macht mehr Sinn?!
 BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
 		  in die Logik eingebaut werden. Im "Preference Dialog" ist alles
 		  implementiert.

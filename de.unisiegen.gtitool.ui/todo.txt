@@ -21,3 +21,4 @@ BM		- Alle Grammar Komponenten müssen die dynamische Sprachänderung
 		  Komponente ganz genau miteinander vergleichen. Es muss erst eine
 		  Absprache erfolgen, wer welche Panel übernimmt, damit es zu keinen
 		  Konflikten kommt.
+		  Fertig: AboutDialog

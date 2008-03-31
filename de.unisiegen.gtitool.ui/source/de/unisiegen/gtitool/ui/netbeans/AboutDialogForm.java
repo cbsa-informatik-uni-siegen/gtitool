@@ -45,20 +45,20 @@ public class AboutDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanelMain = new javax.swing.JPanel();
-        jPanelNorth = new javax.swing.JPanel();
-        jLabelIcon = new javax.swing.JLabel();
-        jLabelName = new javax.swing.JLabel();
-        jLabelCopyright = new javax.swing.JLabel();
-        jSeparator = new javax.swing.JSeparator();
-        jPanelSouth = new javax.swing.JPanel();
-        jLabelWebpage = new javax.swing.JLabel();
-        jLabelWebpageEntry = new javax.swing.JLabel();
-        jLabelVersion = new javax.swing.JLabel();
-        jLabelVersionEntry = new javax.swing.JLabel();
-        jLabelDeveloper = new javax.swing.JLabel();
-        jLabelDeveloper0 = new javax.swing.JLabel();
-        jLabelDeveloper1 = new javax.swing.JLabel();
+        jGTIPanelMain = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelNorth = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelIcon = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelName = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelCopyright = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTISeparator = new de.unisiegen.gtitool.ui.swing.JGTISeparator();
+        jGTIPanelSouth = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelWebpage = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelWebpageEntry = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelVersion = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelVersionEntry = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper0 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelDeveloper1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -74,47 +74,46 @@ public class AboutDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jPanelMain.setLayout(new java.awt.GridBagLayout());
+        jGTIPanelMain.setLayout(new java.awt.GridBagLayout());
 
-        jPanelNorth.setLayout(new java.awt.GridBagLayout());
+        jGTIPanelNorth.setLayout(new java.awt.GridBagLayout());
 
-        jPanelNorth.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/uni_logo.gif")));
+        jGTILabelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/uni_logo.gif")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
-        jPanelNorth.add(jLabelIcon, gridBagConstraints);
+        jGTIPanelNorth.add(jGTILabelIcon, gridBagConstraints);
 
-        jLabelName.setFont(new java.awt.Font("Dialog", 1, 24));
-        jLabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelName.setText("GTI Tool ?.?.?");
-        jLabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jGTILabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelName.setText("GTI Tool ?.?.?");
+        jGTILabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jGTILabelName.setFont(new java.awt.Font("Dialog", 1, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelNorth.add(jLabelName, gridBagConstraints);
+        jGTIPanelNorth.add(jGTILabelName, gridBagConstraints);
 
-        jLabelCopyright.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelCopyright.setText(bundle.getString("AboutDialog.Copyright")); // NOI18N
-        jLabelCopyright.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jGTILabelCopyright.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelCopyright.setText(bundle.getString("AboutDialog.Copyright")); // NOI18N
+        jGTILabelCopyright.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelNorth.add(jLabelCopyright, gridBagConstraints);
+        jGTIPanelNorth.add(jGTILabelCopyright, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        jPanelMain.add(jPanelNorth, gridBagConstraints);
+        jGTIPanelMain.add(jGTIPanelNorth, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -122,24 +121,24 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        jPanelMain.add(jSeparator, gridBagConstraints);
+        jGTIPanelMain.add(jGTISeparator, gridBagConstraints);
 
-        jPanelSouth.setLayout(new java.awt.GridBagLayout());
+        jGTIPanelSouth.setLayout(new java.awt.GridBagLayout());
 
-        jLabelWebpage.setText(bundle.getString("AboutDialog.Webpage")); // NOI18N
+        jGTILabelWebpage.setText(bundle.getString("AboutDialog.Webpage")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 16, 5, 10);
-        jPanelSouth.add(jLabelWebpage, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelWebpage, gridBagConstraints);
 
-        jLabelWebpageEntry.setForeground(java.awt.Color.blue);
-        jLabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
-        jLabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
-        jLabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTILabelWebpageEntry.setForeground(java.awt.Color.blue);
+        jGTILabelWebpageEntry.setText("http://theoinf.math.uni-siegen.de/gtitool");
+        jGTILabelWebpageEntry.setToolTipText(bundle.getString("AboutDialog.WebpageEntryToolTip")); // NOI18N
+        jGTILabelWebpageEntry.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelWebpageEntryMouseClicked(evt);
+                jGTILabelWebpageEntryMouseClicked(evt);
             }
         });
 
@@ -147,52 +146,49 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 10);
-        jPanelSouth.add(jLabelWebpageEntry, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelWebpageEntry, gridBagConstraints);
 
-        jLabelVersion.setText(bundle.getString("AboutDialog.Version")); // NOI18N
+        jGTILabelVersion.setText(bundle.getString("AboutDialog.Version")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 10);
-        jPanelSouth.add(jLabelVersion, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelVersion, gridBagConstraints);
 
-        jLabelVersionEntry.setText("?.?.?.????");
+        jGTILabelVersionEntry.setText("?.?.?_????");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
-        jPanelSouth.add(jLabelVersionEntry, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelVersionEntry, gridBagConstraints);
 
-        jLabelDeveloper.setText(bundle.getString("AboutDialog.Developer")); // NOI18N
+        jGTILabelDeveloper.setText(bundle.getString("AboutDialog.Developer")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 10);
-        jPanelSouth.add(jLabelDeveloper, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelDeveloper, gridBagConstraints);
 
-        jLabelDeveloper0.setText("Christian Fehler");
+        jGTILabelDeveloper0.setText("Christian Fehler");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
-        jPanelSouth.add(jLabelDeveloper0, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelDeveloper0, gridBagConstraints);
 
-        jLabelDeveloper1.setText("Benjamin Mies");
+        jGTILabelDeveloper1.setText("Benjamin Mies");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 0);
-        jPanelSouth.add(jLabelDeveloper1, gridBagConstraints);
+        jGTIPanelSouth.add(jGTILabelDeveloper1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -200,7 +196,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
-        jPanelMain.add(jPanelSouth, gridBagConstraints);
+        jGTIPanelMain.add(jGTIPanelSouth, gridBagConstraints);
 
         jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
         jGTIButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
@@ -216,7 +212,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        jPanelMain.add(jGTIButtonClose, gridBagConstraints);
+        jGTIPanelMain.add(jGTIButtonClose, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -224,39 +220,39 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jPanelMain, gridBagConstraints);
+        getContentPane().add(jGTIPanelMain, gridBagConstraints);
 
         setSize(new java.awt.Dimension(448, 280));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTILabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTILabelWebpageEntryMouseClicked
+      this.logic.handleWebpageEntry();
+    }//GEN-LAST:event_jGTILabelWebpageEntryMouseClicked
+
     private void jGTIButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCloseActionPerformed
       this.logic.handleClose();
     }//GEN-LAST:event_jGTIButtonCloseActionPerformed
-
-    private void jLabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelWebpageEntryMouseClicked
-      this.logic.handleWebpageEntry();
-    }//GEN-LAST:event_jLabelWebpageEntryMouseClicked
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
       this.logic.handleClose();
     }//GEN-LAST:event_formWindowClosing
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
-    public javax.swing.JLabel jLabelCopyright;
-    public javax.swing.JLabel jLabelDeveloper;
-    private javax.swing.JLabel jLabelDeveloper0;
-    private javax.swing.JLabel jLabelDeveloper1;
-    private javax.swing.JLabel jLabelIcon;
-    public javax.swing.JLabel jLabelName;
-    public javax.swing.JLabel jLabelVersion;
-    public javax.swing.JLabel jLabelVersionEntry;
-    public javax.swing.JLabel jLabelWebpage;
-    public javax.swing.JLabel jLabelWebpageEntry;
-    private javax.swing.JPanel jPanelMain;
-    private javax.swing.JPanel jPanelNorth;
-    private javax.swing.JPanel jPanelSouth;
-    private javax.swing.JSeparator jSeparator;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonClose;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelCopyright;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper0;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelDeveloper1;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelIcon;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelName;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersion;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelVersionEntry;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelWebpage;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelWebpageEntry;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMain;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelNorth;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelSouth;
+    public de.unisiegen.gtitool.ui.swing.JGTISeparator jGTISeparator;
     // End of variables declaration//GEN-END:variables
     
 }

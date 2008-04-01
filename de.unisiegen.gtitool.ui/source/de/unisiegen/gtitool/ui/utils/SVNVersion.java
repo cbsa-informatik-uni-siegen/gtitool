@@ -108,6 +108,10 @@ public final class SVNVersion
     newVersion = getVersion ( new File ( "../de.unisiegen.gtitool.ui" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
 
+    // howto
+    newVersion = getVersion ( new File ( "../gtitool.howto" ) ); //$NON-NLS-1$
+    version = newVersion > version ? newVersion : version;
+
     // htdocs
     newVersion = getVersion ( new File ( "../gtitool.htdocs" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
@@ -135,7 +139,7 @@ public final class SVNVersion
     // presentation
     newVersion = getVersion ( new File ( "../gtitool.presentation" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
-    
+
     // start
     newVersion = getVersion ( new File ( "../gtitool.start" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
@@ -162,8 +166,14 @@ public final class SVNVersion
    */
   private final static int getVersion ( File file )
   {
+    if ( !file.exists () )
+    {
+      throw new RuntimeException ( "all projects must be checked out" ); //$NON-NLS-1$
+    }
+
     int version = -1;
     int newVersion;
+
     if ( file.isDirectory () )
     {
       File [] files = file.listFiles ();

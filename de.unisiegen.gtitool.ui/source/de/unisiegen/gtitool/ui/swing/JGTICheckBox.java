@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import java.awt.Insets;
+
 import javax.swing.JCheckBox;
 
 
@@ -25,5 +27,8 @@ public class JGTICheckBox extends JCheckBox
   public JGTICheckBox ()
   {
     super ();
+    setFocusPainted ( false );
+    setBorder ( null );
+    setMargin ( new Insets ( 0, 0, 0, 0 ) );
   }
 }

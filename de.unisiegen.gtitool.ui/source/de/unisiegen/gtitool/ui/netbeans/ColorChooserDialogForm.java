@@ -77,11 +77,11 @@ public class ColorChooserDialogForm extends javax.swing.JDialog
         java.awt.GridBagConstraints gridBagConstraints;
 
         jGTIColorChooser = new de.unisiegen.gtitool.ui.swing.JGTIColorChooser();
-        jPanelPreview = new javax.swing.JPanel();
-        jLabelOldColorText = new javax.swing.JLabel();
-        jLabelOldColorColor = new javax.swing.JLabel();
-        jLabelNewColorText = new javax.swing.JLabel();
-        jLabelNewColorColor = new javax.swing.JLabel();
+        jGTIPanelPreview = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelOldColorText = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelOldColorColor = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelNewColorText = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelNewColorColor = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIButtonReset = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -108,59 +108,59 @@ public class ColorChooserDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         getContentPane().add(jGTIColorChooser, gridBagConstraints);
 
-        jPanelPreview.setLayout(new java.awt.GridBagLayout());
+        jGTIPanelPreview.setLayout(new java.awt.GridBagLayout());
 
-        jLabelOldColorText.setText(bundle.getString("ColorChooserDialog.OldColor")); // NOI18N
+        jGTILabelOldColorText.setText(bundle.getString("ColorChooserDialog.OldColor")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelPreview.add(jLabelOldColorText, gridBagConstraints);
+        jGTIPanelPreview.add(jGTILabelOldColorText, gridBagConstraints);
 
-        jLabelOldColorColor.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelOldColorColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jLabelOldColorColor.setMaximumSize(new java.awt.Dimension(40, 40));
-        jLabelOldColorColor.setMinimumSize(new java.awt.Dimension(40, 40));
-        jLabelOldColorColor.setOpaque(true);
-        jLabelOldColorColor.setPreferredSize(new java.awt.Dimension(40, 40));
+        jGTILabelOldColorColor.setBackground(new java.awt.Color(255, 255, 255));
+        jGTILabelOldColorColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jGTILabelOldColorColor.setMaximumSize(new java.awt.Dimension(40, 40));
+        jGTILabelOldColorColor.setMinimumSize(new java.awt.Dimension(40, 40));
+        jGTILabelOldColorColor.setOpaque(true);
+        jGTILabelOldColorColor.setPreferredSize(new java.awt.Dimension(40, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanelPreview.add(jLabelOldColorColor, gridBagConstraints);
+        jGTIPanelPreview.add(jGTILabelOldColorColor, gridBagConstraints);
 
-        jLabelNewColorText.setText(bundle.getString("ColorChooserDialog.NewColor")); // NOI18N
+        jGTILabelNewColorText.setText(bundle.getString("ColorChooserDialog.NewColor")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanelPreview.add(jLabelNewColorText, gridBagConstraints);
+        jGTIPanelPreview.add(jGTILabelNewColorText, gridBagConstraints);
 
-        jLabelNewColorColor.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelNewColorColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jLabelNewColorColor.setMaximumSize(new java.awt.Dimension(40, 40));
-        jLabelNewColorColor.setMinimumSize(new java.awt.Dimension(40, 40));
-        jLabelNewColorColor.setOpaque(true);
-        jLabelNewColorColor.setPreferredSize(new java.awt.Dimension(40, 40));
+        jGTILabelNewColorColor.setBackground(new java.awt.Color(255, 255, 255));
+        jGTILabelNewColorColor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jGTILabelNewColorColor.setMaximumSize(new java.awt.Dimension(40, 40));
+        jGTILabelNewColorColor.setMinimumSize(new java.awt.Dimension(40, 40));
+        jGTILabelNewColorColor.setOpaque(true);
+        jGTILabelNewColorColor.setPreferredSize(new java.awt.Dimension(40, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelPreview.add(jLabelNewColorColor, gridBagConstraints);
+        jGTIPanelPreview.add(jGTILabelNewColorColor, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jPanelPreview, gridBagConstraints);
+        getContentPane().add(jGTIPanelPreview, gridBagConstraints);
 
         jGTIButtonReset.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ColorChooserDialog.ResetMnemonic").charAt(0));
         jGTIButtonReset.setText(bundle.getString("ColorChooserDialog.Reset")); // NOI18N
@@ -235,11 +235,11 @@ public class ColorChooserDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonReset;
     public de.unisiegen.gtitool.ui.swing.JGTIColorChooser jGTIColorChooser;
-    public javax.swing.JLabel jLabelNewColorColor;
-    public javax.swing.JLabel jLabelNewColorText;
-    public javax.swing.JLabel jLabelOldColorColor;
-    public javax.swing.JLabel jLabelOldColorText;
-    public javax.swing.JPanel jPanelPreview;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNewColorColor;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNewColorText;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelOldColorColor;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelOldColorText;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPreview;
     // End of variables declaration//GEN-END:variables
 
 }

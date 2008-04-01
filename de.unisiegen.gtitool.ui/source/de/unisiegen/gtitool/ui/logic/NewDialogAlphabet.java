@@ -43,9 +43,9 @@ public final class NewDialogAlphabet
         .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
             .getAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .setText ( PreferenceManager.getInstance ()
-            .getPushDownAlphabetItem ().getAlphabet () );
-    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+        .setText ( PreferenceManager.getInstance ().getPushDownAlphabetItem ()
+            .getAlphabet () );
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( PreferenceManager.getInstance ()
             .getUsePushDownAlphabet () );
 
@@ -119,7 +119,8 @@ public final class NewDialogAlphabet
    */
   public final boolean getUsePushDownAlphabet ()
   {
-    return this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.isSelected ();
+    return this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+        .isSelected ();
   }
 
 

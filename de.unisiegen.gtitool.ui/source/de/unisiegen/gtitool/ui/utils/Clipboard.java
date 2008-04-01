@@ -103,7 +103,7 @@ public final class Clipboard implements ClipboardOwner
    */
   public final void lostOwnership ( @SuppressWarnings ( UNUSED )
   java.awt.datatransfer.Clipboard clipboard, @SuppressWarnings ( UNUSED )
-  Transferable pContents )
+  Transferable contents )
   {
     // Do Nothing
   }

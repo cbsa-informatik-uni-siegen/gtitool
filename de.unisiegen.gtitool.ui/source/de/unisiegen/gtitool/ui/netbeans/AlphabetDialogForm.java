@@ -44,9 +44,9 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        JLabelHeadline = new javax.swing.JLabel();
+        jGTILabelHeadline = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         alphabetPanelForm = new de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm();
-        jPanelButtons = new javax.swing.JPanel();
+        jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -62,15 +62,15 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
             }
         });
 
-        JLabelHeadline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelHeadline.setText(bundle.getString("AlphabetDialog.Edit")); // NOI18N
+        jGTILabelHeadline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelHeadline.setText(bundle.getString("AlphabetDialog.Edit")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(JLabelHeadline, gridBagConstraints);
+        getContentPane().add(jGTILabelHeadline, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -81,7 +81,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(alphabetPanelForm, gridBagConstraints);
 
-        jPanelButtons.setLayout(new java.awt.GridBagLayout());
+        jGTIPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AlphabetDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("AlphabetDialog.Ok")); // NOI18N
@@ -98,7 +98,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jGTIButtonOk, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AlphabetDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("AlphabetDialog.Cancel")); // NOI18N
@@ -114,7 +114,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -122,7 +122,7 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        getContentPane().add(jPanelButtons, gridBagConstraints);
+        getContentPane().add(jGTIPanelButtons, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-480)/2, (screenSize.height-300)/2, 480, 300);
@@ -141,11 +141,11 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel JLabelHeadline;
     public de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm alphabetPanelForm;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    public javax.swing.JPanel jPanelButtons;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelHeadline;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
     // End of variables declaration//GEN-END:variables
  
 }

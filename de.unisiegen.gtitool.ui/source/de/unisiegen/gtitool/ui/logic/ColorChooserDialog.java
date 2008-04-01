@@ -64,8 +64,8 @@ public final class ColorChooserDialog
     this.gui = new ColorChooserDialogForm ( this, parent );
     this.gui.setColor ( color );
     this.oldColor = color;
-    this.gui.jLabelOldColorColor.setBackground ( this.oldColor );
-    this.gui.jLabelOldColorText.setForeground ( this.oldColor );
+    this.gui.jGTILabelOldColorColor.setBackground ( this.oldColor );
+    this.gui.jGTILabelOldColorText.setForeground ( this.oldColor );
     updatePreview ();
 
     this.gui.jGTIColorChooser.getSelectionModel ().addChangeListener (
@@ -156,7 +156,7 @@ public final class ColorChooserDialog
    */
   private final void updatePreview ()
   {
-    this.gui.jLabelNewColorColor.setBackground ( this.gui.getColor () );
-    this.gui.jLabelNewColorText.setForeground ( this.gui.getColor () );
+    this.gui.jGTILabelNewColorColor.setBackground ( this.gui.getColor () );
+    this.gui.jGTILabelNewColorText.setForeground ( this.gui.getColor () );
   }
 }

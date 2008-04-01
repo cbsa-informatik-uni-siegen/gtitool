@@ -1038,7 +1038,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.alphabetItem.restore ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( this.alphabetItem.getAlphabet () );
-    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
     this.pushDownAlphabetItem.restore ();
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
@@ -1866,7 +1866,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         .setText ( this.pushDownAlphabetItem.getAlphabet () );
     this.initialUsePushDownAlphabet = PreferenceManager.getInstance ()
         .getUsePushDownAlphabet ();
-    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( this.initialUsePushDownAlphabet );
 
     // PopupMenu
@@ -1943,13 +1943,13 @@ public final class PreferencesDialog implements LanguageChangedListener
           public void actionPerformed ( @SuppressWarnings ( "unused" )
           ActionEvent event )
           {
-            PreferencesDialog.this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+            PreferencesDialog.this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
                 .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
           }
         } );
     this.jPopupMenuUsePushDownAlphabet
         .add ( jMenuItemRestoreUsePushDownAlphabet );
-    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .addMouseListener ( new MouseAdapter ()
         {
 
@@ -2298,9 +2298,9 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabAlphabet" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPane.setToolTipTextAt ( ALPHABET_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabAlphabetToolTip" ) ); //$NON-NLS-1$
-    this.gui.alphabetPanelForm.jLabelInputAlphabet.setText ( Messages
+    this.gui.alphabetPanelForm.jGTILabelInputAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.InputAlphabet" ) ); //$NON-NLS-1$
-    this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.setText ( Messages
+    this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet.setText ( Messages
         .getString ( "PreferencesDialog.PushDownAlphabet" ) ); //$NON-NLS-1$
     // Grammar
     this.gui.jGTITabbedPane.setTitleAt ( GRAMMAR_TAB_INDEX, Messages
@@ -2985,13 +2985,15 @@ public final class PreferencesDialog implements LanguageChangedListener
       PreferenceManager.getInstance ().setPushDownAlphabetItem (
           this.pushDownAlphabetItem );
     }
-    if ( this.initialUsePushDownAlphabet != this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+    if ( this.initialUsePushDownAlphabet != this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .isSelected () )
     {
-      this.initialUsePushDownAlphabet = this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet
+      this.initialUsePushDownAlphabet = this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
           .isSelected ();
-      PreferenceManager.getInstance ().setUsePushDownAlphabet (
-          this.gui.alphabetPanelForm.jCheckBoxPushDownAlphabet.isSelected () );
+      PreferenceManager.getInstance ()
+          .setUsePushDownAlphabet (
+              this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+                  .isSelected () );
     }
   }
 

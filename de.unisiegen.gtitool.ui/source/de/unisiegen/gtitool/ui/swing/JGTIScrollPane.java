@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import java.awt.Color;
+
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 
 
 /**
@@ -25,5 +28,6 @@ public class JGTIScrollPane extends JScrollPane
   public JGTIScrollPane ()
   {
     super ();
+    setBorder ( new LineBorder ( Color.BLACK, 1 ) );
   }
 }

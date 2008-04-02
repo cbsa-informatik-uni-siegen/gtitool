@@ -53,8 +53,8 @@ public class ConfirmDialogForm extends javax.swing.JDialog
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jScrollPaneInfo = new javax.swing.JScrollPane();
-        jTextAreaInfo = new javax.swing.JTextArea();
+        jGTIScrollPaneInfo = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITextAreaInfo = new de.unisiegen.gtitool.ui.swing.JGTITextArea();
         jGTIButtonYes = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonNo = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -69,15 +69,13 @@ public class ConfirmDialogForm extends javax.swing.JDialog
             }
         });
 
-        jScrollPaneInfo.setBorder(null);
-        jTextAreaInfo.setColumns(18);
-        jTextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
-        jTextAreaInfo.setLineWrap(true);
-        jTextAreaInfo.setRows(3);
-        jTextAreaInfo.setWrapStyleWord(true);
-        jTextAreaInfo.setFocusable(false);
-        jTextAreaInfo.setOpaque(false);
-        jScrollPaneInfo.setViewportView(jTextAreaInfo);
+        jGTIScrollPaneInfo.setBorder(null);
+        jGTITextAreaInfo.setColumns(18);
+        jGTITextAreaInfo.setRows(3);
+        jGTITextAreaInfo.setFocusable(false);
+        jGTITextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
+        jGTITextAreaInfo.setOpaque(false);
+        jGTIScrollPaneInfo.setViewportView(jGTITextAreaInfo);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -87,7 +85,7 @@ public class ConfirmDialogForm extends javax.swing.JDialog
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jScrollPaneInfo, gridBagConstraints);
+        getContentPane().add(jGTIScrollPaneInfo, gridBagConstraints);
 
         jGTIButtonYes.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConfirmDialog.YesMnemonic").charAt(0));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
@@ -160,8 +158,8 @@ public class ConfirmDialogForm extends javax.swing.JDialog
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonNo;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonYes;
-    public javax.swing.JScrollPane jScrollPaneInfo;
-    public javax.swing.JTextArea jTextAreaInfo;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneInfo;
+    public de.unisiegen.gtitool.ui.swing.JGTITextArea jGTITextAreaInfo;
     // End of variables declaration//GEN-END:variables
 
 }

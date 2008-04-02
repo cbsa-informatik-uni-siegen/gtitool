@@ -75,8 +75,8 @@ public final class ConfirmDialog
     logger.debug ( "allocate a new confirm dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new ConfirmDialogForm ( this, parent );
-    this.gui.jTextAreaInfo.setCursor ( null );
-    this.gui.jTextAreaInfo.setText ( text );
+    this.gui.jGTITextAreaInfo.setCursor ( null );
+    this.gui.jGTITextAreaInfo.setText ( text );
     this.gui.setTitle ( title );
 
     ArrayList < JGTIButton > buttonList = new ArrayList < JGTIButton > ();

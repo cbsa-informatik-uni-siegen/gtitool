@@ -30,11 +30,10 @@ public final class StateConfigDialog
 
 
   /**
-     * The {@link StateConfigDialogForm}.
-     */
+   * The {@link StateConfigDialogForm}.
+   */
   private StateConfigDialogForm gui;
 
-  
 
   /**
    * The parent {@link JFrame}.
@@ -46,12 +45,14 @@ public final class StateConfigDialog
    * The result stateName ;
    */
   private String stateName;
-  
+
+
   /**
    * The {@link State}
    */
   private State state;
-  
+
+
   /**
    * The {@link DefaultMachineModel}
    */
@@ -65,7 +66,8 @@ public final class StateConfigDialog
    * @param state The {@link State}.
    * @param model The {@link Machine}
    */
-  public StateConfigDialog ( JFrame parent, State state, DefaultMachineModel model )
+  public StateConfigDialog ( JFrame parent, State state,
+      DefaultMachineModel model )
   {
     logger.debug ( "allocate a new new state name dialog" ); //$NON-NLS-1$
     this.parent = parent;
@@ -73,10 +75,10 @@ public final class StateConfigDialog
     this.model = model;
     this.stateName = null;
     this.gui = new StateConfigDialogForm ( this, parent );
-    this.gui.jCheckBoxFinalState.setSelected ( this.state.isFinalState () );
-    this.gui.jCheckBoxStartState.setSelected ( this.state.isStartState () );
+    this.gui.jGTICheckBoxFinalState.setSelected ( this.state.isFinalState () );
+    this.gui.jGTICheckBoxStartState.setSelected ( this.state.isStartState () );
     this.gui.styledStateParserPanel.setText ( state );
-    this.gui.jLabelRename.setText ( Messages.getString (
+    this.gui.jGTILabelRename.setText ( Messages.getString (
         "NewStateNameDialog.RenameText", state ) ); //$NON-NLS-1$
 
     /*
@@ -140,8 +142,8 @@ public final class StateConfigDialog
 
 
   /**
-     * Shows the {@link StateConfigDialogForm}.
-     */
+   * Shows the {@link StateConfigDialogForm}.
+   */
   public final void show ()
   {
     logger.debug ( "show the new state name dialog" ); //$NON-NLS-1$
@@ -153,6 +155,7 @@ public final class StateConfigDialog
     this.gui.setVisible ( true );
   }
 
+
   /**
    * Handle status of the final state checkbox changed
    * 
@@ -163,8 +166,9 @@ public final class StateConfigDialog
     this.state.setFinalState ( status );
     this.model.getGraphModel ().cellsChanged ( new Object []
     { this.state } );
-    
+
   }
+
 
   /**
    * Handle status of the start state checkbox changed
@@ -176,6 +180,6 @@ public final class StateConfigDialog
     this.state.setStartState ( status );
     this.model.getGraphModel ().cellsChanged ( new Object []
     { this.state } );
-    
+
   }
 }

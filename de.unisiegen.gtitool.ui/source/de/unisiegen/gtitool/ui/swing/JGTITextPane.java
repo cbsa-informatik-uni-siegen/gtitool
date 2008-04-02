@@ -25,5 +25,6 @@ public class JGTITextPane extends JTextPane
   public JGTITextPane ()
   {
     super ();
+    setBorder ( null );
   }
 }

@@ -42,6 +42,8 @@ public final class JGTITextArea extends JTextArea
     super ();
     this.initialColor = getBackground ();
     setBorder ( null );
+    setLineWrap ( true );
+    setWrapStyleWord ( true );
   }
 
 

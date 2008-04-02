@@ -95,19 +95,19 @@ public final class ExchangeDialog
       this.gui.jGTITextAreaDescription.setText ( file.getName () );
     }
 
-    this.gui.jTextPaneStatus.setEditorKit ( new StyledEditorKit () );
+    this.gui.jGTITextPaneStatus.setEditorKit ( new StyledEditorKit () );
     this.document = new DefaultStyledDocument ();
-    this.gui.jTextPaneStatus.setDocument ( this.document );
+    this.gui.jGTITextPaneStatus.setDocument ( this.document );
 
     setNormalMode ( true );
 
     if ( PreferenceManager.getInstance ().getReceiveModus () )
     {
-      this.gui.jRadioButtonReceive.setSelected ( true );
+      this.gui.jGTIRadioButtonReceive.setSelected ( true );
     }
     else
     {
-      this.gui.jRadioButtonSend.setSelected ( true );
+      this.gui.jGTIRadioButtonSend.setSelected ( true );
     }
   }
 
@@ -196,7 +196,7 @@ public final class ExchangeDialog
     }
 
     PreferenceManager.getInstance ().setReceiveModus (
-        this.gui.jRadioButtonReceive.isSelected () );
+        this.gui.jGTIRadioButtonReceive.isSelected () );
 
     this.gui.dispose ();
   }
@@ -207,7 +207,7 @@ public final class ExchangeDialog
    */
   public final void handleExecute ()
   {
-    if ( this.gui.jRadioButtonReceive.isSelected () )
+    if ( this.gui.jGTIRadioButtonReceive.isSelected () )
     {
       handleReceive ();
     }
@@ -392,42 +392,43 @@ public final class ExchangeDialog
     }
     if ( ( port < 1024 ) || ( port > 65535 ) )
     {
-      this.gui.jLabelPort.setForeground ( Color.RED );
-      this.gui.jLabelPort.setToolTipText ( Messages
+      this.gui.jGTILabelPort.setForeground ( Color.RED );
+      this.gui.jGTILabelPort.setToolTipText ( Messages
           .getString ( "ExchangeDialog.PortException" ) ); //$NON-NLS-1$
       portOkay = false;
     }
     else
     {
-      this.gui.jLabelPort.setForeground ( Color.BLACK );
-      this.gui.jLabelPort.setToolTipText ( null );
+      this.gui.jGTILabelPort.setForeground ( Color.BLACK );
+      this.gui.jGTILabelPort.setToolTipText ( null );
     }
 
     // Host
     boolean hostOkay = true;
     if ( ( this.gui.jGTITextFieldHost.getText ().length () == 0 )
-        && ( this.gui.jRadioButtonSend.isSelected () ) )
+        && ( this.gui.jGTIRadioButtonSend.isSelected () ) )
     {
-      this.gui.jLabelHost.setForeground ( Color.RED );
-      this.gui.jLabelHost.setToolTipText ( Messages
+      this.gui.jGTILabelHost.setForeground ( Color.RED );
+      this.gui.jGTILabelHost.setToolTipText ( Messages
           .getString ( "ExchangeDialog.HostException" ) ); //$NON-NLS-1$
       hostOkay = false;
     }
     else
     {
-      this.gui.jLabelHost.setForeground ( Color.BLACK );
-      this.gui.jLabelHost.setToolTipText ( null );
+      this.gui.jGTILabelHost.setForeground ( Color.BLACK );
+      this.gui.jGTILabelHost.setToolTipText ( null );
     }
 
     // Set status
-    this.gui.jRadioButtonReceive.setEnabled ( enabled );
-    this.gui.jRadioButtonSend.setEnabled ( enabled && ( this.element != null ) );
+    this.gui.jGTIRadioButtonReceive.setEnabled ( enabled );
+    this.gui.jGTIRadioButtonSend.setEnabled ( enabled
+        && ( this.element != null ) );
     this.gui.jGTITextFieldPort.setEnabled ( enabled );
     this.gui.jGTITextFieldHost.setEnabled ( enabled && ( this.element != null )
-        && ( this.gui.jRadioButtonSend.isSelected () ) );
+        && ( this.gui.jGTIRadioButtonSend.isSelected () ) );
     this.gui.jGTITextAreaDescription.setEnabled ( enabled
         && ( this.element != null )
-        && ( this.gui.jRadioButtonSend.isSelected () ) );
+        && ( this.gui.jGTIRadioButtonSend.isSelected () ) );
     this.gui.jGTIButtonExecute.setEnabled ( enabled && portOkay && hostOkay );
     this.gui.jGTIButtonCancel.setEnabled ( !enabled );
   }

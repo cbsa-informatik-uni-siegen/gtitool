@@ -11,10 +11,8 @@ CF		- Überall die eigenen GTI Komponenten einbauen. Dabei ist vor allem
 		  InfoDialogForm, NewDialogAlphabetForm, NewDialogChoiceForm,
 		  NewDialogForm, NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
 		  NewDialogTerminalForm, StateConfigDialogForm, WordPanelForm
-CF		- Fehler im PreferenceDialog:
-		  Zum reproduzieren: - Startsymbol aus Menge der Nichtterminalzeichen entfernen
-		  					 - Wieder hinzufügen
-		  -> Exception des Panel wird nicht zurück genommen.
+
+
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
 BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"

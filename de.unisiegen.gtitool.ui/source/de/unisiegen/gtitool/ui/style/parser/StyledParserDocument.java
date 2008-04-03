@@ -353,11 +353,11 @@ public final class StyledParserDocument extends DefaultStyledDocument
    */
   public final Object parse ()
   {
+    this.exceptionList.clear ();
     this.externExceptionList.clear ();
 
     this.parsedObject = null;
     setCharacterAttributes ( 0, getLength (), this.normalSet, true );
-    ArrayList < ScannerException > newExceptionList = new ArrayList < ScannerException > ();
     try
     {
       /*
@@ -411,13 +411,13 @@ public final class StyledParserDocument extends DefaultStyledDocument
               - ecx.getLeft (), errorSet, false );
           offset = newOffset;
           scanner.restart ( content );
-          newExceptionList.add ( ecx );
+          this.exceptionList.add ( ecx );
         }
       }
       /*
        * Start parser only if the scanner has no exceptions
        */
-      if ( newExceptionList.size () == 0 )
+      if ( this.exceptionList.size () == 0 )
       {
         GTIParser parser = this.parseable.newParser ( new AbstractScanner ()
         {
@@ -462,7 +462,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
             errorSet.addAttribute ( "exception", newException ); //$NON-NLS-1$
             setCharacterAttributes ( startOffset [ i ], endOffset [ i ]
                 - startOffset [ i ], errorSet, false );
-            newExceptionList.add ( newException );
+            this.exceptionList.add ( newException );
           }
         }
         catch ( ParserWarningException ecx )
@@ -481,9 +481,9 @@ public final class StyledParserDocument extends DefaultStyledDocument
               setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
                   - ecx.getLeft (), warningSet, false );
             }
-            newExceptionList.add ( new ParserWarningException (
-                ecx.getRight (), ecx.getRight (), ecx.getMessage (), ecx
-                    .getInsertText () ) );
+            this.exceptionList.add ( new ParserWarningException ( ecx
+                .getRight (), ecx.getRight (), ecx.getMessage (), ecx
+                .getInsertText () ) );
           }
         }
         catch ( ParserException ecx )
@@ -500,7 +500,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
             setCharacterAttributes ( ecx.getLeft (), ecx.getRight ()
                 - ecx.getLeft (), errorSet, false );
           }
-          newExceptionList.add ( ecx );
+          this.exceptionList.add ( ecx );
         }
       }
     }
@@ -510,12 +510,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
       System.exit ( 1 );
     }
 
-    if ( !newExceptionList.equals ( this.exceptionList ) )
-    {
-      this.exceptionList.clear ();
-      this.exceptionList.addAll ( newExceptionList );
-      fireExceptionsChanged ();
-    }
+    fireExceptionsChanged ();
     return this.parsedObject;
   }
 

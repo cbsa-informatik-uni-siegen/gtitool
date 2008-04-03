@@ -6,14 +6,10 @@ CF		- Open und Save Dialog neu bauen
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
-BM		- Wenn man mit keiner offenen Datei startet, sind die Grammar Buttons
-		  aktiv, vielleicht ist es sinnvoll, alle Machine und alle Grammar
-		  Buttons auszublenden. Das macht mehr Sinn?!
+		  unterstützen (Es fehlen auf jeden Fall die Toolbar Buttons)
 BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
 		  in die Logik eingebaut werden. Im "Preference Dialog" ist alles
 		  implementiert.
-BM		- Alle Grammar Komponenten müssen die dynamische Sprachänderung
-		  unterstützen (Es fehlen auf jeden Fall die Toolbar Buttons)
 
 		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
 		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,

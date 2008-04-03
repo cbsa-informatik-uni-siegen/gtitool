@@ -156,6 +156,9 @@ public class GrammarPanel implements EditorPanel
             GrammarPanel.this.setDividerLocationConsole = true;
           }
         } );
+    
+    // Language changed listener
+    PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
   }
 
@@ -425,7 +428,10 @@ public class GrammarPanel implements EditorPanel
    */
   public void languageChanged ()
   {
-    // Nothing to do
+    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
   }
 
 

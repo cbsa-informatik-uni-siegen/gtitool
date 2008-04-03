@@ -3,16 +3,6 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
-CF		- Überall die eigenen GTI Komponenten einbauen. Dabei ist vor allem
-		  darauf zu achten, dass keine Events verloren gehen.
-		  Fertig:
-		  AboutDialog, AlphabetDialogForm, AlphabetPanelForm,
-		  ColorChooserDialogForm, ConfirmDialogForm, ExchangeDialogForm,
-		  GrammarPanelForm, InfoDialogForm, MainWindowForm,
-		  NewDialogAlphabetForm, NewDialogChoiceForm, NewDialogForm,
-		  NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
-		  NewDialogTerminalForm, PreferencesDialogForm, StateConfigDialogForm,
-		  TerminalDialogForm, TerminalPanelForm, WordPanelForm
 
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel

@@ -32,47 +32,43 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         java.awt.GridBagConstraints gridBagConstraints;
 
         toolbarButton = new javax.swing.ButtonGroup();
-        jSplitPaneConsole = new javax.swing.JSplitPane();
-        jPanelTop = new javax.swing.JPanel();
-        jSplitPaneTable = new javax.swing.JSplitPane();
-        jPanelDiagramm = new javax.swing.JPanel();
-        diagrammContentPanel = new javax.swing.JScrollPane();
-        jPanelTable = new javax.swing.JPanel();
-        jScrollPaneMachine = new javax.swing.JScrollPane();
+        jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelMachine = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTISplitPaneTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIPanelTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneTable = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jPanelBottom = new javax.swing.JPanel();
-        jTabbedPaneConsole = new javax.swing.JTabbedPane();
-        jScrollPaneErrors = new javax.swing.JScrollPane();
+        jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
+        jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jScrollPaneWarnings = new javax.swing.JScrollPane();
+        jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
         wordPanel = new de.unisiegen.gtitool.ui.netbeans.WordPanelForm();
 
         setLayout(new java.awt.GridBagLayout());
 
-        jSplitPaneConsole.setDividerLocation(200);
-        jSplitPaneConsole.setDividerSize(3);
-        jSplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPaneConsole.setResizeWeight(1.0);
-        jPanelTop.setLayout(new java.awt.GridBagLayout());
-
-        jSplitPaneTable.setDividerLocation(400);
-        jSplitPaneTable.setDividerSize(3);
-        jSplitPaneTable.setResizeWeight(1.0);
-        jPanelDiagramm.setLayout(new java.awt.GridBagLayout());
-
+        jGTISplitPaneConsole.setBorder(null);
+        jGTISplitPaneConsole.setDividerLocation(200);
+        jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneConsole.setResizeWeight(1.0);
+        jGTISplitPaneTable.setBorder(null);
+        jGTISplitPaneTable.setDividerLocation(400);
+        jGTISplitPaneTable.setResizeWeight(1.0);
+        jGTIScrollPaneDiagramm.setBorder(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelDiagramm.add(diagrammContentPanel, gridBagConstraints);
+        jGTIPanelDiagramm.add(jGTIScrollPaneDiagramm, gridBagConstraints);
 
-        jSplitPaneTable.setLeftComponent(jPanelDiagramm);
+        jGTISplitPaneTable.setLeftComponent(jGTIPanelDiagramm);
 
-        jPanelTable.setLayout(new java.awt.GridBagLayout());
-
+        jGTIScrollPaneTable.setBorder(null);
         jGTITableMachine.setFocusable(false);
         jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -85,7 +81,7 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
             }
         });
 
-        jScrollPaneMachine.setViewportView(jGTITableMachine);
+        jGTIScrollPaneTable.setViewportView(jGTITableMachine);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -93,23 +89,21 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelTable.add(jScrollPaneMachine, gridBagConstraints);
+        jGTIPanelTable.add(jGTIScrollPaneTable, gridBagConstraints);
 
-        jSplitPaneTable.setRightComponent(jPanelTable);
+        jGTISplitPaneTable.setRightComponent(jGTIPanelTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelTop.add(jSplitPaneTable, gridBagConstraints);
+        jGTIPanelMachine.add(jGTISplitPaneTable, gridBagConstraints);
 
-        jSplitPaneConsole.setLeftComponent(jPanelTop);
+        jGTISplitPaneConsole.setLeftComponent(jGTIPanelMachine);
 
-        jPanelBottom.setLayout(new java.awt.GridBagLayout());
-
-        jTabbedPaneConsole.setFocusable(false);
+        jGTIScrollPaneErrors.setBorder(null);
         jGTITableErrors.setFocusable(false);
         jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -122,11 +116,11 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
             }
         });
 
-        jScrollPaneErrors.setViewportView(jGTITableErrors);
+        jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jScrollPaneErrors); // NOI18N
+        jGTITabbedPaneConsole.addTab("Error", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors);
 
+        jGTIScrollPaneWarnings.setBorder(null);
         jGTITableWarnings.setFocusable(false);
         jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -139,19 +133,9 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
             }
         });
 
-        jScrollPaneWarnings.setViewportView(jGTITableWarnings);
+        jGTIScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
-        jTabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jScrollPaneWarnings); // NOI18N
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanelBottom.add(jTabbedPaneConsole, gridBagConstraints);
-
-        jSplitPaneConsole.setRightComponent(jPanelBottom);
+        jGTITabbedPaneConsole.addTab("Warning", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jGTIScrollPaneWarnings);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -159,7 +143,17 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jSplitPaneConsole, gridBagConstraints);
+        jGTIPanelConsole.add(jGTITabbedPaneConsole, gridBagConstraints);
+
+        jGTISplitPaneConsole.setRightComponent(jGTIPanelConsole);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jGTISplitPaneConsole, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -196,20 +190,20 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JScrollPane diagrammContentPanel;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelDiagramm;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneDiagramm;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneErrors;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneTable;
+    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachine;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
-    public javax.swing.JPanel jPanelBottom;
-    public javax.swing.JPanel jPanelDiagramm;
-    public javax.swing.JPanel jPanelTable;
-    public javax.swing.JPanel jPanelTop;
-    public javax.swing.JScrollPane jScrollPaneErrors;
-    public javax.swing.JScrollPane jScrollPaneMachine;
-    public javax.swing.JScrollPane jScrollPaneWarnings;
-    public javax.swing.JSplitPane jSplitPaneConsole;
-    public javax.swing.JSplitPane jSplitPaneTable;
-    public javax.swing.JTabbedPane jTabbedPaneConsole;
     public javax.swing.ButtonGroup toolbarButton;
     public de.unisiegen.gtitool.ui.netbeans.WordPanelForm wordPanel;
     // End of variables declaration//GEN-END:variables

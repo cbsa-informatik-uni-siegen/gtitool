@@ -17,6 +17,7 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
@@ -76,6 +77,8 @@ public final class JGTIList extends JList implements DropTargetListener
   public JGTIList ()
   {
     super ();
+    setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
     // Java swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {

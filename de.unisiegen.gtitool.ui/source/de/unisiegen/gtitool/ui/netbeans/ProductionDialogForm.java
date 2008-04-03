@@ -46,24 +46,21 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanelSubHeadline1 = new javax.swing.JPanel();
-        jLabelNonTerminalSymbol = new javax.swing.JLabel();
-        jPanelAlphabet = new javax.swing.JPanel();
-        jScrollPane = new javax.swing.JScrollPane();
+        jGTILabelNonterminalSymbol = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIScrollPaneAlphabet = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIList = new de.unisiegen.gtitool.ui.swing.JGTIList();
-        jPanelSubHeadline2 = new javax.swing.JPanel();
-        jLabelNonTerminalAlphabet = new javax.swing.JLabel();
-        jLabelTerminalAlphabet = new javax.swing.JLabel();
-        jPanelWord = new javax.swing.JPanel();
+        jGTIPanelAlphabets = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelNonterminalAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelTerminalAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledNonterminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel();
         styledTerminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel();
-        jLabelProductionWord = new javax.swing.JLabel();
+        jGTILabelProductionWord = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledProductionWordParserPanel = new de.unisiegen.gtitool.ui.style.StyledProductionWordParserPanel();
-        JLabelResultingProduction = new javax.swing.JLabel();
-        jPanelButtons = new javax.swing.JPanel();
+        jGTILabelResultingProduction = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        styledProductionParserPanel = new de.unisiegen.gtitool.ui.style.StyledProductionParserPanel();
+        jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
-        styledProductionParserPanel = new de.unisiegen.gtitool.ui.style.StyledProductionParserPanel();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -77,151 +74,132 @@ public class ProductionDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jPanelSubHeadline1.setLayout(new java.awt.GridBagLayout());
-
-        jLabelNonTerminalSymbol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelNonTerminalSymbol.setText(bundle.getString("ProductionDialog.NonTerminalSymbol")); // NOI18N
-        jLabelNonTerminalSymbol.setPreferredSize(new java.awt.Dimension(100, 15));
+        jGTILabelNonterminalSymbol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelNonterminalSymbol.setText(bundle.getString("ProductionDialog.NonTerminalSymbol")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        jPanelSubHeadline1.add(jLabelNonTerminalSymbol, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jPanelSubHeadline1, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        getContentPane().add(jGTILabelNonterminalSymbol, gridBagConstraints);
 
-        jPanelAlphabet.setLayout(new java.awt.GridBagLayout());
-
-        jGTIList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jGTIList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 handleSelectionChange(evt);
             }
         });
 
-        jScrollPane.setViewportView(jGTIList);
+        jGTIScrollPaneAlphabet.setViewportView(jGTIList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelAlphabet.add(jScrollPane, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jGTIScrollPaneAlphabet, gridBagConstraints);
+
+        jGTILabelNonterminalAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelNonterminalAlphabet.setText(bundle.getString("ProductionDialog.NonTerminalAlphabet")); // NOI18N
+        jGTILabelNonterminalAlphabet.setMinimumSize(new java.awt.Dimension(150, 15));
+        jGTILabelNonterminalAlphabet.setPreferredSize(new java.awt.Dimension(150, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 16);
+        jGTIPanelAlphabets.add(jGTILabelNonterminalAlphabet, gridBagConstraints);
+
+        jGTILabelTerminalAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelTerminalAlphabet.setText(bundle.getString("ProductionDialog.TerminalAlphabet")); // NOI18N
+        jGTILabelTerminalAlphabet.setMinimumSize(new java.awt.Dimension(150, 15));
+        jGTILabelTerminalAlphabet.setPreferredSize(new java.awt.Dimension(150, 15));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
+        jGTIPanelAlphabets.add(jGTILabelTerminalAlphabet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jPanelAlphabet, gridBagConstraints);
-
-        jPanelSubHeadline2.setLayout(new java.awt.GridBagLayout());
-
-        jLabelNonTerminalAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelNonTerminalAlphabet.setText(bundle.getString("ProductionDialog.NonTerminalAlphabet")); // NOI18N
-        jLabelNonTerminalAlphabet.setPreferredSize(new java.awt.Dimension(100, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 16);
-        jPanelSubHeadline2.add(jLabelNonTerminalAlphabet, gridBagConstraints);
-
-        jLabelTerminalAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTerminalAlphabet.setText(bundle.getString("ProductionDialog.TerminalAlphabet")); // NOI18N
-        jLabelTerminalAlphabet.setPreferredSize(new java.awt.Dimension(100, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
-        jPanelSubHeadline2.add(jLabelTerminalAlphabet, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jPanelSubHeadline2, gridBagConstraints);
-
-        jPanelWord.setLayout(new java.awt.GridBagLayout());
+        getContentPane().add(jGTIPanelAlphabets, gridBagConstraints);
 
         styledNonterminalSymbolSetParserPanel.setCopyable(true);
         styledNonterminalSymbolSetParserPanel.setEditable(false);
-        styledNonterminalSymbolSetParserPanel.setMinimumSize(new java.awt.Dimension(100, 40));
-        styledNonterminalSymbolSetParserPanel.setPreferredSize(new java.awt.Dimension(100, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 10);
-        jPanelWord.add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
+        gridBagConstraints.weighty = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(styledNonterminalSymbolSetParserPanel, gridBagConstraints);
 
         styledTerminalSymbolSetParserPanel.setCopyable(true);
         styledTerminalSymbolSetParserPanel.setEditable(false);
-        styledTerminalSymbolSetParserPanel.setMinimumSize(new java.awt.Dimension(100, 40));
-        styledTerminalSymbolSetParserPanel.setPreferredSize(new java.awt.Dimension(100, 40));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.25;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
-        jPanelWord.add(styledTerminalSymbolSetParserPanel, gridBagConstraints);
+        getContentPane().add(styledTerminalSymbolSetParserPanel, gridBagConstraints);
 
+        jGTILabelProductionWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelProductionWord.setText(bundle.getString("ProductionDialog.ProductionWord")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        getContentPane().add(jPanelWord, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jGTILabelProductionWord, gridBagConstraints);
 
-        jLabelProductionWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProductionWord.setText(bundle.getString("ProductionDialog.ProductionWord")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jLabelProductionWord, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(styledProductionWordParserPanel, gridBagConstraints);
 
-        JLabelResultingProduction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelResultingProduction.setText(bundle.getString("ProductionDialog.ResultingProduction")); // NOI18N
+        jGTILabelResultingProduction.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelResultingProduction.setText(bundle.getString("ProductionDialog.ResultingProduction")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        getContentPane().add(jGTILabelResultingProduction, gridBagConstraints);
+
+        styledProductionParserPanel.setEditable(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(JLabelResultingProduction, gridBagConstraints);
-
-        jPanelButtons.setLayout(new java.awt.GridBagLayout());
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 0.25;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
+        getContentPane().add(styledProductionParserPanel, gridBagConstraints);
 
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("TransitionDialog.Ok")); // NOI18N
@@ -238,7 +216,7 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jGTIButtonOk, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("TransitionDialog.Cancel")); // NOI18N
@@ -254,26 +232,16 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        getContentPane().add(jPanelButtons, gridBagConstraints);
-
-        styledProductionParserPanel.setEditable(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
-        getContentPane().add(styledProductionParserPanel, gridBagConstraints);
+        getContentPane().add(jGTIPanelButtons, gridBagConstraints);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-400)/2, (screenSize.height-500)/2, 400, 500);
@@ -296,20 +264,17 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel JLabelResultingProduction;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalSymbol;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelProductionWord;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelResultingProduction;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelTerminalAlphabet;
     public de.unisiegen.gtitool.ui.swing.JGTIList jGTIList;
-    public javax.swing.JLabel jLabelNonTerminalAlphabet;
-    public javax.swing.JLabel jLabelNonTerminalSymbol;
-    public javax.swing.JLabel jLabelProductionWord;
-    public javax.swing.JLabel jLabelTerminalAlphabet;
-    public javax.swing.JPanel jPanelAlphabet;
-    public javax.swing.JPanel jPanelButtons;
-    public javax.swing.JPanel jPanelSubHeadline1;
-    public javax.swing.JPanel jPanelSubHeadline2;
-    public javax.swing.JPanel jPanelWord;
-    public javax.swing.JScrollPane jScrollPane;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelAlphabets;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneAlphabet;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledProductionParserPanel styledProductionParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledProductionWordParserPanel styledProductionWordParserPanel;

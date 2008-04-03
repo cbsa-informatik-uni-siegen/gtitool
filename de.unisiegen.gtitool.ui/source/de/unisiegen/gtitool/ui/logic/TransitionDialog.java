@@ -294,7 +294,7 @@ public final class TransitionDialog
     String targetName = this.stateEnd == null ? Messages
         .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
         .getName ();
-    this.gui.JLabelHeadline.setText ( Messages.getString (
+    this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
     this.transferHandler = new SymbolTransferHandler ( this );
     this.gui.jGTIListChangeOverSet.setTransferHandler ( this.transferHandler );
@@ -309,8 +309,7 @@ public final class TransitionDialog
     this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
-    this.gui.styledTransitionParserPanel
-        .setText ( new DefaultTransition () );
+    this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
     setOverChangeSet ( overChangeSymbolSet );
 
     // Set the push down alphabet
@@ -374,9 +373,11 @@ public final class TransitionDialog
             setButtonStatus ();
           }
         } );
-    
-    this.gui.jGTIListAlphabet.setCellRenderer ( new PrettyStringListCellRenderer() );
-    this.gui.jGTIListChangeOverSet.setCellRenderer ( new PrettyStringListCellRenderer() );
+
+    this.gui.jGTIListAlphabet
+        .setCellRenderer ( new PrettyStringListCellRenderer () );
+    this.gui.jGTIListChangeOverSet
+        .setCellRenderer ( new PrettyStringListCellRenderer () );
   }
 
 
@@ -393,7 +394,7 @@ public final class TransitionDialog
       this.modelAlphabet.remove ( current );
     }
     this.gui.jGTIListAlphabet.clearSelection ();
-    this.gui.jButtonMoveRight.setEnabled ( false );
+    this.gui.jGTIButtonMoveRight.setEnabled ( false );
     updateResultingTransition ();
   }
 
@@ -447,8 +448,8 @@ public final class TransitionDialog
   public final void handleListFocusLost ( FocusEvent event )
   {
     ( ( JGTIList ) event.getSource () ).clearSelection ();
-    this.gui.jButtonMoveLeft.setEnabled ( false );
-    this.gui.jButtonMoveRight.setEnabled ( false );
+    this.gui.jGTIButtonMoveLeft.setEnabled ( false );
+    this.gui.jGTIButtonMoveRight.setEnabled ( false );
   }
 
 
@@ -468,10 +469,10 @@ public final class TransitionDialog
     if ( selectedList.equals ( this.gui.jGTIListAlphabet ) )
     {
       this.gui.jGTIListChangeOverSet.clearSelection ();
-      this.gui.jButtonMoveLeft.setEnabled ( false );
+      this.gui.jGTIButtonMoveLeft.setEnabled ( false );
       if ( selectedList.getSelectedValues ().length > 0 )
       {
-        this.gui.jButtonMoveRight.setEnabled ( true );
+        this.gui.jGTIButtonMoveRight.setEnabled ( true );
       }
     }
     else
@@ -479,9 +480,9 @@ public final class TransitionDialog
       this.gui.jGTIListAlphabet.clearSelection ();
       if ( selectedList.getSelectedValues ().length > 0 )
       {
-        this.gui.jButtonMoveLeft.setEnabled ( true );
+        this.gui.jGTIButtonMoveLeft.setEnabled ( true );
       }
-      this.gui.jButtonMoveRight.setEnabled ( false );
+      this.gui.jGTIButtonMoveRight.setEnabled ( false );
     }
   }
 
@@ -575,7 +576,7 @@ public final class TransitionDialog
       this.modelChangeOverSet.remove ( current );
     }
     this.gui.jGTIListChangeOverSet.clearSelection ();
-    this.gui.jButtonMoveLeft.setEnabled ( false );
+    this.gui.jGTIButtonMoveLeft.setEnabled ( false );
     updateResultingTransition ();
   }
 
@@ -615,9 +616,8 @@ public final class TransitionDialog
     }
     try
     {
-      this.gui.styledTransitionParserPanel
-          .setText ( new DefaultTransition ( this.pushDownWordRead,
-              this.pushDownWordWrite, overChangeSymbolSet ) );
+      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
+          this.pushDownWordRead, this.pushDownWordWrite, overChangeSymbolSet ) );
     }
     catch ( TransitionException exc )
     {
@@ -678,9 +678,9 @@ public final class TransitionDialog
   {
     try
     {
-      this.gui.styledTransitionParserPanel
-          .setText ( new DefaultTransition ( this.pushDownWordRead,
-              this.pushDownWordWrite, this.modelChangeOverSet ) );
+      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
+          this.pushDownWordRead, this.pushDownWordWrite,
+          this.modelChangeOverSet ) );
     }
     catch ( TransitionException exc )
     {

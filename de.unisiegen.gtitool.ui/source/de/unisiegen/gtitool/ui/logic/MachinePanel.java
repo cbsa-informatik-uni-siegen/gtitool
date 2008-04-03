@@ -362,11 +362,11 @@ public final class MachinePanel implements EditorPanel
     /*
      * Divider Location
      */
-    this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
     setVisibleConsole ( this.mainWindowForm.jCheckBoxMenuItemConsole
         .getState () );
-    this.gui.jSplitPaneConsole.addPropertyChangeListener (
+    this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
@@ -381,10 +381,10 @@ public final class MachinePanel implements EditorPanel
             MachinePanel.this.setDividerLocationConsole = true;
           }
         } );
-    this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
+    this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationTable () );
     setVisibleTable ( this.mainWindowForm.jCheckBoxMenuItemTable.getState () );
-    this.gui.jSplitPaneTable.addPropertyChangeListener (
+    this.gui.jGTISplitPaneTable.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
@@ -550,9 +550,9 @@ public final class MachinePanel implements EditorPanel
    */
   public final void clearValidationMessages ()
   {
-    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
 
     this.errorTableModel.clearData ();
@@ -1563,7 +1563,7 @@ public final class MachinePanel implements EditorPanel
       }
     }
 
-    this.gui.diagrammContentPanel.setViewportView ( this.graph );
+    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.graph );
 
     this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
@@ -2463,9 +2463,9 @@ public final class MachinePanel implements EditorPanel
    */
   public final void languageChanged ()
   {
-    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
   }
 
@@ -2525,17 +2525,17 @@ public final class MachinePanel implements EditorPanel
     if ( visible )
     {
       this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole
-          .setRightComponent ( this.gui.jTabbedPaneConsole );
-      this.gui.jSplitPaneConsole.setDividerSize ( 3 );
-      this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+      this.gui.jGTISplitPaneConsole
+          .setRightComponent ( this.gui.jGTITabbedPaneConsole );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationConsole () );
     }
     else
     {
       this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole.setRightComponent ( null );
-      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+      this.gui.jGTISplitPaneConsole.setRightComponent ( null );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
   }
 
@@ -2550,16 +2550,17 @@ public final class MachinePanel implements EditorPanel
     if ( visible )
     {
       this.setDividerLocationTable = false;
-      this.gui.jSplitPaneTable.setRightComponent ( this.gui.jScrollPaneMachine );
-      this.gui.jSplitPaneTable.setDividerSize ( 3 );
-      this.gui.jSplitPaneTable.setDividerLocation ( PreferenceManager
+      this.gui.jGTISplitPaneTable
+          .setRightComponent ( this.gui.jGTIScrollPaneTable );
+      this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationTable () );
     }
     else
     {
       this.setDividerLocationTable = false;
-      this.gui.jSplitPaneTable.setRightComponent ( null );
-      this.gui.jSplitPaneTable.setDividerSize ( 0 );
+      this.gui.jGTISplitPaneTable.setRightComponent ( null );
+      this.gui.jGTISplitPaneTable.setDividerSize ( 0 );
     }
   }
 
@@ -2583,6 +2584,6 @@ public final class MachinePanel implements EditorPanel
    */
   public JTabbedPane getJTabbedPaneConsole ()
   {
-    return this.gui.jTabbedPaneConsole;
+    return this.gui.jGTITabbedPaneConsole;
   }
 }

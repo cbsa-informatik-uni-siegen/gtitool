@@ -26,7 +26,7 @@ public class JGTISplitPane extends JSplitPane
   {
     super ();
     setDividerSize ( 3 );
-    setContinuousLayout ( true );
+    setContinuousLayout ( false );
     setBorder ( null );
   }
 }

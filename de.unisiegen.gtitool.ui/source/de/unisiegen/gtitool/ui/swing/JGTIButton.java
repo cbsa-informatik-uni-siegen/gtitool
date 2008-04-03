@@ -23,9 +23,51 @@ public final class JGTIButton extends JButton
 
 
   /**
+   * The default minimal width of this {@link JGTIButton}.
+   */
+  private static final int DEFAULT_MIN_WIDTH = 80;
+
+
+  /**
+   * The default maximum width of this {@link JGTIButton}.
+   */
+  private static final int DEFAULT_MAX_WIDTH = 800;
+
+
+  /**
+   * The default minimal height of this {@link JGTIButton}.
+   */
+  private static final int DEFAULT_MIN_HEIGHT = 0;
+
+
+  /**
+   * The default maximum height of this {@link JGTIButton}.
+   */
+  private static final int DEFAULT_MAX_HEIGHT = 800;
+
+
+  /**
    * The minimal width of this {@link JGTIButton}.
    */
-  private static final int MIN_WIDTH = 80;
+  private int minWidth;
+
+
+  /**
+   * The maximum width of this {@link JGTIButton}.
+   */
+  private int maxWidth;
+
+
+  /**
+   * The minimal height of this {@link JGTIButton}.
+   */
+  private int minHeight;
+
+
+  /**
+   * The maximum height of this {@link JGTIButton}.
+   */
+  private int maxHeight;
 
 
   /**
@@ -35,6 +77,43 @@ public final class JGTIButton extends JButton
   {
     super ();
     setFocusPainted ( false );
+    this.minWidth = DEFAULT_MIN_WIDTH;
+    this.maxWidth = DEFAULT_MAX_WIDTH;
+    this.minHeight = DEFAULT_MIN_HEIGHT;
+    this.maxHeight = DEFAULT_MAX_HEIGHT;
+  }
+
+
+  /**
+   * Returns the maximum height.
+   * 
+   * @return The maximum height.
+   */
+  public final int getMaximumHeight ()
+  {
+    return this.maxHeight;
+  }
+
+
+  /**
+   * Returns the maximum width.
+   * 
+   * @return The maximum width.
+   */
+  public final int getMaximumWidth ()
+  {
+    return this.maxWidth;
+  }
+
+
+  /**
+   * Returns the minimum height.
+   * 
+   * @return The minimum height.
+   */
+  public final int getMinimumHeight ()
+  {
+    return this.minHeight;
   }
 
 
@@ -47,11 +126,34 @@ public final class JGTIButton extends JButton
   public final Dimension getMinimumSize ()
   {
     Dimension size = super.getMinimumSize ();
-    if ( size.width < MIN_WIDTH )
+    if ( size.width < this.minWidth )
     {
-      size.width = MIN_WIDTH;
+      size.width = this.minWidth;
+    }
+    if ( size.width > this.maxWidth )
+    {
+      size.width = this.maxWidth;
+    }
+    if ( size.height < this.minHeight )
+    {
+      size.height = this.minHeight;
+    }
+    if ( size.height > this.maxHeight )
+    {
+      size.height = this.maxHeight;
     }
     return size;
+  }
+
+
+  /**
+   * Returns the minimum width.
+   * 
+   * @return The minimum width.
+   */
+  public final int getMinimumWidth ()
+  {
+    return this.minWidth;
   }
 
 
@@ -64,10 +166,66 @@ public final class JGTIButton extends JButton
   public final Dimension getPreferredSize ()
   {
     Dimension size = super.getPreferredSize ();
-    if ( size.width < MIN_WIDTH )
+    if ( size.width < this.minWidth )
     {
-      size.width = MIN_WIDTH;
+      size.width = this.minWidth;
+    }
+    if ( size.width > this.maxWidth )
+    {
+      size.width = this.maxWidth;
+    }
+    if ( size.height < this.minHeight )
+    {
+      size.height = this.minHeight;
+    }
+    if ( size.height > this.maxHeight )
+    {
+      size.height = this.maxHeight;
     }
     return size;
+  }
+
+
+  /**
+   * Sets the maximum height.
+   * 
+   * @param maxHeight The maximum height to set.
+   */
+  public final void setMaximumHeight ( int maxHeight )
+  {
+    this.maxHeight = maxHeight;
+  }
+
+
+  /**
+   * Sets the maximum width.
+   * 
+   * @param maxWidth The maximum width to set.
+   */
+  public final void setMaximumWidth ( int maxWidth )
+  {
+    this.maxWidth = maxWidth;
+  }
+
+
+  /**
+   * Sets the minimum height.
+   * 
+   * @param minHeight The minimum height to set.
+   */
+  public final void setMinimumHeight ( int minHeight )
+  {
+    this.minHeight = minHeight;
+  }
+
+
+  /**
+   * Sets the minimum width.
+   * 
+   * @param minWidth The minimum width to set.
+   */
+  public final void setMinimumWidth ( int minWidth )
+  {
+    this.minWidth = minWidth;
   }
 }

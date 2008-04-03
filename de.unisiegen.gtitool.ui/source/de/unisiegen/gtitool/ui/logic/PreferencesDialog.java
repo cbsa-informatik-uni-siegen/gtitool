@@ -2310,11 +2310,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "PreferencesDialog.TabGrammar" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPane.setToolTipTextAt ( GRAMMAR_TAB_INDEX, Messages
         .getString ( "PreferencesDialog.TabGrammarToolTip" ) ); //$NON-NLS-1$
-    this.gui.terminalPanelForm.jLabelNonterminalSymbols.setText ( Messages
+    this.gui.terminalPanelForm.jGTILabelNonterminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.NonterminalSymbols" ) ); //$NON-NLS-1$
-    this.gui.terminalPanelForm.jLabelStartSymbol.setText ( Messages
+    this.gui.terminalPanelForm.jGTILabelStartSymbol.setText ( Messages
         .getString ( "TerminalPanel.StartSymbol" ) ); //$NON-NLS-1$
-    this.gui.terminalPanelForm.jLabelTerminalSymbols.setText ( Messages
+    this.gui.terminalPanelForm.jGTILabelTerminalSymbols.setText ( Messages
         .getString ( "TerminalPanel.TerminalSymbols" ) ); //$NON-NLS-1$
     // Accept
     this.gui.jGTIButtonAccept.setText ( Messages

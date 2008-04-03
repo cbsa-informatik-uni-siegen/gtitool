@@ -11,7 +11,7 @@ CF		- Überall die eigenen GTI Komponenten einbauen. Dabei ist vor allem
 		  InfoDialogForm, NewDialogAlphabetForm, NewDialogChoiceForm,
 		  NewDialogForm, NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
 		  NewDialogTerminalForm, PreferencesDialogForm, StateConfigDialogForm,
-		  WordPanelForm
+		  TerminalDialogForm, TerminalPanelForm, WordPanelForm
 
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel

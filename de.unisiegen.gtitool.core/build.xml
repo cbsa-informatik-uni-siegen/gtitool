@@ -23,6 +23,7 @@
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="log4jfile" value="log4j-1.2.15.jar" />
 	<property name="licensefile" value="${docdir}/license.txt" />
 
@@ -80,7 +81,7 @@
 		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/${corefile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
 				<include name="**/*.properties" />

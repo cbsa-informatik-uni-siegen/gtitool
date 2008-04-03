@@ -27,6 +27,8 @@
 	<property name="tinylaf.basedir" value="${basedir}/../gtitool.tinylaf" />
 	<property name="tinylaf.distdir" value="${tinylaf.basedir}/dist" />
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
+	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
+	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
 	<property name="log4jfile" value="log4j-1.2.15.jar" />
 	<property name="licensefile" value="${core.docdir}/license.txt" />
 	<property name="distdir" value="${basedir}/dist" />
@@ -89,7 +91,7 @@
 			<src path="${sourcedir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
-				<pathelement location="${core.distdir}/de.unisiegen.gtitool.core-${gtitool.version}.jar" />
+				<pathelement location="${core.distdir}/${corefile}" />
 				<pathelement location="${core.distdir}/${javacupfile}" />
 				<pathelement location="${core.distdir}/${log4jfile}" />
 				<pathelement location="${jgraph.distdir}/${jgraphfile}" />
@@ -103,14 +105,14 @@
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.GTITool" />
-			<attribute name="Class-Path" value="de.unisiegen.gtitool.core-${gtitool.version}.jar ${javacupfile} ${jgraphfile} ${tinylaffile} ${log4jfile}" />
+			<attribute name="Class-Path" value="${corefile} ${javacupfile} ${jgraphfile} ${tinylaffile} ${log4jfile}" />
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
 		<!-- copy license -->
 		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
-		<jar jarfile="${distdir}/de.unisiegen.gtitool.ui-${gtitool.version}.jar" manifest="${distdir}/MANIFEST.MF">
+		<jar jarfile="${distdir}/${uifile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
 				<include name="**/*.gif" />

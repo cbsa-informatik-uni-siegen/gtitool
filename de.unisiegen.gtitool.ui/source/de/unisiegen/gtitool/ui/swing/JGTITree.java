@@ -25,5 +25,6 @@ public class JGTITree extends JTree
   public JGTITree ()
   {
     super ();
+    setModel ( null );
   }
 }

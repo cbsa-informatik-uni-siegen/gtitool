@@ -938,7 +938,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( ( event.getButton () == MouseEvent.BUTTON1 )
         && ( event.getClickCount () > 1 ) )
     {
-      TreePath selectedPath = this.gui.jTreeColors.getSelectionModel ()
+      TreePath selectedPath = this.gui.jGTITreeColors.getSelectionModel ()
           .getSelectionPath ();
       if ( selectedPath != null )
       {
@@ -953,7 +953,7 @@ public final class PreferencesDialog implements LanguageChangedListener
           if ( colorChooserDialog.isConfirmed () )
           {
             selectedColorItem.setColor ( colorChooserDialog.getColor () );
-            this.gui.jTreeColors.repaint ();
+            this.gui.jGTITreeColors.repaint ();
           }
         }
       }
@@ -983,21 +983,21 @@ public final class PreferencesDialog implements LanguageChangedListener
     /*
      * General
      */
-    this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
-    this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
-    this.gui.jSliderZoom.setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM
-        .getFactor () );
+    this.gui.jGTIComboBoxLanguage.setSelectedIndex ( 0 );
+    this.gui.jGTIComboBoxLookAndFeel.setSelectedIndex ( 0 );
+    this.gui.jGTISliderZoom
+        .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
 
     /*
      * View
      */
-    this.gui.jComboBoxTransition
+    this.gui.jGTIComboBoxTransition
         .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
             .getIndex () );
-    this.gui.jComboBoxMouseSelection
+    this.gui.jGTIComboBoxMouseSelection
         .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
             .getIndex () );
-    this.gui.jSliderAutoStep
+    this.gui.jGTISliderAutoStep
         .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
             .getAutoStepInterval () );
 
@@ -1030,7 +1030,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemParserWarning.restore ();
     this.colorItemParserHighlighting.restore ();
 
-    this.gui.jTreeColors.repaint ();
+    this.gui.jGTITreeColors.repaint ();
 
     /*
      * Alphabet
@@ -1174,7 +1174,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     this.initialAutoStepItem = PreferenceManager.getInstance ()
         .getAutoStepItem ();
-    this.gui.jSliderAutoStep.setValue ( this.initialAutoStepItem
+    this.gui.jGTISliderAutoStep.setValue ( this.initialAutoStepItem
         .getAutoStepInterval () );
 
     // PopupMenu
@@ -1192,7 +1192,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jSliderAutoStep
+        PreferencesDialog.this.gui.jGTISliderAutoStep
             .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
                 .getAutoStepInterval () );
       }
@@ -1211,7 +1211,7 @@ public final class PreferencesDialog implements LanguageChangedListener
           }
         } );
     this.jPopupMenuAutoStep.add ( jMenuItemRestoreAutoStep );
-    this.gui.jSliderAutoStep.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTISliderAutoStep.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1351,7 +1351,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+        TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
             .getSelectionModel ().getSelectionPath ();
         if ( selectedPath != null )
         {
@@ -1363,7 +1363,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     } );
     this.jPopupMenuColorList.add ( jMenuItemRestoreColorList );
 
-    this.gui.jTreeColors.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTITreeColors.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1372,7 +1372,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-          TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+          TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
               .getPathForLocation ( event.getX (), event.getY () );
           if ( selectedPath != null )
           {
@@ -1380,7 +1380,7 @@ public final class PreferencesDialog implements LanguageChangedListener
                 .getLastPathComponent ();
             if ( selectedColorItem.isLeaf () )
             {
-              PreferencesDialog.this.gui.jTreeColors
+              PreferencesDialog.this.gui.jGTITreeColors
                   .setSelectionPath ( selectedPath );
               PreferencesDialog.this.jPopupMenuColorList.show ( event
                   .getComponent (), event.getX (), event.getY () );
@@ -1396,7 +1396,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       {
         if ( event.isPopupTrigger () )
         {
-          TreePath selectedPath = PreferencesDialog.this.gui.jTreeColors
+          TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
               .getPathForLocation ( event.getX (), event.getY () );
           if ( selectedPath != null )
           {
@@ -1404,7 +1404,7 @@ public final class PreferencesDialog implements LanguageChangedListener
                 .getLastPathComponent ();
             if ( selectedColorItem.isLeaf () )
             {
-              PreferencesDialog.this.gui.jTreeColors
+              PreferencesDialog.this.gui.jGTITreeColors
                   .setSelectionPath ( selectedPath );
               PreferencesDialog.this.jPopupMenuColorList.show ( event
                   .getComponent (), event.getX (), event.getY () );
@@ -1476,45 +1476,46 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.rootNode.add ( this.parserNode );
 
     DefaultTreeModel model = new DefaultTreeModel ( this.rootNode );
-    this.gui.jTreeColors.setModel ( model );
+    this.gui.jGTITreeColors.setModel ( model );
     // Expand the items
     if ( this.stateNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath ( this.stateNode
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.stateNode
           .getPath () ) );
     }
     if ( this.transitionNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath ( this.transitionNode
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.transitionNode
           .getPath () ) );
     }
     if ( this.symbolNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath ( this.symbolNode
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.symbolNode
           .getPath () ) );
     }
     if ( this.nonterminalSymbolNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath (
+      this.gui.jGTITreeColors.expandPath ( new TreePath (
           this.nonterminalSymbolNode.getPath () ) );
     }
     if ( this.terminalSymbolNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath ( this.terminalSymbolNode
-          .getPath () ) );
+      this.gui.jGTITreeColors.expandPath ( new TreePath (
+          this.terminalSymbolNode.getPath () ) );
     }
     if ( this.parserNode.isExpanded () )
     {
-      this.gui.jTreeColors.expandPath ( new TreePath ( this.parserNode
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.parserNode
           .getPath () ) );
     }
 
-    this.gui.jTreeColors.setRowHeight ( 0 );
-    this.gui.jTreeColors.getSelectionModel ().setSelectionMode (
+    this.gui.jGTITreeColors.setRowHeight ( 0 );
+    this.gui.jGTITreeColors.getSelectionModel ().setSelectionMode (
         TreeSelectionModel.SINGLE_TREE_SELECTION );
-    this.gui.jTreeColors.setCellRenderer ( new ColorTreeCellRenderer () );
+    this.gui.jGTITreeColors.setCellRenderer ( new ColorTreeCellRenderer () );
 
-    ToolTipManager.sharedInstance ().registerComponent ( this.gui.jTreeColors );
+    ToolTipManager.sharedInstance ().registerComponent (
+        this.gui.jGTITreeColors );
   }
 
 
@@ -1530,10 +1531,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     {
       this.languageComboBoxModel.addElement ( current );
     }
-    this.gui.jComboBoxLanguage.setModel ( this.languageComboBoxModel );
+    this.gui.jGTIComboBoxLanguage.setModel ( this.languageComboBoxModel );
     this.initialLanguageItem = PreferenceManager.getInstance ()
         .getLanguageItem ();
-    this.gui.jComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
+    this.gui.jGTIComboBoxLanguage.setSelectedItem ( this.initialLanguageItem );
 
     // PopupMenu
     this.jPopupMenuLanguage = new JPopupMenu ();
@@ -1550,11 +1551,11 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jComboBoxLanguage.setSelectedIndex ( 0 );
+        PreferencesDialog.this.gui.jGTIComboBoxLanguage.setSelectedIndex ( 0 );
       }
     } );
     this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
-    this.gui.jComboBoxLanguage.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTIComboBoxLanguage.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1632,10 +1633,10 @@ public final class PreferencesDialog implements LanguageChangedListener
       this.lookAndFeelComboBoxModel.addElement ( new LookAndFeelItem ( current
           .getName (), current.getClassName () ) );
     }
-    this.gui.jComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
+    this.gui.jGTIComboBoxLookAndFeel.setModel ( this.lookAndFeelComboBoxModel );
     this.initialLookAndFeel = PreferenceManager.getInstance ()
         .getLookAndFeelItem ();
-    this.gui.jComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
+    this.gui.jGTIComboBoxLookAndFeel.setSelectedItem ( this.initialLookAndFeel );
 
     // PopupMenu
     this.jPopupMenuLookAndFeel = new JPopupMenu ();
@@ -1652,11 +1653,12 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jComboBoxLookAndFeel.setSelectedIndex ( 0 );
+        PreferencesDialog.this.gui.jGTIComboBoxLookAndFeel
+            .setSelectedIndex ( 0 );
       }
     } );
     this.jPopupMenuLookAndFeel.add ( jMenuItemRestoreLookAndFeel );
-    this.gui.jComboBoxLookAndFeel.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTIComboBoxLookAndFeel.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -1709,11 +1711,11 @@ public final class PreferencesDialog implements LanguageChangedListener
         .create ( 0 ) );
     this.mouseSelectionComboBoxModel.addElement ( MouseSelectionItem
         .create ( 1 ) );
-    this.gui.jComboBoxMouseSelection
+    this.gui.jGTIComboBoxMouseSelection
         .setModel ( this.mouseSelectionComboBoxModel );
     this.initialMouseSelectionItem = PreferenceManager.getInstance ()
         .getMouseSelectionItem ();
-    this.gui.jComboBoxMouseSelection
+    this.gui.jGTIComboBoxMouseSelection
         .setSelectedItem ( this.initialMouseSelectionItem );
 
     // PopupMenu
@@ -1731,13 +1733,13 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jComboBoxMouseSelection
+        PreferencesDialog.this.gui.jGTIComboBoxMouseSelection
             .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
                 .getIndex () );
       }
     } );
     this.jPopupMenuMouseSelection.add ( jMenuItemRestoreMouseSelection );
-    this.gui.jComboBoxMouseSelection.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTIComboBoxMouseSelection.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -2130,10 +2132,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.transitionComboBoxModel = new TransitionComboBoxModel ();
     this.transitionComboBoxModel.addElement ( TransitionItem.create ( 0 ) );
     this.transitionComboBoxModel.addElement ( TransitionItem.create ( 1 ) );
-    this.gui.jComboBoxTransition.setModel ( this.transitionComboBoxModel );
+    this.gui.jGTIComboBoxTransition.setModel ( this.transitionComboBoxModel );
     this.initialTransitionItem = PreferenceManager.getInstance ()
         .getTransitionItem ();
-    this.gui.jComboBoxTransition.setSelectedItem ( this.initialTransitionItem );
+    this.gui.jGTIComboBoxTransition
+        .setSelectedItem ( this.initialTransitionItem );
 
     // PopupMenu
     this.jPopupMenuTransition = new JPopupMenu ();
@@ -2150,13 +2153,13 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jComboBoxTransition
+        PreferencesDialog.this.gui.jGTIComboBoxTransition
             .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
                 .getIndex () );
       }
     } );
     this.jPopupMenuTransition.add ( jMenuItemRestoreTranstion );
-    this.gui.jComboBoxTransition.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTIComboBoxTransition.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -2205,7 +2208,7 @@ public final class PreferencesDialog implements LanguageChangedListener
   {
     this.initialZoomFactorItem = PreferenceManager.getInstance ()
         .getZoomFactorItem ();
-    this.gui.jSliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
+    this.gui.jGTISliderZoom.setValue ( this.initialZoomFactorItem.getFactor () );
 
     // PopupMenu
     this.jPopupMenuZoomFactor = new JPopupMenu ();
@@ -2222,12 +2225,12 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jSliderZoom
+        PreferencesDialog.this.gui.jGTISliderZoom
             .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
       }
     } );
     this.jPopupMenuZoomFactor.add ( jMenuItemRestoreZoomFactor );
-    this.gui.jSliderZoom.addMouseListener ( new MouseAdapter ()
+    this.gui.jGTISliderZoom.addMouseListener ( new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -2335,39 +2338,39 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui.jGTIButtonCancel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.CancelToolTip" ) ); //$NON-NLS-1$
     // Language
-    this.gui.jLabelLanguage.setText ( Messages
+    this.gui.jGTILabelLanguage.setText ( Messages
         .getString ( "PreferencesDialog.Language" ) ); //$NON-NLS-1$
-    this.gui.jLabelLanguage.setDisplayedMnemonic ( Messages.getString (
+    this.gui.jGTILabelLanguage.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.LanguageMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    this.gui.jComboBoxLanguage.setToolTipText ( Messages
+    this.gui.jGTIComboBoxLanguage.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LanguageToolTip" ) ); //$NON-NLS-1$
     // Look and feel
-    this.gui.jLabelLookAndFeel.setText ( Messages
+    this.gui.jGTILabelLookAndFeel.setText ( Messages
         .getString ( "PreferencesDialog.LookAndFeel" ) ); //$NON-NLS-1$    
-    this.gui.jLabelLookAndFeel.setDisplayedMnemonic ( Messages.getString (
+    this.gui.jGTILabelLookAndFeel.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.LookAndFeelMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    this.gui.jComboBoxLookAndFeel.setToolTipText ( Messages
+    this.gui.jGTIComboBoxLookAndFeel.setToolTipText ( Messages
         .getString ( "PreferencesDialog.LookAndFeelToolTip" ) ); //$NON-NLS-1$
     // Zoom
-    this.gui.jLabelZoom.setText ( Messages
+    this.gui.jGTILabelZoom.setText ( Messages
         .getString ( "PreferencesDialog.Zoom" ) ); //$NON-NLS-1$    
-    this.gui.jLabelZoom.setDisplayedMnemonic ( Messages.getString (
+    this.gui.jGTILabelZoom.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.ZoomMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    this.gui.jSliderZoom.setToolTipText ( Messages
+    this.gui.jGTISliderZoom.setToolTipText ( Messages
         .getString ( "PreferencesDialog.ZoomToolTip" ) ); //$NON-NLS-1$
     // Auto Step
-    this.gui.jLabelAutoStep.setText ( Messages
+    this.gui.jGTILabelAutoStep.setText ( Messages
         .getString ( "PreferencesDialog.AutoStep" ) ); //$NON-NLS-1$    
-    this.gui.jLabelAutoStep.setDisplayedMnemonic ( Messages.getString (
+    this.gui.jGTILabelAutoStep.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.AutoStepMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    this.gui.jSliderAutoStep.setToolTipText ( Messages
+    this.gui.jGTISliderAutoStep.setToolTipText ( Messages
         .getString ( "PreferencesDialog.AutoStepToolTip" ) ); //$NON-NLS-1$
     // Mouse selection
-    this.gui.jLabelMouseSelection.setText ( Messages
+    this.gui.jGTILabelMouseSelection.setText ( Messages
         .getString ( "PreferencesDialog.MouseSelection" ) ); //$NON-NLS-1$    
-    this.gui.jLabelMouseSelection.setDisplayedMnemonic ( Messages.getString (
+    this.gui.jGTILabelMouseSelection.setDisplayedMnemonic ( Messages.getString (
         "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
-    this.gui.jComboBoxMouseSelection.setToolTipText ( Messages
+    this.gui.jGTIComboBoxMouseSelection.setToolTipText ( Messages
         .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
     // Restore
     this.gui.jGTIButtonRestore.setText ( Messages
@@ -2504,7 +2507,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void nodeChanged ( TreeNode node )
   {
-    ( ( DefaultTreeModel ) this.gui.jTreeColors.getModel () )
+    ( ( DefaultTreeModel ) this.gui.jGTITreeColors.getModel () )
         .nodeChanged ( node );
     for ( int i = 0 ; i < node.getChildCount () ; i++ )
     {
@@ -2571,11 +2574,11 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveAutoStep ()
   {
-    if ( this.initialAutoStepItem.getAutoStepInterval () != this.gui.jSliderAutoStep
+    if ( this.initialAutoStepItem.getAutoStepInterval () != this.gui.jGTISliderAutoStep
         .getValue () )
     {
-      this.initialAutoStepItem = AutoStepItem.create ( this.gui.jSliderAutoStep
-          .getValue () );
+      this.initialAutoStepItem = AutoStepItem
+          .create ( this.gui.jGTISliderAutoStep.getValue () );
       PreferenceManager.getInstance ().setAutoStepItem (
           this.initialAutoStepItem );
     }
@@ -2588,10 +2591,10 @@ public final class PreferencesDialog implements LanguageChangedListener
   private final void saveColor ()
   {
     // State
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.stateNode
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath ( this.stateNode
         .getPath () ) ) != this.stateNode.isExpanded () )
     {
-      this.stateNode.setExpanded ( this.gui.jTreeColors
+      this.stateNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.stateNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemStateGroup ( this.stateNode );
     }
@@ -2667,10 +2670,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Transition
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.transitionNode
-        .getPath () ) ) != this.transitionNode.isExpanded () )
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
+        this.transitionNode.getPath () ) ) != this.transitionNode.isExpanded () )
     {
-      this.transitionNode.setExpanded ( this.gui.jTreeColors
+      this.transitionNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.transitionNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemTransitionGroup (
           this.transitionNode );
@@ -2720,10 +2723,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Symbol
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.symbolNode
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath ( this.symbolNode
         .getPath () ) ) != this.symbolNode.isExpanded () )
     {
-      this.symbolNode.setExpanded ( this.gui.jTreeColors
+      this.symbolNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.symbolNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemSymbolGroup (
           this.symbolNode );
@@ -2760,12 +2763,12 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // NonterminalSymbol
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath (
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
         this.nonterminalSymbolNode.getPath () ) ) != this.nonterminalSymbolNode
         .isExpanded () )
     {
       this.nonterminalSymbolNode
-          .setExpanded ( this.gui.jTreeColors.isExpanded ( new TreePath (
+          .setExpanded ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
               this.nonterminalSymbolNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemNonterminalSymbolGroup (
           this.nonterminalSymbolNode );
@@ -2783,11 +2786,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // TerminalSymbol
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath (
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
         this.terminalSymbolNode.getPath () ) ) != this.terminalSymbolNode
         .isExpanded () )
     {
-      this.terminalSymbolNode.setExpanded ( this.gui.jTreeColors
+      this.terminalSymbolNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.terminalSymbolNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemTerminalSymbolGroup (
           this.terminalSymbolNode );
@@ -2805,10 +2808,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     }
 
     // Parser
-    if ( this.gui.jTreeColors.isExpanded ( new TreePath ( this.parserNode
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath ( this.parserNode
         .getPath () ) ) != this.parserNode.isExpanded () )
     {
-      this.parserNode.setExpanded ( this.gui.jTreeColors
+      this.parserNode.setExpanded ( this.gui.jGTITreeColors
           .isExpanded ( new TreePath ( this.parserNode.getPath () ) ) );
       PreferenceManager.getInstance ().setColorItemParserGroup (
           this.parserNode );
@@ -2947,11 +2950,11 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveMouseSelection ()
   {
-    if ( this.initialMouseSelectionItem.getIndex () != this.gui.jComboBoxMouseSelection
+    if ( this.initialMouseSelectionItem.getIndex () != this.gui.jGTIComboBoxMouseSelection
         .getSelectedIndex () )
     {
       this.initialMouseSelectionItem = MouseSelectionItem
-          .create ( this.gui.jComboBoxMouseSelection.getSelectedIndex () );
+          .create ( this.gui.jGTIComboBoxMouseSelection.getSelectedIndex () );
       PreferenceManager.getInstance ().setMouseSelectionItem (
           this.initialMouseSelectionItem );
     }
@@ -3032,11 +3035,11 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveTransition ()
   {
-    if ( this.initialTransitionItem.getIndex () != this.gui.jComboBoxTransition
+    if ( this.initialTransitionItem.getIndex () != this.gui.jGTIComboBoxTransition
         .getSelectedIndex () )
     {
       this.initialTransitionItem = TransitionItem
-          .create ( this.gui.jComboBoxTransition.getSelectedIndex () );
+          .create ( this.gui.jGTIComboBoxTransition.getSelectedIndex () );
       PreferenceManager.getInstance ().setTransitionItem (
           this.initialTransitionItem );
     }
@@ -3048,11 +3051,11 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void saveZoomFactor ()
   {
-    if ( this.initialZoomFactorItem.getFactor () != this.gui.jSliderZoom
+    if ( this.initialZoomFactorItem.getFactor () != this.gui.jGTISliderZoom
         .getValue () )
     {
-      this.initialZoomFactorItem = ZoomFactorItem.create ( this.gui.jSliderZoom
-          .getValue () );
+      this.initialZoomFactorItem = ZoomFactorItem
+          .create ( this.gui.jGTISliderZoom.getValue () );
       PreferenceManager.getInstance ().setZoomFactorItem (
           this.initialZoomFactorItem );
       PreferenceManager.getInstance ().fireZoomFactorChanged (

@@ -33,45 +33,43 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jSplitPaneConsole = new javax.swing.JSplitPane();
-        jPanelTop = new javax.swing.JPanel();
-        jScrollPane = new javax.swing.JScrollPane();
-        jGTITable = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jPanelBottom = new javax.swing.JPanel();
-        jTabbedPaneConsole = new javax.swing.JTabbedPane();
-        jScrollPaneErrors = new javax.swing.JScrollPane();
+        jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelGrammar = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneGrammar = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableGrammar = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
+        jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableErrors = new de.unisiegen.gtitool.ui.swing.JGTITable();
-        jScrollPaneWarnings = new javax.swing.JScrollPane();
+        jGTIScrollPaneWarnings = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableWarnings = new de.unisiegen.gtitool.ui.swing.JGTITable();
 
         setLayout(new java.awt.GridBagLayout());
 
-        jSplitPaneConsole.setDividerLocation(200);
-        jSplitPaneConsole.setDividerSize(3);
-        jSplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPaneConsole.setResizeWeight(1.0);
-        jPanelTop.setLayout(new java.awt.GridBagLayout());
-
-        jGTITable.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTISplitPaneConsole.setBorder(null);
+        jGTISplitPaneConsole.setDividerLocation(200);
+        jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneConsole.setResizeWeight(1.0);
+        jGTIScrollPaneGrammar.setBorder(null);
+        jGTITableGrammar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 mouseClickedEvent(evt);
             }
         });
 
-        jScrollPane.setViewportView(jGTITable);
+        jGTIScrollPaneGrammar.setViewportView(jGTITableGrammar);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanelTop.add(jScrollPane, gridBagConstraints);
+        jGTIPanelGrammar.add(jGTIScrollPaneGrammar, gridBagConstraints);
 
-        jSplitPaneConsole.setLeftComponent(jPanelTop);
+        jGTISplitPaneConsole.setLeftComponent(jGTIPanelGrammar);
 
-        jPanelBottom.setLayout(new java.awt.GridBagLayout());
-
-        jTabbedPaneConsole.setFocusable(false);
-        jGTITableErrors.setFocusable(false);
+        jGTIScrollPaneErrors.setBorder(null);
         jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableErrorsMouseExited(evt);
@@ -83,11 +81,12 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
             }
         });
 
-        jScrollPaneErrors.setViewportView(jGTITableErrors);
+        jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
-        jTabbedPaneConsole.addTab("Error", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jScrollPaneErrors);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors); // NOI18N
 
-        jGTITableWarnings.setFocusable(false);
+        jGTIScrollPaneWarnings.setBorder(null);
         jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableWarningsMouseExited(evt);
@@ -99,19 +98,9 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
             }
         });
 
-        jScrollPaneWarnings.setViewportView(jGTITableWarnings);
+        jGTIScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
-        jTabbedPaneConsole.addTab("Warning", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jScrollPaneWarnings);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanelBottom.add(jTabbedPaneConsole, gridBagConstraints);
-
-        jSplitPaneConsole.setRightComponent(jPanelBottom);
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jGTIScrollPaneWarnings); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -119,7 +108,17 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        add(jSplitPaneConsole, gridBagConstraints);
+        jGTIPanelConsole.add(jGTITabbedPaneConsole, gridBagConstraints);
+
+        jGTISplitPaneConsole.setRightComponent(jGTIPanelConsole);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jGTISplitPaneConsole, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -146,16 +145,16 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITable;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelGrammar;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneErrors;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGrammar;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableGrammar;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
-    public javax.swing.JPanel jPanelBottom;
-    public javax.swing.JPanel jPanelTop;
-    public javax.swing.JScrollPane jScrollPane;
-    public javax.swing.JScrollPane jScrollPaneErrors;
-    public javax.swing.JScrollPane jScrollPaneWarnings;
-    public javax.swing.JSplitPane jSplitPaneConsole;
-    public javax.swing.JTabbedPane jTabbedPaneConsole;
     // End of variables declaration//GEN-END:variables
     
 

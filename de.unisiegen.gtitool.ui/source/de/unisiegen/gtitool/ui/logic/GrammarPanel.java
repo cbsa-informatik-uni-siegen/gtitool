@@ -137,11 +137,11 @@ public class GrammarPanel implements EditorPanel
     this.grammar = this.model.getGrammar ();
     initialize ();
 
-    this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+    this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
     setVisibleConsole ( this.mainWindowForm.jCheckBoxMenuItemConsole
         .getState () );
-    this.gui.jSplitPaneConsole.addPropertyChangeListener (
+    this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
@@ -156,7 +156,7 @@ public class GrammarPanel implements EditorPanel
             GrammarPanel.this.setDividerLocationConsole = true;
           }
         } );
-    
+
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
@@ -428,9 +428,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void languageChanged ()
   {
-    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
   }
 
@@ -497,8 +497,8 @@ public class GrammarPanel implements EditorPanel
       ArrayList < Production > productions = new ArrayList < Production > ();
       boolean multiRowChoosen = false;
 
-      int [] rows = this.gui.jGTITable.getSelectedRows ();
-      int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
+      int [] rows = this.gui.jGTITableGrammar.getSelectedRows ();
+      int rowIndex = this.gui.jGTITableGrammar.rowAtPoint ( event.getPoint () );
 
       if ( rows.length > 1 )
         for ( int row : rows )
@@ -516,7 +516,8 @@ public class GrammarPanel implements EditorPanel
         {
 
           // Give the user a visual clue which rowIndex he has clicked on
-          this.gui.jGTITable.changeSelection ( rowIndex, 0, false, false );
+          this.gui.jGTITableGrammar
+              .changeSelection ( rowIndex, 0, false, false );
 
           productions.add ( this.grammar.getProductionAt ( rowIndex ) );
         }
@@ -538,9 +539,9 @@ public class GrammarPanel implements EditorPanel
     }
     else if ( event.getClickCount () == 2 )
     {
-   
-      int rowIndex = this.gui.jGTITable.rowAtPoint ( event.getPoint () );
-      if (rowIndex == -1)
+
+      int rowIndex = this.gui.jGTITableGrammar.rowAtPoint ( event.getPoint () );
+      if ( rowIndex == -1 )
       {
         return;
       }
@@ -623,10 +624,10 @@ public class GrammarPanel implements EditorPanel
   public void handleEditProduction ()
   {
 
-    if ( this.gui.jGTITable.getSelectedRow () >= 0 )
+    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
     {
-      Production production = this.grammar.getProductionAt ( this.gui.jGTITable
-          .getSelectedRow () );
+      Production production = this.grammar
+          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
       ProductionDialog productionDialog = new ProductionDialog ( window,
           this.grammar.getNonterminalSymbolSet (), this.grammar
@@ -641,10 +642,10 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleDeleteProduction ()
   {
-    if ( this.gui.jGTITable.getSelectedRow () >= 0 )
+    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
     {
-      Production production = this.grammar.getProductionAt ( this.gui.jGTITable
-          .getSelectedRow () );
+      Production production = this.grammar
+          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
       ConfirmDialog confirmedDialog = new ConfirmDialog ( getParent (),
           Messages.getString ( "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
               production ), Messages
@@ -665,12 +666,13 @@ public class GrammarPanel implements EditorPanel
    */
   private void initialize ()
   {
-    this.gui.jGTITable.setModel ( this.grammar );
-    this.gui.jGTITable.setColumnModel ( new GrammarColumnModel () );
-    this.gui.jGTITable.getTableHeader ().setReorderingAllowed ( false );
+    this.gui.jGTITableGrammar.setModel ( this.grammar );
+    this.gui.jGTITableGrammar.setColumnModel ( new GrammarColumnModel () );
+    this.gui.jGTITableGrammar.getTableHeader ().setReorderingAllowed ( false );
     if ( this.grammar.getColumnCount () > 0 )
     {
-      this.gui.jGTITable.getSelectionModel ().setSelectionInterval ( 0, 0 );
+      this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( 0,
+          0 );
     }
 
     // ModifyStatusChangedListener
@@ -728,9 +730,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void clearValidationMessages ()
   {
-    this.gui.jTabbedPaneConsole.setTitleAt ( 0, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jTabbedPaneConsole.setTitleAt ( 1, Messages
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
 
     this.errorTableModel.clearData ();
@@ -790,17 +792,17 @@ public class GrammarPanel implements EditorPanel
     if ( visible )
     {
       this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole
-          .setRightComponent ( this.gui.jTabbedPaneConsole );
-      this.gui.jSplitPaneConsole.setDividerSize ( 3 );
-      this.gui.jSplitPaneConsole.setDividerLocation ( PreferenceManager
+      this.gui.jGTISplitPaneConsole
+          .setRightComponent ( this.gui.jGTITabbedPaneConsole );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+      this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationConsole () );
     }
     else
     {
       this.setDividerLocationConsole = false;
-      this.gui.jSplitPaneConsole.setRightComponent ( null );
-      this.gui.jSplitPaneConsole.setDividerSize ( 0 );
+      this.gui.jGTISplitPaneConsole.setRightComponent ( null );
+      this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
   }
 
@@ -812,7 +814,7 @@ public class GrammarPanel implements EditorPanel
    */
   public JTabbedPane getJTabbedPaneConsole ()
   {
-    return this.gui.jTabbedPaneConsole;
+    return this.gui.jGTITabbedPaneConsole;
   }
 
 

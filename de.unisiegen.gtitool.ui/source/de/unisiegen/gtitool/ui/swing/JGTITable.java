@@ -59,6 +59,7 @@ public final class JGTITable extends JTable
   public JGTITable ()
   {
     super ();
+    setFocusable ( false );
   }
 
 

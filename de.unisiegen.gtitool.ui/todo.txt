@@ -8,8 +8,9 @@ CF		- Überall die eigenen GTI Komponenten einbauen. Dabei ist vor allem
 		  Fertig:
 		  AboutDialog, AlphabetDialogForm, AlphabetPanelForm,
 		  ColorChooserDialogForm, ConfirmDialogForm, ExchangeDialogForm,
-		  InfoDialogForm, NewDialogAlphabetForm, NewDialogChoiceForm,
-		  NewDialogForm, NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
+		  GrammarPanelForm, InfoDialogForm, MainWindowForm,
+		  NewDialogAlphabetForm, NewDialogChoiceForm, NewDialogForm,
+		  NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
 		  NewDialogTerminalForm, PreferencesDialogForm, StateConfigDialogForm,
 		  TerminalDialogForm, TerminalPanelForm, WordPanelForm
 

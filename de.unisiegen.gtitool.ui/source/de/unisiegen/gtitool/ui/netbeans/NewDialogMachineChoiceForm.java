@@ -32,15 +32,15 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup = new javax.swing.ButtonGroup();
-        jLabelMachinesCaption = new javax.swing.JLabel();
-        jPanelMachines = new javax.swing.JPanel();
-        jRadioButtonDFA = new javax.swing.JRadioButton();
-        jRadioButtonNFA = new javax.swing.JRadioButton();
-        jRadioButtonEDFA = new javax.swing.JRadioButton();
-        jRadioButtonStackMachine = new javax.swing.JRadioButton();
-        jPanelMachinesSpace = new javax.swing.JPanel();
-        jPanelButtons = new javax.swing.JPanel();
+        buttonGroupChoice = new javax.swing.ButtonGroup();
+        jGTILabelCaption = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIPanelMachines = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIRadioButtonDFA = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonNFA = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonENFA = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonPDA = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIPanelColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonNext = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -48,26 +48,21 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jLabelMachinesCaption.setText(bundle.getString("NewDialog.ChooseMachine")); // NOI18N
+        jGTILabelCaption.setText(bundle.getString("NewDialog.ChooseMachine")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        add(jLabelMachinesCaption, gridBagConstraints);
+        add(jGTILabelCaption, gridBagConstraints);
 
-        jPanelMachines.setLayout(new java.awt.GridBagLayout());
-
-        buttonGroup.add(jRadioButtonDFA);
-        jRadioButtonDFA.setSelected(true);
-        jRadioButtonDFA.setText(bundle.getString("NewDialog.DFA")); // NOI18N
-        jRadioButtonDFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonDFA.setFocusPainted(false);
-        jRadioButtonDFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jRadioButtonDFA.addItemListener(new java.awt.event.ItemListener() {
+        buttonGroupChoice.add(jGTIRadioButtonDFA);
+        jGTIRadioButtonDFA.setSelected(true);
+        jGTIRadioButtonDFA.setText(bundle.getString("NewDialog.DFA")); // NOI18N
+        jGTIRadioButtonDFA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                handleDFAItemStateChanged(evt);
+                jGTIRadioButtonDFAItemStateChanged(evt);
             }
         });
 
@@ -76,16 +71,14 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        jPanelMachines.add(jRadioButtonDFA, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        jGTIPanelMachines.add(jGTIRadioButtonDFA, gridBagConstraints);
 
-        buttonGroup.add(jRadioButtonNFA);
-        jRadioButtonNFA.setText(bundle.getString("NewDialog.NFA")); // NOI18N
-        jRadioButtonNFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonNFA.setFocusPainted(false);
-        jRadioButtonNFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jRadioButtonNFA.addItemListener(new java.awt.event.ItemListener() {
+        buttonGroupChoice.add(jGTIRadioButtonNFA);
+        jGTIRadioButtonNFA.setText(bundle.getString("NewDialog.NFA")); // NOI18N
+        jGTIRadioButtonNFA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                handleNFAItemStateChanged(evt);
+                jGTIRadioButtonNFAItemStateChanged(evt);
             }
         });
 
@@ -94,17 +87,14 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanelMachines.add(jRadioButtonNFA, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        jGTIPanelMachines.add(jGTIRadioButtonNFA, gridBagConstraints);
 
-        buttonGroup.add(jRadioButtonEDFA);
-        jRadioButtonEDFA.setText(bundle.getString("NewDialog.ENFA")); // NOI18N
-        jRadioButtonEDFA.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonEDFA.setFocusPainted(false);
-        jRadioButtonEDFA.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jRadioButtonEDFA.addItemListener(new java.awt.event.ItemListener() {
+        buttonGroupChoice.add(jGTIRadioButtonENFA);
+        jGTIRadioButtonENFA.setText(bundle.getString("NewDialog.ENFA")); // NOI18N
+        jGTIRadioButtonENFA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                handleEDFAItemStateChanged(evt);
+                jGTIRadioButtonENFAItemStateChanged(evt);
             }
         });
 
@@ -113,17 +103,14 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanelMachines.add(jRadioButtonEDFA, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        jGTIPanelMachines.add(jGTIRadioButtonENFA, gridBagConstraints);
 
-        buttonGroup.add(jRadioButtonStackMachine);
-        jRadioButtonStackMachine.setText(bundle.getString("NewDialog.PDA")); // NOI18N
-        jRadioButtonStackMachine.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jRadioButtonStackMachine.setFocusPainted(false);
-        jRadioButtonStackMachine.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jRadioButtonStackMachine.addItemListener(new java.awt.event.ItemListener() {
+        buttonGroupChoice.add(jGTIRadioButtonPDA);
+        jGTIRadioButtonPDA.setText(bundle.getString("NewDialog.PDA")); // NOI18N
+        jGTIRadioButtonPDA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                handleStackMachineItemStateChanged(evt);
+                jGTIRadioButtonPDAItemStateChanged(evt);
             }
         });
 
@@ -133,7 +120,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanelMachines.add(jRadioButtonStackMachine, gridBagConstraints);
+        jGTIPanelMachines.add(jGTIRadioButtonPDA, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -141,7 +128,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jPanelMachines, gridBagConstraints);
+        add(jGTIPanelMachines, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -150,9 +137,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jPanelMachinesSpace, gridBagConstraints);
-
-        jPanelButtons.setLayout(new java.awt.GridBagLayout());
+        add(jGTIPanelColumn0, gridBagConstraints);
 
         jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
         jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
@@ -169,7 +154,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
 
         jGTIButtonNext.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.NextMnemonic").charAt(0));
         jGTIButtonNext.setText(bundle.getString("NewDialog.Next")); // NOI18N
@@ -185,7 +170,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanelButtons.add(jGTIButtonNext, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonNext, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
@@ -201,7 +186,7 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -209,9 +194,25 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        add(jPanelButtons, gridBagConstraints);
+        add(jGTIPanelButtons, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIRadioButtonPDAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIRadioButtonPDAItemStateChanged
+        logic.handlePDAItemStateChanged(evt);
+    }//GEN-LAST:event_jGTIRadioButtonPDAItemStateChanged
+
+    private void jGTIRadioButtonENFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIRadioButtonENFAItemStateChanged
+        logic.handleENFAItemStateChanged(evt);
+    }//GEN-LAST:event_jGTIRadioButtonENFAItemStateChanged
+
+    private void jGTIRadioButtonNFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIRadioButtonNFAItemStateChanged
+        logic.handleNFAItemStateChanged(evt);
+    }//GEN-LAST:event_jGTIRadioButtonNFAItemStateChanged
+
+    private void jGTIRadioButtonDFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIRadioButtonDFAItemStateChanged
+        logic.handleDFAItemStateChanged(evt);
+    }//GEN-LAST:event_jGTIRadioButtonDFAItemStateChanged
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed
         logic.handleCancel();
@@ -224,37 +225,21 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
     private void jGTIButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonPreviousActionPerformed
         logic.handlePreviousMachineChoice();
     }//GEN-LAST:event_jGTIButtonPreviousActionPerformed
-
-    private void handleStackMachineItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleStackMachineItemStateChanged
-        logic.handleStackMachineItemStateChanged(evt);
-    }//GEN-LAST:event_handleStackMachineItemStateChanged
-
-    private void handleEDFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleEDFAItemStateChanged
-        logic.handleEDFAItemStateChanged(evt);
-    }//GEN-LAST:event_handleEDFAItemStateChanged
-
-    private void handleNFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleNFAItemStateChanged
-        logic.handleNFAItemStateChanged(evt);
-    }//GEN-LAST:event_handleNFAItemStateChanged
-
-    private void handleDFAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleDFAItemStateChanged
-        logic.handleDFAItemStateChanged(evt);
-    }//GEN-LAST:event_handleDFAItemStateChanged
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.ButtonGroup buttonGroup;
+    public javax.swing.ButtonGroup buttonGroupChoice;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonNext;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrevious;
-    public javax.swing.JLabel jLabelMachinesCaption;
-    public javax.swing.JPanel jPanelButtons;
-    public javax.swing.JPanel jPanelMachines;
-    public javax.swing.JPanel jPanelMachinesSpace;
-    public javax.swing.JRadioButton jRadioButtonDFA;
-    public javax.swing.JRadioButton jRadioButtonEDFA;
-    public javax.swing.JRadioButton jRadioButtonNFA;
-    public javax.swing.JRadioButton jRadioButtonStackMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelCaption;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn0;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachines;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonDFA;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonENFA;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonNFA;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonPDA;
     // End of variables declaration//GEN-END:variables
     
     private NewDialogMachineChoice logic;

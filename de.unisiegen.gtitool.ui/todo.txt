@@ -3,6 +3,14 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
+CF		- Überall die eigenen GTI Komponenten einbauen. Dabei ist vor allem
+		  darauf zu achten, dass keine Events verloren gehen.
+		  Fertig:
+		  AboutDialog, AlphabetDialogForm, AlphabetPanelForm,
+		  ColorChooserDialogForm, ConfirmDialogForm, ExchangeDialogForm,
+		  InfoDialogForm, NewDialogAlphabetForm, NewDialogChoiceForm,
+		  NewDialogForm, NewDialogGrammarChoiceForm, NewDialogMachineChoiceForm,
+		  NewDialogTerminalForm, StateConfigDialogForm, WordPanelForm
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
@@ -10,14 +18,6 @@ BM		- Draft for... für Grammatiken
 BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
 		  in die Logik eingebaut werden. Im "Preference Dialog" ist alles
 		  implementiert.
-
-		- Es sollten überall die eigenen GTI Komponenten eingebaut werden. Sollte
-		  nicht allzu viel Arbeit sein. Dabei ist vor allem darauf zu achten,
-		  dass keine Events verloren gehen, also die alte und die neue
-		  Komponente ganz genau miteinander vergleichen. Es muss erst eine
-		  Absprache erfolgen, wer welche Panel übernimmt, damit es zu keinen
-		  Konflikten kommt.
-		  Fertig: AboutDialog, AlphabetDialogForm, AlphabetPanelForm,
-		  ColorChooserDialogForm, ConfirmDialogForm, ExchangeDialogForm,
-		  InfoDialogForm, StateConfigDialogForm
-		  
+BM		- Die Kontextfreie Grammatik muss angelegt werden können (Neu Dialog ist
+		  komplett auf die neuen Komponenten umgebaut, kann also von dir gemacht
+		  werden, ohne Konflikte zu befürchten)

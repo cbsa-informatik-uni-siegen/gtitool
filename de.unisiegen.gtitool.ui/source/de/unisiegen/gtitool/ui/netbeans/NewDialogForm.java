@@ -43,15 +43,12 @@ public class NewDialogForm extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
-        javax.swing.JLabel jLabelHeaderImage;
-        javax.swing.JLabel jLabelHeaderSubTitle;
-        javax.swing.JLabel jLabelHeaderTitle;
 
-        jPanelHeader = new javax.swing.JPanel();
-        jLabelHeaderTitle = new javax.swing.JLabel();
-        jLabelHeaderSubTitle = new javax.swing.JLabel();
-        jLabelHeaderImage = new javax.swing.JLabel();
-        jPanelBody = new javax.swing.JPanel();
+        jGTIPanelHeader = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTILabelHeaderTitle = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelHeaderSubTitle = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTILabelHeaderImage = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIPanelBody = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -66,50 +63,48 @@ public class NewDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jPanelHeader.setLayout(new java.awt.GridBagLayout());
-
-        jPanelHeader.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelHeaderTitle.setFont(new java.awt.Font("Dialog", 1, 24));
-        jLabelHeaderTitle.setText(bundle.getString("MainWindow.New")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
-        jPanelHeader.add(jLabelHeaderTitle, gridBagConstraints);
-
-        jLabelHeaderSubTitle.setText(bundle.getString("NewDialog.NewSubtitle")); // NOI18N
-        jLabelHeaderSubTitle.setAlignmentY(0.0F);
+        jGTIPanelHeader.setBackground(new java.awt.Color(255, 255, 255));
+        jGTILabelHeaderTitle.setText(bundle.getString("MainWindow.New")); // NOI18N
+        jGTILabelHeaderTitle.setFont(new java.awt.Font("Dialog", 1, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 5, 10);
-        jPanelHeader.add(jLabelHeaderSubTitle, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 5);
+        jGTIPanelHeader.add(jGTILabelHeaderTitle, gridBagConstraints);
 
-        jLabelHeaderImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        jGTILabelHeaderSubTitle.setText(bundle.getString("NewDialog.NewSubtitle")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        jGTIPanelHeader.add(jGTILabelHeaderSubTitle, gridBagConstraints);
+
+        jGTILabelHeaderImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        jPanelHeader.add(jLabelHeaderImage, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(16, 5, 16, 16);
+        jGTIPanelHeader.add(jGTILabelHeaderImage, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        getContentPane().add(jPanelHeader, gridBagConstraints);
-
-        jPanelBody.setLayout(new java.awt.GridBagLayout());
+        getContentPane().add(jGTIPanelHeader, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 10.0;
-        gridBagConstraints.weighty = 10.0;
-        getContentPane().add(jPanelBody, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jGTIPanelBody, gridBagConstraints);
 
         setSize(new java.awt.Dimension(560, 350));
     }// </editor-fold>//GEN-END:initComponents
@@ -119,8 +114,11 @@ public class NewDialogForm extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowClosing
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JPanel jPanelBody;
-    public javax.swing.JPanel jPanelHeader;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelHeaderImage;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelHeaderSubTitle;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelHeaderTitle;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelBody;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelHeader;
     // End of variables declaration//GEN-END:variables
     
     private NewDialog logic;

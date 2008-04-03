@@ -3,6 +3,10 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.ItemEvent;
 
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogMachineChoiceForm;
 
@@ -17,7 +21,7 @@ public final class NewDialogMachineChoice
 {
 
   /**
-   * Signals the user choice
+   * The user choice.
    */
   public enum Choice
   {
@@ -86,7 +90,7 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Get the user choice.
+   * Returns the user choice.
    * 
    * @return The user choice of this panel.
    */
@@ -97,7 +101,7 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Handle the cancel button pressed event.
+   * Handles the cancel button pressed event.
    */
   public final void handleCancel ()
   {
@@ -106,13 +110,13 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Handle DFA Item State changed.
+   * Handles {@link DFA} item state changed events.
    * 
-   * @param evt The {@link ItemEvent}.
+   * @param event The {@link ItemEvent}.
    */
-  public final void handleDFAItemStateChanged ( ItemEvent evt )
+  public final void handleDFAItemStateChanged ( ItemEvent event )
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    if ( event.getStateChange () == ItemEvent.SELECTED )
     {
       this.actualChoice = Choice.DFA;
     }
@@ -120,19 +124,21 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Handle EDFA Item State changed.
+   * Handles {@link ENFA} item state changed events.
    * 
-   * @param evt The {@link ItemEvent}.
+   * @param event The {@link ItemEvent}.
    */
-  public final void handleEDFAItemStateChanged ( ItemEvent evt )
+  public final void handleENFAItemStateChanged ( ItemEvent event )
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    if ( event.getStateChange () == ItemEvent.SELECTED )
+    {
       this.actualChoice = Choice.ENFA;
+    }
   }
 
 
   /**
-   * Handle the next button pressed event.
+   * Handles the next button pressed event.
    */
   public final void handleNextMachineChoice ()
   {
@@ -141,13 +147,13 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Handle NFA Item State changed.
+   * Handles {@link NFA} item state changed events.
    * 
-   * @param evt The {@link ItemEvent}.
+   * @param event The {@link ItemEvent}.
    */
-  public final void handleNFAItemStateChanged ( ItemEvent evt )
+  public final void handleNFAItemStateChanged ( ItemEvent event )
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
+    if ( event.getStateChange () == ItemEvent.SELECTED )
     {
       this.actualChoice = Choice.NFA;
     }
@@ -155,22 +161,24 @@ public final class NewDialogMachineChoice
 
 
   /**
-   * Handle the previous button pressed event.
+   * Handles {@link PDA} item state changed events.
+   * 
+   * @param event The {@link ItemEvent}.
    */
-  public final void handlePreviousMachineChoice ()
+  public final void handlePDAItemStateChanged ( ItemEvent event )
   {
-    this.parent.handlePreviousMachineChoice ();
+    if ( event.getStateChange () == ItemEvent.SELECTED )
+    {
+      this.actualChoice = Choice.PDA;
+    }
   }
 
 
   /**
-   * Handle StackMachine Item State changed.
-   * 
-   * @param evt The {@link ItemEvent}.
+   * Handles the previous button pressed event.
    */
-  public final void handleStackMachineItemStateChanged ( ItemEvent evt )
+  public final void handlePreviousMachineChoice ()
   {
-    if ( evt.getStateChange () == ItemEvent.SELECTED )
-      this.actualChoice = Choice.PDA;
+    this.parent.handlePreviousMachineChoice ();
   }
 }

@@ -32,7 +32,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         alphabetPanelForm = new de.unisiegen.gtitool.ui.netbeans.AlphabetPanelForm();
-        jPanelButtons = new javax.swing.JPanel();
+        jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonFinished = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -47,8 +47,6 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 5, 16);
         add(alphabetPanelForm, gridBagConstraints);
-
-        jPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
@@ -66,7 +64,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
 
         jGTIButtonFinished.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
         jGTIButtonFinished.setText(bundle.getString("NewDialog.Finished")); // NOI18N
@@ -82,7 +80,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
-        jPanelButtons.add(jGTIButtonFinished, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonFinished, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
@@ -98,7 +96,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        jPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -106,7 +104,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        add(jPanelButtons, gridBagConstraints);
+        add(jGTIPanelButtons, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
 
@@ -128,7 +126,7 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonFinished;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonPrevious;
-    public javax.swing.JPanel jPanelButtons;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
     // End of variables declaration//GEN-END:variables
     
     private NewDialogAlphabet logic;

@@ -62,7 +62,8 @@ public final class NewDialog
    * The {@link NewDialogAlphabet}.
    */
   private NewDialogAlphabet newDialogAlphabet;
-  
+
+
   /**
    * The {@link NewDialogTerminal}
    */
@@ -191,10 +192,13 @@ public final class NewDialog
     }
     else
     {
-      if ( this.grammarChoice.getUserChoice ().equals ( NewDialogGrammarChoice.Choice.CONTEXT_FREE )){
+      if ( this.grammarChoice.getUserChoice ().equals (
+          NewDialogGrammarChoice.Choice.CONTEXT_FREE ) )
+      {
         this.newPanel = new GrammarPanel ( this.parent,
             new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
-                .getNonterminalSymbolSet (), this.newDialogTerminal.geTerminalSymbolSet () ) ), null );
+                .getNonterminalSymbolSet (), this.newDialogTerminal
+                .geTerminalSymbolSet () ) ), null );
         this.gui.dispose ();
       }
     }
@@ -272,7 +276,7 @@ public final class NewDialog
     this.machineChoice = new NewDialogMachineChoice ( this );
     this.grammarChoice = new NewDialogGrammarChoice ( this );
     this.newDialogAlphabet = new NewDialogAlphabet ( this );
-    this.newDialogTerminal = new NewDialogTerminal (this);
+    this.newDialogTerminal = new NewDialogTerminal ( this );
 
     this.gridBagConstraints = new GridBagConstraints ();
     this.gridBagConstraints.gridx = 0;
@@ -281,18 +285,18 @@ public final class NewDialog
     this.gridBagConstraints.weighty = 1;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH;
 
-    this.gui.jPanelBody.add ( this.newDialogChoice.getGui (),
+    this.gui.jGTIPanelBody.add ( this.newDialogChoice.getGui (),
         this.gridBagConstraints );
-    this.gui.jPanelBody.add ( this.grammarChoice.getGui (),
+    this.gui.jGTIPanelBody.add ( this.grammarChoice.getGui (),
         this.gridBagConstraints );
     this.grammarChoice.getGui ().setVisible ( false );
-    this.gui.jPanelBody.add ( this.machineChoice.getGui (),
+    this.gui.jGTIPanelBody.add ( this.machineChoice.getGui (),
         this.gridBagConstraints );
     this.machineChoice.getGui ().setVisible ( false );
-    this.gui.jPanelBody.add ( this.newDialogAlphabet.getGui (),
+    this.gui.jGTIPanelBody.add ( this.newDialogAlphabet.getGui (),
         this.gridBagConstraints );
     this.newDialogAlphabet.getGui ().setVisible ( false );
-    this.gui.jPanelBody.add ( this.newDialogTerminal.getGui (),
+    this.gui.jGTIPanelBody.add ( this.newDialogTerminal.getGui (),
         this.gridBagConstraints );
     this.newDialogTerminal.getGui ().setVisible ( false );
   }

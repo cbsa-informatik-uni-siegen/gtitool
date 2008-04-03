@@ -101,10 +101,10 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
      */
     public final void languageChanged ()
     {
-      this.jLabelWord.setText ( Messages.getString ( "StyledWordParserPanel.Word" ) );
-      this.jLabelStack.setText ( Messages.getString ( "StyledWordParserPanel.Stack" ) );
-      this.JLabelAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.Alphabet" ) );
-      this.jLabelPushDownAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.PushDownAlphabet" ) );
+      this.jGTILabelWord.setText ( Messages.getString ( "StyledWordParserPanel.Word" ) );
+      this.jGTILabelStack.setText ( Messages.getString ( "StyledWordParserPanel.Stack" ) );
+      this.jGTILabelAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.Alphabet" ) );
+      this.jGTILabelPushDownAlphabet.setText ( Messages.getString ( "StyledWordParserPanel.PushDownAlphabet" ) );
     }
     
     /** This method is called from within the constructor to
@@ -116,115 +116,123 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabelWord = new javax.swing.JLabel();
+        jGTILabelWord = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledWordParserPanel = new de.unisiegen.gtitool.ui.style.StyledWordParserPanel();
-        jLabelStack = new javax.swing.JLabel();
-        styledStackParserPanel = new de.unisiegen.gtitool.ui.style.StyledStackParserPanel();
-        JLabelAlphabet = new javax.swing.JLabel();
+        jGTILabelAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledAlphabetParserPanelInput = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
-        jLabelPushDownAlphabet = new javax.swing.JLabel();
+        jGTILabelStack = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        styledStackParserPanel = new de.unisiegen.gtitool.ui.style.StyledStackParserPanel();
+        jGTILabelPushDownAlphabet = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledAlphabetParserPanelPushDown = new de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel();
+        jGTIPanelColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelColumn2 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
-        jLabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        jLabelWord.setText(bundle.getString("StyledWordParserPanel.Word")); // NOI18N
+        jGTILabelWord.setText(bundle.getString("StyledWordParserPanel.Word")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jLabelWord, gridBagConstraints);
+        add(jGTILabelWord, gridBagConstraints);
 
-        styledWordParserPanel.setMinimumSize(new java.awt.Dimension(200, 53));
-        styledWordParserPanel.setPreferredSize(new java.awt.Dimension(200, 53));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         add(styledWordParserPanel, gridBagConstraints);
 
-        jLabelStack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelStack.setText(bundle.getString("StyledWordParserPanel.Stack")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jLabelStack, gridBagConstraints);
-
-        styledStackParserPanel.setEditable(false);
-        styledStackParserPanel.setMinimumSize(new java.awt.Dimension(200, 53));
-        styledStackParserPanel.setPreferredSize(new java.awt.Dimension(200, 53));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 16, 16);
-        add(styledStackParserPanel, gridBagConstraints);
-
-        JLabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelAlphabet.setText(bundle.getString("StyledWordParserPanel.Alphabet")); // NOI18N
+        jGTILabelAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelAlphabet.setText(bundle.getString("StyledWordParserPanel.Alphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(JLabelAlphabet, gridBagConstraints);
+        add(jGTILabelAlphabet, gridBagConstraints);
 
         styledAlphabetParserPanelInput.setCopyable(true);
         styledAlphabetParserPanelInput.setEditable(false);
-        styledAlphabetParserPanelInput.setMinimumSize(new java.awt.Dimension(100, 53));
-        styledAlphabetParserPanelInput.setPreferredSize(new java.awt.Dimension(100, 53));
         styledAlphabetParserPanelInput.setSideBarVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         add(styledAlphabetParserPanelInput, gridBagConstraints);
 
-        jLabelPushDownAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelPushDownAlphabet.setText(bundle.getString("StyledWordParserPanel.PushDownAlphabet")); // NOI18N
+        jGTILabelStack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelStack.setText(bundle.getString("StyledWordParserPanel.Stack")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
+        add(jGTILabelStack, gridBagConstraints);
+
+        styledStackParserPanel.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 16);
+        add(styledStackParserPanel, gridBagConstraints);
+
+        jGTILabelPushDownAlphabet.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jGTILabelPushDownAlphabet.setText(bundle.getString("StyledWordParserPanel.PushDownAlphabet")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        add(jLabelPushDownAlphabet, gridBagConstraints);
+        add(jGTILabelPushDownAlphabet, gridBagConstraints);
 
         styledAlphabetParserPanelPushDown.setCopyable(true);
         styledAlphabetParserPanelPushDown.setEditable(false);
-        styledAlphabetParserPanelPushDown.setMinimumSize(new java.awt.Dimension(100, 53));
-        styledAlphabetParserPanelPushDown.setPreferredSize(new java.awt.Dimension(100, 53));
         styledAlphabetParserPanelPushDown.setSideBarVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 0, 16);
         add(styledAlphabetParserPanelPushDown, gridBagConstraints);
+
+        jGTIPanelColumn1.setMinimumSize(new java.awt.Dimension(100, 16));
+        jGTIPanelColumn1.setPreferredSize(new java.awt.Dimension(100, 16));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        add(jGTIPanelColumn1, gridBagConstraints);
+
+        jGTIPanelColumn2.setMinimumSize(new java.awt.Dimension(200, 16));
+        jGTIPanelColumn2.setPreferredSize(new java.awt.Dimension(200, 16));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.25;
+        add(jGTIPanelColumn2, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel JLabelAlphabet;
-    public javax.swing.JLabel jLabelPushDownAlphabet;
-    public javax.swing.JLabel jLabelStack;
-    public javax.swing.JLabel jLabelWord;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelPushDownAlphabet;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStack;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelWord;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn1;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn2;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelInput;
     public de.unisiegen.gtitool.ui.style.StyledAlphabetParserPanel styledAlphabetParserPanelPushDown;
     public de.unisiegen.gtitool.ui.style.StyledStackParserPanel styledStackParserPanel;

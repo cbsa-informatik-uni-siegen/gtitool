@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.ui.swing;
 
 
+import java.awt.GridBagLayout;
+
 import javax.swing.JPanel;
 
 
@@ -25,5 +27,6 @@ public class JGTIPanel extends JPanel
   public JGTIPanel ()
   {
     super ();
+    setLayout ( new GridBagLayout () );
   }
 }

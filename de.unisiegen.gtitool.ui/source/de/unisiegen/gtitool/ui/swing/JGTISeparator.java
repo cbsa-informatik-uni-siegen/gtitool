@@ -10,7 +10,7 @@ import javax.swing.JSeparator;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTISeparator extends JSeparator
+public final class JGTISeparator extends JSeparator
 {
 
   /**

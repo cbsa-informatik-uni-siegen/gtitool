@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIPanel extends JPanel
+public final class JGTIPanel extends JPanel
 {
 
   /**

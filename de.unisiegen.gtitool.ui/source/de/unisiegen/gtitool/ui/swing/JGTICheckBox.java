@@ -12,7 +12,7 @@ import javax.swing.JCheckBox;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTICheckBox extends JCheckBox
+public final class JGTICheckBox extends JCheckBox
 {
 
   /**

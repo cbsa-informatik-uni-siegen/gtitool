@@ -10,7 +10,7 @@ import javax.swing.JTree;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTITree extends JTree
+public final class JGTITree extends JTree
 {
 
   /**

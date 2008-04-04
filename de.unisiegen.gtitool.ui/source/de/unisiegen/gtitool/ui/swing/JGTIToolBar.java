@@ -10,7 +10,7 @@ import javax.swing.JToolBar;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIToolBar extends JToolBar
+public final class JGTIToolBar extends JToolBar
 {
 
   /**

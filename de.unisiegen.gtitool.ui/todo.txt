@@ -1,6 +1,5 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Ein eigenes ScrollPane implementieren (Tabellen)
 CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
 

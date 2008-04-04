@@ -10,7 +10,7 @@ import javax.swing.JTextPane;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTITextPane extends JTextPane
+public final class JGTITextPane extends JTextPane
 {
 
   /**

@@ -10,7 +10,7 @@ import javax.swing.JLabel;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTILabel extends JLabel
+public final class JGTILabel extends JLabel
 {
 
   /**

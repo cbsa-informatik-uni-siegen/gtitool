@@ -2,9 +2,13 @@ package de.unisiegen.gtitool.ui.swing;
 
 
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.JTableHeader;
 
 
 /**
@@ -13,7 +17,7 @@ import javax.swing.border.LineBorder;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIScrollPane extends JScrollPane
+public final class JGTIScrollPane extends JScrollPane
 {
 
   /**
@@ -29,5 +33,28 @@ public class JGTIScrollPane extends JScrollPane
   {
     super ();
     setBorder ( new LineBorder ( Color.BLACK, 1 ) );
+  }
+
+
+  /**
+   * Fills the upper right corner with the table header if the component is an
+   * instance of {@link JTable}.
+   * 
+   * @param view The component to add to the viewport.
+   */
+  @Override
+  public final void setViewportView ( Component view )
+  {
+    super.setViewportView ( view );
+    if ( view instanceof JTable )
+    {
+      JTable jTable = ( JTable ) view;
+      JTableHeader jTableHeader = new JTableHeader ();
+      jTableHeader.setColumnModel ( jTable.getColumnModel () );
+      jTableHeader.setTable ( jTable );
+      jTableHeader.setResizingAllowed ( false );
+      jTableHeader.setReorderingAllowed ( false );
+      this.setCorner ( ScrollPaneConstants.UPPER_RIGHT_CORNER, jTableHeader );
+    }
   }
 }

@@ -10,7 +10,7 @@ import javax.swing.JSplitPane;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTISplitPane extends JSplitPane
+public final class JGTISplitPane extends JSplitPane
 {
 
   /**

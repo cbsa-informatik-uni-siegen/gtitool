@@ -10,7 +10,7 @@ import javax.swing.JDialog;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTIDialog extends JDialog
+public final class JGTIDialog extends JDialog
 {
 
   /**

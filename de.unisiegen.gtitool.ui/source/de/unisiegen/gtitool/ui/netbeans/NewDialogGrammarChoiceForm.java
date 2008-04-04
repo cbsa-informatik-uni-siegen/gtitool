@@ -52,7 +52,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 5, 16);
         add(jGTILabelCaption, gridBagConstraints);
 
         buttonGroupChoice.add(jGTIRadioRegularGrammar);
@@ -109,6 +109,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
         jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
         jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
+        jGTIButtonPrevious.setMinimumWidth(100);
         jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonPreviousActionPerformed(evt);
@@ -126,6 +127,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jGTIButtonNext.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.NextMnemonic").charAt(0));
         jGTIButtonNext.setText(bundle.getString("NewDialog.Next")); // NOI18N
         jGTIButtonNext.setToolTipText(bundle.getString("NewDialog.NextToolTip")); // NOI18N
+        jGTIButtonNext.setMinimumWidth(100);
         jGTIButtonNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonNextActionPerformed(evt);
@@ -142,6 +144,7 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMinimumWidth(100);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);

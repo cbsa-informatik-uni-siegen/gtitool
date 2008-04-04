@@ -43,13 +43,14 @@ public class NewDialogTerminalForm extends javax.swing.JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 0, 5, 16);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
         add(terminalPanelForm, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
         jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMinimumWidth(100);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
@@ -66,6 +67,7 @@ public class NewDialogTerminalForm extends javax.swing.JPanel {
         jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
         jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
         jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
+        jGTIButtonPrevious.setMinimumWidth(100);
         jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonPreviousActionPerformed(evt);
@@ -83,6 +85,7 @@ public class NewDialogTerminalForm extends javax.swing.JPanel {
         jGTIButtonFinished.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
         jGTIButtonFinished.setText(bundle.getString("NewDialog.Finished")); // NOI18N
         jGTIButtonFinished.setToolTipText(bundle.getString("NewDialog.FinishedToolTip")); // NOI18N
+        jGTIButtonFinished.setMinimumWidth(100);
         jGTIButtonFinished.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonFinishedActionPerformed(evt);

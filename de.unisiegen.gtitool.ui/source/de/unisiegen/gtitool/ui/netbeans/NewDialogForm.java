@@ -80,7 +80,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
+        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 5);
         jGTIPanelHeader.add(jGTILabelHeaderSubTitle, gridBagConstraints);
 
         jGTILabelHeaderImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
@@ -104,6 +104,7 @@ public class NewDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         getContentPane().add(jGTIPanelBody, gridBagConstraints);
 
         setSize(new java.awt.Dimension(560, 350));

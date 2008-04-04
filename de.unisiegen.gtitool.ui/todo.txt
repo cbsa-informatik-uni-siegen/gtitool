@@ -1,6 +1,5 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Auf dem Grammar Panel Drag and Drop einbauen (JGTITable anpassen)
 CF		- Open und Save Dialog neu bauen
 
 
@@ -12,3 +11,8 @@ BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
 BM		- Die Kontextfreie Grammatik muss angelegt werden können (Neu Dialog ist
 		  komplett auf die neuen Komponenten umgebaut, kann also von dir gemacht
 		  werden, ohne Konflikte zu befürchten)
+BM		- Das GrammarPanel enthält jetzt eine Methode moveRows. Diese Methode
+		  müsste von dir implementiert werden. Die Parameter liefern dir alle
+		  Informationen die du brauchst, um die Produktionen zu verschieben,
+		  dabei ist darauf zu achten, dass auch mehrere Produktionen auf einmal
+		  verschoben werden können. Ein Beispiel findest du bei den Netfiltern.

@@ -78,8 +78,9 @@ public final class JGTIList extends JList implements DropTargetListener
   {
     super ();
     setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    setCellRenderer ( new ModifiedListCellRenderer () );
 
-    // Java swing bugfix
+    // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
@@ -101,7 +102,6 @@ public final class JGTIList extends JList implements DropTargetListener
         }
       }
     } );
-    setCellRenderer ( new ModifiedListCellRenderer () );
     setDropTarget ( new DropTarget ( this, this ) );
   }
 
@@ -245,12 +245,19 @@ public final class JGTIList extends JList implements DropTargetListener
         graphics.setColor ( Color.BLACK );
         // Line
         graphics.drawLine ( size, y, width - size, y );
-        // Left
+        graphics.drawLine ( size, y + 1, width - size, y + 1 );
+        // Left upper
         graphics.drawLine ( size, y, 0, y - size );
+        graphics.drawLine ( size, y + 1, 0, y - size + 1 );
+        // Left lower
         graphics.drawLine ( size, y, 0, y + size );
-        // Right
+        graphics.drawLine ( size, y + 1, 0, y + size + 1 );
+        // Right upper
         graphics.drawLine ( width - size, y, width, y - size );
+        graphics.drawLine ( width - size, y + 1, width, y - size + 1 );
+        // Right lower
         graphics.drawLine ( width - size, y, width, y + size );
+        graphics.drawLine ( width - size, y + 1, width, y + size + 1 );
       }
     }
   }

@@ -16,6 +16,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -44,6 +45,9 @@ import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.swing.JGTITable;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITableModelRows;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITableTransferHandler;
 
 
 /**
@@ -120,6 +124,30 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
+   * The {@link JGTITableTransferHandler}.
+   */
+  private JGTITableTransferHandler jGTITableTransferHandler = new JGTITableTransferHandler (
+      TransferHandler.MOVE )
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -1544518703030919808L;
+
+
+    @SuppressWarnings ( "synthetic-access" )
+    @Override
+    protected boolean importTableModelRows ( JGTITable jGTITable,
+        JGTITableModelRows rows, int targetIndex )
+    {
+      moveRows ( jGTITable, rows, targetIndex );
+      return true;
+    }
+  };
+
+
+  /**
    * Allocates a new {@link GrammarPanel}
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
@@ -160,6 +188,20 @@ public class GrammarPanel implements EditorPanel
     // Language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
 
+    this.gui.jGTITableGrammar.setDragEnabled ( true );
+    this.gui.jGTITableGrammar
+        .setTransferHandler ( this.jGTITableTransferHandler );
+  }
+
+
+  /**
+   * Add a new Error
+   * 
+   * @param grammarException The {@link MachineException} containing the data
+   */
+  public final void addError ( GrammarException grammarException )
+  {
+    this.errorTableModel.addRow ( grammarException );
   }
 
 
@@ -172,6 +214,73 @@ public class GrammarPanel implements EditorPanel
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * Add a new {@link Production}.
+   * 
+   * @param production the new Production to add.
+   */
+  public void addProduction ( Production production )
+  {
+    this.model.addProduction ( production );
+  }
+
+
+  /**
+   * Add a new Warning
+   * 
+   * @param grammarException The {@link MachineException} containing the data
+   */
+  public final void addWarning ( GrammarException grammarException )
+  {
+    this.warningTableModel.addRow ( grammarException );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#clearValidationMessages()
+   */
+  public void clearValidationMessages ()
+  {
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
+        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
+        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+
+    this.errorTableModel.clearData ();
+    this.warningTableModel.clearData ();
+  }
+
+
+  /**
+   * Let the listeners know that the modify status has changed.
+   * 
+   * @param forceModify True if the modify is forced, otherwise false.
+   */
+  public final void fireModifyStatusChanged ( boolean forceModify )
+  {
+
+    ModifyStatusChangedListener [] listeners = this.listenerList
+        .getListeners ( ModifyStatusChangedListener.class );
+    if ( forceModify )
+    {
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( true );
+      }
+    }
+    else
+    {
+      boolean newModifyStatus = isModified ();
+      for ( ModifyStatusChangedListener current : listeners )
+      {
+        current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
   }
 
 
@@ -198,6 +307,18 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
+   * Returns the grammar.
+   * 
+   * @return The grammar.
+   * @see #grammar
+   */
+  public Grammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
@@ -205,6 +326,40 @@ public class GrammarPanel implements EditorPanel
   public EditorPanelForm getGui ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
+   */
+  public JTabbedPane getJTabbedPaneConsole ()
+  {
+    return this.gui.jGTITabbedPaneConsole;
+  }
+
+
+  /**
+   * Returns the {@link MainWindow}.
+   * 
+   * @return the {@link MainWindow}.
+   */
+  public MainWindow getMainWindow ()
+  {
+    return this.mainWindowForm.getLogic ();
+  }
+
+
+  /**
+   * Returns the {@link DefaultModel}.
+   * 
+   * @return The {@link DefaultModel}.
+   * @see #model
+   */
+  public DefaultModel getModel ()
+  {
+    return this.model;
   }
 
 
@@ -227,6 +382,112 @@ public class GrammarPanel implements EditorPanel
   public JPanel getPanel ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the parent frame.
+   * 
+   * @return the parent frame.
+   */
+  public JFrame getParent ()
+  {
+    return this.mainWindowForm;
+  }
+
+
+  /**
+   * Handle add production button pressed.
+   */
+  public void handleAddProduction ()
+  {
+    ProductionDialog dialog = new ProductionDialog ( getParent (), this.grammar
+        .getNonterminalSymbolSet (), this.grammar.getTerminalSymbolSet (),
+        this.model, null );
+    dialog.show ();
+  }
+
+
+  /**
+   * Handles focus lost event on the console table.
+   * 
+   * @param event The {@link FocusEvent}.
+   */
+  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
+  FocusEvent event )
+  {
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
+  }
+
+
+  /**
+   * Handles the mouse exited event on the console table.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleConsoleTableMouseExited (
+      @SuppressWarnings ( "unused" )
+      MouseEvent event )
+  {
+    this.gui.jGTITableErrors.clearSelection ();
+    this.gui.jGTITableWarnings.clearSelection ();
+  }
+
+
+  /**
+   * Handles {@link ListSelectionEvent}s on the console table.
+   * 
+   * @param event The {@link ListSelectionEvent}.
+   */
+  public final void handleConsoleTableValueChanged (
+      @SuppressWarnings ( "unused" )
+      ListSelectionEvent event )
+  {
+    // TODO implement me
+  }
+
+
+  /**
+   * Handle delete production button pressed.
+   */
+  public void handleDeleteProduction ()
+  {
+    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
+    {
+      Production production = this.grammar
+          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
+      ConfirmDialog confirmedDialog = new ConfirmDialog ( getParent (),
+          Messages.getString ( "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
+              production ), Messages
+              .getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
+          true, false );
+      confirmedDialog.show ();
+      if ( confirmedDialog.isConfirmed () )
+      {
+        this.model.removeProduction ( production );
+        this.gui.repaint ();
+      }
+    }
+  }
+
+
+  /**
+   * Handle edit production button pressed.
+   */
+  public void handleEditProduction ()
+  {
+
+    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
+    {
+      Production production = this.grammar
+          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
+      JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
+      ProductionDialog productionDialog = new ProductionDialog ( window,
+          this.grammar.getNonterminalSymbolSet (), this.grammar
+              .getTerminalSymbolSet (), this.model, production );
+      productionDialog.show ();
+    }
   }
 
 
@@ -367,121 +628,6 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * Handle Toolbar Alphabet button action event
-   */
-  public void handleToolbarEditDocument ()
-  {
-    TerminalDialog alphabetDialog = new TerminalDialog ( this.mainWindowForm,
-        this.grammar );
-    alphabetDialog.show ();
-  }
-
-
-  /**
-   * Handle undo button pressed
-   */
-  public void handleUndo ()
-  {
-    // TODO implement me
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#isModified()
-   */
-  public final boolean isModified ()
-  {
-    return ( this.model.isModified () ) || ( this.file == null );
-  }
-
-
-  /**
-   * Signals if this panel is redo able
-   * 
-   * @return true, if is redo able, false else
-   */
-  public boolean isRedoAble ()
-  {
-    // TODO implement me
-    return false;
-  }
-
-
-  /**
-   * Signals if this panel is undo able
-   * 
-   * @return true, if is undo able, false else
-   */
-  public boolean isUndoAble ()
-  {
-    // TODO implement me
-    return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LanguageChangedListener#languageChanged()
-   */
-  public void languageChanged ()
-  {
-    this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
-        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-    this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
-        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final synchronized void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#resetModify()
-   */
-  public void resetModify ()
-  {
-    this.model.resetModify ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see EditorPanel#setName(java.lang.String)
-   */
-  public void setName ( String name )
-  {
-    this.name = name;
-  }
-
-
-  /**
-   * Returns the {@link DefaultModel}.
-   * 
-   * @return The {@link DefaultModel}.
-   * @see #model
-   */
-  public DefaultModel getModel ()
-  {
-    return this.model;
-  }
-
-
-  /**
    * Handle mouse button event for the JTable.
    * 
    * @param event The {@link MouseEvent}.
@@ -557,107 +703,22 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * Add a new {@link Production}.
-   * 
-   * @param production the new Production to add.
+   * Handle Toolbar Alphabet button action event
    */
-  public void addProduction ( Production production )
+  public void handleToolbarEditDocument ()
   {
-    this.model.addProduction ( production );
+    TerminalDialog alphabetDialog = new TerminalDialog ( this.mainWindowForm,
+        this.grammar );
+    alphabetDialog.show ();
   }
 
 
   /**
-   * Returns the parent frame.
-   * 
-   * @return the parent frame.
+   * Handle undo button pressed
    */
-  public JFrame getParent ()
+  public void handleUndo ()
   {
-    return this.mainWindowForm;
-  }
-
-
-  /**
-   * Let the listeners know that the modify status has changed.
-   * 
-   * @param forceModify True if the modify is forced, otherwise false.
-   */
-  public final void fireModifyStatusChanged ( boolean forceModify )
-  {
-
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    if ( forceModify )
-    {
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( true );
-      }
-    }
-    else
-    {
-      boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener current : listeners )
-      {
-        current.modifyStatusChanged ( newModifyStatus );
-      }
-    }
-  }
-
-
-  /**
-   * Handle add production button pressed.
-   */
-  public void handleAddProduction ()
-  {
-    ProductionDialog dialog = new ProductionDialog ( getParent (), this.grammar
-        .getNonterminalSymbolSet (), this.grammar.getTerminalSymbolSet (),
-        this.model, null );
-    dialog.show ();
-  }
-
-
-  /**
-   * Handle edit production button pressed.
-   */
-  public void handleEditProduction ()
-  {
-
-    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
-    {
-      Production production = this.grammar
-          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
-      JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
-      ProductionDialog productionDialog = new ProductionDialog ( window,
-          this.grammar.getNonterminalSymbolSet (), this.grammar
-              .getTerminalSymbolSet (), this.model, production );
-      productionDialog.show ();
-    }
-  }
-
-
-  /**
-   * Handle delete production button pressed.
-   */
-  public void handleDeleteProduction ()
-  {
-    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
-    {
-      Production production = this.grammar
-          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
-      ConfirmDialog confirmedDialog = new ConfirmDialog ( getParent (),
-          Messages.getString ( "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
-              production ), Messages
-              .getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
-          true, false );
-      confirmedDialog.show ();
-      if ( confirmedDialog.isConfirmed () )
-      {
-        this.model.removeProduction ( production );
-        this.gui.repaint ();
-      }
-    }
+    // TODO implement me
   }
 
 
@@ -726,59 +787,99 @@ public class GrammarPanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#clearValidationMessages()
+   * @see Modifyable#isModified()
    */
-  public void clearValidationMessages ()
+  public final boolean isModified ()
+  {
+    return ( this.model.isModified () ) || ( this.file == null );
+  }
+
+
+  /**
+   * Signals if this panel is redo able
+   * 
+   * @return true, if is redo able, false else
+   */
+  public boolean isRedoAble ()
+  {
+    // TODO implement me
+    return false;
+  }
+
+
+  /**
+   * Signals if this panel is undo able
+   * 
+   * @return true, if is undo able, false else
+   */
+  public boolean isUndoAble ()
+  {
+    // TODO implement me
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LanguageChangedListener#languageChanged()
+   */
+  public void languageChanged ()
   {
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
         .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
-
-    this.errorTableModel.clearData ();
-    this.warningTableModel.clearData ();
   }
 
 
   /**
-   * Handles focus lost event on the console table.
+   * Moves the rows.
    * 
-   * @param event The {@link FocusEvent}.
+   * @param jGTITable The {@link JGTITable}.
+   * @param rows The {@link JGTITableModelRows}.
+   * @param targetIndex The target index.
    */
-  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent event )
+  private final void moveRows ( JGTITable jGTITable, JGTITableModelRows rows,
+      int targetIndex )
   {
-    this.gui.jGTITableErrors.clearSelection ();
-    this.gui.jGTITableWarnings.clearSelection ();
-    // clearHighlight ();
+    // TODO Implement this
+    System.out.println ( "TODO BM: move: " + rows.getRowIndices () [ 0 ] //$NON-NLS-1$
+        + " -> " + targetIndex ); //$NON-NLS-1$
   }
 
 
   /**
-   * Handles the mouse exited event on the console table.
+   * {@inheritDoc}
    * 
-   * @param event The {@link MouseEvent}.
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final void handleConsoleTableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+  public final synchronized void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
   {
-    this.gui.jGTITableErrors.clearSelection ();
-    this.gui.jGTITableWarnings.clearSelection ();
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 
   /**
-   * Handles {@link ListSelectionEvent}s on the console table.
+   * {@inheritDoc}
    * 
-   * @param event The {@link ListSelectionEvent}.
+   * @see Modifyable#resetModify()
    */
-  public final void handleConsoleTableValueChanged (
-      @SuppressWarnings ( "unused" )
-      ListSelectionEvent event )
+  public void resetModify ()
   {
-    // TODO implement me
+    this.model.resetModify ();
+  }
 
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see EditorPanel#setName(java.lang.String)
+   */
+  public void setName ( String name )
+  {
+    this.name = name;
   }
 
 
@@ -804,61 +905,5 @@ public class GrammarPanel implements EditorPanel
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
-   */
-  public JTabbedPane getJTabbedPaneConsole ()
-  {
-    return this.gui.jGTITabbedPaneConsole;
-  }
-
-
-  /**
-   * Add a new Warning
-   * 
-   * @param grammarException The {@link MachineException} containing the data
-   */
-  public final void addWarning ( GrammarException grammarException )
-  {
-    this.warningTableModel.addRow ( grammarException );
-  }
-
-
-  /**
-   * Returns the grammar.
-   * 
-   * @return The grammar.
-   * @see #grammar
-   */
-  public Grammar getGrammar ()
-  {
-    return this.grammar;
-  }
-
-
-  /**
-   * Add a new Error
-   * 
-   * @param grammarException The {@link MachineException} containing the data
-   */
-  public final void addError ( GrammarException grammarException )
-  {
-    this.errorTableModel.addRow ( grammarException );
-  }
-
-
-  /**
-   * Returns the {@link MainWindow}.
-   * 
-   * @return the {@link MainWindow}.
-   */
-  public MainWindow getMainWindow ()
-  {
-    return this.mainWindowForm.getLogic ();
   }
 }

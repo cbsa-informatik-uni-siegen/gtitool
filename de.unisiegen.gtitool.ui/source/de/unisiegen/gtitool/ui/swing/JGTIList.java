@@ -57,9 +57,9 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
-   * The drop location.
+   * The drop point.
    */
-  private Point dropLocation = null;
+  private Point dropPoint = null;
 
 
   /**
@@ -114,7 +114,7 @@ public final class JGTIList extends JList implements DropTargetListener
   public final void dragEnter ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
-    this.dropLocation = event.getLocation ();
+    this.dropPoint = event.getLocation ();
     repaint ();
   }
 
@@ -127,7 +127,7 @@ public final class JGTIList extends JList implements DropTargetListener
   public final void dragExit ( @SuppressWarnings ( "unused" )
   DropTargetEvent event )
   {
-    this.dropLocation = null;
+    this.dropPoint = null;
     repaint ();
   }
 
@@ -140,7 +140,7 @@ public final class JGTIList extends JList implements DropTargetListener
   public final void dragOver ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
-    this.dropLocation = event.getLocation ();
+    this.dropPoint = event.getLocation ();
     repaint ();
   }
 
@@ -163,7 +163,7 @@ public final class JGTIList extends JList implements DropTargetListener
     {
       event.dropComplete ( false );
     }
-    this.dropLocation = null;
+    this.dropPoint = null;
     repaint ();
   }
 
@@ -176,7 +176,7 @@ public final class JGTIList extends JList implements DropTargetListener
   public final void dropActionChanged ( DropTargetDragEvent event )
   {
     event.acceptDrag ( event.getDropAction () );
-    this.dropLocation = event.getLocation ();
+    this.dropPoint = event.getLocation ();
     repaint ();
   }
 
@@ -200,7 +200,7 @@ public final class JGTIList extends JList implements DropTargetListener
    */
   public final Point getDropPoint ()
   {
-    return this.dropLocation;
+    return this.dropPoint;
   }
 
 
@@ -213,7 +213,7 @@ public final class JGTIList extends JList implements DropTargetListener
   protected final void paintComponent ( Graphics graphics )
   {
     super.paintComponent ( graphics );
-    if ( this.dropLocation != null )
+    if ( this.dropPoint != null )
     {
       if ( this.dndMode == DROP_INTO )
       {
@@ -223,10 +223,10 @@ public final class JGTIList extends JList implements DropTargetListener
       }
       else if ( this.dndMode == DROP_BETWEEN )
       {
-        int rowIndex = locationToIndex ( this.dropLocation );
+        int rowIndex = locationToIndex ( this.dropPoint );
         Rectangle rect = getCellBounds ( rowIndex, rowIndex );
         if ( ( rect == null )
-            || ( this.dropLocation.getY () > rect.y + rect.height ) )
+            || ( this.dropPoint.getY () > rect.y + rect.height ) )
         {
           rowIndex = getModel ().getSize ();
         }

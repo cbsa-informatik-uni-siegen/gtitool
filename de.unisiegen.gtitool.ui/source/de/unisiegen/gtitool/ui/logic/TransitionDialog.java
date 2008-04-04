@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -10,6 +9,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.ListModel;
+import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -26,7 +26,8 @@ import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
-import de.unisiegen.gtitool.ui.swing.dnd.SymbolTransferHandler;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
 
 
 /**
@@ -208,12 +209,6 @@ public final class TransitionDialog
 
 
   /**
-   * The {@link SymbolTransferHandler}.
-   */
-  private SymbolTransferHandler transferHandler;
-
-
-  /**
    * The {@link State} where the {@link Transition} begins.
    */
   private State stateBegin;
@@ -296,10 +291,46 @@ public final class TransitionDialog
         .getName ();
     this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
-    this.transferHandler = new SymbolTransferHandler ( this );
-    this.gui.jGTIListChangeOverSet.setTransferHandler ( this.transferHandler );
+    this.gui.jGTIListChangeOverSet
+        .setTransferHandler ( new JGTIListTransferHandler (
+            TransferHandler.MOVE )
+        {
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 0L;
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          protected boolean importListModelRows ( JGTIList jGTIList,
+              JGTIListModelRows rows, int targetIndex )
+          {
+            moveRowsToChangeOverSet ( jGTIList, rows, targetIndex );
+            return true;
+          }
+        } );
     this.gui.jGTIListChangeOverSet.setDragEnabled ( true );
-    this.gui.jGTIListAlphabet.setTransferHandler ( this.transferHandler );
+    this.gui.jGTIListAlphabet.setTransferHandler ( new JGTIListTransferHandler (
+        TransferHandler.MOVE )
+    {
+
+      /**
+       * The serial version uid.
+       */
+      private static final long serialVersionUID = 0L;
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      protected boolean importListModelRows ( JGTIList jGTIList,
+          JGTIListModelRows rows, int targetIndex )
+      {
+        moveRowsToAlphabet ( jGTIList, rows, targetIndex );
+        return true;
+      }
+    } );
     this.gui.jGTIListAlphabet.setDragEnabled ( true );
     this.modelAlphabet = new SymbolListModel ();
     for ( Symbol symbol : this.alphabet )
@@ -441,19 +472,6 @@ public final class TransitionDialog
 
 
   /**
-   * Handles the focus lost event on the {@link JGTIList}s.
-   * 
-   * @param event The {@link FocusEvent}.
-   */
-  public final void handleListFocusLost ( FocusEvent event )
-  {
-    ( ( JGTIList ) event.getSource () ).clearSelection ();
-    this.gui.jGTIButtonMoveLeft.setEnabled ( false );
-    this.gui.jGTIButtonMoveRight.setEnabled ( false );
-  }
-
-
-  /**
    * Handles the list selection.
    * 
    * @param event The {@link ListSelectionEvent}.
@@ -560,6 +578,44 @@ public final class TransitionDialog
   public final boolean isConfirmed ()
   {
     return this.confirmed;
+  }
+
+
+  /**
+   * Moves the rows.
+   * 
+   * @param jGTIList The {@link JGTIList} into which to import the rows.
+   * @param rows The {@link JGTIListModelRows}.
+   * @param targetIndex The target index.
+   */
+  private final void moveRowsToAlphabet ( JGTIList jGTIList,
+      JGTIListModelRows rows, int targetIndex )
+  {
+    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+    for ( int index : rows.getRowIndices () )
+    {
+      symbolList.add ( ( Symbol ) rows.getModel ().getElementAt ( index ) );
+    }
+    removeFromChangeOver ( symbolList );
+  }
+
+
+  /**
+   * Moves the rows.
+   * 
+   * @param jGTIList The {@link JGTIList} into which to import the rows.
+   * @param rows The {@link JGTIListModelRows}.
+   * @param targetIndex The target index.
+   */
+  private final void moveRowsToChangeOverSet ( JGTIList jGTIList,
+      JGTIListModelRows rows, int targetIndex )
+  {
+    ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+    for ( int index : rows.getRowIndices () )
+    {
+      symbolList.add ( ( Symbol ) rows.getModel ().getElementAt ( index ) );
+    }
+    addToChangeOver ( symbolList );
   }
 
 

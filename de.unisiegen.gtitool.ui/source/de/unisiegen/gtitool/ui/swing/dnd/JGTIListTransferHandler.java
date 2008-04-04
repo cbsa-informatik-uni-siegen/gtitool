@@ -9,21 +9,21 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import de.unisiegen.gtitool.ui.swing.JGTITable;
+import de.unisiegen.gtitool.ui.swing.JGTIList;
 
 
 /**
- * Drag and drop transfer handler class for {@link JGTITable}s.
+ * Drag and drop transfer handler class for {@link JGTIList}s.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class JGTITableTransferHandler extends TransferHandler
+public abstract class JGTIListTransferHandler extends TransferHandler
 {
 
   /**
    * The source actions supported for dragging using this
-   * {@link JGTITableTransferHandler}.
+   * {@link JGTIListTransferHandler}.
    * 
    * @see #getSourceActions(JComponent)
    */
@@ -31,12 +31,12 @@ public abstract class JGTITableTransferHandler extends TransferHandler
 
 
   /**
-   * Allocates a new {@link JGTITableTransferHandler}.
+   * Allocates a new {@link JGTIListTransferHandler}.
    * 
    * @param sourceActions The actions to support for dragging using this
-   *          {@link JGTITableTransferHandler}.
+   *          {@link JGTIListTransferHandler}.
    */
-  public JGTITableTransferHandler ( int sourceActions )
+  public JGTIListTransferHandler ( int sourceActions )
   {
     super ();
     this.sourceActions = sourceActions;
@@ -52,12 +52,12 @@ public abstract class JGTITableTransferHandler extends TransferHandler
   public final boolean canImport ( JComponent jComponent,
       DataFlavor [] dataFlavor )
   {
-    if ( jComponent instanceof JGTITable )
+    if ( jComponent instanceof JGTIList )
     {
       for ( DataFlavor transferFlavor : dataFlavor )
       {
         if ( transferFlavor
-            .equals ( JGTITableModelRowsTransferable.tableModelRowsFlavor ) )
+            .equals ( JGTIListModelRowsTransferable.listModelRowsFlavor ) )
         {
           return true;
         }
@@ -75,12 +75,12 @@ public abstract class JGTITableTransferHandler extends TransferHandler
   @Override
   protected final Transferable createTransferable ( JComponent jComponent )
   {
-    JGTITable table = ( JGTITable ) jComponent;
-    int [] selectedRows = table.getSelectedRows ();
+    JGTIList list = ( JGTIList ) jComponent;
+    int [] selectedRows = list.getSelectedIndices ();
     if ( selectedRows.length > 0 )
     {
-      return new JGTITableModelRowsTransferable ( new JGTITableModelRows (
-          table.getModel (), selectedRows ) );
+      return new JGTIListModelRowsTransferable ( new JGTIListModelRows ( list
+          .getModel (), selectedRows ) );
     }
     return null;
   }
@@ -108,24 +108,24 @@ public abstract class JGTITableTransferHandler extends TransferHandler
   public final boolean importData ( JComponent jComponent,
       Transferable transferable )
   {
-    JGTITable table = ( JGTITable ) jComponent;
+    JGTIList list = ( JGTIList ) jComponent;
     try
     {
-      JGTITableModelRows rows = ( JGTITableModelRows ) transferable
-          .getTransferData ( JGTITableModelRowsTransferable.tableModelRowsFlavor );
+      JGTIListModelRows rows = ( JGTIListModelRows ) transferable
+          .getTransferData ( JGTIListModelRowsTransferable.listModelRowsFlavor );
 
       int sourceIndex = rows.getRowIndices () [ 0 ];
-      int targetIndex = table.rowAtPoint ( table.getDropPoint () );
+      int targetIndex = list.locationToIndex ( list.getDropPoint () );
       if ( targetIndex == -1 )
       {
-        targetIndex = table.getRowCount () - 1;
+        targetIndex = list.getModel ().getSize () - 1;
       }
       else if ( sourceIndex < targetIndex )
       {
         targetIndex-- ;
       }
 
-      if ( importTableModelRows ( table, rows, targetIndex ) )
+      if ( importListModelRows ( list, rows, targetIndex ) )
       {
         return true;
       }
@@ -143,14 +143,14 @@ public abstract class JGTITableTransferHandler extends TransferHandler
 
 
   /**
-   * Imports the rows from the drag source into the specified table.
+   * Imports the rows from the drag source into the specified list.
    * 
-   * @param table The {@link JGTITable} into which to import the rows.
+   * @param list The {@link JGTIList} into which to import the rows.
    * @param rows The rows to import from the drag source.
    * @param targetIndex The target index.
    * @return True if the import was successfull.
    * @see #importData(JComponent, Transferable)
    */
-  protected abstract boolean importTableModelRows ( JGTITable table,
-      JGTITableModelRows rows, int targetIndex );
+  protected abstract boolean importListModelRows ( JGTIList list,
+      JGTIListModelRows rows, int targetIndex );
 }

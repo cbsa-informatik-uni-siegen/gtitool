@@ -6,32 +6,32 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import javax.swing.table.TableModel;
+import javax.swing.ListModel;
 
 
 /**
- * Transferable for {@link JGTITableModelRows}.
+ * Transferable for {@link JGTIListModelRows}.
  * 
  * @author Christian Fehler
- * @version $Id: JGTITableModelRowsTransferable.java 728 2008-04-04 12:28:48Z
+ * @version $Id: JGTIListModelRowsTransferable.java 728 2008-04-04 12:28:48Z
  *          fehler $
  */
-public final class JGTITableModelRowsTransferable implements Transferable
+public final class JGTIListModelRowsTransferable implements Transferable
 {
 
   /**
    * The {@link DataFlavor} used to identify data transfers of rows from a
-   * {@link TableModel}.
+   * {@link ListModel}.
    */
-  public static final DataFlavor tableModelRowsFlavor;
+  public static final DataFlavor listModelRowsFlavor;
 
   static
   {
     try
     {
-      tableModelRowsFlavor = new DataFlavor (
+      listModelRowsFlavor = new DataFlavor (
           DataFlavor.javaJVMLocalObjectMimeType + ";class=" //$NON-NLS-1$
-              + JGTITableModelRows.class.getCanonicalName () );
+              + JGTIListModelRows.class.getCanonicalName () );
     }
     catch ( ClassNotFoundException e )
     {
@@ -41,38 +41,38 @@ public final class JGTITableModelRowsTransferable implements Transferable
 
 
   /**
-   * The {@link JGTITableModelRows}.
+   * The {@link JGTIListModelRows}.
    * 
    * @see #getRows()
    */
-  private final JGTITableModelRows tableModelRows;
+  private final JGTIListModelRows listModelRows;
 
 
   /**
-   * Allocates a new {@link JGTITableModelRowsTransferable} for the specified
+   * Allocates a new {@link JGTIListModelRowsTransferable} for the specified
    * rows.
    * 
-   * @param tableModelRows The {@link JGTITableModelRows} to transfer.
+   * @param listModelRows The {@link JGTIListModelRows} to transfer.
    * @throws NullPointerException if <code>rows</code> is <code>null</code>.
    */
-  public JGTITableModelRowsTransferable ( JGTITableModelRows tableModelRows )
+  public JGTIListModelRowsTransferable ( JGTIListModelRows listModelRows )
   {
-    if ( tableModelRows == null )
+    if ( listModelRows == null )
     {
       throw new NullPointerException ( "rows can not be null" ); //$NON-NLS-1$
     }
-    this.tableModelRows = tableModelRows;
+    this.listModelRows = listModelRows;
   }
 
 
   /**
-   * Returns the {@link JGTITableModelRows}.
+   * Returns the {@link JGTIListModelRows}.
    * 
-   * @return The {@link JGTITableModelRows}.
+   * @return The {@link JGTIListModelRows}.
    */
-  public final JGTITableModelRows getRows ()
+  public final JGTIListModelRows getRows ()
   {
-    return this.tableModelRows;
+    return this.listModelRows;
   }
 
 
@@ -87,7 +87,7 @@ public final class JGTITableModelRowsTransferable implements Transferable
   {
     if ( isDataFlavorSupported ( flavor ) )
     {
-      return this.tableModelRows;
+      return this.listModelRows;
     }
     throw new UnsupportedFlavorException ( flavor );
   }
@@ -101,7 +101,7 @@ public final class JGTITableModelRowsTransferable implements Transferable
   public final DataFlavor [] getTransferDataFlavors ()
   {
     return new DataFlavor []
-    { tableModelRowsFlavor };
+    { listModelRowsFlavor };
   }
 
 

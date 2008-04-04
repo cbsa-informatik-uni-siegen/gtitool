@@ -125,11 +125,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelTransitionSet, gridBagConstraints);
 
-        jGTIListAlphabet.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jGTIListAlphabetFocusLost(evt);
-            }
-        });
+        jGTIListAlphabet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jGTIListAlphabet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jGTIListAlphabetValueChanged(evt);
@@ -188,11 +184,7 @@ public class TransitionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelMoveButtons.add(jGTIButtonMoveRight, gridBagConstraints);
 
-        jGTIListChangeOverSet.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jGTIListChangeOverSetFocusLost(evt);
-            }
-        });
+        jGTIListChangeOverSet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jGTIListChangeOverSet.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jGTIListChangeOverSetValueChanged(evt);
@@ -372,14 +364,6 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private void jGTIButtonMoveLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonMoveLeftActionPerformed
         this.logic.handleMoveLeft();
     }//GEN-LAST:event_jGTIButtonMoveLeftActionPerformed
-
-    private void jGTIListChangeOverSetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTIListChangeOverSetFocusLost
-        this.logic.handleListFocusLost(evt);
-    }//GEN-LAST:event_jGTIListChangeOverSetFocusLost
-
-    private void jGTIListAlphabetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTIListAlphabetFocusLost
-        this.logic.handleListFocusLost(evt);
-    }//GEN-LAST:event_jGTIListAlphabetFocusLost
 
     private void jGTIListChangeOverSetValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jGTIListChangeOverSetValueChanged
         this.logic.handleListSelection(evt);

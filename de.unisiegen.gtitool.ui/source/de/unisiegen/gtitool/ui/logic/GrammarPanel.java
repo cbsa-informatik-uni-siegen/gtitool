@@ -45,6 +45,7 @@ import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTITableModelRows;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTITableTransferHandler;
@@ -124,30 +125,6 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * The {@link JGTITableTransferHandler}.
-   */
-  private JGTITableTransferHandler jGTITableTransferHandler = new JGTITableTransferHandler (
-      TransferHandler.MOVE )
-  {
-
-    /**
-     * The serial version uid.
-     */
-    private static final long serialVersionUID = -1544518703030919808L;
-
-
-    @SuppressWarnings ( "synthetic-access" )
-    @Override
-    protected boolean importTableModelRows ( JGTITable jGTITable,
-        JGTITableModelRows rows, int targetIndex )
-    {
-      moveRows ( jGTITable, rows, targetIndex );
-      return true;
-    }
-  };
-
-
-  /**
    * Allocates a new {@link GrammarPanel}
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
@@ -190,7 +167,25 @@ public class GrammarPanel implements EditorPanel
 
     this.gui.jGTITableGrammar.setDragEnabled ( true );
     this.gui.jGTITableGrammar
-        .setTransferHandler ( this.jGTITableTransferHandler );
+        .setTransferHandler ( new JGTITableTransferHandler (
+            TransferHandler.MOVE )
+        {
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = -1544518703030919808L;
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          protected boolean importTableModelRows ( JGTITable jGTITable,
+              JGTITableModelRows rows, int targetIndex )
+          {
+            moveRows ( jGTITable, rows, targetIndex );
+            return true;
+          }
+        } );
   }
 
 
@@ -836,7 +831,7 @@ public class GrammarPanel implements EditorPanel
   /**
    * Moves the rows.
    * 
-   * @param jGTITable The {@link JGTITable}.
+   * @param jGTITable The {@link JGTIList} into which to import the rows.
    * @param rows The {@link JGTITableModelRows}.
    * @param targetIndex The target index.
    */

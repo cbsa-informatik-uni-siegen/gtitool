@@ -67,10 +67,10 @@ public final class JGTITable extends JTable implements DropTargetListener
 
 
   /**
-   * The current drop location or null if not dragging to this {@link JGTITable}
-   * at the moment.
+   * The current drop point or null if not dragging to this {@link JGTITable} at
+   * the moment.
    */
-  private Point dropLocation = null;
+  private Point dropPoint = null;
 
 
   /**
@@ -121,7 +121,7 @@ public final class JGTITable extends JTable implements DropTargetListener
   public final void dragExit ( @SuppressWarnings ( "unused" )
   DropTargetEvent dte )
   {
-    this.dropLocation = null;
+    this.dropPoint = null;
     repaint ();
   }
 
@@ -133,9 +133,9 @@ public final class JGTITable extends JTable implements DropTargetListener
    */
   public final void dragOver ( DropTargetDragEvent dtde )
   {
-    Point location = dtde.getLocation ();
+    Point point = dtde.getLocation ();
     dtde.acceptDrag ( dtde.getDropAction () );
-    this.dropLocation = location;
+    this.dropPoint = point;
     repaint ();
   }
 
@@ -147,8 +147,8 @@ public final class JGTITable extends JTable implements DropTargetListener
    */
   public final void drop ( DropTargetDropEvent dtde )
   {
-    Point location = dtde.getLocation ();
-    this.dropLocation = location;
+    Point point = dtde.getLocation ();
+    this.dropPoint = point;
 
     dtde.acceptDrop ( dtde.getDropAction () );
     try
@@ -161,7 +161,7 @@ public final class JGTITable extends JTable implements DropTargetListener
     {
       dtde.dropComplete ( false );
     }
-    this.dropLocation = null;
+    this.dropPoint = null;
     repaint ();
   }
 
@@ -190,13 +190,13 @@ public final class JGTITable extends JTable implements DropTargetListener
 
 
   /**
-   * Returns the drop location.
+   * Returns the drop point.
    * 
-   * @return the drop location.
+   * @return the drop point.
    */
-  public final Point getDropLocationAsPoint ()
+  public final Point getDropPoint ()
   {
-    return this.dropLocation;
+    return this.dropPoint;
   }
 
 
@@ -237,9 +237,9 @@ public final class JGTITable extends JTable implements DropTargetListener
   {
     super.paintComponent ( graphics );
 
-    if ( this.dropLocation != null )
+    if ( this.dropPoint != null )
     {
-      int rowIndex = rowAtPoint ( this.dropLocation );
+      int rowIndex = rowAtPoint ( this.dropPoint );
 
       if ( this.dndMode == DROP_BETWEEN )
       {

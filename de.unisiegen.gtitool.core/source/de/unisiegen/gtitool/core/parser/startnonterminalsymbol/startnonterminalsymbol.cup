@@ -1,5 +1,5 @@
 /**
- * The cup file of the nonterminal symbol parser.
+ * The cup file of the start nonterminal symbol parser.
  * 
  * @author Christian Fehler
  * @version $Id$
@@ -15,21 +15,21 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
  * Terminal *
  ************/
  
-terminal String					NONTERMINAL_SYMBOL;
+terminal String					START_NONTERMINAL_SYMBOL;
 
 
 /****************
  * Non Terminal *
  ****************/
  
-non terminal NonterminalSymbol	nonterminal_symbol;
+non terminal NonterminalSymbol	start_nonterminal_symbol;
 
 
-/*********************
- * NonterminalSymbol *
- *********************/
+/**************************
+ * StartNonterminalSymbol *
+ **************************/
 
-nonterminal_symbol				::= NONTERMINAL_SYMBOL:n
+start_nonterminal_symbol		::= START_NONTERMINAL_SYMBOL:n
 									{:
 									   try
 									   {

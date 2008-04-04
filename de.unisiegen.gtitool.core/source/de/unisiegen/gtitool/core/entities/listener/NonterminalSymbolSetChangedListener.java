@@ -22,5 +22,4 @@ public interface NonterminalSymbolSetChangedListener extends EventListener
    */
   public void nonterminalSymbolSetChanged (
       NonterminalSymbolSet newNonterminalSymbolSet );
-
 }

@@ -105,7 +105,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-start-nonterminal-symbol,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -146,6 +146,12 @@
 	<target name="parser-stack">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/stack/stack.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/stack/stack.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/stack" package="de.unisiegen.gtitool.core.parser.stack" parser="StackAbstractParser" symbols="StackTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser start nonterminal symbol -->
+	<target name="parser-start-nonterminal-symbol">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/startnonterminalsymbol/startnonterminalsymbol.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/startnonterminalsymbol/startnonterminalsymbol.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/startnonterminalsymbol" package="de.unisiegen.gtitool.core.parser.startnonterminalsymbol" parser="StartNonterminalSymbolAbstractParser" symbols="StartNonterminalSymbolTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser state -->

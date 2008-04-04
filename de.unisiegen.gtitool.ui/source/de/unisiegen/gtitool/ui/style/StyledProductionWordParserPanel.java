@@ -268,6 +268,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
     this.nonterminalSymbolSet = nonterminalSymbolSet;
 
     // Set the overwritten style
+    clearOverwrittenStyle ();
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
     {
       addOverwrittenStyle ( current.getName (), Style.NONTERMINAL_SYMBOL );
@@ -301,6 +302,7 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
     this.terminalSymbolSet = terminalSymbolSet;
 
     // Set the overwritten style
+    clearOverwrittenStyle ();
     for ( TerminalSymbol current : this.terminalSymbolSet )
     {
       addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );

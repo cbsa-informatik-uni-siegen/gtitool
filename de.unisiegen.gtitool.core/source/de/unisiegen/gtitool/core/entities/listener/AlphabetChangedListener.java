@@ -21,5 +21,4 @@ public interface AlphabetChangedListener extends EventListener
    * @param newAlphabet The new {@link Alphabet}.
    */
   public void alphabetChanged ( Alphabet newAlphabet );
-
 }

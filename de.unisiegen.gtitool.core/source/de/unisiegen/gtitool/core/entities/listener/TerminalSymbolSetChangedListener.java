@@ -21,5 +21,4 @@ public interface TerminalSymbolSetChangedListener extends EventListener
    * @param newTerminalSymbolSet The new {@link TerminalSymbolSet}.
    */
   public void terminalSymbolSetChanged ( TerminalSymbolSet newTerminalSymbolSet );
-
 }

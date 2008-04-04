@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedLi
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.nonterminalsymbolset.NonterminalSymbolSetParseable;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
@@ -47,6 +48,12 @@ public final class StyledNonterminalSymbolSetParserPanel extends
    * be be in the {@link TerminalSymbolSet}.
    */
   private TerminalSymbolSet terminalSymbolSet = null;
+
+
+  /**
+   * The start {@link NonterminalSymbol}.
+   */
+  private NonterminalSymbol startNonterminalSymbol;
 
 
   /**
@@ -176,6 +183,18 @@ public final class StyledNonterminalSymbolSetParserPanel extends
 
 
   /**
+   * Returns the start {@link NonterminalSymbol}.
+   * 
+   * @return The start {@link NonterminalSymbol}.
+   * @see #startNonterminalSymbol
+   */
+  public final NonterminalSymbol getStartNonterminalSymbol ()
+  {
+    return this.startNonterminalSymbol;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see StyledParserPanel#parse()
@@ -257,6 +276,26 @@ public final class StyledNonterminalSymbolSetParserPanel extends
       TreeSet < NonterminalSymbol > notRemoveableNonterminalSymbols )
   {
     this.notRemoveableNonterminalSymbols = notRemoveableNonterminalSymbols;
+  }
+
+
+  /**
+   * Sets the start {@link NonterminalSymbol}.
+   * 
+   * @param startNonterminalSymbol The start {@link NonterminalSymbol} to set.
+   */
+  public final void setStartNonterminalSymbol (
+      NonterminalSymbol startNonterminalSymbol )
+  {
+    this.startNonterminalSymbol = startNonterminalSymbol;
+
+    // Set the overwritten style
+    clearOverwrittenStyle ();
+    if ( this.startNonterminalSymbol != null )
+    {
+      addOverwrittenStyle ( this.startNonterminalSymbol.getName (),
+          Style.START_NONTERMINAL_SYMBOL );
+    }
   }
 
 

@@ -1,9 +1,11 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 
 
@@ -49,7 +51,7 @@ public class TerminalPanelForm extends javax.swing.JPanel
         .setText ( nonterminalSymbolSet );
     this.styledTerminalSymbolSetParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
-    this.styledNonterminalSymbolParserPanelStartSymbol.setNonterminalSymbolSet ( nonterminalSymbolSet );
+    this.styledStartNonterminalSymbolParserPanel.setNonterminalSymbolSet ( nonterminalSymbolSet );
   }
 
 
@@ -106,13 +108,13 @@ public class TerminalPanelForm extends javax.swing.JPanel
           {
             styledTerminalSymbolSetParserPanel
                 .setNonterminalSymbolSet ( newNonterminalSymbolSet );
-            styledNonterminalSymbolParserPanelStartSymbol
+            styledStartNonterminalSymbolParserPanel
                 .setNonterminalSymbolSet ( newNonterminalSymbolSet );
 
             // Parse the symbol sets
             styledNonterminalSymbolSetParserPanel.parse ();
             styledTerminalSymbolSetParserPanel.parse ();
-            styledNonterminalSymbolParserPanelStartSymbol.parse ();        
+            styledStartNonterminalSymbolParserPanel.parse ();        
           }
         } );
 
@@ -129,7 +131,22 @@ public class TerminalPanelForm extends javax.swing.JPanel
             // Parse the symbol sets
             styledNonterminalSymbolSetParserPanel.parse ();
             styledTerminalSymbolSetParserPanel.parse ();
-            styledNonterminalSymbolParserPanelStartSymbol.parse (); 
+            styledStartNonterminalSymbolParserPanel.parse (); 
+          }
+        } );
+    
+    styledStartNonterminalSymbolParserPanel
+        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        {
+
+          public void startNonterminalSymbolChanged (
+              NonterminalSymbol newStartNonterminalSymbol )
+          {
+            styledNonterminalSymbolSetParserPanel
+                .setStartNonterminalSymbol ( newStartNonterminalSymbol );
+
+            // Parse the nonterminal symbol set
+            styledNonterminalSymbolSetParserPanel.parse ();
           }
         } );
   }
@@ -147,7 +164,7 @@ public class TerminalPanelForm extends javax.swing.JPanel
         jGTILabelNonterminalSymbols = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledNonterminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel();
         jGTILabelStartSymbol = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        styledNonterminalSymbolParserPanelStartSymbol = new de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolParserPanel();
+        styledStartNonterminalSymbolParserPanel = new de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel();
         jGTILabelTerminalSymbols = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         styledTerminalSymbolSetParserPanel = new de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel();
 
@@ -185,7 +202,7 @@ public class TerminalPanelForm extends javax.swing.JPanel
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        add(styledNonterminalSymbolParserPanelStartSymbol, gridBagConstraints);
+        add(styledStartNonterminalSymbolParserPanel, gridBagConstraints);
 
         jGTILabelTerminalSymbols.setText(bundle.getString("TerminalPanel.TerminalSymbols")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -211,8 +228,8 @@ public class TerminalPanelForm extends javax.swing.JPanel
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelNonterminalSymbols;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelStartSymbol;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelTerminalSymbols;
-    public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolParserPanel styledNonterminalSymbolParserPanelStartSymbol;
     public de.unisiegen.gtitool.ui.style.StyledNonterminalSymbolSetParserPanel styledNonterminalSymbolSetParserPanel;
+    public de.unisiegen.gtitool.ui.style.StyledStartNonterminalSymbolParserPanel styledStartNonterminalSymbolParserPanel;
     public de.unisiegen.gtitool.ui.style.StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel;
     // End of variables declaration//GEN-END:variables
 

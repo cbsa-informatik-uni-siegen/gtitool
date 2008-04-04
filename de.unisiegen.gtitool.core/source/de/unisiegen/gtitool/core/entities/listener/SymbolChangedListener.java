@@ -21,5 +21,4 @@ public interface SymbolChangedListener extends EventListener
    * @param newSymbol The new {@link Symbol}.
    */
   public void symbolChanged ( Symbol newSymbol );
-
 }

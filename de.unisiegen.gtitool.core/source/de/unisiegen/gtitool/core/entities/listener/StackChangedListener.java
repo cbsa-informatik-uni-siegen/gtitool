@@ -21,5 +21,4 @@ public interface StackChangedListener extends EventListener
    * @param newStack The new {@link Stack}.
    */
   public void stackChanged ( Stack newStack );
-
 }

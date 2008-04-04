@@ -39,8 +39,8 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
@@ -424,6 +424,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the parser start {@link NonterminalSymbol}.
+   */
+  private ColorItem colorItemStartNonterminalSymbol;
+
+
+  /**
    * The {@link ColorItem} of the parser error.
    */
   private ColorItem colorItemParserError;
@@ -559,6 +565,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
   private ColorItem initialColorItemNonterminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol}.
+   */
+  private ColorItem initialColorItemStartNonterminalSymbol;
 
 
   /**
@@ -1022,6 +1034,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemSymbolError.restore ();
 
     this.colorItemNonterminalSymbol.restore ();
+    this.colorItemStartNonterminalSymbol.restore ();
 
     this.colorItemTerminalSymbol.restore ();
 
@@ -1052,7 +1065,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         .setNonterminalSymbolSet ( this.nonterminalSymbolSetItem
             .getNonterminalSymbolSet () );
     this.startSymbolItem.restore ();
-    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
         .setText ( this.startSymbolItem.getNonterminalSymbol () );
     this.terminalSymbolSetItem.restore ();
     this.gui.terminalPanelForm
@@ -1312,6 +1325,10 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getColorItemNonterminalSymbol ();
     this.initialColorItemNonterminalSymbol = this.colorItemNonterminalSymbol
         .clone ();
+    this.colorItemStartNonterminalSymbol = PreferenceManager.getInstance ()
+        .getColorItemStartNonterminalSymbol ();
+    this.initialColorItemStartNonterminalSymbol = this.colorItemStartNonterminalSymbol
+        .clone ();
 
     // TerminalSymbol
     this.colorItemTerminalSymbol = PreferenceManager.getInstance ()
@@ -1456,6 +1473,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.nonterminalSymbolNode = PreferenceManager.getInstance ()
         .getColorItemNonterminalSymbolGroup ();
     this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbol );
+    this.nonterminalSymbolNode.add ( this.colorItemStartNonterminalSymbol );
 
     this.terminalSymbolNode = PreferenceManager.getInstance ()
         .getColorItemTerminalSymbolGroup ();
@@ -1989,11 +2007,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.startSymbolItem = PreferenceManager.getInstance ()
         .getStartSymbolItem ();
     this.initialStartSymbolItem = this.startSymbolItem.clone ();
-    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
         .setText ( this.startSymbolItem.getNonterminalSymbol () );
 
     // PopupMenu
-    JPopupMenu jPopupMenu = this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+    JPopupMenu jPopupMenu = this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
         .getJPopupMenu ();
     jPopupMenu.addSeparator ();
     final JMenuItem jMenuItemRestoreTerminalSymbolSet = new JMenuItem (
@@ -2010,7 +2028,7 @@ public final class PreferencesDialog implements LanguageChangedListener
       ActionEvent event )
       {
         PreferencesDialog.this.startSymbolItem.restore ();
-        PreferencesDialog.this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
+        PreferencesDialog.this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
             .setText ( PreferencesDialog.this.startSymbolItem
                 .getNonterminalSymbol () );
       }
@@ -2033,19 +2051,19 @@ public final class PreferencesDialog implements LanguageChangedListener
     /*
      * TerminalSymbolSet changed listener
      */
-    this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
-        .addNonterminalSymbolChangedListener ( new NonterminalSymbolChangedListener ()
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void nonterminalSymbolChanged (
-              NonterminalSymbol newNonterminalSymbol )
+          public void startNonterminalSymbolChanged (
+              NonterminalSymbol newStartNonterminalSymbol )
           {
             setButtonStatus ();
-            if ( newNonterminalSymbol != null )
+            if ( newStartNonterminalSymbol != null )
             {
               PreferencesDialog.this.startSymbolItem
-                  .setNonterminalSymbol ( newNonterminalSymbol );
+                  .setNonterminalSymbol ( newStartNonterminalSymbol );
             }
           }
         } );
@@ -2455,6 +2473,10 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorNonterminalSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemNonterminalSymbol.setDescription ( Messages
         .getString ( "Preferences.ColorNonterminalSymbolDescription" ) ); //$NON-NLS-1$
+    this.colorItemStartNonterminalSymbol.setCaption ( Messages
+        .getString ( "Preferences.ColorStartNonterminalSymbolCaption" ) ); //$NON-NLS-1$
+    this.colorItemStartNonterminalSymbol.setDescription ( Messages
+        .getString ( "Preferences.ColorStartNonterminalSymbolDescription" ) ); //$NON-NLS-1$
 
     // TerminalSymbol
     this.colorItemTerminalSymbol.setCaption ( Messages
@@ -2784,6 +2806,17 @@ public final class PreferencesDialog implements LanguageChangedListener
       PreferenceManager.getInstance ().fireColorChangedNonterminalSymbol (
           this.colorItemNonterminalSymbol.getColor () );
     }
+    // NonterminalSymbol start
+    if ( !this.initialColorItemStartNonterminalSymbol.getColor ().equals (
+        this.colorItemStartNonterminalSymbol.getColor () ) )
+    {
+      this.initialColorItemStartNonterminalSymbol = this.colorItemStartNonterminalSymbol
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemStartNonterminalSymbol (
+          this.colorItemStartNonterminalSymbol );
+      PreferenceManager.getInstance ().fireColorChangedStartNonterminalSymbol (
+          this.colorItemStartNonterminalSymbol.getColor () );
+    }
 
     // TerminalSymbol
     if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
@@ -3088,8 +3121,8 @@ public final class PreferencesDialog implements LanguageChangedListener
     // Grammar
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
         .getNonterminalSymbolSet () == null )
-        || ( this.gui.terminalPanelForm.styledNonterminalSymbolParserPanelStartSymbol
-            .getNonterminalSymbol () == null )
+        || ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+            .getStartNonterminalSymbol () == null )
         || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
             .getTerminalSymbolSet () == null ) )
     {

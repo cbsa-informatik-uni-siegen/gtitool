@@ -21,5 +21,4 @@ public interface TransitionChangedListener extends EventListener
    * @param newTransition The new {@link Transition}.
    */
   public void transitionChanged ( Transition newTransition );
-
 }

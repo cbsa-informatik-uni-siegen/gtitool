@@ -49,6 +49,11 @@ public enum Style
   NONTERMINAL_SYMBOL ( true, false ),
 
   /**
+   * Style of start {@link NonterminalSymbol}s.
+   */
+  START_NONTERMINAL_SYMBOL ( true, false ),
+
+  /**
    * Style of {@link TerminalSymbol}s.
    */
   TERMINAL_SYMBOL ( true, false ),
@@ -120,6 +125,11 @@ public enum Style
       {
         return PreferenceManager.getInstance ()
             .getColorItemNonterminalSymbol ().getColor ();
+      }
+      case START_NONTERMINAL_SYMBOL :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemStartNonterminalSymbol ().getColor ();
       }
       case TERMINAL_SYMBOL :
       {

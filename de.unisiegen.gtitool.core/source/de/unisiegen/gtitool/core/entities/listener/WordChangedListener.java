@@ -21,5 +21,4 @@ public interface WordChangedListener extends EventListener
    * @param newWord The new {@link Word}.
    */
   public void wordChanged ( Word newWord );
-
 }

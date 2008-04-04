@@ -77,6 +77,13 @@ public class PreferenceManager
 
 
   /**
+   * The default {@link Color} of a start {@link NonterminalSymbol}.
+   */
+  public static final Color DEFAULT_START_NONTERMINAL_SYMBOL_COLOR = new Color (
+      127, 0, 255 );
+
+
+  /**
    * The default {@link NonterminalSymbolSet}.
    */
   public static NonterminalSymbolSet DEFAULT_NONTERMINAL_SYMBOL_SET;
@@ -447,6 +454,24 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserWarning ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the start
+   * {@link NonterminalSymbol} has changed.
+   * 
+   * @param newColor The new color of the start {@link NonterminalSymbol}.
+   */
+  public final void fireColorChangedStartNonterminalSymbol ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedStartNonterminalSymbol ( newColor );
       current.colorChanged ();
     }
   }
@@ -901,6 +926,25 @@ public class PreferenceManager
         .getString ( "Preferences.ColorParserWarningDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_WARNING_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the start {NonterminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the start {NonterminalSymbol}.
+   */
+  public final ColorItem getColorItemStartNonterminalSymbol ()
+  {
+    int rgb = this.preferences.getInt (
+        "Preferences.ColorStartNonterminalSymbol", //$NON-NLS-1$
+        DEFAULT_START_NONTERMINAL_SYMBOL_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorStartNonterminalSymbolCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorStartNonterminalSymbolDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_START_NONTERMINAL_SYMBOL_COLOR );
   }
 
 
@@ -1613,6 +1657,25 @@ public class PreferenceManager
         + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putInt ( "Preferences.ColorParserWarning", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the parser start {@link NonterminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the parser start
+   *          {@link NonterminalSymbol}.
+   */
+  public final void setColorItemStartNonterminalSymbol ( ColorItem colorItem )
+  {
+    logger
+        .debug ( "set color of the start nonterminal symbol to " + Messages.QUOTE //$NON-NLS-1$
+            + "r=" + colorItem.getColor ().getRed () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "g=" + colorItem.getColor ().getGreen () + ", " //$NON-NLS-1$ //$NON-NLS-2$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt (
+        "Preferences.ColorStartNonterminalSymbol", colorItem //$NON-NLS-1$
+            .getColor ().getRGB () & 0xFFFFFF );
   }
 
 

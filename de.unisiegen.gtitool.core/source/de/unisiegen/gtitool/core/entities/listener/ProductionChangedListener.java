@@ -21,5 +21,4 @@ public interface ProductionChangedListener extends EventListener
    * @param newProduction The new {@link Production}.
    */
   public void productionChanged ( Production newProduction );
-
 }

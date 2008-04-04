@@ -67,6 +67,14 @@ public interface ColorChangedListener extends EventListener
 
 
   /**
+   * Invoked when the color of the start {@link NonterminalSymbol} changed.
+   * 
+   * @param newColor The new color of the start{@link NonterminalSymbol}.
+   */
+  public void colorChangedStartNonterminalSymbol ( Color newColor );
+
+
+  /**
    * Invoked when the color of the {@link State} changed.
    * 
    * @param newColor The new color of the {@link State}.

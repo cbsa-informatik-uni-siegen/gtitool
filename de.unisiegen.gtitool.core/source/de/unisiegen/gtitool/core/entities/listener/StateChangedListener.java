@@ -21,5 +21,4 @@ public interface StateChangedListener extends EventListener
    * @param newState The new {@link State}.
    */
   public void stateChanged ( State newState );
-
 }

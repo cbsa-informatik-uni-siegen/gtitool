@@ -1,10 +1,10 @@
 /**
- * The lexer file of the nonterminal symbol scanner.
+ * The lexer file of the start nonterminal symbol scanner.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-package de.unisiegen.gtitool.core.parser.nonterminalsymbol;
+package de.unisiegen.gtitool.core.parser.startnonterminalsymbol;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
@@ -14,13 +14,13 @@ import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
 /**
- * This is the lexer class for a nonterminal symbol.
+ * This is the lexer class for a start nonterminal symbol.
  */
 %%
 
-%class NonterminalSymbolScanner
+%class StartNonterminalSymbolScanner
 %extends AbstractScanner
-%implements NonterminalSymbolTerminals
+%implements StartNonterminalSymbolTerminals
 
 %function nextSymbol
 %type Symbol
@@ -51,8 +51,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
-		case NONTERMINAL_SYMBOL:
-		  return Style.NONTERMINAL_SYMBOL;
+		case START_NONTERMINAL_SYMBOL:
+		  return Style.START_NONTERMINAL_SYMBOL;
 		default:
 		  return Style.NONE;
 	  }
@@ -74,7 +74,7 @@ NonterminalSymbol		= [:jletterdigit:] | \"[:jletterdigit:]+\"
 
 <YYINITIAL>
 {
-	{NonterminalSymbol}	{ return symbol(NONTERMINAL_SYMBOL, yytext()); }
+	{NonterminalSymbol}	{ return symbol(START_NONTERMINAL_SYMBOL, yytext()); }
 }
 
 .|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

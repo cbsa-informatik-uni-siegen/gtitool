@@ -21,5 +21,4 @@ public interface ProductionWordChangedListener extends EventListener
    * @param newProductionWord The new {@link ProductionWord}.
    */
   public void productionWordChanged ( ProductionWord newProductionWord );
-
 }

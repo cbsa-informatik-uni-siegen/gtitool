@@ -21,5 +21,4 @@ public interface NonterminalSymbolChangedListener extends EventListener
    * @param newNonterminalSymbol The new {@link NonterminalSymbol}.
    */
   public void nonterminalSymbolChanged ( NonterminalSymbol newNonterminalSymbol );
-
 }

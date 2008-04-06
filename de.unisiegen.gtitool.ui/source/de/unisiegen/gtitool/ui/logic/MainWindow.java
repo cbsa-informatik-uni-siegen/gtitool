@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 
@@ -28,8 +26,6 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -120,19 +116,19 @@ public final class MainWindow implements LanguageChangedListener
     // Draft for
     this.gui.jMenuDraft.setEnabled ( false );
 
-//    // Toolbar items
-//    setToolBarEditItemState ( false );
-//    setToolBarEnterWordItemState ( false );
-//
-//    this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
-//    this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
-//    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
-//    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+    // // Toolbar items
+    // setToolBarEditItemState ( false );
+    // setToolBarEnterWordItemState ( false );
+    //
+    // this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
+    // this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
+    // this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
+    // this.gui.jGTIToolBarButtonStop.setEnabled ( false );
 
     activateGrammarButtons ( false );
     activateMachineButtons ( false );
     this.gui.jGTIToolBarButtonEditDocument.setEnabled ( false );
-    
+
     // Console and table visibility
     this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
         .getInstance ().getVisibleConsole () );
@@ -635,183 +631,21 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleOpen ()
   {
-    PreferenceManager prefmanager = PreferenceManager.getInstance ();
-    JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
-    chooser.setMultiSelectionEnabled ( true );
-    chooser.setAcceptAllFileFilterUsed ( false );
-
-    // Source files
-    FileFilter sourceFileFilter = new FileFilter ()
-    {
-
-      @Override
-      public boolean accept ( File file )
-      {
-        if ( file.isDirectory () )
-        {
-          return true;
-        }
-        for ( String current : Machine.AVAILABLE_MACHINES )
-        {
-          if ( file.getName ().toLowerCase ().matches (
-              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
-          {
-            return true;
-          }
-        }
-        for ( String current : Grammar.AVAILABLE_GRAMMARS )
-        {
-          if ( file.getName ().toLowerCase ().matches (
-              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
-          {
-            return true;
-          }
-        }
-        return false;
-      }
-
-
-      @Override
-      public String getDescription ()
-      {
-        StringBuilder result = new StringBuilder ();
-        result.append ( Messages.getString ( "MainWindow.OpenSourceFiles" ) ); //$NON-NLS-1$
-        result.append ( " (" ); //$NON-NLS-1$
-        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
-        {
-          result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
-          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
-          {
-            result.append ( "; " ); //$NON-NLS-1$
-          }
-        }
-        if ( ( Machine.AVAILABLE_MACHINES.length > 0 )
-            && ( Grammar.AVAILABLE_GRAMMARS.length > 0 ) )
-        {
-          result.append ( "; " ); //$NON-NLS-1$
-        }
-        for ( int i = 0 ; i < Grammar.AVAILABLE_GRAMMARS.length ; i++ )
-        {
-          result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Grammar.AVAILABLE_GRAMMARS [ i ].toLowerCase () );
-          if ( i != Grammar.AVAILABLE_GRAMMARS.length - 1 )
-          {
-            result.append ( "; " ); //$NON-NLS-1$
-          }
-        }
-        result.append ( ")" ); //$NON-NLS-1$
-        return result.toString ();
-      }
-    };
-
-    // Machine files
-    FileFilter machineFileFilter = new FileFilter ()
-    {
-
-      @Override
-      public boolean accept ( File file )
-      {
-        if ( file.isDirectory () )
-        {
-          return true;
-        }
-        for ( String current : Machine.AVAILABLE_MACHINES )
-        {
-          if ( file.getName ().toLowerCase ().matches (
-              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
-          {
-            return true;
-          }
-        }
-        return false;
-      }
-
-
-      @Override
-      public String getDescription ()
-      {
-        StringBuilder result = new StringBuilder ();
-        result.append ( Messages
-            .getString ( "MainWindow.OpenSourceFilesMachine" ) ); //$NON-NLS-1$
-        result.append ( " (" ); //$NON-NLS-1$
-        for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
-        {
-          result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Machine.AVAILABLE_MACHINES [ i ].toLowerCase () );
-          if ( i != Machine.AVAILABLE_MACHINES.length - 1 )
-          {
-            result.append ( "; " ); //$NON-NLS-1$
-          }
-        }
-        result.append ( ")" ); //$NON-NLS-1$
-        return result.toString ();
-      }
-    };
-
-    // Grammar files
-    FileFilter grammarFileFilter = new FileFilter ()
-    {
-
-      @Override
-      public boolean accept ( File file )
-      {
-        if ( file.isDirectory () )
-        {
-          return true;
-        }
-        for ( String current : Grammar.AVAILABLE_GRAMMARS )
-        {
-          if ( file.getName ().toLowerCase ().matches (
-              ".+\\." + current.toLowerCase () ) ) //$NON-NLS-1$
-          {
-            return true;
-          }
-        }
-        return false;
-      }
-
-
-      @Override
-      public String getDescription ()
-      {
-        StringBuilder result = new StringBuilder ();
-        result.append ( Messages
-            .getString ( "MainWindow.OpenSourceFilesGrammar" ) ); //$NON-NLS-1$
-        result.append ( " (" ); //$NON-NLS-1$
-        for ( int i = 0 ; i < Grammar.AVAILABLE_GRAMMARS.length ; i++ )
-        {
-          result.append ( "*." ); //$NON-NLS-1$
-          result.append ( Grammar.AVAILABLE_GRAMMARS [ i ].toLowerCase () );
-          if ( i != Grammar.AVAILABLE_GRAMMARS.length - 1 )
-          {
-            result.append ( "; " ); //$NON-NLS-1$
-          }
-        }
-        result.append ( ")" ); //$NON-NLS-1$
-        return result.toString ();
-      }
-    };
-
-    chooser.addChoosableFileFilter ( sourceFileFilter );
-    chooser.addChoosableFileFilter ( machineFileFilter );
-    chooser.addChoosableFileFilter ( grammarFileFilter );
-    chooser.setFileFilter ( sourceFileFilter );
-
-    int n = chooser.showOpenDialog ( this.gui );
-    if ( ( n == JFileChooser.CANCEL_OPTION )
-        || ( chooser.getSelectedFile () == null ) )
+    OpenDialog openDialog = new OpenDialog ( this.gui, PreferenceManager
+        .getInstance ().getWorkingPath () );
+    openDialog.show ();
+    if ( ( !openDialog.isConfirmed () )
+        || ( openDialog.getSelectedFile () == null ) )
     {
       return;
     }
 
-    for ( File file : chooser.getSelectedFiles () )
+    for ( File file : openDialog.getSelectedFiles () )
     {
       openFile ( file, true );
     }
-
     PreferenceManager.getInstance ().setWorkingPath (
-        chooser.getSelectedFile ().getParentFile ().getAbsolutePath () );
+        openDialog.getSelectedFile ().getParentFile ().getAbsolutePath () );
   }
 
 
@@ -950,7 +784,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle the save file as event
+   * Handle the save as event.
    */
   public final void handleSaveAs ()
   {
@@ -978,7 +812,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle TabbedPane state changed event
+   * Handle TabbedPane state changed event.
    */
   public final void handleTabbedPaneStateChanged ()
   {
@@ -1709,14 +1543,15 @@ public final class MainWindow implements LanguageChangedListener
     MainWindow.this.gui.jGTIToolBarButtonStop.setToolTipText ( Messages
         .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     // Add production
-    MainWindow.this.gui.jGTIToolBarButtonAddProduction.setToolTipText ( Messages
-        .getString ( "GrammarPanel.AddProduction" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarButtonAddProduction
+        .setToolTipText ( Messages.getString ( "GrammarPanel.AddProduction" ) ); //$NON-NLS-1$
     // Edit production
-    MainWindow.this.gui.jGTIToolBarButtonEditProduction.setToolTipText ( Messages
-        .getString ( "GrammarPanel.ProductionProperties" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarButtonEditProduction
+        .setToolTipText ( Messages
+            .getString ( "GrammarPanel.ProductionProperties" ) ); //$NON-NLS-1$
     // Delete production
-    MainWindow.this.gui.jGTIToolBarButtonDeleteProduction.setToolTipText ( Messages
-        .getString ( "GrammarPanel.DeleteProduction" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jGTIToolBarButtonDeleteProduction
+        .setToolTipText ( Messages.getString ( "GrammarPanel.DeleteProduction" ) ); //$NON-NLS-1$
   }
 
 

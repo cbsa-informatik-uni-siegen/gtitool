@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
+import javax.swing.JComponent;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
@@ -753,6 +754,7 @@ public class PreferenceManager
   public final void fireLanguageChanged ( Locale newLocale )
   {
     Locale.setDefault ( newLocale );
+    JComponent.setDefaultLocale ( newLocale );
     LanguageChangedListener [] listeners = this.listenerList
         .getListeners ( LanguageChangedListener.class );
     for ( LanguageChangedListener current : listeners )

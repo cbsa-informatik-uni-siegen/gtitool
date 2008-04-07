@@ -448,7 +448,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleDeleteProduction ()
   {
-    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
+    if ( this.gui.jGTITableGrammar.getRowCount () > this.gui.jGTITableGrammar
+        .getSelectedRow ()
+        && this.gui.jGTITableGrammar.getSelectedRow () > -1 )
     {
       Production production = this.grammar
           .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
@@ -473,7 +475,9 @@ public class GrammarPanel implements EditorPanel
   public void handleEditProduction ()
   {
 
-    if ( this.gui.jGTITableGrammar.getSelectedRow () >= 0 )
+    if ( this.gui.jGTITableGrammar.getRowCount () > this.gui.jGTITableGrammar
+        .getSelectedRow ()
+        && this.gui.jGTITableGrammar.getSelectedRow () > -1 )
     {
       Production production = this.grammar
           .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );

@@ -2,9 +2,11 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogTerminalForm;
@@ -44,36 +46,53 @@ public final class NewDialogTerminal
     this.gui = new NewDialogTerminalForm ();
     this.gui.setLogic ( this );
 
-    this.gui.terminalPanelForm.setNonterminalSymbolSet ( PreferenceManager.getInstance ().getNonterminalSymbolSetItem ().getStandardNonterminalSymbolSet () );
-    this.gui.terminalPanelForm.setTerminalSymbolSet ( PreferenceManager.getInstance ().getTerminalSymbolSetItem ().getStandardTerminalSymbolSet ());
-    
-    
+    this.gui.terminalPanelForm.setNonterminalSymbolSet ( PreferenceManager
+        .getInstance ().getNonterminalSymbolSetItem ()
+        .getStandardNonterminalSymbolSet () );
+
+    this.gui.terminalPanelForm.setTerminalSymbolSet ( PreferenceManager
+        .getInstance ().getTerminalSymbolSetItem ()
+        .getStandardTerminalSymbolSet () );
+
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .setText ( PreferenceManager.getInstance ().getStartSymbolItem ()
+            .getNonterminalSymbol () );
+
     this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-    .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener()
-    {
+        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void nonterminalSymbolSetChanged (
-          @SuppressWarnings("unused")
-          NonterminalSymbolSet newNonterminalSymbolSet )
-      {
-        setButtonStatus ();
-      }
-    } );
-this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-    .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener()
-    {
+          public void nonterminalSymbolSetChanged (
+              @SuppressWarnings ( "unused" )
+              NonterminalSymbolSet newNonterminalSymbolSet )
+          {
+            setButtonStatus ();
+          }
+        } );
+    this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
+        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void terminalSymbolSetChanged ( @SuppressWarnings("unused")
-      TerminalSymbolSet newTerminalSymbolSet )
-      {
-        setButtonStatus ();
-      }
-    } );
+          public void terminalSymbolSetChanged ( @SuppressWarnings ( "unused" )
+          TerminalSymbolSet newTerminalSymbolSet )
+          {
+            setButtonStatus ();
+          }
+        } );
+
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        {
+
+          public void startNonterminalSymbolChanged (
+              @SuppressWarnings ( "unused" )
+              NonterminalSymbol newStartNonterminalSymbol )
+          {
+            setButtonStatus ();
+          }
+
+        } );
   }
-
-
 
 
   /**
@@ -87,11 +106,10 @@ this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
   }
 
 
-
   /**
    * Handle the cancel button pressed event.
    */
-  
+
   public final void handleCancel ()
   {
     this.parent.getGui ().dispose ();
@@ -115,34 +133,41 @@ this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
   {
     this.parent.handleAlphabetPrevious ();
   }
-  
+
+
   /**
    * Returns the {@link NonterminalSymbolSet}.
    * 
    * @return the {@link NonterminalSymbolSet}.
    */
-  public NonterminalSymbolSet getNonterminalSymbolSet(){
+  public NonterminalSymbolSet getNonterminalSymbolSet ()
+  {
     return this.gui.terminalPanelForm.getNonterminalSymbolSet ();
   }
-  
+
+
   /**
    * Returns the {@link TerminalSymbolSet}.
    * 
    * @return the {@link TerminalSymbolSet}
    */
-  public TerminalSymbolSet geTerminalSymbolSet(){
+  public TerminalSymbolSet geTerminalSymbolSet ()
+  {
     return this.gui.terminalPanelForm.getTerminalSymbolSet ();
   }
-  
+
+
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  public final void setButtonStatus ()
   {
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
         .getNonterminalSymbolSet () == null )
         || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-            .getTerminalSymbolSet ()== null ) )
+            .getTerminalSymbolSet () == null )
+        || ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+            .getStartNonterminalSymbol () == null ) )
     {
       this.gui.jGTIButtonFinished.setEnabled ( false );
     }
@@ -150,5 +175,17 @@ this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
     {
       this.gui.jGTIButtonFinished.setEnabled ( true );
     }
+  }
+
+
+  /**
+   * Returns the start symbol.
+   * 
+   * @return Returns the start symbol.
+   */
+  public NonterminalSymbol getStartSymbol ()
+  {
+    return this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .getStartNonterminalSymbol ();
   }
 }

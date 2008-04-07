@@ -198,7 +198,7 @@ public final class NewDialog
         this.newPanel = new GrammarPanel ( this.parent,
             new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
                 .getNonterminalSymbolSet (), this.newDialogTerminal
-                .geTerminalSymbolSet () ) ), null );
+                .geTerminalSymbolSet (), this.newDialogTerminal.getStartSymbol() ) ), null );
         this.gui.dispose ();
       }
     }

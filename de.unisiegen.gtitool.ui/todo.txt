@@ -8,9 +8,6 @@ CF		- Nachdem die Logik des Start Symbols eingebaut wurde, muss der
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
-BM		- Das Start Symbol muss im "Neu Dialog" und im "Edit Document Dialog"
-		  in die Logik eingebaut werden. Im "Preference Dialog" ist alles
-		  implementiert.
 BM		- Die Kontextfreie Grammatik muss angelegt werden können (Neu Dialog ist
 		  komplett auf die neuen Komponenten umgebaut, kann also von dir gemacht
 		  werden, ohne Konflikte zu befürchten)

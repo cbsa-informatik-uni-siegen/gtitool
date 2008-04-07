@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
@@ -56,21 +57,28 @@ public final class TerminalDialog
     this.parent = parent;
     this.grammar = grammar;
     this.gui = new TerminalDialogForm ( this, parent );
+
     this.gui.terminalPanelForm.setTerminalSymbolSet ( this.grammar
         .getTerminalSymbolSet () );
+
     this.gui.terminalPanelForm.setNonterminalSymbolSet ( this.grammar
         .getNonterminalSymbolSet () );
+
     this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
         .setNotRemoveableNonterminalSymbols ( this.grammar
             .getNotRemoveableNonterminalSymbolsFromNonterminalSymbol () );
+
     this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
         .setNotRemoveableTerminalSymbols ( this.grammar
             .getNotRemoveableTerminalSymbolsFromTerminalSymbol () );
+
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .setText ( this.grammar.getStartSymbol () );
+
     this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
         .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void terminalSymbolSetChanged ( @SuppressWarnings ( "unused" )
           TerminalSymbolSet newTerminalSymbolSet )
           {
@@ -83,13 +91,25 @@ public final class TerminalDialog
         .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void nonterminalSymbolSetChanged (
               @SuppressWarnings ( "unused" )
               NonterminalSymbolSet newNonterminalSymbolSet )
           {
             setButtonStatus ();
           }
+        } );
+
+    this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        {
+
+          public void startNonterminalSymbolChanged (
+              @SuppressWarnings ( "unused" )
+              NonterminalSymbol newStartNonterminalSymbol )
+          {
+            setButtonStatus ();
+          }
+
         } );
 
   }
@@ -116,6 +136,9 @@ public final class TerminalDialog
     performTerminalSymbolChange ( this.grammar.getTerminalSymbolSet (),
         this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
             .getTerminalSymbolSet () );
+    this.grammar
+        .setStartSymbol ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+            .getStartNonterminalSymbol () );
     this.gui.dispose ();
   }
 
@@ -199,7 +222,7 @@ public final class TerminalDialog
   /**
    * Sets the status of the buttons.
    */
-  private final void setButtonStatus ()
+  public final void setButtonStatus ()
   {
     if ( ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
         .getTerminalSymbolSet () == null )

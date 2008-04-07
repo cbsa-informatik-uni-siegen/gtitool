@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
@@ -40,7 +42,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   /**
    * The {@link Machine} version.
    */
-  private static final int GRAMMAR_VERSION = 658;
+  private static final int GRAMMAR_VERSION = 734;
 
 
   /**
@@ -119,6 +121,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
     NonterminalSymbolSet nonterminalSymbolSet = null;
     TerminalSymbolSet terminalSymbolSet = null;
+    NonterminalSymbol startSymbol = null;
 
     for ( Element current : element.getElement () )
     {
@@ -131,10 +134,16 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       {
         terminalSymbolSet = new DefaultTerminalSymbolSet ( current );
       }
+      
+      else  if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
+      {
+        startSymbol = new DefaultNonterminalSymbol ( current );
+      }
+
     }
 
     if ( nonterminalSymbolSet == null || terminalSymbolSet == null
-        || grammarType == null || !foundGrammarVersion )
+        || grammarType == null || startSymbol == null || !foundGrammarVersion )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -150,13 +159,14 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       }
 
       else if ( ( !current.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "TerminalSymbolSet" ) ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "TerminalSymbolSet" ) )  //$NON-NLS-1$
+        && ( !current.getName ().equals ( "NonterminalSymbol" ) ) ) //$NON-NLS-1$
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
-    this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet );
+    this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
 
     for ( Production current : productions )
     {
@@ -202,6 +212,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
         .getGrammarType () ) );
     newElement.addAttribute ( new Attribute ( "grammarVersion", //$NON-NLS-1$
         GRAMMAR_VERSION ) );
+    newElement.addElement ( this.grammar.getStartSymbol ().getElement () );
     newElement.addElement ( this.grammar.getNonterminalSymbolSet ()
         .getElement () );
     newElement.addElement ( this.grammar.getTerminalSymbolSet ().getElement () );

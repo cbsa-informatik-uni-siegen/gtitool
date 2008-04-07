@@ -4,6 +4,7 @@ CF		- Save Dialog neu bauen
 CF		- Nachdem die Logik des Start Symbols eingebaut wurde, muss der
 		  PrettyString angepasst werden, so dass das Start Symbol anders
 		  dargestellt wird.
+CF		- Pretty String der Produktionen unter Windows testen.
 
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel

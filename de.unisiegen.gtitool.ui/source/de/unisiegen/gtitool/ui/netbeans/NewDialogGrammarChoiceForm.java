@@ -74,7 +74,6 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
 
         buttonGroupChoice.add(jGTIRadioButtonContextFreeGrammar);
         jGTIRadioButtonContextFreeGrammar.setText(bundle.getString("NewDialog.CFG")); // NOI18N
-        jGTIRadioButtonContextFreeGrammar.setEnabled(false);
         jGTIRadioButtonContextFreeGrammar.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIRadioButtonContextFreeGrammarItemStateChanged(evt);

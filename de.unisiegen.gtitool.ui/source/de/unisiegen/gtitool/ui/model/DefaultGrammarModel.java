@@ -21,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
@@ -134,8 +135,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       {
         terminalSymbolSet = new DefaultTerminalSymbolSet ( current );
       }
-      
-      else  if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
+
+      else if ( current.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
       {
         startSymbol = new DefaultNonterminalSymbol ( current );
       }
@@ -159,15 +160,23 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       }
 
       else if ( ( !current.getName ().equals ( "NonterminalSymbolSet" ) ) //$NON-NLS-1$
-          && ( !current.getName ().equals ( "TerminalSymbolSet" ) )  //$NON-NLS-1$
-        && ( !current.getName ().equals ( "NonterminalSymbol" ) ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "TerminalSymbolSet" ) ) //$NON-NLS-1$
+          && ( !current.getName ().equals ( "NonterminalSymbol" ) ) ) //$NON-NLS-1$
       {
         throw new StoreException ( Messages
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
-    this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet, startSymbol );
-
+    if ( grammarType.equalsIgnoreCase ( "CFG" ) ) //$NON-NLS-1$
+    {
+      this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet,
+          startSymbol );
+    }
+    if ( grammarType.equalsIgnoreCase ( "RG" ) ) //$NON-NLS-1$
+    {
+      this.grammar = new DefaultRG ( nonterminalSymbolSet, terminalSymbolSet,
+          startSymbol );
+    }
     for ( Production current : productions )
     {
       this.grammar.addProduction ( current );

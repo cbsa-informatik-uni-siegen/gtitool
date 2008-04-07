@@ -76,19 +76,27 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * The start symbol of this grammar.
+   */
+  private NonterminalSymbol startSymbol;
+
+
+  /**
    * Allocate a new {@link AbstractGrammar}.
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
    * @param terminalSymbolSet The {@link TerminalSymbolSet}.
+   * @param startSymbol The start symbol of this grammar.
    * @param validationElements The validation elements which indicates which
    *          validation elements should be checked during a validation.
    */
   public AbstractGrammar ( NonterminalSymbolSet nonterminalSymbolSet,
-      TerminalSymbolSet terminalSymbolSet,
+      TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol,
       ValidationElement ... validationElements )
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
     this.terminalSymbolSet = terminalSymbolSet;
+    this.startSymbol = startSymbol;
 
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -544,5 +552,27 @@ public abstract class AbstractGrammar implements Grammar
     {
       throw new GrammarValidationException ( grammarExceptionList );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.grammars.Grammar#getStartSymbol()
+   */
+  public NonterminalSymbol getStartSymbol ()
+  {
+    return this.startSymbol;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.grammars.Grammar#setStartSymbol(NonterminalSymbol)
+   */
+  public void setStartSymbol ( NonterminalSymbol startSymbol )
+  {
+    this.startSymbol = startSymbol;
   }
 }

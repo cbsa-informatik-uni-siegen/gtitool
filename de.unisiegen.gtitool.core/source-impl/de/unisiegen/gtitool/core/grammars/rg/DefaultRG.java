@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.grammars.rg;
 
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.grammars.AbstractGrammar;
@@ -27,9 +28,10 @@ public final class DefaultRG extends AbstractGrammar implements RG
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet}.
    * @param terminalSymbolSet The {@link TerminalSymbolSet}.
+   * @param startSymbol The start symbol of this grammar.
    */
-  public DefaultRG ( NonterminalSymbolSet nonterminalSymbolSet, TerminalSymbolSet terminalSymbolSet ){
-    super(nonterminalSymbolSet, terminalSymbolSet);
+  public DefaultRG ( NonterminalSymbolSet nonterminalSymbolSet, TerminalSymbolSet terminalSymbolSet, NonterminalSymbol startSymbol ){
+    super(nonterminalSymbolSet, terminalSymbolSet, startSymbol);
   }
 
   /**

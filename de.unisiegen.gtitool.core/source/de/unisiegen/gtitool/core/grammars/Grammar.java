@@ -135,4 +135,19 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    * @throws GrammarValidationException If the validation fails.
    */
   public void validate () throws GrammarValidationException;
+
+
+  /**
+   * Returns the start symbol for this grammar.
+   *
+   * @return the start symbol for this grammar.
+   */
+  public NonterminalSymbol getStartSymbol ();
+  
+  /**
+   * Returns the start symbol for this grammar.
+   *
+   * @param startSymbol the new start symbol of this grammar.
+   */
+  public void setStartSymbol (NonterminalSymbol startSymbol);
 }

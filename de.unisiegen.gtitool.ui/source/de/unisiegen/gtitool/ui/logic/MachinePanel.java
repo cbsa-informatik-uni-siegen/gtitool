@@ -18,7 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
@@ -709,6 +708,17 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
+   */
+  public JTabbedPane getJTabbedPaneConsole ()
+  {
+    return this.gui.jGTITabbedPaneConsole;
+  }
+
+
+  /**
    * Getter for the {@link Machine}
    * 
    * @return the {@link Machine} of this panel
@@ -716,6 +726,30 @@ public final class MachinePanel implements EditorPanel
   public final Machine getMachine ()
   {
     return this.machine;
+  }
+
+
+  /**
+   * Returns the {@link MainWindow}.
+   * 
+   * @return The {@link MainWindow}.
+   * @see #mainWindowForm
+   */
+  public final MainWindow getMainWindow ()
+  {
+    return this.mainWindowForm.getLogic ();
+  }
+
+
+  /**
+   * Returns the {@link MainWindowForm}.
+   * 
+   * @return The {@link MainWindowForm}.
+   * @see #mainWindowForm
+   */
+  public final MainWindowForm getMainWindowForm ()
+  {
+    return this.mainWindowForm;
   }
 
 
@@ -750,30 +784,6 @@ public final class MachinePanel implements EditorPanel
   public final JPanel getPanel ()
   {
     return this.gui;
-  }
-
-
-  /**
-   * Returns the {@link MainWindowForm}.
-   * 
-   * @return The {@link MainWindowForm}.
-   * @see #mainWindowForm
-   */
-  public final MainWindowForm getMainWindowForm ()
-  {
-    return this.mainWindowForm;
-  }
-
-
-  /**
-   * Returns the {@link MainWindow}.
-   * 
-   * @return The {@link MainWindow}.
-   * @see #mainWindowForm
-   */
-  public final MainWindow getMainWindow ()
-  {
-    return this.mainWindowForm.getLogic ();
   }
 
 
@@ -948,10 +958,9 @@ public final class MachinePanel implements EditorPanel
   /**
    * Handle redo button pressed
    */
-  public void handleRedo ()
+  public final void handleRedo ()
   {
     this.redoUndoHandler.redo ();
-
   }
 
 
@@ -991,11 +1000,7 @@ public final class MachinePanel implements EditorPanel
   {
     try
     {
-      PreferenceManager prefmanager = PreferenceManager.getInstance ();
-      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
-      chooser.setMultiSelectionEnabled ( false );
-      chooser.setAcceptAllFileFilterUsed ( false );
-      chooser.addChoosableFileFilter ( new FileFilter ()
+      FileFilter fileFilter = new FileFilter ()
       {
 
         @SuppressWarnings ( "synthetic-access" )
@@ -1025,18 +1030,24 @@ public final class MachinePanel implements EditorPanel
               + MachinePanel.this.machine.getMachineType ().toLowerCase ()
               + ")"; //$NON-NLS-1$
         }
-      } );
-      int n = chooser.showSaveDialog ( this.mainWindowForm );
-      if ( ( n == JFileChooser.CANCEL_OPTION )
-          || ( chooser.getSelectedFile () == null ) )
+      };
+
+      SaveDialog saveDialog = new SaveDialog ( this.mainWindowForm,
+          PreferenceManager.getInstance ().getWorkingPath (), fileFilter,
+          fileFilter );
+      saveDialog.show ();
+
+      if ( ( !saveDialog.isConfirmed () )
+          || ( saveDialog.getSelectedFile () == null ) )
       {
         return null;
       }
-      if ( chooser.getSelectedFile ().exists () )
+
+      if ( saveDialog.getSelectedFile ().exists () )
       {
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
             Messages.getString (
-                "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
                     .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
             true, true, false );
         confirmDialog.show ();
@@ -1046,16 +1057,16 @@ public final class MachinePanel implements EditorPanel
         }
       }
 
-      String filename = chooser.getSelectedFile ().toString ().matches (
-          ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? chooser //$NON-NLS-1$
-          .getSelectedFile ().toString () : chooser.getSelectedFile ()
-          .toString ()
-          + "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
+      String filename = saveDialog.getSelectedFile ().toString ().matches (
+          ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? saveDialog //$NON-NLS-1$
+          .getSelectedFile ().toString ()
+          : saveDialog.getSelectedFile ().toString ()
+              + "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-          .getAbsolutePath () );
+      PreferenceManager.getInstance ().setWorkingPath (
+          saveDialog.getCurrentDirectory ().getAbsolutePath () );
       this.file = new File ( filename );
 
     }
@@ -2574,16 +2585,5 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
-   */
-  public JTabbedPane getJTabbedPaneConsole ()
-  {
-    return this.gui.jGTITabbedPaneConsole;
   }
 }

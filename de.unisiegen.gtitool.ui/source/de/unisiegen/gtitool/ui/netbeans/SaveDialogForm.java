@@ -2,36 +2,36 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import java.awt.Frame;
 
-import de.unisiegen.gtitool.ui.logic.OpenDialog;
+import de.unisiegen.gtitool.ui.logic.SaveDialog;
 
 /**
- * The {@link OpenDialogForm}.
+ * The {@link SaveDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class OpenDialogForm extends javax.swing.JDialog {
+public class SaveDialogForm extends javax.swing.JDialog {
   
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -5540174874850089905L;
+  private static final long serialVersionUID = -2312132994091880833L;
 
 
   /**
-   * The {@link OpenDialog}.
+   * The {@link SaveDialog}.
    */
-  private OpenDialog logic;
+  private SaveDialog logic;
 
 
   /**
-   * Creates new form {@link OpenDialog}.
+   * Creates new form {@link SaveDialog}.
    * 
-   * @param logic The {@link OpenDialog}.
+   * @param logic The {@link SaveDialog}.
    * @param parent The parent {@link Frame}.
    */
-  public OpenDialogForm ( OpenDialog logic, java.awt.Frame parent )
+  public SaveDialogForm ( SaveDialog logic, java.awt.Frame parent )
   {
     super ( parent, true );
     this.logic = logic ;
@@ -49,14 +49,14 @@ public class OpenDialogForm extends javax.swing.JDialog {
 
         jGTIFileChooser = new de.unisiegen.gtitool.ui.swing.JGTIFileChooser();
         jGTIPanelButtons = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIButtonOpen = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTIButtonSave = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
-        setTitle(bundle.getString("OpenDialog.Title")); // NOI18N
+        setTitle(bundle.getString("SaveDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -64,6 +64,8 @@ public class OpenDialogForm extends javax.swing.JDialog {
             }
         });
 
+        jGTIFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        jGTIFileChooser.setMultiSelectionEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -73,13 +75,13 @@ public class OpenDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIFileChooser, gridBagConstraints);
 
-        jGTIButtonOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("OpenDialog.OpenMnemonic").charAt(0));
-        jGTIButtonOpen.setText(bundle.getString("OpenDialog.Open")); // NOI18N
-        jGTIButtonOpen.setToolTipText(bundle.getString("OpenDialog.OpenToolTip")); // NOI18N
-        jGTIButtonOpen.setMinimumWidth(100);
-        jGTIButtonOpen.addActionListener(new java.awt.event.ActionListener() {
+        jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
+        jGTIButtonSave.setText(bundle.getString("SaveDialog.Save")); // NOI18N
+        jGTIButtonSave.setToolTipText(bundle.getString("SaveDialog.SaveToolTip")); // NOI18N
+        jGTIButtonSave.setMinimumWidth(100);
+        jGTIButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIButtonOpenActionPerformed(evt);
+                jGTIButtonSaveActionPerformed(evt);
             }
         });
 
@@ -89,11 +91,11 @@ public class OpenDialogForm extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
-        jGTIPanelButtons.add(jGTIButtonOpen, gridBagConstraints);
+        jGTIPanelButtons.add(jGTIButtonSave, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("OpenDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("OpenDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("OpenDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("SaveDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("SaveDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.setMinimumWidth(100);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,13 +130,13 @@ public class OpenDialogForm extends javax.swing.JDialog {
       this.logic.handleCancel();
     }//GEN-LAST:event_jGTIButtonCancelActionPerformed
 
-    private void jGTIButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOpenActionPerformed
-      this.logic.handleOpen();
-    }//GEN-LAST:event_jGTIButtonOpenActionPerformed
+    private void jGTIButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonSaveActionPerformed
+      this.logic.handleSave();
+    }//GEN-LAST:event_jGTIButtonSaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
-    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOpen;
+    public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonSave;
     public de.unisiegen.gtitool.ui.swing.JGTIFileChooser jGTIFileChooser;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
     // End of variables declaration//GEN-END:variables

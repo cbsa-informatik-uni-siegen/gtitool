@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import org.apache.log4j.Logger;
 
@@ -56,7 +57,7 @@ public final class OpenDialog
    */
   public OpenDialog ( JFrame parent, String workingPath )
   {
-    logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
+    logger.debug ( "allocate a new open dialog" ); //$NON-NLS-1$
     this.parent = parent;
     this.gui = new OpenDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
@@ -153,8 +154,7 @@ public final class OpenDialog
       public String getDescription ()
       {
         StringBuilder result = new StringBuilder ();
-        result.append ( Messages
-            .getString ( "OpenDialog.FilterMachine" ) ); //$NON-NLS-1$
+        result.append ( Messages.getString ( "OpenDialog.FilterFilesMachine" ) ); //$NON-NLS-1$
         result.append ( " (" ); //$NON-NLS-1$
         for ( int i = 0 ; i < Machine.AVAILABLE_MACHINES.length ; i++ )
         {
@@ -197,8 +197,7 @@ public final class OpenDialog
       public String getDescription ()
       {
         StringBuilder result = new StringBuilder ();
-        result.append ( Messages
-            .getString ( "OpenDialog.FilterGrammar" ) ); //$NON-NLS-1$
+        result.append ( Messages.getString ( "OpenDialog.FilterFilesGrammar" ) ); //$NON-NLS-1$
         result.append ( " (" ); //$NON-NLS-1$
         for ( int i = 0 ; i < Grammar.AVAILABLE_GRAMMARS.length ; i++ )
         {
@@ -218,6 +217,17 @@ public final class OpenDialog
     this.gui.jGTIFileChooser.addChoosableFileFilter ( machineFileFilter );
     this.gui.jGTIFileChooser.addChoosableFileFilter ( grammarFileFilter );
     this.gui.jGTIFileChooser.setFileFilter ( sourceFileFilter );
+  }
+
+
+  /**
+   * Returns the current directory.
+   * 
+   * @return The current directory.
+   */
+  public final File getCurrentDirectory ()
+  {
+    return this.gui.jGTIFileChooser.getCurrentDirectory ();
   }
 
 
@@ -265,6 +275,18 @@ public final class OpenDialog
   public final void handleOpen ()
   {
     logger.debug ( "handle open" ); //$NON-NLS-1$
+
+    if ( this.gui.jGTIFileChooser.getUI () instanceof BasicFileChooserUI )
+    {
+      BasicFileChooserUI ui = ( BasicFileChooserUI ) this.gui.jGTIFileChooser
+          .getUI ();
+      ui.getApproveSelectionAction ().actionPerformed ( null );
+    }
+    else
+    {
+      throw new RuntimeException ( "ui is not a BasicFileChooserUI" ); //$NON-NLS-1$
+    }
+
     this.confirmed = true;
     this.gui.dispose ();
   }
@@ -287,7 +309,7 @@ public final class OpenDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the about dialog" ); //$NON-NLS-1$
+    logger.debug ( "show the open dialog" ); //$NON-NLS-1$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

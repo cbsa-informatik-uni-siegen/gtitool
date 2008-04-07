@@ -9,7 +9,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -546,11 +545,7 @@ public class GrammarPanel implements EditorPanel
   {
     try
     {
-      PreferenceManager prefmanager = PreferenceManager.getInstance ();
-      JFileChooser chooser = new JFileChooser ( prefmanager.getWorkingPath () );
-      chooser.setMultiSelectionEnabled ( false );
-      chooser.setAcceptAllFileFilterUsed ( false );
-      chooser.addChoosableFileFilter ( new FileFilter ()
+      FileFilter fileFilter = new FileFilter ()
       {
 
         @SuppressWarnings ( "synthetic-access" )
@@ -580,18 +575,24 @@ public class GrammarPanel implements EditorPanel
               + GrammarPanel.this.grammar.getGrammarType ().toLowerCase ()
               + ")"; //$NON-NLS-1$
         }
-      } );
-      int n = chooser.showSaveDialog ( this.mainWindowForm );
-      if ( ( n == JFileChooser.CANCEL_OPTION )
-          || ( chooser.getSelectedFile () == null ) )
+      };
+
+      SaveDialog saveDialog = new SaveDialog ( this.mainWindowForm,
+          PreferenceManager.getInstance ().getWorkingPath (), fileFilter,
+          fileFilter );
+      saveDialog.show ();
+
+      if ( ( !saveDialog.isConfirmed () )
+          || ( saveDialog.getSelectedFile () == null ) )
       {
         return null;
       }
-      if ( chooser.getSelectedFile ().exists () )
+
+      if ( saveDialog.getSelectedFile ().exists () )
       {
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
             Messages.getString (
-                "MachinePanel.FileExists", chooser.getSelectedFile () //$NON-NLS-1$
+                "MachinePanel.FileExists", saveDialog.getSelectedFile () //$NON-NLS-1$
                     .getName () ), Messages.getString ( "MachinePanel.Save" ), //$NON-NLS-1$
             true, true, false );
         confirmDialog.show ();
@@ -601,18 +602,17 @@ public class GrammarPanel implements EditorPanel
         }
       }
 
-      String filename = chooser.getSelectedFile ().toString ().matches (
-          ".+\\." + this.grammar.getGrammarType ().toLowerCase () ) ? chooser //$NON-NLS-1$
-          .getSelectedFile ().toString () : chooser.getSelectedFile ()
-          .toString ()
-          + "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
+      String filename = saveDialog.getSelectedFile ().toString ().matches (
+          ".+\\." + this.grammar.getGrammarType ().toLowerCase () ) ? saveDialog //$NON-NLS-1$
+          .getSelectedFile ().toString ()
+          : saveDialog.getSelectedFile ().toString ()
+              + "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 
-      prefmanager.setWorkingPath ( chooser.getCurrentDirectory ()
-          .getAbsolutePath () );
+      PreferenceManager.getInstance ().setWorkingPath (
+          saveDialog.getCurrentDirectory ().getAbsolutePath () );
       this.file = new File ( filename );
-
     }
     catch ( StoreException e )
     {

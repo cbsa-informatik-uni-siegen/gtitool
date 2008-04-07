@@ -1,6 +1,5 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Save Dialog neu bauen
 CF		- Nachdem die Logik des Start Symbols eingebaut wurde, muss der
 		  PrettyString angepasst werden, so dass das Start Symbol anders
 		  dargestellt wird.

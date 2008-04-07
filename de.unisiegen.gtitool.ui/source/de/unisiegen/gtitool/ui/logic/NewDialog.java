@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
+import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
@@ -198,7 +199,18 @@ public final class NewDialog
         this.newPanel = new GrammarPanel ( this.parent,
             new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
                 .getNonterminalSymbolSet (), this.newDialogTerminal
-                .geTerminalSymbolSet (), this.newDialogTerminal.getStartSymbol() ) ), null );
+                .geTerminalSymbolSet (), this.newDialogTerminal
+                .getStartSymbol () ) ), null );
+        this.gui.dispose ();
+      }
+      else if ( this.grammarChoice.getUserChoice ().equals (
+          NewDialogGrammarChoice.Choice.REGULAR ) )
+      {
+        this.newPanel = new GrammarPanel ( this.parent,
+            new DefaultGrammarModel ( new DefaultRG ( this.newDialogTerminal
+                .getNonterminalSymbolSet (), this.newDialogTerminal
+                .geTerminalSymbolSet (), this.newDialogTerminal
+                .getStartSymbol () ) ), null );
         this.gui.dispose ();
       }
     }

@@ -42,8 +42,6 @@
 				<filter token="gtitool.version" value="${gtitool.version}" />
 			</filterset>
 		</copy>
-		<!-- move exe file -->
-		<move todir="${gtitooldir}" file="${basedir}/executer/windows/gtitool.exe" />
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${distdir}">

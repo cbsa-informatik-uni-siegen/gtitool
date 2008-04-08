@@ -59,6 +59,16 @@ public interface NonterminalSymbol extends Entity, ProductionWordMember,
 
 
   /**
+   * Returns true if this {@link NonterminalSymbol} is a start
+   * {@link NonterminalSymbol}, otherwise false.
+   * 
+   * @return True if this {@link NonterminalSymbol} is a start
+   *         {@link NonterminalSymbol}, otherwise false.
+   */
+  public boolean isStart ();
+
+
+  /**
    * Sets the active value.
    * 
    * @param active The active value to set.
@@ -72,4 +82,12 @@ public interface NonterminalSymbol extends Entity, ProductionWordMember,
    * @param error The error value to set.
    */
   public void setError ( boolean error );
+
+
+  /**
+   * Sets the start value.
+   * 
+   * @param start The start value to set.
+   */
+  public void setStart ( boolean start );
 }

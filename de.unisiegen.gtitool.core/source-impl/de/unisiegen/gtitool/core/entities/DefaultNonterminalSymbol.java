@@ -38,15 +38,21 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * This {@link Symbol} is a error {@link Symbol}.
+   * This {@link NonterminalSymbol} is a error {@link NonterminalSymbol}.
    */
   private boolean error = false;
 
 
   /**
-   * This {@link Symbol} is a active {@link Symbol}.
+   * This {@link NonterminalSymbol} is a active {@link NonterminalSymbol}.
    */
   private boolean active = false;
+
+
+  /**
+   * This {@link NonterminalSymbol} is a start {@link NonterminalSymbol}.
+   */
+  private boolean start = false;
 
 
   /**
@@ -220,11 +226,11 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a active {@link Symbol}, otherwise
-   * false.
+   * Returns true if this {@link NonterminalSymbol} is a active
+   * {@link NonterminalSymbol}, otherwise false.
    * 
-   * @return True if this {@link Symbol} is a active {@link Symbol}, otherwise
-   *         false.
+   * @return True if this {@link NonterminalSymbol} is a active
+   *         {@link NonterminalSymbol}, otherwise false.
    */
   public final boolean isActive ()
   {
@@ -233,16 +239,29 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
-   * false.
+   * Returns true if this {@link NonterminalSymbol} is a error
+   * {@link NonterminalSymbol}, otherwise false.
    * 
-   * @return True if this {@link Symbol} is a error {@link Symbol}, otherwise
-   *         false.
+   * @return True if this {@link NonterminalSymbol} is a error
+   *         {@link NonterminalSymbol}, otherwise false.
    * @see #error
    */
   public final boolean isError ()
   {
     return this.error;
+  }
+
+
+  /**
+   * Returns true if this {@link NonterminalSymbol} is a start
+   * {@link NonterminalSymbol}, otherwise false.
+   * 
+   * @return True if this {@link NonterminalSymbol} is a start
+   *         {@link NonterminalSymbol}, otherwise false.
+   */
+  public final boolean isStart ()
+  {
+    return this.start;
   }
 
 
@@ -335,6 +354,17 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
+   * Sets the start value.
+   * 
+   * @param start The start value to set.
+   */
+  public final void setStart ( boolean start )
+  {
+    this.start = start;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see PrettyPrintable#toPrettyString()
@@ -342,8 +372,16 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.name,
-        Style.NONTERMINAL_SYMBOL ) );
+    if ( this.start )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.START_NONTERMINAL_SYMBOL ) );
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.NONTERMINAL_SYMBOL ) );
+    }
     return prettyString;
   }
 

@@ -220,11 +220,11 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a active {@link Symbol}, otherwise
-   * false.
+   * Returns true if this {@link TerminalSymbol} is a active
+   * {@link TerminalSymbol}, otherwise false.
    * 
-   * @return True if this {@link Symbol} is a active {@link Symbol}, otherwise
-   *         false.
+   * @return True if this {@link TerminalSymbol} is a active
+   *         {@link TerminalSymbol}, otherwise false.
    */
   public final boolean isActive ()
   {
@@ -233,11 +233,11 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
-   * false.
+   * Returns true if this {@link TerminalSymbol} is a error
+   * {@link TerminalSymbol}, otherwise false.
    * 
-   * @return True if this {@link Symbol} is a error {@link Symbol}, otherwise
-   *         false.
+   * @return True if this {@link TerminalSymbol} is a error
+   *         {@link TerminalSymbol}, otherwise false.
    * @see #error
    */
   public final boolean isError ()

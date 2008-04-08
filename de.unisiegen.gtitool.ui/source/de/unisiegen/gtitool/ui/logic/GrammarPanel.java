@@ -702,13 +702,15 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
-   * Handle Toolbar Alphabet button action event
+   * Handles the toolbar edit document event.
    */
   public void handleToolbarEditDocument ()
   {
-    TerminalDialog alphabetDialog = new TerminalDialog ( this.mainWindowForm,
+    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
         this.grammar );
-    alphabetDialog.show ();
+    terminalDialog.show ();
+    // Must be repainted because of the maybe changed start symbol. 
+    this.gui.jGTITableGrammar.repaint ();
   }
 
 

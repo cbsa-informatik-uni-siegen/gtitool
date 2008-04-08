@@ -1,9 +1,8 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Nachdem die Logik des Start Symbols eingebaut wurde, muss der
-		  PrettyString angepasst werden, so dass das Start Symbol anders
-		  dargestellt wird.
-CF		- Pretty String der Produktionen unter Windows testen.
+CF		- Start Symbol in den Production Dialog einbauen (und testen)
+CF		- Pretty String der Produktionen unter Windows testen
+CF		- Testen ob es möglich ist die Machine Tabelle editable zu machen
 
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel

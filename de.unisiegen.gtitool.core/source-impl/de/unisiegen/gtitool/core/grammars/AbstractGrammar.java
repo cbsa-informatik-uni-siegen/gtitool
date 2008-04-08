@@ -142,6 +142,7 @@ public abstract class AbstractGrammar implements Grammar
   public void addProduction ( Production production )
   {
     this.productions.add ( production );
+    updateStartSymbol ();
     production
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
     fireModifyStatusChanged ( false );
@@ -215,7 +216,6 @@ public abstract class AbstractGrammar implements Grammar
             current ) );
       }
     }
-
     return grammarExceptionList;
   }
 
@@ -354,7 +354,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.grammars.Grammar#getProductionAt(int)
+   * @see Grammar#getProductionAt(int)
    */
   public Production getProductionAt ( int index )
   {
@@ -365,7 +365,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.grammars.Grammar#getProductions()
+   * @see Grammar#getProductions()
    */
   public ArrayList < Production > getProductions ()
   {
@@ -376,11 +376,22 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see javax.swing.table.TableModel#getRowCount()
+   * @see TableModel#getRowCount()
    */
   public int getRowCount ()
   {
     return this.productions.size ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Grammar#getStartSymbol()
+   */
+  public NonterminalSymbol getStartSymbol ()
+  {
+    return this.startSymbol;
   }
 
 
@@ -478,6 +489,7 @@ public abstract class AbstractGrammar implements Grammar
   public void removeProduction ( Production production )
   {
     this.productions.remove ( production );
+    updateStartSymbol ();
     fireModifyStatusChanged ( false );
   }
 
@@ -515,6 +527,18 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.core.grammars.Grammar#setStartSymbol(NonterminalSymbol)
+   */
+  public void setStartSymbol ( NonterminalSymbol startSymbol )
+  {
+    this.startSymbol = startSymbol;
+    updateStartSymbol ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see TableModel#setValueAt(Object, int, int)
    */
   public final void setValueAt ( @SuppressWarnings ( "unused" )
@@ -523,6 +547,30 @@ public abstract class AbstractGrammar implements Grammar
   int columnIndex )
   {
     // Do nothing
+  }
+
+
+  /**
+   * Updates the start symbol flags.
+   */
+  private final void updateStartSymbol ()
+  {
+    for ( Production currentProduction : this.productions )
+    {
+      currentProduction.getNonterminalSymbol ()
+          .setStart (
+              currentProduction.getNonterminalSymbol ().equals (
+                  this.startSymbol ) );
+      for ( ProductionWordMember currentMember : currentProduction
+          .getProductionWord () )
+      {
+        if ( currentMember instanceof NonterminalSymbol )
+        {
+          NonterminalSymbol currentSymbol = ( NonterminalSymbol ) currentMember;
+          currentSymbol.setStart ( currentSymbol.equals ( this.startSymbol ) );
+        }
+      }
+    }
   }
 
 
@@ -552,27 +600,5 @@ public abstract class AbstractGrammar implements Grammar
     {
       throw new GrammarValidationException ( grammarExceptionList );
     }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.grammars.Grammar#getStartSymbol()
-   */
-  public NonterminalSymbol getStartSymbol ()
-  {
-    return this.startSymbol;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.grammars.Grammar#setStartSymbol(NonterminalSymbol)
-   */
-  public void setStartSymbol ( NonterminalSymbol startSymbol )
-  {
-    this.startSymbol = startSymbol;
   }
 }

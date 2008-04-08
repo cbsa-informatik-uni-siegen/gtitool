@@ -70,8 +70,6 @@ public class ConfirmDialogForm extends javax.swing.JDialog
         });
 
         jGTIScrollPaneInfo.setBorder(null);
-        jGTITextAreaInfo.setColumns(18);
-        jGTITextAreaInfo.setRows(3);
         jGTITextAreaInfo.setFocusable(false);
         jGTITextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
         jGTITextAreaInfo.setOpaque(false);
@@ -134,7 +132,7 @@ public class ConfirmDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(330, 160));
+        setSize(new java.awt.Dimension(352, 220));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCancelActionPerformed

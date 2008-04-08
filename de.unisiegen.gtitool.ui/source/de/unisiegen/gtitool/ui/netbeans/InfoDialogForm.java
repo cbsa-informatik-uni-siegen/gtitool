@@ -68,8 +68,6 @@ public class InfoDialogForm extends javax.swing.JDialog
         });
 
         jGTIScrollPaneInfo.setBorder(null);
-        jGTITextAreaInfo.setColumns(18);
-        jGTITextAreaInfo.setRows(3);
         jGTITextAreaInfo.setFocusable(false);
         jGTITextAreaInfo.setFont(new java.awt.Font("Dialog", 1, 12));
         jGTITextAreaInfo.setOpaque(false);
@@ -99,7 +97,7 @@ public class InfoDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         getContentPane().add(jGTIButtonClose, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(256, 160));
+        setSize(new java.awt.Dimension(240, 150));
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

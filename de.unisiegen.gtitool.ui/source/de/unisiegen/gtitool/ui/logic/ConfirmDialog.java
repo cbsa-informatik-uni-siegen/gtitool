@@ -227,6 +227,30 @@ public final class ConfirmDialog
   public final void show ()
   {
     logger.debug ( "show the confirm dialog" ); //$NON-NLS-1$
+
+    int rows = 3;
+    int columns = 16;
+    this.gui.jGTITextAreaInfo.setRows ( rows );
+    this.gui.jGTITextAreaInfo.setColumns ( columns );
+    this.gui.pack ();
+
+    int heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ()
+        .getBounds ().height;
+    int heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
+        .getBounds ().height;
+
+    while ( ( rows < 10 ) && ( heightView > heightViewport ) )
+    {
+      rows++ ;
+      columns = columns + 2;
+      this.gui.jGTITextAreaInfo.setRows ( rows );
+      this.gui.jGTITextAreaInfo.setColumns ( columns );
+      this.gui.pack ();
+      heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ().getBounds ().height;
+      heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
+          .getBounds ().height;
+    }
+
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

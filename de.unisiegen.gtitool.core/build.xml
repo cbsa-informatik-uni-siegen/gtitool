@@ -19,12 +19,14 @@
 	<property name="sourcegenerateddir" value="${basedir}/source-generated" />
 	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
 	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
+	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
+	<property name="logger.distdir" value="${logger.basedir}/dist" />
 	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
-	<property name="log4jfile" value="log4j-1.2.15.jar" />
+	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
 	<property name="licensefile" value="${docdir}/license.txt" />
 
 	<!-- declare -->
@@ -34,7 +36,7 @@
 	</target>
 
 	<!-- dist -->
-	<target name="dist" depends="dist-preclean,dist-jflex,dist-javacup,dist-compile,dist-jar,dist-lib,dist-clean" description="Build distribution">
+	<target name="dist" depends="dist-preclean,dist-logger,dist-jflex,dist-javacup,dist-compile,dist-jar,dist-clean" description="Build distribution">
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
 
@@ -42,6 +44,12 @@
 	<target name="dist-preclean">
 		<delete dir="${distdir}" />
 		<mkdir dir="${distdir}" />
+	</target>
+
+	<!-- dist logger -->
+	<target name="dist-logger">
+		<ant dir="${logger.basedir}" target="dist" inheritall="false" />
+		<copy file="${logger.distdir}/${loggerfile}" todir="${distdir}" />
 	</target>
 
 	<!-- dist jflex -->
@@ -65,7 +73,7 @@
 			<src path="${sourceimpldir}" />
 			<src path="${sourcegenerateddir}" />
 			<classpath>
-				<pathelement location="${libdir}/${log4jfile}" />
+				<pathelement location="${distdir}/${loggerfile}" />
 				<pathelement location="${distdir}/${javacupfile}" />
 			</classpath>
 		</javac>
@@ -92,11 +100,6 @@
 		</jar>
 		<!-- delete manifest -->
 		<delete file="${distdir}/MANIFEST.MF" />
-	</target>
-
-	<!-- dist lib -->
-	<target name="dist-lib">
-		<copy file="${libdir}/${log4jfile}" todir="${distdir}" />
 	</target>
 
 	<!-- dist clean -->
@@ -192,7 +195,7 @@
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${libdir}/${log4jfile}" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${logger.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

@@ -6,9 +6,8 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -104,7 +103,7 @@ public final class Messages
     }
     catch ( IllegalArgumentException exc )
     {
-      logger.error ( "illegal argument exception", exc ); //$NON-NLS-1$
+      logger.error ( "getString", "illegal argument exception", exc ); //$NON-NLS-1$ //$NON-NLS-2$
       return key;
     }
   }

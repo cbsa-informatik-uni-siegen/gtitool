@@ -1,8 +1,7 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -132,7 +131,7 @@ public enum AutoStepItem
       }
       default :
       {
-        logger.error ( "auto step interval is not supported" ); //$NON-NLS-1$
+        logger.error ( "create", "auto step interval is not supported" ); //$NON-NLS-1$ //$NON-NLS-2$
         return PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM;
       }
     }

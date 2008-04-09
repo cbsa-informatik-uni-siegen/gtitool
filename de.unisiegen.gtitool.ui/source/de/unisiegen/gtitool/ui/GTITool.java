@@ -8,8 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -69,19 +68,19 @@ public final class GTITool
     }
     catch ( ClassNotFoundException exc )
     {
-      logger.error ( "class not found exception", exc ); //$NON-NLS-1$
+      logger.error ( "GTITool", "class not found exception", exc ); //$NON-NLS-1$//$NON-NLS-2$
     }
     catch ( InstantiationException exc )
     {
-      logger.error ( "instantiation exception", exc ); //$NON-NLS-1$
+      logger.error ( "GTITool", "instantiation exception", exc ); //$NON-NLS-1$//$NON-NLS-2$
     }
     catch ( IllegalAccessException exc )
     {
-      logger.error ( "illegal access exception", exc ); //$NON-NLS-1$
+      logger.error ( "GTITool", "illegal access exception", exc ); //$NON-NLS-1$//$NON-NLS-2$
     }
     catch ( UnsupportedLookAndFeelException exc )
     {
-      logger.error ( "unsupported look and feel exception", exc ); //$NON-NLS-1$
+      logger.error ( "GTITool", "unsupported look and feel exception", exc ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /*

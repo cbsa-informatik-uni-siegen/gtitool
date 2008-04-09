@@ -3,11 +3,10 @@ package de.unisiegen.gtitool.ui.logic;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
@@ -69,7 +68,7 @@ public final class StateConfigDialog
   public StateConfigDialog ( JFrame parent, State state,
       DefaultMachineModel model )
   {
-    logger.debug ( "allocate a new new state name dialog" ); //$NON-NLS-1$
+    logger.debug ( "StateConfigDialog", "allocate a new new state name dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.state = state;
     this.model = model;
@@ -121,7 +120,7 @@ public final class StateConfigDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
     this.stateName = null;
     this.gui.dispose ();
@@ -133,7 +132,7 @@ public final class StateConfigDialog
    */
   public final void handleOk ()
   {
-    logger.debug ( "handle ok" ); //$NON-NLS-1$
+    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
     State activeState = this.gui.styledStateParserPanel.getState ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
@@ -146,7 +145,7 @@ public final class StateConfigDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the new state name dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the new state name dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

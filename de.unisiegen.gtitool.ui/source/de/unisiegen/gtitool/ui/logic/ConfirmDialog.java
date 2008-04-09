@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.netbeans.ConfirmDialogForm;
 import de.unisiegen.gtitool.ui.swing.JGTIButton;
 
@@ -72,7 +71,7 @@ public final class ConfirmDialog
       boolean yesButtonVisible, boolean noButtonVisible,
       boolean cancelButtonVisible )
   {
-    logger.debug ( "allocate a new confirm dialog" ); //$NON-NLS-1$
+    logger.debug ( "ConfirmDialog", "allocate a new confirm dialog" ); //$NON-NLS-1$//$NON-NLS-2$
     this.parent = parent;
     this.gui = new ConfirmDialogForm ( this, parent );
     this.gui.jGTITextAreaInfo.setCursor ( null );
@@ -157,7 +156,7 @@ public final class ConfirmDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$//$NON-NLS-2$
     this.canceled = true;
     this.gui.dispose ();
   }
@@ -168,7 +167,7 @@ public final class ConfirmDialog
    */
   public final void handleConfirm ()
   {
-    logger.debug ( "handle confirm" ); //$NON-NLS-1$
+    logger.debug ( "handleConfirm", "handle confirm" ); //$NON-NLS-1$//$NON-NLS-2$
     this.confirmed = true;
     this.gui.dispose ();
   }
@@ -179,7 +178,7 @@ public final class ConfirmDialog
    */
   public final void handleNotConfirm ()
   {
-    logger.debug ( "handle not confirm" ); //$NON-NLS-1$
+    logger.debug ( "handleNotConfirm", "handle not confirm" ); //$NON-NLS-1$//$NON-NLS-2$
     this.notConfirmed = true;
     this.gui.dispose ();
   }
@@ -226,7 +225,7 @@ public final class ConfirmDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the confirm dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the confirm dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     int rows = 3;
     int columns = 16;

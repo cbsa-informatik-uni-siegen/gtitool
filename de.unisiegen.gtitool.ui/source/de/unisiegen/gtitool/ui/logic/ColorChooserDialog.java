@@ -7,8 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.netbeans.ColorChooserDialogForm;
 
 
@@ -99,7 +98,7 @@ public final class ColorChooserDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$//$NON-NLS-2$
     this.gui.dispose ();
   }
 
@@ -109,7 +108,7 @@ public final class ColorChooserDialog
    */
   public final void handleOk ()
   {
-    logger.debug ( "handle ok" ); //$NON-NLS-1$
+    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$//$NON-NLS-2$
     this.confirmed = true;
     this.gui.dispose ();
   }
@@ -120,7 +119,7 @@ public final class ColorChooserDialog
    */
   public final void handleReset ()
   {
-    logger.debug ( "handle reset" ); //$NON-NLS-1$
+    logger.debug ( "handleReset", "handle reset" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setColor ( this.oldColor );
   }
 

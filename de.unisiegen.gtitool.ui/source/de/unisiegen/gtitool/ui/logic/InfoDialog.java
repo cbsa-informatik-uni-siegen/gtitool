@@ -3,8 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.netbeans.InfoDialogForm;
 
 
@@ -44,7 +43,7 @@ public final class InfoDialog
    */
   public InfoDialog ( JFrame parent, String text, String title )
   {
-    logger.debug ( "allocate a new info dialog" ); //$NON-NLS-1$
+    logger.debug ( "InfoDialog", "allocate a new info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new InfoDialogForm ( this, parent );
     this.gui.jGTITextAreaInfo.setCursor ( null );
@@ -59,7 +58,7 @@ public final class InfoDialog
    */
   public final void handleClose ()
   {
-    logger.debug ( "handle close" ); //$NON-NLS-1$
+    logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.dispose ();
   }
 
@@ -69,7 +68,7 @@ public final class InfoDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the info dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     int rows = 3;
     int columns = 16;

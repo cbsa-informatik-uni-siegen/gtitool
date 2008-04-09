@@ -28,8 +28,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
@@ -49,6 +47,7 @@ import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolItem;
 import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -904,7 +903,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public PreferencesDialog ( JFrame parent )
   {
-    logger.debug ( "allocate a new preferences dialog" ); //$NON-NLS-1$
+    logger.debug ( "PreferencesDialog", "allocate a new preferences dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new PreferencesDialogForm ( this, parent );
     init ();
@@ -917,7 +916,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleAccept ()
   {
-    logger.debug ( "handle accept" ); //$NON-NLS-1$
+    logger.debug ( "handleAccept", "handle accept" ); //$NON-NLS-1$ //$NON-NLS-2$
     save ();
   }
 
@@ -927,7 +926,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
     if ( this.initialLastActiveTab != this.gui.jGTITabbedPane
         .getSelectedIndex () )
@@ -958,7 +957,8 @@ public final class PreferencesDialog implements LanguageChangedListener
             .getLastPathComponent ();
         if ( selectedColorItem.isLeaf () )
         {
-          logger.debug ( "handle color chooser dialog" ); //$NON-NLS-1$ 
+          logger.debug ( "handleColorTreeMouseReleased", //$NON-NLS-1$
+              "handle color chooser dialog" ); //$NON-NLS-1$
           ColorChooserDialog colorChooserDialog = new ColorChooserDialog (
               this.parent, selectedColorItem.getColor () );
           colorChooserDialog.show ();
@@ -978,7 +978,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleOk ()
   {
-    logger.debug ( "handle ok" ); //$NON-NLS-1$
+    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
     save ();
     this.gui.dispose ();
@@ -990,7 +990,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void handleRestore ()
   {
-    logger.debug ( "handle restore" ); //$NON-NLS-1$
+    logger.debug ( "handleRestore", "handle restore" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     /*
      * General
@@ -2543,7 +2543,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   private final void save ()
   {
-    logger.debug ( "save" ); //$NON-NLS-1$
+    logger.debug ( "save", "save" ); //$NON-NLS-1$//$NON-NLS-2$
     /*
      * General
      */
@@ -2956,21 +2956,22 @@ public final class PreferencesDialog implements LanguageChangedListener
             }
           }
         }
-        catch ( ClassNotFoundException e )
+        catch ( ClassNotFoundException exc )
         {
-          logger.error ( "class not found exception", e ); //$NON-NLS-1$
+          logger.error ( "saveLookAndFeel", "class not found exception", exc );//$NON-NLS-1$//$NON-NLS-2$
         }
-        catch ( InstantiationException e )
+        catch ( InstantiationException exc )
         {
-          logger.error ( "instantiation exception", e ); //$NON-NLS-1$
+          logger.error ( "saveLookAndFeel", "instantiation exception", exc );//$NON-NLS-1$//$NON-NLS-2$
         }
-        catch ( IllegalAccessException e )
+        catch ( IllegalAccessException exc )
         {
-          logger.error ( "illegal access exception", e ); //$NON-NLS-1$
+          logger.error ( "saveLookAndFeel", "illegal access exception", exc );//$NON-NLS-1$//$NON-NLS-2$
         }
-        catch ( UnsupportedLookAndFeelException e )
+        catch ( UnsupportedLookAndFeelException exc )
         {
-          logger.error ( "unsupported look and feel exception", e ); //$NON-NLS-1$
+          logger.error ( "saveLookAndFeel",//$NON-NLS-1$
+              "unsupported look and feel exception", exc );//$NON-NLS-1$
         }
       }
       this.initialLookAndFeel = selectedLookAndFeelItem;
@@ -3145,7 +3146,7 @@ public final class PreferencesDialog implements LanguageChangedListener
    */
   public final void show ()
   {
-    logger.debug ( "show the preferences dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the preferences dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

@@ -1,8 +1,7 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -53,7 +52,7 @@ public enum MouseSelectionItem
       }
       default :
       {
-        logger.error ( "mouse selection index not supported" ); //$NON-NLS-1$
+        logger.error ( "create", "mouse selection index not supported" ); //$NON-NLS-1$ //$NON-NLS-2$
         return PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM;
       }
     }

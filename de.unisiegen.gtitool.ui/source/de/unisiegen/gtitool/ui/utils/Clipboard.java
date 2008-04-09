@@ -9,9 +9,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -87,7 +86,7 @@ public final class Clipboard implements ClipboardOwner
   {
     try
     {
-      logger.debug ( "copy " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
+      logger.debug ( "copy", "copy " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$ //$NON-NLS-2$
           + " into the clipboard" ); //$NON-NLS-1$
       this.systemClipboard.setContents ( new StringSelection ( text ), this );
     }
@@ -121,7 +120,7 @@ public final class Clipboard implements ClipboardOwner
     {
       String text = ( String ) transfer
           .getTransferData ( DataFlavor.stringFlavor );
-      logger.debug ( "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$
+      logger.debug ( "paste", "paste " + Messages.QUOTE + text + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + " from the clipboard" ); //$NON-NLS-1$
       return text;
     }

@@ -4,12 +4,11 @@ package de.unisiegen.gtitool.core;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -98,12 +97,12 @@ public final class Messages
     }
     catch ( MissingResourceException e )
     {
-      logger.error ( "key not found", e ); //$NON-NLS-1$
+      logger.error ( "getPrettyString", "key not found", e ); //$NON-NLS-1$ //$NON-NLS-2$
       return new PrettyString ( new PrettyToken ( key, Style.NONE ) );
     }
     catch ( IllegalArgumentException e )
     {
-      logger.error ( "illegal argument exception", e ); //$NON-NLS-1$
+      logger.error ( "getPrettyString", "illegal argument exception", e ); //$NON-NLS-1$ //$NON-NLS-2$
       return new PrettyString ( new PrettyToken ( key, Style.NONE ) );
     }
   }
@@ -162,12 +161,12 @@ public final class Messages
     }
     catch ( MissingResourceException e )
     {
-      logger.error ( "key not found", e ); //$NON-NLS-1$
+      logger.error ( "getString", "key not found", e ); //$NON-NLS-1$ //$NON-NLS-2$
       return key;
     }
     catch ( IllegalArgumentException e )
     {
-      logger.error ( "illegal argument exception", e ); //$NON-NLS-1$
+      logger.error ( "getString", "illegal argument exception", e ); //$NON-NLS-1$ //$NON-NLS-2$
       return key;
     }
   }

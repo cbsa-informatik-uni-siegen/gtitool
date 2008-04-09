@@ -9,8 +9,6 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -29,6 +27,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
@@ -1776,8 +1775,8 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setSaveState ( boolean state )
   {
-    logger.debug ( "set save status to " + Messages.QUOTE + state //$NON-NLS-1$
-        + Messages.QUOTE );
+    logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE  //$NON-NLS-1$//$NON-NLS-2$
+        + state + Messages.QUOTE );
 
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();

@@ -8,8 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.netbeans.SaveDialogForm;
 
 
@@ -57,7 +56,7 @@ public final class SaveDialog
   public SaveDialog ( JFrame parent, String workingPath, FileFilter fileFilter,
       FileFilter ... choosableFileFilter )
   {
-    logger.debug ( "allocate a new save dialog" ); //$NON-NLS-1$
+    logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new SaveDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
@@ -128,7 +127,7 @@ public final class SaveDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     this.confirmed = false;
     this.gui.setVisible ( false );
@@ -140,7 +139,7 @@ public final class SaveDialog
    */
   public final void handleSave ()
   {
-    logger.debug ( "handle save" ); //$NON-NLS-1$
+    logger.debug ( "handleSave", "handle save" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     if ( this.gui.jGTIFileChooser.getUI () instanceof BasicFileChooserUI )
     {
@@ -175,7 +174,7 @@ public final class SaveDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the save dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

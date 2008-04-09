@@ -21,7 +21,7 @@ public final class SVNVersion
    * The svn pattern.
    */
   private static final Pattern PATTERN = Pattern
-      .compile ( "/svn/gtitool/!svn/ver/[0-9]+/trunk/.*" ); //$NON-NLS-1$
+      .compile ( "/svn/gtitool/!svn/ver/[0-9]+/.*" ); //$NON-NLS-1$
 
 
   /**
@@ -126,6 +126,10 @@ public final class SVNVersion
 
     // jgraph
     newVersion = getVersion ( new File ( "../gtitool.jgraph" ) ); //$NON-NLS-1$
+    version = newVersion > version ? newVersion : version;
+
+    // logger
+    newVersion = getVersion ( new File ( "../gtitool.logger" ) ); //$NON-NLS-1$
     version = newVersion > version ? newVersion : version;
 
     // literature

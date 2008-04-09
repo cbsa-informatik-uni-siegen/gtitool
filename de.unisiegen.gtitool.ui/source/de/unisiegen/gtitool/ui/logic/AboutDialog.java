@@ -6,8 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.utils.Clipboard;
@@ -47,7 +46,7 @@ public final class AboutDialog
    */
   public AboutDialog ( JFrame parent )
   {
-    logger.debug ( "allocate a new about dialog" ); //$NON-NLS-1$
+    logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new AboutDialogForm ( this, parent );
     this.gui.jGTILabelName.setText ( "GTI Tool " + Version.MAJOR + "." //$NON-NLS-1$//$NON-NLS-2$
@@ -65,7 +64,7 @@ public final class AboutDialog
    */
   public final void handleClose ()
   {
-    logger.debug ( "handle close" ); //$NON-NLS-1$
+    logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.dispose ();
   }
 
@@ -75,7 +74,7 @@ public final class AboutDialog
    */
   public final void handleWebpageEntry ()
   {
-    logger.debug ( "handle web page entry" ); //$NON-NLS-1$
+    logger.debug ( "handleWebpageEntry", "handle web page entry" ); //$NON-NLS-1$ //$NON-NLS-2$
     Clipboard.getInstance ().copy ( this.gui.jGTILabelWebpageEntry.getText () );
   }
 
@@ -85,7 +84,7 @@ public final class AboutDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the about dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

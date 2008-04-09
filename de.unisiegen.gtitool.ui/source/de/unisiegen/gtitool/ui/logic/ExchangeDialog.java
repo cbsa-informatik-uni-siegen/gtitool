@@ -11,9 +11,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.exchange.ExchangeException;
@@ -79,7 +78,7 @@ public final class ExchangeDialog
    */
   public ExchangeDialog ( MainWindow mainWindow, Element element, File file )
   {
-    logger.debug ( "allocate a new exchange dialog" ); //$NON-NLS-1$
+    logger.debug ( "ExchangeDialog", "allocate a new exchange dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.mainWindow = mainWindow;
 
     this.element = element;
@@ -157,7 +156,7 @@ public final class ExchangeDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     if ( this.networkServer != null )
     {
       this.networkServer.close ();
@@ -181,7 +180,7 @@ public final class ExchangeDialog
    */
   public final void handleClose ()
   {
-    logger.debug ( "handle close" ); //$NON-NLS-1$
+    logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
 
     if ( this.networkServer != null )
@@ -439,7 +438,7 @@ public final class ExchangeDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the exchange dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the exchange dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.mainWindow.getGui ().getBounds ().x
         + ( this.mainWindow.getGui ().getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );

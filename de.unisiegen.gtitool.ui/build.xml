@@ -21,6 +21,9 @@
 	<property name="javacup.basedir" value="${basedir}/../gtitool.javacup" />
 	<property name="javacup.distdir" value="${javacup.basedir}/dist" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
+	<property name="logger.basedir" value="${basedir}/../gtitool.logger" />
+	<property name="logger.distdir" value="${logger.basedir}/dist" />
+	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
 	<property name="jgraph.basedir" value="${basedir}/../gtitool.jgraph" />
 	<property name="jgraph.distdir" value="${jgraph.basedir}/dist" />
 	<property name="jgraphfile" value="gtitool.jgraph-${gtitool.version}.jar" />
@@ -29,7 +32,6 @@
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
-	<property name="log4jfile" value="log4j-1.2.15.jar" />
 	<property name="licensefile" value="${core.docdir}/license.txt" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
@@ -93,7 +95,7 @@
 			<classpath>
 				<pathelement location="${core.distdir}/${corefile}" />
 				<pathelement location="${core.distdir}/${javacupfile}" />
-				<pathelement location="${core.distdir}/${log4jfile}" />
+				<pathelement location="${core.distdir}/${loggerfile}" />
 				<pathelement location="${jgraph.distdir}/${jgraphfile}" />
 				<pathelement location="${tinylaf.distdir}/${tinylaffile}" />
 			</classpath>
@@ -105,7 +107,7 @@
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.GTITool" />
-			<attribute name="Class-Path" value="${corefile} ${javacupfile} ${jgraphfile} ${tinylaffile} ${log4jfile}" />
+			<attribute name="Class-Path" value="${corefile} ${javacupfile} ${jgraphfile} ${tinylaffile} ${loggerfile}" />
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
@@ -119,9 +121,6 @@
 				<include name="**/*.png" />
 				<include name="**/*.properties" />
 				<include name="Default.theme" />
-			</fileset>
-			<fileset dir="${basedir}/log4j">
-				<include name="log4j.xml" />
 			</fileset>
 		</jar>
 		<!-- delete manifest -->
@@ -156,7 +155,7 @@
 
 	<!-- javadoc -->
 	<target name="javadoc" description="Generate the javadoc">
-		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${core.libdir}/${log4jfile}; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
+		<javadoc access="private" author="true" version="true" doctitle="GTITool Reference Manual" bottom="Copyright (c) 2007-2008 University of Siegen" destdir="${javadocdir}" source="1.5" classpath="${javacup.basedir}/source; ${jflex.basedir}/source; ${logger.basedir}/source; ${jgraph.basedir}/source; ${tinylaf.basedir}/source" windowtitle="GTITool Reference Manual" encoding="UTF-8" overview="${docdir}/overview.html">
 			<fileset dir="${sourcedir}">
 				<include name="**/*.java" />
 			</fileset>

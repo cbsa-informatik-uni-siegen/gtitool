@@ -1,8 +1,7 @@
 package de.unisiegen.gtitool.ui.preferences.item;
 
 
-import org.apache.log4j.Logger;
-
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
@@ -96,7 +95,7 @@ public enum ZoomFactorItem
       }
       default :
       {
-        logger.error ( "zoom factor not supported" ); //$NON-NLS-1$
+        logger.error ( "create", "zoom factor not supported" ); //$NON-NLS-1$ //$NON-NLS-2$
         return PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM;
       }
     }

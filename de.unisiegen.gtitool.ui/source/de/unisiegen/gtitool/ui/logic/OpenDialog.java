@@ -8,10 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 
-import org.apache.log4j.Logger;
-
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.OpenDialogForm;
 
@@ -57,7 +56,7 @@ public final class OpenDialog
    */
   public OpenDialog ( JFrame parent, String workingPath )
   {
-    logger.debug ( "allocate a new open dialog" ); //$NON-NLS-1$
+    logger.debug ( "OpenDialog", "allocate a new open dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new OpenDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
@@ -263,7 +262,7 @@ public final class OpenDialog
    */
   public final void handleCancel ()
   {
-    logger.debug ( "handle cancel" ); //$NON-NLS-1$
+    logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.confirmed = false;
     this.gui.dispose ();
   }
@@ -274,7 +273,7 @@ public final class OpenDialog
    */
   public final void handleOpen ()
   {
-    logger.debug ( "handle open" ); //$NON-NLS-1$
+    logger.debug ( "handleOpen", "handle open" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     if ( this.gui.jGTIFileChooser.getUI () instanceof BasicFileChooserUI )
     {
@@ -309,7 +308,7 @@ public final class OpenDialog
    */
   public final void show ()
   {
-    logger.debug ( "show the open dialog" ); //$NON-NLS-1$
+    logger.debug ( "show", "show the open dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

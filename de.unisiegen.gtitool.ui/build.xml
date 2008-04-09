@@ -7,6 +7,8 @@
 <project name="de.unisiegen.gtitool.ui" default="dist" basedir=".">
 
 	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.distdir" value="${core.basedir}/dist" />
 	<property name="core.libdir" value="${core.basedir}/lib" />
@@ -14,7 +16,6 @@
 	<property name="core.sourcedir" value="${core.basedir}/source" />
 	<property name="core.sourceimpldir" value="${core.basedir}/source-impl" />
 	<property name="core.sourcegenerateddir" value="${core.basedir}/source-generated" />
-	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="jflex.basedir" value="${basedir}/../gtitool.jflex" />
 	<property name="jflex.distdir" value="${jflex.basedir}/dist" />
@@ -32,7 +33,7 @@
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
-	<property name="licensefile" value="${core.docdir}/license.txt" />
+	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="tmpdir" value="${basedir}/tmp" />
@@ -130,12 +131,6 @@
 	<!-- dist clean -->
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
-	</target>
-
-	<!-- svn-keywords -->
-	<target name="svn-keywords" description="Set svn keywords">
-		<exec dir="${basedir}" os="Linux" executable="./keywords.sh" />
-		<echo message="Set svn keywords finished" />
 	</target>
 
 	<!-- svn-version -->

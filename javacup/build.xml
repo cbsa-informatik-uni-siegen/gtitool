@@ -7,6 +7,8 @@
 <project name="gtitool.javacup" default="dist" basedir=".">
 
 	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="distsourcedir" value="${distdir}/source" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -18,10 +20,9 @@
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
-	<property name="licensefile" value="${core.docdir}/license.txt" />
+	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
 	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11.jar" />

@@ -7,6 +7,8 @@
 <project name="gtitool.start" default="dist" basedir=".">
 
 	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
@@ -14,7 +16,6 @@
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
 	<property name="ui.distdir" value="${ui.basedir}/dist" />
@@ -22,7 +23,9 @@
 	<property name="startfile" value="gtitool.start-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
-	<property name="licensefile" value="${core.docdir}/license.txt" />
+	<property name="licensefile" value="${buildfilesdir}/license.txt" />
+	<property name="keystorefile" value="${buildfilesdir}/keystore" />
+	<property name="storepass" value="ao93iw2l" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-gtitool,dist-compile,dist-jar,dist-exe,dist-clean" description="Clean up and produce all distributions">
@@ -33,7 +36,7 @@
 			<fileset dir="${distdir}" includes="*.jar" />
 		</copy>
 		<!-- sign jar files -->
-		<signjar alias="gtitool" keystore="keystore" storepass="ao93iw2l">
+		<signjar alias="gtitool" keystore="${keystorefile}" storepass="${storepass}">
 			<fileset dir="${gtitooldir}" includes="*.jar" />
 		</signjar>
 		<!-- copy sh file -->
@@ -144,5 +147,11 @@
 			</fileset>
 			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
 		</javadoc>
+	</target>
+	
+	<!-- svn-keywords -->
+	<target name="svn-keywords" description="Set svn keywords">
+		<exec dir="${basedir}" os="Linux" executable="./keywords.sh" />
+		<echo message="Set svn keywords finished" />
 	</target>
 </project>

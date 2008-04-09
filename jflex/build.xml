@@ -7,6 +7,8 @@
 <project name="gtitool.jflex" default="dist">
 
 	<!-- property -->
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="distcupdir" value="${distdir}/cup" />
 	<property name="libdir" value="${basedir}/lib" />
@@ -16,10 +18,9 @@
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property file="${core.basedir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
-	<property name="licensefile" value="${core.docdir}/license.txt" />
+	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />

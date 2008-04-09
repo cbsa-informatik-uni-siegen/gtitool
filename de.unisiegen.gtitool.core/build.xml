@@ -7,7 +7,8 @@
 <project name="de.unisiegen.gtitool.core" default="dist" basedir=".">
 
 	<!-- property -->
-	<property file="${basedir}/build.properties" />
+	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
+	<property file="${buildfilesdir}/build.properties" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
@@ -27,7 +28,7 @@
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-	<property name="licensefile" value="${docdir}/license.txt" />
+	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- declare -->
 	<target name="declare">

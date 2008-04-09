@@ -23,6 +23,9 @@ svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.jflex/source/ -na
 # jgraph
 svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.jgraph/source/ -name '*.java'`
 
+# logger
+svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.logger/source/ -name '*.java'`
+
 # start
 svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.start/source/ -name '*.java'`
 

@@ -7,8 +7,3 @@ CF		- Testen ob es möglich ist die Machine Tabelle editable zu machen
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
 BM		- Draft for... für Grammatiken
-BM		- Das GrammarPanel enthält jetzt eine Methode moveRows. Diese Methode
-		  müsste von dir implementiert werden. Die Parameter liefern dir alle
-		  Informationen die du brauchst, um die Produktionen zu verschieben,
-		  dabei ist darauf zu achten, dass auch mehrere Produktionen auf einmal
-		  verschoben werden können. Ein Beispiel findest du bei den Netfiltern.

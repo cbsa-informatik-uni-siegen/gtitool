@@ -871,6 +871,7 @@ public class GrammarPanel implements EditorPanel
     
     this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( newTargetIndex, newTargetIndex + indeces.length - 1 );
     
+    fireModifyStatusChanged ( false );
   }
 
 

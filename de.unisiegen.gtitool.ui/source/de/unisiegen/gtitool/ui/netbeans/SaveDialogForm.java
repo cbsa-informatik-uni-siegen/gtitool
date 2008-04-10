@@ -78,7 +78,6 @@ public class SaveDialogForm extends javax.swing.JDialog {
         jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
         jGTIButtonSave.setText(bundle.getString("SaveDialog.Save")); // NOI18N
         jGTIButtonSave.setToolTipText(bundle.getString("SaveDialog.SaveToolTip")); // NOI18N
-        jGTIButtonSave.setMinimumWidth(100);
         jGTIButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonSaveActionPerformed(evt);
@@ -96,7 +95,6 @@ public class SaveDialogForm extends javax.swing.JDialog {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("SaveDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("SaveDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.setMinimumWidth(100);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);

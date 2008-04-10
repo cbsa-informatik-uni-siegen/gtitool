@@ -20,9 +20,6 @@
   <SubComponents>
     <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneConsole">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
-        </Property>
         <Property name="dividerLocation" type="int" value="200"/>
         <Property name="orientation" type="int" value="0"/>
         <Property name="resizeWeight" type="double" value="1.0"/>
@@ -46,9 +43,6 @@
           <SubComponents>
             <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneTable">
               <Properties>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
                 <Property name="dividerLocation" type="int" value="400"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
               </Properties>
@@ -109,9 +103,6 @@
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
                         <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableMachine">
-                          <Properties>
-                            <Property name="focusable" type="boolean" value="false"/>
-                          </Properties>
                           <Events>
                             <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableMachineMouseExited"/>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableMachineFocusLost"/>
@@ -152,7 +143,9 @@
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="Error">
-                        <Property name="tabTitle" type="java.lang.String" value="Error"/>
+                        <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="MachinePanel.Error" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                        </Property>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/error.gif"/>
                         </Property>
@@ -163,9 +156,6 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableErrors">
-                      <Properties>
-                        <Property name="focusable" type="boolean" value="false"/>
-                      </Properties>
                       <Events>
                         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableErrorsMouseExited"/>
                         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableErrorsFocusLost"/>
@@ -182,7 +172,9 @@
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="Warning">
-                        <Property name="tabTitle" type="java.lang.String" value="Warning"/>
+                        <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                          <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="MachinePanel.Warning" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                        </Property>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                           <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/warning.gif"/>
                         </Property>
@@ -193,9 +185,6 @@
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
                     <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableWarnings">
-                      <Properties>
-                        <Property name="focusable" type="boolean" value="false"/>
-                      </Properties>
                       <Events>
                         <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableWarningsMouseExited"/>
                         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableWarningsFocusLost"/>

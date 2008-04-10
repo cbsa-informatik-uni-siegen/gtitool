@@ -81,8 +81,6 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(alphabetPanelForm, gridBagConstraints);
 
-        jGTIPanelButtons.setLayout(new java.awt.GridBagLayout());
-
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AlphabetDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("AlphabetDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("AlphabetDialog.OkToolTip")); // NOI18N

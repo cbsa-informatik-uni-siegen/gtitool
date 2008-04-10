@@ -94,8 +94,6 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIScrollPaneStatus, gridBagConstraints);
 
-        jGTIPanelPreferences.setLayout(new java.awt.GridBagLayout());
-
         jGTILabelPort.setText(bundle.getString("ExchangeDialog.Port")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -141,8 +139,6 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
         jGTIPanelPreferences.add(jGTITextFieldHost, gridBagConstraints);
-
-        jGTIPanelDescription.setLayout(new java.awt.GridBagLayout());
 
         jGTILabelHostDescription.setText(bundle.getString("ExchangeDialog.Description")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -215,8 +211,6 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelPreferences, gridBagConstraints);
-
-        jGTIPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.ExecuteMnemonic").charAt(0));
         jGTIButtonExecute.setText(bundle.getString("ExchangeDialog.Execute")); // NOI18N

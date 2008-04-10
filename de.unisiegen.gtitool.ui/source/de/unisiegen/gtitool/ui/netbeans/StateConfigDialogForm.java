@@ -87,8 +87,6 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(styledStateParserPanel, gridBagConstraints);
 
-        jGTIPanelState.setLayout(new java.awt.GridBagLayout());
-
         jGTICheckBoxStartState.setText(bundle.getString("NewStateNameDialog.StartState")); // NOI18N
         jGTICheckBoxStartState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,8 +123,6 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelState, gridBagConstraints);
-
-        jGTIPanelButtons.setLayout(new java.awt.GridBagLayout());
 
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N

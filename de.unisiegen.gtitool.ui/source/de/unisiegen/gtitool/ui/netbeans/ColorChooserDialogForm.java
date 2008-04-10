@@ -108,8 +108,6 @@ public class ColorChooserDialogForm extends javax.swing.JDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
         getContentPane().add(jGTIColorChooser, gridBagConstraints);
 
-        jGTIPanelPreview.setLayout(new java.awt.GridBagLayout());
-
         jGTILabelOldColorText.setText(bundle.getString("ColorChooserDialog.OldColor")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

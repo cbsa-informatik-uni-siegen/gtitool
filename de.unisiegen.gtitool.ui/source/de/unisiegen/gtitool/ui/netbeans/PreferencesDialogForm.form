@@ -44,7 +44,7 @@
         <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelGeneral">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="General" toolTip="General settings">
+              <JTabbedPaneConstraints tabName="Allgemein" toolTip="Allgemeine Einstellungen">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.TabGeneral" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -186,7 +186,7 @@
         <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelView">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="View" toolTip="View settings">
+              <JTabbedPaneConstraints tabName="Ansicht" toolTip="Ansicht Einstellungen">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.TabView" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -323,7 +323,7 @@
         <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelColor">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Colors" toolTip="Color settings">
+              <JTabbedPaneConstraints tabName="Farben" toolTip="Einstellungen der Farben">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.TabColors" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -361,7 +361,7 @@
         <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelAlphabet">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Alphabet" toolTip="Alphabet settings">
+              <JTabbedPaneConstraints tabName="Alphabet" toolTip="Alphabet Einstellungen">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.TabAlphabet" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
@@ -386,7 +386,7 @@
         <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelGrammar">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Grammar" toolTip="Grammar settings">
+              <JTabbedPaneConstraints tabName="Grammatik" toolTip="Grammatik Einstellungen">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.TabGrammar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>

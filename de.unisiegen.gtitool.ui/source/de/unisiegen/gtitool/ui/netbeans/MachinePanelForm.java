@@ -50,11 +50,9 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
         setLayout(new java.awt.GridBagLayout());
 
-        jGTISplitPaneConsole.setBorder(null);
         jGTISplitPaneConsole.setDividerLocation(200);
         jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jGTISplitPaneConsole.setResizeWeight(1.0);
-        jGTISplitPaneTable.setBorder(null);
         jGTISplitPaneTable.setDividerLocation(400);
         jGTISplitPaneTable.setResizeWeight(1.0);
         jGTIScrollPaneDiagramm.setBorder(null);
@@ -69,7 +67,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jGTISplitPaneTable.setLeftComponent(jGTIPanelDiagramm);
 
         jGTIScrollPaneTable.setBorder(null);
-        jGTITableMachine.setFocusable(false);
         jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableMachineMouseExited(evt);
@@ -104,7 +101,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jGTISplitPaneConsole.setLeftComponent(jGTIPanelMachine);
 
         jGTIScrollPaneErrors.setBorder(null);
-        jGTITableErrors.setFocusable(false);
         jGTITableErrors.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableErrorsMouseExited(evt);
@@ -118,10 +114,10 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
         jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
-        jGTITabbedPaneConsole.addTab("Error", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors); // NOI18N
 
         jGTIScrollPaneWarnings.setBorder(null);
-        jGTITableWarnings.setFocusable(false);
         jGTITableWarnings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableWarningsMouseExited(evt);
@@ -135,7 +131,7 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
         jGTIScrollPaneWarnings.setViewportView(jGTITableWarnings);
 
-        jGTITabbedPaneConsole.addTab("Warning", new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jGTIScrollPaneWarnings);
+        jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Warning"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/warning.gif")), jGTIScrollPaneWarnings); // NOI18N
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

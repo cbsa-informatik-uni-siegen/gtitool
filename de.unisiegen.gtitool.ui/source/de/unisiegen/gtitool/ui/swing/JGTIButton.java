@@ -25,13 +25,13 @@ public final class JGTIButton extends JButton
   /**
    * The default minimal width of this {@link JGTIButton}.
    */
-  private static final int DEFAULT_MIN_WIDTH = 80;
+  private static final int DEFAULT_MIN_WIDTH = 100;
 
 
   /**
    * The default maximum width of this {@link JGTIButton}.
    */
-  private static final int DEFAULT_MAX_WIDTH = 800;
+  private static final int DEFAULT_MAX_WIDTH = 1000;
 
 
   /**
@@ -43,7 +43,7 @@ public final class JGTIButton extends JButton
   /**
    * The default maximum height of this {@link JGTIButton}.
    */
-  private static final int DEFAULT_MAX_HEIGHT = 800;
+  private static final int DEFAULT_MAX_HEIGHT = 1000;
 
 
   /**

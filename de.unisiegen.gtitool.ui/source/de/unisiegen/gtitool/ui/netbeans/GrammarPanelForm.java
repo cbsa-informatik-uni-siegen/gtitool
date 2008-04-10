@@ -46,7 +46,6 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
 
         setLayout(new java.awt.GridBagLayout());
 
-        jGTISplitPaneConsole.setBorder(null);
         jGTISplitPaneConsole.setDividerLocation(200);
         jGTISplitPaneConsole.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jGTISplitPaneConsole.setResizeWeight(1.0);

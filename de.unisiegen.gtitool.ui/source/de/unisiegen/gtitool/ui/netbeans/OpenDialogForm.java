@@ -76,7 +76,6 @@ public class OpenDialogForm extends javax.swing.JDialog {
         jGTIButtonOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("OpenDialog.OpenMnemonic").charAt(0));
         jGTIButtonOpen.setText(bundle.getString("OpenDialog.Open")); // NOI18N
         jGTIButtonOpen.setToolTipText(bundle.getString("OpenDialog.OpenToolTip")); // NOI18N
-        jGTIButtonOpen.setMinimumWidth(100);
         jGTIButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOpenActionPerformed(evt);
@@ -94,7 +93,6 @@ public class OpenDialogForm extends javax.swing.JDialog {
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("OpenDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("OpenDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("OpenDialog.CancelToolTip")); // NOI18N
-        jGTIButtonCancel.setMinimumWidth(100);
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);

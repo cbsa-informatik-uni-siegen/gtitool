@@ -9,9 +9,9 @@ import java.util.ResourceBundle;
  * The class to get the messages.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id:MessagesStart.java 761 2008-04-10 22:22:51Z fehler $
  */
-public final class MessagesStart
+public final class Messages
 {
 
   /**
@@ -35,7 +35,7 @@ public final class MessagesStart
     try
     {
       ResourceBundle resourceBundle = ResourceBundle
-          .getBundle ( "de.unisiegen.gtitool.ui.start" ); //$NON-NLS-1$
+          .getBundle ( "de.unisiegen.gtitool.start.messages" ); //$NON-NLS-1$
       String message = resourceBundle.getString ( key );
       for ( int i = 0 ; i < arguments.length ; i++ )
       {

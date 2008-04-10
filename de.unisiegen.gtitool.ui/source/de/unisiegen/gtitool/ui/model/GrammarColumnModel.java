@@ -4,9 +4,9 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 

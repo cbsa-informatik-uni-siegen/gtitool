@@ -227,8 +227,8 @@ public final class ConfirmDialog
   {
     logger.debug ( "show", "show the confirm dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    int rows = 3;
-    int columns = 16;
+    int rows = 4;
+    int columns = 18;
     this.gui.jGTITextAreaInfo.setRows ( rows );
     this.gui.jGTITextAreaInfo.setColumns ( columns );
     this.gui.pack ();

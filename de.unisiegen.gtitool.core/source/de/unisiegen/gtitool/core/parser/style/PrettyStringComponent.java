@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.style;
+package de.unisiegen.gtitool.core.parser.style;
 
 
 import java.awt.Component;
@@ -9,10 +9,6 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
-
-import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
-import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
 /**
@@ -36,6 +32,18 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * The center horizontal value.
+   */
+  private boolean centerHorizontal = false;
+
+
+  /**
+   * The center vertical value.
+   */
+  private boolean centerVertical = false;
+
+
+  /**
    * Initializes the {@link PrettyStringComponent}.
    * 
    * @param prettyString The {@link PrettyString}.
@@ -52,6 +60,30 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * Returns the center horizontal value.
+   * 
+   * @return The center horizontal value.
+   * @see #centerHorizontal
+   */
+  public final boolean isCenterHorizontal ()
+  {
+    return this.centerHorizontal;
+  }
+
+
+  /**
+   * Returns the center vertical value.
+   * 
+   * @return The center vertical value.
+   * @see #centerVertical
+   */
+  public final boolean isCenterVertical ()
+  {
+    return this.centerVertical;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see JComponent#paintComponent(Graphics)
@@ -62,9 +94,19 @@ public final class PrettyStringComponent extends JLabel
     g.setColor ( getBackground () );
     g.fillRect ( 0, 0, getWidth (), getHeight () );
 
-    int dx = 0;
-
     FontMetrics metrics = g.getFontMetrics ();
+
+    int dx = 0;
+    if ( this.centerHorizontal )
+    {
+      dx = ( getWidth () - metrics.stringWidth ( this.prettyString.toString () ) ) / 2;
+    }
+
+    int y = getHeight () - 3;
+    if ( this.centerVertical )
+    {
+      y = y - ( ( getHeight () - metrics.getHeight () ) / 2 );
+    }
 
     for ( PrettyToken currentToken : this.prettyString.getPrettyToken () )
     {
@@ -94,9 +136,33 @@ public final class PrettyStringComponent extends JLabel
       char [] chars = currentToken.getChar ();
       for ( int i = 0 ; i < chars.length ; i++ )
       {
-        g.drawChars ( chars, i, 1, dx, getHeight () - 3 );
+        g.drawChars ( chars, i, 1, dx, y );
         dx += metrics.charWidth ( chars [ i ] );
       }
     }
+  }
+
+
+  /**
+   * Sets the center horizontal value.
+   * 
+   * @param centerHorizontal The center horizontal value to set.
+   * @see #centerHorizontal
+   */
+  public final void setCenterHorizontal ( boolean centerHorizontal )
+  {
+    this.centerHorizontal = centerHorizontal;
+  }
+
+
+  /**
+   * Sets the center vertical.
+   * 
+   * @param centerVertical The center vertical to set.
+   * @see #centerVertical
+   */
+  public final void setCenterVertical ( boolean centerVertical )
+  {
+    this.centerVertical = centerVertical;
   }
 }

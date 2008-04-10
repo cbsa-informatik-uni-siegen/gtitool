@@ -16,7 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringListCellRenderer;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 

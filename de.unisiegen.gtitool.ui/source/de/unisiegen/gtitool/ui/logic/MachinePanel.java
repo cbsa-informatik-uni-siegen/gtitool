@@ -49,7 +49,6 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
-import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -59,7 +58,6 @@ import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
-import de.unisiegen.gtitool.ui.logic.renderer.PrettyStringTableCellRenderer;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
@@ -1609,8 +1607,9 @@ public final class MachinePanel implements EditorPanel
 
         } );
     this.gui.jGTITableMachine.setModel ( this.machine );
-    this.gui.jGTITableMachine.setDefaultRenderer ( PrettyPrintable.class,
-        new PrettyStringTableCellRenderer () );
+    this.gui.jGTITableMachine.setColumnModel ( this.machine
+        .getTableColumnModel () );
+
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );

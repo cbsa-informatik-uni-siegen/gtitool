@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -258,6 +259,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @return The {@link State} list.
    */
   public State getState ( int index );
+
+
+  /**
+   * Returns the {@link TableColumnModel}.
+   * 
+   * @return The {@link TableColumnModel}.
+   */
+  public TableColumnModel getTableColumnModel ();
 
 
   /**

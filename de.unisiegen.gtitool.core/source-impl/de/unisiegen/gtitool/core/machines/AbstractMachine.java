@@ -8,6 +8,9 @@ import javax.swing.JTable;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.Messages;
@@ -41,6 +44,11 @@ import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintableList;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringTableCellRenderer;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringTableHeaderCellRenderer;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -1256,6 +1264,44 @@ public abstract class AbstractMachine implements Machine
   public final State getState ( int index )
   {
     return this.stateList.get ( index );
+  }
+
+
+  /**
+   * Returns the {@link TableColumnModel}.
+   * 
+   * @return The {@link TableColumnModel}.
+   */
+  public final TableColumnModel getTableColumnModel ()
+  {
+    DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
+
+    TableColumn stateColumn = new TableColumn ( 0 );
+    stateColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( "", //$NON-NLS-1$
+        Style.NONE ) ) );
+    stateColumn.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    stateColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    columnModel.addColumn ( stateColumn );
+
+    TableColumn epsilonColumn = new TableColumn ( 1 );
+    epsilonColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
+        "\u03B5", Style.SYMBOL ) ) ); //$NON-NLS-1$
+    epsilonColumn
+        .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+    epsilonColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+    columnModel.addColumn ( epsilonColumn );
+
+    for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+    {
+      TableColumn symbolColumn = new TableColumn ( i + 2 );
+      symbolColumn.setHeaderValue ( this.alphabet.get ( i ) );
+      symbolColumn
+          .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
+      symbolColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
+      columnModel.addColumn ( symbolColumn );
+    }
+
+    return columnModel;
   }
 
 

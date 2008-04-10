@@ -140,7 +140,7 @@ public final class Storage
       }
       if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
-        return new DefaultGrammarModel ( element );
+        return new DefaultGrammarModel ( element, null );
       }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }

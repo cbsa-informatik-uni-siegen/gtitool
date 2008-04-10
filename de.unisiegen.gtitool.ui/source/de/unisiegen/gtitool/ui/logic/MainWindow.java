@@ -35,6 +35,7 @@ import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
+import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
@@ -375,6 +376,77 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Use the active Editor Panel as draf for a new file
+   * 
+   * @param type Type of the new file
+   */
+  public final void handleDraftFor ( GrammarType type )
+  {
+    try
+    {
+      DefaultGrammarModel model = new DefaultGrammarModel (
+          this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getModel ()
+              .getElement (), type.toString () );
+      EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, null );
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+      setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+
+    }
+    catch ( StoreException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
+          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      // Do nothing
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      // Do nothing
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      // Do nothing
+    }
+    catch ( TerminalSymbolException exc )
+    {
+      // Do nothing
+    }
+  }
+
+
+  /**
    * Handle edit document action in the toolbar.
    */
   public final void handleEditDocument ()
@@ -518,7 +590,7 @@ public final class MainWindow implements LanguageChangedListener
       }
       else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
-        model = new DefaultGrammarModel ( element );
+        model = new DefaultGrammarModel ( element, null );
       }
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
@@ -829,6 +901,8 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.jMenuItemNFA.setEnabled ( true );
         this.gui.jMenuItemPDA.setEnabled ( true );
         this.gui.jMenuItemENFA.setEnabled ( true );
+        this.gui.jMenuItemRG.setEnabled ( false );
+        this.gui.jMenuItemCFG.setEnabled ( false );
 
         MachinePanel machinePanel = ( MachinePanel ) panel;
         this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
@@ -874,6 +948,8 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.jMenuItemNFA.setEnabled ( false );
         this.gui.jMenuItemPDA.setEnabled ( false );
         this.gui.jMenuItemENFA.setEnabled ( false );
+        this.gui.jMenuItemRG.setEnabled ( true );
+        this.gui.jMenuItemCFG.setEnabled ( true );
       }
       // Undo
       this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
@@ -1775,7 +1851,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   private final void setSaveState ( boolean state )
   {
-    logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE  //$NON-NLS-1$//$NON-NLS-2$
+    logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
         + state + Messages.QUOTE );
 
     EditorPanel panel = this.gui.editorPanelTabbedPane

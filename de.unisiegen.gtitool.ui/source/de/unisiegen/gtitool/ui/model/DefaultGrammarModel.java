@@ -41,6 +41,23 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 {
 
   /**
+   * Signals the grammar type.
+   */
+  public enum GrammarType
+  {
+    /**
+     * The grammar type is rg
+     */
+    RG,
+
+    /**
+     * The grammar type is cfg
+     */
+    CFG;
+  }
+
+
+  /**
    * The {@link Machine} version.
    */
   private static final int GRAMMAR_VERSION = 734;
@@ -80,6 +97,8 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * Allocate a new {@link DefaultGrammarModel}.
    * 
    * @param element The {@link Element}.
+   * @param overwrittenMachineType The overwritten machine type which is used
+   *          instead of the loaded machine type if it is not null.
    * @throws NonterminalSymbolSetException If something with the
    *           {@link NonterminalSymbolSet} is not correct.
    * @throws NonterminalSymbolException If something with the
@@ -90,7 +109,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * @throws TerminalSymbolException If something with the
    *           {@link TerminalSymbolSet} is not correct.
    */
-  public DefaultGrammarModel ( Element element )
+  public DefaultGrammarModel ( Element element, String overwrittenMachineType )
       throws NonterminalSymbolSetException, NonterminalSymbolException,
       StoreException, TerminalSymbolSetException, TerminalSymbolException
   {
@@ -102,7 +121,14 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     {
       if ( attribute.getName ().equals ( "grammarType" ) ) //$NON-NLS-1$
       {
-        grammarType = attribute.getValue ();
+        if ( overwrittenMachineType == null )
+        {
+          grammarType = attribute.getValue ();
+        }
+        else
+        {
+          grammarType = overwrittenMachineType;
+        }
       }
       else if ( attribute.getName ().equals ( "grammarVersion" ) ) //$NON-NLS-1$
       {

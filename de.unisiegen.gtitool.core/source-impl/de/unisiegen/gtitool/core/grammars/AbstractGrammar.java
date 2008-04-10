@@ -571,6 +571,10 @@ public abstract class AbstractGrammar implements Grammar
         }
       }
     }
+    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    {
+      current.setStart ( current.equals ( this.startSymbol ) );
+    }
   }
 
 

@@ -102,6 +102,17 @@ public final class ProductionDialog
 
 
     /**
+     * Returns the list of {@link NonterminalSymbol}s.
+     * 
+     * @return the list of {@link NonterminalSymbol}s.
+     */
+    public ArrayList < NonterminalSymbol > getList ()
+    {
+      return this.list;
+    }
+
+
+    /**
      * Returns the length of the list.
      * 
      * @return The length of the list.
@@ -146,17 +157,6 @@ public final class ProductionDialog
       int index = this.list.indexOf ( pItem );
       this.list.remove ( pItem );
       fireIntervalRemoved ( this, index, index );
-    }
-
-
-    /**
-     * Returns the list of {@link NonterminalSymbol}s.
-     * 
-     * @return the list of {@link NonterminalSymbol}s.
-     */
-    public ArrayList < NonterminalSymbol > getList ()
-    {
-      return this.list;
     }
   }
 
@@ -210,20 +210,30 @@ public final class ProductionDialog
     this.model = model;
     this.oldProduction = production;
 
+    // Nonterminal
+    this.gui.styledNonterminalSymbolSetParserPanel
+        .setStartNonterminalSymbol ( model.getGrammar ().getStartSymbol () );
     this.gui.styledNonterminalSymbolSetParserPanel
         .setText ( nonterminalSymbolSet );
-    this.gui.styledTerminalSymbolSetParserPanel
-        .setText ( terminalSymbolSet );
 
+    // Terminal
+    this.gui.styledTerminalSymbolSetParserPanel.setText ( terminalSymbolSet );
+
+    // ProductionWord
     this.gui.styledProductionWordParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
     this.gui.styledProductionWordParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
+    this.gui.styledProductionWordParserPanel.setStartNonterminalSymbol ( model
+        .getGrammar ().getStartSymbol () );
 
+    // Production
     this.gui.styledProductionParserPanel
         .setNonterminalSymbolSet ( nonterminalSymbolSet );
     this.gui.styledProductionParserPanel
         .setTerminalSymbolSet ( terminalSymbolSet );
+    this.gui.styledProductionParserPanel.setStartNonterminalSymbol ( model
+        .getGrammar ().getStartSymbol () );
 
     for ( NonterminalSymbol current : nonterminalSymbolSet )
     {
@@ -257,8 +267,8 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
-      this.gui.styledProductionWordParserPanel
-          .setText ( this.oldProduction.getProductionWord () );
+      this.gui.styledProductionWordParserPanel.setText ( this.oldProduction
+          .getProductionWord () );
 
       for ( NonterminalSymbol current : this.listModel.getList () )
       {
@@ -284,10 +294,9 @@ public final class ProductionDialog
     else
     {
       setButtonStatus ( true );
-      getGui ().styledProductionParserPanel
-          .setText ( new DefaultProduction (
-              ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
-              productionWord ) );
+      getGui ().styledProductionParserPanel.setText ( new DefaultProduction (
+          ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+          productionWord ) );
     }
 
     this.gui.jGTIList.setCellRenderer ( new PrettyStringListCellRenderer () );
@@ -295,13 +304,13 @@ public final class ProductionDialog
 
 
   /**
-   * Set the ok button status.
+   * Returns the {@link ProductionDialogForm}.
    * 
-   * @param status the new button status.
+   * @return the {@link ProductionDialogForm}.
    */
-  public void setButtonStatus ( boolean status )
+  public ProductionDialogForm getGui ()
   {
-    this.gui.jGTIButtonOk.setEnabled ( status );
+    return this.gui;
   }
 
 
@@ -312,6 +321,32 @@ public final class ProductionDialog
   {
     this.gui.dispose ();
 
+  }
+
+
+  /**
+   * Handle list selected value changed.
+   */
+  public void handleListSelectionChanged ()
+  {
+
+    this.gui.styledProductionWordParserPanel.parse ();
+
+    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
+        .getProductionWord ();
+    if ( productionWord == null )
+    {
+      setButtonStatus ( false );
+      getGui ().styledProductionParserPanel.setText ( null );
+    }
+
+    else
+    {
+      setButtonStatus ( true );
+      getGui ().styledProductionParserPanel.setText ( new DefaultProduction (
+          ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
+          productionWord ) );
+    }
   }
 
 
@@ -341,6 +376,17 @@ public final class ProductionDialog
 
 
   /**
+   * Set the ok button status.
+   * 
+   * @param status the new button status.
+   */
+  public void setButtonStatus ( boolean status )
+  {
+    this.gui.jGTIButtonOk.setEnabled ( status );
+  }
+
+
+  /**
    * Show this dialog.
    */
   public void show ()
@@ -351,43 +397,5 @@ public final class ProductionDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Returns the {@link ProductionDialogForm}.
-   * 
-   * @return the {@link ProductionDialogForm}.
-   */
-  public ProductionDialogForm getGui ()
-  {
-    return this.gui;
-  }
-
-  /**
-   * Handle list selected value changed.
-   *
-   */
-  public void handleListSelectionChanged ()
-  {
-
-    this.gui.styledProductionWordParserPanel.parse ();
-
-    ProductionWord productionWord = this.gui.styledProductionWordParserPanel
-        .getProductionWord ();
-    if ( productionWord == null )
-    {
-      setButtonStatus ( false );
-      getGui ().styledProductionParserPanel.setText ( null );
-    }
-
-    else
-    {
-      setButtonStatus ( true );
-      getGui ().styledProductionParserPanel
-          .setText ( new DefaultProduction (
-              ( NonterminalSymbol ) getGui ().jGTIList.getSelectedValue (),
-              productionWord ) );
-    }
   }
 }

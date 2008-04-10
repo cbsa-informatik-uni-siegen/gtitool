@@ -617,10 +617,12 @@ public abstract class StyledParserPanel extends JPanel
 
   /**
    * Clears the overwritten {@link Style}.
+   * 
+   * @param style The {@link Style} to clear.
    */
-  protected final void clearOverwrittenStyle ()
+  protected final void clearOverwrittenStyle ( Style style )
   {
-    this.document.clearOverwrittenStyle ();
+    this.document.clearOverwrittenStyle ( style );
   }
 
 

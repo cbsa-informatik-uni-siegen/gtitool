@@ -55,6 +55,12 @@ public final class StyledProductionParserPanel extends StyledParserPanel
 
 
   /**
+   * The start {@link NonterminalSymbol}.
+   */
+  private NonterminalSymbol startNonterminalSymbol;
+
+
+  /**
    * Allocates a new {@link StyledProductionParserPanel}.
    */
   public StyledProductionParserPanel ()
@@ -234,6 +240,18 @@ public final class StyledProductionParserPanel extends StyledParserPanel
 
 
   /**
+   * Returns the start {@link NonterminalSymbol}.
+   * 
+   * @return The start {@link NonterminalSymbol}.
+   * @see #startNonterminalSymbol
+   */
+  public final NonterminalSymbol getStartNonterminalSymbol ()
+  {
+    return this.startNonterminalSymbol;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see StyledParserPanel#parse()
@@ -285,10 +303,30 @@ public final class StyledProductionParserPanel extends StyledParserPanel
     this.nonterminalSymbolSet = nonterminalSymbolSet;
 
     // Set the overwritten style
-    clearOverwrittenStyle ();
+    clearOverwrittenStyle ( Style.NONTERMINAL_SYMBOL );
     for ( NonterminalSymbol current : this.nonterminalSymbolSet )
     {
       addOverwrittenStyle ( current.getName (), Style.NONTERMINAL_SYMBOL );
+    }
+  }
+
+
+  /**
+   * Sets the start {@link NonterminalSymbol}.
+   * 
+   * @param startNonterminalSymbol The start {@link NonterminalSymbol} to set.
+   */
+  public final void setStartNonterminalSymbol (
+      NonterminalSymbol startNonterminalSymbol )
+  {
+    this.startNonterminalSymbol = startNonterminalSymbol;
+
+    // Set the overwritten style
+    clearOverwrittenStyle ( Style.START_NONTERMINAL_SYMBOL );
+    if ( this.startNonterminalSymbol != null )
+    {
+      addOverwrittenStyle ( this.startNonterminalSymbol.getName (),
+          Style.START_NONTERMINAL_SYMBOL );
     }
   }
 
@@ -319,7 +357,7 @@ public final class StyledProductionParserPanel extends StyledParserPanel
     this.terminalSymbolSet = terminalSymbolSet;
 
     // Set the overwritten style
-    clearOverwrittenStyle ();
+    clearOverwrittenStyle ( Style.TERMINAL_SYMBOL );
     for ( TerminalSymbol current : this.terminalSymbolSet )
     {
       addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );

@@ -290,7 +290,7 @@ public final class StyledNonterminalSymbolSetParserPanel extends
     this.startNonterminalSymbol = startNonterminalSymbol;
 
     // Set the overwritten style
-    clearOverwrittenStyle ();
+    clearOverwrittenStyle ( Style.START_NONTERMINAL_SYMBOL );
     if ( this.startNonterminalSymbol != null )
     {
       addOverwrittenStyle ( this.startNonterminalSymbol.getName (),

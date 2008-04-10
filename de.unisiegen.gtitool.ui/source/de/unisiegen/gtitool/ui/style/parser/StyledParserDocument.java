@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import java_cup.runtime.Symbol;
 
@@ -183,10 +184,19 @@ public final class StyledParserDocument extends DefaultStyledDocument
 
   /**
    * Clears the overwritten {@link Style}.
+   * 
+   * @param style The {@link Style} to clear.
    */
-  public final void clearOverwrittenStyle ()
+  public final void clearOverwrittenStyle ( Style style )
   {
-    this.overwrittenStyle.clear ();
+    for ( Map.Entry < String, Style > current : this.overwrittenStyle
+        .entrySet () )
+    {
+      if ( current.getValue ().equals ( style ) )
+      {
+        this.overwrittenStyle.remove ( current.getKey () );
+      }
+    }
   }
 
 

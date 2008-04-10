@@ -74,10 +74,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jGTIPanelMain.setLayout(new java.awt.GridBagLayout());
-
-        jGTIPanelNorth.setLayout(new java.awt.GridBagLayout());
-
+        jGTIPanelNorth.setBackground(new java.awt.Color(255, 255, 255));
         jGTILabelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/uni_logo.gif")));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -122,8 +119,6 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         jGTIPanelMain.add(jGTISeparator, gridBagConstraints);
-
-        jGTIPanelSouth.setLayout(new java.awt.GridBagLayout());
 
         jGTILabelWebpage.setText(bundle.getString("AboutDialog.Webpage")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();

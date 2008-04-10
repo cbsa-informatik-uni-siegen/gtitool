@@ -201,9 +201,9 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(styledProductionParserPanel, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.OkMnemonic").charAt(0));
-        jGTIButtonOk.setText(bundle.getString("TransitionDialog.Ok")); // NOI18N
-        jGTIButtonOk.setToolTipText(bundle.getString("TransitionDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ProductionDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("ProductionDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("ProductionDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -218,9 +218,9 @@ public class ProductionDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TransitionDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("TransitionDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("TransitionDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ProductionDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("ProductionDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("ProductionDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);

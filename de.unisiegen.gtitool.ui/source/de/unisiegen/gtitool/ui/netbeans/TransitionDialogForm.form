@@ -111,7 +111,7 @@
           <SubComponents>
             <Component class="de.unisiegen.gtitool.ui.swing.JGTIList" name="jGTIListAlphabet">
               <Properties>
-                <Property name="selectionMode" type="int" value="1"/>
+                <Property name="selectionMode" type="int" value="2"/>
               </Properties>
               <Events>
                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jGTIListAlphabetValueChanged"/>
@@ -170,7 +170,7 @@
           <SubComponents>
             <Component class="de.unisiegen.gtitool.ui.swing.JGTIList" name="jGTIListChangeOverSet">
               <Properties>
-                <Property name="selectionMode" type="int" value="1"/>
+                <Property name="selectionMode" type="int" value="2"/>
               </Properties>
               <Events>
                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jGTIListChangeOverSetValueChanged"/>

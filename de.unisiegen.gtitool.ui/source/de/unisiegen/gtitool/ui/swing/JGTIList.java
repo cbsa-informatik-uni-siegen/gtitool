@@ -20,8 +20,6 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
-import de.unisiegen.gtitool.ui.logic.renderer.ModifiedListCellRenderer;
-
 
 /**
  * Special {@link JList}.
@@ -78,7 +76,6 @@ public final class JGTIList extends JList implements DropTargetListener
   {
     super ();
     setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-    setCellRenderer ( new ModifiedListCellRenderer () );
 
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()

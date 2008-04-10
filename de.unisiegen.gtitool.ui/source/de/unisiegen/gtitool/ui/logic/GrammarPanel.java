@@ -862,10 +862,12 @@ public class GrammarPanel implements EditorPanel
       }
     }
     
+    
     for (int i = indeces.length-1 ; i > -1; i-- ){
       this.grammar.getProductions().remove ( indeces[i] );
     }
     
+    newTargetIndex = Math.min ( newTargetIndex, this.grammar.getRowCount () );
     
     this.grammar.getProductions().addAll ( newTargetIndex , productions );
     

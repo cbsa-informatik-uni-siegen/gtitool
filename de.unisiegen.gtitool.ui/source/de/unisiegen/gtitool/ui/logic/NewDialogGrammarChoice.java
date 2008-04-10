@@ -42,7 +42,7 @@ public final class NewDialogGrammarChoice
   /**
    * The actual user choice
    */
-  private Choice actualChoice = Choice.CONTEXT_FREE;
+  private Choice actualChoice = Choice.REGULAR;
 
 
   /** The parent Dialog containing this panel */

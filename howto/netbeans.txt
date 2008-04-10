@@ -1,0 +1,49 @@
+*** de.unisiegen.gtitool.core ***
+- source folder:
+  - source
+  - source-impl
+  - source-generated
+- projects:
+  - gtitool.javacup
+  - gtitool.jflex
+  - gtitool.logger
+
+
+*** de.unisiegen.gtitool.ui ***
+- source folder:
+  - source
+  - source-generated
+- projects:
+  - de.unisiegen.gtitool.core
+  - gtitool.javacup
+  - gtitool.jflex
+  - gtitool.jgraph
+  - gtitool.logger
+
+
+*** gtitool.javacup ***
+- source folder:
+  - source
+- jar files:
+  - lib/ant.jar
+  - lib/java-cup.jar
+  - lib/jflex.jar
+
+
+*** gtitool.jflex ***
+- source folder:
+  - source
+- jar files:
+  - lib/ant.jar
+  - lib/java-cup.jar
+  - lib/jflex.jar
+
+
+*** gtitool.jgraph ***
+- source folder:
+  - source
+
+
+*** gtitool.logger ***
+- source folder:
+  - source

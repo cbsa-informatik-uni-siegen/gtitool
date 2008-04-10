@@ -1,11 +1,9 @@
 *** eclipse plugins ***
-
 http://texlipse.sourceforge.net
 http://subclipse.tigris.org/update_1.2.x
 
 
 *** versions ***
-
 eclipse 3.3.2
 netbeans 5.5.1
 java 1.5.0_15

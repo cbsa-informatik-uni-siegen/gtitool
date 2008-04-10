@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui;
+package de.unisiegen.gtitool.start;
 
 
 import java.awt.Font;
@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+
+import de.unisiegen.gtitool.ui.GTITool;
 
 
 /**

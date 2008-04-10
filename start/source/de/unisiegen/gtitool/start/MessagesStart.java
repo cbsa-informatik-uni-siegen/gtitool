@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui;
+package de.unisiegen.gtitool.start;
 
 
 import java.util.MissingResourceException;

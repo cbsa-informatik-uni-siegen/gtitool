@@ -7,7 +7,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>0</headerType>
   <jar>gtitool.start-@gtitool.version@.jar</jar>
-  <outfile>../../dist/gtitool.exe</outfile>
+  <outfile>../../../dist/gtitool.exe</outfile>
   <errTitle>GTI Tool: Error</errTitle>
   <customProcName>true</customProcName>
   <icon>gtitool.ico</icon>

@@ -12,8 +12,7 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="distsourcedir" value="${distdir}/source" />
 	<property name="libdir" value="${basedir}/lib" />
-	<property name="flexdir" value="${basedir}/flex" />
-	<property name="cupdir" value="${basedir}/cup" />
+	<property name="localbuildfilesdir" value="${basedir}/buildfiles" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
@@ -25,8 +24,8 @@
 	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
-	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup-11.jar" />
-	<taskdef name="javacup.jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/JFlex.jar" />
+	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup.jar" />
+	<taskdef name="javacup.jflex" classname="JFlex.anttask.JFlexTask" classpath="${libdir}/jflex.jar" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-cup,dist-jflex,dist-compile,dist-jar,dist-clean">
@@ -42,12 +41,12 @@
 	<!-- dist cup -->
 	<target name="dist-cup">
 		<mkdir dir="${distsourcedir}" />
-		<javacup.cup srcfile="${cupdir}/parser.cup" interface="on" destdir="${distsourcedir}" parser="parser" symbols="sym" quiet="false" nonterms="true" />
+		<javacup.cup srcfile="${localbuildfilesdir}/parser.cup" interface="on" destdir="${distsourcedir}" parser="parser" symbols="sym" quiet="false" nonterms="true" />
 	</target>
 
 	<!-- dist jflex -->
 	<target name="dist-jflex" depends="dist-cup">
-		<javacup.jflex file="${flexdir}/Lexer.jflex" destdir="${distsourcedir}" />
+		<javacup.jflex file="${localbuildfilesdir}/lexer.jflex" destdir="${distsourcedir}" />
 	</target>
 
 	<!-- dist compile -->

@@ -12,6 +12,7 @@
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="distcupdir" value="${distdir}/cup" />
 	<property name="libdir" value="${basedir}/lib" />
+	<property name="localbuildfilesdir" value="${basedir}/buildfiles" />
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
@@ -23,8 +24,8 @@
 	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
-	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/JFlex.jar" />
-	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java_cup.jar" />
+	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/jflex.jar" />
+	<taskdef classname="java_cup.AntTask" name="jflex.cup" classpath="${libdir}/java-cup.jar" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-jflex,dist-cup,dist-compile,dist-jar,dist-clean" description="Build distribution">
@@ -39,7 +40,7 @@
 
 	<!-- dist jflex -->
 	<target name="dist-jflex">
-		<jflex.jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${libdir}/skeleton.nested" />
+		<jflex.jflex file="${sourcedir}/JFlex/LexScan.flex" skeleton="${localbuildfilesdir}/skeleton.nested" />
 	</target>
 
 	<!-- dist cup -->
@@ -60,7 +61,7 @@
 	<!-- dist jar -->
 	<target name="dist-jar" depends="dist-compile">
 		<!-- copy skeleton -->
-		<copy file="${libdir}/skeleton.default" todir="${classesdir}/JFlex" />
+		<copy file="${localbuildfilesdir}/skeleton.default" todir="${classesdir}/JFlex" />
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
 			<attribute name="Main-Class" value="JFlex.Main" />

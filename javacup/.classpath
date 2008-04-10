@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="source"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/ant.jar"/>
-	<classpathentry kind="lib" path="lib/java-cup-11.jar"/>
-	<classpathentry kind="lib" path="lib/JFlex.jar"/>
+	<classpathentry kind="lib" path="lib/java-cup.jar"/>
+	<classpathentry kind="lib" path="lib/jflex.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

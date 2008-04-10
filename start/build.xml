@@ -13,6 +13,7 @@
 	<property name="sourcedir" value="${basedir}/source" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
+	<property name="executerdir" value="${buildfilesdir}/executer" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
@@ -40,7 +41,7 @@
 			<fileset dir="${gtitooldir}" includes="*.jar" />
 		</signjar>
 		<!-- copy sh file -->
-		<copy todir="${gtitooldir}" file="${basedir}/executer/linux/gtitool.sh">
+		<copy todir="${gtitooldir}" file="${executerdir}/linux/gtitool.sh">
 			<filterset>
 				<filter token="gtitool.version" value="${gtitool.version}" />
 			</filterset>
@@ -120,18 +121,18 @@
 	</target>
 
 	<!-- dist exe -->
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${basedir}/executer/windows/launch4j/launch4j.jar:${basedir}/executer/windows/launch4j/lib/xstream.jar" />
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${executerdir}/windows/launch4j/launch4j.jar:${executerdir}/windows/launch4j/lib/xstream.jar" />
 	<target name="dist-exe">
 		<!-- update config file -->
-		<copy tofile="${basedir}/executer/windows/tmp_launch4j.xml" file="${basedir}/executer/windows/launch4j.xml">
+		<copy tofile="${executerdir}/windows/tmp_launch4j.xml" file="${executerdir}/windows/launch4j.xml">
 			<filterset>
 				<filter token="gtitool.version" value="${gtitool.version}" />
 			</filterset>
 		</copy>
 		<!-- launch4j -->
-		<launch4j configFile="${basedir}/executer/windows/tmp_launch4j.xml" />
+		<launch4j configFile="${executerdir}/windows/tmp_launch4j.xml" />
 		<!-- delete config file -->
-		<delete file="${basedir}/executer/windows/tmp_launch4j.xml" />
+		<delete file="${executerdir}/windows/tmp_launch4j.xml" />
 	</target>
 
 	<!-- dist clean -->
@@ -148,7 +149,7 @@
 			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
 		</javadoc>
 	</target>
-	
+
 	<!-- svn-keywords -->
 	<target name="svn-keywords" description="Set svn keywords">
 		<exec dir="${basedir}" os="Linux" executable="./keywords.sh" />

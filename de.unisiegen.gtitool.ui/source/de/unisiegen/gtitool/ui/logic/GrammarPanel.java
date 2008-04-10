@@ -844,9 +844,33 @@ public class GrammarPanel implements EditorPanel
   private final void moveRows ( JGTITable jGTITable, JGTITableModelRows rows,
       int targetIndex )
   {
-    // TODO Implement this
-    System.out.println ( "TODO BM: move: " + rows.getRowIndices () [ 0 ] //$NON-NLS-1$
-        + " -> " + targetIndex ); //$NON-NLS-1$
+    ArrayList<Production> productions = new ArrayList<Production>();
+    
+    int[] indeces = rows.getRowIndices ();
+    
+    int newTargetIndex = targetIndex;
+    
+    if (indeces.length > 0 && indeces[0] < targetIndex){
+      newTargetIndex++;
+    }
+    
+    for (int index : indeces){
+      productions.add ( this.grammar.getProductionAt ( index ) );
+      
+      if (index < targetIndex){
+        newTargetIndex--;
+      }
+    }
+    
+    for (int i = indeces.length-1 ; i > -1; i-- ){
+      this.grammar.getProductions().remove ( indeces[i] );
+    }
+    
+    
+    this.grammar.getProductions().addAll ( newTargetIndex , productions );
+    
+    this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( newTargetIndex, newTargetIndex + indeces.length - 1 );
+    
   }
 
 

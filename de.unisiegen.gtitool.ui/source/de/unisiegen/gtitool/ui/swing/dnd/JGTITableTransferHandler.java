@@ -77,7 +77,7 @@ public abstract class JGTITableTransferHandler extends TransferHandler
   {
     JGTITable table = ( JGTITable ) jComponent;
     int [] selectedRows = table.getSelectedRows ();
-    if ( selectedRows.length > 0 )
+    if ( ( table.getRowCount () > 0 ) && ( selectedRows.length > 0 ) )
     {
       return new JGTITableModelRowsTransferable ( new JGTITableModelRows (
           table.getModel (), selectedRows ) );

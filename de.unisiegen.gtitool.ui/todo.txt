@@ -1,6 +1,5 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Start Symbol in den Production Dialog einbauen (und testen)
 CF		- Pretty String der Produktionen unter Windows testen
 CF		- Testen ob es möglich ist die Machine Tabelle editable zu machen
 

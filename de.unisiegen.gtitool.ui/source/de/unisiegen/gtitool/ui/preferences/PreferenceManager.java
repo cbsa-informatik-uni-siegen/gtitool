@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.logger.Logger;
@@ -50,14 +49,13 @@ public final class PreferenceManager extends
   /**
    * The default look and feel class name.
    */
-  public static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = UIManager
-      .getSystemLookAndFeelClassName ();
+  public static final String DEFAULT_LOOK_AND_FEEL_CLASS_NAME = "de.muntjak.tinylookandfeel.TinyLookAndFeel";//$NON-NLS-1$
 
 
   /**
    * The default look and feel name.
    */
-  public static final String DEFAULT_LOOK_AND_FEEL_NAME = "System"; //$NON-NLS-1$
+  public static final String DEFAULT_LOOK_AND_FEEL_NAME = "TinyLaF"; //$NON-NLS-1$
 
 
   /**

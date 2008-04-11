@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
+import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
 
 
 /**
@@ -47,6 +48,11 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The {@link State} represented by this view.
    */
   private State state;
+  
+  /**
+   * Flag signals that nex state move should be ignored.
+   */
+  private boolean ignoreStateMove = false;
 
 
   /**
@@ -59,7 +65,17 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The puplished x position.
    */
   private double puplishedXPosition = POSITION_NOT_DEFINED;
+  
+  /**
+   * The actual x value.
+   */
+  private double xValue = POSITION_NOT_DEFINED;
 
+  
+  /**
+   * The actual y value.
+   */
+  private double yValue = POSITION_NOT_DEFINED;
 
   /**
    * The initial y position.
@@ -114,6 +130,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
             if ( defaultStateView.getState ().equals ( getState () ) )
             {
               fireModifyStatusChanged ();
+              fireStatePositionChanged ();
               return;
             }
           }
@@ -135,6 +152,19 @@ public final class DefaultStateView extends DefaultGraphCell implements
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   *   /**
+   * Adds the given {@link StatePositionChangedListener}.
+   * 
+   * @param listener The {@link StatePositionChangedListener}.
+   */
+  public final synchronized void addStatePositionChangedListener (
+      StatePositionChangedListener listener )
+  {
+    this.listenerList.add ( StatePositionChangedListener.class, listener );
   }
 
 
@@ -173,6 +203,33 @@ public final class DefaultStateView extends DefaultGraphCell implements
       {
         listeners [ n ].modifyStatusChanged ( newModifyStatus );
       }
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the state position has changed.
+   */
+  private final void fireStatePositionChanged ()
+  {
+    if (this.ignoreStateMove){
+      this.ignoreStateMove = false;
+      return;
+    }
+    
+    StatePositionChangedListener [] listeners = this.listenerList
+        .getListeners ( StatePositionChangedListener.class );
+    double x = getXPosition ();
+    double y = getYPosition ();
+    if ( ( this.xValue != x ) || ( this.yValue != y ) )
+    {
+      for ( int n = 0 ; n < listeners.length ; ++n )
+      {
+        listeners [ n ].statePositionChanged ( this, this.xValue, this.yValue, x, y );
+      }
+      this.xValue = x;
+      this.yValue = y;
+      
     }
   }
 
@@ -217,6 +274,19 @@ public final class DefaultStateView extends DefaultGraphCell implements
       return POSITION_NOT_DEFINED;
     }
     return bounds.getX ();
+  }
+  
+  /**
+   * Move this {@link DefaultStateView}.
+   *
+   * @param x The new x value.
+   * @param y The new y value.
+   */
+  public void move(double x, double y){
+    this.ignoreStateMove = true;
+    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
+    GraphConstants.setBounds ( this.getAttributes (), bounds );
   }
 
 

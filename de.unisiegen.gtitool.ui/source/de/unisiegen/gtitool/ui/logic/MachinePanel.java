@@ -1959,6 +1959,7 @@ public final class MachinePanel implements EditorPanel
           if ( transitionDialog.isConfirmed () )
           {
             Transition newTransition = transitionDialog.getTransition ();
+            boolean nullTarget = false;
             if ( target == null )
             {
 
@@ -1970,8 +1971,9 @@ public final class MachinePanel implements EditorPanel
                 target = MachinePanel.this.model.createStateView ( event
                     .getPoint ().x
                     / MachinePanel.this.zoomFactor, event.getPoint ().y
-                    / MachinePanel.this.zoomFactor, newState, true );
+                    / MachinePanel.this.zoomFactor, newState, false );
                 newTransition.setStateEnd ( target.getState () );
+                nullTarget = true;
 
               }
               catch ( StateException e1 )
@@ -1984,7 +1986,7 @@ public final class MachinePanel implements EditorPanel
             }
 
             MachinePanel.this.model.createTransitionView ( newTransition,
-                MachinePanel.this.firstState, target, true );
+                MachinePanel.this.firstState, target, nullTarget, true );
           }
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
@@ -2049,6 +2051,7 @@ public final class MachinePanel implements EditorPanel
         transitionDialog.show ();
         if ( transitionDialog.isConfirmed () )
         {
+          boolean nullTarget = false;
           Transition newTransition = transitionDialog.getTransition ();
           if ( target == null )
           {
@@ -2061,19 +2064,19 @@ public final class MachinePanel implements EditorPanel
               target = MachinePanel.this.model.createStateView ( event
                   .getPoint ().x
                   / MachinePanel.this.zoomFactor, event.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState, true );
+                  / MachinePanel.this.zoomFactor, newState, false );
               newTransition.setStateEnd ( target.getState () );
+              nullTarget = true;
             }
             catch ( StateException e1 )
             {
               e1.printStackTrace ();
               System.exit ( 1 );
-              return;
             }
           }
 
           MachinePanel.this.model.createTransitionView ( newTransition,
-              MachinePanel.this.firstState, target, true );
+              MachinePanel.this.firstState, target, nullTarget, true );
         }
         switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {

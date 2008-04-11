@@ -42,6 +42,8 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.redoundo.StateAddedItem;
+import de.unisiegen.gtitool.ui.redoundo.StateMovedItem;
+import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.StateRemovedItem;
 import de.unisiegen.gtitool.ui.redoundo.TransitionAddedItem;
 import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
@@ -132,6 +134,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    */
   private ModifyStatusChangedListener modifyStatusChangedListener;
 
+  
+  /**
+   * The {@link StatePositionChangedListener}.
+   */
+  private StatePositionChangedListener statePositionChangedListener;
 
   /**
    * The {@link RedoUndoHandler}
@@ -251,6 +258,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machine = AbstractMachine.createMachine ( machineType, alphabet,
         pushDownAlphabet, usePushDownAlphabet );
     initializeModifyStatusChangedListener ();
+    initializeStatePositionChangedListener ();
     initializeGraph ();
 
     // Load the states
@@ -305,7 +313,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 
-        createTransitionView ( transition, source, target, false );
+        createTransitionView ( transition, source, target, false, false );
       }
       else if ( ( !current.getName ().equals ( "Alphabet" ) ) //$NON-NLS-1$
           && ( !current.getName ().equals ( "StateView" ) ) ) //$NON-NLS-1$
@@ -329,6 +337,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     this.machine = machine;
     initializeModifyStatusChangedListener ();
+    initializeStatePositionChangedListener ();
     initializeGraph ();
 
     // Reset modify
@@ -399,6 +408,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     stateView
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+    
+    stateView.addStatePositionChangedListener ( this.statePositionChangedListener );
 
     if ( createUndoStep )
     {
@@ -416,10 +427,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * @param transition The {@link Transition}.
    * @param source The source of the new {@link Transition}.
    * @param target The target of the new {@link Transition}.
-   * @param createUndoStep Flag signals if an undo step should be created,
+   * @param targetCreated Flag signals if target {@link DefaultStateView} is
+   *          created via the new {@link DefaultTransitionView}.
+   * @param createUndoStep Flag signals if an undo step should be created.
    */
   public final void createTransitionView ( Transition transition,
-      DefaultStateView source, DefaultStateView target, boolean createUndoStep )
+      DefaultStateView source, DefaultStateView target, boolean targetCreated,
+      boolean createUndoStep )
   {
     this.machine.addTransition ( transition );
     DefaultTransitionView transitionView = new DefaultTransitionView (
@@ -442,7 +456,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new TransitionAddedItem ( this, transitionView );
+      RedoUndoItem item = new TransitionAddedItem ( this, transitionView,
+          targetCreated ? target : null );
       this.redoUndoHandler.addUndo ( item );
     }
   }
@@ -676,6 +691,30 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     };
     this.machine
         .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+  }
+  
+  /**
+   * Initialize the {@link StatePositionChangedListener}.
+   */
+  private final void initializeStatePositionChangedListener ()
+  {
+    this.statePositionChangedListener = new StatePositionChangedListener ()
+    {
+      
+      /**
+       * {@inheritDoc}
+       * @see StatePositionChangedListener#statePositionChanged(DefaultStateView, double, double, double, double)
+       */
+      @SuppressWarnings("synthetic-access")
+      public void statePositionChanged ( DefaultStateView stateView, double oldX, double oldY, double newX,
+          double newY )
+      {
+        RedoUndoItem item = new StateMovedItem ( DefaultMachineModel.this, stateView, oldX, oldY, newX, newY );
+        DefaultMachineModel.this.redoUndoHandler.addUndo ( item );
+      }
+
+
+    };
   }
 
 

@@ -61,7 +61,7 @@ public class TransitionRemovedItem extends RedoUndoItem
   {
     this.model.createTransitionView ( this.transitionView.getTransition (),
         this.transitionView.getSourceView (), this.transitionView
-            .getTargetView (), false );
+            .getTargetView (), false, false );
   }
 
 }

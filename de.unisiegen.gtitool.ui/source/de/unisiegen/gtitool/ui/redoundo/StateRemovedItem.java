@@ -74,7 +74,7 @@ public class StateRemovedItem extends RedoUndoItem
     for ( DefaultTransitionView current : this.transitions )
     {
       this.model.createTransitionView ( current.getTransition (), current
-          .getSourceView (), current.getTargetView (), false );
+          .getSourceView (), current.getTargetView (), false, false );
     }
   }
 

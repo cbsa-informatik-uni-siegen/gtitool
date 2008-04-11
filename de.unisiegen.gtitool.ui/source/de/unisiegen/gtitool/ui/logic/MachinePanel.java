@@ -70,9 +70,9 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.editor.ParserCellEditor;
-import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
 
 
 /**
@@ -353,7 +353,7 @@ public final class MachinePanel implements EditorPanel
     this.gui = new MachinePanelForm ();
     this.gui.setMachinePanel ( this );
 
-    this.redoUndoHandler = new RedoUndoHandler ( model, this.mainWindowForm );
+    this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
 
     intitializeMouseAdapter ();

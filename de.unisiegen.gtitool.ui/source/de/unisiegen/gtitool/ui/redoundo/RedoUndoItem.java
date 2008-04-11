@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.utils;
+package de.unisiegen.gtitool.ui.redoundo;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
  * @author Benjamin Mies
  *
  */
-public class RedoUndoItem
+public abstract class RedoUndoItem
 {
   /**
    * The changed state view
@@ -50,6 +50,13 @@ public class RedoUndoItem
      * A Transiton was removed.
      */
     TRANSITION_REMOVED;
+  }
+  
+  /**
+   * Allocate a new {@link RedoUndoItem}.
+   */
+  public RedoUndoItem(){
+    // Nothing to do
   }
   
   /**
@@ -118,5 +125,14 @@ public class RedoUndoItem
     return this.stateView;
   }
 
+  /**
+   * Redo the action represented by this item.
+   */
+  public abstract void redo();
+  
+  /**
+   * Undo the action represented by this item.
+   */
+  public abstract void undo();
   
 }

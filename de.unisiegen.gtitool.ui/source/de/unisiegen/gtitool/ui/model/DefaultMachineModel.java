@@ -39,8 +39,12 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
-import de.unisiegen.gtitool.ui.utils.RedoUndoItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
+import de.unisiegen.gtitool.ui.redoundo.StateAddedItem;
+import de.unisiegen.gtitool.ui.redoundo.StateRemovedItem;
+import de.unisiegen.gtitool.ui.redoundo.TransitionAddedItem;
+import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
 
 
 /**
@@ -398,8 +402,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new RedoUndoItem (
-          RedoUndoItem.REDO_UNDO_ACTION.STATE_ADDED, stateView );
+      RedoUndoItem item = new StateAddedItem ( this, stateView, null );
       this.redoUndoHandler.addUndo ( item );
     }
 
@@ -439,8 +442,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new RedoUndoItem (
-          RedoUndoItem.REDO_UNDO_ACTION.TRANSITION_ADDED, transitionView );
+      RedoUndoItem item = new TransitionAddedItem ( this, transitionView );
       this.redoUndoHandler.addUndo ( item );
     }
   }
@@ -746,8 +748,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new RedoUndoItem (
-          RedoUndoItem.REDO_UNDO_ACTION.STATE_REMOVED, stateView, removeList );
+      RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
       this.redoUndoHandler.addUndo ( item );
     }
   }
@@ -770,8 +771,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new RedoUndoItem (
-          RedoUndoItem.REDO_UNDO_ACTION.TRANSITION_REMOVED, transitionView );
+      RedoUndoItem item = new TransitionRemovedItem ( this, transitionView );
       this.redoUndoHandler.addUndo ( item );
     }
   }

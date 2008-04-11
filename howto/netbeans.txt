@@ -1,3 +1,11 @@
+***Install needed update***
+
+# from main menu invoke  Tools |  Update Center,
+# in the table of known update centers check NetBeans Update Center Beta (uncheck the others),
+# click Next, the IDE will connect to the update center and show all available updates,
+# find GUI Builder Update Pack for NetBeans 5.5 under Features node, select it and push Add button
+# (all necessary modules will appear in the Include to Install list)
+
 *** de.unisiegen.gtitool.core ***
 - source folder:
   - source

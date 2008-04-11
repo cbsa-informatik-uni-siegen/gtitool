@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
@@ -24,24 +25,27 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
  * @version $Id: StyledProductionParserPanelTest.java 547 2008-02-10 22:24:57Z
  *          fehler $
  */
-@SuppressWarnings (
-{ "all" } )
 public class StyledProductionParserPanelTest
 {
 
+  /**
+   * The main methos.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
     try
     {
       NonterminalSymbolSet nonterminalSymbolSet = new DefaultNonterminalSymbolSet (
-          new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol (
-              "F" ), new DefaultNonterminalSymbol ( "G" ) );
+          new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol ( //$NON-NLS-1$
+              "F" ), new DefaultNonterminalSymbol ( "G" ) );//$NON-NLS-1$ //$NON-NLS-2$
 
       TerminalSymbolSet terminalSymbolSet = new DefaultTerminalSymbolSet (
-          new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ),
-          new DefaultTerminalSymbol ( "c" ) );
+          new DefaultTerminalSymbol ( "a" ), new DefaultTerminalSymbol ( "b" ),//$NON-NLS-1$ //$NON-NLS-2$
+          new DefaultTerminalSymbol ( "c" ) ); //$NON-NLS-1$
 
-      JFrame jFrame = new JFrame ( "ProductionPanelTest" );
+      JFrame jFrame = new JFrame ( "ProductionPanelTest" ); //$NON-NLS-1$
       StyledProductionParserPanel styledProductionParserPanel = new StyledProductionParserPanel ();
 
       styledProductionParserPanel
@@ -62,7 +66,7 @@ public class StyledProductionParserPanelTest
           } );
       jFrame.add ( styledProductionParserPanel );
       jFrame.setBounds ( 300, 300, 400, 300 );
-      jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+      jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
       jFrame.setVisible ( true );
     }
     catch ( NonterminalSymbolSetException exc )

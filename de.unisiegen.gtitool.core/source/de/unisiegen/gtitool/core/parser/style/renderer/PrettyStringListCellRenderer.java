@@ -1,10 +1,14 @@
-package de.unisiegen.gtitool.core.parser.style;
+package de.unisiegen.gtitool.core.parser.style.renderer;
 
 
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 
 
 /**

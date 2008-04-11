@@ -7,6 +7,8 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
@@ -74,6 +76,29 @@ public class ParserMultiException extends ParserException
           .getParserOffset ().getStart ();
       endOffset [ j ] = negativeNonterminalSymbols.get ( j ).getParserOffset ()
           .getEnd ();
+    }
+    throw new ParserMultiException ( startOffset, endOffset, message );
+  }
+
+
+  /**
+   * Throws a {@link ParserMultiException} if the {@link StateSet} consist of
+   * {@link State}s with the same name.
+   * 
+   * @param negativeStates The input list of {@link State}s.
+   */
+  public static void throwStateSetException ( ArrayList < State > negativeStates )
+  {
+    String [] message = new String [ negativeStates.size () ];
+    int [] startOffset = new int [ negativeStates.size () ];
+    int [] endOffset = new int [ negativeStates.size () ];
+    for ( int j = 0 ; j < negativeStates.size () ; j++ )
+    {
+      message [ j ] = Messages.getString ( "Parser.11", negativeStates //$NON-NLS-1$
+          .get ( j ) );
+      startOffset [ j ] = negativeStates.get ( j ).getParserOffset ()
+          .getStart ();
+      endOffset [ j ] = negativeStates.get ( j ).getParserOffset ().getEnd ();
     }
     throw new ParserMultiException ( startOffset, endOffset, message );
   }

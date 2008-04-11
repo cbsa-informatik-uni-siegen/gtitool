@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
@@ -18,19 +19,22 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings (
-{ "all" } )
 public class StyledWordParserPanelTest
 {
 
+  /**
+   * The main methos.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
     try
     {
-      Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
-          new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
-      
-      JFrame jFrame = new JFrame ( "WordPanelTest" );
+      Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ), //$NON-NLS-1$
+          new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      JFrame jFrame = new JFrame ( "WordPanelTest" ); //$NON-NLS-1$
       StyledWordParserPanel styledWordParserPanel = new StyledWordParserPanel ();
       styledWordParserPanel.setAlphabet ( alphabet );
       styledWordParserPanel.addWordChangedListener ( new WordChangedListener ()
@@ -46,7 +50,7 @@ public class StyledWordParserPanelTest
       } );
       jFrame.add ( styledWordParserPanel );
       jFrame.setBounds ( 300, 300, 400, 300 );
-      jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+      jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
       jFrame.setVisible ( true );
     }
     catch ( AlphabetException exc )

@@ -17,8 +17,10 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
@@ -274,6 +276,42 @@ public abstract class StyledParserPanel extends JPanel
    * The synchronized {@link StyledParserPanel}.
    */
   private StyledParserPanel synchronizedStyledParserPanel = null;
+
+
+  /**
+   * Enables or disables the {@link JScrollBar}s.
+   * 
+   * @param enabled The enabled flag.
+   */
+  public final void setScrollBarEnabled ( boolean enabled )
+  {
+    if ( enabled )
+    {
+      this.jScrollPane
+          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
+      this.jScrollPane
+          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+    }
+    else
+    {
+      this.jScrollPane
+          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+      this.jScrollPane
+          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
+    }
+  }
+
+
+  /**
+   * Returns true is the {@link JScrollBar} is enabled, otherwise false.
+   * 
+   * @return True is the {@link JScrollBar} is enabled, otherwise false.
+   */
+  public boolean isScrollBarEnabled ()
+  {
+    return ( this.jScrollPane.getHorizontalScrollBarPolicy () != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER )
+        || ( this.jScrollPane.getVerticalScrollBarPolicy () != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
+  }
 
 
   /**

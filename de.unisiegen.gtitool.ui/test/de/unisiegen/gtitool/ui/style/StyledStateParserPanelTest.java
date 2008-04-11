@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
@@ -13,14 +14,17 @@ import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings (
-{ "all" } )
 public class StyledStateParserPanelTest
 {
 
+  /**
+   * The main methos.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
-    JFrame jFrame = new JFrame ( "StackPanelTest" );
+    JFrame jFrame = new JFrame ( "StackPanelTest" ); //$NON-NLS-1$
     StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
     styledStackParserPanel
         .addStackChangedListener ( new StackChangedListener ()
@@ -36,7 +40,7 @@ public class StyledStateParserPanelTest
         } );
     jFrame.add ( styledStackParserPanel );
     jFrame.setBounds ( 300, 300, 400, 300 );
-    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+    jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
     jFrame.setVisible ( true );
   }
 }

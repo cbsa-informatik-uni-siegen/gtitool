@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.style;
+package de.unisiegen.gtitool.core.parser.style.renderer;
 
 
 import java.awt.Component;
@@ -6,6 +6,10 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 
 
 /**

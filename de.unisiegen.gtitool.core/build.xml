@@ -109,7 +109,7 @@
 	</target>
 
 	<!-- parser -->
-	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-start-nonterminal-symbol,parser-state,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
+	<target name="parser" depends="declare,parser-clean,parser-alphabet,parser-nonterminal-symbol,parser-nonterminal-symbol-set,parser-production,parser-production-word,parser-stack,parser-start-nonterminal-symbol,parser-state,parser-state-set,parser-symbol,parser-terminal-symbol,parser-terminal-symbol-set,parser-transition,parser-word" description="Generate parsers and lexers" />
 
 	<!-- parser clean -->
 	<target name="parser-clean">
@@ -162,6 +162,12 @@
 	<target name="parser-state">
 		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.flex" destdir="${sourcegenerateddir}" nobak="yes" />
 		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/state/state.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/state" package="de.unisiegen.gtitool.core.parser.state" parser="StateAbstractParser" symbols="StateTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
+	</target>
+
+	<!-- parser state -->
+	<target name="parser-state-set">
+		<jflex file="${sourcedir}/de/unisiegen/gtitool/core/parser/stateset/stateset.flex" destdir="${sourcegenerateddir}" nobak="yes" />
+		<cup srcfile="${sourcedir}/de/unisiegen/gtitool/core/parser/stateset/stateset.cup" destdir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser/stateset" package="de.unisiegen.gtitool.core.parser.stateset" parser="StateSetAbstractParser" symbols="StateSetTerminals" interface="yes" debug="no" expect="100" nonterms="no" nopositions="no" compact_red="no" dump_grammar="no" />
 	</target>
 
 	<!-- parser symbol -->

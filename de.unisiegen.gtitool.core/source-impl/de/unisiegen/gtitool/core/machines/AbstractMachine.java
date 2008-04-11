@@ -16,8 +16,10 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
+import de.unisiegen.gtitool.core.entities.DefaultStateSet;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -35,6 +37,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperationsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -43,12 +46,11 @@ import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
-import de.unisiegen.gtitool.core.parser.style.PrettyPrintableList;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyStringTableCellRenderer;
-import de.unisiegen.gtitool.core.parser.style.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRenderer;
+import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
@@ -1343,7 +1345,7 @@ public abstract class AbstractMachine implements Machine
       return this.stateList.get ( rowIndex );
     }
 
-    PrettyPrintableList stateEndList = new PrettyPrintableList ();
+    StateSet stateEndList = new DefaultStateSet ();
     State currentState = this.stateList.get ( rowIndex );
 
     // Epsilon column
@@ -1353,7 +1355,15 @@ public abstract class AbstractMachine implements Machine
       {
         if ( currentTransition.isEpsilonTransition () )
         {
-          stateEndList.add ( currentTransition.getStateEnd () );
+          try
+          {
+            stateEndList.add ( currentTransition.getStateEnd () );
+          }
+          catch ( StateSetException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+          }
         }
       }
     }
@@ -1365,7 +1375,15 @@ public abstract class AbstractMachine implements Machine
       {
         if ( currentTransition.contains ( currentSymbol ) )
         {
-          stateEndList.add ( currentTransition.getStateEnd () );
+          try
+          {
+            stateEndList.add ( currentTransition.getStateEnd () );
+          }
+          catch ( StateSetException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+          }
         }
       }
     }
@@ -1380,10 +1398,9 @@ public abstract class AbstractMachine implements Machine
    * @see TableModel#isCellEditable(int, int)
    */
   public final boolean isCellEditable ( @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  int rowIndex, int columnIndex )
   {
-    return false;
+    return columnIndex > 0;
   }
 
 

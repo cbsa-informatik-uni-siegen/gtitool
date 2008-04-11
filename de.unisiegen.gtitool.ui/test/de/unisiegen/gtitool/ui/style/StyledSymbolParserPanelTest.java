@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.SymbolChangedListener;
@@ -14,14 +15,17 @@ import de.unisiegen.gtitool.core.entities.listener.SymbolChangedListener;
  * @version $Id: StyledSymbolParserPanelTest.java 547 2008-02-10 22:24:57Z
  *          fehler $
  */
-@SuppressWarnings (
-{ "all" } )
 public class StyledSymbolParserPanelTest
 {
 
+  /**
+   * The main methos.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
-    JFrame jFrame = new JFrame ( "SymbolPanelTest" );
+    JFrame jFrame = new JFrame ( "SymbolPanelTest" ); //$NON-NLS-1$
     StyledSymbolParserPanel styledSymbolParserPanel = new StyledSymbolParserPanel ();
     styledSymbolParserPanel
         .addSymbolChangedListener ( new SymbolChangedListener ()
@@ -37,7 +41,7 @@ public class StyledSymbolParserPanelTest
         } );
     jFrame.add ( styledSymbolParserPanel );
     jFrame.setBounds ( 300, 300, 400, 300 );
-    jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+    jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
     jFrame.setVisible ( true );
   }
 }

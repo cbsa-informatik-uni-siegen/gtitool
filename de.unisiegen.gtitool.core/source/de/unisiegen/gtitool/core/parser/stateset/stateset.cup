@@ -1,0 +1,117 @@
+/**
+ * The cup file of the state set parser.
+ * 
+ * @author Christian Fehler
+ * @version $Id$
+ */
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultStateSet;
+import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.StateSet;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.exceptions.ErrorHandling;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
+import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
+
+
+/************
+ * Terminal *
+ ************/
+ 
+terminal String						STATE;
+terminal							COMMA;
+terminal							LCBRACE;
+terminal							RCBRACE;
+
+
+/****************
+ * Non Terminal *
+ ****************/
+ 
+non terminal StateSet				state_set;
+non terminal State					state;
+non terminal State[]				state_list_comma;
+
+
+/*********
+ * Error *
+ *********/
+
+non terminal 						epsilon;
+non terminal						state_list_comma_error;
+
+
+/*************
+ * State Set *
+ *************/
+
+state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
+									{:
+									   try
+									   {
+									     RESULT = new DefaultStateSet(slc);
+									   }
+									   catch (StateSetException ecx)
+									   {
+									     ParserMultiException.throwStateSetException(ecx.getState());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft, rright));
+									:}
+								|	state_list_comma:slc
+									{:
+									   try
+									   {
+									     RESULT = new DefaultStateSet(slc);
+									   }
+									   catch (StateSetException ecx)
+									   {
+									     ParserMultiException.throwStateSetException(ecx.getState());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(slcleft, slcright));
+									:}
+								;
+
+state							::= STATE:s
+									{:
+									   try
+									   {
+									     RESULT = new DefaultState(s);
+									   }
+									   catch (StateException exc)
+									   {
+									     ParserException.throwStateException(sleft, sright, s);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(sleft, sright));
+									:}
+								;
+
+state_list_comma				::= state_list_comma:slc COMMA:c state:s
+								    {:
+								       RESULT = new State[slc.length + 1];
+									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
+									   RESULT[slc.length] = s;
+								    :}
+								|	state:s
+									{:
+									   RESULT = new State[] { s };
+									:}
+								|	state_list_comma_error
+									{: :}
+								;
+
+state_list_comma_error			::= state_list_comma:slc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	state_list_comma:slc STATE:s
+									{:
+									   ErrorHandling.expect ( "State Set", ", ", slcleft, slcright, "," );
+									:}
+								;
+
+epsilon							::= /* epsilon */
+									{: :}
+								;

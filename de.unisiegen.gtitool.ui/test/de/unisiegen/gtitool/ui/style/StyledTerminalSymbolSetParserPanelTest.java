@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.style;
 
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
@@ -19,20 +20,23 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
  * @version $Id: StyledAlphabetParserPanelTest.java 547 2008-02-10 22:24:57Z
  *          fehler $
  */
-@SuppressWarnings (
-{ "all" } )
 public class StyledTerminalSymbolSetParserPanelTest
 {
 
+  /**
+   * The main methos.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
     try
     {
       NonterminalSymbolSet nonterminalSymbolSet = new DefaultNonterminalSymbolSet (
-          new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol (
-              "F" ), new DefaultNonterminalSymbol ( "G" ) );
+          new DefaultNonterminalSymbol ( "E" ), new DefaultNonterminalSymbol ( //$NON-NLS-1$
+              "F" ), new DefaultNonterminalSymbol ( "G" ) ); //$NON-NLS-1$//$NON-NLS-2$
 
-      JFrame jFrame = new JFrame ( "TerminalSymbolSetPanelTest" );
+      JFrame jFrame = new JFrame ( "TerminalSymbolSetPanelTest" ); //$NON-NLS-1$
       StyledTerminalSymbolSetParserPanel styledTerminalSymbolSetParserPanel = new StyledTerminalSymbolSetParserPanel ();
       styledTerminalSymbolSetParserPanel
           .setNonterminalSymbolSet ( nonterminalSymbolSet );
@@ -51,7 +55,7 @@ public class StyledTerminalSymbolSetParserPanelTest
           } );
       jFrame.add ( styledTerminalSymbolSetParserPanel );
       jFrame.setBounds ( 300, 300, 400, 300 );
-      jFrame.setDefaultCloseOperation ( jFrame.DISPOSE_ON_CLOSE );
+      jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
       jFrame.setVisible ( true );
     }
     catch ( NonterminalSymbolException exc )

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.core.parser.exceptions;
 
 
 import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 
@@ -33,6 +34,21 @@ public class ParserException extends ScannerException
       String illegalName )
   {
     throw new ParserException ( left, right, Messages.getString ( "Parser.9", //$NON-NLS-1$
+        illegalName ) );
+  }
+
+
+  /**
+   * Throws a {@link ParserException} if the {@link State} name is not correct.
+   * 
+   * @param left The left parser index.
+   * @param right The right parser index.
+   * @param illegalName The illegal name.
+   */
+  public static void throwStateException ( int left, int right,
+      String illegalName )
+  {
+    throw new ParserException ( left, right, Messages.getString ( "Parser.12", //$NON-NLS-1$
         illegalName ) );
   }
 

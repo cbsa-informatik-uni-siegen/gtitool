@@ -29,6 +29,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableColumn;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
@@ -70,6 +71,7 @@ import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.editor.ParserCellEditor;
 import de.unisiegen.gtitool.ui.utils.RedoUndoHandler;
 
 
@@ -1611,10 +1613,14 @@ public final class MachinePanel implements EditorPanel
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.setColumnModel ( this.machine
         .getTableColumnModel () );
-
     this.gui.jGTITableMachine.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    // TODOCF
+    TableColumn col = this.gui.jGTITableMachine.getColumnModel ()
+        .getColumn ( 2 );
+    col.setCellEditor ( new ParserCellEditor () );
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );

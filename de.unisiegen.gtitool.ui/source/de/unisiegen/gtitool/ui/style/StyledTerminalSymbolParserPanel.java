@@ -112,15 +112,4 @@ public final class StyledTerminalSymbolParserPanel extends StyledParserPanel
   {
     this.listenerList.remove ( TerminalSymbolChangedListener.class, listener );
   }
-
-
-  /**
-   * Sets the {@link TerminalSymbol} of the document.
-   * 
-   * @param terminalSymbol The input {@link TerminalSymbol}.
-   */
-  public final void setText ( TerminalSymbol terminalSymbol )
-  {
-    getEditor ().setText ( terminalSymbol.toString () );
-  }
 }

@@ -150,22 +150,4 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   {
     setHighlightedParseableEntity ( symbol );
   }
-
-
-  /**
-   * Sets the {@link Transition} of the document.
-   * 
-   * @param transition The input {@link Transition}.
-   */
-  public final void setText ( Transition transition )
-  {
-    if ( transition == null )
-    {
-      getEditor ().setText ( "" ); //$NON-NLS-1$
-    }
-    else
-    {
-      getEditor ().setText ( transition.toString () );
-    }
-  }
 }

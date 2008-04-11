@@ -72,6 +72,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserCellEditor;
 
 
@@ -1618,9 +1619,14 @@ public final class MachinePanel implements EditorPanel
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
     // TODOCF
-    TableColumn col = this.gui.jGTITableMachine.getColumnModel ()
-        .getColumn ( 2 );
-    col.setCellEditor ( new ParserCellEditor () );
+    for ( int i = 1 ; i < this.gui.jGTITableMachine.getColumnModel ()
+        .getColumnCount () ; i++ )
+    {
+      TableColumn current = this.gui.jGTITableMachine.getColumnModel ()
+          .getColumn ( i );
+      current.setCellEditor ( new ParserCellEditor (
+          new StyledStateSetParserPanel () ) );
+    }
 
     this.gui.wordPanel.setVisible ( false );
     this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );

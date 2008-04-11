@@ -363,22 +363,4 @@ public final class StyledProductionParserPanel extends StyledParserPanel
       addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );
     }
   }
-
-
-  /**
-   * Sets the {@link Production} of the document.
-   * 
-   * @param production The input {@link Production}.
-   */
-  public final void setText ( Production production )
-  {
-    if ( production == null )
-    {
-      getEditor ().setText ( "" ); //$NON-NLS-1$
-    }
-    else
-    {
-      getEditor ().setText ( production.toString () );
-    }
-  }
 }

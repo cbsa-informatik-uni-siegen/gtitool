@@ -109,15 +109,4 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
   {
     this.listenerList.remove ( SymbolChangedListener.class, listener );
   }
-
-
-  /**
-   * Sets the {@link Symbol} of the document.
-   * 
-   * @param symbol The input {@link Symbol}.
-   */
-  public final void setText ( Symbol symbol )
-  {
-    getEditor ().setText ( symbol.toString () );
-  }
 }

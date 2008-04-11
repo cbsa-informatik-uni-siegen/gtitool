@@ -182,15 +182,4 @@ public final class StyledStartNonterminalSymbolParserPanel extends
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
   }
-
-
-  /**
-   * Sets the start {@link NonterminalSymbol} of the document.
-   * 
-   * @param symbol The input start {@link NonterminalSymbol}.
-   */
-  public final void setText ( NonterminalSymbol symbol )
-  {
-    getEditor ().setText ( symbol.toString () );
-  }
 }

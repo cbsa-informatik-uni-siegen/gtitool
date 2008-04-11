@@ -109,15 +109,4 @@ public final class StyledStateParserPanel extends StyledParserPanel
   {
     this.listenerList.remove ( StateChangedListener.class, listener );
   }
-
-
-  /**
-   * Sets the {@link State} of the document.
-   * 
-   * @param state The input {@link State}.
-   */
-  public final void setText ( State state )
-  {
-    getEditor ().setText ( state.toString () );
-  }
 }

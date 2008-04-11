@@ -213,15 +213,4 @@ public final class StyledStackParserPanel extends StyledParserPanel
   {
     this.pushDownAlphabet = pushDownAlphabet;
   }
-
-
-  /**
-   * Sets the {@link Stack} of the document.
-   * 
-   * @param stack The input {@link Stack}.
-   */
-  public final void setText ( Stack stack )
-  {
-    getEditor ().setText ( stack.toString () );
-  }
 }

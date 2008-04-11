@@ -212,15 +212,4 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   {
     this.notRemoveableSymbols = notRemoveableSymbols;
   }
-
-
-  /**
-   * Sets the {@link Alphabet} of the document.
-   * 
-   * @param alphabet The input {@link Alphabet}.
-   */
-  public final void setText ( Alphabet alphabet )
-  {
-    getEditor ().setText ( alphabet.toString () );
-  }
 }

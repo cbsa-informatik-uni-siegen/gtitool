@@ -265,15 +265,4 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   {
     this.notRemoveableTerminalSymbols = notRemoveableTerminalSymbols;
   }
-
-
-  /**
-   * Sets the {@link TerminalSymbolSet} of the document.
-   * 
-   * @param terminalSymbolSet The input {@link TerminalSymbolSet}.
-   */
-  public final void setText ( TerminalSymbolSet terminalSymbolSet )
-  {
-    getEditor ().setText ( terminalSymbolSet.toString () );
-  }
 }

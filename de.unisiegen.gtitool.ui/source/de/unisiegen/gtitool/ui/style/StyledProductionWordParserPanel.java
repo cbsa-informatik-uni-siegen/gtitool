@@ -346,15 +346,4 @@ public final class StyledProductionWordParserPanel extends StyledParserPanel
       addOverwrittenStyle ( current.getName (), Style.TERMINAL_SYMBOL );
     }
   }
-
-
-  /**
-   * Sets the {@link ProductionWord} of the document.
-   * 
-   * @param word The input {@link ProductionWord}.
-   */
-  public final void setText ( ProductionWord word )
-  {
-    getEditor ().setText ( word.toString () );
-  }
 }

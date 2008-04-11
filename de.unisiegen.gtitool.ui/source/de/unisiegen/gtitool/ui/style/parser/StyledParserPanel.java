@@ -12,12 +12,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.CellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
@@ -176,21 +176,33 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Flag that indicates if the {@link SideBar} is visible.
+   */
+  private boolean sideBarVisible;
+
+
+  /**
    * Flag that indicates if the panel is copyable.
    */
   private boolean copyable;
 
 
   /**
-   * The {@link StyledParserDocument}.
-   */
-  private StyledParserDocument document;
-
-
-  /**
    * Flag that indicates if the panel is editable.
    */
   private boolean editable;
+
+
+  /**
+   * Flag that indicates if the panel is used as a {@link CellEditor}.
+   */
+  private boolean cellEditor = false;
+
+
+  /**
+   * The {@link StyledParserDocument}.
+   */
+  private StyledParserDocument document;
 
 
   /**
@@ -267,51 +279,9 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Flag that indicates if the {@link SideBar} is visible.
-   */
-  private boolean sideBarVisible;
-
-
-  /**
    * The synchronized {@link StyledParserPanel}.
    */
   private StyledParserPanel synchronizedStyledParserPanel = null;
-
-
-  /**
-   * Enables or disables the {@link JScrollBar}s.
-   * 
-   * @param enabled The enabled flag.
-   */
-  public final void setScrollBarEnabled ( boolean enabled )
-  {
-    if ( enabled )
-    {
-      this.jScrollPane
-          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
-      this.jScrollPane
-          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
-    }
-    else
-    {
-      this.jScrollPane
-          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
-      this.jScrollPane
-          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
-    }
-  }
-
-
-  /**
-   * Returns true is the {@link JScrollBar} is enabled, otherwise false.
-   * 
-   * @return True is the {@link JScrollBar} is enabled, otherwise false.
-   */
-  public boolean isScrollBarEnabled ()
-  {
-    return ( this.jScrollPane.getHorizontalScrollBarPolicy () != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER )
-        || ( this.jScrollPane.getVerticalScrollBarPolicy () != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
-  }
 
 
   /**
@@ -689,18 +659,6 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
-   * Returns the editor.
-   * 
-   * @return The editor.
-   * @see #editor
-   */
-  protected final StyledParserEditor getEditor ()
-  {
-    return this.editor;
-  }
-
-
-  /**
    * Returns the {@link JPopupMenu}.
    * 
    * @return The {@link JPopupMenu}.
@@ -718,7 +676,7 @@ public abstract class StyledParserPanel extends JPanel
    * 
    * @return The {@link Object} for the program text.
    */
-  protected final Object getParsedObject ()
+  public final Object getParsedObject ()
   {
     return this.document.getParsedObject ();
   }
@@ -745,6 +703,19 @@ public abstract class StyledParserPanel extends JPanel
     {
       this.editor.setText ( this.history.undo ().toString () );
     }
+  }
+
+
+  /**
+   * Returns true if this {@link StyledParserPanel} is used as a
+   * {@link CellEditor}, otherwise false.
+   * 
+   * @return True if this {@link StyledParserPanel} is used as a
+   *         {@link CellEditor}, otherwise false.
+   */
+  public boolean isCellEditor ()
+  {
+    return this.cellEditor;
   }
 
 
@@ -869,6 +840,32 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * Sets the cell editor flag.
+   * 
+   * @param cellEditor The cell editor flag.
+   */
+  public final void setCellEditor ( boolean cellEditor )
+  {
+    this.cellEditor = cellEditor;
+    if ( this.cellEditor )
+    {
+      this.jScrollPane
+          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+      this.jScrollPane
+          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
+      setSideBarVisible ( false );
+    }
+    else
+    {
+      this.jScrollPane
+          .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
+      this.jScrollPane
+          .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+    }
+  }
+
+
+  /**
    * Sets the specified boolean to indicate whether or not this
    * {@link StyledParserPanel} should be copyable.
    * 
@@ -989,8 +986,19 @@ public abstract class StyledParserPanel extends JPanel
    */
   public final void setSideBarVisible ( boolean sideBarVisible )
   {
-    this.sideBarVisible = sideBarVisible;
-    setStatus ();
+    if ( sideBarVisible )
+    {
+      if ( !this.cellEditor )
+      {
+        this.sideBarVisible = true;
+        setStatus ();
+      }
+    }
+    else
+    {
+      this.sideBarVisible = false;
+      setStatus ();
+    }
   }
 
 
@@ -1019,6 +1027,24 @@ public abstract class StyledParserPanel extends JPanel
     }
     // SideBar
     this.sideBar.setVisible ( this.sideBarVisible );
+  }
+
+
+  /**
+   * Sets the {@link Object} of the {@link StyledParserPanel}.
+   * 
+   * @param object The input {@link Object}.
+   */
+  public final void setText ( Object object )
+  {
+    if ( object == null )
+    {
+      this.editor.setText ( "" ); //$NON-NLS-1$
+    }
+    else
+    {
+      this.editor.setText ( object.toString () );
+    }
   }
 
 
@@ -1082,8 +1108,8 @@ public abstract class StyledParserPanel extends JPanel
     }
     this.synchronizedStyledParserPanel = styledParserPanel;
 
-    getEditor ().setText (
-        this.synchronizedStyledParserPanel.getEditor ().getText () );
+    this.editor.setText ( this.synchronizedStyledParserPanel.getParsedObject ()
+        .toString () );
 
     this.parseableChangedListenerOther = new ParseableChangedListener ()
     {
@@ -1093,9 +1119,9 @@ public abstract class StyledParserPanel extends JPanel
       Object newObject )
       {
         removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
-        getEditor ().setText (
-            StyledParserPanel.this.synchronizedStyledParserPanel.getEditor ()
-                .getText () );
+        StyledParserPanel.this.editor
+            .setText ( StyledParserPanel.this.synchronizedStyledParserPanel
+                .getParsedObject ().toString () );
         addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
       }
     };
@@ -1108,8 +1134,8 @@ public abstract class StyledParserPanel extends JPanel
       {
         StyledParserPanel.this.synchronizedStyledParserPanel
             .removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );
-        StyledParserPanel.this.synchronizedStyledParserPanel.getEditor ()
-            .setText ( getEditor ().getText () );
+        StyledParserPanel.this.synchronizedStyledParserPanel
+            .setText ( StyledParserPanel.this.editor.getText () );
         StyledParserPanel.this.synchronizedStyledParserPanel
             .addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );
       }

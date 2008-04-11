@@ -211,15 +211,4 @@ public final class StyledWordParserPanel extends StyledParserPanel
   {
     setHighlightedParseableEntity ( symbol );
   }
-
-
-  /**
-   * Sets the {@link Word} of the document.
-   * 
-   * @param word The input {@link Word}.
-   */
-  public final void setText ( Word word )
-  {
-    getEditor ().setText ( word.toString () );
-  }
 }

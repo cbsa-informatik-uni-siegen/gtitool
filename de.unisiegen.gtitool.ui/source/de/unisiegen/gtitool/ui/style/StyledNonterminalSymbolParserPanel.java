@@ -177,15 +177,4 @@ public final class StyledNonterminalSymbolParserPanel extends StyledParserPanel
   {
     this.nonterminalSymbolSet = nonterminalSymbolSet;
   }
-
-
-  /**
-   * Sets the {@link NonterminalSymbol} of the document.
-   * 
-   * @param symbol The input {@link NonterminalSymbol}.
-   */
-  public final void setText ( NonterminalSymbol symbol )
-  {
-    getEditor ().setText ( symbol.toString () );
-  }
 }

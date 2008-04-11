@@ -164,15 +164,4 @@ public final class StyledStateSetParserPanel extends StyledParserPanel
   {
     setHighlightedParseableEntity ( state );
   }
-
-
-  /**
-   * Sets the {@link StateSet} of the document.
-   * 
-   * @param stateSet The input {@link StateSet}.
-   */
-  public final void setText ( StateSet stateSet )
-  {
-    getEditor ().setText ( stateSet.toString () );
-  }
 }

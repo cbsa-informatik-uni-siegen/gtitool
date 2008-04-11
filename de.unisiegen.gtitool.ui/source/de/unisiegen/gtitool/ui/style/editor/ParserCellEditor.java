@@ -8,8 +8,7 @@ import javax.swing.CellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import de.unisiegen.gtitool.core.entities.StateSet;
-import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
+import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
 /**
@@ -29,19 +28,20 @@ public final class ParserCellEditor extends AbstractCellEditor implements
 
 
   /**
-   * The {@link StyledStateSetParserPanel}.
+   * The {@link StyledParserPanel}.
    */
-  private StyledStateSetParserPanel parserPanel;
+  private StyledParserPanel styledParserPanel;
 
 
   /**
    * Allocates a new {@link ParserCellEditor}.
+   * 
+   * @param styledParserPanel The used {@link StyledParserPanel}.
    */
-  public ParserCellEditor ()
+  public ParserCellEditor ( StyledParserPanel styledParserPanel )
   {
-    this.parserPanel = new StyledStateSetParserPanel ();
-    this.parserPanel.setSideBarVisible ( false );
-    this.parserPanel.setScrollBarEnabled ( false );
+    this.styledParserPanel = styledParserPanel;
+    this.styledParserPanel.setCellEditor ( true );
   }
 
 
@@ -52,7 +52,7 @@ public final class ParserCellEditor extends AbstractCellEditor implements
    */
   public final Object getCellEditorValue ()
   {
-    return this.parserPanel.getStateSet ();
+    return this.styledParserPanel.getParsedObject ();
   }
 
 
@@ -69,7 +69,7 @@ public final class ParserCellEditor extends AbstractCellEditor implements
       int rowIndex, @SuppressWarnings ( "unused" )
       int colIndex )
   {
-    this.parserPanel.setText ( ( ( StateSet ) value ) );
-    return this.parserPanel;
+    this.styledParserPanel.setText ( value );
+    return this.styledParserPanel;
   }
 }

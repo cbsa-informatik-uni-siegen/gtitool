@@ -309,15 +309,4 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   {
     this.terminalSymbolSet = terminalSymbolSet;
   }
-
-
-  /**
-   * Sets the {@link NonterminalSymbolSet} of the document.
-   * 
-   * @param nonterminalSymbolSet The input {@link NonterminalSymbolSet}.
-   */
-  public final void setText ( NonterminalSymbolSet nonterminalSymbolSet )
-  {
-    getEditor ().setText ( nonterminalSymbolSet.toString () );
-  }
 }

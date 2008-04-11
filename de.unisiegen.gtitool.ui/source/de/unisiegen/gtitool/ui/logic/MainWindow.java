@@ -1119,9 +1119,11 @@ public final class MainWindow implements LanguageChangedListener
 
     int errorCount = 0;
     int warningCount = 0;
+    boolean machinePanelSelected;
 
     if ( panel instanceof MachinePanel )
     {
+      machinePanelSelected = true;
       MachinePanel machinePanel = ( MachinePanel ) panel;
       try
       {
@@ -1146,9 +1148,9 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
-
-    if ( panel instanceof GrammarPanel )
+    else if ( panel instanceof GrammarPanel )
     {
+      machinePanelSelected = false;
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
       try
       {
@@ -1173,6 +1175,11 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
+    else
+    {
+      throw new RuntimeException (
+          "the select panel is not a machine or grammar panel" ); //$NON-NLS-1$
+    }
 
     // Return if only errors should be displayes
     if ( !showDialogIfWarning && errorCount == 0 )
@@ -1182,14 +1189,16 @@ public final class MainWindow implements LanguageChangedListener
         // Select the warning tab
         panel.getJTabbedPaneConsole ().setSelectedIndex ( 1 );
 
-        // Update the title
         // Update the titles
         panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-            Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+            machinePanelSelected ? Messages.getString ( "MachinePanel.Error" ) //$NON-NLS-1$
+                : Messages.getString ( "GrammarPanel.Error" ) ); //$NON-NLS-1$
+
         panel.getJTabbedPaneConsole ().setTitleAt (
             1,
             Messages.getString (
-                "MachinePanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
+                    : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
                     warningCount ) ) );
       }
       return true;
@@ -1202,38 +1211,49 @@ public final class MainWindow implements LanguageChangedListener
       String message = null;
       if ( errorCount == 1 && warningCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount0" ); //$NON-NLS-1$
+        message = Messages
+            .getString ( machinePanelSelected ? "MainWindow.ErrorWarningMachineCount0" //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount0" ); //$NON-NLS-1$
       }
       else if ( errorCount == 1 && warningCount > 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount1", //$NON-NLS-1$
-            false, String.valueOf ( warningCount ) );
+        message = Messages.getString (
+            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount1" //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount1", false, String //$NON-NLS-1$
+                .valueOf ( warningCount ) );
       }
       else if ( errorCount > 1 && warningCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount2", //$NON-NLS-1$
-            false, String.valueOf ( errorCount ) );
+        message = Messages.getString (
+            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount2" //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount2", false, String //$NON-NLS-1$
+                .valueOf ( errorCount ) );
       }
       else
       {
-        message = Messages.getString ( "MainWindow.ErrorWarningMachineCount3", //$NON-NLS-1$
-            false, String.valueOf ( errorCount ), String
-                .valueOf ( warningCount ) );
+        message = Messages.getString (
+            machinePanelSelected ? "MainWindow.ErrorWarningMachineCount3" //$NON-NLS-1$
+                : "MainWindow.ErrorWarningGrammarCount3", false, String //$NON-NLS-1$
+                .valueOf ( errorCount ), String.valueOf ( warningCount ) );
       }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( "MachinePanel.ErrorFound", false, new Integer ( //$NON-NLS-1$
-              errorCount ) ) );
-      panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-          Messages.getString ( "MachinePanel.WarningFound", false, new Integer ( //$NON-NLS-1$
-              warningCount ) ) );
+          Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound" //$NON-NLS-1$
+              : "GrammarPanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt (
+          1,
+          Messages.getString (
+              machinePanelSelected ? "MachinePanel.WarningFound" //$NON-NLS-1$
+                  : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                  warningCount ) ) );
 
       // Select the error tab
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( "MainWindow.ErrorWarningMachine" ) ); //$NON-NLS-1$
+          .getString ( machinePanelSelected ? "MainWindow.ErrorWarningMachine" //$NON-NLS-1$
+              : "MainWindow.ErrorWarningGrammar" ) ); //$NON-NLS-1$
     }
     // Only error
     else if ( errorCount > 0 )
@@ -1241,27 +1261,31 @@ public final class MainWindow implements LanguageChangedListener
       String message;
       if ( errorCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.ErrorMachineCountOne" ); //$NON-NLS-1$
+        message = Messages
+            .getString ( machinePanelSelected ? "MainWindow.ErrorMachineCountOne"//$NON-NLS-1$
+                : "MainWindow.ErrorGrammarCountOne" );//$NON-NLS-1$
       }
       else
       {
         message = Messages.getString (
-            "MainWindow.ErrorMachineCount", false, String //$NON-NLS-1$
+            machinePanelSelected ? "MainWindow.ErrorMachineCount"//$NON-NLS-1$
+                : "MainWindow.ErrorGrammarCount", false, String//$NON-NLS-1$
                 .valueOf ( errorCount ) );
       }
 
       // Update the titles
-      panel.getJTabbedPaneConsole ().setTitleAt (
-          0,
-          Messages.getString (
-              "MachinePanel.ErrorFound", false, new Integer ( errorCount ) ) ); //$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt ( 0,
+          Messages.getString ( machinePanelSelected ? "MachinePanel.ErrorFound"//$NON-NLS-1$
+              : "GrammarPanel.ErrorFound", false, new Integer ( errorCount ) ) );//$NON-NLS-1$
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-          Messages.getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+          Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
+              : "GrammarPanel.Warning" ) );//$NON-NLS-1$
 
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 0 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( "MainWindow.ErrorMachine" ) ); //$NON-NLS-1$
+          .getString ( machinePanelSelected ? "MainWindow.ErrorMachine"//$NON-NLS-1$
+              : "MainWindow.ErrorGrammar" ) );//$NON-NLS-1$
     }
     // Only warning
     else if ( warningCount > 0 )
@@ -1269,44 +1293,55 @@ public final class MainWindow implements LanguageChangedListener
       String message;
       if ( warningCount == 1 )
       {
-        message = Messages.getString ( "MainWindow.WarningMachineCountOne" ); //$NON-NLS-1$
+        message = Messages
+            .getString ( machinePanelSelected ? "MainWindow.WarningMachineCountOne"//$NON-NLS-1$
+                : "MainWindow.WarningGrammarCountOne" );//$NON-NLS-1$
       }
       else
       {
         message = Messages.getString (
-            "MainWindow.WarningMachineCount", false, String //$NON-NLS-1$
+            machinePanelSelected ? "MainWindow.WarningMachineCount"//$NON-NLS-1$
+                : "MainWindow.WarningGrammarCount", false, String//$NON-NLS-1$
                 .valueOf ( warningCount ) );
       }
 
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
-      panel
-          .getJTabbedPaneConsole ()
-          .setTitleAt (
-              1,
-              Messages
-                  .getString (
-                      "MachinePanel.WarningFound", false, new Integer ( warningCount ) ) ); //$NON-NLS-1$
+          Messages.getString ( machinePanelSelected ? "MachinePanel.Error"//$NON-NLS-1$
+              : "GrammarPanel.Error" ) );//$NON-NLS-1$
+      panel.getJTabbedPaneConsole ().setTitleAt (
+          1,
+          Messages.getString (
+              machinePanelSelected ? "MachinePanel.WarningFound"//$NON-NLS-1$
+                  : "GrammarPanel.WarningFound", false, new Integer ( //$NON-NLS-1$
+                  warningCount ) ) );
 
       // Select the warning tab
       panel.getJTabbedPaneConsole ().setSelectedIndex ( 1 );
 
       infoDialog = new InfoDialog ( this.gui, message, Messages
-          .getString ( "MainWindow.WarningMachine" ) ); //$NON-NLS-1$
+          .getString ( machinePanelSelected ? "MainWindow.WarningMachine"//$NON-NLS-1$
+              : "MainWindow.WarningGrammar" ) );//$NON-NLS-1$
     }
     // No error and no warning
     else
     {
       // Update the titles
       panel.getJTabbedPaneConsole ().setTitleAt ( 0,
-          Messages.getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+          Messages.getString ( machinePanelSelected ? "MachinePanel.Error"//$NON-NLS-1$
+              : "GrammarPanel.Error" ) );//$NON-NLS-1$
       panel.getJTabbedPaneConsole ().setTitleAt ( 1,
-          Messages.getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+          Messages.getString ( machinePanelSelected ? "MachinePanel.Warning"//$NON-NLS-1$
+              : "GrammarPanel.Warning" ) );//$NON-NLS-1$
 
-      infoDialog = new InfoDialog ( this.gui, Messages
-          .getString ( "MainWindow.NoErrorNoWarningMachineCount" ), Messages //$NON-NLS-1$
-          .getString ( "MainWindow.NoErrorNoWarningMachine" ) ); //$NON-NLS-1$
+      infoDialog = new InfoDialog (
+          this.gui,
+          Messages
+              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachineCount"//$NON-NLS-1$
+                  : "MainWindow.NoErrorNoWarningGrammarCount" ),//$NON-NLS-1$
+          Messages
+              .getString ( machinePanelSelected ? "MainWindow.NoErrorNoWarningMachine"//$NON-NLS-1$
+                  : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
     }
 
     this.gui.jCheckBoxMenuItemConsole.setSelected ( true );

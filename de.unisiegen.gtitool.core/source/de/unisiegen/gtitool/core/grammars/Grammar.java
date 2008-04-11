@@ -42,6 +42,11 @@ public interface Grammar extends Serializable, TableModel, Modifyable
      * There is a {@link NonterminalSymbol} which is not reachable.
      */
     NONTERMINAL_NOT_REACHABLE,
+    
+    /**
+     * The grammar is not regular.
+     */
+    GRAMMAR_NOT_REGULAR;
   }
 
 

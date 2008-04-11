@@ -2,4 +2,3 @@ CF		- Stack in der Machine testen
 CF		- Fehlerbehandlung der Parser implementieren
 CF		- Active und Error auf den Grammar Entities entfernen falls sie
 		  nicht gebraucht werden
-BM		- Unterscheidung zwischen den Grammatiken implementieren

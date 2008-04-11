@@ -5,4 +5,3 @@ CF		- Testen ob es möglich ist die Machine Tabelle editable zu machen
 
 
 BM		- Redo / Undo für Grammar Panel und Machine Panel
-BM		- Draft for... für Grammatiken

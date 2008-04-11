@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarNonterminalNotReachableException;
+import de.unisiegen.gtitool.core.exceptions.grammar.GrammarRegularGrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -135,9 +136,9 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Add a {@link Production} to this grammar
+   * Add a {@link Production} to this grammar.
    * 
-   * @param production The {@link Production}
+   * @param production The {@link Production}.
    */
   public void addProduction ( Production production )
   {
@@ -161,9 +162,9 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Check the grammar for duplicate productions
+   * Check the grammar for duplicate productions.
    * 
-   * @return list containing occured errors
+   * @return list containing occured errors.
    */
   private final ArrayList < GrammarException > checkDuplicateProduction ()
   {
@@ -188,9 +189,9 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Check the grammar for not reachable nonterminal symbols
+   * Check the grammar for not reachable nonterminal symbols.
    * 
-   * @return list containing occured errors
+   * @return list containing occured errors.
    */
   private final ArrayList < GrammarException > checkNonterminalNotReachable ()
   {
@@ -214,6 +215,48 @@ public abstract class AbstractGrammar implements Grammar
       {
         grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
             current ) );
+      }
+    }
+    return grammarExceptionList;
+  }
+
+
+  /**
+   * Check if the grammar is regular.
+   * 
+   * @return list containing occured errors.
+   */
+  private final ArrayList < GrammarException > checkRegularGrammar ()
+  {
+    ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
+
+    for ( Production current : this.productions )
+    {
+      int count = 0;
+      for ( ProductionWordMember wordMember : current.getProductionWord () )
+      {
+        count++ ;
+        if ( count == 1 )
+        {
+          if ( ! ( wordMember instanceof TerminalSymbol ) )
+          {
+            grammarExceptionList.add(new GrammarRegularGrammarException(current));
+            break;
+          }
+        }
+        if ( count == 2 )
+        {
+          if ( ! ( wordMember instanceof NonterminalSymbol ) )
+          {
+            grammarExceptionList.add(new GrammarRegularGrammarException(current));
+            break;
+          }
+        }
+        if ( count == 3 )
+        {
+          grammarExceptionList.add(new GrammarRegularGrammarException(current));
+          break;
+        }
       }
     }
     return grammarExceptionList;
@@ -597,6 +640,12 @@ public abstract class AbstractGrammar implements Grammar
         .contains ( ValidationElement.NONTERMINAL_NOT_REACHABLE ) )
     {
       grammarExceptionList.addAll ( checkNonterminalNotReachable () );
+    }
+
+    if ( this.validationElementList
+        .contains ( ValidationElement.GRAMMAR_NOT_REGULAR ) )
+    {
+      grammarExceptionList.addAll ( checkRegularGrammar () );
     }
 
     // Throw the exception if a warning or an error has occurred.

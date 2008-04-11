@@ -73,7 +73,7 @@ import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
-import de.unisiegen.gtitool.ui.style.editor.ParserCellEditor;
+import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
 
 
 /**
@@ -1624,7 +1624,7 @@ public final class MachinePanel implements EditorPanel
     {
       TableColumn current = this.gui.jGTITableMachine.getColumnModel ()
           .getColumn ( i );
-      current.setCellEditor ( new ParserCellEditor (
+      current.setCellEditor ( new ParserTableCellEditor (
           new StyledStateSetParserPanel () ) );
     }
 

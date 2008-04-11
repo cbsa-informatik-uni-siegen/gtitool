@@ -1107,6 +1107,8 @@ public final class MachinePanel implements EditorPanel
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
         this.machine );
     alphabetDialog.show ();
+    this.gui.jGTITableMachine.setColumnModel ( this.machine
+        .getTableColumnModel () );
   }
 
 

@@ -3,11 +3,13 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -600,6 +602,18 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Component#addKeyListener(KeyListener)
+   */
+  @Override
+  public final void addKeyListener ( KeyListener listener )
+  {
+    this.editor.addKeyListener ( listener );
+  }
+
+
+  /**
    * Adds the given style.
    * 
    * @param token The token.
@@ -679,6 +693,17 @@ public abstract class StyledParserPanel extends JPanel
   public final Object getParsedObject ()
   {
     return this.document.getParsedObject ();
+  }
+
+
+  /**
+   * Returns the text contained in the editor.
+   * 
+   * @return The text contained in the editor.
+   */
+  public final String getText ()
+  {
+    return this.editor.getText ();
   }
 
 
@@ -779,6 +804,18 @@ public abstract class StyledParserPanel extends JPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Component#removeKeyListener(KeyListener)
+   */
+  @Override
+  public final void removeKeyListener ( KeyListener listener )
+  {
+    this.editor.removeKeyListener ( listener );
+  }
+
+
+  /**
    * Removes the given {@link ParseableChangedListener}.
    * 
    * @param listener The {@link ParseableChangedListener}.
@@ -853,6 +890,9 @@ public abstract class StyledParserPanel extends JPanel
           .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
       this.jScrollPane
           .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
+
+      this.editor.setCellEditor ( true );
+
       setSideBarVisible ( false );
     }
     else
@@ -861,6 +901,8 @@ public abstract class StyledParserPanel extends JPanel
           .setHorizontalScrollBarPolicy ( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED );
       this.jScrollPane
           .setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
+
+      this.editor.setCellEditor ( false );
     }
   }
 
@@ -1108,8 +1150,7 @@ public abstract class StyledParserPanel extends JPanel
     }
     this.synchronizedStyledParserPanel = styledParserPanel;
 
-    this.editor.setText ( this.synchronizedStyledParserPanel.getParsedObject ()
-        .toString () );
+    this.editor.setText ( this.synchronizedStyledParserPanel.getText () );
 
     this.parseableChangedListenerOther = new ParseableChangedListener ()
     {
@@ -1121,7 +1162,7 @@ public abstract class StyledParserPanel extends JPanel
         removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
         StyledParserPanel.this.editor
             .setText ( StyledParserPanel.this.synchronizedStyledParserPanel
-                .getParsedObject ().toString () );
+                .getText () );
         addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
       }
     };

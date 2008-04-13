@@ -1622,10 +1622,26 @@ public final class MachinePanel implements EditorPanel
     for ( int i = 1 ; i < this.gui.jGTITableMachine.getColumnModel ()
         .getColumnCount () ; i++ )
     {
+      StyledStateSetParserPanel parserPanel = new StyledStateSetParserPanel ();
       TableColumn current = this.gui.jGTITableMachine.getColumnModel ()
           .getColumn ( i );
-      current.setCellEditor ( new ParserTableCellEditor (
-          new StyledStateSetParserPanel () ) );
+      final ParserTableCellEditor cellEditor = new ParserTableCellEditor (
+          parserPanel );
+      current.setCellEditor ( cellEditor );
+
+      parserPanel.addKeyListener ( new KeyAdapter ()
+      {
+
+        @Override
+        public void keyPressed ( KeyEvent event )
+        {
+          if ( event.getKeyCode () == KeyEvent.VK_ENTER )
+          {
+            cellEditor.stopCellEditing ();
+            event.setKeyCode ( 0 );
+          }
+        }
+      } );
     }
 
     this.gui.wordPanel.setVisible ( false );

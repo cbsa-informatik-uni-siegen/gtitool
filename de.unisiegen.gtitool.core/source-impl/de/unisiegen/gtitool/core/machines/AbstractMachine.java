@@ -2042,12 +2042,12 @@ public abstract class AbstractMachine implements Machine
    * 
    * @see TableModel#setValueAt(Object, int, int)
    */
-  public final void setValueAt ( @SuppressWarnings ( "unused" )
-  Object value, @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public final void setValueAt ( Object value, int rowIndex, int columnIndex )
   {
-    // Do nothing
+    // TODOCF
+    System.out.println ( "value:       " + value ); //$NON-NLS-1$
+    System.out.println ( "rowIndex:    " + rowIndex ); //$NON-NLS-1$
+    System.out.println ( "columnIndex: " + columnIndex ); //$NON-NLS-1$
   }
 
 

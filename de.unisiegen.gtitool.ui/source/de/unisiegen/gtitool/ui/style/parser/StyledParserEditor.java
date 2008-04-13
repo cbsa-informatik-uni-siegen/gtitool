@@ -3,8 +3,10 @@ package de.unisiegen.gtitool.ui.style.parser;
 
 import java.awt.event.MouseEvent;
 
+import javax.swing.CellEditor;
 import javax.swing.JEditorPane;
 import javax.swing.ToolTipManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
@@ -28,6 +30,12 @@ public final class StyledParserEditor extends JEditorPane
 
 
   /**
+   * Flag that indicates if the panel is used as a {@link CellEditor}.
+   */
+  private boolean cellEditor = false;
+
+
+  /**
    * Allocates a new {@link StyledParserEditor} instance.
    * 
    * @see JEditorPane#JEditorPane()
@@ -35,6 +43,7 @@ public final class StyledParserEditor extends JEditorPane
   public StyledParserEditor ()
   {
     super ();
+    setCellEditor ( false );
     setEditorKit ( new StyledEditorKit () );
     ToolTipManager.sharedInstance ().registerComponent ( this );
   }
@@ -73,5 +82,37 @@ public final class StyledParserEditor extends JEditorPane
       }
     }
     return super.getToolTipText ( event );
+  }
+
+
+  /**
+   * Returns true if this {@link StyledParserEditor} is used as a
+   * {@link CellEditor}, otherwise false.
+   * 
+   * @return True if this {@link StyledParserEditor} is used as a
+   *         {@link CellEditor}, otherwise false.
+   */
+  public boolean isCellEditor ()
+  {
+    return this.cellEditor;
+  }
+
+
+  /**
+   * Sets the cell editor flag.
+   * 
+   * @param cellEditor The cell editor flag.
+   */
+  public final void setCellEditor ( boolean cellEditor )
+  {
+    this.cellEditor = cellEditor;
+    if ( this.cellEditor )
+    {
+      setBorder ( new EmptyBorder ( 0, 0, 0, 0 ) );
+    }
+    else
+    {
+      setBorder ( new EmptyBorder ( 2, 2, 2, 2 ) );
+    }
   }
 }

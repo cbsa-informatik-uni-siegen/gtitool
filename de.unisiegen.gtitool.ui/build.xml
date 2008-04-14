@@ -177,6 +177,7 @@
 		<delete includeemptydirs="true">
 			<fileset dir="${sourcegenerateddir}" includes="**/*" />
 		</delete>
+		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
 		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
 
 

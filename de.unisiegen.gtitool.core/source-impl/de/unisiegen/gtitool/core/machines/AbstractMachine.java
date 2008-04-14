@@ -2047,7 +2047,8 @@ public abstract class AbstractMachine implements Machine
    */
   public final void setValueAt ( Object value, int rowIndex, int columnIndex )
   {
-    // TODOCF
+    // TODOCF Complete the code and add a listener for the gui.
+
     System.out.println ( "value:       " + value ); //$NON-NLS-1$
     System.out.println ( "rowIndex:    " + rowIndex ); //$NON-NLS-1$
     System.out.println ( "columnIndex: " + columnIndex ); //$NON-NLS-1$
@@ -2113,8 +2114,6 @@ public abstract class AbstractMachine implements Machine
       }
       if ( !found )
       {
-        stateRemove.add ( currentOld );
-
         // Add the state which is already in the machine
         for ( State stateMember : this.stateList )
         {
@@ -2130,56 +2129,76 @@ public abstract class AbstractMachine implements Machine
     System.out.println ( "state add:     " + stateAdd ); //$NON-NLS-1$
     System.out.println ( "state remove:  " + stateRemove ); //$NON-NLS-1$
 
-    // Epsilon column
-    if ( columnIndex == 1 )
+    // Add the states
+    for ( State current : stateAdd )
     {
-      // Add the states
-      for ( State current : stateAdd )
+      try
       {
-        try
-        {
-          addTransition ( new DefaultTransition ( this.alphabet,
-              this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
-              stateBegin, current ) );
-        }
-        catch ( TransitionSymbolNotInAlphabetException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
-        catch ( TransitionSymbolOnlyOneTimeException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
+        addTransition ( new DefaultTransition ( this.alphabet,
+            this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
+            stateBegin, current, ( columnIndex == 1 ? new Symbol [] {}
+                : new Symbol []
+                { this.alphabet.get ( columnIndex - 2 ) } ) ) );
       }
-
-      // Remove the states
-      for ( State currentState : stateRemove )
+      catch ( TransitionSymbolNotInAlphabetException exc )
       {
-        Transition removeTransition = null;
-        for ( Transition currentTransition : this.transitionList )
-        {
-          if ( currentTransition.isEpsilonTransition ()
-              && currentTransition.getStateBegin ().getName ().equals (
-                  stateBegin.getName () )
-              && currentTransition.getStateEnd ().getName ().equals (
-                  currentState.getName () ) )
-          {
-            removeTransition = currentTransition;
-            break;
-          }
-        }
-        if ( removeTransition != null )
-        {
-          removeTransition ( removeTransition );
-        }
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
       }
     }
-    // Normal columns
-    else
+
+    // Remove the states
+    for ( State currentState : stateRemove )
     {
-      // TODOCF Normal
+      Transition removeTransition = null;
+      transitionLoop : for ( Transition currentTransition : this.transitionList )
+      {
+        if ( currentTransition.getStateBegin ().getName ().equals (
+            stateBegin.getName () )
+            && currentTransition.getStateEnd ().getName ().equals (
+                currentState.getName () ) )
+        {
+          // Epsilon transition
+          if ( columnIndex == 1 && currentTransition.isEpsilonTransition () )
+          {
+            removeTransition = currentTransition;
+          }
+          // No epsilon
+          else if ( columnIndex > 1 )
+          {
+            Symbol symbolColumn = this.alphabet.get ( columnIndex - 2 );
+            Symbol symbolRemove = null;
+            symbolLoop : for ( Symbol currentSymbol : currentTransition
+                .getSymbol () )
+            {
+              if ( currentSymbol.equals ( symbolColumn ) )
+              {
+                symbolRemove = currentSymbol;
+                break symbolLoop;
+              }
+            }
+            if ( symbolRemove != null )
+            {
+              currentTransition.remove ( symbolRemove );
+            }
+
+            if ( currentTransition.isEpsilonTransition () )
+            {
+              removeTransition = currentTransition;
+            }
+            break transitionLoop;
+          }
+        }
+      }
+      if ( removeTransition != null )
+      {
+        removeTransition ( removeTransition );
+      }
     }
   }
 

@@ -17,6 +17,8 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultStateSet;
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
@@ -38,6 +40,8 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeExce
 import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperationsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -975,17 +979,17 @@ public abstract class AbstractMachine implements Machine
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
     {
-      for ( ModifyStatusChangedListener element : listeners )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        element.modifyStatusChanged ( true );
+        current.modifyStatusChanged ( true );
       }
     }
     else
     {
       boolean newModifyStatus = isModified ();
-      for ( ModifyStatusChangedListener element : listeners )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        element.modifyStatusChanged ( newModifyStatus );
+        current.modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -1004,9 +1008,9 @@ public abstract class AbstractMachine implements Machine
   {
     TableModelListener [] listeners = this.listenerList
         .getListeners ( TableModelListener.class );
-    for ( TableModelListener element : listeners )
+    for ( TableModelListener current : listeners )
     {
-      element.tableChanged ( event );
+      current.tableChanged ( event );
     }
   }
 
@@ -1339,7 +1343,7 @@ public abstract class AbstractMachine implements Machine
    */
   public final Object getValueAt ( int rowIndex, int columnIndex )
   {
-    // First column
+    // State column
     if ( columnIndex == 0 )
     {
       return this.stateList.get ( rowIndex );
@@ -1387,7 +1391,6 @@ public abstract class AbstractMachine implements Machine
         }
       }
     }
-
     return stateEndList;
   }
 
@@ -2048,6 +2051,136 @@ public abstract class AbstractMachine implements Machine
     System.out.println ( "value:       " + value ); //$NON-NLS-1$
     System.out.println ( "rowIndex:    " + rowIndex ); //$NON-NLS-1$
     System.out.println ( "columnIndex: " + columnIndex ); //$NON-NLS-1$
+
+    // State column
+    if ( columnIndex == 0 )
+    {
+      throw new IllegalArgumentException (
+          "the state column should not be editable" ); //$NON-NLS-1$
+    }
+
+    if ( value == null )
+    {
+      return;
+    }
+
+    State stateBegin = this.stateList.get ( rowIndex );
+    StateSet stateSetNew = ( StateSet ) value;
+    StateSet stateSetOld = ( StateSet ) getValueAt ( rowIndex, columnIndex );
+
+    System.out.println ( "state begin:   " + stateBegin.getName () ); //$NON-NLS-1$
+    System.out.println ( "state set old: " + ( stateSetOld.toString () ) );//$NON-NLS-1$
+    System.out.println ( "state set new: " + ( stateSetNew.toString () ) );//$NON-NLS-1$
+
+    ArrayList < State > stateAdd = new ArrayList < State > ();
+    ArrayList < State > stateRemove = new ArrayList < State > ();
+
+    for ( State currentNew : stateSetNew )
+    {
+      boolean found = false;
+      for ( State currentOld : stateSetOld )
+      {
+        if ( currentNew.getName ().equals ( currentOld.getName () ) )
+        {
+          found = true;
+          break;
+        }
+      }
+      if ( !found )
+      {
+        // Add the state which is already in the machine
+        for ( State stateMember : this.stateList )
+        {
+          if ( stateMember.getName ().equals ( currentNew.getName () ) )
+          {
+            stateAdd.add ( stateMember );
+            break;
+          }
+        }
+      }
+    }
+
+    for ( State currentOld : stateSetOld )
+    {
+      boolean found = false;
+      for ( State currentNew : stateSetNew )
+      {
+        if ( currentOld.getName ().equals ( currentNew.getName () ) )
+        {
+          found = true;
+          break;
+        }
+      }
+      if ( !found )
+      {
+        stateRemove.add ( currentOld );
+
+        // Add the state which is already in the machine
+        for ( State stateMember : this.stateList )
+        {
+          if ( stateMember.getName ().equals ( currentOld.getName () ) )
+          {
+            stateRemove.add ( stateMember );
+            break;
+          }
+        }
+      }
+    }
+
+    System.out.println ( "state add:     " + stateAdd ); //$NON-NLS-1$
+    System.out.println ( "state remove:  " + stateRemove ); //$NON-NLS-1$
+
+    // Epsilon column
+    if ( columnIndex == 1 )
+    {
+      // Add the states
+      for ( State current : stateAdd )
+      {
+        try
+        {
+          addTransition ( new DefaultTransition ( this.alphabet,
+              this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
+              stateBegin, current ) );
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+      }
+
+      // Remove the states
+      for ( State currentState : stateRemove )
+      {
+        Transition removeTransition = null;
+        for ( Transition currentTransition : this.transitionList )
+        {
+          if ( currentTransition.isEpsilonTransition ()
+              && currentTransition.getStateBegin ().getName ().equals (
+                  stateBegin.getName () )
+              && currentTransition.getStateEnd ().getName ().equals (
+                  currentState.getName () ) )
+          {
+            removeTransition = currentTransition;
+            break;
+          }
+        }
+        if ( removeTransition != null )
+        {
+          removeTransition ( removeTransition );
+        }
+      }
+    }
+    // Normal columns
+    else
+    {
+      // TODOCF Normal
+    }
   }
 
 

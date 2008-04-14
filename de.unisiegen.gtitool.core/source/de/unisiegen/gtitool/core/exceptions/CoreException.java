@@ -178,7 +178,7 @@ public abstract class CoreException extends Exception
   {
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ();
-    result.append ( "Message:     " + getMessage () + lineBreak ); //$NON-NLS-1$
+    result.append ( "Message:     " + getPrettyMessage () + lineBreak ); //$NON-NLS-1$
     result.append ( "Description: " + getPrettyDescription () ); //$NON-NLS-1$
     return result.toString ();
   }

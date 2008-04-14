@@ -84,13 +84,11 @@ public final class DefaultStateSet implements StateSet
    * Allocates a new {@link DefaultStateSet}.
    * 
    * @param element The {@link Element}.
-   * @throws StateSetException If something with the {@link DefaultStateSet} is
-   *           not correct.
    * @throws StateException If something with the {@link Symbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultStateSet ( Element element ) throws StateSetException,
-      StateException, StoreException
+  public DefaultStateSet ( Element element ) throws StateException,
+      StoreException
   {
     this ();
     // Check if the element is correct
@@ -205,32 +203,13 @@ public final class DefaultStateSet implements StateSet
    * 
    * @param state The {@link State} to be appended to this
    *          {@link DefaultStateSet}.
-   * @throws StateSetException If something with the {@link DefaultStateSet} is
-   *           not correct.
    */
-  public final void add ( State state ) throws StateSetException
+  public final void add ( State state )
   {
     // State
     if ( state == null )
     {
       throw new NullPointerException ( "state is null" ); //$NON-NLS-1$
-    }
-    /*
-     * Throws an StateSetException if the symbol which should be added is
-     * already in this StateSet.
-     */
-    ArrayList < State > negativeSymbols = new ArrayList < State > ();
-    for ( State current : this.stateSet )
-    {
-      if ( state.getName ().equals ( current.getName () ) )
-      {
-        negativeSymbols.add ( current );
-      }
-    }
-    if ( negativeSymbols.size () > 0 )
-    {
-      negativeSymbols.add ( state );
-      throw new StateSetMoreThanOneStateException ( this, negativeSymbols );
     }
     this.stateSet.add ( state );
     fireStateSetChanged ();
@@ -348,15 +327,7 @@ public final class DefaultStateSet implements StateSet
     DefaultStateSet newDefaultStateSet = new DefaultStateSet ();
     for ( State current : this.stateSet )
     {
-      try
-      {
-        newDefaultStateSet.add ( current.clone () );
-      }
-      catch ( StateSetException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+      newDefaultStateSet.add ( current.clone () );
     }
     return newDefaultStateSet;
   }

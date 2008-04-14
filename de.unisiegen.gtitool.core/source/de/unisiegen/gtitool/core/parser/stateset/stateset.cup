@@ -71,6 +71,11 @@ state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 									   }
 									   RESULT.setParserOffset(new ParserOffset(slcleft, slcright));
 									:}
+								|	epsilon:e
+									{:
+									   RESULT = new DefaultStateSet();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
 								;
 
 state							::= STATE:s

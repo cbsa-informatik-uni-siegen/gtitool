@@ -8,4 +8,12 @@ CF		- Das dist Verzeichnis sollte beim Build nicht gelöscht werden, da sonst da
 CF		- Version Interface anpassen.
 
 
-BM		- Redo / Undo für Grammar Panel und Machine Panel
+BM		- Redo / Undo:
+			- Produktion löschen
+			- Produktion hinzufügen
+			- Produktion bearbeiten
+			- Reihenfolge der Produktionen
+			- Name von Zustand geändert
+			- Zustand bearbeiten
+			- Transition bearbeiten
+			- 

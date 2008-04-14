@@ -34,7 +34,9 @@
 
 	<!-- dist preclean -->
 	<target name="dist-preclean">
-		<delete dir="${distdir}" includeemptydirs="true" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
 		<mkdir dir="${distdir}" />
 	</target>
 
@@ -85,7 +87,6 @@
 	<target name="dist-clean">
 		<delete dir="${classesdir}" />
 		<delete dir="${distcupdir}" />
-		<delete file="${distdir}/MANIFEST.MF" />
 	</target>
 
 	<!-- javadoc -->

@@ -36,7 +36,6 @@
 	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
-	<property name="tmpdir" value="${basedir}/tmp" />
 	<property name="docdir" value="${basedir}/doc" />
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />
@@ -58,7 +57,7 @@
 		<move todir="${distdir}">
 			<fileset dir="${gtitooldir}" includes="*" />
 		</move>
-		<!-- delete file -->
+		<!-- delete dir -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
@@ -81,7 +80,9 @@
 
 	<!-- dist preclean -->
 	<target name="dist-preclean">
-		<delete dir="${distdir}" includeemptydirs="true" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
 		<mkdir dir="${distdir}" />
 	</target>
 
@@ -135,17 +136,18 @@
 
 	<!-- svn-version -->
 	<target name="svn-version">
-		<delete dir="${tmpdir}" includeemptydirs="true" />
-		<mkdir dir="${tmpdir}" />
-		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${tmpdir}" encoding="UTF-8" optimize="on">
+		<mkdir dir="${distdir}" />
+		<delete dir="${classesdir}" includeemptydirs="true" />
+		<mkdir dir="${classesdir}" />
+		<javac includes="de/unisiegen/gtitool/ui/utils/SVNVersion.java" debug="on" destdir="${classesdir}" encoding="UTF-8" optimize="on">
 			<src path="${sourcedir}" />
 		</javac>
 		<java classname="de.unisiegen.gtitool.ui.utils.SVNVersion" dir="${basedir}" fork="true" outputproperty="gtitool.version.build">
 			<classpath>
-				<pathelement path="${tmpdir}" />
+				<pathelement path="${classesdir}" />
 			</classpath>
 		</java>
-		<delete dir="${tmpdir}" includeemptydirs="true" />
+		<delete dir="${classesdir}" includeemptydirs="true" />
 	</target>
 
 	<!-- javadoc -->
@@ -172,6 +174,9 @@
 
 	<!-- version -->
 	<target name="version" depends="svn-version" description="Generate the version interface">
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
 		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
 
 

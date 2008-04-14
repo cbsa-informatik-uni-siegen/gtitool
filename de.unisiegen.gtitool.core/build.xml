@@ -43,7 +43,9 @@
 
 	<!-- dist preclean -->
 	<target name="dist-preclean">
-		<delete dir="${distdir}" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
 		<mkdir dir="${distdir}" />
 	</target>
 
@@ -113,7 +115,9 @@
 
 	<!-- parser clean -->
 	<target name="parser-clean">
-		<delete dir="${sourcegenerateddir}/de/unisiegen/gtitool/core/parser" />
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
 	</target>
 
 	<!-- parser alphabet -->

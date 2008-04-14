@@ -46,6 +46,8 @@
 				<filter token="gtitool.version" value="${gtitool.version}" />
 			</filterset>
 		</copy>
+		<!-- copy exe file -->
+		<copy todir="${gtitooldir}" file="${distdir}/gtitool.exe" />
 		<!-- tar file -->
 		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${distdir}">
@@ -68,7 +70,7 @@
 		</move>
 		<!-- chmod -->
 		<chmod file="${distdir}/gtitool.sh" perm="755" />
-		<!-- delete file -->
+		<!-- delete dir -->
 		<delete dir="${gtitooldir}" includeemptydirs="true" />
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
@@ -81,7 +83,9 @@
 
 	<!-- dist preclean -->
 	<target name="dist-preclean">
-		<delete dir="${distdir}" includeemptydirs="true" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distdir}" includes="**/*" />
+		</delete>
 		<mkdir dir="${distdir}" />
 	</target>
 
@@ -124,15 +128,15 @@
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${executerdir}/windows/launch4j/launch4j.jar:${executerdir}/windows/launch4j/lib/xstream.jar" />
 	<target name="dist-exe">
 		<!-- update config file -->
-		<copy tofile="${executerdir}/windows/tmp_launch4j.xml" file="${executerdir}/windows/launch4j.xml">
+		<copy tofile="${distdir}/launch4j.xml" file="${executerdir}/windows/launch4j.xml">
 			<filterset>
 				<filter token="gtitool.version" value="${gtitool.version}" />
 			</filterset>
 		</copy>
 		<!-- launch4j -->
-		<launch4j configFile="${executerdir}/windows/tmp_launch4j.xml" />
+		<launch4j configFile="${distdir}/launch4j.xml" />
 		<!-- delete config file -->
-		<delete file="${executerdir}/windows/tmp_launch4j.xml" />
+		<delete file="${distdir}/launch4j.xml" />
 	</target>
 
 	<!-- dist clean -->

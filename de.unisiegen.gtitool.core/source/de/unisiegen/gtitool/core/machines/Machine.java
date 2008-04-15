@@ -18,6 +18,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -92,6 +93,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    */
   public static final String [] AVAILABLE_MACHINES =
   { "DFA", "NFA", "ENFA", "PDA" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
+
+
+  /**
+   * Adds the given {@link MachineChangedListener}.
+   * 
+   * @param listener The {@link MachineChangedListener}.
+   */
+  public void addMachineChangedListener ( MachineChangedListener listener );
 
 
   /**
@@ -346,6 +355,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    */
   public void previousSymbol () throws WordFinishedException,
       WordResetedException;
+
+
+  /**
+   * Removes the given {@link MachineChangedListener}.
+   * 
+   * @param listener The {@link MachineChangedListener}.
+   */
+  public void removeMachineChangedListener ( MachineChangedListener listener );
 
 
   /**

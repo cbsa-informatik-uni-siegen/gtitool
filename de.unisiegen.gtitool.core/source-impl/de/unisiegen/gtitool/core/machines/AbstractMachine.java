@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
+import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -441,6 +442,17 @@ public abstract class AbstractMachine implements Machine
 
     // Reset modify
     resetModify ();
+  }
+
+
+  /**
+   * Adds the given {@link MachineChangedListener}.
+   * 
+   * @param listener The {@link MachineChangedListener}.
+   */
+  public final void addMachineChangedListener ( MachineChangedListener listener )
+  {
+    this.listenerList.add ( MachineChangedListener.class, listener );
   }
 
 
@@ -965,6 +977,39 @@ public abstract class AbstractMachine implements Machine
   private final void clearHistory ()
   {
     this.history.clear ();
+  }
+
+
+  /**
+   * Let the listeners know that a new {@link Transition} is added.
+   * 
+   * @param newTransition The {@link Transition} to add.
+   */
+  private final void fireMachineChangedTransitionAdded (
+      Transition newTransition )
+  {
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.transitionAdded ( newTransition );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link Transition} is removed.
+   * 
+   * @param transition The {@link Transition} to remove.
+   */
+  private final void fireMachineChangedTransitionRemoved ( Transition transition )
+  {
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.transitionRemoved ( transition );
+    }
   }
 
 
@@ -1836,6 +1881,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Removes the given {@link MachineChangedListener}.
+   * 
+   * @param listener The {@link MachineChangedListener}.
+   */
+  public final void removeMachineChangedListener (
+      MachineChangedListener listener )
+  {
+    this.listenerList.add ( MachineChangedListener.class, listener );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -2134,11 +2191,13 @@ public abstract class AbstractMachine implements Machine
     {
       try
       {
-        addTransition ( new DefaultTransition ( this.alphabet,
+        Transition newTransition = new DefaultTransition ( this.alphabet,
             this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
             stateBegin, current, ( columnIndex == 1 ? new Symbol [] {}
                 : new Symbol []
-                { this.alphabet.get ( columnIndex - 2 ) } ) ) );
+                { this.alphabet.get ( columnIndex - 2 ) } ) );
+        addTransition ( newTransition );
+        fireMachineChangedTransitionAdded ( newTransition );
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
       {
@@ -2198,6 +2257,7 @@ public abstract class AbstractMachine implements Machine
       if ( removeTransition != null )
       {
         removeTransition ( removeTransition );
+        fireMachineChangedTransitionRemoved ( removeTransition );
       }
     }
   }

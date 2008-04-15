@@ -66,7 +66,7 @@ public class StateAddedItem extends RedoUndoItem
     {
       this.model.createTransitionView ( this.transition.getTransition (),
           this.transition.getSourceView (), this.transition.getTargetView (),
-          false, false );
+          false, false, true );
     }
   }
 

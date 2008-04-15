@@ -1618,7 +1618,6 @@ public final class MachinePanel implements EditorPanel
     this.gui.jGTITableMachine
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
 
-    // TODOCF
     for ( int i = 1 ; i < this.gui.jGTITableMachine.getColumnModel ()
         .getColumnCount () ; i++ )
     {
@@ -2003,7 +2002,7 @@ public final class MachinePanel implements EditorPanel
             }
 
             MachinePanel.this.model.createTransitionView ( newTransition,
-                MachinePanel.this.firstState, target, nullTarget, true );
+                MachinePanel.this.firstState, target, nullTarget, true, true );
           }
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
@@ -2093,7 +2092,7 @@ public final class MachinePanel implements EditorPanel
           }
 
           MachinePanel.this.model.createTransitionView ( newTransition,
-              MachinePanel.this.firstState, target, nullTarget, true );
+              MachinePanel.this.firstState, target, nullTarget, true, true );
         }
         switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {

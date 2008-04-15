@@ -83,8 +83,8 @@ public class StateMovedItem extends RedoUndoItem
   public void redo ()
   {
     this.stateView.move ( this.newX, this.newY );
-    this.model.getGraphModel ()
-    .cellsChanged ( DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
+    this.model.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
   }
 
 
@@ -97,8 +97,8 @@ public class StateMovedItem extends RedoUndoItem
   public void undo ()
   {
     this.stateView.move ( this.oldX, this.oldY );
-    this.model.getGraphModel ()
-    .cellsChanged ( DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
+    this.model.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
   }
 
 }

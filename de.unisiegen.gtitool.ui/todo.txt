@@ -2,9 +2,6 @@ CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Pretty String der Produktionen unter Windows testen
 CF		- setValue der Machine implementieren und an die GUI weiterreichen
-CF		- Das dist Verzeichnis sollte beim Build nicht gelöscht werden, da sonst das
-		  Testen auf der Console erschwert wird, da das Verzeichnis erst wieder verlassen
-		  werden muss. Besser alle Dateien innerhalb des dist Verzeichnisses loeschen.
 CF		- Version Interface anpassen.
 
 

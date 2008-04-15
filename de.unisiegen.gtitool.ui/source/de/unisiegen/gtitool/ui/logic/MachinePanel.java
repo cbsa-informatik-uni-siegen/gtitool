@@ -1623,6 +1623,7 @@ public final class MachinePanel implements EditorPanel
         .getColumnCount () ; i++ )
     {
       StyledStateSetParserPanel parserPanel = new StyledStateSetParserPanel ();
+      parserPanel.setStateList ( this.machine.getState () );
       TableColumn current = this.gui.jGTITableMachine.getColumnModel ()
           .getColumn ( i );
       final ParserTableCellEditor cellEditor = new ParserTableCellEditor (

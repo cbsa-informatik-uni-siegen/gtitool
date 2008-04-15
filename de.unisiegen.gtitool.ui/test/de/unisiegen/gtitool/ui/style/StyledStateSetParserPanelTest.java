@@ -1,11 +1,16 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.listener.StateSetChangedListener;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 
 
 /**
@@ -25,23 +30,37 @@ public class StyledStateSetParserPanelTest
    */
   public static void main ( String [] arguments )
   {
-    JFrame jFrame = new JFrame ( "StateSetPanelTest" ); //$NON-NLS-1$
-    StyledStateSetParserPanel styledStateSetParserPanel = new StyledStateSetParserPanel ();
-    styledStateSetParserPanel
-        .addStateSetChangedListener ( new StateSetChangedListener ()
-        {
+    try
+    {
+      JFrame jFrame = new JFrame ( "StateSetPanelTest" ); //$NON-NLS-1$
 
-          public void stateSetChanged ( StateSet newStateSet )
+      ArrayList < State > stateList = new ArrayList < State > ();
+      stateList.add ( new DefaultState ( "z0" ) ); //$NON-NLS-1$
+      stateList.add ( new DefaultState ( "z1" ) );//$NON-NLS-1$
+      stateList.add ( new DefaultState ( "z2" ) );//$NON-NLS-1$
+
+      StyledStateSetParserPanel styledStateSetParserPanel = new StyledStateSetParserPanel ();
+      styledStateSetParserPanel.setStateList ( stateList );
+      styledStateSetParserPanel
+          .addStateSetChangedListener ( new StateSetChangedListener ()
           {
-            if ( newStateSet != null )
+
+            public void stateSetChanged ( StateSet newStateSet )
             {
-              System.out.println ( newStateSet );
+              if ( newStateSet != null )
+              {
+                System.out.println ( newStateSet );
+              }
             }
-          }
-        } );
-    jFrame.add ( styledStateSetParserPanel );
-    jFrame.setBounds ( 300, 300, 400, 300 );
-    jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
-    jFrame.setVisible ( true );
+          } );
+      jFrame.add ( styledStateSetParserPanel );
+      jFrame.setBounds ( 300, 300, 400, 300 );
+      jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
+      jFrame.setVisible ( true );
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+    }
   }
 }

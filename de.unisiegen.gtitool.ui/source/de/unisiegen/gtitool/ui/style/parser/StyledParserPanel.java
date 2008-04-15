@@ -33,6 +33,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
+import de.unisiegen.gtitool.ui.style.editor.StyledParserEditor;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.sidebar.SideBar;
 import de.unisiegen.gtitool.ui.style.sidebar.SideBarListener;

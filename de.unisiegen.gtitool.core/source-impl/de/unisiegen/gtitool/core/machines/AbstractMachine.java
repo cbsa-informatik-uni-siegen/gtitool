@@ -58,6 +58,7 @@ import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRend
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -2104,12 +2105,6 @@ public abstract class AbstractMachine implements Machine
    */
   public final void setValueAt ( Object value, int rowIndex, int columnIndex )
   {
-    // TODOCF Complete the code and add a listener for the gui.
-
-    System.out.println ( "value:       " + value ); //$NON-NLS-1$
-    System.out.println ( "rowIndex:    " + rowIndex ); //$NON-NLS-1$
-    System.out.println ( "columnIndex: " + columnIndex ); //$NON-NLS-1$
-
     // State column
     if ( columnIndex == 0 )
     {
@@ -2126,9 +2121,9 @@ public abstract class AbstractMachine implements Machine
     StateSet stateSetNew = ( StateSet ) value;
     StateSet stateSetOld = ( StateSet ) getValueAt ( rowIndex, columnIndex );
 
-    System.out.println ( "state begin:   " + stateBegin.getName () ); //$NON-NLS-1$
-    System.out.println ( "state set old: " + ( stateSetOld.toString () ) );//$NON-NLS-1$
-    System.out.println ( "state set new: " + ( stateSetNew.toString () ) );//$NON-NLS-1$
+    logger.debug ( "setValueAt", "state begin:   " + stateBegin.getName () ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state set old: " + stateSetOld.toString () ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state set new: " + stateSetNew.toString () ); //$NON-NLS-1$//$NON-NLS-2$
 
     ArrayList < State > stateAdd = new ArrayList < State > ();
     ArrayList < State > stateRemove = new ArrayList < State > ();
@@ -2183,8 +2178,8 @@ public abstract class AbstractMachine implements Machine
       }
     }
 
-    System.out.println ( "state add:     " + stateAdd ); //$NON-NLS-1$
-    System.out.println ( "state remove:  " + stateRemove ); //$NON-NLS-1$
+    logger.debug ( "setValueAt", "state add:     " + stateAdd ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state remove:  " + stateRemove ); //$NON-NLS-1$ //$NON-NLS-2$
 
     // Add the states
     for ( State current : stateAdd )
@@ -2292,6 +2287,13 @@ public abstract class AbstractMachine implements Machine
       }
     }
   }
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( AbstractMachine.class );
 
 
   /**

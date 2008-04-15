@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.style.parser;
+package de.unisiegen.gtitool.ui.style.document;
 
 
 import java.awt.Color;

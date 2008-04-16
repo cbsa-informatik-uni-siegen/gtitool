@@ -49,11 +49,8 @@ public final class AboutDialog
     logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new AboutDialogForm ( this, parent );
-    this.gui.jGTILabelName.setText ( "GTI Tool " + Version.MAJOR + "." //$NON-NLS-1$//$NON-NLS-2$
-        + Version.MINOR + "." + Version.MICRO ); //$NON-NLS-1$
-    this.gui.jGTILabelVersionEntry.setText ( Version.MAJOR
-        + "." + Version.MINOR //$NON-NLS-1$
-        + "." + Version.MICRO + "." + Version.BUILD ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.jGTILabelName.setText ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
+    this.gui.jGTILabelVersionEntry.setText ( Version.FULL_VERSION );
     this.gui.jGTILabelWebpageEntry
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
   }

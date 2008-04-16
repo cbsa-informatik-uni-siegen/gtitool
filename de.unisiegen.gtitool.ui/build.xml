@@ -211,6 +211,19 @@ public interface Version
    * The build version of the project.
    */
   public static final int BUILD = ${gtitool.version.build};
+
+
+  /**
+   * The version of the project.
+   */
+  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO; //$NON-NLS-1$//$NON-NLS-2$
+
+
+  /**
+   * The full version of the project.
+   */
+  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$ //$NON-NLS-2$
+      + "_" + BUILD; //$NON-NLS-1$
 }
 </echo>
 	</target>

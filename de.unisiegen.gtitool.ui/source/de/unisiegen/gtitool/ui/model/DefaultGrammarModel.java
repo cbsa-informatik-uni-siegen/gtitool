@@ -28,6 +28,10 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.ui.redoundo.ProductionAddedItem;
+import de.unisiegen.gtitool.ui.redoundo.ProductionRemovedItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
@@ -55,6 +59,12 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
      */
     CFG;
   }
+
+
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -228,10 +238,17 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * Add a new production to list.
    * 
    * @param production The production to add.
+   * @param createUndoStep Flag signals if an undo step should be created.
    */
-  public void addProduction ( Production production )
+  public void addProduction ( Production production, boolean createUndoStep )
   {
     this.grammar.addProduction ( production );
+
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new ProductionAddedItem ( this, production );
+      this.redoUndoHandler.addUndo ( item );
+    }
   }
 
 
@@ -290,11 +307,16 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * Remove the given production from list.
    * 
    * @param production The production to remove.
+   * @param createUndoStep Flag signals if an undo step should be created.
    */
-  public void removeProduction ( Production production )
+  public void removeProduction ( Production production, boolean createUndoStep )
   {
     this.grammar.removeProduction ( production );
-
+    if ( createUndoStep )
+    {
+      RedoUndoItem item = new ProductionRemovedItem ( this, production );
+      this.redoUndoHandler.addUndo ( item );
+    }
   }
 
 
@@ -365,4 +387,16 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
       }
     }
   }
+
+
+  /**
+   * Set a new {@link RedoUndoHandler}
+   * 
+   * @param redoUndoHandler the new {@link RedoUndoHandler}
+   */
+  public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
+  {
+    this.redoUndoHandler = redoUndoHandler;
+  }
+
 }

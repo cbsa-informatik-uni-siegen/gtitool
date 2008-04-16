@@ -116,7 +116,8 @@ public final class ProductionPopupMenu extends JPopupMenu
             ProductionPopupMenu.this.model.getGrammar ()
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
                 .getGrammar ().getTerminalSymbolSet (),
-            ProductionPopupMenu.this.model, null );
+            ProductionPopupMenu.this.model, null,
+            ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler () );
         dialog.show ();
       }
     } );
@@ -141,7 +142,8 @@ public final class ProductionPopupMenu extends JPopupMenu
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
                 .getGrammar ().getTerminalSymbolSet (),
             ProductionPopupMenu.this.model,
-            ProductionPopupMenu.this.productions.get ( 0 ) );
+            ProductionPopupMenu.this.productions.get ( 0 ),
+            ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ());
         productionDialog.show ();
       }
     } );
@@ -181,7 +183,7 @@ public final class ProductionPopupMenu extends JPopupMenu
           {
             for (Production production : ProductionPopupMenu.this.productions){
             ProductionPopupMenu.this.model
-                .removeProduction ( production );
+                .removeProduction ( production, true );
            ((GrammarPanelForm) ProductionPopupMenu.this.grammarPanel.getGui ()).repaint ();
           }
         }

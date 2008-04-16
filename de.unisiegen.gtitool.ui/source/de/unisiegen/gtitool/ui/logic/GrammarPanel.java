@@ -43,6 +43,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
@@ -98,7 +99,12 @@ public class GrammarPanel implements EditorPanel
    */
   private EventListenerList listenerList = new EventListenerList ();
 
-
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
+  
+  
   /**
    * The {@link MainWindowForm}
    */
@@ -139,6 +145,11 @@ public class GrammarPanel implements EditorPanel
     this.gui = new GrammarPanelForm ();
     this.gui.setGrammarPanel ( this );
     this.grammar = this.model.getGrammar ();
+    
+    this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
+    
+    this.model.setRedoUndoHandler ( this.redoUndoHandler );
+    
     initialize ();
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
@@ -218,7 +229,7 @@ public class GrammarPanel implements EditorPanel
    */
   public void addProduction ( Production production )
   {
-    this.model.addProduction ( production );
+    this.model.addProduction ( production, true );
   }
 
 
@@ -397,7 +408,7 @@ public class GrammarPanel implements EditorPanel
   {
     ProductionDialog dialog = new ProductionDialog ( getParent (), this.grammar
         .getNonterminalSymbolSet (), this.grammar.getTerminalSymbolSet (),
-        this.model, null );
+        this.model, null, this.redoUndoHandler );
     dialog.show ();
   }
 
@@ -461,7 +472,7 @@ public class GrammarPanel implements EditorPanel
       confirmedDialog.show ();
       if ( confirmedDialog.isConfirmed () )
       {
-        this.model.removeProduction ( production );
+        this.model.removeProduction ( production,true );
         this.gui.repaint ();
       }
     }
@@ -483,7 +494,7 @@ public class GrammarPanel implements EditorPanel
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
       ProductionDialog productionDialog = new ProductionDialog ( window,
           this.grammar.getNonterminalSymbolSet (), this.grammar
-              .getTerminalSymbolSet (), this.model, production );
+              .getTerminalSymbolSet (), this.model, production, this.redoUndoHandler );
       productionDialog.show ();
     }
   }
@@ -505,7 +516,8 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleRedo ()
   {
-    // TODO implement me
+     this.redoUndoHandler.redo ();
+     this.gui.repaint ();
   }
 
 
@@ -695,7 +707,7 @@ public class GrammarPanel implements EditorPanel
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
       ProductionDialog productionDialog = new ProductionDialog ( window,
           this.grammar.getNonterminalSymbolSet (), this.grammar
-              .getTerminalSymbolSet (), this.model, production );
+              .getTerminalSymbolSet (), this.model, production, this.redoUndoHandler );
       productionDialog.show ();
     }
   }
@@ -719,7 +731,8 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleUndo ()
   {
-    // TODO implement me
+    this.redoUndoHandler.undo();
+    this.gui.repaint ();
   }
 
 
@@ -803,8 +816,7 @@ public class GrammarPanel implements EditorPanel
    */
   public boolean isRedoAble ()
   {
-    // TODO implement me
-    return false;
+    return this.redoUndoHandler.isRedoAble ();
   }
 
 
@@ -815,8 +827,7 @@ public class GrammarPanel implements EditorPanel
    */
   public boolean isUndoAble ()
   {
-    // TODO implement me
-    return false;
+    return this.redoUndoHandler.isUndoAble ();
   }
 
 
@@ -933,5 +944,18 @@ public class GrammarPanel implements EditorPanel
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
+  }
+
+
+  
+  /**
+   * Returns the redoUndoHandler.
+   *
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
   }
 }

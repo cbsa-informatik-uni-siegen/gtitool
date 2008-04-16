@@ -19,6 +19,9 @@ import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
+import de.unisiegen.gtitool.ui.redoundo.ProductionChangedItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
@@ -189,6 +192,11 @@ public final class ProductionDialog
    * The {@link DefaultGrammarModel}.
    */
   private DefaultGrammarModel model;
+  
+  /**
+   * The {@link RedoUndoHandler}.
+   */
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -199,16 +207,18 @@ public final class ProductionDialog
    * @param terminalSymbolSet The {@link TerminalSymbolSet}.
    * @param model The {@link DefaultGrammarModel}.
    * @param production The production to configure.
+   * @param redoUndoHandler The {@link RedoUndoHandler}.
    */
   public ProductionDialog ( JFrame parent,
       NonterminalSymbolSet nonterminalSymbolSet,
       TerminalSymbolSet terminalSymbolSet, DefaultGrammarModel model,
-      Production production )
+      Production production, RedoUndoHandler redoUndoHandler )
   {
     this.parent = parent;
     this.gui = new ProductionDialogForm ( this, this.parent );
     this.model = model;
     this.oldProduction = production;
+    this.redoUndoHandler = redoUndoHandler;
 
     // Nonterminal
     this.gui.styledNonterminalSymbolSetParserPanel
@@ -361,13 +371,16 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
+      RedoUndoItem item = new ProductionChangedItem(this.oldProduction, production);
+      this.redoUndoHandler.addUndo ( item );
+      
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );
       this.oldProduction.setProductionWord ( production.getProductionWord () );
     }
     else
     {
-      this.model.addProduction ( production );
+      this.model.addProduction ( production, true );
     }
 
     this.gui.dispose ();

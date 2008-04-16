@@ -4,13 +4,10 @@ CF		- Pretty String der Produktionen unter Windows testen
 CF		- setValue der Machine implementieren und an die GUI weiterreichen
 CF		- Version Interface anpassen.
 
-
+BM		- Fehler bei isModified im GrammarPanel
 BM		- Redo / Undo:
-			- Produktion löschen
-			- Produktion hinzufügen
-			- Produktion bearbeiten
 			- Reihenfolge der Produktionen
 			- Name von Zustand geändert
 			- Zustand bearbeiten
 			- Transition bearbeiten
-			- 
+BM		- Bei Fehler Produktion highlighten

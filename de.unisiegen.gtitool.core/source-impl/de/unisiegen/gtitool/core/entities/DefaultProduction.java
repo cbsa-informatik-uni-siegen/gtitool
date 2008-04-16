@@ -76,7 +76,7 @@ public final class DefaultProduction implements Production
   {
     this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
-    this.initialNonterminalSymbol = nonterminalSymbol;
+    this.initialNonterminalSymbol = nonterminalSymbol.clone ();
   }
 
 

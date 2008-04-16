@@ -803,7 +803,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * Removes a {@link DefaultStateView}.
    * 
    * @param stateView The {@link DefaultStateView} that should be removed.
-   * @param createUndoStep Flag signals if an undo step should be created
+   * @param createUndoStep Flag signals if an undo step should be created.
    */
   public final void removeState ( DefaultStateView stateView,
       boolean createUndoStep )

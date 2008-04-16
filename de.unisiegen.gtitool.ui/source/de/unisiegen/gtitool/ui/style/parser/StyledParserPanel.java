@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -609,6 +610,18 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
   /**
    * {@inheritDoc}
    * 
+   * @see Component#addFocusListener(FocusListener)
+   */
+  @Override
+  public final void addFocusListener ( FocusListener listener )
+  {
+    this.editor.addFocusListener ( listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Component#addKeyListener(KeyListener)
    */
   @Override
@@ -817,6 +830,18 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
     E checkedObject = checkParsedObject ( this.document.parse () );
     setErrorIndicator ( checkedObject == null );
     return checkedObject;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Component#removeFocusListener(FocusListener)
+   */
+  @Override
+  public final void removeFocusListener ( FocusListener listener )
+  {
+    this.editor.removeFocusListener ( listener );
   }
 
 

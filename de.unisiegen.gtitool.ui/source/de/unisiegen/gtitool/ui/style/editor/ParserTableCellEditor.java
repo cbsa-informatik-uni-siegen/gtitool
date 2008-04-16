@@ -63,7 +63,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * 
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed ( @SuppressWarnings ( "unused" )
+    public final void actionPerformed ( @SuppressWarnings ( "unused" )
     ActionEvent event )
     {
       ParserTableCellEditor.this.stopCellEditing ();
@@ -74,7 +74,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * Cancels the editing.
      */
     @SuppressWarnings ( "synthetic-access" )
-    public void cancelCellEditing ()
+    public final void cancelCellEditing ()
     {
       fireEditingCanceled ();
     }
@@ -97,7 +97,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * @param event The {@link EventObject}.
      * @return True if cell is ready for editing, false otherwise.
      */
-    public boolean isCellEditable ( EventObject event )
+    public final boolean isCellEditable ( EventObject event )
     {
       if ( event instanceof MouseEvent )
       {
@@ -112,7 +112,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * 
      * @see ItemListener#itemStateChanged(ItemEvent)
      */
-    public void itemStateChanged ( @SuppressWarnings ( "unused" )
+    public final void itemStateChanged ( @SuppressWarnings ( "unused" )
     ItemEvent event )
     {
       ParserTableCellEditor.this.stopCellEditing ();
@@ -136,7 +136,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * @param event The {@link EventObject}.
      * @return True
      */
-    public boolean shouldSelectCell ( EventObject event )
+    public final boolean shouldSelectCell ( EventObject event )
     {
       return true;
     }
@@ -148,7 +148,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * @param event The {@link EventObject}.
      * @return True.
      */
-    public boolean startCellEditing ( EventObject event )
+    public final boolean startCellEditing ( EventObject event )
     {
       return true;
     }
@@ -160,7 +160,7 @@ public class ParserTableCellEditor < E extends Entity > extends
      * @return True.
      */
     @SuppressWarnings ( "synthetic-access" )
-    public boolean stopCellEditing ()
+    public final boolean stopCellEditing ()
     {
       fireEditingStopped ();
       return true;
@@ -207,7 +207,7 @@ public class ParserTableCellEditor < E extends Entity > extends
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public Object getCellEditorValue ()
+      public final Object getCellEditorValue ()
       {
         return ParserTableCellEditor.this.styledParserPanel.getParsedObject ();
       }
@@ -215,7 +215,7 @@ public class ParserTableCellEditor < E extends Entity > extends
 
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void setValue ( Object value )
+      public final void setValue ( Object value )
       {
         ParserTableCellEditor.this.styledParserPanel.setText ( value );
       }
@@ -229,7 +229,7 @@ public class ParserTableCellEditor < E extends Entity > extends
    * @see AbstractCellEditor#cancelCellEditing()
    */
   @Override
-  public void cancelCellEditing ()
+  public final void cancelCellEditing ()
   {
     this.delegate.cancelCellEditing ();
   }
@@ -240,7 +240,7 @@ public class ParserTableCellEditor < E extends Entity > extends
    * 
    * @see CellEditor#getCellEditorValue()
    */
-  public Object getCellEditorValue ()
+  public final Object getCellEditorValue ()
   {
     return this.delegate.getCellEditorValue ();
   }
@@ -252,11 +252,12 @@ public class ParserTableCellEditor < E extends Entity > extends
    * @see TableCellEditor#getTableCellEditorComponent(JTable, Object, boolean,
    *      int, int)
    */
-  public Component getTableCellEditorComponent ( @SuppressWarnings ( "unused" )
-  JTable table, Object value, @SuppressWarnings ( "unused" )
-  boolean isSelected, @SuppressWarnings ( "unused" )
-  int row, @SuppressWarnings ( "unused" )
-  int column )
+  public final Component getTableCellEditorComponent (
+      @SuppressWarnings ( "unused" )
+      JTable table, Object value, @SuppressWarnings ( "unused" )
+      boolean isSelected, @SuppressWarnings ( "unused" )
+      int row, @SuppressWarnings ( "unused" )
+      int column )
   {
     this.delegate.setValue ( value );
     return this.styledParserPanel;

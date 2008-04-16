@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.awt.Component;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
@@ -1634,6 +1635,17 @@ public final class MachinePanel implements EditorPanel
           parserPanel );
       current.setCellEditor ( cellEditor );
 
+      parserPanel.addFocusListener ( new FocusAdapter ()
+      {
+
+        @Override
+        public void focusLost ( @SuppressWarnings ( "unused" )
+        FocusEvent event )
+        {
+          cellEditor.cancelCellEditing ();
+        }
+      } );
+
       parserPanel.addKeyListener ( new KeyAdapter ()
       {
 
@@ -1643,7 +1655,7 @@ public final class MachinePanel implements EditorPanel
           if ( event.getKeyCode () == KeyEvent.VK_ENTER )
           {
             cellEditor.stopCellEditing ();
-            event.setKeyCode ( 0 );
+            event.consume ();
           }
         }
       } );

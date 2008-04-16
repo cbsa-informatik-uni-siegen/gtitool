@@ -2,7 +2,11 @@ CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Pretty String der Produktionen unter Windows testen
 CF		- setValue der Machine implementieren und an die GUI weiterreichen
-CF		- Version Interface anpassen.
+CF		- Version Interface anpassen
+CF		- Der PublicKey benutzt nach der Uebertragung zum Erstellen propritären
+		  Source Code von Sun, der ohne Ankündigung aus Java entfernt werden kann.
+		  Es muss eine Klasse erstellt werden, die das Interface implementiert.
+
 
 BM		- Fehler bei isModified im GrammarPanel
 BM		- Redo / Undo:

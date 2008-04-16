@@ -8,7 +8,6 @@ CF		- Der PublicKey benutzt nach der Uebertragung zum Erstellen propritären
 		  Es muss eine Klasse erstellt werden, die das Interface implementiert.
 
 
-BM		- Fehler bei isModified im GrammarPanel
 BM		- Redo / Undo:
 			- Reihenfolge der Produktionen
 			- Name von Zustand geändert

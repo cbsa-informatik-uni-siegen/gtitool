@@ -63,7 +63,11 @@ public final class DefaultProduction implements Production
    * The {@link ProductionWord}
    */
   private ProductionWord productionWord;
-
+  
+  /**
+   * The initial {@link ProductionWord}.
+   */
+  private ProductionWord initialProductionWord;
 
   /**
    * Allocates a new {@link DefaultProduction}.
@@ -77,6 +81,7 @@ public final class DefaultProduction implements Production
     this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
     this.initialNonterminalSymbol = nonterminalSymbol.clone ();
+    this.initialProductionWord = productionWord.clone ();
   }
 
 
@@ -117,6 +122,8 @@ public final class DefaultProduction implements Production
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
+    this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
+    this.initialProductionWord = this.productionWord.clone ();
   }
 
 
@@ -259,8 +266,7 @@ public final class DefaultProduction implements Production
    */
   public final boolean isModified ()
   {
-    if ( this.productionWord.isModified () )
-    {
+    if(!this.productionWord.equals ( this.initialProductionWord )){
       return true;
     }
     if (!this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ))
@@ -368,6 +374,7 @@ public final class DefaultProduction implements Production
   public void setProductionWord ( ProductionWord productionWord )
   {
     this.productionWord = productionWord;
+    System.err.println(productionWord);
     fireModifyStatusChanged ();
   }
 

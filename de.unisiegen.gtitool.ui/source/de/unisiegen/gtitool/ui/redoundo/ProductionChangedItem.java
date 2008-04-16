@@ -52,10 +52,10 @@ public class ProductionChangedItem extends RedoUndoItem
   @Override
   public void redo ()
   {
+    this.production
+    .setProductionWord ( this.newProduction.getProductionWord () );
     this.production.setNonterminalSymbol ( this.newProduction
         .getNonterminalSymbol () );
-    this.production
-        .setProductionWord ( this.newProduction.getProductionWord () );
   }
 
 

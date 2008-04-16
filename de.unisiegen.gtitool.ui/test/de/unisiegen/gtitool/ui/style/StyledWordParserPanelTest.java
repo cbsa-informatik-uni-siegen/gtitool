@@ -8,9 +8,9 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -37,17 +37,18 @@ public class StyledWordParserPanelTest
       JFrame jFrame = new JFrame ( "WordPanelTest" ); //$NON-NLS-1$
       StyledWordParserPanel styledWordParserPanel = new StyledWordParserPanel ();
       styledWordParserPanel.setAlphabet ( alphabet );
-      styledWordParserPanel.addWordChangedListener ( new WordChangedListener ()
-      {
-
-        public void wordChanged ( Word newWord )
-        {
-          if ( newWord != null )
+      styledWordParserPanel
+          .addParseableChangedListener ( new ParseableChangedListener < Word > ()
           {
-            System.out.println ( newWord );
-          }
-        }
-      } );
+
+            public void parseableChanged ( Word newWord )
+            {
+              if ( newWord != null )
+              {
+                System.out.println ( newWord );
+              }
+            }
+          } );
       jFrame.add ( styledWordParserPanel );
       jFrame.setBounds ( 300, 300, 400, 300 );
       jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );

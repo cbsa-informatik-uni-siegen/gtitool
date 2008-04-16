@@ -15,7 +15,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.ProductionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -23,7 +22,6 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.production.ProductionParseable;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -68,28 +66,6 @@ public final class StyledProductionParserPanel extends
   public StyledProductionParserPanel ()
   {
     super ( new ProductionParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < Production > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( Production newProduction )
-          {
-            fireProductionChanged ( newProduction );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link ProductionChangedListener}.
-   * 
-   * @param listener The {@link ProductionChangedListener}.
-   */
-  public final synchronized void addProductionChangedListener (
-      ProductionChangedListener listener )
-  {
-    this.listenerList.add ( ProductionChangedListener.class, listener );
   }
 
 
@@ -202,60 +178,6 @@ public final class StyledProductionParserPanel extends
       return newProduction;
     }
     return production;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link Production} has changed.
-   * 
-   * @param newProduction The new {@link Production}.
-   */
-  private final void fireProductionChanged ( Production newProduction )
-  {
-    Production checkedProduction = checkParsedObject ( newProduction );
-    ProductionChangedListener [] listeners = this.listenerList
-        .getListeners ( ProductionChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].productionChanged ( checkedProduction );
-    }
-  }
-
-
-  /**
-   * Returns the start {@link NonterminalSymbol}.
-   * 
-   * @return The start {@link NonterminalSymbol}.
-   * @see #startNonterminalSymbol
-   */
-  public final NonterminalSymbol getStartNonterminalSymbol ()
-  {
-    return this.startNonterminalSymbol;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final Production parse ()
-  {
-    Production productionWord = ( Production ) super.parse ();
-    return checkParsedObject ( productionWord );
-  }
-
-
-  /**
-   * Removes the given {@link ProductionChangedListener}.
-   * 
-   * @param listener The {@link ProductionChangedListener}.
-   */
-  public final synchronized void removeProductionChangedListener (
-      ProductionChangedListener listener )
-  {
-    this.listenerList.remove ( ProductionChangedListener.class, listener );
   }
 
 

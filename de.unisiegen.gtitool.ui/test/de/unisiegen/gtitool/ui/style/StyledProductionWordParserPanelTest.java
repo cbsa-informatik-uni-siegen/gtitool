@@ -11,11 +11,11 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -53,14 +53,14 @@ public class StyledProductionWordParserPanelTest
       styledProductionWordParserPanel.setTerminalSymbolSet ( terminalSymbolSet );
 
       styledProductionWordParserPanel
-          .addProductionWordChangedListener ( new ProductionWordChangedListener ()
+          .addParseableChangedListener ( new ParseableChangedListener < ProductionWord > ()
           {
 
-            public void productionWordChanged ( ProductionWord productionWord )
+            public void parseableChanged ( ProductionWord newProductionWord )
             {
-              if ( productionWord != null )
+              if ( newProductionWord != null )
               {
-                System.out.println ( productionWord.toStringDebug () );
+                System.out.println ( newProductionWord.toStringDebug () );
               }
             }
           } );

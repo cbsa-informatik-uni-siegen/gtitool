@@ -9,12 +9,10 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.terminalsymbolset.TerminalSymbolSetParseable;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -55,28 +53,6 @@ public final class StyledTerminalSymbolSetParserPanel extends
   public StyledTerminalSymbolSetParserPanel ()
   {
     super ( new TerminalSymbolSetParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( TerminalSymbolSet newTerminalSymbolSet )
-          {
-            fireTerminalSymbolSetChanged ( newTerminalSymbolSet );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link TerminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
-   */
-  public final synchronized void addTerminalSymbolSetChangedListener (
-      TerminalSymbolSetChangedListener listener )
-  {
-    this.listenerList.add ( TerminalSymbolSetChangedListener.class, listener );
   }
 
 
@@ -130,93 +106,6 @@ public final class StyledTerminalSymbolSetParserPanel extends
       return null;
     }
     return terminalSymbolSet;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link TerminalSymbolSet} has changed.
-   * 
-   * @param newTerminalSymbolSet The new {@link TerminalSymbolSet}.
-   */
-  private final void fireTerminalSymbolSetChanged (
-      TerminalSymbolSet newTerminalSymbolSet )
-  {
-    TerminalSymbolSet checkedTerminalSymbolSet = checkParsedObject ( newTerminalSymbolSet );
-    TerminalSymbolSetChangedListener [] listeners = this.listenerList
-        .getListeners ( TerminalSymbolSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].terminalSymbolSetChanged ( checkedTerminalSymbolSet );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final TerminalSymbolSet parse ()
-  {
-    TerminalSymbolSet terminalSymbolSet = ( TerminalSymbolSet ) super.parse ();
-    return checkParsedObject ( terminalSymbolSet );
-  }
-
-
-  /**
-   * Removes the given {@link TerminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
-   */
-  public final synchronized void removeTerminalSymbolSetChangedListener (
-      TerminalSymbolSetChangedListener listener )
-  {
-    this.listenerList
-        .remove ( TerminalSymbolSetChangedListener.class, listener );
-  }
-
-
-  /**
-   * Sets the {@link TerminalSymbol}s which should be highlighted.
-   * 
-   * @param terminalSymbols The {@link TerminalSymbol}s which should be
-   *          highlighted.
-   */
-  public final void setHighlightedTerminalSymbol (
-      Iterable < TerminalSymbol > terminalSymbols )
-  {
-    setHighlightedParseableEntity ( terminalSymbols );
-  }
-
-
-  /**
-   * Sets the {@link TerminalSymbol}s which should be highlighted.
-   * 
-   * @param terminalSymbols The {@link TerminalSymbol}s which should be
-   *          highlighted.
-   */
-  public final void setHighlightedTerminalSymbol (
-      TerminalSymbol ... terminalSymbols )
-  {
-    Entity [] entities = new Entity [ terminalSymbols.length ];
-    for ( int i = 0 ; i < terminalSymbols.length ; i++ )
-    {
-      entities [ i ] = terminalSymbols [ i ];
-    }
-    setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
-   * Sets the {@link TerminalSymbol} which should be highlighted.
-   * 
-   * @param terminalSymbol The {@link TerminalSymbol} which should be
-   *          highlighted.
-   */
-  public final void setHighlightedTerminalSymbol ( TerminalSymbol terminalSymbol )
-  {
-    setHighlightedParseableEntity ( terminalSymbol );
   }
 
 

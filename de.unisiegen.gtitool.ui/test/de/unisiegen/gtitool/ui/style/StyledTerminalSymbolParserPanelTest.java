@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -28,14 +28,14 @@ public class StyledTerminalSymbolParserPanelTest
     JFrame jFrame = new JFrame ( "TerminalSymbolPanelTest" ); //$NON-NLS-1$
     StyledTerminalSymbolParserPanel styledTerminalSymbolParserPanel = new StyledTerminalSymbolParserPanel ();
     styledTerminalSymbolParserPanel
-        .addTerminalSymbolChangedListener ( new TerminalSymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbol > ()
         {
 
-          public void terminalSymbolChanged ( TerminalSymbol terminalSymbol )
+          public void parseableChanged ( TerminalSymbol newTerminalSymbol )
           {
-            if ( terminalSymbol != null )
+            if ( newTerminalSymbol != null )
             {
-              System.out.println ( terminalSymbol );
+              System.out.println ( newTerminalSymbol );
             }
           }
         } );

@@ -9,13 +9,11 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.nonterminalsymbolset.NonterminalSymbolSetParseable;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -62,30 +60,6 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   public StyledNonterminalSymbolSetParserPanel ()
   {
     super ( new NonterminalSymbolSetParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged (
-              NonterminalSymbolSet newNonterminalSymbolSet )
-          {
-            fireNonterminalSymbolSetChanged ( newNonterminalSymbolSet );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link NonterminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link NonterminalSymbolSetChangedListener}.
-   */
-  public final synchronized void addNonterminalSymbolSetChangedListener (
-      NonterminalSymbolSetChangedListener listener )
-  {
-    this.listenerList
-        .add ( NonterminalSymbolSetChangedListener.class, listener );
   }
 
 
@@ -140,108 +114,6 @@ public final class StyledNonterminalSymbolSetParserPanel extends
     }
 
     return nonterminalSymbolSet;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link NonterminalSymbolSet} has changed.
-   * 
-   * @param newNonterminalSymbolSet The new {@link NonterminalSymbolSet}.
-   */
-  private final void fireNonterminalSymbolSetChanged (
-      NonterminalSymbolSet newNonterminalSymbolSet )
-  {
-    NonterminalSymbolSet checkedNonterminalSymbolSet = checkParsedObject ( newNonterminalSymbolSet );
-    NonterminalSymbolSetChangedListener [] listeners = this.listenerList
-        .getListeners ( NonterminalSymbolSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ]
-          .nonterminalSymbolSetChanged ( checkedNonterminalSymbolSet );
-    }
-  }
-
-
-  /**
-   * Returns the start {@link NonterminalSymbol}.
-   * 
-   * @return The start {@link NonterminalSymbol}.
-   * @see #startNonterminalSymbol
-   */
-  public final NonterminalSymbol getStartNonterminalSymbol ()
-  {
-    return this.startNonterminalSymbol;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final NonterminalSymbolSet parse ()
-  {
-    NonterminalSymbolSet nonterminalSymbolSet = ( NonterminalSymbolSet ) super
-        .parse ();
-    return checkParsedObject ( nonterminalSymbolSet );
-  }
-
-
-  /**
-   * Removes the given {@link NonterminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link NonterminalSymbolSetChangedListener}.
-   */
-  public final synchronized void removeNonterminalSymbolSetChangedListener (
-      NonterminalSymbolSetChangedListener listener )
-  {
-    this.listenerList.remove ( NonterminalSymbolSetChangedListener.class,
-        listener );
-  }
-
-
-  /**
-   * Sets the {@link NonterminalSymbol}s which should be highlighted.
-   * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s which should be
-   *          highlighted.
-   */
-  public final void setHighlightedNonterminalSymbol (
-      Iterable < NonterminalSymbol > nonterminalSymbols )
-  {
-    setHighlightedParseableEntity ( nonterminalSymbols );
-  }
-
-
-  /**
-   * Sets the {@link NonterminalSymbol}s which should be highlighted.
-   * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s which should be
-   *          highlighted.
-   */
-  public final void setHighlightedNonterminalSymbol (
-      NonterminalSymbol ... nonterminalSymbols )
-  {
-    Entity [] entities = new Entity [ nonterminalSymbols.length ];
-    for ( int i = 0 ; i < nonterminalSymbols.length ; i++ )
-    {
-      entities [ i ] = nonterminalSymbols [ i ];
-    }
-    setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
-   * Sets the {@link NonterminalSymbol} which should be highlighted.
-   * 
-   * @param nonterminalSymbol The {@link NonterminalSymbol} which should be
-   *          highlighted.
-   */
-  public final void setHighlightedNonterminalSymbol (
-      NonterminalSymbol nonterminalSymbol )
-  {
-    setHighlightedParseableEntity ( nonterminalSymbol );
   }
 
 

@@ -8,9 +8,9 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Stack;
-import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -38,10 +38,10 @@ public class StyledStackParserPanelTest
       StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
       styledStackParserPanel.setPushDownAlphabet ( pushDownalphabet );
       styledStackParserPanel
-          .addStackChangedListener ( new StackChangedListener ()
+          .addParseableChangedListener ( new ParseableChangedListener < Stack > ()
           {
 
-            public void stackChanged ( Stack newStack )
+            public void parseableChanged ( Stack newStack )
             {
               if ( newStack != null )
               {

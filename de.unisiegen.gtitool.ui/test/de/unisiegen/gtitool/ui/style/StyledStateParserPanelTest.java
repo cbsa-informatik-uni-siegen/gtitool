@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Stack;
-import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -27,14 +27,14 @@ public class StyledStateParserPanelTest
     JFrame jFrame = new JFrame ( "StackPanelTest" ); //$NON-NLS-1$
     StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
     styledStackParserPanel
-        .addStackChangedListener ( new StackChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Stack > ()
         {
 
-          public void stackChanged ( Stack stack )
+          public void parseableChanged ( Stack newStack )
           {
-            if ( stack != null )
+            if ( newStack != null )
             {
-              System.out.println ( stack );
+              System.out.println ( newStack );
             }
           }
         } );

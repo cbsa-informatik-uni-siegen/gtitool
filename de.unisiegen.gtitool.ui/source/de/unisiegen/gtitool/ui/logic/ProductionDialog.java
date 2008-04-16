@@ -15,13 +15,13 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 import de.unisiegen.gtitool.ui.redoundo.ProductionChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -192,7 +192,8 @@ public final class ProductionDialog
    * The {@link DefaultGrammarModel}.
    */
   private DefaultGrammarModel model;
-  
+
+
   /**
    * The {@link RedoUndoHandler}.
    */
@@ -253,17 +254,16 @@ public final class ProductionDialog
     this.gui.jGTIList.setSelectedIndex ( 0 );
 
     this.gui.styledProductionWordParserPanel
-        .addProductionWordChangedListener ( new ProductionWordChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < ProductionWord > ()
         {
 
-          public void productionWordChanged ( ProductionWord newProductionWord )
+          public void parseableChanged ( ProductionWord newProductionWord )
           {
             if ( newProductionWord == null )
             {
               setButtonStatus ( false );
               getGui ().styledProductionParserPanel.setText ( null );
             }
-
             else
             {
               setButtonStatus ( true );
@@ -371,9 +371,10 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
-      RedoUndoItem item = new ProductionChangedItem(this.oldProduction, production);
+      RedoUndoItem item = new ProductionChangedItem ( this.oldProduction,
+          production );
       this.redoUndoHandler.addUndo ( item );
-      
+
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );
       this.oldProduction.setProductionWord ( production.getProductionWord () );

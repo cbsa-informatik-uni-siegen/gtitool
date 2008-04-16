@@ -9,8 +9,8 @@ import javax.swing.WindowConstants;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
-import de.unisiegen.gtitool.core.entities.listener.StateSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -42,10 +42,10 @@ public class StyledStateSetParserPanelTest
       StyledStateSetParserPanel styledStateSetParserPanel = new StyledStateSetParserPanel ();
       styledStateSetParserPanel.setStateList ( stateList );
       styledStateSetParserPanel
-          .addStateSetChangedListener ( new StateSetChangedListener ()
+          .addParseableChangedListener ( new ParseableChangedListener < StateSet > ()
           {
 
-            public void stateSetChanged ( StateSet newStateSet )
+            public void parseableChanged ( StateSet newStateSet )
             {
               if ( newStateSet != null )
               {

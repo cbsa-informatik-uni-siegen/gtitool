@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -28,15 +28,14 @@ public class StyledNonterminalSymbolParserPanelTest
     JFrame jFrame = new JFrame ( "NonterminalSymbolPanelTest" ); //$NON-NLS-1$
     StyledNonterminalSymbolParserPanel styledNonterminalSymbolParserPanel = new StyledNonterminalSymbolParserPanel ();
     styledNonterminalSymbolParserPanel
-        .addNonterminalSymbolChangedListener ( new NonterminalSymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          public void nonterminalSymbolChanged (
-              NonterminalSymbol nonterminalSymbol )
+          public void parseableChanged ( NonterminalSymbol newNonterminalSymbol )
           {
-            if ( nonterminalSymbol != null )
+            if ( newNonterminalSymbol != null )
             {
-              System.out.println ( nonterminalSymbol );
+              System.out.println ( newNonterminalSymbol );
             }
           }
         } );

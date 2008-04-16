@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.ProductionWordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
@@ -21,7 +20,6 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.productionword.ProductionWordParseable;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -66,28 +64,6 @@ public final class StyledProductionWordParserPanel extends
   public StyledProductionWordParserPanel ()
   {
     super ( new ProductionWordParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < ProductionWord > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( ProductionWord newProductionWord )
-          {
-            fireProductionWordChanged ( newProductionWord );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link ProductionWordChangedListener}.
-   * 
-   * @param listener The {@link ProductionWordChangedListener}.
-   */
-  public final synchronized void addProductionWordChangedListener (
-      ProductionWordChangedListener listener )
-  {
-    this.listenerList.add ( ProductionWordChangedListener.class, listener );
   }
 
 
@@ -183,61 +159,6 @@ public final class StyledProductionWordParserPanel extends
       return newProductionWord;
     }
     return productionWord;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link ProductionWord} has changed.
-   * 
-   * @param newProductionWord The new {@link ProductionWord}.
-   */
-  private final void fireProductionWordChanged (
-      ProductionWord newProductionWord )
-  {
-    ProductionWord checkedProductionWord = checkParsedObject ( newProductionWord );
-    ProductionWordChangedListener [] listeners = this.listenerList
-        .getListeners ( ProductionWordChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].productionWordChanged ( checkedProductionWord );
-    }
-  }
-
-
-  /**
-   * Returns the start {@link NonterminalSymbol}.
-   * 
-   * @return The start {@link NonterminalSymbol}.
-   * @see #startNonterminalSymbol
-   */
-  public final NonterminalSymbol getStartNonterminalSymbol ()
-  {
-    return this.startNonterminalSymbol;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final ProductionWord parse ()
-  {
-    ProductionWord productionWord = ( ProductionWord ) super.parse ();
-    return checkParsedObject ( productionWord );
-  }
-
-
-  /**
-   * Removes the given {@link ProductionWordChangedListener}.
-   * 
-   * @param listener The {@link ProductionWordChangedListener}.
-   */
-  public final synchronized void removeProductionWordChangedListener (
-      ProductionWordChangedListener listener )
-  {
-    this.listenerList.remove ( ProductionWordChangedListener.class, listener );
   }
 
 

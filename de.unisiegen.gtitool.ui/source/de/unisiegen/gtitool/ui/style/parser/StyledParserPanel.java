@@ -635,7 +635,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  protected final synchronized void addParseableChangedListener (
+  public final synchronized void addParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
@@ -671,19 +671,20 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
   @SuppressWarnings ( "unchecked" )
   private final void fireParseableChanged ( E newObject )
   {
-    setErrorIndicator ( newObject == null );
+    E checkedObject = checkParsedObject ( newObject );
+    setErrorIndicator ( checkedObject == null );
 
     // History
-    if ( newObject != null )
+    if ( checkedObject != null )
     {
-      this.history.add ( newObject );
+      this.history.add ( checkedObject );
     }
 
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
     for ( ParseableChangedListener < E > current : listeners )
     {
-      current.parseableChanged ( newObject );
+      current.parseableChanged ( checkedObject );
     }
   }
 
@@ -811,11 +812,11 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @return The parsed object or null, if the text could not be parsed.
    */
-  protected Object parse ()
+  public final E parse ()
   {
-    Object newObject = this.document.parse ();
-    setErrorIndicator ( newObject == null );
-    return newObject;
+    E checkedObject = checkParsedObject ( this.document.parse () );
+    setErrorIndicator ( checkedObject == null );
+    return checkedObject;
   }
 
 
@@ -836,7 +837,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  protected final synchronized void removeParseableChangedListener (
+  public final synchronized void removeParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.remove ( ParseableChangedListener.class, listener );
@@ -977,7 +978,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param error Flag that indicates if there is an error.
    */
-  protected final void setErrorIndicator ( boolean error )
+  private final void setErrorIndicator ( boolean error )
   {
     if ( ( this.document.getParsedObject () == null ) || error )
     {
@@ -1007,7 +1008,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param entities The {@link Entity}s which should be highlighted.
    */
-  protected final void setHighlightedParseableEntity ( Entity ... entities )
+  public final void setHighlightedParseableEntity ( Entity ... entities )
   {
     this.document.setHighlightedParseableEntity ( entities );
   }
@@ -1018,7 +1019,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param entity The {@link Entity} which should be highlighted.
    */
-  protected final void setHighlightedParseableEntity ( Entity entity )
+  public final void setHighlightedParseableEntity ( Entity entity )
   {
     this.document.setHighlightedParseableEntity ( entity );
   }
@@ -1029,7 +1030,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param entities The {@link Entity}s which should be highlighted.
    */
-  protected final void setHighlightedParseableEntity (
+  public final void setHighlightedParseableEntity (
       Iterable < ? extends Entity > entities )
   {
     this.document.setHighlightedParseableEntity ( entities );

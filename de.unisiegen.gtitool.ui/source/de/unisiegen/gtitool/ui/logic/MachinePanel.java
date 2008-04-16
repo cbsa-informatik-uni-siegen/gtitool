@@ -1276,11 +1276,12 @@ public final class MachinePanel implements EditorPanel
       try
       {
         this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
+            .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
       }
       catch ( WordResetedException exc )
       {
-        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedParseableEntity ();
       }
     }
     catch ( WordFinishedException exc )
@@ -1365,11 +1366,12 @@ public final class MachinePanel implements EditorPanel
       try
       {
         this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedSymbol ( this.machine.getReadedSymbols () );
+            .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
       }
       catch ( WordResetedException exc )
       {
-        this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedParseableEntity ();
       }
     }
     catch ( WordFinishedException exc )
@@ -1453,7 +1455,7 @@ public final class MachinePanel implements EditorPanel
     this.graphModel
         .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
 
-    this.gui.wordPanel.styledWordParserPanel.setHighlightedSymbol ();
+    this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
     this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( true );
     this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( true );

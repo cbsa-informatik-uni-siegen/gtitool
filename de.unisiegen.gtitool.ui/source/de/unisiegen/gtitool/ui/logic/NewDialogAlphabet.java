@@ -2,9 +2,9 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -53,22 +53,22 @@ public final class NewDialogAlphabet
      * Alphabet changed listener
      */
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
           Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
         } );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
           Alphabet newAlphabet )
           {
             setButtonStatus ();

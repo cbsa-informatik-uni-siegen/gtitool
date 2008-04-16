@@ -20,11 +20,11 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
@@ -365,11 +365,11 @@ public final class TransitionDialog
      * Word changed listener
      */
     this.gui.styledWordParserPanelRead
-        .addWordChangedListener ( new WordChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void wordChanged ( Word newWord )
+          public void parseableChanged ( Word newWord )
           {
             if ( newWord != null )
             {
@@ -385,11 +385,11 @@ public final class TransitionDialog
           }
         } );
     this.gui.styledWordParserPanelWrite
-        .addWordChangedListener ( new WordChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void wordChanged ( Word newWord )
+          public void parseableChanged ( Word newWord )
           {
             if ( newWord != null )
             {

@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.startnonterminalsymbol.StartNonterminalSymbolParseable;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -45,29 +43,6 @@ public final class StyledStartNonterminalSymbolParserPanel extends
   public StyledStartNonterminalSymbolParserPanel ()
   {
     super ( new StartNonterminalSymbolParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( NonterminalSymbol newNonterminalSymbol )
-          {
-            fireStartNonterminalSymbolChanged ( newNonterminalSymbol );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link StartNonterminalSymbolChangedListener}.
-   * 
-   * @param listener The {@link StartNonterminalSymbolChangedListener}.
-   */
-  public final synchronized void addStartNonterminalSymbolChangedListener (
-      StartNonterminalSymbolChangedListener listener )
-  {
-    this.listenerList.add ( StartNonterminalSymbolChangedListener.class,
-        listener );
   }
 
 
@@ -101,53 +76,6 @@ public final class StyledStartNonterminalSymbolParserPanel extends
     }
 
     return nonterminalSymbol;
-  }
-
-
-  /**
-   * Let the listeners know that the start {@link NonterminalSymbol} has
-   * changed.
-   * 
-   * @param newStartNonterminalSymbol The new start {@link NonterminalSymbol}.
-   */
-  private final void fireStartNonterminalSymbolChanged (
-      NonterminalSymbol newStartNonterminalSymbol )
-  {
-    NonterminalSymbol checkedStartNonterminalSymbol = checkParsedObject ( newStartNonterminalSymbol );
-    StartNonterminalSymbolChangedListener [] listeners = this.listenerList
-        .getListeners ( StartNonterminalSymbolChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ]
-          .startNonterminalSymbolChanged ( checkedStartNonterminalSymbol );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final NonterminalSymbol parse ()
-  {
-    NonterminalSymbol startNonterminalSymbol = ( NonterminalSymbol ) super
-        .parse ();
-    return checkParsedObject ( startNonterminalSymbol );
-  }
-
-
-  /**
-   * Removes the given {@link StartNonterminalSymbolChangedListener}.
-   * 
-   * @param listener The {@link StartNonterminalSymbolChangedListener}.
-   */
-  public final synchronized void removeNonterminalSymbolChangedListener (
-      StartNonterminalSymbolChangedListener listener )
-  {
-    this.listenerList.remove ( StartNonterminalSymbolChangedListener.class,
-        listener );
   }
 
 

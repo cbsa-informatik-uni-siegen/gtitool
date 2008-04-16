@@ -7,10 +7,10 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -57,11 +57,11 @@ public final class AlphabetDialog
         .setNotRemoveableSymbols ( this.machine
             .getNotRemoveableSymbolsFromAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
           Alphabet newAlphabet )
           {
             setButtonStatus ();
@@ -74,11 +74,11 @@ public final class AlphabetDialog
         .setNotRemoveableSymbols ( this.machine
             .getNotRemoveableSymbolsFromPushDownAlphabet () );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( @SuppressWarnings ( "unused" )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
           Alphabet newAlphabet )
           {
             setButtonStatus ();

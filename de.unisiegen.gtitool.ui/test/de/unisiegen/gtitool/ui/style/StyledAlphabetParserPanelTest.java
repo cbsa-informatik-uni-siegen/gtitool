@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
-import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -28,14 +28,14 @@ public class StyledAlphabetParserPanelTest
     JFrame jFrame = new JFrame ( "AlphabetPanelTest" ); //$NON-NLS-1$
     StyledAlphabetParserPanel styledAlphabetParserPanel = new StyledAlphabetParserPanel ();
     styledAlphabetParserPanel
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
-          public void alphabetChanged ( Alphabet alphabet )
+          public void parseableChanged ( Alphabet newAlphabet )
           {
-            if ( alphabet != null )
+            if ( newAlphabet != null )
             {
-              System.out.println ( alphabet );
+              System.out.println ( newAlphabet );
             }
           }
         } );

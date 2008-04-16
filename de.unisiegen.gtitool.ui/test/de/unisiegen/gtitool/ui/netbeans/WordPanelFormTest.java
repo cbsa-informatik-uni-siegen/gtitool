@@ -7,9 +7,9 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -31,9 +31,9 @@ public class WordPanelFormTest
 
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ),
           new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) );
-      
-      Alphabet pushDownAlphabet = new DefaultAlphabet ( new DefaultSymbol ( "a" ),
-          new DefaultSymbol ( "b" ) );
+
+      Alphabet pushDownAlphabet = new DefaultAlphabet (
+          new DefaultSymbol ( "a" ), new DefaultSymbol ( "b" ) );
 
       WordPanelForm wordPanelForm = new WordPanelForm ();
 
@@ -41,10 +41,10 @@ public class WordPanelFormTest
       wordPanelForm.setPushDownAlphabet ( pushDownAlphabet );
 
       wordPanelForm.styledWordParserPanel
-          .addWordChangedListener ( new WordChangedListener ()
+          .addParseableChangedListener ( new ParseableChangedListener < Word > ()
           {
 
-            public void wordChanged ( Word newWord )
+            public void parseableChanged ( Word newWord )
             {
               if ( newWord != null )
               {

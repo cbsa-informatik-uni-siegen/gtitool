@@ -4,12 +4,12 @@ package de.unisiegen.gtitool.ui.logic;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -84,13 +84,13 @@ public final class StateConfigDialog
      * State changed listener
      */
     this.gui.styledStateParserPanel
-        .addStateChangedListener ( new StateChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < State > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void stateChanged ( State pNewState )
+          public void parseableChanged ( State newState )
           {
-            if ( pNewState == null )
+            if ( newState == null )
             {
               StateConfigDialog.this.gui.jGTIButtonOk.setEnabled ( false );
             }

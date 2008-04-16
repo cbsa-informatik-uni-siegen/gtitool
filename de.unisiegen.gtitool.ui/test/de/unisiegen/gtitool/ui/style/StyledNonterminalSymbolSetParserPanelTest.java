@@ -8,9 +8,9 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -41,10 +41,10 @@ public class StyledNonterminalSymbolSetParserPanelTest
       styledNonterminalSymbolSetParserPanel
           .setTerminalSymbolSet ( terminalSymbolSet );
       styledNonterminalSymbolSetParserPanel
-          .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+          .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
           {
 
-            public void nonterminalSymbolSetChanged (
+            public void parseableChanged (
                 NonterminalSymbolSet newNonterminalSymbolSet )
             {
               if ( newNonterminalSymbolSet != null )

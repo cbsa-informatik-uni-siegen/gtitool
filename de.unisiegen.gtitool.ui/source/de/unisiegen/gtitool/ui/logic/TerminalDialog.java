@@ -10,13 +10,11 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.ui.netbeans.TerminalDialogForm;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -76,42 +74,37 @@ public final class TerminalDialog
         .setText ( this.grammar.getStartSymbol () );
 
     this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
-          public void terminalSymbolSetChanged ( @SuppressWarnings ( "unused" )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
           TerminalSymbolSet newTerminalSymbolSet )
           {
             setButtonStatus ();
           }
-
         } );
 
     this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
-          public void nonterminalSymbolSetChanged (
-              @SuppressWarnings ( "unused" )
-              NonterminalSymbolSet newNonterminalSymbolSet )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
+          NonterminalSymbolSet newNonterminalSymbolSet )
           {
             setButtonStatus ();
           }
         } );
 
     this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          public void startNonterminalSymbolChanged (
-              @SuppressWarnings ( "unused" )
-              NonterminalSymbol newStartNonterminalSymbol )
+          public void parseableChanged ( @SuppressWarnings ( "unused" )
+          NonterminalSymbol newNonterminalSymbol )
           {
             setButtonStatus ();
           }
-
         } );
-
   }
 
 

@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.listener.SymbolChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -28,14 +28,14 @@ public class StyledSymbolParserPanelTest
     JFrame jFrame = new JFrame ( "SymbolPanelTest" ); //$NON-NLS-1$
     StyledSymbolParserPanel styledSymbolParserPanel = new StyledSymbolParserPanel ();
     styledSymbolParserPanel
-        .addSymbolChangedListener ( new SymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Symbol > ()
         {
 
-          public void symbolChanged ( Symbol symbol )
+          public void parseableChanged ( Symbol newSymbol )
           {
-            if ( symbol != null )
+            if ( newSymbol != null )
             {
-              System.out.println ( symbol );
+              System.out.println ( newSymbol );
             }
           }
         } );

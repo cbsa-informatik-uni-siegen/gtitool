@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -28,14 +28,14 @@ public class StyledTransitionParserPanelTest
     JFrame jFrame = new JFrame ( "TransitionPanelTest" ); //$NON-NLS-1$
     StyledTransitionParserPanel styledTransitionParserPanel = new StyledTransitionParserPanel ();
     styledTransitionParserPanel
-        .addTransitionChangedListener ( new TransitionChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Transition > ()
         {
 
-          public void transitionChanged ( Transition transition )
+          public void parseableChanged ( Transition newTransition )
           {
-            if ( transition != null )
+            if ( newTransition != null )
             {
-              System.out.println ( transition );
+              System.out.println ( newTransition );
             }
           }
         } );

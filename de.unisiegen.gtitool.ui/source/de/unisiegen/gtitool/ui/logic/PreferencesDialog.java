@@ -36,10 +36,6 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
@@ -56,6 +52,7 @@ import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -1164,11 +1161,11 @@ public final class PreferencesDialog implements LanguageChangedListener
      * Alphabet changed listener
      */
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet newAlphabet )
+          public void parseableChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
             if ( newAlphabet != null )
@@ -1856,11 +1853,11 @@ public final class PreferencesDialog implements LanguageChangedListener
      * NonterminalSymbolSet changed listener
      */
     this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void nonterminalSymbolSetChanged (
+          public void parseableChanged (
               NonterminalSymbolSet newNonterminalSymbolSet )
           {
             setButtonStatus ();
@@ -1931,11 +1928,11 @@ public final class PreferencesDialog implements LanguageChangedListener
      * Alphabet changed listener
      */
     this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .addAlphabetChangedListener ( new AlphabetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void alphabetChanged ( Alphabet newAlphabet )
+          public void parseableChanged ( Alphabet newAlphabet )
           {
             setButtonStatus ();
             if ( newAlphabet != null )
@@ -2052,18 +2049,17 @@ public final class PreferencesDialog implements LanguageChangedListener
      * TerminalSymbolSet changed listener
      */
     this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void startNonterminalSymbolChanged (
-              NonterminalSymbol newStartNonterminalSymbol )
+          public void parseableChanged ( NonterminalSymbol newNonterminalSymbol )
           {
             setButtonStatus ();
-            if ( newStartNonterminalSymbol != null )
+            if ( newNonterminalSymbol != null )
             {
               PreferencesDialog.this.startSymbolItem
-                  .setNonterminalSymbol ( newStartNonterminalSymbol );
+                  .setNonterminalSymbol ( newNonterminalSymbol );
             }
           }
         } );
@@ -2124,12 +2120,11 @@ public final class PreferencesDialog implements LanguageChangedListener
      * TerminalSymbolSet changed listener
      */
     this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void terminalSymbolSetChanged (
-              TerminalSymbolSet newTerminalSymbolSet )
+          public void parseableChanged ( TerminalSymbolSet newTerminalSymbolSet )
           {
             setButtonStatus ();
             if ( newTerminalSymbolSet != null )

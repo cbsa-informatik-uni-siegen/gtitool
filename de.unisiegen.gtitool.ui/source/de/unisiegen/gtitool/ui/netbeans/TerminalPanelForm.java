@@ -4,9 +4,8 @@ package de.unisiegen.gtitool.ui.netbeans;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
-import de.unisiegen.gtitool.core.entities.listener.TerminalSymbolSetChangedListener;
+import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
 /**
@@ -100,10 +99,10 @@ public class TerminalPanelForm extends javax.swing.JPanel
     initComponents ();
 
     styledNonterminalSymbolSetParserPanel
-        .addNonterminalSymbolSetChangedListener ( new NonterminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
         {
 
-          public void nonterminalSymbolSetChanged (
+          public void parseableChanged (
               NonterminalSymbolSet newNonterminalSymbolSet )
           {
             styledTerminalSymbolSetParserPanel
@@ -114,16 +113,15 @@ public class TerminalPanelForm extends javax.swing.JPanel
             // Parse the symbol sets
             styledNonterminalSymbolSetParserPanel.parse ();
             styledTerminalSymbolSetParserPanel.parse ();
-            styledStartNonterminalSymbolParserPanel.parse ();        
+            styledStartNonterminalSymbolParserPanel.parse ();
           }
         } );
 
     styledTerminalSymbolSetParserPanel
-        .addTerminalSymbolSetChangedListener ( new TerminalSymbolSetChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
         {
 
-          public void terminalSymbolSetChanged (
-              TerminalSymbolSet newTerminalSymbolSet )
+          public void parseableChanged ( TerminalSymbolSet newTerminalSymbolSet )
           {
             styledNonterminalSymbolSetParserPanel
                 .setTerminalSymbolSet ( newTerminalSymbolSet );
@@ -131,19 +129,18 @@ public class TerminalPanelForm extends javax.swing.JPanel
             // Parse the symbol sets
             styledNonterminalSymbolSetParserPanel.parse ();
             styledTerminalSymbolSetParserPanel.parse ();
-            styledStartNonterminalSymbolParserPanel.parse (); 
+            styledStartNonterminalSymbolParserPanel.parse ();
           }
         } );
-    
+
     styledStartNonterminalSymbolParserPanel
-        .addStartNonterminalSymbolChangedListener ( new StartNonterminalSymbolChangedListener ()
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbol > ()
         {
 
-          public void startNonterminalSymbolChanged (
-              NonterminalSymbol newStartNonterminalSymbol )
+          public void parseableChanged ( NonterminalSymbol newNonterminalSymbol )
           {
             styledNonterminalSymbolSetParserPanel
-                .setStartNonterminalSymbol ( newStartNonterminalSymbol );
+                .setStartNonterminalSymbol ( newNonterminalSymbol );
 
             // Parse the nonterminal symbol set
             styledNonterminalSymbolSetParserPanel.parse ();

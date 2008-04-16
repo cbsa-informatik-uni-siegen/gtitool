@@ -7,12 +7,10 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
-import de.unisiegen.gtitool.core.entities.listener.StackChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.stack.StackParseable;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -44,28 +42,6 @@ public final class StyledStackParserPanel extends StyledParserPanel < Stack >
   public StyledStackParserPanel ()
   {
     super ( new StackParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < Stack > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( Stack newStack )
-          {
-            fireStackChanged ( newStack );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link StackChangedListener}.
-   * 
-   * @param listener The {@link StackChangedListener}.
-   */
-  public final synchronized void addStackChangedListener (
-      StackChangedListener listener )
-  {
-    this.listenerList.add ( StackChangedListener.class, listener );
   }
 
 
@@ -101,86 +77,6 @@ public final class StyledStackParserPanel extends StyledParserPanel < Stack >
     }
 
     return stack;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link Stack} has changed.
-   * 
-   * @param newStack The new {@link Stack}.
-   */
-  private final void fireStackChanged ( Stack newStack )
-  {
-    Stack checkedStack = checkParsedObject ( newStack );
-    StackChangedListener [] listeners = this.listenerList
-        .getListeners ( StackChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].stackChanged ( checkedStack );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final Stack parse ()
-  {
-    Stack stack = ( Stack ) super.parse ();
-    return checkParsedObject ( stack );
-  }
-
-
-  /**
-   * Removes the given {@link StackChangedListener}.
-   * 
-   * @param listener The {@link StackChangedListener}.
-   */
-  public final synchronized void removeStackChangedListener (
-      StackChangedListener listener )
-  {
-    this.listenerList.remove ( StackChangedListener.class, listener );
-  }
-
-
-  /**
-   * Sets the {@link Symbol}s which should be highlighted.
-   * 
-   * @param symbols The {@link Symbol}s which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
-  {
-    setHighlightedParseableEntity ( symbols );
-  }
-
-
-  /**
-   * Sets the {@link Symbol}s which should be highlighted.
-   * 
-   * @param symbols The {@link Symbol}s which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Symbol ... symbols )
-  {
-    Entity [] entities = new Entity [ symbols.length ];
-    for ( int i = 0 ; i < symbols.length ; i++ )
-    {
-      entities [ i ] = symbols [ i ];
-    }
-    setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
-   * Sets the {@link Symbol} which should be highlighted.
-   * 
-   * @param symbol The {@link Symbol} which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Symbol symbol )
-  {
-    setHighlightedParseableEntity ( symbol );
   }
 
 

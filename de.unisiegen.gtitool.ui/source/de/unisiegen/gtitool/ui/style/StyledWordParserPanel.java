@@ -7,12 +7,10 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.entities.listener.WordChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.word.WordParseable;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -43,28 +41,6 @@ public final class StyledWordParserPanel extends StyledParserPanel < Word >
   public StyledWordParserPanel ()
   {
     super ( new WordParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( Word newWord )
-          {
-            fireWordChanged ( newWord );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link WordChangedListener}.
-   * 
-   * @param listener The {@link WordChangedListener}.
-   */
-  public final synchronized void addWordChangedListener (
-      WordChangedListener listener )
-  {
-    this.listenerList.add ( WordChangedListener.class, listener );
   }
 
 
@@ -103,48 +79,6 @@ public final class StyledWordParserPanel extends StyledParserPanel < Word >
 
 
   /**
-   * Let the listeners know that the {@link Word} has changed.
-   * 
-   * @param newWord The new {@link Word}.
-   */
-  private final void fireWordChanged ( Word newWord )
-  {
-    Word checkedWord = checkParsedObject ( newWord );
-    WordChangedListener [] listeners = this.listenerList
-        .getListeners ( WordChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].wordChanged ( checkedWord );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final Word parse ()
-  {
-    Word word = ( Word ) super.parse ();
-    return checkParsedObject ( word );
-  }
-
-
-  /**
-   * Removes the given {@link WordChangedListener}.
-   * 
-   * @param listener The {@link WordChangedListener}.
-   */
-  public final synchronized void removeWordChangedListener (
-      WordChangedListener listener )
-  {
-    this.listenerList.remove ( WordChangedListener.class, listener );
-  }
-
-
-  /**
    * Sets the {@link Alphabet}. Every {@link Symbol} in the {@link Word} has to
    * be in the {@link Alphabet}.
    * 
@@ -153,43 +87,5 @@ public final class StyledWordParserPanel extends StyledParserPanel < Word >
   public final void setAlphabet ( Alphabet alphabet )
   {
     this.alphabet = alphabet;
-  }
-
-
-  /**
-   * Sets the {@link Symbol}s which should be highlighted.
-   * 
-   * @param symbols The {@link Symbol}s which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Iterable < Symbol > symbols )
-  {
-    setHighlightedParseableEntity ( symbols );
-  }
-
-
-  /**
-   * Sets the {@link Symbol}s which should be highlighted.
-   * 
-   * @param symbols The {@link Symbol}s which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Symbol ... symbols )
-  {
-    Entity [] entities = new Entity [ symbols.length ];
-    for ( int i = 0 ; i < symbols.length ; i++ )
-    {
-      entities [ i ] = symbols [ i ];
-    }
-    setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
-   * Sets the {@link Symbol} which should be highlighted.
-   * 
-   * @param symbol The {@link Symbol} which should be highlighted.
-   */
-  public final void setHighlightedSymbol ( Symbol symbol )
-  {
-    setHighlightedParseableEntity ( symbol );
   }
 }

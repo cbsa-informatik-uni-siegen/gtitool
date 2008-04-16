@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
-import de.unisiegen.gtitool.core.entities.listener.StateSetChangedListener;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.stateset.StateSetParseable;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -44,28 +42,6 @@ public final class StyledStateSetParserPanel extends
   public StyledStateSetParserPanel ()
   {
     super ( new StateSetParseable () );
-    super
-        .addParseableChangedListener ( new ParseableChangedListener < StateSet > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( StateSet newStateSet )
-          {
-            fireStateSetChanged ( newStateSet );
-          }
-        } );
-  }
-
-
-  /**
-   * Adds the given {@link StateSetChangedListener}.
-   * 
-   * @param listener The {@link StateSetChangedListener}.
-   */
-  public final synchronized void addStateSetChangedListener (
-      StateSetChangedListener listener )
-  {
-    this.listenerList.add ( StateSetChangedListener.class, listener );
   }
 
 
@@ -110,86 +86,6 @@ public final class StyledStateSetParserPanel extends
     }
 
     return stateSet;
-  }
-
-
-  /**
-   * Let the listeners know that the {@link StateSet} has changed.
-   * 
-   * @param newStateSet The new {@link StateSet}.
-   */
-  private final void fireStateSetChanged ( StateSet newStateSet )
-  {
-    StateSet checkedStateSet = checkParsedObject ( newStateSet );
-    StateSetChangedListener [] listeners = this.listenerList
-        .getListeners ( StateSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].stateSetChanged ( checkedStateSet );
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see StyledParserPanel#parse()
-   */
-  @Override
-  public final StateSet parse ()
-  {
-    StateSet stateSet = ( StateSet ) super.parse ();
-    return checkParsedObject ( stateSet );
-  }
-
-
-  /**
-   * Removes the given {@link StateSetChangedListener}.
-   * 
-   * @param listener The {@link StateSetChangedListener}.
-   */
-  public final synchronized void removeStateSetChangedListener (
-      StateSetChangedListener listener )
-  {
-    this.listenerList.remove ( StateSetChangedListener.class, listener );
-  }
-
-
-  /**
-   * Sets the {@link State}s which should be highlighted.
-   * 
-   * @param states The {@link State}s which should be highlighted.
-   */
-  public final void setHighlightedState ( Iterable < State > states )
-  {
-    setHighlightedParseableEntity ( states );
-  }
-
-
-  /**
-   * Sets the {@link State}s which should be highlighted.
-   * 
-   * @param states The {@link State}s which should be highlighted.
-   */
-  public final void setHighlightedState ( State ... states )
-  {
-    Entity [] entities = new Entity [ states.length ];
-    for ( int i = 0 ; i < states.length ; i++ )
-    {
-      entities [ i ] = states [ i ];
-    }
-    setHighlightedParseableEntity ( entities );
-  }
-
-
-  /**
-   * Sets the {@link State} which should be highlighted.
-   * 
-   * @param state The {@link State} which should be highlighted.
-   */
-  public final void setHighlightedState ( State state )
-  {
-    setHighlightedParseableEntity ( state );
   }
 
 

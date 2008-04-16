@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.parser.state.StateParseable;
@@ -14,7 +15,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledStateParserPanel extends StyledParserPanel
+public final class StyledStateParserPanel extends StyledParserPanel < State >
 {
 
   /**
@@ -29,15 +30,16 @@ public final class StyledStateParserPanel extends StyledParserPanel
   public StyledStateParserPanel ()
   {
     super ( new StateParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < State > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireStateChanged ( ( State ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( State newState )
+          {
+            fireStateChanged ( newState );
+          }
+        } );
   }
 
 
@@ -54,35 +56,30 @@ public final class StyledStateParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#checkParsedObject(Entity)
+   */
+  @Override
+  protected final State checkParsedObject ( State state )
+  {
+    return state;
+  }
+
+
+  /**
    * Let the listeners know that the {@link State} has changed.
    * 
    * @param newState The new {@link State}.
    */
   private final void fireStateChanged ( State newState )
   {
+    State checkedState = checkParsedObject ( newState );
     StateChangedListener [] listeners = this.listenerList
         .getListeners ( StateChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].stateChanged ( newState );
-    }
-  }
-
-
-  /**
-   * Returns the {@link State} for the program text within the document.
-   * 
-   * @return The {@link State} for the program text.
-   */
-  public final State getState ()
-  {
-    try
-    {
-      return ( State ) getParsedObject ();
-    }
-    catch ( Exception exc )
-    {
-      return null;
+      listeners [ n ].stateChanged ( checkedState );
     }
   }
 
@@ -95,7 +92,8 @@ public final class StyledStateParserPanel extends StyledParserPanel
   @Override
   public final State parse ()
   {
-    return ( State ) super.parse ();
+    State state = ( State ) super.parse ();
+    return checkParsedObject ( state );
   }
 
 

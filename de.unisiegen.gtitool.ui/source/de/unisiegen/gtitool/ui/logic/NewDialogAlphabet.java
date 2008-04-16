@@ -85,7 +85,7 @@ public final class NewDialogAlphabet
   public final Alphabet getAlphabet ()
   {
     return this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getAlphabet ();
+        .getParsedObject ();
   }
 
 
@@ -108,7 +108,7 @@ public final class NewDialogAlphabet
   public final Alphabet getPushDownAlphabet ()
   {
     return this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-        .getAlphabet ();
+        .getParsedObject ();
   }
 
 
@@ -158,9 +158,9 @@ public final class NewDialogAlphabet
   private final void setButtonStatus ()
   {
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getAlphabet () == null )
+        .getParsedObject () == null )
         || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getAlphabet () == null ) )
+            .getParsedObject () == null ) )
     {
       this.gui.jGTIButtonFinished.setEnabled ( false );
     }

@@ -134,7 +134,7 @@ public final class StateConfigDialog
   {
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
-    State activeState = this.gui.styledStateParserPanel.getState ();
+    State activeState = this.gui.styledStateParserPanel.getParsedObject ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
     this.gui.dispose ();
   }

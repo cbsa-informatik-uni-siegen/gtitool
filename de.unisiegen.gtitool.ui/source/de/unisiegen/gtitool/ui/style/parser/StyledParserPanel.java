@@ -46,8 +46,9 @@ import de.unisiegen.gtitool.ui.utils.Clipboard;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity}.
  */
-public abstract class StyledParserPanel extends JPanel
+public abstract class StyledParserPanel < E extends Entity > extends JPanel
 {
 
   /**
@@ -73,7 +74,7 @@ public abstract class StyledParserPanel extends JPanel
     /**
      * The history list.
      */
-    private ArrayList < Object > list;
+    private ArrayList < E > list;
 
 
     /**
@@ -81,7 +82,7 @@ public abstract class StyledParserPanel extends JPanel
      */
     public History ()
     {
-      this.list = new ArrayList < Object > ();
+      this.list = new ArrayList < E > ();
       this.index = -1;
       this.addNextObject = true;
     }
@@ -92,7 +93,7 @@ public abstract class StyledParserPanel extends JPanel
      * 
      * @param newObject The object to add.
      */
-    public final void add ( Object newObject )
+    public final void add ( E newObject )
     {
       if ( this.addNextObject
           && ( ( this.list.size () == 0 ) || !this.list.get (
@@ -133,7 +134,7 @@ public abstract class StyledParserPanel extends JPanel
      * 
      * @return The next object.
      */
-    public final Object redo ()
+    public final E redo ()
     {
       this.index++ ;
       this.addNextObject = false;
@@ -158,7 +159,7 @@ public abstract class StyledParserPanel extends JPanel
      * 
      * @return The previous object.
      */
-    public final Object undo ()
+    public final E undo ()
     {
       this.index-- ;
       this.addNextObject = false;
@@ -206,13 +207,13 @@ public abstract class StyledParserPanel extends JPanel
   /**
    * The {@link StyledParserDocument}.
    */
-  private StyledParserDocument document;
+  private StyledParserDocument < E > document;
 
 
   /**
    * The {@link StyledParserEditor}.
    */
-  private StyledParserEditor editor;
+  private StyledParserEditor < E > editor;
 
 
   /**
@@ -267,25 +268,25 @@ public abstract class StyledParserPanel extends JPanel
    * The {@link ParseableChangedListener} for the other
    * {@link StyledParserPanel}.
    */
-  private ParseableChangedListener parseableChangedListenerOther;
+  private ParseableChangedListener < E > parseableChangedListenerOther;
 
 
   /**
    * The {@link ParseableChangedListener} for this {@link StyledParserPanel}.
    */
-  private ParseableChangedListener parseableChangedListenerThis;
+  private ParseableChangedListener < E > parseableChangedListenerThis;
 
 
   /**
    * The {@link SideBar}.
    */
-  private SideBar sideBar;
+  private SideBar < E > sideBar;
 
 
   /**
    * The synchronized {@link StyledParserPanel}.
    */
-  private StyledParserPanel synchronizedStyledParserPanel = null;
+  private StyledParserPanel < E > synchronizedStyledParserPanel = null;
 
 
   /**
@@ -298,7 +299,7 @@ public abstract class StyledParserPanel extends JPanel
     this.editable = true;
     this.copyable = false;
     this.sideBarVisible = true;
-    this.editor = new StyledParserEditor ();
+    this.editor = new StyledParserEditor < E > ();
 
     // PopupMenu
     this.jPopupMenu = new JPopupMenu ();
@@ -484,21 +485,23 @@ public abstract class StyledParserPanel extends JPanel
     } );
 
     // Document
-    this.document = new StyledParserDocument ( parseable );
-    this.document.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    this.document = new StyledParserDocument < E > ( parseable );
+    this.document
+        .addParseableChangedListener ( new ParseableChangedListener < E > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireParseableChanged ( newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( E newObject )
+          {
+            fireParseableChanged ( newObject );
+          }
+        } );
     setLayout ( new BorderLayout () );
     this.jScrollPane = new JScrollPane ();
     this.jScrollPane.setBorder ( new LineBorder ( NORMAL_COLOR ) );
     add ( this.jScrollPane, BorderLayout.CENTER );
-    this.sideBar = new SideBar ( this.jScrollPane, this.document, this.editor );
+    this.sideBar = new SideBar < E > ( this.jScrollPane, this.document,
+        this.editor );
     this.sideBar.addSideBarListener ( new SideBarListener ()
     {
 
@@ -633,10 +636,20 @@ public abstract class StyledParserPanel extends JPanel
    * @param listener The {@link ParseableChangedListener}.
    */
   protected final synchronized void addParseableChangedListener (
-      ParseableChangedListener listener )
+      ParseableChangedListener < E > listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
   }
+
+
+  /**
+   * Checks the given parsed {@link Object}.
+   * 
+   * @param parsedObject The parsed {@link Object} to check.
+   * @return The input parsed {@link Object} or null, if the parsed
+   *         {@link Object} is not correct.
+   */
+  protected abstract E checkParsedObject ( E parsedObject );
 
 
   /**
@@ -655,7 +668,8 @@ public abstract class StyledParserPanel extends JPanel
    * 
    * @param newObject The new {@link Object}.
    */
-  private final void fireParseableChanged ( Object newObject )
+  @SuppressWarnings ( "unchecked" )
+  private final void fireParseableChanged ( E newObject )
   {
     setErrorIndicator ( newObject == null );
 
@@ -667,9 +681,9 @@ public abstract class StyledParserPanel extends JPanel
 
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ParseableChangedListener < E > current : listeners )
     {
-      listeners [ n ].parseableChanged ( newObject );
+      current.parseableChanged ( newObject );
     }
   }
 
@@ -692,9 +706,9 @@ public abstract class StyledParserPanel extends JPanel
    * 
    * @return The {@link Object} for the program text.
    */
-  public final Object getParsedObject ()
+  public final E getParsedObject ()
   {
-    return this.document.getParsedObject ();
+    return checkParsedObject ( this.document.getParsedObject () );
   }
 
 
@@ -823,7 +837,7 @@ public abstract class StyledParserPanel extends JPanel
    * @param listener The {@link ParseableChangedListener}.
    */
   protected final synchronized void removeParseableChangedListener (
-      ParseableChangedListener listener )
+      ParseableChangedListener < E > listener )
   {
     this.listenerList.remove ( ParseableChangedListener.class, listener );
   }
@@ -965,7 +979,7 @@ public abstract class StyledParserPanel extends JPanel
    */
   protected final void setErrorIndicator ( boolean error )
   {
-    if ( ( getParsedObject () == null ) || error )
+    if ( ( this.document.getParsedObject () == null ) || error )
     {
       this.jScrollPane.setBorder ( new LineBorder ( ERROR_COLOR ) );
     }
@@ -1138,7 +1152,7 @@ public abstract class StyledParserPanel extends JPanel
    * @param styledParserPanel The other {@link StyledParserPanel} which should
    *          be synchronized.
    */
-  public final void synchronize ( StyledParserPanel styledParserPanel )
+  public final void synchronize ( StyledParserPanel < E > styledParserPanel )
   {
     if ( styledParserPanel == null )
     {
@@ -1154,12 +1168,12 @@ public abstract class StyledParserPanel extends JPanel
 
     this.editor.setText ( this.synchronizedStyledParserPanel.getText () );
 
-    this.parseableChangedListenerOther = new ParseableChangedListener ()
+    this.parseableChangedListenerOther = new ParseableChangedListener < E > ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void parseableChanged ( @SuppressWarnings ( "unused" )
-      Object newObject )
+      E newObject )
       {
         removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
         StyledParserPanel.this.editor
@@ -1168,12 +1182,12 @@ public abstract class StyledParserPanel extends JPanel
         addParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
       }
     };
-    this.parseableChangedListenerThis = new ParseableChangedListener ()
+    this.parseableChangedListenerThis = new ParseableChangedListener < E > ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void parseableChanged ( @SuppressWarnings ( "unused" )
-      Object newObject )
+      E newObject )
       {
         StyledParserPanel.this.synchronizedStyledParserPanel
             .removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );

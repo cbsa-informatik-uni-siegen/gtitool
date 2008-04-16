@@ -22,7 +22,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledAlphabetParserPanel extends StyledParserPanel
+public final class StyledAlphabetParserPanel extends
+    StyledParserPanel < Alphabet >
 {
 
   /**
@@ -43,15 +44,16 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public StyledAlphabetParserPanel ()
   {
     super ( new AlphabetParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Alphabet > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireAlphabetChanged ( ( Alphabet ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Alphabet newAlphabet )
+          {
+            fireAlphabetChanged ( newAlphabet );
+          }
+        } );
   }
 
 
@@ -68,13 +70,12 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link Alphabet}.
+   * {@inheritDoc}
    * 
-   * @param alphabet The {@link Alphabet} to check.
-   * @return The input {@link Alphabet} or null, if the {@link Alphabet}
-   *         contains symbols which can not be removed.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final Alphabet checkAlphabet ( Alphabet alphabet )
+  @Override
+  protected final Alphabet checkParsedObject ( Alphabet alphabet )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
@@ -108,31 +109,12 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
    */
   private final void fireAlphabetChanged ( Alphabet newAlphabet )
   {
-    Alphabet checkedAlphabet = checkAlphabet ( newAlphabet );
+    Alphabet checkedAlphabet = checkParsedObject ( newAlphabet );
     AlphabetChangedListener [] listeners = this.listenerList
         .getListeners ( AlphabetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( AlphabetChangedListener current : listeners )
     {
-      listeners [ n ].alphabetChanged ( checkedAlphabet );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Alphabet} for the program text within the document.
-   * 
-   * @return The {@link Alphabet} for the program text.
-   */
-  public final Alphabet getAlphabet ()
-  {
-    try
-    {
-      Alphabet alphabet = ( Alphabet ) getParsedObject ();
-      return checkAlphabet ( alphabet );
-    }
-    catch ( Exception exc )
-    {
-      return null;
+      current.alphabetChanged ( checkedAlphabet );
     }
   }
 
@@ -146,7 +128,7 @@ public final class StyledAlphabetParserPanel extends StyledParserPanel
   public final Alphabet parse ()
   {
     Alphabet alphabet = ( Alphabet ) super.parse ();
-    return checkAlphabet ( alphabet );
+    return checkParsedObject ( alphabet );
   }
 
 

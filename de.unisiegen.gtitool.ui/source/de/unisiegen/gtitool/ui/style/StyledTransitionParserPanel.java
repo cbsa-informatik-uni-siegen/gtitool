@@ -17,7 +17,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @version $Id: StyledTransitionParserPanel.java 225 2007-11-22 16:55:02Z
  *          fehler $
  */
-public final class StyledTransitionParserPanel extends StyledParserPanel
+public final class StyledTransitionParserPanel extends
+    StyledParserPanel < Transition >
 {
 
   /**
@@ -32,15 +33,16 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   public StyledTransitionParserPanel ()
   {
     super ( new TransitionParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Transition > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireTransitionChanged ( ( Transition ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Transition newTransition )
+          {
+            fireTransitionChanged ( newTransition );
+          }
+        } );
   }
 
 
@@ -57,35 +59,30 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#checkParsedObject(Entity)
+   */
+  @Override
+  protected final Transition checkParsedObject ( Transition transition )
+  {
+    return transition;
+  }
+
+
+  /**
    * Let the listeners know that the {@link Transition} has changed.
    * 
    * @param newTransition The new {@link Transition}.
    */
   private final void fireTransitionChanged ( Transition newTransition )
   {
+    Transition checkedTransition = checkParsedObject ( newTransition );
     TransitionChangedListener [] listeners = this.listenerList
         .getListeners ( TransitionChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].transitionChanged ( newTransition );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Transition} for the program text within the document.
-   * 
-   * @return The {@link Transition} for the program text.
-   */
-  public final Transition getTransition ()
-  {
-    try
-    {
-      return ( Transition ) getParsedObject ();
-    }
-    catch ( Exception exc )
-    {
-      return null;
+      listeners [ n ].transitionChanged ( checkedTransition );
     }
   }
 
@@ -98,7 +95,8 @@ public final class StyledTransitionParserPanel extends StyledParserPanel
   @Override
   public final Transition parse ()
   {
-    return ( Transition ) super.parse ();
+    Transition transition = ( Transition ) super.parse ();
+    return checkParsedObject ( transition );
   }
 
 

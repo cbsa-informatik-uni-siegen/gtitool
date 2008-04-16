@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.DefaultProductionWord;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -33,7 +34,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @version $Id: StyledProductionParserPanel.java 532 2008-02-04 23:54:55Z
  *          fehler $
  */
-public final class StyledProductionParserPanel extends StyledParserPanel
+public final class StyledProductionParserPanel extends
+    StyledParserPanel < Production >
 {
 
   /**
@@ -66,15 +68,16 @@ public final class StyledProductionParserPanel extends StyledParserPanel
   public StyledProductionParserPanel ()
   {
     super ( new ProductionParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Production > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireProductionChanged ( ( Production ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Production newProduction )
+          {
+            fireProductionChanged ( newProduction );
+          }
+        } );
   }
 
 
@@ -91,13 +94,12 @@ public final class StyledProductionParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link Production}.
+   * {@inheritDoc}
    * 
-   * @param production The {@link Production} to check.
-   * @return The input {@link Production} with the right
-   *         {@link NonterminalSymbol}s and {@link TerminalSymbol}s.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final Production checkProduction ( Production production )
+  @Override
+  protected final Production checkParsedObject ( Production production )
   {
     if ( this.nonterminalSymbolSet == null )
     {
@@ -210,31 +212,12 @@ public final class StyledProductionParserPanel extends StyledParserPanel
    */
   private final void fireProductionChanged ( Production newProduction )
   {
-    Production checkedProduction = checkProduction ( newProduction );
+    Production checkedProduction = checkParsedObject ( newProduction );
     ProductionChangedListener [] listeners = this.listenerList
         .getListeners ( ProductionChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].productionChanged ( checkedProduction );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Production} for the program text within the document.
-   * 
-   * @return The {@link Production} for the program text.
-   */
-  public final Production getProduction ()
-  {
-    try
-    {
-      Production productionWord = ( Production ) getParsedObject ();
-      return checkProduction ( productionWord );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -260,7 +243,7 @@ public final class StyledProductionParserPanel extends StyledParserPanel
   public final Production parse ()
   {
     Production productionWord = ( Production ) super.parse ();
-    return checkProduction ( productionWord );
+    return checkParsedObject ( productionWord );
   }
 
 

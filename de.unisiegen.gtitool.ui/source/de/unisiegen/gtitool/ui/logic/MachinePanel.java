@@ -40,6 +40,7 @@ import org.jgraph.graph.GraphConstants;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
@@ -1399,7 +1400,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final boolean handleWordStart ()
   {
-    if ( this.gui.wordPanel.styledWordParserPanel.getWord () == null )
+    if ( this.gui.wordPanel.styledWordParserPanel.getParsedObject () == null )
     {
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, Messages
           .getString ( "MachinePanel.WordModeNoWordEntered" ), Messages //$NON-NLS-1$
@@ -1415,7 +1416,8 @@ public final class MachinePanel implements EditorPanel
     this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( false );
     this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( false );
 
-    this.machine.start ( this.gui.wordPanel.styledWordParserPanel.getWord () );
+    this.machine.start ( this.gui.wordPanel.styledWordParserPanel
+        .getParsedObject () );
 
     // Stack
     this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
@@ -1626,7 +1628,7 @@ public final class MachinePanel implements EditorPanel
 
       StyledStateSetParserPanel parserPanel = new StyledStateSetParserPanel ();
       parserPanel.setStateList ( this.machine.getState () );
-      final ParserTableCellEditor cellEditor = new ParserTableCellEditor (
+      final ParserTableCellEditor < StateSet > cellEditor = new ParserTableCellEditor < StateSet > (
           parserPanel );
       current.setCellEditor ( cellEditor );
 

@@ -3107,9 +3107,9 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // Alphabet
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getAlphabet () == null )
+        .getParsedObject () == null )
         || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getAlphabet () == null ) )
+            .getParsedObject () == null ) )
     {
       enabled = false;
       this.gui.jGTITabbedPane.setForegroundAt ( ALPHABET_TAB_INDEX, Color.RED );
@@ -3121,11 +3121,11 @@ public final class PreferencesDialog implements LanguageChangedListener
 
     // Grammar
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .getNonterminalSymbolSet () == null )
+        .getParsedObject () == null )
         || ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-            .getStartNonterminalSymbol () == null )
+            .getParsedObject () == null )
         || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-            .getTerminalSymbolSet () == null ) )
+            .getParsedObject () == null ) )
     {
       enabled = false;
       this.gui.jGTITabbedPane.setForegroundAt ( GRAMMAR_TAB_INDEX, Color.RED );

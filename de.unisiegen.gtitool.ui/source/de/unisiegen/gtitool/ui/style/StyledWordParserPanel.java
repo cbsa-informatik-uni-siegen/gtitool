@@ -22,7 +22,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledWordParserPanel extends StyledParserPanel
+public final class StyledWordParserPanel extends StyledParserPanel < Word >
 {
 
   /**
@@ -43,15 +43,16 @@ public final class StyledWordParserPanel extends StyledParserPanel
   public StyledWordParserPanel ()
   {
     super ( new WordParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireWordChanged ( ( Word ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Word newWord )
+          {
+            fireWordChanged ( newWord );
+          }
+        } );
   }
 
 
@@ -68,13 +69,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link Word}.
+   * {@inheritDoc}
    * 
-   * @param word The {@link Word} to check.
-   * @return The input {@link Word} or null, if a {@link Symbol} in the
-   *         {@link Word} is not in the {@link Alphabet}.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final Word checkWord ( Word word )
+  @Override
+  protected final Word checkParsedObject ( Word word )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
@@ -109,31 +109,12 @@ public final class StyledWordParserPanel extends StyledParserPanel
    */
   private final void fireWordChanged ( Word newWord )
   {
-    Word checkedWord = checkWord ( newWord );
+    Word checkedWord = checkParsedObject ( newWord );
     WordChangedListener [] listeners = this.listenerList
         .getListeners ( WordChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].wordChanged ( checkedWord );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Word} for the program text within the document.
-   * 
-   * @return The {@link Word} for the program text.
-   */
-  public final Word getWord ()
-  {
-    try
-    {
-      Word word = ( Word ) getParsedObject ();
-      return checkWord ( word );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -147,7 +128,7 @@ public final class StyledWordParserPanel extends StyledParserPanel
   public final Word parse ()
   {
     Word word = ( Word ) super.parse ();
-    return checkWord ( word );
+    return checkParsedObject ( word );
   }
 
 

@@ -18,6 +18,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.text.JTextComponent;
 
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserWarningException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
@@ -29,8 +30,9 @@ import de.unisiegen.gtitool.ui.style.listener.ExceptionsChangedListener;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity}.
  */
-public final class SideBar extends JComponent
+public final class SideBar < E extends Entity > extends JComponent
 {
 
   /**
@@ -84,7 +86,7 @@ public final class SideBar extends JComponent
   /**
    * The used {@link StyledParserDocument}.
    */
-  private StyledParserDocument document;
+  private StyledParserDocument < E > document;
 
 
   /**
@@ -118,7 +120,7 @@ public final class SideBar extends JComponent
    * @param document The used {@link StyledParserDocument}.
    * @param textComponent The used text component.
    */
-  public SideBar ( JScrollPane scrollPane, StyledParserDocument document,
+  public SideBar ( JScrollPane scrollPane, StyledParserDocument < E > document,
       JTextComponent textComponent )
   {
     super ();

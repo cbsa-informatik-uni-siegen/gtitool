@@ -163,11 +163,11 @@ public final class NewDialogTerminal
   public final void setButtonStatus ()
   {
     if ( ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-        .getNonterminalSymbolSet () == null )
+        .getParsedObject () == null )
         || ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-            .getTerminalSymbolSet () == null )
+            .getParsedObject () == null )
         || ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-            .getStartNonterminalSymbol () == null ) )
+            .getParsedObject () == null ) )
     {
       this.gui.jGTIButtonFinished.setEnabled ( false );
     }
@@ -186,6 +186,6 @@ public final class NewDialogTerminal
   public NonterminalSymbol getStartSymbol ()
   {
     return this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-        .getStartNonterminalSymbol ();
+        .getParsedObject ();
   }
 }

@@ -25,7 +25,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @version $Id: StyledTerminalSymbolSetParserPanel.java 532 2008-02-04
  *          23:54:55Z fehler $
  */
-public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
+public final class StyledTerminalSymbolSetParserPanel extends
+    StyledParserPanel < TerminalSymbolSet >
 {
 
   /**
@@ -54,15 +55,16 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   public StyledTerminalSymbolSetParserPanel ()
   {
     super ( new TerminalSymbolSetParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < TerminalSymbolSet > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireTerminalSymbolSetChanged ( ( TerminalSymbolSet ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( TerminalSymbolSet newTerminalSymbolSet )
+          {
+            fireTerminalSymbolSetChanged ( newTerminalSymbolSet );
+          }
+        } );
   }
 
 
@@ -79,14 +81,12 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link TerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbolSet The {@link TerminalSymbolSet} to check.
-   * @return The input {@link TerminalSymbolSet} or null, if a
-   *         {@link TerminalSymbol} in the {@link TerminalSymbolSet} is in the
-   *         {@link NonterminalSymbolSet}.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final TerminalSymbolSet checkTerminalSymbolSet (
+  @Override
+  protected final TerminalSymbolSet checkParsedObject (
       TerminalSymbolSet terminalSymbolSet )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
@@ -141,32 +141,12 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   private final void fireTerminalSymbolSetChanged (
       TerminalSymbolSet newTerminalSymbolSet )
   {
-    TerminalSymbolSet checkedTerminalSymbolSet = checkTerminalSymbolSet ( newTerminalSymbolSet );
+    TerminalSymbolSet checkedTerminalSymbolSet = checkParsedObject ( newTerminalSymbolSet );
     TerminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( TerminalSymbolSetChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].terminalSymbolSetChanged ( checkedTerminalSymbolSet );
-    }
-  }
-
-
-  /**
-   * Returns the {@link TerminalSymbolSet} for the program text within the
-   * document.
-   * 
-   * @return The {@link TerminalSymbolSet} for the program text.
-   */
-  public final TerminalSymbolSet getTerminalSymbolSet ()
-  {
-    try
-    {
-      TerminalSymbolSet terminalSymbolSet = ( TerminalSymbolSet ) getParsedObject ();
-      return checkTerminalSymbolSet ( terminalSymbolSet );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -180,7 +160,7 @@ public final class StyledTerminalSymbolSetParserPanel extends StyledParserPanel
   public final TerminalSymbolSet parse ()
   {
     TerminalSymbolSet terminalSymbolSet = ( TerminalSymbolSet ) super.parse ();
-    return checkTerminalSymbolSet ( terminalSymbolSet );
+    return checkParsedObject ( terminalSymbolSet );
   }
 
 

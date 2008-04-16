@@ -642,8 +642,8 @@ public final class TransitionDialog
    */
   private final void setButtonStatus ()
   {
-    if ( ( this.gui.styledWordParserPanelRead.getWord () == null )
-        || ( this.gui.styledWordParserPanelWrite.getWord () == null ) )
+    if ( ( this.gui.styledWordParserPanelRead.getParsedObject () == null )
+        || ( this.gui.styledWordParserPanelWrite.getParsedObject () == null ) )
     {
       this.gui.jGTIButtonOk.setEnabled ( false );
     }

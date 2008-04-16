@@ -107,10 +107,10 @@ public final class AlphabetDialog
     this.gui.setVisible ( false );
     performAlphabetChange ( this.machine.getAlphabet (),
         this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-            .getAlphabet () );
+            .getParsedObject () );
     performAlphabetChange ( this.machine.getPushDownAlphabet (),
         this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getAlphabet () );
+            .getParsedObject () );
     this.machine
         .setUsePushDownAlphabet ( this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
             .isSelected () );
@@ -162,9 +162,9 @@ public final class AlphabetDialog
   private final void setButtonStatus ()
   {
     if ( ( this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
-        .getAlphabet () == null )
+        .getParsedObject () == null )
         || ( this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
-            .getAlphabet () == null ) )
+            .getParsedObject () == null ) )
     {
       this.gui.jGTIButtonOk.setEnabled ( false );
     }

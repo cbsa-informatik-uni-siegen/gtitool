@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.style;
 
 
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.listener.SymbolChangedListener;
 import de.unisiegen.gtitool.core.parser.symbol.SymbolParseable;
@@ -14,7 +15,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledSymbolParserPanel extends StyledParserPanel
+public final class StyledSymbolParserPanel extends StyledParserPanel < Symbol >
 {
 
   /**
@@ -29,15 +30,16 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
   public StyledSymbolParserPanel ()
   {
     super ( new SymbolParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Symbol > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireSymbolChanged ( ( Symbol ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Symbol newSymbol )
+          {
+            fireSymbolChanged ( newSymbol );
+          }
+        } );
   }
 
 
@@ -54,35 +56,30 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see StyledParserPanel#checkParsedObject(Entity)
+   */
+  @Override
+  protected final Symbol checkParsedObject ( Symbol symbol )
+  {
+    return symbol;
+  }
+
+
+  /**
    * Let the listeners know that the {@link Symbol} has changed.
    * 
    * @param newSymbol The new {@link Symbol}.
    */
   private final void fireSymbolChanged ( Symbol newSymbol )
   {
+    Symbol checkedSymbol = checkParsedObject ( newSymbol );
     SymbolChangedListener [] listeners = this.listenerList
         .getListeners ( SymbolChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
-      listeners [ n ].symbolChanged ( newSymbol );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Symbol} for the program text within the document.
-   * 
-   * @return The {@link Symbol} for the program text.
-   */
-  public final Symbol getSymbol ()
-  {
-    try
-    {
-      return ( Symbol ) getParsedObject ();
-    }
-    catch ( Exception exc )
-    {
-      return null;
+      listeners [ n ].symbolChanged ( checkedSymbol );
     }
   }
 
@@ -95,7 +92,8 @@ public final class StyledSymbolParserPanel extends StyledParserPanel
   @Override
   public final Symbol parse ()
   {
-    return ( Symbol ) super.parse ();
+    Symbol symbol = ( Symbol ) super.parse ();
+    return checkParsedObject ( symbol );
   }
 
 

@@ -15,6 +15,7 @@ import javax.swing.CellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -23,9 +24,10 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity}.
  */
-public class ParserTableCellEditor extends AbstractCellEditor implements
-    TableCellEditor
+public class ParserTableCellEditor < E extends Entity > extends
+    AbstractCellEditor implements TableCellEditor
 {
 
   /**
@@ -175,7 +177,7 @@ public class ParserTableCellEditor extends AbstractCellEditor implements
   /**
    * The {@link StyledParserPanel}.
    */
-  private StyledParserPanel styledParserPanel;
+  private StyledParserPanel < E > styledParserPanel;
 
 
   /**
@@ -189,7 +191,7 @@ public class ParserTableCellEditor extends AbstractCellEditor implements
    * 
    * @param styledParserPanel The {@link StyledParserPanel}.
    */
-  public ParserTableCellEditor ( StyledParserPanel styledParserPanel )
+  public ParserTableCellEditor ( StyledParserPanel < E > styledParserPanel )
   {
     this.styledParserPanel = styledParserPanel;
     this.styledParserPanel.setCellEditor ( true );

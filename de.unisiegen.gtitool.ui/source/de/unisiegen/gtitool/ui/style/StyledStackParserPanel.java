@@ -22,7 +22,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledStackParserPanel extends StyledParserPanel
+public final class StyledStackParserPanel extends StyledParserPanel < Stack >
 {
 
   /**
@@ -44,15 +44,16 @@ public final class StyledStackParserPanel extends StyledParserPanel
   public StyledStackParserPanel ()
   {
     super ( new StackParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < Stack > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireStackChanged ( ( Stack ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Stack newStack )
+          {
+            fireStackChanged ( newStack );
+          }
+        } );
   }
 
 
@@ -69,13 +70,12 @@ public final class StyledStackParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link Stack}.
+   * {@inheritDoc}
    * 
-   * @param stack The {@link Stack} to check.
-   * @return The input {@link Stack} or null, if a {@link Symbol} in the
-   *         {@link Stack} is not in the push down {@link Alphabet}.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final Stack checkStack ( Stack stack )
+  @Override
+  protected final Stack checkParsedObject ( Stack stack )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
@@ -111,31 +111,12 @@ public final class StyledStackParserPanel extends StyledParserPanel
    */
   private final void fireStackChanged ( Stack newStack )
   {
-    Stack checkedStack = checkStack ( newStack );
+    Stack checkedStack = checkParsedObject ( newStack );
     StackChangedListener [] listeners = this.listenerList
         .getListeners ( StackChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].stackChanged ( checkedStack );
-    }
-  }
-
-
-  /**
-   * Returns the {@link Stack} for the program text within the document.
-   * 
-   * @return The {@link Stack} for the program text.
-   */
-  public final Stack getStack ()
-  {
-    try
-    {
-      Stack stack = ( Stack ) getParsedObject ();
-      return checkStack ( stack );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -149,7 +130,7 @@ public final class StyledStackParserPanel extends StyledParserPanel
   public final Stack parse ()
   {
     Stack stack = ( Stack ) super.parse ();
-    return checkStack ( stack );
+    return checkParsedObject ( stack );
   }
 
 

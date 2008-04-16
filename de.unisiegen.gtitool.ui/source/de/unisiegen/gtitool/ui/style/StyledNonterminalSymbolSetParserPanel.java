@@ -27,7 +27,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  *          23:54:55Z fehler $
  */
 public final class StyledNonterminalSymbolSetParserPanel extends
-    StyledParserPanel
+    StyledParserPanel < NonterminalSymbolSet >
 {
 
   /**
@@ -62,15 +62,17 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   public StyledNonterminalSymbolSetParserPanel ()
   {
     super ( new NonterminalSymbolSetParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < NonterminalSymbolSet > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireNonterminalSymbolSetChanged ( ( NonterminalSymbolSet ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged (
+              NonterminalSymbolSet newNonterminalSymbolSet )
+          {
+            fireNonterminalSymbolSetChanged ( newNonterminalSymbolSet );
+          }
+        } );
   }
 
 
@@ -88,14 +90,12 @@ public final class StyledNonterminalSymbolSetParserPanel extends
 
 
   /**
-   * Checks the given {@link NonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to check.
-   * @return The input {@link NonterminalSymbolSet} or null, if a
-   *         {@link NonterminalSymbol} in the {@link NonterminalSymbolSet} is in
-   *         the {@link TerminalSymbolSet}.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final NonterminalSymbolSet checkNonterminalSymbolSet (
+  @Override
+  protected final NonterminalSymbolSet checkParsedObject (
       NonterminalSymbolSet nonterminalSymbolSet )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
@@ -151,33 +151,13 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   private final void fireNonterminalSymbolSetChanged (
       NonterminalSymbolSet newNonterminalSymbolSet )
   {
-    NonterminalSymbolSet checkedNonterminalSymbolSet = checkNonterminalSymbolSet ( newNonterminalSymbolSet );
+    NonterminalSymbolSet checkedNonterminalSymbolSet = checkParsedObject ( newNonterminalSymbolSet );
     NonterminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( NonterminalSymbolSetChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ]
           .nonterminalSymbolSetChanged ( checkedNonterminalSymbolSet );
-    }
-  }
-
-
-  /**
-   * Returns the {@link NonterminalSymbolSet} for the program text within the
-   * document.
-   * 
-   * @return The {@link NonterminalSymbolSet} for the program text.
-   */
-  public final NonterminalSymbolSet getNonterminalSymbolSet ()
-  {
-    try
-    {
-      NonterminalSymbolSet nonterminalSymbolSet = ( NonterminalSymbolSet ) getParsedObject ();
-      return checkNonterminalSymbolSet ( nonterminalSymbolSet );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -204,7 +184,7 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   {
     NonterminalSymbolSet nonterminalSymbolSet = ( NonterminalSymbolSet ) super
         .parse ();
-    return checkNonterminalSymbolSet ( nonterminalSymbolSet );
+    return checkParsedObject ( nonterminalSymbolSet );
   }
 
 

@@ -284,7 +284,7 @@ public final class ProductionDialog
     this.gui.styledProductionWordParserPanel.parse ();
 
     ProductionWord productionWord = this.gui.styledProductionWordParserPanel
-        .getProductionWord ();
+        .getParsedObject ();
     if ( productionWord == null )
     {
       setButtonStatus ( false );
@@ -333,7 +333,7 @@ public final class ProductionDialog
     this.gui.styledProductionWordParserPanel.parse ();
 
     ProductionWord productionWord = this.gui.styledProductionWordParserPanel
-        .getProductionWord ();
+        .getParsedObject ();
     if ( productionWord == null )
     {
       setButtonStatus ( false );
@@ -357,7 +357,7 @@ public final class ProductionDialog
   {
     Production production = new DefaultProduction (
         ( NonterminalSymbol ) this.gui.jGTIList.getSelectedValue (),
-        this.gui.styledProductionWordParserPanel.getProductionWord () );
+        this.gui.styledProductionWordParserPanel.getParsedObject () );
 
     if ( this.oldProduction != null )
     {

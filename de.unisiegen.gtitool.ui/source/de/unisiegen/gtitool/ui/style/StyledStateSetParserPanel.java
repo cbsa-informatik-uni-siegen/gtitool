@@ -21,7 +21,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StyledStateSetParserPanel extends StyledParserPanel
+public final class StyledStateSetParserPanel extends
+    StyledParserPanel < StateSet >
 {
 
   /**
@@ -43,15 +44,16 @@ public final class StyledStateSetParserPanel extends StyledParserPanel
   public StyledStateSetParserPanel ()
   {
     super ( new StateSetParseable () );
-    super.addParseableChangedListener ( new ParseableChangedListener ()
-    {
+    super
+        .addParseableChangedListener ( new ParseableChangedListener < StateSet > ()
+        {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( Object newObject )
-      {
-        fireStateSetChanged ( ( StateSet ) newObject );
-      }
-    } );
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( StateSet newStateSet )
+          {
+            fireStateSetChanged ( newStateSet );
+          }
+        } );
   }
 
 
@@ -68,12 +70,12 @@ public final class StyledStateSetParserPanel extends StyledParserPanel
 
 
   /**
-   * Checks the given {@link StateSet}.
+   * {@inheritDoc}
    * 
-   * @param stateSet The {@link StateSet} to check.
-   * @return The input {@link StateSet}.
+   * @see StyledParserPanel#checkParsedObject(Entity)
    */
-  private final StateSet checkStateSet ( StateSet stateSet )
+  @Override
+  protected final StateSet checkParsedObject ( StateSet stateSet )
   {
     ArrayList < ScannerException > exceptionList = new ArrayList < ScannerException > ();
 
@@ -118,31 +120,12 @@ public final class StyledStateSetParserPanel extends StyledParserPanel
    */
   private final void fireStateSetChanged ( StateSet newStateSet )
   {
-    StateSet checkedStateSet = checkStateSet ( newStateSet );
+    StateSet checkedStateSet = checkParsedObject ( newStateSet );
     StateSetChangedListener [] listeners = this.listenerList
         .getListeners ( StateSetChangedListener.class );
     for ( int n = 0 ; n < listeners.length ; ++n )
     {
       listeners [ n ].stateSetChanged ( checkedStateSet );
-    }
-  }
-
-
-  /**
-   * Returns the {@link StateSet} for the program text within the document.
-   * 
-   * @return The {@link StateSet} for the program text.
-   */
-  public final StateSet getStateSet ()
-  {
-    try
-    {
-      StateSet stateSet = ( StateSet ) getParsedObject ();
-      return checkStateSet ( stateSet );
-    }
-    catch ( Exception exc )
-    {
-      return null;
     }
   }
 
@@ -156,7 +139,7 @@ public final class StyledStateSetParserPanel extends StyledParserPanel
   public final StateSet parse ()
   {
     StateSet stateSet = ( StateSet ) super.parse ();
-    return checkStateSet ( stateSet );
+    return checkParsedObject ( stateSet );
   }
 
 

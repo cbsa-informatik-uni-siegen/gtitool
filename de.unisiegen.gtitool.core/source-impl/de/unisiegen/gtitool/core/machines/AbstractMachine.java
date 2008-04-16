@@ -2114,6 +2114,7 @@ public abstract class AbstractMachine implements Machine
 
     if ( value == null )
     {
+      logger.debug ( "setValueAt", "value is null" ); //$NON-NLS-1$ //$NON-NLS-2$
       return;
     }
 
@@ -2121,7 +2122,7 @@ public abstract class AbstractMachine implements Machine
     StateSet stateSetNew = ( StateSet ) value;
     StateSet stateSetOld = ( StateSet ) getValueAt ( rowIndex, columnIndex );
 
-    logger.debug ( "setValueAt", "state begin:   " + stateBegin.getName () ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state begin: " + stateBegin.getName () ); //$NON-NLS-1$ //$NON-NLS-2$
     logger.debug ( "setValueAt", "state set old: " + stateSetOld.toString () ); //$NON-NLS-1$ //$NON-NLS-2$
     logger.debug ( "setValueAt", "state set new: " + stateSetNew.toString () ); //$NON-NLS-1$//$NON-NLS-2$
 
@@ -2178,8 +2179,8 @@ public abstract class AbstractMachine implements Machine
       }
     }
 
-    logger.debug ( "setValueAt", "state add:     " + stateAdd ); //$NON-NLS-1$ //$NON-NLS-2$
-    logger.debug ( "setValueAt", "state remove:  " + stateRemove ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state add: " + stateAdd ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "setValueAt", "state remove: " + stateRemove ); //$NON-NLS-1$ //$NON-NLS-2$
 
     // Add the states
     for ( State current : stateAdd )

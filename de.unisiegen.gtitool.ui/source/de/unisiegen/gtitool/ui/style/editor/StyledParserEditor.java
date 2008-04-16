@@ -11,6 +11,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 
+import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
 
 
@@ -20,9 +21,10 @@ import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity}.
  * @see StyledParserDocument
  */
-public final class StyledParserEditor extends JEditorPane
+public final class StyledParserEditor < E extends Entity > extends JEditorPane
 {
 
   /**
@@ -64,13 +66,14 @@ public final class StyledParserEditor extends JEditorPane
    * 
    * @see JTextComponent#getToolTipText(MouseEvent)
    */
+  @SuppressWarnings ( "unchecked" )
   @Override
   public final String getToolTipText ( MouseEvent event )
   {
     int index = viewToModel ( event.getPoint () );
     if ( index < getDocument ().getLength () )
     {
-      StyledParserDocument document = ( StyledParserDocument ) getDocument ();
+      StyledParserDocument < E > document = ( StyledParserDocument ) getDocument ();
       AttributeSet set = document.getCharacterElement ( index )
           .getAttributes ();
       Object exception = set.getAttribute ( "exception" ); //$NON-NLS-1$

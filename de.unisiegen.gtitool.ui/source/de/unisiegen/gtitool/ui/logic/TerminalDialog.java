@@ -132,13 +132,13 @@ public final class TerminalDialog
     this.gui.setVisible ( false );
     performNonterminalSymbolChange ( this.grammar.getNonterminalSymbolSet (),
         this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-            .getNonterminalSymbolSet () );
+            .getParsedObject () );
     performTerminalSymbolChange ( this.grammar.getTerminalSymbolSet (),
         this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-            .getTerminalSymbolSet () );
+            .getParsedObject () );
     this.grammar
         .setStartSymbol ( this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-            .getStartNonterminalSymbol () );
+            .getParsedObject () );
     this.gui.dispose ();
   }
 
@@ -225,9 +225,9 @@ public final class TerminalDialog
   public final void setButtonStatus ()
   {
     if ( ( this.gui.terminalPanelForm.styledTerminalSymbolSetParserPanel
-        .getTerminalSymbolSet () == null )
+        .getParsedObject () == null )
         || ( this.gui.terminalPanelForm.styledNonterminalSymbolSetParserPanel
-            .getNonterminalSymbolSet () == null ) )
+            .getParsedObject () == null ) )
     {
       this.gui.jGTIButtonOk.setEnabled ( false );
     }

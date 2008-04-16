@@ -40,8 +40,10 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity}.
  */
-public final class StyledParserDocument extends DefaultStyledDocument
+public final class StyledParserDocument < E extends Entity > extends
+    DefaultStyledDocument
 {
 
   /**
@@ -81,7 +83,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
   /**
    * The parsed object.
    */
-  private Object parsedObject;
+  private E parsedObject;
 
 
   /**
@@ -176,7 +178,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * @param listener The {@link ParseableChangedListener}.
    */
   public final synchronized void addParseableChangedListener (
-      ParseableChangedListener listener )
+      ParseableChangedListener < E > listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
   }
@@ -219,11 +221,12 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @param newObject The new {@link Object}.
    */
-  public final void fireParseableChanged ( Object newObject )
+  @SuppressWarnings ( "unchecked" )
+  public final void fireParseableChanged ( E newObject )
   {
     ParseableChangedListener [] listeners = this.listenerList
         .getListeners ( ParseableChangedListener.class );
-    for ( ParseableChangedListener current : listeners )
+    for ( ParseableChangedListener < E > current : listeners )
     {
       current.parseableChanged ( newObject );
     }
@@ -297,7 +300,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @return The {@link Object} for the program text.
    */
-  public final Object getParsedObject ()
+  public final E getParsedObject ()
   {
     return this.parsedObject;
   }
@@ -361,7 +364,8 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * 
    * @return The parsed object or null, if the text could not be parsed.
    */
-  public final Object parse ()
+  @SuppressWarnings ( "unchecked" )
+  public final E parse ()
   {
     this.exceptionList.clear ();
     this.externExceptionList.clear ();
@@ -457,7 +461,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
         } );
         try
         {
-          this.parsedObject = parser.parse ();
+          this.parsedObject = ( E ) parser.parse ();
         }
         catch ( ParserMultiException ecx )
         {
@@ -568,7 +572,7 @@ public final class StyledParserDocument extends DefaultStyledDocument
    * @param listener The {@link ParseableChangedListener}.
    */
   public final synchronized void removeParseableChangedListener (
-      ParseableChangedListener listener )
+      ParseableChangedListener < E > listener )
   {
     this.listenerList.remove ( ParseableChangedListener.class, listener );
   }

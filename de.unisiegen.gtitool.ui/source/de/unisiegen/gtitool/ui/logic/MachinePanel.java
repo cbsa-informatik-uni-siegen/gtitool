@@ -519,6 +519,19 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Cancels the auto step {@link Timer}.
+   */
+  private final void cancelAutoStepTimer ()
+  {
+    if ( this.autoStepTimer != null )
+    {
+      this.autoStepTimer.cancel ();
+      this.autoStepTimer = null;
+    }
+  }
+
+
+  /**
    * Clears the highlight.
    */
   public final void clearHighlight ()
@@ -705,7 +718,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @see EditorPanel#getFileEnding()
    */
-  public String getFileEnding ()
+  public final String getFileEnding ()
   {
     return "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
   }
@@ -808,7 +821,7 @@ public final class MachinePanel implements EditorPanel
    * @return The redoUndoHandler.
    * @see #redoUndoHandler
    */
-  public RedoUndoHandler getRedoUndoHandler ()
+  public final RedoUndoHandler getRedoUndoHandler ()
   {
     return this.redoUndoHandler;
   }
@@ -1286,7 +1299,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * Handle undo button pressed
    */
-  public void handleUndo ()
+  public final void handleUndo ()
   {
     this.redoUndoHandler.undo ();
     fireModifyStatusChanged ( false );
@@ -1298,23 +1311,16 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param event
    */
-  @SuppressWarnings ( "synthetic-access" )
   public final void handleWordAutoStep ( ItemEvent event )
   {
     if ( event.getStateChange () == ItemEvent.SELECTED )
     {
-      if ( this.autoStepTimer == null )
-      {
-        this.autoStepTimer = new Timer ();
-        int time = PreferenceManager.getInstance ().getAutoStepItem ()
-            .getAutoStepInterval ();
-        this.autoStepTimer.schedule ( new AutoStepTimerTask (), 0, time );
-      }
+      cancelAutoStepTimer ();
+      startAutoStepTimer ();
     }
     else
     {
-      this.autoStepTimer.cancel ();
-      this.autoStepTimer = null;
+      cancelAutoStepTimer ();
     }
   }
 
@@ -1532,8 +1538,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final void handleWordStop ()
   {
-    this.autoStepTimer.cancel ();
-    this.autoStepTimer = null;
+    cancelAutoStepTimer ();
 
     this.wordNavigation = false;
     clearHighlight ();
@@ -1720,8 +1725,7 @@ public final class MachinePanel implements EditorPanel
       StyledStateSetParserPanel parserPanel = new StyledStateSetParserPanel ();
       parserPanel.setStateList ( this.machine.getState () );
       final ParserTableCellEditor < StateSet > cellEditor = new ParserTableCellEditor < StateSet > (
-          parserPanel );
-      cellEditor.setMachinePanel ( this );
+          this, parserPanel );
 
       cellEditor.addCellEditorListener ( new CellEditorListener ()
       {
@@ -2734,6 +2738,19 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+
+
+  /**
+   * Starts the auto step {@link Timer}.
+   */
+  @SuppressWarnings ( "synthetic-access" )
+  private final void startAutoStepTimer ()
+  {
+    this.autoStepTimer = new Timer ();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ()
+        .getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), 0, time );
   }
 
 

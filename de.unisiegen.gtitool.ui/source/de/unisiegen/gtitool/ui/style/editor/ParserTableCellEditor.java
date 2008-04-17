@@ -196,10 +196,13 @@ public class ParserTableCellEditor < E extends Entity > extends
   /**
    * Allocates a new {@link ParserTableCellEditor}.
    * 
+   * @param machinePanel The {@link MachinePanel}.
    * @param styledParserPanel The {@link StyledParserPanel}.
    */
-  public ParserTableCellEditor ( StyledParserPanel < E > styledParserPanel )
+  public ParserTableCellEditor ( MachinePanel machinePanel,
+      StyledParserPanel < E > styledParserPanel )
   {
+    this.machinePanel = machinePanel;
     this.styledParserPanel = styledParserPanel;
     this.styledParserPanel.setCellEditor ( true );
 
@@ -254,18 +257,6 @@ public class ParserTableCellEditor < E extends Entity > extends
 
 
   /**
-   * Returns the {@link MachinePanel}.
-   * 
-   * @return The {@link MachinePanel}.
-   * @see #machinePanel
-   */
-  public final MachinePanel getMachinePanel ()
-  {
-    return this.machinePanel;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see TableCellEditor#getTableCellEditorComponent(JTable, Object, boolean,
@@ -296,21 +287,8 @@ public class ParserTableCellEditor < E extends Entity > extends
   @Override
   public final boolean isCellEditable ( EventObject event )
   {
-    boolean editable = this.delegate.isCellEditable ( event );
-
-    return editable;
-  }
-
-
-  /**
-   * Sets the {@link MachinePanel}.
-   * 
-   * @param machinePanel The {@link MachinePanel} to set.
-   * @see #machinePanel
-   */
-  public final void setMachinePanel ( MachinePanel machinePanel )
-  {
-    this.machinePanel = machinePanel;
+    return this.delegate.isCellEditable ( event )
+        && !this.machinePanel.isWordEnterMode ();
   }
 
 

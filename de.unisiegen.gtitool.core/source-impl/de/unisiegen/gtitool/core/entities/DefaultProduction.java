@@ -374,7 +374,6 @@ public final class DefaultProduction implements Production
   public void setProductionWord ( ProductionWord productionWord )
   {
     this.productionWord = productionWord;
-    System.err.println(productionWord);
     fireModifyStatusChanged ();
   }
 

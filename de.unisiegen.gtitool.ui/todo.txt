@@ -5,7 +5,7 @@ CF		- setValue der Machine implementieren und an die GUI weiterreichen
 CF		- Der PublicKey benützt nach der Übertragung zum Erstellen propritären
 		  Source Code von Sun, der ohne Ankündigung aus Java entfernt werden kann.
 		  Es muss eine Klasse erstellt werden, die das Interface implementiert.
-
+CF		- Timeoute bei Transfer einbauen (und evtl abbrechen)
 
 BM		- Redo / Undo:
 			- Reihenfolge der Produktionen

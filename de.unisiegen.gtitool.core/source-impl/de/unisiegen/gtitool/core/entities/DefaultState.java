@@ -456,11 +456,15 @@ public final class DefaultState implements State
           this.finalState );
       for ( Transition current : this.transitionBeginList )
       {
-        newDefaultState.addTransitionBegin ( current.clone () );
+        Transition newTransition = current.clone ();
+        newTransition.setStateBegin ( newDefaultState );
+        newDefaultState.addTransitionBegin ( newTransition );
       }
       for ( Transition current : this.transitionEndList )
       {
-        newDefaultState.addTransitionEnd ( current.clone () );
+        Transition newTransition = current.clone ();
+        newTransition.setStateEnd ( newDefaultState );
+        newDefaultState.addTransitionEnd ( newTransition );
       }
       return newDefaultState;
     }

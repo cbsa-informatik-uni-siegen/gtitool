@@ -321,6 +321,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       if ( current.getName ().equals ( "TransitionView" ) ) //$NON-NLS-1$
       {
         Transition transition = new DefaultTransition ( current.getElement ( 0 ) );
+        transition.setAlphabet ( alphabet );
+        transition.setPushDownAlphabet ( pushDownAlphabet );
+
         DefaultStateView source = getStateById ( transition.getStateBeginId () );
         DefaultStateView target = getStateById ( transition.getStateEndId () );
 

@@ -506,6 +506,7 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "state is already added" ); //$NON-NLS-1$
     }
+
     // Set the state alphabet if it is not set already.
     if ( state.getAlphabet () == null )
     {
@@ -515,6 +516,8 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
+
+    // Set the state push down alphabet if it is not set already.
     if ( state.getPushDownAlphabet () == null )
     {
       state.setPushDownAlphabet ( this.pushDownAlphabet );
@@ -523,6 +526,7 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "not the same push down alphabet" ); //$NON-NLS-1$
     }
+
     if ( state.getId () == State.ID_NOT_DEFINED )
     {
       state.setId ( ++this.currentStateId );
@@ -615,6 +619,7 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "transition is already added" ); //$NON-NLS-1$
     }
+
     // Set the transition alphabet if it is not set already.
     if ( transition.getAlphabet () == null )
     {
@@ -624,6 +629,17 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
+
+    // Set the transition push down alphabet if it is not set already.
+    if ( transition.getPushDownAlphabet () == null )
+    {
+      transition.setPushDownAlphabet ( this.pushDownAlphabet );
+    }
+    if ( !this.pushDownAlphabet.equals ( transition.getPushDownAlphabet () ) )
+    {
+      throw new IllegalArgumentException ( "not the same push down alphabet" ); //$NON-NLS-1$
+    }
+
     if ( transition.getId () == Transition.ID_NOT_DEFINED )
     {
       transition.setId ( ++this.currentTransitionId );

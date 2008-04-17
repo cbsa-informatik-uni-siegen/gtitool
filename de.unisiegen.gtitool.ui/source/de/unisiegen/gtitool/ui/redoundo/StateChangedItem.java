@@ -5,8 +5,6 @@ import org.jgraph.JGraph;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
 /**
@@ -22,37 +20,69 @@ public class StateChangedItem extends RedoUndoItem
 
 
   /**
-   * The old {@link State}.
-   */
-  private State oldState;
-
-
-  /**
-   * The new {@link State}.
-   */
-  private State newState;
-
-
-  /**
    * The {@link JGraph}.
    */
   private JGraph graph;
 
 
   /**
+   * The old state name.
+   */
+  private String oldName;
+
+
+  /**
+   * The old start state flag.
+   */
+  private boolean oldStartState;
+
+
+  /**
+   * The old final state flag.
+   */
+  private boolean oldFinalState;
+
+
+  /**
+   * The new state name.
+   */
+  private String newName;
+
+
+  /**
+   * The new start state flag.
+   */
+  private boolean newStartState;
+
+
+  /**
+   * The new final state flag.
+   */
+  private boolean newFinalState;
+
+
+  /**
    * Allocate a new {@link StateChangedItem}.
    * 
    * @param graph The {@link JGraph}.
-   * @param oldState The {@link DefaultMachineModel}.
-   * @param newState The {@link DefaultStateView}.
+   * @param state The {@link State}.
+   * @param oldName The old state name.
+   * @param oldStartState The old start state flag.
+   * @param oldFinalState The old final state flag.
    */
-  public StateChangedItem ( JGraph graph, State oldState, State newState )
+  public StateChangedItem ( JGraph graph,  State state,
+      String oldName, boolean oldStartState, boolean oldFinalState )
   {
     super ();
     this.graph = graph;
-    this.oldState = oldState;
-    this.state = newState;
-    this.newState = newState.clone ();
+    this.state = state;
+    this.oldName = oldName;
+    this.oldStartState = oldStartState;
+    this.oldFinalState = oldFinalState;
+    this.newName = state.getName ();
+    this.newStartState = state.isStartState ();
+    this.newFinalState = state.isFinalState ();
+
   }
 
 
@@ -66,11 +96,11 @@ public class StateChangedItem extends RedoUndoItem
   {
     try
     {
-      this.state.setName ( this.newState.getName () );
+      this.state.setName ( this.newName );
       this.graph.getGraphLayoutCache ().valueForCellChanged ( this.state,
-          this.newState.getName () );
-      this.state.setStartState ( this.newState.isStartState () );
-      this.state.setFinalState ( this.newState.isFinalState () );
+          this.newName );
+      this.state.setStartState ( this.newStartState );
+      this.state.setFinalState ( this.newFinalState );
     }
     catch ( StateException exc )
     {
@@ -89,11 +119,11 @@ public class StateChangedItem extends RedoUndoItem
   {
     try
     {
-      this.state.setName ( this.oldState.getName () );
+      this.state.setName ( this.oldName );
       this.graph.getGraphLayoutCache ().valueForCellChanged ( this.state,
-          this.oldState.getName () );
-      this.state.setStartState ( this.oldState.isStartState () );
-      this.state.setFinalState ( this.oldState.isFinalState () );
+          this.oldName );
+      this.state.setStartState ( this.oldStartState );
+      this.state.setFinalState ( this.oldFinalState );
     }
     catch ( StateException exc )
     {

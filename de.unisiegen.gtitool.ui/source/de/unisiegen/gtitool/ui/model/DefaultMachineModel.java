@@ -430,7 +430,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( createUndoStep )
     {
       RedoUndoItem item = new StateAddedItem ( this, stateView, null );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
 
     return stateView;
@@ -481,7 +481,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     {
       RedoUndoItem item = new TransitionAddedItem ( this, transitionView,
           targetCreated ? target : null );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
   }
 
@@ -763,7 +763,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       {
         RedoUndoItem item = new StateMovedItem ( DefaultMachineModel.this,
             stateView, oldX, oldY, newX, newY );
-        DefaultMachineModel.this.redoUndoHandler.addUndo ( item );
+        DefaultMachineModel.this.redoUndoHandler.addItem ( item );
       }
 
     };
@@ -840,7 +840,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( createUndoStep )
     {
       RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
   }
 
@@ -863,7 +863,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( createUndoStep )
     {
       RedoUndoItem item = new TransitionRemovedItem ( this, transitionView );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
   }
 

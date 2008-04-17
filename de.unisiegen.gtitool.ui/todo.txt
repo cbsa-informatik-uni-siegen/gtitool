@@ -8,10 +8,8 @@ CF		- Timeout bei Transfer einbauen (und evtl abbrechen)
 
 
 BM		- Redo / Undo:
-			- Reihenfolge der Produktionen
-			- Zustand bearbeiten
 			- Transition bearbeiten
 BM		- Bei Fehler Produktion highlighten
 BM		- Pretty String der Produktionen unter Windows testen: Ich konnte das Problem
 		  bei mir nicht reproduzieren, habe die Font aber jetzt fest eingestellt und
-		  nicht mehr einfach vom LaF übernommen. Bitte testen.
+		  nicht mehr einfach vom LaF übernommen. Bitte testen.>>>>>>> .r798

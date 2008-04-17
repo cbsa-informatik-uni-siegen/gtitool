@@ -88,12 +88,6 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         getContentPane().add(styledStateParserPanel, gridBagConstraints);
 
         jGTICheckBoxStartState.setText(bundle.getString("NewStateNameDialog.StartState")); // NOI18N
-        jGTICheckBoxStartState.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTICheckBoxStartStateActionPerformed(evt);
-            }
-        });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -102,12 +96,6 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         jGTIPanelState.add(jGTICheckBoxStartState, gridBagConstraints);
 
         jGTICheckBoxFinalState.setText(bundle.getString("NewStateNameDialog.FinalState")); // NOI18N
-        jGTICheckBoxFinalState.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTICheckBoxFinalStateActionPerformed(evt);
-            }
-        });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -130,7 +118,6 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
-                jGTIButton1ActionPerformed(evt);
             }
         });
 
@@ -170,21 +157,9 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
         setBounds((screenSize.width-400)/2, (screenSize.height-250)/2, 400, 250);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jGTICheckBoxFinalStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTICheckBoxFinalStateActionPerformed
-        logic.finalStateValueChanged(this.jGTICheckBoxFinalState.isSelected());
-    }//GEN-LAST:event_jGTICheckBoxFinalStateActionPerformed
-
-    private void jGTICheckBoxStartStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTICheckBoxStartStateActionPerformed
-        logic.startStateValueChanged(this.jGTICheckBoxStartState.isSelected());
-    }//GEN-LAST:event_jGTICheckBoxStartStateActionPerformed
-
     private void jGTIButtonCanceljGTIButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonCanceljGTIButton1ActionPerformed
       this.logic.handleCancel();
     }//GEN-LAST:event_jGTIButtonCanceljGTIButton1ActionPerformed
-
-    private void jGTIButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButton1ActionPerformed
-      this.logic.handleOk();
-    }//GEN-LAST:event_jGTIButton1ActionPerformed
 
     private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
       this.logic.handleOk();

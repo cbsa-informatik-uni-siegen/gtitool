@@ -654,4 +654,18 @@ public abstract class AbstractGrammar implements Grammar
       throw new GrammarValidationException ( grammarExceptionList );
     }
   }
+
+
+  
+  /**
+   * Sets the {@link Production}s.
+   *
+   * @param productions The {@link Production}s to set.
+   * @see #productions
+   * @see Production
+   */
+  public void setProductions ( ArrayList < Production > productions )
+  {
+    this.productions = productions;
+  }
 }

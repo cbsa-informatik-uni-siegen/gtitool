@@ -247,7 +247,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     if ( createUndoStep )
     {
       RedoUndoItem item = new ProductionAddedItem ( this, production );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
   }
 
@@ -315,7 +315,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
     if ( createUndoStep )
     {
       RedoUndoItem item = new ProductionRemovedItem ( this, production );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
     }
   }
 

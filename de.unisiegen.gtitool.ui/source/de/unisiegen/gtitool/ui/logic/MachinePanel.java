@@ -593,7 +593,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final StatePopupMenu createStatePopupMenu ( DefaultStateView stateView )
   {
-    return new StatePopupMenu ( this.mainWindowForm, this, this.graph, this.model,
+    return new StatePopupMenu ( this.mainWindowForm, this, this.model,
         stateView );
   }
 
@@ -964,6 +964,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleRedo ()
   {
     this.redoUndoHandler.redo ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1201,7 +1202,7 @@ public final class MachinePanel implements EditorPanel
   public void handleUndo ()
   {
     this.redoUndoHandler.undo ();
-
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -1740,25 +1741,9 @@ public final class MachinePanel implements EditorPanel
             // open transition config dialog
             DefaultStateView state = ( DefaultStateView ) object;
             StateConfigDialog dialog = new StateConfigDialog (
-                MachinePanel.this.mainWindowForm, MachinePanel.this, state.getState (),
-                MachinePanel.this.model );
+                MachinePanel.this.mainWindowForm, MachinePanel.this, state
+                    .getState (), MachinePanel.this.model );
             dialog.show ();
-            if ( ( dialog.getStateName () != null )
-                && ( !dialog.getStateName ().equals (
-                    state.getState ().getName () ) ) )
-            {
-              try
-              {
-                state.getState ().setName ( dialog.getStateName () );
-              }
-              catch ( StateException exc )
-              {
-                exc.printStackTrace ();
-                System.exit ( 1 );
-              }
-              MachinePanel.this.graph.getGraphLayoutCache ()
-                  .valueForCellChanged ( state, dialog.getStateName () );
-            }
           }
         }
 
@@ -2637,10 +2622,9 @@ public final class MachinePanel implements EditorPanel
   }
 
 
-  
   /**
    * Returns the redoUndoHandler.
-   *
+   * 
    * @return The redoUndoHandler.
    * @see #redoUndoHandler
    */

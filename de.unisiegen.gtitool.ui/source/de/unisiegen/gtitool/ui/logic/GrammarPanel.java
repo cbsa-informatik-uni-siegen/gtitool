@@ -43,6 +43,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.ProductionsMovedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
@@ -518,6 +519,7 @@ public class GrammarPanel implements EditorPanel
   {
      this.redoUndoHandler.redo ();
      this.gui.repaint ();
+     fireModifyStatusChanged ( false );
   }
 
 
@@ -733,6 +735,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.redoUndoHandler.undo();
     this.gui.repaint ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -855,6 +858,9 @@ public class GrammarPanel implements EditorPanel
   private final void moveRows ( JGTITable jGTITable, JGTITableModelRows rows,
       int targetIndex )
   {
+    ArrayList<Production> oldProductions = new ArrayList < Production >();
+    oldProductions.addAll (  this.grammar.getProductions() );
+    
     ArrayList<Production> productions = new ArrayList<Production>();
     
     int[] indeces = rows.getRowIndices ();
@@ -885,6 +891,9 @@ public class GrammarPanel implements EditorPanel
     this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( newTargetIndex, newTargetIndex + indeces.length - 1 );
     
     fireModifyStatusChanged ( false );
+    
+    ProductionsMovedItem item = new ProductionsMovedItem(this.grammar, oldProductions);
+    this.redoUndoHandler.addItem ( item );
   }
 
 

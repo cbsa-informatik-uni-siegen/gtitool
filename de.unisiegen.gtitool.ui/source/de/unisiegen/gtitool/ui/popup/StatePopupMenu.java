@@ -10,12 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.jgraph.JGraph;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
@@ -23,6 +21,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 
 
 /**
@@ -44,12 +43,6 @@ public final class StatePopupMenu extends JPopupMenu
    * The {@link DefaultStateView}
    */
   private DefaultStateView state;
-
-
-  /**
-   * The {@link JGraph}
-   */
-  private JGraph graph;
 
 
   /**
@@ -99,16 +92,14 @@ public final class StatePopupMenu extends JPopupMenu
    * 
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
-   * @param graph the JGraph containing the state
    * @param model the model containing the state
    * @param state the state to open the popup menu
    */
   public StatePopupMenu ( JFrame parent, MachinePanel machinePanel,
-      JGraph graph, DefaultMachineModel model, DefaultStateView state )
+      DefaultMachineModel model, DefaultStateView state )
   {
     this.parent = parent;
     this.machinePanel = machinePanel;
-    this.graph = graph;
     this.model = model;
     this.state = state;
     populateMenues ();
@@ -171,6 +162,12 @@ public final class StatePopupMenu extends JPopupMenu
 
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
+        StateChangedItem item = new StateChangedItem ( StatePopupMenu.this.model.getJGraph (),
+            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
+                .getState ().getName (), !StatePopupMenu.this.state.getState ()
+                .isStartState (), StatePopupMenu.this.state.getState ()
+                .isFinalState () );
+        StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
     this.startState.setSelected ( this.state.getState ().isStartState () );
@@ -191,6 +188,12 @@ public final class StatePopupMenu extends JPopupMenu
             !StatePopupMenu.this.state.getState ().isFinalState () );
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
+        StateChangedItem item = new StateChangedItem ( StatePopupMenu.this.model.getJGraph (),
+            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
+                .getState ().getName (), StatePopupMenu.this.state.getState ()
+                .isStartState (), !StatePopupMenu.this.state.getState ()
+                .isFinalState () );
+        StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
     this.finalState.setSelected ( this.state.getState ().isFinalState () );
@@ -208,27 +211,9 @@ public final class StatePopupMenu extends JPopupMenu
       ActionEvent event )
       {
         StateConfigDialog dialog = new StateConfigDialog (
-            StatePopupMenu.this.parent, StatePopupMenu.this.machinePanel, StatePopupMenu.this.state.getState (),
-            StatePopupMenu.this.model );
+            StatePopupMenu.this.parent, StatePopupMenu.this.machinePanel,
+            StatePopupMenu.this.state.getState (), StatePopupMenu.this.model );
         dialog.show ();
-        if ( ( dialog.getStateName () != null )
-            && ( !dialog.getStateName ().equals (
-                StatePopupMenu.this.state.getState ().getName () ) ) )
-        {
-          try
-          {
-            StatePopupMenu.this.state.getState ().setName (
-                dialog.getStateName () );
-            StatePopupMenu.this.graph.getGraphLayoutCache ()
-                .valueForCellChanged ( StatePopupMenu.this.state,
-                    dialog.getStateName () );
-          }
-          catch ( StateException exc )
-          {
-            exc.printStackTrace ();
-            System.exit ( 1 );
-          }
-        }
       }
     } );
     add ( this.configurate );

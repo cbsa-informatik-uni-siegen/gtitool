@@ -373,7 +373,7 @@ public final class ProductionDialog
     {
       RedoUndoItem item = new ProductionChangedItem ( this.oldProduction,
           production );
-      this.redoUndoHandler.addUndo ( item );
+      this.redoUndoHandler.addItem ( item );
 
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );

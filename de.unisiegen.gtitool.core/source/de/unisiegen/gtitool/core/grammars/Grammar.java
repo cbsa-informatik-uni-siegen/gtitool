@@ -116,7 +116,13 @@ public interface Grammar extends Serializable, TableModel, Modifyable
    * @return all {@link Production}s of this grammar.
    */
   public ArrayList < Production > getProductions ();
-
+  
+  /**
+   * Set the {@link Production}s.
+   * 
+   * @param productions The new {@link Production}s.
+   */
+  public void setProductions(ArrayList<Production> productions);
 
   /**
    * Returns the {@link TerminalSymbolSet}.

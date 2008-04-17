@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.entities.State;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
@@ -54,12 +55,6 @@ public final class StateConfigDialog
 
 
   /**
-   * The old {@link State}.
-   */
-  private State oldState;
-
-
-  /**
    * The {@link DefaultMachineModel}
    */
   private DefaultMachineModel model;
@@ -69,6 +64,24 @@ public final class StateConfigDialog
    * The {@link MachinePanel}.
    */
   private MachinePanel machinePanel;
+
+
+  /**
+   * The old state name.
+   */
+  private String oldName;
+
+
+  /**
+   * The old start state flag.
+   */
+  private boolean oldStartState;
+
+
+  /**
+   * The old final state flag.
+   */
+  private boolean oldFinalState;
 
 
   /**
@@ -86,7 +99,9 @@ public final class StateConfigDialog
     this.parent = parent;
     this.machinePanel = machinePanel;
     this.state = state;
-    this.oldState = state.clone ();
+    this.oldName = state.getName ();
+    this.oldStartState = state.isStartState ();
+    this.oldFinalState = state.isFinalState ();
     this.model = model;
     this.stateName = null;
     this.gui = new StateConfigDialogForm ( this, parent );
@@ -120,18 +135,6 @@ public final class StateConfigDialog
 
 
   /**
-   * Returns the stateName.
-   * 
-   * @return The stateName.
-   * @see #stateName
-   */
-  public final String getStateName ()
-  {
-    return this.stateName;
-  }
-
-
-  /**
    * Handles the action on the cancel button.
    */
   public final void handleCancel ()
@@ -152,9 +155,28 @@ public final class StateConfigDialog
     this.gui.setVisible ( false );
     State activeState = this.gui.styledStateParserPanel.getParsedObject ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
+
+    if ( this.stateName != null
+        && !this.stateName.equals ( this.state.getName () ) )
+      try
+      {
+        this.state.setName ( this.stateName );
+        this.model.getJGraph ().getGraphLayoutCache ().valueForCellChanged (
+            this.state, this.stateName );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+      }
+
+    this.state.setFinalState ( this.gui.jGTICheckBoxFinalState.isSelected () );
+    this.state.setStartState ( this.gui.jGTICheckBoxStartState.isSelected () );
+    this.model.getGraphModel ().cellsChanged ( new Object []
+    { this.state } );
+
     StateChangedItem item = new StateChangedItem ( this.model.getJGraph (),
-        this.oldState, this.state );
-    this.machinePanel.getRedoUndoHandler ().addUndo ( item );
+        this.state, this.oldName, this.oldStartState, this.oldFinalState );
+    this.machinePanel.getRedoUndoHandler ().addItem ( item );
     this.gui.dispose ();
   }
 
@@ -171,33 +193,5 @@ public final class StateConfigDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Handle status of the final state checkbox changed
-   * 
-   * @param status the new final state status
-   */
-  public void finalStateValueChanged ( boolean status )
-  {
-    this.state.setFinalState ( status );
-    this.model.getGraphModel ().cellsChanged ( new Object []
-    { this.state } );
-
-  }
-
-
-  /**
-   * Handle status of the start state checkbox changed
-   * 
-   * @param status the new start state status
-   */
-  public void startStateValueChanged ( boolean status )
-  {
-    this.state.setStartState ( status );
-    this.model.getGraphModel ().cellsChanged ( new Object []
-    { this.state } );
-
   }
 }

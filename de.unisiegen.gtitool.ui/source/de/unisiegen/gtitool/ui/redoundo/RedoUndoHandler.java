@@ -49,7 +49,7 @@ public class RedoUndoHandler
    * 
    * @param item The undo step to add.
    */
-  public void addUndo ( RedoUndoItem item )
+  public void addItem ( RedoUndoItem item )
   {
     this.undoSteps.push ( item );
     this.redoSteps.clear ();

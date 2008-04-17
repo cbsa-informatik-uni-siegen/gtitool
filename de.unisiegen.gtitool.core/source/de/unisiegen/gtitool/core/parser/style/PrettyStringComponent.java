@@ -44,6 +44,12 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * The used font.
+   */
+  private static final Font FONT = new Font ( "Dialog", Font.PLAIN, 12 ); //$NON-NLS-1$
+
+
+  /**
    * Initializes the {@link PrettyStringComponent}.
    * 
    * @param prettyString The {@link PrettyString}.
@@ -93,7 +99,7 @@ public final class PrettyStringComponent extends JLabel
   {
     g.setColor ( getBackground () );
     g.fillRect ( 0, 0, getWidth (), getHeight () );
-
+    g.setFont ( FONT );
     FontMetrics metrics = g.getFontMetrics ();
 
     int dx = 0;
@@ -115,20 +121,20 @@ public final class PrettyStringComponent extends JLabel
       if ( !currentToken.getStyle ().isBold ()
           && !currentToken.getStyle ().isItalic () )
       {
-        font = g.getFont ().deriveFont ( Font.PLAIN );
+        font = FONT;
       }
       else if ( currentToken.getStyle ().isBold ()
           && currentToken.getStyle ().isItalic () )
       {
-        font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
+        font = FONT.deriveFont ( Font.BOLD | Font.ITALIC );
       }
       else if ( currentToken.getStyle ().isBold () )
       {
-        font = g.getFont ().deriveFont ( Font.BOLD );
+        font = FONT.deriveFont ( Font.BOLD );
       }
       else if ( currentToken.getStyle ().isItalic () )
       {
-        font = g.getFont ().deriveFont ( Font.ITALIC );
+        font = FONT.deriveFont ( Font.ITALIC );
       }
 
       g.setFont ( font );

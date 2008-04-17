@@ -1,14 +1,17 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- Pretty String der Produktionen unter Windows testen
 CF		- setValue der Machine implementieren und an die GUI weiterreichen
 CF		- Der PublicKey benützt nach der Übertragung zum Erstellen propritären
 		  Source Code von Sun, der ohne Ankündigung aus Java entfernt werden kann.
 		  Es muss eine Klasse erstellt werden, die das Interface implementiert.
-CF		- Timeoute bei Transfer einbauen (und evtl abbrechen)
+CF		- Timeout bei Transfer einbauen (und evtl abbrechen)
+
 
 BM		- Redo / Undo:
 			- Reihenfolge der Produktionen
 			- Zustand bearbeiten
 			- Transition bearbeiten
 BM		- Bei Fehler Produktion highlighten
+BM		- Pretty String der Produktionen unter Windows testen: Ich konnte das Problem
+		  bei mir nicht reproduzieren, habe die Font aber jetzt fest eingestellt und
+		  nicht mehr einfach vom LaF übernommen. Bitte testen.

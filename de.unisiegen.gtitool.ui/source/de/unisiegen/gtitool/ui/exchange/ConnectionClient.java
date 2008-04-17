@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.exchange;
 
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -18,6 +19,12 @@ public final class ConnectionClient extends Connection
 {
 
   /**
+   * The timeout value in ms.
+   */
+  private static final int TIMEOUT = 3000;
+
+
+  /**
    * Allocates a new {@link ConnectionClient}.
    * 
    * @param network The {@link Network}.
@@ -31,8 +38,10 @@ public final class ConnectionClient extends Connection
     super ( network, exchange );
     try
     {
-      setSocket ( new Socket ( getNetwork ().getHost (), getNetwork ()
-          .getPort () ) );
+      Socket socket = new Socket ();
+      socket.connect ( new InetSocketAddress ( getNetwork ().getHost (),
+          getNetwork ().getPort () ), TIMEOUT );
+      setSocket ( socket );
     }
     catch ( UnknownHostException exc )
     {

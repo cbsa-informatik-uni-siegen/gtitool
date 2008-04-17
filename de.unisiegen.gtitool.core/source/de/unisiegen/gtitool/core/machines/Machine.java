@@ -296,6 +296,16 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Returns true if every {@link State} name is unique in this {@link Machine},
+   * otherwise false.
+   * 
+   * @return True if every {@link State} name is unique in this {@link Machine},
+   *         otherwise false.
+   */
+  public boolean isEveryStateUnique ();
+
+
+  /**
    * Returns true if the {@link Word} is finished, otherwise false.
    * 
    * @return True if this {@link Word} is finished, otherwise false.

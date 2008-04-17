@@ -404,10 +404,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     GraphConstants.setOpaque ( stateView.getAttributes (), true );
 
     // Gradient
-    GraphConstants.setGradientColor ( stateView.getAttributes (), Color.white );
+    GraphConstants.setGradientColor ( stateView.getAttributes (), Color.WHITE );
 
     // Set black border
-    GraphConstants.setBorderColor ( stateView.getAttributes (), Color.black );
+    GraphConstants.setBorderColor ( stateView.getAttributes (), Color.BLACK );
 
     // Set the line width
     GraphConstants.setLineWidth ( stateView.getAttributes (), 1 );
@@ -694,7 +694,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     // Set the zoom factor of this graph
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
-    EdgeView.renderer.setForeground ( Color.magenta );
+    EdgeView.renderer.setForeground ( Color.MAGENTA );
   }
 
 
@@ -718,15 +718,17 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
-      public void symbolAdded ( Transition transition,
-          ArrayList < Symbol > addedSymbols )
+      public void symbolAdded ( @SuppressWarnings ( "unused" )
+      Transition transition, @SuppressWarnings ( "unused" )
+      ArrayList < Symbol > addedSymbols )
       {
         // TODOBM
       }
 
 
-      public void symbolRemoved ( Transition transition,
-          ArrayList < Symbol > removedSymbols )
+      public void symbolRemoved ( @SuppressWarnings ( "unused" )
+      Transition transition, @SuppressWarnings ( "unused" )
+      ArrayList < Symbol > removedSymbols )
       {
         // TODOBM
       }

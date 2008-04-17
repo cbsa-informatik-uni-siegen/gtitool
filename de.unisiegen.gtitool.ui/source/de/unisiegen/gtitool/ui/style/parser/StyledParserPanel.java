@@ -32,6 +32,7 @@ import de.unisiegen.gtitool.core.parser.Parseable;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
+import de.unisiegen.gtitool.core.util.Theme;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
@@ -992,7 +993,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
     }
     else
     {
-      this.editor.setBackground ( new Color ( 240, 240, 240 ) );
+      this.editor.setBackground ( Theme.DISABLED_COMPONENT_COLOR );
     }
     super.setEnabled ( enabled );
   }

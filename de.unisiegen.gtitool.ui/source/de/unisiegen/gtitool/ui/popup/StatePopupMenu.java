@@ -152,21 +152,25 @@ public final class StatePopupMenu extends JPopupMenu
         StatePopupMenu.this.state.getState ().setStartState (
             !StatePopupMenu.this.state.getState ().isStartState () );
         if ( StatePopupMenu.this.state.getState ().isStartState () )
+        {
           GraphConstants.setBackground ( StatePopupMenu.this.state
               .getAttributes (), PreferenceManager.getInstance ()
               .getColorItemStateStart ().getColor () );
+        }
         else
+        {
           GraphConstants.setBackground ( StatePopupMenu.this.state
               .getAttributes (), PreferenceManager.getInstance ()
               .getColorItemStateBackground ().getColor () );
+        }
 
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
-        StateChangedItem item = new StateChangedItem ( StatePopupMenu.this.model.getJGraph (),
-            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
-                .getState ().getName (), !StatePopupMenu.this.state.getState ()
-                .isStartState (), StatePopupMenu.this.state.getState ()
-                .isFinalState () );
+        StateChangedItem item = new StateChangedItem (
+            StatePopupMenu.this.model.getJGraph (), StatePopupMenu.this.state
+                .getState (), StatePopupMenu.this.state.getState ().getName (),
+            !StatePopupMenu.this.state.getState ().isStartState (),
+            StatePopupMenu.this.state.getState ().isFinalState () );
         StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
@@ -188,11 +192,11 @@ public final class StatePopupMenu extends JPopupMenu
             !StatePopupMenu.this.state.getState ().isFinalState () );
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
-        StateChangedItem item = new StateChangedItem ( StatePopupMenu.this.model.getJGraph (),
-            StatePopupMenu.this.state.getState (), StatePopupMenu.this.state
-                .getState ().getName (), StatePopupMenu.this.state.getState ()
-                .isStartState (), !StatePopupMenu.this.state.getState ()
-                .isFinalState () );
+        StateChangedItem item = new StateChangedItem (
+            StatePopupMenu.this.model.getJGraph (), StatePopupMenu.this.state
+                .getState (), StatePopupMenu.this.state.getState ().getName (),
+            StatePopupMenu.this.state.getState ().isStartState (),
+            !StatePopupMenu.this.state.getState ().isFinalState () );
         StatePopupMenu.this.machinePanel.getRedoUndoHandler ().addItem ( item );
       }
     } );
@@ -214,6 +218,9 @@ public final class StatePopupMenu extends JPopupMenu
             StatePopupMenu.this.parent, StatePopupMenu.this.machinePanel,
             StatePopupMenu.this.state.getState (), StatePopupMenu.this.model );
         dialog.show ();
+
+        // Update the machine table status
+        StatePopupMenu.this.machinePanel.updateMachineTableStatus ();
       }
     } );
     add ( this.configurate );

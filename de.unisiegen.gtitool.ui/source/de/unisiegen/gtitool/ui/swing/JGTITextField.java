@@ -7,6 +7,8 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import de.unisiegen.gtitool.core.util.Theme;
+
 
 /**
  * Special {@link JTextField}.
@@ -27,12 +29,6 @@ public final class JGTITextField extends JTextField
    * The initial {@link Color}.
    */
   private Color initialColor;
-
-
-  /**
-   * The disabled {@link Color}.
-   */
-  private static final Color DISABLED_COLOR = new Color ( 240, 240, 240 );
 
 
   /**
@@ -61,7 +57,7 @@ public final class JGTITextField extends JTextField
     }
     else
     {
-      setBackground ( DISABLED_COLOR );
+      setBackground ( Theme.DISABLED_COMPONENT_COLOR );
     }
   }
 }

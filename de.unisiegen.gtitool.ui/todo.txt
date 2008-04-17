@@ -1,9 +1,6 @@
 CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
-CF		- setValue der Machine implementieren und an die GUI weiterreichen
 CF		- Timeout bei Transfer einbauen (und evtl abbrechen)
-CF		- Die Tabelle darf nicht immer editable sein.
-CF		- Bei doppelten Zustandsnamen muss die Tabelle ausgegraut werden.
 
 
 BM		- Redo / Undo:

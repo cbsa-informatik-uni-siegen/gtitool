@@ -1562,6 +1562,30 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Returns true if every {@link State} name is unique in this {@link Machine},
+   * otherwise false.
+   * 
+   * @return True if every {@link State} name is unique in this {@link Machine},
+   *         otherwise false.
+   */
+  public final boolean isEveryStateUnique ()
+  {
+    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    {
+      for ( int j = i + 1 ; j < this.stateList.size () ; j++ )
+      {
+        if ( this.stateList.get ( i ).getName ().equals (
+            this.stateList.get ( j ).getName () ) )
+        {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
+  /**
    * Returns true if the {@link Word} is finished, otherwise false.
    * 
    * @return True if this {@link Word} is finished, otherwise false.

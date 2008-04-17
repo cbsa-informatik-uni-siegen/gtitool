@@ -417,6 +417,9 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.wordPanel.styledWordParserPanel.parse ();
 
+    // Update the machine table status
+    updateMachineTableStatus ();
+
     // Reset modify
     resetModify ();
   }
@@ -1853,6 +1856,9 @@ public final class MachinePanel implements EditorPanel
                 MachinePanel.this.mainWindowForm, MachinePanel.this, state
                     .getState (), MachinePanel.this.model );
             dialog.show ();
+
+            // Update the machine table status
+            updateMachineTableStatus ();
           }
         }
 
@@ -2728,5 +2734,24 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+
+
+  /**
+   * Updates the {@link Machine} table status.
+   */
+  public final void updateMachineTableStatus ()
+  {
+    if ( this.machine.isEveryStateUnique () )
+    {
+      this.gui.jGTITableMachine.setEnabled ( true );
+      this.gui.jGTITableMachine.setToolTipText ( null );
+    }
+    else
+    {
+      this.gui.jGTITableMachine.setEnabled ( false );
+      this.gui.jGTITableMachine.setToolTipText ( Messages
+          .getString ( "MachinePanel.TableDisabled" ) ); //$NON-NLS-1$
+    }
   }
 }

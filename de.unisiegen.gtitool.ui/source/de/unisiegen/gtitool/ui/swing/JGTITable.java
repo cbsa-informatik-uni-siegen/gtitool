@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.swing;
 
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
+
+import de.unisiegen.gtitool.core.util.Theme;
 
 
 /**
@@ -230,6 +233,18 @@ public final class JGTITable extends JTable implements DropTargetListener
   /**
    * {@inheritDoc}
    * 
+   * @see Component#isEnabled()
+   */
+  @Override
+  public final boolean isEnabled ()
+  {
+    return super.isEnabled ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see JComponent#paintComponent(Graphics)
    */
   @Override
@@ -302,5 +317,27 @@ public final class JGTITable extends JTable implements DropTargetListener
       throw new IllegalArgumentException ( "dnd mode is invalid" ); //$NON-NLS-1$
     }
     this.dndMode = dndMode;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see JComponent#setEnabled(boolean)
+   */
+  @Override
+  public final void setEnabled ( boolean enabled )
+  {
+    super.setEnabled ( enabled );
+    getTableHeader ().setEnabled ( enabled );
+    getTableHeader ().setResizingAllowed ( enabled );
+    if ( enabled )
+    {
+      setBackground ( Color.WHITE );
+    }
+    else
+    {
+      setBackground ( Theme.DISABLED_COMPONENT_COLOR );
+    }
   }
 }

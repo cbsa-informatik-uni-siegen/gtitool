@@ -6,6 +6,8 @@ import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
+import de.unisiegen.gtitool.core.util.Theme;
+
 
 /**
  * Special {@link JTextArea}.
@@ -26,12 +28,6 @@ public final class JGTITextArea extends JTextArea
    * The initial {@link Color}.
    */
   private Color initialColor;
-
-
-  /**
-   * The disabled {@link Color}.
-   */
-  private static final Color DISABLED_COLOR = new Color ( 240, 240, 240 );
 
 
   /**
@@ -62,7 +58,7 @@ public final class JGTITextArea extends JTextArea
     }
     else
     {
-      setBackground ( DISABLED_COLOR );
+      setBackground ( Theme.DISABLED_COMPONENT_COLOR );
     }
   }
 }

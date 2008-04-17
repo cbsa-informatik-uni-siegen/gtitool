@@ -515,6 +515,14 @@ public abstract class AbstractMachine implements Machine
     {
       throw new IllegalArgumentException ( "not the same alphabet" ); //$NON-NLS-1$
     }
+    if ( state.getPushDownAlphabet () == null )
+    {
+      state.setPushDownAlphabet ( this.pushDownAlphabet );
+    }
+    if ( !this.pushDownAlphabet.equals ( state.getPushDownAlphabet () ) )
+    {
+      throw new IllegalArgumentException ( "not the same push down alphabet" ); //$NON-NLS-1$
+    }
     if ( state.getId () == State.ID_NOT_DEFINED )
     {
       state.setId ( ++this.currentStateId );

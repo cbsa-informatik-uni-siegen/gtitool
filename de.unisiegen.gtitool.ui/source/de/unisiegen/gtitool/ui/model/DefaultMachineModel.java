@@ -301,6 +301,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
           if ( childElement.getName ().equals ( "State" ) ) //$NON-NLS-1$
           {
             state = new DefaultState ( childElement );
+            state.setAlphabet ( alphabet );
+            state.setPushDownAlphabet ( pushDownAlphabet );
           }
         }
         createStateView ( x + 35, y + 35, state, false );

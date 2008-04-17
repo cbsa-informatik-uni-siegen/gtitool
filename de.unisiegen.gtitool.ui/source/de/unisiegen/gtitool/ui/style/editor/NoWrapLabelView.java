@@ -12,7 +12,7 @@ import javax.swing.text.View;
  * The {@link NoWrapColumnFactory}.
  * 
  * @author Christian Fehler
- * @version $Id: StyledParserEditor.java 775 2008-04-13 23:02:55Z fehler $
+ * @version $Id$
  */
 public final class NoWrapLabelView extends LabelView
 {

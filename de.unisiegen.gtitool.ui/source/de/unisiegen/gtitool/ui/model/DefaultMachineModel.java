@@ -706,6 +706,32 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machineChangedListener = new MachineChangedListener ()
     {
 
+      public void startEditing ()
+      {
+        // TODOBM
+      }
+
+
+      public void stopEditing ()
+      {
+        // TODOBM
+      }
+
+
+      public void symbolAdded ( Transition transition,
+          ArrayList < Symbol > addedSymbols )
+      {
+        // TODOBM
+      }
+
+
+      public void symbolRemoved ( Transition transition,
+          ArrayList < Symbol > removedSymbols )
+      {
+        // TODOBM
+      }
+
+
       public void transitionAdded ( Transition newTransition )
       {
         createTransitionView ( newTransition,

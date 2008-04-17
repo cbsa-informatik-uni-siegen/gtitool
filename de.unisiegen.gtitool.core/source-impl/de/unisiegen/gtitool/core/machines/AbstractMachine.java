@@ -58,6 +58,7 @@ import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableCellRend
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCellRenderer;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 
 
@@ -168,6 +169,13 @@ public abstract class AbstractMachine implements Machine
       return this.transitionSet;
     }
   }
+
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger
+      .getLogger ( AbstractMachine.class );
 
 
   /**
@@ -1006,6 +1014,78 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Let the listeners know that the editing is startet.
+   */
+  private final void fireMachineChangedStartEditing ()
+  {
+    logger.debug ( "fireMachineChangedStartEditing", "start editing" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.startEditing ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the editing is stopped.
+   */
+  private final void fireMachineChangedStopEditing ()
+  {
+    logger.debug ( "fireMachineChangedStopEditing", "stop editing" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.stopEditing ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that {@link Symbol}s were added to the
+   * {@link Transition}.
+   * 
+   * @param transition The modified {@link Transition}.
+   * @param addedSymbols The added {@link Symbol}s.
+   */
+  private final void fireMachineChangedSymbolAdded ( Transition transition,
+      ArrayList < Symbol > addedSymbols )
+  {
+    logger.debug ( "fireMachineChangedSymbolAdded", "symbol added: " //$NON-NLS-1$ //$NON-NLS-2$
+        + addedSymbols + " to " + transition ); //$NON-NLS-1$
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.symbolAdded ( transition, addedSymbols );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that {@link Symbol}s were removed from the
+   * {@link Transition}.
+   * 
+   * @param transition The modified {@link Transition}.
+   * @param removedSymbols The removed {@link Symbol}s.
+   */
+  private final void fireMachineChangedSymbolRemoved ( Transition transition,
+      ArrayList < Symbol > removedSymbols )
+  {
+    logger.debug ( "fireMachineChangedSymbolRemoved", "symbol removed: " //$NON-NLS-1$ //$NON-NLS-2$
+        + removedSymbols + " from " + transition ); //$NON-NLS-1$
+    MachineChangedListener [] listeners = this.listenerList
+        .getListeners ( MachineChangedListener.class );
+    for ( MachineChangedListener current : listeners )
+    {
+      current.symbolRemoved ( transition, removedSymbols );
+    }
+  }
+
+
+  /**
    * Let the listeners know that a new {@link Transition} is added.
    * 
    * @param newTransition The {@link Transition} to add.
@@ -1013,6 +1093,8 @@ public abstract class AbstractMachine implements Machine
   private final void fireMachineChangedTransitionAdded (
       Transition newTransition )
   {
+    logger.debug ( "fireMachineChangedTransitionAdded", "transition added: " //$NON-NLS-1$//$NON-NLS-2$
+        + newTransition );
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
@@ -1029,6 +1111,8 @@ public abstract class AbstractMachine implements Machine
    */
   private final void fireMachineChangedTransitionRemoved ( Transition transition )
   {
+    logger.debug ( "fireMachineChangedTransitionRemoved", //$NON-NLS-1$
+        "transition removed: " + transition ); //$NON-NLS-1$
     MachineChangedListener [] listeners = this.listenerList
         .getListeners ( MachineChangedListener.class );
     for ( MachineChangedListener current : listeners )
@@ -2206,18 +2290,58 @@ public abstract class AbstractMachine implements Machine
     logger.debug ( "setValueAt", "state add: " + stateAdd ); //$NON-NLS-1$ //$NON-NLS-2$
     logger.debug ( "setValueAt", "state remove: " + stateRemove ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    // Add the states
-    for ( State current : stateAdd )
+    ArrayList < Transition > transitionAdd = new ArrayList < Transition > ();
+    ArrayList < Transition > transitionRemove = new ArrayList < Transition > ();
+    ArrayList < ObjectPair < Transition, Symbol >> symbolsAdd = new ArrayList < ObjectPair < Transition, Symbol >> ();
+    ArrayList < ObjectPair < Transition, Symbol >> symbolsRemove = new ArrayList < ObjectPair < Transition, Symbol >> ();
+
+    // Add the transitions
+    for ( State currentState : stateAdd )
     {
       try
       {
-        Transition newTransition = new DefaultTransition ( this.alphabet,
-            this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
-            stateBegin, current, ( columnIndex == 1 ? new Symbol [] {}
-                : new Symbol []
-                { this.alphabet.get ( columnIndex - 2 ) } ) );
-        addTransition ( newTransition );
-        fireMachineChangedTransitionAdded ( newTransition );
+        // Epsilon transition
+        if ( columnIndex == 1 )
+        {
+          logger.debug ( "setValueAt", "add transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
+          Transition newTransition = new DefaultTransition ( this.alphabet,
+              this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
+              stateBegin, currentState );
+          transitionAdd.add ( newTransition );
+        }
+        // No epsilon transition
+        else
+        {
+          Transition foundTransition = null;
+          loopTransition : for ( Transition currentTransition : this.transitionList )
+          {
+            if ( ( !currentTransition.isEpsilonTransition () )
+                && currentTransition.getStateBegin ().getName ().equals (
+                    stateBegin.getName () )
+                && currentTransition.getStateEnd ().getName ().equals (
+                    currentState.getName () ) )
+            {
+              foundTransition = currentTransition;
+              break loopTransition;
+            }
+          }
+          if ( foundTransition == null )
+          {
+            logger.debug ( "setValueAt", //$NON-NLS-1$
+                "add transition: no epsilon: transition not found" ); //$NON-NLS-1$
+            Transition newTransition = new DefaultTransition ( this.alphabet,
+                this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
+                stateBegin, currentState, this.alphabet.get ( columnIndex - 2 ) );
+            transitionAdd.add ( newTransition );
+          }
+          else
+          {
+            logger.debug ( "setValueAt", //$NON-NLS-1$
+                "add transition: no epsilon: transition found" ); //$NON-NLS-1$
+            symbolsAdd.add ( new ObjectPair < Transition, Symbol > (
+                foundTransition, this.alphabet.get ( columnIndex - 2 ) ) );
+          }
+        }
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
       {
@@ -2231,11 +2355,10 @@ public abstract class AbstractMachine implements Machine
       }
     }
 
-    // Remove the states
+    // Remove the transitions and symbols
     for ( State currentState : stateRemove )
     {
-      Transition removeTransition = null;
-      transitionLoop : for ( Transition currentTransition : this.transitionList )
+      for ( Transition currentTransition : this.transitionList )
       {
         if ( currentTransition.getStateBegin ().getName ().equals (
             stateBegin.getName () )
@@ -2243,42 +2366,106 @@ public abstract class AbstractMachine implements Machine
                 currentState.getName () ) )
         {
           // Epsilon transition
-          if ( columnIndex == 1 && currentTransition.isEpsilonTransition () )
+          if ( ( columnIndex == 1 ) && currentTransition.isEpsilonTransition () )
           {
-            removeTransition = currentTransition;
+            logger.debug ( "setValueAt", "remove transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
+            transitionRemove.add ( currentTransition );
           }
-          // No epsilon
+          // No epsilon transition
           else if ( columnIndex > 1 )
           {
             Symbol symbolColumn = this.alphabet.get ( columnIndex - 2 );
             Symbol symbolRemove = null;
-            symbolLoop : for ( Symbol currentSymbol : currentTransition
+            loopSymbol : for ( Symbol currentSymbol : currentTransition
                 .getSymbol () )
             {
               if ( currentSymbol.equals ( symbolColumn ) )
               {
                 symbolRemove = currentSymbol;
-                break symbolLoop;
+                break loopSymbol;
               }
             }
+
             if ( symbolRemove != null )
             {
-              currentTransition.remove ( symbolRemove );
+              // The last symbol is removed
+              if ( currentTransition.size () == 1 )
+              {
+                logger.debug ( "setValueAt", //$NON-NLS-1$
+                    "remove transition: no epsilon: remove transition" ); //$NON-NLS-1$
+                transitionRemove.add ( currentTransition );
+              }
+              // Only one symbol is removed
+              else
+              {
+                logger.debug ( "setValueAt", //$NON-NLS-1$
+                    "remove transition: no epsilon: remove symbol" ); //$NON-NLS-1$
+                symbolsRemove.add ( new ObjectPair < Transition, Symbol > (
+                    currentTransition, symbolRemove ) );
+              }
             }
-
-            if ( currentTransition.isEpsilonTransition () )
+            else
             {
-              removeTransition = currentTransition;
+              logger.debug ( "setValueAt", //$NON-NLS-1$
+                  "remove transition: no epsilon: nothing found" ); //$NON-NLS-1$
             }
-            break transitionLoop;
+          }
+          else
+          {
+            logger.debug ( "setValueAt", //$NON-NLS-1$
+                "remove transition: epsilon column: no epsilon transition" ); //$NON-NLS-1$
           }
         }
       }
-      if ( removeTransition != null )
+    }
+
+    if ( ( transitionAdd.size () > 0 ) || ( transitionRemove.size () > 0 )
+        || ( symbolsAdd.size () > 0 ) || ( symbolsRemove.size () > 0 ) )
+    {
+      fireMachineChangedStartEditing ();
+
+      for ( Transition current : transitionAdd )
       {
-        removeTransition ( removeTransition );
-        fireMachineChangedTransitionRemoved ( removeTransition );
+        addTransition ( current );
+        fireMachineChangedTransitionAdded ( current );
       }
+
+      for ( Transition current : transitionRemove )
+      {
+        removeTransition ( current );
+        fireMachineChangedTransitionRemoved ( current );
+      }
+
+      for ( ObjectPair < Transition, Symbol > current : symbolsAdd )
+      {
+        try
+        {
+          current.getFirst ().add ( current.getSecond () );
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
+        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+        symbolList.add ( current.getSecond () );
+        fireMachineChangedSymbolAdded ( current.getFirst (), symbolList );
+      }
+
+      for ( ObjectPair < Transition, Symbol > current : symbolsRemove )
+      {
+        current.getFirst ().remove ( current.getSecond () );
+        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+        symbolList.add ( current.getSecond () );
+        fireMachineChangedSymbolRemoved ( current.getFirst (), symbolList );
+      }
+
+      fireMachineChangedStopEditing ();
     }
   }
 
@@ -2312,13 +2499,6 @@ public abstract class AbstractMachine implements Machine
       }
     }
   }
-
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( AbstractMachine.class );
 
 
   /**

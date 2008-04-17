@@ -353,7 +353,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link ColorChangedListener}.
    */
-  public final synchronized void addColorChangedListener (
+  public final void addColorChangedListener (
       ColorChangedListener listener )
   {
     this.listenerList.add ( ColorChangedListener.class, listener );
@@ -365,7 +365,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link LanguageChangedListener}.
    */
-  public final synchronized void addLanguageChangedListener (
+  public final void addLanguageChangedListener (
       LanguageChangedListener listener )
   {
     this.listenerList.add ( LanguageChangedListener.class, listener );
@@ -1492,7 +1492,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link ColorChangedListener}.
    */
-  public final synchronized void removeColorChangedListener (
+  public final void removeColorChangedListener (
       ColorChangedListener listener )
   {
     this.listenerList.remove ( ColorChangedListener.class, listener );
@@ -1504,7 +1504,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link LanguageChangedListener}.
    */
-  public final synchronized void removeLanguageChangedListener (
+  public final void removeLanguageChangedListener (
       LanguageChangedListener listener )
   {
     this.listenerList.remove ( LanguageChangedListener.class, listener );

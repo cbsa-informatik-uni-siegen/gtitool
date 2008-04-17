@@ -365,7 +365,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -825,7 +825,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );

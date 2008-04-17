@@ -902,7 +902,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );

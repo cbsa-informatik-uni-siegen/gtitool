@@ -286,7 +286,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
 
 
   /**
-   * The synchronized {@link StyledParserPanel}.
+   * The {@link StyledParserPanel}.
    */
   private StyledParserPanel < E > synchronizedStyledParserPanel = null;
 
@@ -649,7 +649,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  public final synchronized void addParseableChangedListener (
+  public final void addParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
@@ -863,7 +863,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  public final synchronized void removeParseableChangedListener (
+  public final void removeParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.remove ( ParseableChangedListener.class, listener );

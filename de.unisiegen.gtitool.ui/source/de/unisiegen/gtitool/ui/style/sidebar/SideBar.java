@@ -229,9 +229,9 @@ public final class SideBar < E extends Entity > extends JComponent
   {
     SideBarListener listeners[] = this.listenerList
         .getListeners ( SideBarListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( SideBarListener current : listeners )
     {
-      listeners [ n ].insertText ( this.currentRight, insertText );
+      current.insertText ( this.currentRight, insertText );
     }
   }
 
@@ -243,9 +243,9 @@ public final class SideBar < E extends Entity > extends JComponent
   {
     SideBarListener listeners[] = this.listenerList
         .getListeners ( SideBarListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( SideBarListener current : listeners )
     {
-      listeners [ n ].markText ( this.currentLeft, this.currentRight );
+      current.markText ( this.currentLeft, this.currentRight );
     }
   }
 

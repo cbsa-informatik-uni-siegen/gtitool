@@ -250,7 +250,7 @@ public final class DefaultStateSet implements StateSet
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -262,7 +262,7 @@ public final class DefaultStateSet implements StateSet
    * 
    * @param listener The {@link StateSetChangedListener}.
    */
-  public final synchronized void addStateSetChangedListener (
+  public final void addStateSetChangedListener (
       StateSetChangedListener listener )
   {
     this.listenerList.add ( StateSetChangedListener.class, listener );
@@ -372,9 +372,9 @@ public final class DefaultStateSet implements StateSet
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -386,9 +386,9 @@ public final class DefaultStateSet implements StateSet
   {
     StateSetChangedListener [] listeners = this.listenerList
         .getListeners ( StateSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( StateSetChangedListener current : listeners )
     {
-      listeners [ n ].stateSetChanged ( this );
+      current.stateSetChanged ( this );
     }
   }
 
@@ -545,7 +545,7 @@ public final class DefaultStateSet implements StateSet
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
@@ -557,7 +557,7 @@ public final class DefaultStateSet implements StateSet
    * 
    * @param listener The {@link StateSetChangedListener}.
    */
-  public final synchronized void removeStateSetChangedListener (
+  public final void removeStateSetChangedListener (
       StateSetChangedListener listener )
   {
     this.listenerList.remove ( StateSetChangedListener.class, listener );

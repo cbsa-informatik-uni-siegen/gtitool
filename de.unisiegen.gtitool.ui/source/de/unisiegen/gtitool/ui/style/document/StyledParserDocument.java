@@ -153,7 +153,7 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param listener The {@link ExceptionsChangedListener}.
    */
-  public final synchronized void addExceptionsChangedListener (
+  public final void addExceptionsChangedListener (
       ExceptionsChangedListener listener )
   {
     this.listenerList.add ( ExceptionsChangedListener.class, listener );
@@ -177,7 +177,7 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  public final synchronized void addParseableChangedListener (
+  public final void addParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.add ( ParseableChangedListener.class, listener );
@@ -548,7 +548,7 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param listener The {@link ExceptionsChangedListener}.
    */
-  public final synchronized void removeExceptionsChangedListener (
+  public final void removeExceptionsChangedListener (
       ExceptionsChangedListener listener )
   {
     this.listenerList.remove ( ExceptionsChangedListener.class, listener );
@@ -571,7 +571,7 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param listener The {@link ParseableChangedListener}.
    */
-  public final synchronized void removeParseableChangedListener (
+  public final void removeParseableChangedListener (
       ParseableChangedListener < E > listener )
   {
     this.listenerList.remove ( ParseableChangedListener.class, listener );

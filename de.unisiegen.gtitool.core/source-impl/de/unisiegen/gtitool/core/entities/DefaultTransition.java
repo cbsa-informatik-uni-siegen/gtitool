@@ -540,7 +540,7 @@ public final class DefaultTransition implements Transition
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -552,7 +552,7 @@ public final class DefaultTransition implements Transition
    * 
    * @param listener The {@link TransitionChangedListener}.
    */
-  public final synchronized void addTransitionChangedListener (
+  public final void addTransitionChangedListener (
       TransitionChangedListener listener )
   {
     this.listenerList.add ( TransitionChangedListener.class, listener );
@@ -654,9 +654,9 @@ public final class DefaultTransition implements Transition
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -668,9 +668,9 @@ public final class DefaultTransition implements Transition
   {
     TransitionChangedListener [] listeners = this.listenerList
         .getListeners ( TransitionChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( TransitionChangedListener current : listeners )
     {
-      listeners [ n ].transitionChanged ( this );
+      current.transitionChanged ( this );
     }
   }
 
@@ -1000,7 +1000,7 @@ public final class DefaultTransition implements Transition
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
@@ -1012,7 +1012,7 @@ public final class DefaultTransition implements Transition
    * 
    * @param listener The {@link TransitionChangedListener}.
    */
-  public final synchronized void removeTransitionChangedListener (
+  public final void removeTransitionChangedListener (
       TransitionChangedListener listener )
   {
     this.listenerList.remove ( TransitionChangedListener.class, listener );

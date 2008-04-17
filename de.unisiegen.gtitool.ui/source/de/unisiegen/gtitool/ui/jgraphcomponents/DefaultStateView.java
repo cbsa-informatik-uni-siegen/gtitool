@@ -48,7 +48,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The {@link State} represented by this view.
    */
   private State state;
-  
+
+
   /**
    * Flag signals that nex state move should be ignored.
    */
@@ -65,17 +66,19 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The puplished x position.
    */
   private double puplishedXPosition = POSITION_NOT_DEFINED;
-  
+
+
   /**
    * The actual x value.
    */
   private double xValue = POSITION_NOT_DEFINED;
 
-  
+
   /**
    * The actual y value.
    */
   private double yValue = POSITION_NOT_DEFINED;
+
 
   /**
    * The initial y position.
@@ -148,7 +151,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -156,12 +159,11 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   *   /**
-   * Adds the given {@link StatePositionChangedListener}.
+   * /** Adds the given {@link StatePositionChangedListener}.
    * 
    * @param listener The {@link StatePositionChangedListener}.
    */
-  public final synchronized void addStatePositionChangedListener (
+  public final void addStatePositionChangedListener (
       StatePositionChangedListener listener )
   {
     this.listenerList.add ( StatePositionChangedListener.class, listener );
@@ -199,9 +201,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
       this.puplishedXPosition = x;
       this.puplishedYPosition = y;
       boolean newModifyStatus = isModified ();
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( ModifyStatusChangedListener current : listeners )
       {
-        listeners [ n ].modifyStatusChanged ( newModifyStatus );
+        current.modifyStatusChanged ( newModifyStatus );
       }
     }
   }
@@ -212,24 +214,24 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   private final void fireStatePositionChanged ()
   {
-    if (this.ignoreStateMove){
+    if ( this.ignoreStateMove )
+    {
       this.ignoreStateMove = false;
       return;
     }
-    
+
     StatePositionChangedListener [] listeners = this.listenerList
         .getListeners ( StatePositionChangedListener.class );
     double x = getXPosition ();
     double y = getYPosition ();
     if ( ( this.xValue != x ) || ( this.yValue != y ) )
     {
-      for ( int n = 0 ; n < listeners.length ; ++n )
+      for ( StatePositionChangedListener current : listeners )
       {
-        listeners [ n ].statePositionChanged ( this, this.xValue, this.yValue, x, y );
+        current.statePositionChanged ( this, this.xValue, this.yValue, x, y );
       }
       this.xValue = x;
       this.yValue = y;
-      
     }
   }
 
@@ -275,14 +277,16 @@ public final class DefaultStateView extends DefaultGraphCell implements
     }
     return bounds.getX ();
   }
-  
+
+
   /**
    * Move this {@link DefaultStateView}.
-   *
+   * 
    * @param x The new x value.
    * @param y The new y value.
    */
-  public void move(double x, double y){
+  public void move ( double x, double y )
+  {
     this.ignoreStateMove = true;
     Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
@@ -335,7 +339,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );

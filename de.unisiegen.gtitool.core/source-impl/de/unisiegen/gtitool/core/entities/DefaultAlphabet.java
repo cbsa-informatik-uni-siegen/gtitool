@@ -273,7 +273,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @param listener The {@link AlphabetChangedListener}.
    */
-  public final synchronized void addAlphabetChangedListener (
+  public final void addAlphabetChangedListener (
       AlphabetChangedListener listener )
   {
     this.listenerList.add ( AlphabetChangedListener.class, listener );
@@ -285,7 +285,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -402,9 +402,9 @@ public final class DefaultAlphabet implements Alphabet
   {
     AlphabetChangedListener [] listeners = this.listenerList
         .getListeners ( AlphabetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( AlphabetChangedListener current : listeners )
     {
-      listeners [ n ].alphabetChanged ( this );
+      current.alphabetChanged ( this );
     }
   }
 
@@ -417,9 +417,9 @@ public final class DefaultAlphabet implements Alphabet
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -576,7 +576,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @param listener The {@link AlphabetChangedListener}.
    */
-  public final synchronized void removeAlphabetChangedListener (
+  public final void removeAlphabetChangedListener (
       AlphabetChangedListener listener )
   {
     this.listenerList.remove ( AlphabetChangedListener.class, listener );
@@ -588,7 +588,7 @@ public final class DefaultAlphabet implements Alphabet
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );

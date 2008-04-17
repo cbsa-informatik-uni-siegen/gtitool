@@ -204,7 +204,7 @@ public final class PreferenceManager extends
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
    */
-  public final synchronized void addZoomFactorChangedListener (
+  public final void addZoomFactorChangedListener (
       ZoomFactorChangedListener listener )
   {
     this.listenerList.add ( ZoomFactorChangedListener.class, listener );
@@ -493,7 +493,7 @@ public final class PreferenceManager extends
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
    */
-  public final synchronized void removeZoomFactorChangedListener (
+  public final void removeZoomFactorChangedListener (
       ZoomFactorChangedListener listener )
   {
     this.listenerList.remove ( ZoomFactorChangedListener.class, listener );

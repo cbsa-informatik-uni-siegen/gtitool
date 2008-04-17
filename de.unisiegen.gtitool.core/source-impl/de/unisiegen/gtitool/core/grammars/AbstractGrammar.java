@@ -128,7 +128,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see Machine#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -240,7 +240,8 @@ public abstract class AbstractGrammar implements Grammar
         {
           if ( ! ( wordMember instanceof TerminalSymbol ) )
           {
-            grammarExceptionList.add(new GrammarRegularGrammarException(current));
+            grammarExceptionList.add ( new GrammarRegularGrammarException (
+                current ) );
             break;
           }
         }
@@ -248,13 +249,15 @@ public abstract class AbstractGrammar implements Grammar
         {
           if ( ! ( wordMember instanceof NonterminalSymbol ) )
           {
-            grammarExceptionList.add(new GrammarRegularGrammarException(current));
+            grammarExceptionList.add ( new GrammarRegularGrammarException (
+                current ) );
             break;
           }
         }
         if ( count == 3 )
         {
-          grammarExceptionList.add(new GrammarRegularGrammarException(current));
+          grammarExceptionList.add ( new GrammarRegularGrammarException (
+              current ) );
           break;
         }
       }
@@ -517,7 +520,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see Machine#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
@@ -656,10 +659,9 @@ public abstract class AbstractGrammar implements Grammar
   }
 
 
-  
   /**
    * Sets the {@link Production}s.
-   *
+   * 
    * @param productions The {@link Production}s to set.
    * @see #productions
    * @see Production

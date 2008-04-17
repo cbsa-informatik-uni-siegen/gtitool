@@ -281,7 +281,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * 
    * @param listener The {@link NonterminalSymbolSetChangedListener}.
    */
-  public final synchronized void addNonterminalSymbolSetChangedListener (
+  public final void addNonterminalSymbolSetChangedListener (
       NonterminalSymbolSetChangedListener listener )
   {
     this.listenerList
@@ -294,7 +294,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -418,9 +418,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     NonterminalSymbolSetChangedListener [] listeners = this.listenerList
         .getListeners ( NonterminalSymbolSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( NonterminalSymbolSetChangedListener current : listeners )
     {
-      listeners [ n ].nonterminalSymbolSetChanged ( this );
+      current.nonterminalSymbolSetChanged ( this );
     }
   }
 
@@ -433,9 +433,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -597,7 +597,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * 
    * @param listener The {@link NonterminalSymbolSetChangedListener}.
    */
-  public final synchronized void removeNonterminalSymbolSetChangedListener (
+  public final void removeNonterminalSymbolSetChangedListener (
       NonterminalSymbolSetChangedListener listener )
   {
     this.listenerList.remove ( NonterminalSymbolSetChangedListener.class,
@@ -610,7 +610,7 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
@@ -728,5 +728,5 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
-  
+
 }

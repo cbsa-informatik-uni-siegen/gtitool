@@ -92,7 +92,7 @@ public final class Network
    * 
    * @param listener The {@link ExchangeFinishedListener}.
    */
-  public final synchronized void addExchangeFinishedListener (
+  public final void addExchangeFinishedListener (
       ExchangeFinishedListener listener )
   {
     this.listenerList.add ( ExchangeFinishedListener.class, listener );
@@ -104,7 +104,7 @@ public final class Network
    * 
    * @param listener The {@link ExchangeReceivedListener}.
    */
-  public final synchronized void addExchangeReceivedListener (
+  public final void addExchangeReceivedListener (
       ExchangeReceivedListener listener )
   {
     this.listenerList.add ( ExchangeReceivedListener.class, listener );
@@ -116,7 +116,7 @@ public final class Network
    * 
    * @param listener The {@link NetworkConnectedListener}.
    */
-  public final synchronized void addNetworkConnectedListener (
+  public final void addNetworkConnectedListener (
       NetworkConnectedListener listener )
   {
     this.listenerList.add ( NetworkConnectedListener.class, listener );
@@ -239,7 +239,7 @@ public final class Network
    * 
    * @param listener The {@link ExchangeFinishedListener}.
    */
-  public final synchronized void removeExchangeFinishedListener (
+  public final void removeExchangeFinishedListener (
       ExchangeFinishedListener listener )
   {
     this.listenerList.remove ( ExchangeFinishedListener.class, listener );
@@ -251,7 +251,7 @@ public final class Network
    * 
    * @param listener The {@link ExchangeReceivedListener}.
    */
-  public final synchronized void removeExchangeReceivedListener (
+  public final void removeExchangeReceivedListener (
       ExchangeReceivedListener listener )
   {
     this.listenerList.remove ( ExchangeReceivedListener.class, listener );
@@ -263,7 +263,7 @@ public final class Network
    * 
    * @param listener The {@link NetworkConnectedListener}.
    */
-  public final synchronized void removeNetworkConnectedListener (
+  public final void removeNetworkConnectedListener (
       NetworkConnectedListener listener )
   {
     this.listenerList.remove ( NetworkConnectedListener.class, listener );

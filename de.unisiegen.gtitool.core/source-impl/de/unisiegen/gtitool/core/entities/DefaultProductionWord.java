@@ -160,7 +160,7 @@ public final class DefaultProductionWord implements ProductionWord
     }
     add ( productionWordMembers );
     this.initialProductionWordMemberList
-    .addAll ( this.productionWordMemberList );
+        .addAll ( this.productionWordMemberList );
   }
 
 
@@ -228,7 +228,7 @@ public final class DefaultProductionWord implements ProductionWord
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -279,9 +279,9 @@ public final class DefaultProductionWord implements ProductionWord
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -357,7 +357,7 @@ public final class DefaultProductionWord implements ProductionWord
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );

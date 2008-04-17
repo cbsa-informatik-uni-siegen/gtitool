@@ -52,7 +52,8 @@ public final class DefaultProduction implements Production
    * The {@link NonterminalSymbol}
    */
   private NonterminalSymbol nonterminalSymbol;
-  
+
+
   /**
    * The initial {@link NonterminalSymbol}
    */
@@ -63,11 +64,13 @@ public final class DefaultProduction implements Production
    * The {@link ProductionWord}
    */
   private ProductionWord productionWord;
-  
+
+
   /**
    * The initial {@link ProductionWord}.
    */
   private ProductionWord initialProductionWord;
+
 
   /**
    * Allocates a new {@link DefaultProduction}.
@@ -132,7 +135,7 @@ public final class DefaultProduction implements Production
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -198,9 +201,9 @@ public final class DefaultProduction implements Production
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
     }
   }
 
@@ -266,10 +269,11 @@ public final class DefaultProduction implements Production
    */
   public final boolean isModified ()
   {
-    if(!this.productionWord.equals ( this.initialProductionWord )){
+    if ( !this.productionWord.equals ( this.initialProductionWord ) )
+    {
       return true;
     }
-    if (!this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ))
+    if ( !this.nonterminalSymbol.equals ( this.initialNonterminalSymbol ) )
     {
       return true;
     }
@@ -282,7 +286,7 @@ public final class DefaultProduction implements Production
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
@@ -296,8 +300,8 @@ public final class DefaultProduction implements Production
    */
   public final void resetModify ()
   {
-   this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
-   this.productionWord.resetModify ();
+    this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
+    this.productionWord.resetModify ();
   }
 
 
@@ -385,8 +389,10 @@ public final class DefaultProduction implements Production
    */
   public boolean contains ( NonterminalSymbol symbol )
   {
-    for (ProductionWordMember current : this.productionWord){
-      if (current.equals ( symbol )){
+    for ( ProductionWordMember current : this.productionWord )
+    {
+      if ( current.equals ( symbol ) )
+      {
         return true;
       }
     }
@@ -396,13 +402,15 @@ public final class DefaultProduction implements Production
 
   /**
    * {@inheritDoc}
-   *
+   * 
    * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.TerminalSymbol)
    */
   public boolean contains ( TerminalSymbol symbol )
   {
-    for (ProductionWordMember current : this.productionWord){
-      if (current.equals ( symbol )){
+    for ( ProductionWordMember current : this.productionWord )
+    {
+      if ( current.equals ( symbol ) )
+      {
         return true;
       }
     }

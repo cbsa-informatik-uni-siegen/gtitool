@@ -275,26 +275,26 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Adds the given {@link TerminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
-   */
-  public final synchronized void addTerminalSymbolSetChangedListener (
-      TerminalSymbolSetChangedListener listener )
-  {
-    this.listenerList.add ( TerminalSymbolSetChangedListener.class, listener );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * Adds the given {@link TerminalSymbolSetChangedListener}.
+   * 
+   * @param listener The {@link TerminalSymbolSetChangedListener}.
+   */
+  public final void addTerminalSymbolSetChangedListener (
+      TerminalSymbolSetChangedListener listener )
+  {
+    this.listenerList.add ( TerminalSymbolSetChangedListener.class, listener );
   }
 
 
@@ -408,20 +408,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Let the listeners know that the {@link TerminalSymbolSet} has changed.
-   */
-  private final void fireTerminalSymbolSetChanged ()
-  {
-    TerminalSymbolSetChangedListener [] listeners = this.listenerList
-        .getListeners ( TerminalSymbolSetChangedListener.class );
-    for ( int n = 0 ; n < listeners.length ; ++n )
-    {
-      listeners [ n ].terminalSymbolSetChanged ( this );
-    }
-  }
-
-
-  /**
    * Let the listeners know that the modify status has changed.
    */
   private final void fireModifyStatusChanged ()
@@ -429,9 +415,23 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     boolean newModifyStatus = isModified ();
-    for ( int n = 0 ; n < listeners.length ; ++n )
+    for ( ModifyStatusChangedListener current : listeners )
     {
-      listeners [ n ].modifyStatusChanged ( newModifyStatus );
+      current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link TerminalSymbolSet} has changed.
+   */
+  private final void fireTerminalSymbolSetChanged ()
+  {
+    TerminalSymbolSetChangedListener [] listeners = this.listenerList
+        .getListeners ( TerminalSymbolSetChangedListener.class );
+    for ( TerminalSymbolSetChangedListener current : listeners )
+    {
+      current.terminalSymbolSetChanged ( this );
     }
   }
 
@@ -588,27 +588,27 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Removes the given {@link TerminalSymbolSetChangedListener}.
-   * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
-   */
-  public final synchronized void removeTerminalSymbolSetChangedListener (
-      TerminalSymbolSetChangedListener listener )
-  {
-    this.listenerList
-        .remove ( TerminalSymbolSetChangedListener.class, listener );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public final synchronized void removeModifyStatusChangedListener (
+  public final void removeModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
+   * Removes the given {@link TerminalSymbolSetChangedListener}.
+   * 
+   * @param listener The {@link TerminalSymbolSetChangedListener}.
+   */
+  public final void removeTerminalSymbolSetChangedListener (
+      TerminalSymbolSetChangedListener listener )
+  {
+    this.listenerList
+        .remove ( TerminalSymbolSetChangedListener.class, listener );
   }
 
 

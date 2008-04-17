@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
+import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -53,24 +54,39 @@ public final class StateConfigDialog
 
 
   /**
+   * The old {@link State}.
+   */
+  private State oldState;
+
+
+  /**
    * The {@link DefaultMachineModel}
    */
   private DefaultMachineModel model;
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * Allocates a new {@link StateConfigDialog}.
    * 
    * @param parent The parent {@link JFrame}.
+   * @param machinePanel The {@link MachinePanel}.
    * @param state The {@link State}.
    * @param model The {@link Machine}
    */
-  public StateConfigDialog ( JFrame parent, State state,
-      DefaultMachineModel model )
+  public StateConfigDialog ( JFrame parent, MachinePanel machinePanel,
+      State state, DefaultMachineModel model )
   {
     logger.debug ( "StateConfigDialog", "allocate a new new state name dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
+    this.machinePanel = machinePanel;
     this.state = state;
+    this.oldState = state.clone ();
     this.model = model;
     this.stateName = null;
     this.gui = new StateConfigDialogForm ( this, parent );
@@ -136,6 +152,9 @@ public final class StateConfigDialog
     this.gui.setVisible ( false );
     State activeState = this.gui.styledStateParserPanel.getParsedObject ();
     this.stateName = ( activeState == null ? null : activeState.getName () );
+    StateChangedItem item = new StateChangedItem ( this.model.getJGraph (),
+        this.oldState, this.state );
+    this.machinePanel.getRedoUndoHandler ().addUndo ( item );
     this.gui.dispose ();
   }
 

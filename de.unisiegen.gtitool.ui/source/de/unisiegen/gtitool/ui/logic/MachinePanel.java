@@ -593,7 +593,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final StatePopupMenu createStatePopupMenu ( DefaultStateView stateView )
   {
-    return new StatePopupMenu ( this.mainWindowForm, this.graph, this.model,
+    return new StatePopupMenu ( this.mainWindowForm, this, this.graph, this.model,
         stateView );
   }
 
@@ -1740,7 +1740,7 @@ public final class MachinePanel implements EditorPanel
             // open transition config dialog
             DefaultStateView state = ( DefaultStateView ) object;
             StateConfigDialog dialog = new StateConfigDialog (
-                MachinePanel.this.mainWindowForm, state.getState (),
+                MachinePanel.this.mainWindowForm, MachinePanel.this, state.getState (),
                 MachinePanel.this.model );
             dialog.show ();
             if ( ( dialog.getStateName () != null )
@@ -2634,5 +2634,18 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
+  }
+
+
+  
+  /**
+   * Returns the redoUndoHandler.
+   *
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
   }
 }

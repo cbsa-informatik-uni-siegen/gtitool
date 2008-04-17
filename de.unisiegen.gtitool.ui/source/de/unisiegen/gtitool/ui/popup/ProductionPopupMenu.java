@@ -70,7 +70,8 @@ public final class ProductionPopupMenu extends JPopupMenu
    * The add item.
    */
   private JMenuItem add;
-  
+
+
   /**
    * The validate item.
    */
@@ -84,8 +85,8 @@ public final class ProductionPopupMenu extends JPopupMenu
    * @param model the model containing the production.
    * @param productions the selected {@link Production}s
    */
-  public ProductionPopupMenu ( GrammarPanel parent,
-      DefaultGrammarModel model, ArrayList < Production > productions )
+  public ProductionPopupMenu ( GrammarPanel parent, DefaultGrammarModel model,
+      ArrayList < Production > productions )
   {
     this.grammarPanel = parent;
     this.model = model;
@@ -136,14 +137,15 @@ public final class ProductionPopupMenu extends JPopupMenu
       {
 
         JFrame window = ( JFrame ) SwingUtilities
-            .getWindowAncestor ( (GrammarPanelForm)ProductionPopupMenu.this.grammarPanel.getGui () );
+            .getWindowAncestor ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
+                .getGui () );
         ProductionDialog productionDialog = new ProductionDialog ( window,
             ProductionPopupMenu.this.model.getGrammar ()
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
                 .getGrammar ().getTerminalSymbolSet (),
             ProductionPopupMenu.this.model,
             ProductionPopupMenu.this.productions.get ( 0 ),
-            ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ());
+            ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler () );
         productionDialog.show ();
       }
     } );
@@ -162,36 +164,38 @@ public final class ProductionPopupMenu extends JPopupMenu
       ActionEvent event )
       {
         String message = null;
-        if (ProductionPopupMenu.this.productions.size () == 1)
+        if ( ProductionPopupMenu.this.productions.size () == 1 )
         {
-          message =  Messages.getString (
+          message = Messages.getString (
               "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
               ProductionPopupMenu.this.productions.get ( 0 ) );
         }
-        else {
-          message = Messages.getString (
-              "ProductionPopupMenu.DeleteProductionsQuestion"); //$NON-NLS-1$
+        else
+        {
+          message = Messages
+              .getString ( "ProductionPopupMenu.DeleteProductionsQuestion" ); //$NON-NLS-1$
         }
-          
-          ConfirmDialog confirmedDialog = new ConfirmDialog (
-              ProductionPopupMenu.this.grammarPanel.getParent (),
-             message,
-              Messages.getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
-              true, false );
-          confirmedDialog.show ();
-          if ( confirmedDialog.isConfirmed () )
+
+        ConfirmDialog confirmedDialog = new ConfirmDialog (
+            ProductionPopupMenu.this.grammarPanel.getParent (),
+            message,
+            Messages.getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
+            true, false );
+        confirmedDialog.show ();
+        if ( confirmedDialog.isConfirmed () )
+        {
+          for ( Production production : ProductionPopupMenu.this.productions )
           {
-            for (Production production : ProductionPopupMenu.this.productions){
-            ProductionPopupMenu.this.model
-                .removeProduction ( production, true );
-           ((GrammarPanelForm) ProductionPopupMenu.this.grammarPanel.getGui ()).repaint ();
+            ProductionPopupMenu.this.model.removeProduction ( production, true );
+            ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
+                .getGui () ).repaint ();
           }
         }
       }
     } );
     this.delete.setEnabled ( this.productions.size () > 0 );
     add ( this.delete );
-    
+
     this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()
     {
@@ -200,7 +204,8 @@ public final class ProductionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        ProductionPopupMenu.this.grammarPanel.getMainWindow ().handleValidate ();
+        ProductionPopupMenu.this.grammarPanel.getMainWindow ()
+            .handleValidate ();
       }
     } );
     add ( this.validate );

@@ -9,7 +9,6 @@ CF		- Der PublicKey benützt nach der Übertragung zum Erstellen propritären
 
 BM		- Redo / Undo:
 			- Reihenfolge der Produktionen
-			- Name von Zustand geändert
 			- Zustand bearbeiten
 			- Transition bearbeiten
 BM		- Bei Fehler Produktion highlighten

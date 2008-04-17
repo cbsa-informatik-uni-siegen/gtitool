@@ -12,6 +12,8 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,8 +24,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.SwingUtilities;
 
-import sun.security.rsa.RSAPublicKeyImpl;
 import de.unisiegen.gtitool.core.storage.Element;
+import de.unisiegen.gtitool.ui.exchange.encryption.AESSecretKeyImpl;
+import de.unisiegen.gtitool.ui.exchange.encryption.RSAPrivateKeyImpl;
+import de.unisiegen.gtitool.ui.exchange.encryption.RSAPublicKeyImpl;
 import de.unisiegen.gtitool.ui.storage.Storage;
 
 
@@ -103,21 +107,21 @@ public abstract class Connection extends Thread
 
 
   /**
-   * The rsa {@link PublicKey}.
+   * The {@link RSAPublicKey}.
    */
-  private PublicKey publicKeyRSA = null;
+  private RSAPublicKey rsaPublicKey = null;
 
 
   /**
-   * The RSA {@link PrivateKey}.
+   * The {@link RSAPrivateKey}.
    */
-  private PrivateKey privateKeyRSA = null;
+  private RSAPrivateKey rsaPrivateKey = null;
 
 
   /**
-   * The AES {@link SecretKey}.
+   * The {@link SecretKey}.
    */
-  private SecretKey secretKeyAES = null;
+  private SecretKey aesSecretKey = null;
 
 
   /**
@@ -216,7 +220,7 @@ public abstract class Connection extends Thread
       throws NoSuchAlgorithmException, NoSuchPaddingException,
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
-    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.secretKeyAES
+    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.aesSecretKey
         .getEncoded (), AES );
     Cipher cipher = Cipher.getInstance ( AES );
     cipher.init ( Cipher.DECRYPT_MODE, secretKeySpec );
@@ -240,7 +244,7 @@ public abstract class Connection extends Thread
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
     Cipher cipher = Cipher.getInstance ( RSA );
-    cipher.init ( Cipher.DECRYPT_MODE, this.privateKeyRSA );
+    cipher.init ( Cipher.DECRYPT_MODE, this.rsaPrivateKey );
     return cipher.doFinal ( cipherText );
   }
 
@@ -260,7 +264,7 @@ public abstract class Connection extends Thread
       throws NoSuchAlgorithmException, NoSuchPaddingException,
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
-    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.secretKeyAES
+    SecretKeySpec secretKeySpec = new SecretKeySpec ( this.aesSecretKey
         .getEncoded (), AES );
     Cipher cipher = Cipher.getInstance ( AES );
     cipher.init ( Cipher.ENCRYPT_MODE, secretKeySpec );
@@ -284,7 +288,7 @@ public abstract class Connection extends Thread
       InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
     Cipher cipher = Cipher.getInstance ( RSA );
-    cipher.init ( Cipher.ENCRYPT_MODE, this.publicKeyRSA );
+    cipher.init ( Cipher.ENCRYPT_MODE, this.rsaPublicKey );
     return cipher.doFinal ( plainText );
   }
 
@@ -468,7 +472,7 @@ public abstract class Connection extends Thread
 
       byte [] publicKeyBytes = new byte [ publicKeyLength ];
       Connection.this.input.read ( publicKeyBytes, 0, publicKeyLength );
-      this.publicKeyRSA = new RSAPublicKeyImpl ( publicKeyBytes );
+      this.rsaPublicKey = new RSAPublicKeyImpl ( publicKeyBytes );
     }
     catch ( Exception exc )
     {
@@ -492,7 +496,7 @@ public abstract class Connection extends Thread
       byte [] secretKeyBytes = new byte [ secretKeyLength ];
       Connection.this.input.read ( secretKeyBytes, 0, secretKeyLength );
       secretKeyBytes = decryptRSA ( secretKeyBytes );
-      this.secretKeyAES = new SecretKeySpec ( secretKeyBytes, AES );
+      this.aesSecretKey = new AESSecretKeyImpl ( secretKeyBytes );
     }
     catch ( Exception exc )
     {
@@ -507,9 +511,9 @@ public abstract class Connection extends Thread
    */
   protected final void send ()
   {
-    if ( this.secretKeyAES == null )
+    if ( this.aesSecretKey == null )
     {
-      throw new RuntimeException ( "secret AES key not received" ); //$NON-NLS-1$
+      throw new RuntimeException ( "secret aes key not received" ); //$NON-NLS-1$
     }
     try
     {
@@ -552,7 +556,9 @@ public abstract class Connection extends Thread
         keyPair = keyPairGenerator.genKeyPair ();
 
         // Save the private key
-        this.privateKeyRSA = keyPair.getPrivate ();
+        RSAPrivateKey privateKey = ( RSAPrivateKey ) keyPair.getPrivate ();
+        this.rsaPrivateKey = new RSAPrivateKeyImpl ( privateKey.getModulus (),
+            privateKey.getPrivateExponent () );
       }
       catch ( NoSuchAlgorithmException exc )
       {
@@ -561,7 +567,10 @@ public abstract class Connection extends Thread
       }
 
       // PublicKey
-      byte [] publicKeyBytes = keyPair.getPublic ().getEncoded ();
+      RSAPublicKey publicKey = ( RSAPublicKey ) keyPair.getPublic ();
+      byte [] publicKeyBytes = new RSAPublicKeyImpl ( publicKey.getModulus (),
+          publicKey.getPublicExponent () ).getEncoded ();
+
       writeBytes ( publicKeyBytes );
 
       // Flush
@@ -587,7 +596,8 @@ public abstract class Connection extends Thread
       {
         KeyGenerator keyGenerator = KeyGenerator.getInstance ( AES );
         keyGenerator.init ( AES_KEY_LENGTH );
-        this.secretKeyAES = keyGenerator.generateKey ();
+        this.aesSecretKey = new AESSecretKeyImpl ( keyGenerator.generateKey ()
+            .getEncoded () );
       }
       catch ( NoSuchAlgorithmException exc )
       {
@@ -596,7 +606,7 @@ public abstract class Connection extends Thread
       }
 
       // SecretKey
-      byte [] secretKeyBytes = this.secretKeyAES.getEncoded ();
+      byte [] secretKeyBytes = this.aesSecretKey.getEncoded ();
       secretKeyBytes = encryptRSA ( secretKeyBytes );
       writeBytes ( secretKeyBytes );
 

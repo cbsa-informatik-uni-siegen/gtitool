@@ -19,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
+import javax.swing.CellEditor;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
@@ -26,6 +27,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -338,6 +341,12 @@ public final class MachinePanel implements EditorPanel
    * The {@link RedoUndoHandler}
    */
   private RedoUndoHandler redoUndoHandler;
+
+
+  /**
+   * Flag that indicates if a cell is edited.
+   */
+  private boolean cellEditingMode = false;
 
 
   /**
@@ -791,6 +800,81 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Returns the redoUndoHandler.
+   * 
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
+  }
+
+
+  /**
+   * Handles the {@link CellEditor} start cell editing event.
+   * 
+   * @param row The edited row.
+   * @param column The edited column.
+   */
+  public final void handleCellEditorStartCellEditing ( int row, int column )
+  {
+    // Clear highlight
+    clearHighlight ();
+    this.graph.clearSelection ();
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      Transition transition = current.getTransition ();
+      transition.setError ( false );
+      transition.setActive ( false );
+    }
+
+    State beginState = this.machine.getState ( row );
+
+    // States
+    ArrayList < State > stateList = new ArrayList < State > ();
+    stateList.add ( beginState );
+    highlightStateActive ( stateList );
+
+    // epsilon column
+    if ( column == 1 )
+    {
+      // Transitions
+      for ( Transition currentTransition : this.machine.getTransition () )
+      {
+        if ( currentTransition.isEpsilonTransition ()
+            && currentTransition.getStateBegin ().equals ( beginState ) )
+        {
+          currentTransition.setActive ( true );
+        }
+      }
+    }
+    // no epsilon column
+    else
+    {
+      // Transitions
+      Symbol symbol = this.machine.getAlphabet ().get ( column - 2 );
+      for ( Transition currentTransition : this.machine.getTransition () )
+      {
+        if ( currentTransition.contains ( symbol )
+            && currentTransition.getStateBegin ().equals ( beginState ) )
+        {
+          for ( Symbol currentSymbol : currentTransition.getSymbol () )
+          {
+            currentSymbol.setError ( false );
+            currentSymbol.setActive ( currentSymbol.equals ( symbol ) );
+          }
+          currentTransition.setActive ( true );
+        }
+      }
+    }
+
+    this.cellEditingMode = true;
+    this.gui.jGTITableMachine.repaint ();
+  }
+
+
+  /**
    * Handles focus lost event on the console table.
    * 
    * @param event The {@link FocusEvent}.
@@ -909,7 +993,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleMachineTableFocusLost ( @SuppressWarnings ( "unused" )
   FocusEvent event )
   {
-    if ( !this.enterWordMode )
+    if ( !this.enterWordMode && !this.cellEditingMode )
     {
       this.gui.jGTITableMachine.clearSelection ();
       clearHighlight ();
@@ -926,7 +1010,7 @@ public final class MachinePanel implements EditorPanel
       @SuppressWarnings ( "unused" )
       MouseEvent event )
   {
-    if ( !this.enterWordMode )
+    if ( !this.enterWordMode && !this.cellEditingMode )
     {
       this.gui.jGTITableMachine.clearSelection ();
       clearHighlight ();
@@ -943,7 +1027,7 @@ public final class MachinePanel implements EditorPanel
       @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
   {
-    if ( !this.enterWordMode )
+    if ( !this.enterWordMode && !this.cellEditingMode )
     {
       clearHighlight ();
 
@@ -1634,6 +1718,31 @@ public final class MachinePanel implements EditorPanel
       parserPanel.setStateList ( this.machine.getState () );
       final ParserTableCellEditor < StateSet > cellEditor = new ParserTableCellEditor < StateSet > (
           parserPanel );
+      cellEditor.setMachinePanel ( this );
+
+      cellEditor.addCellEditorListener ( new CellEditorListener ()
+      {
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void editingCanceled ( @SuppressWarnings ( "unused" )
+        ChangeEvent event )
+        {
+          MachinePanel.this.cellEditingMode = false;
+          clearHighlight ();
+          MachinePanel.this.graph.clearSelection ();
+        }
+
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void editingStopped ( @SuppressWarnings ( "unused" )
+        ChangeEvent event )
+        {
+          MachinePanel.this.cellEditingMode = false;
+          clearHighlight ();
+          MachinePanel.this.graph.clearSelection ();
+        }
+      } );
+
       current.setCellEditor ( cellEditor );
 
       parserPanel.addFocusListener ( new FocusAdapter ()
@@ -2619,17 +2728,5 @@ public final class MachinePanel implements EditorPanel
   {
     this.zoomFactor = factor;
     this.graph.setScale ( factor );
-  }
-
-
-  /**
-   * Returns the redoUndoHandler.
-   * 
-   * @return The redoUndoHandler.
-   * @see #redoUndoHandler
-   */
-  public RedoUndoHandler getRedoUndoHandler ()
-  {
-    return this.redoUndoHandler;
   }
 }

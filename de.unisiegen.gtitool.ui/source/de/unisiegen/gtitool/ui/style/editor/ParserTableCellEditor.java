@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
 import de.unisiegen.gtitool.core.entities.Entity;
+import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -187,6 +188,12 @@ public class ParserTableCellEditor < E extends Entity > extends
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel = null;
+
+
+  /**
    * Allocates a new {@link ParserTableCellEditor}.
    * 
    * @param styledParserPanel The {@link StyledParserPanel}.
@@ -247,6 +254,18 @@ public class ParserTableCellEditor < E extends Entity > extends
 
 
   /**
+   * Returns the {@link MachinePanel}.
+   * 
+   * @return The {@link MachinePanel}.
+   * @see #machinePanel
+   */
+  public final MachinePanel getMachinePanel ()
+  {
+    return this.machinePanel;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see TableCellEditor#getTableCellEditorComponent(JTable, Object, boolean,
@@ -260,6 +279,11 @@ public class ParserTableCellEditor < E extends Entity > extends
       int column )
   {
     this.delegate.setValue ( value );
+
+    if ( this.machinePanel != null )
+    {
+      this.machinePanel.handleCellEditorStartCellEditing ( row, column );
+    }
     return this.styledParserPanel;
   }
 
@@ -270,9 +294,23 @@ public class ParserTableCellEditor < E extends Entity > extends
    * @see AbstractCellEditor#isCellEditable(EventObject)
    */
   @Override
-  public final boolean isCellEditable ( EventObject anEvent )
+  public final boolean isCellEditable ( EventObject event )
   {
-    return this.delegate.isCellEditable ( anEvent );
+    boolean editable = this.delegate.isCellEditable ( event );
+
+    return editable;
+  }
+
+
+  /**
+   * Sets the {@link MachinePanel}.
+   * 
+   * @param machinePanel The {@link MachinePanel} to set.
+   * @see #machinePanel
+   */
+  public final void setMachinePanel ( MachinePanel machinePanel )
+  {
+    this.machinePanel = machinePanel;
   }
 
 

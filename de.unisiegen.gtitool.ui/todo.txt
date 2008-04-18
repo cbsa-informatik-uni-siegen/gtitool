@@ -2,9 +2,9 @@ CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
-
+BM		- Fehler beim löschen von mehreren Produktionen
 BM		- Bei Fehler Produktion highlighten
-BM		- Selektierte Komponenten sollten per "del" gelöscht werden können
+BM		- Selektierte Komponenten sollten per "del" gelöscht werden können (GrammarPanel)
 BM		- Pretty String der Produktionen unter Windows testen: Ich konnte das Problem
 		  bei mir nicht reproduzieren, habe die Font aber jetzt fest eingestellt und
 		  nicht mehr einfach vom LaF übernommen. Bitte testen

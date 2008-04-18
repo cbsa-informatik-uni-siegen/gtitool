@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.model;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.swing.event.EventListenerList;
 
@@ -40,6 +41,7 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.redoundo.StateAddedItem;
@@ -47,6 +49,7 @@ import de.unisiegen.gtitool.ui.redoundo.StateMovedItem;
 import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.StateRemovedItem;
 import de.unisiegen.gtitool.ui.redoundo.TransitionAddedItem;
+import de.unisiegen.gtitool.ui.redoundo.TransitionChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.TransitionRemovedItem;
 
 
@@ -140,6 +143,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * The {@link MachineChangedListener}.
    */
   private MachineChangedListener machineChangedListener;
+
+
+  /**
+   * The {@link MultiItem}.
+   */
+  MultiItem multiItem;
 
 
   /**
@@ -708,29 +717,41 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
       public void startEditing ()
       {
-        // TODOBM
+        DefaultMachineModel.this.multiItem = new MultiItem ();
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       public void stopEditing ()
       {
-        // TODOBM
+        DefaultMachineModel.this.redoUndoHandler
+            .addItem ( DefaultMachineModel.this.multiItem );
       }
 
 
-      public void symbolAdded ( @SuppressWarnings ( "unused" )
-      Transition transition, @SuppressWarnings ( "unused" )
-      ArrayList < Symbol > addedSymbols )
+      public void symbolAdded ( Transition transition,
+          ArrayList < Symbol > addedSymbols )
       {
-        // TODOBM
+        TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
+        oldSymbols.addAll ( transition.getSymbol () );
+        oldSymbols.removeAll ( addedSymbols );
+        TransitionChangedItem item = new TransitionChangedItem ( transition,
+            transition.getPushDownWordRead (), transition
+                .getPushDownWordWrite (), oldSymbols );
+        DefaultMachineModel.this.multiItem.addItem ( item );
       }
 
 
-      public void symbolRemoved ( @SuppressWarnings ( "unused" )
-      Transition transition, @SuppressWarnings ( "unused" )
-      ArrayList < Symbol > removedSymbols )
+      public void symbolRemoved ( Transition transition,
+          ArrayList < Symbol > removedSymbols )
       {
-        // TODOBM
+        TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
+        oldSymbols.addAll ( transition.getSymbol () );
+        oldSymbols.addAll ( removedSymbols );
+        TransitionChangedItem item = new TransitionChangedItem ( transition,
+            transition.getPushDownWordRead (), transition
+                .getPushDownWordWrite (), oldSymbols );
+        DefaultMachineModel.this.multiItem.addItem ( item );
       }
 
 
@@ -740,12 +761,20 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
             getStateViewForState ( newTransition.getStateBegin () ),
             getStateViewForState ( newTransition.getStateEnd () ), false,
             false, false );
+        TransitionAddedItem item = new TransitionAddedItem (
+            DefaultMachineModel.this,
+            getTransitionViewForTransition ( newTransition ), null );
+        DefaultMachineModel.this.multiItem.addItem ( item );
       }
 
 
       public void transitionRemoved ( Transition transition )
       {
-        removeTransition ( getTransitionViewForTransition ( transition ), false );
+        DefaultTransitionView transitionView = getTransitionViewForTransition ( transition );
+        removeTransition ( transitionView, false );
+        RedoUndoItem item = new TransitionRemovedItem (
+            DefaultMachineModel.this, transitionView );
+        DefaultMachineModel.this.multiItem.addItem ( item );
       }
     };
     this.machine.addMachineChangedListener ( this.machineChangedListener );

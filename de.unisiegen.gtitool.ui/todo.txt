@@ -3,9 +3,6 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
 
-BM		- Redo / Undo:
-			- Im MachineModel gibt es einige TODOBMs, die implementiert werden
-			  möchten 
 BM		- Bei Fehler Produktion highlighten
 BM		- Selektierte Komponenten sollten per "del" gelöscht werden können
 BM		- Pretty String der Produktionen unter Windows testen: Ich konnte das Problem

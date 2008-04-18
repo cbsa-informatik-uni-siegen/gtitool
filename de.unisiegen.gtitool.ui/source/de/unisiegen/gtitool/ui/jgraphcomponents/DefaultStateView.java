@@ -214,18 +214,23 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   private final void fireStatePositionChanged ()
   {
-    if ( this.ignoreStateMove )
-    {
-      this.ignoreStateMove = false;
-      return;
-    }
-
-    StatePositionChangedListener [] listeners = this.listenerList
-        .getListeners ( StatePositionChangedListener.class );
     double x = getXPosition ();
     double y = getYPosition ();
+    
+    StatePositionChangedListener [] listeners = this.listenerList
+        .getListeners ( StatePositionChangedListener.class );
+  
     if ( ( this.xValue != x ) || ( this.yValue != y ) )
     {
+      
+      if ( this.ignoreStateMove )
+      {
+        this.ignoreStateMove = false;
+        this.xValue = x;
+        this.yValue = y;
+        return;
+      }
+      
       for ( StatePositionChangedListener current : listeners )
       {
         current.statePositionChanged ( this, this.xValue, this.yValue, x, y );
@@ -288,9 +293,11 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public void move ( double x, double y )
   {
     this.ignoreStateMove = true;
+    
     Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( this.getAttributes (), bounds );
+    
   }
 
 

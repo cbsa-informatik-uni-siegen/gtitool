@@ -15,9 +15,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -62,12 +60,6 @@ public final class TransitionPopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel model;
-
-
-  /**
    * The delete item.
    */
   private JMenuItem delete;
@@ -83,19 +75,17 @@ public final class TransitionPopupMenu extends JPopupMenu
    * Allocates a new {@link StatePopupMenu}.
    * 
    * @param parent The parent panel.
-   * @param model the model containing the state.
    * @param transition the transition to open the popup menu.
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet}.
    */
   public TransitionPopupMenu ( MachinePanelForm parent,
-      DefaultMachineModel model, DefaultTransitionView transition,
-      Alphabet alphabet, Alphabet pushDownAlphabet )
+      DefaultTransitionView transition, Alphabet alphabet,
+      Alphabet pushDownAlphabet )
   {
     this.parent = parent;
     this.alphabet = alphabet;
     this.pushDownAlphabet = pushDownAlphabet;
-    this.model = model;
     this.transition = transition;
     populateMenues ();
 
@@ -132,18 +122,8 @@ public final class TransitionPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        ConfirmDialog confirmedDialog = new ConfirmDialog (
-            TransitionPopupMenu.this.parent.getLogic ().getMainWindowForm (),
-            Messages.getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
-                TransitionPopupMenu.this.transition ), Messages
-                .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$
-            true, false );
-        confirmedDialog.show ();
-        if ( confirmedDialog.isConfirmed () )
-        {
-          TransitionPopupMenu.this.model.removeTransition (
-              TransitionPopupMenu.this.transition, true );
-        }
+        TransitionPopupMenu.this.parent.getLogic ().deleteTransition (
+            TransitionPopupMenu.this.transition );
       }
     } );
     add ( this.delete );

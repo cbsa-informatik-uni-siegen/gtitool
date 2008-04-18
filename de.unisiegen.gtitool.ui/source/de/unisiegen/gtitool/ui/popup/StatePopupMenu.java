@@ -16,7 +16,6 @@ import org.jgraph.graph.GraphModel;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
@@ -122,18 +121,7 @@ public final class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        ConfirmDialog confirmDialog = new ConfirmDialog (
-            StatePopupMenu.this.parent, Messages.getString (
-                "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
-                StatePopupMenu.this.state ), Messages
-                .getString ( "TransitionDialog.DeleteStateTitle" ), true, true, //$NON-NLS-1$
-            false );
-        confirmDialog.show ();
-        if ( confirmDialog.isConfirmed () )
-        {
-          StatePopupMenu.this.model.removeState ( StatePopupMenu.this.state,
-              true );
-        }
+        StatePopupMenu.this.machinePanel.deleteState(StatePopupMenu.this.state);
       }
     } );
     add ( this.delete );

@@ -187,9 +187,9 @@ public final class ProductionPopupMenu extends JPopupMenu
           for ( Production production : ProductionPopupMenu.this.productions )
           {
             ProductionPopupMenu.this.model.removeProduction ( production, true );
-            ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
-                .getGui () ).repaint ();
           }
+          ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
+              .getGui () ).repaint ();
         }
       }
     } );

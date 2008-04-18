@@ -16,7 +16,8 @@ import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
  * The {@link PrettyString} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: PrettyStringTableCellRenderer.java 811 2008-04-18 13:52:03Z
+ *          fehler $
  */
 public final class PrettyStringTableCellRenderer extends
     DefaultTableCellRenderer

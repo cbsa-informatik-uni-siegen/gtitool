@@ -41,6 +41,7 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
@@ -98,14 +99,9 @@ public final class MachinePanel implements EditorPanel
   public enum ActiveMouseAdapter
   {
     /**
-     * Mouse is choosen.
+     * Add Final State is choosen.
      */
-    MOUSE,
-
-    /**
-     * Add State is choosen.
-     */
-    ADD_STATE,
+    ADD_FINAL_STATE,
 
     /**
      * Add Start State is choosen.
@@ -113,14 +109,19 @@ public final class MachinePanel implements EditorPanel
     ADD_START_STATE,
 
     /**
-     * Add Final State is choosen.
+     * Add State is choosen.
      */
-    ADD_FINAL_STATE,
+    ADD_STATE,
 
     /**
      * Add Transition is choosen.
      */
-    ADD_TRANSITION;
+    ADD_TRANSITION,
+
+    /**
+     * Mouse is choosen.
+     */
+    MOUSE;
   }
 
 
@@ -159,51 +160,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link EventListenerList}.
+   * The {@link MouseAdapter} for the end icon in the toolbar.
    */
-  private EventListenerList listenerList = new EventListenerList ();
+  private MouseAdapter addEndState;
 
 
   /**
-   * The {@link MainWindowForm}.
+   * The {@link MouseAdapter} for the start icon in the toolbar.
    */
-  private MainWindowForm mainWindowForm;
-
-
-  /**
-   * The {@link MachinePanelForm}.
-   */
-  private MachinePanelForm gui;
-
-
-  /**
-   * The {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel model;
-
-
-  /**
-   * The {@link Machine}.
-   */
-  private Machine machine;
-
-
-  /**
-   * The {@link JGraph} containing the diagramm.
-   */
-  private JGraph graph;
-
-
-  /**
-   * The {@link DefaultGraphModel} for this graph.
-   */
-  private DefaultGraphModel graphModel;
-
-
-  /**
-   * The {@link MouseAdapter} for the mouse icon in the toolbar.
-   */
-  private MouseAdapter normalMouse;
+  private MouseAdapter addStartState;
 
 
   /**
@@ -219,45 +184,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link MouseAdapter} for the transition icon in the toolbar.
+   * The {@link Timer} of the auto step mode.
    */
-  private MouseMotionAdapter transitionMove;
+  private Timer autoStepTimer = null;
 
 
   /**
-   * The {@link MouseAdapter} for the start icon in the toolbar.
+   * Flag that indicates if a cell is edited.
    */
-  private MouseAdapter addStartState;
-
-
-  /**
-   * The {@link MouseAdapter} for the end icon in the toolbar.
-   */
-  private MouseAdapter addEndState;
-
-
-  /**
-   * The {@link MouseAdapter} for the enter word mode.
-   */
-  private MouseAdapter enterWordModeMouse;
-
-
-  /**
-   * The source state for a new {@link Transition}.
-   */
-  private DefaultStateView firstState;
-
-
-  /**
-   * The tmp state for a new Transition.
-   */
-  private DefaultGraphCell tmpState;
-
-
-  /**
-   * The tmp transition.
-   */
-  private DefaultEdge tmpTransition;
+  private boolean cellEditingMode = false;
 
 
   /**
@@ -267,15 +202,15 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The zoom factor for this graph .
+   * Flag signals if we are in the enter word mode
    */
-  private double zoomFactor;
+  private boolean enterWordMode = false;
 
 
   /**
-   * The {@link MachineConsoleTableModel} for the warning table.
+   * The {@link MouseAdapter} for the enter word mode.
    */
-  private MachineConsoleTableModel warningTableModel;
+  private MouseAdapter enterWordModeMouse;
 
 
   /**
@@ -285,21 +220,93 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * The {@link File} for this {@link MachinePanel}.
+   */
+  private File file;
+
+
+  /**
+   * The source state for a new {@link Transition}.
+   */
+  private DefaultStateView firstState;
+
+
+  /**
+   * The {@link JGraph} containing the diagramm.
+   */
+  private JGraph graph;
+
+
+  /**
+   * The {@link DefaultGraphModel} for this graph.
+   */
+  private DefaultGraphModel graphModel;
+
+
+  /**
+   * The {@link MachinePanelForm}.
+   */
+  private MachinePanelForm gui;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
+   * The {@link Machine}.
+   */
+  private Machine machine;
+
+
+  /**
+   * The {@link MainWindowForm}.
+   */
+  private MainWindowForm mainWindowForm;
+
+
+  /**
+   * The {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel model;
+
+
+  /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
+   * Flag signals if mouse button is down.
+   */
+  private boolean mouseDown = false;
+
+
+  /**
+   * The name of this {@link MachinePanel}.
+   */
+  private String name = null;
+
+
+  /**
+   * The {@link MouseAdapter} for the mouse icon in the toolbar.
+   */
+  private MouseAdapter normalMouse;
+
+
+  /**
    * The {@link JPopupMenu}.
    */
   private JPopupMenu popup;
 
 
   /**
-   * The {@link Timer} of the auto step mode.
+   * The {@link RedoUndoHandler}
    */
-  private Timer autoStepTimer = null;
-
-
-  /**
-   * The {@link File} for this {@link MachinePanel}.
-   */
-  private File file;
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -315,9 +322,27 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Flag signals if we are in the enter word mode
+   * The tmp state for a new Transition.
    */
-  private boolean enterWordMode = false;
+  private DefaultGraphCell tmpState;
+
+
+  /**
+   * The tmp transition.
+   */
+  private DefaultEdge tmpTransition;
+
+
+  /**
+   * The {@link MouseAdapter} for the transition icon in the toolbar.
+   */
+  private MouseMotionAdapter transitionMove;
+
+
+  /**
+   * The {@link MachineConsoleTableModel} for the warning table.
+   */
+  private MachineConsoleTableModel warningTableModel;
 
 
   /**
@@ -327,27 +352,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link ModifyStatusChangedListener}.
+   * The zoom factor for this graph .
    */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
-
-
-  /**
-   * The name of this {@link MachinePanel}.
-   */
-  private String name = null;
-
-
-  /**
-   * The {@link RedoUndoHandler}
-   */
-  private RedoUndoHandler redoUndoHandler;
-
-
-  /**
-   * Flag that indicates if a cell is edited.
-   */
-  private boolean cellEditingMode = false;
+  private double zoomFactor;
 
 
   /**
@@ -425,8 +432,7 @@ public final class MachinePanel implements EditorPanel
     // Reset modify
     resetModify ();
   }
-
-
+  
   /**
    * Add a new Error
    * 
@@ -459,8 +465,47 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.tmpState = null;
           MachinePanel.this.dragged = false;
         }
+        else if ( !MachinePanel.this.mouseDown && event.getKeyCode () == KeyEvent.VK_DELETE )
+        {
+          Object object = MachinePanel.this.graph.getSelectionCell ();
+
+          if ( object instanceof DefaultStateView )
+          {
+            deleteState ( ( DefaultStateView ) object );
+          }
+          else if ( object instanceof DefaultTransitionView )
+          {
+            deleteTransition ( ( DefaultTransitionView ) object );
+          }
+        }
       }
     } );
+    
+    this.graph.addMouseListener ( new MouseAdapter(){
+      
+      /**
+       * Invoked when a mouse button has been pressed on a component.
+       */
+      @SuppressWarnings("synthetic-access")
+      @Override
+      public void mousePressed(@SuppressWarnings("unused")
+      MouseEvent e) 
+      {
+        MachinePanel.this.mouseDown = true;
+      }
+
+      /**
+       * Invoked when a mouse button has been released on a component.
+       */
+      @Override
+      @SuppressWarnings("synthetic-access")
+      public void mouseReleased(@SuppressWarnings("unused")
+      MouseEvent e) 
+      {
+        MachinePanel.this.mouseDown = false;
+      }
+      
+    });
 
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -669,8 +714,48 @@ public final class MachinePanel implements EditorPanel
   private final TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView transitionView )
   {
-    return new TransitionPopupMenu ( this.gui, this.model, transitionView,
-        this.machine.getAlphabet (), this.machine.getPushDownAlphabet () );
+    return new TransitionPopupMenu ( this.gui, transitionView, this.machine
+        .getAlphabet (), this.machine.getPushDownAlphabet () );
+  }
+
+
+  /**
+   * Delete the given {@link DefaultStateView}.
+   * 
+   * @param state the {@link DefaultStateView} to delete.
+   */
+  public void deleteState ( DefaultStateView state )
+  {
+    ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+        Messages.getString ( "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
+            state ),
+        Messages.getString ( "TransitionDialog.DeleteStateTitle" ), true, true, //$NON-NLS-1$
+        false );
+    confirmDialog.show ();
+    if ( confirmDialog.isConfirmed () )
+    {
+      this.model.removeState ( state, true );
+    }
+  }
+
+
+  /**
+   * Delete the given {@link DefaultTransitionView}.
+   * 
+   * @param transition the {@link DefaultTransitionView} to delete.
+   */
+  public void deleteTransition ( DefaultTransitionView transition )
+  {
+    ConfirmDialog confirmedDialog = new ConfirmDialog ( this.mainWindowForm,
+        Messages.getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
+            transition ), Messages
+            .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$
+        true, false );
+    confirmedDialog.show ();
+    if ( confirmedDialog.isConfirmed () )
+    {
+      this.model.removeTransition ( transition, true );
+    }
   }
 
 
@@ -925,8 +1010,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleConsoleTableValueChanged (
-      ListSelectionEvent event )
+  public final void handleConsoleTableValueChanged ( ListSelectionEvent event )
   {
     JTable table;
     if ( event.getSource () == this.gui.jGTITableErrors.getSelectionModel () )
@@ -1640,6 +1724,8 @@ public final class MachinePanel implements EditorPanel
   {
     this.machine = this.model.getMachine ();
     this.graph = this.model.getJGraph ();
+    this.graph.getSelectionModel ().setSelectionMode (
+        GraphSelectionModel.SINGLE_GRAPH_SELECTION );
     this.graphModel = this.model.getGraphModel ();
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;

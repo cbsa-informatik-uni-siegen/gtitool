@@ -144,7 +144,7 @@ public final class MachinePanel implements EditorPanel
 
         public void run ()
         {
-          MachinePanel.this.handleWordNextStep ();
+          handleWordNextStep ();
         }
       } );
     }
@@ -412,6 +412,7 @@ public final class MachinePanel implements EditorPanel
         } );
 
     initialize ();
+    initializeMachineTable ();
     addListener ();
     addGraphListener ();
 
@@ -1213,8 +1214,7 @@ public final class MachinePanel implements EditorPanel
     AlphabetDialog alphabetDialog = new AlphabetDialog ( this.mainWindowForm,
         this.machine );
     alphabetDialog.show ();
-    this.gui.jGTITableMachine.setColumnModel ( this.machine
-        .getTableColumnModel () );
+    initializeMachineTable ();
   }
 
 
@@ -1631,7 +1631,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Initialize the machine panel
+   * Initialize the {@link MachinePanel}.
    */
   private final void initialize ()
   {
@@ -1709,6 +1709,19 @@ public final class MachinePanel implements EditorPanel
           }
 
         } );
+
+    this.gui.wordPanel.setVisible ( false );
+    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
+    this.gui.wordPanel.setPushDownAlphabet ( this.machine
+        .getPushDownAlphabet () );
+  }
+
+
+  /**
+   * Initializes the {@link Machine} table.
+   */
+  private final void initializeMachineTable ()
+  {
     this.gui.jGTITableMachine.setModel ( this.machine );
     this.gui.jGTITableMachine.setColumnModel ( this.machine
         .getTableColumnModel () );
@@ -1777,11 +1790,6 @@ public final class MachinePanel implements EditorPanel
         }
       } );
     }
-
-    this.gui.wordPanel.setVisible ( false );
-    this.gui.wordPanel.setAlphabet ( this.machine.getAlphabet () );
-    this.gui.wordPanel.setPushDownAlphabet ( this.machine
-        .getPushDownAlphabet () );
   }
 
 

@@ -15,10 +15,10 @@ import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 
 
 /**
- * The production cell renderer.
+ * The {@link PrettyString} {@link JTableHeader} {@link TableCellRenderer}.
  * 
- * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public final class PrettyStringTableHeaderCellRenderer extends
     DefaultTableCellRenderer

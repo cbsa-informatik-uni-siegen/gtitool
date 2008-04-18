@@ -89,6 +89,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Returns the {@link HistoryItem}.
+   * 
+   * @return The {@link HistoryItem}.
+   */
+  public ArrayList < HistoryItem > getHistory ();
+
+
+  /**
    * The available machines.
    */
   public static final String [] AVAILABLE_MACHINES =

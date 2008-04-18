@@ -19,7 +19,7 @@ public class StyledAlphabetParserPanelTest
 {
 
   /**
-   * The main methos.
+   * The main method.
    * 
    * @param arguments The arguments.
    */

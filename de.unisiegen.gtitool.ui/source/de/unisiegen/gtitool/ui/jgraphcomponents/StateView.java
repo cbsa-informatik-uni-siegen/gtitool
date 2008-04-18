@@ -13,6 +13,8 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import javax.swing.JComponent;
+
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.EdgeView;
@@ -33,13 +35,14 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public class StateView extends VertexView
+public final class StateView extends VertexView
 {
 
   /**
    * The {@link JGraph} ellipse renderer.
    * 
    * @author Benjamin Mies
+   * @author Christian Fehler
    */
   public static class JGraphEllipseRenderer extends VertexRenderer
   {
@@ -98,14 +101,16 @@ public class StateView extends VertexView
     private Color preferenceTransition;
 
 
-    /** The {@link StateView} */
+    /**
+     * The {@link StateView}.
+     */
     private StateView stateView;
 
 
     /**
-     * Allocate a new {@link JGraphEllipseRenderer}
+     * Allocates a new {@link JGraphEllipseRenderer}.
      * 
-     * @param stateView the {@link StateView}
+     * @param stateView The {@link StateView}.
      */
     public JGraphEllipseRenderer ( StateView stateView )
     {
@@ -202,10 +207,10 @@ public class StateView extends VertexView
     /**
      * {@inheritDoc}
      * 
-     * @see javax.swing.JComponent#getPreferredSize()
+     * @see JComponent#getPreferredSize()
      */
     @Override
-    public Dimension getPreferredSize ()
+    public final Dimension getPreferredSize ()
     {
       Dimension d = super.getPreferredSize ();
       d.width += d.width / 8;
@@ -217,10 +222,10 @@ public class StateView extends VertexView
     /**
      * {@inheritDoc}
      * 
-     * @see org.jgraph.graph.VertexRenderer#paint(java.awt.Graphics)
+     * @see VertexRenderer#paint(Graphics)
      */
     @Override
-    public void paint ( Graphics g )
+    public final void paint ( Graphics g )
     {
       State state = null;
       if ( this.stateView.getCell () instanceof DefaultStateView )
@@ -358,7 +363,7 @@ public class StateView extends VertexView
         // Manipulate the clipping area
         g2.setClip ( -100, 0, 150, 70 );
 
-        // Paint an arrow and a string "start" if state is start state
+        // Paint an arrow and a string start if state is start state
         g.drawLine ( -50, 35, 0, 35 );
         g.fillPolygon ( new int []
         { -6, -6, 0 }, new int []
@@ -376,13 +381,13 @@ public class StateView extends VertexView
 
 
   /**
-   * The renderer for this view
+   * The {@link JGraphEllipseRenderer} for this view.
    */
   public transient JGraphEllipseRenderer ellipseRenderer;
 
 
   /**
-   * Create a new {@link StateView}
+   * Allocates a new {@link StateView}.
    */
   public StateView ()
   {
@@ -392,9 +397,9 @@ public class StateView extends VertexView
 
 
   /**
-   * Create a new {@link StateView}
+   * Create a new {@link StateView}.
    * 
-   * @param cell the Cell Object for this view
+   * @param cell The cell {@link Object} for this view.
    */
   public StateView ( Object cell )
   {
@@ -406,12 +411,12 @@ public class StateView extends VertexView
   /**
    * {@inheritDoc}
    * 
-   * @see org.jgraph.graph.VertexView#getPerimeterPoint(org.jgraph.graph.EdgeView,
-   *      java.awt.geom.Point2D, java.awt.geom.Point2D)
+   * @see VertexView#getPerimeterPoint(EdgeView, Point2D, Point2D)
    */
   @Override
-  @SuppressWarnings ( "unused" )
-  public Point2D getPerimeterPoint ( EdgeView edge, Point2D source, Point2D p )
+  public final Point2D getPerimeterPoint ( @SuppressWarnings ( "unused" )
+  EdgeView edge, @SuppressWarnings ( "unused" )
+  Point2D source, Point2D p )
   {
     Rectangle2D r = getBounds ();
 
@@ -483,7 +488,7 @@ public class StateView extends VertexView
    * @see VertexView#getRenderer()
    */
   @Override
-  public CellViewRenderer getRenderer ()
+  public final CellViewRenderer getRenderer ()
   {
     return this.ellipseRenderer;
   }

@@ -29,7 +29,7 @@ public class StyledProductionParserPanelTest
 {
 
   /**
-   * The main methos.
+   * The main method.
    * 
    * @param arguments The arguments.
    */

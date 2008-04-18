@@ -24,7 +24,7 @@ public class StyledStateSetParserPanelTest
 {
 
   /**
-   * The main methos.
+   * The main method.
    * 
    * @param arguments The arguments.
    */

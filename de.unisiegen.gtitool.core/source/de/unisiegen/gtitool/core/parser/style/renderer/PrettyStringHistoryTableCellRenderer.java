@@ -2,36 +2,37 @@ package de.unisiegen.gtitool.core.parser.style.renderer;
 
 
 import java.awt.Component;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.machines.HistoryItem;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
+import de.unisiegen.gtitool.core.parser.style.PrettyStringHistoryComponent;
 
 
 /**
- * The {@link PrettyString} {@link TableCellRenderer}.
+ * The {@link PrettyString} {@link HistoryItem} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public final class PrettyStringTableCellRenderer extends
+public final class PrettyStringHistoryTableCellRenderer extends
     DefaultTableCellRenderer
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 8028186422772719475L;
+  private static final long serialVersionUID = 2083830686506423666L;
 
 
   /**
-   * Allocates a new {@link PrettyStringTableCellRenderer}.
+   * Allocates a new {@link PrettyStringHistoryTableCellRenderer}.
    */
-  public PrettyStringTableCellRenderer ()
+  public PrettyStringHistoryTableCellRenderer ()
   {
     super ();
   }
@@ -43,6 +44,7 @@ public final class PrettyStringTableCellRenderer extends
    * @see TableCellRenderer#getTableCellRendererComponent(JTable, Object,
    *      boolean, boolean, int, int)
    */
+  @SuppressWarnings ( "unchecked" )
   @Override
   public Component getTableCellRendererComponent ( JTable table, Object value,
       boolean isSelected, @SuppressWarnings ( "unused" )
@@ -50,21 +52,20 @@ public final class PrettyStringTableCellRenderer extends
       int row, @SuppressWarnings ( "unused" )
       int column )
   {
-    PrettyString prettyString = null;
-    if ( value instanceof PrettyPrintable )
+    ArrayList < HistoryItem > historyItemList = null;
+    if ( value instanceof ArrayList )
     {
-      prettyString = ( ( PrettyPrintable ) value ).toPrettyString ();
-    }
-    else if ( value instanceof PrettyString )
-    {
-      prettyString = ( PrettyString ) value;
+      historyItemList = ( ( ArrayList ) value );
     }
     else
     {
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
     }
 
-    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
+    PrettyStringHistoryComponent component = new PrettyStringHistoryComponent (
+        historyItemList );
+    
+    table.setRowHeight ( row, component.getRowHeight () );
 
     if ( isSelected )
     {

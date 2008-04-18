@@ -1,7 +1,3 @@
-/*
- * @(#)EdgeRenderer.java 1.0 03-JUL-04 Copyright (c) 2001-2005 Gaudenz Alder See
- * LICENSE file in distribution for licensing details of this source file
- */
 package org.jgraph.graph;
 
 

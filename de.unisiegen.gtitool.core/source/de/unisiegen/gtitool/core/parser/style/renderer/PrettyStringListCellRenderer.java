@@ -5,6 +5,7 @@ import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
@@ -12,10 +13,10 @@ import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 
 
 /**
- * The {@link PrettyPrintable} list cell renderer.
+ * The {@link PrettyPrintable} {@link ListCellRenderer}.
  * 
- * @author Benjamin Mies
  * @author Christian Fehler
+ * @version $Id$
  */
 public class PrettyStringListCellRenderer extends DefaultListCellRenderer
 {

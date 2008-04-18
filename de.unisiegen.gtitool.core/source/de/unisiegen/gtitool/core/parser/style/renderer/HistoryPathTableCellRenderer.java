@@ -2,24 +2,23 @@ package de.unisiegen.gtitool.core.parser.style.renderer;
 
 
 import java.awt.Component;
-import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import de.unisiegen.gtitool.core.machines.HistoryItem;
-import de.unisiegen.gtitool.core.parser.style.PrettyString;
-import de.unisiegen.gtitool.core.parser.style.PrettyStringHistoryComponent;
+import de.unisiegen.gtitool.core.machines.HistoryPath;
+import de.unisiegen.gtitool.core.parser.style.HistoryPathComponent;
 
 
 /**
- * The {@link PrettyString} {@link HistoryItem} {@link TableCellRenderer}.
+ * The {@link HistoryPath} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: PrettyStringHistoryTableCellRenderer.java 811 2008-04-18
+ *          13:52:03Z fehler $
  */
-public final class PrettyStringHistoryTableCellRenderer extends
+public final class HistoryPathTableCellRenderer extends
     DefaultTableCellRenderer
 {
 
@@ -30,9 +29,9 @@ public final class PrettyStringHistoryTableCellRenderer extends
 
 
   /**
-   * Allocates a new {@link PrettyStringHistoryTableCellRenderer}.
+   * Allocates a new {@link HistoryPathTableCellRenderer}.
    */
-  public PrettyStringHistoryTableCellRenderer ()
+  public HistoryPathTableCellRenderer ()
   {
     super ();
   }
@@ -52,19 +51,18 @@ public final class PrettyStringHistoryTableCellRenderer extends
       int row, @SuppressWarnings ( "unused" )
       int column )
   {
-    ArrayList < HistoryItem > historyItemList = null;
-    if ( value instanceof ArrayList )
+    HistoryPath historyPath = null;
+    if ( value instanceof HistoryPath )
     {
-      historyItemList = ( ( ArrayList ) value );
+      historyPath = ( ( HistoryPath ) value );
     }
     else
     {
-      throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "the value is not a history path" ); //$NON-NLS-1$
     }
 
-    PrettyStringHistoryComponent component = new PrettyStringHistoryComponent (
-        historyItemList );
-    
+    HistoryPathComponent component = new HistoryPathComponent ( historyPath );
+
     table.setRowHeight ( row, component.getRowHeight () );
 
     if ( isSelected )

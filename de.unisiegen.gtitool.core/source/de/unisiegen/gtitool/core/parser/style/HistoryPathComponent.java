@@ -6,28 +6,23 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
-import de.unisiegen.gtitool.core.entities.DefaultTransition;
-import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
-import de.unisiegen.gtitool.core.machines.HistoryItem;
+import de.unisiegen.gtitool.core.machines.HistoryPath;
 
 
 /**
- * This class implements the {@link PrettyPrintable} {@link HistoryItem}
+ * This class implements the {@link PrettyPrintable} {@link HistoryPath}
  * {@link Component}.
  * 
  * @author Christian Fehler
  */
-public final class PrettyStringHistoryComponent extends JLabel
+public final class HistoryPathComponent extends JLabel
 {
 
   // TODOCF
@@ -61,9 +56,9 @@ public final class PrettyStringHistoryComponent extends JLabel
 
 
   /**
-   * The {@link HistoryItem} list.
+   * The {@link HistoryPath}.
    */
-  private ArrayList < HistoryItem > historyItemList;
+  private HistoryPath historyPath;
 
 
   /**
@@ -85,17 +80,16 @@ public final class PrettyStringHistoryComponent extends JLabel
 
 
   /**
-   * Initializes the {@link PrettyStringHistoryComponent}.
+   * Initializes the {@link HistoryPathComponent}.
    * 
-   * @param historyItemList The {@link HistoryItem} list.
+   * @param historyPath The {@link HistoryPath}.
    */
-  public PrettyStringHistoryComponent (
-      ArrayList < HistoryItem > historyItemList )
+  public HistoryPathComponent ( HistoryPath historyPath )
   {
     super ();
     setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
 
-    this.historyItemList = historyItemList;
+    this.historyPath = historyPath;
 
     // Used to calculate the preferered size.
     setText ( "Component" ); //$NON-NLS-1$
@@ -158,30 +152,21 @@ public final class PrettyStringHistoryComponent extends JLabel
     this.xPosition = 0;
     this.yPosition = getHeight ();
 
-    for ( HistoryItem currentHistoryItem : this.historyItemList )
+    for ( int i = 0 ; i < this.historyPath.getTransitionList ().size () ; i++ )
     {
-      State state = currentHistoryItem.getStateSet ().first ();
-      Transition transition = null;
-      try
-      {
-        transition = new DefaultTransition ( new DefaultWord (),
-            new DefaultWord (), currentHistoryItem.getSymbolSet () );
-      }
-      catch ( TransitionSymbolNotInAlphabetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-      catch ( TransitionSymbolOnlyOneTimeException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-
-      paintState ( state, g );
+      // State
+      paintState ( this.historyPath.getStateList ().get ( i ), g );
+      // Space
       this.xPosition += SPACE_WIDTH;
-      paintTransition ( transition, g );
+      // Transition
+      paintTransition ( this.historyPath.getTransitionList ().get ( i ), g );
+      // Space
       this.xPosition += SPACE_WIDTH;
+    }
+    if ( this.historyPath.getStateList ().size () > 0 )
+    {
+      paintState ( this.historyPath.getStateList ().get (
+          this.historyPath.getStateList ().size () - 1 ), g );
     }
   }
 

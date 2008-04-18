@@ -13,6 +13,7 @@ import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
@@ -20,10 +21,14 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
+import de.unisiegen.gtitool.ui.redoundo.TransitionChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
@@ -239,20 +244,53 @@ public final class TransitionDialog
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
+   * The {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel model;
+
+
+  /**
+   * The x value of the new {@link DefaultStateView}.
+   */
+  private double xPosition;
+
+
+  /**
+   * The y value of the new {@link DefaultStateView}.
+   */
+  private double yPosition;
+
+
+  /**
+   * The zoom factor of the {@link MachinePanel}.
+   */
+  private double zoomFactor;
+
+
+  /**
    * Creates a new {@link TransitionDialog}.
    * 
    * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
-   * @param stateBegin The {@link State} where the {@link Transition} begins.
-   * @param stateEnd The {@link State} where the {@link Transition} ends.
+   * @param transition The {@link Transition}.
    */
-  public TransitionDialog ( JFrame parent, Alphabet alphabet,
-      Alphabet pushDownAlphabet, State stateBegin, State stateEnd )
+  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+      Alphabet alphabet, Alphabet pushDownAlphabet, Transition transition )
   {
-    this ( parent, alphabet, pushDownAlphabet, new DefaultWord (),
-        new DefaultWord (), new TreeSet < Symbol > (), stateBegin, stateEnd );
+    this ( parent, machinePanel, alphabet, pushDownAlphabet, transition
+        .getStateBegin (), transition.getStateEnd (), transition
+        .getPushDownWordRead (), transition.getPushDownWordWrite (), transition
+        .getSymbol () );
+    this.transition = transition;
   }
 
 
@@ -260,31 +298,65 @@ public final class TransitionDialog
    * Creates a new {@link TransitionDialog}.
    * 
    * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
+   * @param model The {@link DefaultMachineModel}.
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
-   * @param pushDownWordRead The {@link Word} which is read from the
-   *          {@link Stack}.
-   * @param pushDownWordWrite The {@link Word} which should be written on the
-   *          {@link Stack}.
-   * @param overChangeSymbolSet The change over {@link Symbol} set.
    * @param stateBegin The {@link State} where the {@link Transition} begins.
    * @param stateEnd The {@link State} where the {@link Transition} ends.
+   * @param pushDownWordRead The push down word to read.
+   * @param pushDownWordWrite The push down word to write.
+   * @param symbols The Symbols of the {@link Transition}.
+   * @param x The x value of the new {@link DefaultStateView}.
+   * @param y The y value of the new {@link DefaultStateView}.
+   * @param zoomFactor The zoom factor of the {@link MachinePanel}.
    */
-  public TransitionDialog ( JFrame parent, Alphabet alphabet,
-      Alphabet pushDownAlphabet, Word pushDownWordRead, Word pushDownWordWrite,
-      TreeSet < Symbol > overChangeSymbolSet, State stateBegin, State stateEnd )
+  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+      DefaultMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
+      State stateBegin, State stateEnd, Word pushDownWordRead,
+      Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
+      double zoomFactor )
+  {
+    this ( parent, machinePanel, alphabet, pushDownAlphabet, stateBegin,
+        stateEnd, pushDownWordRead, pushDownWordWrite, symbols );
+    this.model = model;
+    this.xPosition = x;
+    this.yPosition = y;
+    this.zoomFactor = zoomFactor;
+  }
+
+
+  /**
+   * Creates a new {@link TransitionDialog}.
+   * 
+   * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
+   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
+   * @param pushDownAlphabet The push down {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param stateBegin The {@link State} where the {@link Transition} begins.
+   * @param stateEnd The {@link State} where the {@link Transition} ends.
+   * @param pushDownWordRead The push down word to read.
+   * @param pushDownWordWrite The push down word to write.
+   * @param symbols The Symbols of the {@link Transition}.
+   */
+  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+      Alphabet alphabet, Alphabet pushDownAlphabet, State stateBegin,
+      State stateEnd, Word pushDownWordRead, Word pushDownWordWrite,
+      TreeSet < Symbol > symbols )
   {
     this.parent = parent;
+    this.machinePanel = machinePanel;
     this.alphabet = alphabet;
     this.pushDownAlphabet = pushDownAlphabet;
+
     // PushDownWordRead
     setPushDownWordRead ( pushDownWordRead );
     // PushDownWordWrite
     setPushDownWordWrite ( pushDownWordWrite );
     this.stateBegin = stateBegin;
     this.stateEnd = stateEnd;
-    this.transition = null;
     this.gui = new TransitionDialogForm ( this, parent );
     String targetName = this.stateEnd == null ? Messages
         .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
@@ -341,7 +413,7 @@ public final class TransitionDialog
     this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
-    setOverChangeSet ( overChangeSymbolSet );
+    setOverChangeSet ( symbols );
 
     // Set the push down alphabet
     this.gui.styledAlphabetParserPanelPushDownAlphabet
@@ -350,14 +422,14 @@ public final class TransitionDialog
     this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
 
     // Set the push down read and write word
-    if ( pushDownWordRead != null )
+    if ( this.pushDownWordRead != null )
     {
-      this.gui.styledWordParserPanelRead.setText ( pushDownWordRead );
+      this.gui.styledWordParserPanelRead.setText ( this.pushDownWordRead );
     }
     this.gui.styledWordParserPanelRead.parse ();
-    if ( pushDownWordWrite != null )
+    if ( this.pushDownWordWrite != null )
     {
-      this.gui.styledWordParserPanelWrite.setText ( pushDownWordWrite );
+      this.gui.styledWordParserPanelWrite.setText ( this.pushDownWordWrite );
     }
     this.gui.styledWordParserPanelWrite.parse ();
 
@@ -452,17 +524,6 @@ public final class TransitionDialog
 
 
   /**
-   * Get the {@link Transition} of this dialog.
-   * 
-   * @return The {@link Transition}.
-   */
-  public final Transition getTransition ()
-  {
-    return this.transition;
-  }
-
-
-  /**
    * Handles cancel button pressed.
    */
   public final void handleCancel ()
@@ -543,6 +604,59 @@ public final class TransitionDialog
   {
     this.confirmed = true;
     this.gui.setVisible ( false );
+
+    if ( this.transition == null )
+    {
+      handleNewTransition ();
+    }
+    else
+    {
+      handleUpdateTransition ();
+    }
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Update the {@link Transition}.
+   */
+  private void handleUpdateTransition ()
+  {
+    TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
+    oldSymbols.addAll ( this.transition.getSymbol () );
+
+    Word oldPushDownWordRead = this.transition.getPushDownWordRead ();
+    Word oldPushDownWordWrite = this.transition.getPushDownWordWrite ();
+
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    for ( Symbol symbol : this.modelChangeOverSet )
+    {
+      symbols.add ( symbol );
+    }
+    try
+    {
+      this.transition.setPushDownWordRead ( this.pushDownWordRead );
+      this.transition.setPushDownWordWrite ( this.pushDownWordWrite );
+      this.transition.clear ();
+      this.transition.add ( symbols );
+
+      TransitionChangedItem item = new TransitionChangedItem ( this.transition,
+          oldPushDownWordRead, oldPushDownWordWrite, oldSymbols );
+      this.machinePanel.getRedoUndoHandler ().addItem ( item );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * Create a new {@link Transition}.
+   */
+  private void handleNewTransition ()
+  {
     try
     {
       ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
@@ -555,17 +669,43 @@ public final class TransitionDialog
       this.transition.setAlphabet ( this.alphabet );
       this.transition.setPushDownAlphabet ( this.pushDownAlphabet );
       this.transition.setStateBegin ( this.stateBegin );
+
+      boolean nullTarget = false;
+
+      DefaultStateView target;
+
       if ( this.stateEnd != null )
       {
         this.transition.setStateEnd ( this.stateEnd );
+        target = this.model.getStateById ( this.stateEnd.getId () );
       }
+      else
+      {
+        State newState;
+        newState = new DefaultState ( this.alphabet, this.pushDownAlphabet,
+            false, false );
+        target = this.model.createStateView ( this.xPosition / this.zoomFactor,
+            this.yPosition / this.zoomFactor, newState, false );
+        this.transition.setStateEnd ( target.getState () );
+        nullTarget = true;
+        this.stateEnd = target.getState ();
+
+      }
+
+      this.model.createTransitionView ( this.transition, this.model
+          .getStateById ( this.stateBegin.getId () ), target, nullTarget, true,
+          true );
     }
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    this.gui.dispose ();
+    catch ( StateException e1 )
+    {
+      e1.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 

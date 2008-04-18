@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.CellEditor;
@@ -43,6 +44,7 @@ import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -50,7 +52,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
@@ -668,9 +669,8 @@ public final class MachinePanel implements EditorPanel
   private final TransitionPopupMenu createTransitionPopupMenu (
       DefaultTransitionView transitionView )
   {
-    return new TransitionPopupMenu ( this.graph, this.gui, this.model,
-        transitionView, this.machine.getAlphabet (), this.machine
-            .getPushDownAlphabet () );
+    return new TransitionPopupMenu ( this.gui, this.model, transitionView,
+        this.machine.getAlphabet (), this.machine.getPushDownAlphabet () );
   }
 
 
@@ -1066,6 +1066,8 @@ public final class MachinePanel implements EditorPanel
   {
     this.redoUndoHandler.redo ();
     fireModifyStatusChanged ( false );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -1303,6 +1305,8 @@ public final class MachinePanel implements EditorPanel
   {
     this.redoUndoHandler.undo ();
     fireModifyStatusChanged ( false );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 
@@ -1830,35 +1834,11 @@ public final class MachinePanel implements EditorPanel
             DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
             Transition usedTransition = transitionView.getTransition ();
             TransitionDialog transitionDialog = new TransitionDialog (
-                MachinePanel.this.mainWindowForm, MachinePanel.this.machine
-                    .getAlphabet (), MachinePanel.this.machine
-                    .getPushDownAlphabet (), usedTransition
-                    .getPushDownWordRead (), usedTransition
-                    .getPushDownWordWrite (), usedTransition.getSymbol (),
-                transitionView.getSourceView ().getState (), transitionView
-                    .getTargetView ().getState () );
+                MachinePanel.this.mainWindowForm, MachinePanel.this,
+                MachinePanel.this.machine.getAlphabet (),
+                MachinePanel.this.machine.getPushDownAlphabet (),
+                usedTransition );
             transitionDialog.show ();
-            if ( transitionDialog.isConfirmed () )
-            {
-              Transition newTransition = transitionDialog.getTransition ();
-              MachinePanel.this.graph.getGraphLayoutCache ()
-                  .valueForCellChanged ( transitionView, newTransition );
-              Transition oldTransition = transitionView.getTransition ();
-              oldTransition.clear ();
-              try
-              {
-                oldTransition.add ( newTransition );
-                oldTransition.setPushDownWordRead ( newTransition
-                    .getPushDownWordRead () );
-                oldTransition.setPushDownWordWrite ( newTransition
-                    .getPushDownWordWrite () );
-              }
-              catch ( TransitionException exc )
-              {
-                exc.printStackTrace ();
-                System.exit ( 1 );
-              }
-            }
           }
           else
           {
@@ -2096,43 +2076,16 @@ public final class MachinePanel implements EditorPanel
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
           }
           TransitionDialog transitionDialog = new TransitionDialog (
-              MachinePanel.this.mainWindowForm, MachinePanel.this.machine
-                  .getAlphabet (), MachinePanel.this.machine
-                  .getPushDownAlphabet (), MachinePanel.this.firstState
-                  .getState (), target == null ? null : target.getState () );
+              MachinePanel.this.mainWindowForm, MachinePanel.this,
+              MachinePanel.this.model,
+              MachinePanel.this.machine.getAlphabet (),
+              MachinePanel.this.machine.getPushDownAlphabet (),
+              MachinePanel.this.firstState.getState (), target == null ? null
+                  : target.getState (), new DefaultWord (), new DefaultWord (),
+              new TreeSet < Symbol > (), event.getPoint ().x,
+              event.getPoint ().y, MachinePanel.this.zoomFactor );
           transitionDialog.show ();
-          if ( transitionDialog.isConfirmed () )
-          {
-            Transition newTransition = transitionDialog.getTransition ();
-            boolean nullTarget = false;
-            if ( target == null )
-            {
 
-              try
-              {
-                State newState = new DefaultState ( MachinePanel.this.machine
-                    .getAlphabet (), MachinePanel.this.machine
-                    .getPushDownAlphabet (), false, false );
-                target = MachinePanel.this.model.createStateView ( event
-                    .getPoint ().x
-                    / MachinePanel.this.zoomFactor, event.getPoint ().y
-                    / MachinePanel.this.zoomFactor, newState, false );
-                newTransition.setStateEnd ( target.getState () );
-                nullTarget = true;
-
-              }
-              catch ( StateException e1 )
-              {
-                e1.printStackTrace ();
-                System.exit ( 1 );
-                return;
-              }
-
-            }
-
-            MachinePanel.this.model.createTransitionView ( newTransition,
-                MachinePanel.this.firstState, target, nullTarget, true, true );
-          }
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
             case WITHOUT_RETURN_TO_MOUSE :
@@ -2189,40 +2142,14 @@ public final class MachinePanel implements EditorPanel
         }
 
         TransitionDialog transitionDialog = new TransitionDialog (
-            MachinePanel.this.mainWindowForm, MachinePanel.this.machine
-                .getAlphabet (), MachinePanel.this.machine
-                .getPushDownAlphabet (), MachinePanel.this.firstState
-                .getState (), target == null ? null : target.getState () );
+            MachinePanel.this.mainWindowForm, MachinePanel.this,
+            MachinePanel.this.model, MachinePanel.this.machine.getAlphabet (),
+            MachinePanel.this.machine.getPushDownAlphabet (),
+            MachinePanel.this.firstState.getState (), target == null ? null
+                : target.getState (), new DefaultWord (), new DefaultWord (),
+            new TreeSet < Symbol > (), event.getPoint ().x,
+            event.getPoint ().y, MachinePanel.this.zoomFactor );
         transitionDialog.show ();
-        if ( transitionDialog.isConfirmed () )
-        {
-          boolean nullTarget = false;
-          Transition newTransition = transitionDialog.getTransition ();
-          if ( target == null )
-          {
-            try
-            {
-              State newState;
-              newState = new DefaultState ( MachinePanel.this.machine
-                  .getAlphabet (), MachinePanel.this.machine
-                  .getPushDownAlphabet (), false, false );
-              target = MachinePanel.this.model.createStateView ( event
-                  .getPoint ().x
-                  / MachinePanel.this.zoomFactor, event.getPoint ().y
-                  / MachinePanel.this.zoomFactor, newState, false );
-              newTransition.setStateEnd ( target.getState () );
-              nullTarget = true;
-            }
-            catch ( StateException e1 )
-            {
-              e1.printStackTrace ();
-              System.exit ( 1 );
-            }
-          }
-
-          MachinePanel.this.model.createTransitionView ( newTransition,
-              MachinePanel.this.firstState, target, nullTarget, true, true );
-        }
         switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :

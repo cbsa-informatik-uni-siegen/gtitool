@@ -4,7 +4,6 @@ CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
 
 BM		- Redo / Undo:
-			- Transition bearbeiten
 			- Im MachineModel gibt es einige TODOBMs, die implementiert werden
 			  möchten 
 BM		- Bei Fehler Produktion highlighten

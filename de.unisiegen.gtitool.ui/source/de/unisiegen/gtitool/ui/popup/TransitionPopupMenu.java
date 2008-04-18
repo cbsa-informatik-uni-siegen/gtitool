@@ -10,11 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import org.jgraph.JGraph;
-
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
@@ -38,12 +35,6 @@ public final class TransitionPopupMenu extends JPopupMenu
    * The serial version uid.
    */
   private static final long serialVersionUID = 3541518527653662496L;
-
-
-  /**
-   * The {@link JGraph}.
-   */
-  private JGraph graph;
 
 
   /**
@@ -91,18 +82,16 @@ public final class TransitionPopupMenu extends JPopupMenu
   /**
    * Allocates a new {@link StatePopupMenu}.
    * 
-   * @param jGraph The {@link JGraph}.
    * @param parent The parent panel.
    * @param model the model containing the state.
    * @param transition the transition to open the popup menu.
    * @param alphabet The {@link Alphabet}.
    * @param pushDownAlphabet The push down {@link Alphabet}.
    */
-  public TransitionPopupMenu ( JGraph jGraph, MachinePanelForm parent,
+  public TransitionPopupMenu ( MachinePanelForm parent,
       DefaultMachineModel model, DefaultTransitionView transition,
       Alphabet alphabet, Alphabet pushDownAlphabet )
   {
-    this.graph = jGraph;
     this.parent = parent;
     this.alphabet = alphabet;
     this.pushDownAlphabet = pushDownAlphabet;
@@ -144,9 +133,9 @@ public final class TransitionPopupMenu extends JPopupMenu
       ActionEvent event )
       {
         ConfirmDialog confirmedDialog = new ConfirmDialog (
-            TransitionPopupMenu.this.parent.getLogic ().getMainWindowForm (), Messages
-                .getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
-                    TransitionPopupMenu.this.transition ), Messages
+            TransitionPopupMenu.this.parent.getLogic ().getMainWindowForm (),
+            Messages.getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
+                TransitionPopupMenu.this.transition ), Messages
                 .getString ( "TransitionDialog.DeleteTransitionTitle" ), true, //$NON-NLS-1$
             true, false );
         confirmedDialog.show ();
@@ -173,38 +162,11 @@ public final class TransitionPopupMenu extends JPopupMenu
         JFrame window = ( JFrame ) SwingUtilities
             .getWindowAncestor ( TransitionPopupMenu.this.parent );
         TransitionDialog transitionDialog = new TransitionDialog ( window,
+            TransitionPopupMenu.this.parent.getLogic (),
             TransitionPopupMenu.this.alphabet,
             TransitionPopupMenu.this.pushDownAlphabet,
-            TransitionPopupMenu.this.transition.getTransition ()
-                .getPushDownWordRead (), TransitionPopupMenu.this.transition
-                .getTransition ().getPushDownWordWrite (),
-            TransitionPopupMenu.this.transition.getTransition ().getSymbol (),
-            TransitionPopupMenu.this.transition.getSourceView ().getState (),
-            TransitionPopupMenu.this.transition.getTargetView ().getState () );
+            TransitionPopupMenu.this.transition.getTransition () );
         transitionDialog.show ();
-        if ( transitionDialog.isConfirmed () )
-        {
-          Transition newTransition = transitionDialog.getTransition ();
-          TransitionPopupMenu.this.graph.getGraphLayoutCache ()
-              .valueForCellChanged ( TransitionPopupMenu.this.transition,
-                  newTransition );
-          Transition oldTransition = TransitionPopupMenu.this.transition
-              .getTransition ();
-          oldTransition.clear ();
-          try
-          {
-            oldTransition.add ( newTransition );
-            oldTransition.setPushDownWordRead ( newTransition
-                .getPushDownWordRead () );
-            oldTransition.setPushDownWordWrite ( newTransition
-                .getPushDownWordWrite () );
-          }
-          catch ( TransitionException exc )
-          {
-            exc.printStackTrace ();
-            System.exit ( 1 );
-          }
-        }
       }
     } );
     add ( this.config );

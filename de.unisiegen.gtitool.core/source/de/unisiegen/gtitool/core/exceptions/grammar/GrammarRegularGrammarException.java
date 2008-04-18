@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
-import de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.ProductionWordMembersInvolvedException;
 
 
 /**
@@ -18,7 +20,7 @@ import de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException;
  *          18:02:32Z fehler $
  */
 public final class GrammarRegularGrammarException extends GrammarException
-    implements ProductionInvolvedException
+    implements ProductionWordMembersInvolvedException
 {
 
   /**
@@ -30,15 +32,23 @@ public final class GrammarRegularGrammarException extends GrammarException
   /**
    * List of involved productions.
    */
-  private ArrayList < Production > productions = new ArrayList < Production > ();
+  private Production production;
+
+
+  /**
+   * The involved {@link Symbol}s.
+   */
+  private ArrayList < ProductionWordMember > symbols;
 
 
   /**
    * Allocates a new {@link GrammarRegularGrammarException}.
    * 
    * @param production The {@link Production}.
+   * @param symbols The involved {@link Symbol}s.
    */
-  public GrammarRegularGrammarException ( Production production )
+  public GrammarRegularGrammarException ( Production production,
+      ArrayList < ProductionWordMember > symbols )
   {
     super ();
     // Production
@@ -46,13 +56,15 @@ public final class GrammarRegularGrammarException extends GrammarException
     {
       throw new NullPointerException ( "production is null" ); //$NON-NLS-1$
     }
-    this.productions.add ( production );
+    this.production = production;
+
+    this.symbols = symbols;
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "GrammarRegularGrammarException.Message" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages.getPrettyString (
         "GrammarRegularGrammarException.Description", //$NON-NLS-1$
-        this.productions.get ( 0 ) ) );
+        this.production ) );
   }
 
 
@@ -80,7 +92,7 @@ public final class GrammarRegularGrammarException extends GrammarException
     StringBuilder result = new StringBuilder ( super.toString () );
     result.append ( lineBreak );
     result.append ( "Production: " ); //$NON-NLS-1$
-    result.append ( this.productions.get ( 0 ).toString () );
+    result.append ( this.production.toString () );
     return result.toString ();
   }
 
@@ -88,10 +100,10 @@ public final class GrammarRegularGrammarException extends GrammarException
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException#getProductions()
+   * @see de.unisiegen.gtitool.core.exceptions.ProductionWordMembersInvolvedException#getProductionWordMember()
    */
-  public ArrayList < Production > getProductions ()
+  public ArrayList < ProductionWordMember > getProductionWordMember ()
   {
-    return this.productions;
+    return this.symbols;
   }
 }

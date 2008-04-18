@@ -2,3 +2,5 @@ CF		- Fehlerbehandlung der Parser implementieren
 CF		- Active und Error auf den Grammar Entities entfernen falls sie
 		  nicht gebraucht werden, oder in den PrettyString einbauen
 CF		- clone der Entities überprüfen
+CF		- Farben anlegen
+CF		- Pretty String verbessern

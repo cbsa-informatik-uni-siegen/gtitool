@@ -926,7 +926,6 @@ public final class MachinePanel implements EditorPanel
    * @param event The {@link ListSelectionEvent}.
    */
   public final void handleConsoleTableValueChanged (
-      @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
   {
     JTable table;

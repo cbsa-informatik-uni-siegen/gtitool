@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.exceptions.grammar;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -14,7 +12,8 @@ import de.unisiegen.gtitool.core.exceptions.NonterminalSymbolInvolvedException;
  * {@link NonterminalSymbol}, which is not reachable.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarNonterminalNotReachableException.java 695 2008-03-28
+ *          18:02:32Z fehler $
  */
 public final class GrammarNonterminalNotReachableException extends
     GrammarException implements NonterminalSymbolInvolvedException
@@ -41,7 +40,7 @@ public final class GrammarNonterminalNotReachableException extends
       NonterminalSymbol nonterminalSymbol )
   {
     super ();
-    // Production
+    // NonterminalSymbol
     if ( nonterminalSymbol == null )
     {
       throw new NullPointerException ( "nonterminalSymbol is null" ); //$NON-NLS-1$
@@ -61,12 +60,9 @@ public final class GrammarNonterminalNotReachableException extends
    * 
    * @see NonterminalSymbolInvolvedException#getNonterminalSymbol()
    */
-  public final ArrayList < NonterminalSymbol > getNonterminalSymbol ()
+  public final NonterminalSymbol getNonterminalSymbol ()
   {
-    ArrayList < NonterminalSymbol > result = new ArrayList < NonterminalSymbol > (
-        1 );
-    result.add ( this.nonterminalSymbol );
-    return result;
+    return this.nonterminalSymbol;
   }
 
 

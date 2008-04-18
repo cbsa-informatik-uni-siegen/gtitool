@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -21,7 +23,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -100,12 +104,13 @@ public class GrammarPanel implements EditorPanel
    */
   private EventListenerList listenerList = new EventListenerList ();
 
+
   /**
    * The {@link RedoUndoHandler}
    */
   private RedoUndoHandler redoUndoHandler;
-  
-  
+
+
   /**
    * The {@link MainWindowForm}
    */
@@ -146,11 +151,11 @@ public class GrammarPanel implements EditorPanel
     this.gui = new GrammarPanelForm ();
     this.gui.setGrammarPanel ( this );
     this.grammar = this.model.getGrammar ();
-    
+
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
-    
+
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
-    
+
     initialize ();
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
@@ -446,11 +451,81 @@ public class GrammarPanel implements EditorPanel
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleConsoleTableValueChanged (
-      @SuppressWarnings ( "unused" )
-      ListSelectionEvent event )
+  public final void handleConsoleTableValueChanged ( ListSelectionEvent event )
+  {
+    JTable table;
+    if ( event.getSource () == this.gui.jGTITableErrors.getSelectionModel () )
+    {
+      table = this.gui.jGTITableErrors;
+    }
+    else if ( event.getSource () == this.gui.jGTITableWarnings
+        .getSelectionModel () )
+    {
+      table = this.gui.jGTITableWarnings;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
+    }
+
+    clearHighlight ();
+
+    int index = table.getSelectedRow ();
+    if ( index != -1 )
+    {
+      highlightProductions ( ( ( GrammarConsoleTableModel ) table.getModel () )
+          .getProduction ( index ) );
+      highlightNonterminalSymbol ( ( ( GrammarConsoleTableModel ) table
+          .getModel () ).getNonterminalSymbol ( index ) );
+      highlightNonterminalSymbol ( ( ( GrammarConsoleTableModel ) table
+          .getModel () ).getProductionWordMember ( index ) );
+    }
+  }
+
+
+  /**
+   * Highlight the affected error {@link ProductionWordMember}s.
+   * 
+   * @param productionWordMember List with all {@link ProductionWordMember}s
+   *          that are affected.
+   */
+  private void highlightNonterminalSymbol (
+      ArrayList < ProductionWordMember > productionWordMember )
   {
     // TODO implement me
+  }
+
+
+  /**
+   * Highlight the affected error {@link NonterminalSymbol}.
+   * 
+   * @param nonterminalSymbol List with all {@link NonterminalSymbol} that is
+   *          affected.
+   */
+  private void highlightNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
+  {
+    // TODO implement me
+  }
+
+
+  /**
+   * Highlight the affected error {@link Production}.
+   * 
+   * @param production List with all {@link Production} that is affected.
+   */
+  private void highlightProductions ( Production production )
+  {
+    // TODO implement me
+  }
+
+
+  /**
+   * Clears the highlight.
+   */
+  private void clearHighlight ()
+  {
+    this.gui.jGTITableGrammar.clearSelection ();
+    this.gui.jGTITableGrammar.setSelectionBackground ( Color.WHITE );
   }
 
 
@@ -473,7 +548,7 @@ public class GrammarPanel implements EditorPanel
       confirmedDialog.show ();
       if ( confirmedDialog.isConfirmed () )
       {
-        this.model.removeProduction ( production,true );
+        this.model.removeProduction ( production, true );
         this.gui.repaint ();
       }
     }
@@ -495,7 +570,8 @@ public class GrammarPanel implements EditorPanel
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
       ProductionDialog productionDialog = new ProductionDialog ( window,
           this.grammar.getNonterminalSymbolSet (), this.grammar
-              .getTerminalSymbolSet (), this.model, production, this.redoUndoHandler );
+              .getTerminalSymbolSet (), this.model, production,
+          this.redoUndoHandler );
       productionDialog.show ();
     }
   }
@@ -517,9 +593,9 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleRedo ()
   {
-     this.redoUndoHandler.redo ();
-     this.gui.repaint ();
-     fireModifyStatusChanged ( false );
+    this.redoUndoHandler.redo ();
+    this.gui.repaint ();
+    fireModifyStatusChanged ( false );
   }
 
 
@@ -709,7 +785,8 @@ public class GrammarPanel implements EditorPanel
       JFrame window = ( JFrame ) SwingUtilities.getWindowAncestor ( this.gui );
       ProductionDialog productionDialog = new ProductionDialog ( window,
           this.grammar.getNonterminalSymbolSet (), this.grammar
-              .getTerminalSymbolSet (), this.model, production, this.redoUndoHandler );
+              .getTerminalSymbolSet (), this.model, production,
+          this.redoUndoHandler );
       productionDialog.show ();
     }
   }
@@ -723,7 +800,7 @@ public class GrammarPanel implements EditorPanel
     TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
         this.grammar );
     terminalDialog.show ();
-    // Must be repainted because of the maybe changed start symbol. 
+    // Must be repainted because of the maybe changed start symbol.
     this.gui.jGTITableGrammar.repaint ();
   }
 
@@ -733,7 +810,7 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleUndo ()
   {
-    this.redoUndoHandler.undo();
+    this.redoUndoHandler.undo ();
     this.gui.repaint ();
     fireModifyStatusChanged ( false );
   }
@@ -858,41 +935,46 @@ public class GrammarPanel implements EditorPanel
   private final void moveRows ( JGTITable jGTITable, JGTITableModelRows rows,
       int targetIndex )
   {
-    ArrayList<Production> oldProductions = new ArrayList < Production >();
-    oldProductions.addAll (  this.grammar.getProductions() );
-    
-    ArrayList<Production> productions = new ArrayList<Production>();
-    
-    int[] indeces = rows.getRowIndices ();
-    
+    ArrayList < Production > oldProductions = new ArrayList < Production > ();
+    oldProductions.addAll ( this.grammar.getProductions () );
+
+    ArrayList < Production > productions = new ArrayList < Production > ();
+
+    int [] indeces = rows.getRowIndices ();
+
     int newTargetIndex = targetIndex;
-    
-    if (indeces.length > 0 && indeces[0] < targetIndex){
-      newTargetIndex++;
+
+    if ( indeces.length > 0 && indeces [ 0 ] < targetIndex )
+    {
+      newTargetIndex++ ;
     }
-    
-    for (int index : indeces){
+
+    for ( int index : indeces )
+    {
       productions.add ( this.grammar.getProductionAt ( index ) );
-      
-      if (index < targetIndex){
-        newTargetIndex--;
+
+      if ( index < targetIndex )
+      {
+        newTargetIndex-- ;
       }
     }
-    
-    
-    for (int i = indeces.length-1 ; i > -1; i-- ){
-      this.grammar.getProductions().remove ( indeces[i] );
+
+    for ( int i = indeces.length - 1 ; i > -1 ; i-- )
+    {
+      this.grammar.getProductions ().remove ( indeces [ i ] );
     }
-    
+
     newTargetIndex = Math.min ( newTargetIndex, this.grammar.getRowCount () );
-    
-    this.grammar.getProductions().addAll ( newTargetIndex , productions );
-    
-    this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval ( newTargetIndex, newTargetIndex + indeces.length - 1 );
-    
+
+    this.grammar.getProductions ().addAll ( newTargetIndex, productions );
+
+    this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval (
+        newTargetIndex, newTargetIndex + indeces.length - 1 );
+
     fireModifyStatusChanged ( false );
-    
-    ProductionsMovedItem item = new ProductionsMovedItem(this.grammar, oldProductions);
+
+    ProductionsMovedItem item = new ProductionsMovedItem ( this.grammar,
+        oldProductions );
     this.redoUndoHandler.addItem ( item );
   }
 
@@ -956,10 +1038,9 @@ public class GrammarPanel implements EditorPanel
   }
 
 
-  
   /**
    * Returns the redoUndoHandler.
-   *
+   * 
    * @return The redoUndoHandler.
    * @see #redoUndoHandler
    */

@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.exceptions.grammar;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -14,7 +12,8 @@ import de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException;
  * {@link Production} that exists more than one time.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: GrammarDuplicateProductionException.java 695 2008-03-28
+ *          18:02:32Z fehler $
  */
 public final class GrammarDuplicateProductionException extends GrammarException
     implements ProductionInvolvedException
@@ -57,13 +56,11 @@ public final class GrammarDuplicateProductionException extends GrammarException
   /**
    * {@inheritDoc}
    * 
-   * @see ProductionInvolvedException#getProductions()
+   * @see ProductionInvolvedException#getProduction()
    */
-  public final ArrayList < Production > getProductions ()
+  public final Production getProduction ()
   {
-    ArrayList < Production > result = new ArrayList < Production > ( 1 );
-    result.add ( this.production );
-    return result;
+    return this.production;
   }
 
 

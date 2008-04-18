@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.exceptions;
 
 
-import java.util.ArrayList;
-
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 
 
@@ -10,16 +8,17 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
  * Involved {@link NonterminalSymbol} interface.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: NonterminalSymbolInvolvedException.java 695 2008-03-28
+ *          18:02:32Z fehler $
  */
 public interface NonterminalSymbolInvolvedException
 {
 
   /**
-   * Returns the {@link NonterminalSymbol}s.
+   * Returns the {@link NonterminalSymbol}.
    * 
-   * @return The {@link NonterminalSymbol}s.
+   * @return The {@link NonterminalSymbol}.
    */
-  public ArrayList < NonterminalSymbol > getNonterminalSymbol ();
+  public NonterminalSymbol getNonterminalSymbol ();
 
 }

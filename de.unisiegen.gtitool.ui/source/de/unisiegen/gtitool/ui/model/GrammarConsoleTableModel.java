@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import com.sun.java_cup.internal.symbol;
+
+import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
-import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.core.exceptions.grammar.GrammarDuplicateProductionException;
+import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.exceptions.NonterminalSymbolInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.ProductionInvolvedException;
+import de.unisiegen.gtitool.core.exceptions.ProductionWordMembersInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
@@ -44,9 +50,21 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
     /**
-     * The {@link Production}s.
+     * The {@link Production}.
      */
-    public ArrayList < Production > productions = new ArrayList < Production > ();
+    public Production production;
+
+
+    /**
+     * The {@link symbol}s.
+     */
+    public ArrayList < ProductionWordMember > productionWordMember;
+
+
+    /**
+     * The {@link NonterminalSymbol}.
+     */
+    public NonterminalSymbol nonterminalSymbol;
 
 
     /**
@@ -54,14 +72,19 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
      * 
      * @param message The message.
      * @param descrition The description.
-     * @param productions The {@link Production}s
+     * @param production The {@link Production}.
+     * @param nonterminalSymbol The {@link NonterminalSymbol}.
+     * @param symbols The {@link Symbol}s.
      */
     public ConsoleTableEntry ( PrettyString message, PrettyString descrition,
-        ArrayList < Production > productions )
+        Production production, NonterminalSymbol nonterminalSymbol,
+        ArrayList < ProductionWordMember > symbols )
     {
       this.message = message;
       this.description = descrition;
-      this.productions = productions;
+      this.production = production;
+      this.productionWordMember = symbols;
+      this.nonterminalSymbol = nonterminalSymbol;
     }
   }
 
@@ -119,18 +142,31 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
    */
   public final void addRow ( GrammarException grammarException )
   {
-    ArrayList < Production > productions = new ArrayList < Production > ();
+    Production production = null;
+    NonterminalSymbol nonterminalSymbol = null;
+    ArrayList < ProductionWordMember > productionWordMember = null;
 
-    if ( grammarException instanceof GrammarDuplicateProductionException )
+    if ( grammarException instanceof ProductionInvolvedException )
     {
-      productions
-          .addAll ( ( ( GrammarDuplicateProductionException ) grammarException )
-              .getProductions () );
+      production = ( ( ProductionInvolvedException ) grammarException )
+          .getProduction ();
+    }
+
+    if ( grammarException instanceof NonterminalSymbolInvolvedException )
+    {
+      nonterminalSymbol = ( ( NonterminalSymbolInvolvedException ) grammarException )
+          .getNonterminalSymbol ();
+    }
+
+    if ( grammarException instanceof ProductionWordMembersInvolvedException )
+    {
+      productionWordMember = ( ( ProductionWordMembersInvolvedException ) grammarException )
+          .getProductionWordMember ();
     }
 
     this.data.add ( new ConsoleTableEntry ( grammarException
         .getPrettyMessage (), grammarException.getPrettyDescription (),
-        productions ) );
+        production, nonterminalSymbol, productionWordMember ) );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 
@@ -217,14 +253,39 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
   /**
-   * Returns the {@link State}s of the given row index.
+   * Returns the {@link Production} of the given row index.
    * 
    * @param rowIndex The given row index.
-   * @return The {@link State}s of the given row index.
+   * @return The {@link Production} of the given row index.
    */
-  public final ArrayList < Production > getProductions ( int rowIndex )
+  public final Production getProduction ( int rowIndex )
   {
-    return this.data.get ( rowIndex ).productions;
+    return this.data.get ( rowIndex ).production;
+  }
+
+
+  /**
+   * Returns the {@link NonterminalSymbol} of the given row index.
+   * 
+   * @param rowIndex The given row index.
+   * @return The {@link NonterminalSymbol} of the given row index.
+   */
+  public final NonterminalSymbol getNonterminalSymbol ( int rowIndex )
+  {
+    return this.data.get ( rowIndex ).nonterminalSymbol;
+  }
+
+
+  /**
+   * Returns the {@link ProductionWordMember}s of the given row index.
+   * 
+   * @param rowIndex The given row index.
+   * @return The {@link NonterminalSymbol} of the given row index.
+   */
+  public final ArrayList < ProductionWordMember > getProductionWordMember (
+      int rowIndex )
+  {
+    return this.data.get ( rowIndex ).productionWordMember;
   }
 
 
@@ -258,7 +319,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
       }
       case PRODUCTION_COLUMN :
       {
-        return this.data.get ( rowIndex ).productions;
+        return this.data.get ( rowIndex ).production;
       }
       default :
       {

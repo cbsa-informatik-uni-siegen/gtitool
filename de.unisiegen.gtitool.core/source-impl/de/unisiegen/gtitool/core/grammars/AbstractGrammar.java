@@ -180,7 +180,10 @@ public abstract class AbstractGrammar implements Grammar
           {
             grammarExceptionList.add ( new GrammarDuplicateProductionException (
                 current ) );
-            foundDuplicates.add ( current );
+            if ( !foundDuplicates.contains ( current ) )
+            {
+              foundDuplicates.add ( current );
+            }
           }
         }
     }
@@ -232,34 +235,39 @@ public abstract class AbstractGrammar implements Grammar
 
     for ( Production current : this.productions )
     {
+      ArrayList < ProductionWordMember > symbols = new ArrayList < ProductionWordMember > ();
+      Production production = null;
       int count = 0;
       for ( ProductionWordMember wordMember : current.getProductionWord () )
       {
         count++ ;
+        if ( production != null )
+        {
+          symbols.add ( wordMember );
+        }
         if ( count == 1 )
         {
           if ( ! ( wordMember instanceof TerminalSymbol ) )
           {
-            grammarExceptionList.add ( new GrammarRegularGrammarException (
-                current ) );
-            break;
+            production = current;
           }
         }
         if ( count == 2 )
         {
           if ( ! ( wordMember instanceof NonterminalSymbol ) )
           {
-            grammarExceptionList.add ( new GrammarRegularGrammarException (
-                current ) );
-            break;
+            production = current;
           }
         }
         if ( count == 3 )
         {
-          grammarExceptionList.add ( new GrammarRegularGrammarException (
-              current ) );
-          break;
+          production = current;
         }
+      }
+      if ( production != null )
+      {
+        grammarExceptionList.add ( new GrammarRegularGrammarException (
+            production, symbols ) );
       }
     }
     return grammarExceptionList;

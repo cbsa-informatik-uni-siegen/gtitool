@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -151,6 +152,27 @@ public class PreferenceManager
    * The default {@link Color} of the error {@link State}.
    */
   public static final Color DEFAULT_STATE_ERROR_COLOR = new Color ( 255, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link Production}.
+   */
+  public static final Color DEFAULT_PRODUCTION_ERROR_COLOR = new Color ( 255,
+      0, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link TerminalSymbol}.
+   */
+  public static final Color DEFAULT_TERMINAL_SYMBOL_ERROR_COLOR = new Color (
+      255, 0, 0 );
+
+
+  /**
+   * The default {@link Color} of the error {@link NonterminalSymbol}.
+   */
+  public static final Color DEFAULT_NONTERMINAL_SYMBOL_ERROR_COLOR = new Color (
+      255, 0, 0 );
 
 
   /**
@@ -353,8 +375,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link ColorChangedListener}.
    */
-  public final void addColorChangedListener (
-      ColorChangedListener listener )
+  public final void addColorChangedListener ( ColorChangedListener listener )
   {
     this.listenerList.add ( ColorChangedListener.class, listener );
   }
@@ -385,6 +406,24 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedNonterminalSymbol ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error
+   * {@link NonterminalSymbol} has changed.
+   * 
+   * @param newColor The new color of the error {@link NonterminalSymbol}.
+   */
+  public final void fireColorChangedNonterminalSymbolError ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedNonterminalSymbolError ( newColor );
       current.colorChanged ();
     }
   }
@@ -454,6 +493,24 @@ public class PreferenceManager
     for ( ColorChangedListener current : listeners )
     {
       current.colorChangedParserWarning ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the color of the error {@link Production} has
+   * changed.
+   * 
+   * @param newColor The new color of the error {@link Production}.
+   */
+  public final void fireColorChangedProductionError ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedProductionError ( newColor );
       current.colorChanged ();
     }
   }
@@ -674,6 +731,24 @@ public class PreferenceManager
 
 
   /**
+   * Let the listeners know that the color of the error {@link TerminalSymbol}
+   * has changed.
+   * 
+   * @param newColor The new color of the error {@link TerminalSymbol}.
+   */
+  public final void fireColorChangedTerminalSymbolError ( Color newColor )
+  {
+    ColorChangedListener [] listeners = this.listenerList
+        .getListeners ( ColorChangedListener.class );
+    for ( ColorChangedListener current : listeners )
+    {
+      current.colorChangedTerminalSymbolError ( newColor );
+      current.colorChanged ();
+    }
+  }
+
+
+  /**
    * Let the listeners know that the color of the {@link Transition} has
    * changed.
    * 
@@ -830,6 +905,25 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the error {@link NonterminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link NonterminalSymbol}.
+   */
+  public final ColorItem getColorItemNonterminalSymbolError ()
+  {
+    int rgb = this.preferences.getInt (
+        "Preferences.ColorNonterminalSymbolError", //$NON-NLS-1$
+        DEFAULT_NONTERMINAL_SYMBOL_ERROR_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolErrorCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolErrorDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_NONTERMINAL_SYMBOL_ERROR_COLOR );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the {@link NonterminalSymbol} group.
    * 
    * @return The {@link ColorItem} of the {@link NonterminalSymbol} group.
@@ -837,10 +931,12 @@ public class PreferenceManager
   public final ColorItem getColorItemNonterminalSymbolGroup ()
   {
     String caption = Messages
-        .getString ( "Preferences.ColorNonterminalSymbolGroup" );//$NON-NLS-1$
+        .getString ( "Preferences.ColorNonterminalSymbolGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorNonterminalSymbolGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorNonterminalSymbolGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -869,10 +965,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemParserGroup ()
   {
-    String caption = Messages.getString ( "Preferences.ColorParserGroup" );//$NON-NLS-1$
+    String caption = Messages
+        .getString ( "Preferences.ColorParserGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorParserGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorParserGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -927,6 +1026,41 @@ public class PreferenceManager
         .getString ( "Preferences.ColorParserWarningDescription" );//$NON-NLS-1$
     return new ColorItem ( new Color ( rgb ), caption, description,
         DEFAULT_PARSER_WARNING_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the error {@link Production}.
+   * 
+   * @return The {@link ColorItem} of the error {@link Production}.
+   */
+  public final ColorItem getColorItemProductionError ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorProductionError", //$NON-NLS-1$
+        DEFAULT_PRODUCTION_ERROR_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorProductionErrorCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorProductionErrorDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_PRODUCTION_ERROR_COLOR );
+  }
+
+
+  /**
+   * Returns the {@link ColorItem} of the {@link Production} group.
+   * 
+   * @return The {@link ColorItem} of the {@link Production} group.
+   */
+  public final ColorItem getColorItemProductionGroup ()
+  {
+    String caption = Messages
+        .getString ( "Preferences.ColorProductionGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorProductionGroupDescription" );//$NON-NLS-1$
+    boolean expanded = this.preferences.getBoolean (
+        "Preferences.ColorProductionGroupExpanded", false ); //$NON-NLS-1$
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -1043,10 +1177,12 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemStateGroup ()
   {
-    String caption = Messages.getString ( "Preferences.ColorStateGroup" );//$NON-NLS-1$
+    String caption = Messages.getString ( "Preferences.ColorStateGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorStateGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorStateGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -1145,10 +1281,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemSymbolGroup ()
   {
-    String caption = Messages.getString ( "Preferences.ColorSymbolGroup" );//$NON-NLS-1$
+    String caption = Messages
+        .getString ( "Preferences.ColorSymbolGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorSymbolGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorSymbolGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -1171,6 +1310,24 @@ public class PreferenceManager
 
 
   /**
+   * Returns the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @return The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final ColorItem getColorItemTerminalSymbolError ()
+  {
+    int rgb = this.preferences.getInt ( "Preferences.ColorTerminalSymbolError", //$NON-NLS-1$
+        DEFAULT_TERMINAL_SYMBOL_ERROR_COLOR.getRGB () );
+    String caption = Messages
+        .getString ( "Preferences.ColorTerminalSymbolErrorCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTerminalSymbolErrorDescription" );//$NON-NLS-1$
+    return new ColorItem ( new Color ( rgb ), caption, description,
+        DEFAULT_TERMINAL_SYMBOL_ERROR_COLOR );
+  }
+
+
+  /**
    * Returns the {@link ColorItem} of the {@link TerminalSymbol} group.
    * 
    * @return The {@link ColorItem} of the {@link TerminalSymbol} group.
@@ -1178,10 +1335,12 @@ public class PreferenceManager
   public final ColorItem getColorItemTerminalSymbolGroup ()
   {
     String caption = Messages
-        .getString ( "Preferences.ColorTerminalSymbolGroup" );//$NON-NLS-1$
+        .getString ( "Preferences.ColorTerminalSymbolGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTerminalSymbolGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorTerminalSymbolGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -1245,10 +1404,13 @@ public class PreferenceManager
    */
   public final ColorItem getColorItemTransitionGroup ()
   {
-    String caption = Messages.getString ( "Preferences.ColorTransitionGroup" );//$NON-NLS-1$
+    String caption = Messages
+        .getString ( "Preferences.ColorTransitionGroupCaption" );//$NON-NLS-1$
+    String description = Messages
+        .getString ( "Preferences.ColorTransitionGroupDescription" );//$NON-NLS-1$
     boolean expanded = this.preferences.getBoolean (
         "Preferences.ColorTransitionGroupExpanded", false ); //$NON-NLS-1$
-    return new ColorItem ( caption, expanded );
+    return new ColorItem ( caption, description, expanded );
   }
 
 
@@ -1492,8 +1654,7 @@ public class PreferenceManager
    * 
    * @param listener The {@link ColorChangedListener}.
    */
-  public final void removeColorChangedListener (
-      ColorChangedListener listener )
+  public final void removeColorChangedListener ( ColorChangedListener listener )
   {
     this.listenerList.remove ( ColorChangedListener.class, listener );
   }
@@ -1564,6 +1725,24 @@ public class PreferenceManager
             + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putInt ( "Preferences.ColorNonterminalSymbol", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link NonterminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error
+   *          {@link NonterminalSymbol}.
+   */
+  public final void setColorItemNonterminalSymbolError ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemNonterminalSymbolError",//$NON-NLS-1$ 
+        "set color of the error nonterminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt ( "Preferences.ColorNonterminalSymbolError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 
@@ -1664,6 +1843,39 @@ public class PreferenceManager
             + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putInt ( "Preferences.ColorParserWarning", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link Production}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link Production}.
+   */
+  public final void setColorItemProductionError ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemProductionError",//$NON-NLS-1$ 
+        "set color of the error production to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$ 
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt ( "Preferences.ColorProductionError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the {@link Production} group.
+   * 
+   * @param colorItem The {@link ColorItem} of the {@link Production} group.
+   */
+  public final void setColorItemProductionGroup ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemProductionGroup", //$NON-NLS-1$
+        "set expanded value of the production group to " + Messages.QUOTE //$NON-NLS-1$
+            + colorItem.isExpanded () + Messages.QUOTE );
+    this.preferences.putBoolean (
+        "Preferences.ColorProductionGroupExpanded", colorItem //$NON-NLS-1$
+            .isExpanded () );
   }
 
 
@@ -1896,6 +2108,23 @@ public class PreferenceManager
             + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
     this.preferences.putInt ( "Preferences.ColorTerminalSymbol", colorItem //$NON-NLS-1$
         .getColor ().getRGB () & 0xFFFFFF );
+  }
+
+
+  /**
+   * Sets the {@link ColorItem} of the error {@link TerminalSymbol}.
+   * 
+   * @param colorItem The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  public final void setColorItemTerminalSymbolError ( ColorItem colorItem )
+  {
+    logger.debug ( "setColorItemTerminalSymbolError",//$NON-NLS-1$ 
+        "set color of the error terminal symbol to " + Messages.QUOTE + "r="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getRed () + ", " + "g="//$NON-NLS-1$ //$NON-NLS-2$
+            + colorItem.getColor ().getGreen () + ", "//$NON-NLS-1$
+            + "b=" + colorItem.getColor ().getBlue () + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt ( "Preferences.ColorTerminalSymbolError", //$NON-NLS-1$
+        colorItem.getColor ().getRGB () & 0xFFFFFF );
   }
 
 

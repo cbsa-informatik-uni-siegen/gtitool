@@ -31,6 +31,7 @@ import javax.swing.tree.TreeSelectionModel;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -101,16 +102,16 @@ public final class PreferencesDialog implements LanguageChangedListener
     {
       super.getTreeCellRendererComponent ( tree, value, sel, expanded, leaf,
           row, sel );
+      ColorItem colorItem = ( ColorItem ) value;
       if ( leaf )
       {
-        ColorItem colorItem = ( ColorItem ) value;
         setIcon ( colorItem.getIcon () );
         setToolTipText ( colorItem.getDescription () );
       }
       else
       {
         setIcon ( null );
-        setToolTipText ( null );
+        setToolTipText ( colorItem.getDescription () );
       }
       return this;
     }
@@ -414,9 +415,21 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the error {@link Production}.
+   */
+  private ColorItem colorItemProductionError;
+
+
+  /**
    * The {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
   private ColorItem colorItemNonterminalSymbol;
+
+
+  /**
+   * The {@link ColorItem} of the error {@link NonterminalSymbol}.
+   */
+  private ColorItem colorItemNonterminalSymbolError;
 
 
   /**
@@ -516,6 +529,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  private ColorItem colorItemTerminalSymbolError;
+
+
+  /**
    * The {@link ColorItem} of the {@link Transition}.
    */
   private ColorItem colorItemTransition;
@@ -561,6 +580,12 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the parser {@link NonterminalSymbol}.
    */
   private ColorItem initialColorItemNonterminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link NonterminalSymbol}.
+   */
+  private ColorItem initialColorItemNonterminalSymbolError;
 
 
   /**
@@ -657,6 +682,18 @@ public final class PreferencesDialog implements LanguageChangedListener
    * The initial {@link ColorItem} of the parser {@link TerminalSymbol}.
    */
   private ColorItem initialColorItemTerminalSymbol;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link TerminalSymbol}.
+   */
+  private ColorItem initialColorItemTerminalSymbolError;
+
+
+  /**
+   * The initial {@link ColorItem} of the error {@link Production}.
+   */
+  private ColorItem initialColorItemProductionError;
 
 
   /**
@@ -870,6 +907,12 @@ public final class PreferencesDialog implements LanguageChangedListener
 
 
   /**
+   * The color tree {@link Production} node.
+   */
+  private ColorItem productionNode;
+
+
+  /**
    * The color tree {@link TerminalSymbol} node.
    */
   private ColorItem terminalSymbolNode;
@@ -992,6 +1035,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     /*
      * General
      */
+    // TODOCF
     this.gui.jGTIComboBoxLanguage.setSelectedIndex ( 0 );
     this.gui.jGTIComboBoxLookAndFeel.setSelectedIndex ( 0 );
     this.gui.jGTISliderZoom
@@ -1030,10 +1074,14 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemSymbolActive.restore ();
     this.colorItemSymbolError.restore ();
 
+    this.colorItemProductionError.restore ();
+
     this.colorItemNonterminalSymbol.restore ();
+    this.colorItemNonterminalSymbolError.restore ();
     this.colorItemStartNonterminalSymbol.restore ();
 
     this.colorItemTerminalSymbol.restore ();
+    this.colorItemTerminalSymbolError.restore ();
 
     this.colorItemParserKeyword.restore ();
     this.colorItemParserError.restore ();
@@ -1317,10 +1365,20 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getColorItemSymbolError ();
     this.initialColorItemSymbolError = this.colorItemSymbolError.clone ();
 
+    // Production
+    this.colorItemProductionError = PreferenceManager.getInstance ()
+        .getColorItemProductionError ();
+    this.initialColorItemProductionError = this.colorItemProductionError
+        .clone ();
+
     // NonterminalSymbol
     this.colorItemNonterminalSymbol = PreferenceManager.getInstance ()
         .getColorItemNonterminalSymbol ();
     this.initialColorItemNonterminalSymbol = this.colorItemNonterminalSymbol
+        .clone ();
+    this.colorItemNonterminalSymbolError = PreferenceManager.getInstance ()
+        .getColorItemNonterminalSymbolError ();
+    this.initialColorItemNonterminalSymbolError = this.colorItemNonterminalSymbolError
         .clone ();
     this.colorItemStartNonterminalSymbol = PreferenceManager.getInstance ()
         .getColorItemStartNonterminalSymbol ();
@@ -1331,6 +1389,10 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemTerminalSymbol = PreferenceManager.getInstance ()
         .getColorItemTerminalSymbol ();
     this.initialColorItemTerminalSymbol = this.colorItemTerminalSymbol.clone ();
+    this.colorItemTerminalSymbolError = PreferenceManager.getInstance ()
+        .getColorItemTerminalSymbolError ();
+    this.initialColorItemTerminalSymbolError = this.colorItemTerminalSymbolError
+        .clone ();
 
     // Parser keyword
     this.colorItemParserKeyword = PreferenceManager.getInstance ()
@@ -1443,7 +1505,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         } );
 
     // Items
-    this.rootNode = new ColorItem ( "root", true ); //$NON-NLS-1$
+    this.rootNode = new ColorItem ( "root", "root", true ); //$NON-NLS-1$ //$NON-NLS-2$
 
     this.stateNode = PreferenceManager.getInstance ().getColorItemStateGroup ();
     this.stateNode.add ( this.colorItemState );
@@ -1467,14 +1529,21 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.symbolNode.add ( this.colorItemSymbolActive );
     this.symbolNode.add ( this.colorItemSymbolError );
 
+    this.productionNode = PreferenceManager.getInstance ()
+        .getColorItemProductionGroup ();
+
+    this.productionNode.add ( this.colorItemProductionError );
+
     this.nonterminalSymbolNode = PreferenceManager.getInstance ()
         .getColorItemNonterminalSymbolGroup ();
     this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbol );
+    this.nonterminalSymbolNode.add ( this.colorItemNonterminalSymbolError );
     this.nonterminalSymbolNode.add ( this.colorItemStartNonterminalSymbol );
 
     this.terminalSymbolNode = PreferenceManager.getInstance ()
         .getColorItemTerminalSymbolGroup ();
     this.terminalSymbolNode.add ( this.colorItemTerminalSymbol );
+    this.terminalSymbolNode.add ( this.colorItemTerminalSymbolError );
 
     this.parserNode = PreferenceManager.getInstance ()
         .getColorItemParserGroup ();
@@ -1486,6 +1555,7 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.rootNode.add ( this.stateNode );
     this.rootNode.add ( this.transitionNode );
     this.rootNode.add ( this.symbolNode );
+    this.rootNode.add ( this.productionNode );
     this.rootNode.add ( this.nonterminalSymbolNode );
     this.rootNode.add ( this.terminalSymbolNode );
     this.rootNode.add ( this.parserNode );
@@ -1506,6 +1576,11 @@ public final class PreferencesDialog implements LanguageChangedListener
     if ( this.symbolNode.isExpanded () )
     {
       this.gui.jGTITreeColors.expandPath ( new TreePath ( this.symbolNode
+          .getPath () ) );
+    }
+    if ( this.productionNode.isExpanded () )
+    {
+      this.gui.jGTITreeColors.expandPath ( new TreePath ( this.productionNode
           .getPath () ) );
     }
     if ( this.nonterminalSymbolNode.isExpanded () )
@@ -2392,6 +2467,7 @@ public final class PreferencesDialog implements LanguageChangedListener
         "PreferencesDialog.RestoreMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     this.gui.jGTIButtonRestore.setToolTipText ( Messages
         .getString ( "PreferencesDialog.RestoreToolTip" ) ); //$NON-NLS-1$
+
     // State
     this.colorItemState.setCaption ( Messages
         .getString ( "Preferences.ColorStateCaption" ) ); //$NON-NLS-1$
@@ -2463,11 +2539,21 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.colorItemSymbolError.setDescription ( Messages
         .getString ( "Preferences.ColorSymbolErrorDescription" ) ); //$NON-NLS-1$
 
+    // Production
+    this.colorItemProductionError.setCaption ( Messages
+        .getString ( "Preferences.ColorProductionErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemProductionError.setDescription ( Messages
+        .getString ( "Preferences.ColorProductionErrorDescription" ) ); //$NON-NLS-1$
+
     // NonterminalSymbol
     this.colorItemNonterminalSymbol.setCaption ( Messages
         .getString ( "Preferences.ColorNonterminalSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemNonterminalSymbol.setDescription ( Messages
         .getString ( "Preferences.ColorNonterminalSymbolDescription" ) ); //$NON-NLS-1$
+    this.colorItemNonterminalSymbolError.setCaption ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemNonterminalSymbolError.setDescription ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolErrorDescription" ) ); //$NON-NLS-1$
     this.colorItemStartNonterminalSymbol.setCaption ( Messages
         .getString ( "Preferences.ColorStartNonterminalSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemStartNonterminalSymbol.setDescription ( Messages
@@ -2478,6 +2564,10 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorTerminalSymbolCaption" ) ); //$NON-NLS-1$
     this.colorItemTerminalSymbol.setDescription ( Messages
         .getString ( "Preferences.ColorTerminalSymbolDescription" ) ); //$NON-NLS-1$
+    this.colorItemTerminalSymbolError.setCaption ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolErrorCaption" ) ); //$NON-NLS-1$
+    this.colorItemTerminalSymbolError.setDescription ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolErrorDescription" ) ); //$NON-NLS-1$
 
     // Parser keyword
     this.colorItemParserKeyword.setCaption ( Messages
@@ -2501,18 +2591,40 @@ public final class PreferencesDialog implements LanguageChangedListener
         .getString ( "Preferences.ColorParserHighlightingDescription" ) ); //$NON-NLS-1$
 
     // Color tree
-    this.stateNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorStateGroup" ) ); //$NON-NLS-1$
-    this.transitionNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorTransitionGroup" ) ); //$NON-NLS-1$
-    this.symbolNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorSymbolGroup" ) ); //$NON-NLS-1$
-    this.nonterminalSymbolNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorNonterminalSymbolGroup" ) ); //$NON-NLS-1$
-    this.terminalSymbolNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorTerminalSymbolGroup" ) ); //$NON-NLS-1$
-    this.parserNode.setUserObject ( Messages
-        .getString ( "Preferences.ColorParserGroup" ) ); //$NON-NLS-1$
+    this.stateNode.setCaption ( Messages
+        .getString ( "Preferences.ColorStateGroupCaption" ) ); //$NON-NLS-1$
+    this.stateNode.setDescription ( Messages
+        .getString ( "Preferences.ColorStateGroupDescription" ) ); //$NON-NLS-1$
+
+    this.transitionNode.setCaption ( Messages
+        .getString ( "Preferences.ColorTransitionGroupCaption" ) ); //$NON-NLS-1$
+    this.transitionNode.setDescription ( Messages
+        .getString ( "Preferences.ColorTransitionGroupDescription" ) ); //$NON-NLS-1$
+
+    this.symbolNode.setCaption ( Messages
+        .getString ( "Preferences.ColorSymbolGroupCaption" ) ); //$NON-NLS-1$
+    this.symbolNode.setDescription ( Messages
+        .getString ( "Preferences.ColorSymbolGroupDescription" ) ); //$NON-NLS-1$
+
+    this.productionNode.setCaption ( Messages
+        .getString ( "Preferences.ColorProductionGroupCaption" ) ); //$NON-NLS-1$
+    this.productionNode.setDescription ( Messages
+        .getString ( "Preferences.ColorProductionGroupDescription" ) ); //$NON-NLS-1$
+
+    this.nonterminalSymbolNode.setCaption ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolGroupCaption" ) ); //$NON-NLS-1$
+    this.nonterminalSymbolNode.setDescription ( Messages
+        .getString ( "Preferences.ColorNonterminalSymbolGroupDescription" ) ); //$NON-NLS-1$
+
+    this.terminalSymbolNode.setCaption ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolGroupCaption" ) ); //$NON-NLS-1$
+    this.terminalSymbolNode.setDescription ( Messages
+        .getString ( "Preferences.ColorTerminalSymbolGroupDescription" ) ); //$NON-NLS-1$
+
+    this.parserNode.setCaption ( Messages
+        .getString ( "Preferences.ColorParserGroupCaption" ) ); //$NON-NLS-1$
+    this.parserNode.setDescription ( Messages
+        .getString ( "Preferences.ColorParserGroupDescription" ) ); //$NON-NLS-1$
     nodeChanged ( this.rootNode );
   }
 
@@ -2779,6 +2891,27 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemSymbolError.getColor () );
     }
 
+    // Production
+    if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
+        this.productionNode.getPath () ) ) != this.productionNode.isExpanded () )
+    {
+      this.productionNode.setExpanded ( this.gui.jGTITreeColors
+          .isExpanded ( new TreePath ( this.productionNode.getPath () ) ) );
+      PreferenceManager.getInstance ().setColorItemProductionGroup (
+          this.productionNode );
+    }
+    // Production error
+    if ( !this.initialColorItemProductionError.getColor ().equals (
+        this.colorItemProductionError.getColor () ) )
+    {
+      this.initialColorItemProductionError = this.colorItemProductionError
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemProductionError (
+          this.colorItemProductionError );
+      PreferenceManager.getInstance ().fireColorChangedProductionError (
+          this.colorItemProductionError.getColor () );
+    }
+
     // NonterminalSymbol
     if ( this.gui.jGTITreeColors.isExpanded ( new TreePath (
         this.nonterminalSymbolNode.getPath () ) ) != this.nonterminalSymbolNode
@@ -2800,6 +2933,17 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemNonterminalSymbol );
       PreferenceManager.getInstance ().fireColorChangedNonterminalSymbol (
           this.colorItemNonterminalSymbol.getColor () );
+    }
+    // NonterminalSymbol error
+    if ( !this.initialColorItemNonterminalSymbolError.getColor ().equals (
+        this.colorItemNonterminalSymbolError.getColor () ) )
+    {
+      this.initialColorItemNonterminalSymbolError = this.colorItemNonterminalSymbolError
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemNonterminalSymbolError (
+          this.colorItemNonterminalSymbolError );
+      PreferenceManager.getInstance ().fireColorChangedNonterminalSymbolError (
+          this.colorItemNonterminalSymbolError.getColor () );
     }
     // NonterminalSymbol start
     if ( !this.initialColorItemStartNonterminalSymbol.getColor ().equals (
@@ -2833,6 +2977,17 @@ public final class PreferencesDialog implements LanguageChangedListener
           this.colorItemTerminalSymbol );
       PreferenceManager.getInstance ().fireColorChangedTerminalSymbol (
           this.colorItemTerminalSymbol.getColor () );
+    }
+    // TerminalSymbol error
+    if ( !this.initialColorItemTerminalSymbolError.getColor ().equals (
+        this.colorItemTerminalSymbolError.getColor () ) )
+    {
+      this.initialColorItemTerminalSymbolError = this.colorItemTerminalSymbolError
+          .clone ();
+      PreferenceManager.getInstance ().setColorItemTerminalSymbolError (
+          this.colorItemTerminalSymbolError );
+      PreferenceManager.getInstance ().fireColorChangedTerminalSymbolError (
+          this.colorItemTerminalSymbolError.getColor () );
     }
 
     // Parser

@@ -39,6 +39,19 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
   /**
    * {@inheritDoc}
    * 
+   * @see ColorChangedListener#colorChangedNonterminalSymbolError(Color)
+   */
+  public void colorChangedNonterminalSymbolError (
+      @SuppressWarnings ( "unused" )
+      Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ColorChangedListener#colorChangedParserError(Color)
    */
   public void colorChangedParserError ( @SuppressWarnings ( "unused" )
@@ -78,6 +91,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @see ColorChangedListener#colorChangedParserWarning(Color)
    */
   public void colorChangedParserWarning ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedProductionError(Color)
+   */
+  public void colorChangedProductionError ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.
@@ -223,6 +248,18 @@ public abstract class ColorChangedAdapter implements ColorChangedListener
    * @see ColorChangedListener#colorChangedTerminalSymbol(Color)
    */
   public void colorChangedTerminalSymbol ( @SuppressWarnings ( "unused" )
+  Color newColor )
+  {
+    // Override this method if needed.
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ColorChangedListener#colorChangedTerminalSymbolError(Color)
+   */
+  public void colorChangedTerminalSymbolError ( @SuppressWarnings ( "unused" )
   Color newColor )
   {
     // Override this method if needed.

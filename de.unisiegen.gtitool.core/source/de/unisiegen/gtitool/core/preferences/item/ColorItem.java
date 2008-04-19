@@ -82,13 +82,16 @@ public final class ColorItem extends DefaultMutableTreeNode implements
    * Allocates a new {@link ColorItem}.
    * 
    * @param caption The caption of this item.
+   * @param description The description of this item.
    * @param expanded The expanded value.
    */
-  public ColorItem ( String caption, boolean expanded )
+  public ColorItem ( String caption, String description, boolean expanded )
   {
     super ( caption );
     // Caption
     setCaption ( caption );
+    // Description
+    setDescription ( description );
     // Expanded
     setExpanded ( expanded );
   }
@@ -107,7 +110,7 @@ public final class ColorItem extends DefaultMutableTreeNode implements
       return new ColorItem ( this.color, this.caption, this.description,
           this.standardColor );
     }
-    return new ColorItem ( this.caption, this.expanded );
+    return new ColorItem ( this.caption, this.description, this.expanded );
   }
 
 

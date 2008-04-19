@@ -573,7 +573,7 @@ public class GrammarPanel implements EditorPanel
         ArrayList < Production > oldProductions = new ArrayList < Production > ();
         oldProductions.addAll ( this.grammar.getProductions () );
 
-        for ( Production current : oldProductions )
+        for ( Production current : productions )
         {
           this.model.removeProduction ( current );
         }

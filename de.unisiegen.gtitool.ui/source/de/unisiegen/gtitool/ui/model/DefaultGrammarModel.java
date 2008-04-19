@@ -306,13 +306,13 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * Remove the given production from list.
+   * Remove a {@link Production} from list.
    * 
-   * @param production The production to remove.
+   * @param index The index of the {@link Production}.
    */
-  public void removeProduction ( Production production )
+  public void removeProduction ( int index )
   {
-    this.grammar.removeProduction ( production );
+    this.grammar.removeProduction ( index );
   }
 
 

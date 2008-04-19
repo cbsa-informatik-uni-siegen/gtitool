@@ -544,18 +544,12 @@ public class GrammarPanel implements EditorPanel
         return;
       }
 
-      ArrayList < Production > productions = new ArrayList < Production > ();
-
-      for ( int index : rows )
-      {
-        productions.add ( this.grammar.getProductionAt ( index ) );
-      }
       String message = null;
-      if ( productions.size () == 1 )
+      if ( rows.length == 1 )
       {
         message = Messages.getString (
             "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
-            productions.get ( 0 ) );
+            this.grammar.getProductionAt ( rows [ 0 ] ) );
       }
       else
       {
@@ -573,9 +567,11 @@ public class GrammarPanel implements EditorPanel
         ArrayList < Production > oldProductions = new ArrayList < Production > ();
         oldProductions.addAll ( this.grammar.getProductions () );
 
-        for ( Production current : productions )
+        int number = 0;
+        for ( int index : rows )
         {
-          this.model.removeProduction ( current );
+          this.model.removeProduction ( index - number);
+          number++;
         }
 
         RedoUndoItem item = new ProductionsListChangedItem ( this.grammar,
@@ -799,7 +795,7 @@ public class GrammarPanel implements EditorPanel
       }
 
       ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
-          this.model, productions );
+          this.model, productions, rows );
 
       popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );

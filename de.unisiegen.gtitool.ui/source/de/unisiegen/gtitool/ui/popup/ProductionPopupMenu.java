@@ -78,6 +78,11 @@ public final class ProductionPopupMenu extends JPopupMenu
    * The validate item.
    */
   private JMenuItem validate;
+  
+  /**
+   * The indeces of the {@link Production}s.
+   */
+  private int [] indeces;
 
 
   /**
@@ -85,14 +90,16 @@ public final class ProductionPopupMenu extends JPopupMenu
    * 
    * @param parent The {@link GrammarPanel}.
    * @param model the model containing the production.
-   * @param productions the selected {@link Production}s
+   * @param productions the selected {@link Production}s.
+   * @param indeces The indeces of the {@link Production}s.
    */
   public ProductionPopupMenu ( GrammarPanel parent, DefaultGrammarModel model,
-      ArrayList < Production > productions )
+      ArrayList < Production > productions, int [] indeces )
   {
     this.grammarPanel = parent;
     this.model = model;
     this.productions = productions;
+    this.indeces = indeces;
     populateMenues ();
 
   }
@@ -189,9 +196,11 @@ public final class ProductionPopupMenu extends JPopupMenu
           ArrayList < Production > oldProductions = new ArrayList < Production > ();
           oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel.getGrammar ().getProductions () );
           
-          for ( Production production : ProductionPopupMenu.this.productions )
+          int number = 0;
+          for ( int index : ProductionPopupMenu.this.indeces )
           {
-            ProductionPopupMenu.this.model.removeProduction ( production );
+            ProductionPopupMenu.this.model.removeProduction ( index - number );
+            number++;
           }
           RedoUndoItem item = new ProductionsListChangedItem ( ProductionPopupMenu.this.grammarPanel.getGrammar (),
               oldProductions );

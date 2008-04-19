@@ -176,8 +176,12 @@ public abstract class AbstractGrammar implements Grammar
       if ( !foundDuplicates.contains ( current ) )
         for ( Production other : this.productions )
         {
-          if ( ! ( current == other ) && current.equals ( other ) )
+          if ( ! ( current == other ) /*&& current.equals ( other )*/ )
           {
+            if (current.getNonterminalSymbol ().equals ( other.getNonterminalSymbol () ) && current.getProductionWord ().equals ( other.getProductionWord () ))
+            
+            
+            
             grammarExceptionList.add ( new GrammarDuplicateProductionException (
                 current ) );
             if ( !foundDuplicates.contains ( current ) )
@@ -214,7 +218,7 @@ public abstract class AbstractGrammar implements Grammar
           }
         }
       }
-      if ( !used )
+      if ( !used && !current.equals ( this.startSymbol ))
       {
         grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
             current ) );
@@ -536,13 +540,13 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
-   * Remove a {@link Production} from this grammar
+   * Remove a {@link Production} from this grammar.
    * 
-   * @param production The {@link Production}
+   * @param index The index of the {@link Production}.
    */
-  public void removeProduction ( Production production )
+  public void removeProduction ( int index )
   {
-    this.productions.remove ( production );
+    this.productions.remove ( index );
     updateStartSymbol ();
     fireModifyStatusChanged ( false );
   }

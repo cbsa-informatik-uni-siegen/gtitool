@@ -133,11 +133,11 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Remove a new production from this grammar.
+   * Remove a new {@link Production} from this grammar.
    * 
-   * @param production The {@link Production}:
+   * @param index The index of the {@link Production}:
    */
-  public void removeProduction ( Production production );
+  public void removeProduction ( int index );
 
 
   /**

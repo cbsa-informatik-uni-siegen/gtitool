@@ -28,8 +28,7 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.ui.redoundo.ProductionAddedItem;
-import de.unisiegen.gtitool.ui.redoundo.ProductionRemovedItem;
+import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
@@ -242,11 +241,14 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    */
   public void addProduction ( Production production, boolean createUndoStep )
   {
+    ArrayList < Production > productions = new ArrayList < Production > ();
+    productions.addAll ( this.grammar.getProductions () );
     this.grammar.addProduction ( production );
 
     if ( createUndoStep )
     {
-      RedoUndoItem item = new ProductionAddedItem ( this, production );
+      RedoUndoItem item = new ProductionsListChangedItem ( this.grammar,
+          productions );
       this.redoUndoHandler.addItem ( item );
     }
   }
@@ -307,16 +309,10 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * Remove the given production from list.
    * 
    * @param production The production to remove.
-   * @param createUndoStep Flag signals if an undo step should be created.
    */
-  public void removeProduction ( Production production, boolean createUndoStep )
+  public void removeProduction ( Production production )
   {
     this.grammar.removeProduction ( production );
-    if ( createUndoStep )
-    {
-      RedoUndoItem item = new ProductionRemovedItem ( this, production );
-      this.redoUndoHandler.addItem ( item );
-    }
   }
 
 

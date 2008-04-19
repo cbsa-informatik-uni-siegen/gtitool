@@ -47,8 +47,9 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.redoundo.ProductionsMovedItem;
+import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
@@ -534,21 +535,53 @@ public class GrammarPanel implements EditorPanel
    */
   public void handleDeleteProduction ()
   {
-    if ( this.gui.jGTITableGrammar.getRowCount () > this.gui.jGTITableGrammar
-        .getSelectedRow ()
-        && this.gui.jGTITableGrammar.getSelectedRow () > -1 )
+    if ( this.gui.jGTITableGrammar.getRowCount () > 0 )
     {
-      Production production = this.grammar
-          .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
-      ConfirmDialog confirmedDialog = new ConfirmDialog ( getParent (),
-          Messages.getString ( "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
-              production ), Messages
+      int [] rows = this.gui.jGTITableGrammar.getSelectedRows ();
+
+      if ( rows.length == 0 )
+      {
+        return;
+      }
+
+      ArrayList < Production > productions = new ArrayList < Production > ();
+
+      for ( int index : rows )
+      {
+        productions.add ( this.grammar.getProductionAt ( index ) );
+      }
+      String message = null;
+      if ( productions.size () == 1 )
+      {
+        message = Messages.getString (
+            "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
+            productions.get ( 0 ) );
+      }
+      else
+      {
+        message = Messages
+            .getString ( "ProductionPopupMenu.DeleteProductionsQuestion" ); //$NON-NLS-1$
+      }
+
+      ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
+          message, Messages
               .getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
           true, false );
-      confirmedDialog.show ();
-      if ( confirmedDialog.isConfirmed () )
+      confirmDialog.show ();
+      if ( confirmDialog.isConfirmed () )
       {
-        this.model.removeProduction ( production, true );
+        ArrayList < Production > oldProductions = new ArrayList < Production > ();
+        oldProductions.addAll ( this.grammar.getProductions () );
+
+        for ( Production current : oldProductions )
+        {
+          this.model.removeProduction ( current );
+        }
+
+        RedoUndoItem item = new ProductionsListChangedItem ( this.grammar,
+            oldProductions );
+        this.redoUndoHandler.addItem ( item );
+
         this.gui.repaint ();
       }
     }
@@ -759,10 +792,9 @@ public class GrammarPanel implements EditorPanel
       }
       else
       {
-        int [] rowindeces = new int [ rows.length ];
         for ( int i = 0 ; i < rows.length ; i++ )
         {
-          productions.add ( this.grammar.getProductionAt ( rowindeces [ i ] ) );
+          productions.add ( this.grammar.getProductionAt ( rows [ i ] ) );
         }
       }
 
@@ -973,8 +1005,8 @@ public class GrammarPanel implements EditorPanel
 
     fireModifyStatusChanged ( false );
 
-    ProductionsMovedItem item = new ProductionsMovedItem ( this.grammar,
-        oldProductions );
+    ProductionsListChangedItem item = new ProductionsListChangedItem (
+        this.grammar, oldProductions );
     this.redoUndoHandler.addItem ( item );
   }
 

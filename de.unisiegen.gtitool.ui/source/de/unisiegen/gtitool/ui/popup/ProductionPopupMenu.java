@@ -19,6 +19,8 @@ import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
+import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
@@ -176,18 +178,25 @@ public final class ProductionPopupMenu extends JPopupMenu
               .getString ( "ProductionPopupMenu.DeleteProductionsQuestion" ); //$NON-NLS-1$
         }
 
-        ConfirmDialog confirmedDialog = new ConfirmDialog (
+        ConfirmDialog confirmDialog = new ConfirmDialog (
             ProductionPopupMenu.this.grammarPanel.getParent (),
             message,
             Messages.getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
             true, false );
-        confirmedDialog.show ();
-        if ( confirmedDialog.isConfirmed () )
+        confirmDialog.show ();
+        if ( confirmDialog.isConfirmed () )
         {
+          ArrayList < Production > oldProductions = new ArrayList < Production > ();
+          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel.getGrammar ().getProductions () );
+          
           for ( Production production : ProductionPopupMenu.this.productions )
           {
-            ProductionPopupMenu.this.model.removeProduction ( production, true );
+            ProductionPopupMenu.this.model.removeProduction ( production );
           }
+          RedoUndoItem item = new ProductionsListChangedItem ( ProductionPopupMenu.this.grammarPanel.getGrammar (),
+              oldProductions );
+          ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ().addItem ( item );
+          
           ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
               .getGui () ).repaint ();
         }

@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 /**
  * Representation of {@link RedoUndoItem} for {@link Production} added action.
  */
-public class ProductionsMovedItem extends RedoUndoItem
+public class ProductionsListChangedItem extends RedoUndoItem
 {
 
   /**
@@ -32,12 +32,12 @@ public class ProductionsMovedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link ProductionsMovedItem}.
+   * Allocate a new {@link ProductionsListChangedItem}.
    * 
    * @param grammar The {@link Grammar}.
    * @param oldProductions Old list with {@link Production}s.
    */
-  public ProductionsMovedItem ( Grammar grammar,
+  public ProductionsListChangedItem ( Grammar grammar,
       ArrayList < Production > oldProductions )
   {
     super ();

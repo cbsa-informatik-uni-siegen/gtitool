@@ -432,7 +432,8 @@ public final class MachinePanel implements EditorPanel
     // Reset modify
     resetModify ();
   }
-  
+
+
   /**
    * Add a new Error
    * 
@@ -465,7 +466,8 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.tmpState = null;
           MachinePanel.this.dragged = false;
         }
-        else if ( !MachinePanel.this.mouseDown && event.getKeyCode () == KeyEvent.VK_DELETE )
+        else if ( !MachinePanel.this.mouseDown
+            && event.getKeyCode () == KeyEvent.VK_DELETE )
         {
           Object object = MachinePanel.this.graph.getSelectionCell ();
 
@@ -480,32 +482,34 @@ public final class MachinePanel implements EditorPanel
         }
       }
     } );
-    
-    this.graph.addMouseListener ( new MouseAdapter(){
-      
+
+    this.graph.addMouseListener ( new MouseAdapter ()
+    {
+
       /**
        * Invoked when a mouse button has been pressed on a component.
        */
-      @SuppressWarnings("synthetic-access")
+      @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed(@SuppressWarnings("unused")
-      MouseEvent e) 
+      public void mousePressed ( @SuppressWarnings ( "unused" )
+      MouseEvent e )
       {
         MachinePanel.this.mouseDown = true;
       }
+
 
       /**
        * Invoked when a mouse button has been released on a component.
        */
       @Override
-      @SuppressWarnings("synthetic-access")
-      public void mouseReleased(@SuppressWarnings("unused")
-      MouseEvent e) 
+      @SuppressWarnings ( "synthetic-access" )
+      public void mouseReleased ( @SuppressWarnings ( "unused" )
+      MouseEvent e )
       {
         MachinePanel.this.mouseDown = false;
       }
-      
-    });
+
+    } );
 
     // ModifyStatusChangedListener
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
@@ -620,7 +624,9 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Clear all Error and Warning messages
+   * {@inheritDoc}
+   * 
+   * @see EditorPanel#clearValidationMessages()
    */
   public final void clearValidationMessages ()
   {

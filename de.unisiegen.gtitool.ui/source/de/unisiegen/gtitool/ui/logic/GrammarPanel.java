@@ -28,7 +28,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
-import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -41,7 +40,6 @@ import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
 import de.unisiegen.gtitool.ui.model.GrammarConsoleTableModel;
-import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
@@ -90,13 +88,13 @@ public final class GrammarPanel implements EditorPanel
 
 
   /**
-   * The name of this {@link MachinePanel}.
+   * The name of this {@link GrammarPanel}.
    */
   private String name = null;
 
 
   /**
-   * The {@link File} for this {@link MachinePanel}.
+   * The {@link File} for this {@link GrammarPanel}.
    */
   private File file;
 
@@ -126,7 +124,7 @@ public final class GrammarPanel implements EditorPanel
 
 
   /**
-   * The {@link MachineConsoleTableModel} for the warning table.
+   * The {@link GrammarConsoleTableModel} for the warning table.
    */
   private GrammarConsoleTableModel warningTableModel;
 
@@ -210,7 +208,7 @@ public final class GrammarPanel implements EditorPanel
   /**
    * Add a new Error
    * 
-   * @param grammarException The {@link MachineException} containing the data
+   * @param grammarException The {@link GrammarException} containing the data
    */
   public final void addError ( GrammarException grammarException )
   {
@@ -244,7 +242,7 @@ public final class GrammarPanel implements EditorPanel
   /**
    * Add a new warning.
    * 
-   * @param grammarException The {@link MachineException} containing the data.
+   * @param grammarException The {@link GrammarException} containing the data.
    */
   public final void addWarning ( GrammarException grammarException )
   {
@@ -291,9 +289,9 @@ public final class GrammarPanel implements EditorPanel
   public final void clearValidationMessages ()
   {
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
-        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+        .getString ( "GrammarPanel.Error" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
-        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+        .getString ( "GrammarPanel.Warning" ) ); //$NON-NLS-1$
 
     this.errorTableModel.clearData ();
     this.warningTableModel.clearData ();
@@ -307,6 +305,7 @@ public final class GrammarPanel implements EditorPanel
    */
   public final void fireModifyStatusChanged ( boolean forceModify )
   {
+    clearValidationMessages ();
 
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -1019,9 +1018,9 @@ public final class GrammarPanel implements EditorPanel
   public final void languageChanged ()
   {
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
-        .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
+        .getString ( "GrammarPanel.Error" ) ); //$NON-NLS-1$
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 1, Messages
-        .getString ( "MachinePanel.Warning" ) ); //$NON-NLS-1$
+        .getString ( "GrammarPanel.Warning" ) ); //$NON-NLS-1$
   }
 
 

@@ -137,14 +137,14 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Clear all Error and Warning messages
+   * Clears all error and warning messages.
    */
   public void clearValidationMessages ();
 
 
   /**
    * Returns the {@link JTabbedPane} containing the console.
-   *
+   * 
    * @return the {@link JTabbedPane} containing the console.
    */
   public JTabbedPane getJTabbedPaneConsole ();
@@ -156,7 +156,5 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @param visible Visible or not visible.
    */
   public void setVisibleConsole ( boolean visible );
-
-
 
 }

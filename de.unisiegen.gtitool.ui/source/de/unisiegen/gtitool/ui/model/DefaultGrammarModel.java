@@ -297,11 +297,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    */
   public boolean isModified ()
   {
-    if ( this.grammar.isModified () )
-    {
-      return true;
-    }
-    return false;
+    return this.grammar.isModified ();
   }
 
 

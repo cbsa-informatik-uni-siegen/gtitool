@@ -262,9 +262,9 @@ public final class DefaultProductionWord implements ProductionWord
   {
     if ( other instanceof DefaultProductionWord )
     {
-      DefaultProductionWord defaultWord = ( DefaultProductionWord ) other;
+      DefaultProductionWord defaultProductionWord = ( DefaultProductionWord ) other;
       return this.productionWordMemberList
-          .equals ( defaultWord.productionWordMemberList );
+          .equals ( defaultProductionWord.productionWordMemberList );
     }
     return false;
   }

@@ -357,7 +357,7 @@ public final class DefaultProduction implements Production
   public final void resetModify ()
   {
     this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
-    this.productionWord.resetModify ();
+    this.initialProductionWord = this.productionWord.clone ();
   }
 
 

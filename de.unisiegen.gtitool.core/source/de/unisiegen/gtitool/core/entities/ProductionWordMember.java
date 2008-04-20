@@ -35,4 +35,22 @@ public interface ProductionWordMember extends Entity, Storable
    * @return The name of this {@link ProductionWordMember}.
    */
   public String getName ();
+
+
+  /**
+   * Returns true if this {@link NonterminalSymbol} is a error
+   * {@link NonterminalSymbol}, otherwise false.
+   * 
+   * @return True if this {@link NonterminalSymbol} is a error
+   *         {@link NonterminalSymbol}, otherwise false.
+   */
+  public boolean isError ();
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   */
+  public void setError ( boolean error );
 }

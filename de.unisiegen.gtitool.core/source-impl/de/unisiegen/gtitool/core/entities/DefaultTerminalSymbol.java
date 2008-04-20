@@ -44,13 +44,6 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * This {@link DefaultTerminalSymbol} is a active
-   * {@link DefaultTerminalSymbol}.
-   */
-  private boolean active = false;
-
-
-  /**
    * The offset of this {@link DefaultTerminalSymbol} in the source code.
    * 
    * @see #getParserOffset()
@@ -220,19 +213,6 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns true if this {@link TerminalSymbol} is a active
-   * {@link TerminalSymbol}, otherwise false.
-   * 
-   * @return True if this {@link TerminalSymbol} is a active
-   *         {@link TerminalSymbol}, otherwise false.
-   */
-  public final boolean isActive ()
-  {
-    return this.active;
-  }
-
-
-  /**
    * Returns true if this {@link TerminalSymbol} is a error
    * {@link TerminalSymbol}, otherwise false.
    * 
@@ -243,17 +223,6 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public final boolean isError ()
   {
     return this.error;
-  }
-
-
-  /**
-   * Sets the active value.
-   * 
-   * @param active The active value to set.
-   */
-  public final void setActive ( boolean active )
-  {
-    this.active = active;
   }
 
 
@@ -342,8 +311,16 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.name,
-        Style.TERMINAL_SYMBOL ) );
+    if ( this.error )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.TERMINAL_SYMBOL_ERROR ) );
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.TERMINAL_SYMBOL ) );
+    }
     return prettyString;
   }
 

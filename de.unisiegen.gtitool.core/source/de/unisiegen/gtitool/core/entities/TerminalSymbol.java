@@ -39,16 +39,6 @@ public interface TerminalSymbol extends Entity, ProductionWordMember, Storable,
 
 
   /**
-   * Returns true if this {@link TerminalSymbol} is a active
-   * {@link TerminalSymbol}, otherwise false.
-   * 
-   * @return True if this {@link TerminalSymbol} is a active
-   *         {@link TerminalSymbol}, otherwise false.
-   */
-  public boolean isActive ();
-
-
-  /**
    * Returns true if this {@link TerminalSymbol} is a error
    * {@link TerminalSymbol}, otherwise false.
    * 
@@ -56,14 +46,6 @@ public interface TerminalSymbol extends Entity, ProductionWordMember, Storable,
    *         {@link TerminalSymbol}, otherwise false.
    */
   public boolean isError ();
-
-
-  /**
-   * Sets the active value.
-   * 
-   * @param active The active value to set.
-   */
-  public void setActive ( boolean active );
 
 
   /**

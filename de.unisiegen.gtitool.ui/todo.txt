@@ -2,5 +2,4 @@ CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
-BM		- Bei Fehler Produktion highlighten
 BM		- Selektierte Komponenten sollten per "del" gelöscht werden können (GrammarPanel)

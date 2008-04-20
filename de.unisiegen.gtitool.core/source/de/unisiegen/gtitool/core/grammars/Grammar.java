@@ -42,7 +42,7 @@ public interface Grammar extends Serializable, TableModel, Modifyable
      * There is a {@link NonterminalSymbol} which is not reachable.
      */
     NONTERMINAL_NOT_REACHABLE,
-    
+
     /**
      * The grammar is not regular.
      */
@@ -102,6 +102,14 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Get all {@link Production}s of this grammar.
+   * 
+   * @return all {@link Production}s of this grammar.
+   */
+  public ArrayList < Production > getProduction ();
+
+
+  /**
    * Get a specified production.
    * 
    * @param index the index of the production.
@@ -111,18 +119,12 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Get all {@link Production}s of this grammar.
+   * Returns the start symbol for this grammar.
    * 
-   * @return all {@link Production}s of this grammar.
+   * @return the start symbol for this grammar.
    */
-  public ArrayList < Production > getProductions ();
-  
-  /**
-   * Set the {@link Production}s.
-   * 
-   * @param productions The new {@link Production}s.
-   */
-  public void setProductions(ArrayList<Production> productions);
+  public NonterminalSymbol getStartSymbol ();
+
 
   /**
    * Returns the {@link TerminalSymbolSet}.
@@ -141,24 +143,25 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Set the {@link Production}s.
+   * 
+   * @param productions The new {@link Production}s.
+   */
+  public void setProductions ( ArrayList < Production > productions );
+
+
+  /**
+   * Returns the start symbol for this grammar.
+   * 
+   * @param startSymbol the new start symbol of this grammar.
+   */
+  public void setStartSymbol ( NonterminalSymbol startSymbol );
+
+
+  /**
    * Validates that everything in the {@link Grammar} is correct.
    * 
    * @throws GrammarValidationException If the validation fails.
    */
   public void validate () throws GrammarValidationException;
-
-
-  /**
-   * Returns the start symbol for this grammar.
-   *
-   * @return the start symbol for this grammar.
-   */
-  public NonterminalSymbol getStartSymbol ();
-  
-  /**
-   * Returns the start symbol for this grammar.
-   *
-   * @param startSymbol the new start symbol of this grammar.
-   */
-  public void setStartSymbol (NonterminalSymbol startSymbol);
 }

@@ -45,7 +45,7 @@ public class ProductionsListChangedItem extends RedoUndoItem
     this.oldProductions = oldProductions;
 
     this.newProductions = new ArrayList < Production > ();
-    this.newProductions.addAll ( this.grammar.getProductions () );
+    this.newProductions.addAll ( this.grammar.getProduction () );
   }
 
 

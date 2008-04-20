@@ -32,6 +32,28 @@ public interface Production extends Entity, Storable, Modifyable,
 
 
   /**
+   * Returns true if this {@link Production} contains this
+   * {@link NonterminalSymbol}, else false.
+   * 
+   * @param symbol The {@link NonterminalSymbol}.
+   * @return true if this {@link Production} contains this
+   *         {@link NonterminalSymbol}, else false.
+   */
+  public boolean contains ( NonterminalSymbol symbol );
+
+
+  /**
+   * Returns true if this {@link Production} contains this
+   * {@link TerminalSymbol}, else false.
+   * 
+   * @param symbol The {@link TerminalSymbol}.
+   * @return true if this {@link Production} contains this
+   *         {@link TerminalSymbol}, else false.
+   */
+  public boolean contains ( TerminalSymbol symbol );
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#equals(Object)
@@ -56,6 +78,24 @@ public interface Production extends Entity, Storable, Modifyable,
 
 
   /**
+   * Returns true if this {@link Production} is a error {@link Production},
+   * otherwise false.
+   * 
+   * @return True if this {@link Production} is a error {@link Production},
+   *         otherwise false.
+   */
+  public boolean isError ();
+
+
+  /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   */
+  public void setError ( boolean error );
+
+
+  /**
    * Set the {@link NonterminalSymbol} for this {@link Production}.
    * 
    * @param nonterminalSymbol the {@link NonterminalSymbol}.
@@ -69,26 +109,4 @@ public interface Production extends Entity, Storable, Modifyable,
    * @param productionWord the {@link ProductionWord}.
    */
   public void setProductionWord ( ProductionWord productionWord );
-
-
-  /**
-   * Returns true if this {@link Production} contains this
-   * {@link NonterminalSymbol}, else false.
-   * 
-   * @param symbol The {@link NonterminalSymbol}.
-   * @return true if this {@link Production} contains this
-   *         {@link NonterminalSymbol}, else false.
-   */
-  public boolean contains ( NonterminalSymbol symbol );
-
-
-  /**
-   * Returns true if this {@link Production} contains this
-   * {@link TerminalSymbol}, else false.
-   * 
-   * @param symbol The {@link TerminalSymbol}.
-   * @return true if this {@link Production} contains this
-   *         {@link TerminalSymbol}, else false.
-   */
-  public boolean contains ( TerminalSymbol symbol );
 }

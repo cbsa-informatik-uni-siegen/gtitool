@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.grammar;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
@@ -26,30 +28,32 @@ public final class GrammarDuplicateProductionException extends GrammarException
 
 
   /**
-   * The {@link Production}.
+   * The {@link Production} list.
    */
-  private Production production;
+  private ArrayList < Production > productionList;
 
 
   /**
    * Allocates a new {@link GrammarDuplicateProductionException}.
    * 
-   * @param production The {@link Production}.
+   * @param productionList The {@link Production} list.
    */
-  public GrammarDuplicateProductionException ( Production production )
+  public GrammarDuplicateProductionException (
+      ArrayList < Production > productionList )
   {
     super ();
     // Production
-    if ( production == null )
+    if ( productionList == null )
     {
       throw new NullPointerException ( "production is null" ); //$NON-NLS-1$
     }
-    this.production = production;
+    this.productionList = productionList;
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "GrammarDuplicatProductionException.Message" ) ); //$NON-NLS-1$
-    setPrettyDescription ( Messages.getPrettyString (
-        "GrammarDuplicatProductionException.Description", production ) ); //$NON-NLS-1$
+    setPrettyDescription ( Messages
+        .getPrettyString (
+            "GrammarDuplicatProductionException.Description", productionList.get ( 0 ) ) ); //$NON-NLS-1$
   }
 
 
@@ -58,9 +62,9 @@ public final class GrammarDuplicateProductionException extends GrammarException
    * 
    * @see ProductionInvolvedException#getProduction()
    */
-  public final Production getProduction ()
+  public final ArrayList < Production > getProduction ()
   {
-    return this.production;
+    return this.productionList;
   }
 
 
@@ -87,8 +91,8 @@ public final class GrammarDuplicateProductionException extends GrammarException
     String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
     StringBuilder result = new StringBuilder ( super.toString () );
     result.append ( lineBreak );
-    result.append ( "Production: " ); //$NON-NLS-1$
-    result.append ( this.production.toString () );
+    result.append ( "Productions: " ); //$NON-NLS-1$
+    result.append ( this.productionList.toString () );
     return result.toString ();
   }
 }

@@ -242,7 +242,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   public void addProduction ( Production production, boolean createUndoStep )
   {
     ArrayList < Production > productions = new ArrayList < Production > ();
-    productions.addAll ( this.grammar.getProductions () );
+    productions.addAll ( this.grammar.getProduction () );
     this.grammar.addProduction ( production );
 
     if ( createUndoStep )
@@ -271,7 +271,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
         .getElement () );
     newElement.addElement ( this.grammar.getTerminalSymbolSet ().getElement () );
 
-    for ( Production current : this.grammar.getProductions () )
+    for ( Production current : this.grammar.getProduction () )
     {
       newElement.addElement ( current.getElement () );
     }

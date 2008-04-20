@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
@@ -26,6 +25,7 @@ import javax.swing.filechooser.FileFilter;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
+import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
@@ -59,9 +59,10 @@ import de.unisiegen.gtitool.ui.swing.dnd.JGTITableTransferHandler;
 
 /**
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public class GrammarPanel implements EditorPanel
+public final class GrammarPanel implements EditorPanel
 {
 
   /**
@@ -222,7 +223,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
    */
-  public void addModifyStatusChangedListener (
+  public final void addModifyStatusChangedListener (
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
@@ -234,16 +235,16 @@ public class GrammarPanel implements EditorPanel
    * 
    * @param production the new Production to add.
    */
-  public void addProduction ( Production production )
+  public final void addProduction ( Production production )
   {
     this.model.addProduction ( production, true );
   }
 
 
   /**
-   * Add a new Warning
+   * Add a new warning.
    * 
-   * @param grammarException The {@link MachineException} containing the data
+   * @param grammarException The {@link MachineException} containing the data.
    */
   public final void addWarning ( GrammarException grammarException )
   {
@@ -252,11 +253,42 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
+   * Clears the {@link Production} highlights.
+   */
+  private final void clearProductionHighlights ()
+  {
+    this.grammar.getStartSymbol ().setError ( false );
+
+    for ( NonterminalSymbol current : this.grammar.getNonterminalSymbolSet () )
+    {
+      current.setError ( false );
+    }
+
+    for ( TerminalSymbol current : this.grammar.getTerminalSymbolSet () )
+    {
+      current.setError ( false );
+    }
+
+    for ( Production currentProduction : this.grammar.getProduction () )
+    {
+      currentProduction.setError ( false );
+      currentProduction.getNonterminalSymbol ().setError ( false );
+      for ( ProductionWordMember currentMember : currentProduction
+          .getProductionWord () )
+      {
+        currentMember.setError ( false );
+      }
+    }
+    this.gui.jGTITableGrammar.repaint ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#clearValidationMessages()
+   * @see EditorPanel#clearValidationMessages()
    */
-  public void clearValidationMessages ()
+  public final void clearValidationMessages ()
   {
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
@@ -301,7 +333,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see EditorPanel#getFile()
    */
-  public File getFile ()
+  public final File getFile ()
   {
     return this.file;
   }
@@ -312,7 +344,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see EditorPanel#getFileEnding()
    */
-  public String getFileEnding ()
+  public final String getFileEnding ()
   {
     return "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
   }
@@ -324,7 +356,7 @@ public class GrammarPanel implements EditorPanel
    * @return The grammar.
    * @see #grammar
    */
-  public Grammar getGrammar ()
+  public final Grammar getGrammar ()
   {
     return this.grammar;
   }
@@ -335,7 +367,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
    */
-  public EditorPanelForm getGui ()
+  public final EditorPanelForm getGui ()
   {
     return this.gui;
   }
@@ -346,7 +378,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
    */
-  public JTabbedPane getJTabbedPaneConsole ()
+  public final JTabbedPane getJTabbedPaneConsole ()
   {
     return this.gui.jGTITabbedPaneConsole;
   }
@@ -357,7 +389,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @return the {@link MainWindow}.
    */
-  public MainWindow getMainWindow ()
+  public final MainWindow getMainWindow ()
   {
     return this.mainWindowForm.getLogic ();
   }
@@ -369,7 +401,7 @@ public class GrammarPanel implements EditorPanel
    * @return The {@link DefaultModel}.
    * @see #model
    */
-  public DefaultModel getModel ()
+  public final DefaultModel getModel ()
   {
     return this.model;
   }
@@ -380,7 +412,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see EditorPanel#getName()
    */
-  public String getName ()
+  public final String getName ()
   {
     return this.file == null ? this.name : this.file.getName ();
   }
@@ -391,7 +423,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see EditorPanel#getPanel()
    */
-  public JPanel getPanel ()
+  public final JPanel getPanel ()
   {
     return this.gui;
   }
@@ -402,16 +434,28 @@ public class GrammarPanel implements EditorPanel
    * 
    * @return the parent frame.
    */
-  public JFrame getParent ()
+  public final JFrame getParent ()
   {
     return this.mainWindowForm;
   }
 
 
   /**
+   * Returns the redoUndoHandler.
+   * 
+   * @return The redoUndoHandler.
+   * @see #redoUndoHandler
+   */
+  public final RedoUndoHandler getRedoUndoHandler ()
+  {
+    return this.redoUndoHandler;
+  }
+
+
+  /**
    * Handle add production button pressed.
    */
-  public void handleAddProduction ()
+  public final void handleAddProduction ()
   {
     ProductionDialog dialog = new ProductionDialog ( getParent (), this.grammar
         .getNonterminalSymbolSet (), this.grammar.getTerminalSymbolSet (),
@@ -430,6 +474,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
+    clearProductionHighlights ();
   }
 
 
@@ -444,6 +489,7 @@ public class GrammarPanel implements EditorPanel
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
+    clearProductionHighlights ();
   }
 
 
@@ -469,71 +515,27 @@ public class GrammarPanel implements EditorPanel
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
     }
 
-    clearHighlight ();
+    this.gui.jGTITableGrammar.clearSelection ();
+    clearProductionHighlights ();
 
     int index = table.getSelectedRow ();
     if ( index != -1 )
     {
-      highlightProductions ( ( ( GrammarConsoleTableModel ) table.getModel () )
+      highlightProduction ( ( ( GrammarConsoleTableModel ) table.getModel () )
           .getProduction ( index ) );
       highlightNonterminalSymbol ( ( ( GrammarConsoleTableModel ) table
           .getModel () ).getNonterminalSymbol ( index ) );
-      highlightNonterminalSymbol ( ( ( GrammarConsoleTableModel ) table
+      highlightProductionWord ( ( ( GrammarConsoleTableModel ) table
           .getModel () ).getProductionWordMember ( index ) );
+      this.gui.jGTITableGrammar.repaint ();
     }
-  }
-
-
-  /**
-   * Highlight the affected error {@link ProductionWordMember}s.
-   * 
-   * @param productionWordMember List with all {@link ProductionWordMember}s
-   *          that are affected.
-   */
-  private void highlightNonterminalSymbol (
-      ArrayList < ProductionWordMember > productionWordMember )
-  {
-    // TODO implement me
-  }
-
-
-  /**
-   * Highlight the affected error {@link NonterminalSymbol}.
-   * 
-   * @param nonterminalSymbol List with all {@link NonterminalSymbol} that is
-   *          affected.
-   */
-  private void highlightNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
-  {
-    // TODO implement me
-  }
-
-
-  /**
-   * Highlight the affected error {@link Production}.
-   * 
-   * @param production List with all {@link Production} that is affected.
-   */
-  private void highlightProductions ( Production production )
-  {
-    // TODO implement me
-  }
-
-
-  /**
-   * Clears the highlight.
-   */
-  private void clearHighlight ()
-  {
-    this.gui.jGTITableGrammar.clearSelection ();
-    this.gui.jGTITableGrammar.setSelectionBackground ( Color.WHITE );
   }
 
 
   /**
    * Handle delete production button pressed.
    */
-  public void handleDeleteProduction ()
+  public final void handleDeleteProduction ()
   {
     if ( this.gui.jGTITableGrammar.getRowCount () > 0 )
     {
@@ -565,13 +567,13 @@ public class GrammarPanel implements EditorPanel
       if ( confirmDialog.isConfirmed () )
       {
         ArrayList < Production > oldProductions = new ArrayList < Production > ();
-        oldProductions.addAll ( this.grammar.getProductions () );
+        oldProductions.addAll ( this.grammar.getProduction () );
 
         int number = 0;
         for ( int index : rows )
         {
-          this.model.removeProduction ( index - number);
-          number++;
+          this.model.removeProduction ( index - number );
+          number++ ;
         }
 
         RedoUndoItem item = new ProductionsListChangedItem ( this.grammar,
@@ -587,12 +589,12 @@ public class GrammarPanel implements EditorPanel
   /**
    * Handle edit production button pressed.
    */
-  public void handleEditProduction ()
+  public final void handleEditProduction ()
   {
 
-    if ( this.gui.jGTITableGrammar.getRowCount () > this.gui.jGTITableGrammar
-        .getSelectedRow ()
-        && this.gui.jGTITableGrammar.getSelectedRow () > -1 )
+    if ( ( this.gui.jGTITableGrammar.getRowCount () > this.gui.jGTITableGrammar
+        .getSelectedRow () )
+        && ( this.gui.jGTITableGrammar.getSelectedRow () > -1 ) )
     {
       Production production = this.grammar
           .getProductionAt ( this.gui.jGTITableGrammar.getSelectedRow () );
@@ -620,7 +622,7 @@ public class GrammarPanel implements EditorPanel
   /**
    * Handle redo button pressed
    */
-  public void handleRedo ()
+  public final void handleRedo ()
   {
     this.redoUndoHandler.redo ();
     this.gui.repaint ();
@@ -750,10 +752,12 @@ public class GrammarPanel implements EditorPanel
    * 
    * @param event The {@link MouseEvent}.
    */
-  public void handleTableMouseClickedEvent ( MouseEvent event )
+  public final void handleTableMouseClickedEvent ( MouseEvent event )
   {
     if ( event.getButton () == MouseEvent.BUTTON2 )
+    {
       return;
+    }
 
     if ( event.getButton () == MouseEvent.BUTTON3 )
     {
@@ -765,11 +769,15 @@ public class GrammarPanel implements EditorPanel
       int rowIndex = this.gui.jGTITableGrammar.rowAtPoint ( event.getPoint () );
 
       if ( rows.length > 1 )
+      {
         for ( int row : rows )
         {
           if ( row == rowIndex )
+          {
             multiRowChoosen = true;
+          }
         }
+      }
       if ( !multiRowChoosen )
       {
         if ( rowIndex == -1 )
@@ -788,9 +796,9 @@ public class GrammarPanel implements EditorPanel
       }
       else
       {
-        for ( int i = 0 ; i < rows.length ; i++ )
+        for ( int element : rows )
         {
-          productions.add ( this.grammar.getProductionAt ( rows [ i ] ) );
+          productions.add ( this.grammar.getProductionAt ( element ) );
         }
       }
 
@@ -823,7 +831,7 @@ public class GrammarPanel implements EditorPanel
   /**
    * Handles the toolbar edit document event.
    */
-  public void handleToolbarEditDocument ()
+  public final void handleToolbarEditDocument ()
   {
     TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
         this.grammar );
@@ -836,7 +844,7 @@ public class GrammarPanel implements EditorPanel
   /**
    * Handle undo button pressed
    */
-  public void handleUndo ()
+  public final void handleUndo ()
   {
     this.redoUndoHandler.undo ();
     this.gui.repaint ();
@@ -845,9 +853,75 @@ public class GrammarPanel implements EditorPanel
 
 
   /**
+   * Highlight the affected error {@link NonterminalSymbol}.
+   * 
+   * @param nonterminalSymbol List with all {@link NonterminalSymbol} that is
+   *          affected.
+   */
+  private final void highlightNonterminalSymbol (
+      NonterminalSymbol nonterminalSymbol )
+  {
+    if ( nonterminalSymbol == null )
+    {
+      return;
+    }
+
+    nonterminalSymbol.setError ( true );
+  }
+
+
+  /**
+   * Highlight the affected error {@link Production} list.
+   * 
+   * @param productionList List with all {@link Production} list that is
+   *          affected.
+   */
+  private final void highlightProduction (
+      ArrayList < Production > productionList )
+  {
+    if ( productionList == null )
+    {
+      return;
+    }
+
+    for ( Production currentProduction : productionList )
+    {
+      currentProduction.setError ( true );
+      currentProduction.getNonterminalSymbol ().setError ( true );
+      for ( ProductionWordMember currentMember : currentProduction
+          .getProductionWord () )
+      {
+        currentMember.setError ( true );
+      }
+    }
+  }
+
+
+  /**
+   * Highlight the affected error {@link ProductionWordMember}s.
+   * 
+   * @param productionWordMember List with all {@link ProductionWordMember}s
+   *          that are affected.
+   */
+  private final void highlightProductionWord (
+      ArrayList < ProductionWordMember > productionWordMember )
+  {
+    if ( productionWordMember == null )
+    {
+      return;
+    }
+
+    for ( ProductionWordMember currentMember : productionWordMember )
+    {
+      currentMember.setError ( true );
+    }
+  }
+
+
+  /**
    * Initialize the used model
    */
-  private void initialize ()
+  private final void initialize ()
   {
     this.gui.jGTITableGrammar.setModel ( this.grammar );
     this.gui.jGTITableGrammar.setColumnModel ( new GrammarColumnModel () );
@@ -885,7 +959,6 @@ public class GrammarPanel implements EditorPanel
           {
             handleConsoleTableValueChanged ( event );
           }
-
         } );
     this.warningTableModel = new GrammarConsoleTableModel ();
     this.gui.jGTITableWarnings.setModel ( this.warningTableModel );
@@ -901,7 +974,6 @@ public class GrammarPanel implements EditorPanel
           {
             handleConsoleTableValueChanged ( event );
           }
-
         } );
   }
 
@@ -922,7 +994,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @return true, if is redo able, false else
    */
-  public boolean isRedoAble ()
+  public final boolean isRedoAble ()
   {
     return this.redoUndoHandler.isRedoAble ();
   }
@@ -933,7 +1005,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @return true, if is undo able, false else
    */
-  public boolean isUndoAble ()
+  public final boolean isUndoAble ()
   {
     return this.redoUndoHandler.isUndoAble ();
   }
@@ -944,7 +1016,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see LanguageChangedListener#languageChanged()
    */
-  public void languageChanged ()
+  public final void languageChanged ()
   {
     this.gui.jGTITabbedPaneConsole.setTitleAt ( 0, Messages
         .getString ( "MachinePanel.Error" ) ); //$NON-NLS-1$
@@ -964,7 +1036,7 @@ public class GrammarPanel implements EditorPanel
       int targetIndex )
   {
     ArrayList < Production > oldProductions = new ArrayList < Production > ();
-    oldProductions.addAll ( this.grammar.getProductions () );
+    oldProductions.addAll ( this.grammar.getProduction () );
 
     ArrayList < Production > productions = new ArrayList < Production > ();
 
@@ -972,7 +1044,7 @@ public class GrammarPanel implements EditorPanel
 
     int newTargetIndex = targetIndex;
 
-    if ( indeces.length > 0 && indeces [ 0 ] < targetIndex )
+    if ( ( indeces.length > 0 ) && ( indeces [ 0 ] < targetIndex ) )
     {
       newTargetIndex++ ;
     }
@@ -989,12 +1061,12 @@ public class GrammarPanel implements EditorPanel
 
     for ( int i = indeces.length - 1 ; i > -1 ; i-- )
     {
-      this.grammar.getProductions ().remove ( indeces [ i ] );
+      this.grammar.getProduction ().remove ( indeces [ i ] );
     }
 
     newTargetIndex = Math.min ( newTargetIndex, this.grammar.getRowCount () );
 
-    this.grammar.getProductions ().addAll ( newTargetIndex, productions );
+    this.grammar.getProduction ().addAll ( newTargetIndex, productions );
 
     this.gui.jGTITableGrammar.getSelectionModel ().setSelectionInterval (
         newTargetIndex, newTargetIndex + indeces.length - 1 );
@@ -1024,7 +1096,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see Modifyable#resetModify()
    */
-  public void resetModify ()
+  public final void resetModify ()
   {
     this.model.resetModify ();
   }
@@ -1035,7 +1107,7 @@ public class GrammarPanel implements EditorPanel
    * 
    * @see EditorPanel#setName(java.lang.String)
    */
-  public void setName ( String name )
+  public final void setName ( String name )
   {
     this.name = name;
   }
@@ -1063,17 +1135,5 @@ public class GrammarPanel implements EditorPanel
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
-  }
-
-
-  /**
-   * Returns the redoUndoHandler.
-   * 
-   * @return The redoUndoHandler.
-   * @see #redoUndoHandler
-   */
-  public RedoUndoHandler getRedoUndoHandler ()
-  {
-    return this.redoUndoHandler;
   }
 }

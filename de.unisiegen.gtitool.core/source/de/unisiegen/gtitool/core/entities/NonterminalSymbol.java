@@ -39,16 +39,6 @@ public interface NonterminalSymbol extends Entity, ProductionWordMember,
 
 
   /**
-   * Returns true if this {@link NonterminalSymbol} is a active
-   * {@link NonterminalSymbol}, otherwise false.
-   * 
-   * @return True if this {@link NonterminalSymbol} is a active
-   *         {@link NonterminalSymbol}, otherwise false.
-   */
-  public boolean isActive ();
-
-
-  /**
    * Returns true if this {@link NonterminalSymbol} is a error
    * {@link NonterminalSymbol}, otherwise false.
    * 
@@ -66,14 +56,6 @@ public interface NonterminalSymbol extends Entity, ProductionWordMember,
    *         {@link NonterminalSymbol}, otherwise false.
    */
   public boolean isStart ();
-
-
-  /**
-   * Sets the active value.
-   * 
-   * @param active The active value to set.
-   */
-  public void setActive ( boolean active );
 
 
   /**

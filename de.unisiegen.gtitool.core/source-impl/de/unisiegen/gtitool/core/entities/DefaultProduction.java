@@ -34,6 +34,12 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * This {@link Production} is a error {@link Production}.
+   */
+  private boolean error = false;
+
+
+  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -70,22 +76,6 @@ public final class DefaultProduction implements Production
    * The initial {@link ProductionWord}.
    */
   private ProductionWord initialProductionWord;
-
-
-  /**
-   * Allocates a new {@link DefaultProduction}.
-   * 
-   * @param nonterminalSymbol The {@link NonterminalSymbol}.
-   * @param productionWord The {@link ProductionWord}.
-   */
-  public DefaultProduction ( NonterminalSymbol nonterminalSymbol,
-      ProductionWord productionWord )
-  {
-    this.nonterminalSymbol = nonterminalSymbol;
-    this.productionWord = productionWord;
-    this.initialNonterminalSymbol = nonterminalSymbol.clone ();
-    this.initialProductionWord = productionWord.clone ();
-  }
 
 
   /**
@@ -131,6 +121,22 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * Allocates a new {@link DefaultProduction}.
+   * 
+   * @param nonterminalSymbol The {@link NonterminalSymbol}.
+   * @param productionWord The {@link ProductionWord}.
+   */
+  public DefaultProduction ( NonterminalSymbol nonterminalSymbol,
+      ProductionWord productionWord )
+  {
+    this.nonterminalSymbol = nonterminalSymbol;
+    this.productionWord = productionWord;
+    this.initialNonterminalSymbol = nonterminalSymbol.clone ();
+    this.initialProductionWord = productionWord.clone ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -164,8 +170,44 @@ public final class DefaultProduction implements Production
   public final int compareTo ( @SuppressWarnings ( "unused" )
   Production other )
   {
-    // TODO implement me
+    // TODOCF Implement this, after implement it on all other entities.
     return 0;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   */
+  public boolean contains ( NonterminalSymbol symbol )
+  {
+    for ( ProductionWordMember current : this.productionWord )
+    {
+      if ( current.equals ( symbol ) )
+      {
+        return true;
+      }
+    }
+    return this.nonterminalSymbol.equals ( symbol );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   */
+  public boolean contains ( TerminalSymbol symbol )
+  {
+    for ( ProductionWordMember current : this.productionWord )
+    {
+      if ( current.equals ( symbol ) )
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -181,9 +223,10 @@ public final class DefaultProduction implements Production
     if ( other instanceof DefaultProduction )
     {
       DefaultProduction defaultProduction = ( DefaultProduction ) other;
-      if ( this.productionWord.equals ( defaultProduction.getProductionWord () )
-          && this.nonterminalSymbol.equals ( defaultProduction
-              .getNonterminalSymbol () ) )
+      if ( this.nonterminalSymbol.equals ( defaultProduction
+          .getNonterminalSymbol () )
+          && this.productionWord.equals ( defaultProduction
+              .getProductionWord () ) )
       {
         return true;
       }
@@ -257,8 +300,21 @@ public final class DefaultProduction implements Production
   @Override
   public final int hashCode ()
   {
-    // TODO implement me
-    return 0;
+    return this.nonterminalSymbol.hashCode () + this.productionWord.hashCode ();
+  }
+
+
+  /**
+   * Returns true if this {@link Production} is a error {@link Production},
+   * otherwise false.
+   * 
+   * @return True if this {@link Production} is a error {@link Production},
+   *         otherwise false.
+   * @see #error
+   */
+  public final boolean isError ()
+  {
+    return this.error;
   }
 
 
@@ -306,11 +362,49 @@ public final class DefaultProduction implements Production
 
 
   /**
+   * Sets the error value.
+   * 
+   * @param error The error value to set.
+   * @see #error
+   */
+  public final void setError ( boolean error )
+  {
+    this.error = error;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @param nonterminalSymbol
+   * @see de.unisiegen.gtitool.core.entities.Production#setNonterminalSymbol(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   */
+  public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
+  {
+    this.nonterminalSymbol = nonterminalSymbol;
+    fireModifyStatusChanged ();
+  }
+
+
+  /**
    * {@inheritDoc}
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
     this.parserOffset = parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @param productionWord
+   * @see de.unisiegen.gtitool.core.entities.Production#setProductionWord(de.unisiegen.gtitool.core.entities.ProductionWord)
+   */
+  public void setProductionWord ( ProductionWord productionWord )
+  {
+    this.productionWord = productionWord;
+    fireModifyStatusChanged ();
   }
 
 
@@ -324,7 +418,15 @@ public final class DefaultProduction implements Production
     PrettyString prettyString = new PrettyString ();
     prettyString.addPrettyPrintable ( this.nonterminalSymbol );
     prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
-    prettyString.addPrettyToken ( new PrettyToken ( "\u2192", Style.NONE ) ); //$NON-NLS-1$
+    if ( this.error )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u2192", //$NON-NLS-1$
+          Style.PRODUCTION_ERROR ) );
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u2192", Style.NONE ) ); //$NON-NLS-1$
+    }
     prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
     prettyString.addPrettyPrintable ( this.productionWord );
     return prettyString;
@@ -353,67 +455,5 @@ public final class DefaultProduction implements Production
   {
     return this.nonterminalSymbol.toStringDebug () + " \u2192 " + //$NON-NLS-1$
         this.productionWord.toStringDebug ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @param nonterminalSymbol
-   * @see de.unisiegen.gtitool.core.entities.Production#setNonterminalSymbol(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
-   */
-  public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
-  {
-    this.nonterminalSymbol = nonterminalSymbol;
-    fireModifyStatusChanged ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @param productionWord
-   * @see de.unisiegen.gtitool.core.entities.Production#setProductionWord(de.unisiegen.gtitool.core.entities.ProductionWord)
-   */
-  public void setProductionWord ( ProductionWord productionWord )
-  {
-    this.productionWord = productionWord;
-    fireModifyStatusChanged ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
-   */
-  public boolean contains ( NonterminalSymbol symbol )
-  {
-    for ( ProductionWordMember current : this.productionWord )
-    {
-      if ( current.equals ( symbol ) )
-      {
-        return true;
-      }
-    }
-    return this.nonterminalSymbol.equals ( symbol );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.TerminalSymbol)
-   */
-  public boolean contains ( TerminalSymbol symbol )
-  {
-    for ( ProductionWordMember current : this.productionWord )
-    {
-      if ( current.equals ( symbol ) )
-      {
-        return true;
-      }
-    }
-    return false;
   }
 }

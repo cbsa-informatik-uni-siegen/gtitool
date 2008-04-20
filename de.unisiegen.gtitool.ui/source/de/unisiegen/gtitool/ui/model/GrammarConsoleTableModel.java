@@ -50,9 +50,9 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
     /**
-     * The {@link Production}.
+     * The {@link Production} list.
      */
-    public Production production;
+    public ArrayList < Production > productionList;
 
 
     /**
@@ -71,18 +71,19 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
      * Allocates a new {@link ConsoleTableEntry}.
      * 
      * @param message The message.
-     * @param descrition The description.
-     * @param production The {@link Production}.
+     * @param description The description.
+     * @param productionList The {@link Production} list.
      * @param nonterminalSymbol The {@link NonterminalSymbol}.
      * @param symbols The {@link Symbol}s.
      */
-    public ConsoleTableEntry ( PrettyString message, PrettyString descrition,
-        Production production, NonterminalSymbol nonterminalSymbol,
+    public ConsoleTableEntry ( PrettyString message, PrettyString description,
+        ArrayList < Production > productionList,
+        NonterminalSymbol nonterminalSymbol,
         ArrayList < ProductionWordMember > symbols )
     {
       this.message = message;
-      this.description = descrition;
-      this.production = production;
+      this.description = description;
+      this.productionList = productionList;
       this.productionWordMember = symbols;
       this.nonterminalSymbol = nonterminalSymbol;
     }
@@ -142,7 +143,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
    */
   public final void addRow ( GrammarException grammarException )
   {
-    Production production = null;
+    ArrayList < Production > production = null;
     NonterminalSymbol nonterminalSymbol = null;
     ArrayList < ProductionWordMember > productionWordMember = null;
 
@@ -253,18 +254,6 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
   /**
-   * Returns the {@link Production} of the given row index.
-   * 
-   * @param rowIndex The given row index.
-   * @return The {@link Production} of the given row index.
-   */
-  public final Production getProduction ( int rowIndex )
-  {
-    return this.data.get ( rowIndex ).production;
-  }
-
-
-  /**
    * Returns the {@link NonterminalSymbol} of the given row index.
    * 
    * @param rowIndex The given row index.
@@ -273,6 +262,18 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
   public final NonterminalSymbol getNonterminalSymbol ( int rowIndex )
   {
     return this.data.get ( rowIndex ).nonterminalSymbol;
+  }
+
+
+  /**
+   * Returns the {@link Production} list of the given row index.
+   * 
+   * @param rowIndex The given row index.
+   * @return The {@link Production} list of the given row index.
+   */
+  public final ArrayList < Production > getProduction ( int rowIndex )
+  {
+    return this.data.get ( rowIndex ).productionList;
   }
 
 
@@ -319,7 +320,7 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
       }
       case PRODUCTION_COLUMN :
       {
-        return this.data.get ( rowIndex ).production;
+        return this.data.get ( rowIndex ).productionList;
       }
       default :
       {

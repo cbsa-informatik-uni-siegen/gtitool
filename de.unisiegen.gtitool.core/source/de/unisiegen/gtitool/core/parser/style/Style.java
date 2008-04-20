@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.core.parser.style;
 import java.awt.Color;
 
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
@@ -44,9 +45,19 @@ public enum Style
   SYMBOL_ERROR ( true, false ),
 
   /**
+   * Style of error {@link Production}s.
+   */
+  PRODUCTION_ERROR ( true, false ),
+
+  /**
    * Style of {@link NonterminalSymbol}s.
    */
   NONTERMINAL_SYMBOL ( true, false ),
+
+  /**
+   * Style of error {@link NonterminalSymbol}s.
+   */
+  NONTERMINAL_SYMBOL_ERROR ( true, false ),
 
   /**
    * Style of start {@link NonterminalSymbol}s.
@@ -57,6 +68,11 @@ public enum Style
    * Style of {@link TerminalSymbol}s.
    */
   TERMINAL_SYMBOL ( true, false ),
+
+  /**
+   * Style of error {@link TerminalSymbol}s.
+   */
+  TERMINAL_SYMBOL_ERROR ( true, false ),
 
   /**
    * Style of keywords.
@@ -121,10 +137,20 @@ public enum Style
         return PreferenceManager.getInstance ().getColorItemSymbolError ()
             .getColor ();
       }
+      case PRODUCTION_ERROR :
+      {
+        return PreferenceManager.getInstance ().getColorItemProductionError ()
+            .getColor ();
+      }
       case NONTERMINAL_SYMBOL :
       {
         return PreferenceManager.getInstance ()
             .getColorItemNonterminalSymbol ().getColor ();
+      }
+      case NONTERMINAL_SYMBOL_ERROR :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemNonterminalSymbolError ().getColor ();
       }
       case START_NONTERMINAL_SYMBOL :
       {
@@ -135,6 +161,11 @@ public enum Style
       {
         return PreferenceManager.getInstance ().getColorItemTerminalSymbol ()
             .getColor ();
+      }
+      case TERMINAL_SYMBOL_ERROR :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemTerminalSymbolError ().getColor ();
       }
       case KEYWORD :
       {

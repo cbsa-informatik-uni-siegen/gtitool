@@ -51,6 +51,7 @@ public final class GrammarRegularGrammarException extends GrammarException
       ArrayList < ProductionWordMember > symbols )
   {
     super ();
+
     // Production
     if ( production == null )
     {

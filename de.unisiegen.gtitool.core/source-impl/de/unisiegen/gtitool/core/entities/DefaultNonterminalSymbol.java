@@ -44,12 +44,6 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * This {@link NonterminalSymbol} is a active {@link NonterminalSymbol}.
-   */
-  private boolean active = false;
-
-
-  /**
    * This {@link NonterminalSymbol} is a start {@link NonterminalSymbol}.
    */
   private boolean start = false;
@@ -226,19 +220,6 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns true if this {@link NonterminalSymbol} is a active
-   * {@link NonterminalSymbol}, otherwise false.
-   * 
-   * @return True if this {@link NonterminalSymbol} is a active
-   *         {@link NonterminalSymbol}, otherwise false.
-   */
-  public final boolean isActive ()
-  {
-    return this.active;
-  }
-
-
-  /**
    * Returns true if this {@link NonterminalSymbol} is a error
    * {@link NonterminalSymbol}, otherwise false.
    * 
@@ -262,17 +243,6 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public final boolean isStart ()
   {
     return this.start;
-  }
-
-
-  /**
-   * Sets the active value.
-   * 
-   * @param active The active value to set.
-   */
-  public final void setActive ( boolean active )
-  {
-    this.active = active;
   }
 
 
@@ -372,7 +342,12 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    if ( this.start )
+    if ( this.error )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.NONTERMINAL_SYMBOL_ERROR ) );
+    }
+    else if ( this.start )
     {
       prettyString.addPrettyToken ( new PrettyToken ( this.name,
           Style.START_NONTERMINAL_SYMBOL ) );

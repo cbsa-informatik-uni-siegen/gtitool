@@ -194,7 +194,7 @@ public final class ProductionPopupMenu extends JPopupMenu
         if ( confirmDialog.isConfirmed () )
         {
           ArrayList < Production > oldProductions = new ArrayList < Production > ();
-          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel.getGrammar ().getProductions () );
+          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel.getGrammar ().getProduction () );
           
           int number = 0;
           for ( int index : ProductionPopupMenu.this.indeces )

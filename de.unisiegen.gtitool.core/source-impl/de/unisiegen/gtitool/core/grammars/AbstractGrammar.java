@@ -170,26 +170,24 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
     ArrayList < Production > foundDuplicates = new ArrayList < Production > ();
-
-    for ( Production current : this.productions )
+    for ( int i = 0 ; i < this.productions.size () ; i++ )
     {
-      if ( !foundDuplicates.contains ( current ) )
-        for ( Production other : this.productions )
+      ArrayList < Production > duplicatedList = new ArrayList < Production > ();
+      for ( int j = i + 1 ; j < this.productions.size () ; j++ )
+      {
+        if ( !foundDuplicates.contains ( this.productions.get ( i ) )
+            && this.productions.get ( i ).equals ( this.productions.get ( j ) ) )
         {
-          if ( ! ( current == other ) /*&& current.equals ( other )*/ )
-          {
-            if (current.getNonterminalSymbol ().equals ( other.getNonterminalSymbol () ) && current.getProductionWord ().equals ( other.getProductionWord () ))
-            
-            
-            
-            grammarExceptionList.add ( new GrammarDuplicateProductionException (
-                current ) );
-            if ( !foundDuplicates.contains ( current ) )
-            {
-              foundDuplicates.add ( current );
-            }
-          }
+          duplicatedList.add ( this.productions.get ( j ) );
         }
+      }
+      if ( duplicatedList.size () > 0 )
+      {
+        foundDuplicates.add ( this.productions.get ( i ) );
+        duplicatedList.add ( this.productions.get ( i ) );
+        grammarExceptionList.add ( new GrammarDuplicateProductionException (
+            duplicatedList ) );
+      }
     }
     return grammarExceptionList;
   }
@@ -204,24 +202,25 @@ public abstract class AbstractGrammar implements Grammar
   {
     ArrayList < GrammarException > grammarExceptionList = new ArrayList < GrammarException > ();
 
-    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
+    for ( NonterminalSymbol currentNonterminalSymbol : this.nonterminalSymbolSet )
     {
       boolean used = false;
-      loop : for ( Production production : this.productions )
+      loopProduction : for ( Production currentProduction : this.productions )
       {
-        for ( ProductionWordMember symbol : production.getProductionWord () )
+        for ( ProductionWordMember symbol : currentProduction
+            .getProductionWord () )
         {
-          if ( current.equals ( symbol ) )
+          if ( currentNonterminalSymbol.equals ( symbol ) )
           {
             used = true;
-            break loop;
+            break loopProduction;
           }
         }
       }
-      if ( !used && !current.equals ( this.startSymbol ))
+      if ( !used && !currentNonterminalSymbol.equals ( this.startSymbol ) )
       {
         grammarExceptionList.add ( new GrammarNonterminalNotReachableException (
-            current ) );
+            currentNonterminalSymbol ) );
       }
     }
     return grammarExceptionList;
@@ -240,39 +239,87 @@ public abstract class AbstractGrammar implements Grammar
     for ( Production current : this.productions )
     {
       ArrayList < ProductionWordMember > symbols = new ArrayList < ProductionWordMember > ();
-      Production production = null;
-      int count = 0;
+
+      ArrayList < ProductionWordMember > wordMemberList = new ArrayList < ProductionWordMember > ();
       for ( ProductionWordMember wordMember : current.getProductionWord () )
       {
-        count++ ;
-        if ( production != null )
-        {
-          symbols.add ( wordMember );
-        }
-        if ( count == 1 )
-        {
-          if ( ! ( wordMember instanceof TerminalSymbol ) )
-          {
-            production = current;
-          }
-        }
-        if ( count == 2 )
-        {
-          if ( ! ( wordMember instanceof NonterminalSymbol ) )
-          {
-            production = current;
-          }
-        }
-        if ( count == 3 )
-        {
-          production = current;
-        }
+        wordMemberList.add ( wordMember );
       }
-      if ( production != null )
+
+      // Epsilon
+      if ( wordMemberList.size () == 0 )
       {
-        grammarExceptionList.add ( new GrammarRegularGrammarException (
-            production, symbols ) );
+        continue;
       }
+
+      // One member and not a TerminalSymbol
+      if ( wordMemberList.size () == 1 )
+      {
+        if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
+        {
+          symbols.add ( wordMemberList.get ( 0 ) );
+          grammarExceptionList.add ( new GrammarRegularGrammarException (
+              current, symbols ) );
+          continue;
+        }
+      }
+
+      // Two members and not a TerminalSymbol and a NonterminalSymbol
+      if ( wordMemberList.size () == 2 )
+      {
+        if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol )
+            && ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
+        {
+          symbols.add ( wordMemberList.get ( 0 ) );
+          symbols.add ( wordMemberList.get ( 1 ) );
+          grammarExceptionList.add ( new GrammarRegularGrammarException (
+              current, symbols ) );
+          continue;
+        }
+      }
+
+      // More than two members
+      if ( wordMemberList.size () > 2 )
+      {
+        symbols.addAll ( wordMemberList );
+        grammarExceptionList.add ( new GrammarRegularGrammarException (
+            current, symbols ) );
+        continue;
+      }
+
+      // Production production = null;
+      // int count = 0;
+      // for ( ProductionWordMember wordMember : current.getProductionWord () )
+      // {
+      // count++ ;
+      // if ( production != null )
+      // {
+      // symbols.add ( wordMember );
+      // }
+      // if ( count == 1 )
+      // {
+      // if ( ! ( wordMember instanceof TerminalSymbol ) )
+      // {
+      // production = current;
+      // }
+      // }
+      // if ( count == 2 )
+      // {
+      // if ( ! ( wordMember instanceof NonterminalSymbol ) )
+      // {
+      // production = current;
+      // }
+      // }
+      // if ( count == 3 )
+      // {
+      // production = current;
+      // }
+      // }
+      // if ( production != null )
+      // {
+      // grammarExceptionList.add ( new GrammarRegularGrammarException (
+      // production, symbols ) );
+      // }
     }
     return grammarExceptionList;
   }
@@ -412,22 +459,22 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * {@inheritDoc}
    * 
-   * @see Grammar#getProductionAt(int)
+   * @see Grammar#getProduction()
    */
-  public Production getProductionAt ( int index )
+  public ArrayList < Production > getProduction ()
   {
-    return this.productions.get ( index );
+    return this.productions;
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see Grammar#getProductions()
+   * @see Grammar#getProductionAt(int)
    */
-  public ArrayList < Production > getProductions ()
+  public Production getProductionAt ( int index )
   {
-    return this.productions;
+    return this.productions.get ( index );
   }
 
 
@@ -583,6 +630,19 @@ public abstract class AbstractGrammar implements Grammar
 
 
   /**
+   * Sets the {@link Production}s.
+   * 
+   * @param productions The {@link Production}s to set.
+   * @see #productions
+   * @see Production
+   */
+  public void setProductions ( ArrayList < Production > productions )
+  {
+    this.productions = productions;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see de.unisiegen.gtitool.core.grammars.Grammar#setStartSymbol(NonterminalSymbol)
@@ -668,18 +728,5 @@ public abstract class AbstractGrammar implements Grammar
     {
       throw new GrammarValidationException ( grammarExceptionList );
     }
-  }
-
-
-  /**
-   * Sets the {@link Production}s.
-   * 
-   * @param productions The {@link Production}s to set.
-   * @see #productions
-   * @see Production
-   */
-  public void setProductions ( ArrayList < Production > productions )
-  {
-    this.productions = productions;
   }
 }

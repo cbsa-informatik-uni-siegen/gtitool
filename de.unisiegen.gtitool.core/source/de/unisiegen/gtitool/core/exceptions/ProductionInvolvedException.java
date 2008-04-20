@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.entities.Production;
 
 
@@ -15,10 +17,9 @@ public interface ProductionInvolvedException
 {
 
   /**
-   * Returns the {@link Production}s.
+   * Returns the {@link Production} list.
    * 
-   * @return The {@link Production}s.
+   * @return The {@link Production} list.
    */
-  public Production getProduction ();
-
+  public ArrayList < Production > getProduction ();
 }

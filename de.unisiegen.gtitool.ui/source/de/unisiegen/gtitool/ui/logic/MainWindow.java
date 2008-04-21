@@ -1987,4 +1987,15 @@ public final class MainWindow implements LanguageChangedListener
       grammarPanel.handleAddProduction ();
     }
   }
+
+
+  /**
+   * Getter for the {@link ModifyStatusChangedListener}.
+   *
+   * @return The {@link ModifyStatusChangedListener}.
+   */
+  public ModifyStatusChangedListener getModifyStatusChangedListener ()
+  {
+    return this.modifyStatusChangedListener;
+  }
 }

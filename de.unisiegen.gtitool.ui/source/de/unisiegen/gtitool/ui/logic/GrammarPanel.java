@@ -801,7 +801,7 @@ public final class GrammarPanel implements EditorPanel
         }
       }
 
-      ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
+      ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this.mainWindowForm, this,
           this.model, productions, rows );
 
       popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
@@ -832,8 +832,8 @@ public final class GrammarPanel implements EditorPanel
    */
   public final void handleToolbarEditDocument ()
   {
-    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
-        this.grammar );
+    TerminalDialog terminalDialog = new TerminalDialog ( 
+        this.mainWindowForm, this.grammar );
     terminalDialog.show ();
     // Must be repainted because of the maybe changed start symbol.
     this.gui.jGTITableGrammar.repaint ();

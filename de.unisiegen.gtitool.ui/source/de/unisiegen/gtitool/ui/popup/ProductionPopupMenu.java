@@ -14,11 +14,14 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.convert.ConvertGrammar;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
@@ -78,7 +81,8 @@ public final class ProductionPopupMenu extends JPopupMenu
    * The validate item.
    */
   private JMenuItem validate;
-  
+
+
   /**
    * The indeces of the {@link Production}s.
    */
@@ -86,16 +90,25 @@ public final class ProductionPopupMenu extends JPopupMenu
 
 
   /**
+   * The {@link MainWindowForm}.
+   */
+  private MainWindowForm mainWindowForm;
+
+
+  /**
    * Allocates a new {@link StatePopupMenu}.
    * 
+   * @param mainWindowForm The {@link MainWindowForm}.
    * @param parent The {@link GrammarPanel}.
    * @param model the model containing the production.
    * @param productions the selected {@link Production}s.
    * @param indeces The indeces of the {@link Production}s.
    */
-  public ProductionPopupMenu ( GrammarPanel parent, DefaultGrammarModel model,
+  public ProductionPopupMenu ( MainWindowForm mainWindowForm,
+      GrammarPanel parent, DefaultGrammarModel model,
       ArrayList < Production > productions, int [] indeces )
   {
+    this.mainWindowForm = mainWindowForm;
     this.grammarPanel = parent;
     this.model = model;
     this.productions = productions;
@@ -194,18 +207,21 @@ public final class ProductionPopupMenu extends JPopupMenu
         if ( confirmDialog.isConfirmed () )
         {
           ArrayList < Production > oldProductions = new ArrayList < Production > ();
-          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel.getGrammar ().getProduction () );
-          
+          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel
+              .getGrammar ().getProduction () );
+
           int number = 0;
           for ( int index : ProductionPopupMenu.this.indeces )
           {
             ProductionPopupMenu.this.model.removeProduction ( index - number );
-            number++;
+            number++ ;
           }
-          RedoUndoItem item = new ProductionsListChangedItem ( ProductionPopupMenu.this.grammarPanel.getGrammar (),
+          RedoUndoItem item = new ProductionsListChangedItem (
+              ProductionPopupMenu.this.grammarPanel.getGrammar (),
               oldProductions );
-          ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ().addItem ( item );
-          
+          ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ().addItem (
+              item );
+
           ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
               .getGui () ).repaint ();
         }
@@ -227,5 +243,24 @@ public final class ProductionPopupMenu extends JPopupMenu
       }
     } );
     add ( this.validate );
+
+    JMenuItem convert = new JMenuItem ( "Convert" ); //$NON-NLS-1$
+    convert.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        if ( ProductionPopupMenu.this.grammarPanel
+            .getMainWindow ().handleValidate ( false ) )
+        {
+          new ConvertGrammar ( ProductionPopupMenu.this.mainWindowForm,
+              ProductionPopupMenu.this.grammarPanel.getGrammar (),
+              MachineType.ENFA );
+        }
+      }
+    } );
+    add ( convert );
   }
 }

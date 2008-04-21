@@ -55,6 +55,11 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
                 mouseClickedEvent(evt);
             }
         });
+        jGTITableGrammar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jGTITableGrammarKeyReleased(evt);
+            }
+        });
 
         jGTIScrollPaneGrammar.setViewportView(jGTITableGrammar);
 
@@ -120,6 +125,10 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
         add(jGTISplitPaneConsole, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTITableGrammarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jGTITableGrammarKeyReleased
+        this.logic.handleGrammarTableKeyReleased(evt);
+    }//GEN-LAST:event_jGTITableGrammarKeyReleased
 
     private void jGTITableWarningsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableWarningsFocusLost
         this.logic.handleConsoleTableFocusLost(evt);

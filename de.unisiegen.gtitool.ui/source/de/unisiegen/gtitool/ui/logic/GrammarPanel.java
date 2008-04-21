@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Component;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -619,6 +620,20 @@ public final class GrammarPanel implements EditorPanel
 
 
   /**
+   * Handles key events on the grammar table.
+   * 
+   * @param event The {@link KeyEvent}.
+   */
+  public final void handleGrammarTableKeyReleased ( KeyEvent event )
+  {
+    if ( event.getKeyCode () == KeyEvent.VK_DELETE )
+    {
+      handleDeleteProduction ();
+    }
+  }
+
+
+  /**
    * Handle redo button pressed
    */
   public final void handleRedo ()
@@ -801,8 +816,8 @@ public final class GrammarPanel implements EditorPanel
         }
       }
 
-      ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this.mainWindowForm, this,
-          this.model, productions, rows );
+      ProductionPopupMenu popupmenu = new ProductionPopupMenu (
+          this.mainWindowForm, this, this.model, productions, rows );
 
       popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );
@@ -832,8 +847,8 @@ public final class GrammarPanel implements EditorPanel
    */
   public final void handleToolbarEditDocument ()
   {
-    TerminalDialog terminalDialog = new TerminalDialog ( 
-        this.mainWindowForm, this.grammar );
+    TerminalDialog terminalDialog = new TerminalDialog ( this.mainWindowForm,
+        this.grammar );
     terminalDialog.show ();
     // Must be repainted because of the maybe changed start symbol.
     this.gui.jGTITableGrammar.repaint ();

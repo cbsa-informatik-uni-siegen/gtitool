@@ -44,17 +44,16 @@ public final class JGTIFileChooser extends JFileChooser
     setControlButtonsAreShown ( false );
     setBorder ( null );
     setMultiSelectionEnabled ( true );
-
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see javax.swing.JFileChooser#approveSelection()
+   * @see JFileChooser#approveSelection()
    */
   @Override
-  public void approveSelection ()
+  public final void approveSelection ()
   {
     if ( this.openDialog != null )
     {
@@ -73,7 +72,7 @@ public final class JGTIFileChooser extends JFileChooser
    * 
    * @param openDialog The {@link OpenDialog}.
    */
-  public void setOpenDialog ( OpenDialog openDialog )
+  public final void setOpenDialog ( OpenDialog openDialog )
   {
     this.openDialog = openDialog;
   }
@@ -84,9 +83,8 @@ public final class JGTIFileChooser extends JFileChooser
    * 
    * @param saveDialog The {@link SaveDialog}.
    */
-  public void setSaveDialog ( SaveDialog saveDialog )
+  public final void setSaveDialog ( SaveDialog saveDialog )
   {
     this.saveDialog = saveDialog;
   }
-
 }

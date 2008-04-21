@@ -57,6 +57,7 @@ public final class SaveDialog
       FileFilter ... choosableFileFilter )
   {
     logger.debug ( "SaveDialog", "allocate a new save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     this.parent = parent;
     this.gui = new SaveDialogForm ( this, parent );
     this.gui.jGTIFileChooser.setCurrentDirectory ( new File ( workingPath ) );
@@ -81,6 +82,21 @@ public final class SaveDialog
       this.gui.jGTIFileChooser.addChoosableFileFilter ( current );
     }
     this.gui.jGTIFileChooser.setFileFilter ( fileFilter );
+  }
+
+
+  /**
+   * Approve this {@link SaveDialog}.
+   */
+  public final void approve ()
+  {
+    logger.debug ( "approve", "approve" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
   }
 
 
@@ -178,24 +194,12 @@ public final class SaveDialog
   public final void show ()
   {
     logger.debug ( "show", "show the save dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Approve this dialog.
-   */
-  public void approve ()
-  {
-    if ( !getSelectedFile ().isDirectory () )
-    {
-      this.confirmed = true;
-      this.gui.dispose ();
-    }
   }
 }

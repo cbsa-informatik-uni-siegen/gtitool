@@ -82,7 +82,6 @@ public final class JGTITable extends JTable implements DropTargetListener
   public JGTITable ()
   {
     super ();
-    setFocusable ( false );
 
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()

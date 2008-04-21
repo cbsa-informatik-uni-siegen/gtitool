@@ -220,6 +220,19 @@ public final class OpenDialog
 
 
   /**
+   * Approve this {@link OpenDialog}.
+   */
+  public final void approve ()
+  {
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
+  }
+
+
+  /**
    * Returns the current directory.
    * 
    * @return The current directory.
@@ -263,6 +276,7 @@ public final class OpenDialog
   public final void handleCancel ()
   {
     logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     this.confirmed = false;
     this.gui.dispose ();
   }
@@ -311,23 +325,12 @@ public final class OpenDialog
   public final void show ()
   {
     logger.debug ( "show", "show the open dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-  /**
-   * Approve this dialog.
-   */
-  public void approve ()
-  {
-    if ( !getSelectedFile ().isDirectory () )
-    {
-      this.confirmed = true;
-      this.gui.dispose ();
-    }
   }
 }

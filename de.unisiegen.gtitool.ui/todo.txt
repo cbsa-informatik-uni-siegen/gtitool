@@ -2,5 +2,7 @@ CF		- History über die Zustände führen
 CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 CF		- Sprache und LaF restore
+CF		- Selektierte Komponenten sollten per "del" gelöscht werden können (GrammarPanel)
 
-BM		- Selektierte Komponenten sollten per "del" gelöscht werden können (GrammarPanel)
+
+BM		- Open und Save Dialoge anpassen (Doppelklick)

@@ -260,66 +260,47 @@ public abstract class AbstractGrammar implements Grammar
           symbols.add ( wordMemberList.get ( 0 ) );
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
-          continue;
         }
       }
 
       // Two members and not a TerminalSymbol and a NonterminalSymbol
       if ( wordMemberList.size () == 2 )
       {
-        if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol )
-            && ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
+        if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
         {
           symbols.add ( wordMemberList.get ( 0 ) );
+        }
+        if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
+        {
           symbols.add ( wordMemberList.get ( 1 ) );
+        }
+        if ( symbols.size () > 0 )
+        {
           grammarExceptionList.add ( new GrammarRegularGrammarException (
               current, symbols ) );
-          continue;
         }
       }
 
       // More than two members
       if ( wordMemberList.size () > 2 )
       {
-        symbols.addAll ( wordMemberList );
+        if ( ! ( wordMemberList.get ( 0 ) instanceof TerminalSymbol ) )
+        {
+          symbols.add ( wordMemberList.get ( 0 ) );
+        }
+        if ( ! ( wordMemberList.get ( 1 ) instanceof NonterminalSymbol ) )
+        {
+          symbols.add ( wordMemberList.get ( 1 ) );
+        }
+
+        for ( int i = 2 ; i < wordMemberList.size () ; i++ )
+        {
+          symbols.add ( wordMemberList.get ( i ) );
+        }
+
         grammarExceptionList.add ( new GrammarRegularGrammarException (
             current, symbols ) );
-        continue;
       }
-
-      // Production production = null;
-      // int count = 0;
-      // for ( ProductionWordMember wordMember : current.getProductionWord () )
-      // {
-      // count++ ;
-      // if ( production != null )
-      // {
-      // symbols.add ( wordMember );
-      // }
-      // if ( count == 1 )
-      // {
-      // if ( ! ( wordMember instanceof TerminalSymbol ) )
-      // {
-      // production = current;
-      // }
-      // }
-      // if ( count == 2 )
-      // {
-      // if ( ! ( wordMember instanceof NonterminalSymbol ) )
-      // {
-      // production = current;
-      // }
-      // }
-      // if ( count == 3 )
-      // {
-      // production = current;
-      // }
-      // }
-      // if ( production != null )
-      // {
-      // grammarExceptionList.add ( new GrammarRegularGrammarException (
-      // production, symbols ) );
-      // }
     }
     return grammarExceptionList;
   }

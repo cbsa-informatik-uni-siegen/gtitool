@@ -1,4 +1,3 @@
 CF		- Fehlerbehandlung der Parser implementieren
 CF		- clone der Entities überprüfen
 CF		- compareTo der Entities implementieren
-CF		- GrammarExceptions anpassen: Rechtslineare Grammatik.

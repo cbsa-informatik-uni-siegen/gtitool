@@ -101,7 +101,7 @@ public final class GrammarRegularGrammarException extends GrammarException
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.exceptions.ProductionWordMembersInvolvedException#getProductionWordMember()
+   * @see ProductionWordMembersInvolvedException#getProductionWordMember()
    */
   public ArrayList < ProductionWordMember > getProductionWordMember ()
   {

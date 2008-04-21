@@ -3,6 +3,9 @@ package de.unisiegen.gtitool.ui.swing;
 
 import javax.swing.JFileChooser;
 
+import de.unisiegen.gtitool.ui.logic.OpenDialog;
+import de.unisiegen.gtitool.ui.logic.SaveDialog;
+
 
 /**
  * Special {@link JFileChooser}.
@@ -20,6 +23,18 @@ public final class JGTIFileChooser extends JFileChooser
 
 
   /**
+   * The {@link OpenDialog}.
+   */
+  private OpenDialog openDialog;
+
+
+  /**
+   * The {@link SaveDialog}.
+   */
+  private SaveDialog saveDialog;
+
+
+  /**
    * Allocates a new {@link JGTIFileChooser}.
    */
   public JGTIFileChooser ()
@@ -29,5 +44,49 @@ public final class JGTIFileChooser extends JFileChooser
     setControlButtonsAreShown ( false );
     setBorder ( null );
     setMultiSelectionEnabled ( true );
+
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see javax.swing.JFileChooser#approveSelection()
+   */
+  @Override
+  public void approveSelection ()
+  {
+    if ( this.openDialog != null )
+    {
+      this.openDialog.approve ();
+    }
+    if ( this.saveDialog != null )
+    {
+      this.saveDialog.approve ();
+    }
+    super.approveSelection ();
+  }
+
+
+  /**
+   * Setter for the {@link OpenDialog}.
+   * 
+   * @param openDialog The {@link OpenDialog}.
+   */
+  public void setOpenDialog ( OpenDialog openDialog )
+  {
+    this.openDialog = openDialog;
+  }
+
+
+  /**
+   * Setter for the {@link SaveDialog}.
+   * 
+   * @param saveDialog The {@link SaveDialog}.
+   */
+  public void setSaveDialog ( SaveDialog saveDialog )
+  {
+    this.saveDialog = saveDialog;
+  }
+
 }

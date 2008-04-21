@@ -285,9 +285,11 @@ public final class OpenDialog
     {
       throw new RuntimeException ( "ui is not a BasicFileChooserUI" ); //$NON-NLS-1$
     }
-
-    this.confirmed = true;
-    this.gui.dispose ();
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
   }
 
 
@@ -315,5 +317,17 @@ public final class OpenDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+  /**
+   * Approve this dialog.
+   */
+  public void approve ()
+  {
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
   }
 }

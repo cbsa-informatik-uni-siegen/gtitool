@@ -36,6 +36,7 @@ public class SaveDialogForm extends javax.swing.JDialog {
     super ( parent, true );
     this.logic = logic ;
     initComponents ();
+    this.jGTIFileChooser.setSaveDialog ( this.logic );
   }
     
     /** This method is called from within the constructor to

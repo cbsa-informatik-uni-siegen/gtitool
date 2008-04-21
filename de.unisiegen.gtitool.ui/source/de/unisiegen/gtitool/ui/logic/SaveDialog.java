@@ -152,8 +152,11 @@ public final class SaveDialog
       throw new RuntimeException ( "ui is not a BasicFileChooserUI" ); //$NON-NLS-1$
     }
 
-    this.confirmed = true;
-    this.gui.setVisible ( false );
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
   }
 
 
@@ -181,5 +184,18 @@ public final class SaveDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * Approve this dialog.
+   */
+  public void approve ()
+  {
+    if ( !getSelectedFile ().isDirectory () )
+    {
+      this.confirmed = true;
+      this.gui.dispose ();
+    }
   }
 }

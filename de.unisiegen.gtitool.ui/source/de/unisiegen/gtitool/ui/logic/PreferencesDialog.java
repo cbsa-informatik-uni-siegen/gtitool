@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Locale;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -1035,9 +1036,16 @@ public final class PreferencesDialog implements LanguageChangedListener
     /*
      * General
      */
-    // TODOCF
-    this.gui.jGTIComboBoxLanguage.setSelectedIndex ( 0 );
-    this.gui.jGTIComboBoxLookAndFeel.setSelectedIndex ( 0 );
+    this.gui.jGTIComboBoxLanguage
+        .setSelectedItem ( new LanguageItem (
+            de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_TITLE,
+            new Locale (
+                de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_LANGUAGE ) ) );
+
+    this.gui.jGTIComboBoxLookAndFeel.setSelectedItem ( new LookAndFeelItem (
+        PreferenceManager.DEFAULT_LOOK_AND_FEEL_NAME,
+        PreferenceManager.DEFAULT_LOOK_AND_FEEL_CLASS_NAME ) );
+
     this.gui.jGTISliderZoom
         .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
 
@@ -1641,7 +1649,11 @@ public final class PreferencesDialog implements LanguageChangedListener
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        PreferencesDialog.this.gui.jGTIComboBoxLanguage.setSelectedIndex ( 0 );
+        PreferencesDialog.this.gui.jGTIComboBoxLanguage
+            .setSelectedItem ( new LanguageItem (
+                de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_TITLE,
+                new Locale (
+                    de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_LANGUAGE_LANGUAGE ) ) );
       }
     } );
     this.jPopupMenuLanguage.add ( jMenuItemRestoreLanguage );
@@ -1744,7 +1756,9 @@ public final class PreferencesDialog implements LanguageChangedListener
       ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLookAndFeel
-            .setSelectedIndex ( 0 );
+            .setSelectedItem ( new LookAndFeelItem (
+                PreferenceManager.DEFAULT_LOOK_AND_FEEL_NAME,
+                PreferenceManager.DEFAULT_LOOK_AND_FEEL_CLASS_NAME ) );
       }
     } );
     this.jPopupMenuLookAndFeel.add ( jMenuItemRestoreLookAndFeel );

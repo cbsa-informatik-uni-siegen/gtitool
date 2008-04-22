@@ -3,4 +3,12 @@ CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
 
-BM		- Open und Save Dialoge anpassen (Doppelklick)
+BM		- Umwandeln von Grammatik in Maschine
+
+
+		- Umwandeln von Maschinen
+			- ENDEA -> NDEA
+			- NDEA  -> DEA
+		- Autolayout
+		- Minimaler Automat
+		- Parallel Loop Routing

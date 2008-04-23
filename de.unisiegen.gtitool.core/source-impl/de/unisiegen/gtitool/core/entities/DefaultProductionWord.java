@@ -257,11 +257,33 @@ public final class DefaultProductionWord implements ProductionWord
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  ProductionWord other )
+  public final int compareTo ( ProductionWord other )
   {
-    // TODOCF
-    return 0;
+    ArrayList < ProductionWordMember > firstList = new ArrayList < ProductionWordMember > ();
+    ArrayList < ProductionWordMember > secondList = new ArrayList < ProductionWordMember > ();
+
+    firstList.addAll ( this.productionWordMemberList );
+    secondList.addAll ( other.get () );
+
+    int minSize = firstList.size () < secondList.size () ? firstList.size ()
+        : secondList.size ();
+
+    for ( int i = 0 ; i < minSize ; i++ )
+    {
+      int compare = firstList.get ( i ).getName ().compareTo (
+          secondList.get ( i ).getName () );
+      if ( compare != 0 )
+      {
+        return compare;
+      }
+    }
+
+    if ( firstList.size () == secondList.size () )
+    {
+      return 0;
+    }
+
+    return firstList.size () < secondList.size () ? -1 : 1;
   }
 
 
@@ -312,6 +334,30 @@ public final class DefaultProductionWord implements ProductionWord
       newElement.addElement ( current );
     }
     return newElement;
+  }
+
+
+  /**
+   * Returns the {@link ProductionWordMember}s.
+   * 
+   * @return The {@link ProductionWordMember}s.
+   */
+  public final ArrayList < ProductionWordMember > get ()
+  {
+    return this.productionWordMemberList;
+  }
+
+
+  /**
+   * Returns the {@link ProductionWordMember} with the given index.
+   * 
+   * @param index The index.
+   * @return The {@link ProductionWordMember} with the given index.
+   * @see #productionWordMemberList
+   */
+  public final ProductionWordMember get ( int index )
+  {
+    return this.productionWordMemberList.get ( index );
   }
 
 

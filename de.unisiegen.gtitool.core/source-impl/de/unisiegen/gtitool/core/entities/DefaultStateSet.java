@@ -338,11 +338,32 @@ public final class DefaultStateSet implements StateSet
    * 
    * @see Comparable#compareTo( Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  StateSet other )
+  public final int compareTo ( StateSet other )
   {
-    // TODOCF
-    return 0;
+    ArrayList < State > firstList = new ArrayList < State > ();
+    ArrayList < State > secondList = new ArrayList < State > ();
+
+    firstList.addAll ( this.stateSet );
+    secondList.addAll ( other.get () );
+
+    int minSize = firstList.size () < secondList.size () ? firstList.size ()
+        : secondList.size ();
+
+    for ( int i = 0 ; i < minSize ; i++ )
+    {
+      int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
+      if ( compare != 0 )
+      {
+        return compare;
+      }
+    }
+
+    if ( firstList.size () == secondList.size () )
+    {
+      return 0;
+    }
+
+    return firstList.size () < secondList.size () ? -1 : 1;
   }
 
 

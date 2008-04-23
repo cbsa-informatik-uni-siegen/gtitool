@@ -222,11 +222,32 @@ public final class DefaultWord implements Word
    * 
    * @see Comparable#compareTo( Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  Word other )
+  public final int compareTo ( Word other )
   {
-    // TODOCF
-    return 0;
+    ArrayList < Symbol > firstList = new ArrayList < Symbol > ();
+    ArrayList < Symbol > secondList = new ArrayList < Symbol > ();
+
+    firstList.addAll ( this.symbolList );
+    secondList.addAll ( other.get () );
+
+    int minSize = firstList.size () < secondList.size () ? firstList.size ()
+        : secondList.size ();
+
+    for ( int i = 0 ; i < minSize ; i++ )
+    {
+      int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
+      if ( compare != 0 )
+      {
+        return compare;
+      }
+    }
+
+    if ( firstList.size () == secondList.size () )
+    {
+      return 0;
+    }
+
+    return firstList.size () < secondList.size () ? -1 : 1;
   }
 
 

@@ -167,11 +167,18 @@ public final class DefaultProduction implements Production
    * 
    * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  Production other )
+  public final int compareTo ( Production other )
   {
-    // TODOCF
-    return 0;
+    // NonterminalSymbol
+    int compare = this.nonterminalSymbol.compareTo ( other
+        .getNonterminalSymbol () );
+    if ( compare != 0 )
+    {
+      return compare;
+    }
+
+    // ProductionWord
+    return this.productionWord.compareTo ( other.getProductionWord () );
   }
 
 

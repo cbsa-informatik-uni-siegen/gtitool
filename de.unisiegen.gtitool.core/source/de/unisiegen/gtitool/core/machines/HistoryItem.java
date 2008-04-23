@@ -118,7 +118,7 @@ public final class HistoryItem
   @Override
   public final String toString ()
   {
-    // TODOCF
-    return this.stateSet.toString ();
+    return this.stateSet + " | " + this.transitionSet + " | " + this.symbolList //$NON-NLS-1$ //$NON-NLS-2$
+        + " | " + this.oldStack; //$NON-NLS-1$
   }
 }

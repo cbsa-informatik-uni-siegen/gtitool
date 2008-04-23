@@ -1,6 +1,8 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.util.ArrayList;
+
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -60,4 +62,21 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @see Object#equals(Object)
    */
   public boolean equals ( Object other );
+
+
+  /**
+   * Returns the {@link ProductionWordMember}s.
+   * 
+   * @return The {@link ProductionWordMember}s.
+   */
+  public ArrayList < ProductionWordMember > get ();
+
+
+  /**
+   * Returns the {@link ProductionWordMember} with the given index.
+   * 
+   * @param index The index.
+   * @return The {@link ProductionWordMember} with the given index.
+   */
+  public ProductionWordMember get ( int index );
 }

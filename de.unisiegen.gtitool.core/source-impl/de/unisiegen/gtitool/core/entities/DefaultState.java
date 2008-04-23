@@ -483,7 +483,7 @@ public final class DefaultState implements State
    */
   public final int compareTo ( State other )
   {
-    return this.id < other.getId () ? -1 : ( this.id > other.getId () ? 1 : 0 );
+    return this.name.compareTo ( other.getName () );
   }
 
 

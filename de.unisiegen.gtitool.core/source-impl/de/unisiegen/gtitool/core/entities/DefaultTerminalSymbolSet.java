@@ -379,11 +379,32 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
    * 
    * @see Comparable#compareTo( Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  TerminalSymbolSet other )
+  public final int compareTo ( TerminalSymbolSet other )
   {
-    // TODOCF
-    return 0;
+    ArrayList < TerminalSymbol > firstList = new ArrayList < TerminalSymbol > ();
+    ArrayList < TerminalSymbol > secondList = new ArrayList < TerminalSymbol > ();
+
+    firstList.addAll ( this.terminalSymbolSet );
+    secondList.addAll ( other.get () );
+
+    int minSize = firstList.size () < secondList.size () ? firstList.size ()
+        : secondList.size ();
+
+    for ( int i = 0 ; i < minSize ; i++ )
+    {
+      int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
+      if ( compare != 0 )
+      {
+        return compare;
+      }
+    }
+
+    if ( firstList.size () == secondList.size () )
+    {
+      return 0;
+    }
+
+    return firstList.size () < secondList.size () ? -1 : 1;
   }
 
 

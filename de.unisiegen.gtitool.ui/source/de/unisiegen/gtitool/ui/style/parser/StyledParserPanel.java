@@ -50,7 +50,8 @@ import de.unisiegen.gtitool.ui.utils.Clipboard;
  * @version $Id$
  * @param <E> The {@link Entity}.
  */
-public abstract class StyledParserPanel < E extends Entity > extends JPanel
+public abstract class StyledParserPanel < E extends Entity < E >> extends
+    JPanel
 {
 
   /**
@@ -1034,7 +1035,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param entities The {@link Entity}s which should be highlighted.
    */
-  public final void setHighlightedParseableEntity ( Entity ... entities )
+  public final void setHighlightedParseableEntity ( Entity < ? > ... entities )
   {
     this.document.setHighlightedParseableEntity ( entities );
   }
@@ -1045,7 +1046,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * 
    * @param entity The {@link Entity} which should be highlighted.
    */
-  public final void setHighlightedParseableEntity ( Entity entity )
+  public final void setHighlightedParseableEntity ( Entity < ? > entity )
   {
     this.document.setHighlightedParseableEntity ( entity );
   }
@@ -1057,7 +1058,7 @@ public abstract class StyledParserPanel < E extends Entity > extends JPanel
    * @param entities The {@link Entity}s which should be highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable < ? extends Entity > entities )
+      Iterable < ? extends Entity < ? > > entities )
   {
     this.document.setHighlightedParseableEntity ( entities );
   }

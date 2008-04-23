@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Symbol extends Entity, Storable, Comparable < Symbol >
+public interface Symbol extends Entity < Symbol >, Storable
 {
 
   /**
@@ -19,14 +19,6 @@ public interface Symbol extends Entity, Storable, Comparable < Symbol >
    * @see Entity#clone()
    */
   public Symbol clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( Symbol other );
 
 
   /**

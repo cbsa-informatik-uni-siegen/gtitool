@@ -32,7 +32,7 @@ import de.unisiegen.gtitool.ui.style.listener.ExceptionsChangedListener;
  * @version $Id$
  * @param <E> The {@link Entity}.
  */
-public final class SideBar < E extends Entity > extends JComponent
+public final class SideBar < E extends Entity < E >> extends JComponent
 {
 
   /**

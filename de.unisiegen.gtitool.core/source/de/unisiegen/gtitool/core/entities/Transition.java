@@ -16,8 +16,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Transition extends Entity, Storable, Modifyable,
-    Comparable < Transition >, Iterable < Symbol >
+public interface Transition extends Entity < Transition >, Storable,
+    Modifyable, Iterable < Symbol >
 {
 
   /**
@@ -92,14 +92,6 @@ public interface Transition extends Entity, Storable, Modifyable,
    * @see Object#clone()
    */
   public Transition clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( Transition other );
 
 
   /**

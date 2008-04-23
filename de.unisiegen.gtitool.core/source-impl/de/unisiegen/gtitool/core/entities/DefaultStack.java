@@ -110,6 +110,19 @@ public final class DefaultStack implements Stack
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo( Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  Stack other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultStack} contains the specified
    * {@link Symbol}.
    * 

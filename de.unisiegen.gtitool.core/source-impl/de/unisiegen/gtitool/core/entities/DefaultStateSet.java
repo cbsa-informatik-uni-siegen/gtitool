@@ -334,6 +334,19 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo( Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  StateSet other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultStateSet} contains the specified
    * {@link State}.
    * 

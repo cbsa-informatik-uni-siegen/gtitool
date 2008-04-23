@@ -27,7 +27,7 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * @version $Id$
  * @param <E> The {@link Entity}.
  */
-public class ParserTableCellEditor < E extends Entity > extends
+public class ParserTableCellEditor < E extends Entity < E >> extends
     AbstractCellEditor implements TableCellEditor
 {
 

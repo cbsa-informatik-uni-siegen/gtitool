@@ -14,15 +14,15 @@ import de.unisiegen.gtitool.core.parser.Parseable;
  * @version $Id$
  * @param <E> The {@link Entity}.
  */
-public interface ParseableChangedListener < E extends Entity > extends
+public interface ParseableChangedListener < E extends Entity < E >> extends
     EventListener
 {
 
   /**
-   * Invoked when the {@link Object} changed.
+   * Invoked when the {@link Entity} changed.
    * 
-   * @param newObject The new {@link Object}.
+   * @param newEntity The new {@link Entity}.
    */
-  public void parseableChanged ( E newObject );
+  public void parseableChanged ( E newEntity );
 
 }

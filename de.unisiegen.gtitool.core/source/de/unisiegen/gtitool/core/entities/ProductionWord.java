@@ -11,8 +11,9 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface ProductionWord extends Entity, Storable, Modifyable,
-    Iterable < ProductionWordMember >
+@SuppressWarnings ( "unchecked" )
+public interface ProductionWord extends Entity < ProductionWord >, Storable,
+    Modifyable, Iterable < ProductionWordMember >
 {
 
   /**

@@ -15,8 +15,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface TerminalSymbolSet extends Entity, Storable, Modifyable,
-    Iterable < TerminalSymbol >
+public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
+    Storable, Modifyable, Iterable < TerminalSymbol >
 {
 
   /**

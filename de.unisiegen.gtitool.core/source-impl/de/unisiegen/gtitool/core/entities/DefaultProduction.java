@@ -170,7 +170,7 @@ public final class DefaultProduction implements Production
   public final int compareTo ( @SuppressWarnings ( "unused" )
   Production other )
   {
-    // TODOCF Implement this, after implement it on all other entities.
+    // TODOCF
     return 0;
   }
 

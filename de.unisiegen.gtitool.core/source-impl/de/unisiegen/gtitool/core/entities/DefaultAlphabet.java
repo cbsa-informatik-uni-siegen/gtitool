@@ -365,6 +365,19 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  Alphabet other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultAlphabet} contains the specified
    * {@link Symbol}.
    * 

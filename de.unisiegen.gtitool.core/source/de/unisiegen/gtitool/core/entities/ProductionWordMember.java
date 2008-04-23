@@ -1,6 +1,10 @@
 package de.unisiegen.gtitool.core.entities;
 
 
+import java.io.Serializable;
+
+import de.unisiegen.gtitool.core.parser.ParserOffset;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
 
@@ -10,23 +14,16 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface ProductionWordMember extends Entity, Storable
+public interface ProductionWordMember extends Storable, PrettyPrintable,
+    Cloneable, Serializable
 {
 
   /**
-   * {@inheritDoc}
+   * Creates and returns a copy of this {@link ProductionWordMember}.
    * 
-   * @see Entity#clone()
+   * @see Object#clone()
    */
   public ProductionWordMember clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
 
 
   /**
@@ -35,6 +32,14 @@ public interface ProductionWordMember extends Entity, Storable
    * @return The name of this {@link ProductionWordMember}.
    */
   public String getName ();
+
+
+  /**
+   * Returns the {@link ParserOffset}.
+   * 
+   * @return The {@link ParserOffset}.
+   */
+  public ParserOffset getParserOffset ();
 
 
   /**
@@ -53,4 +58,12 @@ public interface ProductionWordMember extends Entity, Storable
    * @param error The error value to set.
    */
   public void setError ( boolean error );
+
+
+  /**
+   * Sets the {@link ParserOffset}.
+   * 
+   * @param parserOffset The new {@link ParserOffset}.
+   */
+  public void setParserOffset ( ParserOffset parserOffset );
 }

@@ -218,6 +218,19 @@ public final class DefaultWord implements Word
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo( Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  Word other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultWord} contains the given {@link Symbol}.
    * Otherwise false.
    * 

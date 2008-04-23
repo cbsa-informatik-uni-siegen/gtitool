@@ -12,8 +12,10 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
  * 
  * @author Christian Fehler
  * @version $Id$
+ * @param <E> The {@link Entity} type.
  */
-public interface Entity extends PrettyPrintable, Cloneable, Serializable
+public interface Entity < E > extends PrettyPrintable, Cloneable, Serializable,
+    Comparable < E >
 {
 
   /**
@@ -23,11 +25,11 @@ public interface Entity extends PrettyPrintable, Cloneable, Serializable
 
 
   /**
-   * Creates and returns a copy of this entity.
+   * Creates and returns a copy of this {@link Entity}.
    * 
    * @see Object#clone()
    */
-  public Entity clone ();
+  public Entity < E > clone ();
 
 
   /**

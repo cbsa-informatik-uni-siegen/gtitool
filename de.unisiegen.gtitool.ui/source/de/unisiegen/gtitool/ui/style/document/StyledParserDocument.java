@@ -42,7 +42,7 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @version $Id$
  * @param <E> The {@link Entity}.
  */
-public final class StyledParserDocument < E extends Entity > extends
+public final class StyledParserDocument < E extends Entity < E > > extends
     DefaultStyledDocument
 {
 
@@ -89,7 +89,7 @@ public final class StyledParserDocument < E extends Entity > extends
   /**
    * The highlighted {@link Entity} list.
    */
-  private ArrayList < Entity > highlightedParseableEntityList;
+  private ArrayList < Entity < ? >> highlightedParseableEntityList;
 
 
   /**
@@ -120,7 +120,7 @@ public final class StyledParserDocument < E extends Entity > extends
       throw new NullPointerException ( "parseable is null" ); //$NON-NLS-1$
     }
     this.parseable = parseable;
-    this.highlightedParseableEntityList = new ArrayList < Entity > ();
+    this.highlightedParseableEntityList = new ArrayList < Entity < ? >> ();
 
     this.exceptionList = new ArrayList < ScannerException > ();
     this.externExceptionList = new ArrayList < ScannerException > ();
@@ -312,7 +312,7 @@ public final class StyledParserDocument < E extends Entity > extends
   private final void highlightedParseableEntities ()
   {
     parse ();
-    for ( Entity current : this.highlightedParseableEntityList )
+    for ( Entity < ? > current : this.highlightedParseableEntityList )
     {
       SimpleAttributeSet highlightedParseableEntitySet = getAttributeSetHighlightedParseableEntity ();
       highlightedParseableEntitySet.addAttribute ( "highlighting", current ); //$NON-NLS-1$
@@ -626,10 +626,10 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param entities The {@linkEntity}s which should be highlighted.
    */
-  public final void setHighlightedParseableEntity ( Entity ... entities )
+  public final void setHighlightedParseableEntity ( Entity < ? > ... entities )
   {
     this.highlightedParseableEntityList.clear ();
-    for ( Entity current : entities )
+    for ( Entity < ? > current : entities )
     {
       this.highlightedParseableEntityList.add ( current );
     }
@@ -642,9 +642,9 @@ public final class StyledParserDocument < E extends Entity > extends
    * 
    * @param entity The {@link Entity} which should be highlighted.
    */
-  public final void setHighlightedParseableEntity ( Entity entity )
+  public final void setHighlightedParseableEntity ( Entity < ? > entity )
   {
-    ArrayList < Entity > entities = new ArrayList < Entity > ();
+    ArrayList < Entity < ? >> entities = new ArrayList < Entity < ? > > ();
     entities.add ( entity );
     setHighlightedParseableEntity ( entities );
   }
@@ -656,10 +656,10 @@ public final class StyledParserDocument < E extends Entity > extends
    * @param entities The {@link Entity}s which should be highlighted.
    */
   public final void setHighlightedParseableEntity (
-      Iterable < ? extends Entity > entities )
+      Iterable < ? extends Entity < ? > > entities )
   {
     this.highlightedParseableEntityList.clear ();
-    for ( Entity current : entities )
+    for ( Entity < ? > current : entities )
     {
       this.highlightedParseableEntityList.add ( current );
     }

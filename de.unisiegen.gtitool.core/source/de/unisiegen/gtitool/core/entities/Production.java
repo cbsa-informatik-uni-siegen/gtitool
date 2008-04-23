@@ -11,8 +11,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Production extends Entity, Storable, Modifyable,
-    Comparable < Production >
+public interface Production extends Entity < Production >, Storable, Modifyable
 {
 
   /**
@@ -21,14 +20,6 @@ public interface Production extends Entity, Storable, Modifyable,
    * @see Object#clone()
    */
   public Production clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( Production other );
 
 
   /**

@@ -10,8 +10,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface TerminalSymbol extends Entity, ProductionWordMember, Storable,
-    Comparable < TerminalSymbol >
+public interface TerminalSymbol extends Entity < TerminalSymbol >,
+    ProductionWordMember, Storable
 {
 
   /**
@@ -20,14 +20,6 @@ public interface TerminalSymbol extends Entity, ProductionWordMember, Storable,
    * @see Entity#clone()
    */
   public TerminalSymbol clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Comparable#compareTo(Object)
-   */
-  public int compareTo ( TerminalSymbol other );
 
 
   /**

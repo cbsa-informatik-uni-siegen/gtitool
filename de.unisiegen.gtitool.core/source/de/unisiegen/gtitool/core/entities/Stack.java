@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Stack extends Entity, Iterable < Symbol >
+public interface Stack extends Entity < Stack >, Iterable < Symbol >
 {
 
   /**

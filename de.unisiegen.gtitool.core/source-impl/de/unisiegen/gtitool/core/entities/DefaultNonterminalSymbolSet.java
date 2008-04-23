@@ -277,6 +277,18 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final void addModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Adds the given {@link NonterminalSymbolSetChangedListener}.
    * 
    * @param listener The {@link NonterminalSymbolSetChangedListener}.
@@ -286,18 +298,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     this.listenerList
         .add ( NonterminalSymbolSetChangedListener.class, listener );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#addModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void addModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.add ( ModifyStatusChangedListener.class, listener );
   }
 
 
@@ -379,6 +379,19 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo(Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  NonterminalSymbolSet other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultNonterminalSymbolSet} contains the
    * specified {@link NonterminalSymbol}.
    * 
@@ -412,20 +425,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Let the listeners know that the {@link NonterminalSymbolSet} has changed.
-   */
-  private final void fireNonterminalSymbolSetChanged ()
-  {
-    NonterminalSymbolSetChangedListener [] listeners = this.listenerList
-        .getListeners ( NonterminalSymbolSetChangedListener.class );
-    for ( NonterminalSymbolSetChangedListener current : listeners )
-    {
-      current.nonterminalSymbolSetChanged ( this );
-    }
-  }
-
-
-  /**
    * Let the listeners know that the modify status has changed.
    */
   private final void fireModifyStatusChanged ()
@@ -436,6 +435,20 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     for ( ModifyStatusChangedListener current : listeners )
     {
       current.modifyStatusChanged ( newModifyStatus );
+    }
+  }
+
+
+  /**
+   * Let the listeners know that the {@link NonterminalSymbolSet} has changed.
+   */
+  private final void fireNonterminalSymbolSetChanged ()
+  {
+    NonterminalSymbolSetChangedListener [] listeners = this.listenerList
+        .getListeners ( NonterminalSymbolSetChangedListener.class );
+    for ( NonterminalSymbolSetChangedListener current : listeners )
+    {
+      current.nonterminalSymbolSetChanged ( this );
     }
   }
 
@@ -593,6 +606,18 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
+   */
+  public final void removeModifyStatusChangedListener (
+      ModifyStatusChangedListener listener )
+  {
+    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
+  }
+
+
+  /**
    * Removes the given {@link NonterminalSymbolSetChangedListener}.
    * 
    * @param listener The {@link NonterminalSymbolSetChangedListener}.
@@ -602,18 +627,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   {
     this.listenerList.remove ( NonterminalSymbolSetChangedListener.class,
         listener );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
-   */
-  public final void removeModifyStatusChangedListener (
-      ModifyStatusChangedListener listener )
-  {
-    this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
 
 

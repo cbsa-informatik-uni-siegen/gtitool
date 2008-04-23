@@ -24,7 +24,8 @@ import de.unisiegen.gtitool.ui.style.document.StyledParserDocument;
  * @param <E> The {@link Entity}.
  * @see StyledParserDocument
  */
-public final class StyledParserEditor < E extends Entity > extends JEditorPane
+public final class StyledParserEditor < E extends Entity < E >> extends
+    JEditorPane
 {
 
   /**

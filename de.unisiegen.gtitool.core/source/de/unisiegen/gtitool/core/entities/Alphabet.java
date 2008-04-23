@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Alphabet extends Entity, Storable, Modifyable,
+public interface Alphabet extends Entity < Alphabet >, Storable, Modifyable,
     Iterable < Symbol >
 {
 

@@ -255,6 +255,19 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * {@inheritDoc}
    * 
+   * @see Comparable#compareTo(Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  ProductionWord other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#equals(Object)
    */
   @Override

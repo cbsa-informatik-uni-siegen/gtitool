@@ -375,6 +375,19 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Comparable#compareTo( Object)
+   */
+  public final int compareTo ( @SuppressWarnings ( "unused" )
+  TerminalSymbolSet other )
+  {
+    // TODOCF
+    return 0;
+  }
+
+
+  /**
    * Returns true if this {@link DefaultTerminalSymbolSet} contains the
    * specified {@link TerminalSymbol}.
    * 

@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface StateSet extends Entity, Storable, Modifyable,
+public interface StateSet extends Entity < StateSet >, Storable, Modifyable,
     Iterable < State >
 {
 

@@ -15,8 +15,8 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface NonterminalSymbolSet extends Entity, Storable, Modifyable,
-    Iterable < NonterminalSymbol >
+public interface NonterminalSymbolSet extends Entity < NonterminalSymbolSet >,
+    Storable, Modifyable, Iterable < NonterminalSymbol >
 {
 
   /**

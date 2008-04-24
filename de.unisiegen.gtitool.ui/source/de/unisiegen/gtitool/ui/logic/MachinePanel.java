@@ -730,7 +730,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param state the {@link DefaultStateView} to delete.
    */
-  public void deleteState ( DefaultStateView state )
+  public final void deleteState ( DefaultStateView state )
   {
     ConfirmDialog confirmDialog = new ConfirmDialog ( this.mainWindowForm,
         Messages.getString ( "TransitionDialog.DeleteStateQuestion", //$NON-NLS-1$
@@ -750,7 +750,7 @@ public final class MachinePanel implements EditorPanel
    * 
    * @param transition the {@link DefaultTransitionView} to delete.
    */
-  public void deleteTransition ( DefaultTransitionView transition )
+  public final void deleteTransition ( DefaultTransitionView transition )
   {
     ConfirmDialog confirmedDialog = new ConfirmDialog ( this.mainWindowForm,
         Messages.getString ( "TransitionDialog.DeleteTransitionQuestion", //$NON-NLS-1$
@@ -813,6 +813,18 @@ public final class MachinePanel implements EditorPanel
   public final String getFileEnding ()
   {
     return "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the {@link JGraph}.
+   * 
+   * @return The {@link JGraph}.
+   * @see #graph
+   */
+  public final JGraph getGraph ()
+  {
+    return this.graph;
   }
 
 

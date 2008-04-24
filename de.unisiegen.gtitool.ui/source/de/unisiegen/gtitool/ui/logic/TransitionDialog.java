@@ -100,6 +100,18 @@ public final class TransitionDialog
 
 
     /**
+     * Returns true, if the item is a member of this model, otherwise false.
+     * 
+     * @param item The item to check.
+     * @return True, if the item is a member of this model, otherwise false.
+     */
+    public final boolean contains ( Symbol item )
+    {
+      return this.list.contains ( item );
+    }
+
+
+    /**
      * Returns the value at the specified index.
      * 
      * @param index The requested index.
@@ -281,60 +293,6 @@ public final class TransitionDialog
    * @param alphabet The {@link Alphabet} available for the {@link Transition}.
    * @param pushDownAlphabet The push down {@link Alphabet} available for the
    *          {@link Transition}.
-   * @param transition The {@link Transition}.
-   */
-  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
-      Alphabet alphabet, Alphabet pushDownAlphabet, Transition transition )
-  {
-    this ( parent, machinePanel, alphabet, pushDownAlphabet, transition
-        .getStateBegin (), transition.getStateEnd (), transition
-        .getPushDownWordRead (), transition.getPushDownWordWrite (), transition
-        .getSymbol () );
-    this.transition = transition;
-  }
-
-
-  /**
-   * Creates a new {@link TransitionDialog}.
-   * 
-   * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
-   * @param model The {@link DefaultMachineModel}.
-   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
-   * @param pushDownAlphabet The push down {@link Alphabet} available for the
-   *          {@link Transition}.
-   * @param stateBegin The {@link State} where the {@link Transition} begins.
-   * @param stateEnd The {@link State} where the {@link Transition} ends.
-   * @param pushDownWordRead The push down word to read.
-   * @param pushDownWordWrite The push down word to write.
-   * @param symbols The Symbols of the {@link Transition}.
-   * @param x The x value of the new {@link DefaultStateView}.
-   * @param y The y value of the new {@link DefaultStateView}.
-   * @param zoomFactor The zoom factor of the {@link MachinePanel}.
-   */
-  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
-      DefaultMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
-      State stateBegin, State stateEnd, Word pushDownWordRead,
-      Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
-      double zoomFactor )
-  {
-    this ( parent, machinePanel, alphabet, pushDownAlphabet, stateBegin,
-        stateEnd, pushDownWordRead, pushDownWordWrite, symbols );
-    this.model = model;
-    this.xPosition = x;
-    this.yPosition = y;
-    this.zoomFactor = zoomFactor;
-  }
-
-
-  /**
-   * Creates a new {@link TransitionDialog}.
-   * 
-   * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
-   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
-   * @param pushDownAlphabet The push down {@link Alphabet} available for the
-   *          {@link Transition}.
    * @param stateBegin The {@link State} where the {@link Transition} begins.
    * @param stateEnd The {@link State} where the {@link Transition} ends.
    * @param pushDownWordRead The push down word to read.
@@ -485,6 +443,60 @@ public final class TransitionDialog
 
 
   /**
+   * Creates a new {@link TransitionDialog}.
+   * 
+   * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
+   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
+   * @param pushDownAlphabet The push down {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param transition The {@link Transition}.
+   */
+  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+      Alphabet alphabet, Alphabet pushDownAlphabet, Transition transition )
+  {
+    this ( parent, machinePanel, alphabet, pushDownAlphabet, transition
+        .getStateBegin (), transition.getStateEnd (), transition
+        .getPushDownWordRead (), transition.getPushDownWordWrite (), transition
+        .getSymbol () );
+    this.transition = transition;
+  }
+
+
+  /**
+   * Creates a new {@link TransitionDialog}.
+   * 
+   * @param parent The parent frame.
+   * @param machinePanel The {@link MachinePanel}.
+   * @param model The {@link DefaultMachineModel}.
+   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
+   * @param pushDownAlphabet The push down {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param stateBegin The {@link State} where the {@link Transition} begins.
+   * @param stateEnd The {@link State} where the {@link Transition} ends.
+   * @param pushDownWordRead The push down word to read.
+   * @param pushDownWordWrite The push down word to write.
+   * @param symbols The Symbols of the {@link Transition}.
+   * @param x The x value of the new {@link DefaultStateView}.
+   * @param y The y value of the new {@link DefaultStateView}.
+   * @param zoomFactor The zoom factor of the {@link MachinePanel}.
+   */
+  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
+      DefaultMachineModel model, Alphabet alphabet, Alphabet pushDownAlphabet,
+      State stateBegin, State stateEnd, Word pushDownWordRead,
+      Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
+      double zoomFactor )
+  {
+    this ( parent, machinePanel, alphabet, pushDownAlphabet, stateBegin,
+        stateEnd, pushDownWordRead, pushDownWordWrite, symbols );
+    this.model = model;
+    this.xPosition = x;
+    this.yPosition = y;
+    this.zoomFactor = zoomFactor;
+  }
+
+
+  /**
    * Adds the given {@link Symbol}s to the change over set.
    * 
    * @param symbolList The {@link Symbol}s to add.
@@ -598,64 +610,9 @@ public final class TransitionDialog
 
 
   /**
-   * Handle ok button pressed.
-   */
-  public final void handleOk ()
-  {
-    this.confirmed = true;
-    this.gui.setVisible ( false );
-
-    if ( this.transition == null )
-    {
-      handleNewTransition ();
-    }
-    else
-    {
-      handleUpdateTransition ();
-    }
-    this.gui.dispose ();
-  }
-
-
-  /**
-   * Update the {@link Transition}.
-   */
-  private void handleUpdateTransition ()
-  {
-    TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
-    oldSymbols.addAll ( this.transition.getSymbol () );
-
-    Word oldPushDownWordRead = this.transition.getPushDownWordRead ();
-    Word oldPushDownWordWrite = this.transition.getPushDownWordWrite ();
-
-    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-    for ( Symbol symbol : this.modelChangeOverSet )
-    {
-      symbols.add ( symbol );
-    }
-    try
-    {
-      this.transition.setPushDownWordRead ( this.pushDownWordRead );
-      this.transition.setPushDownWordWrite ( this.pushDownWordWrite );
-      this.transition.clear ();
-      this.transition.add ( symbols );
-
-      TransitionChangedItem item = new TransitionChangedItem ( this.transition,
-          oldPushDownWordRead, oldPushDownWordWrite, oldSymbols );
-      this.machinePanel.getRedoUndoHandler ().addItem ( item );
-    }
-    catch ( Exception exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-  }
-
-
-  /**
    * Create a new {@link Transition}.
    */
-  private void handleNewTransition ()
+  private final void handleNewTransition ()
   {
     try
     {
@@ -710,6 +667,62 @@ public final class TransitionDialog
 
 
   /**
+   * Handle ok button pressed.
+   */
+  public final void handleOk ()
+  {
+    this.confirmed = true;
+    this.gui.setVisible ( false );
+
+    if ( this.transition == null )
+    {
+      handleNewTransition ();
+    }
+    else
+    {
+      handleUpdateTransition ();
+    }
+    this.gui.dispose ();
+    this.machinePanel.getGraph ().repaint ();
+  }
+
+
+  /**
+   * Update the {@link Transition}.
+   */
+  private void handleUpdateTransition ()
+  {
+    TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
+    oldSymbols.addAll ( this.transition.getSymbol () );
+
+    Word oldPushDownWordRead = this.transition.getPushDownWordRead ();
+    Word oldPushDownWordWrite = this.transition.getPushDownWordWrite ();
+
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    for ( Symbol symbol : this.modelChangeOverSet )
+    {
+      symbols.add ( symbol );
+    }
+    try
+    {
+      this.transition.setPushDownWordRead ( this.pushDownWordRead );
+      this.transition.setPushDownWordWrite ( this.pushDownWordWrite );
+      this.transition.clear ();
+      this.transition.add ( symbols );
+
+      TransitionChangedItem item = new TransitionChangedItem ( this.transition,
+          oldPushDownWordRead, oldPushDownWordWrite, oldSymbols );
+      this.machinePanel.getRedoUndoHandler ().addItem ( item );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
    * Returns the confirmed value.
    * 
    * @return The confirmed value.
@@ -734,8 +747,13 @@ public final class TransitionDialog
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )
     {
-      symbolList.add ( ( Symbol ) rows.getModel ().getElementAt ( index ) );
+      Symbol symbol = ( Symbol ) rows.getModel ().getElementAt ( index );
+      if ( !this.modelAlphabet.contains ( symbol ) )
+      {
+        symbolList.add ( symbol );
+      }
     }
+
     removeFromChangeOver ( symbolList );
   }
 
@@ -753,7 +771,11 @@ public final class TransitionDialog
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )
     {
-      symbolList.add ( ( Symbol ) rows.getModel ().getElementAt ( index ) );
+      Symbol symbol = ( Symbol ) rows.getModel ().getElementAt ( index );
+      if ( !this.modelChangeOverSet.contains ( symbol ) )
+      {
+        symbolList.add ( symbol );
+      }
     }
     addToChangeOver ( symbolList );
   }
@@ -870,7 +892,7 @@ public final class TransitionDialog
   /**
    * Updates the current resulting {@link Transition}.
    */
-  private void updateResultingTransition ()
+  private final void updateResultingTransition ()
   {
     try
     {

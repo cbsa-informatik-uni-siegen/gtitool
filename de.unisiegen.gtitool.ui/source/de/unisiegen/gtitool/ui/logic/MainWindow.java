@@ -210,7 +210,18 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle the action event of the about item.
+   * Getter for the {@link ModifyStatusChangedListener}.
+   * 
+   * @return The {@link ModifyStatusChangedListener}.
+   */
+  public ModifyStatusChangedListener getModifyStatusChangedListener ()
+  {
+    return this.modifyStatusChangedListener;
+  }
+
+
+  /**
+   * Handles the action event of the about item.
    */
   public final void handleAbout ()
   {
@@ -220,7 +231,22 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Auto Step Stopped by Exception
+   * Handle add production button pressed.
+   */
+  public void handleAddProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleAddProduction ();
+    }
+  }
+
+
+  /**
+   * Handles the auto step stopped by exception event.
    */
   public final void handleAutoStepStopped ()
   {
@@ -295,6 +321,92 @@ public final class MainWindow implements LanguageChangedListener
       panel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
       PreferenceManager.getInstance ().setVisibleConsole (
           this.gui.jCheckBoxMenuItemConsole.getState () );
+    }
+  }
+
+
+  /**
+   * Handle delete production button pressed.
+   */
+  public void handleDeleteProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleDeleteProduction ();
+    }
+  }
+
+
+  /**
+   * Use the active Editor Panel as draf for a new file
+   * 
+   * @param type Type of the new file
+   */
+  public final void handleDraftFor ( GrammarType type )
+  {
+    try
+    {
+      DefaultGrammarModel model = new DefaultGrammarModel (
+          this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getModel ()
+              .getElement (), type.toString () );
+      EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, null );
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+      setGeneralStates ( true );
+      this.gui.jMenuItemValidate.setEnabled ( true );
+
+      // toolbar items
+      setToolBarEditItemState ( true );
+
+    }
+    catch ( StoreException exc )
+    {
+      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
+          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
+      infoDialog.show ();
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      // Do nothing
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      // Do nothing
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      // Do nothing
+    }
+    catch ( TerminalSymbolException exc )
+    {
+      // Do nothing
     }
   }
 
@@ -375,77 +487,6 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Use the active Editor Panel as draf for a new file
-   * 
-   * @param type Type of the new file
-   */
-  public final void handleDraftFor ( GrammarType type )
-  {
-    try
-    {
-      DefaultGrammarModel model = new DefaultGrammarModel (
-          this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getModel ()
-              .getElement (), type.toString () );
-      EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, null );
-
-      TreeSet < String > nameList = new TreeSet < String > ();
-      int count = 0;
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
-      {
-        if ( current.getFile () == null )
-        {
-          nameList.add ( current.getName () );
-          count++ ;
-        }
-      }
-
-      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
-      while ( nameList.contains ( name ) )
-      {
-        count++ ;
-        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-            + "." + type.toString ().toLowerCase (); //$NON-NLS-1$
-      }
-
-      newEditorPanel.setName ( name );
-      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
-      newEditorPanel
-          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
-
-      // toolbar items
-      setToolBarEditItemState ( true );
-
-    }
-    catch ( StoreException exc )
-    {
-      InfoDialog infoDialog = new InfoDialog ( this.gui, exc.getMessage (),
-          Messages.getString ( "MainWindow.ErrorLoad" ) ); //$NON-NLS-1$
-      infoDialog.show ();
-    }
-    catch ( NonterminalSymbolSetException exc )
-    {
-      // Do nothing
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      // Do nothing
-    }
-    catch ( TerminalSymbolSetException exc )
-    {
-      // Do nothing
-    }
-    catch ( TerminalSymbolException exc )
-    {
-      // Do nothing
-    }
-  }
-
-
-  /**
    * Handle edit document action in the toolbar.
    */
   public final void handleEditDocument ()
@@ -478,6 +519,21 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jMenuItemEnterWord.setEnabled ( true );
     this.gui.jMenuItemEditMachine.setEnabled ( false );
     this.gui.jMenuItemValidate.setEnabled ( true );
+  }
+
+
+  /**
+   * Handle edit production button pressed.
+   */
+  public void handleEditProduction ()
+  {
+    EditorPanel panel = this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel ();
+    if ( panel instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+      grammarPanel.handleEditProduction ();
+    }
   }
 
 
@@ -523,6 +579,24 @@ public final class MainWindow implements LanguageChangedListener
     else
     {
       panel.handleExchange ();
+    }
+  }
+
+
+  /**
+   * Handles the history event.
+   */
+  public final void handleHistory ()
+  {
+    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
+          .getSelectedEditorPanel ();
+      machinePanel.handleHistory ();
+    }
+    else
+    {
+      throw new RuntimeException ( "the selected panel is not a machine panel" ); //$NON-NLS-1$
     }
   }
 
@@ -1608,6 +1682,11 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Exchange" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemExchange.setMnemonic ( Messages.getString (
         "MainWindow.ExchangeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // History
+    MainWindow.this.gui.jMenuItemHistory.setText ( Messages
+        .getString ( "MainWindow.History" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemHistory.setMnemonic ( Messages.getString (
+        "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Help
     MainWindow.this.gui.jMenuHelp.setText ( Messages
         .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
@@ -1941,61 +2020,5 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarButtonNextStep.setEnabled ( state );
     this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( state );
     this.gui.jGTIToolBarButtonStop.setEnabled ( state );
-  }
-
-
-  /**
-   * Handle delete production button pressed.
-   */
-  public void handleDeleteProduction ()
-  {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
-        .getSelectedEditorPanel ();
-    if ( panel instanceof GrammarPanel )
-    {
-      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleDeleteProduction ();
-    }
-  }
-
-
-  /**
-   * Handle edit production button pressed.
-   */
-  public void handleEditProduction ()
-  {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
-        .getSelectedEditorPanel ();
-    if ( panel instanceof GrammarPanel )
-    {
-      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleEditProduction ();
-    }
-  }
-
-
-  /**
-   * Handle add production button pressed.
-   */
-  public void handleAddProduction ()
-  {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
-        .getSelectedEditorPanel ();
-    if ( panel instanceof GrammarPanel )
-    {
-      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleAddProduction ();
-    }
-  }
-
-
-  /**
-   * Getter for the {@link ModifyStatusChangedListener}.
-   *
-   * @return The {@link ModifyStatusChangedListener}.
-   */
-  public ModifyStatusChangedListener getModifyStatusChangedListener ()
-  {
-    return this.modifyStatusChangedListener;
   }
 }

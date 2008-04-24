@@ -128,6 +128,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuItemEditMachine = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
+        jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -703,6 +704,16 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuExtras.add(jMenuItemExchange);
 
+        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
+        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
+        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistoryActionPerformed(evt);
+            }
+        });
+
+        jMenuExtras.add(jMenuItemHistory);
+
         jMenuBarMain.add(jMenuExtras);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
@@ -725,12 +736,16 @@ public class MainWindowForm extends javax.swing.JFrame {
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jMenuItemHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistoryActionPerformed
+        this.logic.handleHistory();
+    }//GEN-LAST:event_jMenuItemHistoryActionPerformed
+
     private void jMenuItemCFGhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCFGhandleDraftFor
-        logic.handleDraftFor(GrammarType.CFG);
+        this.logic.handleDraftFor(GrammarType.CFG);
     }//GEN-LAST:event_jMenuItemCFGhandleDraftFor
 
     private void jMenuItemRGhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRGhandleDraftFor
-         logic.handleDraftFor(GrammarType.RG);
+        this.logic.handleDraftFor(GrammarType.RG);
     }//GEN-LAST:event_jMenuItemRGhandleDraftFor
 
     private void jGTIToolBarButtonAddProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonAddProductionActionPerformed
@@ -951,6 +966,7 @@ public class MainWindowForm extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuItemEditMachine;
     public javax.swing.JMenuItem jMenuItemEnterWord;
     public javax.swing.JMenuItem jMenuItemExchange;
+    public javax.swing.JMenuItem jMenuItemHistory;
     public javax.swing.JMenuItem jMenuItemNFA;
     public javax.swing.JMenuItem jMenuItemNew;
     public javax.swing.JMenuItem jMenuItemOpen;

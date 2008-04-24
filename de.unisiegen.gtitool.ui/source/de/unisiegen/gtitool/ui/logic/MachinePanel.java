@@ -1092,6 +1092,22 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Handles the history event.
+   */
+  public final void handleHistory ()
+  {
+    if ( !this.wordNavigation )
+    {
+      throw new RuntimeException ( "the word navigation is not in progress" ); //$NON-NLS-1$
+    }
+
+    HistoryDialog historyDialog = new HistoryDialog ( this.mainWindowForm,
+        this.machine );
+    historyDialog.show ();
+  }
+
+
+  /**
    * Handles the focus lost event on the machine table.
    * 
    * @param event The {@link FocusEvent}.

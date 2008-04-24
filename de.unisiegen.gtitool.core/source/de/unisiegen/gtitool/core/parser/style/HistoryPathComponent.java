@@ -25,24 +25,6 @@ import de.unisiegen.gtitool.core.machines.HistoryPath;
 public final class HistoryPathComponent extends JLabel
 {
 
-  // TODOCF
-  // History:
-  // [z0]
-  // [{1}, {1}]
-  // [1, 1]
-  // Current:
-  // [z1, z2]
-
-  // History:
-  // [z0]
-  // [{1}, {1}]
-  // [1, 1]
-  // [z1, z2]
-  // [{0, 1}]
-  // [0]
-  // Current:
-  // [z2]
-
   /**
    * The serial version uid.
    */

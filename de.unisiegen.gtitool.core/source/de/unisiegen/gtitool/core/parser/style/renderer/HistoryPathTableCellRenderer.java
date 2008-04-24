@@ -63,7 +63,10 @@ public final class HistoryPathTableCellRenderer extends
 
     HistoryPathComponent component = new HistoryPathComponent ( historyPath );
 
-    table.setRowHeight ( row, component.getRowHeight () );
+    if ( table.getRowHeight ( row ) != component.getRowHeight () )
+    {
+      table.setRowHeight ( row, component.getRowHeight () );
+    }
 
     if ( isSelected )
     {

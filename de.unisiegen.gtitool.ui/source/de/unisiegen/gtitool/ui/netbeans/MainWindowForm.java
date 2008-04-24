@@ -125,10 +125,10 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuExecute = new javax.swing.JMenu();
         jMenuItemValidate = new javax.swing.JMenuItem();
         jMenuItemEnterWord = new javax.swing.JMenuItem();
+        jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemEditMachine = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
-        jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -680,6 +680,16 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuExecute.add(jMenuItemEnterWord);
 
+        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
+        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
+        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistoryActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemHistory);
+
         jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
         jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
         jMenuItemEditMachine.addActionListener(new java.awt.event.ActionListener() {
@@ -703,16 +713,6 @@ public class MainWindowForm extends javax.swing.JFrame {
         });
 
         jMenuExtras.add(jMenuItemExchange);
-
-        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
-        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
-        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemHistoryActionPerformed(evt);
-            }
-        });
-
-        jMenuExtras.add(jMenuItemHistory);
 
         jMenuBarMain.add(jMenuExtras);
 

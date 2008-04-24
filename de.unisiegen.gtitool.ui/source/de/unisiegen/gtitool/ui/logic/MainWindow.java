@@ -1667,7 +1667,12 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.EnterWord" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemEnterWord.setMnemonic ( Messages.getString (
         "MainWindow.EnterWordMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    // EnterWord
+    // History
+    MainWindow.this.gui.jMenuItemHistory.setText ( Messages
+        .getString ( "MainWindow.History" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.jMenuItemHistory.setMnemonic ( Messages.getString (
+        "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // EditMachine
     MainWindow.this.gui.jMenuItemEditMachine.setText ( Messages
         .getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemEditMachine.setMnemonic ( Messages.getString (
@@ -1682,11 +1687,6 @@ public final class MainWindow implements LanguageChangedListener
         .getString ( "MainWindow.Exchange" ) ); //$NON-NLS-1$
     MainWindow.this.gui.jMenuItemExchange.setMnemonic ( Messages.getString (
         "MainWindow.ExchangeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    // History
-    MainWindow.this.gui.jMenuItemHistory.setText ( Messages
-        .getString ( "MainWindow.History" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemHistory.setMnemonic ( Messages.getString (
-        "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Help
     MainWindow.this.gui.jMenuHelp.setText ( Messages
         .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$

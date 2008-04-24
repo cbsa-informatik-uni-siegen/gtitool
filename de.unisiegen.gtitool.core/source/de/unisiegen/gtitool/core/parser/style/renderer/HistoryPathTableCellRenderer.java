@@ -61,12 +61,8 @@ public final class HistoryPathTableCellRenderer extends
       throw new IllegalArgumentException ( "the value is not a history path" ); //$NON-NLS-1$
     }
 
-    HistoryPathComponent component = new HistoryPathComponent ( historyPath );
-
-    if ( table.getRowHeight ( row ) != component.getRowHeight () )
-    {
-      table.setRowHeight ( row, component.getRowHeight () );
-    }
+    HistoryPathComponent component = new HistoryPathComponent ( historyPath,
+        table, row );
 
     if ( isSelected )
     {

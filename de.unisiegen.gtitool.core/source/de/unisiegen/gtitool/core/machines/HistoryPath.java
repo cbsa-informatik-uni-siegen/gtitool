@@ -52,20 +52,6 @@ public final class HistoryPath
    * @param beginState The begin {@link State}.
    * @param transition The {@link Transition}.
    * @param endState The end {@link State}.
-   */
-  public final void add ( State beginState, Transition transition,
-      State endState )
-  {
-    add ( beginState, transition, endState, null );
-  }
-
-
-  /**
-   * Adds the values to the {@link HistoryPath}.
-   * 
-   * @param beginState The begin {@link State}.
-   * @param transition The {@link Transition}.
-   * @param endState The end {@link State}.
    * @param symbol The {@link Symbol}.
    */
   public final void add ( State beginState, Transition transition,
@@ -77,13 +63,15 @@ public final class HistoryPath
           "the symbol is not a member of the transition" ); //$NON-NLS-1$
     }
 
-    if ( transition.isEpsilonTransition () )
+    Transition newTransition = transition.clone ();
+
+    if ( newTransition.isEpsilonTransition () )
     {
-      transition.setActive ( true );
+      newTransition.setActive ( true );
     }
     else
     {
-      for ( Symbol current : transition )
+      for ( Symbol current : newTransition )
       {
         if ( current.equals ( symbol ) )
         {
@@ -107,7 +95,7 @@ public final class HistoryPath
       }
     }
 
-    this.transitionList.add ( transition );
+    this.transitionList.add ( newTransition );
     this.stateList.add ( endState );
     this.symbolList.add ( symbol );
   }

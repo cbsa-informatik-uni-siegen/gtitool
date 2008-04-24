@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -20,6 +22,7 @@ import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.machines.HistoryItem;
 import de.unisiegen.gtitool.core.machines.HistoryPath;
 import de.unisiegen.gtitool.core.parser.style.renderer.HistoryPathTableCellRenderer;
@@ -44,45 +47,62 @@ public class HistoryPathComponentTest
   {
     try
     {
+      // Word
+      Word word = new DefaultWord ();
+
+      // Symbol
+      Symbol symbol0 = new DefaultSymbol ( "a" );//$NON-NLS-1$
+      Symbol symbol1 = new DefaultSymbol ( "b" );//$NON-NLS-1$
+      Symbol symbol2 = new DefaultSymbol ( "c" );//$NON-NLS-1$
+
+      // Alphabet
+      Alphabet alphabet = new DefaultAlphabet ( symbol0, symbol1, symbol2 );
+
+      // State
+      State state0 = new DefaultState ( "z0" );//$NON-NLS-1$
+      State state1 = new DefaultState ( "z1" );//$NON-NLS-1$
+      State state2 = new DefaultState ( "z2" );//$NON-NLS-1$
+
+      // Transition
+      Transition transition0 = new DefaultTransition ( alphabet, alphabet,
+          word, word, state0, state1, symbol0, symbol1 );
+      Transition transition1 = new DefaultTransition ( alphabet, alphabet,
+          word, word, state1, state2, symbol1, symbol2 );
+      Transition transition2 = new DefaultTransition ( alphabet, alphabet,
+          word, word, state2, state2, symbol0, symbol1, symbol2 );
+
+      Stack stack = new DefaultStack ();
+
       // Item0
       TreeSet < State > item0States = new TreeSet < State > ();
-      item0States.add ( new DefaultState ( "z0" ) ); //$NON-NLS-1$
+      item0States.add ( state0 );
       TreeSet < Transition > item0Transitions = new TreeSet < Transition > ();
-      item0Transitions.add ( new DefaultTransition ( new DefaultWord (),
-          new DefaultWord (), new DefaultSymbol ( "a" ), new DefaultSymbol ( //$NON-NLS-1$
-              "b" ) ) ); //$NON-NLS-1$
+      item0Transitions.add ( transition0 );
       ArrayList < Symbol > item0Symbols = new ArrayList < Symbol > ();
-      item0Symbols.add ( new DefaultSymbol ( "a" ) ); //$NON-NLS-1$
-      item0Symbols.add ( new DefaultSymbol ( "b" ) ); //$NON-NLS-1$
-      Stack item0Stack = new DefaultStack ();
+      item0Symbols.add ( symbol0 );
+      item0Symbols.add ( symbol1 );
       HistoryItem item0 = new HistoryItem ( item0States, item0Transitions,
-          item0Symbols, item0Stack );
+          item0Symbols, stack );
 
       // Item1
       TreeSet < State > item1States = new TreeSet < State > ();
-      item1States.add ( new DefaultState ( "z1" ) ); //$NON-NLS-1$
+      item1States.add ( state1 );
       TreeSet < Transition > item1Transitions = new TreeSet < Transition > ();
-      item1Transitions.add ( new DefaultTransition ( new DefaultWord (),
-          new DefaultWord (), new DefaultSymbol ( "a" ), new DefaultSymbol ( //$NON-NLS-1$
-              "b" ) ) ); //$NON-NLS-1$
+      item1Transitions.add ( transition1 );
       ArrayList < Symbol > item1Symbols = new ArrayList < Symbol > ();
-      item1Symbols.add ( new DefaultSymbol ( "b" ) ); //$NON-NLS-1$
-      Stack item1Stack = new DefaultStack ();
+      item1Symbols.add ( symbol1 );
       HistoryItem item1 = new HistoryItem ( item1States, item1Transitions,
-          item1Symbols, item1Stack );
+          item1Symbols, stack );
 
       // Item2
       TreeSet < State > item2States = new TreeSet < State > ();
-      item2States.add ( new DefaultState ( "z2" ) ); //$NON-NLS-1$
+      item2States.add ( state2 );
       TreeSet < Transition > item2Transitions = new TreeSet < Transition > ();
-      item2Transitions.add ( new DefaultTransition ( new DefaultWord (),
-          new DefaultWord (), new DefaultSymbol ( "a" ), new DefaultSymbol ( //$NON-NLS-1$
-              "b" ) ) ); //$NON-NLS-1$
+      item2Transitions.add ( transition2 );
       ArrayList < Symbol > item2Symbols = new ArrayList < Symbol > ();
-      item2Symbols.add ( new DefaultSymbol ( "b" ) ); //$NON-NLS-1$
-      Stack item2Stack = new DefaultStack ();
+      item2Symbols.add ( symbol1 );
       HistoryItem item2 = new HistoryItem ( item2States, item2Transitions,
-          item2Symbols, item2Stack );
+          item2Symbols, stack );
 
       // History list
       ArrayList < HistoryItem > historyItemList = new ArrayList < HistoryItem > ();
@@ -100,34 +120,6 @@ public class HistoryPathComponentTest
             historyItemList.get ( i + 1 ).getStateSet ().first (),
             historyItemList.get ( i ).getSymbolSet ().get ( 0 ) );
       }
-
-      // // Word
-      // Word word = new DefaultWord ();
-      //
-      // // Symbol
-      // Symbol symbol0 = new DefaultSymbol ( "a" );//$NON-NLS-1$
-      // Symbol symbol1 = new DefaultSymbol ( "b" );//$NON-NLS-1$
-      // Symbol symbol2 = new DefaultSymbol ( "c" );//$NON-NLS-1$
-      //
-      // // State
-      // State state0 = new DefaultState ( "z0" );//$NON-NLS-1$
-      // State state1 = new DefaultState ( "z1" );//$NON-NLS-1$
-      // State state2 = new DefaultState ( "z2" );//$NON-NLS-1$
-      // State state3 = new DefaultState ( "z3" );//$NON-NLS-1$
-      // State state4 = new DefaultState ( "z4" );//$NON-NLS-1$
-      //
-      // // Transition
-      // Transition transition0 = new DefaultTransition ( word, word, symbol0,
-      // symbol1 );
-      // Transition transition1 = new DefaultTransition ( word, word, symbol2 );
-      // Transition transition2 = new DefaultTransition ( word, word, symbol0,
-      // symbol1, symbol2 );
-      // Transition transition3 = new DefaultTransition ( word, word );
-
-      // historyPath.add ( state0, transition0, state1, symbol0 );
-      // historyPath.add ( state1, transition1, state2, symbol2 );
-      // historyPath.add ( state2, transition2, state3, symbol1 );
-      // historyPath.add ( state3, transition3, state4 );
 
       // Model
       DefaultTableModel model = new DefaultTableModel ();

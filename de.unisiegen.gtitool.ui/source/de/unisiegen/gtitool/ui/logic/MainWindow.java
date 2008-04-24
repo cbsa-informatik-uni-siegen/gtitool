@@ -99,8 +99,13 @@ public final class MainWindow implements LanguageChangedListener
         .getMainWindowBounds () );
     // Setting the default states
     setGeneralStates ( false );
-    // Save
+
+    // Save state
     setSaveState ( false );
+
+    // Item state
+    setItemState ();
+
     // Copy
     // Validate
     this.gui.jMenuItemValidate.setEnabled ( false );
@@ -1031,8 +1036,12 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble () );
       this.gui.jGTIToolBarButtonRedo.setEnabled ( panel.isRedoAble () );
     }
+
     // Save status
     setSaveState ();
+
+    // Item status
+    setItemState ();
   }
 
 
@@ -1075,6 +1084,33 @@ public final class MainWindow implements LanguageChangedListener
 
         machinePanel.handleToolbarAddState ( state );
       }
+    }
+  }
+
+
+  /**
+   * Sets the item state.
+   */
+  private final void setItemState ()
+  {
+    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
+          .getSelectedEditorPanel ();
+
+      this.gui.jMenuItemHistory.setEnabled ( machinePanel.isWordNavigation () );
+    }
+    else if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      // GrammarPanel grammarPanel = ( GrammarPanel )
+      // this.gui.editorPanelTabbedPane
+      // .getSelectedEditorPanel ();
+
+      this.gui.jMenuItemHistory.setEnabled ( false );
+    }
+    else
+    {
+      this.gui.jMenuItemHistory.setEnabled ( false );
     }
   }
 
@@ -1499,6 +1535,9 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
       this.gui.jGTIToolBarButtonStop.setEnabled ( true );
     }
+
+    // Item status
+    setItemState ();
   }
 
 
@@ -1521,6 +1560,9 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
     this.gui.jGTIToolBarButtonStop.setEnabled ( false );
     machinePanel.handleWordStop ();
+
+    // Item status
+    setItemState ();
   }
 
 

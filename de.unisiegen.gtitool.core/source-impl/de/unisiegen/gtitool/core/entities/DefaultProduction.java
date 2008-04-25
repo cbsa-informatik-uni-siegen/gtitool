@@ -151,20 +151,6 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
-   * @see Object#clone()
-   */
-  @Override
-  public final DefaultProduction clone ()
-  {
-    DefaultProduction newDefaultProduction = new DefaultProduction (
-        this.nonterminalSymbol, this.productionWord );
-    return newDefaultProduction;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( Production other )
@@ -363,8 +349,19 @@ public final class DefaultProduction implements Production
    */
   public final void resetModify ()
   {
-    this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
-    this.initialProductionWord = this.productionWord.clone ();
+    try
+    {
+      this.initialNonterminalSymbol = new DefaultNonterminalSymbol (
+          this.nonterminalSymbol.getName () );
+
+      this.initialProductionWord = new DefaultProductionWord ();
+      this.initialProductionWord.add ( this.productionWord );
+    }
+    catch ( NonterminalSymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
   }
 
 

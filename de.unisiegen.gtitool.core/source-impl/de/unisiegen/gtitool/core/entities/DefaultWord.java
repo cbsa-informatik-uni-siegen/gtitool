@@ -203,23 +203,6 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultWord clone ()
-  {
-    DefaultWord newDefaultWord = new DefaultWord ();
-    for ( Symbol current : this.symbolList )
-    {
-      newDefaultWord.add ( current );
-    }
-    return newDefaultWord;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo( Object)
    */
   public final int compareTo ( Word other )

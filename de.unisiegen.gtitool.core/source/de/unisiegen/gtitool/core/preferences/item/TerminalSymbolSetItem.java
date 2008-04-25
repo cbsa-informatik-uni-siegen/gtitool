@@ -1,7 +1,9 @@
 package de.unisiegen.gtitool.core.preferences.item;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 
 
 /**
@@ -50,8 +52,22 @@ public final class TerminalSymbolSetItem implements Cloneable
   @Override
   public final TerminalSymbolSetItem clone ()
   {
-    return new TerminalSymbolSetItem ( this.terminalSymbolSet.clone (),
-        this.standardTerminalSymbolSet.clone () );
+    TerminalSymbolSet newTerminalSymbolSet = new DefaultTerminalSymbolSet ();
+    TerminalSymbolSet newStandardTerminalSymbolSet = new DefaultTerminalSymbolSet ();
+
+    try
+    {
+      newTerminalSymbolSet.add ( this.terminalSymbolSet );
+      newStandardTerminalSymbolSet.add ( this.standardTerminalSymbolSet );
+    }
+    catch ( TerminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    return new TerminalSymbolSetItem ( newTerminalSymbolSet,
+        newStandardTerminalSymbolSet );
   }
 
 

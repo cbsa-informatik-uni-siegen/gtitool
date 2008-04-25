@@ -3,9 +3,12 @@ package de.unisiegen.gtitool.core.machines;
 
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 
 
 /**
@@ -63,7 +66,24 @@ public final class HistoryPath
           "the symbol is not a member of the transition" ); //$NON-NLS-1$
     }
 
-    Transition newTransition = transition.clone ();
+    Transition newTransition = new DefaultTransition ();
+    for ( Symbol current : transition.getSymbol () )
+    {
+      try
+      {
+        newTransition.add ( current );
+      }
+      catch ( TransitionSymbolNotInAlphabetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+      catch ( TransitionSymbolOnlyOneTimeException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
 
     if ( newTransition.isEpsilonTransition () )
     {

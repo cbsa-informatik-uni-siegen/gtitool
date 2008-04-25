@@ -2,6 +2,8 @@ package de.unisiegen.gtitool.core.preferences.item;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 
 
 /**
@@ -48,8 +50,21 @@ public final class AlphabetItem implements Cloneable
   @Override
   public final AlphabetItem clone ()
   {
-    return new AlphabetItem ( this.alphabet.clone (), this.standardAlphabet
-        .clone () );
+    Alphabet newAlphabet = new DefaultAlphabet ();
+    Alphabet newStandardAlphabet = new DefaultAlphabet ();
+
+    try
+    {
+      newAlphabet.add ( this.alphabet );
+      newStandardAlphabet.add ( this.standardAlphabet );
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    return new AlphabetItem ( newAlphabet, newStandardAlphabet );
   }
 
 

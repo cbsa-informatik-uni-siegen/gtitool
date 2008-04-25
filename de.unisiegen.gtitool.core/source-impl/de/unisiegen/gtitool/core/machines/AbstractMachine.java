@@ -17,6 +17,7 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultStateSet;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
@@ -40,6 +41,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeExce
 import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperationsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -611,7 +613,16 @@ public abstract class AbstractMachine implements Machine
       for ( Symbol currentSymbol : this.alphabet )
       {
         // The symbols must be cloned
-        notUsedSymbolSet.add ( currentSymbol.clone () );
+        try
+        {
+          notUsedSymbolSet
+              .add ( new DefaultSymbol ( currentSymbol.getName () ) );
+        }
+        catch ( SymbolException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+        }
       }
       for ( Symbol currentSymbol : currentSymbolSet )
       {
@@ -1731,7 +1742,10 @@ public abstract class AbstractMachine implements Machine
     TreeSet < State > newActiveStateSet = new TreeSet < State > ();
     TreeSet < Transition > newActiveTransitionSet = new TreeSet < Transition > ();
     ArrayList < Symbol > newActiveSymbolList = new ArrayList < Symbol > ();
-    Stack oldStack = this.stack.clone ();
+
+    // The stack must be cloned
+    Stack oldStack = new DefaultStack ();
+    oldStack.push ( this.stack );
 
     // Epsilon transition found
     if ( epsilonTransitionFound )

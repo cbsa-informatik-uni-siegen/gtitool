@@ -352,31 +352,6 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultTerminalSymbolSet clone ()
-  {
-    DefaultTerminalSymbolSet newDefaultTerminalSymbolSet = new DefaultTerminalSymbolSet ();
-    for ( TerminalSymbol current : this.terminalSymbolSet )
-    {
-      try
-      {
-        newDefaultTerminalSymbolSet.add ( current );
-      }
-      catch ( TerminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    return newDefaultTerminalSymbolSet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo( Object)
    */
   public final int compareTo ( TerminalSymbolSet other )

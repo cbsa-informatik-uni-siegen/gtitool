@@ -95,23 +95,6 @@ public final class DefaultStack implements Stack
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultStack clone ()
-  {
-    DefaultStack newDefaultStack = new DefaultStack ();
-    for ( Symbol current : this.symbolList )
-    {
-      newDefaultStack.push ( current );
-    }
-    return newDefaultStack;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo( Object)
    */
   public final int compareTo ( @SuppressWarnings ( "unused" )

@@ -1,2 +1,1 @@
 CF		- Fehlerbehandlung der Parser implementieren
-CF		- clone der Entities überprüfen

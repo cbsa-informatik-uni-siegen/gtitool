@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
  * @version $Id$
  * @param <E> The {@link Entity} type.
  */
-public interface Entity < E > extends PrettyPrintable, Cloneable, Serializable,
+public interface Entity < E > extends PrettyPrintable, Serializable,
     Comparable < E >
 {
 
@@ -22,14 +22,6 @@ public interface Entity < E > extends PrettyPrintable, Cloneable, Serializable,
    * The value if no parser offset is defined.
    */
   public static final ParserOffset NO_PARSER_OFFSET = new ParserOffset ( -1, -1 );
-
-
-  /**
-   * Creates and returns a copy of this {@link Entity}.
-   * 
-   * @see Object#clone()
-   */
-  public E clone ();
 
 
   /**

@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.redoundo;
 
 import java.util.TreeSet;
 
+import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -78,11 +79,14 @@ public class TransitionChangedItem extends RedoUndoItem
     this.oldPushDownWordRead = oldPushDownWordRead;
     this.oldPushDownWordWrite = oldPushDownWordWrite;
 
-    this.newSymbols = new TreeSet < Symbol >();
+    this.newSymbols = new TreeSet < Symbol > ();
     this.newSymbols.addAll ( transition.getSymbol () );
 
-    this.newPushDownWordRead = transition.getPushDownWordRead ().clone ();
-    this.newPushDownWordWrite = transition.getPushDownWordWrite ().clone ();
+    this.newPushDownWordRead = new DefaultWord ();
+    this.newPushDownWordRead.add ( transition.getPushDownWordRead () );
+
+    this.newPushDownWordWrite = new DefaultWord ();
+    this.newPushDownWordWrite.add ( transition.getPushDownWordWrite () );
   }
 
 
@@ -96,7 +100,7 @@ public class TransitionChangedItem extends RedoUndoItem
   {
     this.transition.setPushDownWordRead ( this.newPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.newPushDownWordWrite );
-    this.transition.clear();
+    this.transition.clear ();
     try
     {
       this.transition.add ( this.newSymbols );
@@ -104,7 +108,7 @@ public class TransitionChangedItem extends RedoUndoItem
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
-      System.exit(1);
+      System.exit ( 1 );
     }
   }
 
@@ -119,7 +123,7 @@ public class TransitionChangedItem extends RedoUndoItem
   {
     this.transition.setPushDownWordRead ( this.oldPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.oldPushDownWordWrite );
-    this.transition.clear();
+    this.transition.clear ();
     try
     {
       this.transition.add ( this.oldSymbols );
@@ -127,7 +131,7 @@ public class TransitionChangedItem extends RedoUndoItem
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
-      System.exit(1);
+      System.exit ( 1 );
     }
   }
 

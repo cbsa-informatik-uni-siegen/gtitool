@@ -120,27 +120,6 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultTerminalSymbol clone ()
-  {
-    try
-    {
-      return new DefaultTerminalSymbol ( this.name );
-    }
-    catch ( TerminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( TerminalSymbol other )

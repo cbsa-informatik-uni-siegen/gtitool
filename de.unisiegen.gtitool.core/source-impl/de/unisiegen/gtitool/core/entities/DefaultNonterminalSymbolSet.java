@@ -356,31 +356,6 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultNonterminalSymbolSet clone ()
-  {
-    DefaultNonterminalSymbolSet newDefaultNonterminalSymbolSet = new DefaultNonterminalSymbolSet ();
-    for ( NonterminalSymbol current : this.nonterminalSymbolSet )
-    {
-      try
-      {
-        newDefaultNonterminalSymbolSet.add ( current );
-      }
-      catch ( NonterminalSymbolSetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    return newDefaultNonterminalSymbolSet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( NonterminalSymbolSet other )

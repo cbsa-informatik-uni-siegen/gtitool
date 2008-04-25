@@ -238,23 +238,6 @@ public final class DefaultProductionWord implements ProductionWord
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultProductionWord clone ()
-  {
-    DefaultProductionWord newDefaultProductionWord = new DefaultProductionWord ();
-    for ( ProductionWordMember current : this.productionWordMemberList )
-    {
-      newDefaultProductionWord.add ( current );
-    }
-    return newDefaultProductionWord;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( ProductionWord other )

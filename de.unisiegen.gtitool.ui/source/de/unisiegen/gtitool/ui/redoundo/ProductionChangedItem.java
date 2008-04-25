@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.redoundo;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultProduction;
 import de.unisiegen.gtitool.core.entities.Production;
 
 
@@ -38,7 +39,8 @@ public class ProductionChangedItem extends RedoUndoItem
       Production newProduction )
   {
     super ();
-    this.oldProduction = oldProduction.clone ();
+    this.oldProduction = new DefaultProduction ( oldProduction
+        .getNonterminalSymbol (), oldProduction.getProductionWord () );
     this.production = oldProduction;
     this.newProduction = newProduction;
   }
@@ -53,7 +55,7 @@ public class ProductionChangedItem extends RedoUndoItem
   public void redo ()
   {
     this.production
-    .setProductionWord ( this.newProduction.getProductionWord () );
+        .setProductionWord ( this.newProduction.getProductionWord () );
     this.production.setNonterminalSymbol ( this.newProduction
         .getNonterminalSymbol () );
   }

@@ -319,23 +319,6 @@ public final class DefaultStateSet implements StateSet
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultStateSet clone ()
-  {
-    DefaultStateSet newDefaultStateSet = new DefaultStateSet ();
-    for ( State current : this.stateSet )
-    {
-      newDefaultStateSet.add ( current );
-    }
-    return newDefaultStateSet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo( Object)
    */
   public final int compareTo ( StateSet other )

@@ -443,42 +443,6 @@ public final class DefaultState implements State
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultState clone ()
-  {
-    // TODOCF Check this
-    try
-    {
-      DefaultState newDefaultState = new DefaultState ( this.alphabet,
-          this.pushDownAlphabet, this.name, this.startState, this.finalState );
-      for ( Transition current : this.transitionBeginList )
-      {
-        Transition newTransition = current.clone ();
-        newTransition.setStateBegin ( newDefaultState );
-        newDefaultState.addTransitionBegin ( newTransition );
-      }
-      for ( Transition current : this.transitionEndList )
-      {
-        Transition newTransition = current.clone ();
-        newTransition.setStateEnd ( newDefaultState );
-        newDefaultState.addTransitionEnd ( newTransition );
-      }
-      return newDefaultState;
-    }
-    catch ( StateException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( State other )

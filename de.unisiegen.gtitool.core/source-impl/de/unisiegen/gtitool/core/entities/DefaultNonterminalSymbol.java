@@ -127,27 +127,6 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultNonterminalSymbol clone ()
-  {
-    try
-    {
-      return new DefaultNonterminalSymbol ( this.name );
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( NonterminalSymbol other )

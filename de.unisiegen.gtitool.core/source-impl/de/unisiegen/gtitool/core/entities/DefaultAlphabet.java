@@ -342,31 +342,6 @@ public final class DefaultAlphabet implements Alphabet
   /**
    * {@inheritDoc}
    * 
-   * @see Entity#clone()
-   */
-  @Override
-  public final DefaultAlphabet clone ()
-  {
-    DefaultAlphabet newDefaultAlphabet = new DefaultAlphabet ();
-    for ( Symbol current : this.symbolSet )
-    {
-      try
-      {
-        newDefaultAlphabet.add ( current );
-      }
-      catch ( AlphabetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    return newDefaultAlphabet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( Alphabet other )

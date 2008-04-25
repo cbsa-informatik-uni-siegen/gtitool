@@ -1,7 +1,9 @@
 package de.unisiegen.gtitool.core.preferences.item;
 
 
+import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
+import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 
 
 /**
@@ -50,8 +52,22 @@ public final class NonterminalSymbolSetItem implements Cloneable
   @Override
   public final NonterminalSymbolSetItem clone ()
   {
-    return new NonterminalSymbolSetItem ( this.nonterminalSymbolSet.clone (),
-        this.standardNonterminalSymbolSet.clone () );
+    NonterminalSymbolSet newNonterminalSymbolSet = new DefaultNonterminalSymbolSet ();
+    NonterminalSymbolSet newStandardNonterminalSymbolSet = new DefaultNonterminalSymbolSet ();
+
+    try
+    {
+      newNonterminalSymbolSet.add ( this.nonterminalSymbolSet );
+      newStandardNonterminalSymbolSet.add ( this.standardNonterminalSymbolSet );
+    }
+    catch ( NonterminalSymbolSetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
+    return new NonterminalSymbolSetItem ( newNonterminalSymbolSet,
+        newStandardNonterminalSymbolSet );
   }
 
 

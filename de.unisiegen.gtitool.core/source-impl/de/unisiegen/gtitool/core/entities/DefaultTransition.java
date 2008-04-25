@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
@@ -502,8 +501,18 @@ public final class DefaultTransition implements Transition
       tmpList.add ( symbol );
       throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
+
     // The symbol must be cloned because of the different possible styles
-    this.symbolSet.add ( symbol.clone () );
+    try
+    {
+      this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
+    }
+    catch ( SymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+
     fireTransitionChanged ();
     fireModifyStatusChanged ();
   }
@@ -567,35 +576,6 @@ public final class DefaultTransition implements Transition
     this.symbolSet.clear ();
     fireTransitionChanged ();
     fireModifyStatusChanged ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#clone()
-   */
-  @Override
-  public final DefaultTransition clone ()
-  {
-    DefaultTransition newDefaultTransition = null;
-    try
-    {
-      newDefaultTransition = new DefaultTransition ( this.alphabet.clone (),
-          this.pushDownAlphabet.clone (), this.pushDownWordRead.clone (),
-          this.pushDownWordWrite.clone (), this.stateBegin, this.stateEnd );
-      for ( Symbol current : this.symbolSet )
-      {
-        newDefaultTransition.add ( current.clone () );
-      }
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
-    return newDefaultTransition;
   }
 
 
@@ -1028,8 +1008,12 @@ public final class DefaultTransition implements Transition
   {
     this.initialSymbolSet.clear ();
     this.initialSymbolSet.addAll ( this.symbolSet );
-    this.initialPushDownWordRead = this.pushDownWordRead.clone ();
-    this.initialPushDownWordWrite = this.pushDownWordWrite.clone ();
+
+    this.initialPushDownWordRead = new DefaultWord ();
+    this.initialPushDownWordRead.add ( this.pushDownWordRead );
+
+    this.initialPushDownWordWrite = new DefaultWord ();
+    this.initialPushDownWordWrite.add ( this.pushDownWordWrite );
   }
 
 

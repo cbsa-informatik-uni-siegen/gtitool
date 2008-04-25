@@ -15,7 +15,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @version $Id$
  */
 public interface ProductionWordMember extends Storable, PrettyPrintable,
-    Cloneable, Serializable
+    Serializable
 {
 
   /**

@@ -19,14 +19,6 @@ public interface ProductionWordMember extends Storable, PrettyPrintable,
 {
 
   /**
-   * Creates and returns a copy of this {@link ProductionWordMember}.
-   * 
-   * @see Object#clone()
-   */
-  public ProductionWordMember clone ();
-
-
-  /**
    * Returns the name of this {@link ProductionWordMember}.
    * 
    * @return The name of this {@link ProductionWordMember}.

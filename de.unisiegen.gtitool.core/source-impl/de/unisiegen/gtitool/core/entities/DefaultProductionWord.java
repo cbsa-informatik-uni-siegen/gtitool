@@ -246,7 +246,7 @@ public final class DefaultProductionWord implements ProductionWord
     DefaultProductionWord newDefaultProductionWord = new DefaultProductionWord ();
     for ( ProductionWordMember current : this.productionWordMemberList )
     {
-      newDefaultProductionWord.add ( current.clone () );
+      newDefaultProductionWord.add ( current );
     }
     return newDefaultProductionWord;
   }

@@ -106,7 +106,7 @@
 	<target name="dist-jar" depends="dist-compile">
 		<!-- manifest -->
 		<manifest file="${distdir}/MANIFEST.MF">
-			<attribute name="Main-Class" value="de.unisiegen.gtitool.ui.Start" />
+			<attribute name="Main-Class" value="de.unisiegen.gtitool.start.Start" />
 			<attribute name="Class-Path" value="${uifile}" />
 		</manifest>
 		<!-- make dir meta-inf -->

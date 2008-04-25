@@ -1,5 +1,4 @@
 CF		- History über die Zustände führen
-CF		- ParallelEdgeRouter anpassen, so dass das Ergebnis besser aussieht
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
 

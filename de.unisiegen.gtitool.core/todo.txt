@@ -1,1 +1,0 @@
-CF		- Fehlerbehandlung der Parser implementieren

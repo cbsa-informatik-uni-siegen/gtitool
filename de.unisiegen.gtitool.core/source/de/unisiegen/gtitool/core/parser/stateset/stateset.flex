@@ -13,9 +13,6 @@ import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;
 
-/**
- * This is the lexer class for a state set.
- */
 %%
 
 %class StateSetScanner

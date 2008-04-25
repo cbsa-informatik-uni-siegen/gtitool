@@ -40,6 +40,7 @@ non terminal TerminalSymbol[]		terminal_symbol_list_comma;
  *********/
 
 non terminal 						epsilon;
+non terminal						terminal_symbol_set_error;
 non terminal						terminal_symbol_list_comma_error;
 
 
@@ -70,6 +71,37 @@ terminal_symbol_set				::= LCBRACE:l terminal_symbol_list_comma:tslc RCBRACE:r
 									     ParserMultiException.throwTerminalSymbolSetException(ecx.getTerminalSymbol());
 									   }
 									   RESULT.setParserOffset(new ParserOffset(tslcleft,tslcright));
+									:}
+								|	terminal_symbol_set_error
+									{: :}
+								;
+
+terminal_symbol_set_error		::= LCBRACE:l epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l terminal_symbol_list_comma:tslc epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "}", lleft, tslcright, "}" );
+									:}
+								|	LCBRACE:l terminal_symbol_list_comma:tslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								/* one missing token - comma */
+								|	LCBRACE:l terminal_symbol_list_comma:tslc TERMINAL_SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", ", ", lleft, tslcright, "," );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l COMMA:c
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s", lleft, lright, "s" );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   ErrorHandling.expect ( "Terminal Symbol Set", "s", lleft, lright, "s" );
 									:}
 								;
 

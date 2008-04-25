@@ -40,6 +40,7 @@ non terminal NonterminalSymbol[]	nonterminal_symbol_list_comma;
  *********/
 
 non terminal 						epsilon;
+non terminal						nonterminal_symbol_set_error;
 non terminal						nonterminal_symbol_list_comma_error;
 
 
@@ -70,6 +71,37 @@ nonterminal_symbol_set			::= LCBRACE:l nonterminal_symbol_list_comma:nslc RCBRAC
 									     ParserMultiException.throwNonterminalSymbolSetException(ecx.getNonterminalSymbol());
 									   }
 									   RESULT.setParserOffset(new ParserOffset(nslcleft,nslcright));
+									:}
+								|	nonterminal_symbol_set_error
+									{: :}
+								;
+
+nonterminal_symbol_set_error	::= LCBRACE:l epsilon
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l nonterminal_symbol_list_comma:nslc epsilon
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", "}", lleft, nslcright, "}" );
+									:}
+								|	LCBRACE:l nonterminal_symbol_list_comma:nslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								/* one missing token - comma */
+								|	LCBRACE:l nonterminal_symbol_list_comma:nslc NONTERMINAL_SYMBOL:s
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", ", ", lleft, nslcright, "," );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l COMMA:c
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", "s", lleft, lright, "s" );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   ErrorHandling.expect ( "Nonterminal Symbol Set", "s", lleft, lright, "s" );
 									:}
 								;
 
@@ -105,7 +137,7 @@ nonterminal_symbol_list_comma_error	::= nonterminal_symbol_list_comma:nslc COMMA
 									{:
 									   ErrorHandling.expect ( "Nonterminal Symbol Set", " s", nslcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
 									:}
-								/* one missing token */
+								/* one missing token - comma */
 								|	nonterminal_symbol_list_comma:nslc NONTERMINAL_SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Nonterminal Symbol Set", ", ", nslcleft, nslcright, "," );

@@ -48,6 +48,7 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	{
 	  switch (id)
 	  {
+	    case EPSILON:
 		case SYMBOL:
 		  return Style.SYMBOL;
 		case ARROWUP:

@@ -209,7 +209,7 @@ symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
 									:}
-								/* one missing token */
+								/* one missing token - comma */
 								|	symbol_list_comma:slc SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Alphabet", ", ", slcleft, slcright, "," );

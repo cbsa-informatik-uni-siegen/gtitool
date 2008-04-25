@@ -88,15 +88,17 @@ alphabet_error					::= LCBRACE:l epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
-								/* one missing token */
+								/* one missing token - comma */
 								|	LCBRACE:l symbol_list_comma:slc SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Alphabet", ", ", lleft, slcright, "," );
 									:}
+								/* one missing token - symbol */
 								|	LCBRACE:l COMMA:c
 									{:
 									   ErrorHandling.expect ( "Alphabet", "s", lleft, lright, "s" );
 									:}
+								/* one missing token - symbol */
 								|	LCBRACE:l RCBRACE:r
 									{:
 									   ErrorHandling.expect ( "Alphabet", "s", lleft, lright, "s" );
@@ -135,7 +137,7 @@ symbol_list_comma_error			::= symbol_list_comma:slc COMMA:c epsilon
 									{:
 									   ErrorHandling.expect ( "Alphabet", " s", slcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
 									:}
-								/* one missing token */
+								/* one missing token - comma */
 								|	symbol_list_comma:slc SYMBOL:s
 									{:
 									   ErrorHandling.expect ( "Alphabet", ", ", slcleft, slcright, "," );

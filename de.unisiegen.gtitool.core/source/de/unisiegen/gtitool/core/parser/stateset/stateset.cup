@@ -40,6 +40,7 @@ non terminal State[]				state_list_comma;
  *********/
 
 non terminal 						epsilon;
+non terminal						state_set_error;
 non terminal						state_list_comma_error;
 
 
@@ -75,6 +76,37 @@ state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 									{:
 									   RESULT = new DefaultStateSet();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
+								|	state_set_error
+									{: :}
+								;
+
+state_set_error					::= LCBRACE:l epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l state_list_comma:slc epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", "}", lleft, slcright, "}" );
+									:}
+								|	LCBRACE:l state_list_comma:slc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								/* one missing token - comma */
+								|	LCBRACE:l state_list_comma:slc STATE:s
+									{:
+									   ErrorHandling.expect ( "State Set", ", ", lleft, slcright, "," );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l COMMA:c
+									{:
+									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
 									:}
 								;
 

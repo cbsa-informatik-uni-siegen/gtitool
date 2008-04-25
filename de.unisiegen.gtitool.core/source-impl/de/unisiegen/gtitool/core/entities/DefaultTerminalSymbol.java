@@ -129,9 +129,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
     {
       return new DefaultTerminalSymbol ( this.name );
     }
-    catch ( TerminalSymbolException e )
+    catch ( TerminalSymbolException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
       return null;
     }

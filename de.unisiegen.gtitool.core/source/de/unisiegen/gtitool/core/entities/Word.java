@@ -42,14 +42,6 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public Word clone ();
-
-
-  /**
    * Returns true if this {@link Word} contains the given {@link Symbol}.
    * Otherwise false.
    * 
@@ -58,14 +50,6 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
    *         Otherwise false.
    */
   public boolean contains ( Symbol symbol );
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
 
 
   /**

@@ -352,11 +352,11 @@ public final class DefaultAlphabet implements Alphabet
     {
       try
       {
-        newDefaultAlphabet.add ( current.clone () );
+        newDefaultAlphabet.add ( current );
       }
-      catch ( AlphabetException e )
+      catch ( AlphabetException exc )
       {
-        e.printStackTrace ();
+        exc.printStackTrace ();
         System.exit ( 1 );
       }
     }

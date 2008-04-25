@@ -49,22 +49,6 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public ProductionWord clone ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
-
-
-  /**
    * Returns the {@link ProductionWordMember}s.
    * 
    * @return The {@link ProductionWordMember}s.

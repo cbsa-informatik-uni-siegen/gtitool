@@ -21,14 +21,6 @@ public interface Stack extends Entity < Stack >, Iterable < Symbol >
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public Stack clone ();
-
-
-  /**
    * Returns true if this {@link Stack} contains the specified {@link Symbol}.
    * 
    * @param symbol {@link Symbol} whose presence in this {@link Stack} is to be

@@ -135,9 +135,9 @@ public final class DefaultSymbol implements Symbol
     {
       return new DefaultSymbol ( this.name );
     }
-    catch ( SymbolException e )
+    catch ( SymbolException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
       return null;
     }

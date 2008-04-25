@@ -14,14 +14,6 @@ public interface Symbol extends Entity < Symbol >, Storable
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public Symbol clone ();
-
-
-  /**
    * Returns the name of this {@link Symbol}.
    * 
    * @return The name of this {@link Symbol}.

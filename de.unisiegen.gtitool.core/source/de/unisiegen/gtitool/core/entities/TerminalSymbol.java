@@ -15,14 +15,6 @@ public interface TerminalSymbol extends Entity < TerminalSymbol >,
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public TerminalSymbol clone ();
-
-
-  /**
    * Returns the name of this {@link TerminalSymbol}.
    * 
    * @return The name of this {@link TerminalSymbol}.

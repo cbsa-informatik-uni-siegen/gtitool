@@ -74,14 +74,6 @@ public interface TerminalSymbolSet extends Entity < TerminalSymbolSet >,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public TerminalSymbolSet clone ();
-
-
-  /**
    * Returns true if this {@link TerminalSymbolSet} contains the specified
    * {@link TerminalSymbol}.
    * 

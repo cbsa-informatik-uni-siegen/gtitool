@@ -115,8 +115,8 @@ public final class DefaultProduction implements Production
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
     }
-    this.initialNonterminalSymbol = this.nonterminalSymbol.clone ();
-    this.initialProductionWord = this.productionWord.clone ();
+
+    resetModify ();
   }
 
 
@@ -131,8 +131,8 @@ public final class DefaultProduction implements Production
   {
     this.nonterminalSymbol = nonterminalSymbol;
     this.productionWord = productionWord;
-    this.initialNonterminalSymbol = nonterminalSymbol.clone ();
-    this.initialProductionWord = productionWord.clone ();
+
+    resetModify ();
   }
 
 
@@ -157,7 +157,7 @@ public final class DefaultProduction implements Production
   public final DefaultProduction clone ()
   {
     DefaultProduction newDefaultProduction = new DefaultProduction (
-        this.nonterminalSymbol.clone (), this.productionWord.clone () );
+        this.nonterminalSymbol, this.productionWord );
     return newDefaultProduction;
   }
 

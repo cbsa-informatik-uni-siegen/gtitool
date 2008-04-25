@@ -136,9 +136,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
     {
       return new DefaultNonterminalSymbol ( this.name );
     }
-    catch ( NonterminalSymbolException e )
+    catch ( NonterminalSymbolException exc )
     {
-      e.printStackTrace ();
+      exc.printStackTrace ();
       System.exit ( 1 );
       return null;
     }

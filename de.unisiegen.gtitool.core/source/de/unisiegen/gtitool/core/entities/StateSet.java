@@ -66,14 +66,6 @@ public interface StateSet extends Entity < StateSet >, Storable, Modifyable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public StateSet clone ();
-
-
-  /**
    * Returns true if this {@link StateSet} contains the specified {@link State}.
    * 
    * @param nonterminalSymbol {@link State} whose presence in this

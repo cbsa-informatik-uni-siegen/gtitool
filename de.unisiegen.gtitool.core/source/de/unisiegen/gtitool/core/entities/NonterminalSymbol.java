@@ -15,14 +15,6 @@ public interface NonterminalSymbol extends Entity < NonterminalSymbol >,
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public NonterminalSymbol clone ();
-
-
-  /**
    * Returns the name of this {@link NonterminalSymbol}.
    * 
    * @return The name of this {@link NonterminalSymbol}.

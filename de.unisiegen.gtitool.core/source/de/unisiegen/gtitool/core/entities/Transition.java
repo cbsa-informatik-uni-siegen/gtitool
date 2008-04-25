@@ -87,14 +87,6 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#clone()
-   */
-  public Transition clone ();
-
-
-  /**
    * Returns true if this {@link Transition} contains the given {@link Symbol}.
    * Otherwise false.
    * 
@@ -103,14 +95,6 @@ public interface Transition extends Entity < Transition >, Storable,
    *         Otherwise false.
    */
   public boolean contains ( Symbol symbol );
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
 
 
   /**

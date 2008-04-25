@@ -366,11 +366,11 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     {
       try
       {
-        newDefaultNonterminalSymbolSet.add ( current.clone () );
+        newDefaultNonterminalSymbolSet.add ( current );
       }
-      catch ( NonterminalSymbolSetException e )
+      catch ( NonterminalSymbolSetException exc )
       {
-        e.printStackTrace ();
+        exc.printStackTrace ();
         System.exit ( 1 );
       }
     }

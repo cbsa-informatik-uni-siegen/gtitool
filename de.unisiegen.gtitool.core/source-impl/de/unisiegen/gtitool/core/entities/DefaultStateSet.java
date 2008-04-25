@@ -327,7 +327,7 @@ public final class DefaultStateSet implements StateSet
     DefaultStateSet newDefaultStateSet = new DefaultStateSet ();
     for ( State current : this.stateSet )
     {
-      newDefaultStateSet.add ( current.clone () );
+      newDefaultStateSet.add ( current );
     }
     return newDefaultStateSet;
   }

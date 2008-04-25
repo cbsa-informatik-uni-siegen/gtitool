@@ -64,14 +64,6 @@ public interface Alphabet extends Entity < Alphabet >, Storable, Modifyable,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public Alphabet clone ();
-
-
-  /**
    * Returns true if this {@link Alphabet} contains the specified {@link Symbol}.
    * 
    * @param symbol {@link Symbol} whose presence in this {@link Alphabet} is to

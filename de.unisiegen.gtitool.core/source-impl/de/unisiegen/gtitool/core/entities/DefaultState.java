@@ -448,11 +448,11 @@ public final class DefaultState implements State
   @Override
   public final DefaultState clone ()
   {
+    // TODOCF Check this
     try
     {
-      DefaultState newDefaultState = new DefaultState ( this.alphabet.clone (),
-          this.pushDownAlphabet.clone (), this.name, this.startState,
-          this.finalState );
+      DefaultState newDefaultState = new DefaultState ( this.alphabet,
+          this.pushDownAlphabet, this.name, this.startState, this.finalState );
       for ( Transition current : this.transitionBeginList )
       {
         Transition newTransition = current.clone ();

@@ -103,7 +103,7 @@ public final class DefaultStack implements Stack
     DefaultStack newDefaultStack = new DefaultStack ();
     for ( Symbol current : this.symbolList )
     {
-      newDefaultStack.push ( current.clone () );
+      newDefaultStack.push ( current );
     }
     return newDefaultStack;
   }

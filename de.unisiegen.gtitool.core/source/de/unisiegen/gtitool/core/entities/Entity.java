@@ -29,7 +29,7 @@ public interface Entity < E > extends PrettyPrintable, Cloneable, Serializable,
    * 
    * @see Object#clone()
    */
-  public Entity < E > clone ();
+  public E clone ();
 
 
   /**
@@ -38,14 +38,6 @@ public interface Entity < E > extends PrettyPrintable, Cloneable, Serializable,
    * @return The {@link ParserOffset}.
    */
   public ParserOffset getParserOffset ();
-
-
-  /**
-   * Returns a hash code value for this entity.
-   * 
-   * @see Object#hashCode()
-   */
-  public int hashCode ();
 
 
   /**

@@ -51,20 +51,7 @@ public interface State extends Entity < State >, Storable, Modifyable
   public void addTransitionEnd ( Transition transition );
 
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public State clone ();
 
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
 
 
   /**

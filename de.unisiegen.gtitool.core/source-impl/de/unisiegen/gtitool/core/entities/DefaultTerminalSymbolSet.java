@@ -362,11 +362,11 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
     {
       try
       {
-        newDefaultTerminalSymbolSet.add ( current.clone () );
+        newDefaultTerminalSymbolSet.add ( current );
       }
-      catch ( TerminalSymbolSetException e )
+      catch ( TerminalSymbolSetException exc )
       {
-        e.printStackTrace ();
+        exc.printStackTrace ();
         System.exit ( 1 );
       }
     }

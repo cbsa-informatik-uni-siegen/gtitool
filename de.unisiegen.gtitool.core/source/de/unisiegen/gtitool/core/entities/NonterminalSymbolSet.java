@@ -74,14 +74,6 @@ public interface NonterminalSymbolSet extends Entity < NonterminalSymbolSet >,
 
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Entity#clone()
-   */
-  public NonterminalSymbolSet clone ();
-
-
-  /**
    * Returns true if this {@link NonterminalSymbolSet} contains the specified
    * {@link NonterminalSymbol}.
    * 

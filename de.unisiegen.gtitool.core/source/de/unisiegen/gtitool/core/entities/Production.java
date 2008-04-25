@@ -15,14 +15,6 @@ public interface Production extends Entity < Production >, Storable, Modifyable
 {
 
   /**
-   * {@inheritDoc}
-   * 
-   * @see Object#clone()
-   */
-  public Production clone ();
-
-
-  /**
    * Returns true if this {@link Production} contains this
    * {@link NonterminalSymbol}, else false.
    * 
@@ -42,14 +34,6 @@ public interface Production extends Entity < Production >, Storable, Modifyable
    *         {@link TerminalSymbol}, else false.
    */
   public boolean contains ( TerminalSymbol symbol );
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Object#equals(Object)
-   */
-  public boolean equals ( Object other );
 
 
   /**

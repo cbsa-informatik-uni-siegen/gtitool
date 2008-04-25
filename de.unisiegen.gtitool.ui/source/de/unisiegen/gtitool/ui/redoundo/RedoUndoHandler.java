@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class RedoUndoHandler
+public final class RedoUndoHandler
 {
 
   /**
@@ -34,7 +34,7 @@ public class RedoUndoHandler
 
 
   /**
-   * Allocate a new {@link RedoUndoHandler}
+   * Allocates a new {@link RedoUndoHandler}
    * 
    * @param mainWindow The {@link MainWindowForm}
    */
@@ -45,11 +45,11 @@ public class RedoUndoHandler
 
 
   /**
-   * Add a undo step.
+   * Adds a undo step.
    * 
    * @param item The undo step to add.
    */
-  public void addItem ( RedoUndoItem item )
+  public final void addItem ( RedoUndoItem item )
   {
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
@@ -61,31 +61,31 @@ public class RedoUndoHandler
 
 
   /**
-   * Signal if there are any undo steps.
+   * Signals if there are any undo steps.
    * 
    * @return true if there are any undo steps, false else.
    */
-  public boolean isRedoAble ()
+  public final boolean isRedoAble ()
   {
     return !this.redoSteps.empty ();
   }
 
 
   /**
-   * Signal if there are any undo steps.
+   * Signals if there are any undo steps.
    * 
    * @return true if there are any undo steps, false else.
    */
-  public boolean isUndoAble ()
+  public final boolean isUndoAble ()
   {
     return !this.undoSteps.isEmpty ();
   }
 
 
   /**
-   * Redo last step.
+   * Redos last step.
    */
-  public void redo ()
+  public final void redo ()
   {
     RedoUndoItem step = this.redoSteps.pop ();
 
@@ -101,9 +101,9 @@ public class RedoUndoHandler
 
 
   /**
-   * Undo last step.
+   * Undos last step.
    */
-  public void undo ()
+  public final void undo ()
   {
     RedoUndoItem step = this.undoSteps.pop ();
     this.mainWindow.jMenuItemRedo.setEnabled ( true );

@@ -9,8 +9,11 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link State} added action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class StateChangedItem extends RedoUndoItem
+public final class StateChangedItem extends RedoUndoItem
 {
 
   /**
@@ -62,7 +65,7 @@ public class StateChangedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link StateChangedItem}.
+   * Allocates a new {@link StateChangedItem}.
    * 
    * @param graph The {@link JGraph}.
    * @param state The {@link State}.
@@ -70,8 +73,8 @@ public class StateChangedItem extends RedoUndoItem
    * @param oldStartState The old start state flag.
    * @param oldFinalState The old final state flag.
    */
-  public StateChangedItem ( JGraph graph,  State state,
-      String oldName, boolean oldStartState, boolean oldFinalState )
+  public StateChangedItem ( JGraph graph, State state, String oldName,
+      boolean oldStartState, boolean oldFinalState )
   {
     super ();
     this.graph = graph;
@@ -82,17 +85,16 @@ public class StateChangedItem extends RedoUndoItem
     this.newName = state.getName ();
     this.newStartState = state.isStartState ();
     this.newFinalState = state.isFinalState ();
-
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     try
     {
@@ -104,7 +106,8 @@ public class StateChangedItem extends RedoUndoItem
     }
     catch ( StateException exc )
     {
-      // Do nothing
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
   }
 
@@ -112,10 +115,10 @@ public class StateChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     try
     {
@@ -127,8 +130,8 @@ public class StateChangedItem extends RedoUndoItem
     }
     catch ( StateException exc )
     {
-      // Do nothing
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
   }
-
 }

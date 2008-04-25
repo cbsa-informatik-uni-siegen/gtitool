@@ -9,8 +9,11 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Transition} removed action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class TransitionAddedItem extends RedoUndoItem
+public final class TransitionAddedItem extends RedoUndoItem
 {
 
   /**
@@ -32,7 +35,7 @@ public class TransitionAddedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link TransitionAddedItem}.
+   * Allocates a new {@link TransitionAddedItem}.
    * 
    * @param model The {@link DefaultMachineModel}.
    * @param transitionView The {@link DefaultTransitionView}.
@@ -51,10 +54,10 @@ public class TransitionAddedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     if ( this.stateView != null )
     {
@@ -67,17 +70,16 @@ public class TransitionAddedItem extends RedoUndoItem
     this.model.createTransitionView ( this.transitionView.getTransition (),
         this.transitionView.getSourceView (), this.transitionView
             .getTargetView (), true, false, true );
-
   }
 
 
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     this.model.removeTransition ( this.transitionView, false );
     if ( this.stateView != null )
@@ -85,5 +87,4 @@ public class TransitionAddedItem extends RedoUndoItem
       this.model.removeState ( this.stateView, false );
     }
   }
-
 }

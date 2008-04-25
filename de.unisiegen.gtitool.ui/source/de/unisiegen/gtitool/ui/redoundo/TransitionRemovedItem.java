@@ -8,8 +8,11 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Transition} removed action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class TransitionRemovedItem extends RedoUndoItem
+public final class TransitionRemovedItem extends RedoUndoItem
 {
 
   /**
@@ -25,7 +28,7 @@ public class TransitionRemovedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link TransitionRemovedItem}.
+   * Allocates a new {@link TransitionRemovedItem}.
    * 
    * @param model The {@link DefaultMachineModel}.
    * @param transitionView The {@link DefaultTransitionView}.
@@ -42,7 +45,7 @@ public class TransitionRemovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
   public void redo ()
@@ -54,7 +57,7 @@ public class TransitionRemovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
   public void undo ()
@@ -63,5 +66,4 @@ public class TransitionRemovedItem extends RedoUndoItem
         this.transitionView.getSourceView (), this.transitionView
             .getTargetView (), false, false, true );
   }
-
 }

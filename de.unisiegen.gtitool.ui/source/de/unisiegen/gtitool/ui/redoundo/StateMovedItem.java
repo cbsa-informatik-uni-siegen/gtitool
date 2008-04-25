@@ -10,8 +10,11 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link State} moved action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class StateMovedItem extends RedoUndoItem
+public final class StateMovedItem extends RedoUndoItem
 {
 
   /**
@@ -51,7 +54,7 @@ public class StateMovedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link StateMovedItem}.
+   * Allocates a new {@link StateMovedItem}.
    * 
    * @param model The {@link DefaultMachineModel}.
    * @param stateView The {@link DefaultStateView}.
@@ -77,7 +80,7 @@ public class StateMovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
   public void redo ()
@@ -91,7 +94,7 @@ public class StateMovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
   public void undo ()
@@ -100,5 +103,4 @@ public class StateMovedItem extends RedoUndoItem
     this.model.getGraphModel ().cellsChanged (
         DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
   }
-
 }

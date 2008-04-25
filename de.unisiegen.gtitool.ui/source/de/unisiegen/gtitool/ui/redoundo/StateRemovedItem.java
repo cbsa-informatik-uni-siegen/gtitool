@@ -11,8 +11,11 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link State} removed action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class StateRemovedItem extends RedoUndoItem
+public final class StateRemovedItem extends RedoUndoItem
 {
 
   /**
@@ -34,7 +37,7 @@ public class StateRemovedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link StateRemovedItem}.
+   * Allocates a new {@link StateRemovedItem}.
    * 
    * @param model The {@link DefaultMachineModel}.
    * @param stateView The {@link DefaultStateView}.
@@ -54,10 +57,10 @@ public class StateRemovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     this.model.removeState ( this.stateView, false );
   }
@@ -66,10 +69,10 @@ public class StateRemovedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     // add state
     this.stateView.addPort ();
@@ -84,5 +87,4 @@ public class StateRemovedItem extends RedoUndoItem
           .getSourceView (), current.getTargetView (), false, false, true );
     }
   }
-
 }

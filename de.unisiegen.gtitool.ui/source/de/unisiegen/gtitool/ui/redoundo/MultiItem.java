@@ -8,8 +8,11 @@ import de.unisiegen.gtitool.core.entities.Transition;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Transition} removed action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class MultiItem extends RedoUndoItem
+public final class MultiItem extends RedoUndoItem
 {
 
   /**
@@ -19,12 +22,23 @@ public class MultiItem extends RedoUndoItem
 
 
   /**
+   * Add a new item to this {@link RedoUndoItem} list.
+   * 
+   * @param item The new {@link RedoUndoItem}.
+   */
+  public final void addItem ( RedoUndoItem item )
+  {
+    this.itemList.add ( item );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     for ( RedoUndoItem current : this.itemList )
     {
@@ -36,24 +50,14 @@ public class MultiItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     for ( RedoUndoItem current : this.itemList )
     {
       current.undo ();
     }
   }
-  
-  /**
-   * Add a new item to this {@link RedoUndoItem} list.
-   *
-   * @param item The new {@link RedoUndoItem}.
-   */
-  public void addItem(RedoUndoItem item){
-    this.itemList.add ( item );
-  }
-
 }

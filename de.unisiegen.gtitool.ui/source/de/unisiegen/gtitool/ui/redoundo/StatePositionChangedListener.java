@@ -9,8 +9,8 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 /**
  * The listener interface for state position changes.
  * 
- * @author Benjamin MIes
- * @version $Id: ModifyStatusChangedListener.java 446 2008-01-18 15:37:55Z
+ * @author Benjamin Mies
+ * @version $Id: StatePositionChangedListener.java 446 2008-01-18 15:37:55Z
  *          fehler $
  */
 public interface StatePositionChangedListener extends EventListener

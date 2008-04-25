@@ -9,8 +9,11 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Production} added action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class ProductionsListChangedItem extends RedoUndoItem
+public final class ProductionsListChangedItem extends RedoUndoItem
 {
 
   /**
@@ -22,17 +25,17 @@ public class ProductionsListChangedItem extends RedoUndoItem
   /**
    * Old list with {@link Production}s.
    */
-  ArrayList < Production > oldProductions;
+  private ArrayList < Production > oldProductions;
 
 
   /**
    * New list with {@link Production}s.
    */
-  ArrayList < Production > newProductions;
+  private ArrayList < Production > newProductions;
 
 
   /**
-   * Allocate a new {@link ProductionsListChangedItem}.
+   * Allocates a new {@link ProductionsListChangedItem}.
    * 
    * @param grammar The {@link Grammar}.
    * @param oldProductions Old list with {@link Production}s.
@@ -52,10 +55,10 @@ public class ProductionsListChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     this.grammar.setProductions ( this.newProductions );
   }
@@ -64,12 +67,11 @@ public class ProductionsListChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     this.grammar.setProductions ( this.oldProductions );
   }
-
 }

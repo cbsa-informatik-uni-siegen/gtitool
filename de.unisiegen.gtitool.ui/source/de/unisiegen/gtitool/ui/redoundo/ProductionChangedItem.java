@@ -7,8 +7,11 @@ import de.unisiegen.gtitool.core.entities.Production;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Production} added action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class ProductionChangedItem extends RedoUndoItem
+public final class ProductionChangedItem extends RedoUndoItem
 {
 
   /**
@@ -30,7 +33,7 @@ public class ProductionChangedItem extends RedoUndoItem
 
 
   /**
-   * Allocate a new {@link ProductionChangedItem}.
+   * Allocates a new {@link ProductionChangedItem}.
    * 
    * @param oldProduction The old {@link Production}.
    * @param newProduction The new {@link Production}.
@@ -49,10 +52,10 @@ public class ProductionChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     this.production
         .setProductionWord ( this.newProduction.getProductionWord () );
@@ -64,15 +67,14 @@ public class ProductionChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     this.production.setNonterminalSymbol ( this.oldProduction
         .getNonterminalSymbol () );
     this.production
         .setProductionWord ( this.oldProduction.getProductionWord () );
   }
-
 }

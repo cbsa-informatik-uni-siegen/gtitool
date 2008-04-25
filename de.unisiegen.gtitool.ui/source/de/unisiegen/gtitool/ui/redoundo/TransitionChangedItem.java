@@ -13,8 +13,11 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 
 /**
  * Representation of {@link RedoUndoItem} for {@link Transition} changed action.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
-public class TransitionChangedItem extends RedoUndoItem
+public final class TransitionChangedItem extends RedoUndoItem
 {
 
   /**
@@ -26,41 +29,41 @@ public class TransitionChangedItem extends RedoUndoItem
   /**
    * The old {@link Symbol}s of the {@link Transition}.
    */
-  TreeSet < Symbol > oldSymbols;
+  private TreeSet < Symbol > oldSymbols;
 
 
   /**
    * The old {@link Word} which is read from the {@link Stack}.
    */
-  Word oldPushDownWordRead;
+  private Word oldPushDownWordRead;
 
 
   /**
    * The old {@link Word} which is written from the {@link Stack}.
    */
-  Word oldPushDownWordWrite;
+  private Word oldPushDownWordWrite;
 
 
   /**
    * The new {@link Symbol}s of the {@link Transition}.
    */
-  TreeSet < Symbol > newSymbols;
+  private TreeSet < Symbol > newSymbols;
 
 
   /**
    * The new {@link Word} which is read from the {@link Stack}.
    */
-  Word newPushDownWordRead;
+  private Word newPushDownWordRead;
 
 
   /**
    * The new {@link Word} which is written from the {@link Stack}.
    */
-  Word newPushDownWordWrite;
+  private Word newPushDownWordWrite;
 
 
   /**
-   * Allocate a new {@link TransitionChangedItem}.
+   * Allocates a new {@link TransitionChangedItem}.
    * 
    * @param transition The {@link Transition}.
    * @param oldPushDownWordRead The old {@link Word} which is read from the
@@ -93,10 +96,10 @@ public class TransitionChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#redo()
+   * @see RedoUndoItem#redo()
    */
   @Override
-  public void redo ()
+  public final void redo ()
   {
     this.transition.setPushDownWordRead ( this.newPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.newPushDownWordWrite );
@@ -116,10 +119,10 @@ public class TransitionChangedItem extends RedoUndoItem
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.redoundo.RedoUndoItem#undo()
+   * @see RedoUndoItem#undo()
    */
   @Override
-  public void undo ()
+  public final void undo ()
   {
     this.transition.setPushDownWordRead ( this.oldPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.oldPushDownWordWrite );
@@ -134,5 +137,4 @@ public class TransitionChangedItem extends RedoUndoItem
       System.exit ( 1 );
     }
   }
-
 }

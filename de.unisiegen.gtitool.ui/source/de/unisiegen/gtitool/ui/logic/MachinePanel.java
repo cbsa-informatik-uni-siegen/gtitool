@@ -508,7 +508,6 @@ public final class MachinePanel implements EditorPanel
       {
         MachinePanel.this.mouseDown = false;
       }
-
     } );
 
     // ModifyStatusChangedListener

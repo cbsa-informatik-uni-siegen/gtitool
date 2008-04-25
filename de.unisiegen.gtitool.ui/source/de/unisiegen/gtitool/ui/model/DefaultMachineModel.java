@@ -148,7 +148,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link MultiItem}.
    */
-  MultiItem multiItem;
+  private MultiItem multiItem;
 
 
   /**
@@ -479,7 +479,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     ParallelEdgeRouter.setEdgeSeparation ( 20 );
     ParallelEdgeRouter.setEdgeDeparture ( 10 );
     GraphConstants.setRouting ( transitionView.getAttributes (),
-        ParallelEdgeRouter.sharedInstance );
+        ParallelEdgeRouter.getSharedInstance () );
 
     this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
@@ -674,7 +674,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.graphModel = new DefaultGraphModel ();
 
     this.jGraph = new JGraph ( this.graphModel );
-    this.jGraph.setDoubleBuffered ( true );
+    this.jGraph.setDoubleBuffered ( false );
     this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
     this.jGraph.setInvokesStopCellEditing ( true );
     this.jGraph.setJumpToDefaultPort ( true );
@@ -715,6 +715,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machineChangedListener = new MachineChangedListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void startEditing ()
       {
         DefaultMachineModel.this.multiItem = new MultiItem ();
@@ -729,6 +730,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       public void symbolAdded ( Transition transition,
           ArrayList < Symbol > addedSymbols )
       {
@@ -742,6 +744,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       public void symbolRemoved ( Transition transition,
           ArrayList < Symbol > removedSymbols )
       {
@@ -755,6 +758,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       public void transitionAdded ( Transition newTransition )
       {
         createTransitionView ( newTransition,
@@ -768,6 +772,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
 
 
+      @SuppressWarnings ( "synthetic-access" )
       public void transitionRemoved ( Transition transition )
       {
         DefaultTransitionView transitionView = getTransitionViewForTransition ( transition );

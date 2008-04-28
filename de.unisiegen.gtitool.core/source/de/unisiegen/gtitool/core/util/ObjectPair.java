@@ -83,4 +83,17 @@ public final class ObjectPair < E, T >
   {
     this.second = second;
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    return ( this.first == null ? "null" : this.first.toString () ) + " | "  //$NON-NLS-1$//$NON-NLS-2$
+        + ( this.second == null ? "null" : this.second.toString () ); //$NON-NLS-1$
+  }
 }

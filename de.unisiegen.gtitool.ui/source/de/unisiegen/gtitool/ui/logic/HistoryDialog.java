@@ -15,6 +15,7 @@ import de.unisiegen.gtitool.core.machines.HistoryItem;
 import de.unisiegen.gtitool.core.machines.HistoryPath;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.style.renderer.HistoryPathTableCellRenderer;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
@@ -61,26 +62,81 @@ public final class HistoryDialog
 
     // History
     ArrayList < HistoryItem > historyItemList = machine.getHistory ();
-    HistoryPath historyPath = new HistoryPath ();
 
-    for ( int i = 0 ; i < historyItemList.size () ; i++ )
+    for ( HistoryItem current : historyItemList )
     {
-      State beginState = historyItemList.get ( i ).getStateSet ().first ();
-      Transition transition = historyItemList.get ( i ).getTransitionSet ()
-          .first ();
-      State endState;
-      if ( i == historyItemList.size () - 1 )
-      {
-        endState = machine.getActiveState ().first ();
-      }
-      else
-      {
-        endState = historyItemList.get ( i + 1 ).getStateSet ().first ();
-      }
-      Symbol symbol = historyItemList.get ( i ).getSymbolSet ().get ( 0 );
-
-      historyPath.add ( beginState, transition, endState, symbol );
+      System.out.println ( current );
     }
+
+    HistoryPath historyPath = new HistoryPath ();
+    ArrayList < ObjectPair < Transition, Symbol >> list = new ArrayList < ObjectPair < Transition, Symbol >> ();
+
+    for ( State activeState : machine.getActiveState () )
+    {
+      State currentState = activeState;
+      for ( int i = historyItemList.size () - 1 ; i >= 0 ; i-- )
+      {
+        loopTransition : for ( Transition currentTransition : historyItemList
+            .get ( i ).getTransitionSet () )
+        {
+          if ( currentTransition.getStateEnd () == currentState )
+          {
+            ArrayList < Symbol > symbols = historyItemList.get ( i )
+                .getSymbolSet ();
+            if ( symbols.size () > 0 )
+            {
+              list.add ( 0, new ObjectPair < Transition, Symbol > (
+                  currentTransition, symbols.get ( 0 ) ) );
+            }
+            else
+            {
+              list.add ( 0, new ObjectPair < Transition, Symbol > (
+                  currentTransition, null ) );
+            }
+            currentState = currentTransition.getStateBegin ();
+            break loopTransition;
+          }
+        }
+      }
+    }
+
+    for ( ObjectPair < Transition, Symbol > current : list )
+    {
+      System.err.println ( current );
+
+      historyPath.add ( current.getFirst ().getStateBegin (), current
+          .getFirst (), current.getFirst ().getStateEnd (), current
+          .getSecond () );
+
+    }
+
+    // The old source code
+
+    // for ( int i = 0 ; i < historyItemList.size () ; i++ )
+    // {
+    // State beginState = historyItemList.get ( i ).getStateSet ().first ();
+    // Transition transition = historyItemList.get ( i ).getTransitionSet ()
+    // .first ();
+    // State endState;
+    // if ( i == historyItemList.size () - 1 )
+    // {
+    // endState = machine.getActiveState ().first ();
+    // }
+    // else
+    // {
+    // endState = historyItemList.get ( i + 1 ).getStateSet ().first ();
+    // }
+    //
+    // ArrayList < Symbol > symbols = historyItemList.get ( i ).getSymbolSet ();
+    // if ( symbols.size () > 0 )
+    // {
+    // historyPath.add ( beginState, transition, endState, symbols.get ( 0 ) );
+    // }
+    // else
+    // {
+    // historyPath.add ( beginState, transition, endState ,null);
+    // }
+    // }
 
     // Model
     DefaultTableModel historyModel = new DefaultTableModel ()

@@ -605,7 +605,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 				
 				x = p0.getX() + dx * factor + nx * y + offsetX;
 				y = p0.getY() + dy * factor + ny * y + offsetY;
-				return new Point2D.Double(x, y);
+			  // TODO modify begin
+        return new Point2D.Double ( x, y - 8);
+        // TODO modify end
 			}
 		}
 		

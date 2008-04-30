@@ -17,7 +17,7 @@
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="ui.basedir" value="${basedir}/../de.unisiegen.gtitool.ui" />
 	<property name="ui.distdir" value="${ui.basedir}/dist" />
 	<property name="gtitooldir" value="${distdir}/gtitool-${gtitool.version}" />

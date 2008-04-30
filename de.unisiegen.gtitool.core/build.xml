@@ -9,7 +9,7 @@
 	<!-- property -->
 	<property name="buildfilesdir" value="${basedir}/../gtitool.start/buildfiles" />
 	<property file="${buildfilesdir}/build.properties" />
-	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="libdir" value="${basedir}/lib" />

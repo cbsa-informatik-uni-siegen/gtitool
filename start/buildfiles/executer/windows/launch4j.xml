@@ -15,12 +15,12 @@
     <minVersion>1.1.0</minVersion>
   </jre>
   <versionInfo>
-    <fileVersion>@gtitool.version@.0</fileVersion>
-    <txtFileVersion>@gtitool.version@.0</txtFileVersion>
+    <fileVersion>@gtitool.version@</fileVersion>
+    <txtFileVersion>@gtitool.version@</txtFileVersion>
     <fileDescription>GTI Tool</fileDescription>
     <copyright>Copyright (c) 2007-2008 C. Fehler, B. Mies</copyright>
-    <productVersion>@gtitool.version@.0</productVersion>
-    <txtProductVersion>@gtitool.version@.0</txtProductVersion>
+    <productVersion>@gtitool.version@</productVersion>
+    <txtProductVersion>@gtitool.version@</txtProductVersion>
     <productName>GTI Tool</productName>
     <companyName>University of Siegen, Department of Theoretical Computer Science</companyName>
     <internalName>GTI Tool</internalName>

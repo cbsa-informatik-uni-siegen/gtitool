@@ -83,7 +83,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         jGTIPanelNorth.add(jGTILabelIcon, gridBagConstraints);
 
         jGTILabelName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jGTILabelName.setText("GTI Tool ?.?.?");
+        jGTILabelName.setText("GTI Tool ?.?.?.?");
         jGTILabelName.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jGTILabelName.setFont(new java.awt.Font("Dialog", 1, 24));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -152,7 +152,7 @@ public class AboutDialogForm extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 10);
         jGTIPanelSouth.add(jGTILabelVersion, gridBagConstraints);
 
-        jGTILabelVersionEntry.setText("?.?.?_????");
+        jGTILabelVersionEntry.setText("?.?.?.?_????");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;

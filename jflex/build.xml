@@ -19,7 +19,7 @@
 	<property name="javadocdir" value="${docdir}/javadoc" />
 	<property name="core.basedir" value="${basedir}/../de.unisiegen.gtitool.core" />
 	<property name="core.docdir" value="${core.basedir}/doc" />
-	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}" />
+	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
 	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 

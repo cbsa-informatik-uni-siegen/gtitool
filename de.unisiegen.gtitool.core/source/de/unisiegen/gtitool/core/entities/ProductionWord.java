@@ -63,4 +63,11 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @return The {@link ProductionWordMember} with the given index.
    */
   public ProductionWordMember get ( int index );
+  
+  /**
+   * Returns the size of the {@link ProductionWord}.
+   *
+   * @return the size of the {@link ProductionWord}.
+   */
+  public int size();
 }

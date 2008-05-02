@@ -509,4 +509,15 @@ public final class DefaultProductionWord implements ProductionWord
     }
     return result.toString ();
   }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.ProductionWord#size()
+   */
+  public int size ()
+  {
+    return this.productionWordMemberList.size ();
+  }
 }

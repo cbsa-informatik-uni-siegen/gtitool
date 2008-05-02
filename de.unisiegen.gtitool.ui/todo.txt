@@ -2,7 +2,7 @@ CF		- History über die Zustände führen
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 
 
-BM		- Umwandeln von Grammatik in Maschine
+BM		- Umwandeln von kontextfreier Grammatik in Maschine
 
 
 		- Umwandeln von Maschinen

@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.convert.ConvertGrammar;
+import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
@@ -255,7 +255,7 @@ public final class ProductionPopupMenu extends JPopupMenu
         if ( ProductionPopupMenu.this.grammarPanel
             .getMainWindow ().handleValidate ( false ) )
         {
-          new ConvertGrammar ( ProductionPopupMenu.this.mainWindowForm,
+          new ConvertRegularGrammar ( ProductionPopupMenu.this.mainWindowForm,
               ProductionPopupMenu.this.grammarPanel.getGrammar (),
               MachineType.ENFA );
         }

@@ -25,10 +25,7 @@ import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
-import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
-import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
-import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
@@ -41,7 +38,7 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 /**
  * Convert the grammar to a machine.
  */
-public class ConvertGrammar
+public class ConvertRegularGrammar
 {
 
   /**
@@ -94,13 +91,13 @@ public class ConvertGrammar
 
 
   /**
-   * Allocate a new {@link ConvertGrammar}.
+   * Allocate a new {@link ConvertRegularGrammar}.
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
    * @param machineType The {@link MachineType}.
    */
-  public ConvertGrammar ( MainWindowForm mainWindowForm, Grammar grammar,
+  public ConvertRegularGrammar ( MainWindowForm mainWindowForm, Grammar grammar,
       MachineType machineType )
   {
     this.mainWindowForm = mainWindowForm;
@@ -177,30 +174,9 @@ public class ConvertGrammar
    */
   private void createMachinePanel ()
   {
-    if ( this.machineType.equals ( MachineType.DFA ) )
-    {
-      this.model = new DefaultMachineModel ( new DefaultDFA ( this.alphabet,
-          this.alphabet, false ) );
-      this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
-    }
-    else if ( this.machineType.equals ( MachineType.NFA ) )
-    {
-      this.model = new DefaultMachineModel ( new DefaultNFA ( this.alphabet,
-          this.alphabet, false ) );
-      this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
-    }
-    else if ( this.machineType.equals ( MachineType.ENFA ) )
-    {
       this.model = new DefaultMachineModel ( new DefaultENFA ( this.alphabet,
           this.alphabet, false ) );
       this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
-    }
-    else if ( this.machineType.equals ( MachineType.PDA ) )
-    {
-      this.model = new DefaultMachineModel ( new DefaultPDA ( this.alphabet,
-          this.alphabet, false ) );
-      this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
-    }
   }
 
 
@@ -224,8 +200,8 @@ public class ConvertGrammar
       {
         state = new DefaultState ( this.alphabet, this.alphabet, false, false );
       }
-      DefaultStateView stateView = this.model.createStateView ( this.position, this.position,
-          state, false );
+      DefaultStateView stateView = this.model.createStateView ( this.position,
+          this.position, state, false );
       this.position += 50;
       return stateView;
 
@@ -270,21 +246,33 @@ public class ConvertGrammar
   private void performProductionWord ( DefaultStateView stateView,
       ProductionWord productionWord )
   {
-    DefaultStateView actual = stateView;
 
+    Symbol terminalSymbol = null;
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    
     for ( ProductionWordMember current : productionWord )
     {
       DefaultStateView newStateView = null;
-      ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
-
       try
       {
         if ( current instanceof TerminalSymbol )
         {
+          terminalSymbol =  new DefaultSymbol ( current.getName () );
+          symbols.add ( terminalSymbol );
+          if ( productionWord.size () == 1 )
+          {
+            newStateView = createStateView ( null );
+            
+            Transition transition = new DefaultTransition ( this.alphabet,
+                this.alphabet, new DefaultWord (), new DefaultWord (), stateView
+                    .getState (), newStateView.getState (), symbols );
 
-          newStateView = createStateView ( null );
-          symbols.add ( new DefaultSymbol ( current.getName () ) );
-
+            this.model.createTransitionView ( transition, stateView, newStateView,
+                false, false, true );
+            
+            newStateView.getState ().setFinalState ( true );
+            symbols.clear ();
+          }
         }
         else
         {
@@ -294,15 +282,15 @@ public class ConvertGrammar
             newStateView = createStateView ( current.getName () );
             this.states.put ( ( NonterminalSymbol ) current, newStateView );
           }
+          
+          Transition transition = new DefaultTransition ( this.alphabet,
+              this.alphabet, new DefaultWord (), new DefaultWord (), stateView
+                  .getState (), newStateView.getState (), symbols );
+
+          this.model.createTransitionView ( transition, stateView, newStateView,
+              false, false, true );
 
         }
-        Transition transition = new DefaultTransition ( this.alphabet,
-            this.alphabet, new DefaultWord (), new DefaultWord (), actual
-                .getState (), newStateView.getState (), symbols );
-
-        this.model.createTransitionView ( transition, actual, newStateView,
-            false, false, true );
-        actual = newStateView;
       }
       catch ( SymbolException exc )
       {
@@ -320,6 +308,5 @@ public class ConvertGrammar
         System.exit ( 1 );
       }
     }
-    actual.getState ().setFinalState ( true );
   }
 }

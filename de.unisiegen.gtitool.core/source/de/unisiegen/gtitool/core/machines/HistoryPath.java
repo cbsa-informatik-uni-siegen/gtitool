@@ -122,6 +122,59 @@ public final class HistoryPath
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Object#equals(Object)
+   */
+  @Override
+  public final boolean equals ( Object other )
+  {
+    if ( other instanceof HistoryPath )
+    {
+      HistoryPath path = ( HistoryPath ) other;
+
+      if ( this.stateList.size () != path.getStateList ().size () )
+      {
+        return false;
+      }
+
+      for ( int i = 0 ; i < this.stateList.size () ; i++ )
+      {
+        if ( !this.stateList.get ( i ).getName ().equals (
+            path.getStateList ().get ( i ).getName () ) )
+        {
+          return false;
+        }
+      }
+
+      if ( this.transitionList.size () != path.getTransitionList ().size () )
+      {
+        return false;
+      }
+      for ( int i = 0 ; i < this.transitionList.size () ; i++ )
+      {
+        if ( this.transitionList.get ( i ).size () != path.getTransitionList ()
+            .get ( i ).size () )
+        {
+          return false;
+        }
+        for ( int j = 0 ; j < this.transitionList.get ( i ).size () ; j++ )
+        {
+          if ( !this.transitionList.get ( i ).getSymbol ( j ).equals (
+              path.getTransitionList ().get ( i ).getSymbol ( j ) ) )
+          {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+    return false;
+  }
+
+
+  /**
    * Returns the {@link State} list.
    * 
    * @return The {@link State} list.
@@ -154,5 +207,29 @@ public final class HistoryPath
   public final ArrayList < Transition > getTransitionList ()
   {
     return this.transitionList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    StringBuilder result = new StringBuilder ();
+
+    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    {
+      if ( i > 0 )
+      {
+        result.append ( " -> " ); //$NON-NLS-1$
+      }
+      State state = this.stateList.get ( i );
+      result.append ( state.getName () );
+    }
+
+    return result.toString ();
   }
 }

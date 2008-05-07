@@ -14,7 +14,6 @@ import javax.swing.JTable;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.machines.HistoryPath;
-import de.unisiegen.gtitool.logger.Logger;
 
 
 /**
@@ -66,13 +65,6 @@ public final class HistoryPathComponent extends JLabel
    * The transition arrow offset.
    */
   private static final int TRANSITION_ARROW_OFFSET = 6;
-
-
-  /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( HistoryPathComponent.class );
 
 
   /**
@@ -151,8 +143,6 @@ public final class HistoryPathComponent extends JLabel
 
       // Line break
       int stateWidth = calculateStateWidth ( state, g );
-      logger.debug ( "calculateRowCount", "calc '" //$NON-NLS-1$ //$NON-NLS-2$
-          + state + "': " + stateWidth ); //$NON-NLS-1$
       if ( ( this.xPosition + stateWidth ) > width )
       {
         count++ ;
@@ -165,8 +155,6 @@ public final class HistoryPathComponent extends JLabel
 
       // Line break
       int transitionWidth = calculateTransitionWidth ( transition, g );
-      logger.debug ( "calculateRowCount", "calc '" + transition + "': "//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-          + transitionWidth );
       if ( ( this.xPosition + transitionWidth ) > width )
       {
         count++ ;
@@ -186,8 +174,6 @@ public final class HistoryPathComponent extends JLabel
 
       // Line break
       int stateWidth = calculateStateWidth ( state, g );
-      logger.debug ( "calculateRowCount", "calc '" + state + "': " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-          + stateWidth );
       if ( this.xPosition + stateWidth > width )
       {
         count++ ;
@@ -347,8 +333,6 @@ public final class HistoryPathComponent extends JLabel
   {
     FontMetrics metrics = g.getFontMetrics ();
 
-    int oldX = this.xPosition;
-
     for ( PrettyToken currentToken : state.toPrettyString ().getPrettyToken () )
     {
       Font font = null;
@@ -381,9 +365,6 @@ public final class HistoryPathComponent extends JLabel
         this.xPosition += metrics.charWidth ( chars [ i ] );
       }
     }
-
-    logger.debug ( "paintState", "paint '" + state + "': " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        + ( this.xPosition - oldX ) );
   }
 
 
@@ -450,8 +431,5 @@ public final class HistoryPathComponent extends JLabel
         this.yPosition - TRANSITION_ARROW_OFFSET + 2 );
 
     this.xPosition += SPACE_WIDTH;
-
-    logger.debug ( "paintTransition", "paint '" + transition + "': " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        + ( this.xPosition - oldX ) );
   }
 }

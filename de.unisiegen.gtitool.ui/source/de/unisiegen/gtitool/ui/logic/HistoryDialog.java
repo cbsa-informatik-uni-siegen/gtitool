@@ -49,6 +49,18 @@ public final class HistoryDialog
 
 
   /**
+   * The {@link Machine}.
+   */
+  private Machine machine;
+
+
+  /**
+   * The {@link HistoryPath} list.
+   */
+  private ArrayList < ArrayList < ObjectPair < Transition, Symbol > >> historyPathList = new ArrayList < ArrayList < ObjectPair < Transition, Symbol >> > ();
+
+
+  /**
    * Allocates a new {@link HistoryDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -56,87 +68,12 @@ public final class HistoryDialog
    */
   public HistoryDialog ( JFrame parent, Machine machine )
   {
-    logger.debug ( "HistoryDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "HistoryDialog", "allocate a new history dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     this.parent = parent;
+    this.machine = machine;
+
     this.gui = new HistoryDialogForm ( this, parent );
-
-    // History
-    ArrayList < HistoryItem > historyItemList = machine.getHistory ();
-
-    for ( HistoryItem current : historyItemList )
-    {
-      System.out.println ( current );
-    }
-
-    HistoryPath historyPath = new HistoryPath ();
-    ArrayList < ObjectPair < Transition, Symbol >> list = new ArrayList < ObjectPair < Transition, Symbol >> ();
-
-    for ( State activeState : machine.getActiveState () )
-    {
-      State currentState = activeState;
-      for ( int i = historyItemList.size () - 1 ; i >= 0 ; i-- )
-      {
-        loopTransition : for ( Transition currentTransition : historyItemList
-            .get ( i ).getTransitionSet () )
-        {
-          if ( currentTransition.getStateEnd () == currentState )
-          {
-            ArrayList < Symbol > symbols = historyItemList.get ( i )
-                .getSymbolSet ();
-            if ( symbols.size () > 0 )
-            {
-              list.add ( 0, new ObjectPair < Transition, Symbol > (
-                  currentTransition, symbols.get ( 0 ) ) );
-            }
-            else
-            {
-              list.add ( 0, new ObjectPair < Transition, Symbol > (
-                  currentTransition, null ) );
-            }
-            currentState = currentTransition.getStateBegin ();
-            break loopTransition;
-          }
-        }
-      }
-    }
-
-    for ( ObjectPair < Transition, Symbol > current : list )
-    {
-      System.err.println ( current );
-
-      historyPath.add ( current.getFirst ().getStateBegin (), current
-          .getFirst (), current.getFirst ().getStateEnd (), current
-          .getSecond () );
-
-    }
-
-    // The old source code
-
-    // for ( int i = 0 ; i < historyItemList.size () ; i++ )
-    // {
-    // State beginState = historyItemList.get ( i ).getStateSet ().first ();
-    // Transition transition = historyItemList.get ( i ).getTransitionSet ()
-    // .first ();
-    // State endState;
-    // if ( i == historyItemList.size () - 1 )
-    // {
-    // endState = machine.getActiveState ().first ();
-    // }
-    // else
-    // {
-    // endState = historyItemList.get ( i + 1 ).getStateSet ().first ();
-    // }
-    //
-    // ArrayList < Symbol > symbols = historyItemList.get ( i ).getSymbolSet ();
-    // if ( symbols.size () > 0 )
-    // {
-    // historyPath.add ( beginState, transition, endState, symbols.get ( 0 ) );
-    // }
-    // else
-    // {
-    // historyPath.add ( beginState, transition, endState ,null);
-    // }
-    // }
 
     // Model
     DefaultTableModel historyModel = new DefaultTableModel ()
@@ -156,9 +93,35 @@ public final class HistoryDialog
         return false;
       }
     };
+
     historyModel.addColumn ( "history" ); //$NON-NLS-1$
-    historyModel.addRow ( new Object []
-    { historyPath } );
+
+    ArrayList < HistoryPath > historyPathLocalList = new ArrayList < HistoryPath > ();
+
+    while ( true )
+    {
+      getNextHistoryPath ();
+      HistoryPath historyPath = new HistoryPath ();
+      for ( ObjectPair < Transition, Symbol > currentPair : this.historyPathList
+          .get ( this.historyPathList.size () - 1 ) )
+      {
+        historyPath.add ( currentPair.getFirst ().getStateBegin (), currentPair
+            .getFirst (), currentPair.getFirst ().getStateEnd (), currentPair
+            .getSecond () );
+      }
+      if ( historyPathLocalList.contains ( historyPath ) )
+      {
+        System.err.println ( historyPath );
+        break;
+      }
+      historyPathLocalList.add ( historyPath );
+    }
+
+    for ( HistoryPath current : historyPathLocalList )
+    {
+      historyModel.addRow ( new Object []
+      { current } );
+    }
 
     // ColumnModel
     DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
@@ -172,6 +135,90 @@ public final class HistoryDialog
     this.gui.jGTITableHistory.setColumnModel ( columnModel );
     this.gui.jGTITableHistory.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableHistory.getTableHeader ().setResizingAllowed ( false );
+  }
+
+
+  /**
+   * Adds the next {@link HistoryPath}.
+   */
+  private final void getNextHistoryPath ()
+  {
+    ArrayList < ObjectPair < Transition, Symbol >> list = new ArrayList < ObjectPair < Transition, Symbol >> ();
+
+    ArrayList < HistoryItem > historyItemList = this.machine.getHistory ();
+
+    for ( State activeState : this.machine.getActiveState () )
+    {
+      State currentState = activeState;
+      for ( int i = historyItemList.size () - 1 ; i >= 0 ; i-- )
+      {
+        loopTransition : for ( Transition currentTransition : historyItemList
+            .get ( i ).getTransitionSet () )
+        {
+          if ( currentTransition.getStateEnd () == currentState )
+          {
+            ArrayList < ObjectPair < Transition, Symbol >> tmpList = new ArrayList < ObjectPair < Transition, Symbol >> ();
+            tmpList.addAll ( list );
+
+            ArrayList < Symbol > symbols = historyItemList.get ( i )
+                .getSymbolSet ();
+            if ( symbols.size () > 0 )
+            {
+              tmpList.add ( 0, new ObjectPair < Transition, Symbol > (
+                  currentTransition, symbols.get ( 0 ) ) );
+            }
+            else
+            {
+              tmpList.add ( 0, new ObjectPair < Transition, Symbol > (
+                  currentTransition, null ) );
+            }
+
+            boolean equals = this.historyPathList.size () > 0;
+            loopEquals : for ( ArrayList < ObjectPair < Transition, Symbol > > current : this.historyPathList )
+            {
+              ArrayList < ObjectPair < Transition, Symbol > > currentSmall = new ArrayList < ObjectPair < Transition, Symbol > > ();
+
+              for ( int k = 0 ; k < tmpList.size () ; k++ )
+              {
+                currentSmall.add ( current.get ( k
+                    + ( current.size () - tmpList.size () ) ) );
+              }
+
+              if ( currentSmall.size () == tmpList.size () )
+              {
+                for ( int k = 0 ; k < currentSmall.size () ; k++ )
+                {
+                  if ( ! ( currentSmall.get ( k ).getFirst () == tmpList.get (
+                      k ).getFirst () ) )
+                  {
+                    equals = false;
+                    break loopEquals;
+                  }
+                }
+              }
+              else
+              {
+                equals = false;
+                break loopEquals;
+              }
+            }
+
+            if ( equals )
+            {
+              continue loopTransition;
+            }
+
+            list.clear ();
+            list.addAll ( tmpList );
+
+            currentState = currentTransition.getStateBegin ();
+            break loopTransition;
+          }
+        }
+      }
+    }
+
+    this.historyPathList.add ( list );
   }
 
 
@@ -190,7 +237,7 @@ public final class HistoryDialog
    */
   public final void show ()
   {
-    logger.debug ( "show", "show the about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "show", "show the history dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )

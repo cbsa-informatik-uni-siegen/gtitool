@@ -2312,6 +2312,7 @@ public final class MachinePanel implements EditorPanel
         if ( MachinePanel.this.firstState == null )
         {
           MachinePanel.this.dragged = true;
+          // TODOBM ClassCastException
           MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );

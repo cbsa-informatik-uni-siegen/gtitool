@@ -1,5 +1,6 @@
 CF		- History über die Zustände führen
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
+CF		- Markierte Transitionen 
 
 
 BM		- Umwandeln von kontextfreier Grammatik in Maschine

@@ -1,12 +1,11 @@
 CF		- History über die Zustände führen
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 CF		- Markierte Transitionen 
+CF		- Determinismus bei PDA untersuchen im Navigationsmodus
 
-
-BM		- Umwandeln von kontextfreier Grammatik in Maschine
-BM		- Es kommt beim Anlegen einer Transition über einem Zustand zu einer
-		  ClassCastException, siehe TODOBM im MachinePanel
-
+BM		- Split View
+BM		- Erweiterte Tabelle für PDA
+	
 		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA

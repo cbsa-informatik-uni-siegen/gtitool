@@ -13,8 +13,11 @@ import javax.swing.SwingUtilities;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
+import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
@@ -93,6 +96,11 @@ public final class ProductionPopupMenu extends JPopupMenu
    * The {@link MainWindowForm}.
    */
   private MainWindowForm mainWindowForm;
+  
+  /**
+   * The {@link Converter}.
+   */
+  private Converter converter;
 
 
   /**
@@ -114,6 +122,17 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.productions = productions;
     this.indeces = indeces;
     populateMenues ();
+    
+    if (model.getGrammar () instanceof RG){
+      this.converter = new ConvertRegularGrammar ( ProductionPopupMenu.this.mainWindowForm,
+          ProductionPopupMenu.this.grammarPanel.getGrammar (),
+          MachineType.ENFA );
+    }
+    else {
+      this.converter = new ConvertContextFreeGrammar( ProductionPopupMenu.this.mainWindowForm,
+          ProductionPopupMenu.this.grammarPanel.getGrammar (),
+          MachineType.ENFA );
+    }
 
   }
 
@@ -255,9 +274,7 @@ public final class ProductionPopupMenu extends JPopupMenu
         if ( ProductionPopupMenu.this.grammarPanel
             .getMainWindow ().handleValidate ( false ) )
         {
-          new ConvertRegularGrammar ( ProductionPopupMenu.this.mainWindowForm,
-              ProductionPopupMenu.this.grammarPanel.getGrammar (),
-              MachineType.ENFA );
+          ProductionPopupMenu.this.converter.convert ();
         }
       }
     } );

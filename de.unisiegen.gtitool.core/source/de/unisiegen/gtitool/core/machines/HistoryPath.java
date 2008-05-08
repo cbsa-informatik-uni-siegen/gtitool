@@ -21,9 +21,9 @@ public final class HistoryPath
 {
 
   /**
-   * The {@link State} list.
+   * The start {@link State}.
    */
-  private ArrayList < State > stateList;
+  private State startState;
 
 
   /**
@@ -43,7 +43,7 @@ public final class HistoryPath
    */
   public HistoryPath ()
   {
-    this.stateList = new ArrayList < State > ();
+    this.startState = null;
     this.transitionList = new ArrayList < Transition > ();
     this.symbolList = new ArrayList < Symbol > ();
   }
@@ -52,13 +52,10 @@ public final class HistoryPath
   /**
    * Adds the values to the {@link HistoryPath}.
    * 
-   * @param beginState The begin {@link State}.
    * @param transition The {@link Transition}.
-   * @param endState The end {@link State}.
    * @param symbol The {@link Symbol}.
    */
-  public final void add ( State beginState, Transition transition,
-      State endState, Symbol symbol )
+  public final void add ( Transition transition, Symbol symbol )
   {
     if ( symbol != null && !transition.contains ( symbol ) )
     {
@@ -67,6 +64,8 @@ public final class HistoryPath
     }
 
     Transition newTransition = new DefaultTransition ();
+    newTransition.setStateBegin ( transition.getStateBegin () );
+    newTransition.setStateEnd ( transition.getStateEnd () );
     for ( Symbol current : transition.getSymbol () )
     {
       try
@@ -101,22 +100,7 @@ public final class HistoryPath
       }
     }
 
-    if ( this.stateList.size () == 0 )
-    {
-      this.stateList.add ( beginState );
-    }
-    else
-    {
-      State lastState = this.stateList.get ( this.stateList.size () - 1 );
-      if ( beginState != lastState )
-      {
-        throw new IllegalArgumentException (
-            "the begin state is not equals to the last added state" ); //$NON-NLS-1$
-      }
-    }
-
     this.transitionList.add ( newTransition );
-    this.stateList.add ( endState );
     this.symbolList.add ( symbol );
   }
 
@@ -132,20 +116,6 @@ public final class HistoryPath
     if ( other instanceof HistoryPath )
     {
       HistoryPath path = ( HistoryPath ) other;
-
-      if ( this.stateList.size () != path.getStateList ().size () )
-      {
-        return false;
-      }
-
-      for ( int i = 0 ; i < this.stateList.size () ; i++ )
-      {
-        if ( !this.stateList.get ( i ).getName ().equals (
-            path.getStateList ().get ( i ).getName () ) )
-        {
-          return false;
-        }
-      }
 
       if ( this.transitionList.size () != path.getTransitionList ().size () )
       {
@@ -175,14 +145,14 @@ public final class HistoryPath
 
 
   /**
-   * Returns the {@link State} list.
+   * Returns the start {@link State}.
    * 
-   * @return The {@link State} list.
-   * @see #stateList
+   * @return The start {@link State}.
+   * @see #startState
    */
-  public final ArrayList < State > getStateList ()
+  public final State getStartState ()
   {
-    return this.stateList;
+    return this.startState;
   }
 
 
@@ -220,14 +190,14 @@ public final class HistoryPath
   {
     StringBuilder result = new StringBuilder ();
 
-    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    for ( int i = 0 ; i < this.transitionList.size () ; i++ )
     {
-      if ( i > 0 )
+      if ( i == 0 )
       {
-        result.append ( " -> " ); //$NON-NLS-1$
+        this.transitionList.get ( i ).getStateBegin ().getName ();
       }
-      State state = this.stateList.get ( i );
-      result.append ( state.getName () );
+      result.append ( " -> " ); //$NON-NLS-1$
+      this.transitionList.get ( i ).getStateEnd ().getName ();
     }
 
     return result.toString ();

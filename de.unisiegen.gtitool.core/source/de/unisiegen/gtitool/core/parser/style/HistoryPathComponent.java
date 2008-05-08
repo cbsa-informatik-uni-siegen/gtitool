@@ -138,11 +138,10 @@ public final class HistoryPathComponent extends JLabel
 
     for ( int i = 0 ; i < this.historyPath.getTransitionList ().size () ; i++ )
     {
-      State state = this.historyPath.getStateList ().get ( i );
       Transition transition = this.historyPath.getTransitionList ().get ( i );
 
       // Line break
-      int stateWidth = calculateStateWidth ( state, g );
+      int stateWidth = calculateStateWidth ( transition.getStateBegin (), g );
       if ( ( this.xPosition + stateWidth ) > width )
       {
         count++ ;
@@ -167,10 +166,10 @@ public final class HistoryPathComponent extends JLabel
     }
 
     // Last state
-    if ( this.historyPath.getStateList ().size () > 0 )
+    if ( this.historyPath.getTransitionList ().size () > 0 )
     {
-      State state = this.historyPath.getStateList ().get (
-          this.historyPath.getStateList ().size () - 1 );
+      State state = this.historyPath.getTransitionList ().get (
+          this.historyPath.getTransitionList ().size () - 1 ).getStateEnd ();
 
       // Line break
       int stateWidth = calculateStateWidth ( state, g );
@@ -276,8 +275,8 @@ public final class HistoryPathComponent extends JLabel
 
     for ( int i = 0 ; i < this.historyPath.getTransitionList ().size () ; i++ )
     {
-      State state = this.historyPath.getStateList ().get ( i );
       Transition transition = this.historyPath.getTransitionList ().get ( i );
+      State state = transition.getStateBegin ();
 
       // Line break
       if ( this.xPosition + calculateStateWidth ( state, g ) > width )
@@ -299,10 +298,10 @@ public final class HistoryPathComponent extends JLabel
     }
 
     // Last state
-    if ( this.historyPath.getStateList ().size () > 0 )
+    if ( this.historyPath.getTransitionList ().size () > 0 )
     {
-      State state = this.historyPath.getStateList ().get (
-          this.historyPath.getStateList ().size () - 1 );
+      State state = this.historyPath.getTransitionList ().get (
+          this.historyPath.getTransitionList ().size () - 1 ).getStateEnd ();
 
       // Line break
       if ( this.xPosition + calculateStateWidth ( state, g ) > width )

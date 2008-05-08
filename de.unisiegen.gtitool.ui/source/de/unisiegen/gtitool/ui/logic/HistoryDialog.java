@@ -206,10 +206,13 @@ public final class HistoryDialog
       // Do nothing
     }
 
-    Path path = new Path (
-        new ArrayList < ObjectPair < Transition, Symbol > > (), inputList,
-        this.machine.getActiveState ().first () );
-    this.remainingPathList.add ( path );
+    for ( State current : this.machine.getActiveState () )
+    {
+      Path path = new Path (
+          new ArrayList < ObjectPair < Transition, Symbol > > (), inputList,
+          current );
+      this.remainingPathList.add ( path );
+    }
 
     calculate ();
 
@@ -223,9 +226,8 @@ public final class HistoryDialog
       {
         Transition currentTransition = currentTransitionList.get ( i )
             .getFirst ();
-        historyPath.add ( currentTransition.getStateBegin (),
-            currentTransition, currentTransition.getStateEnd (),
-            currentTransitionList.get ( i ).getSecond () );
+        historyPath.add ( currentTransition, currentTransitionList.get ( i )
+            .getSecond () );
       }
       historyModel.addRow ( new Object []
       { historyPath } );

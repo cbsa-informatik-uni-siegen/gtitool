@@ -184,6 +184,24 @@ public final class HistoryPathComponent extends JLabel
       this.xPosition += stateWidth;
     }
 
+    // Start state
+    if ( this.historyPath.getStartState () != null )
+    {
+      State state = this.historyPath.getStartState ();
+
+      // Line break
+      int stateWidth = calculateStateWidth ( state, g );
+      if ( this.xPosition + stateWidth > width )
+      {
+        count++ ;
+        this.xPosition = 0;
+        this.yPosition += ROW_HEIGHT;
+      }
+
+      // State
+      this.xPosition += stateWidth;
+    }
+
     return count;
   }
 
@@ -302,6 +320,21 @@ public final class HistoryPathComponent extends JLabel
     {
       State state = this.historyPath.getTransitionList ().get (
           this.historyPath.getTransitionList ().size () - 1 ).getStateEnd ();
+
+      // Line break
+      if ( this.xPosition + calculateStateWidth ( state, g ) > width )
+      {
+        this.xPosition = 0;
+        this.yPosition += ROW_HEIGHT;
+      }
+
+      paintState ( state, g );
+    }
+
+    // Start state
+    if ( this.historyPath.getStartState () != null )
+    {
+      State state = this.historyPath.getStartState ();
 
       // Line break
       if ( this.xPosition + calculateStateWidth ( state, g ) > width )

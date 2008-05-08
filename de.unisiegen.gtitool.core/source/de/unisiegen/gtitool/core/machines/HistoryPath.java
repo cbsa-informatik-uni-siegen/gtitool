@@ -181,6 +181,18 @@ public final class HistoryPath
 
 
   /**
+   * Sets the start {@link State}.
+   * 
+   * @param startState The start {@link State} to set.
+   * @see #startState
+   */
+  public final void setStartState ( State startState )
+  {
+    this.startState = startState;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#toString()

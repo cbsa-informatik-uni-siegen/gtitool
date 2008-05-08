@@ -222,13 +222,31 @@ public final class HistoryDialog
     {
       HistoryPath historyPath = new HistoryPath ();
 
-      for ( int i = currentTransitionList.size () - 1 ; i >= 0 ; i-- )
+      if ( currentTransitionList.size () == 0 )
       {
-        Transition currentTransition = currentTransitionList.get ( i )
-            .getFirst ();
-        historyPath.add ( currentTransition, currentTransitionList.get ( i )
-            .getSecond () );
+        State startState = null;
+        for ( State currentState : this.machine.getState () )
+        {
+          if ( currentState.isStartState () )
+          {
+            startState = currentState;
+            break;
+          }
+        }
+
+        historyPath.setStartState ( startState );
       }
+      else
+      {
+        for ( int i = currentTransitionList.size () - 1 ; i >= 0 ; i-- )
+        {
+          Transition currentTransition = currentTransitionList.get ( i )
+              .getFirst ();
+          historyPath.add ( currentTransition, currentTransitionList.get ( i )
+              .getSecond () );
+        }
+      }
+
       historyModel.addRow ( new Object []
       { historyPath } );
     }

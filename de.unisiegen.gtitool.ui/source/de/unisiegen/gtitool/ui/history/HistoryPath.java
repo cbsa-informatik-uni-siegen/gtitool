@@ -17,7 +17,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
  * @author Christian Fehler
  * @version $Id$
  */
-public final class HistoryPath
+public final class HistoryPath implements Comparable < HistoryPath >
 {
 
   /**
@@ -108,39 +108,37 @@ public final class HistoryPath
   /**
    * {@inheritDoc}
    * 
-   * @see Object#equals(Object)
+   * @see Comparable#compareTo(Object)
    */
-  @Override
-  public final boolean equals ( Object other )
+  public final int compareTo ( HistoryPath other )
   {
-    if ( other instanceof HistoryPath )
+    if ( this.startState != null && other.startState != null )
     {
-      HistoryPath path = ( HistoryPath ) other;
-
-      if ( this.transitionList.size () != path.getTransitionList ().size () )
-      {
-        return false;
-      }
-      for ( int i = 0 ; i < this.transitionList.size () ; i++ )
-      {
-        if ( this.transitionList.get ( i ).size () != path.getTransitionList ()
-            .get ( i ).size () )
-        {
-          return false;
-        }
-        for ( int j = 0 ; j < this.transitionList.get ( i ).size () ; j++ )
-        {
-          if ( !this.transitionList.get ( i ).getSymbol ( j ).equals (
-              path.getTransitionList ().get ( i ).getSymbol ( j ) ) )
-          {
-            return false;
-          }
-        }
-      }
-
-      return true;
+      return 0;
     }
-    return false;
+    if ( this.startState != null )
+    {
+      return -1;
+    }
+    if ( other.startState != null )
+    {
+      return 1;
+    }
+
+    if ( this.transitionList.size () == other.transitionList.size () )
+    {
+      return 0;
+    }
+    if ( this.transitionList.size () < other.transitionList.size () )
+    {
+      return -1;
+    }
+    if ( this.transitionList.size () > other.transitionList.size () )
+    {
+      return 1;
+    }
+
+    return 0;
   }
 
 
@@ -206,10 +204,11 @@ public final class HistoryPath
     {
       if ( i == 0 )
       {
-        this.transitionList.get ( i ).getStateBegin ().getName ();
+        result.append ( this.transitionList.get ( i ).getStateBegin ()
+            .getName () );
       }
       result.append ( " -> " ); //$NON-NLS-1$
-      this.transitionList.get ( i ).getStateEnd ().getName ();
+      result.append ( this.transitionList.get ( i ).getStateEnd ().getName () );
     }
 
     return result.toString ();

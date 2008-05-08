@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableColumnModel;
@@ -121,6 +122,8 @@ public final class HistoryDialog
     }
 
     calculate ();
+    
+    Collections.sort(this.historyPathList);
 
     for ( HistoryPath current : this.historyPathList )
     {

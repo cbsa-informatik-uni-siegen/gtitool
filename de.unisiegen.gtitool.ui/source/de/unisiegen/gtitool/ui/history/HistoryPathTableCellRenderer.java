@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.style.renderer;
+package de.unisiegen.gtitool.ui.history;
 
 
 import java.awt.Component;
@@ -7,8 +7,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import de.unisiegen.gtitool.core.machines.HistoryPath;
-import de.unisiegen.gtitool.core.parser.style.HistoryPathComponent;
 
 
 /**

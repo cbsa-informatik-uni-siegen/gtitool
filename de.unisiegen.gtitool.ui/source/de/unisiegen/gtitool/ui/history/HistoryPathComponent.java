@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.parser.style;
+package de.unisiegen.gtitool.ui.history;
 
 
 import java.awt.Color;
@@ -13,7 +13,8 @@ import javax.swing.JTable;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.HistoryPath;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 
 
 /**

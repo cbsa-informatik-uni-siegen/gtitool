@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core.machines;
+package de.unisiegen.gtitool.ui.history;
 
 
 import java.util.ArrayList;

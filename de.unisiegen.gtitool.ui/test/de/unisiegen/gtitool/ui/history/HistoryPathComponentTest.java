@@ -1,7 +1,8 @@
-package de.unisiegen.gtitool.core.parser.style;
+package de.unisiegen.gtitool.ui.history;
 
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableColumnModel;
@@ -18,8 +19,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
-import de.unisiegen.gtitool.core.machines.HistoryPath;
-import de.unisiegen.gtitool.core.parser.style.renderer.HistoryPathTableCellRenderer;
 
 
 /**
@@ -48,9 +47,17 @@ public class HistoryPathComponentTest
       Symbol symbol0 = new DefaultSymbol ( "a" );//$NON-NLS-1$
       Symbol symbol1 = new DefaultSymbol ( "b" );//$NON-NLS-1$
       Symbol symbol2 = new DefaultSymbol ( "c" );//$NON-NLS-1$
+      Symbol symbol3 = new DefaultSymbol ( "d" );//$NON-NLS-1$
+      Symbol symbol4 = new DefaultSymbol ( "e" );//$NON-NLS-1$
+      Symbol symbol5 = new DefaultSymbol ( "f" );//$NON-NLS-1$
+      Symbol symbol6 = new DefaultSymbol ( "g" );//$NON-NLS-1$
+      Symbol symbol7 = new DefaultSymbol ( "h" );//$NON-NLS-1$
+      Symbol symbol8 = new DefaultSymbol ( "i" );//$NON-NLS-1$
+      Symbol symbol9 = new DefaultSymbol ( "j" );//$NON-NLS-1$
 
       // Alphabet
-      Alphabet alphabet = new DefaultAlphabet ( symbol0, symbol1, symbol2 );
+      Alphabet alphabet = new DefaultAlphabet ( symbol0, symbol1, symbol2,
+          symbol3, symbol4, symbol5, symbol6, symbol7, symbol8, symbol9 );
 
       // State
       State state0 = new DefaultState ( "z0" );//$NON-NLS-1$
@@ -59,7 +66,8 @@ public class HistoryPathComponentTest
 
       // Transition
       Transition transition0 = new DefaultTransition ( alphabet, alphabet,
-          word, word, state0, state1, symbol0, symbol1 );
+          word, word, state0, state1, symbol0, symbol1, symbol2, symbol3,
+          symbol4, symbol5, symbol6, symbol7, symbol8, symbol9 );
       Transition transition1 = new DefaultTransition ( alphabet, alphabet,
           word, word, state1, state2, symbol1, symbol2 );
       Transition transition2 = new DefaultTransition ( alphabet, alphabet,
@@ -105,7 +113,10 @@ public class HistoryPathComponentTest
       jTable.setModel ( model );
       jTable.setColumnModel ( columnModel );
 
-      jFrame.add ( jTable );
+      JScrollPane jScrollPane = new JScrollPane ();
+      jScrollPane.setViewportView ( jTable );
+
+      jFrame.add ( jScrollPane );
       jFrame.setBounds ( 0, 0, 800, 600 );
       jFrame.setLocationRelativeTo ( null );
       jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );

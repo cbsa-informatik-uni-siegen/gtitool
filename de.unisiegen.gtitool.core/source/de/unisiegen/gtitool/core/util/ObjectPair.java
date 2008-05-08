@@ -9,7 +9,7 @@ package de.unisiegen.gtitool.core.util;
  * @param <E> The type of the first {@link Object}.
  * @param <T> The type of the second {@link Object}.
  */
-public final class ObjectPair < E, T >
+public class ObjectPair < E, T >
 {
 
   /**

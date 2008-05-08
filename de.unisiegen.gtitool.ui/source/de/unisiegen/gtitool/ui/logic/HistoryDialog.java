@@ -11,11 +11,9 @@ import javax.swing.table.TableColumn;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.machines.HistoryItem;
 import de.unisiegen.gtitool.core.machines.HistoryPath;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.style.renderer.HistoryPathTableCellRenderer;
-import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
@@ -29,6 +27,98 @@ import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
  */
 public final class HistoryDialog
 {
+
+  /**
+   * The path.
+   * 
+   * @author Christian Fehler
+   */
+  private final class Path
+  {
+
+    /**
+     * The {@link Transition} list.
+     */
+    private ArrayList < Transition > transitionList;
+
+
+    /**
+     * The readed {@link Symbol} list.
+     */
+    private ArrayList < Symbol > readedSymbolList;
+
+
+    /**
+     * The {@link State}.
+     */
+    private State state;
+
+
+    /**
+     * Allocates a new {@link Path}.
+     * 
+     * @param transitionList The {@link Transition} list.
+     * @param readedSymbolList The readed {@link Symbol} list
+     */
+    public Path ( ArrayList < Transition > transitionList,
+        ArrayList < Symbol > readedSymbolList )
+    {
+      this ( transitionList, readedSymbolList, null );
+    }
+
+
+    /**
+     * Allocates a new {@link Path}.
+     * 
+     * @param transitionList The {@link Transition} list.
+     * @param readedSymbolList The readed {@link Symbol} list
+     * @param state The {@link State}.
+     */
+    public Path ( ArrayList < Transition > transitionList,
+        ArrayList < Symbol > readedSymbolList, State state )
+    {
+      this.transitionList = transitionList;
+      this.readedSymbolList = readedSymbolList;
+      this.state = state;
+    }
+
+
+    /**
+     * Returns the readed {@link Symbol} list.
+     * 
+     * @return The readed {@link Symbol} list.
+     * @see #readedSymbolList
+     */
+    public final ArrayList < Symbol > getReadedSymbolList ()
+    {
+      return this.readedSymbolList;
+    }
+
+
+    /**
+     * Returns the {@link State}.
+     * 
+     * @return The {@link State}.
+     * @see #state
+     */
+    public final State getState ()
+    {
+      return this.state;
+    }
+
+
+    /**
+     * Returns the {@link Transition} list.
+     * 
+     * @return The {@link Transition} list.
+     * @see #transitionList
+     */
+    public final ArrayList < Transition > getTransitionList ()
+    {
+      return this.transitionList;
+    }
+  }
+
 
   /**
    * The {@link Logger} for this class.
@@ -55,9 +145,15 @@ public final class HistoryDialog
 
 
   /**
-   * The {@link HistoryPath} list.
+   * The remaining path list.
    */
-  private ArrayList < ArrayList < ObjectPair < Transition, Symbol > >> historyPathList = new ArrayList < ArrayList < ObjectPair < Transition, Symbol >> > ();
+  private ArrayList < Path > remainingPathList = new ArrayList < Path > ();
+
+
+  /**
+   * The history path list.
+   */
+  private ArrayList < ArrayList < Transition >> historyPathList = new ArrayList < ArrayList < Transition >> ();
 
 
   /**
@@ -96,31 +192,38 @@ public final class HistoryDialog
 
     historyModel.addColumn ( "history" ); //$NON-NLS-1$
 
-    ArrayList < HistoryPath > historyPathLocalList = new ArrayList < HistoryPath > ();
-
-    while ( true )
+    Path path = null;
+    try
     {
-      getNextHistoryPath ();
-      HistoryPath historyPath = new HistoryPath ();
-      for ( ObjectPair < Transition, Symbol > currentPair : this.historyPathList
-          .get ( this.historyPathList.size () - 1 ) )
-      {
-        historyPath.add ( currentPair.getFirst ().getStateBegin (), currentPair
-            .getFirst (), currentPair.getFirst ().getStateEnd (), currentPair
-            .getSecond () );
-      }
-      if ( historyPathLocalList.contains ( historyPath ) )
-      {
-        System.err.println ( historyPath );
-        break;
-      }
-      historyPathLocalList.add ( historyPath );
+      ArrayList < Symbol > inputList = new ArrayList < Symbol > ();
+      inputList.addAll ( this.machine.getReadedSymbols () );
+
+      path = new Path ( new ArrayList < Transition > (), inputList,
+          this.machine.getActiveState ().first () );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
     }
 
-    for ( HistoryPath current : historyPathLocalList )
+    this.remainingPathList.add ( path );
+
+    calculate ();
+
+    logger.debug ( "HistoryDialog", "result: " + this.historyPathList ); //$NON-NLS-1$//$NON-NLS-2$
+
+    for ( ArrayList < Transition > currentTransitionList : this.historyPathList )
     {
-      historyModel.addRow ( new Object []
-      { current } );
+      HistoryPath historyPath = new HistoryPath ();
+      
+      for ( int i =  currentTransitionList .size ()-1;i>=0;i--)
+      {
+        Transition currentTransition = currentTransitionList.get ( i );
+        historyPath.add ( currentTransition.getStateBegin (), currentTransition,
+            currentTransition.getStateEnd (), null );
+      }
+      historyModel.addRow ( new Object[]{historyPath} );
     }
 
     // ColumnModel
@@ -139,86 +242,73 @@ public final class HistoryDialog
 
 
   /**
-   * Adds the next {@link HistoryPath}.
+   * Calculates the list of history paths.
    */
-  private final void getNextHistoryPath ()
+  private final void calculate ()
   {
-    ArrayList < ObjectPair < Transition, Symbol >> list = new ArrayList < ObjectPair < Transition, Symbol >> ();
-
-    ArrayList < HistoryItem > historyItemList = this.machine.getHistory ();
-
-    for ( State activeState : this.machine.getActiveState () )
+    if ( this.remainingPathList.size () == 0 )
     {
-      State currentState = activeState;
-      for ( int i = historyItemList.size () - 1 ; i >= 0 ; i-- )
+      return;
+    }
+
+    Path path = this.remainingPathList.remove ( 0 );
+
+    ArrayList < Transition > transitionList = path.getTransitionList ();
+    ArrayList < Symbol > readedSymbolList = path.getReadedSymbolList ();
+
+    State state;
+    if ( path.getState () == null )
+    {
+      state = transitionList.get ( transitionList.size () - 1 )
+          .getStateBegin ();
+    }
+    else
+    {
+      state = path.getState ();
+    }
+
+    if ( state.isStartState () && readedSymbolList.isEmpty () )
+    {
+      this.historyPathList.add ( transitionList );
+
+      calculate ();
+      return;
+    }
+
+    ArrayList < Transition > list = state.getTransitionEnd ();
+
+    for ( Transition current : list )
+    {
+      if ( current.isEpsilonTransition () )
       {
-        loopTransition : for ( Transition currentTransition : historyItemList
-            .get ( i ).getTransitionSet () )
-        {
-          if ( currentTransition.getStateEnd () == currentState )
-          {
-            ArrayList < ObjectPair < Transition, Symbol >> tmpList = new ArrayList < ObjectPair < Transition, Symbol >> ();
-            tmpList.addAll ( list );
+        ArrayList < Transition > newTransitionList = new ArrayList < Transition > ();
+        newTransitionList.addAll ( transitionList );
+        newTransitionList.add ( current );
 
-            ArrayList < Symbol > symbols = historyItemList.get ( i )
-                .getSymbolSet ();
-            if ( symbols.size () > 0 )
-            {
-              tmpList.add ( 0, new ObjectPair < Transition, Symbol > (
-                  currentTransition, symbols.get ( 0 ) ) );
-            }
-            else
-            {
-              tmpList.add ( 0, new ObjectPair < Transition, Symbol > (
-                  currentTransition, null ) );
-            }
+        ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
+        newReadedSymbolList.addAll ( readedSymbolList );
 
-            boolean equals = this.historyPathList.size () > 0;
-            loopEquals : for ( ArrayList < ObjectPair < Transition, Symbol > > current : this.historyPathList )
-            {
-              ArrayList < ObjectPair < Transition, Symbol > > currentSmall = new ArrayList < ObjectPair < Transition, Symbol > > ();
+        Path newPath = new Path ( newTransitionList, newReadedSymbolList );
+        this.remainingPathList.add ( newPath );
+      }
+      else if ( ( readedSymbolList.size () > 0 )
+          && current.contains ( readedSymbolList
+              .get ( readedSymbolList.size () - 1 ) ) )
+      {
+        ArrayList < Transition > newTransitionList = new ArrayList < Transition > ();
+        newTransitionList.addAll ( transitionList );
+        newTransitionList.add ( current );
 
-              for ( int k = 0 ; k < tmpList.size () ; k++ )
-              {
-                currentSmall.add ( current.get ( k
-                    + ( current.size () - tmpList.size () ) ) );
-              }
+        ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
+        newReadedSymbolList.addAll ( readedSymbolList );
+        newReadedSymbolList.remove ( newReadedSymbolList.size () - 1 );
 
-              if ( currentSmall.size () == tmpList.size () )
-              {
-                for ( int k = 0 ; k < currentSmall.size () ; k++ )
-                {
-                  if ( ! ( currentSmall.get ( k ).getFirst () == tmpList.get (
-                      k ).getFirst () ) )
-                  {
-                    equals = false;
-                    break loopEquals;
-                  }
-                }
-              }
-              else
-              {
-                equals = false;
-                break loopEquals;
-              }
-            }
-
-            if ( equals )
-            {
-              continue loopTransition;
-            }
-
-            list.clear ();
-            list.addAll ( tmpList );
-
-            currentState = currentTransition.getStateBegin ();
-            break loopTransition;
-          }
-        }
+        Path newPath = new Path ( newTransitionList, newReadedSymbolList );
+        this.remainingPathList.add ( newPath );
       }
     }
 
-    this.historyPathList.add ( list );
+    calculate ();
   }
 
 

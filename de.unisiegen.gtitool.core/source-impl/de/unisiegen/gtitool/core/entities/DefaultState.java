@@ -151,6 +151,12 @@ public final class DefaultState implements State
 
 
   /**
+   * This {@link DefaultState} is a selected {@link DefaultState}.
+   */
+  private boolean selected = false;
+
+
+  /**
    * Allocates a new {@link DefaultState}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
@@ -773,6 +779,19 @@ public final class DefaultState implements State
 
 
   /**
+   * Returns true if this {@link DefaultState} is a selected
+   * {@link DefaultState}, otherwise false.
+   * 
+   * @return True if this {@link DefaultState} is a selected
+   *         {@link DefaultState}, otherwise false.
+   */
+  public final boolean isSelected ()
+  {
+    return this.selected;
+  }
+
+
+  /**
    * Returns the startState.
    * 
    * @return The startState.
@@ -1014,6 +1033,17 @@ public final class DefaultState implements State
 
 
   /**
+   * Sets the selected value.
+   * 
+   * @param selected The selected value to set.
+   */
+  public final void setSelected ( boolean selected )
+  {
+    this.selected = selected;
+  }
+
+
+  /**
    * Sets the startState value.
    * 
    * @param startState The startState to set.
@@ -1033,7 +1063,15 @@ public final class DefaultState implements State
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+    if ( this.selected )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name,
+          Style.STATE_SELECTED ) );
+    }
+    else
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+    }
     return prettyString;
   }
 

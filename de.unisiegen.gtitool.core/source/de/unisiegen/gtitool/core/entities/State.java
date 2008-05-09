@@ -51,9 +51,6 @@ public interface State extends Entity < State >, Storable, Modifyable
   public void addTransitionEnd ( Transition transition );
 
 
-
-
-
   /**
    * Returns the {@link Alphabet}.
    * 
@@ -207,6 +204,16 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
+   * Returns true if this {@link State} is a selected {@link State}, otherwise
+   * false.
+   * 
+   * @return True if this {@link State} is a selected {@link State}, otherwise
+   *         false.
+   */
+  public boolean isSelected ();
+
+
+  /**
    * Returns the startState.
    * 
    * @return The startState.
@@ -301,6 +308,14 @@ public interface State extends Entity < State >, Storable, Modifyable
    * @param pushDownAlphabet The push down {@link Alphabet} to set.
    */
   public void setPushDownAlphabet ( Alphabet pushDownAlphabet );
+
+
+  /**
+   * Sets the selected value.
+   * 
+   * @param selected The selected value to set.
+   */
+  public void setSelected ( boolean selected );
 
 
   /**

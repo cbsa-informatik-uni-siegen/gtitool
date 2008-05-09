@@ -37,6 +37,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumn;
 
 import org.jgraph.JGraph;
+import org.jgraph.event.GraphSelectionEvent;
+import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
@@ -483,6 +485,17 @@ public final class MachinePanel implements EditorPanel
       }
     } );
 
+    this.graph.addGraphSelectionListener ( new GraphSelectionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void valueChanged ( @SuppressWarnings ( "unused" )
+      GraphSelectionEvent event )
+      {
+        updateSelected ();
+      }
+    } );
+
     this.graph.addMouseListener ( new MouseAdapter ()
     {
 
@@ -772,6 +785,7 @@ public final class MachinePanel implements EditorPanel
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
     clearValidationMessages ();
+    updateSelected ();
 
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
@@ -1916,7 +1930,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Initialize the Mouse Adapter of the Toolbar
+   * Initializes the mouse adapter of the toolbar.
    */
   private final void intitializeMouseAdapter ()
   {
@@ -1960,7 +1974,7 @@ public final class MachinePanel implements EditorPanel
           }
           else
           {
-            // open transition config dialog
+            // open state config dialog
             DefaultStateView state = ( DefaultStateView ) object;
             StateConfigDialog dialog = new StateConfigDialog (
                 MachinePanel.this.mainWindowForm, MachinePanel.this, state
@@ -2827,5 +2841,33 @@ public final class MachinePanel implements EditorPanel
       this.gui.jGTITableMachine.setToolTipText ( Messages
           .getString ( "MachinePanel.TableDisabled" ) ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Updates the selected {@link Transition}s and {@link State}s or clears the
+   * selected.
+   */
+  private final void updateSelected ()
+  {
+    Object cell = this.graph.getSelectionCell ();
+
+    if ( cell == null )
+    {
+      this.machine.clearSelectedTransition ();
+    }
+    else if ( cell instanceof DefaultStateView )
+    {
+      // TODOCF Implement this
+    }
+    else if ( cell instanceof DefaultTransitionView )
+    {
+      DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
+      Transition transition = transitionView.getTransition ();
+
+      this.machine.setSelectedTransition ( transition );
+    }
+
+    this.gui.jGTITableMachine.repaint ();
   }
 }

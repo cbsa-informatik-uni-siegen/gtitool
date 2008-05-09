@@ -30,6 +30,11 @@ public enum Style
   STATE ( true, false ),
 
   /**
+   * Style of selected {@link State}s.
+   */
+  STATE_SELECTED ( true, false ),
+
+  /**
    * Style of {@link Symbol}s.
    */
   SYMBOL ( true, false ),
@@ -120,6 +125,11 @@ public enum Style
       case STATE :
       {
         return PreferenceManager.getInstance ().getColorItemState ()
+            .getColor ();
+      }
+      case STATE_SELECTED :
+      {
+        return PreferenceManager.getInstance ().getColorItemStateSelected ()
             .getColor ();
       }
       case SYMBOL :

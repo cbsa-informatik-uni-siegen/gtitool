@@ -89,14 +89,6 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns the {@link HistoryItem}.
-   * 
-   * @return The {@link HistoryItem}.
-   */
-  public ArrayList < HistoryItem > getHistory ();
-
-
-  /**
    * The available machines.
    */
   public static final String [] AVAILABLE_MACHINES =
@@ -160,6 +152,12 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Clears all selected {@link Transition}s.
+   */
+  public void clearSelectedTransition ();
+
+
+  /**
    * Returns the active {@link State}s.
    * 
    * @return The active {@link State}s.
@@ -202,6 +200,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    */
   public Symbol getCurrentSymbol () throws WordFinishedException,
       WordResetedException;
+
+
+  /**
+   * Returns the {@link HistoryItem}.
+   * 
+   * @return The {@link HistoryItem}.
+   */
+  public ArrayList < HistoryItem > getHistory ();
 
 
   /**
@@ -437,6 +443,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
    * @param transitions The {@link Transition}s to remove.
    */
   public void removeTransition ( Transition ... transitions );
+
+
+  /**
+   * Sets the given {@link Transition} selected.
+   * 
+   * @param transition The {@link Transition} which should be selected.
+   */
+  public void setSelectedTransition ( Transition transition );
 
 
   /**

@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultStack;
+import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultStateSet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
@@ -40,6 +41,7 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineStateStartException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperationsException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
@@ -61,6 +63,7 @@ import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringTableHeaderCe
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
+import de.unisiegen.gtitool.core.util.ObjectTriple;
 import de.unisiegen.gtitool.logger.Logger;
 
 
@@ -249,6 +252,13 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The list of cached values which is needed because of the {@link Transition}
+   * highlighting.
+   */
+  private ArrayList < ObjectTriple < Integer, Integer, Object >> cachedValueList;
+
+
+  /**
    * Allocates a new {@link AbstractMachine}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link AbstractMachine}.
@@ -297,6 +307,8 @@ public abstract class AbstractMachine implements Machine
     this.activeSymbolList = new ArrayList < Symbol > ();
     // History
     this.history = new ArrayList < HistoryItem > ();
+    // CachedValueList
+    this.cachedValueList = new ArrayList < ObjectTriple < Integer, Integer, Object >> ();
 
     // AlphabetChangedListener
     this.alphabetChangedListener = new AlphabetChangedListener ()
@@ -925,6 +937,26 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Clears all selected.
+   */
+  public final void clearSelectedTransition ()
+  {
+    // find the columns
+    for ( int i = 2 ; i < getColumnCount () ; i++ )
+    {
+      for ( int j = 0 ; j < getRowCount () ; j++ )
+      {
+        StateSet stateSet = ( StateSet ) getValueAt ( j, i );
+        for ( State currentState : stateSet )
+        {
+          currentState.setSelected ( false );
+        }
+      }
+    }
+  }
+
+
+  /**
    * Let the listeners know that the editing is startet.
    */
   private final void fireMachineChangedStartEditing ()
@@ -1212,6 +1244,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Returns the {@link HistoryItem}.
+   * 
+   * @return The {@link HistoryItem}.
+   * @see #history
+   */
+  public final ArrayList < HistoryItem > getHistory ()
+  {
+    return this.history;
+  }
+
+
+  /**
    * Returns the {@link Machine} type.
    * 
    * @return The {@link Machine} type.
@@ -1456,7 +1500,67 @@ public abstract class AbstractMachine implements Machine
         }
       }
     }
-    return stateEndList;
+
+    for ( int i = 0 ; i < this.cachedValueList.size () ; i++ )
+    {
+      ObjectTriple < Integer, Integer, Object > cache = this.cachedValueList
+          .get ( i );
+      int cachedRowIndex = cache.getFirst ().intValue ();
+      int cachedColumnIndex = cache.getSecond ().intValue ();
+      if ( ( rowIndex == cachedRowIndex )
+          && ( columnIndex == cachedColumnIndex ) )
+      {
+        StateSet cachedStateSet = ( StateSet ) cache.getThird ();
+        
+        if (cachedStateSet.size () != stateEndList.size () )
+        {
+          this.cachedValueList.remove ( i );
+          break ;
+        }
+        
+        for ( int j = 0 ; j < stateEndList.size () ; j++ )
+        {
+          try
+          {
+            cachedStateSet.get ( j ).setName ( stateEndList.get ( j ).getName () );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+          }
+        }
+        return cache.getThird ();
+      }
+    }
+
+    StateSet newStateEndList = new DefaultStateSet ();
+
+    for ( State current : stateEndList )
+    {
+      try
+      {
+        State newState = new DefaultState ( current.getName () );
+        newState.setId ( current.getId () );
+        newStateEndList.add ( newState );
+      }
+      catch ( StateSetException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+    }
+
+    this.cachedValueList
+        .add ( new ObjectTriple < Integer, Integer, Object > ( new Integer (
+            rowIndex ), new Integer ( columnIndex ), newStateEndList ) );
+
+    return newStateEndList;
   }
 
 
@@ -2132,6 +2236,61 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Sets the given {@link Transition} selected.
+   * 
+   * @param transition The {@link Transition} which should be selected.
+   */
+  public final void setSelectedTransition ( Transition transition )
+  {
+    // reset
+    for ( int i = 2 ; i < getColumnCount () ; i++ )
+    {
+      for ( int j = 0 ; j < getRowCount () ; j++ )
+      {
+        StateSet stateSet = ( StateSet ) getValueAt ( j, i );
+        for ( State currentState : stateSet )
+        {
+          currentState.setSelected ( false );
+        }
+      }
+    }
+
+    // find the row
+    int row = -1;
+    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    {
+      if ( this.stateList.get ( i ).equals ( transition.getStateBegin () ) )
+      {
+        row = i;
+        break;
+      }
+    }
+
+    // find the columns
+    for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+    {
+      for ( int j = 0 ; j < transition.size () ; j++ )
+      {
+        if ( this.alphabet.get ( i ).equals ( transition.getSymbol ( j ) ) )
+        {
+          int column = i + 2;
+          StateSet stateSet = ( StateSet ) getValueAt ( row, column );
+
+          for ( State currentState : stateSet )
+          {
+            if ( currentState.equals ( transition.getStateEnd () ) )
+            {
+              currentState.setSelected ( true );
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+
+  /**
    * Sets the use push down {@link Alphabet}.
    * 
    * @param usePushDownAlphabet The use push down {@link Alphabet} to set.
@@ -2504,17 +2663,5 @@ public abstract class AbstractMachine implements Machine
     {
       throw new MachineValidationException ( machineExceptionList );
     }
-  }
-
-
-  /**
-   * Returns the {@link HistoryItem}.
-   * 
-   * @return The {@link HistoryItem}.
-   * @see #history
-   */
-  public final ArrayList < HistoryItem > getHistory ()
-  {
-    return this.history;
   }
 }

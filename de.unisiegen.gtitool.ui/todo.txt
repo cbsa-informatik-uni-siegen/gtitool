@@ -1,4 +1,3 @@
-CF		- History über die Zustände führen
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 CF		- Markierte Transitionen 
 CF		- Determinismus bei PDA untersuchen im Navigationsmodus

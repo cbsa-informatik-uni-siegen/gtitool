@@ -8,8 +8,9 @@ package de.unisiegen.gtitool.core.util;
  * @version $Id$
  * @param <E> The type of the first {@link Object}.
  * @param <F> The type of the second {@link Object}.
+ * @param <G> The type of the third {@link Object}.
  */
-public class ObjectPair < E, F >
+public class ObjectTriple < E, F, G >
 {
 
   /**
@@ -25,15 +26,23 @@ public class ObjectPair < E, F >
 
 
   /**
-   * Allocates a new {@link ObjectPair}.
+   * The third {@link Object}.
+   */
+  private G third;
+
+
+  /**
+   * Allocates a new {@link ObjectTriple}.
    * 
    * @param first The first {@link Object}.
    * @param second The second {@link Object}.
+   * @param third The third {@link Object}.
    */
-  public ObjectPair ( E first, F second )
+  public ObjectTriple ( E first, F second, G third )
   {
     this.first = first;
     this.second = second;
+    this.third = third;
   }
 
 
@@ -62,6 +71,18 @@ public class ObjectPair < E, F >
 
 
   /**
+   * Returns the third {@link Object}.
+   * 
+   * @return The third {@link Object}.
+   * @see #third
+   */
+  public final G getThird ()
+  {
+    return this.third;
+  }
+
+
+  /**
    * Sets the first {@link Object}.
    * 
    * @param first The first {@link Object} to set.
@@ -86,6 +107,18 @@ public class ObjectPair < E, F >
 
 
   /**
+   * Sets the third {@link Object}.
+   * 
+   * @param third The third {@link Object} to set.
+   * @see #third
+   */
+  public final void setThird ( G third )
+  {
+    this.third = third;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#toString()
@@ -94,6 +127,7 @@ public class ObjectPair < E, F >
   public final String toString ()
   {
     return ( this.first == null ? "null" : this.first.toString () ) + " | " //$NON-NLS-1$//$NON-NLS-2$
-        + ( this.second == null ? "null" : this.second.toString () ); //$NON-NLS-1$
+        + ( this.second == null ? "null" : this.second.toString () ) + " | " //$NON-NLS-1$//$NON-NLS-2$
+        + ( this.third == null ? "null" : this.third.toString () ) + " | "; //$NON-NLS-1$//$NON-NLS-2$
   }
 }

@@ -75,14 +75,14 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     DFA,
 
     /**
-     * The machine type is NFA
-     */
-    NFA,
-
-    /**
      * The machine type is ENFA
      */
     ENFA,
+
+    /**
+     * The machine type is NFA
+     */
+    NFA,
 
     /**
      * The machine type is PDA
@@ -98,9 +98,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link Machine}
+   * The {@link DefaultGraphModel} for this model.
    */
-  private Machine machine;
+  private DefaultGraphModel graphModel;
 
 
   /**
@@ -110,33 +110,15 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link DefaultGraphModel} for this model.
-   */
-  private DefaultGraphModel graphModel;
-
-
-  /**
-   * A list of all {@link DefaultStateView}s
-   */
-  private ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
-
-
-  /**
-   * A list of all {@link DefaultTransitionView}s
-   */
-  private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
-
-
-  /**
    * The {@link EventListenerList}.
    */
   private EventListenerList listenerList = new EventListenerList ();
 
 
   /**
-   * The {@link ModifyStatusChangedListener}.
+   * The {@link Machine}
    */
-  private ModifyStatusChangedListener modifyStatusChangedListener;
+  private Machine machine;
 
 
   /**
@@ -146,9 +128,21 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
+   * The {@link ModifyStatusChangedListener}.
+   */
+  private ModifyStatusChangedListener modifyStatusChangedListener;
+
+
+  /**
    * The {@link MultiItem}.
    */
   private MultiItem multiItem;
+
+
+  /**
+   * The {@link RedoUndoHandler}
+   */
+  private RedoUndoHandler redoUndoHandler;
 
 
   /**
@@ -158,9 +152,21 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link RedoUndoHandler}
+   * A list of all {@link DefaultStateView}s
    */
-  private RedoUndoHandler redoUndoHandler;
+  private ArrayList < DefaultStateView > stateViewList = new ArrayList < DefaultStateView > ();
+
+
+  /**
+   * The {@link PDATableModel}.
+   */
+  private PDATableModel tableModel;
+
+
+  /**
+   * A list of all {@link DefaultTransitionView}s
+   */
+  private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
 
 
   /**
@@ -467,6 +473,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( addToMachine )
     {
       this.machine.addTransition ( transition );
+      if (this.tableModel == null){
+        this.tableModel = new PDATableModel();
+      }
       this.tableModel.addRow ( transition );
     }
     DefaultTransitionView transitionView = new DefaultTransitionView (
@@ -945,6 +954,15 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machine.resetModify ();
   }
 
+  /**
+   * Set the {@link PDATableModel}.
+   *
+   * @param tableModel The new {@link PDATableModel}.
+   */
+  public void setPdaTableModel ( PDATableModel tableModel )
+  {
+    this.tableModel = tableModel;
+  }
 
   /**
    * Set a new {@link RedoUndoHandler}
@@ -954,20 +972,5 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
   {
     this.redoUndoHandler = redoUndoHandler;
-  }
-
-  /**
-   * The {@link PDATableModel}.
-   */
-  PDATableModel tableModel;
-
-  /**
-   * Set the {@link PDATableModel}.
-   *
-   * @param tableModel The new {@link PDATableModel}.
-   */
-  public void setPdaTableModel ( PDATableModel tableModel )
-  {
-    this.tableModel = tableModel;
   }
 }

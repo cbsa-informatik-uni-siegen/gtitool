@@ -1,14 +1,13 @@
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
-CF		- Markierte Transitionen 
 CF		- Determinismus bei PDA untersuchen im Navigationsmodus
+CF		- Umwandeln von Maschinen
+			- ENDEA -> NDEA
+			- NDEA  -> DEA
+
 
 BM		- Autolayout
 
 
 		- Split View
-		- Umwandeln von Maschinen
-			- ENDEA -> NDEA
-			- NDEA  -> DEA
 		- Minimaler Automat
 		- Parallel Loop Routing
-		

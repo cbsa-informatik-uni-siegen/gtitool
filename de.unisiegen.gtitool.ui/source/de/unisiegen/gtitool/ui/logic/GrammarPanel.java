@@ -161,7 +161,7 @@ public final class GrammarPanel implements EditorPanel
 
     this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
-    setVisibleConsole ( this.mainWindowForm.jCheckBoxMenuItemConsole
+    setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()

@@ -388,7 +388,7 @@ public final class MachinePanel implements EditorPanel
      */
     this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConsole () );
-    setVisibleConsole ( this.mainWindowForm.jCheckBoxMenuItemConsole
+    setVisibleConsole ( this.mainWindowForm.getJCheckBoxMenuItemConsole ()
         .getState () );
     this.gui.jGTISplitPaneConsole.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
@@ -408,7 +408,8 @@ public final class MachinePanel implements EditorPanel
 
     this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationTable () );
-    setVisibleTable ( this.mainWindowForm.jCheckBoxMenuItemTable.getState () );
+    setVisibleTable ( this.mainWindowForm.getJCheckBoxMenuItemTable ()
+        .getState () );
     this.gui.jGTISplitPaneTable.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
@@ -2125,9 +2126,9 @@ public final class MachinePanel implements EditorPanel
           }
           case WITH_RETURN_TO_MOUSE :
           {
-            // Return to the normal Mouse after every click
-            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
-                .setSelected ( true );
+            // Return to the normal mouse after every click.
+            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+                true );
             break;
           }
         }
@@ -2247,9 +2248,9 @@ public final class MachinePanel implements EditorPanel
             }
             case WITH_RETURN_TO_MOUSE :
             {
-              // Return to the normal Mouse after every click
-              MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
-                  .setSelected ( true );
+              // Return to the normal mouse after every click.
+              MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+                  true );
               break;
             }
           }
@@ -2314,9 +2315,9 @@ public final class MachinePanel implements EditorPanel
           }
           case WITH_RETURN_TO_MOUSE :
           {
-            // Return to the normal Mouse after every click
-            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
-                .setSelected ( true );
+            // Return to the normal mouse after every click.
+            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+                true );
             break;
           }
         }
@@ -2506,9 +2507,9 @@ public final class MachinePanel implements EditorPanel
           }
           case WITH_RETURN_TO_MOUSE :
           {
-            // Return to the normal Mouse after every click
-            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
-                .setSelected ( true );
+            // Return to the normal mouse after every click.
+            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+                true );
             break;
           }
         }
@@ -2604,9 +2605,9 @@ public final class MachinePanel implements EditorPanel
           }
           case WITH_RETURN_TO_MOUSE :
           {
-            // Return to the normal Mouse after every click
-            MachinePanel.this.mainWindowForm.jGTIToolBarToggleButtonMouse
-                .setSelected ( true );
+            // Return to the normal mouse after every click.
+            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+                true );
             break;
           }
         }

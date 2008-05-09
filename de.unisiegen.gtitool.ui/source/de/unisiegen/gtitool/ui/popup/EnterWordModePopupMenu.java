@@ -63,20 +63,20 @@ public final class EnterWordModePopupMenu extends JPopupMenu
   /**
    * The {@link MainWindowForm}
    */
-  private MainWindowForm mainWindow;
+  private MainWindowForm mainWindowForm;
 
 
   /**
    * Allocates a new {@link StatePopupMenu}.
    * 
-   * @param machinePanel The {@link MachinePanel}
-   * @param mainWindow The {@link MainWindow}
+   * @param machinePanel The {@link MachinePanel}.
+   * @param mainWindowForm The {@link MainWindow}.
    */
   public EnterWordModePopupMenu ( MachinePanel machinePanel,
-      MainWindowForm mainWindow )
+      MainWindowForm mainWindowForm )
   {
     this.machinePanel = machinePanel;
-    this.mainWindow = mainWindow;
+    this.mainWindowForm = mainWindowForm;
     populateMenues ();
   }
 
@@ -89,11 +89,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
     this.jMenuItemStart = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
-    this.jMenuItemStart
-        .setIcon ( new ImageIcon (
-            getClass ()
-                .getResource (
-                    "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/start.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemStart.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/start.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemStart.addActionListener ( new ActionListener ()
     {
 
@@ -103,16 +100,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       {
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
-          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStart
-              .setEnabled ( false );
-          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonNextStep
-              .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonPrevious
-              .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarToggleButtonAutoStep
-              .setEnabled ( true );
-          EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStop
-              .setEnabled ( true );
+          EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+              .setStateWordNavigation ( true );
         }
       }
     } );
@@ -142,8 +131,11 @@ public final class EnterWordModePopupMenu extends JPopupMenu
 
     this.jMenuItemNextStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
-    this.jMenuItemNextStep.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/forward.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemNextStep
+        .setIcon ( new ImageIcon (
+            getClass ()
+                .getResource (
+                    "/de/unisiegen/gtitool/ui/icon/popupMenu/wordnavigation/forward.png" ) ) ); //$NON-NLS-1$
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
@@ -168,16 +160,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStart
-            .setEnabled ( true );
-        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonNextStep
-            .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonPrevious
-            .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarToggleButtonAutoStep
-            .setEnabled ( false );
-        EnterWordModePopupMenu.this.mainWindow.jGTIToolBarButtonStop
-            .setEnabled ( false );
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+            .setStateWordNavigation ( false );
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }
     } );

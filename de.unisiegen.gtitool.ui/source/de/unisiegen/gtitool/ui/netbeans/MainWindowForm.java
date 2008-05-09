@@ -2,9 +2,20 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 
 
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
+import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
+import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;
+import de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane;
 
 /**
  * The {@link MainWindowForm}.
@@ -14,7 +25,7 @@ import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class MainWindowForm extends javax.swing.JFrame {
+public class MainWindowForm extends JFrame {
  
     /**
      * The serial version uid.
@@ -38,6 +49,713 @@ public class MainWindowForm extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Returns the jMenuItemNew.
+     *
+     * @return The jMenuItemNew.
+     * @see #jMenuItemNew
+     */
+    public final JMenuItem getJMenuItemNew ()
+    {
+      return this.jMenuItemNew;
+    }
+    
+    /**
+     * Returns the jMenuItemOpen.
+     *
+     * @return The jMenuItemOpen.
+     * @see #jMenuItemOpen
+     */
+    public final JMenuItem getJMenuItemOpen ()
+    {
+      return this.jMenuItemOpen;
+    }
+    
+    /**
+     * Returns the jMenuItemClose.
+     *
+     * @return The jMenuItemClose.
+     * @see #jMenuItemClose
+     */
+    public final JMenuItem getJMenuItemClose ()
+    {
+      return this.jMenuItemClose;
+    }
+    
+    /**
+     * Returns the jMenuItemCloseAll.
+     *
+     * @return The jMenuItemCloseAll.
+     * @see #jMenuItemCloseAll
+     */
+    public final JMenuItem getJMenuItemCloseAll ()
+    {
+      return this.jMenuItemCloseAll;
+    }
+    
+    /**
+     * Returns the jMenuItemSave.
+     *
+     * @return The jMenuItemSave.
+     * @see #jMenuItemSave
+     */
+    public final JMenuItem getJMenuItemSave ()
+    {
+      return this.jMenuItemSave;
+    }
+    
+    /**
+     * Returns the jMenuItemSaveAs.
+     *
+     * @return The jMenuItemSaveAs.
+     * @see #jMenuItemSave
+     */
+    public final JMenuItem getJMenuItemSaveAs ()
+    {
+      return this.jMenuItemSaveAs;
+    }
+    
+    /**
+     * Returns the jMenuItemSaveAll.
+     *
+     * @return The jMenuItemSaveAll.
+     * @see #jMenuItemSave
+     */
+    public final JMenuItem getJMenuItemSaveAll ()
+    {
+      return this.jMenuItemSaveAll;
+    }
+    
+    /**
+     * Returns the jMenuItemUndo.
+     *
+     * @return The jMenuItemUndo.
+     * @see #jMenuItemUndo
+     */
+    public final JMenuItem getJMenuItemUndo ()
+    {
+      return this.jMenuItemUndo;
+    }
+    
+    /**
+     * Returns the jMenuItemRedo.
+     *
+     * @return The jMenuItemRedo.
+     * @see #jMenuItemRedo
+     */
+    public final JMenuItem getJMenuItemRedo ()
+    {
+      return this.jMenuItemRedo;
+    }
+    
+    /**
+     * Returns the jMenuItemPreferences.
+     *
+     * @return The jMenuItemPreferences.
+     * @see #jMenuItemPreferences
+     */
+    public final JMenuItem getJMenuItemPreferences ()
+    {
+      return this.jMenuItemPreferences;
+    }
+    
+    /**
+     * Returns the jMenuItemValidate.
+     *
+     * @return The jMenuItemValidate.
+     * @see #jMenuItemValidate
+     */
+    public final JMenuItem getJMenuItemValidate ()
+    {
+      return this.jMenuItemValidate;
+    }
+    
+    /**
+     * Returns the editorPanelTabbedPane.
+     *
+     * @return The editorPanelTabbedPane.
+     * @see #editorPanelTabbedPane
+     */
+    public final EditorPanelTabbedPane getEditorPanelTabbedPane ()
+    {
+      return this.editorPanelTabbedPane;
+    }
+
+    
+    /**
+     * Returns the jCheckBoxMenuItemConsole.
+     *
+     * @return The jCheckBoxMenuItemConsole.
+     * @see #jCheckBoxMenuItemConsole
+     */
+    public final JCheckBoxMenuItem getJCheckBoxMenuItemConsole ()
+    {
+      return this.jCheckBoxMenuItemConsole;
+    }
+
+    
+    /**
+     * Returns the jCheckBoxMenuItemTable.
+     *
+     * @return The jCheckBoxMenuItemTable.
+     * @see #jCheckBoxMenuItemTable
+     */
+    public final JCheckBoxMenuItem getJCheckBoxMenuItemTable ()
+    {
+      return this.jCheckBoxMenuItemTable;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonAddProduction.
+     *
+     * @return The jGTIToolBarButtonAddProduction.
+     * @see #jGTIToolBarButtonAddProduction
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonAddProduction ()
+    {
+      return this.jGTIToolBarButtonAddProduction;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonDeleteProduction.
+     *
+     * @return The jGTIToolBarButtonDeleteProduction.
+     * @see #jGTIToolBarButtonDeleteProduction
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonDeleteProduction ()
+    {
+      return this.jGTIToolBarButtonDeleteProduction;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonEditDocument.
+     *
+     * @return The jGTIToolBarButtonEditDocument.
+     * @see #jGTIToolBarButtonEditDocument
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonEditDocument ()
+    {
+      return this.jGTIToolBarButtonEditDocument;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonEditProduction.
+     *
+     * @return The jGTIToolBarButtonEditProduction.
+     * @see #jGTIToolBarButtonEditProduction
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonEditProduction ()
+    {
+      return this.jGTIToolBarButtonEditProduction;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonNew.
+     *
+     * @return The jGTIToolBarButtonNew.
+     * @see #jGTIToolBarButtonNew
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonNew ()
+    {
+      return this.jGTIToolBarButtonNew;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonNextStep.
+     *
+     * @return The jGTIToolBarButtonNextStep.
+     * @see #jGTIToolBarButtonNextStep
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonNextStep ()
+    {
+      return this.jGTIToolBarButtonNextStep;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonOpen.
+     *
+     * @return The jGTIToolBarButtonOpen.
+     * @see #jGTIToolBarButtonOpen
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonOpen ()
+    {
+      return this.jGTIToolBarButtonOpen;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonPrevious.
+     *
+     * @return The jGTIToolBarButtonPrevious.
+     * @see #jGTIToolBarButtonPrevious
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonPrevious ()
+    {
+      return this.jGTIToolBarButtonPrevious;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonRedo.
+     *
+     * @return The jGTIToolBarButtonRedo.
+     * @see #jGTIToolBarButtonRedo
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonRedo ()
+    {
+      return this.jGTIToolBarButtonRedo;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonSave.
+     *
+     * @return The jGTIToolBarButtonSave.
+     * @see #jGTIToolBarButtonSave
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonSave ()
+    {
+      return this.jGTIToolBarButtonSave;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonSaveAs.
+     *
+     * @return The jGTIToolBarButtonSaveAs.
+     * @see #jGTIToolBarButtonSaveAs
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonSaveAs ()
+    {
+      return this.jGTIToolBarButtonSaveAs;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonStart.
+     *
+     * @return The jGTIToolBarButtonStart.
+     * @see #jGTIToolBarButtonStart
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonStart ()
+    {
+      return this.jGTIToolBarButtonStart;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonStop.
+     *
+     * @return The jGTIToolBarButtonStop.
+     * @see #jGTIToolBarButtonStop
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonStop ()
+    {
+      return this.jGTIToolBarButtonStop;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarButtonUndo.
+     *
+     * @return The jGTIToolBarButtonUndo.
+     * @see #jGTIToolBarButtonUndo
+     */
+    public final JGTIToolBarButton getJGTIToolBarButtonUndo ()
+    {
+      return this.jGTIToolBarButtonUndo;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonAddState.
+     *
+     * @return The jGTIToolBarToggleButtonAddState.
+     * @see #jGTIToolBarToggleButtonAddState
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonAddState ()
+    {
+      return this.jGTIToolBarToggleButtonAddState;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonAddTransition.
+     *
+     * @return The jGTIToolBarToggleButtonAddTransition.
+     * @see #jGTIToolBarToggleButtonAddTransition
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonAddTransition ()
+    {
+      return this.jGTIToolBarToggleButtonAddTransition;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonAutoStep.
+     *
+     * @return The jGTIToolBarToggleButtonAutoStep.
+     * @see #jGTIToolBarToggleButtonAutoStep
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonAutoStep ()
+    {
+      return this.jGTIToolBarToggleButtonAutoStep;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonFinalState.
+     *
+     * @return The jGTIToolBarToggleButtonFinalState.
+     * @see #jGTIToolBarToggleButtonFinalState
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonFinalState ()
+    {
+      return this.jGTIToolBarToggleButtonFinalState;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonMouse.
+     *
+     * @return The jGTIToolBarToggleButtonMouse.
+     * @see #jGTIToolBarToggleButtonMouse
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonMouse ()
+    {
+      return this.jGTIToolBarToggleButtonMouse;
+    }
+
+    
+    /**
+     * Returns the jGTIToolBarToggleButtonStartState.
+     *
+     * @return The jGTIToolBarToggleButtonStartState.
+     * @see #jGTIToolBarToggleButtonStartState
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonStartState ()
+    {
+      return this.jGTIToolBarToggleButtonStartState;
+    }
+
+    
+    /**
+     * Returns the jMenuBarMain.
+     *
+     * @return The jMenuBarMain.
+     * @see #jMenuBarMain
+     */
+    public final JMenuBar getJMenuBarMain ()
+    {
+      return this.jMenuBarMain;
+    }
+
+    
+    /**
+     * Returns the jMenuDraft.
+     *
+     * @return The jMenuDraft.
+     * @see #jMenuDraft
+     */
+    public final JMenu getJMenuDraft ()
+    {
+      return this.jMenuDraft;
+    }
+
+    
+    /**
+     * Returns the jMenuEdit.
+     *
+     * @return The jMenuEdit.
+     * @see #jMenuEdit
+     */
+    public final JMenu getJMenuEdit ()
+    {
+      return this.jMenuEdit;
+    }
+
+    
+    /**
+     * Returns the jMenuExecute.
+     *
+     * @return The jMenuExecute.
+     * @see #jMenuExecute
+     */
+    public final JMenu getJMenuExecute ()
+    {
+      return this.jMenuExecute;
+    }
+
+    
+    /**
+     * Returns the jMenuExtras.
+     *
+     * @return The jMenuExtras.
+     * @see #jMenuExtras
+     */
+    public final JMenu getJMenuExtras ()
+    {
+      return this.jMenuExtras;
+    }
+
+    
+    /**
+     * Returns the jMenuFile.
+     *
+     * @return The jMenuFile.
+     * @see #jMenuFile
+     */
+    public final JMenu getJMenuFile ()
+    {
+      return this.jMenuFile;
+    }
+
+    
+    /**
+     * Returns the jMenuHelp.
+     *
+     * @return The jMenuHelp.
+     * @see #jMenuHelp
+     */
+    public final JMenu getJMenuHelp ()
+    {
+      return this.jMenuHelp;
+    }
+
+    
+    /**
+     * Returns the jMenuItemAbout.
+     *
+     * @return The jMenuItemAbout.
+     * @see #jMenuItemAbout
+     */
+    public final JMenuItem getJMenuItemAbout ()
+    {
+      return this.jMenuItemAbout;
+    }
+
+    
+    /**
+     * Returns the jMenuItemCFG.
+     *
+     * @return The jMenuItemCFG.
+     * @see #jMenuItemCFG
+     */
+    public final JMenuItem getJMenuItemCFG ()
+    {
+      return this.jMenuItemCFG;
+    }
+
+    
+    /**
+     * Returns the jMenuItemDFA.
+     *
+     * @return The jMenuItemDFA.
+     * @see #jMenuItemDFA
+     */
+    public final JMenuItem getJMenuItemDFA ()
+    {
+      return this.jMenuItemDFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemENFA.
+     *
+     * @return The jMenuItemENFA.
+     * @see #jMenuItemENFA
+     */
+    public final JMenuItem getJMenuItemENFA ()
+    {
+      return this.jMenuItemENFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemEditMachine.
+     *
+     * @return The jMenuItemEditMachine.
+     * @see #jMenuItemEditMachine
+     */
+    public final JMenuItem getJMenuItemEditMachine ()
+    {
+      return this.jMenuItemEditMachine;
+    }
+
+    
+    /**
+     * Returns the jMenuItemEnterWord.
+     *
+     * @return The jMenuItemEnterWord.
+     * @see #jMenuItemEnterWord
+     */
+    public final JMenuItem getJMenuItemEnterWord ()
+    {
+      return this.jMenuItemEnterWord;
+    }
+
+    
+    /**
+     * Returns the jMenuItemExchange.
+     *
+     * @return The jMenuItemExchange.
+     * @see #jMenuItemExchange
+     */
+    public final JMenuItem getJMenuItemExchange ()
+    {
+      return this.jMenuItemExchange;
+    }
+
+    
+    /**
+     * Returns the jMenuItemHistory.
+     *
+     * @return The jMenuItemHistory.
+     * @see #jMenuItemHistory
+     */
+    public final JMenuItem getJMenuItemHistory ()
+    {
+      return this.jMenuItemHistory;
+    }
+
+    
+    /**
+     * Returns the jMenuItemNFA.
+     *
+     * @return The jMenuItemNFA.
+     * @see #jMenuItemNFA
+     */
+    public final JMenuItem getJMenuItemNFA ()
+    {
+      return this.jMenuItemNFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemPDA.
+     *
+     * @return The jMenuItemPDA.
+     * @see #jMenuItemPDA
+     */
+    public final JMenuItem getJMenuItemPDA ()
+    {
+      return this.jMenuItemPDA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemQuit.
+     *
+     * @return The jMenuItemQuit.
+     * @see #jMenuItemQuit
+     */
+    public final JMenuItem getJMenuItemQuit ()
+    {
+      return this.jMenuItemQuit;
+    }
+
+    
+    /**
+     * Returns the jMenuItemRG.
+     *
+     * @return The jMenuItemRG.
+     * @see #jMenuItemRG
+     */
+    public final JMenuItem getJMenuItemRG ()
+    {
+      return this.jMenuItemRG;
+    }
+
+    
+    /**
+     * Returns the jMenuRecentlyUsed.
+     *
+     * @return The jMenuRecentlyUsed.
+     * @see #jMenuRecentlyUsed
+     */
+    public final JMenu getJMenuRecentlyUsed ()
+    {
+      return this.jMenuRecentlyUsed;
+    }
+
+    
+    /**
+     * Returns the jMenuView.
+     *
+     * @return The jMenuView.
+     * @see #jMenuView
+     */
+    public final JMenu getJMenuView ()
+    {
+      return this.jMenuView;
+    }
+
+    
+    /**
+     * Returns the jToolBarEdit.
+     *
+     * @return The jToolBarEdit.
+     * @see #jToolBarEdit
+     */
+    public final JToolBar getJToolBarEdit ()
+    {
+      return this.jToolBarEdit;
+    }
+
+    
+    /**
+     * Returns the jToolBarFile.
+     *
+     * @return The jToolBarFile.
+     * @see #jToolBarFile
+     */
+    public final JToolBar getJToolBarFile ()
+    {
+      return this.jToolBarFile;
+    }
+
+    
+    /**
+     * Returns the jToolBarMain.
+     *
+     * @return The jToolBarMain.
+     * @see #jToolBarMain
+     */
+    public final JToolBar getJToolBarMain ()
+    {
+      return this.jToolBarMain;
+    }
+
+    
+    /**
+     * Returns the jToolBarNavigation.
+     *
+     * @return The jToolBarNavigation.
+     * @see #jToolBarNavigation
+     */
+    public final JToolBar getJToolBarNavigation ()
+    {
+      return this.jToolBarNavigation;
+    }
+    
+    /**
+     * Returns the jSeparatorNavigation.
+     *
+     * @return The jSeparatorNavigation.
+     * @see #jSeparatorNavigation
+     */
+    public final JSeparator getJSeparatorNavigation ()
+    {
+      return this.jSeparatorNavigation;
+    }
+
     /**
      * 
      * Get the logic class for this gui class
@@ -113,11 +831,7 @@ public class MainWindowForm extends javax.swing.JFrame {
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemUndo = new javax.swing.JMenuItem();
         jMenuItemRedo = new javax.swing.JMenuItem();
-        jSeparatorEdit1 = new javax.swing.JSeparator();
-        jMenuItemCut = new javax.swing.JMenuItem();
-        jMenuItemCopy = new javax.swing.JMenuItem();
-        jMenuItemPaste = new javax.swing.JMenuItem();
-        jSeparatorEdit2 = new javax.swing.JSeparator();
+        jSeparatorEdit = new javax.swing.JSeparator();
         jMenuItemPreferences = new javax.swing.JMenuItem();
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
@@ -603,27 +1317,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuEdit.add(jMenuItemRedo);
 
-        jMenuEdit.add(jSeparatorEdit1);
-
-        jMenuItemCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/cut16.gif")));
-        jMenuItemCut.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CutMnemonic").charAt(0));
-        jMenuItemCut.setText(bundle.getString("MainWindow.Cut")); // NOI18N
-        jMenuEdit.add(jMenuItemCut);
-
-        jMenuItemCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/copy16.gif")));
-        jMenuItemCopy.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CopyMnemonic").charAt(0));
-        jMenuItemCopy.setText(bundle.getString("MainWindow.Copy")); // NOI18N
-        jMenuEdit.add(jMenuItemCopy);
-
-        jMenuItemPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/paste16.gif")));
-        jMenuItemPaste.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PasteMnemonic").charAt(0));
-        jMenuItemPaste.setText(bundle.getString("MainWindow.Paste")); // NOI18N
-        jMenuEdit.add(jMenuItemPaste);
-
-        jMenuEdit.add(jSeparatorEdit2);
+        jMenuEdit.add(jSeparatorEdit);
 
         jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/preferences16.png")));
         jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
@@ -935,78 +1629,74 @@ public class MainWindowForm extends javax.swing.JFrame {
     }//GEN-LAST:event_handleOpen
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane editorPanelTabbedPane;
-    public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
-    public javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonAddProduction;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditDocument;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditProduction;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonOpen;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPrevious;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonRedo;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSave;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSaveAs;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStart;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStop;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonUndo;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddState;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddTransition;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonFinalState;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
-    public javax.swing.JMenuBar jMenuBarMain;
-    public javax.swing.JMenu jMenuDraft;
-    public javax.swing.JMenu jMenuEdit;
-    public javax.swing.JMenu jMenuExecute;
-    public javax.swing.JMenu jMenuExtras;
-    public javax.swing.JMenu jMenuFile;
-    public javax.swing.JMenu jMenuHelp;
-    public javax.swing.JMenuItem jMenuItemAbout;
-    public javax.swing.JMenuItem jMenuItemCFG;
-    public javax.swing.JMenuItem jMenuItemClose;
-    public javax.swing.JMenuItem jMenuItemCloseAll;
-    public javax.swing.JMenuItem jMenuItemCopy;
-    public javax.swing.JMenuItem jMenuItemCut;
-    public javax.swing.JMenuItem jMenuItemDFA;
-    public javax.swing.JMenuItem jMenuItemENFA;
-    public javax.swing.JMenuItem jMenuItemEditMachine;
-    public javax.swing.JMenuItem jMenuItemEnterWord;
-    public javax.swing.JMenuItem jMenuItemExchange;
-    public javax.swing.JMenuItem jMenuItemHistory;
-    public javax.swing.JMenuItem jMenuItemNFA;
-    public javax.swing.JMenuItem jMenuItemNew;
-    public javax.swing.JMenuItem jMenuItemOpen;
-    public javax.swing.JMenuItem jMenuItemPDA;
-    public javax.swing.JMenuItem jMenuItemPaste;
-    public javax.swing.JMenuItem jMenuItemPreferences;
-    public javax.swing.JMenuItem jMenuItemQuit;
-    public javax.swing.JMenuItem jMenuItemRG;
-    public javax.swing.JMenuItem jMenuItemRedo;
-    public javax.swing.JMenuItem jMenuItemSave;
-    public javax.swing.JMenuItem jMenuItemSaveAll;
-    public javax.swing.JMenuItem jMenuItemSaveAs;
-    public javax.swing.JMenuItem jMenuItemUndo;
-    public javax.swing.JMenuItem jMenuItemValidate;
-    public javax.swing.JMenu jMenuRecentlyUsed;
-    public javax.swing.JMenu jMenuView;
-    public javax.swing.JSeparator jSeparatorEdit1;
-    public javax.swing.JSeparator jSeparatorEdit2;
-    public javax.swing.JSeparator jSeparatorEditNavigation;
-    public javax.swing.JSeparator jSeparatorFile1;
-    public javax.swing.JSeparator jSeparatorFile2;
-    public javax.swing.JSeparator jSeparatorFile3;
-    public javax.swing.JSeparator jSeparatorFileEdit;
-    public javax.swing.JSeparator jSeparatorNavigation;
-    public javax.swing.JToolBar jToolBarEdit;
-    public javax.swing.JToolBar jToolBarFile;
-    public javax.swing.JToolBar jToolBarMain;
-    public javax.swing.JToolBar jToolBarNavigation;
-    public javax.swing.ButtonGroup modeSettingsGroup;
-    public javax.swing.ButtonGroup toolbarButton;
+    private de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane editorPanelTabbedPane;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonAddProduction;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditDocument;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditProduction;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonOpen;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPrevious;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonRedo;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSave;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSaveAs;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStart;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStop;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonUndo;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddState;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddTransition;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonFinalState;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
+    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
+    private javax.swing.JMenuBar jMenuBarMain;
+    private javax.swing.JMenu jMenuDraft;
+    private javax.swing.JMenu jMenuEdit;
+    private javax.swing.JMenu jMenuExecute;
+    private javax.swing.JMenu jMenuExtras;
+    private javax.swing.JMenu jMenuFile;
+    private javax.swing.JMenu jMenuHelp;
+    private javax.swing.JMenuItem jMenuItemAbout;
+    private javax.swing.JMenuItem jMenuItemCFG;
+    private javax.swing.JMenuItem jMenuItemClose;
+    private javax.swing.JMenuItem jMenuItemCloseAll;
+    private javax.swing.JMenuItem jMenuItemDFA;
+    private javax.swing.JMenuItem jMenuItemENFA;
+    private javax.swing.JMenuItem jMenuItemEditMachine;
+    private javax.swing.JMenuItem jMenuItemEnterWord;
+    private javax.swing.JMenuItem jMenuItemExchange;
+    private javax.swing.JMenuItem jMenuItemHistory;
+    private javax.swing.JMenuItem jMenuItemNFA;
+    private javax.swing.JMenuItem jMenuItemNew;
+    private javax.swing.JMenuItem jMenuItemOpen;
+    private javax.swing.JMenuItem jMenuItemPDA;
+    private javax.swing.JMenuItem jMenuItemPreferences;
+    private javax.swing.JMenuItem jMenuItemQuit;
+    private javax.swing.JMenuItem jMenuItemRG;
+    private javax.swing.JMenuItem jMenuItemRedo;
+    private javax.swing.JMenuItem jMenuItemSave;
+    private javax.swing.JMenuItem jMenuItemSaveAll;
+    private javax.swing.JMenuItem jMenuItemSaveAs;
+    private javax.swing.JMenuItem jMenuItemUndo;
+    private javax.swing.JMenuItem jMenuItemValidate;
+    private javax.swing.JMenu jMenuRecentlyUsed;
+    private javax.swing.JMenu jMenuView;
+    private javax.swing.JSeparator jSeparatorEdit;
+    private javax.swing.JSeparator jSeparatorEditNavigation;
+    private javax.swing.JSeparator jSeparatorFile1;
+    private javax.swing.JSeparator jSeparatorFile2;
+    private javax.swing.JSeparator jSeparatorFile3;
+    private javax.swing.JSeparator jSeparatorFileEdit;
+    private javax.swing.JSeparator jSeparatorNavigation;
+    private javax.swing.JToolBar jToolBarEdit;
+    private javax.swing.JToolBar jToolBarFile;
+    private javax.swing.JToolBar jToolBarMain;
+    private javax.swing.JToolBar jToolBarNavigation;
+    private javax.swing.ButtonGroup modeSettingsGroup;
+    private javax.swing.ButtonGroup toolbarButton;
     // End of variables declaration//GEN-END:variables
 
 }

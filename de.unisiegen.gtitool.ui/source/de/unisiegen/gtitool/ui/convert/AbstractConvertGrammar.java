@@ -136,7 +136,7 @@ public abstract class AbstractConvertGrammar implements Converter
   {
     TreeSet < String > nameList = new TreeSet < String > ();
     int count = 0;
-    for ( EditorPanel current : this.mainWindowForm.editorPanelTabbedPane )
+    for ( EditorPanel current : this.mainWindowForm.getEditorPanelTabbedPane () )
     {
       if ( current.getFile () == null )
       {
@@ -155,11 +155,12 @@ public abstract class AbstractConvertGrammar implements Converter
     }
 
     this.newPanel.setName ( name );
-    this.mainWindowForm.editorPanelTabbedPane.addEditorPanel ( this.newPanel );
+    this.mainWindowForm.getEditorPanelTabbedPane ().addEditorPanel (
+        this.newPanel );
     this.newPanel.addModifyStatusChangedListener ( this.mainWindowForm
         .getLogic ().getModifyStatusChangedListener () );
-    this.mainWindowForm.editorPanelTabbedPane
-        .setSelectedEditorPanel ( this.newPanel );
+    this.mainWindowForm.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+        this.newPanel );
   }
 
 
@@ -293,10 +294,10 @@ public abstract class AbstractConvertGrammar implements Converter
     this.pushDownAlphabet = pushDownAlphabet;
   }
 
+
   /**
-   * 
    * Create a new {@link Transition}.
-   *
+   * 
    * @param read The word to read from stack.
    * @param write The word to write to stack.
    * @param source The source {@link DefaultStateView}.
@@ -311,10 +312,10 @@ public abstract class AbstractConvertGrammar implements Converter
     {
       Transition transition;
       transition = new DefaultTransition ( this.alphabet,
-          this.pushDownAlphabet, read, write, source.getState (),
-          target.getState (), symbols );
-      getModel ().createTransitionView ( transition, source, target,
-          false, false, true );
+          this.pushDownAlphabet, read, write, source.getState (), target
+              .getState (), symbols );
+      getModel ().createTransitionView ( transition, source, target, false,
+          false, true );
     }
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
@@ -328,10 +329,9 @@ public abstract class AbstractConvertGrammar implements Converter
   }
 
 
-  
   /**
    * Returns the newPanel.
-   *
+   * 
    * @return The newPanel.
    * @see #newPanel
    */

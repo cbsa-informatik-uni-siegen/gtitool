@@ -101,47 +101,27 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.setTitle ( "GTI Tool " + Version.VERSION ); //$NON-NLS-1$
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
-    // Setting the default states
-    setGeneralStates ( false );
 
-    // Save state
-    setSaveState ( false );
+    setStateGeneral ( false );
+    setStateSave ( false );
+    setStateHistoryItem ();
+    setStateValidate ( false );
+    setStateMenuEnterWord ( false );
 
-    // Item state
-    setItemState ();
-
-    // Copy
-    // Validate
-    this.gui.jMenuItemValidate.setEnabled ( false );
-    // EnterWord
-    this.gui.jMenuItemEnterWord.setEnabled ( false );
     // Edit Machine
-    this.gui.jMenuItemEditMachine.setEnabled ( false );
-    // Preferences
-    this.gui.jMenuItemPreferences.setEnabled ( true );
-    // RecentlyUsed
-    this.gui.jMenuRecentlyUsed.setEnabled ( false );
-    // Draft for
-    this.gui.jMenuDraft.setEnabled ( false );
+    // TODO
+    this.gui.getJMenuItemEditMachine ().setEnabled ( false );
 
-    // // Toolbar items
-    // setToolBarEditItemState ( false );
-    // setToolBarEnterWordItemState ( false );
-    //
-    // this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
-    // this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
-    // this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
-    // this.gui.jGTIToolBarButtonStop.setEnabled ( false );
-
-    activateGrammarButtons ( false );
-    activateMachineButtons ( false );
-    this.gui.jGTIToolBarButtonEditDocument.setEnabled ( false );
+    setStateRecentlyUsed ( false );
+    setStateGrammarButtons ( false );
+    setStateMachineButtons ( false );
+    setStateEditDocument ( false );
 
     // Console and table visibility
-    this.gui.jCheckBoxMenuItemConsole.setSelected ( PreferenceManager
-        .getInstance ().getVisibleConsole () );
-    this.gui.jCheckBoxMenuItemTable.setSelected ( PreferenceManager
-        .getInstance ().getVisibleTable () );
+    this.gui.getJCheckBoxMenuItemConsole ().setSelected (
+        PreferenceManager.getInstance ().getVisibleConsole () );
+    this.gui.getJCheckBoxMenuItemTable ().setSelected (
+        PreferenceManager.getInstance ().getVisibleTable () );
 
     this.gui.setVisible ( true );
     if ( PreferenceManager.getInstance ().getMainWindowMaximized () )
@@ -165,44 +145,9 @@ public final class MainWindow implements LanguageChangedListener
       @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
-        setSaveState ( modified );
+        setStateSave ( modified );
       }
     };
-  }
-
-
-  /**
-   * Show or hide the buttons needed in the GrammarPanel
-   * 
-   * @param state the visible state of the buttons
-   */
-  private void activateGrammarButtons ( boolean state )
-  {
-    this.gui.jGTIToolBarButtonAddProduction.setVisible ( state );
-    this.gui.jGTIToolBarButtonEditProduction.setVisible ( state );
-    this.gui.jGTIToolBarButtonDeleteProduction.setVisible ( state );
-  }
-
-
-  /**
-   * Show or hide the buttons needed in the MachinePanel
-   * 
-   * @param state the visible state of the buttons
-   */
-  private void activateMachineButtons ( boolean state )
-  {
-    this.gui.jSeparatorNavigation.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonMouse.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonAddState.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonStartState.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonFinalState.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonAddTransition.setVisible ( state );
-
-    this.gui.jGTIToolBarButtonStart.setVisible ( state );
-    this.gui.jGTIToolBarButtonPrevious.setVisible ( state );
-    this.gui.jGTIToolBarButtonNextStep.setVisible ( state );
-    this.gui.jGTIToolBarToggleButtonAutoStep.setVisible ( state );
-    this.gui.jGTIToolBarButtonStop.setVisible ( state );
   }
 
 
@@ -244,7 +189,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleAddProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -259,7 +204,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleAutoStepStopped ()
   {
-    this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
+    setStateAutoStep ( false );
   }
 
 
@@ -270,11 +215,11 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean handleClose ()
   {
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null )
+    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () == null )
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
-    return handleClose ( this.gui.editorPanelTabbedPane
+    return handleClose ( this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
   }
 
@@ -305,13 +250,13 @@ public final class MainWindow implements LanguageChangedListener
       }
     }
 
-    this.gui.editorPanelTabbedPane.removeSelectedEditorPanel ();
+    this.gui.getEditorPanelTabbedPane ().removeSelectedEditorPanel ();
     // All editor panels are closed
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null )
+    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () == null )
     {
-      activateGrammarButtons ( false );
-      activateMachineButtons ( false );
-      this.gui.jGTIToolBarButtonEditDocument.setEnabled ( false );
+      setStateGrammarButtons ( false );
+      setStateMachineButtons ( false );
+      setStateEditDocument ( false );
     }
     return true;
   }
@@ -322,7 +267,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleCloseAll ()
   {
-    for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
     {
       // Check if the close was canceled
       if ( !handleClose ( current ) )
@@ -338,14 +283,15 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleConsoleStateChanged ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui.jCheckBoxMenuItemConsole
-        .getState () )
+    if ( PreferenceManager.getInstance ().getVisibleConsole () != this.gui
+        .getJCheckBoxMenuItemConsole ().getState () )
     {
-      panel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
+      panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
+          .getState () );
       PreferenceManager.getInstance ().setVisibleConsole (
-          this.gui.jCheckBoxMenuItemConsole.getState () );
+          this.gui.getJCheckBoxMenuItemConsole ().getState () );
     }
   }
 
@@ -355,7 +301,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleDeleteProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -374,14 +320,14 @@ public final class MainWindow implements LanguageChangedListener
   {
     try
     {
-      DefaultGrammarModel model = new DefaultGrammarModel (
-          this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getModel ()
-              .getElement (), type.toString () );
+      DefaultGrammarModel model = new DefaultGrammarModel ( this.gui
+          .getEditorPanelTabbedPane ().getSelectedEditorPanel ().getModel ()
+          .getElement (), type.toString () );
       EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, null );
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -400,16 +346,15 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       newEditorPanel.setName ( name );
-      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+          newEditorPanel );
 
-      // toolbar items
-      setToolBarEditItemState ( true );
-
+      setStateGeneral ( true );
+      setStateValidate ( true );
+      setStateEditItem ( true );
     }
     catch ( StoreException exc )
     {
@@ -445,14 +390,14 @@ public final class MainWindow implements LanguageChangedListener
   {
     try
     {
-      DefaultMachineModel model = new DefaultMachineModel (
-          this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getModel ()
-              .getElement (), type.toString () );
+      DefaultMachineModel model = new DefaultMachineModel ( this.gui
+          .getEditorPanelTabbedPane ().getSelectedEditorPanel ().getModel ()
+          .getElement (), type.toString () );
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -471,16 +416,15 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       newEditorPanel.setName ( name );
-      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+          newEditorPanel );
 
-      // toolbar items
-      setToolBarEditItemState ( true );
-
+      setStateGeneral ( true );
+      setStateValidate ( true );
+      setStateEditItem ( true );
     }
     catch ( StoreException exc )
     {
@@ -516,7 +460,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEditDocument ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     panel.handleToolbarEditDocument ();
   }
@@ -527,23 +471,26 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEditMachine ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
 
-    setToolBarEditItemState ( true );
-    setToolBarEnterWordItemState ( false );
+    setStateEditItem ( true );
+    setStateEnterWord ( false );
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
-    machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
+    machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
         .getState () );
-    this.gui.jCheckBoxMenuItemConsole.setEnabled ( true );
-    this.gui.jMenuItemEnterWord.setEnabled ( true );
-    this.gui.jMenuItemEditMachine.setEnabled ( false );
-    this.gui.jMenuItemValidate.setEnabled ( true );
+    // TODO
+    this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( true );
+    setStateMenuEnterWord ( true );
+    // TODO
+    this.gui.getJMenuItemEditMachine ().setEnabled ( false );
+
+    setStateValidate ( true );
   }
 
 
@@ -552,7 +499,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEditProduction ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -567,7 +514,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleEnterWord ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -577,14 +524,17 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( handleValidate ( false ) )
     {
-      setToolBarEditItemState ( false );
-      this.gui.jGTIToolBarButtonStart.setEnabled ( true );
+      setStateEditItem ( false );
+      // TODO
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
       machinePanel.handleEnterWord ();
-      this.gui.jCheckBoxMenuItemConsole.setEnabled ( false );
+      // TODO
+      this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( false );
       machinePanel.setVisibleConsole ( false );
-      this.gui.jMenuItemEnterWord.setEnabled ( false );
-      this.gui.jMenuItemEditMachine.setEnabled ( true );
-      this.gui.jMenuItemValidate.setEnabled ( false );
+      setStateMenuEnterWord ( false );
+      // TODO
+      this.gui.getJMenuItemEditMachine ().setEnabled ( true );
+      setStateValidate ( false );
     }
   }
 
@@ -594,7 +544,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleExchange ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel == null )
     {
@@ -613,10 +563,10 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleHistory ()
   {
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
+    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof MachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
-          .getSelectedEditorPanel ();
+      MachinePanel machinePanel = ( MachinePanel ) this.gui
+          .getEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleHistory ();
     }
     else
@@ -639,7 +589,7 @@ public final class MainWindow implements LanguageChangedListener
     {
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -658,16 +608,17 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       newEditorPanel.setName ( name );
-      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+          newEditorPanel );
 
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
+      setStateGeneral ( true );
+      setStateValidate ( true );
 
       // toolbar items
-      setToolBarEditItemState ( true );
+      setStateEditItem ( true );
     }
   }
 
@@ -762,7 +713,7 @@ public final class MainWindow implements LanguageChangedListener
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -781,16 +732,17 @@ public final class MainWindow implements LanguageChangedListener
       }
 
       newEditorPanel.setName ( name );
-      this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+          newEditorPanel );
 
-      setGeneralStates ( true );
-      this.gui.jMenuItemValidate.setEnabled ( true );
+      setStateGeneral ( true );
+      setStateValidate ( true );
 
       // toolbar items
-      setToolBarEditItemState ( true );
+      setStateEditItem ( true );
     }
   }
 
@@ -834,12 +786,13 @@ public final class MainWindow implements LanguageChangedListener
   public final void handleQuit ()
   {
     // Active file
-    File activeFile = this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null ? null
-        : this.gui.editorPanelTabbedPane.getSelectedEditorPanel ().getFile ();
+    File activeFile = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () == null ? null : this.gui
+        .getEditorPanelTabbedPane ().getSelectedEditorPanel ().getFile ();
 
     // Opened file
     ArrayList < File > openedFiles = new ArrayList < File > ();
-    for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
     {
       if ( current.getFile () != null )
       {
@@ -847,12 +800,13 @@ public final class MainWindow implements LanguageChangedListener
       }
     }
     // Close the tabs
-    for ( int i = this.gui.editorPanelTabbedPane.getComponentCount () - 1 ; i >= 0 ; i-- )
+    for ( int i = this.gui.getEditorPanelTabbedPane ().getComponentCount () - 1 ; i >= 0 ; i-- )
     {
-      EditorPanel current = this.gui.editorPanelTabbedPane.getEditorPanel ( i );
+      EditorPanel current = this.gui.getEditorPanelTabbedPane ()
+          .getEditorPanel ( i );
       if ( current.isModified () )
       {
-        this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( current );
+        this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel ( current );
 
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
             Messages.getString (
@@ -865,8 +819,8 @@ public final class MainWindow implements LanguageChangedListener
           File file = current.handleSave ();
           if ( file != null )
           {
-            this.gui.editorPanelTabbedPane.setEditorPanelTitle ( current, file
-                .getName () );
+            this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle ( current,
+                file.getName () );
           }
         }
         else if ( confirmDialog.isCanceled () )
@@ -874,7 +828,7 @@ public final class MainWindow implements LanguageChangedListener
           return;
         }
       }
-      this.gui.editorPanelTabbedPane.removeEditorPanel ( current );
+      this.gui.getEditorPanelTabbedPane ().removeEditorPanel ( current );
     }
     PreferenceManager.getInstance ().setMainWindowPreferences ( this.gui );
     PreferenceManager.getInstance ().setOpenedFilesItem (
@@ -898,7 +852,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleRedo ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
@@ -912,11 +866,11 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleSave ()
   {
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null )
+    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () == null )
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
-    handleSave ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () );
+    handleSave ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () );
   }
 
 
@@ -935,16 +889,16 @@ public final class MainWindow implements LanguageChangedListener
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
 
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
-        if ( ( !current.equals ( this.gui.editorPanelTabbedPane
+        if ( ( !current.equals ( this.gui.getEditorPanelTabbedPane ()
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
-          this.gui.editorPanelTabbedPane.removeEditorPanel ( current );
+          this.gui.getEditorPanelTabbedPane ().removeEditorPanel ( current );
         }
       }
-      this.gui.editorPanelTabbedPane.setEditorPanelTitle ( panel, file
-          .getName () );
+      this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle ( panel,
+          file.getName () );
     }
   }
 
@@ -954,14 +908,14 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleSaveAll ()
   {
-    EditorPanel active = this.gui.editorPanelTabbedPane
+    EditorPanel active = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
     {
-      this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( current );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel ( current );
       handleSave ( current );
     }
-    this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( active );
+    this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel ( active );
   }
 
 
@@ -970,7 +924,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleSaveAs ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     File file = panel.handleSaveAs ();
     if ( file != null )
@@ -979,16 +933,16 @@ public final class MainWindow implements LanguageChangedListener
       this.recentlyUsedFiles.remove ( item );
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
-        if ( ( !current.equals ( this.gui.editorPanelTabbedPane
+        if ( ( !current.equals ( this.gui.getEditorPanelTabbedPane ()
             .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
         {
-          this.gui.editorPanelTabbedPane.removeEditorPanel ( current );
+          this.gui.getEditorPanelTabbedPane ().removeEditorPanel ( current );
         }
       }
-      this.gui.editorPanelTabbedPane.setEditorPanelTitle ( panel, file
-          .getName () );
+      this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle ( panel,
+          file.getName () );
     }
   }
 
@@ -1000,8 +954,9 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTabbedPaneMouseReleased ( MouseEvent event )
   {
-    int tabIndex = this.gui.editorPanelTabbedPane.getUI ().tabForCoordinate (
-        this.gui.editorPanelTabbedPane, event.getX (), event.getY () );
+    int tabIndex = this.gui.getEditorPanelTabbedPane ().getUI ()
+        .tabForCoordinate ( this.gui.getEditorPanelTabbedPane (),
+            event.getX (), event.getY () );
 
     if ( ( event.getButton () == MouseEvent.BUTTON1 )
         && ( event.getClickCount () >= 2 ) && ( tabIndex == -1 ) )
@@ -1030,83 +985,84 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTabbedPaneStateChanged ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
-      activateMachineButtons ( panel instanceof MachinePanel );
-      activateGrammarButtons ( panel instanceof GrammarPanel );
+      setStateMachineButtons ( panel instanceof MachinePanel );
+      setStateGrammarButtons ( panel instanceof GrammarPanel );
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
-
-        this.gui.jMenuItemDFA.setEnabled ( true );
-        this.gui.jMenuItemNFA.setEnabled ( true );
-        this.gui.jMenuItemPDA.setEnabled ( true );
-        this.gui.jMenuItemENFA.setEnabled ( true );
-        this.gui.jMenuItemRG.setEnabled ( false );
-        this.gui.jMenuItemCFG.setEnabled ( false );
+        setStateDraftForItems ( true );
 
         MachinePanel machinePanel = ( MachinePanel ) panel;
-        this.gui.jCheckBoxMenuItemConsole.setEnabled ( !machinePanel
-            .isWordEnterMode () );
-        machinePanel.setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole
-            .getState ()
+        // TODO
+        this.gui.getJCheckBoxMenuItemConsole ().setEnabled (
+            !machinePanel.isWordEnterMode () );
+        // TODO
+        machinePanel.setVisibleConsole ( this.gui
+            .getJCheckBoxMenuItemConsole ().getState ()
             && !machinePanel.isWordEnterMode () );
-        machinePanel.setVisibleTable ( this.gui.jCheckBoxMenuItemTable
+        // TODO
+        machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .getState () );
-        setToolBarEditItemState ( !machinePanel.isWordEnterMode () );
-        setToolBarEnterWordItemState ( machinePanel.isWordEnterMode () );
-        this.gui.jMenuItemEditMachine.setEnabled ( machinePanel
-            .isWordEnterMode () );
-        this.gui.jMenuItemValidate.setEnabled ( !machinePanel
-            .isWordEnterMode () );
-        this.gui.jMenuItemEnterWord.setEnabled ( !machinePanel
-            .isWordEnterMode () );
-        this.gui.jCheckBoxMenuItemTable.setEnabled ( true );
-        this.gui.jMenuItemEnterWord.setEnabled ( true );
+        setStateEditItem ( !machinePanel.isWordEnterMode () );
+        setStateEnterWord ( machinePanel.isWordEnterMode () );
+        // TODO
+        this.gui.getJMenuItemEditMachine ().setEnabled (
+            machinePanel.isWordEnterMode () );
+        // TODO
+        this.gui.getJMenuItemValidate ().setEnabled (
+            !machinePanel.isWordEnterMode () );
+        setStateMenuEnterWord ( !machinePanel.isWordEnterMode () );
+        // TODO
+        this.gui.getJCheckBoxMenuItemTable ().setEnabled ( true );
 
         // Set the status of the word navigation icons
-        this.gui.jGTIToolBarButtonStart.setEnabled ( machinePanel
-            .isWordEnterMode ()
-            && !machinePanel.isWordNavigation () );
-        this.gui.jGTIToolBarButtonPrevious.setEnabled ( machinePanel
-            .isWordNavigation () );
-        this.gui.jGTIToolBarButtonNextStep.setEnabled ( machinePanel
-            .isWordNavigation () );
-        this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( machinePanel
-            .isWordNavigation () );
-        this.gui.jGTIToolBarButtonStop.setEnabled ( machinePanel
-            .isWordNavigation () );
+        // TODO
+        this.gui.getJGTIToolBarButtonStart ().setEnabled (
+            machinePanel.isWordEnterMode ()
+                && !machinePanel.isWordNavigation () );
+        // TODO
+        this.gui.getJGTIToolBarButtonPrevious ().setEnabled (
+            machinePanel.isWordNavigation () );
+        // TODO
+        this.gui.getJGTIToolBarButtonNextStep ().setEnabled (
+            machinePanel.isWordNavigation () );
+        // TODO
+        this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled (
+            machinePanel.isWordNavigation () );
+        // TODO
+        this.gui.getJGTIToolBarButtonStop ().setEnabled (
+            machinePanel.isWordNavigation () );
 
       }
-      // Grammar Panel
+      // GrammarPanel
+      else if ( panel instanceof GrammarPanel )
+      {
+        // TODO
+        this.gui.getJCheckBoxMenuItemTable ().setEnabled ( false );
+        panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
+            .getState () );
+        setStateMenuEnterWord ( false );
+
+        setStateDraftForItems ( false );
+      }
       else
       {
-        this.gui.jCheckBoxMenuItemTable.setEnabled ( false );
-        panel
-            .setVisibleConsole ( this.gui.jCheckBoxMenuItemConsole.getState () );
-        this.gui.jMenuItemEnterWord.setEnabled ( false );
-        this.gui.jMenuItemDFA.setEnabled ( false );
-        this.gui.jMenuItemNFA.setEnabled ( false );
-        this.gui.jMenuItemPDA.setEnabled ( false );
-        this.gui.jMenuItemENFA.setEnabled ( false );
-        this.gui.jMenuItemRG.setEnabled ( true );
-        this.gui.jMenuItemCFG.setEnabled ( true );
+        throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
-      // Undo
-      this.gui.jMenuItemUndo.setEnabled ( panel.isUndoAble () );
-      this.gui.jGTIToolBarButtonUndo.setEnabled ( panel.isUndoAble () );
-      // Redo
-      this.gui.jMenuItemRedo.setEnabled ( panel.isRedoAble () );
-      this.gui.jGTIToolBarButtonRedo.setEnabled ( panel.isRedoAble () );
+
+      setStateUndo ( panel.isUndoAble () );
+      setStateRedo ( panel.isRedoAble () );
     }
 
     // Save status
-    setSaveState ();
+    setStateSave ();
 
     // Item status
-    setItemState ();
+    setStateHistoryItem ();
   }
 
 
@@ -1115,18 +1071,18 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTableStateChanged ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ( panel instanceof MachinePanel ) )
     {
       MachinePanel machinePanel = ( MachinePanel ) panel;
 
-      if ( PreferenceManager.getInstance ().getVisibleTable () != this.gui.jCheckBoxMenuItemTable
-          .getState () )
+      if ( PreferenceManager.getInstance ().getVisibleTable () != this.gui
+          .getJCheckBoxMenuItemTable ().getState () )
       {
         PreferenceManager.getInstance ().setVisibleTable (
-            this.gui.jCheckBoxMenuItemTable.getState () );
-        machinePanel.setVisibleTable ( this.gui.jCheckBoxMenuItemTable
+            this.gui.getJCheckBoxMenuItemTable ().getState () );
+        machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .getState () );
       }
     }
@@ -1141,7 +1097,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarAddState ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel panel : this.gui.getEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -1160,7 +1116,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarEnd ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel panel : this.gui.getEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -1179,7 +1135,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarMouse ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel panel : this.gui.getEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -1198,7 +1154,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarStart ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel panel : this.gui.getEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -1217,7 +1173,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleToolbarTransition ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel panel : this.gui.getEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -1234,7 +1190,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleUndo ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
@@ -1261,7 +1217,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean handleValidate ( boolean showDialogIfWarning )
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     int errorCount = 0;
@@ -1491,7 +1447,7 @@ public final class MainWindow implements LanguageChangedListener
                   : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
     }
 
-    this.gui.jCheckBoxMenuItemConsole.setSelected ( true );
+    setStateConsole ( true );
     panel.setVisibleConsole ( true );
 
     infoDialog.show ();
@@ -1506,7 +1462,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordAutoStep ( ItemEvent event )
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1523,7 +1479,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordNextStep ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1540,7 +1496,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordPreviousStep ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1557,7 +1513,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordStart ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1567,15 +1523,11 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( machinePanel.handleWordStart () )
     {
-      this.gui.jGTIToolBarButtonStart.setEnabled ( false );
-      this.gui.jGTIToolBarButtonNextStep.setEnabled ( true );
-      this.gui.jGTIToolBarButtonPrevious.setEnabled ( true );
-      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( true );
-      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
+      setStateWordNavigation ( true );
     }
 
     // Item status
-    setItemState ();
+    setStateHistoryItem ();
   }
 
 
@@ -1584,7 +1536,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleWordStop ()
   {
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1592,15 +1544,12 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    this.gui.jGTIToolBarButtonStart.setEnabled ( true );
-    this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
-    this.gui.jGTIToolBarButtonPrevious.setEnabled ( false );
-    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
-    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+    setStateWordNavigation ( false );
+
     machinePanel.handleWordStop ();
 
     // Item status
-    setItemState ();
+    setStateHistoryItem ();
   }
 
 
@@ -1611,7 +1560,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean isCloseActiveState ()
   {
-    return this.gui.jMenuItemClose.isEnabled ();
+    return this.gui.getJMenuItemClose ().isEnabled ();
   }
 
 
@@ -1622,7 +1571,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean isCloseAllActiveState ()
   {
-    return this.gui.jMenuItemCloseAll.isEnabled ();
+    return this.gui.getJMenuItemCloseAll ().isEnabled ();
   }
 
 
@@ -1633,7 +1582,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean isNewActiveState ()
   {
-    return this.gui.jMenuItemNew.isEnabled ();
+    return this.gui.getJMenuItemNew ().isEnabled ();
   }
 
 
@@ -1644,7 +1593,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean isSaveActiveState ()
   {
-    return this.gui.jMenuItemSave.isEnabled ();
+    return this.gui.getJMenuItemSave ().isEnabled ();
   }
 
 
@@ -1655,7 +1604,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final boolean isSaveAsActiveState ()
   {
-    return this.gui.jMenuItemSaveAs.isEnabled ();
+    return this.gui.getJMenuItemSaveAs ().isEnabled ();
   }
 
 
@@ -1667,214 +1616,198 @@ public final class MainWindow implements LanguageChangedListener
   public final void languageChanged ()
   {
     // File
-    MainWindow.this.gui.jMenuFile.setText ( Messages
-        .getString ( "MainWindow.File" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuFile.setMnemonic ( Messages.getString (
-        "MainWindow.FileMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuFile ().setText (
+        Messages.getString ( "MainWindow.File" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuFile ().setMnemonic (
+        Messages.getString ( "MainWindow.FileMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // New
-    MainWindow.this.gui.jMenuItemNew.setText ( Messages
-        .getString ( "MainWindow.New" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemNew.setMnemonic ( Messages.getString (
-        "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jGTIToolBarButtonNew.setToolTipText ( Messages
-        .getString ( "MainWindow.NewToolTip" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemNew ().setText (
+        Messages.getString ( "MainWindow.New" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemNew ().setMnemonic (
+        Messages.getString ( "MainWindow.NewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonNew ().setToolTipText (
+        Messages.getString ( "MainWindow.NewToolTip" ) ); //$NON-NLS-1$
     // Open
-    MainWindow.this.gui.jMenuItemOpen.setText ( Messages
-        .getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemOpen.setMnemonic ( Messages.getString (
-        "MainWindow.OpenMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jGTIToolBarButtonOpen.setToolTipText ( Messages
-        .getString ( "MainWindow.OpenToolTip" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemOpen ().setText (
+        Messages.getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemOpen ().setMnemonic (
+        Messages.getString ( "MainWindow.OpenMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonOpen ().setToolTipText (
+        Messages.getString ( "MainWindow.OpenToolTip" ) ); //$NON-NLS-1$
     // Close
-    MainWindow.this.gui.jMenuItemClose.setText ( Messages
-        .getString ( "MainWindow.Close" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemClose.setMnemonic ( Messages.getString (
-        "MainWindow.CloseMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemClose ().setText (
+        Messages.getString ( "MainWindow.Close" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemClose ().setMnemonic (
+        Messages.getString ( "MainWindow.CloseMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // CloseAll
-    MainWindow.this.gui.jMenuItemCloseAll.setText ( Messages
-        .getString ( "MainWindow.CloseAll" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemCloseAll.setMnemonic ( Messages.getString (
-        "MainWindow.CloseAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCloseAll ().setText (
+        Messages.getString ( "MainWindow.CloseAll" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemCloseAll ().setMnemonic (
+        Messages.getString ( "MainWindow.CloseAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Save
-    MainWindow.this.gui.jMenuItemSave.setText ( Messages
-        .getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemSave.setMnemonic ( Messages.getString (
-        "MainWindow.SaveMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jGTIToolBarButtonSave.setToolTipText ( Messages
-        .getString ( "MainWindow.SaveToolTip" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSave ().setText (
+        Messages.getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSave ().setMnemonic (
+        Messages.getString ( "MainWindow.SaveMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonSave ().setToolTipText (
+        Messages.getString ( "MainWindow.SaveToolTip" ) ); //$NON-NLS-1$
     // SaveAs
-    MainWindow.this.gui.jMenuItemSaveAs.setText ( Messages
-        .getString ( "MainWindow.SaveAs" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemSaveAs.setMnemonic ( Messages.getString (
-        "MainWindow.SaveAsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jGTIToolBarButtonSaveAs.setToolTipText ( Messages
-        .getString ( "MainWindow.SaveAsToolTip" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSaveAs ().setText (
+        Messages.getString ( "MainWindow.SaveAs" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSaveAs ().setMnemonic (
+        Messages.getString ( "MainWindow.SaveAsMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonSaveAs ().setToolTipText (
+        Messages.getString ( "MainWindow.SaveAsToolTip" ) ); //$NON-NLS-1$
     // SaveAll
-    MainWindow.this.gui.jMenuItemSaveAll.setText ( Messages
-        .getString ( "MainWindow.SaveAll" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemSaveAll.setMnemonic ( Messages.getString (
-        "MainWindow.SaveAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSaveAll ().setText (
+        Messages.getString ( "MainWindow.SaveAll" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemSaveAll ().setMnemonic (
+        Messages.getString ( "MainWindow.SaveAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Draft for
-    MainWindow.this.gui.jMenuDraft.setText ( Messages
-        .getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuDraft.setMnemonic ( Messages.getString (
-        "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemDFA.setText ( Messages
-        .getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemNFA.setText ( Messages
-        .getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemENFA.setText ( Messages
-        .getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemPDA.setText ( Messages
-        .getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuDraft ().setText (
+        Messages.getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuDraft ().setMnemonic (
+        Messages.getString ( "MainWindow.DraftForMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemDFA ().setText (
+        Messages.getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemNFA ().setText (
+        Messages.getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemENFA ().setText (
+        Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemPDA ().setText (
+        Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
     // RecentlyUsed
-    MainWindow.this.gui.jMenuRecentlyUsed.setText ( Messages
-        .getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuRecentlyUsed.setMnemonic ( Messages.getString (
-        "MainWindow.RecentlyUsedMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuRecentlyUsed ().setText (
+        Messages.getString ( "MainWindow.RecentlyUsed" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuRecentlyUsed ().setMnemonic (
+        Messages.getString ( "MainWindow.RecentlyUsedMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Quit
-    MainWindow.this.gui.jMenuItemQuit.setText ( Messages
-        .getString ( "MainWindow.Quit" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemQuit.setMnemonic ( Messages.getString (
-        "MainWindow.QuitMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemQuit ().setText (
+        Messages.getString ( "MainWindow.Quit" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemQuit ().setMnemonic (
+        Messages.getString ( "MainWindow.QuitMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Edit
-    MainWindow.this.gui.jMenuEdit.setText ( Messages
-        .getString ( "MainWindow.Edit" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuEdit.setMnemonic ( Messages.getString (
-        "MainWindow.EditMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    // Cut
-    MainWindow.this.gui.jMenuItemCut.setText ( Messages
-        .getString ( "MainWindow.Cut" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemCut.setMnemonic ( Messages.getString (
-        "MainWindow.CutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    // Copy
-    MainWindow.this.gui.jMenuItemCopy.setText ( Messages
-        .getString ( "MainWindow.Copy" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemCopy.setMnemonic ( Messages.getString (
-        "MainWindow.CopyMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
-    // Paste
-    MainWindow.this.gui.jMenuItemPaste.setText ( Messages
-        .getString ( "MainWindow.Paste" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemPaste.setMnemonic ( Messages.getString (
-        "MainWindow.PasteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuEdit ().setText (
+        Messages.getString ( "MainWindow.Edit" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuEdit ().setMnemonic (
+        Messages.getString ( "MainWindow.EditMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Undo
-    MainWindow.this.gui.jMenuItemUndo.setText ( Messages
-        .getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemUndo.setMnemonic ( Messages.getString (
-        "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemUndo ().setText (
+        Messages.getString ( "MainWindow.Undo" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemUndo ().setMnemonic (
+        Messages.getString ( "MainWindow.UndoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Redo
-    MainWindow.this.gui.jMenuItemRedo.setText ( Messages
-        .getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemRedo.setMnemonic ( Messages.getString (
-        "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemRedo ().setText (
+        Messages.getString ( "MainWindow.Redo" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemRedo ().setMnemonic (
+        Messages.getString ( "MainWindow.RedoMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Preferences
-    MainWindow.this.gui.jMenuItemPreferences.setText ( Messages
-        .getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemPreferences.setMnemonic ( Messages.getString (
-        "MainWindow.PreferencesMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemPreferences ().setText (
+        Messages.getString ( "MainWindow.Preferences" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemPreferences ().setMnemonic (
+        Messages.getString ( "MainWindow.PreferencesMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // View
-    MainWindow.this.gui.jMenuView.setText ( Messages
-        .getString ( "MainWindow.View" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuView.setMnemonic ( Messages.getString (
-        "MainWindow.ViewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuView ().setText (
+        Messages.getString ( "MainWindow.View" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuView ().setMnemonic (
+        Messages.getString ( "MainWindow.ViewMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Console
-    MainWindow.this.gui.jCheckBoxMenuItemConsole.setText ( Messages
-        .getString ( "MainWindow.Console" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jCheckBoxMenuItemConsole.setMnemonic ( Messages
-        .getString ( "MainWindow.ConsoleMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemConsole ().setText (
+        Messages.getString ( "MainWindow.Console" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemConsole ().setMnemonic (
+        Messages.getString ( "MainWindow.ConsoleMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Table
-    MainWindow.this.gui.jCheckBoxMenuItemTable.setText ( Messages
-        .getString ( "MainWindow.Table" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jCheckBoxMenuItemTable.setMnemonic ( Messages
-        .getString ( "MainWindow.TableMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemTable ().setText (
+        Messages.getString ( "MainWindow.Table" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJCheckBoxMenuItemTable ().setMnemonic (
+        Messages.getString ( "MainWindow.TableMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Execute
-    MainWindow.this.gui.jMenuExecute.setText ( Messages
-        .getString ( "MainWindow.Execute" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuExecute.setMnemonic ( Messages.getString (
-        "MainWindow.ExecuteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuExecute ().setText (
+        Messages.getString ( "MainWindow.Execute" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuExecute ().setMnemonic (
+        Messages.getString ( "MainWindow.ExecuteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Validate
-    MainWindow.this.gui.jMenuItemValidate.setText ( Messages
-        .getString ( "MainWindow.Validate" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemValidate.setMnemonic ( Messages.getString (
-        "MainWindow.ValidateMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemValidate ().setText (
+        Messages.getString ( "MainWindow.Validate" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemValidate ().setMnemonic (
+        Messages.getString ( "MainWindow.ValidateMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // EnterWord
-    MainWindow.this.gui.jMenuItemEnterWord.setText ( Messages
-        .getString ( "MainWindow.EnterWord" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemEnterWord.setMnemonic ( Messages.getString (
-        "MainWindow.EnterWordMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEnterWord ().setText (
+        Messages.getString ( "MainWindow.EnterWord" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEnterWord ().setMnemonic (
+        Messages.getString ( "MainWindow.EnterWordMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // History
-    MainWindow.this.gui.jMenuItemHistory.setText ( Messages
-        .getString ( "MainWindow.History" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemHistory.setMnemonic ( Messages.getString (
-        "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemHistory ().setText (
+        Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemHistory ().setMnemonic (
+        Messages.getString ( "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // EditMachine
-    MainWindow.this.gui.jMenuItemEditMachine.setText ( Messages
-        .getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemEditMachine.setMnemonic ( Messages.getString (
-        "MainWindow.EditMachineMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEditMachine ().setText (
+        Messages.getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemEditMachine ().setMnemonic (
+        Messages.getString ( "MainWindow.EditMachineMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Extras
-    MainWindow.this.gui.jMenuExtras.setText ( Messages
-        .getString ( "MainWindow.Extras" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuExtras.setMnemonic ( Messages.getString (
-        "MainWindow.ExtrasMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuExtras ().setText (
+        Messages.getString ( "MainWindow.Extras" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuExtras ().setMnemonic (
+        Messages.getString ( "MainWindow.ExtrasMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Exchange
-    MainWindow.this.gui.jMenuItemExchange.setText ( Messages
-        .getString ( "MainWindow.Exchange" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemExchange.setMnemonic ( Messages.getString (
-        "MainWindow.ExchangeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemExchange ().setText (
+        Messages.getString ( "MainWindow.Exchange" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemExchange ().setMnemonic (
+        Messages.getString ( "MainWindow.ExchangeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Help
-    MainWindow.this.gui.jMenuHelp.setText ( Messages
-        .getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuHelp.setMnemonic ( Messages.getString (
-        "MainWindow.HelpMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuHelp ().setText (
+        Messages.getString ( "MainWindow.Help" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuHelp ().setMnemonic (
+        Messages.getString ( "MainWindow.HelpMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // About
-    MainWindow.this.gui.jMenuItemAbout.setText ( Messages
-        .getString ( "MainWindow.About" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.jMenuItemAbout.setMnemonic ( Messages.getString (
-        "MainWindow.AboutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemAbout ().setText (
+        Messages.getString ( "MainWindow.About" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemAbout ().setMnemonic (
+        Messages.getString ( "MainWindow.AboutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Mouse
-    MainWindow.this.gui.jGTIToolBarToggleButtonMouse.setToolTipText ( Messages
-        .getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarToggleButtonMouse ().setToolTipText (
+        Messages.getString ( "MachinePanel.Mouse" ) ); //$NON-NLS-1$
     // Add state
-    MainWindow.this.gui.jGTIToolBarToggleButtonAddState
-        .setToolTipText ( Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarToggleButtonAddState ().setToolTipText (
+        Messages.getString ( "MachinePanel.AddState" ) ); //$NON-NLS-1$
     // Add transition
-    MainWindow.this.gui.jGTIToolBarToggleButtonAddTransition
+    MainWindow.this.gui.getJGTIToolBarToggleButtonAddTransition ()
         .setToolTipText ( Messages.getString ( "MachinePanel.AddTransition" ) ); //$NON-NLS-1$
     // Start state
-    MainWindow.this.gui.jGTIToolBarToggleButtonStartState
-        .setToolTipText ( Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarToggleButtonStartState ().setToolTipText (
+        Messages.getString ( "MachinePanel.StartState" ) ); //$NON-NLS-1$
     // Final state
-    MainWindow.this.gui.jGTIToolBarToggleButtonFinalState
-        .setToolTipText ( Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarToggleButtonFinalState ().setToolTipText (
+        Messages.getString ( "MachinePanel.FinalState" ) ); //$NON-NLS-1$
     // Edit Document
-    MainWindow.this.gui.jGTIToolBarButtonEditDocument.setToolTipText ( Messages
-        .getString ( "MachinePanel.EditDocument" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonEditDocument ().setToolTipText (
+        Messages.getString ( "MachinePanel.EditDocument" ) ); //$NON-NLS-1$
     // Previous Step
-    MainWindow.this.gui.jGTIToolBarButtonPrevious.setToolTipText ( Messages
-        .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonPrevious ().setToolTipText (
+        Messages.getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
     // Start Word
-    MainWindow.this.gui.jGTIToolBarButtonStart.setToolTipText ( Messages
-        .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonStart ().setToolTipText (
+        Messages.getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
     // Next Step
-    MainWindow.this.gui.jGTIToolBarButtonNextStep.setToolTipText ( Messages
-        .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonNextStep ().setToolTipText (
+        Messages.getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
     // Auto Step
-    MainWindow.this.gui.jGTIToolBarToggleButtonAutoStep
-        .setToolTipText ( Messages.getString ( "MachinePanel.WordModeAutoStep" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarToggleButtonAutoStep ().setToolTipText (
+        Messages.getString ( "MachinePanel.WordModeAutoStep" ) ); //$NON-NLS-1$
     // Stop Word
-    MainWindow.this.gui.jGTIToolBarButtonStop.setToolTipText ( Messages
-        .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonStop ().setToolTipText (
+        Messages.getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     // Add production
-    MainWindow.this.gui.jGTIToolBarButtonAddProduction
-        .setToolTipText ( Messages.getString ( "GrammarPanel.AddProduction" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonAddProduction ().setToolTipText (
+        Messages.getString ( "GrammarPanel.AddProduction" ) ); //$NON-NLS-1$
     // Edit production
-    MainWindow.this.gui.jGTIToolBarButtonEditProduction
-        .setToolTipText ( Messages
-            .getString ( "GrammarPanel.ProductionProperties" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonEditProduction ().setToolTipText (
+        Messages.getString ( "GrammarPanel.ProductionProperties" ) ); //$NON-NLS-1$
     // Delete production
-    MainWindow.this.gui.jGTIToolBarButtonDeleteProduction
-        .setToolTipText ( Messages.getString ( "GrammarPanel.DeleteProduction" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJGTIToolBarButtonDeleteProduction ().setToolTipText (
+        Messages.getString ( "GrammarPanel.DeleteProduction" ) ); //$NON-NLS-1$
   }
 
 
@@ -1888,11 +1821,11 @@ public final class MainWindow implements LanguageChangedListener
   public final void openFile ( File file, boolean addToRecentlyUsed )
   {
     // check if we already have an editor panel for the file
-    for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+    for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
     {
       if ( file.equals ( current.getFile () ) )
       {
-        this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( current );
+        this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel ( current );
 
         // reorganize recently used files
         if ( addToRecentlyUsed )
@@ -1920,32 +1853,37 @@ public final class MainWindow implements LanguageChangedListener
         DefaultMachineModel model = ( DefaultMachineModel ) element;
         EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
-        this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+        this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
         newEditorPanel
             .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-        this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
-        this.gui.editorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel,
-            file.getName () );
-        setGeneralStates ( true );
-        this.gui.jMenuItemValidate.setEnabled ( true );
+        this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+            newEditorPanel );
+        this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle (
+            newEditorPanel, file.getName () );
 
-        // toolbar items
-        setToolBarEditItemState ( true );
+        setStateGeneral ( true );
+        setStateValidate ( true );
+        setStateEditItem ( true );
       }
-
-      else
+      else if ( element instanceof DefaultGrammarModel )
       {
         DefaultGrammarModel model = ( DefaultGrammarModel ) element;
 
         EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, file );
 
-        this.gui.editorPanelTabbedPane.addEditorPanel ( newEditorPanel );
+        this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
         newEditorPanel
             .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-        this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( newEditorPanel );
-        this.gui.editorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel,
-            file.getName () );
-        setGeneralStates ( true );
+        this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+            newEditorPanel );
+        this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle (
+            newEditorPanel, file.getName () );
+
+        setStateGeneral ( true );
+      }
+      else
+      {
+        throw new RuntimeException ( "not supported element" ); //$NON-NLS-1$
       }
 
       // reorganize recently used files
@@ -1979,13 +1917,13 @@ public final class MainWindow implements LanguageChangedListener
   {
     ArrayList < RecentlyUsedMenuItem > notExistingFiles = new ArrayList < RecentlyUsedMenuItem > ();
 
-    this.gui.jMenuRecentlyUsed.removeAll ();
+    this.gui.getJMenuRecentlyUsed ().removeAll ();
 
     for ( RecentlyUsedMenuItem item : this.recentlyUsedFiles )
     {
       if ( item.getFile ().exists () )
       {
-        this.gui.jMenuRecentlyUsed.add ( item );
+        this.gui.getJMenuRecentlyUsed ().add ( item );
       }
       else
       {
@@ -1995,14 +1933,7 @@ public final class MainWindow implements LanguageChangedListener
 
     this.recentlyUsedFiles.removeAll ( notExistingFiles );
 
-    if ( this.recentlyUsedFiles.size () > 0 )
-    {
-      this.gui.jMenuRecentlyUsed.setEnabled ( true );
-    }
-    else
-    {
-      this.gui.jMenuRecentlyUsed.setEnabled ( false );
-    }
+    setStateRecentlyUsed ( this.recentlyUsedFiles.size () > 0 );
   }
 
 
@@ -2020,12 +1951,13 @@ public final class MainWindow implements LanguageChangedListener
         .getActiveFile ();
     if ( activeFile != null )
     {
-      for ( EditorPanel current : this.gui.editorPanelTabbedPane )
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
       {
         if ( current.getFile ().getAbsolutePath ().equals (
             activeFile.getAbsolutePath () ) )
         {
-          this.gui.editorPanelTabbedPane.setSelectedEditorPanel ( current );
+          this.gui.getEditorPanelTabbedPane ()
+              .setSelectedEditorPanel ( current );
           break;
         }
       }
@@ -2034,88 +1966,248 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets general states for items and buttons.
+   * Sets the auto step state.
    * 
    * @param state The new state.
    */
-  private final void setGeneralStates ( boolean state )
+  public final void setStateAutoStep ( boolean state )
   {
-    // SaveAs
-    this.gui.jGTIToolBarButtonSaveAs.setEnabled ( state );
-    this.gui.jMenuItemSaveAs.setEnabled ( state );
-    // SaveAll
-    this.gui.jMenuItemSaveAll.setEnabled ( state );
-    // Close
-    this.gui.jMenuItemClose.setEnabled ( state );
-    // CloseAll
-    this.gui.jMenuItemCloseAll.setEnabled ( state );
-    // View
-    this.gui.jCheckBoxMenuItemConsole.setEnabled ( state );
-    this.gui.jCheckBoxMenuItemTable.setEnabled ( state );
-    // Enter word
-    this.gui.jMenuItemEnterWord.setEnabled ( state );
-    // Cut
-    this.gui.jMenuItemCut.setVisible ( false );
-    // Copy
-    this.gui.jMenuItemCopy.setVisible ( false );
-    // Paste
-    this.gui.jMenuItemPaste.setVisible ( false );
-    // Undo
-    this.gui.jMenuItemUndo.setEnabled ( false );
-    this.gui.jGTIToolBarButtonUndo.setEnabled ( false );
-    // Redo
-    this.gui.jMenuItemRedo.setEnabled ( false );
-    this.gui.jGTIToolBarButtonRedo.setEnabled ( false );
-    // Separator
-    this.gui.jSeparatorEdit1.setVisible ( false );
-    this.gui.jSeparatorEdit2.setVisible ( false );
-    // Edit document
-    this.gui.jGTIToolBarButtonEditDocument.setEnabled ( state );
-    // Draft for
-    this.gui.jMenuDraft.setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( state );
   }
 
 
   /**
-   * Sets the item state.
+   * Sets the button mouse state.
+   * 
+   * @param state The new state.
    */
-  private final void setItemState ()
+  public final void setStateButtonMouse ( boolean state )
   {
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
-    {
-      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
-          .getSelectedEditorPanel ();
+    this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( state );
+  }
 
-      this.gui.jMenuItemHistory.setEnabled ( machinePanel.isWordNavigation () );
-    }
-    else if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof GrammarPanel )
-    {
-      // GrammarPanel grammarPanel = ( GrammarPanel )
-      // this.gui.editorPanelTabbedPane
-      // .getSelectedEditorPanel ();
 
-      this.gui.jMenuItemHistory.setEnabled ( false );
+  /**
+   * Sets the console state for items and buttons.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateConsole ( boolean state )
+  {
+    this.gui.getJCheckBoxMenuItemConsole ().setSelected ( state );
+  }
+
+
+  /**
+   * Sets the edit document state for items and buttons.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateEditDocument ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the recently used items.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateRecentlyUsed ( boolean state )
+  {
+    this.gui.getJMenuRecentlyUsed ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the draft for items.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateDraftForItems ( boolean state )
+  {
+    this.gui.getJMenuItemDFA ().setEnabled ( state );
+    this.gui.getJMenuItemNFA ().setEnabled ( state );
+    this.gui.getJMenuItemPDA ().setEnabled ( state );
+    this.gui.getJMenuItemENFA ().setEnabled ( state );
+    this.gui.getJMenuItemRG ().setEnabled ( !state );
+    this.gui.getJMenuItemCFG ().setEnabled ( !state );
+  }
+
+
+  /**
+   * Sets the state of the edit machine toolbar items.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateEditItem ( boolean state )
+  {
+    this.gui.getJGTIToolBarToggleButtonAddState ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonAddTransition ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonFinalState ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonMouse ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonStartState ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the enter word menu item.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateMenuEnterWord ( boolean state )
+  {
+    this.gui.getJMenuItemEnterWord ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the enter word toolbar items.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateEnterWord ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonStart ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonStop ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets general states for items and buttons.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateGeneral ( boolean state )
+  {
+    // SaveAs
+    this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( state );
+    this.gui.getJMenuItemSaveAs ().setEnabled ( state );
+
+    // SaveAll
+    this.gui.getJMenuItemSaveAll ().setEnabled ( state );
+
+    // Close
+    this.gui.getJMenuItemClose ().setEnabled ( state );
+
+    // CloseAll
+    this.gui.getJMenuItemCloseAll ().setEnabled ( state );
+
+    // View
+    this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( state );
+    this.gui.getJCheckBoxMenuItemTable ().setEnabled ( state );
+
+    // Enter word
+    this.gui.getJMenuItemEnterWord ().setEnabled ( state );
+
+    // Undo
+    this.gui.getJMenuItemUndo ().setEnabled ( false );
+    this.gui.getJGTIToolBarButtonUndo ().setEnabled ( false );
+
+    // Redo
+    this.gui.getJMenuItemRedo ().setEnabled ( false );
+    this.gui.getJGTIToolBarButtonRedo ().setEnabled ( false );
+
+    // Edit document
+    this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
+
+    // Draft for
+    this.gui.getJMenuDraft ().setEnabled ( state );
+  }
+
+
+  /**
+   * Shows or hides the buttons needed in the {@link GrammarPanel}.
+   * 
+   * @param state The visible state of the buttons.
+   */
+  private void setStateGrammarButtons ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( state );
+  }
+
+
+  /**
+   * Sets the history item state.
+   */
+  private final void setStateHistoryItem ()
+  {
+    // MachinePanel
+    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.gui
+          .getEditorPanelTabbedPane ().getSelectedEditorPanel ();
+
+      this.gui.getJMenuItemHistory ().setEnabled (
+          machinePanel.isWordNavigation () );
     }
+    // GrammarPanel
+    else if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      this.gui.getJMenuItemHistory ().setEnabled ( false );
+    }
+    // No selected editor
     else
     {
-      this.gui.jMenuItemHistory.setEnabled ( false );
+      this.gui.getJMenuItemHistory ().setEnabled ( false );
     }
+  }
+
+
+  /**
+   * Shows or hides the buttons needed in the {@link MachinePanel}.
+   * 
+   * @param state The visible state of the buttons.
+   */
+  private void setStateMachineButtons ( boolean state )
+  {
+    this.gui.getJSeparatorNavigation ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( state );
+
+    this.gui.getJGTIToolBarButtonStart ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonPrevious ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonNextStep ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonStop ().setVisible ( state );
+  }
+
+
+  /**
+   * Sets the redo state for items and buttons.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateRedo ( boolean state )
+  {
+    this.gui.getJMenuItemRedo ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonRedo ().setEnabled ( state );
   }
 
 
   /**
    * Sets the state of the save button and item.
    */
-  private final void setSaveState ()
+  private final void setStateSave ()
   {
     boolean state = false;
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
       state = panel.isModified ();
     }
-    setSaveState ( state );
+    setStateSave ( state );
   }
 
 
@@ -2124,24 +2216,24 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @param state The new state of the save button.
    */
-  private final void setSaveState ( boolean state )
+  private final void setStateSave ( boolean state )
   {
     logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
         + state + Messages.QUOTE );
 
-    EditorPanel panel = this.gui.editorPanelTabbedPane
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
       if ( state )
       {
-        this.gui.editorPanelTabbedPane.setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
+        this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
             + panel.getName () );
       }
       else
       {
-        this.gui.editorPanelTabbedPane.setEditorPanelTitle ( panel, panel
-            .getName () );
+        this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle ( panel,
+            panel.getName () );
       }
     }
     else if ( state == true )
@@ -2149,38 +2241,45 @@ public final class MainWindow implements LanguageChangedListener
       throw new IllegalArgumentException ( "save button error" ); //$NON-NLS-1$
     }
 
-    this.gui.jGTIToolBarButtonSave.setEnabled ( state );
-    this.gui.jMenuItemSave.setEnabled ( state );
+    this.gui.getJGTIToolBarButtonSave ().setEnabled ( state );
+    this.gui.getJMenuItemSave ().setEnabled ( state );
   }
 
 
   /**
-   * Set the state of the edit machine toolbar items
+   * Sets the redo state for items and buttons.
    * 
-   * @param state the new state
+   * @param state The new state.
    */
-  private final void setToolBarEditItemState ( boolean state )
+  public final void setStateUndo ( boolean state )
   {
-    this.gui.jGTIToolBarToggleButtonAddState.setEnabled ( state );
-    this.gui.jGTIToolBarToggleButtonAddTransition.setEnabled ( state );
-    this.gui.jGTIToolBarToggleButtonFinalState.setEnabled ( state );
-    this.gui.jGTIToolBarToggleButtonMouse.setEnabled ( state );
-    this.gui.jGTIToolBarToggleButtonStartState.setEnabled ( state );
-    this.gui.jGTIToolBarButtonEditDocument.setEnabled ( state );
+    this.gui.getJMenuItemUndo ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonUndo ().setEnabled ( state );
   }
 
 
   /**
-   * Set the state of the enter word toolbar items
+   * Sets the validate state for items and buttons.
    * 
-   * @param state the new state
+   * @param state The new state.
    */
-  private final void setToolBarEnterWordItemState ( boolean state )
+  public final void setStateValidate ( boolean state )
   {
-    this.gui.jGTIToolBarButtonPrevious.setEnabled ( state );
-    this.gui.jGTIToolBarButtonStart.setEnabled ( state );
-    this.gui.jGTIToolBarButtonNextStep.setEnabled ( state );
-    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( state );
-    this.gui.jGTIToolBarButtonStop.setEnabled ( state );
+    this.gui.getJMenuItemValidate ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the state of the word navigation items.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateWordNavigation ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonStart ().setEnabled ( !state );
+    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
+    this.gui.getJGTIToolBarButtonStop ().setEnabled ( state );
   }
 }

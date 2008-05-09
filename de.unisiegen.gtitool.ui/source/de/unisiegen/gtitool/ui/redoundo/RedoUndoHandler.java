@@ -30,17 +30,17 @@ public final class RedoUndoHandler
   /**
    * The {@link MainWindowForm}.
    */
-  private MainWindowForm mainWindow;
+  private MainWindowForm mainWindowForm;
 
 
   /**
    * Allocates a new {@link RedoUndoHandler}
    * 
-   * @param mainWindow The {@link MainWindowForm}
+   * @param mainWindowForm The {@link MainWindowForm}
    */
-  public RedoUndoHandler ( MainWindowForm mainWindow )
+  public RedoUndoHandler ( MainWindowForm mainWindowForm )
   {
-    this.mainWindow = mainWindow;
+    this.mainWindowForm = mainWindowForm;
   }
 
 
@@ -53,10 +53,8 @@ public final class RedoUndoHandler
   {
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
-    this.mainWindow.jMenuItemRedo.setEnabled ( false );
-    this.mainWindow.jGTIToolBarButtonRedo.setEnabled ( false );
-    this.mainWindow.jMenuItemUndo.setEnabled ( true );
-    this.mainWindow.jGTIToolBarButtonUndo.setEnabled ( true );
+    this.mainWindowForm.getLogic ().setStateRedo ( false );
+    this.mainWindowForm.getLogic ().setStateUndo ( true );
   }
 
 
@@ -89,11 +87,9 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.redoSteps.pop ();
 
-    this.mainWindow.jMenuItemRedo.setEnabled ( !this.redoSteps.isEmpty () );
-    this.mainWindow.jGTIToolBarButtonRedo.setEnabled ( !this.redoSteps
-        .isEmpty () );
-    this.mainWindow.jMenuItemUndo.setEnabled ( true );
-    this.mainWindow.jGTIToolBarButtonUndo.setEnabled ( true );
+    this.mainWindowForm.getLogic ().setStateRedo ( !this.redoSteps.isEmpty () );
+    this.mainWindowForm.getLogic ().setStateUndo ( true );
+
     this.undoSteps.push ( step );
 
     step.redo ();
@@ -106,11 +102,10 @@ public final class RedoUndoHandler
   public final void undo ()
   {
     RedoUndoItem step = this.undoSteps.pop ();
-    this.mainWindow.jMenuItemRedo.setEnabled ( true );
-    this.mainWindow.jGTIToolBarButtonRedo.setEnabled ( true );
-    this.mainWindow.jMenuItemUndo.setEnabled ( !this.undoSteps.isEmpty () );
-    this.mainWindow.jGTIToolBarButtonUndo.setEnabled ( !this.undoSteps
-        .isEmpty () );
+
+    this.mainWindowForm.getLogic ().setStateRedo ( true );
+    this.mainWindowForm.getLogic ().setStateUndo ( !this.undoSteps.isEmpty () );
+
     this.redoSteps.push ( step );
 
     step.undo ();

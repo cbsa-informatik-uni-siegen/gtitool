@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
 
 
 /**
- * Create a new Default Popup Menu
+ * The {@link DefaultPopupMenu}.
  * 
  * @author Benjamin Mies
  * @version $Id$
@@ -95,10 +95,10 @@ public final class DefaultPopupMenu extends JPopupMenu
 
 
   /**
-   * Allocate a new {@link DefaultPopupMenu}
+   * Allocates a new {@link DefaultPopupMenu}.
    * 
-   * @param panel the machine panel
-   * @param factor the actual zoom factor
+   * @param panel The machine panel.
+   * @param factor The actual zoom factor.
    */
   public DefaultPopupMenu ( MachinePanel panel, int factor )
   {

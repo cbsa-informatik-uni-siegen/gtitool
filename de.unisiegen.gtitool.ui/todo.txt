@@ -3,7 +3,6 @@ CF		- Determinismus bei PDA untersuchen im Navigationsmodus
 CF		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA
-CF		- Speichern der Divider Position der Machine Tabelle
 
 
 BM		- Autolayout

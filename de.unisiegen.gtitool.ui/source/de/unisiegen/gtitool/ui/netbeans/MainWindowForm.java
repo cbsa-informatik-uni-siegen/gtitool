@@ -448,6 +448,7 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
         jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
         jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

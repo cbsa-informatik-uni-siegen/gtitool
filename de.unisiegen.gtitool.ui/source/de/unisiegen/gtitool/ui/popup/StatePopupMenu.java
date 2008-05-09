@@ -110,7 +110,6 @@ public final class StatePopupMenu extends JPopupMenu
    */
   private final void populateMenues ()
   {
-
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupMenu/delete.png" ) ) ); //$NON-NLS-1$
@@ -121,7 +120,8 @@ public final class StatePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        StatePopupMenu.this.machinePanel.deleteState(StatePopupMenu.this.state);
+        StatePopupMenu.this.machinePanel
+            .deleteState ( StatePopupMenu.this.state );
       }
     } );
     add ( this.delete );

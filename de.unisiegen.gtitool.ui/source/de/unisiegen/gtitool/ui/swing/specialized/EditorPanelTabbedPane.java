@@ -87,9 +87,11 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
 
 
   /**
-   * Returns the selected {@link EditorPanel}.
+   * Returns the selected {@link EditorPanel}. Returns null if there is no
+   * currently selected tab.
    * 
-   * @return The selected {@link EditorPanel}.
+   * @return The selected {@link EditorPanel}. Returns null if there is no
+   *         currently selected tab.
    */
   public final EditorPanel getSelectedEditorPanel ()
   {

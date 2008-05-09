@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
@@ -40,6 +41,8 @@ import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
+import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
+import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
@@ -239,7 +242,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle add production button pressed.
    */
-  public void handleAddProduction ()
+  public final void handleAddProduction ()
   {
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();
@@ -263,7 +266,23 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Closes the selected {@link EditorPanel}.
    * 
-   * @param panel The {@link EditorPanel} to be saved
+   * @return True if the panel is closed, false if the close was canceled.
+   */
+  public final boolean handleClose ()
+  {
+    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null )
+    {
+      throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
+    }
+    return handleClose ( this.gui.editorPanelTabbedPane
+        .getSelectedEditorPanel () );
+  }
+
+
+  /**
+   * Closes the {@link EditorPanel}.
+   * 
+   * @param panel The {@link EditorPanel} to close.
    * @return True if the panel is closed, false if the close was canceled.
    */
   public final boolean handleClose ( EditorPanel panel )
@@ -334,7 +353,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle delete production button pressed.
    */
-  public void handleDeleteProduction ()
+  public final void handleDeleteProduction ()
   {
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();
@@ -531,7 +550,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle edit production button pressed.
    */
-  public void handleEditProduction ()
+  public final void handleEditProduction ()
   {
     EditorPanel panel = this.gui.editorPanelTabbedPane
         .getSelectedEditorPanel ();
@@ -889,7 +908,20 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle the save file event
+   * Handles the save file event on the selected editor panel.
+   */
+  public final void handleSave ()
+  {
+    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () == null )
+    {
+      throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
+    }
+    handleSave ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () );
+  }
+
+
+  /**
+   * Handles the save file event.
    * 
    * @param panel The {@link EditorPanel} to be saved
    */
@@ -968,15 +1000,27 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleTabbedPaneMouseReleased ( MouseEvent event )
   {
-    if ( event.getClickCount () >= 2 )
-    {
-      int tabIndex = this.gui.editorPanelTabbedPane.getUI ().tabForCoordinate (
-          this.gui.editorPanelTabbedPane, event.getX (), event.getY () );
+    int tabIndex = this.gui.editorPanelTabbedPane.getUI ().tabForCoordinate (
+        this.gui.editorPanelTabbedPane, event.getX (), event.getY () );
 
+    if ( ( event.getButton () == MouseEvent.BUTTON1 )
+        && ( event.getClickCount () >= 2 ) && ( tabIndex == -1 ) )
+    {
+      handleNew ();
+    }
+    else if ( event.getButton () == MouseEvent.BUTTON3 )
+    {
+      TabPopupMenu popupMenu;
       if ( tabIndex == -1 )
       {
-        handleNew ();
+        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_DEACTIVE );
       }
+      else
+      {
+        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_ACTIVE );
+      }
+      popupMenu.show ( ( Component ) event.getSource (), event.getX (), event
+          .getY () );
     }
   }
 
@@ -1285,7 +1329,7 @@ public final class MainWindow implements LanguageChangedListener
     }
 
     // Return if only errors should be displayes
-    if ( !showDialogIfWarning && errorCount == 0 )
+    if ( !showDialogIfWarning && ( errorCount == 0 ) )
     {
       if ( warningCount > 0 )
       {
@@ -1312,20 +1356,20 @@ public final class MainWindow implements LanguageChangedListener
     if ( ( errorCount > 0 ) && ( warningCount > 0 ) )
     {
       String message = null;
-      if ( errorCount == 1 && warningCount == 1 )
+      if ( ( errorCount == 1 ) && ( warningCount == 1 ) )
       {
         message = Messages
             .getString ( machinePanelSelected ? "MainWindow.ErrorWarningMachineCount0" //$NON-NLS-1$
                 : "MainWindow.ErrorWarningGrammarCount0" ); //$NON-NLS-1$
       }
-      else if ( errorCount == 1 && warningCount > 1 )
+      else if ( ( errorCount == 1 ) && ( warningCount > 1 ) )
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorWarningMachineCount1" //$NON-NLS-1$
                 : "MainWindow.ErrorWarningGrammarCount1", false, String //$NON-NLS-1$
                 .valueOf ( warningCount ) );
       }
-      else if ( errorCount > 1 && warningCount == 1 )
+      else if ( ( errorCount > 1 ) && ( warningCount == 1 ) )
       {
         message = Messages.getString (
             machinePanelSelected ? "MainWindow.ErrorWarningMachineCount2" //$NON-NLS-1$
@@ -1557,6 +1601,61 @@ public final class MainWindow implements LanguageChangedListener
 
     // Item status
     setItemState ();
+  }
+
+
+  /**
+   * Returns the close active state.
+   * 
+   * @return The close active state.
+   */
+  public final boolean isCloseActiveState ()
+  {
+    return this.gui.jMenuItemClose.isEnabled ();
+  }
+
+
+  /**
+   * Returns the close all active state.
+   * 
+   * @return The close all active state.
+   */
+  public final boolean isCloseAllActiveState ()
+  {
+    return this.gui.jMenuItemCloseAll.isEnabled ();
+  }
+
+
+  /**
+   * Returns the new active state.
+   * 
+   * @return The new active state.
+   */
+  public final boolean isNewActiveState ()
+  {
+    return this.gui.jMenuItemNew.isEnabled ();
+  }
+
+
+  /**
+   * Returns the save active state.
+   * 
+   * @return The save active state.
+   */
+  public final boolean isSaveActiveState ()
+  {
+    return this.gui.jMenuItemSave.isEnabled ();
+  }
+
+
+  /**
+   * Returns the save as active state.
+   * 
+   * @return The save as active state.
+   */
+  public final boolean isSaveAsActiveState ()
+  {
+    return this.gui.jMenuItemSaveAs.isEnabled ();
   }
 
 

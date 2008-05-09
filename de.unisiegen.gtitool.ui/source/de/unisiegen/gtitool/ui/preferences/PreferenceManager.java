@@ -103,6 +103,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default table divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_STACK_TABLE = DEFAULT_HEIGHT / 4;
+
+
+  /**
    * The default preference dialog last active tab.
    */
   public static final int DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB = 0;
@@ -248,6 +254,18 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "MachinePanel.DividerConsole", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_CONSOLE );
+  }
+
+
+  /**
+   * Returns the stack table divider location.
+   * 
+   * @return The stack table divider location.
+   */
+  public final int getDividerLocationStackTable ()
+  {
+    return this.preferences.getInt ( "MachinePanel.DividerStackTable", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_STACK_TABLE );
   }
 
 
@@ -526,6 +544,20 @@ public final class PreferenceManager extends
         "set console divider location to " + Messages.QUOTE + location + ""//$NON-NLS-1$//$NON-NLS-2$
             + Messages.QUOTE );
     this.preferences.putInt ( "MachinePanel.DividerConsole", location ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the stack table divider location.
+   * 
+   * @param location The stack table divider location.
+   */
+  public final void setDividerLocationStackTable ( int location )
+  {
+    logger.debug (
+        "setDividerLocationStackTable", "set stack table divider location to "//$NON-NLS-1$//$NON-NLS-2$
+            + Messages.QUOTE + location + "" + Messages.QUOTE );//$NON-NLS-1$
+    this.preferences.putInt ( "MachinePanel.DividerStackTable", location ); //$NON-NLS-1$
   }
 
 

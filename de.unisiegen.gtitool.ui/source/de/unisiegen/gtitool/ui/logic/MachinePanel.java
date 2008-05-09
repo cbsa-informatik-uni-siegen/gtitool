@@ -405,6 +405,7 @@ public final class MachinePanel implements EditorPanel
             MachinePanel.this.setDividerLocationConsole = true;
           }
         } );
+
     this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationTable () );
     setVisibleTable ( this.mainWindowForm.jCheckBoxMenuItemTable.getState () );
@@ -424,6 +425,19 @@ public final class MachinePanel implements EditorPanel
           }
         } );
 
+    this.gui.jGTISplitPaneStackTable.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationStackTable () );
+    this.gui.jGTISplitPaneStackTable.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( PropertyChangeEvent event )
+          {
+            PreferenceManager.getInstance ().setDividerLocationStackTable (
+                ( ( Integer ) event.getNewValue () ).intValue () );
+          }
+        } );
     initialize ();
     initializeMachineTable ();
     initializePDATable ();
@@ -473,7 +487,7 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.dragged = false;
         }
         else if ( !MachinePanel.this.mouseDown
-            && event.getKeyCode () == KeyEvent.VK_DELETE )
+            && ( event.getKeyCode () == KeyEvent.VK_DELETE ) )
         {
           Object object = MachinePanel.this.graph.getSelectionCell ();
 
@@ -2714,6 +2728,17 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * <<<<<<< .mine ======= Performs the cells changed on the
+   * {@link GraphModel}.
+   */
+  public final void performCellsChanged ()
+  {
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -2851,17 +2876,6 @@ public final class MachinePanel implements EditorPanel
       this.gui.jGTITableMachine.setToolTipText ( Messages
           .getString ( "MachinePanel.TableDisabled" ) ); //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * <<<<<<< .mine ======= Performs the cells changed on the
-   * {@link GraphModel}.
-   */
-  public final void performCellsChanged ()
-  {
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 

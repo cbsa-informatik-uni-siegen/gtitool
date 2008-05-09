@@ -1280,6 +1280,55 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
+   * @see Transition#toStackOperationPrettyString()
+   */
+  public final PrettyString toStackOperationPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( "(", Style.NONE ) ); //$NON-NLS-1$
+    prettyString.addPrettyPrintable ( this.stateBegin );
+    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+    if ( getSymbol ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      for ( Symbol current : getSymbol () )
+      {
+        prettyString.addPrettyPrintable ( current );
+      }
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+    if ( getPushDownWordRead ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      prettyString.addPrettyPrintable ( this.pushDownWordRead );
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( "), (", Style.NONE ) ); //$NON-NLS-1$
+
+    prettyString.addPrettyPrintable ( this.stateEnd );
+    prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+    if ( getPushDownWordWrite ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      prettyString.addPrettyPrintable ( this.pushDownWordWrite );
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
+
+    return prettyString;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Entity#toString()
    */
   @Override
@@ -1346,56 +1395,5 @@ public final class DefaultTransition implements Transition
     result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
     result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
     return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.Transition#toStackOperationPrettyString()
-   */
-  public PrettyString toStackOperationPrettyString ()
-  {
-    PrettyString prettyString = new PrettyString ();
-    prettyString.addPrettyToken ( new PrettyToken ( "( ", Style.NONE ) ); //$NON-NLS-1$
-    prettyString.addPrettyPrintable ( getStateBegin () );
-    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
-    if ( getSymbol ().size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      for ( Symbol current : getSymbol () )
-      {
-        prettyString.addPrettyPrintable ( current );
-      }
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
-    if ( getPushDownWordRead ().size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-
-    }
-    else
-    {
-      prettyString.addPrettyPrintable ( getPushDownWordRead () );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( " ),(", Style.NONE ) ); //$NON-NLS-1$
-
-    prettyString.addPrettyPrintable ( getStateEnd () );
-    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
-    if ( getPushDownWordWrite ().size () == 0 )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-
-    }
-    else
-    {
-      prettyString.addPrettyPrintable ( getPushDownWordWrite () );
-    }
-    prettyString.addPrettyToken ( new PrettyToken ( " )", Style.NONE ) ); //$NON-NLS-1$
-
-    return prettyString;
   }
 }

@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 
@@ -337,4 +338,12 @@ public interface Transition extends Entity < Transition >, Storable,
    * @return The number of {@link Symbol}s in this {@link Transition}.
    */
   public int size ();
+
+
+  /**
+   * Return the {@link PrettyString} for the stack operation.
+   * 
+   * @return The {@link PrettyString} for the stack operation.
+   */
+  public PrettyString toStackOperationPrettyString ();
 }

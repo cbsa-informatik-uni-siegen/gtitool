@@ -131,7 +131,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     else {
       this.converter = new ConvertContextFreeGrammar( ProductionPopupMenu.this.mainWindowForm,
           ProductionPopupMenu.this.grammarPanel.getGrammar (),
-          MachineType.ENFA );
+          MachineType.PDA );
     }
 
   }

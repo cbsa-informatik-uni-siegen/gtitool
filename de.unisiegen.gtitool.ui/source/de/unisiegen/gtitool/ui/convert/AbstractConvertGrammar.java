@@ -34,6 +34,9 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 /**
  * Convert the grammar to a machine.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
 public abstract class AbstractConvertGrammar implements Converter
 {
@@ -322,5 +325,18 @@ public abstract class AbstractConvertGrammar implements Converter
       exc.printStackTrace ();
     }
 
+  }
+
+
+  
+  /**
+   * Returns the newPanel.
+   *
+   * @return The newPanel.
+   * @see #newPanel
+   */
+  public MachinePanel getNewPanel ()
+  {
+    return this.newPanel;
   }
 }

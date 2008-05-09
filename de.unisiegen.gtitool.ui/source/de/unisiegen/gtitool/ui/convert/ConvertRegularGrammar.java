@@ -25,6 +25,9 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 /**
  * Convert a {@link RG} to a {@link ENFA}.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
 public class ConvertRegularGrammar extends AbstractConvertGrammar
 {

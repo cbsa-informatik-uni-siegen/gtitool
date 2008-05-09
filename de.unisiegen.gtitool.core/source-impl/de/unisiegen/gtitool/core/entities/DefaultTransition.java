@@ -31,13 +31,55 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class DefaultTransition implements Transition
+public class DefaultTransition implements Transition
 {
 
   /**
    * The serial version uid.
    */
   private static final long serialVersionUID = 7649068993385065572L;
+
+
+  /**
+   * This {@link Transition} is a active {@link Transition}.
+   */
+  private boolean active = false;
+
+
+  /**
+   * The {@link Alphabet} of this {@link DefaultTransition}.
+   */
+  private Alphabet alphabet = null;
+
+
+  /**
+   * This {@link Transition} is a error {@link Transition}.
+   */
+  private boolean error = false;
+
+
+  /**
+   * The id of this {@link DefaultTransition}.
+   */
+  private int id = ID_NOT_DEFINED;
+
+
+  /**
+   * The initial {@link Word} which is read from the {@link Stack}.
+   */
+  private Word initialPushDownWordRead = new DefaultWord ();
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   */
+  private Word initialPushDownWordWrite = new DefaultWord ();
+
+
+  /**
+   * The initial set of {@link Symbol}s.
+   */
+  private TreeSet < Symbol > initialSymbolSet;
 
 
   /**
@@ -56,21 +98,21 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The {@link Alphabet} of this {@link DefaultTransition}.
-   */
-  private Alphabet alphabet = null;
-
-
-  /**
    * The push down {@link Alphabet} of this {@link DefaultTransition}.
    */
   private Alphabet pushDownAlphabet;
 
 
   /**
-   * The id of this {@link DefaultTransition}.
+   * The {@link Word} which is read from the {@link Stack}.
    */
-  private int id = ID_NOT_DEFINED;
+  private Word pushDownWordRead = new DefaultWord ();
+
+
+  /**
+   * The {@link Word} which should be written on the {@link Stack}.
+   */
+  private Word pushDownWordWrite = new DefaultWord ();
 
 
   /**
@@ -101,48 +143,6 @@ public final class DefaultTransition implements Transition
    * The set of {@link Symbol}s.
    */
   private TreeSet < Symbol > symbolSet;
-
-
-  /**
-   * The initial set of {@link Symbol}s.
-   */
-  private TreeSet < Symbol > initialSymbolSet;
-
-
-  /**
-   * The {@link Word} which is read from the {@link Stack}.
-   */
-  private Word pushDownWordRead = new DefaultWord ();
-
-
-  /**
-   * The initial {@link Word} which is read from the {@link Stack}.
-   */
-  private Word initialPushDownWordRead = new DefaultWord ();
-
-
-  /**
-   * The {@link Word} which should be written on the {@link Stack}.
-   */
-  private Word pushDownWordWrite = new DefaultWord ();
-
-
-  /**
-   * The {@link Word} which should be written on the {@link Stack}.
-   */
-  private Word initialPushDownWordWrite = new DefaultWord ();
-
-
-  /**
-   * This {@link Transition} is a error {@link Transition}.
-   */
-  private boolean error = false;
-
-
-  /**
-   * This {@link Transition} is a active {@link Transition}.
-   */
-  private boolean active = false;
 
 
   /**
@@ -1209,7 +1209,7 @@ public final class DefaultTransition implements Transition
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public final PrettyString toPrettyString ()
+  public PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
@@ -1283,7 +1283,7 @@ public final class DefaultTransition implements Transition
    * @see Entity#toString()
    */
   @Override
-  public final String toString ()
+  public String toString ()
   {
     StringBuilder result = new StringBuilder ();
     if ( this.symbolSet.size () == 0 )
@@ -1346,5 +1346,56 @@ public final class DefaultTransition implements Transition
     result.append ( "End state:   " + this.stateEnd.toString () + lineBreak ); //$NON-NLS-1$
     result.append ( "Symbols:     " + this.symbolSet.toString () ); //$NON-NLS-1$
     return result.toString ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.core.entities.Transition#toStackOperationPrettyString()
+   */
+  public PrettyString toStackOperationPrettyString ()
+  {
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( "( ", Style.NONE ) ); //$NON-NLS-1$
+    prettyString.addPrettyPrintable ( getStateBegin () );
+    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
+    if ( getSymbol ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      for ( Symbol current : getSymbol () )
+      {
+        prettyString.addPrettyPrintable ( current );
+      }
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
+    if ( getPushDownWordRead ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+
+    }
+    else
+    {
+      prettyString.addPrettyPrintable ( getPushDownWordRead () );
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( " ),(", Style.NONE ) ); //$NON-NLS-1$
+
+    prettyString.addPrettyPrintable ( getStateEnd () );
+    prettyString.addPrettyToken ( new PrettyToken ( ",", Style.NONE ) ); //$NON-NLS-1$
+    if ( getPushDownWordWrite ().size () == 0 )
+    {
+      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+
+    }
+    else
+    {
+      prettyString.addPrettyPrintable ( getPushDownWordWrite () );
+    }
+    prettyString.addPrettyToken ( new PrettyToken ( " )", Style.NONE ) ); //$NON-NLS-1$
+
+    return prettyString;
   }
 }

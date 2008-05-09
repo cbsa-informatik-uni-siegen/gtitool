@@ -11,6 +11,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -20,6 +21,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
+import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -29,6 +31,12 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  */
 public class ConvertContextFreeGrammar extends AbstractConvertGrammar
 {
+
+  /**
+   * The {@link PDATableModel}.
+   */
+  PDATableModel tableModel = new PDATableModel ();
+
 
   /**
    * Allocate a new {@link ConvertContextFreeGrammar}.
@@ -92,6 +100,28 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     Machine machine = new DefaultPDA ( getAlphabet (), getPushDownAlphabet (),
         true );
     createMachinePanel ( machine );
+    getNewPanel ().setPdaTableModel ( this.tableModel );
+    getModel ().setPdaTableModel ( this.tableModel );
+
+  }
+
+
+  /**
+   * Create a new {@link Transition}.
+   * 
+   * @param read The word to read from stack.
+   * @param write The word to write to stack.
+   * @param source The source {@link DefaultStateView}.
+   * @param target The target {@link DefaultStateView}.
+   * @param symbol The {@link Symbol}
+   */
+  private void createTransition ( Word read, Word write,
+      DefaultStateView source, DefaultStateView target, Symbol symbol )
+  {
+    ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
+    symbols.add ( symbol );
+
+    createTransition ( read, write, source, target, symbols );
   }
 
 
@@ -108,8 +138,7 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     start.getState ().setStartState ( true );
     DefaultStateView stateView = createStateView ( "f" ); //$NON-NLS-1$
     stateView.getState ().setFinalState ( true );
-    
-    
+
     try
     {
       Symbol symbol = new DefaultSymbol ( getGrammar ().getStartSymbol ()
@@ -119,6 +148,15 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
 
       createTransition ( new DefaultWord (), word, start, stateView,
           new ArrayList < Symbol > () );
+
+      for ( TerminalSymbol current : getGrammar ().getTerminalSymbolSet () )
+      {
+        symbol = new DefaultSymbol ( current.getName () );
+        word = new DefaultWord ( symbol );
+
+        createTransition ( word, new DefaultWord (), stateView, stateView,
+            symbol );
+      }
     }
     catch ( SymbolException exc )
     {
@@ -138,14 +176,13 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
         {
           write.add ( new DefaultSymbol ( symbol.getName () ) );
         }
-        createTransition ( read, write, stateView, stateView, new ArrayList < Symbol >() );
+        createTransition ( read, write, stateView, stateView,
+            new ArrayList < Symbol > () );
       }
       catch ( SymbolException exc )
       {
         exc.printStackTrace ();
       }
-      
-      
     }
   }
 }

@@ -2,16 +2,16 @@ package de.unisiegen.gtitool.ui.convert;
 
 
 /**
- * TODO
- *
+ * This interface represents the converter classes.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
 public interface Converter
 {
   
   /**
-   * 
-   * TODO
-   *
+   * Perform convert action.
    */
   public void convert();
 }

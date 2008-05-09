@@ -59,6 +59,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -71,6 +72,8 @@ import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
+import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
+import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -360,6 +363,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * The {@link PDATableModel}.
+   */
+  private PDATableModel pdaTableModel = new PDATableModel ();
+
+
+  /**
    * Create a new Machine Panel Object
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
@@ -423,6 +432,7 @@ public final class MachinePanel implements EditorPanel
 
     initialize ();
     initializeMachineTable ();
+    initializePDATable ();
     addListener ();
     addGraphListener ();
 
@@ -1930,7 +1940,22 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Initializes the mouse adapter of the toolbar.
+   * <<<<<<< .mine Initializes the {@link PDA} table.
+   */
+  private final void initializePDATable ()
+  {
+    this.gui.jGTITableMachinePDA.setModel ( this.pdaTableModel );
+    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
+    this.gui.jGTITableMachinePDA.getTableHeader ()
+        .setReorderingAllowed ( false );
+    this.gui.jGTITableMachinePDA
+        .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+  }
+
+
+  /**
+   * Initialize the Mouse Adapter of the Toolbar ======= Initializes the mouse
+   * adapter of the toolbar. >>>>>>> .r864
    */
   private final void intitializeMouseAdapter ()
   {
@@ -2330,7 +2355,6 @@ public final class MachinePanel implements EditorPanel
           if ( cell instanceof DefaultStateView )
           {
             MachinePanel.this.dragged = true;
-            // TODOBM ClassCastException
             MachinePanel.this.firstState = ( DefaultStateView ) cell;
           }
         }
@@ -2785,8 +2809,10 @@ public final class MachinePanel implements EditorPanel
     if ( visible )
     {
       this.setDividerLocationTable = false;
+
       this.gui.jGTISplitPaneTable
-          .setRightComponent ( this.gui.jGTIScrollPaneTable );
+          .setRightComponent ( this.gui.jGTISplitPaneStackTable );
+
       this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
       this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
           .getInstance ().getDividerLocationTable () );
@@ -2841,6 +2867,31 @@ public final class MachinePanel implements EditorPanel
       this.gui.jGTITableMachine.setToolTipText ( Messages
           .getString ( "MachinePanel.TableDisabled" ) ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Add a new stack {@link Transition}.
+   * 
+   * @param transition the new {@link Transition}.
+   */
+  public void addStackTransition ( Transition transition )
+  {
+    this.pdaTableModel.addRow ( transition );
+  }
+
+
+  /**
+   * Sets the pdaTableModel.
+   * 
+   * @param pdaTableModel The pdaTableModel to set.
+   * @see #pdaTableModel
+   */
+  public void setPdaTableModel ( PDATableModel pdaTableModel )
+  {
+    this.pdaTableModel = pdaTableModel;
+    this.gui.jGTITableMachinePDA.setModel ( pdaTableModel );
+    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
   }
 
 

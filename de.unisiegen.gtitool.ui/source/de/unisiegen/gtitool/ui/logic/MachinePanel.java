@@ -74,7 +74,6 @@ import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
-import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -364,12 +363,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * The {@link PDATableModel}.
-   */
-  private PDATableModel pdaTableModel = new PDATableModel ();
-
-
-  /**
    * Create a new Machine Panel Object
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
@@ -578,17 +571,6 @@ public final class MachinePanel implements EditorPanel
       ModifyStatusChangedListener listener )
   {
     this.listenerList.add ( ModifyStatusChangedListener.class, listener );
-  }
-
-
-  /**
-   * Add a new stack {@link Transition}.
-   * 
-   * @param transition the new {@link Transition}.
-   */
-  public void addStackTransition ( Transition transition )
-  {
-    this.pdaTableModel.addRow ( transition );
   }
 
 
@@ -1939,7 +1921,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final void initializePDATable ()
   {
-    this.gui.jGTITableMachinePDA.setModel ( this.pdaTableModel );
+    this.gui.jGTITableMachinePDA.setModel ( this.model.getTableModel () );
     this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
     this.gui.jGTITableMachinePDA.getTableHeader ()
         .setReorderingAllowed ( false );
@@ -2777,20 +2759,6 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Sets the pdaTableModel.
-   * 
-   * @param pdaTableModel The pdaTableModel to set.
-   * @see #pdaTableModel
-   */
-  public void setPdaTableModel ( PDATableModel pdaTableModel )
-  {
-    this.pdaTableModel = pdaTableModel;
-    this.gui.jGTITableMachinePDA.setModel ( pdaTableModel );
-    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
-  }
-
-
-  /**
    * Sets the visibility of the console.
    * 
    * @param visible Visible or not visible.
@@ -2887,7 +2855,8 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Performs the cells changed on the {@link GraphModel}.
+   * <<<<<<< .mine ======= Performs the cells changed on the
+   * {@link GraphModel}.
    */
   public final void performCellsChanged ()
   {
@@ -2897,8 +2866,8 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Updates the selected {@link Transition}s and {@link State}s or clears the
-   * selected.
+   * >>>>>>> .r871 Updates the selected {@link Transition}s and {@link State}s
+   * or clears the selected.
    */
   private final void updateSelected ()
   {

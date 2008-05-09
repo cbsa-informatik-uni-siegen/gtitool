@@ -21,7 +21,6 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -34,12 +33,6 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  */
 public class ConvertContextFreeGrammar extends AbstractConvertGrammar
 {
-
-  /**
-   * The {@link PDATableModel}.
-   */
-  private PDATableModel tableModel = new PDATableModel ();
-
 
   /**
    * Allocate a new {@link ConvertContextFreeGrammar}.
@@ -103,8 +96,6 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     Machine machine = new DefaultPDA ( getAlphabet (), getPushDownAlphabet (),
         true );
     createMachinePanel ( machine );
-    getNewPanel ().setPdaTableModel ( this.tableModel );
-    getModel ().setPdaTableModel ( this.tableModel );
 
   }
 

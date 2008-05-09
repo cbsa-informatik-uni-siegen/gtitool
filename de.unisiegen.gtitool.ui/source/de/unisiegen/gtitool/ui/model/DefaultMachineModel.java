@@ -192,6 +192,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
+    this.tableModel = new PDATableModel();
+    
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {
@@ -365,6 +367,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public DefaultMachineModel ( Machine machine )
   {
     this.machine = machine;
+    this.tableModel = new PDATableModel();
     initializeModifyStatusChangedListener ();
     initializeStatePositionChangedListener ();
     initializeGraph ();
@@ -473,9 +476,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( addToMachine )
     {
       this.machine.addTransition ( transition );
-      if (this.tableModel == null){
-        this.tableModel = new PDATableModel();
-      }
       this.tableModel.addRow ( transition );
     }
     DefaultTransitionView transitionView = new DefaultTransitionView (
@@ -642,6 +642,18 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final ArrayList < DefaultStateView > getStateViewList ()
   {
     return this.stateViewList;
+  }
+
+
+  /**
+   * Returns the tableModel.
+   *
+   * @return The tableModel.
+   * @see #tableModel
+   */
+  public PDATableModel getTableModel ()
+  {
+    return this.tableModel;
   }
 
 
@@ -954,9 +966,10 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machine.resetModify ();
   }
 
+
   /**
    * Set the {@link PDATableModel}.
-   *
+   * 
    * @param tableModel The new {@link PDATableModel}.
    */
   public void setPdaTableModel ( PDATableModel tableModel )
@@ -964,6 +977,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.tableModel = tableModel;
   }
 
+
+  
   /**
    * Set a new {@link RedoUndoHandler}
    * 

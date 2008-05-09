@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeSet;
@@ -961,7 +962,27 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle TabbedPane state changed event.
+   * Handles the tabbed pane mouse released event.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleTabbedPaneMouseReleased ( MouseEvent event )
+  {
+    if ( event.getClickCount () >= 2 )
+    {
+      int tabIndex = this.gui.editorPanelTabbedPane.getUI ().tabForCoordinate (
+          this.gui.editorPanelTabbedPane, event.getX (), event.getY () );
+
+      if ( tabIndex == -1 )
+      {
+        handleNew ();
+      }
+    }
+  }
+
+
+  /**
+   * Handles the tabbed pane state changed event.
    */
   public final void handleTabbedPaneStateChanged ()
   {
@@ -1084,33 +1105,6 @@ public final class MainWindow implements LanguageChangedListener
 
         machinePanel.handleToolbarAddState ( state );
       }
-    }
-  }
-
-
-  /**
-   * Sets the item state.
-   */
-  private final void setItemState ()
-  {
-    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
-    {
-      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
-          .getSelectedEditorPanel ();
-
-      this.gui.jMenuItemHistory.setEnabled ( machinePanel.isWordNavigation () );
-    }
-    else if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof GrammarPanel )
-    {
-      // GrammarPanel grammarPanel = ( GrammarPanel )
-      // this.gui.editorPanelTabbedPane
-      // .getSelectedEditorPanel ();
-
-      this.gui.jMenuItemHistory.setEnabled ( false );
-    }
-    else
-    {
-      this.gui.jMenuItemHistory.setEnabled ( false );
     }
   }
 
@@ -1980,6 +1974,33 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.jGTIToolBarButtonEditDocument.setEnabled ( state );
     // Draft for
     this.gui.jMenuDraft.setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the item state.
+   */
+  private final void setItemState ()
+  {
+    if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.gui.editorPanelTabbedPane
+          .getSelectedEditorPanel ();
+
+      this.gui.jMenuItemHistory.setEnabled ( machinePanel.isWordNavigation () );
+    }
+    else if ( this.gui.editorPanelTabbedPane.getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      // GrammarPanel grammarPanel = ( GrammarPanel )
+      // this.gui.editorPanelTabbedPane
+      // .getSelectedEditorPanel ();
+
+      this.gui.jMenuItemHistory.setEnabled ( false );
+    }
+    else
+    {
+      this.gui.jMenuItemHistory.setEnabled ( false );
+    }
   }
 
 

@@ -389,6 +389,11 @@ public class MainWindowForm extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jToolBarMain, gridBagConstraints);
 
+        editorPanelTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editorPanelTabbedPaneMouseReleased(evt);
+            }
+        });
         editorPanelTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 editorPanelTabbedPaneStateChanged(evt);
@@ -735,6 +740,10 @@ public class MainWindowForm extends javax.swing.JFrame {
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editorPanelTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneMouseReleased
+        this.logic.handleTabbedPaneMouseReleased(evt);
+    }//GEN-LAST:event_editorPanelTabbedPaneMouseReleased
 
     private void jMenuItemHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistoryActionPerformed
         this.logic.handleHistory();

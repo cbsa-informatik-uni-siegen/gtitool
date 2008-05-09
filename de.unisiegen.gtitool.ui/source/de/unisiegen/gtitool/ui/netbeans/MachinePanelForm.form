@@ -158,10 +158,6 @@
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
                                 <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableMachinePDA">
-                                  <Events>
-                                    <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableMachinePDAMouseExited"/>
-                                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableMachinePDAFocusLost"/>
-                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>

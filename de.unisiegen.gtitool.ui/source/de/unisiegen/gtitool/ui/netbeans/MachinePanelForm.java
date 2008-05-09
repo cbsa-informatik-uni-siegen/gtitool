@@ -98,17 +98,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jGTISplitPaneStackTable.setLeftComponent(jGTIPanelTransitionTable);
 
         jGTIScrollPaneTablePDA.setBorder(null);
-        jGTITableMachinePDA.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jGTITableMachinePDAMouseExited(evt);
-            }
-        });
-        jGTITableMachinePDA.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jGTITableMachinePDAFocusLost(evt);
-            }
-        });
-
         jGTIScrollPaneTablePDA.setViewportView(jGTITableMachinePDA);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -198,14 +187,6 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         add(wordPanel, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jGTITableMachinePDAFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAFocusLost
-// TODO add your handling code here:
-    }//GEN-LAST:event_jGTITableMachinePDAFocusLost
-
-    private void jGTITableMachinePDAMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAMouseExited
-// TODO add your handling code here:
-    }//GEN-LAST:event_jGTITableMachinePDAMouseExited
 
     private void jGTITableMachineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseExited
       this.logic.handleMachineTableMouseExited(evt);

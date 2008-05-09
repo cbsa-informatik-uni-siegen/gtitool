@@ -1025,6 +1025,7 @@
     </Container>
     <Container class="de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane" name="editorPanelTabbedPane">
       <Events>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editorPanelTabbedPaneMouseReleased"/>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="editorPanelTabbedPaneStateChanged"/>
       </Events>
       <Constraints>

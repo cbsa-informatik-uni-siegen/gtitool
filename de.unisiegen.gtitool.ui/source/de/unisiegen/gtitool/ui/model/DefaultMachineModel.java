@@ -467,6 +467,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( addToMachine )
     {
       this.machine.addTransition ( transition );
+      this.tableModel.addRow ( transition );
     }
     DefaultTransitionView transitionView = new DefaultTransitionView (
         transition, source, target );
@@ -953,5 +954,20 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
   {
     this.redoUndoHandler = redoUndoHandler;
+  }
+
+  /**
+   * The {@link PDATableModel}.
+   */
+  PDATableModel tableModel;
+
+  /**
+   * Set the {@link PDATableModel}.
+   *
+   * @param tableModel The new {@link PDATableModel}.
+   */
+  public void setPdaTableModel ( PDATableModel tableModel )
+  {
+    this.tableModel = tableModel;
   }
 }

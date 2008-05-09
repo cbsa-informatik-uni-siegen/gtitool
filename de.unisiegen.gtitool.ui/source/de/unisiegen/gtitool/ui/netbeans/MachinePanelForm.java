@@ -38,8 +38,13 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         jGTIPanelDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIScrollPaneDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIPanelTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTISplitPaneStackTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
+        jGTIPanelTransitionTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIScrollPaneTable = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
+        jGTIPanelPDATable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneTablePDA = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIScrollPaneErrors = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -66,6 +71,8 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
         jGTISplitPaneTable.setLeftComponent(jGTIPanelDiagramm);
 
+        jGTISplitPaneStackTable.setDividerLocation(100);
+        jGTISplitPaneStackTable.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jGTIScrollPaneTable.setBorder(null);
         jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -86,7 +93,39 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanelTable.add(jGTIScrollPaneTable, gridBagConstraints);
+        jGTIPanelTransitionTable.add(jGTIScrollPaneTable, gridBagConstraints);
+
+        jGTISplitPaneStackTable.setLeftComponent(jGTIPanelTransitionTable);
+
+        jGTIScrollPaneTablePDA.setBorder(null);
+        jGTITableMachinePDA.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jGTITableMachinePDAMouseExited(evt);
+            }
+        });
+        jGTITableMachinePDA.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jGTITableMachinePDAFocusLost(evt);
+            }
+        });
+
+        jGTIScrollPaneTablePDA.setViewportView(jGTITableMachinePDA);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanelPDATable.add(jGTIScrollPaneTablePDA, gridBagConstraints);
+
+        jGTISplitPaneStackTable.setRightComponent(jGTIPanelPDATable);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jGTIPanelTable.add(jGTISplitPaneStackTable, gridBagConstraints);
 
         jGTISplitPaneTable.setRightComponent(jGTIPanelTable);
 
@@ -160,6 +199,14 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
 
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTITableMachinePDAFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAFocusLost
+// TODO add your handling code here:
+    }//GEN-LAST:event_jGTITableMachinePDAFocusLost
+
+    private void jGTITableMachinePDAMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachinePDAMouseExited
+// TODO add your handling code here:
+    }//GEN-LAST:event_jGTITableMachinePDAMouseExited
+
     private void jGTITableMachineMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTITableMachineMouseExited
       this.logic.handleMachineTableMouseExited(evt);
     }//GEN-LAST:event_jGTITableMachineMouseExited
@@ -189,16 +236,21 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelDiagramm;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPDATable;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTransitionTable;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneDiagramm;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneErrors;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneTablePDA;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneStackTable;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneTable;
     public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableErrors;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableMachinePDA;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
     public javax.swing.ButtonGroup toolbarButton;
     public de.unisiegen.gtitool.ui.netbeans.WordPanelForm wordPanel;

@@ -446,6 +446,14 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Sets the given {@link State} selected.
+   * 
+   * @param state The {@link State} which should be selected.
+   */
+  public void setSelectedState ( State state );
+
+
+  /**
    * Sets the given {@link Transition} selected.
    * 
    * @param transition The {@link Transition} which should be selected.

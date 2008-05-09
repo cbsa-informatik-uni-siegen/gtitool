@@ -96,6 +96,12 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The count of special columns.
+   */
+  private static final int SPECIAL_COLUMN_COUNT = 2;
+
+
+  /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
    * @param machineType The {@link Machine} type.
@@ -1230,7 +1236,7 @@ public abstract class AbstractMachine implements Machine
    */
   public final int getColumnCount ()
   {
-    return 2 + this.alphabet.size ();
+    return SPECIAL_COLUMN_COUNT + this.alphabet.size ();
   }
 
 
@@ -1249,7 +1255,7 @@ public abstract class AbstractMachine implements Machine
     {
       return "\u03B5"; //$NON-NLS-1$
     }
-    return this.alphabet.get ( columnIndex - 2 ).toString ();
+    return this.alphabet.get ( columnIndex - SPECIAL_COLUMN_COUNT ).toString ();
   }
 
 
@@ -1434,7 +1440,7 @@ public abstract class AbstractMachine implements Machine
 
     for ( int i = 0 ; i < this.alphabet.size () ; i++ )
     {
-      TableColumn symbolColumn = new TableColumn ( i + 2 );
+      TableColumn symbolColumn = new TableColumn ( i + SPECIAL_COLUMN_COUNT );
       symbolColumn.setHeaderValue ( this.alphabet.get ( i ) );
       symbolColumn
           .setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
@@ -1481,6 +1487,46 @@ public abstract class AbstractMachine implements Machine
     // State column
     if ( columnIndex == STATE_COLUMN )
     {
+      for ( int i = 0 ; i < this.cachedValueList.size () ; i++ )
+      {
+        ObjectTriple < Integer, Integer, Object > cache = this.cachedValueList
+            .get ( i );
+        int cachedRowIndex = cache.getFirst ().intValue ();
+        int cachedColumnIndex = cache.getSecond ().intValue ();
+        if ( ( rowIndex == cachedRowIndex )
+            && ( columnIndex == cachedColumnIndex ) )
+        {
+          State cachedState = ( State ) cache.getThird ();
+
+          try
+          {
+            cachedState.setName ( this.stateList.get ( rowIndex ).getName () );
+          }
+          catch ( StateException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+          }
+
+          return cache.getThird ();
+        }
+      }
+
+      State newState = null;
+      try
+      {
+        newState = new DefaultState ( this.stateList.get ( rowIndex )
+            .getName () );
+        newState.setId ( this.stateList.get ( rowIndex ).getId () );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+      }
+      this.cachedValueList.add ( new ObjectTriple < Integer, Integer, Object > (
+          new Integer ( rowIndex ), new Integer ( columnIndex ), newState ) );
+
       return this.stateList.get ( rowIndex );
     }
 
@@ -1509,7 +1555,8 @@ public abstract class AbstractMachine implements Machine
     // Normal columns
     else
     {
-      Symbol currentSymbol = this.alphabet.get ( columnIndex - 2 );
+      Symbol currentSymbol = this.alphabet.get ( columnIndex
+          - SPECIAL_COLUMN_COUNT );
       for ( Transition currentTransition : currentState.getTransitionBegin () )
       {
         if ( currentTransition.contains ( currentSymbol ) )
@@ -2263,6 +2310,32 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * Sets the given {@link State} selected.
+   * 
+   * @param state The {@link State} which should be selected.
+   */
+  public final void setSelectedState ( State state )
+  {
+    // reset
+    clearSelectedTransition ();
+
+    // find the row
+    int row = -1;
+    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    {
+      if ( this.stateList.get ( i ).equals ( state ) )
+      {
+        row = i;
+        break;
+      }
+    }
+
+    State chachedState = ( State ) getValueAt ( row, STATE_COLUMN );
+    chachedState.setSelected ( true );
+  }
+
+
+  /**
    * Sets the given {@link Transition} selected.
    * 
    * @param transition The {@link Transition} which should be selected.
@@ -2270,17 +2343,7 @@ public abstract class AbstractMachine implements Machine
   public final void setSelectedTransition ( Transition transition )
   {
     // reset
-    for ( int i = 1 ; i < getColumnCount () ; i++ )
-    {
-      for ( int j = 0 ; j < getRowCount () ; j++ )
-      {
-        StateSet stateSet = ( StateSet ) getValueAt ( j, i );
-        for ( State currentState : stateSet )
-        {
-          currentState.setSelected ( false );
-        }
-      }
-    }
+    clearSelectedTransition ();
 
     // find the row
     int row = -1;
@@ -2314,7 +2377,7 @@ public abstract class AbstractMachine implements Machine
         {
           if ( this.alphabet.get ( i ).equals ( transition.getSymbol ( j ) ) )
           {
-            int column = i + 2;
+            int column = i + SPECIAL_COLUMN_COUNT;
             StateSet stateSet = ( StateSet ) getValueAt ( row, column );
 
             for ( State currentState : stateSet )
@@ -2469,7 +2532,8 @@ public abstract class AbstractMachine implements Machine
                 "add transition: no epsilon: transition not found" ); //$NON-NLS-1$
             Transition newTransition = new DefaultTransition ( this.alphabet,
                 this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
-                stateBegin, currentState, this.alphabet.get ( columnIndex - 2 ) );
+                stateBegin, currentState, this.alphabet.get ( columnIndex
+                    - SPECIAL_COLUMN_COUNT ) );
             transitionAdd.add ( newTransition );
           }
           else
@@ -2477,7 +2541,8 @@ public abstract class AbstractMachine implements Machine
             logger.debug ( "setValueAt", //$NON-NLS-1$
                 "add transition: no epsilon: transition found" ); //$NON-NLS-1$
             symbolsAdd.add ( new ObjectPair < Transition, Symbol > (
-                foundTransition, this.alphabet.get ( columnIndex - 2 ) ) );
+                foundTransition, this.alphabet.get ( columnIndex
+                    - SPECIAL_COLUMN_COUNT ) ) );
           }
         }
       }
@@ -2513,7 +2578,8 @@ public abstract class AbstractMachine implements Machine
           // No epsilon transition
           else if ( columnIndex > EPSILON_COLUMN )
           {
-            Symbol symbolColumn = this.alphabet.get ( columnIndex - 2 );
+            Symbol symbolColumn = this.alphabet.get ( columnIndex
+                - SPECIAL_COLUMN_COUNT );
             Symbol symbolRemove = null;
             loopSymbol : for ( Symbol currentSymbol : currentTransition
                 .getSymbol () )

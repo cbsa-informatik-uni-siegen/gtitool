@@ -2909,7 +2909,10 @@ public final class MachinePanel implements EditorPanel
     }
     else if ( cell instanceof DefaultStateView )
     {
-      // TODOCF Implement this
+      DefaultStateView stateView = ( DefaultStateView ) cell;
+      State state = stateView.getState ();
+
+      this.machine.setSelectedState ( state );
     }
     else if ( cell instanceof DefaultTransitionView )
     {

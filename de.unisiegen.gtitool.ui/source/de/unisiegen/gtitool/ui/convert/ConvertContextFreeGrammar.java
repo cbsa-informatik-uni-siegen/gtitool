@@ -28,6 +28,9 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 /**
  * Convert a {@link CFG} to a {@link PDA}.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
 public class ConvertContextFreeGrammar extends AbstractConvertGrammar
 {
@@ -35,7 +38,7 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
   /**
    * The {@link PDATableModel}.
    */
-  PDATableModel tableModel = new PDATableModel ();
+  private PDATableModel tableModel = new PDATableModel ();
 
 
   /**

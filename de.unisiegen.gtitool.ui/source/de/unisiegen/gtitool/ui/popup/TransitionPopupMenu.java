@@ -147,6 +147,7 @@ public final class TransitionPopupMenu extends JPopupMenu
             TransitionPopupMenu.this.pushDownAlphabet,
             TransitionPopupMenu.this.transition.getTransition () );
         transitionDialog.show ();
+        TransitionPopupMenu.this.parent.getLogic ().performCellsChanged ();
       }
     } );
     add ( this.config );

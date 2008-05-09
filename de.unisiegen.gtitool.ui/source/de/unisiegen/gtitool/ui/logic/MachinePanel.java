@@ -43,6 +43,7 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultStack;
@@ -581,6 +582,17 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Add a new stack {@link Transition}.
+   * 
+   * @param transition the new {@link Transition}.
+   */
+  public void addStackTransition ( Transition transition )
+  {
+    this.pdaTableModel.addRow ( transition );
+  }
+
+
+  /**
    * Add a new Warning
    * 
    * @param machineException The {@link MachineException} containing the data
@@ -640,8 +652,7 @@ public final class MachinePanel implements EditorPanel
       state.setActive ( false );
     }
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1096,8 +1107,7 @@ public final class MachinePanel implements EditorPanel
 
     clearHighlight ();
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1206,8 +1216,7 @@ public final class MachinePanel implements EditorPanel
   {
     this.redoUndoHandler.redo ();
     fireModifyStatusChanged ( false );
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1445,8 +1454,7 @@ public final class MachinePanel implements EditorPanel
   {
     this.redoUndoHandler.undo ();
     fireModifyStatusChanged ( false );
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1509,8 +1517,7 @@ public final class MachinePanel implements EditorPanel
         current.setActive ( true );
       }
 
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
 
       try
       {
@@ -1526,8 +1533,7 @@ public final class MachinePanel implements EditorPanel
     catch ( WordFinishedException exc )
     {
       this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getPrettyDescription ().toString (), exc.getPrettyMessage ()
           .toString () );
@@ -1536,8 +1542,7 @@ public final class MachinePanel implements EditorPanel
     catch ( WordResetedException exc )
     {
       this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getPrettyDescription ().toString (), exc.getPrettyMessage ()
           .toString () );
@@ -1546,8 +1551,7 @@ public final class MachinePanel implements EditorPanel
     catch ( WordNotAcceptedException exc )
     {
       this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getPrettyDescription ().toString (), exc.getPrettyMessage ()
           .toString () );
@@ -1596,8 +1600,7 @@ public final class MachinePanel implements EditorPanel
         current.setActive ( true );
       }
 
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
 
       /*
        * After the last previous step the current symbol is not defined.
@@ -1615,8 +1618,7 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( WordFinishedException exc )
     {
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getPrettyDescription ().toString (), exc.getPrettyMessage ()
           .toString () );
@@ -1624,8 +1626,7 @@ public final class MachinePanel implements EditorPanel
     }
     catch ( WordResetedException exc )
     {
-      this.graphModel.cellsChanged ( DefaultGraphModel
-          .getAll ( this.graphModel ) );
+      performCellsChanged ();
       InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
           .getPrettyDescription ().toString (), exc.getPrettyMessage ()
           .toString () );
@@ -1669,8 +1670,7 @@ public final class MachinePanel implements EditorPanel
       current.setActive ( true );
     }
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
 
     this.wordNavigation = true;
     return true;
@@ -1690,8 +1690,7 @@ public final class MachinePanel implements EditorPanel
     // Stack
     this.gui.wordPanel.styledStackParserPanel.setText ( new DefaultStack () );
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
@@ -1712,8 +1711,7 @@ public final class MachinePanel implements EditorPanel
     {
       current.setActive ( true );
     }
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1728,8 +1726,7 @@ public final class MachinePanel implements EditorPanel
     {
       current.setError ( true );
     }
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1744,8 +1741,7 @@ public final class MachinePanel implements EditorPanel
     {
       current.setError ( true );
     }
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1769,8 +1765,7 @@ public final class MachinePanel implements EditorPanel
       current.setError ( true );
     }
 
-    this.graphModel
-        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
+    performCellsChanged ();
   }
 
 
@@ -1996,6 +1991,8 @@ public final class MachinePanel implements EditorPanel
                 MachinePanel.this.machine.getPushDownAlphabet (),
                 usedTransition );
             transitionDialog.show ();
+
+            performCellsChanged ();
           }
           else
           {
@@ -2243,6 +2240,8 @@ public final class MachinePanel implements EditorPanel
               event.getPoint ().y, MachinePanel.this.zoomFactor );
           transitionDialog.show ();
 
+          performCellsChanged ();
+
           switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
           {
             case WITHOUT_RETURN_TO_MOUSE :
@@ -2307,6 +2306,9 @@ public final class MachinePanel implements EditorPanel
             new TreeSet < Symbol > (), event.getPoint ().x,
             event.getPoint ().y, MachinePanel.this.zoomFactor );
         transitionDialog.show ();
+
+        performCellsChanged ();
+
         switch ( PreferenceManager.getInstance ().getMouseSelectionItem () )
         {
           case WITHOUT_RETURN_TO_MOUSE :
@@ -2775,6 +2777,20 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * Sets the pdaTableModel.
+   * 
+   * @param pdaTableModel The pdaTableModel to set.
+   * @see #pdaTableModel
+   */
+  public void setPdaTableModel ( PDATableModel pdaTableModel )
+  {
+    this.pdaTableModel = pdaTableModel;
+    this.gui.jGTITableMachinePDA.setModel ( pdaTableModel );
+    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
+  }
+
+
+  /**
    * Sets the visibility of the console.
    * 
    * @param visible Visible or not visible.
@@ -2871,27 +2887,12 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Add a new stack {@link Transition}.
-   * 
-   * @param transition the new {@link Transition}.
+   * Performs the cells changed on the {@link GraphModel}.
    */
-  public void addStackTransition ( Transition transition )
+  public final void performCellsChanged ()
   {
-    this.pdaTableModel.addRow ( transition );
-  }
-
-
-  /**
-   * Sets the pdaTableModel.
-   * 
-   * @param pdaTableModel The pdaTableModel to set.
-   * @see #pdaTableModel
-   */
-  public void setPdaTableModel ( PDATableModel pdaTableModel )
-  {
-    this.pdaTableModel = pdaTableModel;
-    this.gui.jGTITableMachinePDA.setModel ( pdaTableModel );
-    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
+    this.graphModel
+        .cellsChanged ( DefaultGraphModel.getAll ( this.graphModel ) );
   }
 
 

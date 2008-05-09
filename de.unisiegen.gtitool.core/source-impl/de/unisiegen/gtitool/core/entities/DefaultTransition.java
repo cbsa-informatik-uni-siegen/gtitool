@@ -31,7 +31,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * @author Christian Fehler
  * @version $Id$
  */
-public class DefaultTransition implements Transition
+public final class DefaultTransition implements Transition
 {
 
   /**
@@ -1209,7 +1209,7 @@ public class DefaultTransition implements Transition
    * 
    * @see PrettyPrintable#toPrettyString()
    */
-  public PrettyString toPrettyString ()
+  public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
@@ -1283,7 +1283,7 @@ public class DefaultTransition implements Transition
    * @see Entity#toString()
    */
   @Override
-  public String toString ()
+  public final String toString ()
   {
     StringBuilder result = new StringBuilder ();
     if ( this.symbolSet.size () == 0 )

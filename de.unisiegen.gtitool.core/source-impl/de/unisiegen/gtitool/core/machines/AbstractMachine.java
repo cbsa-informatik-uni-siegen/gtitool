@@ -84,6 +84,18 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
+   * The index of the {@link State} column.
+   */
+  private static final int STATE_COLUMN = 0;
+
+
+  /**
+   * The index of the epsilon {@link Transition} column.
+   */
+  private static final int EPSILON_COLUMN = 1;
+
+
+  /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
    * @param machineType The {@link Machine} type.
@@ -942,14 +954,28 @@ public abstract class AbstractMachine implements Machine
   public final void clearSelectedTransition ()
   {
     // find the columns
-    for ( int i = 2 ; i < getColumnCount () ; i++ )
+    for ( int i = 0 ; i < getColumnCount () ; i++ )
     {
       for ( int j = 0 ; j < getRowCount () ; j++ )
       {
-        StateSet stateSet = ( StateSet ) getValueAt ( j, i );
-        for ( State currentState : stateSet )
+        Object value = getValueAt ( j, i );
+        if ( value instanceof State )
         {
-          currentState.setSelected ( false );
+          State state = ( State ) value;
+          state.setSelected ( false );
+        }
+        else if ( value instanceof StateSet )
+        {
+          StateSet stateSet = ( StateSet ) value;
+          for ( State currentState : stateSet )
+          {
+            currentState.setSelected ( false );
+          }
+        }
+        else
+        {
+          throw new RuntimeException ( "not supported table value class: " //$NON-NLS-1$
+              + value.getClass ().getSimpleName () );
         }
       }
     }
@@ -1215,11 +1241,11 @@ public abstract class AbstractMachine implements Machine
    */
   public final String getColumnName ( int columnIndex )
   {
-    if ( columnIndex == 0 )
+    if ( columnIndex == STATE_COLUMN )
     {
       return ""; //$NON-NLS-1$
     }
-    if ( columnIndex == 1 )
+    if ( columnIndex == EPSILON_COLUMN )
     {
       return "\u03B5"; //$NON-NLS-1$
     }
@@ -1391,14 +1417,14 @@ public abstract class AbstractMachine implements Machine
   {
     DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
 
-    TableColumn stateColumn = new TableColumn ( 0 );
+    TableColumn stateColumn = new TableColumn ( STATE_COLUMN );
     stateColumn.setHeaderValue ( new PrettyString ( new PrettyToken ( "", //$NON-NLS-1$
         Style.NONE ) ) );
     stateColumn.setHeaderRenderer ( new PrettyStringTableHeaderCellRenderer () );
     stateColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     columnModel.addColumn ( stateColumn );
 
-    TableColumn epsilonColumn = new TableColumn ( 1 );
+    TableColumn epsilonColumn = new TableColumn ( EPSILON_COLUMN );
     epsilonColumn.setHeaderValue ( new PrettyString ( new PrettyToken (
         "\u03B5", Style.SYMBOL ) ) ); //$NON-NLS-1$
     epsilonColumn
@@ -1453,7 +1479,7 @@ public abstract class AbstractMachine implements Machine
   public final Object getValueAt ( int rowIndex, int columnIndex )
   {
     // State column
-    if ( columnIndex == 0 )
+    if ( columnIndex == STATE_COLUMN )
     {
       return this.stateList.get ( rowIndex );
     }
@@ -1462,7 +1488,7 @@ public abstract class AbstractMachine implements Machine
     State currentState = this.stateList.get ( rowIndex );
 
     // Epsilon column
-    if ( columnIndex == 1 )
+    if ( columnIndex == EPSILON_COLUMN )
     {
       for ( Transition currentTransition : currentState.getTransitionBegin () )
       {
@@ -1511,18 +1537,19 @@ public abstract class AbstractMachine implements Machine
           && ( columnIndex == cachedColumnIndex ) )
       {
         StateSet cachedStateSet = ( StateSet ) cache.getThird ();
-        
-        if (cachedStateSet.size () != stateEndList.size () )
+
+        if ( cachedStateSet.size () != stateEndList.size () )
         {
           this.cachedValueList.remove ( i );
-          break ;
+          break;
         }
-        
+
         for ( int j = 0 ; j < stateEndList.size () ; j++ )
         {
           try
           {
-            cachedStateSet.get ( j ).setName ( stateEndList.get ( j ).getName () );
+            cachedStateSet.get ( j ).setName (
+                stateEndList.get ( j ).getName () );
           }
           catch ( StateException exc )
           {
@@ -2243,7 +2270,7 @@ public abstract class AbstractMachine implements Machine
   public final void setSelectedTransition ( Transition transition )
   {
     // reset
-    for ( int i = 2 ; i < getColumnCount () ; i++ )
+    for ( int i = 1 ; i < getColumnCount () ; i++ )
     {
       for ( int j = 0 ; j < getRowCount () ; j++ )
       {
@@ -2266,27 +2293,41 @@ public abstract class AbstractMachine implements Machine
       }
     }
 
-    // find the columns
-    for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+    if ( transition.isEpsilonTransition () )
     {
-      for ( int j = 0 ; j < transition.size () ; j++ )
-      {
-        if ( this.alphabet.get ( i ).equals ( transition.getSymbol ( j ) ) )
-        {
-          int column = i + 2;
-          StateSet stateSet = ( StateSet ) getValueAt ( row, column );
+      StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
 
-          for ( State currentState : stateSet )
+      for ( State currentState : stateSet )
+      {
+        if ( currentState.equals ( transition.getStateEnd () ) )
+        {
+          currentState.setSelected ( true );
+        }
+      }
+    }
+    else
+    {
+      // find the columns
+      for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+      {
+        for ( int j = 0 ; j < transition.size () ; j++ )
+        {
+          if ( this.alphabet.get ( i ).equals ( transition.getSymbol ( j ) ) )
           {
-            if ( currentState.equals ( transition.getStateEnd () ) )
+            int column = i + 2;
+            StateSet stateSet = ( StateSet ) getValueAt ( row, column );
+
+            for ( State currentState : stateSet )
             {
-              currentState.setSelected ( true );
+              if ( currentState.equals ( transition.getStateEnd () ) )
+              {
+                currentState.setSelected ( true );
+              }
             }
           }
         }
       }
     }
-
   }
 
 
@@ -2311,7 +2352,7 @@ public abstract class AbstractMachine implements Machine
   public final void setValueAt ( Object value, int rowIndex, int columnIndex )
   {
     // State column
-    if ( columnIndex == 0 )
+    if ( columnIndex == STATE_COLUMN )
     {
       throw new IllegalArgumentException (
           "the state column should not be editable" ); //$NON-NLS-1$
@@ -2463,13 +2504,14 @@ public abstract class AbstractMachine implements Machine
                 currentState.getName () ) )
         {
           // Epsilon transition
-          if ( ( columnIndex == 1 ) && currentTransition.isEpsilonTransition () )
+          if ( ( columnIndex == EPSILON_COLUMN )
+              && currentTransition.isEpsilonTransition () )
           {
             logger.debug ( "setValueAt", "remove transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
             transitionRemove.add ( currentTransition );
           }
           // No epsilon transition
-          else if ( columnIndex > 1 )
+          else if ( columnIndex > EPSILON_COLUMN )
           {
             Symbol symbolColumn = this.alphabet.get ( columnIndex - 2 );
             Symbol symbolRemove = null;

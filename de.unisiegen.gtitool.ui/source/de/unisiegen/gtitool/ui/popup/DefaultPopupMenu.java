@@ -123,7 +123,7 @@ public final class DefaultPopupMenu extends JPopupMenu
   {
     this.zoom = new JMenu ( "Zoom" ); //$NON-NLS-1$
     this.zoom.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/zoom.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupmenu/zoom.png" ) ) ); //$NON-NLS-1$
 
     this.zoom50 = new JCheckBoxMenuItem ( "50% " ); //$NON-NLS-1$
     this.zoom50.addActionListener ( new ActionListener ()

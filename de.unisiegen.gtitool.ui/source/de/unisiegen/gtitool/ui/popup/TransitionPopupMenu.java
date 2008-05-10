@@ -114,7 +114,7 @@ public final class TransitionPopupMenu extends JPopupMenu
 
     this.delete = new JMenuItem ( Messages.getString ( "MachinePanel.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/delete.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupmenu/delete.png" ) ) ); //$NON-NLS-1$
     this.delete.addActionListener ( new ActionListener ()
     {
 
@@ -131,7 +131,7 @@ public final class TransitionPopupMenu extends JPopupMenu
     this.config = new JMenuItem ( Messages
         .getString ( "MachinePanel.Properties" ) ); //$NON-NLS-1$
     this.config.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/popupMenu/rename.png" ) ) ); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/icon/popupmenu/rename.png" ) ) ); //$NON-NLS-1$
     this.config.addActionListener ( new ActionListener ()
     {
 

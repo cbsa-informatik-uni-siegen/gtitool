@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -44,6 +45,11 @@ public final class DefaultPopupMenu extends JPopupMenu
    * The validate item.
    */
   private JMenuItem validate;
+  
+  /**
+   * The layout item.
+   */
+  private JMenuItem layout;
 
 
   /**
@@ -210,6 +216,7 @@ public final class DefaultPopupMenu extends JPopupMenu
 
     add ( this.zoom );
 
+    //TODO i18n
     this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()
     {
@@ -222,6 +229,19 @@ public final class DefaultPopupMenu extends JPopupMenu
       }
     } );
     add ( this.validate );
+    
+    this.layout = new JMenuItem ( "Tu es" ); //$NON-NLS-1$
+    this.layout.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        new LayoutManager(DefaultPopupMenu.this.panel.getModel ()).doLayout ();
+      }
+    } );
+    add ( this.layout );
 
     switch ( this.factor )
     {

@@ -30,6 +30,7 @@ import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -268,6 +269,8 @@ public abstract class AbstractConvertGrammar implements Converter
     createMachine ();
     performProductions ();
     addPanelToView ();
+    
+    new LayoutManager(this.model).doLayout ();
   }
 
 

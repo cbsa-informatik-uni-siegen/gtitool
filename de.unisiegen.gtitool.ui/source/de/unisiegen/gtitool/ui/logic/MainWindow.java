@@ -2288,7 +2288,7 @@ public final class MainWindow implements LanguageChangedListener
   /**
    * Handle convert to action performed.
    * 
-   * @param enfa The {@link MachineType} to convert to.
+   * @param type The {@link MachineType} to convert to.
    */
   public void handleConvertTo ( MachineType type )
   {

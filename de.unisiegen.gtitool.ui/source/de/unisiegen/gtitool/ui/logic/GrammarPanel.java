@@ -1167,9 +1167,6 @@ public final class GrammarPanel implements EditorPanel
     {
       return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
     }
-    else
-    {
-      return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
-    }
+    return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
   }
 }

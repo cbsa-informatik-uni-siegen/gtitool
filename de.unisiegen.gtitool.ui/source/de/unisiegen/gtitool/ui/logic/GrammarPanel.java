@@ -30,11 +30,15 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
+import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
+import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -816,8 +820,8 @@ public final class GrammarPanel implements EditorPanel
         }
       }
 
-      ProductionPopupMenu popupmenu = new ProductionPopupMenu (
-          this.mainWindowForm, this, this.model, productions, rows );
+      ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
+          this.model, productions, rows );
 
       popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );
@@ -1148,6 +1152,24 @@ public final class GrammarPanel implements EditorPanel
       this.setDividerLocationConsole = false;
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getConverter()
+   */
+  public Converter getConverter ()
+  {
+    if ( this.grammar instanceof RG )
+    {
+      return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
+    }
+    else
+    {
+      return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
     }
   }
 }

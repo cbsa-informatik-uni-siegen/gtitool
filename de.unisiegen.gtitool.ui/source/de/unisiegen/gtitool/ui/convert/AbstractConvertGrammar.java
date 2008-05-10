@@ -95,14 +95,12 @@ public abstract class AbstractConvertGrammar implements Converter
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
-   * @param machineType The {@link MachineType}.
    */
   public AbstractConvertGrammar ( MainWindowForm mainWindowForm,
-      Grammar grammar, MachineType machineType )
+      Grammar grammar )
   {
     this.mainWindowForm = mainWindowForm;
     this.grammar = grammar;
-    this.machineType = machineType;
 
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( TerminalSymbol current : grammar.getTerminalSymbolSet () )
@@ -262,10 +260,13 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   *
+   * {@inheritDoc}
+   * 
+   * @see Converter#convert(MachineType)
    */
-  public void convert ()
+  public void convert (MachineType type)
   {
+    this.machineType = type;
     createMachine ();
     performProductions ();
     addPanelToView ();

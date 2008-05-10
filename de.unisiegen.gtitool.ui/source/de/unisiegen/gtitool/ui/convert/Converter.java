@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+
+
 /**
  * This interface represents the converter classes.
  * 
@@ -9,9 +12,11 @@ package de.unisiegen.gtitool.ui.convert;
  */
 public interface Converter
 {
-  
+
   /**
    * Perform convert action.
+   * 
+   * @param machineType The {@link MachineType} to convert to. 
    */
-  public void convert();
+  public void convert ( MachineType machineType );
 }

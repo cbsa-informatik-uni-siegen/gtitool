@@ -19,7 +19,6 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -44,12 +43,10 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
-   * @param machineType The {@link MachineType}.
    */
-  public ConvertRegularGrammar ( MainWindowForm mainWindowForm,
-      Grammar grammar, MachineType machineType )
+  public ConvertRegularGrammar ( MainWindowForm mainWindowForm, Grammar grammar )
   {
-    super ( mainWindowForm, grammar, machineType );
+    super ( mainWindowForm, grammar );
     setPushDownAlphabet ( getAlphabet () );
   }
 

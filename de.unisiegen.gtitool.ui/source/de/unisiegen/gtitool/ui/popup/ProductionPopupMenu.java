@@ -13,18 +13,12 @@ import javax.swing.SwingUtilities;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.ui.Messages;
-import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
-import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
-import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
-import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
@@ -93,47 +87,21 @@ public final class ProductionPopupMenu extends JPopupMenu
 
 
   /**
-   * The {@link MainWindowForm}.
-   */
-  private MainWindowForm mainWindowForm;
-  
-  /**
-   * The {@link Converter}.
-   */
-  private Converter converter;
-
-
-  /**
    * Allocates a new {@link StatePopupMenu}.
    * 
-   * @param mainWindowForm The {@link MainWindowForm}.
    * @param parent The {@link GrammarPanel}.
    * @param model the model containing the production.
    * @param productions the selected {@link Production}s.
    * @param indeces The indeces of the {@link Production}s.
    */
-  public ProductionPopupMenu ( MainWindowForm mainWindowForm,
-      GrammarPanel parent, DefaultGrammarModel model,
+  public ProductionPopupMenu ( GrammarPanel parent, DefaultGrammarModel model,
       ArrayList < Production > productions, int [] indeces )
   {
-    this.mainWindowForm = mainWindowForm;
     this.grammarPanel = parent;
     this.model = model;
     this.productions = productions;
     this.indeces = indeces;
     populateMenues ();
-    
-    if (model.getGrammar () instanceof RG){
-      this.converter = new ConvertRegularGrammar ( ProductionPopupMenu.this.mainWindowForm,
-          ProductionPopupMenu.this.grammarPanel.getGrammar (),
-          MachineType.ENFA );
-    }
-    else {
-      this.converter = new ConvertContextFreeGrammar( ProductionPopupMenu.this.mainWindowForm,
-          ProductionPopupMenu.this.grammarPanel.getGrammar (),
-          MachineType.PDA );
-    }
-
   }
 
 
@@ -263,21 +231,5 @@ public final class ProductionPopupMenu extends JPopupMenu
     } );
     add ( this.validate );
 
-    JMenuItem convert = new JMenuItem ( "Convert" ); //$NON-NLS-1$
-    convert.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
-      {
-        if ( ProductionPopupMenu.this.grammarPanel
-            .getMainWindow ().handleValidate ( false ) )
-        {
-          ProductionPopupMenu.this.converter.convert ();
-        }
-      }
-    } );
-    add ( convert );
   }
 }

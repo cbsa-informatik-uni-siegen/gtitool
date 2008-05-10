@@ -21,7 +21,6 @@ import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -39,12 +38,11 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
    * 
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
-   * @param machineType The {@link MachineType}.
    */
   public ConvertContextFreeGrammar ( MainWindowForm mainWindowForm,
-      Grammar grammar, MachineType machineType )
+      Grammar grammar )
   {
-    super ( mainWindowForm, grammar, machineType );
+    super ( mainWindowForm, grammar );
 
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( TerminalSymbol current : grammar.getTerminalSymbolSet () )

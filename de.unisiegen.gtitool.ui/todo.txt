@@ -6,8 +6,7 @@ CF		- Umwandeln von Maschinen
 
 
 BM		- Autolayout
-BM		- Das Konvertieren muss ins Hauptmenü übernommen werden
-		  (Menü Ausführen)
+BM		- Die Konvertieren Items müssen entsprechend aktiviert und deaktiviert werden
 
 
 		- Split View

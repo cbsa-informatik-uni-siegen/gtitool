@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -2281,5 +2282,38 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
     this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
     this.gui.getJGTIToolBarButtonStop ().setEnabled ( state );
+  }
+
+
+  /**
+   * Handle convert to action performed.
+   * 
+   * @param enfa The {@link MachineType} to convert to.
+   */
+  public void handleConvertTo ( MachineType type )
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    
+    // TODO remove if statement when converter for machines are ready
+    if ( panel.getConverter () != null )
+    {
+      panel.getConverter ().convert (type);
+    }
+  }
+
+
+  /**
+   * Handle auto layout action performed.
+   */
+  public void doAutoLayout ()
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) panel;
+      new LayoutManager ( machinePanel.getModel () ).doLayout ();
+    }
   }
 }

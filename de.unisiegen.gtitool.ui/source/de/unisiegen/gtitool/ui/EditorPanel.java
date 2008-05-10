@@ -9,6 +9,7 @@ import javax.swing.JTabbedPane;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
+import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
@@ -156,5 +157,12 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
    * @param visible Visible or not visible.
    */
   public void setVisibleConsole ( boolean visible );
+  
+  /**
+   * Get the {@link Converter} for this {@link EditorPanel}.
+   *
+   * @return The {@link Converter}.
+   */
+  public Converter getConverter();
 
 }

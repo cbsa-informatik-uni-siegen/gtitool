@@ -13,6 +13,7 @@ import javax.swing.JToolBar;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;
 import de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane;
@@ -841,6 +842,12 @@ public class MainWindowForm extends JFrame {
         jMenuItemEnterWord = new javax.swing.JMenuItem();
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemEditMachine = new javax.swing.JMenuItem();
+        jMenuItemAutoLayout = new javax.swing.JMenuItem();
+        jMenuConvertTo = new javax.swing.JMenu();
+        jMenuItemConvertToDFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToNFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToENFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToPDA = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
@@ -1400,6 +1407,56 @@ public class MainWindowForm extends JFrame {
 
         jMenuExecute.add(jMenuItemEditMachine);
 
+        jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
+        jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAutoLayoutActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemAutoLayout);
+
+        jMenuConvertTo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
+        jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
+        jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
+        jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        jMenuItemConvertToDFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToDFAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertTo.add(jMenuItemConvertToDFA);
+
+        jMenuItemConvertToNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        jMenuItemConvertToNFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToNFActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertTo.add(jMenuItemConvertToNFA);
+
+        jMenuItemConvertToENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        jMenuItemConvertToENFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToENFAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertTo.add(jMenuItemConvertToENFA);
+
+        jMenuItemConvertToPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        jMenuItemConvertToPDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToPDAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertTo.add(jMenuItemConvertToPDA);
+
+        jMenuExecute.add(jMenuConvertTo);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -1435,6 +1492,26 @@ public class MainWindowForm extends JFrame {
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemAutoLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAutoLayoutActionPerformed
+        this.logic.doAutoLayout();
+    }//GEN-LAST:event_jMenuItemAutoLayoutActionPerformed
+
+    private void jMenuItemConvertToPDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToPDAActionPerformed
+        this.logic.handleConvertTo(MachineType.PDA);
+    }//GEN-LAST:event_jMenuItemConvertToPDAActionPerformed
+
+    private void jMenuItemConvertToENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToENFAActionPerformed
+        this.logic.handleConvertTo(MachineType.ENFA);
+    }//GEN-LAST:event_jMenuItemConvertToENFAActionPerformed
+
+    private void jMenuItemConvertToNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToNFActionPerformed
+        this.logic.handleConvertTo(MachineType.NFA);
+    }//GEN-LAST:event_jMenuItemConvertToNFActionPerformed
+
+    private void jMenuItemConvertToDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToDFAActionPerformed
+         this.logic.handleConvertTo(MachineType.DFA);
+    }//GEN-LAST:event_jMenuItemConvertToDFAActionPerformed
 
     private void editorPanelTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneMouseReleased
         this.logic.handleTabbedPaneMouseReleased(evt);
@@ -1653,6 +1730,7 @@ public class MainWindowForm extends JFrame {
     private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
     private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
     private javax.swing.JMenuBar jMenuBarMain;
+    private javax.swing.JMenu jMenuConvertTo;
     private javax.swing.JMenu jMenuDraft;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuExecute;
@@ -1660,9 +1738,14 @@ public class MainWindowForm extends JFrame {
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuHelp;
     private javax.swing.JMenuItem jMenuItemAbout;
+    private javax.swing.JMenuItem jMenuItemAutoLayout;
     private javax.swing.JMenuItem jMenuItemCFG;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCloseAll;
+    private javax.swing.JMenuItem jMenuItemConvertToDFA;
+    private javax.swing.JMenuItem jMenuItemConvertToENFA;
+    private javax.swing.JMenuItem jMenuItemConvertToNFA;
+    private javax.swing.JMenuItem jMenuItemConvertToPDA;
     private javax.swing.JMenuItem jMenuItemDFA;
     private javax.swing.JMenuItem jMenuItemENFA;
     private javax.swing.JMenuItem jMenuItemEditMachine;

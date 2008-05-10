@@ -66,6 +66,7 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
@@ -2881,7 +2882,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * >>>>>>> .r871 Updates the selected {@link Transition}s and {@link State}s
+   * Updates the selected {@link Transition}s and {@link State}s
    * or clears the selected.
    */
   private final void updateSelected ()
@@ -2908,5 +2909,16 @@ public final class MachinePanel implements EditorPanel
     }
 
     this.gui.jGTITableMachine.repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.EditorPanel#getConverter()
+   */
+  public Converter getConverter ()
+  {
+    return null;
   }
 }

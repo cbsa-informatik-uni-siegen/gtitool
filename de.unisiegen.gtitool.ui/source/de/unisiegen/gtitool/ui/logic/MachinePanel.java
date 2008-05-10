@@ -2128,7 +2128,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
                 true );
             break;
           }
@@ -2250,7 +2250,7 @@ public final class MachinePanel implements EditorPanel
             case WITH_RETURN_TO_MOUSE :
             {
               // Return to the normal mouse after every click.
-              MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+              MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
                   true );
               break;
             }
@@ -2317,7 +2317,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
                 true );
             break;
           }
@@ -2509,7 +2509,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
                 true );
             break;
           }
@@ -2607,7 +2607,7 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateButtonMouse (
+            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
                 true );
             break;
           }

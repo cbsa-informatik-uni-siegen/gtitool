@@ -1,13 +1,16 @@
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
-CF		- Determinismus bei PDA untersuchen im Navigationsmodus
+CF		- Determinismus bei PDA im Navigationsmodus untersuchen
 CF		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA
+CF		- Umbau der Button Zustände
+CF		- Keller Operationen highlighten
 
 
 BM		- Autolayout
 BM		- Die Konvertieren Items müssen entsprechend aktiviert und deaktiviert werden
-
+BM		- Wenn eine Produktion per DnD an die gleiche Stelle verschoben wird, dann man
+		  diesen Schritt rückgängig machen, obwohl sich ja nichts geändert hat.
 
 		- Split View
 		- Minimaler Automat

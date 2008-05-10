@@ -103,20 +103,16 @@ public final class MainWindow implements LanguageChangedListener
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
 
-    setStateGeneral ( false );
-    setStateSave ( false );
-    setStateHistoryItem ();
-    setStateValidate ( false );
-    setStateMenuEnterWord ( false );
-
-    // Edit Machine
-    // TODO
-    this.gui.getJMenuItemEditMachine ().setEnabled ( false );
-
-    setStateRecentlyUsed ( false );
-    setStateGrammarButtons ( false );
-    setStateMachineButtons ( false );
-    setStateEditDocument ( false );
+    setStateEnabledGeneral ( false );
+    setStateEnabledSave ( false );
+    setStateEnabledHistoryItem ();
+    setStateEnabledValidate ( false );
+    setStateEnabledMenuEnterWord ( false );
+    setStateEnabledEditMachine ( false );
+    setStateEnabledRecentlyUsed ( false );
+    setStateVisibleGrammarButtons ( false );
+    setStateVisibleMachineButtons ( false );
+    setStateEnabledEditDocument ( false );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -146,9 +142,24 @@ public final class MainWindow implements LanguageChangedListener
       @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
-        setStateSave ( modified );
+        setStateEnabledSave ( modified );
       }
     };
+  }
+
+
+  /**
+   * Handle auto layout action performed.
+   */
+  public void doAutoLayout ()
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) panel;
+      new LayoutManager ( machinePanel.getModel () ).doLayout ();
+    }
   }
 
 
@@ -169,7 +180,7 @@ public final class MainWindow implements LanguageChangedListener
    * 
    * @return The {@link ModifyStatusChangedListener}.
    */
-  public ModifyStatusChangedListener getModifyStatusChangedListener ()
+  public final ModifyStatusChangedListener getModifyStatusChangedListener ()
   {
     return this.modifyStatusChangedListener;
   }
@@ -205,7 +216,7 @@ public final class MainWindow implements LanguageChangedListener
    */
   public final void handleAutoStepStopped ()
   {
-    setStateAutoStep ( false );
+    setStateSelectedAutoStep ( false );
   }
 
 
@@ -255,9 +266,10 @@ public final class MainWindow implements LanguageChangedListener
     // All editor panels are closed
     if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () == null )
     {
-      setStateGrammarButtons ( false );
-      setStateMachineButtons ( false );
-      setStateEditDocument ( false );
+      setStateEnabledGeneral ( false );
+      setStateVisibleGrammarButtons ( false );
+      setStateVisibleMachineButtons ( false );
+      setStateEnabledEditDocument ( false );
     }
     return true;
   }
@@ -293,6 +305,24 @@ public final class MainWindow implements LanguageChangedListener
           .getState () );
       PreferenceManager.getInstance ().setVisibleConsole (
           this.gui.getJCheckBoxMenuItemConsole ().getState () );
+    }
+  }
+
+
+  /**
+   * Handle convert to action performed.
+   * 
+   * @param type The {@link MachineType} to convert to.
+   */
+  public final void handleConvertTo ( MachineType type )
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+
+    // TODO remove if statement when converter for machines are ready
+    if ( panel.getConverter () != null )
+    {
+      panel.getConverter ().convert ( type );
     }
   }
 
@@ -353,9 +383,9 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
           newEditorPanel );
 
-      setStateGeneral ( true );
-      setStateValidate ( true );
-      setStateEditItem ( true );
+      setStateEnabledGeneral ( true );
+      setStateEnabledValidate ( true );
+      setStateEnabledEditMachineItems ( true );
     }
     catch ( StoreException exc )
     {
@@ -423,9 +453,9 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
           newEditorPanel );
 
-      setStateGeneral ( true );
-      setStateValidate ( true );
-      setStateEditItem ( true );
+      setStateEnabledGeneral ( true );
+      setStateEnabledValidate ( true );
+      setStateEnabledEditMachineItems ( true );
     }
     catch ( StoreException exc )
     {
@@ -479,19 +509,18 @@ public final class MainWindow implements LanguageChangedListener
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
 
-    setStateEditItem ( true );
-    setStateEnterWord ( false );
+    setStateEnabledEditMachineItems ( true );
+    setStateEnabledEnterWord ( false );
+
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
     machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
         .getState () );
-    // TODO
-    this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( true );
-    setStateMenuEnterWord ( true );
-    // TODO
-    this.gui.getJMenuItemEditMachine ().setEnabled ( false );
 
-    setStateValidate ( true );
+    setStateEnabledConsole ( true );
+    setStateEnabledMenuEnterWord ( true );
+    setStateEnabledEditMachine ( false );
+    setStateEnabledValidate ( true );
   }
 
 
@@ -525,17 +554,14 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( handleValidate ( false ) )
     {
-      setStateEditItem ( false );
-      // TODO
-      this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
+      setStateEnabledEditMachineItems ( false );
+      setStateEnabledWordStart ( true );
       machinePanel.handleEnterWord ();
-      // TODO
-      this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( false );
+      setStateSelectedConsole ( false );
       machinePanel.setVisibleConsole ( false );
-      setStateMenuEnterWord ( false );
-      // TODO
-      this.gui.getJMenuItemEditMachine ().setEnabled ( true );
-      setStateValidate ( false );
+      setStateEnabledMenuEnterWord ( false );
+      setStateEnabledEditMachine ( true );
+      setStateEnabledValidate ( false );
     }
   }
 
@@ -615,11 +641,11 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
           newEditorPanel );
 
-      setStateGeneral ( true );
-      setStateValidate ( true );
+      setStateEnabledGeneral ( true );
+      setStateEnabledValidate ( true );
 
       // toolbar items
-      setStateEditItem ( true );
+      setStateEnabledEditMachineItems ( true );
     }
   }
 
@@ -739,11 +765,11 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
           newEditorPanel );
 
-      setStateGeneral ( true );
-      setStateValidate ( true );
+      setStateEnabledGeneral ( true );
+      setStateEnabledValidate ( true );
 
       // toolbar items
-      setStateEditItem ( true );
+      setStateEnabledEditMachineItems ( true );
     }
   }
 
@@ -990,80 +1016,57 @@ public final class MainWindow implements LanguageChangedListener
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
-      setStateMachineButtons ( panel instanceof MachinePanel );
-      setStateGrammarButtons ( panel instanceof GrammarPanel );
+      setStateVisibleMachineButtons ( panel instanceof MachinePanel );
+      setStateVisibleGrammarButtons ( panel instanceof GrammarPanel );
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
-        setStateDraftForItems ( true );
+        setStateEnabledDraftFor ( true );
 
         MachinePanel machinePanel = ( MachinePanel ) panel;
-        // TODO
-        this.gui.getJCheckBoxMenuItemConsole ().setEnabled (
-            !machinePanel.isWordEnterMode () );
-        // TODO
+        setStateSelectedConsole ( !machinePanel.isWordEnterMode () );
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().getState ()
             && !machinePanel.isWordEnterMode () );
-        // TODO
         machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .getState () );
-        setStateEditItem ( !machinePanel.isWordEnterMode () );
-        setStateEnterWord ( machinePanel.isWordEnterMode () );
-        // TODO
-        this.gui.getJMenuItemEditMachine ().setEnabled (
-            machinePanel.isWordEnterMode () );
-        // TODO
-        this.gui.getJMenuItemValidate ().setEnabled (
-            !machinePanel.isWordEnterMode () );
-        setStateMenuEnterWord ( !machinePanel.isWordEnterMode () );
-        // TODO
-        this.gui.getJCheckBoxMenuItemTable ().setEnabled ( true );
+        setStateEnabledEditMachineItems ( !machinePanel.isWordEnterMode () );
+        setStateEnabledEnterWord ( machinePanel.isWordEnterMode () );
+        setStateEnabledEditMachine ( machinePanel.isWordEnterMode () );
+        setStateEnabledValidate ( !machinePanel.isWordEnterMode () );
+        setStateEnabledMenuEnterWord ( !machinePanel.isWordEnterMode () );
+        setStateEnabledTable ( true );
 
         // Set the status of the word navigation icons
-        // TODO
-        this.gui.getJGTIToolBarButtonStart ().setEnabled (
-            machinePanel.isWordEnterMode ()
-                && !machinePanel.isWordNavigation () );
-        // TODO
-        this.gui.getJGTIToolBarButtonPrevious ().setEnabled (
-            machinePanel.isWordNavigation () );
-        // TODO
-        this.gui.getJGTIToolBarButtonNextStep ().setEnabled (
-            machinePanel.isWordNavigation () );
-        // TODO
-        this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled (
-            machinePanel.isWordNavigation () );
-        // TODO
-        this.gui.getJGTIToolBarButtonStop ().setEnabled (
-            machinePanel.isWordNavigation () );
-
+        setStateEnabledWordStart ( machinePanel.isWordEnterMode ()
+            && !machinePanel.isWordNavigation () );
+        setStateEnabledPrevious ( machinePanel.isWordNavigation () );
+        setStateEnabledNextStep ( machinePanel.isWordNavigation () );
+        setStateEnabledAutoStep ( machinePanel.isWordNavigation () );
       }
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
-        // TODO
-        this.gui.getJCheckBoxMenuItemTable ().setEnabled ( false );
+        setStateEnabledTable ( false );
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .getState () );
-        setStateMenuEnterWord ( false );
-
-        setStateDraftForItems ( false );
+        setStateEnabledMenuEnterWord ( false );
+        setStateEnabledDraftFor ( false );
       }
       else
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
 
-      setStateUndo ( panel.isUndoAble () );
-      setStateRedo ( panel.isRedoAble () );
+      setStateEnabledUndo ( panel.isUndoAble () );
+      setStateEnabledRedo ( panel.isRedoAble () );
     }
 
     // Save status
-    setStateSave ();
+    setStateEnabledSave ();
 
     // Item status
-    setStateHistoryItem ();
+    setStateEnabledHistoryItem ();
   }
 
 
@@ -1448,7 +1451,7 @@ public final class MainWindow implements LanguageChangedListener
                   : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
     }
 
-    setStateConsole ( true );
+    setStateSelectedConsole ( true );
     panel.setVisibleConsole ( true );
 
     infoDialog.show ();
@@ -1524,11 +1527,11 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( machinePanel.handleWordStart () )
     {
-      setStateWordNavigation ( true );
+      setStateEnabledWordNavigation ( true );
     }
 
     // Item status
-    setStateHistoryItem ();
+    setStateEnabledHistoryItem ();
   }
 
 
@@ -1545,12 +1548,12 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    setStateWordNavigation ( false );
+    setStateEnabledWordNavigation ( false );
 
     machinePanel.handleWordStop ();
 
     // Item status
-    setStateHistoryItem ();
+    setStateEnabledHistoryItem ();
   }
 
 
@@ -1862,9 +1865,9 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle (
             newEditorPanel, file.getName () );
 
-        setStateGeneral ( true );
-        setStateValidate ( true );
-        setStateEditItem ( true );
+        setStateEnabledGeneral ( true );
+        setStateEnabledValidate ( true );
+        setStateEnabledEditMachineItems ( true );
       }
       else if ( element instanceof DefaultGrammarModel )
       {
@@ -1880,7 +1883,7 @@ public final class MainWindow implements LanguageChangedListener
         this.gui.getEditorPanelTabbedPane ().setEditorPanelTitle (
             newEditorPanel, file.getName () );
 
-        setStateGeneral ( true );
+        setStateEnabledGeneral ( true );
       }
       else
       {
@@ -1934,7 +1937,7 @@ public final class MainWindow implements LanguageChangedListener
 
     this.recentlyUsedFiles.removeAll ( notExistingFiles );
 
-    setStateRecentlyUsed ( this.recentlyUsedFiles.size () > 0 );
+    setStateEnabledRecentlyUsed ( this.recentlyUsedFiles.size () > 0 );
   }
 
 
@@ -1967,66 +1970,33 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the auto step state.
+   * Sets the enabled state of the auto step.
    * 
    * @param state The new state.
    */
-  public final void setStateAutoStep ( boolean state )
+  public final void setStateEnabledAutoStep ( boolean state )
   {
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
   }
 
 
   /**
-   * Sets the button mouse state.
+   * Sets the enabled state of the console.
    * 
    * @param state The new state.
    */
-  public final void setStateButtonMouse ( boolean state )
+  public final void setStateEnabledConsole ( boolean state )
   {
-    this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( state );
+    this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( state );
   }
 
 
   /**
-   * Sets the console state for items and buttons.
+   * Sets the enabled state of the draft for.
    * 
    * @param state The new state.
    */
-  public final void setStateConsole ( boolean state )
-  {
-    this.gui.getJCheckBoxMenuItemConsole ().setSelected ( state );
-  }
-
-
-  /**
-   * Sets the edit document state for items and buttons.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEditDocument ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the state of the recently used items.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateRecentlyUsed ( boolean state )
-  {
-    this.gui.getJMenuRecentlyUsed ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the state of the draft for items.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateDraftForItems ( boolean state )
+  private final void setStateEnabledDraftFor ( boolean state )
   {
     this.gui.getJMenuItemDFA ().setEnabled ( state );
     this.gui.getJMenuItemNFA ().setEnabled ( state );
@@ -2038,11 +2008,33 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the state of the edit machine toolbar items.
+   * Sets the enabled state of edit document.
    * 
    * @param state The new state.
    */
-  private final void setStateEditItem ( boolean state )
+  public final void setStateEnabledEditDocument ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state of the edit machine.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateEnabledEditMachine ( boolean state )
+  {
+    this.gui.getJMenuItemEditMachine ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state of the edit machine items.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateEnabledEditMachineItems ( boolean state )
   {
     this.gui.getJGTIToolBarToggleButtonAddState ().setEnabled ( state );
     this.gui.getJGTIToolBarToggleButtonAddTransition ().setEnabled ( state );
@@ -2054,22 +2046,11 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the state of the enter word menu item.
+   * Sets the enabled state of the enter word.
    * 
    * @param state The new state.
    */
-  private final void setStateMenuEnterWord ( boolean state )
-  {
-    this.gui.getJMenuItemEnterWord ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the state of the enter word toolbar items.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateEnterWord ( boolean state )
+  private final void setStateEnabledEnterWord ( boolean state )
   {
     this.gui.getJGTIToolBarButtonStart ().setEnabled ( state );
     this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
@@ -2080,65 +2061,33 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets general states for items and buttons.
+   * Sets the enabled general states.
    * 
    * @param state The new state.
    */
-  private final void setStateGeneral ( boolean state )
+  private final void setStateEnabledGeneral ( boolean state )
   {
-    // SaveAs
     this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( state );
     this.gui.getJMenuItemSaveAs ().setEnabled ( state );
-
-    // SaveAll
     this.gui.getJMenuItemSaveAll ().setEnabled ( state );
-
-    // Close
     this.gui.getJMenuItemClose ().setEnabled ( state );
-
-    // CloseAll
     this.gui.getJMenuItemCloseAll ().setEnabled ( state );
-
-    // View
     this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( state );
     this.gui.getJCheckBoxMenuItemTable ().setEnabled ( state );
-
-    // Enter word
     this.gui.getJMenuItemEnterWord ().setEnabled ( state );
-
-    // Undo
     this.gui.getJMenuItemUndo ().setEnabled ( false );
     this.gui.getJGTIToolBarButtonUndo ().setEnabled ( false );
-
-    // Redo
     this.gui.getJMenuItemRedo ().setEnabled ( false );
     this.gui.getJGTIToolBarButtonRedo ().setEnabled ( false );
-
-    // Edit document
     this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( state );
-
-    // Draft for
     this.gui.getJMenuDraft ().setEnabled ( state );
   }
 
 
   /**
-   * Shows or hides the buttons needed in the {@link GrammarPanel}.
-   * 
-   * @param state The visible state of the buttons.
+   * Sets the enabled state of the history item.
    */
-  private void setStateGrammarButtons ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( state );
-  }
-
-
-  /**
-   * Sets the history item state.
-   */
-  private final void setStateHistoryItem ()
+  private final void setStateEnabledHistoryItem ()
   {
     // MachinePanel
     if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof MachinePanel )
@@ -2163,33 +2112,55 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Shows or hides the buttons needed in the {@link MachinePanel}.
+   * Sets the enabled state of the enter word menu item.
    * 
-   * @param state The visible state of the buttons.
+   * @param state The new state.
    */
-  private void setStateMachineButtons ( boolean state )
+  private final void setStateEnabledMenuEnterWord ( boolean state )
   {
-    this.gui.getJSeparatorNavigation ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( state );
-
-    this.gui.getJGTIToolBarButtonStart ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonPrevious ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonNextStep ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonStop ().setVisible ( state );
+    this.gui.getJMenuItemEnterWord ().setEnabled ( state );
   }
 
 
   /**
-   * Sets the redo state for items and buttons.
+   * Sets the enabled state of the next step.
    * 
    * @param state The new state.
    */
-  public final void setStateRedo ( boolean state )
+  public final void setStateEnabledNextStep ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state of the previous.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateEnabledPrevious ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state of the recently used.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateEnabledRecentlyUsed ( boolean state )
+  {
+    this.gui.getJMenuRecentlyUsed ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state for redo.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateEnabledRedo ( boolean state )
   {
     this.gui.getJMenuItemRedo ().setEnabled ( state );
     this.gui.getJGTIToolBarButtonRedo ().setEnabled ( state );
@@ -2197,9 +2168,9 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the state of the save button and item.
+   * Sets the enabled state of the save.
    */
-  private final void setStateSave ()
+  private final void setStateEnabledSave ()
   {
     boolean state = false;
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
@@ -2208,16 +2179,16 @@ public final class MainWindow implements LanguageChangedListener
     {
       state = panel.isModified ();
     }
-    setStateSave ( state );
+    setStateEnabledSave ( state );
   }
 
 
   /**
-   * Sets the state of the save button and item.
+   * Sets the enabled state of the save.
    * 
-   * @param state The new state of the save button.
+   * @param state The new state.
    */
-  private final void setStateSave ( boolean state )
+  private final void setStateEnabledSave ( boolean state )
   {
     logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
         + state + Messages.QUOTE );
@@ -2248,11 +2219,22 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the redo state for items and buttons.
+   * Sets the enabled state of the state.
    * 
    * @param state The new state.
    */
-  public final void setStateUndo ( boolean state )
+  public final void setStateEnabledTable ( boolean state )
+  {
+    this.gui.getJCheckBoxMenuItemTable ().setEnabled ( state );
+  }
+
+
+  /**
+   * Sets the enabled state of the undo.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateEnabledUndo ( boolean state )
   {
     this.gui.getJMenuItemUndo ().setEnabled ( state );
     this.gui.getJGTIToolBarButtonUndo ().setEnabled ( state );
@@ -2260,22 +2242,22 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the validate state for items and buttons.
+   * Sets the enabled state of the validate.
    * 
    * @param state The new state.
    */
-  public final void setStateValidate ( boolean state )
+  public final void setStateEnabledValidate ( boolean state )
   {
     this.gui.getJMenuItemValidate ().setEnabled ( state );
   }
 
 
   /**
-   * Sets the state of the word navigation items.
+   * Sets the enabled state of the word navigation.
    * 
    * @param state The new state.
    */
-  public final void setStateWordNavigation ( boolean state )
+  public final void setStateEnabledWordNavigation ( boolean state )
   {
     this.gui.getJGTIToolBarButtonStart ().setEnabled ( !state );
     this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
@@ -2286,34 +2268,80 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle convert to action performed.
+   * Sets the enabled state of the start.
    * 
-   * @param type The {@link MachineType} to convert to.
+   * @param state The new state.
    */
-  public void handleConvertTo ( MachineType type )
+  public final void setStateEnabledWordStart ( boolean state )
   {
-    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
-    
-    // TODO remove if statement when converter for machines are ready
-    if ( panel.getConverter () != null )
-    {
-      panel.getConverter ().convert (type);
-    }
+    this.gui.getJGTIToolBarButtonStart ().setEnabled ( state );
   }
 
 
   /**
-   * Handle auto layout action performed.
+   * Sets the selected state of the auto step.
+   * 
+   * @param state The new state.
    */
-  public void doAutoLayout ()
+  public final void setStateSelectedAutoStep ( boolean state )
   {
-    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
-    if ( panel instanceof MachinePanel )
-    {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
-      new LayoutManager ( machinePanel.getModel () ).doLayout ();
-    }
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( state );
+  }
+
+
+  /**
+   * Sets the selected state of the console.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateSelectedConsole ( boolean state )
+  {
+    this.gui.getJCheckBoxMenuItemConsole ().setSelected ( state );
+  }
+
+
+  /**
+   * Sets the selected state of mouse.
+   * 
+   * @param state The new state.
+   */
+  public final void setStateSelectedMouse ( boolean state )
+  {
+    this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( state );
+  }
+
+
+  /**
+   * Sets the visible state of the grammar buttons.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateVisibleGrammarButtons ( boolean state )
+  {
+    this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( state );
+  }
+
+
+  /**
+   * Sets the visible state of the machine buttons.
+   * 
+   * @param state The new state.
+   */
+  private final void setStateVisibleMachineButtons ( boolean state )
+  {
+    this.gui.getJSeparatorNavigation ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( state );
+
+    this.gui.getJGTIToolBarButtonStart ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonPrevious ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonNextStep ().setVisible ( state );
+    this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( state );
+    this.gui.getJGTIToolBarButtonStop ().setVisible ( state );
   }
 }

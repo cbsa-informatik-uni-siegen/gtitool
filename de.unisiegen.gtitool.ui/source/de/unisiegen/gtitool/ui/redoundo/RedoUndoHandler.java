@@ -53,8 +53,8 @@ public final class RedoUndoHandler
   {
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
-    this.mainWindowForm.getLogic ().setStateRedo ( false );
-    this.mainWindowForm.getLogic ().setStateUndo ( true );
+    this.mainWindowForm.getLogic ().setStateEnabledRedo ( false );
+    this.mainWindowForm.getLogic ().setStateEnabledUndo ( true );
   }
 
 
@@ -87,8 +87,8 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.redoSteps.pop ();
 
-    this.mainWindowForm.getLogic ().setStateRedo ( !this.redoSteps.isEmpty () );
-    this.mainWindowForm.getLogic ().setStateUndo ( true );
+    this.mainWindowForm.getLogic ().setStateEnabledRedo ( !this.redoSteps.isEmpty () );
+    this.mainWindowForm.getLogic ().setStateEnabledUndo ( true );
 
     this.undoSteps.push ( step );
 
@@ -103,8 +103,8 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.undoSteps.pop ();
 
-    this.mainWindowForm.getLogic ().setStateRedo ( true );
-    this.mainWindowForm.getLogic ().setStateUndo ( !this.undoSteps.isEmpty () );
+    this.mainWindowForm.getLogic ().setStateEnabledRedo ( true );
+    this.mainWindowForm.getLogic ().setStateEnabledUndo ( !this.undoSteps.isEmpty () );
 
     this.redoSteps.push ( step );
 

@@ -101,7 +101,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
           EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-              .setStateWordNavigation ( true );
+              .setStateEnabledWordNavigation ( true );
         }
       }
     } );
@@ -161,7 +161,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       ActionEvent event )
       {
         EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-            .setStateWordNavigation ( false );
+            .setStateEnabledWordNavigation ( false );
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }
     } );

@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
@@ -45,7 +46,8 @@ public final class DefaultPopupMenu extends JPopupMenu
    * The validate item.
    */
   private JMenuItem validate;
-  
+
+
   /**
    * The layout item.
    */
@@ -216,8 +218,9 @@ public final class DefaultPopupMenu extends JPopupMenu
 
     add ( this.zoom );
 
-    //TODO i18n
-    this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
+    // TODO i18n
+    this.validate = new JMenuItem ( Messages
+        .getString ( "MachinePanel.Validate" ) ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()
     {
 
@@ -229,8 +232,9 @@ public final class DefaultPopupMenu extends JPopupMenu
       }
     } );
     add ( this.validate );
-    
-    this.layout = new JMenuItem ( "Tu es" ); //$NON-NLS-1$
+
+    this.layout = new JMenuItem ( Messages
+        .getString ( "MachinePanel.AutoLayout" ) ); //$NON-NLS-1$
     this.layout.addActionListener ( new ActionListener ()
     {
 
@@ -238,7 +242,8 @@ public final class DefaultPopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        new LayoutManager(DefaultPopupMenu.this.panel.getModel ()).doLayout ();
+        new LayoutManager ( DefaultPopupMenu.this.panel.getModel () )
+            .doLayout ();
       }
     } );
     add ( this.layout );

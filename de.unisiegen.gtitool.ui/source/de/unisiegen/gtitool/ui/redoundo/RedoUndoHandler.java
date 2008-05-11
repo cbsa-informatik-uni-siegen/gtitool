@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.redoundo;
 
 import java.util.Stack;
 
+import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -53,8 +54,9 @@ public final class RedoUndoHandler
   {
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
-    this.mainWindowForm.getLogic ().setStateEnabledRedo ( false );
-    this.mainWindowForm.getLogic ().setStateEnabledUndo ( true );
+    this.mainWindowForm.getLogic ().removeButtonState (
+        ButtonState.REDO_ENABLED );
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.UNDO_ENABLED );
   }
 
 
@@ -87,8 +89,18 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.redoSteps.pop ();
 
-    this.mainWindowForm.getLogic ().setStateEnabledRedo ( !this.redoSteps.isEmpty () );
-    this.mainWindowForm.getLogic ().setStateEnabledUndo ( true );
+    if ( !this.redoSteps.isEmpty () )
+    {
+      this.mainWindowForm.getLogic ()
+          .addButtonState ( ButtonState.REDO_ENABLED );
+    }
+    else
+    {
+      this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.REDO_ENABLED );
+    }
+
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.UNDO_ENABLED );
 
     this.undoSteps.push ( step );
 
@@ -103,8 +115,18 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.undoSteps.pop ();
 
-    this.mainWindowForm.getLogic ().setStateEnabledRedo ( true );
-    this.mainWindowForm.getLogic ().setStateEnabledUndo ( !this.undoSteps.isEmpty () );
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.REDO_ENABLED );
+
+    if ( !this.undoSteps.isEmpty () )
+    {
+      this.mainWindowForm.getLogic ()
+          .addButtonState ( ButtonState.UNDO_ENABLED );
+    }
+    else
+    {
+      this.mainWindowForm.getLogic ().removeButtonState (
+          ButtonState.UNDO_ENABLED );
+    }
 
     this.redoSteps.push ( step );
 

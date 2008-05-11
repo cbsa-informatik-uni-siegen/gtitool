@@ -7,11 +7,12 @@ CF		- Umbau der Button Zustände
 CF		- Keller Operationen highlighten
 
 
-BM		- Autolayout
+BM		- Autolayout verbessern
+BM		- Undo Steps für Autolayout anlegen
 BM		- Die Konvertieren Items müssen entsprechend aktiviert und deaktiviert werden
 BM		- Wenn eine Produktion per DnD an die gleiche Stelle verschoben wird, dann man
 		  diesen Schritt rückgängig machen, obwohl sich ja nichts geändert hat.
+BM		- Minimaler Automat
 
 		- Split View
-		- Minimaler Automat
 		- Parallel Loop Routing

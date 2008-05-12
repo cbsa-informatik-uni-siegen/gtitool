@@ -55,8 +55,8 @@ public final class RedoUndoHandler
     this.undoSteps.push ( item );
     this.redoSteps.clear ();
     this.mainWindowForm.getLogic ().removeButtonState (
-        ButtonState.REDO_ENABLED );
-    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.UNDO_ENABLED );
+        ButtonState.ENABLED_REDO );
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.ENABLED_UNDO );
   }
 
 
@@ -92,15 +92,15 @@ public final class RedoUndoHandler
     if ( !this.redoSteps.isEmpty () )
     {
       this.mainWindowForm.getLogic ()
-          .addButtonState ( ButtonState.REDO_ENABLED );
+          .addButtonState ( ButtonState.ENABLED_REDO );
     }
     else
     {
       this.mainWindowForm.getLogic ().removeButtonState (
-          ButtonState.REDO_ENABLED );
+          ButtonState.ENABLED_REDO );
     }
 
-    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.UNDO_ENABLED );
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.ENABLED_UNDO );
 
     this.undoSteps.push ( step );
 
@@ -115,17 +115,17 @@ public final class RedoUndoHandler
   {
     RedoUndoItem step = this.undoSteps.pop ();
 
-    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.REDO_ENABLED );
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.ENABLED_REDO );
 
     if ( !this.undoSteps.isEmpty () )
     {
       this.mainWindowForm.getLogic ()
-          .addButtonState ( ButtonState.UNDO_ENABLED );
+          .addButtonState ( ButtonState.ENABLED_UNDO );
     }
     else
     {
       this.mainWindowForm.getLogic ().removeButtonState (
-          ButtonState.UNDO_ENABLED );
+          ButtonState.ENABLED_UNDO );
     }
 
     this.redoSteps.push ( step );

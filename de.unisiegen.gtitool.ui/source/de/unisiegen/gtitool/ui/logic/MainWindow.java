@@ -61,6 +61,50 @@ public final class MainWindow implements LanguageChangedListener
 {
 
   /**
+   * The {@link ButtonState} enum.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ButtonState
+  {
+    /**
+     * The undo enabled button state.
+     */
+    ENABLED_UNDO,
+
+    /**
+     * The redo enabled button state.
+     */
+    ENABLED_REDO,
+
+    /**
+     * The history enabled button state.
+     */
+    ENABLED_HISTORY,
+
+    /**
+     * The machine table enabled button state.
+     */
+    ENABLED_MACHINE_TABLE,
+
+    /**
+     * The console table enabled button state.
+     */
+    ENABLED_CONSOLE_TABLE,
+
+    /**
+     * The machine table selected button state.
+     */
+    SELECTED_MACHINE_TABLE,
+
+    /**
+     * The console table selected button state.
+     */
+    SELECTED_CONSOLE_TABLE;
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( MainWindow.class );
@@ -85,6 +129,12 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * The {@link ButtonState} list.
+   */
+  private ArrayList < ButtonState > buttonStateList = new ArrayList < ButtonState > ();
+
+
+  /**
    * Creates new form {@link MainWindow}.
    */
   public MainWindow ()
@@ -105,7 +155,7 @@ public final class MainWindow implements LanguageChangedListener
 
     setStateEnabledGeneral ( false );
     setStateEnabledSave ( false );
-    setStateEnabledHistoryItem ();
+    removeButtonState ( ButtonState.ENABLED_HISTORY );
     setStateEnabledValidate ( false );
     setStateEnabledMenuEnterWord ( false );
     setStateEnabledEditMachine ( false );
@@ -119,11 +169,11 @@ public final class MainWindow implements LanguageChangedListener
         PreferenceManager.getInstance ().getVisibleConsole () );
     if ( PreferenceManager.getInstance ().getVisibleTable () )
     {
-      addButtonState ( ButtonState.MACHINE_TABLE_SELECTED );
+      addButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
     }
     else
     {
-      removeButtonState ( ButtonState.MACHINE_TABLE_SELECTED );
+      removeButtonState ( ButtonState.SELECTED_MACHINE_TABLE );
     }
 
     this.gui.setVisible ( true );
@@ -155,9 +205,69 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Adds the given {@link ButtonState}.
+   * 
+   * @param buttonState The {@link ButtonState} to add.
+   */
+  public final void addButtonState ( ButtonState buttonState )
+  {
+    // enabled
+    if ( ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_UNDO ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_UNDO );
+      this.gui.getJMenuItemUndo ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonUndo ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_REDO ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REDO ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_REDO );
+      this.gui.getJMenuItemRedo ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonRedo ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_HISTORY ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_HISTORY ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_HISTORY );
+      this.gui.getJMenuItemHistory ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_MACHINE_TABLE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_MACHINE_TABLE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_MACHINE_TABLE );
+      this.gui.getJCheckBoxMenuItemTable ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONSOLE_TABLE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONSOLE_TABLE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONSOLE_TABLE );
+      this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( true );
+    }
+    // selected
+    else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.SELECTED_MACHINE_TABLE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.SELECTED_MACHINE_TABLE );
+      this.gui.getJCheckBoxMenuItemTable ().setSelected ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.SELECTED_CONSOLE_TABLE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.SELECTED_CONSOLE_TABLE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.SELECTED_CONSOLE_TABLE );
+      this.gui.getJCheckBoxMenuItemConsole ().setSelected ( true );
+    }
+  }
+
+
+  /**
    * Handle auto layout action performed.
    */
-  public void doAutoLayout ()
+  public final void doAutoLayout ()
   {
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -504,7 +614,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Edit Machine button pressed
+   * Handles the edit machine event.
    */
   public final void handleEditMachine ()
   {
@@ -523,7 +633,7 @@ public final class MainWindow implements LanguageChangedListener
     machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
         .getState () );
 
-    setStateEnabledConsole ( true );
+    addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     setStateEnabledMenuEnterWord ( true );
     setStateEnabledEditMachine ( false );
     setStateEnabledValidate ( true );
@@ -560,10 +670,11 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( handleValidate ( false ) )
     {
+      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       setStateEnabledEditMachineItems ( false );
       setStateEnabledWordStart ( true );
       machinePanel.handleEnterWord ();
-      removeButtonState ( ButtonState.CONSOLE_TABLE_SELECTED );
+      removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       machinePanel.setVisibleConsole ( false );
       setStateEnabledMenuEnterWord ( false );
       setStateEnabledEditMachine ( true );
@@ -1020,7 +1131,13 @@ public final class MainWindow implements LanguageChangedListener
   {
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( panel != null )
+
+    if ( panel == null )
+    {
+      removeButtonState ( ButtonState.ENABLED_HISTORY );
+      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+    }
+    else
     {
       setStateVisibleMachineButtons ( panel instanceof MachinePanel );
       setStateVisibleGrammarButtons ( panel instanceof GrammarPanel );
@@ -1040,7 +1157,25 @@ public final class MainWindow implements LanguageChangedListener
         setStateEnabledEditMachine ( machinePanel.isWordEnterMode () );
         setStateEnabledValidate ( !machinePanel.isWordEnterMode () );
         setStateEnabledMenuEnterWord ( !machinePanel.isWordEnterMode () );
-        setStateEnabledTable ( true );
+        addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+
+        if ( machinePanel.isWordEnterMode () )
+        {
+          removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+        }
+        else
+        {
+          addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+        }
+
+        if ( machinePanel.isWordNavigation () )
+        {
+          addButtonState ( ButtonState.ENABLED_HISTORY );
+        }
+        else
+        {
+          removeButtonState ( ButtonState.ENABLED_HISTORY );
+        }
 
         // Set the status of the word navigation icons
         setStateEnabledWordStart ( machinePanel.isWordEnterMode ()
@@ -1052,11 +1187,13 @@ public final class MainWindow implements LanguageChangedListener
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
-        setStateEnabledTable ( false );
+        removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+        addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
             .getState () );
         setStateEnabledMenuEnterWord ( false );
         setStateEnabledDraftFor ( false );
+        removeButtonState ( ButtonState.ENABLED_HISTORY );
       }
       else
       {
@@ -1065,28 +1202,25 @@ public final class MainWindow implements LanguageChangedListener
 
       if ( panel.isUndoAble () )
       {
-        addButtonState ( ButtonState.UNDO_ENABLED );
+        addButtonState ( ButtonState.ENABLED_UNDO );
       }
       else
       {
-        removeButtonState ( ButtonState.UNDO_ENABLED );
+        removeButtonState ( ButtonState.ENABLED_UNDO );
       }
 
       if ( panel.isRedoAble () )
       {
-        addButtonState ( ButtonState.REDO_ENABLED );
+        addButtonState ( ButtonState.ENABLED_REDO );
       }
       else
       {
-        removeButtonState ( ButtonState.REDO_ENABLED );
+        removeButtonState ( ButtonState.ENABLED_REDO );
       }
     }
 
     // Save status
     setStateEnabledSave ();
-
-    // Item status
-    setStateEnabledHistoryItem ();
   }
 
 
@@ -1471,7 +1605,7 @@ public final class MainWindow implements LanguageChangedListener
                   : "MainWindow.NoErrorNoWarningGrammar" ) ); //$NON-NLS-1$
     }
 
-    addButtonState ( ButtonState.CONSOLE_TABLE_SELECTED );
+    addButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
     panel.setVisibleConsole ( true );
 
     infoDialog.show ();
@@ -1550,8 +1684,7 @@ public final class MainWindow implements LanguageChangedListener
       setStateEnabledWordNavigation ( true );
     }
 
-    // Item status
-    setStateEnabledHistoryItem ();
+    addButtonState ( ButtonState.ENABLED_HISTORY );
   }
 
 
@@ -1572,8 +1705,7 @@ public final class MainWindow implements LanguageChangedListener
 
     machinePanel.handleWordStop ();
 
-    // Item status
-    setStateEnabledHistoryItem ();
+    removeButtonState ( ButtonState.ENABLED_HISTORY );
   }
 
 
@@ -1962,6 +2094,54 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
+   * Removes the given {@link ButtonState}.
+   * 
+   * @param buttonState The {@link ButtonState} to remove.
+   */
+  public final void removeButtonState ( ButtonState buttonState )
+  {
+    if ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_UNDO );
+      this.gui.getJMenuItemUndo ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonUndo ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_REDO ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_REDO );
+      this.gui.getJMenuItemRedo ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonRedo ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_HISTORY ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_HISTORY );
+      this.gui.getJMenuItemHistory ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_TABLE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_TABLE );
+      this.gui.getJCheckBoxMenuItemTable ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONSOLE_TABLE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONSOLE_TABLE );
+      this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( false );
+    }
+    // selected
+    else if ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.SELECTED_MACHINE_TABLE );
+      this.gui.getJCheckBoxMenuItemTable ().setSelected ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.SELECTED_CONSOLE_TABLE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.SELECTED_CONSOLE_TABLE );
+      this.gui.getJCheckBoxMenuItemConsole ().setSelected ( false );
+    }
+  }
+
+
+  /**
    * Open all files which was open at last session
    */
   public final void restoreOpenFiles ()
@@ -1990,94 +2170,6 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * The {@link ButtonState} enum.
-   * 
-   * @author Christian Fehler
-   */
-  public enum ButtonState
-  {
-    /**
-     * The undo enabled button state.
-     */
-    UNDO_ENABLED,
-
-    /**
-     * The redo enabled button state.
-     */
-    REDO_ENABLED,
-
-    /**
-     * The machine table selected button state.
-     */
-    MACHINE_TABLE_SELECTED,
-
-    /**
-     * The console table selected button state.
-     */
-    CONSOLE_TABLE_SELECTED;
-  }
-
-
-  /**
-   * Adds the given {@link ButtonState}.
-   * 
-   * @param buttonState The {@link ButtonState} to add.
-   */
-  public final void addButtonState ( ButtonState buttonState )
-  {
-    // enabled
-    if ( buttonState.equals ( ButtonState.UNDO_ENABLED ) )
-    {
-      this.gui.getJMenuItemUndo ().setEnabled ( true );
-      this.gui.getJGTIToolBarButtonUndo ().setEnabled ( true );
-    }
-    else if ( buttonState.equals ( ButtonState.REDO_ENABLED ) )
-    {
-      this.gui.getJMenuItemRedo ().setEnabled ( true );
-      this.gui.getJGTIToolBarButtonRedo ().setEnabled ( true );
-    }
-    // selected
-    else if ( buttonState.equals ( ButtonState.MACHINE_TABLE_SELECTED ) )
-    {
-      this.gui.getJCheckBoxMenuItemTable ().setSelected ( true );
-    }
-    else if ( buttonState.equals ( ButtonState.CONSOLE_TABLE_SELECTED ) )
-    {
-      this.gui.getJCheckBoxMenuItemConsole ().setSelected ( true );
-    }
-  }
-
-
-  /**
-   * Removes the given {@link ButtonState}.
-   * 
-   * @param buttonState The {@link ButtonState} to remove.
-   */
-  public final void removeButtonState ( ButtonState buttonState )
-  {
-    if ( buttonState.equals ( ButtonState.UNDO_ENABLED ) )
-    {
-      this.gui.getJMenuItemUndo ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonUndo ().setEnabled ( false );
-    }
-    else if ( buttonState.equals ( ButtonState.REDO_ENABLED ) )
-    {
-      this.gui.getJMenuItemRedo ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonRedo ().setEnabled ( false );
-    }
-    // selected
-    else if ( buttonState.equals ( ButtonState.MACHINE_TABLE_SELECTED ) )
-    {
-      this.gui.getJCheckBoxMenuItemTable ().setSelected ( false );
-    }
-    else if ( buttonState.equals ( ButtonState.CONSOLE_TABLE_SELECTED ) )
-    {
-      this.gui.getJCheckBoxMenuItemConsole ().setSelected ( false );
-    }
-  }
-
-
-  /**
    * Sets the enabled state of the auto step.
    * 
    * @param state The new state.
@@ -2085,17 +2177,6 @@ public final class MainWindow implements LanguageChangedListener
   public final void setStateEnabledAutoStep ( boolean state )
   {
     this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the console.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledConsole ( boolean state )
-  {
-    this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( state );
   }
 
 
@@ -2193,33 +2274,6 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Sets the enabled state of the history item.
-   */
-  private final void setStateEnabledHistoryItem ()
-  {
-    // MachinePanel
-    if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof MachinePanel )
-    {
-      MachinePanel machinePanel = ( MachinePanel ) this.gui
-          .getEditorPanelTabbedPane ().getSelectedEditorPanel ();
-
-      this.gui.getJMenuItemHistory ().setEnabled (
-          machinePanel.isWordNavigation () );
-    }
-    // GrammarPanel
-    else if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () instanceof GrammarPanel )
-    {
-      this.gui.getJMenuItemHistory ().setEnabled ( false );
-    }
-    // No selected editor
-    else
-    {
-      this.gui.getJMenuItemHistory ().setEnabled ( false );
-    }
-  }
-
-
-  /**
    * Sets the enabled state of the enter word menu item.
    * 
    * @param state The new state.
@@ -2311,17 +2365,6 @@ public final class MainWindow implements LanguageChangedListener
 
     this.gui.getJGTIToolBarButtonSave ().setEnabled ( state );
     this.gui.getJMenuItemSave ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the state.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledTable ( boolean state )
-  {
-    this.gui.getJCheckBoxMenuItemTable ().setEnabled ( state );
   }
 
 

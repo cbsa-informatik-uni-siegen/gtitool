@@ -128,6 +128,11 @@ public final class MainWindow implements LanguageChangedListener
     ENABLED_AUTO_LAYOUT,
 
     /**
+     * The recently used enabled button state.
+     */
+    ENABLED_RECENTLY_USED,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -135,7 +140,17 @@ public final class MainWindow implements LanguageChangedListener
     /**
      * The console table selected button state.
      */
-    SELECTED_CONSOLE_TABLE;
+    SELECTED_CONSOLE_TABLE,
+
+    /**
+     * The machine visible button state.
+     */
+    VISIBLE_MACHINE,
+
+    /**
+     * The grammar visible button state.
+     */
+    VISIBLE_GRAMMAR;
   }
 
 
@@ -199,9 +214,9 @@ public final class MainWindow implements LanguageChangedListener
     removeButtonState ( ButtonState.ENABLED_UNDO );
     removeButtonState ( ButtonState.ENABLED_REDO );
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-    setStateEnabledRecentlyUsed ( false );
-    setStateVisibleGrammarButtons ( false );
-    setStateVisibleMachineButtons ( false );
+    removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
+    removeButtonState ( ButtonState.VISIBLE_MACHINE );
+    removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
 
     // Console and table visibility
     this.gui.getJCheckBoxMenuItemConsole ().setSelected (
@@ -359,6 +374,14 @@ public final class MainWindow implements LanguageChangedListener
 
       this.gui.getJMenuItemAutoLayout ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_RECENTLY_USED ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_RECENTLY_USED ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_RECENTLY_USED );
+
+      this.gui.getJMenuRecentlyUsed ().setEnabled ( true );
+    }
     // selected
     else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
         && ( !this.buttonStateList
@@ -375,6 +398,34 @@ public final class MainWindow implements LanguageChangedListener
       this.buttonStateList.add ( ButtonState.SELECTED_CONSOLE_TABLE );
 
       this.gui.getJCheckBoxMenuItemConsole ().setSelected ( true );
+    }
+    // visible
+    else if ( ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
+        && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_MACHINE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.VISIBLE_MACHINE );
+
+      this.gui.getJSeparatorNavigation ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( true );
+
+      this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonPrevious ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonStop ().setVisible ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.VISIBLE_GRAMMAR ) )
+        && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_GRAMMAR ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.VISIBLE_GRAMMAR );
+
+      this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( true );
+      this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( true );
     }
   }
 
@@ -503,11 +554,12 @@ public final class MainWindow implements LanguageChangedListener
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
       removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+      removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
       removeButtonState ( ButtonState.ENABLED_UNDO );
       removeButtonState ( ButtonState.ENABLED_REDO );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-      setStateVisibleGrammarButtons ( false );
-      setStateVisibleMachineButtons ( false );
+      removeButtonState ( ButtonState.VISIBLE_MACHINE );
+      removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
     }
     return true;
   }
@@ -1276,8 +1328,8 @@ public final class MainWindow implements LanguageChangedListener
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
-        setStateVisibleMachineButtons ( true );
-        setStateVisibleGrammarButtons ( false );
+        addButtonState ( ButtonState.VISIBLE_MACHINE );
+        removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
 
         MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -1332,8 +1384,8 @@ public final class MainWindow implements LanguageChangedListener
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
-        setStateVisibleMachineButtons ( false );
-        setStateVisibleGrammarButtons ( true );
+        removeButtonState ( ButtonState.VISIBLE_MACHINE );
+        addButtonState ( ButtonState.VISIBLE_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
@@ -2215,7 +2267,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Organize the recently used files in the menu
+   * Organizes the recently used files in the menu.
    */
   private final void organizeRecentlyUsedFilesMenu ()
   {
@@ -2237,7 +2289,14 @@ public final class MainWindow implements LanguageChangedListener
 
     this.recentlyUsedFiles.removeAll ( notExistingFiles );
 
-    setStateEnabledRecentlyUsed ( this.recentlyUsedFiles.size () > 0 );
+    if ( this.recentlyUsedFiles.size () > 0 )
+    {
+      addButtonState ( ButtonState.ENABLED_RECENTLY_USED );
+    }
+    else
+    {
+      removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
+    }
   }
 
 
@@ -2332,6 +2391,12 @@ public final class MainWindow implements LanguageChangedListener
 
       this.gui.getJMenuItemAutoLayout ().setEnabled ( false );
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_RECENTLY_USED ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_RECENTLY_USED );
+
+      this.gui.getJMenuRecentlyUsed ().setEnabled ( false );
+    }
     // selected
     else if ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
     {
@@ -2344,6 +2409,31 @@ public final class MainWindow implements LanguageChangedListener
       this.buttonStateList.remove ( ButtonState.SELECTED_CONSOLE_TABLE );
 
       this.gui.getJCheckBoxMenuItemConsole ().setSelected ( false );
+    }
+    // visible
+    else if ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.VISIBLE_MACHINE );
+
+      this.gui.getJSeparatorNavigation ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonStop ().setVisible ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.VISIBLE_GRAMMAR ) )
+    {
+      this.buttonStateList.remove ( ButtonState.VISIBLE_GRAMMAR );
+
+      this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( false );
+      this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( false );
     }
   }
 
@@ -2437,17 +2527,6 @@ public final class MainWindow implements LanguageChangedListener
   public final void setStateEnabledPrevious ( boolean state )
   {
     this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the recently used.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateEnabledRecentlyUsed ( boolean state )
-  {
-    this.gui.getJMenuRecentlyUsed ().setEnabled ( state );
   }
 
 
@@ -2547,40 +2626,5 @@ public final class MainWindow implements LanguageChangedListener
   public final void setStateSelectedMouse ( boolean state )
   {
     this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( state );
-  }
-
-
-  /**
-   * Sets the visible state of the grammar buttons.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateVisibleGrammarButtons ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( state );
-  }
-
-
-  /**
-   * Sets the visible state of the machine buttons.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateVisibleMachineButtons ( boolean state )
-  {
-    this.gui.getJSeparatorNavigation ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( state );
-
-    this.gui.getJGTIToolBarButtonStart ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonPrevious ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonNextStep ().setVisible ( state );
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setVisible ( state );
-    this.gui.getJGTIToolBarButtonStop ().setVisible ( state );
   }
 }

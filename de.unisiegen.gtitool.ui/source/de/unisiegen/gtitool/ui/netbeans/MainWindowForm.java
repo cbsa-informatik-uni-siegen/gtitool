@@ -541,6 +541,17 @@ public class MainWindowForm extends JFrame {
     {
       return this.jMenuItemAbout;
     }
+    
+    /**
+     * Returns the jMenuItemAutoLayout.
+     *
+     * @return The jMenuItemAutoLayout.
+     * @see #jMenuItemAutoLayout
+     */
+    public final JMenuItem getJMenuItemAutoLayout ()
+    {
+      return this.jMenuItemAutoLayout;
+    }
 
     
     /**
@@ -1082,7 +1093,6 @@ public class MainWindowForm extends JFrame {
 
         jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png")));
         jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MachinePanel.WordModeAutoStep")); // NOI18N
-        jGTIToolBarToggleButtonAutoStep.setEnabled(false);
         jGTIToolBarToggleButtonAutoStep.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jGTIToolBarToggleButtonAutoStepItemStateChanged(evt);
@@ -1407,6 +1417,7 @@ public class MainWindowForm extends JFrame {
 
         jMenuExecute.add(jMenuItemEditMachine);
 
+        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
         jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
         jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

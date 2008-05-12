@@ -123,6 +123,11 @@ public final class MainWindow implements LanguageChangedListener
     ENABLED_ENTER_WORD,
 
     /**
+     * The auto layout enabled button state.
+     */
+    ENABLED_AUTO_LAYOUT,
+
+    /**
      * The machine table selected button state.
      */
     SELECTED_MACHINE_TABLE,
@@ -193,6 +198,7 @@ public final class MainWindow implements LanguageChangedListener
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
     removeButtonState ( ButtonState.ENABLED_UNDO );
     removeButtonState ( ButtonState.ENABLED_REDO );
+    removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     setStateEnabledRecentlyUsed ( false );
     setStateVisibleGrammarButtons ( false );
     setStateVisibleMachineButtons ( false );
@@ -346,6 +352,13 @@ public final class MainWindow implements LanguageChangedListener
 
       this.gui.getJMenuItemEnterWord ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_AUTO_LAYOUT ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_AUTO_LAYOUT ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_AUTO_LAYOUT );
+
+      this.gui.getJMenuItemAutoLayout ().setEnabled ( true );
+    }
     // selected
     else if ( ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
         && ( !this.buttonStateList
@@ -492,6 +505,7 @@ public final class MainWindow implements LanguageChangedListener
       removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
       removeButtonState ( ButtonState.ENABLED_UNDO );
       removeButtonState ( ButtonState.ENABLED_REDO );
+      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       setStateVisibleGrammarButtons ( false );
       setStateVisibleMachineButtons ( false );
     }
@@ -754,6 +768,7 @@ public final class MainWindow implements LanguageChangedListener
     addButtonState ( ButtonState.ENABLED_ENTER_WORD );
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
     addButtonState ( ButtonState.ENABLED_VALIDATE );
+    addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
   }
 
 
@@ -797,6 +812,7 @@ public final class MainWindow implements LanguageChangedListener
       removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
       addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
+      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     }
   }
 
@@ -1253,6 +1269,7 @@ public final class MainWindow implements LanguageChangedListener
     {
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     }
     else
     {
@@ -1281,6 +1298,7 @@ public final class MainWindow implements LanguageChangedListener
           removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
           removeButtonState ( ButtonState.ENABLED_VALIDATE );
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         }
         // normal mode
         else
@@ -1290,6 +1308,7 @@ public final class MainWindow implements LanguageChangedListener
           addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
           addButtonState ( ButtonState.ENABLED_VALIDATE );
           addButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         }
 
         // word navigation mode
@@ -1322,6 +1341,7 @@ public final class MainWindow implements LanguageChangedListener
         removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
+        removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       }
       else
       {
@@ -2305,6 +2325,12 @@ public final class MainWindow implements LanguageChangedListener
       this.buttonStateList.remove ( ButtonState.ENABLED_ENTER_WORD );
 
       this.gui.getJMenuItemEnterWord ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_AUTO_LAYOUT ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_AUTO_LAYOUT );
+
+      this.gui.getJMenuItemAutoLayout ().setEnabled ( false );
     }
     // selected
     else if ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )

@@ -38,7 +38,7 @@ public final class NewDialog
   /**
    * The parent {@link JFrame}.
    */
-  private MainWindowForm parent;
+  private MainWindowForm mainWindowForm;
 
 
   /**
@@ -90,7 +90,7 @@ public final class NewDialog
    */
   public NewDialog ( MainWindowForm parent )
   {
-    this.parent = parent;
+    this.mainWindowForm = parent;
     initialize ();
   }
 
@@ -157,7 +157,7 @@ public final class NewDialog
       if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.DFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
+        this.newPanel = new MachinePanel ( this.mainWindowForm,
             new DefaultMachineModel ( new DefaultDFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -166,7 +166,7 @@ public final class NewDialog
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.NFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
+        this.newPanel = new MachinePanel ( this.mainWindowForm,
             new DefaultMachineModel ( new DefaultNFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -175,7 +175,7 @@ public final class NewDialog
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.ENFA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
+        this.newPanel = new MachinePanel ( this.mainWindowForm,
             new DefaultMachineModel ( new DefaultENFA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -184,7 +184,7 @@ public final class NewDialog
       else if ( this.machineChoice.getUserChoice ().equals (
           NewDialogMachineChoice.Choice.PDA ) )
       {
-        this.newPanel = new MachinePanel ( this.parent,
+        this.newPanel = new MachinePanel ( this.mainWindowForm,
             new DefaultMachineModel ( new DefaultPDA ( this.newDialogAlphabet
                 .getAlphabet (), this.newDialogAlphabet.getPushDownAlphabet (),
                 this.newDialogAlphabet.getUsePushDownAlphabet () ) ), null );
@@ -196,7 +196,7 @@ public final class NewDialog
       if ( this.grammarChoice.getUserChoice ().equals (
           NewDialogGrammarChoice.Choice.CONTEXT_FREE ) )
       {
-        this.newPanel = new GrammarPanel ( this.parent,
+        this.newPanel = new GrammarPanel ( this.mainWindowForm,
             new DefaultGrammarModel ( new DefaultCFG ( this.newDialogTerminal
                 .getNonterminalSymbolSet (), this.newDialogTerminal
                 .geTerminalSymbolSet (), this.newDialogTerminal
@@ -206,7 +206,7 @@ public final class NewDialog
       else if ( this.grammarChoice.getUserChoice ().equals (
           NewDialogGrammarChoice.Choice.REGULAR ) )
       {
-        this.newPanel = new GrammarPanel ( this.parent,
+        this.newPanel = new GrammarPanel ( this.mainWindowForm,
             new DefaultGrammarModel ( new DefaultRG ( this.newDialogTerminal
                 .getNonterminalSymbolSet (), this.newDialogTerminal
                 .geTerminalSymbolSet (), this.newDialogTerminal
@@ -282,7 +282,7 @@ public final class NewDialog
    */
   private final void initialize ()
   {
-    this.gui = new NewDialogForm ( this.parent, true );
+    this.gui = new NewDialogForm ( this.mainWindowForm, true );
     this.gui.setLogic ( this );
     this.newDialogChoice = new NewDialogChoice ( this );
     this.machineChoice = new NewDialogMachineChoice ( this );
@@ -319,9 +319,10 @@ public final class NewDialog
    */
   public final void show ()
   {
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+    int x = this.mainWindowForm.getBounds ().x
+        + ( this.mainWindowForm.getWidth () / 2 ) - ( this.gui.getWidth () / 2 );
+    int y = this.mainWindowForm.getBounds ().y
+        + ( this.mainWindowForm.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );

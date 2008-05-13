@@ -156,7 +156,12 @@ public final class MainWindow implements LanguageChangedListener
      * The navigation steps enabled button state.
      */
     ENABLED_NAVIGATION_STEPS,
-
+    
+    /**
+     * The convert enabled button state.
+     */
+    ENABLED_CONVERT_TO,
+    
     /**
      * The save enabled button state.
      */
@@ -249,6 +254,7 @@ public final class MainWindow implements LanguageChangedListener
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
     removeButtonState ( ButtonState.ENABLED_SAVE );
     removeButtonState ( ButtonState.ENABLED_HISTORY );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
     removeButtonState ( ButtonState.ENABLED_VALIDATE );
     removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -490,6 +496,14 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO );
+
+      this.gui.getJMenuConvertTo ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) ) )
@@ -1473,6 +1487,7 @@ public final class MainWindow implements LanguageChangedListener
     if ( panel == null )
     {
       removeButtonState ( ButtonState.ENABLED_HISTORY );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -1488,7 +1503,8 @@ public final class MainWindow implements LanguageChangedListener
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
-
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+        
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().getState ()
@@ -1548,6 +1564,7 @@ public final class MainWindow implements LanguageChangedListener
       {
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -2598,6 +2615,12 @@ public final class MainWindow implements LanguageChangedListener
     {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO );
+
+      this.gui.getJMenuConvertTo ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {

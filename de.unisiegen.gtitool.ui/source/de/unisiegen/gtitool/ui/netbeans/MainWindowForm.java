@@ -458,6 +458,16 @@ public class MainWindowForm extends JFrame {
       return this.jMenuBarMain;
     }
 
+    /**
+     * Returns the jMenuConvertTo.
+     *
+     * @return The jMenuConvertTo.
+     * @see #jMenuConvertTo
+     */
+    public final JMenuItem getJMenuConvertTo ()
+    {
+      return this.jMenuConvertTo;
+    }
     
     /**
      * Returns the jMenuDraft.

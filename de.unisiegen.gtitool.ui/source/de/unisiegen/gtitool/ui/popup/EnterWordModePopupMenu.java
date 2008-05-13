@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -101,7 +102,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
           EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-              .setStateEnabledWordNavigation ( true );
+              .addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
       }
     } );
@@ -160,8 +161,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-            .setStateEnabledWordNavigation ( false );
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ().addButtonState (
+            ButtonState.ENABLED_NAVIGATION_START );
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }
     } );

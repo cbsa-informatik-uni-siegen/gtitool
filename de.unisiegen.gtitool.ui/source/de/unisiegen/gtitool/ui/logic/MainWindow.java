@@ -113,6 +113,11 @@ public final class MainWindow implements LanguageChangedListener
     ENABLED_DRAFT_FOR_GRAMMAR,
 
     /**
+     * The edit document enabled button state.
+     */
+    ENABLED_EDIT_DOCUMENT,
+
+    /**
      * The edit machine enabled button state.
      */
     ENABLED_EDIT_MACHINE,
@@ -136,6 +141,21 @@ public final class MainWindow implements LanguageChangedListener
      * The machine edit items enabled button state.
      */
     ENABLED_MACHINE_EDIT_ITEMS,
+
+    /**
+     * The navigation deactive enabled button state.
+     */
+    ENABLED_NAVIGATION_DEACTIVE,
+
+    /**
+     * The navigation start enabled button state.
+     */
+    ENABLED_NAVIGATION_START,
+
+    /**
+     * The navigation steps enabled button state.
+     */
+    ENABLED_NAVIGATION_STEPS,
 
     /**
      * The save enabled button state.
@@ -224,6 +244,7 @@ public final class MainWindow implements LanguageChangedListener
         .getMainWindowBounds () );
 
     removeButtonState ( ButtonState.ENABLED_GENERAL );
+    removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
     removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
     removeButtonState ( ButtonState.ENABLED_SAVE );
@@ -304,7 +325,6 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJMenuItemClose ().setEnabled ( true );
       this.gui.getJMenuItemCloseAll ().setEnabled ( true );
       this.gui.getJMenuDraft ().setEnabled ( true );
-      this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_UNDO ) ) )
@@ -380,6 +400,14 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJMenuItemRG ().setEnabled ( true );
       this.gui.getJMenuItemCFG ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_EDIT_DOCUMENT ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_EDIT_DOCUMENT ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_EDIT_DOCUMENT );
+
+      this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_EDIT_MACHINE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_EDIT_MACHINE ) ) )
     {
@@ -415,11 +443,53 @@ public final class MainWindow implements LanguageChangedListener
     {
       this.buttonStateList.add ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
 
-      this.gui.getJGTIToolBarToggleButtonMouse ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAddState ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setEnabled ( true );
+      this.gui.getJGTIToolBarToggleButtonMouse ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonStartState ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_DEACTIVE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_DEACTIVE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
+
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_START ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_START ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
+
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_STEPS ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS );
+
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) ) )
@@ -631,6 +701,7 @@ public final class MainWindow implements LanguageChangedListener
     if ( this.gui.getEditorPanelTabbedPane ().getSelectedEditorPanel () == null )
     {
       removeButtonState ( ButtonState.ENABLED_GENERAL );
+      removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
@@ -755,6 +826,7 @@ public final class MainWindow implements LanguageChangedListener
           newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
     }
     catch ( StoreException exc )
@@ -828,6 +900,7 @@ public final class MainWindow implements LanguageChangedListener
           newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
     }
     catch ( StoreException exc )
@@ -888,7 +961,7 @@ public final class MainWindow implements LanguageChangedListener
     }
 
     addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-    setStateEnabledEnterWord ( false );
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
@@ -934,9 +1007,10 @@ public final class MainWindow implements LanguageChangedListener
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
     {
+      removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-      setStateEnabledWordStart ( true );
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
       machinePanel.handleEnterWord ();
       removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       machinePanel.setVisibleConsole ( false );
@@ -1023,6 +1097,7 @@ public final class MainWindow implements LanguageChangedListener
           newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
 
       addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -1146,6 +1221,7 @@ public final class MainWindow implements LanguageChangedListener
           newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
 
       addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -1399,6 +1475,7 @@ public final class MainWindow implements LanguageChangedListener
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+      removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
 
       // Save status
       removeButtonState ( ButtonState.ENABLED_SAVE );
@@ -1418,55 +1495,60 @@ public final class MainWindow implements LanguageChangedListener
             && !machinePanel.isWordEnterMode () );
         machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .getState () );
-        setStateEnabledEnterWord ( machinePanel.isWordEnterMode () );
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
-
-        // word enter mode
-        if ( machinePanel.isWordEnterMode () )
-        {
-          addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
-
-          removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-          removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-          removeButtonState ( ButtonState.ENABLED_VALIDATE );
-          removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
-          removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-        }
-        // normal mode
-        else
-        {
-          removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
-
-          addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-          addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-          addButtonState ( ButtonState.ENABLED_VALIDATE );
-          addButtonState ( ButtonState.ENABLED_ENTER_WORD );
-          addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-        }
 
         // word navigation mode
         if ( machinePanel.isWordNavigation () )
         {
           addButtonState ( ButtonState.ENABLED_HISTORY );
+          addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+
+          removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+          removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+          removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+          removeButtonState ( ButtonState.ENABLED_VALIDATE );
+          removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+
+          addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
-        // normal or word enter mode
+        // word enter mode
+        else if ( machinePanel.isWordEnterMode () )
+        {
+          addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+
+          removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+          removeButtonState ( ButtonState.ENABLED_HISTORY );
+          removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+          removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+          removeButtonState ( ButtonState.ENABLED_VALIDATE );
+          removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+
+          addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+        }
+        // normal mode
         else
         {
           removeButtonState ( ButtonState.ENABLED_HISTORY );
-        }
+          removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
 
-        // Set the status of the word navigation icons
-        setStateEnabledWordStart ( machinePanel.isWordEnterMode ()
-            && !machinePanel.isWordNavigation () );
-        setStateEnabledPrevious ( machinePanel.isWordNavigation () );
-        setStateEnabledNextStep ( machinePanel.isWordNavigation () );
-        setStateEnabledAutoStep ( machinePanel.isWordNavigation () );
+          addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+          addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+          addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+          addButtonState ( ButtonState.ENABLED_VALIDATE );
+          addButtonState ( ButtonState.ENABLED_ENTER_WORD );
+          addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+
+          addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+        }
       }
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
@@ -1902,9 +1984,9 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Auto Step Action in the Word Enter Mode
+   * Handles the word auto step action in the word enter mode.
    * 
-   * @param event
+   * @param event The {@link ItemEvent}.
    */
   public final void handleWordAutoStep ( ItemEvent event )
   {
@@ -1921,7 +2003,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Next Step Action in the Word Enter Mode
+   * Handles the word next step action in the word enter mode.
    */
   public final void handleWordNextStep ()
   {
@@ -1938,7 +2020,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Previous Step Action in the Word Enter Mode
+   * Handles the word previous step action in the word enter mode.
    */
   public final void handleWordPreviousStep ()
   {
@@ -1955,7 +2037,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Start Action in the Word Enter Mode
+   * Handles the word start action in the word enter mode.
    */
   public final void handleWordStart ()
   {
@@ -1969,7 +2051,7 @@ public final class MainWindow implements LanguageChangedListener
 
     if ( machinePanel.handleWordStart () )
     {
-      setStateEnabledWordNavigation ( true );
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
     }
 
     addButtonState ( ButtonState.ENABLED_HISTORY );
@@ -1977,7 +2059,7 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Handle Stop Action in the Word Enter Mode
+   * Handles the word stop action in the word enter mode.
    */
   public final void handleWordStop ()
   {
@@ -1989,7 +2071,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
-    setStateEnabledWordNavigation ( false );
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
 
     machinePanel.handleWordStop ();
 
@@ -2306,6 +2388,7 @@ public final class MainWindow implements LanguageChangedListener
             newEditorPanel, file.getName () );
 
         addButtonState ( ButtonState.ENABLED_GENERAL );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
       }
@@ -2323,6 +2406,7 @@ public final class MainWindow implements LanguageChangedListener
             newEditorPanel, file.getName () );
 
         addButtonState ( ButtonState.ENABLED_GENERAL );
+        addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
       }
       else
@@ -2405,7 +2489,6 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJMenuItemClose ().setEnabled ( false );
       this.gui.getJMenuItemCloseAll ().setEnabled ( false );
       this.gui.getJMenuDraft ().setEnabled ( false );
-      this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
     {
@@ -2461,6 +2544,12 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJMenuItemRG ().setEnabled ( false );
       this.gui.getJMenuItemCFG ().setEnabled ( false );
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_EDIT_DOCUMENT ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_EDIT_DOCUMENT );
+
+      this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( false );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_EDIT_MACHINE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -2494,6 +2583,21 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJGTIToolBarToggleButtonFinalState ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonMouse ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonStartState ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_DEACTIVE ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" );//$NON-NLS-1$
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_START ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" );//$NON-NLS-1$
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
@@ -2563,6 +2667,11 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( false );
       this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( false );
     }
+    else
+    {
+      throw new IllegalArgumentException ( "unsupported button state: " //$NON-NLS-1$
+          + buttonState );
+    }
   }
 
 
@@ -2591,79 +2700,5 @@ public final class MainWindow implements LanguageChangedListener
         }
       }
     }
-  }
-
-
-  /**
-   * Sets the enabled state of the start.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledWordStart ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonStart ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the next step.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledNextStep ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the previous.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledPrevious ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the auto step.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledAutoStep ( boolean state )
-  {
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the enter word.
-   * 
-   * @param state The new state.
-   */
-  private final void setStateEnabledEnterWord ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonStart ().setEnabled ( state );
-    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
-    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
-    this.gui.getJGTIToolBarButtonStop ().setEnabled ( state );
-  }
-
-
-  /**
-   * Sets the enabled state of the word navigation.
-   * 
-   * @param state The new state.
-   */
-  public final void setStateEnabledWordNavigation ( boolean state )
-  {
-    this.gui.getJGTIToolBarButtonStart ().setEnabled ( !state );
-    this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( state );
-    this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( state );
-    this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( state );
-    this.gui.getJGTIToolBarButtonStop ().setEnabled ( state );
   }
 }

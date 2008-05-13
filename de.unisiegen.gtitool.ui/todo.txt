@@ -3,7 +3,6 @@ CF		- Determinismus bei PDA im Navigationsmodus untersuchen
 CF		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA
-CF		- Umbau der Button Zustände
 CF		- Keller Operationen highlighten
 
 

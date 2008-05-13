@@ -1635,7 +1635,7 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Handle Start Action in the Word Enter Mode
+   * Handles the word start action in the word enter mode.
    * 
    * @return true if started else false
    */

@@ -71,6 +71,7 @@ import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
@@ -2112,9 +2113,9 @@ public final class MachinePanel implements EditorPanel
               / MachinePanel.this.zoomFactor, event.getPoint ().y
               / MachinePanel.this.zoomFactor, newState, true );
         }
-        catch ( StateException e1 )
+        catch ( StateException exc )
         {
-          e1.printStackTrace ();
+          exc.printStackTrace ();
           System.exit ( 1 );
         }
 
@@ -2128,12 +2129,11 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
-                true );
+            MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+                ButtonState.SELECTED_MOUSE );
             break;
           }
         }
-
       }
     };
 
@@ -2250,8 +2250,8 @@ public final class MachinePanel implements EditorPanel
             case WITH_RETURN_TO_MOUSE :
             {
               // Return to the normal mouse after every click.
-              MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
-                  true );
+              MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+                  ButtonState.SELECTED_MOUSE );
               break;
             }
           }
@@ -2317,8 +2317,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
-                true );
+            MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+                ButtonState.SELECTED_MOUSE );
             break;
           }
         }
@@ -2509,8 +2509,8 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
-                true );
+            MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+                ButtonState.SELECTED_MOUSE );
             break;
           }
         }
@@ -2607,12 +2607,11 @@ public final class MachinePanel implements EditorPanel
           case WITH_RETURN_TO_MOUSE :
           {
             // Return to the normal mouse after every click.
-            MachinePanel.this.mainWindowForm.getLogic ().setStateSelectedMouse (
-                true );
+            MachinePanel.this.mainWindowForm.getLogic ().addButtonState (
+                ButtonState.SELECTED_MOUSE );
             break;
           }
         }
-
       }
     };
 
@@ -2882,8 +2881,8 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * Updates the selected {@link Transition}s and {@link State}s
-   * or clears the selected.
+   * Updates the selected {@link Transition}s and {@link State}s or clears the
+   * selected.
    */
   private final void updateSelected ()
   {

@@ -228,6 +228,16 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
+   * Returns true if this {@link Transition} is a selected {@link Transition},
+   * otherwise false.
+   * 
+   * @return True if this {@link Transition} is a selected {@link Transition},
+   *         otherwise false.
+   */
+  public boolean isSelected ();
+
+
+  /**
    * Remove the given {@link Symbol}s from this {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to remove.
@@ -314,6 +324,14 @@ public interface Transition extends Entity < Transition >, Storable,
    * @param pushDownWordWrite The {@link Word} to set.
    */
   public void setPushDownWordWrite ( Word pushDownWordWrite );
+
+
+  /**
+   * Sets the selected value.
+   * 
+   * @param selected The selected value to set.
+   */
+  public void setSelected ( boolean selected );
 
 
   /**

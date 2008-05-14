@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 
 
@@ -33,6 +34,11 @@ public enum Style
    * Style of selected {@link State}s.
    */
   STATE_SELECTED ( true, false ),
+
+  /**
+   * Style of selected {@link Transition}s.
+   */
+  TRANSITION_SELECTED ( true, false ),
 
   /**
    * Style of {@link Symbol}s.
@@ -131,6 +137,11 @@ public enum Style
       {
         return PreferenceManager.getInstance ().getColorItemStateSelected ()
             .getColor ();
+      }
+      case TRANSITION_SELECTED :
+      {
+        return PreferenceManager.getInstance ()
+            .getColorItemTransitionSelected ().getColor ();
       }
       case SYMBOL :
       {

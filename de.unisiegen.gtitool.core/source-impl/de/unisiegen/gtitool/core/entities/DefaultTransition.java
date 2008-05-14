@@ -41,6 +41,12 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * This {@link DefaultTransition} is a selected {@link DefaultTransition}.
+   */
+  private boolean selected = false;
+
+
+  /**
    * This {@link Transition} is a active {@link Transition}.
    */
   private boolean active = false;
@@ -910,6 +916,19 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Returns true if this {@link DefaultTransition} is a selected
+   * {@link DefaultTransition}, otherwise false.
+   * 
+   * @return True if this {@link DefaultTransition} is a selected
+   *         {@link DefaultTransition}, otherwise false.
+   */
+  public final boolean isSelected ()
+  {
+    return this.selected;
+  }
+
+
+  /**
    * Returns an iterator over the {@link Symbol}s in this
    * {@link DefaultTransition}.
    * 
@@ -1132,6 +1151,17 @@ public final class DefaultTransition implements Transition
 
 
   /**
+   * Sets the selected value.
+   * 
+   * @param selected The selected value to set.
+   */
+  public final void setSelected ( boolean selected )
+  {
+    this.selected = selected;
+  }
+
+
+  /**
    * Sets the {@link State} where the {@link DefaultTransition} begins.
    * 
    * @param stateBegin The {@link State} to set.
@@ -1321,6 +1351,11 @@ public final class DefaultTransition implements Transition
       prettyString.addPrettyPrintable ( this.pushDownWordWrite );
     }
     prettyString.addPrettyToken ( new PrettyToken ( ")", Style.NONE ) ); //$NON-NLS-1$
+
+    if ( this.selected )
+    {
+      prettyString.overwriteColor ( Style.TRANSITION_SELECTED );
+    }
 
     return prettyString;
   }

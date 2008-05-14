@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.core.parser.style;
 
 
+import java.awt.Color;
+
+
 /**
  * This class represents a {@link PrettyToken}.
  * 
@@ -20,6 +23,12 @@ public final class PrettyToken
    * The {@link Style}.
    */
   private Style style;
+
+
+  /**
+   * The overwritten {@link Color}.
+   */
+  private Color overwrittenColor = null;
 
 
   /**
@@ -47,6 +56,21 @@ public final class PrettyToken
 
 
   /**
+   * Returns the {@link Color}.
+   * 
+   * @return The {@link Color}.
+   */
+  public final Color getColor ()
+  {
+    if ( this.overwrittenColor != null )
+    {
+      return this.overwrittenColor;
+    }
+    return this.style.getColor ();
+  }
+
+
+  /**
    * Returns the {@link Style}.
    * 
    * @return The {@link Style}.
@@ -69,13 +93,35 @@ public final class PrettyToken
 
 
   /**
-   * Sets the {@link Style}.
+   * Returns the bold value.
    * 
-   * @param style The {@link Style} to set.
+   * @return The bold value.
    */
-  public final void setStyle ( Style style )
+  public final boolean isBold ()
   {
-    this.style = style;
+    return this.style.isBold ();
+  }
+
+
+  /**
+   * Returns the italic value.
+   * 
+   * @return The italic value.
+   */
+  public final boolean isItalic ()
+  {
+    return this.style.isItalic ();
+  }
+
+
+  /**
+   * Overwrites the {@link Color} with the given {@link Color}.
+   * 
+   * @param newColor The new {@link Color}.
+   */
+  public final void overwrite ( Color newColor )
+  {
+    this.overwrittenColor = newColor;
   }
 
 

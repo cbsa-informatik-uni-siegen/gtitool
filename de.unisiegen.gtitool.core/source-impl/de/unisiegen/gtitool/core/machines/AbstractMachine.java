@@ -959,6 +959,12 @@ public abstract class AbstractMachine implements Machine
    */
   public final void clearSelectedTransition ()
   {
+    // transition
+    for ( Transition current : this.transitionList )
+    {
+      current.setSelected ( false );
+    }
+
     // find the columns
     for ( int i = 0 ; i < getColumnCount () ; i++ )
     {
@@ -2344,6 +2350,9 @@ public abstract class AbstractMachine implements Machine
   {
     // reset
     clearSelectedTransition ();
+
+    // transition
+    transition.setSelected ( true );
 
     // find the row
     int row = -1;

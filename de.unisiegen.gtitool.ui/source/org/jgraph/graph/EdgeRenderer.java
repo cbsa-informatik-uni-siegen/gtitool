@@ -135,7 +135,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 	/** Cached spline curve */
 	protected transient Spline2D spline;
 	
-	// TODO modify begin
+	// modify begin
   /**
    * The error {@link Transition} color.
    */
@@ -158,7 +158,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
    * The normal {@link Transition} color.
    */
   private Color preferenceTransition;
-  // TODO modify end
+  // modify end
   
   
 	/**
@@ -168,7 +168,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 		defaultForeground = UIManager.getColor("Tree.textForeground");
 		defaultBackground = UIManager.getColor("Tree.textBackground");
 		
-	// TODO modify begin
+	// modify begin
     this.preferenceTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ().getColor ();
     this.preferenceTransitionError = PreferenceManager.getInstance ()
@@ -209,7 +209,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
             EdgeRenderer.this.preferenceTransitionSelected = newColor;
           }
         } );
-    //TODO modify end
+    //modify end
 	}
 
 	/**
@@ -605,9 +605,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 				
 				x = p0.getX() + dx * factor + nx * y + offsetX;
 				y = p0.getY() + dy * factor + ny * y + offsetY;
-			  // TODO modify begin
+			  // modify begin
         return new Point2D.Double ( x, y - 8);
-        // TODO modify end
+        // modify end
 			}
 		}
 		
@@ -720,7 +720,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 				translateGraphics(g);
 				g.setColor(getForeground());
 				
-				// TODO modify begin
+				// modify begin
         // Error
         if ( ( this.view.getCell () instanceof DefaultTransitionView )
             && ( ( ( DefaultTransitionView ) this.view.getCell () )
@@ -745,7 +745,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         {
           g2.setColor ( this.preferenceTransition );
         }
-        // TODO modify end
+        // modify end
         
 				if (lineWidth > 0) {
 					g2.setStroke(new BasicStroke(lineWidth, c, j));
@@ -770,7 +770,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 						g2.draw(view.lineShape);
 				}
 
-				// TODO modify begin
+				// modify begin
         // if (selected) { // Paint Selected
         // g2.setStroke(GraphConstants.SELECTION_STROKE);
         // g2.setColor(highlightColor);
@@ -781,7 +781,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         // if (view.endShape != null)
         // g2.draw(view.endShape);
         // }
-        // TODO modify end
+        // modify end
 				
 				g2.setStroke(new BasicStroke(1));
 				g
@@ -791,7 +791,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 						.getAllAttributes());
 				JGraph graph = (JGraph)this.graph.get();
 				if (labels != null) {
-				  // TODO modify begin
+				  // modify begin
           for ( int i = 0 ; i < labels.length ; i++ )
           {
             if ( this.view.getCell () instanceof DefaultTransitionView )
@@ -802,13 +802,13 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
                   this.view, i ), false || !this.simpleExtraLabels );
             }
           }
-          // TODO modify end
+          // modify end
 				}
 				if (graph.getEditingCell() != view.getCell()) {
 					g.setFont(getFont());
 					Object label = graph.convertValueToString(view);
 					if (label != null) {
-					  // TODO modify begin
+					  // modify begin
             if ( this.view.getCell () instanceof DefaultTransitionView )
             {
               Transition transition = ( ( DefaultTransitionView ) this.view
@@ -816,7 +816,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
               paintTransition ( g, transition, getLabelPosition ( this.view ),
                   true );
             }
-            // TODO modify end
+            // modify end
 					}
 				}
 			}
@@ -867,32 +867,32 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
         dy = -metrics.getDescent();
       }
       
-      // TODO modify begin
+      // modify begin
       for ( PrettyToken currentToken : prettyString )
       {
         Font font = null;
 
-        if ( !currentToken.getStyle ().isBold ()
-            && !currentToken.getStyle ().isItalic () )
+        if ( !currentToken.isBold ()
+            && !currentToken.isItalic () )
         {
           font = g.getFont ().deriveFont ( Font.PLAIN );
         }
-        else if ( currentToken.getStyle ().isBold ()
-            && currentToken.getStyle ().isItalic () )
+        else if ( currentToken.isBold ()
+            && currentToken.isItalic () )
         {
           font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
         }
-        else if ( currentToken.getStyle ().isBold () )
+        else if ( currentToken.isBold () )
         {
           font = g.getFont ().deriveFont ( Font.BOLD );
         }
-        else if ( currentToken.getStyle ().isItalic () )
+        else if ( currentToken.isItalic () )
         {
           font = g.getFont ().deriveFont ( Font.ITALIC );
         }
 
         g.setFont ( font );
-        g.setColor ( currentToken.getStyle ().getColor () );
+        g.setColor ( currentToken.getColor () );
         char [] chars = currentToken.getChar ();
         for ( int i = 0 ; i < chars.length ; i++ )
         {
@@ -900,7 +900,7 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
           dx += this.metrics.charWidth ( chars [ i ] );
         }
       }
-      // TODO modify end
+      // modify end
       
       if (applyTransform) {
         // Undo the transform

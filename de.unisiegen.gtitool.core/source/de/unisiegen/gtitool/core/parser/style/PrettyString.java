@@ -116,6 +116,21 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
+   * Overwrites the {@link Style} of every {@link PrettyToken} with the given
+   * {@link Style}.
+   * 
+   * @param newStyle The new {@link Style}.
+   */
+  public final void overwriteColor ( Style newStyle )
+  {
+    for ( PrettyToken current : this.prettyTokenList )
+    {
+      current.overwrite ( newStyle.getColor () );
+    }
+  }
+
+
+  /**
    * Replaces the target with the replacement.
    * 
    * @param target The target.

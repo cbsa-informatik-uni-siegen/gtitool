@@ -305,27 +305,25 @@ public final class StateView extends VertexView
         {
           Font font = null;
 
-          if ( !currentToken.getStyle ().isBold ()
-              && !currentToken.getStyle ().isItalic () )
+          if ( !currentToken.isBold () && !currentToken.isItalic () )
           {
             font = g.getFont ().deriveFont ( Font.PLAIN );
           }
-          else if ( currentToken.getStyle ().isBold ()
-              && currentToken.getStyle ().isItalic () )
+          else if ( currentToken.isBold () && currentToken.isItalic () )
           {
             font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
           }
-          else if ( currentToken.getStyle ().isBold () )
+          else if ( currentToken.isBold () )
           {
             font = g.getFont ().deriveFont ( Font.BOLD );
           }
-          else if ( currentToken.getStyle ().isItalic () )
+          else if ( currentToken.isItalic () )
           {
             font = g.getFont ().deriveFont ( Font.ITALIC );
           }
 
           g.setFont ( font );
-          g.setColor ( currentToken.getStyle ().getColor () );
+          g.setColor ( currentToken.getColor () );
           char [] chars = currentToken.getChar ();
           for ( int i = 0 ; i < chars.length ; i++ )
           {

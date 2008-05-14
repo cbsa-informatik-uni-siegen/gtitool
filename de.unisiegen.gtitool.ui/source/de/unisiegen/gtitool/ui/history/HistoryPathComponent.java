@@ -242,27 +242,25 @@ public final class HistoryPathComponent extends JLabel
         .getPrettyToken () )
     {
       Font font = null;
-      if ( !currentToken.getStyle ().isBold ()
-          && !currentToken.getStyle ().isItalic () )
+      if ( !currentToken.isBold () && !currentToken.isItalic () )
       {
         font = FONT;
       }
-      else if ( currentToken.getStyle ().isBold ()
-          && currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isBold () && currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.BOLD | Font.ITALIC );
       }
-      else if ( currentToken.getStyle ().isBold () )
+      else if ( currentToken.isBold () )
       {
         font = FONT.deriveFont ( Font.BOLD );
       }
-      else if ( currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.ITALIC );
       }
 
       g.setFont ( font );
-      g.setColor ( currentToken.getStyle ().getColor () );
+      g.setColor ( currentToken.getColor () );
       char [] chars = currentToken.getChar ();
       for ( int i = 0 ; i < chars.length ; i++ )
       {
@@ -369,27 +367,25 @@ public final class HistoryPathComponent extends JLabel
     for ( PrettyToken currentToken : state.toPrettyString ().getPrettyToken () )
     {
       Font font = null;
-      if ( !currentToken.getStyle ().isBold ()
-          && !currentToken.getStyle ().isItalic () )
+      if ( !currentToken.isBold () && !currentToken.isItalic () )
       {
         font = FONT;
       }
-      else if ( currentToken.getStyle ().isBold ()
-          && currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isBold () && currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.BOLD | Font.ITALIC );
       }
-      else if ( currentToken.getStyle ().isBold () )
+      else if ( currentToken.isBold () )
       {
         font = FONT.deriveFont ( Font.BOLD );
       }
-      else if ( currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.ITALIC );
       }
 
       g.setFont ( font );
-      g.setColor ( currentToken.getStyle ().getColor () );
+      g.setColor ( currentToken.getColor () );
       char [] chars = currentToken.getChar ();
       for ( int i = 0 ; i < chars.length ; i++ )
       {
@@ -419,27 +415,25 @@ public final class HistoryPathComponent extends JLabel
     {
       Font font = null;
 
-      if ( !currentToken.getStyle ().isBold ()
-          && !currentToken.getStyle ().isItalic () )
+      if ( !currentToken.isBold () && !currentToken.isItalic () )
       {
         font = FONT;
       }
-      else if ( currentToken.getStyle ().isBold ()
-          && currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isBold () && currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.BOLD | Font.ITALIC );
       }
-      else if ( currentToken.getStyle ().isBold () )
+      else if ( currentToken.isBold () )
       {
         font = FONT.deriveFont ( Font.BOLD );
       }
-      else if ( currentToken.getStyle ().isItalic () )
+      else if ( currentToken.isItalic () )
       {
         font = FONT.deriveFont ( Font.ITALIC );
       }
 
       g.setFont ( font );
-      g.setColor ( currentToken.getStyle ().getColor () );
+      g.setColor ( currentToken.getColor () );
 
       char [] chars = currentToken.getChar ();
       for ( int i = 0 ; i < chars.length ; i++ )

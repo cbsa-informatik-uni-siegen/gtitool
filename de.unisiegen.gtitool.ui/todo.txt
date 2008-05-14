@@ -1,9 +1,7 @@
 CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
-CF		- Determinismus bei PDA im Navigationsmodus untersuchen
 CF		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA
-CF		- Keller Operationen highlighten
 
 
 BM		- Autolayout verbessern
@@ -14,3 +12,6 @@ BM		- Minimaler Automat
 
 		- Split View
 		- Parallel Loop Routing
+		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
+		  Dabei ist darauf zu achten, das auch die Navigation angepasst werden
+		  soll.

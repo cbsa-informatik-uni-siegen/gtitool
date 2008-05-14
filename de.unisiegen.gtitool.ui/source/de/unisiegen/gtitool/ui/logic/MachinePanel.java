@@ -2908,6 +2908,7 @@ public final class MachinePanel implements EditorPanel
     }
 
     this.gui.jGTITableMachine.repaint ();
+    this.gui.jGTITableMachinePDA.repaint ();
   }
 
 

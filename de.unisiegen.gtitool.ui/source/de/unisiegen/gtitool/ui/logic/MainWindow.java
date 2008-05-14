@@ -156,12 +156,12 @@ public final class MainWindow implements LanguageChangedListener
      * The navigation steps enabled button state.
      */
     ENABLED_NAVIGATION_STEPS,
-    
+
     /**
      * The convert enabled button state.
      */
     ENABLED_CONVERT_TO,
-    
+
     /**
      * The save enabled button state.
      */
@@ -498,8 +498,7 @@ public final class MainWindow implements LanguageChangedListener
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO ) )
-        && ( !this.buttonStateList
-            .contains ( ButtonState.ENABLED_CONVERT_TO ) ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CONVERT_TO ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO );
 
@@ -1504,7 +1503,7 @@ public final class MainWindow implements LanguageChangedListener
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
-        
+
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().getState ()
@@ -2285,7 +2284,7 @@ public final class MainWindow implements LanguageChangedListener
     MainWindow.this.gui.getJMenuItemHistory ().setMnemonic (
         Messages.getString ( "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // AutoLayout
-    MainWindow.this.gui.getJMenuItemAutoLayout  ().setText (
+    MainWindow.this.gui.getJMenuItemAutoLayout ().setText (
         Messages.getString ( "MainWindow.AutoLayout" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemAutoLayout ().setMnemonic (
         Messages.getString ( "MainWindow.AutoLayoutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
@@ -2294,6 +2293,15 @@ public final class MainWindow implements LanguageChangedListener
         Messages.getString ( "MainWindow.ConvertTo" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuConvertTo ().setMnemonic (
         Messages.getString ( "MainWindow.ConvertToMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ConvertToDFA
+    MainWindow.this.gui.getJMenuItemConvertToDFA ().setText (
+        Messages.getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToNFA ().setText (
+        Messages.getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToENFA ().setText (
+        Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToPDA ().setText (
+        Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
     // EditMachine
     MainWindow.this.gui.getJMenuItemEditMachine ().setText (
         Messages.getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$

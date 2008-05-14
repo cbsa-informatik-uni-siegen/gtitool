@@ -39,7 +39,7 @@ public class MainWindowForm extends JFrame {
      */ 
     private MainWindow logic;
     
-    
+
     /**
      * Creates new form MainWindow
      * 
@@ -92,6 +92,53 @@ public class MainWindowForm extends JFrame {
     public final JMenuItem getJMenuItemCloseAll ()
     {
       return this.jMenuItemCloseAll;
+    }
+    
+    /**
+     * Returns the jMenuItemConvertToDFA.
+     *
+     * @return The jMenuItemConvertToDFA.
+     * @see #jMenuItemConvertToDFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToDFA ()
+    {
+      return this.jMenuItemConvertToDFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemConvertToENFA.
+     *
+     * @return The jMenuItemConvertToENFA.
+     * @see #jMenuItemConvertToENFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToENFA ()
+    {
+      return this.jMenuItemConvertToENFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemConvertToNFA.
+     *
+     * @return The jMenuItemConvertToNFA.
+     * @see #jMenuItemConvertToNFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToNFA ()
+    {
+      return this.jMenuItemConvertToNFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemConvertToPDA.
+     *
+     * @return The jMenuItemConvertToPDA.
+     * @see #jMenuItemConvertToPDA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToPDA ()
+    {
+      return this.jMenuItemConvertToPDA;
     }
     
     /**

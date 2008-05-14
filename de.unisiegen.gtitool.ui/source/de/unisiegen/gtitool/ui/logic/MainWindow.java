@@ -2284,6 +2284,16 @@ public final class MainWindow implements LanguageChangedListener
         Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemHistory ().setMnemonic (
         Messages.getString ( "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // AutoLayout
+    MainWindow.this.gui.getJMenuItemAutoLayout  ().setText (
+        Messages.getString ( "MainWindow.AutoLayout" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemAutoLayout ().setMnemonic (
+        Messages.getString ( "MainWindow.AutoLayoutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ConvertTo
+    MainWindow.this.gui.getJMenuConvertTo ().setText (
+        Messages.getString ( "MainWindow.ConvertTo" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuConvertTo ().setMnemonic (
+        Messages.getString ( "MainWindow.ConvertToMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // EditMachine
     MainWindow.this.gui.getJMenuItemEditMachine ().setText (
         Messages.getString ( "MainWindow.EditMachine" ) ); //$NON-NLS-1$

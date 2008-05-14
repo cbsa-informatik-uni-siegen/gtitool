@@ -125,7 +125,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     this.zoom.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/popupmenu/zoom.png" ) ) ); //$NON-NLS-1$
 
-    this.zoom50 = new JCheckBoxMenuItem ( "50% " ); //$NON-NLS-1$
+    this.zoom50 = new JCheckBoxMenuItem ( "50\u0025" ); //$NON-NLS-1$
     this.zoom50.addActionListener ( new ActionListener ()
     {
 
@@ -138,7 +138,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom50 );
 
-    this.zoom75 = new JCheckBoxMenuItem ( "75%" ); //$NON-NLS-1$
+    this.zoom75 = new JCheckBoxMenuItem ( "75\u0025" ); //$NON-NLS-1$
     this.zoom75.addActionListener ( new ActionListener ()
     {
 
@@ -151,7 +151,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom75 );
 
-    this.zoom100 = new JCheckBoxMenuItem ( "100%" ); //$NON-NLS-1$
+    this.zoom100 = new JCheckBoxMenuItem ( "100\u0025" ); //$NON-NLS-1$
     this.zoom100.addActionListener ( new ActionListener ()
     {
 
@@ -164,7 +164,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom100 );
 
-    this.zoom125 = new JCheckBoxMenuItem ( "125%" ); //$NON-NLS-1$
+    this.zoom125 = new JCheckBoxMenuItem ( "125\u0025" ); //$NON-NLS-1$
     this.zoom125.addActionListener ( new ActionListener ()
     {
 
@@ -177,7 +177,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom125 );
 
-    this.zoom150 = new JCheckBoxMenuItem ( "150%" ); //$NON-NLS-1$
+    this.zoom150 = new JCheckBoxMenuItem ( "150\u0025" ); //$NON-NLS-1$
     this.zoom150.addActionListener ( new ActionListener ()
     {
 
@@ -190,7 +190,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom150 );
 
-    this.zoom175 = new JCheckBoxMenuItem ( "175%" ); //$NON-NLS-1$
+    this.zoom175 = new JCheckBoxMenuItem ( "175\u0025" ); //$NON-NLS-1$
     this.zoom175.addActionListener ( new ActionListener ()
     {
 
@@ -203,7 +203,7 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom175 );
 
-    this.zoom200 = new JCheckBoxMenuItem ( "200%" ); //$NON-NLS-1$
+    this.zoom200 = new JCheckBoxMenuItem ( "200\u0025" ); //$NON-NLS-1$
     this.zoom200.addActionListener ( new ActionListener ()
     {
 
@@ -218,7 +218,6 @@ public final class DefaultPopupMenu extends JPopupMenu
 
     add ( this.zoom );
 
-    // TODO i18n
     this.validate = new JMenuItem ( Messages
         .getString ( "MachinePanel.Validate" ) ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()

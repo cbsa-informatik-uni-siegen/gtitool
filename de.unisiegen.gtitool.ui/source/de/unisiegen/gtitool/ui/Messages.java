@@ -36,29 +36,12 @@ public final class Messages
    * 
    * @return The available {@link LanguageItem}s.
    */
-  public final static LanguageItem [] getLanguageItems ()
+  public final static ArrayList < LanguageItem > getLanguageItems ()
   {
     ArrayList < LanguageItem > list = new ArrayList < LanguageItem > ();
-    try
-    {
-      ResourceBundle bundle = ResourceBundle
-          .getBundle ( "de.unisiegen.gtitool.ui.languages" ); //$NON-NLS-1$
-      int index = 0;
-      while ( true )
-      {
-        String title = bundle.getString ( "Language" + index + ".Title" ); //$NON-NLS-1$ //$NON-NLS-2$
-        String language = bundle.getString ( "Language" + index + ".Language" ); //$NON-NLS-1$//$NON-NLS-2$
-        list.add ( new LanguageItem ( title, new Locale ( language ) ) );
-        index++ ;
-      }
-    }
-    catch ( MissingResourceException exc )
-    {
-      /*
-       * Happens after the last language is added.
-       */
-    }
-    return list.toArray ( new LanguageItem [] {} );
+    list.add ( new LanguageItem ( "Deutsch", new Locale ( "de" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
+    list.add ( new LanguageItem ( "English", new Locale ( "en" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
+    return list;
   }
 
 

@@ -836,7 +836,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final Converter getConverter ()
   {
-    return null;
+    return new ConvertMachineDialog ( this.mainWindowForm );
   }
 
 

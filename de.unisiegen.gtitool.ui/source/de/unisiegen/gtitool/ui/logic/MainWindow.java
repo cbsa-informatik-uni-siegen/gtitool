@@ -775,14 +775,10 @@ public final class MainWindow implements LanguageChangedListener
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
-    // TODO remove if statement when converter for machines are ready
-    if ( panel.getConverter () != null )
+    // if there are no validation errors perform the action
+    if ( handleValidate ( false ) )
     {
-      // if there are no validation errors perform the action
-      if ( handleValidate ( false ) )
-      {
-        panel.getConverter ().convert ( type );
-      }
+      panel.getConverter ().convert ( type );
     }
   }
 
@@ -1507,7 +1503,7 @@ public final class MainWindow implements LanguageChangedListener
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
-        removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+        addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
         MachinePanel machinePanel = ( MachinePanel ) panel;
         machinePanel.setVisibleConsole ( this.gui

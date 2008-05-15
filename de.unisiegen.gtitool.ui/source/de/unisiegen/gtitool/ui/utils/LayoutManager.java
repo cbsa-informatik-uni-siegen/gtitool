@@ -11,6 +11,9 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 /**
  * This class manages the layout of the graph.
+ * 
+ * @author Benjamin Mies
+ * @version $Id$
  */
 public class LayoutManager
 {
@@ -124,6 +127,8 @@ public class LayoutManager
 
     int rowSize = ( int ) Math.ceil ( Math.sqrt ( this.model
         .getStateViewList ().size () ) );
+    
+    rowSize*=2;
 
     int count = 0;
     int pos = 0;
@@ -143,9 +148,9 @@ public class LayoutManager
       }
       group.add ( current );
       if ( (pos % 2) != 0)
-      current.move ( x, y-50 );
+      current.move ( x, y+50 );
       else {
-        current.move ( x, y + 50 );
+        current.move ( x, y - 50 );
       }
       count++ ;
       pos++;
@@ -163,11 +168,7 @@ public class LayoutManager
 
     doLayoutInternal ();
 
-    resortGroups ();
-
-    doLayoutInternal ();
-
-    finishlayout ();
+    finishLayout ();
 
     this.model.getGraphModel ().cellsChanged (
         this.model.getStateViewList ().toArray () );
@@ -244,7 +245,7 @@ public class LayoutManager
   /**
    * Layout the graph into a grid.
    */
-  private void finishlayout ()
+  private void finishLayout ()
   {
 
     ArrayList < DefaultStateView > states = new ArrayList < DefaultStateView > ();
@@ -289,28 +290,28 @@ public class LayoutManager
     createGrid ( this.model.getStateViewList () );
   }
 
-  /**
-   * Resort the groups. 
-   */
-  private void resortGroups ()
-  {
-    ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
-    this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
-
-    for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
-    {
-      ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
-      for ( int i = 0 ; i < oldGroups.size () ; i++ )
-      {
-        if ( oldGroups.get ( i ).size () > j )
-        {
-          DefaultStateView node = oldGroups.get ( i ).get ( j );
-          group.add ( node );
-        }
-      }
-      this.groups.add ( group );
-    }
-  }
+//  /**
+//   * Resort the groups. 
+//   */
+//  private void resortGroups ()
+//  {
+//    ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
+//    this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
+//
+//    for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
+//    {
+//      ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
+//      for ( int i = 0 ; i < oldGroups.size () ; i++ )
+//      {
+//        if ( oldGroups.get ( i ).size () > j )
+//        {
+//          DefaultStateView node = oldGroups.get ( i ).get ( j );
+//          group.add ( node );
+//        }
+//      }
+//      this.groups.add ( group );
+//    }
+//  }
 
 
   /**

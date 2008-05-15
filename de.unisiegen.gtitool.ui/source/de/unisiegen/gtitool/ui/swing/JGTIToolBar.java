@@ -24,5 +24,8 @@ public final class JGTIToolBar extends JToolBar
   public JGTIToolBar ()
   {
     super ();
+    setBorder ( null );
+    setFloatable ( false );
+    setBorderPainted ( false );
   }
 }

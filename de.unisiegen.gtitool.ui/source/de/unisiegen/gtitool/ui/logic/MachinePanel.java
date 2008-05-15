@@ -241,7 +241,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * The {@link JGraph} containing the diagramm.
    */
-  private JGraph graph;
+  private JGraph jGraph;
 
 
   /**
@@ -473,7 +473,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final void addGraphListener ()
   {
-    this.graph.addKeyListener ( new KeyAdapter ()
+    this.jGraph.addKeyListener ( new KeyAdapter ()
     {
 
       @Override
@@ -492,7 +492,7 @@ public final class MachinePanel implements EditorPanel
         else if ( !MachinePanel.this.mouseDown
             && ( event.getKeyCode () == KeyEvent.VK_DELETE ) )
         {
-          Object object = MachinePanel.this.graph.getSelectionCell ();
+          Object object = MachinePanel.this.jGraph.getSelectionCell ();
 
           if ( object instanceof DefaultStateView )
           {
@@ -506,7 +506,7 @@ public final class MachinePanel implements EditorPanel
       }
     } );
 
-    this.graph.addGraphSelectionListener ( new GraphSelectionListener ()
+    this.jGraph.addGraphSelectionListener ( new GraphSelectionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -517,7 +517,7 @@ public final class MachinePanel implements EditorPanel
       }
     } );
 
-    this.graph.addMouseListener ( new MouseAdapter ()
+    this.jGraph.addMouseListener ( new MouseAdapter ()
     {
 
       /**
@@ -836,7 +836,7 @@ public final class MachinePanel implements EditorPanel
    */
   public final Converter getConverter ()
   {
-    return new ConvertMachineDialog ( this.mainWindowForm );
+    return new ConvertMachineDialog ( this.mainWindowForm, this );
   }
 
 
@@ -866,11 +866,11 @@ public final class MachinePanel implements EditorPanel
    * Returns the {@link JGraph}.
    * 
    * @return The {@link JGraph}.
-   * @see #graph
+   * @see #jGraph
    */
-  public final JGraph getGraph ()
+  public final JGraph getJGraph ()
   {
-    return this.graph;
+    return this.jGraph;
   }
 
 
@@ -987,7 +987,7 @@ public final class MachinePanel implements EditorPanel
   {
     // Clear highlight
     clearHighlight ();
-    this.graph.clearSelection ();
+    this.jGraph.clearSelection ();
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
       Transition transition = current.getTransition ();
@@ -1113,7 +1113,7 @@ public final class MachinePanel implements EditorPanel
   public final void handleEditMachine ()
   {
     this.enterWordMode = false;
-    this.graph.removeMouseListener ( this.enterWordModeMouse );
+    this.jGraph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGraph ().setEnabled ( true );
 
@@ -1129,10 +1129,10 @@ public final class MachinePanel implements EditorPanel
   public final void handleEnterWord ()
   {
     this.enterWordMode = true;
-    this.graph.clearSelection ();
+    this.jGraph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
-    this.model.getJGraph ().setEnabled ( false );
-    this.graph.addMouseListener ( this.enterWordModeMouse );
+    this.jGraph.setEnabled ( false );
+    this.jGraph.addMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.requestFocus ();
   }
 
@@ -1359,12 +1359,12 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.addState );
+      this.jGraph.addMouseListener ( this.addState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_STATE;
     }
     else
     {
-      this.graph.removeMouseListener ( this.addState );
+      this.jGraph.removeMouseListener ( this.addState );
     }
   }
 
@@ -1390,12 +1390,12 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.addEndState );
+      this.jGraph.addMouseListener ( this.addEndState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
     {
-      this.graph.removeMouseListener ( this.addEndState );
+      this.jGraph.removeMouseListener ( this.addEndState );
     }
   }
 
@@ -1409,12 +1409,12 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.normalMouse );
+      this.jGraph.addMouseListener ( this.normalMouse );
       activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     else
     {
-      this.graph.removeMouseListener ( this.normalMouse );
+      this.jGraph.removeMouseListener ( this.normalMouse );
     }
   }
 
@@ -1428,12 +1428,12 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.addStartState );
+      this.jGraph.addMouseListener ( this.addStartState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_START_STATE;
     }
     else
     {
-      this.graph.removeMouseListener ( this.addStartState );
+      this.jGraph.removeMouseListener ( this.addStartState );
     }
   }
 
@@ -1447,14 +1447,14 @@ public final class MachinePanel implements EditorPanel
   {
     if ( state )
     {
-      this.graph.addMouseListener ( this.addTransition );
-      this.graph.addMouseMotionListener ( this.transitionMove );
+      this.jGraph.addMouseListener ( this.addTransition );
+      this.jGraph.addMouseMotionListener ( this.transitionMove );
       activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
     }
     else
     {
-      this.graph.removeMouseListener ( this.addTransition );
-      this.graph.removeMouseMotionListener ( this.transitionMove );
+      this.jGraph.removeMouseListener ( this.addTransition );
+      this.jGraph.removeMouseMotionListener ( this.transitionMove );
     }
   }
 
@@ -1787,8 +1787,8 @@ public final class MachinePanel implements EditorPanel
   private final void initialize ()
   {
     this.machine = this.model.getMachine ();
-    this.graph = this.model.getJGraph ();
-    this.graph.getSelectionModel ().setSelectionMode (
+    this.jGraph = this.model.getJGraph ();
+    this.jGraph.getSelectionModel ().setSelectionMode (
         GraphSelectionModel.SINGLE_GRAPH_SELECTION );
     this.graphModel = this.model.getGraphModel ();
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
@@ -1828,7 +1828,7 @@ public final class MachinePanel implements EditorPanel
       }
     }
 
-    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.graph );
+    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.jGraph );
 
     this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
@@ -1902,7 +1902,7 @@ public final class MachinePanel implements EditorPanel
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
-          MachinePanel.this.graph.clearSelection ();
+          MachinePanel.this.jGraph.clearSelection ();
         }
 
 
@@ -1912,7 +1912,7 @@ public final class MachinePanel implements EditorPanel
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
-          MachinePanel.this.graph.clearSelection ();
+          MachinePanel.this.jGraph.clearSelection ();
         }
       } );
 
@@ -1988,7 +1988,7 @@ public final class MachinePanel implements EditorPanel
 
           if ( event.getClickCount () >= 2 )
           {
-            DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.graph
+            DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGraph
                 .getFirstCellForLocation ( event.getPoint ().getX (), event
                     .getPoint ().getY () );
             if ( cell == null )
@@ -2034,7 +2034,7 @@ public final class MachinePanel implements EditorPanel
         }
 
         // Open a new popup menu
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
         if ( object == null )
@@ -2091,7 +2091,7 @@ public final class MachinePanel implements EditorPanel
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2190,7 +2190,7 @@ public final class MachinePanel implements EditorPanel
         if ( ( event.getButton () == MouseEvent.BUTTON3 )
             && ( MachinePanel.this.firstState == null ) )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
@@ -2226,7 +2226,7 @@ public final class MachinePanel implements EditorPanel
 
         if ( MachinePanel.this.firstState == null )
         {
-          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.graph
+          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.jGraph
               .getSelectionCellAt ( event.getPoint () );
           if ( MachinePanel.this.firstState == null )
           {
@@ -2239,7 +2239,7 @@ public final class MachinePanel implements EditorPanel
           try
           {
 
-            target = ( DefaultStateView ) MachinePanel.this.graph
+            target = ( DefaultStateView ) MachinePanel.this.jGraph
                 .getNextCellForLocation ( MachinePanel.this.tmpState, event
                     .getPoint ().getX (), event.getPoint ().getY () );
 
@@ -2307,7 +2307,7 @@ public final class MachinePanel implements EditorPanel
 
         try
         {
-          target = ( DefaultStateView ) MachinePanel.this.graph
+          target = ( DefaultStateView ) MachinePanel.this.jGraph
               .getNextCellForLocation ( MachinePanel.this.tmpState, event
                   .getPoint ().getX (), event.getPoint ().getY () );
 
@@ -2376,8 +2376,8 @@ public final class MachinePanel implements EditorPanel
         double x, y;
         if ( MachinePanel.this.firstState == null )
         {
-          Object cell = MachinePanel.this.graph.getFirstCellForLocation ( event
-              .getPoint ().getX (), event.getPoint ().getY () );
+          Object cell = MachinePanel.this.jGraph.getFirstCellForLocation (
+              event.getPoint ().getX (), event.getPoint ().getY () );
           if ( cell instanceof DefaultStateView )
           {
             MachinePanel.this.dragged = true;
@@ -2393,7 +2393,7 @@ public final class MachinePanel implements EditorPanel
           x = event.getX () / MachinePanel.this.zoomFactor;
           y = event.getY () / MachinePanel.this.zoomFactor;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
-          MachinePanel.this.graph.getGraphLayoutCache ().insert (
+          MachinePanel.this.jGraph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
           MachinePanel.this.tmpTransition = new DefaultEdge ( "" ); //$NON-NLS-1$
@@ -2402,7 +2402,7 @@ public final class MachinePanel implements EditorPanel
           GraphConstants.setEndFill ( MachinePanel.this.tmpTransition
               .getAttributes (), true );
 
-          MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
+          MachinePanel.this.jGraph.getGraphLayoutCache ().insertEdge (
               MachinePanel.this.tmpTransition,
               MachinePanel.this.firstState.getChildAt ( 0 ),
               MachinePanel.this.tmpState.getChildAt ( 0 ) );
@@ -2429,7 +2429,7 @@ public final class MachinePanel implements EditorPanel
           x = event.getX () / MachinePanel.this.zoomFactor;
           y = event.getY () / MachinePanel.this.zoomFactor;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
-          MachinePanel.this.graph.getGraphLayoutCache ().insert (
+          MachinePanel.this.jGraph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
           MachinePanel.this.tmpTransition = new DefaultEdge ( "" ); //$NON-NLS-1$
@@ -2438,7 +2438,7 @@ public final class MachinePanel implements EditorPanel
           GraphConstants.setEndFill ( MachinePanel.this.tmpTransition
               .getAttributes (), true );
 
-          MachinePanel.this.graph.getGraphLayoutCache ().insertEdge (
+          MachinePanel.this.jGraph.getGraphLayoutCache ().insertEdge (
               MachinePanel.this.tmpTransition,
               MachinePanel.this.firstState.getChildAt ( 0 ),
               MachinePanel.this.tmpState.getChildAt ( 0 ) );
@@ -2479,7 +2479,7 @@ public final class MachinePanel implements EditorPanel
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2579,7 +2579,7 @@ public final class MachinePanel implements EditorPanel
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2874,7 +2874,7 @@ public final class MachinePanel implements EditorPanel
   public final void setZoomFactor ( double factor )
   {
     this.zoomFactor = factor;
-    this.graph.setScale ( factor );
+    this.jGraph.setScale ( factor );
   }
 
 
@@ -2916,7 +2916,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final void updateSelected ()
   {
-    Object cell = this.graph.getSelectionCell ();
+    Object cell = this.jGraph.getSelectionCell ();
 
     if ( cell == null )
     {
@@ -2949,7 +2949,7 @@ public final class MachinePanel implements EditorPanel
    */
   private final void updateSelected ( MouseEvent event )
   {
-    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.graph
+    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGraph
         .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
             .getY () );
 
@@ -2967,7 +2967,7 @@ public final class MachinePanel implements EditorPanel
 
       transitionList.add ( transitionView.getTransition () );
 
-      DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.graph
+      DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.jGraph
           .getNextCellForLocation ( cell, event.getPoint ().getX (), event
               .getPoint ().getY () );
 
@@ -2978,7 +2978,7 @@ public final class MachinePanel implements EditorPanel
           transitionList.add ( ( ( DefaultTransitionView ) nextCell )
               .getTransition () );
         }
-        nextCell = ( DefaultGraphCell ) MachinePanel.this.graph
+        nextCell = ( DefaultGraphCell ) MachinePanel.this.jGraph
             .getNextCellForLocation ( nextCell, event.getPoint ().getX (),
                 event.getPoint ().getY () );
       }

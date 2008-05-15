@@ -683,7 +683,7 @@ public final class TransitionDialog
       handleUpdateTransition ();
     }
     this.gui.dispose ();
-    this.machinePanel.getGraph ().repaint ();
+    this.machinePanel.getJGraph ().repaint ();
   }
 
 

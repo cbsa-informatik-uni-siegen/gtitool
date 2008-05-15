@@ -45,6 +45,10 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jGTIToolBarMain = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
+        jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -62,15 +66,39 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
             }
         });
 
+        jGTIToolBarButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
+        jGTIToolBarButtonPrevious.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
+        jGTIToolBarButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonPreviousActionPerformed(evt);
+            }
+        });
+
+        jGTIToolBarMain.add(jGTIToolBarButtonPrevious);
+
+        jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png")));
+        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
+        jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGTIToolBarButtonNextStepActionPerformed(evt);
+            }
+        });
+
+        jGTIToolBarMain.add(jGTIToolBarButtonNextStep);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTIScrollPaneOriginal, gridBagConstraints);
+        getContentPane().add(jGTIToolBarMain, gridBagConstraints);
+
+        jGTISplitPaneGraph.setDividerLocation(250);
+        jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
+
+        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -79,8 +107,8 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
-        getContentPane().add(jGTIScrollPaneConverted, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
+        getContentPane().add(jGTISplitPaneGraph, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
@@ -93,7 +121,7 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
@@ -109,14 +137,22 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(640, 400));
+        setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIToolBarButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonPreviousActionPerformed
+        this.logic.handlePreviousStep();
+    }//GEN-LAST:event_jGTIToolBarButtonPreviousActionPerformed
+
+    private void jGTIToolBarButtonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonNextStepActionPerformed
+        this.logic.handleNextStep();
+    }//GEN-LAST:event_jGTIToolBarButtonNextStepActionPerformed
 
     private void jGTIButtonOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIButtonOkActionPerformed
       this.logic.handleOk();
@@ -135,6 +171,10 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPrevious;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     // End of variables declaration//GEN-END:variables
     
 }

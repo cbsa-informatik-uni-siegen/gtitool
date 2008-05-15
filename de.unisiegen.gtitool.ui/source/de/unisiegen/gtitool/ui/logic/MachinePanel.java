@@ -2065,13 +2065,15 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
+        
+     // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( event.getPoint ().getX (), event
-                  .getPoint ().getY () );
           if ( object == null )
           {
             MachinePanel.this.popup = createPopupMenu ();
@@ -2093,12 +2095,9 @@ public final class MachinePanel implements EditorPanel
           return;
         }
 
-        // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( event.getPoint ().getX (), event
-                .getPoint ().getY () );
+        
 
-        if ( object instanceof DefaultStateView )
+        if ( object != null )
         {
           return;
         }
@@ -2446,13 +2445,15 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
+        
+        // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( event.getPoint ().getX (), event
-                  .getPoint ().getY () );
           if ( object == null )
           {
             MachinePanel.this.popup = createPopupMenu ();
@@ -2474,12 +2475,9 @@ public final class MachinePanel implements EditorPanel
           return;
         }
 
-        // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( event.getPoint ().getX (), event
-                .getPoint ().getY () );
+       
 
-        if ( object instanceof DefaultStateView )
+        if ( object != null )
         {
           return;
         }
@@ -2544,13 +2542,15 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
+        
+        // check if there is another stateview under this point
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getFirstCellForLocation ( event.getPoint ().getX (), event
+                .getPoint ().getY () );
 
         // Open popup menu if left button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( event.getPoint ().getX (), event
-                  .getPoint ().getY () );
           if ( object == null )
           {
             MachinePanel.this.popup = createPopupMenu ();
@@ -2572,12 +2572,9 @@ public final class MachinePanel implements EditorPanel
           return;
         }
 
-        // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-            .getFirstCellForLocation ( event.getPoint ().getX (), event
-                .getPoint ().getY () );
+       
 
-        if ( object instanceof DefaultStateView )
+        if ( object != null )
         {
           return;
         }

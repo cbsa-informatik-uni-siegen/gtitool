@@ -4,7 +4,6 @@ CF		- Umwandeln von Maschinen
 			- NDEA  -> DEA
 
 
-BM		- Beim anlegen von einem Zustand prüfen ob eine Transition darunter liegt.
 BM		- Wenn eine Produktion per DnD an die gleiche Stelle verschoben wird, dann man
 		  diesen Schritt rückgängig machen, obwohl sich ja nichts geändert hat. Dies
 		  ist anscheinend ein allgemeineres Problem, auch wemm man einen Zustandsnamen

@@ -271,7 +271,7 @@ public abstract class AbstractConvertGrammar implements Converter
     performProductions ();
     addPanelToView ();
     
-    new LayoutManager(this.model).doLayout ();
+    new LayoutManager(this.model, this.newPanel.getRedoUndoHandler ()).doLayout ();
   }
 
 

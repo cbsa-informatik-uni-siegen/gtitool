@@ -604,7 +604,7 @@ public final class MainWindow implements LanguageChangedListener
     if ( panel instanceof MachinePanel )
     {
       MachinePanel machinePanel = ( MachinePanel ) panel;
-      new LayoutManager ( machinePanel.getModel () ).doLayout ();
+      new LayoutManager ( machinePanel.getModel (), machinePanel.getRedoUndoHandler () ).doLayout ();
     }
   }
 

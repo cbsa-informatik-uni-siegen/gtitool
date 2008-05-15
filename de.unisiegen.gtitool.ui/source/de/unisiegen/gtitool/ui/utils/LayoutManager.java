@@ -7,6 +7,9 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
+import de.unisiegen.gtitool.ui.redoundo.MultiItem;
+import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.StateMovedItem;
 
 
 /**
@@ -29,6 +32,7 @@ public class LayoutManager
    */
   private ArrayList < ArrayList < DefaultStateView >> groups = new ArrayList < ArrayList < DefaultStateView > > ();
 
+
   /**
    * The actual min costs.
    */
@@ -40,10 +44,12 @@ public class LayoutManager
    */
   private DefaultMachineModel model;
 
+
   /**
    * The actual first node to swap.
    */
   private DefaultStateView swapNode1;
+
 
   /**
    * The actual second node to swap.
@@ -52,13 +58,22 @@ public class LayoutManager
 
 
   /**
+   * The {@link RedoUndoHandler}.
+   */
+  private RedoUndoHandler redoUndoHandler;
+
+
+  /**
    * Allocate a new {@link LayoutManager}.
    * 
    * @param model The {@link DefaultMachineModel}.
+   * @param redoUndoHandler The {@link RedoUndoHandler}.
    */
-  public LayoutManager ( DefaultMachineModel model )
+  public LayoutManager ( DefaultMachineModel model,
+      RedoUndoHandler redoUndoHandler )
   {
     this.model = model;
+    this.redoUndoHandler = redoUndoHandler;
   }
 
 
@@ -113,9 +128,10 @@ public class LayoutManager
     return count;
   }
 
+
   /**
-   * Layout the states into a grid to perform next layout steps. 
-   *
+   * Layout the states into a grid to perform next layout steps.
+   * 
    * @param states List with all states of the machine.
    */
   private void createGrid ( ArrayList < DefaultStateView > states )
@@ -127,8 +143,8 @@ public class LayoutManager
 
     int rowSize = ( int ) Math.ceil ( Math.sqrt ( this.model
         .getStateViewList ().size () ) );
-    
-    rowSize*=2;
+
+    rowSize *= 2;
 
     int count = 0;
     int pos = 0;
@@ -144,16 +160,26 @@ public class LayoutManager
       }
       else
       {
-          x+= 100;
+        x += 100;
       }
       group.add ( current );
-      if ( (pos % 2) != 0)
-      current.move ( x, y+50 );
-      else {
-        current.move ( x, y - 50 );
+      if ( this.item != null )
+      {
+        if ( ( pos % 2 ) != 0 )
+        {
+          this.item.addItem ( new StateMovedItem ( this.model, current, current
+              .getXPosition (), current.getYPosition (), x, y + 50 ) );
+          current.move ( x, y + 50 );
+        }
+        else
+        {
+          this.item.addItem ( new StateMovedItem ( this.model, current, current
+              .getXPosition (), current.getYPosition (), x, y - 50 ) );
+          current.move ( x, y - 50 );
+        }
       }
       count++ ;
-      pos++;
+      pos++ ;
     }
     this.groups.add ( group );
   }
@@ -201,9 +227,10 @@ public class LayoutManager
     }
   }
 
+
   /**
-   * Find the best nodes to swap. 
-   *
+   * Find the best nodes to swap.
+   * 
    * @param index The index of the actual group.
    */
   private void findNodesToSwap ( int index )
@@ -254,8 +281,12 @@ public class LayoutManager
     {
       states.addAll ( current );
     }
-
+    this.item = new MultiItem ();
     createGrid ( states );
+    
+    this.redoUndoHandler.addItem ( this.item );
+
+    this.item = null;
   }
 
 
@@ -283,6 +314,12 @@ public class LayoutManager
 
 
   /**
+   * The {@link MultiItem} for redo / undo.
+   */
+  MultiItem item;
+
+
+  /**
    * Layout the graph into a grid.
    */
   private void prelayout ()
@@ -290,29 +327,30 @@ public class LayoutManager
     createGrid ( this.model.getStateViewList () );
   }
 
-//  /**
-//   * Resort the groups. 
-//   */
-//  private void resortGroups ()
-//  {
-//    ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
-//    this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
-//
-//    for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
-//    {
-//      ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
-//      for ( int i = 0 ; i < oldGroups.size () ; i++ )
-//      {
-//        if ( oldGroups.get ( i ).size () > j )
-//        {
-//          DefaultStateView node = oldGroups.get ( i ).get ( j );
-//          group.add ( node );
-//        }
-//      }
-//      this.groups.add ( group );
-//    }
-//  }
 
+  // /**
+  // * Resort the groups.
+  // */
+  // private void resortGroups ()
+  // {
+  // ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
+  // this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
+  //
+  // for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
+  // {
+  // ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView >
+  // ();
+  // for ( int i = 0 ; i < oldGroups.size () ; i++ )
+  // {
+  // if ( oldGroups.get ( i ).size () > j )
+  // {
+  // DefaultStateView node = oldGroups.get ( i ).get ( j );
+  // group.add ( node );
+  // }
+  // }
+  // this.groups.add ( group );
+  // }
+  // }
 
   /**
    * Swap to {@link DefaultStateView}.

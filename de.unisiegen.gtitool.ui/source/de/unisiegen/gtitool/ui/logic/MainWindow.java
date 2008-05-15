@@ -777,7 +777,11 @@ public final class MainWindow implements LanguageChangedListener
     // TODO remove if statement when converter for machines are ready
     if ( panel.getConverter () != null )
     {
-      panel.getConverter ().convert ( type );
+      // if there are no validation errors perform the action
+      if ( handleValidate ( false ) )
+      {
+        panel.getConverter ().convert ( type );
+      }
     }
   }
 

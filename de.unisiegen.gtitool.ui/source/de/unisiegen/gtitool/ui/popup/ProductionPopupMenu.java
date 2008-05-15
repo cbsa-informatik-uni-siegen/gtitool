@@ -217,7 +217,8 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.delete.setEnabled ( this.productions.size () > 0 );
     add ( this.delete );
 
-    this.validate = new JMenuItem ( "Validate" ); //$NON-NLS-1$
+    this.validate = new JMenuItem ( Messages
+        .getString ( "MachinePanel.Validate" ) ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()
     {
 

@@ -454,11 +454,11 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Sets the given {@link Transition} selected.
+   * Sets the given {@link Transition}s selected.
    * 
-   * @param transition The {@link Transition} which should be selected.
+   * @param transitionList The {@link Transition}s which should be selected.
    */
-  public void setSelectedTransition ( Transition transition );
+  public void setSelectedTransition ( ArrayList < Transition > transitionList );
 
 
   /**

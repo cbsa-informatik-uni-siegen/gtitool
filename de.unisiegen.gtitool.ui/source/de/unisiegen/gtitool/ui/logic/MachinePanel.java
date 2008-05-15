@@ -805,6 +805,8 @@ public final class MachinePanel implements EditorPanel
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
     clearValidationMessages ();
+
+    // is needed if a cell is deleted
     updateSelected ();
 
     ModifyStatusChangedListener [] listeners = this.listenerList
@@ -824,6 +826,17 @@ public final class MachinePanel implements EditorPanel
         current.modifyStatusChanged ( newModifyStatus );
       }
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see EditorPanel#getConverter()
+   */
+  public final Converter getConverter ()
+  {
+    return null;
   }
 
 
@@ -1969,41 +1982,47 @@ public final class MachinePanel implements EditorPanel
           return;
         }
         // open configuration
-        if ( ( event.getButton () == MouseEvent.BUTTON1 )
-            && ( event.getClickCount () == 2 ) )
+        if ( event.getButton () == MouseEvent.BUTTON1 )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
-              .getFirstCellForLocation ( event.getPoint ().getX (), event
-                  .getPoint ().getY () );
-          if ( object == null )
-          {
-            return;
-          }
-          else if ( object instanceof DefaultTransitionView )
-          {
-            // open transition config dialog
-            DefaultTransitionView transitionView = ( DefaultTransitionView ) object;
-            Transition usedTransition = transitionView.getTransition ();
-            TransitionDialog transitionDialog = new TransitionDialog (
-                MachinePanel.this.mainWindowForm, MachinePanel.this,
-                MachinePanel.this.machine.getAlphabet (),
-                MachinePanel.this.machine.getPushDownAlphabet (),
-                usedTransition );
-            transitionDialog.show ();
+          updateSelected ( event );
 
-            performCellsChanged ();
-          }
-          else
+          if ( event.getClickCount () >= 2 )
           {
-            // open state config dialog
-            DefaultStateView state = ( DefaultStateView ) object;
-            StateConfigDialog dialog = new StateConfigDialog (
-                MachinePanel.this.mainWindowForm, MachinePanel.this, state
-                    .getState (), MachinePanel.this.model );
-            dialog.show ();
+            DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.graph
+                .getFirstCellForLocation ( event.getPoint ().getX (), event
+                    .getPoint ().getY () );
+            if ( cell == null )
+            {
+              return;
+            }
+            else if ( cell instanceof DefaultTransitionView )
+            {
+              DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
 
-            // Update the machine table status
-            updateMachineTableStatus ();
+              // open transition config dialog
+              Transition usedTransition = transitionView.getTransition ();
+              TransitionDialog transitionDialog = new TransitionDialog (
+                  MachinePanel.this.mainWindowForm, MachinePanel.this,
+                  MachinePanel.this.machine.getAlphabet (),
+                  MachinePanel.this.machine.getPushDownAlphabet (),
+                  usedTransition );
+              transitionDialog.show ();
+
+              performCellsChanged ();
+            }
+            else if ( cell instanceof DefaultStateView )
+            {
+              DefaultStateView stateView = ( DefaultStateView ) cell;
+
+              // open state config dialog
+              StateConfigDialog dialog = new StateConfigDialog (
+                  MachinePanel.this.mainWindowForm, MachinePanel.this,
+                  stateView.getState (), MachinePanel.this.model );
+              dialog.show ();
+
+              // Update the machine table status
+              updateMachineTableStatus ();
+            }
           }
         }
 
@@ -2050,12 +2069,17 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // if middle mouse button was pressed, or we are in word enter mode,
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
         {
           return;
+        }
+
+        if ( event.getButton () == MouseEvent.BUTTON1 )
+        {
+          updateSelected ( event );
         }
 
         // if an popup menu is open close it and do nothing more
@@ -2065,8 +2089,8 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
-        
-     // check if there is another stateview under this point
+
+        // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
@@ -2094,8 +2118,6 @@ public final class MachinePanel implements EditorPanel
           }
           return;
         }
-
-        
 
         if ( object != null )
         {
@@ -2143,12 +2165,17 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // if middle mouse button was pressed, or we are in word enter mode,
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
         {
           return;
+        }
+
+        if ( event.getButton () == MouseEvent.BUTTON1 )
+        {
+          updateSelected ( event );
         }
 
         // if an popup menu is open close it and do nothing more
@@ -2430,12 +2457,17 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // if middle mouse button was pressed, or we are in word enter mode,
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
         {
           return;
+        }
+
+        if ( event.getButton () == MouseEvent.BUTTON1 )
+        {
+          updateSelected ( event );
         }
 
         // if an popup menu is open close it and do nothing more
@@ -2445,7 +2477,7 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
-        
+
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
@@ -2474,8 +2506,6 @@ public final class MachinePanel implements EditorPanel
           }
           return;
         }
-
-       
 
         if ( object != null )
         {
@@ -2527,12 +2557,17 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // if middle mouse button was pressed, or we are in word enter mode,
         // return
         if ( ( event.getButton () == MouseEvent.BUTTON2 )
             || MachinePanel.this.enterWordMode )
         {
           return;
+        }
+
+        if ( event.getButton () == MouseEvent.BUTTON1 )
+        {
+          updateSelected ( event );
         }
 
         // if an popup menu is open close it and do nothing more
@@ -2542,7 +2577,7 @@ public final class MachinePanel implements EditorPanel
           MachinePanel.this.popup = null;
           return;
         }
-        
+
         // check if there is another stateview under this point
         DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.graph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
@@ -2571,8 +2606,6 @@ public final class MachinePanel implements EditorPanel
           }
           return;
         }
-
-       
 
         if ( object != null )
         {
@@ -2623,7 +2656,7 @@ public final class MachinePanel implements EditorPanel
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if Middle Mouse Button was pressed, or we are in word enter mode,
+        // if middle mouse button was pressed, or we are in word enter mode,
         // return
         if ( ( event.getButton () != MouseEvent.BUTTON3 )
             || !MachinePanel.this.enterWordMode )
@@ -2639,7 +2672,7 @@ public final class MachinePanel implements EditorPanel
           return;
         }
 
-        // Open popup menu if left button was pressed
+        // Open popup menu if right button was pressed
         if ( event.getButton () == MouseEvent.BUTTON3 )
         {
           MachinePanel.this.popup = createEnterWordModePopupMenu ();
@@ -2899,7 +2932,9 @@ public final class MachinePanel implements EditorPanel
     {
       DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
       Transition transition = transitionView.getTransition ();
-      this.machine.setSelectedTransition ( transition );
+      ArrayList < Transition > transitionList = new ArrayList < Transition > ();
+      transitionList.add ( transition );
+      this.machine.setSelectedTransition ( transitionList );
     }
 
     this.gui.jGTITableMachine.repaint ();
@@ -2908,12 +2943,58 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
-   * {@inheritDoc}
+   * Updates the selected {@link Transition}s and {@link State}s.
    * 
-   * @see EditorPanel#getConverter()
+   * @param event The {@link MouseEvent}.
    */
-  public final Converter getConverter ()
+  private final void updateSelected ( MouseEvent event )
   {
-    return null;
+    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.graph
+        .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
+            .getY () );
+
+    if ( cell == null )
+    {
+      MachinePanel.this.machine.clearSelectedTransition ();
+
+      MachinePanel.this.gui.jGTITableMachine.repaint ();
+      MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
+    }
+    else if ( cell instanceof DefaultTransitionView )
+    {
+      DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
+      ArrayList < Transition > transitionList = new ArrayList < Transition > ();
+
+      transitionList.add ( transitionView.getTransition () );
+
+      DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.graph
+          .getNextCellForLocation ( cell, event.getPoint ().getX (), event
+              .getPoint ().getY () );
+
+      while ( nextCell != cell )
+      {
+        if ( nextCell instanceof DefaultTransitionView )
+        {
+          transitionList.add ( ( ( DefaultTransitionView ) nextCell )
+              .getTransition () );
+        }
+        nextCell = ( DefaultGraphCell ) MachinePanel.this.graph
+            .getNextCellForLocation ( nextCell, event.getPoint ().getX (),
+                event.getPoint ().getY () );
+      }
+
+      MachinePanel.this.machine.setSelectedTransition ( transitionList );
+
+      MachinePanel.this.gui.jGTITableMachine.repaint ();
+      MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
+    }
+    else if ( cell instanceof DefaultStateView )
+    {
+      DefaultStateView stateView = ( DefaultStateView ) cell;
+      MachinePanel.this.machine.setSelectedState ( stateView.getState () );
+
+      MachinePanel.this.gui.jGTITableMachine.repaint ();
+      MachinePanel.this.gui.jGTITableMachinePDA.repaint ();
+    }
   }
 }

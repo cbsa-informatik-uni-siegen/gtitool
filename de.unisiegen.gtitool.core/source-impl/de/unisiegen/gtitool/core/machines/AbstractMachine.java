@@ -2342,58 +2342,65 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Sets the given {@link Transition} selected.
+   * Sets the given {@link Transition}s selected.
    * 
-   * @param transition The {@link Transition} which should be selected.
+   * @param transitionList The {@link Transition}s which should be selected.
    */
-  public final void setSelectedTransition ( Transition transition )
+  public final void setSelectedTransition (
+      ArrayList < Transition > transitionList )
   {
     // reset
     clearSelectedTransition ();
 
     // transition
-    transition.setSelected ( true );
-
-    // find the row
-    int row = -1;
-    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    for ( Transition current : transitionList )
     {
-      if ( this.stateList.get ( i ).equals ( transition.getStateBegin () ) )
-      {
-        row = i;
-        break;
-      }
+      current.setSelected ( true );
     }
 
-    if ( transition.isEpsilonTransition () )
+    for ( Transition current : transitionList )
     {
-      StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
-
-      for ( State currentState : stateSet )
+      // find the row
+      int row = -1;
+      for ( int i = 0 ; i < this.stateList.size () ; i++ )
       {
-        if ( currentState.equals ( transition.getStateEnd () ) )
+        if ( this.stateList.get ( i ).equals ( current.getStateBegin () ) )
         {
-          currentState.setSelected ( true );
+          row = i;
+          break;
         }
       }
-    }
-    else
-    {
-      // find the columns
-      for ( int i = 0 ; i < this.alphabet.size () ; i++ )
-      {
-        for ( int j = 0 ; j < transition.size () ; j++ )
-        {
-          if ( this.alphabet.get ( i ).equals ( transition.getSymbol ( j ) ) )
-          {
-            int column = i + SPECIAL_COLUMN_COUNT;
-            StateSet stateSet = ( StateSet ) getValueAt ( row, column );
 
-            for ( State currentState : stateSet )
+      if ( current.isEpsilonTransition () )
+      {
+        StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
+
+        for ( State currentState : stateSet )
+        {
+          if ( currentState.equals ( current.getStateEnd () ) )
+          {
+            currentState.setSelected ( true );
+          }
+        }
+      }
+      else
+      {
+        // find the columns
+        for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+        {
+          for ( int j = 0 ; j < current.size () ; j++ )
+          {
+            if ( this.alphabet.get ( i ).equals ( current.getSymbol ( j ) ) )
             {
-              if ( currentState.equals ( transition.getStateEnd () ) )
+              int column = i + SPECIAL_COLUMN_COUNT;
+              StateSet stateSet = ( StateSet ) getValueAt ( row, column );
+
+              for ( State currentState : stateSet )
               {
-                currentState.setSelected ( true );
+                if ( currentState.equals ( current.getStateEnd () ) )
+                {
+                  currentState.setSelected ( true );
+                }
               }
             }
           }

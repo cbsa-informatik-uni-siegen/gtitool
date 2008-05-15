@@ -64,6 +64,12 @@ public class LayoutManager
 
 
   /**
+   * The {@link MultiItem} for redo / undo.
+   */
+  MultiItem item;
+
+
+  /**
    * Allocate a new {@link LayoutManager}.
    * 
    * @param model The {@link DefaultMachineModel}.
@@ -168,13 +174,13 @@ public class LayoutManager
         if ( ( pos % 2 ) != 0 )
         {
           this.item.addItem ( new StateMovedItem ( this.model, current, current
-              .getXPosition (), current.getYPosition (), x, y + 50 ) );
+              .getPositionX (), current.getPositionY (), x, y + 50 ) );
           current.move ( x, y + 50 );
         }
         else
         {
           this.item.addItem ( new StateMovedItem ( this.model, current, current
-              .getXPosition (), current.getYPosition (), x, y - 50 ) );
+              .getPositionX (), current.getPositionY (), x, y - 50 ) );
           current.move ( x, y - 50 );
         }
       }
@@ -283,7 +289,7 @@ public class LayoutManager
     }
     this.item = new MultiItem ();
     createGrid ( states );
-    
+
     this.redoUndoHandler.addItem ( this.item );
 
     this.item = null;
@@ -311,12 +317,6 @@ public class LayoutManager
     }
     return false;
   }
-
-
-  /**
-   * The {@link MultiItem} for redo / undo.
-   */
-  MultiItem item;
 
 
   /**

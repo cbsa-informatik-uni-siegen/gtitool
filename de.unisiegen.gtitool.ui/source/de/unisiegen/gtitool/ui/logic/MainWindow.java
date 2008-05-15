@@ -604,7 +604,8 @@ public final class MainWindow implements LanguageChangedListener
     if ( panel instanceof MachinePanel )
     {
       MachinePanel machinePanel = ( MachinePanel ) panel;
-      new LayoutManager ( machinePanel.getModel (), machinePanel.getRedoUndoHandler () ).doLayout ();
+      new LayoutManager ( machinePanel.getModel (), machinePanel
+          .getRedoUndoHandler () ).doLayout ();
     }
   }
 
@@ -2100,55 +2101,66 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Returns the close active state.
+   * Returns the close enabled state.
    * 
-   * @return The close active state.
+   * @return The close enabled state.
    */
-  public final boolean isCloseActiveState ()
+  public final boolean isEnabledClose ()
   {
     return this.gui.getJMenuItemClose ().isEnabled ();
   }
 
 
   /**
-   * Returns the close all active state.
+   * Returns the close all enabled state.
    * 
-   * @return The close all active state.
+   * @return The close all enabled state.
    */
-  public final boolean isCloseAllActiveState ()
+  public final boolean isEnabledCloseAll ()
   {
     return this.gui.getJMenuItemCloseAll ().isEnabled ();
   }
 
 
   /**
-   * Returns the new active state.
+   * Returns the new enabled state.
    * 
-   * @return The new active state.
+   * @return The new enabled state.
    */
-  public final boolean isNewActiveState ()
+  public final boolean isEnabledNew ()
   {
     return this.gui.getJMenuItemNew ().isEnabled ();
   }
 
 
   /**
-   * Returns the save active state.
+   * Returns the open enabled state.
    * 
-   * @return The save active state.
+   * @return The open enabled state.
    */
-  public final boolean isSaveActiveState ()
+  public final boolean isEnabledOpen ()
+  {
+    return this.gui.getJMenuItemNew ().isEnabled ();
+  }
+
+
+  /**
+   * Returns the save enabled state.
+   * 
+   * @return The save enabled state.
+   */
+  public final boolean isEnabledSave ()
   {
     return this.gui.getJMenuItemSave ().isEnabled ();
   }
 
 
   /**
-   * Returns the save as active state.
+   * Returns the save as enabled state.
    * 
-   * @return The save as active state.
+   * @return The save as enabled state.
    */
-  public final boolean isSaveAsActiveState ()
+  public final boolean isEnabledSaveAs ()
   {
     return this.gui.getJMenuItemSaveAs ().isEnabled ();
   }

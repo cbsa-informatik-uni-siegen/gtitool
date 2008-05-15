@@ -2896,14 +2896,12 @@ public final class MachinePanel implements EditorPanel
     {
       DefaultStateView stateView = ( DefaultStateView ) cell;
       State state = stateView.getState ();
-
       this.machine.setSelectedState ( state );
     }
     else if ( cell instanceof DefaultTransitionView )
     {
       DefaultTransitionView transitionView = ( DefaultTransitionView ) cell;
       Transition transition = transitionView.getTransition ();
-
       this.machine.setSelectedTransition ( transition );
     }
 
@@ -2915,9 +2913,9 @@ public final class MachinePanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getConverter()
+   * @see EditorPanel#getConverter()
    */
-  public Converter getConverter ()
+  public final Converter getConverter ()
   {
     return null;
   }

@@ -54,6 +54,12 @@ public final class TabPopupMenu extends JPopupMenu
 
 
   /**
+   * The open item.
+   */
+  private JMenuItem jMenuItemOpen;
+
+
+  /**
    * The close item.
    */
   private JMenuItem jMenuItemClose;
@@ -125,8 +131,29 @@ public final class TabPopupMenu extends JPopupMenu
         TabPopupMenu.this.mainWindow.handleNew ();
       }
     } );
-    this.jMenuItemNew.setEnabled ( this.mainWindow.isNewActiveState () );
+    this.jMenuItemNew.setEnabled ( this.mainWindow.isEnabledNew () );
     add ( this.jMenuItemNew );
+
+    // Open
+    this.jMenuItemOpen = new JMenuItem ( Messages
+        .getString ( "MainWindow.Open" ) ); //$NON-NLS-1$
+    this.jMenuItemOpen.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/open16.png" ) ) ); //$NON-NLS-1$
+    this.jMenuItemOpen.setMnemonic ( Messages.getString (
+        "MainWindow.OpenMnemonic" ) //$NON-NLS-1$
+        .charAt ( 0 ) );
+    this.jMenuItemOpen.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        TabPopupMenu.this.mainWindow.handleOpen ();
+      }
+    } );
+    this.jMenuItemOpen.setEnabled ( this.mainWindow.isEnabledOpen () );
+    add ( this.jMenuItemOpen );
 
     // Close
     this.jMenuItemClose = new JMenuItem ( Messages
@@ -148,7 +175,7 @@ public final class TabPopupMenu extends JPopupMenu
     } );
     this.jMenuItemClose.setEnabled ( this.tabPopupMenuType
         .equals ( TabPopupMenuType.TAB_ACTIVE )
-        && this.mainWindow.isCloseActiveState () );
+        && this.mainWindow.isEnabledClose () );
     add ( this.jMenuItemClose );
 
     // CloseAll
@@ -169,8 +196,7 @@ public final class TabPopupMenu extends JPopupMenu
         TabPopupMenu.this.mainWindow.handleCloseAll ();
       }
     } );
-    this.jMenuItemCloseAll.setEnabled ( this.mainWindow
-        .isCloseAllActiveState () );
+    this.jMenuItemCloseAll.setEnabled ( this.mainWindow.isEnabledCloseAll () );
     add ( this.jMenuItemCloseAll );
 
     add ( new JSeparator () );
@@ -195,7 +221,7 @@ public final class TabPopupMenu extends JPopupMenu
     } );
     this.jMenuItemSave.setEnabled ( this.tabPopupMenuType
         .equals ( TabPopupMenuType.TAB_ACTIVE )
-        && this.mainWindow.isSaveActiveState () );
+        && this.mainWindow.isEnabledSave () );
     add ( this.jMenuItemSave );
 
     // SaveAs
@@ -218,7 +244,7 @@ public final class TabPopupMenu extends JPopupMenu
     } );
     this.jMenuItemSaveAs.setEnabled ( this.tabPopupMenuType
         .equals ( TabPopupMenuType.TAB_ACTIVE )
-        && this.mainWindow.isSaveAsActiveState () );
+        && this.mainWindow.isEnabledSaveAs () );
     add ( this.jMenuItemSaveAs );
   }
 }

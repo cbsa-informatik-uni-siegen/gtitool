@@ -194,8 +194,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
-    double x = getXPosition ();
-    double y = getYPosition ();
+    double x = getPositionX ();
+    double y = getPositionY ();
     if ( ( this.puplishedXPosition != x ) || ( this.puplishedYPosition != y ) )
     {
       this.puplishedXPosition = x;
@@ -214,15 +214,15 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   private final void fireStatePositionChanged ()
   {
-    double x = getXPosition ();
-    double y = getYPosition ();
-    
+    double x = getPositionX ();
+    double y = getPositionY ();
+
     StatePositionChangedListener [] listeners = this.listenerList
         .getListeners ( StatePositionChangedListener.class );
-  
+
     if ( ( this.xValue != x ) || ( this.yValue != y ) )
     {
-      
+
       if ( this.ignoreStateMove )
       {
         this.ignoreStateMove = false;
@@ -230,7 +230,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
         this.yValue = y;
         return;
       }
-      
+
       for ( StatePositionChangedListener current : listeners )
       {
         current.statePositionChanged ( this, this.xValue, this.yValue, x, y );
@@ -248,12 +248,44 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   public final Element getElement ()
   {
-    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
     Element newElement = new Element ( "StateView" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "x", bounds.getX () ) ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "y", bounds.getY () ) ); //$NON-NLS-1$
     newElement.addElement ( this.state.getElement () );
     return newElement;
+  }
+
+
+  /**
+   * Returns the x position.
+   * 
+   * @return The x position.
+   */
+  public final double getPositionX ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+    if ( bounds == null )
+    {
+      return POSITION_NOT_DEFINED;
+    }
+    return bounds.getX ();
+  }
+
+
+  /**
+   * Returns the y position.
+   * 
+   * @return The y position.
+   */
+  public final double getPositionY ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+    if ( bounds == null )
+    {
+      return POSITION_NOT_DEFINED;
+    }
+    return bounds.getY ();
   }
 
 
@@ -265,55 +297,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
   public final State getState ()
   {
     return this.state;
-  }
-
-
-  /**
-   * Returns the x position.
-   * 
-   * @return The x position.
-   */
-  public final double getXPosition ()
-  {
-    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
-    if ( bounds == null )
-    {
-      return POSITION_NOT_DEFINED;
-    }
-    return bounds.getX ();
-  }
-
-
-  /**
-   * Move this {@link DefaultStateView}.
-   * 
-   * @param x The new x value.
-   * @param y The new y value.
-   */
-  public void move ( double x, double y )
-  {
-    this.ignoreStateMove = true;
-    
-    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
-    bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
-    GraphConstants.setBounds ( this.getAttributes (), bounds );
-    
-  }
-
-
-  /**
-   * Returns the y position.
-   * 
-   * @return The y position.
-   */
-  public final double getYPosition ()
-  {
-    Rectangle2D bounds = GraphConstants.getBounds ( this.getAttributes () );
-    if ( bounds == null )
-    {
-      return POSITION_NOT_DEFINED;
-    }
-    return bounds.getY ();
   }
 
 
@@ -336,8 +319,25 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   public final boolean isModified ()
   {
-    return ( this.initialXPosition != getXPosition () )
-        || ( this.initialYPosition != getYPosition () );
+    return ( this.initialXPosition != getPositionX () )
+        || ( this.initialYPosition != getPositionY () );
+  }
+
+
+  /**
+   * Move this {@link DefaultStateView}.
+   * 
+   * @param x The new x value.
+   * @param y The new y value.
+   */
+  public void move ( double x, double y )
+  {
+    this.ignoreStateMove = true;
+
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+    bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
+    GraphConstants.setBounds ( getAttributes (), bounds );
+
   }
 
 
@@ -360,7 +360,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
    */
   public final void resetModify ()
   {
-    this.initialXPosition = getXPosition ();
-    this.initialYPosition = getYPosition ();
+    this.initialXPosition = getPositionX ();
+    this.initialYPosition = getPositionY ();
   }
 }

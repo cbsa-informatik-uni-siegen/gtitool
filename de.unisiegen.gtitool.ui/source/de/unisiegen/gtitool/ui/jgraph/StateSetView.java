@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.jgraphcomponents;
+package de.unisiegen.gtitool.ui.jgraph;
 
 
 import java.awt.BasicStroke;
@@ -33,9 +33,9 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StateView.java 897 2008-05-14 23:03:18Z fehler $
  */
-public final class StateView extends VertexView
+public final class StateSetView extends VertexView
 {
 
   /**
@@ -102,17 +102,17 @@ public final class StateView extends VertexView
 
 
     /**
-     * The {@link StateView}.
+     * The {@link StateSetView}.
      */
-    private StateView stateView;
+    private StateSetView stateView;
 
 
     /**
      * Allocates a new {@link JGraphEllipseRenderer}.
      * 
-     * @param stateView The {@link StateView}.
+     * @param stateView The {@link StateSetView}.
      */
-    public JGraphEllipseRenderer ( StateView stateView )
+    public JGraphEllipseRenderer ( StateSetView stateView )
     {
       super ();
       this.stateView = stateView;
@@ -340,7 +340,7 @@ public final class StateView extends VertexView
       {
         g.setColor ( this.bordercolor );
         g2.setStroke ( new BasicStroke ( b ) );
-        g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+        g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 35, 35 );
         if ( state.isFinalState () )
         {
           g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
@@ -385,9 +385,9 @@ public final class StateView extends VertexView
 
 
   /**
-   * Allocates a new {@link StateView}.
+   * Allocates a new {@link StateSetView}.
    */
-  public StateView ()
+  public StateSetView ()
   {
     super ();
     this.ellipseRenderer = new JGraphEllipseRenderer ( this );
@@ -395,11 +395,11 @@ public final class StateView extends VertexView
 
 
   /**
-   * Create a new {@link StateView}.
+   * Create a new {@link StateSetView}.
    * 
    * @param cell The cell {@link Object} for this view.
    */
-  public StateView ( Object cell )
+  public StateSetView ( Object cell )
   {
     super ( cell );
     this.ellipseRenderer = new JGraphEllipseRenderer ( this );

@@ -2,8 +2,8 @@ package de.unisiegen.gtitool.ui.redoundo;
 
 
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 

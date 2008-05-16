@@ -8,7 +8,7 @@ import org.jgraph.JGraph;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
-import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -60,6 +60,7 @@ public final class ConvertMachineDialog implements Converter
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
    */
+  @SuppressWarnings ( "unchecked" )
   public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel )
   {
     logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
@@ -70,8 +71,10 @@ public final class ConvertMachineDialog implements Converter
     this.gui = new ConvertMachineDialogForm ( this, parent );
 
     this.jGraph = new JGraph ( this.machinePanel.getJGraph ().getModel () );
+
     this.jGraph.setGraphLayoutCache ( this.machinePanel.getJGraph ()
         .getGraphLayoutCache () );
+
     this.jGraph.setDoubleBuffered ( false );
     this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
     this.jGraph.setInvokesStopCellEditing ( true );

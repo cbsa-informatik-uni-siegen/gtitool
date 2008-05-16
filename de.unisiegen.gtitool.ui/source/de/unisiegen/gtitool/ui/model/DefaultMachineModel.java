@@ -37,9 +37,9 @@ import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
@@ -404,7 +404,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       State state, boolean createUndoStep )
   {
     this.machine.addState ( state );
-    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
+    String viewClass = "de.unisiegen.gtitool.ui.jgraph.StateView"; //$NON-NLS-1$
     DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
     // check position of the new state

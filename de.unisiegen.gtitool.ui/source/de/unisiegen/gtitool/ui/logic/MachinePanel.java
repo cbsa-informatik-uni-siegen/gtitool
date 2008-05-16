@@ -68,9 +68,9 @@ import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraphcomponents.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.jgraphcomponents.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
@@ -718,7 +718,7 @@ public final class MachinePanel implements EditorPanel
   @SuppressWarnings ( "unchecked" )
   private final DefaultGraphCell createTmpObject ( double x, double y )
   {
-    String viewClass = "de.unisiegen.gtitool.ui.jgraphcomponents.StateView"; //$NON-NLS-1$
+    String viewClass = "de.unisiegen.gtitool.ui.jgraph.StateView"; //$NON-NLS-1$
 
     DefaultGraphCell cell = new DefaultGraphCell ();
 

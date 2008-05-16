@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.jgraphcomponents;
+package de.unisiegen.gtitool.ui.jgraph;
 
 
 import org.jgraph.graph.DefaultEdge;

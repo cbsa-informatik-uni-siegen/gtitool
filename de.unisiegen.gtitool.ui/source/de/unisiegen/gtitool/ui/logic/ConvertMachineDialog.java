@@ -5,13 +5,18 @@ import javax.swing.JFrame;
 
 import org.jgraph.JGraph;
 
-import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
+import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
+import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
+import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
+import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
-import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
-import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
@@ -43,9 +48,15 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The {@link JGraph} containing the diagramm.
+   * The original {@link JGraph} containing the diagramm.
    */
-  private JGraph jGraph;
+  private JGraph jGraphOriginal;
+
+
+  /**
+   * The converted {@link JGraph} containing the diagramm.
+   */
+  private JGraph jGraphConverted;
 
 
   /**
@@ -55,12 +66,23 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * The original {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelOriginal;
+
+
+  /**
+   * The original {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelConverted;
+
+
+  /**
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
    */
-  @SuppressWarnings ( "unchecked" )
   public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel )
   {
     logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
@@ -70,39 +92,58 @@ public final class ConvertMachineDialog implements Converter
     this.machinePanel = machinePanel;
     this.gui = new ConvertMachineDialogForm ( this, parent );
 
-    this.jGraph = new JGraph ( this.machinePanel.getJGraph ().getModel () );
+    try
+    {
+      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
+          .getModel ().getElement (), null );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( SymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( StoreException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    this.jGraphOriginal = this.modelOriginal.getJGraph ();
+    this.jGraphOriginal.setEnabled ( false );
+    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
 
-    this.jGraph.setGraphLayoutCache ( this.machinePanel.getJGraph ()
-        .getGraphLayoutCache () );
-
-    this.jGraph.setDoubleBuffered ( false );
-    this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
-    this.jGraph.setInvokesStopCellEditing ( true );
-    this.jGraph.setJumpToDefaultPort ( true );
-    this.jGraph.setSizeable ( false );
-    this.jGraph.setConnectable ( false );
-    this.jGraph.setDisconnectable ( false );
-    this.jGraph.setEdgeLabelsMovable ( false );
-    this.jGraph.setEditable ( false );
-    this.jGraph.setHandleSize ( 0 );
-
-    // disable the graph
-    this.jGraph.clearSelection ();
-    this.jGraph.setEnabled ( false );
-
-    PreferenceManager.getInstance ().addColorChangedListener (
-        new ColorChangedAdapter ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          public void colorChanged ()
-          {
-            ConvertMachineDialog.this.jGraph.repaint ();
-          }
-        } );
-
-    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraph );
+    this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+        this.modelOriginal.getMachine ().getAlphabet (), this.modelOriginal
+            .getMachine ().getPushDownAlphabet (), this.modelOriginal
+            .getMachine ().isUsePushDownAlphabet () ) );
+    this.jGraphConverted = this.modelConverted.getJGraph ();
+    this.jGraphConverted.setEnabled ( false );
+    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
   }
 
 

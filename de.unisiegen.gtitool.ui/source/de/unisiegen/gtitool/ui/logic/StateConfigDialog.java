@@ -173,10 +173,14 @@ public final class StateConfigDialog
     this.state.setStartState ( this.gui.jGTICheckBoxStartState.isSelected () );
     this.model.getGraphModel ().cellsChanged ( new Object []
     { this.state } );
-
-    StateChangedItem item = new StateChangedItem ( this.model.getJGraph (),
-        this.state, this.oldName, this.oldStartState, this.oldFinalState );
-    this.machinePanel.getRedoUndoHandler ().addItem ( item );
+    if ( !this.oldName.equals ( this.state.getName () )
+        || this.oldStartState != this.state.isStartState ()
+        || this.oldFinalState != this.state.isFinalState () )
+    {
+      StateChangedItem item = new StateChangedItem ( this.model.getJGraph (),
+          this.state, this.oldName, this.oldStartState, this.oldFinalState );
+      this.machinePanel.getRedoUndoHandler ().addItem ( item );
+    }
     this.gui.dispose ();
   }
 

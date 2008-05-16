@@ -371,9 +371,15 @@ public final class ProductionDialog
 
     if ( this.oldProduction != null )
     {
-      RedoUndoItem item = new ProductionChangedItem ( this.oldProduction,
-          production );
-      this.redoUndoHandler.addItem ( item );
+      if ( !production.getNonterminalSymbol ().equals (
+          this.oldProduction.getNonterminalSymbol () )
+          || !production.getProductionWord ().equals (
+              this.oldProduction.getProductionWord () ) )
+      {
+        RedoUndoItem item = new ProductionChangedItem ( this.oldProduction,
+            production );
+        this.redoUndoHandler.addItem ( item );
+      }
 
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );

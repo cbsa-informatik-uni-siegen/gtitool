@@ -173,15 +173,23 @@ public class LayoutManager
       {
         if ( ( pos % 2 ) != 0 )
         {
-          this.item.addItem ( new StateMovedItem ( this.model, current, current
-              .getPositionX (), current.getPositionY (), x, y + 50 ) );
-          current.move ( x, y + 50 );
+          if ( current.getPositionX () != x
+              || current.getPositionY () != y + 50 )
+          {
+            this.item.addItem ( new StateMovedItem ( this.model, current,
+                current.getPositionX (), current.getPositionY (), x, y + 50 ) );
+            current.move ( x, y + 50 );
+          }
         }
         else
         {
-          this.item.addItem ( new StateMovedItem ( this.model, current, current
-              .getPositionX (), current.getPositionY (), x, y - 50 ) );
-          current.move ( x, y - 50 );
+          if ( current.getPositionX () != x
+              || current.getPositionY () != y - 50 )
+          {
+            this.item.addItem ( new StateMovedItem ( this.model, current,
+                current.getPositionX (), current.getPositionY (), x, y - 50 ) );
+            current.move ( x, y - 50 );
+          }
         }
       }
       count++ ;
@@ -290,7 +298,10 @@ public class LayoutManager
     this.item = new MultiItem ();
     createGrid ( states );
 
-    this.redoUndoHandler.addItem ( this.item );
+    if ( this.item.size () > 0 )
+    {
+      this.redoUndoHandler.addItem ( this.item );
+    }
 
     this.item = null;
   }

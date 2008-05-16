@@ -710,9 +710,17 @@ public final class TransitionDialog
       this.transition.clear ();
       this.transition.add ( symbols );
 
-      TransitionChangedItem item = new TransitionChangedItem ( this.transition,
-          oldPushDownWordRead, oldPushDownWordWrite, oldSymbols );
-      this.machinePanel.getRedoUndoHandler ().addItem ( item );
+      if ( !this.transition.getPushDownWordRead ()
+          .equals ( oldPushDownWordRead )
+          || !this.transition.getPushDownWordWrite ().equals (
+              oldPushDownWordWrite )
+          || !this.transition.getSymbol ().equals ( oldSymbols ) )
+      {
+        TransitionChangedItem item = new TransitionChangedItem (
+            this.transition, oldPushDownWordRead, oldPushDownWordWrite,
+            oldSymbols );
+        this.machinePanel.getRedoUndoHandler ().addItem ( item );
+      }
     }
     catch ( Exception exc )
     {

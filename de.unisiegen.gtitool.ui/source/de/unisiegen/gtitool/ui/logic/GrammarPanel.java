@@ -1091,9 +1091,20 @@ public final class GrammarPanel implements EditorPanel
 
     fireModifyStatusChanged ( false );
 
-    ProductionsListChangedItem item = new ProductionsListChangedItem (
-        this.grammar, oldProductions );
-    this.redoUndoHandler.addItem ( item );
+    boolean changed = false;
+    
+    for ( int i = 0 ; i < oldProductions.size () ; i++){
+      if (!this.grammar.getProductionAt ( i ).equals ( oldProductions.get ( i ) )){
+        changed = true;
+        break;
+      }
+    }
+    if ( changed )
+    {
+      ProductionsListChangedItem item = new ProductionsListChangedItem (
+          this.grammar, oldProductions );
+      this.redoUndoHandler.addItem ( item );
+    }
   }
 
 

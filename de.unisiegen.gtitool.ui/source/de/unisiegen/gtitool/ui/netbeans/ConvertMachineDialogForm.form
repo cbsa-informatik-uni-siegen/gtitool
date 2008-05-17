@@ -65,12 +65,39 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonNextStepActionPerformed"/>
           </Events>
         </Component>
+        <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonAutoStep">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="ConvertMachineDialog.AutoStep" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonAutoStepActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonStop">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="ConvertMachineDialog.Stop" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonStopActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneGraph">
       <Properties>
         <Property name="dividerLocation" type="int" value="250"/>
         <Property name="orientation" type="int" value="0"/>
+        <Property name="resizeWeight" type="double" value="0.5"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

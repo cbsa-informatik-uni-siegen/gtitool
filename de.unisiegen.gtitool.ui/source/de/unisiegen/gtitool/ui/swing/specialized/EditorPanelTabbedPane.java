@@ -44,7 +44,7 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
    */
   public final void addEditorPanel ( EditorPanel editorPanel )
   {
-    add ( editorPanel.getPanel () );
+    add ( editorPanel.getName (), editorPanel.getPanel () );
   }
 
 

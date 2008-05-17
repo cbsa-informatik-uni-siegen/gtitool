@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
@@ -80,6 +81,18 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * The original {@link Machine}.
+   */
+  private Machine machineOriginal;
+
+
+  /**
+   * The original {@link Machine}.
+   */
+  private Machine machineConverted;
+
+
+  /**
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -93,6 +106,7 @@ public final class ConvertMachineDialog implements Converter
     this.parent = parent;
     this.machinePanel = machinePanel;
     this.gui = new ConvertMachineDialogForm ( this, parent );
+    this.gui.jGTISplitPaneGraph.setDividerLocation ( 0.5 );
 
     try
     {
@@ -138,23 +152,51 @@ public final class ConvertMachineDialog implements Converter
     this.jGraphOriginal = this.modelOriginal.getJGraph ();
     this.jGraphOriginal.setEnabled ( false );
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
+    this.machineOriginal = this.modelOriginal.getMachine ();
 
     this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
-        this.modelOriginal.getMachine ().getAlphabet (), this.modelOriginal
-            .getMachine ().getPushDownAlphabet (), this.modelOriginal
-            .getMachine ().isUsePushDownAlphabet () ) );
+        this.machineOriginal.getAlphabet (), this.machineOriginal
+            .getPushDownAlphabet (), this.machineOriginal
+            .isUsePushDownAlphabet () ) );
     this.modelConverted.setUseStateSetView ( true );
     this.jGraphConverted = this.modelConverted.getJGraph ();
     this.jGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
+    this.machineConverted = this.modelConverted.getMachine ();
 
-    // add the first state
+    addStartState ();
+    start ();
+  }
+
+
+  /**
+   * Starts the convertion.
+   */
+  private final void start ()
+  {
+    for ( State current : this.machineOriginal.getState () )
+    {
+      if ( current.isStartState () )
+      {
+        current.setActive ( true );
+        break;
+      }
+    }
+    // only one state added
+    this.machineConverted.getState ( 0 ).setActive ( true );
+  }
+
+
+  /**
+   * Adds the start {@link State}.
+   */
+  private final void addStartState ()
+  {
     State newState;
     try
     {
-      newState = new DefaultState ( this.modelConverted.getMachine ()
-          .getAlphabet (), this.modelConverted.getMachine ()
-          .getPushDownAlphabet (), false, false );
+      newState = new DefaultState ( this.machineConverted.getAlphabet (),
+          this.machineConverted.getPushDownAlphabet (), true, false );
     }
     catch ( StateException exc )
     {
@@ -162,7 +204,8 @@ public final class ConvertMachineDialog implements Converter
       System.exit ( 1 );
       return;
     }
-    this.modelConverted.createStateView ( 100, 100, newState, true );
+    this.modelConverted.createStateView ( 120, 100, newState, false );
+
   }
 
 
@@ -175,6 +218,15 @@ public final class ConvertMachineDialog implements Converter
   MachineType machineType )
   {
     show ();
+  }
+
+
+  /**
+   * Handles the action on the auto step button.
+   */
+  public final void handleAutoStep ()
+  {
+    logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -213,6 +265,15 @@ public final class ConvertMachineDialog implements Converter
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Handles the action on the stop button.
+   */
+  public final void handleStop ()
+  {
+    logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 

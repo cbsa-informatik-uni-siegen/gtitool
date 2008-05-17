@@ -504,10 +504,12 @@ public final class MainWindow implements LanguageChangedListener
 
       this.gui.getJMenuConvertTo ().setEnabled ( true );
     }
-    else if ( ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
-        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) ) )
+    else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
-      this.buttonStateList.add ( ButtonState.ENABLED_SAVE );
+      if (!this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ))
+      {
+        this.buttonStateList.add ( ButtonState.ENABLED_SAVE );
+      }
 
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + true + Messages.QUOTE );

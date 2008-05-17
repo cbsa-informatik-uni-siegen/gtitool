@@ -4,7 +4,8 @@
  *  
  * See LICENSE file in distribution for licensing details of this source file
  */
-package org.jgraph.graph;
+// modify begin
+package de.unisiegen.gtitool.ui.jgraph;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -32,6 +33,11 @@ import javax.swing.JComponent;
 import javax.swing.UIManager;
 
 import org.jgraph.JGraph;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.CellViewRenderer;
+import org.jgraph.graph.Edge;
+import org.jgraph.graph.EdgeView;
+import org.jgraph.graph.GraphConstants;
 import org.jgraph.util.Bezier;
 import org.jgraph.util.Spline2D;
 
@@ -39,7 +45,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
-import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 /**
@@ -49,8 +54,9 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Gaudenz Alder
  */
 @SuppressWarnings ( "all" )
-public class EdgeRenderer extends JComponent implements CellViewRenderer,
+public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellViewRenderer,
 		Serializable {
+  //modify end
 
 	/** Static Graphics used for Font Metrics */
 	protected static transient Graphics fontGraphics;

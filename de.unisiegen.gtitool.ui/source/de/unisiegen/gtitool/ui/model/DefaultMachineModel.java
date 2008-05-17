@@ -39,6 +39,7 @@ import de.unisiegen.gtitool.core.storage.Storable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.StateSetView;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
@@ -757,6 +758,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     // Set the zoom factor of this graph
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
+    EdgeView.renderer = new EdgeRenderer();
     EdgeView.renderer.setForeground ( Color.MAGENTA );
   }
 

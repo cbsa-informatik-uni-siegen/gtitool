@@ -33,7 +33,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id:StateView.java 910 2008-05-16 00:31:21Z fehler $
  */
 public final class StateView extends VertexView
 {
@@ -370,6 +370,18 @@ public final class StateView extends VertexView
       }
     }
   }
+
+
+  /**
+   * The {@link StateView} width.
+   */
+  public static final int WIDTH = 70;
+
+
+  /**
+   * The {@link StateView} height.
+   */
+  public static final int HEIGHT = 70;
 
 
   /**

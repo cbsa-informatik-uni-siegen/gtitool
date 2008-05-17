@@ -12,7 +12,7 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
-import org.jgraph.util.ParallelEdgeRouter;
+import org.jgraph.util.JGraphpadParallelSplineRouter;
 
 import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
@@ -40,6 +40,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.StateSetView;
+import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
@@ -167,6 +169,12 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * A list of all {@link DefaultTransitionView}s
    */
   private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
+
+
+  /**
+   * Flag that indicates if the {@link StateSetView} should be used.
+   */
+  private boolean useStateSetView = false;
 
 
   /**
@@ -404,19 +412,44 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       State state, boolean createUndoStep )
   {
     this.machine.addState ( state );
-    String viewClass = "de.unisiegen.gtitool.ui.jgraph.StateView"; //$NON-NLS-1$
     DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
-    // check position of the new state
-    double xPosition = x < 35 ? 35 : x;
-    double yPostition = y < 35 ? 35 : y;
+    String viewClass;
+    if ( this.useStateSetView )
+    {
+      viewClass = StateSetView.class.getName ();
+
+      // check position of the new state
+      double xPosition = x < ( StateSetView.WIDTH / 2 ) ? ( StateSetView.WIDTH / 2 )
+          : x;
+      double yPostition = y < ( StateSetView.HEIGHT / 2 ) ? ( StateSetView.HEIGHT / 2 )
+          : y;
+
+      // Set bounds
+      GraphConstants.setBounds ( stateView.getAttributes (),
+          new Rectangle2D.Double ( xPosition - ( StateSetView.WIDTH / 2 ),
+              yPostition - ( StateSetView.HEIGHT / 2 ), StateSetView.WIDTH,
+              StateSetView.HEIGHT ) );
+    }
+    else
+    {
+      viewClass = StateView.class.getName ();
+
+      // check position of the new state
+      double xPosition = x < ( StateView.WIDTH / 2 ) ? ( StateView.WIDTH / 2 )
+          : x;
+      double yPostition = y < ( StateView.HEIGHT / 2 ) ? ( StateView.HEIGHT / 2 )
+          : y;
+
+      // Set bounds
+      GraphConstants.setBounds ( stateView.getAttributes (),
+          new Rectangle2D.Double ( xPosition - ( StateView.WIDTH / 2 ),
+              yPostition - ( StateView.HEIGHT / 2 ), StateView.WIDTH,
+              StateView.HEIGHT ) );
+    }
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
-
-    // Set bounds
-    GraphConstants.setBounds ( stateView.getAttributes (),
-        new Rectangle2D.Double ( xPosition - 35, yPostition - 35, 70, 70 ) );
 
     // Opaque
     GraphConstants.setOpaque ( stateView.getAttributes (), true );
@@ -445,7 +478,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     stateView
         .addStatePositionChangedListener ( this.statePositionChangedListener );
 
-    if ( createUndoStep )
+    if ( this.redoUndoHandler != null && createUndoStep )
     {
       RedoUndoItem item = new StateAddedItem ( this, stateView, null );
       this.redoUndoHandler.addItem ( item );
@@ -486,17 +519,16 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     GraphConstants.setEndFill ( transitionView.getAttributes (), true );
 
     // Set the parallel routing
-    ParallelEdgeRouter.setEdgeSeparation ( 20 );
-    ParallelEdgeRouter.setEdgeDeparture ( 10 );
+    JGraphpadParallelSplineRouter.getSharedInstance ().setEdgeSeparation ( 25 );
     GraphConstants.setRouting ( transitionView.getAttributes (),
-        ParallelEdgeRouter.getSharedInstance () );
+        JGraphpadParallelSplineRouter.getSharedInstance () );
 
     this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
     this.transitionViewList.add ( transitionView );
 
-    if ( createUndoStep )
+    if ( this.redoUndoHandler != null && createUndoStep )
     {
       RedoUndoItem item = new TransitionAddedItem ( this, transitionView,
           targetCreated ? target : null );
@@ -747,8 +779,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       @SuppressWarnings ( "synthetic-access" )
       public void stopEditing ()
       {
-        DefaultMachineModel.this.redoUndoHandler
-            .addItem ( DefaultMachineModel.this.multiItem );
+        if ( DefaultMachineModel.this.redoUndoHandler != null )
+        {
+          DefaultMachineModel.this.redoUndoHandler
+              .addItem ( DefaultMachineModel.this.multiItem );
+        }
       }
 
 
@@ -845,7 +880,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       public void statePositionChanged ( DefaultStateView stateView,
           double oldX, double oldY, double newX, double newY )
       {
-        if ( oldX != newX || oldY != newY )
+        if ( DefaultMachineModel.this.redoUndoHandler != null
+            && ( oldX != newX || oldY != newY ) )
         {
           RedoUndoItem item = new StateMovedItem ( DefaultMachineModel.this,
               stateView, oldX, oldY, newX, newY );
@@ -876,6 +912,18 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       }
     }
     return false;
+  }
+
+
+  /**
+   * Returns the useStateSetView.
+   * 
+   * @return The useStateSetView.
+   * @see #useStateSetView
+   */
+  public final boolean isUseStateSetView ()
+  {
+    return this.useStateSetView;
   }
 
 
@@ -924,7 +972,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     stateView
         .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
-    if ( createUndoStep )
+    if ( this.redoUndoHandler != null && createUndoStep )
     {
       RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
       this.redoUndoHandler.addItem ( item );
@@ -947,7 +995,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machine.removeTransition ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
 
-    if ( createUndoStep )
+    if ( this.redoUndoHandler != null && createUndoStep )
     {
       RedoUndoItem item = new TransitionRemovedItem ( this, transitionView );
       this.redoUndoHandler.addItem ( item );
@@ -989,5 +1037,17 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
   {
     this.redoUndoHandler = redoUndoHandler;
+  }
+
+
+  /**
+   * Sets the useStateSetView.
+   * 
+   * @param useStateSetView The useStateSetView to set.
+   * @see #useStateSetView
+   */
+  public final void setUseStateSetView ( boolean useStateSetView )
+  {
+    this.useStateSetView = useStateSetView;
   }
 }

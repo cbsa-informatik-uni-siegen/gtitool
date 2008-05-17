@@ -31,9 +31,8 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 /**
  * The state view class.
  * 
- * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id: StateView.java 897 2008-05-14 23:03:18Z fehler $
+ * @version $Id$
  */
 public final class StateSetView extends VertexView
 {
@@ -41,7 +40,6 @@ public final class StateSetView extends VertexView
   /**
    * The {@link JGraph} ellipse renderer.
    * 
-   * @author Benjamin Mies
    * @author Christian Fehler
    */
   public static class JGraphEllipseRenderer extends VertexRenderer
@@ -279,11 +277,12 @@ public final class StateSetView extends VertexView
         }
         if ( state.isFinalState () )
         {
-          g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          g.fillRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+              50, 50 );
         }
         else
         {
-          g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+          g.fillRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
         }
       }
       try
@@ -340,19 +339,21 @@ public final class StateSetView extends VertexView
       {
         g.setColor ( this.bordercolor );
         g2.setStroke ( new BasicStroke ( b ) );
-        g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 35, 35 );
+        g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
         if ( state.isFinalState () )
         {
-          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+              50, 50 );
         }
       }
       if ( this.selected )
       {
         g.setColor ( this.preferenceStateSelected );
-        g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+        g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
         if ( state.isFinalState () )
         {
-          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+              50, 50 );
         }
       }
       if ( state.isStartState () )
@@ -370,6 +371,18 @@ public final class StateSetView extends VertexView
       }
     }
   }
+
+
+  /**
+   * The {@link StateSetView} width.
+   */
+  public static final int WIDTH = 120;
+
+
+  /**
+   * The {@link StateSetView} height.
+   */
+  public static final int HEIGHT = 70;
 
 
   /**

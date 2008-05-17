@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 
 import org.jgraph.JGraph;
 
+import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -141,9 +143,26 @@ public final class ConvertMachineDialog implements Converter
         this.modelOriginal.getMachine ().getAlphabet (), this.modelOriginal
             .getMachine ().getPushDownAlphabet (), this.modelOriginal
             .getMachine ().isUsePushDownAlphabet () ) );
+    this.modelConverted.setUseStateSetView ( true );
     this.jGraphConverted = this.modelConverted.getJGraph ();
     this.jGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
+
+    // add the first state
+    State newState;
+    try
+    {
+      newState = new DefaultState ( this.modelConverted.getMachine ()
+          .getAlphabet (), this.modelConverted.getMachine ()
+          .getPushDownAlphabet (), false, false );
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    this.modelConverted.createStateView ( 100, 100, newState, true );
   }
 
 

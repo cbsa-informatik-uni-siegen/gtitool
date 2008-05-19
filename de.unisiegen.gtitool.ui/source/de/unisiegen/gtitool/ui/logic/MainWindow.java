@@ -506,7 +506,7 @@ public final class MainWindow implements LanguageChangedListener
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
-      if (!this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ))
+      if ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) )
       {
         this.buttonStateList.add ( ButtonState.ENABLED_SAVE );
       }
@@ -1138,6 +1138,10 @@ public final class MainWindow implements LanguageChangedListener
       else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
         model = new DefaultGrammarModel ( element, null );
+      }
+      else
+      {
+        throw new IllegalArgumentException ( "unsupported model" ); //$NON-NLS-1$
       }
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )

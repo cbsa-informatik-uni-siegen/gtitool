@@ -46,7 +46,7 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jGTIToolBarMain = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
-        jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonAutoStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
@@ -68,15 +68,15 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
             }
         });
 
-        jGTIToolBarButtonPrevious.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
-        jGTIToolBarButtonPrevious.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
-        jGTIToolBarButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
+        jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
+        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
+        jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIToolBarButtonPreviousActionPerformed(evt);
+                jGTIToolBarButtonPreviousStepActionPerformed(evt);
             }
         });
 
-        jGTIToolBarMain.add(jGTIToolBarButtonPrevious);
+        jGTIToolBarMain.add(jGTIToolBarButtonPreviousStep);
 
         jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png")));
         jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
@@ -177,9 +177,9 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
         this.logic.handleStop();
     }//GEN-LAST:event_jGTIToolBarButtonStopActionPerformed
 
-    private void jGTIToolBarButtonPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonPreviousActionPerformed
+    private void jGTIToolBarButtonPreviousStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonPreviousStepActionPerformed
         this.logic.handlePreviousStep();
-    }//GEN-LAST:event_jGTIToolBarButtonPreviousActionPerformed
+    }//GEN-LAST:event_jGTIToolBarButtonPreviousStepActionPerformed
 
     private void jGTIToolBarButtonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonNextStepActionPerformed
         this.logic.handleNextStep();
@@ -205,7 +205,7 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonAutoStep;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPrevious;
+    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
     // End of variables declaration//GEN-END:variables

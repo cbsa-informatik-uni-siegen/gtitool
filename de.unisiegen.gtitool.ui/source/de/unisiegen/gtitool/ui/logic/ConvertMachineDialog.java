@@ -198,15 +198,15 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The current original {@link State}.
-   */
-  private State currentActiveStateOriginal;
-
-
-  /**
    * The current converted {@link State}.
    */
   private State currentActiveStateConverted;
+
+
+  /**
+   * The current x position.
+   */
+  private int currentX = 120;
 
 
   /**
@@ -216,9 +216,15 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The current x position.
+   * Flag that indicates if the end is reached.
    */
-  private int currentX = 120;
+  private boolean endReached = false;
+
+
+  /**
+   * Flag that indicates if the begin is reached.
+   */
+  private boolean beginReached = true;
 
 
   /**
@@ -393,6 +399,13 @@ public final class ConvertMachineDialog implements Converter
   public final void handleAutoStep ()
   {
     logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    int number = 0;
+    while ( !this.endReached && ( number < 25 ) )
+    {
+      handleNextStep ();
+      number++ ;
+    }
   }
 
 
@@ -411,11 +424,21 @@ public final class ConvertMachineDialog implements Converter
    */
   public final void handleNextStep ()
   {
+    this.beginReached = false;
+
     if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
       logger.debug ( "handleNextStep", "handle next step: activate old states" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-      this.currentActiveStateOriginal.setActive ( true );
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( this.currentActiveStateConverted.getName ().contains (
+            current.getName () ) )
+        {
+          current.setActive ( true );
+        }
+      }
+
       this.currentActiveStateConverted.setActive ( true );
 
       this.step = this.step.nextStep ();
@@ -430,7 +453,7 @@ public final class ConvertMachineDialog implements Converter
       {
         if ( currentState.isActive () )
         {
-          for ( Transition currentTransition : this.currentActiveStateOriginal
+          for ( Transition currentTransition : currentState
               .getTransitionBegin () )
           {
             loopSymbol : for ( Symbol currentSymbol : currentTransition
@@ -482,10 +505,12 @@ public final class ConvertMachineDialog implements Converter
       logger.debug ( "handleNextStep", "handle next step: add state" ); //$NON-NLS-1$ //$NON-NLS-2$
 
       String name = ""; //$NON-NLS-1$
+      boolean finalState = false;
       for ( State currentState : this.machineOriginal.getState () )
       {
         if ( currentState.isActive () )
         {
+          finalState = finalState || currentState.isFinalState ();
           name += currentState.getName ();
         }
       }
@@ -507,7 +532,8 @@ public final class ConvertMachineDialog implements Converter
         try
         {
           newState = new DefaultState ( this.machineConverted.getAlphabet (),
-              this.machineConverted.getPushDownAlphabet (), name, false, false );
+              this.machineConverted.getPushDownAlphabet (), name, false,
+              finalState );
           newState.setActive ( true );
         }
         catch ( StateException exc )
@@ -576,7 +602,7 @@ public final class ConvertMachineDialog implements Converter
       clearSymbolHighlightConverted ();
 
       // calculate next symbol
-      boolean nextState = false;
+      boolean useNextState = false;
       int index = -1;
       for ( int i = 0 ; i < this.machineConverted.getAlphabet ().size () ; i++ )
       {
@@ -586,17 +612,25 @@ public final class ConvertMachineDialog implements Converter
           index = i;
           if ( i == this.machineConverted.getAlphabet ().size () - 1 )
           {
-            nextState = true;
+            useNextState = true;
           }
           break;
         }
       }
 
-      if ( nextState )
+      if ( useNextState )
       {
+        State nextState = this.machineConverted
+            .getState ( this.machineConverted.getState ().size () - 1 );
+
+        if ( nextState == this.currentActiveStateConverted )
+        {
+          this.endReached = true;
+        }
+        this.currentActiveStateConverted = nextState;
+
         this.currentActiveSymbol = this.machineConverted.getAlphabet ()
             .get ( 0 );
-        // TODOCF
       }
       else
       {
@@ -611,6 +645,8 @@ public final class ConvertMachineDialog implements Converter
       throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
     }
 
+    setStatus ();
+
     this.jGraphOriginal.repaint ();
     this.jGraphConverted.repaint ();
   }
@@ -622,6 +658,16 @@ public final class ConvertMachineDialog implements Converter
   public final void handleOk ()
   {
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.setVisible ( false );
+
+    while ( !this.endReached )
+    {
+      handleNextStep ();
+    }
+
+    this.machinePanel.getMainWindow ().handleNew (
+        this.modelConverted.getElement () );
+
     this.gui.dispose ();
   }
 
@@ -659,7 +705,7 @@ public final class ConvertMachineDialog implements Converter
     {
       newState = new DefaultState ( this.machineConverted.getAlphabet (),
           this.machineConverted.getPushDownAlphabet (), startState.getName (),
-          true, false );
+          true, startState.isFinalState () );
     }
     catch ( StateException exc )
     {
@@ -671,9 +717,10 @@ public final class ConvertMachineDialog implements Converter
     this.modelConverted.createStateView ( this.currentX, 100, newState, false );
 
     // store the first values
-    this.currentActiveStateOriginal = startState;
     this.currentActiveStateConverted = newState;
     this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
+
+    setStatus ();
   }
 
 
@@ -683,6 +730,18 @@ public final class ConvertMachineDialog implements Converter
   public final void handleStop ()
   {
     logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Sets the button status.
+   */
+  private final void setStatus ()
+  {
+    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
+    this.gui.jGTIToolBarButtonAutoStep.setEnabled ( !this.endReached );
+    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
   }
 
 

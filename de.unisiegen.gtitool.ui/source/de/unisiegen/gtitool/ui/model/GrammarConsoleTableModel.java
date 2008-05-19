@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import com.sun.java_cup.internal.symbol;
-
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
@@ -50,13 +48,13 @@ public final class GrammarConsoleTableModel extends AbstractTableModel
 
 
     /**
-     * The {@link Production} list.
+     * The {@link Production}s.
      */
     public ArrayList < Production > productionList;
 
 
     /**
-     * The {@link symbol}s.
+     * The {@link ProductionWordMember}s.
      */
     public ArrayList < ProductionWordMember > productionWordMember;
 

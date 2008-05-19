@@ -42,6 +42,95 @@ public final class ConvertMachineDialog implements Converter
 {
 
   /**
+   * The {@link Step} enum.
+   * 
+   * @author Christian Fehler
+   */
+  private enum Step
+  {
+    /**
+     * The activate old {@link State}s step.
+     */
+    ACTIVATE_OLD_STATES,
+
+    /**
+     * The activate {@link Symbol}s step.
+     */
+    ACTIVATE_SYMBOLS,
+
+    /**
+     * The activate new {@link State}s step.
+     */
+    ACTIVATE_NEW_STATES,
+
+    /**
+     * The add {@link State} step.
+     */
+    ADD_STATE,
+
+    /**
+     * The clear step.
+     */
+    CLEAR;
+
+    /**
+     * Returns the first {@link Step}.
+     * 
+     * @return The first {@link Step}.
+     */
+    public static final Step getFirst ()
+    {
+      return ACTIVATE_OLD_STATES;
+    }
+
+
+    /**
+     * Returns the last {@link Step}.
+     * 
+     * @return The last {@link Step}.
+     */
+    public static final Step getLast ()
+    {
+      return CLEAR;
+    }
+
+
+    /**
+     * Returns the next {@link Step}.
+     * 
+     * @return The next {@link Step}.
+     */
+    public final Step nextStep ()
+    {
+      switch ( this )
+      {
+        case ACTIVATE_OLD_STATES :
+        {
+          return ACTIVATE_SYMBOLS;
+        }
+        case ACTIVATE_SYMBOLS :
+        {
+          return ACTIVATE_NEW_STATES;
+        }
+        case ACTIVATE_NEW_STATES :
+        {
+          return ADD_STATE;
+        }
+        case ADD_STATE :
+        {
+          return CLEAR;
+        }
+        case CLEAR :
+        {
+          return ACTIVATE_OLD_STATES;
+        }
+      }
+      throw new IllegalArgumentException ( "unsupported step" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -121,9 +210,9 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The current step.
+   * The current {@link Step}.
    */
-  private int step = 0;
+  private Step step = Step.getFirst ();
 
 
   /**
@@ -322,11 +411,18 @@ public final class ConvertMachineDialog implements Converter
    */
   public final void handleNextStep ()
   {
-    logger.debug ( "handleNextStep", "handle next step" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-    if ( this.step == 0 )
+    if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
-      logger.debug ( "handleNextStep", "step 0" ); //$NON-NLS-1$ //$NON-NLS-2$
+      logger.debug ( "handleNextStep", "handle next step: activate old states" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      this.currentActiveStateOriginal.setActive ( true );
+      this.currentActiveStateConverted.setActive ( true );
+
+      this.step = this.step.nextStep ();
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_SYMBOLS ) )
+    {
+      logger.debug ( "handleNextStep", "handle next step: activate symbols" ); //$NON-NLS-1$ //$NON-NLS-2$
 
       clearSymbolHighlightOriginal ();
 
@@ -350,11 +446,11 @@ public final class ConvertMachineDialog implements Converter
         }
       }
 
-      this.step = 1;
+      this.step = this.step.nextStep ();
     }
-    else if ( this.step == 1 )
+    else if ( this.step.equals ( Step.ACTIVATE_NEW_STATES ) )
     {
-      logger.debug ( "handleNextStep", "step 1" ); //$NON-NLS-1$ //$NON-NLS-2$
+      logger.debug ( "handleNextStep", "handle next step: activate new states" ); //$NON-NLS-1$ //$NON-NLS-2$
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       for ( Transition currentTransition : this.machineOriginal
@@ -379,11 +475,11 @@ public final class ConvertMachineDialog implements Converter
         currentTransition.getStateEnd ().setActive ( true );
       }
 
-      this.step = 2;
+      this.step = this.step.nextStep ();
     }
-    else if ( this.step == 2 )
+    else if ( this.step.equals ( Step.ADD_STATE ) )
     {
-      // TODOCF
+      logger.debug ( "handleNextStep", "handle next step: add state" ); //$NON-NLS-1$ //$NON-NLS-2$
 
       String name = ""; //$NON-NLS-1$
       for ( State currentState : this.machineOriginal.getState () )
@@ -466,10 +562,12 @@ public final class ConvertMachineDialog implements Converter
               .getStateViewForState ( this.currentActiveStateConverted ),
           newStateView, false, false, true );
 
-      this.step = 3;
+      this.step = this.step.nextStep ();
     }
-    else if ( this.step == 3 )
+    else if ( this.step.equals ( Step.CLEAR ) )
     {
+      logger.debug ( "handleNextStep", "handle next step: clear" ); //$NON-NLS-1$ //$NON-NLS-2$
+
       clearStateHighlightOriginal ();
       clearStateHighlightConverted ();
       clearTransitionHighlightOriginal ();
@@ -506,15 +604,13 @@ public final class ConvertMachineDialog implements Converter
             index + 1 );
       }
 
-      this.step = 4;
+      this.step = this.step.nextStep ();
     }
-    else if ( this.step == 4 )
+    else
     {
-      this.currentActiveStateOriginal.setActive ( true );
-      this.currentActiveStateConverted.setActive ( true );
-
-      this.step = 0;
+      throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
     }
+
     this.jGraphOriginal.repaint ();
     this.jGraphConverted.repaint ();
   }
@@ -557,7 +653,6 @@ public final class ConvertMachineDialog implements Converter
     {
       throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
     }
-    startState.setActive ( true );
 
     State newState;
     try
@@ -565,7 +660,6 @@ public final class ConvertMachineDialog implements Converter
       newState = new DefaultState ( this.machineConverted.getAlphabet (),
           this.machineConverted.getPushDownAlphabet (), startState.getName (),
           true, false );
-      newState.setActive ( true );
     }
     catch ( StateException exc )
     {

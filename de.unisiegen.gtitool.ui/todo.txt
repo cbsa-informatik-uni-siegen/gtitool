@@ -5,7 +5,8 @@ CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 CF		- Umwandeln von Maschinen
 			- ENDEA -> NDEA
 			- NDEA  -> DEA
-CF		- Convert Items ausblenden, wenn nicht verfügbar (Machine) 
+CF		- Convert Items ausblenden, wenn nicht verfügbar (Machine)
+CF		- Fehler im ParallelEdgeRenderer korrigieren
 
 
 BM		- Warnungen entfernen

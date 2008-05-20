@@ -10,6 +10,9 @@ CF		- Fehler im ParallelEdgeRenderer korrigieren
 CF		- Im Info Dialog besteht manchmal das Problem, dass die Größe falsch
 		  berechnet wird
 
+BM		- Der erste Zustand (Wenn er ein Start-Zustand ist) links oben ist beim
+		  AutoLayout (knapp) zu nahe an dem linken und oberen Rand, da sollten
+		  noch 5 bis 10 Pixel dazu kommen.
 BM		- Warnungen entfernen
 BM		- Minimaler Automat
 

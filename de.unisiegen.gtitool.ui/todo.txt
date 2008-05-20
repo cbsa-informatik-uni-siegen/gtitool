@@ -7,7 +7,8 @@ CF		- Umwandeln von Maschinen
 			- NDEA  -> DEA
 CF		- Convert Items ausblenden, wenn nicht verfügbar (Machine)
 CF		- Fehler im ParallelEdgeRenderer korrigieren
-
+CF		- Im Info Dialog besteht manchmal das Problem, dass die Größe falsch
+		  berechnet wird
 
 BM		- Warnungen entfernen
 BM		- Minimaler Automat

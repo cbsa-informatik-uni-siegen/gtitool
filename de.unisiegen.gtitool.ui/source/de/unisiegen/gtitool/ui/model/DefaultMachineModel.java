@@ -479,7 +479,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     stateView
         .addStatePositionChangedListener ( this.statePositionChangedListener );
 
-    if ( this.redoUndoHandler != null && createUndoStep )
+    if ( ( this.redoUndoHandler != null ) && createUndoStep )
     {
       RedoUndoItem item = new StateAddedItem ( this, stateView, null );
       this.redoUndoHandler.addItem ( item );
@@ -502,10 +502,11 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    *          added to the {@link Machine}. The default value should be true,
    *          only if the {@link Machine} has added the {@link Transition}
    *          before, it should be false.
+   * @return The new created {@link DefaultTransitionView}.
    */
-  public final void createTransitionView ( Transition transition,
-      DefaultStateView source, DefaultStateView target, boolean targetCreated,
-      boolean createUndoStep, boolean addToMachine )
+  public final DefaultTransitionView createTransitionView (
+      Transition transition, DefaultStateView source, DefaultStateView target,
+      boolean targetCreated, boolean createUndoStep, boolean addToMachine )
   {
     if ( addToMachine )
     {
@@ -529,12 +530,14 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     this.transitionViewList.add ( transitionView );
 
-    if ( this.redoUndoHandler != null && createUndoStep )
+    if ( ( this.redoUndoHandler != null ) && createUndoStep )
     {
       RedoUndoItem item = new TransitionAddedItem ( this, transitionView,
           targetCreated ? target : null );
       this.redoUndoHandler.addItem ( item );
     }
+
+    return transitionView;
   }
 
 
@@ -758,7 +761,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     // Set the zoom factor of this graph
     this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
 
-    EdgeView.renderer = new EdgeRenderer();
+    EdgeView.renderer = new EdgeRenderer ();
     EdgeView.renderer.setForeground ( Color.MAGENTA );
   }
 
@@ -882,8 +885,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       public void statePositionChanged ( DefaultStateView stateView,
           double oldX, double oldY, double newX, double newY )
       {
-        if ( DefaultMachineModel.this.redoUndoHandler != null
-            && ( oldX != newX || oldY != newY ) )
+        if ( ( DefaultMachineModel.this.redoUndoHandler != null )
+            && ( ( oldX != newX ) || ( oldY != newY ) ) )
         {
           RedoUndoItem item = new StateMovedItem ( DefaultMachineModel.this,
               stateView, oldX, oldY, newX, newY );
@@ -974,7 +977,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     stateView
         .removeModifyStatusChangedListener ( this.modifyStatusChangedListener );
 
-    if ( this.redoUndoHandler != null && createUndoStep )
+    if ( ( this.redoUndoHandler != null ) && createUndoStep )
     {
       RedoUndoItem item = new StateRemovedItem ( this, stateView, removeList );
       this.redoUndoHandler.addItem ( item );
@@ -997,7 +1000,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.machine.removeTransition ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
 
-    if ( this.redoUndoHandler != null && createUndoStep )
+    if ( ( this.redoUndoHandler != null ) && createUndoStep )
     {
       RedoUndoItem item = new TransitionRemovedItem ( this, transitionView );
       this.redoUndoHandler.addItem ( item );

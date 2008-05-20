@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.StateSetView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
@@ -64,9 +65,9 @@ public final class ConvertMachineDialog implements Converter
     ACTIVATE_NEW_STATES,
 
     /**
-     * The add {@link State} step.
+     * The add {@link State} and {@link Transition} step.
      */
-    ADD_STATE,
+    ADD_STATE_AND_TRANSITION,
 
     /**
      * The clear step.
@@ -114,9 +115,9 @@ public final class ConvertMachineDialog implements Converter
         }
         case ACTIVATE_NEW_STATES :
         {
-          return ADD_STATE;
+          return ADD_STATE_AND_TRANSITION;
         }
-        case ADD_STATE :
+        case ADD_STATE_AND_TRANSITION :
         {
           return CLEAR;
         }
@@ -126,6 +127,278 @@ public final class ConvertMachineDialog implements Converter
         }
       }
       throw new IllegalArgumentException ( "unsupported step" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
+   * The {@link StepItem}.
+   * 
+   * @author Christian Fehler
+   */
+  private class StepItem
+  {
+
+    /**
+     * The active {@link Step}.
+     */
+    private Step activeStep;
+
+
+    /**
+     * The current active {@link Symbol}.
+     */
+    private Symbol activeSymbol;
+
+
+    /**
+     * The current active {@link State}.
+     */
+    private State activeState;
+
+
+    /**
+     * The active {@link State}s of the original {@link JGraph}.
+     */
+    private ArrayList < State > activeStatesOriginal;
+
+
+    /**
+     * The active {@link State}s of the converted {@link JGraph}.
+     */
+    private ArrayList < State > activeStatesConverted;
+
+
+    /**
+     * The active {@link Transition}s of the original {@link JGraph}.
+     */
+    private ArrayList < Transition > activeTransitionsOriginal;
+
+
+    /**
+     * The active {@link Transition}s of the converted {@link JGraph}.
+     */
+    private ArrayList < Transition > activeTransitionsConverted;
+
+
+    /**
+     * The active {@link Symbol}s of the original {@link JGraph}.
+     */
+    private ArrayList < Symbol > activeSymbolsOriginal;
+
+
+    /**
+     * The active {@link Symbol}s of the converted {@link JGraph}.
+     */
+    private ArrayList < Symbol > activeSymbolsConverted;
+
+
+    /**
+     * The added {@link DefaultStateView}.
+     */
+    private DefaultStateView addedDefaultStateView = null;
+
+
+    /**
+     * The added {@link DefaultTransitionView}.
+     */
+    private DefaultTransitionView addedDefaultTransitionView = null;
+
+
+    /**
+     * Allocates a new {@link StepItem}.
+     * 
+     * @param activeStep The active {@link Step}.
+     * @param currentActiveSymbol The current active {@link Symbol}.
+     * @param currentActiveState The current active {@link State}.
+     * @param activeStatesOriginal The active {@link State}s of the original
+     *          {@link JGraph}.
+     * @param activeStatesConverted The active {@link State}s of the converted
+     *          {@link JGraph}.
+     * @param activeTransitionsOriginal The active {@link Transition}s of the
+     *          original {@link JGraph}.
+     * @param activeTransitionsConverted The active {@link Transition}s of the
+     *          converted {@link JGraph}.
+     * @param activeSymbolsOriginal The active {@link Symbol}s of the original
+     *          {@link JGraph}.
+     * @param activeSymbolsConverted The active {@link Symbol}s of the
+     *          converted {@link JGraph}.
+     */
+    public StepItem ( Step activeStep, Symbol currentActiveSymbol,
+        State currentActiveState, ArrayList < State > activeStatesOriginal,
+        ArrayList < State > activeStatesConverted,
+        ArrayList < Transition > activeTransitionsOriginal,
+        ArrayList < Transition > activeTransitionsConverted,
+        ArrayList < Symbol > activeSymbolsOriginal,
+        ArrayList < Symbol > activeSymbolsConverted )
+    {
+      this.activeStep = activeStep;
+      this.activeSymbol = currentActiveSymbol;
+      this.activeState = currentActiveState;
+      this.activeStatesOriginal = activeStatesOriginal;
+      this.activeStatesConverted = activeStatesConverted;
+      this.activeTransitionsOriginal = activeTransitionsOriginal;
+      this.activeTransitionsConverted = activeTransitionsConverted;
+      this.activeSymbolsOriginal = activeSymbolsOriginal;
+      this.activeSymbolsConverted = activeSymbolsConverted;
+    }
+
+
+    /**
+     * Returns the activeState.
+     * 
+     * @return The activeState.
+     * @see #activeState
+     */
+    public final State getActiveState ()
+    {
+      return this.activeState;
+    }
+
+
+    /**
+     * Returns the activeStatesConverted.
+     * 
+     * @return The activeStatesConverted.
+     * @see #activeStatesConverted
+     */
+    public final ArrayList < State > getActiveStatesConverted ()
+    {
+      return this.activeStatesConverted;
+    }
+
+
+    /**
+     * Returns the activeStatesOriginal.
+     * 
+     * @return The activeStatesOriginal.
+     * @see #activeStatesOriginal
+     */
+    public final ArrayList < State > getActiveStatesOriginal ()
+    {
+      return this.activeStatesOriginal;
+    }
+
+
+    /**
+     * Returns the activeStep.
+     * 
+     * @return The activeStep.
+     * @see #activeStep
+     */
+    public final Step getActiveStep ()
+    {
+      return this.activeStep;
+    }
+
+
+    /**
+     * Returns the activeSymbol.
+     * 
+     * @return The activeSymbol.
+     * @see #activeSymbol
+     */
+    public final Symbol getActiveSymbol ()
+    {
+      return this.activeSymbol;
+    }
+
+
+    /**
+     * Returns the activeSymbolsConverted.
+     * 
+     * @return The activeSymbolsConverted.
+     * @see #activeSymbolsConverted
+     */
+    public final ArrayList < Symbol > getActiveSymbolsConverted ()
+    {
+      return this.activeSymbolsConverted;
+    }
+
+
+    /**
+     * Returns the activeSymbolsOriginal.
+     * 
+     * @return The activeSymbolsOriginal.
+     * @see #activeSymbolsOriginal
+     */
+    public final ArrayList < Symbol > getActiveSymbolsOriginal ()
+    {
+      return this.activeSymbolsOriginal;
+    }
+
+
+    /**
+     * Returns the activeTransitionsConverted.
+     * 
+     * @return The activeTransitionsConverted.
+     * @see #activeTransitionsConverted
+     */
+    public final ArrayList < Transition > getActiveTransitionsConverted ()
+    {
+      return this.activeTransitionsConverted;
+    }
+
+
+    /**
+     * Returns the activeTransitionsOriginal.
+     * 
+     * @return The activeTransitionsOriginal.
+     * @see #activeTransitionsOriginal
+     */
+    public final ArrayList < Transition > getActiveTransitionsOriginal ()
+    {
+      return this.activeTransitionsOriginal;
+    }
+
+
+    /**
+     * Returns the addedDefaultStateView.
+     * 
+     * @return The addedDefaultStateView.
+     * @see #addedDefaultStateView
+     */
+    public final DefaultStateView getAddedDefaultStateView ()
+    {
+      return this.addedDefaultStateView;
+    }
+
+
+    /**
+     * Returns the addedDefaultTransitionView.
+     * 
+     * @return The addedDefaultTransitionView.
+     * @see #addedDefaultTransitionView
+     */
+    public final DefaultTransitionView getAddedDefaultTransitionView ()
+    {
+      return this.addedDefaultTransitionView;
+    }
+
+
+    /**
+     * Sets the addedDefaultStateView.
+     * 
+     * @param addedDefaultStateView The addedDefaultStateView to set.
+     * @see #addedDefaultStateView
+     */
+    public final void setAddedDefaultStateView (
+        DefaultStateView addedDefaultStateView )
+    {
+      this.addedDefaultStateView = addedDefaultStateView;
+    }
+
+
+    /**
+     * Sets the addedDefaultTransitionView.
+     * 
+     * @param addedDefaultTransitionView The addedDefaultTransitionView to set.
+     * @see #addedDefaultTransitionView
+     */
+    public final void setAddedDefaultTransitionView (
+        DefaultTransitionView addedDefaultTransitionView )
+    {
+      this.addedDefaultTransitionView = addedDefaultTransitionView;
     }
   }
 
@@ -198,9 +471,9 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The current converted {@link State}.
+   * The current {@link State}.
    */
-  private State currentActiveStateConverted;
+  private State currentActiveState;
 
 
   /**
@@ -222,9 +495,9 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * Flag that indicates if the begin is reached.
+   * The {@link StepItem} list.
    */
-  private boolean beginReached = true;
+  private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
 
 
   /**
@@ -300,6 +573,74 @@ public final class ConvertMachineDialog implements Converter
     this.machineConverted = this.modelConverted.getMachine ();
 
     handleStart ();
+  }
+
+
+  /**
+   * Adds a {@link StepItem}.
+   */
+  private final void addStepItem ()
+  {
+    ArrayList < State > activeStatesOriginal = new ArrayList < State > ();
+    ArrayList < State > activeStatesConverted = new ArrayList < State > ();
+    ArrayList < Transition > activeTransitionsOriginal = new ArrayList < Transition > ();
+    ArrayList < Transition > activeTransitionsConverted = new ArrayList < Transition > ();
+    ArrayList < Symbol > activeSymbolsOriginal = new ArrayList < Symbol > ();
+    ArrayList < Symbol > activeSymbolsConverted = new ArrayList < Symbol > ();
+
+    for ( State current : this.machineOriginal.getState () )
+    {
+      if ( current.isActive () )
+      {
+        activeStatesOriginal.add ( current );
+      }
+    }
+    for ( State current : this.machineConverted.getState () )
+    {
+      if ( current.isActive () )
+      {
+        activeStatesConverted.add ( current );
+      }
+    }
+    for ( Transition current : this.machineOriginal.getTransition () )
+    {
+      if ( current.isActive () )
+      {
+        activeTransitionsOriginal.add ( current );
+      }
+    }
+    for ( Transition current : this.machineConverted.getTransition () )
+    {
+      if ( current.isActive () )
+      {
+        activeTransitionsConverted.add ( current );
+      }
+    }
+    for ( Transition currentTransition : this.machineOriginal.getTransition () )
+    {
+      for ( Symbol currentSymbol : currentTransition )
+      {
+        if ( currentSymbol.isActive () )
+        {
+          activeSymbolsOriginal.add ( currentSymbol );
+        }
+      }
+    }
+    for ( Transition currentTransition : this.machineConverted.getTransition () )
+    {
+      for ( Symbol currentSymbol : currentTransition )
+      {
+        if ( currentSymbol.isActive () )
+        {
+          activeSymbolsConverted.add ( currentSymbol );
+        }
+      }
+    }
+
+    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
+        this.currentActiveState, activeStatesOriginal, activeStatesConverted,
+        activeTransitionsOriginal, activeTransitionsConverted,
+        activeSymbolsOriginal, activeSymbolsConverted ) );
   }
 
 
@@ -424,7 +765,7 @@ public final class ConvertMachineDialog implements Converter
    */
   public final void handleNextStep ()
   {
-    this.beginReached = false;
+    addStepItem ();
 
     if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
@@ -432,14 +773,13 @@ public final class ConvertMachineDialog implements Converter
 
       for ( State current : this.machineOriginal.getState () )
       {
-        if ( this.currentActiveStateConverted.getName ().contains (
-            current.getName () ) )
+        if ( this.currentActiveState.getName ().contains ( current.getName () ) )
         {
           current.setActive ( true );
         }
       }
 
-      this.currentActiveStateConverted.setActive ( true );
+      this.currentActiveState.setActive ( true );
 
       this.step = this.step.nextStep ();
     }
@@ -500,9 +840,10 @@ public final class ConvertMachineDialog implements Converter
 
       this.step = this.step.nextStep ();
     }
-    else if ( this.step.equals ( Step.ADD_STATE ) )
+    else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
     {
-      logger.debug ( "handleNextStep", "handle next step: add state" ); //$NON-NLS-1$ //$NON-NLS-2$
+      logger.debug ( "handleNextStep", //$NON-NLS-1$
+          "handle next step: add state and transition" ); //$NON-NLS-1$
 
       String name = ""; //$NON-NLS-1$
       boolean finalState = false;
@@ -546,6 +887,10 @@ public final class ConvertMachineDialog implements Converter
         this.currentX += 80 + StateSetView.WIDTH;
         newStateView = this.modelConverted.createStateView ( this.currentX,
             100, newState, false );
+
+        // add to step item
+        this.stepItemList.get ( this.stepItemList.size () - 1 )
+            .setAddedDefaultStateView ( newStateView );
       }
       else
       {
@@ -559,9 +904,8 @@ public final class ConvertMachineDialog implements Converter
       {
         transition = new DefaultTransition ( this.machineConverted
             .getAlphabet (), this.machineConverted.getPushDownAlphabet (),
-            new DefaultWord (), new DefaultWord (),
-            this.currentActiveStateConverted, newState, new DefaultSymbol (
-                this.currentActiveSymbol.getName () ) );
+            new DefaultWord (), new DefaultWord (), this.currentActiveState,
+            newState, new DefaultSymbol ( this.currentActiveSymbol.getName () ) );
         transition.setActive ( true );
       }
       catch ( TransitionSymbolNotInAlphabetException exc )
@@ -583,10 +927,14 @@ public final class ConvertMachineDialog implements Converter
         return;
       }
 
-      this.modelConverted.createTransitionView ( transition,
-          this.modelConverted
-              .getStateViewForState ( this.currentActiveStateConverted ),
-          newStateView, false, false, true );
+      DefaultTransitionView newTransitionView = this.modelConverted
+          .createTransitionView ( transition, this.modelConverted
+              .getStateViewForState ( this.currentActiveState ), newStateView,
+              false, false, true );
+
+      // add to step item
+      this.stepItemList.get ( this.stepItemList.size () - 1 )
+          .setAddedDefaultTransitionView ( newTransitionView );
 
       this.step = this.step.nextStep ();
     }
@@ -623,11 +971,11 @@ public final class ConvertMachineDialog implements Converter
         State nextState = this.machineConverted
             .getState ( this.machineConverted.getState ().size () - 1 );
 
-        if ( nextState == this.currentActiveStateConverted )
+        if ( nextState == this.currentActiveState )
         {
           this.endReached = true;
         }
-        this.currentActiveStateConverted = nextState;
+        this.currentActiveState = nextState;
 
         this.currentActiveSymbol = this.machineConverted.getAlphabet ()
             .get ( 0 );
@@ -678,6 +1026,61 @@ public final class ConvertMachineDialog implements Converter
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    StepItem stepItem = this.stepItemList
+        .remove ( this.stepItemList.size () - 1 );
+    clearStateHighlightOriginal ();
+    clearStateHighlightConverted ();
+    clearTransitionHighlightOriginal ();
+    clearTransitionHighlightConverted ();
+    clearSymbolHighlightOriginal ();
+    clearSymbolHighlightConverted ();
+
+    for ( State current : stepItem.getActiveStatesOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( State current : stepItem.getActiveStatesConverted () )
+    {
+      current.setActive ( true );
+    }
+    for ( Transition current : stepItem.getActiveTransitionsOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( Transition current : stepItem.getActiveTransitionsConverted () )
+    {
+      current.setActive ( true );
+    }
+    for ( Symbol current : stepItem.getActiveSymbolsOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( Symbol current : stepItem.getActiveSymbolsConverted () )
+    {
+      current.setActive ( true );
+    }
+    this.step = stepItem.getActiveStep ();
+    this.currentActiveState = stepItem.getActiveState ();
+    this.currentActiveSymbol = stepItem.getActiveSymbol ();
+
+    if ( stepItem.getAddedDefaultStateView () != null )
+    {
+      this.modelConverted.removeState ( stepItem.getAddedDefaultStateView (),
+          false );
+      this.currentX -= 80 + StateSetView.WIDTH;
+    }
+    if ( stepItem.getAddedDefaultTransitionView () != null )
+    {
+      this.modelConverted.removeTransition ( stepItem
+          .getAddedDefaultTransitionView (), false );
+    }
+
+    this.endReached = false;
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
   }
 
 
@@ -717,7 +1120,7 @@ public final class ConvertMachineDialog implements Converter
     this.modelConverted.createStateView ( this.currentX, 100, newState, false );
 
     // store the first values
-    this.currentActiveStateConverted = newState;
+    this.currentActiveState = newState;
     this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
 
     setStatus ();
@@ -738,7 +1141,8 @@ public final class ConvertMachineDialog implements Converter
    */
   private final void setStatus ()
   {
-    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached );
+    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.stepItemList
+        .isEmpty () );
     this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
     this.gui.jGTIToolBarButtonAutoStep.setEnabled ( !this.endReached );
     this.gui.jGTIToolBarButtonStop.setEnabled ( false );

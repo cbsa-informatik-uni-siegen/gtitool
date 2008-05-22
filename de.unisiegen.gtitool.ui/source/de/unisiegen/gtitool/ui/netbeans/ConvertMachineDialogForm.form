@@ -97,7 +97,6 @@
       <Properties>
         <Property name="dividerLocation" type="int" value="250"/>
         <Property name="orientation" type="int" value="0"/>
-        <Property name="resizeWeight" type="double" value="0.5"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

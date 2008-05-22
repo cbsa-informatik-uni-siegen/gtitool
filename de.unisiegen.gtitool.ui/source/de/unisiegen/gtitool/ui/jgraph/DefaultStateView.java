@@ -26,7 +26,7 @@ import de.unisiegen.gtitool.ui.redoundo.StatePositionChangedListener;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id:DefaultStateView.java 910 2008-05-16 00:31:21Z fehler $
  */
 public final class DefaultStateView extends DefaultGraphCell implements
     Storable, Modifyable
@@ -42,6 +42,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The position is not defined value.
    */
   public static final double POSITION_NOT_DEFINED = Double.MIN_VALUE;
+
+
+  /**
+   * The width is not defined value.
+   */
+  public static final double WIDTH_NOT_DEFINED = Double.MIN_VALUE;
+
+
+  /**
+   * The height is not defined value.
+   */
+  public static final double HEIGHT_NOT_DEFINED = Double.MIN_VALUE;
 
 
   /**
@@ -258,6 +270,22 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the height.
+   * 
+   * @return The height.
+   */
+  public final double getHeight ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+    if ( bounds == null )
+    {
+      return HEIGHT_NOT_DEFINED;
+    }
+    return bounds.getHeight ();
+  }
+
+
+  /**
    * Returns the x position.
    * 
    * @return The x position.
@@ -301,6 +329,22 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the width.
+   * 
+   * @return The width.
+   */
+  public final double getWidth ()
+  {
+    Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
+    if ( bounds == null )
+    {
+      return WIDTH_NOT_DEFINED;
+    }
+    return bounds.getWidth ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -337,7 +381,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
     Rectangle2D bounds = GraphConstants.getBounds ( getAttributes () );
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
-
   }
 
 

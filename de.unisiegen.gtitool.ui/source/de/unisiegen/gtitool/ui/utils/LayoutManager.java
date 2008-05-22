@@ -18,7 +18,7 @@ import de.unisiegen.gtitool.ui.redoundo.StateMovedItem;
  * @author Benjamin Mies
  * @version $Id$
  */
-public class LayoutManager
+public final class LayoutManager
 {
 
   /**
@@ -48,13 +48,13 @@ public class LayoutManager
   /**
    * The actual first node to swap.
    */
-  private DefaultStateView swapNode1;
+  private DefaultStateView swapNode0;
 
 
   /**
    * The actual second node to swap.
    */
-  private DefaultStateView swapNode2;
+  private DefaultStateView swapNode1;
 
 
   /**
@@ -64,13 +64,13 @@ public class LayoutManager
 
 
   /**
-   * The {@link MultiItem} for redo / undo.
+   * The {@link MultiItem} for redo/undo.
    */
-  MultiItem item;
+  private MultiItem item;
 
 
   /**
-   * Allocate a new {@link LayoutManager}.
+   * Allocates a new {@link LayoutManager}.
    * 
    * @param model The {@link DefaultMachineModel}.
    * @param redoUndoHandler The {@link RedoUndoHandler}.
@@ -84,11 +84,11 @@ public class LayoutManager
 
 
   /**
-   * Calculate the cuts of the graph.
+   * Calculates the cuts of the graph.
    * 
    * @return The count of the cuts.
    */
-  private int calculateAllCuts ()
+  private final int calculateAllCuts ()
   {
     int count = 0;
     for ( int i = 0 ; i < this.groups.size () ; i++ )
@@ -100,12 +100,12 @@ public class LayoutManager
 
 
   /**
-   * Calculate the cuts between the given index and the groups below.
+   * Calculates the cuts between the given index and the groups below.
    * 
    * @param index The index of the given group.
    * @return The count of cuts.
    */
-  private int calculateCuts ( final int index )
+  private final int calculateCuts ( final int index )
   {
     int count = 0;
 
@@ -136,11 +136,11 @@ public class LayoutManager
 
 
   /**
-   * Layout the states into a grid to perform next layout steps.
+   * Layouts the states into a grid to perform next layout steps.
    * 
    * @param states List with all states of the machine.
    */
-  private void createGrid ( ArrayList < DefaultStateView > states )
+  private final void createGrid ( ArrayList < DefaultStateView > states )
   {
     int x = -50;
     int y = 100;
@@ -156,7 +156,7 @@ public class LayoutManager
     int pos = 0;
     for ( DefaultStateView current : states )
     {
-      if ( count != 0 && ( count % rowSize ) == 0 )
+      if ( ( count != 0 ) && ( ( count % rowSize ) == 0 ) )
       {
         this.groups.add ( group );
         pos = 0;
@@ -173,8 +173,8 @@ public class LayoutManager
       {
         if ( ( pos % 2 ) != 0 )
         {
-          if ( current.getPositionX () != x
-              || current.getPositionY () != y + 50 )
+          if ( ( current.getPositionX () != x )
+              || ( current.getPositionY () != y + 50 ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
                 current.getPositionX (), current.getPositionY (), x, y + 50 ) );
@@ -183,8 +183,8 @@ public class LayoutManager
         }
         else
         {
-          if ( current.getPositionX () != x
-              || current.getPositionY () != y - 50 )
+          if ( ( current.getPositionX () != x )
+              || ( current.getPositionY () != y - 50 ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
                 current.getPositionX (), current.getPositionY (), x, y - 50 ) );
@@ -200,9 +200,9 @@ public class LayoutManager
 
 
   /**
-   * Perform the graph layout.
+   * Performs the graph layout.
    */
-  public void doLayout ()
+  public final void doLayout ()
   {
     prelayout ();
 
@@ -216,26 +216,28 @@ public class LayoutManager
 
 
   /**
-   * Perform the internal layout action.
+   * Performs the internal layout action.
    */
-  private void doLayoutInternal ()
+  private final void doLayoutInternal ()
   {
     for ( int index = 0 ; index < this.groups.size () - 1 ; index++ )
     {
       while ( !this.fixedNodes.containsAll ( this.groups.get ( index + 1 ) ) )
       {
         findNodesToSwap ( index );
-        if ( this.swapNode1 == null )
+        if ( this.swapNode0 == null )
         {
           continue;
         }
         if ( calculateAllCuts () > this.minCosts )
-          swap ( index, this.swapNode1, index + 1, this.swapNode2 );
+        {
+          swap ( index, this.swapNode0, index + 1, this.swapNode1 );
+        }
+        this.fixedNodes.add ( this.swapNode0 );
         this.fixedNodes.add ( this.swapNode1 );
-        this.fixedNodes.add ( this.swapNode2 );
         this.minCosts = Integer.MAX_VALUE;
+        this.swapNode0 = null;
         this.swapNode1 = null;
-        this.swapNode2 = null;
       }
       this.fixedNodes.clear ();
     }
@@ -243,52 +245,51 @@ public class LayoutManager
 
 
   /**
-   * Find the best nodes to swap.
+   * Finds the best nodes to swap.
    * 
    * @param index The index of the actual group.
    */
-  private void findNodesToSwap ( int index )
+  private final void findNodesToSwap ( int index )
   {
-    ArrayList < DefaultStateView > group1 = this.groups.get ( index );
-    ArrayList < DefaultStateView > group2 = this.groups.get ( index + 1 );
+    ArrayList < DefaultStateView > group0 = this.groups.get ( index );
+    ArrayList < DefaultStateView > group1 = this.groups.get ( index + 1 );
 
-    for ( int i = 0 ; i < group1.size () ; i++ )
+    for ( int i = 0 ; i < group0.size () ; i++ )
     {
-      DefaultStateView node1 = group1.get ( i );
-      if ( this.fixedNodes.contains ( node1 ) )
+      DefaultStateView node0 = group0.get ( i );
+      if ( this.fixedNodes.contains ( node0 ) )
       {
         continue;
       }
-      for ( int j = 0 ; j < group2.size () ; j++ )
+      for ( int j = 0 ; j < group1.size () ; j++ )
       {
 
-        DefaultStateView node2 = group2.get ( j );
+        DefaultStateView node1 = group1.get ( j );
 
-        if ( this.fixedNodes.contains ( node2 ) )
+        if ( this.fixedNodes.contains ( node1 ) )
         {
           continue;
         }
 
-        swap ( index, node1, index + 1, node2 );
+        swap ( index, node0, index + 1, node1 );
         int costs = calculateAllCuts ();
         if ( costs < this.minCosts )
         {
           this.minCosts = costs;
+          this.swapNode0 = node0;
           this.swapNode1 = node1;
-          this.swapNode2 = node2;
         }
-        swap ( index, node2, index + 1, node1 );
+        swap ( index, node1, index + 1, node0 );
       }
     }
   }
 
 
   /**
-   * Layout the graph into a grid.
+   * Layouts the graph into a grid.
    */
-  private void finishLayout ()
+  private final void finishLayout ()
   {
-
     ArrayList < DefaultStateView > states = new ArrayList < DefaultStateView > ();
 
     for ( ArrayList < DefaultStateView > current : this.groups )
@@ -298,7 +299,7 @@ public class LayoutManager
     this.item = new MultiItem ();
     createGrid ( states );
 
-    if ( this.item.size () > 0 )
+    if ( ( this.redoUndoHandler != null ) && ( this.item.size () > 0 ) )
     {
       this.redoUndoHandler.addItem ( this.item );
     }
@@ -308,13 +309,13 @@ public class LayoutManager
 
 
   /**
-   * Check if there is a cut for the given {@link State}.
+   * Checks if there is a cut for the given {@link State}.
    * 
    * @param state The {@link State}.
    * @param groupIndex The actual group index.
    * @return True if there is a cut, else false.
    */
-  private boolean isCut ( State state, int groupIndex )
+  private final boolean isCut ( State state, int groupIndex )
   {
     for ( int i = groupIndex + 1 ; i < this.groups.size () ; i++ )
     {
@@ -331,57 +332,58 @@ public class LayoutManager
 
 
   /**
-   * Layout the graph into a grid.
+   * Layouts the graph into a grid.
    */
-  private void prelayout ()
+  private final void prelayout ()
   {
     createGrid ( this.model.getStateViewList () );
   }
 
 
-  // /**
-  // * Resort the groups.
-  // */
-  // private void resortGroups ()
-  // {
-  // ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
-  // this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
-  //
-  // for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
-  // {
-  // ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView >
-  // ();
-  // for ( int i = 0 ; i < oldGroups.size () ; i++ )
-  // {
-  // if ( oldGroups.get ( i ).size () > j )
-  // {
-  // DefaultStateView node = oldGroups.get ( i ).get ( j );
-  // group.add ( node );
-  // }
-  // }
-  // this.groups.add ( group );
-  // }
-  // }
+  /**
+   * Resorts the groups. Not used in the moment.
+   */
+  @SuppressWarnings ( "unused" )
+  private void resortGroups ()
+  {
+    ArrayList < ArrayList < DefaultStateView > > oldGroups = this.groups;
+    this.groups = new ArrayList < ArrayList < DefaultStateView > > ();
+
+    for ( int j = 0 ; j < oldGroups.get ( 0 ).size () ; j++ )
+    {
+      ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
+      for ( int i = 0 ; i < oldGroups.size () ; i++ )
+      {
+        if ( oldGroups.get ( i ).size () > j )
+        {
+          DefaultStateView node = oldGroups.get ( i ).get ( j );
+          group.add ( node );
+        }
+      }
+      this.groups.add ( group );
+    }
+  }
+
 
   /**
-   * Swap to {@link DefaultStateView}.
+   * Swaps the {@link DefaultStateView}.
    * 
-   * @param groupIndex1 The group index of the first {@link DefaultStateView}.
-   * @param stateView1 The first {@link DefaultStateView}.
-   * @param groupIndex2 The group index of the second {@link DefaultStateView}.
-   * @param stateView2 The second {@link DefaultStateView}.
+   * @param groupIndex0 The group index of the first {@link DefaultStateView}.
+   * @param stateView0 The first {@link DefaultStateView}.
+   * @param groupIndex1 The group index of the second {@link DefaultStateView}.
+   * @param stateView1 The second {@link DefaultStateView}.
    */
-  private void swap ( int groupIndex1, DefaultStateView stateView1,
-      int groupIndex2, DefaultStateView stateView2 )
+  private final void swap ( int groupIndex0, DefaultStateView stateView0,
+      int groupIndex1, DefaultStateView stateView1 )
   {
+    ArrayList < DefaultStateView > list0 = this.groups.get ( groupIndex0 );
     ArrayList < DefaultStateView > list1 = this.groups.get ( groupIndex1 );
-    ArrayList < DefaultStateView > list2 = this.groups.get ( groupIndex2 );
+    int index0 = list0.indexOf ( stateView0 );
     int index1 = list1.indexOf ( stateView1 );
-    int index2 = list2.indexOf ( stateView2 );
 
-    list1.add ( index1, stateView2 );
+    list0.add ( index0, stateView1 );
+    list0.remove ( stateView0 );
+    list1.add ( index1, stateView0 );
     list1.remove ( stateView1 );
-    list2.add ( index2, stateView1 );
-    list2.remove ( stateView2 );
   }
 }

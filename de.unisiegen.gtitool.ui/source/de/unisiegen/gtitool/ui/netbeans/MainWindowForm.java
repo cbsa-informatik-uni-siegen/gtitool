@@ -1484,7 +1484,6 @@ public class MainWindowForm extends JFrame {
 
         jMenuExecute.add(jMenuItemAutoLayout);
 
-        jMenuConvertTo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
         jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
         jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
         jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N

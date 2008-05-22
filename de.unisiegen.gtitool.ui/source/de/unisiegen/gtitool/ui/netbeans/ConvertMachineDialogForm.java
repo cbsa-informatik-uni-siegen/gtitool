@@ -118,7 +118,6 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
 
         jGTISplitPaneGraph.setDividerLocation(250);
         jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jGTISplitPaneGraph.setResizeWeight(0.5);
         jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
 
         jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);

@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -27,10 +28,10 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
-import de.unisiegen.gtitool.ui.jgraph.StateSetView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
+import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
 /**
@@ -41,6 +42,64 @@ import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
  */
 public final class ConvertMachineDialog implements Converter
 {
+
+  /**
+   * The {@link Position}.
+   * 
+   * @author Christian Fehler
+   */
+  private class Position
+  {
+
+    /**
+     * The x position.
+     */
+    private double x;
+
+
+    /**
+     * The y position.
+     */
+    private double y;
+
+
+    /**
+     * Allocates a new {@link Position}.
+     * 
+     * @param x The x position.
+     * @param y The y position.
+     */
+    public Position ( double x, double y )
+    {
+      this.x = x;
+      this.y = y;
+    }
+
+
+    /**
+     * Returns the x position.
+     * 
+     * @return The x position.
+     * @see #x
+     */
+    public final double getX ()
+    {
+      return this.x;
+    }
+
+
+    /**
+     * Returns the y position.
+     * 
+     * @return The y position.
+     * @see #y
+     */
+    public final double getY ()
+    {
+      return this.y;
+    }
+  }
+
 
   /**
    * The {@link Step} enum.
@@ -411,6 +470,12 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * The initial position.
+   */
+  private static final int INITIAL_POSITION = 200;
+
+
+  /**
    * The {@link ConvertMachineDialogForm}.
    */
   private ConvertMachineDialogForm gui;
@@ -477,12 +542,6 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
-   * The current x position.
-   */
-  private int currentX = 120;
-
-
-  /**
    * The current {@link Step}.
    */
   private Step step = Step.getFirst ();
@@ -501,6 +560,12 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * The {@link Position} map.
+   */
+  private HashMap < String, Position > positionMap;
+
+
+  /**
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -514,6 +579,7 @@ public final class ConvertMachineDialog implements Converter
     this.parent = parent;
     this.machinePanel = machinePanel;
     this.gui = new ConvertMachineDialogForm ( this, parent );
+    this.gui.jGTISplitPaneGraph.setResizeWeight ( 0.333 );
     this.gui.jGTISplitPaneGraph.setDividerLocation ( 0.5 );
 
     try
@@ -572,7 +638,9 @@ public final class ConvertMachineDialog implements Converter
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
     this.machineConverted = this.modelConverted.getMachine ();
 
-    handleStart ();
+    this.positionMap = new HashMap < String, Position > ();
+
+    performStart ();
   }
 
 
@@ -735,6 +803,20 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * Returns the position of the {@link State} or null if the position is not
+   * defined.
+   * 
+   * @param state The {@link State}.
+   * @return The position of the {@link State} or null if the position is not
+   *         defined.
+   */
+  private final Position getPosition ( State state )
+  {
+    return this.positionMap.get ( state.getName () );
+  }
+
+
+  /**
    * Handles the action on the auto step button.
    */
   public final void handleAutoStep ()
@@ -744,9 +826,14 @@ public final class ConvertMachineDialog implements Converter
     int number = 0;
     while ( !this.endReached && ( number < 25 ) )
     {
-      handleNextStep ();
+      performNextStep ( false );
       number++ ;
     }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
   }
 
 
@@ -765,11 +852,65 @@ public final class ConvertMachineDialog implements Converter
    */
   public final void handleNextStep ()
   {
+    performNextStep ( true );
+  }
+
+
+  /**
+   * Handles the action on the ok button.
+   */
+  public final void handleOk ()
+  {
+    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.setVisible ( false );
+
+    while ( !this.endReached )
+    {
+      performNextStep ( false );
+    }
+
+    this.machinePanel.getMainWindow ().handleNew (
+        this.modelConverted.getElement () );
+
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the action on the previous step button.
+   */
+  public final void handlePreviousStep ()
+  {
+    performPreviousStep ( true );
+  }
+
+
+  /**
+   * Handles the action on the stop button.
+   */
+  public final void handleStop ()
+  {
+    logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Performs the next step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performNextStep ( boolean manualStep )
+  {
     addStepItem ();
 
     if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
-      logger.debug ( "handleNextStep", "handle next step: activate old states" ); //$NON-NLS-1$ //$NON-NLS-2$
+      if ( manualStep )
+      {
+        logger.debug (
+            "handleNextStep", "handle next step: activate old states" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
 
       for ( State current : this.machineOriginal.getState () )
       {
@@ -785,7 +926,10 @@ public final class ConvertMachineDialog implements Converter
     }
     else if ( this.step.equals ( Step.ACTIVATE_SYMBOLS ) )
     {
-      logger.debug ( "handleNextStep", "handle next step: activate symbols" ); //$NON-NLS-1$ //$NON-NLS-2$
+      if ( manualStep )
+      {
+        logger.debug ( "handleNextStep", "handle next step: activate symbols" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
 
       clearSymbolHighlightOriginal ();
 
@@ -813,7 +957,11 @@ public final class ConvertMachineDialog implements Converter
     }
     else if ( this.step.equals ( Step.ACTIVATE_NEW_STATES ) )
     {
-      logger.debug ( "handleNextStep", "handle next step: activate new states" ); //$NON-NLS-1$ //$NON-NLS-2$
+      if ( manualStep )
+      {
+        logger.debug (
+            "handleNextStep", "handle next step: activate new states" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       for ( Transition currentTransition : this.machineOriginal
@@ -842,8 +990,11 @@ public final class ConvertMachineDialog implements Converter
     }
     else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
     {
-      logger.debug ( "handleNextStep", //$NON-NLS-1$
-          "handle next step: add state and transition" ); //$NON-NLS-1$
+      if ( manualStep )
+      {
+        logger.debug ( "handleNextStep", //$NON-NLS-1$
+            "handle next step: add state and transition" ); //$NON-NLS-1$
+      }
 
       String name = ""; //$NON-NLS-1$
       boolean finalState = false;
@@ -884,9 +1035,14 @@ public final class ConvertMachineDialog implements Converter
           return;
         }
 
-        this.currentX += 80 + StateSetView.WIDTH;
-        newStateView = this.modelConverted.createStateView ( this.currentX,
-            100, newState, false );
+        newStateView = this.modelConverted.createStateView ( INITIAL_POSITION,
+            INITIAL_POSITION, newState, false );
+
+        Position position = getPosition ( newState );
+        if ( position != null )
+        {
+          newStateView.move ( position.getX (), position.getY () );
+        }
 
         // add to step item
         this.stepItemList.get ( this.stepItemList.size () - 1 )
@@ -940,7 +1096,10 @@ public final class ConvertMachineDialog implements Converter
     }
     else if ( this.step.equals ( Step.CLEAR ) )
     {
-      logger.debug ( "handleNextStep", "handle next step: clear" ); //$NON-NLS-1$ //$NON-NLS-2$
+      if ( manualStep )
+      {
+        logger.debug ( "handleNextStep", "handle next step: clear" ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
 
       clearStateHighlightOriginal ();
       clearStateHighlightConverted ();
@@ -993,39 +1152,28 @@ public final class ConvertMachineDialog implements Converter
       throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
     }
 
-    setStatus ();
-
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
-  }
-
-
-  /**
-   * Handles the action on the ok button.
-   */
-  public final void handleOk ()
-  {
-    logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.gui.setVisible ( false );
-
-    while ( !this.endReached )
+    if ( manualStep )
     {
-      handleNextStep ();
+      setStatus ();
+
+      this.jGraphOriginal.repaint ();
+      this.jGraphConverted.repaint ();
     }
-
-    this.machinePanel.getMainWindow ().handleNew (
-        this.modelConverted.getElement () );
-
-    this.gui.dispose ();
   }
 
 
   /**
-   * Handles the action on the previous step button.
+   * Performs the previous step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
    */
-  public final void handlePreviousStep ()
+  private final void performPreviousStep ( boolean manualStep )
   {
-    logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+    if ( manualStep )
+    {
+      logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
@@ -1068,7 +1216,6 @@ public final class ConvertMachineDialog implements Converter
     {
       this.modelConverted.removeState ( stepItem.getAddedDefaultStateView (),
           false );
-      this.currentX -= 80 + StateSetView.WIDTH;
     }
     if ( stepItem.getAddedDefaultTransitionView () != null )
     {
@@ -1077,17 +1224,21 @@ public final class ConvertMachineDialog implements Converter
     }
 
     this.endReached = false;
-    setStatus ();
 
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
+    if ( manualStep )
+    {
+      setStatus ();
+
+      this.jGraphOriginal.repaint ();
+      this.jGraphConverted.repaint ();
+    }
   }
 
 
   /**
-   * Handles the start action.
+   * Performs the start.
    */
-  private final void handleStart ()
+  private final void performStart ()
   {
     State startState = null;
     for ( State current : this.machineOriginal.getState () )
@@ -1116,23 +1267,35 @@ public final class ConvertMachineDialog implements Converter
       System.exit ( 1 );
       return;
     }
-    this.currentX = StateSetView.WIDTH;
-    this.modelConverted.createStateView ( this.currentX, 100, newState, false );
+    DefaultStateView newStateView = this.modelConverted.createStateView (
+        INITIAL_POSITION, INITIAL_POSITION, newState, false );
 
     // store the first values
     this.currentActiveState = newState;
     this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
 
+    while ( !this.endReached )
+    {
+      performNextStep ( false );
+    }
+
+    new LayoutManager ( this.modelConverted, null ).doLayout ();
+    for ( DefaultStateView current : this.modelConverted.getStateViewList () )
+    {
+      this.positionMap.put ( current.getState ().getName (), new Position (
+          current.getPositionX (), current.getPositionY () ) );
+    }
+
+    while ( !this.stepItemList.isEmpty () )
+    {
+      performPreviousStep ( false );
+    }
+
+    // move the start state
+    Position position = getPosition ( newState );
+    newStateView.move ( position.getX (), position.getY () );
+
     setStatus ();
-  }
-
-
-  /**
-   * Handles the action on the stop button.
-   */
-  public final void handleStop ()
-  {
-    logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 

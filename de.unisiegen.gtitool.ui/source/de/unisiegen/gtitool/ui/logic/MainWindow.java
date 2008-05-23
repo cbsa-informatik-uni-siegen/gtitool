@@ -158,9 +158,39 @@ public final class MainWindow implements LanguageChangedListener
     ENABLED_NAVIGATION_STEPS,
 
     /**
-     * The convert enabled button state.
+     * The convert to enabled button state.
      */
     ENABLED_CONVERT_TO,
+
+    /**
+     * The convert to source dfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_DFA,
+
+    /**
+     * The convert to source nfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_NFA,
+
+    /**
+     * The convert to source enfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_ENFA,
+
+    /**
+     * The convert to source pda enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_PDA,
+
+    /**
+     * The convert to source rg enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_RG,
+
+    /**
+     * The convert to source cfg enabled button state.
+     */
+    ENABLED_CONVERT_TO_SOURCE_CFG,
 
     /**
      * The save enabled button state.
@@ -503,6 +533,103 @@ public final class MainWindow implements LanguageChangedListener
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO );
 
       this.gui.getJMenuConvertTo ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
@@ -1506,12 +1633,34 @@ public final class MainWindow implements LanguageChangedListener
       // MachinePanel
       if ( panel instanceof MachinePanel )
       {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
-        MachinePanel machinePanel = ( MachinePanel ) panel;
+        if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "PDA" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
+        }
+
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().getState ()
             && !machinePanel.isWordEnterMode () );
@@ -1568,6 +1717,21 @@ public final class MainWindow implements LanguageChangedListener
       // GrammarPanel
       else if ( panel instanceof GrammarPanel )
       {
+        GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+
+        if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "RG" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+        }
+        else if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "CFG" ) ) //$NON-NLS-1$
+        {
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
+        }
+
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );

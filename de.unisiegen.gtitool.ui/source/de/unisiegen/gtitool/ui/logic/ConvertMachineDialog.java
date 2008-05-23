@@ -3,8 +3,11 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
 
@@ -31,6 +34,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
@@ -42,6 +46,42 @@ import de.unisiegen.gtitool.ui.utils.LayoutManager;
  */
 public final class ConvertMachineDialog implements Converter
 {
+
+  /**
+   * Does the next step after a delay.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class AutoStepTimerTask extends TimerTask
+  {
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see TimerTask#run()
+     */
+    @Override
+    public final void run ()
+    {
+      SwingUtilities.invokeLater ( new Runnable ()
+      {
+
+        @SuppressWarnings ( "synthetic-access" )
+        public void run ()
+        {
+          if ( ConvertMachineDialog.this.endReached )
+          {
+            handleStop ();
+          }
+          else
+          {
+            performNextStep ( true );
+          }
+        }
+      } );
+    }
+  }
+
 
   /**
    * The {@link Position}.
@@ -566,6 +606,12 @@ public final class ConvertMachineDialog implements Converter
 
 
   /**
+   * The auto step {@link Timer}.
+   */
+  private Timer autoStepTimer = null;
+
+
+  /**
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -823,11 +869,25 @@ public final class ConvertMachineDialog implements Converter
   {
     logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    int number = 0;
-    while ( !this.endReached && ( number < 25 ) )
+    setStatus ();
+
+    this.autoStepTimer = new Timer ();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ()
+        .getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
+  }
+
+
+  /**
+   * Handles the action on the begin step button.
+   */
+  public final void handleBeginStep ()
+  {
+    logger.debug ( "handleBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    while ( !this.stepItemList.isEmpty () )
     {
-      performNextStep ( false );
-      number++ ;
+      performPreviousStep ( false );
     }
 
     setStatus ();
@@ -844,6 +904,25 @@ public final class ConvertMachineDialog implements Converter
   {
     logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handles the action on the end step button.
+   */
+  public final void handleEndStep ()
+  {
+    logger.debug ( "handleEndStep", "handle end step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    while ( !this.endReached )
+    {
+      performNextStep ( false );
+    }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
   }
 
 
@@ -891,6 +970,12 @@ public final class ConvertMachineDialog implements Converter
   public final void handleStop ()
   {
     logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    this.autoStepTimer.cancel ();
+    this.autoStepTimer = null;
+
+    this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
+    setStatus ();
   }
 
 
@@ -1304,11 +1389,25 @@ public final class ConvertMachineDialog implements Converter
    */
   private final void setStatus ()
   {
-    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.stepItemList
-        .isEmpty () );
-    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
-    this.gui.jGTIToolBarButtonAutoStep.setEnabled ( !this.endReached );
-    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+    if ( this.gui.jGTIToolBarToggleButtonAutoStep.isSelected () )
+    {
+      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( false );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( false );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( true );
+      this.gui.jGTIToolBarButtonEndStep.setEnabled ( false );
+    }
+    else
+    {
+      boolean beginReached = this.stepItemList.isEmpty ();
+      this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !beginReached );
+      this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !beginReached );
+      this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
+      this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached );
+      this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+      this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached );
+    }
   }
 
 

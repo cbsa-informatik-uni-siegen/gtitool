@@ -9,6 +9,9 @@ CF		- Convert Items ausblenden, wenn nicht verfügbar (Machine)
 CF		- Fehler im ParallelEdgeRenderer korrigieren
 CF		- Im Info Dialog besteht manchmal das Problem, dass die Größe falsch
 		  berechnet wird
+CF		- Die Methode StateSetView.getPerimeterPoint muss angepasst werden, da keine
+		  Ellipse gezeichnet wird.
+
 
 BM		- Wäre es möglich beim AutoLayout die Größe der DefaultStateView zu beachten?
 		  Ich bräuchte das bei dem Potenzautomaten, da sind die Zustände zu nah

@@ -1081,21 +1081,32 @@ public final class ConvertMachineDialog implements Converter
             "handle next step: add state and transition" ); //$NON-NLS-1$
       }
 
-      String name = ""; //$NON-NLS-1$
+      StringBuilder name = new StringBuilder ();
+      name.append ( "{" ); //$NON-NLS-1$
+      boolean first = true;
       boolean finalState = false;
       for ( State currentState : this.machineOriginal.getState () )
       {
         if ( currentState.isActive () )
         {
-          finalState = finalState || currentState.isFinalState ();
-          name += currentState.getName ();
+          if ( currentState.isFinalState () )
+          {
+            finalState = true;
+          }
+          if ( !first )
+          {
+            name.append ( ", " );//$NON-NLS-1$
+          }
+          first = false;
+          name.append ( currentState.getName () );
         }
       }
+      name.append ( "}" );//$NON-NLS-1$
 
       State stateFound = null;
       for ( State current : this.machineConverted.getState () )
       {
-        if ( current.getName ().equals ( name ) )
+        if ( current.getName ().equals ( name.toString () ) )
         {
           stateFound = current;
           break;
@@ -1109,8 +1120,8 @@ public final class ConvertMachineDialog implements Converter
         try
         {
           newState = new DefaultState ( this.machineConverted.getAlphabet (),
-              this.machineConverted.getPushDownAlphabet (), name, false,
-              finalState );
+              this.machineConverted.getPushDownAlphabet (), name.toString (),
+              false, finalState );
           newState.setActive ( true );
         }
         catch ( StateException exc )
@@ -1343,8 +1354,8 @@ public final class ConvertMachineDialog implements Converter
     try
     {
       newState = new DefaultState ( this.machineConverted.getAlphabet (),
-          this.machineConverted.getPushDownAlphabet (), startState.getName (),
-          true, startState.isFinalState () );
+          this.machineConverted.getPushDownAlphabet (), "{"//$NON-NLS-1$
+              + startState.getName () + "}", true, startState.isFinalState () );//$NON-NLS-1$
     }
     catch ( StateException exc )
     {

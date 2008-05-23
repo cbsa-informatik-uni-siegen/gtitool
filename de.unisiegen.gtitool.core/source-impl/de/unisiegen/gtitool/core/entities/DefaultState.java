@@ -991,17 +991,76 @@ public final class DefaultState implements State
     {
       throw new StateEmptyNameException ();
     }
-    if ( !Character.isJavaIdentifierStart ( name.charAt ( 0 ) ) )
+
+    // name after a conversion
+    if ( name.charAt ( 0 ) == '{' )
     {
-      throw new StateIllegalNameException ( name );
-    }
-    for ( int i = 1 ; i < name.length () ; i++ )
-    {
-      if ( !Character.isJavaIdentifierPart ( name.charAt ( i ) ) )
+      if ( name.charAt ( name.length () - 1 ) != '}' )
       {
         throw new StateIllegalNameException ( name );
       }
+      String stateSet = name.substring ( 1, name.length () - 1 );
+
+      String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
+
+      for ( String current : splitStateSet )
+      {
+        String newName = current;
+
+        if ( newName.length () == 0 )
+        {
+          throw new StateIllegalNameException ( name );
+        }
+
+        // remove spaces
+        while ( newName.charAt ( 0 ) == ' ' )
+        {
+          newName = newName.substring ( 1 );
+
+          if ( newName.length () == 0 )
+          {
+            throw new StateIllegalNameException ( name );
+          }
+        }
+        while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+        {
+          newName = newName.substring ( 0, newName.length () - 1 );
+
+          if ( newName.length () == 0 )
+          {
+            throw new StateIllegalNameException ( name );
+          }
+        }
+
+        if ( !Character.isJavaIdentifierStart ( newName.charAt ( 0 ) ) )
+        {
+          throw new StateIllegalNameException ( name );
+        }
+        for ( int i = 1 ; i < newName.length () ; i++ )
+        {
+          if ( !Character.isJavaIdentifierPart ( newName.charAt ( i ) ) )
+          {
+            throw new StateIllegalNameException ( name );
+          }
+        }
+      }
     }
+    // normal name
+    else
+    {
+      if ( !Character.isJavaIdentifierStart ( name.charAt ( 0 ) ) )
+      {
+        throw new StateIllegalNameException ( name );
+      }
+      for ( int i = 1 ; i < name.length () ; i++ )
+      {
+        if ( !Character.isJavaIdentifierPart ( name.charAt ( i ) ) )
+        {
+          throw new StateIllegalNameException ( name );
+        }
+      }
+    }
+
     this.name = name;
     fireStateChanged ();
     fireModifyStatusChanged ();
@@ -1070,7 +1129,46 @@ public final class DefaultState implements State
     }
     else
     {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+      // name after a conversion
+      if ( this.name.charAt ( 0 ) == '{' )
+      {
+        String stateSet = this.name.substring ( 1, this.name.length () - 1 );
+
+        String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
+
+        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        boolean first = true;
+        for ( String current : splitStateSet )
+        {
+          String newName = current;
+
+          // remove spaces
+          while ( newName.charAt ( 0 ) == ' ' )
+          {
+            newName = newName.substring ( 1 );
+          }
+          while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+          {
+            newName = newName.substring ( 0, newName.length () - 1 );
+          }
+
+          if ( !first )
+          {
+            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          }
+          first = false;
+
+          prettyString
+              .addPrettyToken ( new PrettyToken ( newName, Style.STATE ) );
+        }
+        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      }
+      // normal name
+      else
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( this.name, Style.STATE ) );
+      }
     }
     return prettyString;
   }

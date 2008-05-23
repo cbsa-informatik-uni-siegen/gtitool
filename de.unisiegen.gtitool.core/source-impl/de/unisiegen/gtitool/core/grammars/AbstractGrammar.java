@@ -652,7 +652,7 @@ public abstract class AbstractGrammar implements Grammar
   /**
    * Updates the start symbol flags.
    */
-  private final void updateStartSymbol ()
+  public final void updateStartSymbol ()
   {
     for ( Production currentProduction : this.productions )
     {

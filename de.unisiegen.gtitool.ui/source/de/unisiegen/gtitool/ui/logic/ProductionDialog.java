@@ -318,26 +318,25 @@ public final class ProductionDialog
    * 
    * @return the {@link ProductionDialogForm}.
    */
-  public ProductionDialogForm getGui ()
+  public final ProductionDialogForm getGui ()
   {
     return this.gui;
   }
 
 
   /**
-   * Handle dialog canceled.
+   * Handles dialog canceled.
    */
-  public void handleCancel ()
+  public final void handleCancel ()
   {
     this.gui.dispose ();
-
   }
 
 
   /**
-   * Handle list selected value changed.
+   * Handles list selected value changed.
    */
-  public void handleListSelectionChanged ()
+  public final void handleListSelectionChanged ()
   {
 
     this.gui.styledProductionWordParserPanel.parse ();
@@ -363,7 +362,7 @@ public final class ProductionDialog
   /**
    * Handle dialog confirmed.
    */
-  public void handleOk ()
+  public final void handleOk ()
   {
     Production production = new DefaultProduction (
         ( NonterminalSymbol ) this.gui.jGTIList.getSelectedValue (),
@@ -384,6 +383,8 @@ public final class ProductionDialog
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );
       this.oldProduction.setProductionWord ( production.getProductionWord () );
+      
+      this.model.getGrammar ().updateStartSymbol();
     }
     else
     {
@@ -400,7 +401,7 @@ public final class ProductionDialog
    * 
    * @param status the new button status.
    */
-  public void setButtonStatus ( boolean status )
+  public final void setButtonStatus ( boolean status )
   {
     this.gui.jGTIButtonOk.setEnabled ( status );
   }
@@ -409,7 +410,7 @@ public final class ProductionDialog
   /**
    * Show this dialog.
    */
-  public void show ()
+  public final void show ()
   {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );

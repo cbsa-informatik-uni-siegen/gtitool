@@ -159,6 +159,12 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
+   * Updates the start symbol flags.
+   */
+  public void updateStartSymbol ();
+
+
+  /**
    * Validates that everything in the {@link Grammar} is correct.
    * 
    * @throws GrammarValidationException If the validation fails.

@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JPanel;
+
 import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The new dialog machine choice form.
@@ -9,7 +12,9 @@ import de.unisiegen.gtitool.ui.logic.NewDialogMachineChoice;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
+public class NewDialogMachineChoiceForm extends JPanel implements
+    GUIClass < NewDialogMachineChoice >
+{
     
     /**
      * The serial version uid.
@@ -17,10 +22,26 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
     private static final long serialVersionUID = -1303990739783698131L;
 
     /**
-     * Creates new form NewDialogMachineChoiceForm
+     * The {@link NewDialogMachineChoice}.
      */
-    public NewDialogMachineChoiceForm() {
+    private NewDialogMachineChoice logic;
+    
+    /**
+     * Allocates a new {@link NewDialogMachineChoiceForm}.
+     */
+    public NewDialogMachineChoiceForm(NewDialogMachineChoice logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final NewDialogMachineChoice getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -242,9 +263,4 @@ public class NewDialogMachineChoiceForm extends javax.swing.JPanel {
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonPDA;
     // End of variables declaration//GEN-END:variables
     
-    private NewDialogMachineChoice logic;
-    
-    public void setLogic( NewDialogMachineChoice pLogic){
-      this.logic = pLogic;
-  }
 }

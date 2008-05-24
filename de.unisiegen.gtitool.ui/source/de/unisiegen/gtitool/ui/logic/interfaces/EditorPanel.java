@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui;
+package de.unisiegen.gtitool.ui.logic.interfaces;
 
 
 import java.io.File;
@@ -13,17 +13,31 @@ import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 
 
 /**
  * The {@link EditorPanel} interface.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public interface EditorPanel extends Modifyable, LanguageChangedListener
 {
+
+  /**
+   * Clears all error and warning messages.
+   */
+  public void clearValidationMessages ();
+
+
+  /**
+   * Get the {@link Converter} for this {@link EditorPanel}.
+   * 
+   * @return The {@link Converter}.
+   */
+  public Converter getConverter ();
+
 
   /**
    * Returns the {@link File} of this {@link EditorPanel}.
@@ -42,11 +56,19 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Getter for the gui element of this logic class
+   * Returns the {@link JTabbedPane} containing the console.
    * 
-   * @return The {@link EditorPanelForm} for this logic class
+   * @return the {@link JTabbedPane} containing the console.
    */
-  public EditorPanelForm getGui ();
+  public JTabbedPane getJTabbedPaneConsole ();
+
+
+  /**
+   * Returns the {@link DefaultMachineModel}
+   * 
+   * @return the {@link DefaultMachineModel}
+   */
+  public DefaultModel getModel ();
 
 
   /**
@@ -130,39 +152,9 @@ public interface EditorPanel extends Modifyable, LanguageChangedListener
 
 
   /**
-   * Returns the {@link DefaultMachineModel}
-   * 
-   * @return the {@link DefaultMachineModel}
-   */
-  public DefaultModel getModel ();
-
-
-  /**
-   * Clears all error and warning messages.
-   */
-  public void clearValidationMessages ();
-
-
-  /**
-   * Returns the {@link JTabbedPane} containing the console.
-   * 
-   * @return the {@link JTabbedPane} containing the console.
-   */
-  public JTabbedPane getJTabbedPaneConsole ();
-
-
-  /**
    * Sets the visibility of the console.
    * 
    * @param visible Visible or not visible.
    */
   public void setVisibleConsole ( boolean visible );
-  
-  /**
-   * Get the {@link Converter} for this {@link EditorPanel}.
-   *
-   * @return The {@link Converter}.
-   */
-  public Converter getConverter();
-
 }

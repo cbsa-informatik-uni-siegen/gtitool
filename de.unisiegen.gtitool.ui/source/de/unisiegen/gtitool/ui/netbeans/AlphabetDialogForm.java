@@ -1,17 +1,20 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
- * The alphabet edit dialog.
+ * The alphabet dialog.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class AlphabetDialogForm extends javax.swing.JDialog {
+public class AlphabetDialogForm extends JDialog implements GUIClass <AlphabetDialog>
+{
     
    /**
     * The serial version uid.
@@ -24,15 +27,25 @@ public class AlphabetDialogForm extends javax.swing.JDialog {
     private AlphabetDialog logic;
     
     /**
-     * Creates new form {@link AlphabetDialogForm}.
+     * Allocates a new {@link AlphabetDialogForm}.
      * 
-     * @param logic The {@link AlphabetDialogForm}.
-     * @param parent The parent {@link Frame}.
+     * @param logic The {@link AlphabetDialog}.
+     * @param parent The parent {@link JFrame}.
      */
-    public AlphabetDialogForm(AlphabetDialog logic, java.awt.Frame parent) {
+    public AlphabetDialogForm(AlphabetDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final AlphabetDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

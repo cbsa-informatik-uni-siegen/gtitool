@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Version;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
 import de.unisiegen.gtitool.ui.utils.Clipboard;
 
@@ -18,7 +19,7 @@ import de.unisiegen.gtitool.ui.utils.Clipboard;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class AboutDialog
+public final class AboutDialog implements LogicClass < AboutDialogForm >
 {
 
   /**
@@ -53,6 +54,17 @@ public final class AboutDialog
     this.gui.jGTILabelVersionEntry.setText ( Version.FULL_VERSION );
     this.gui.jGTILabelWebpageEntry
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final AboutDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

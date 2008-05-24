@@ -19,6 +19,7 @@ import de.unisiegen.gtitool.ui.history.HistoryPath;
 import de.unisiegen.gtitool.ui.history.HistoryPathPart;
 import de.unisiegen.gtitool.ui.history.HistoryPathTableCellRenderer;
 import de.unisiegen.gtitool.ui.history.TransitionSymbolPair;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
 
 
@@ -28,7 +29,7 @@ import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class HistoryDialog
+public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 {
 
   /**
@@ -122,8 +123,8 @@ public final class HistoryDialog
     }
 
     calculate ();
-    
-    Collections.sort(this.historyPathList);
+
+    Collections.sort ( this.historyPathList );
 
     for ( HistoryPath current : this.historyPathList )
     {
@@ -220,6 +221,17 @@ public final class HistoryDialog
     }
 
     calculate ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final HistoryDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

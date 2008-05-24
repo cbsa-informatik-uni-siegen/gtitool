@@ -1,18 +1,20 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.TerminalDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
- * The alphabet edit dialog.
+ * The terminal dialog.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class TerminalDialogForm extends javax.swing.JDialog {
+public class TerminalDialogForm extends JDialog implements GUIClass <TerminalDialog>
+{
     
    /**
     * The serial version uid.
@@ -20,20 +22,30 @@ public class TerminalDialogForm extends javax.swing.JDialog {
     private static final long serialVersionUID = 2561838968856553690L;
     
     /**
-     * The {@link AlphabetDialog}.
+     * The {@link TerminalDialog}.
      */
     private TerminalDialog logic;
     
     /**
-     * Creates new form {@link AlphabetDialogForm}.
+     * Creates new form {@link TerminalDialogForm}.
      * 
-     * @param logic The {@link AlphabetDialogForm}.
-     * @param parent The parent {@link Frame}.
+     * @param logic The {@link JFrame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public TerminalDialogForm(TerminalDialog logic, java.awt.Frame parent) {
+    public TerminalDialogForm(TerminalDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final TerminalDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

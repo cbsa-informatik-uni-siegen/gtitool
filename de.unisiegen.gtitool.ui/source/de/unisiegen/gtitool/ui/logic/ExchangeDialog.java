@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.ui.exchange.Network;
 import de.unisiegen.gtitool.ui.exchange.listener.ExchangeFinishedListener;
 import de.unisiegen.gtitool.ui.exchange.listener.ExchangeReceivedListener;
 import de.unisiegen.gtitool.ui.exchange.listener.NetworkConnectedListener;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ExchangeDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -30,7 +31,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class ExchangeDialog
+public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
 {
 
   /**
@@ -70,6 +71,12 @@ public final class ExchangeDialog
 
 
   /**
+   * The {@link DefaultStyledDocument}
+   */
+  private DefaultStyledDocument document;
+
+
+  /**
    * Allocates a new {@link ExchangeDialog}.
    * 
    * @param mainWindow The {@link MainWindow}.
@@ -82,7 +89,7 @@ public final class ExchangeDialog
     this.mainWindow = mainWindow;
 
     this.element = element;
-    this.gui = new ExchangeDialogForm ( this, this.mainWindow.getGui () );
+    this.gui = new ExchangeDialogForm ( this, this.mainWindow.getGUI () );
 
     this.gui.jGTITextFieldPort.setText ( String.valueOf ( PreferenceManager
         .getInstance ().getPort () ) );
@@ -109,12 +116,6 @@ public final class ExchangeDialog
       this.gui.jGTIRadioButtonSend.setSelected ( true );
     }
   }
-
-
-  /**
-   * The {@link DefaultStyledDocument}
-   */
-  private DefaultStyledDocument document;
 
 
   /**
@@ -148,6 +149,17 @@ public final class ExchangeDialog
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final ExchangeDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 
@@ -439,11 +451,11 @@ public final class ExchangeDialog
   public final void show ()
   {
     logger.debug ( "show", "show the exchange dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
-    int x = this.mainWindow.getGui ().getBounds ().x
-        + ( this.mainWindow.getGui ().getWidth () / 2 )
+    int x = this.mainWindow.getGUI ().getBounds ().x
+        + ( this.mainWindow.getGUI ().getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
-    int y = this.mainWindow.getGui ().getBounds ().y
-        + ( this.mainWindow.getGui ().getHeight () / 2 )
+    int y = this.mainWindow.getGUI ().getBounds ().y
+        + ( this.mainWindow.getGUI ().getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );

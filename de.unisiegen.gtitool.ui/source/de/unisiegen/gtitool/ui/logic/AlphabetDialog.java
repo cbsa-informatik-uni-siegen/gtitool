@@ -9,6 +9,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -19,7 +20,7 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class AlphabetDialog
+public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 {
 
   /**
@@ -87,6 +88,17 @@ public final class AlphabetDialog
 
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( this.machine.isUsePushDownAlphabet () );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final AlphabetDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

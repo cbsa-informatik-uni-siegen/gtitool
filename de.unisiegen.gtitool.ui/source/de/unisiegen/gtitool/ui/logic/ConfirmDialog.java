@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ConfirmDialogForm;
 import de.unisiegen.gtitool.ui.swing.JGTIButton;
 
@@ -18,7 +19,7 @@ import de.unisiegen.gtitool.ui.swing.JGTIButton;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class ConfirmDialog
+public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
 {
 
   /**
@@ -148,6 +149,17 @@ public final class ConfirmDialog
       }
     }
     this.gui.pack ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final ConfirmDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

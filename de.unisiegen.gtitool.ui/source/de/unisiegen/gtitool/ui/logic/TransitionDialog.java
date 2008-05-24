@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
 import de.unisiegen.gtitool.ui.redoundo.TransitionChangedItem;
@@ -42,7 +43,8 @@ import de.unisiegen.gtitool.ui.swing.dnd.JGTIListTransferHandler;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class TransitionDialog
+public final class TransitionDialog implements
+    LogicClass < TransitionDialogForm >
 {
 
   /**
@@ -530,6 +532,17 @@ public final class TransitionDialog
    * @see #gui
    */
   public final TransitionDialogForm getGui ()
+  {
+    return this.gui;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final TransitionDialogForm getGUI ()
   {
     return this.gui;
   }

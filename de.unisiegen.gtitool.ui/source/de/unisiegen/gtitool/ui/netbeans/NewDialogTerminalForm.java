@@ -1,25 +1,47 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JPanel;
+
 import de.unisiegen.gtitool.ui.logic.NewDialogTerminal;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
- * The new dialog alphabet form.
+ * The new dialog terminal form.
  *
  * @author Benjamin Mies
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class NewDialogTerminalForm extends javax.swing.JPanel {
+public class NewDialogTerminalForm extends JPanel implements GUIClass <NewDialogTerminal>
+{
     
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = -8070356231677722624L;
 
-    /** Creates new form NewDialogAlphabetForm */
-    public NewDialogTerminalForm() {
+    /**
+     * The {@link NewDialogTerminal}.
+     */
+    private NewDialogTerminal logic;
+    
+    /**
+     * Allocates a new {@link NewDialogAlphabetForm}.
+     */
+    public NewDialogTerminalForm(NewDialogTerminal logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final NewDialogTerminal getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -127,9 +149,4 @@ public class NewDialogTerminalForm extends javax.swing.JPanel {
     public de.unisiegen.gtitool.ui.netbeans.TerminalPanelForm terminalPanelForm;
     // End of variables declaration//GEN-END:variables
     
-    private NewDialogTerminal logic;
-    
-    public void setLogic( NewDialogTerminal pLogic ){
-        this.logic = pLogic;
-    }
 }

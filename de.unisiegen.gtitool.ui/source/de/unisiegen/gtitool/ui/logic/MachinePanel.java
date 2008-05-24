@@ -64,7 +64,6 @@ import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
@@ -73,6 +72,8 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
@@ -98,7 +99,9 @@ import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class MachinePanel implements EditorPanel
+public final class MachinePanel implements LogicClass < MachinePanelForm >,
+    EditorPanel
+
 {
 
   /**
@@ -378,8 +381,7 @@ public final class MachinePanel implements EditorPanel
     this.mainWindowForm = mainWindowForm;
     this.model = model;
     this.file = file;
-    this.gui = new MachinePanelForm ();
-    this.gui.setMachinePanel ( this );
+    this.gui = new MachinePanelForm (this);
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
@@ -864,6 +866,17 @@ public final class MachinePanel implements EditorPanel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final MachinePanelForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  /**
    * Returns the {@link JGraph}.
    * 
    * @return The {@link JGraph}.
@@ -878,18 +891,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
-   */
-  public final MachinePanelForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getJTabbedPaneConsole()
    */
   public JTabbedPane getJTabbedPaneConsole ()
   {
@@ -958,7 +960,7 @@ public final class MachinePanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getPanel()
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getPanel()
    */
   public final JPanel getPanel ()
   {

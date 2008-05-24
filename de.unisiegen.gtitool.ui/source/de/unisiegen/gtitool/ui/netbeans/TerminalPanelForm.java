@@ -1,10 +1,11 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
 
+import javax.swing.JPanel;
+
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.entities.listener.StartNonterminalSymbolChangedListener;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -14,9 +15,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings (
-{ "all" } )
-public class TerminalPanelForm extends javax.swing.JPanel
+@SuppressWarnings ({ "all" })
+public class TerminalPanelForm extends JPanel
 {
 
   /**
@@ -36,63 +36,9 @@ public class TerminalPanelForm extends javax.swing.JPanel
    */
   private TerminalSymbolSet terminalSymbolSet = null;
 
-
+  
   /**
-   * Sets the {@link NonterminalSymbolSet} of this {@link TerminalPanelForm}.
-   * 
-   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
-   */
-  public void setNonterminalSymbolSet (
-      NonterminalSymbolSet nonterminalSymbolSet )
-  {
-    this.nonterminalSymbolSet = nonterminalSymbolSet;
-    this.styledNonterminalSymbolSetParserPanel
-        .setText ( nonterminalSymbolSet );
-    this.styledTerminalSymbolSetParserPanel
-        .setNonterminalSymbolSet ( nonterminalSymbolSet );
-    this.styledStartNonterminalSymbolParserPanel.setNonterminalSymbolSet ( nonterminalSymbolSet );
-  }
-
-
-  /**
-   * Sets the {@link TerminalSymbolSet} of this {@link TerminalPanelForm}.
-   * 
-   * @param terminalSymbolSet The {@link TerminalSymbolSet} to set.
-   */
-  public void setTerminalSymbolSet ( TerminalSymbolSet terminalSymbolSet )
-  {
-    this.terminalSymbolSet = terminalSymbolSet;
-    this.styledTerminalSymbolSetParserPanel
-        .setText ( terminalSymbolSet );
-    this.styledNonterminalSymbolSetParserPanel
-        .setTerminalSymbolSet ( terminalSymbolSet );
-  }
-
-
-  /**
-   * Returns the {@link NonterminalSymbolSet}.
-   * 
-   * @return The {@link NonterminalSymbolSet}.
-   */
-  public NonterminalSymbolSet getNonterminalSymbolSet ()
-  {
-    return this.nonterminalSymbolSet;
-  }
-
-
-  /**
-   * Returns the {@link TerminalSymbolSet}.
-   * 
-   * @return The {@link TerminalSymbolSet}.
-   */
-  public TerminalSymbolSet getTerminalSymbolSet ()
-  {
-    return this.terminalSymbolSet;
-  }
-
-
-  /**
-   * Creates new form TerminalPanelForm
+   * Allocates a new {@link TerminalPanelForm}.
    */
   public TerminalPanelForm ()
   {
@@ -146,6 +92,59 @@ public class TerminalPanelForm extends javax.swing.JPanel
             styledNonterminalSymbolSetParserPanel.parse ();
           }
         } );
+  }
+
+  /**
+   * Sets the {@link NonterminalSymbolSet} of this {@link TerminalPanelForm}.
+   * 
+   * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
+   */
+  public void setNonterminalSymbolSet (
+      NonterminalSymbolSet nonterminalSymbolSet )
+  {
+    this.nonterminalSymbolSet = nonterminalSymbolSet;
+    this.styledNonterminalSymbolSetParserPanel
+        .setText ( nonterminalSymbolSet );
+    this.styledTerminalSymbolSetParserPanel
+        .setNonterminalSymbolSet ( nonterminalSymbolSet );
+    this.styledStartNonterminalSymbolParserPanel.setNonterminalSymbolSet ( nonterminalSymbolSet );
+  }
+
+
+  /**
+   * Sets the {@link TerminalSymbolSet} of this {@link TerminalPanelForm}.
+   * 
+   * @param terminalSymbolSet The {@link TerminalSymbolSet} to set.
+   */
+  public void setTerminalSymbolSet ( TerminalSymbolSet terminalSymbolSet )
+  {
+    this.terminalSymbolSet = terminalSymbolSet;
+    this.styledTerminalSymbolSetParserPanel
+        .setText ( terminalSymbolSet );
+    this.styledNonterminalSymbolSetParserPanel
+        .setTerminalSymbolSet ( terminalSymbolSet );
+  }
+
+
+  /**
+   * Returns the {@link NonterminalSymbolSet}.
+   * 
+   * @return The {@link NonterminalSymbolSet}.
+   */
+  public NonterminalSymbolSet getNonterminalSymbolSet ()
+  {
+    return this.nonterminalSymbolSet;
+  }
+
+
+  /**
+   * Returns the {@link TerminalSymbolSet}.
+   * 
+   * @return The {@link TerminalSymbolSet}.
+   */
+  public TerminalSymbolSet getTerminalSymbolSet ()
+  {
+    return this.terminalSymbolSet;
   }
 
 

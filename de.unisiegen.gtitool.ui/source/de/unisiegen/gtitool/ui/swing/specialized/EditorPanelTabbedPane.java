@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import javax.swing.JTabbedPane;
 
-import de.unisiegen.gtitool.ui.EditorPanel;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 
 
@@ -54,6 +54,7 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
    * @param index The index.
    * @return The {@link EditorPanel}.
    */
+  @SuppressWarnings ( "unchecked" )
   public final EditorPanel getEditorPanel ( int index )
   {
     Component component = getComponentAt ( index );
@@ -61,7 +62,7 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
     {
       return null;
     }
-    return ( ( EditorPanelForm ) component ).getLogic ();
+    return ( EditorPanel ) ( ( GUIClass ) component ).getLogic ();
   }
 
 
@@ -93,6 +94,7 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
    * @return The selected {@link EditorPanel}. Returns null if there is no
    *         currently selected tab.
    */
+  @SuppressWarnings ( "unchecked" )
   public final EditorPanel getSelectedEditorPanel ()
   {
     Component component = getSelectedComponent ();
@@ -100,7 +102,7 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
     {
       return null;
     }
-    return ( ( EditorPanelForm ) component ).getLogic ();
+    return ( EditorPanel ) ( ( GUIClass ) component ).getLogic ();
   }
 
 
@@ -109,13 +111,15 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
    * 
    * @see Iterable#iterator()
    */
+  @SuppressWarnings ( "unchecked" )
   public final Iterator < EditorPanel > iterator ()
   {
     ArrayList < EditorPanel > editorPanelList = new ArrayList < EditorPanel > (
         getComponentCount () );
     for ( Component current : getComponents () )
     {
-      editorPanelList.add ( ( ( EditorPanelForm ) current ).getLogic () );
+      editorPanelList.add ( ( EditorPanel ) ( ( GUIClass ) current )
+          .getLogic () );
     }
     return editorPanelList.iterator ();
   }

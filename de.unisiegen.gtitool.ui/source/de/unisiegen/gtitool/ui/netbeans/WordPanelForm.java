@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
@@ -14,7 +15,8 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class WordPanelForm extends javax.swing.JPanel implements LanguageChangedListener{
+public class WordPanelForm extends JPanel implements LanguageChangedListener
+{
     
     /**
      * The serial version uid.
@@ -32,7 +34,7 @@ public class WordPanelForm extends javax.swing.JPanel implements LanguageChanged
     private Alphabet pushDownAlphabet = null ;
     
     /**
-     * Creates new form WordPanelForm.
+     * Allocates a new {@link WordPanelForm}.
      */
     public WordPanelForm() {
         initComponents();

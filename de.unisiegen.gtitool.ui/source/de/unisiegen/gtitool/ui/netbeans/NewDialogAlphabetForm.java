@@ -1,6 +1,10 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JPanel;
+
+import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.NewDialogAlphabet;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The new dialog alphabet form.
@@ -10,16 +14,37 @@ import de.unisiegen.gtitool.ui.logic.NewDialogAlphabet;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class NewDialogAlphabetForm extends javax.swing.JPanel {
+public class NewDialogAlphabetForm extends JPanel implements GUIClass <NewDialogAlphabet>
+{
     
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = -8070356231677722624L;
 
-    /** Creates new form NewDialogAlphabetForm */
-    public NewDialogAlphabetForm() {
+    /**
+     * The {@link NewDialogAlphabet}.
+     */
+    private NewDialogAlphabet logic;
+    
+    /**
+     * Allocates a new {@link NewDialogAlphabetForm}.
+     * 
+     * @param logic The {@link NewDialogAlphabet}.
+     */
+    public NewDialogAlphabetForm(NewDialogAlphabet logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final NewDialogAlphabet getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -129,9 +154,4 @@ public class NewDialogAlphabetForm extends javax.swing.JPanel {
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButtons;
     // End of variables declaration//GEN-END:variables
     
-    private NewDialogAlphabet logic;
-    
-    public void setLogic( NewDialogAlphabet pLogic ){
-        this.logic = pLogic;
-    }
 }

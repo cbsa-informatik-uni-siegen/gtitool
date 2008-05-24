@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.OpenDialogForm;
 
 
@@ -21,7 +22,7 @@ import de.unisiegen.gtitool.ui.netbeans.OpenDialogForm;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class OpenDialog
+public final class OpenDialog implements LogicClass < OpenDialogForm >
 {
 
   /**
@@ -240,6 +241,17 @@ public final class OpenDialog
   public final File getCurrentDirectory ()
   {
     return this.gui.jGTIFileChooser.getCurrentDirectory ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final OpenDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

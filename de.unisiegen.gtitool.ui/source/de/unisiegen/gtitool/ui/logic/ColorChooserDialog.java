@@ -8,6 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ColorChooserDialogForm;
 
 
@@ -17,7 +18,8 @@ import de.unisiegen.gtitool.ui.netbeans.ColorChooserDialogForm;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class ColorChooserDialog
+public final class ColorChooserDialog implements
+    LogicClass < ColorChooserDialogForm >
 {
 
   /**
@@ -90,6 +92,17 @@ public final class ColorChooserDialog
   public final Color getColor ()
   {
     return this.gui.getColor ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final ColorChooserDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

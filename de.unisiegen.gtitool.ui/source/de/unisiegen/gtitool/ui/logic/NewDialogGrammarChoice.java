@@ -3,6 +3,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.event.ItemEvent;
 
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogGrammarChoiceForm;
 
@@ -13,7 +14,8 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogGrammarChoiceForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class NewDialogGrammarChoice
+public final class NewDialogGrammarChoice implements
+    LogicClass < NewDialogGrammarChoiceForm >
 {
 
   /**
@@ -57,17 +59,16 @@ public final class NewDialogGrammarChoice
   public NewDialogGrammarChoice ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogGrammarChoiceForm ();
-    this.gui.setLogic ( this );
+    this.gui = new NewDialogGrammarChoiceForm ( this );
   }
 
 
   /**
-   * Getter for the gui of this logic class.
+   * {@inheritDoc}
    * 
-   * @return The {@link NewDialogGrammarChoiceForm}.
+   * @see LogicClass#getGUI()
    */
-  public final NewDialogGrammarChoiceForm getGui ()
+  public final NewDialogGrammarChoiceForm getGUI ()
   {
     return this.gui;
   }
@@ -89,7 +90,7 @@ public final class NewDialogGrammarChoice
    */
   public final void handleCancel ()
   {
-    this.parent.getGui ().dispose ();
+    this.parent.getGUI ().dispose ();
   }
 
 

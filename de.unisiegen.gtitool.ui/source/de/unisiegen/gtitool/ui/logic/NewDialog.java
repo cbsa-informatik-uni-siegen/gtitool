@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.GridBagConstraints;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
@@ -12,7 +11,8 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.machines.enfa.DefaultENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.pda.DefaultPDA;
-import de.unisiegen.gtitool.ui.EditorPanel;
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
@@ -26,7 +26,7 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class NewDialog
+public final class NewDialog implements LogicClass < NewDialogForm >
 {
 
   /**
@@ -107,11 +107,11 @@ public final class NewDialog
 
 
   /**
-   * Getter for the gui of this logic class
+   * {@inheritDoc}
    * 
-   * @return The {@link JDialog}
+   * @see LogicClass#getGUI()
    */
-  public final JDialog getGui ()
+  public final NewDialogForm getGUI ()
   {
     return this.gui;
   }
@@ -125,14 +125,14 @@ public final class NewDialog
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.MACHINE ) )
     {
-      this.machineChoice.getGui ().setVisible ( true );
+      this.machineChoice.getGUI ().setVisible ( true );
     }
     else
     {
-      this.grammarChoice.getGui ().setVisible ( true );
+      this.grammarChoice.getGUI ().setVisible ( true );
     }
-    this.newDialogAlphabet.getGui ().setVisible ( false );
-    this.newDialogTerminal.getGui ().setVisible ( false );
+    this.newDialogAlphabet.getGUI ().setVisible ( false );
+    this.newDialogTerminal.getGUI ().setVisible ( false );
 
   }
 
@@ -222,8 +222,8 @@ public final class NewDialog
    */
   public final void handleNextGrammarChoice ()
   {
-    this.newDialogTerminal.getGui ().setVisible ( true );
-    this.grammarChoice.getGui ().setVisible ( false );
+    this.newDialogTerminal.getGUI ().setVisible ( true );
+    this.grammarChoice.getGUI ().setVisible ( false );
   }
 
 
@@ -232,8 +232,8 @@ public final class NewDialog
    */
   public final void handleNextMachineChoice ()
   {
-    this.newDialogAlphabet.getGui ().setVisible ( true );
-    this.machineChoice.getGui ().setVisible ( false );
+    this.newDialogAlphabet.getGUI ().setVisible ( true );
+    this.machineChoice.getGUI ().setVisible ( false );
   }
 
 
@@ -245,13 +245,13 @@ public final class NewDialog
     if ( this.newDialogChoice.getUserChoice ().equals (
         NewDialogChoice.Choice.MACHINE ) )
     {
-      this.machineChoice.getGui ().setVisible ( true );
+      this.machineChoice.getGUI ().setVisible ( true );
     }
     else
     {
-      this.grammarChoice.getGui ().setVisible ( true );
+      this.grammarChoice.getGUI ().setVisible ( true );
     }
-    this.newDialogChoice.getGui ().setVisible ( false );
+    this.newDialogChoice.getGUI ().setVisible ( false );
 
   }
 
@@ -261,8 +261,8 @@ public final class NewDialog
    */
   public final void handlePreviousGrammarChoice ()
   {
-    this.newDialogChoice.getGui ().setVisible ( true );
-    this.grammarChoice.getGui ().setVisible ( false );
+    this.newDialogChoice.getGUI ().setVisible ( true );
+    this.grammarChoice.getGUI ().setVisible ( false );
   }
 
 
@@ -271,8 +271,8 @@ public final class NewDialog
    */
   public final void handlePreviousMachineChoice ()
   {
-    this.newDialogChoice.getGui ().setVisible ( true );
-    this.machineChoice.getGui ().setVisible ( false );
+    this.newDialogChoice.getGUI ().setVisible ( true );
+    this.machineChoice.getGUI ().setVisible ( false );
 
   }
 
@@ -282,8 +282,7 @@ public final class NewDialog
    */
   private final void initialize ()
   {
-    this.gui = new NewDialogForm ( this.mainWindowForm, true );
-    this.gui.setLogic ( this );
+    this.gui = new NewDialogForm ( this, this.mainWindowForm );
     this.newDialogChoice = new NewDialogChoice ( this );
     this.machineChoice = new NewDialogMachineChoice ( this );
     this.grammarChoice = new NewDialogGrammarChoice ( this );
@@ -297,20 +296,20 @@ public final class NewDialog
     this.gridBagConstraints.weighty = 1;
     this.gridBagConstraints.fill = GridBagConstraints.BOTH;
 
-    this.gui.jGTIPanelBody.add ( this.newDialogChoice.getGui (),
+    this.gui.jGTIPanelBody.add ( this.newDialogChoice.getGUI (),
         this.gridBagConstraints );
-    this.gui.jGTIPanelBody.add ( this.grammarChoice.getGui (),
+    this.gui.jGTIPanelBody.add ( this.grammarChoice.getGUI (),
         this.gridBagConstraints );
-    this.grammarChoice.getGui ().setVisible ( false );
-    this.gui.jGTIPanelBody.add ( this.machineChoice.getGui (),
+    this.grammarChoice.getGUI ().setVisible ( false );
+    this.gui.jGTIPanelBody.add ( this.machineChoice.getGUI (),
         this.gridBagConstraints );
-    this.machineChoice.getGui ().setVisible ( false );
-    this.gui.jGTIPanelBody.add ( this.newDialogAlphabet.getGui (),
+    this.machineChoice.getGUI ().setVisible ( false );
+    this.gui.jGTIPanelBody.add ( this.newDialogAlphabet.getGUI (),
         this.gridBagConstraints );
-    this.newDialogAlphabet.getGui ().setVisible ( false );
-    this.gui.jGTIPanelBody.add ( this.newDialogTerminal.getGui (),
+    this.newDialogAlphabet.getGUI ().setVisible ( false );
+    this.gui.jGTIPanelBody.add ( this.newDialogTerminal.getGUI (),
         this.gridBagConstraints );
-    this.newDialogTerminal.getGui ().setVisible ( false );
+    this.newDialogTerminal.getGUI ().setVisible ( false );
   }
 
 

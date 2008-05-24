@@ -18,7 +18,6 @@ import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
@@ -146,8 +145,8 @@ public final class ProductionPopupMenu extends JPopupMenu
       {
 
         JFrame window = ( JFrame ) SwingUtilities
-            .getWindowAncestor ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
-                .getGui () );
+            .getWindowAncestor ( ProductionPopupMenu.this.grammarPanel
+                .getGUI () );
         ProductionDialog productionDialog = new ProductionDialog ( window,
             ProductionPopupMenu.this.model.getGrammar ()
                 .getNonterminalSymbolSet (), ProductionPopupMenu.this.model
@@ -209,8 +208,7 @@ public final class ProductionPopupMenu extends JPopupMenu
           ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ().addItem (
               item );
 
-          ( ( GrammarPanelForm ) ProductionPopupMenu.this.grammarPanel
-              .getGui () ).repaint ();
+          ProductionPopupMenu.this.grammarPanel.getGUI ().repaint ();
         }
       }
     } );

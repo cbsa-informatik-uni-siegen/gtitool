@@ -1,25 +1,49 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JPanel;
+
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
- * The Forms file for the {@link MachinePanel}
+ * The {@link MachinePanelForm}.
  *
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelForm{
+public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
+{
     
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = -6408224101983628704L;
 
-    /** Creates new form MachinesPanelForm */
-    public MachinePanelForm() {
+    /**
+     * The {@link MachinePanel}.
+     */
+    private MachinePanel logic;
+    
+    /**
+     * Allocates a new {@link MachinePanelForm}.
+     * 
+     * @param logic The {@link MachinePanel}.
+     */
+    public MachinePanelForm(MachinePanel logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final MachinePanel getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -237,16 +261,4 @@ public class MachinePanelForm extends javax.swing.JPanel implements EditorPanelF
     public de.unisiegen.gtitool.ui.netbeans.WordPanelForm wordPanel;
     // End of variables declaration//GEN-END:variables
     
-    
-    private MachinePanel logic;
-    
-    public void setMachinePanel (MachinePanel window){
-        logic = window;
-    }
-    
-    public MachinePanel getLogic(){
-      return this.logic;
-    }
 }
-
-

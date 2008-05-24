@@ -30,17 +30,17 @@ import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.RecentlyUsedMenuItem;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -48,6 +48,7 @@ import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
+import de.unisiegen.gtitool.ui.utils.RecentlyUsedMenuItem;
 
 
 /**
@@ -57,7 +58,8 @@ import de.unisiegen.gtitool.ui.utils.LayoutManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class MainWindow implements LanguageChangedListener
+public final class MainWindow implements LogicClass < MainWindowForm >,
+    LanguageChangedListener
 {
 
   /**
@@ -740,12 +742,11 @@ public final class MainWindow implements LanguageChangedListener
 
 
   /**
-   * Returns the gui.
+   * {@inheritDoc}
    * 
-   * @return The gui.
-   * @see #gui
+   * @see LogicClass#getGUI()
    */
-  public final MainWindowForm getGui ()
+  public final MainWindowForm getGUI ()
   {
     return this.gui;
   }

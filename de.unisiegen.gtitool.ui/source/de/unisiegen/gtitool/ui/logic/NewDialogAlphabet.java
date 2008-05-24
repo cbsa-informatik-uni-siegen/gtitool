@@ -2,6 +2,7 @@ package de.unisiegen.gtitool.ui.logic;
 
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -14,7 +15,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class NewDialogAlphabet
+public final class NewDialogAlphabet implements
+    LogicClass < NewDialogAlphabetForm >
 {
 
   /**
@@ -37,8 +39,7 @@ public final class NewDialogAlphabet
   public NewDialogAlphabet ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogAlphabetForm ();
-    this.gui.setLogic ( this );
+    this.gui = new NewDialogAlphabetForm ( this );
     this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
         .setText ( PreferenceManager.getInstance ().getAlphabetItem ()
             .getAlphabet () );
@@ -90,11 +91,11 @@ public final class NewDialogAlphabet
 
 
   /**
-   * Getter for the gui of this logic class.
+   * {@inheritDoc}
    * 
-   * @return The {@link NewDialogAlphabetForm}.
+   * @see LogicClass#getGUI()
    */
-  public final NewDialogAlphabetForm getGui ()
+  public final NewDialogAlphabetForm getGUI ()
   {
     return this.gui;
   }
@@ -129,7 +130,7 @@ public final class NewDialogAlphabet
    */
   public final void handleCancel ()
   {
-    this.parent.getGui ().dispose ();
+    this.parent.getGUI ().dispose ();
   }
 
 

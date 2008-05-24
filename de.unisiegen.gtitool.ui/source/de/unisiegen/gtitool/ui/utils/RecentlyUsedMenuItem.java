@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.netbeans.helperclasses;
+package de.unisiegen.gtitool.ui.utils;
 
 
 import java.awt.event.ActionEvent;

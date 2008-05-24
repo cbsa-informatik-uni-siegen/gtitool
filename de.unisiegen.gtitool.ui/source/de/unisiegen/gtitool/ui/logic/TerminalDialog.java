@@ -13,6 +13,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.TerminalDialogForm;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -21,9 +22,10 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The logic class for the create new transition dialog.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public final class TerminalDialog
+public final class TerminalDialog implements LogicClass < TerminalDialogForm >
 {
 
   /**
@@ -105,6 +107,17 @@ public final class TerminalDialog
             setButtonStatus ();
           }
         } );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final TerminalDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

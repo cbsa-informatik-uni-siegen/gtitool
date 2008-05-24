@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JPanel;
+
 import de.unisiegen.gtitool.ui.logic.NewDialogGrammarChoice;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The new dialog choice form.
@@ -8,19 +11,37 @@ import de.unisiegen.gtitool.ui.logic.NewDialogGrammarChoice;
  * @author Benjamin Mies
  * @version $Id$
  */
-@SuppressWarnings({ "all" })
-public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
-    
+@SuppressWarnings ({ "all" })
+public class NewDialogGrammarChoiceForm extends JPanel implements
+    GUIClass < NewDialogGrammarChoice >
+{
+
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = 5573593212620914155L;
 
     /**
-     * Creates new form NewDialogGrammarChoiceForm 
+     * The {@link NewDialogGrammarChoice}.
      */
-    public NewDialogGrammarChoiceForm() {
+    private NewDialogGrammarChoice logic;
+    
+    /**
+     * Allocates a new {@link NewDialogGrammarChoiceForm}.
+     */
+    public NewDialogGrammarChoiceForm(NewDialogGrammarChoice logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final NewDialogGrammarChoice getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -198,9 +219,4 @@ public class NewDialogGrammarChoiceForm extends javax.swing.JPanel {
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioRegularGrammar;
     // End of variables declaration//GEN-END:variables
     
-    private NewDialogGrammarChoice logic;
-    
-    public void setLogic ( NewDialogGrammarChoice pLogic ) {
-      this.logic = pLogic;
-    }
 }

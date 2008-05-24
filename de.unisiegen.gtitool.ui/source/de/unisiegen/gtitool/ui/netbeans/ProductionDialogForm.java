@@ -1,19 +1,21 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
-import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
- * The transition dialog.
+ * The production dialog form.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class ProductionDialogForm extends javax.swing.JDialog {
+public class ProductionDialogForm extends JDialog implements GUIClass <ProductionDialog>
+{
     
    /**
     * The serial version uid.
@@ -26,15 +28,25 @@ public class ProductionDialogForm extends javax.swing.JDialog {
     private ProductionDialog logic;
     
     /**
-     * Creates new form {@link ProductionDialog}.
+     * Allocates a new {@link ProductionDialogForm}.
      * 
      * @param logic The {@link ProductionDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public ProductionDialogForm(ProductionDialog logic, java.awt.Frame parent) {
+    public ProductionDialogForm(ProductionDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final ProductionDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

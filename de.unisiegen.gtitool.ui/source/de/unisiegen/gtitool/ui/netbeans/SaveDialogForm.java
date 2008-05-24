@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.SaveDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The {@link SaveDialogForm}.
@@ -11,7 +13,8 @@ import de.unisiegen.gtitool.ui.logic.SaveDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class SaveDialogForm extends javax.swing.JDialog {
+public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
+{
   
   /**
    * The serial version uid.
@@ -26,17 +29,27 @@ public class SaveDialogForm extends javax.swing.JDialog {
 
 
   /**
-   * Creates new form {@link SaveDialog}.
+   * Allocates a new {@link SaveDialogForm}.
    * 
    * @param logic The {@link SaveDialog}.
-   * @param parent The parent {@link Frame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public SaveDialogForm ( SaveDialog logic, java.awt.Frame parent )
+  public SaveDialogForm ( SaveDialog logic, JFrame parent )
   {
     super ( parent, true );
     this.logic = logic ;
     initComponents ();
     this.jGTIFileChooser.setSaveDialog ( this.logic );
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see GUIClass#getLogic()
+   */
+  public final SaveDialog getLogic ()
+  {
+    return this.logic;
   }
     
     /** This method is called from within the constructor to

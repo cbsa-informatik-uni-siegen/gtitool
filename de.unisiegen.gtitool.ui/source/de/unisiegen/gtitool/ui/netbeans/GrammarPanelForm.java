@@ -1,27 +1,48 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import de.unisiegen.gtitool.ui.EditorPanel;
+import javax.swing.JPanel;
+
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
+import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
-import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
+ * The {@link GrammarPanelForm}
  *
  * @author Benjamin Mies
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelForm{
+public class GrammarPanelForm extends JPanel implements GUIClass <GrammarPanel>
+{
     
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = -505151111103641215L;
     
+    /**
+     * The {@link GrammarPanel}.
+     */
+    private GrammarPanel logic;
     
-    /** Creates new form GrammarPanelForm */
-    public GrammarPanelForm() {
+    /**
+     * Allocates a new {@link GrammarPanelForm}.
+     */
+    public GrammarPanelForm(GrammarPanel logic) {
+        this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final GrammarPanel getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to
@@ -164,15 +185,5 @@ public class GrammarPanelForm extends javax.swing.JPanel implements EditorPanelF
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableGrammar;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableWarnings;
     // End of variables declaration//GEN-END:variables
-    
 
-    private GrammarPanel logic;
-    
-    public void setGrammarPanel (GrammarPanel window){
-        logic = window;
-    }
-    
-    public GrammarPanel getLogic(){
-      return this.logic;
-    }
 }

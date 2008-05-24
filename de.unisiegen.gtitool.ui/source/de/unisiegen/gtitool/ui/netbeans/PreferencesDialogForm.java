@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
@@ -12,7 +15,8 @@ import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class PreferencesDialogForm extends javax.swing.JDialog {
+public class PreferencesDialogForm extends JDialog implements GUIClass <PreferencesDialog>
+{
     
     /**
      * The serial version uid.
@@ -25,15 +29,25 @@ public class PreferencesDialogForm extends javax.swing.JDialog {
     private PreferencesDialog logic ;
     
     /**
-     * Creates new form PreferenceDialog
+     * Allocates a new {@link PreferencesDialogForm}
      * 
      * @param logic The {@link PreferencesDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public PreferencesDialogForm(PreferencesDialog logic, Frame parent) {
+    public PreferencesDialogForm(PreferencesDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final PreferencesDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

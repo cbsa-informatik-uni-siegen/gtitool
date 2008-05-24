@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.logic;
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.InfoDialogForm;
 
 
@@ -13,8 +14,19 @@ import de.unisiegen.gtitool.ui.netbeans.InfoDialogForm;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class InfoDialog
+public final class InfoDialog implements LogicClass < InfoDialogForm >
 {
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final InfoDialogForm getGUI ()
+  {
+    return this.gui;
+  }
+
 
   /**
    * The {@link Logger} for this class.

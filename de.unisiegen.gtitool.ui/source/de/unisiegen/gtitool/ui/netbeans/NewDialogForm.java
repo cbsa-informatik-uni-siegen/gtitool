@@ -1,6 +1,11 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.NewDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
@@ -10,29 +15,40 @@ import de.unisiegen.gtitool.ui.logic.NewDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class NewDialogForm extends javax.swing.JDialog {
+public class NewDialogForm extends JDialog implements GUIClass <NewDialog>
+{
 
   /**
    * The serial version uid.
    */
   private static final long serialVersionUID = 5230055486510640010L;
 
-  //
-  // Constructor
-  //
   
   /**
-   * Allocates a new {@link NewDialogForm} instance.
-   *
-   * @param parent the parent frame.
-   * @param modal true to display the wizard modal
-   *              for the parent.
+   * The {@link NewDialog}.
    */
-  public NewDialogForm(java.awt.Frame parent, boolean modal) {
-    super(parent, modal);
-    
+  private NewDialog logic ;
+  
+  /**
+   * Allocates a new {@link NewDialogForm}.
+   *
+   * @param logic The {@link NewDialog}.
+   * @param parent The parent {@link JFrame}.
+   */
+  public NewDialogForm(NewDialog logic, JFrame parent) {
+    super(parent, true);
+    this.logic = logic;    
     initComponents();
-   
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see GUIClass#getLogic()
+   */
+  public final NewDialog getLogic ()
+  {
+    return this.logic;
   }
   
   /** This method is called from within the constructor to
@@ -122,15 +138,4 @@ public class NewDialogForm extends javax.swing.JDialog {
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelHeader;
     // End of variables declaration//GEN-END:variables
     
-    private NewDialog logic;
-    
-    private boolean canceled = true;
-    
-    public void setLogic( NewDialog pLogic){
-        this.logic = pLogic;
-    }
-    
-    public boolean isCanceled(){
-        return this.canceled;
-    }
 }

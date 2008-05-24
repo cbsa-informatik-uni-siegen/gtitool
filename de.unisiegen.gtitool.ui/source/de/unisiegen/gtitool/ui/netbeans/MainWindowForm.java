@@ -14,6 +14,7 @@ import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;
 import de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane;
@@ -26,7 +27,8 @@ import de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class MainWindowForm extends JFrame {
+public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
+{
  
     /**
      * The serial version uid.
@@ -48,6 +50,16 @@ public class MainWindowForm extends JFrame {
     public MainWindowForm(MainWindow logic) {
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final MainWindow getLogic ()
+    {
+      return this.logic;
     }
     
     /**
@@ -825,18 +837,6 @@ public class MainWindowForm extends JFrame {
       return this.jSeparatorNavigation;
     }
 
-    /**
-     * 
-     * Get the logic class for this gui class
-     *
-     * @return the logic class for this gui class
-     */
-    public MainWindow getLogic()
-    {
-      return this.logic;
-    }
-    
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

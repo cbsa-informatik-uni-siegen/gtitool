@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.netbeans.ProductionDialogForm;
 import de.unisiegen.gtitool.ui.redoundo.ProductionChangedItem;
@@ -28,9 +29,11 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The logic class for the create new production dialog.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
-public final class ProductionDialog
+public final class ProductionDialog implements
+    LogicClass < ProductionDialogForm >
 {
 
   /**
@@ -325,6 +328,17 @@ public final class ProductionDialog
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final ProductionDialogForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  /**
    * Handles dialog canceled.
    */
   public final void handleCancel ()
@@ -383,8 +397,8 @@ public final class ProductionDialog
       this.oldProduction.setNonterminalSymbol ( production
           .getNonterminalSymbol () );
       this.oldProduction.setProductionWord ( production.getProductionWord () );
-      
-      this.model.getGrammar ().updateStartSymbol();
+
+      this.model.getGrammar ().updateStartSymbol ();
     }
     else
     {

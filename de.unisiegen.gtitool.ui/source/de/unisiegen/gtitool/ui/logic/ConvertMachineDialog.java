@@ -31,6 +31,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
@@ -44,7 +45,8 @@ import de.unisiegen.gtitool.ui.utils.LayoutManager;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class ConvertMachineDialog implements Converter
+public final class ConvertMachineDialog implements
+    LogicClass < ConvertMachineDialogForm >, Converter
 {
 
   /**
@@ -845,6 +847,17 @@ public final class ConvertMachineDialog implements Converter
   MachineType machineType )
   {
     show ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final ConvertMachineDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

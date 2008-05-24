@@ -1,8 +1,11 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.OpenDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The {@link OpenDialogForm}.
@@ -11,7 +14,8 @@ import de.unisiegen.gtitool.ui.logic.OpenDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class OpenDialogForm extends javax.swing.JDialog {
+public class OpenDialogForm extends JDialog implements GUIClass<OpenDialog>
+{
   
   /**
    * The serial version uid.
@@ -26,17 +30,27 @@ public class OpenDialogForm extends javax.swing.JDialog {
 
 
   /**
-   * Creates new form {@link OpenDialog}.
+   * Allocates a new {@link OpenDialogForm}.
    * 
    * @param logic The {@link OpenDialog}.
-   * @param parent The parent {@link Frame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public OpenDialogForm ( OpenDialog logic, java.awt.Frame parent )
+  public OpenDialogForm (OpenDialog logic, JFrame parent )
   {
     super ( parent, true );
     this.logic = logic ;
     initComponents ();
     this.jGTIFileChooser.setOpenDialog ( this.logic );
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see GUIClass#getLogic()
+   */
+  public final OpenDialog getLogic ()
+  {
+    return this.logic;
   }
     
     /** This method is called from within the constructor to

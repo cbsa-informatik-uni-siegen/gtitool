@@ -7,6 +7,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogMachineChoiceForm;
 
@@ -17,7 +18,8 @@ import de.unisiegen.gtitool.ui.netbeans.NewDialogMachineChoiceForm;
  * @author Benjamin Mies
  * @version $Id$
  */
-public final class NewDialogMachineChoice
+public final class NewDialogMachineChoice implements
+    LogicClass < NewDialogMachineChoiceForm >
 {
 
   /**
@@ -73,17 +75,16 @@ public final class NewDialogMachineChoice
   public NewDialogMachineChoice ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogMachineChoiceForm ();
-    this.gui.setLogic ( this );
+    this.gui = new NewDialogMachineChoiceForm ( this );
   }
 
 
   /**
-   * Getter for the gui of this logic class.
+   * {@inheritDoc}
    * 
-   * @return The {@link NewDialogMachineChoiceForm}.
+   * @see LogicClass#getGUI()
    */
-  public final NewDialogMachineChoiceForm getGui ()
+  public final NewDialogMachineChoiceForm getGUI ()
   {
     return this.gui;
   }
@@ -105,7 +106,7 @@ public final class NewDialogMachineChoice
    */
   public final void handleCancel ()
   {
-    this.parent.getGui ().dispose ();
+    this.parent.getGUI ().dispose ();
   }
 
 

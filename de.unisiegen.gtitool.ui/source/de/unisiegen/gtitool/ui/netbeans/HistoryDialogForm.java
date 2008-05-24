@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.HistoryDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
@@ -12,7 +14,8 @@ import de.unisiegen.gtitool.ui.logic.HistoryDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class HistoryDialogForm extends javax.swing.JDialog {
+public class HistoryDialogForm extends JDialog implements GUIClass <HistoryDialog>
+{
     
     /**
      * The serial version uid.
@@ -25,15 +28,25 @@ public class HistoryDialogForm extends javax.swing.JDialog {
     private HistoryDialog logic ;
     
     /**
-     * Creates new form {@link HistoryDialog}.
+     * Allocates a new {@link HistoryDialogForm}.
      * 
      * @param logic The {@link HistoryDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public HistoryDialogForm(HistoryDialog logic, java.awt.Frame parent) {
+    public HistoryDialogForm(HistoryDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic ;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final HistoryDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

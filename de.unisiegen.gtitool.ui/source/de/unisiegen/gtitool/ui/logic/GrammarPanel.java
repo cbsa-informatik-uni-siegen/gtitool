@@ -34,12 +34,13 @@ import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.ui.EditorPanel;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.convert.ConvertContextFreeGrammar;
 import de.unisiegen.gtitool.ui.convert.ConvertRegularGrammar;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
@@ -47,7 +48,6 @@ import de.unisiegen.gtitool.ui.model.GrammarColumnModel;
 import de.unisiegen.gtitool.ui.model.GrammarConsoleTableModel;
 import de.unisiegen.gtitool.ui.netbeans.GrammarPanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
-import de.unisiegen.gtitool.ui.netbeans.helperclasses.EditorPanelForm;
 import de.unisiegen.gtitool.ui.popup.ProductionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
@@ -65,7 +65,9 @@ import de.unisiegen.gtitool.ui.swing.dnd.JGTITableTransferHandler;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class GrammarPanel implements EditorPanel
+public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
+    EditorPanel
+
 {
 
   /**
@@ -153,8 +155,7 @@ public final class GrammarPanel implements EditorPanel
     this.mainWindowForm = mainWindowForm;
     this.model = model;
     this.file = file;
-    this.gui = new GrammarPanelForm ();
-    this.gui.setGrammarPanel ( this );
+    this.gui = new GrammarPanelForm ( this );
     this.grammar = this.model.getGrammar ();
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
@@ -335,6 +336,21 @@ public final class GrammarPanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getConverter()
+   */
+  public Converter getConverter ()
+  {
+    if ( this.grammar instanceof RG )
+    {
+      return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
+    }
+    return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see EditorPanel#getFile()
    */
   public final File getFile ()
@@ -369,9 +385,9 @@ public final class GrammarPanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getGui()
+   * @see LogicClass#getGUI()
    */
-  public final EditorPanelForm getGui ()
+  public final GrammarPanelForm getGUI ()
   {
     return this.gui;
   }
@@ -380,7 +396,7 @@ public final class GrammarPanel implements EditorPanel
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getJTabbedPaneConsole()
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel#getJTabbedPaneConsole()
    */
   public final JTabbedPane getJTabbedPaneConsole ()
   {
@@ -1092,9 +1108,12 @@ public final class GrammarPanel implements EditorPanel
     fireModifyStatusChanged ( false );
 
     boolean changed = false;
-    
-    for ( int i = 0 ; i < oldProductions.size () ; i++){
-      if (!this.grammar.getProductionAt ( i ).equals ( oldProductions.get ( i ) )){
+
+    for ( int i = 0 ; i < oldProductions.size () ; i++ )
+    {
+      if ( !this.grammar.getProductionAt ( i )
+          .equals ( oldProductions.get ( i ) ) )
+      {
         changed = true;
         break;
       }
@@ -1164,20 +1183,5 @@ public final class GrammarPanel implements EditorPanel
       this.gui.jGTISplitPaneConsole.setRightComponent ( null );
       this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
     }
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.EditorPanel#getConverter()
-   */
-  public Converter getConverter ()
-  {
-    if ( this.grammar instanceof RG )
-    {
-      return new ConvertRegularGrammar ( this.mainWindowForm, this.grammar );
-    }
-    return new ConvertContextFreeGrammar ( this.mainWindowForm, this.grammar );
   }
 }

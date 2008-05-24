@@ -1,19 +1,20 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.ui.logic.AboutDialog;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The {@link StateConfigDialogForm}.
- * 
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class StateConfigDialogForm extends javax.swing.JDialog {
+public class StateConfigDialogForm extends JDialog implements GUIClass<StateConfigDialog>
+{
     
     /**
      * The serial version uid.
@@ -26,16 +27,25 @@ public class StateConfigDialogForm extends javax.swing.JDialog {
     private StateConfigDialog logic ;
     
     /**
-     * Creates new form {@link StateConfigDialogForm}
+     * Allocates a new {@link StateConfigDialogForm}.
      * 
-     * 
-     * @param logic The {@link AboutDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param logic The {@link StateConfigDialog}.
+     * @param parent The parent {@link JFrame}.
      */
-    public StateConfigDialogForm(StateConfigDialog logic, java.awt.Frame parent) {
+    public StateConfigDialogForm(StateConfigDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final StateConfigDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

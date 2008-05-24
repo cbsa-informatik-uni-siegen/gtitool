@@ -1,9 +1,12 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.AboutDialog;
+import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.ExchangeDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The {@link ExchangeDialogForm}.
@@ -12,7 +15,8 @@ import de.unisiegen.gtitool.ui.logic.ExchangeDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class ExchangeDialogForm extends javax.swing.JDialog {
+public class ExchangeDialogForm extends JDialog implements GUIClass <ExchangeDialog>
+{
     
   /**
    * The serial version uid.
@@ -27,16 +31,26 @@ public class ExchangeDialogForm extends javax.swing.JDialog {
 
 
   /**
-   * Creates new form {@link ExchangeDialog}.
+   * Creates new {@link ExchangeDialogForm}.
    * 
    * @param logic The {@link ExchangeDialog}.
-   * @param parent The parent {@link Frame}.
+   * @param parent The parent {@link JFrame}.
    */
-  public ExchangeDialogForm ( ExchangeDialog logic, java.awt.Frame parent )
+  public ExchangeDialogForm ( ExchangeDialog logic, JFrame parent )
   {
     super ( parent, true );
     this.logic = logic;
     initComponents ();
+  }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see GUIClass#getLogic()
+   */
+  public final ExchangeDialog getLogic ()
+  {
+    return this.logic;
   }
     
     /** This method is called from within the constructor to

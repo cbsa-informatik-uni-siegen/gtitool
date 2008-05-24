@@ -1,8 +1,12 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
+import de.unisiegen.gtitool.ui.logic.AboutDialog;
+import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
@@ -12,7 +16,8 @@ import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class ConvertMachineDialogForm extends javax.swing.JDialog {
+public class ConvertMachineDialogForm extends JDialog implements GUIClass <ConvertMachineDialog>
+{
     
     /**
      * The serial version uid.
@@ -25,15 +30,25 @@ public class ConvertMachineDialogForm extends javax.swing.JDialog {
     private ConvertMachineDialog logic ;
     
     /**
-     * Creates new form {@link ConvertMachineDialog}.
+     * Allocates a new {@link ConvertMachineDialog}.
      * 
      * @param logic The {@link ConvertMachineDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public ConvertMachineDialogForm(ConvertMachineDialog logic, Frame parent) {
+    public ConvertMachineDialogForm(ConvertMachineDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic ;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final ConvertMachineDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

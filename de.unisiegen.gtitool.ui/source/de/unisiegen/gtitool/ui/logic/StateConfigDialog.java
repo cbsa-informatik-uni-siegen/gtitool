@@ -8,6 +8,7 @@ import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.StateConfigDialogForm;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
@@ -20,7 +21,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class StateConfigDialog
+public final class StateConfigDialog implements
+    LogicClass < StateConfigDialogForm >
 {
 
   /**
@@ -131,6 +133,17 @@ public final class StateConfigDialog
             }
           }
         } );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final StateConfigDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

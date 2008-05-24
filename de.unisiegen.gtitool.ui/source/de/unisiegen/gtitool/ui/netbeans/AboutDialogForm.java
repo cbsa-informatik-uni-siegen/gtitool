@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.AboutDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
@@ -12,28 +14,39 @@ import de.unisiegen.gtitool.ui.logic.AboutDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class AboutDialogForm extends javax.swing.JDialog {
-    
+public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
+{
+
     /**
      * The serial version uid.
      */
     private static final long serialVersionUID = 8264731535784921404L;
-    
+
     /**
      * The {@link AboutDialog}.
      */
     private AboutDialog logic ;
-    
+
     /**
-     * Creates new form {@link AboutDialog}.
+     * Allocates a new {@link AboutDialogForm}.
      * 
      * @param logic The {@link AboutDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public AboutDialogForm(AboutDialog logic, java.awt.Frame parent) {
+    public AboutDialogForm(AboutDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic ;
         initComponents();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final AboutDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

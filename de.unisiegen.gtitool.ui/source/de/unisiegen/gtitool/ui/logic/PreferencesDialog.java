@@ -47,6 +47,7 @@ import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
@@ -63,7 +64,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class PreferencesDialog implements LanguageChangedListener
+public final class PreferencesDialog implements
+    LogicClass < PreferencesDialogForm >, LanguageChangedListener
 {
 
   /**
@@ -949,6 +951,17 @@ public final class PreferencesDialog implements LanguageChangedListener
     this.gui = new PreferencesDialogForm ( this, parent );
     init ();
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final PreferencesDialogForm getGUI ()
+  {
+    return this.gui;
   }
 
 

@@ -5,6 +5,7 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogAlphabetForm;
 import de.unisiegen.gtitool.ui.netbeans.NewDialogTerminalForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -18,7 +19,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class NewDialogTerminal
+public final class NewDialogTerminal implements
+    LogicClass < NewDialogTerminalForm >
 {
 
   /**
@@ -41,8 +43,7 @@ public final class NewDialogTerminal
   public NewDialogTerminal ( NewDialog parent )
   {
     this.parent = parent;
-    this.gui = new NewDialogTerminalForm ();
-    this.gui.setLogic ( this );
+    this.gui = new NewDialogTerminalForm (this);
 
     this.gui.terminalPanelForm.setNonterminalSymbolSet ( PreferenceManager
         .getInstance ().getNonterminalSymbolSetItem ()
@@ -91,13 +92,47 @@ public final class NewDialogTerminal
 
 
   /**
-   * Getter for the gui of this logic class.
+   * Returns the {@link TerminalSymbolSet}.
    * 
-   * @return The {@link NewDialogAlphabetForm}.
+   * @return the {@link TerminalSymbolSet}
    */
-  public final NewDialogTerminalForm getGui ()
+  public TerminalSymbolSet geTerminalSymbolSet ()
+  {
+    return this.gui.terminalPanelForm.getTerminalSymbolSet ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final NewDialogTerminalForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the {@link NonterminalSymbolSet}.
+   * 
+   * @return the {@link NonterminalSymbolSet}.
+   */
+  public NonterminalSymbolSet getNonterminalSymbolSet ()
+  {
+    return this.gui.terminalPanelForm.getNonterminalSymbolSet ();
+  }
+
+
+  /**
+   * Returns the start symbol.
+   * 
+   * @return Returns the start symbol.
+   */
+  public NonterminalSymbol getStartSymbol ()
+  {
+    return this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
+        .getParsedObject ();
   }
 
 
@@ -107,7 +142,7 @@ public final class NewDialogTerminal
 
   public final void handleCancel ()
   {
-    this.parent.getGui ().dispose ();
+    this.parent.getGUI ().dispose ();
   }
 
 
@@ -131,28 +166,6 @@ public final class NewDialogTerminal
 
 
   /**
-   * Returns the {@link NonterminalSymbolSet}.
-   * 
-   * @return the {@link NonterminalSymbolSet}.
-   */
-  public NonterminalSymbolSet getNonterminalSymbolSet ()
-  {
-    return this.gui.terminalPanelForm.getNonterminalSymbolSet ();
-  }
-
-
-  /**
-   * Returns the {@link TerminalSymbolSet}.
-   * 
-   * @return the {@link TerminalSymbolSet}
-   */
-  public TerminalSymbolSet geTerminalSymbolSet ()
-  {
-    return this.gui.terminalPanelForm.getTerminalSymbolSet ();
-  }
-
-
-  /**
    * Sets the status of the buttons.
    */
   public final void setButtonStatus ()
@@ -170,17 +183,5 @@ public final class NewDialogTerminal
     {
       this.gui.jGTIButtonFinished.setEnabled ( true );
     }
-  }
-
-
-  /**
-   * Returns the start symbol.
-   * 
-   * @return Returns the start symbol.
-   */
-  public NonterminalSymbol getStartSymbol ()
-  {
-    return this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
-        .getParsedObject ();
   }
 }

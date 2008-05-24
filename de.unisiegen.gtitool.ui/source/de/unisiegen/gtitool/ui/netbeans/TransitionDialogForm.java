@@ -1,8 +1,10 @@
 package de.unisiegen.gtitool.ui.netbeans;
 
-import java.awt.Frame;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.ui.logic.TransitionDialog;
+import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 /**
  * The transition dialog.
@@ -12,7 +14,8 @@ import de.unisiegen.gtitool.ui.logic.TransitionDialog;
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class TransitionDialogForm extends javax.swing.JDialog {
+public class TransitionDialogForm extends JDialog implements GUIClass <TransitionDialog>
+{
     
    /**
     * The serial version uid.
@@ -25,15 +28,25 @@ public class TransitionDialogForm extends javax.swing.JDialog {
     private TransitionDialog logic;
     
     /**
-     * Creates new form {@link TransitionDialog}.
+     * Allocates a new {@link TransitionDialogForm}.
      * 
      * @param logic The {@link TransitionDialog}.
-     * @param parent The parent {@link Frame}.
+     * @param parent The parent {@link JFrame}.
      */
-    public TransitionDialogForm(TransitionDialog logic, java.awt.Frame parent) {
+    public TransitionDialogForm(TransitionDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic;
         initComponents();
+    }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * @see GUIClass#getLogic()
+     */
+    public final TransitionDialog getLogic ()
+    {
+      return this.logic;
     }
     
     /** This method is called from within the constructor to

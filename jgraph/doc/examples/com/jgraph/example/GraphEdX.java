@@ -37,8 +37,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -144,6 +147,9 @@ public class GraphEdX extends GraphEd {
 		GraphModel model = new MyGraphModel();
 		GraphLayoutCache layoutCache = new GraphLayoutCache(model,
 				new DefaultCellViewFactory(), true);
+		Set locals = new HashSet();
+		locals.add(GraphConstants.BOUNDS);
+		layoutCache.setLocalAttributes(locals);
 		return new MyGraph(model, layoutCache);
 	}
 
@@ -251,7 +257,7 @@ public class GraphEdX extends GraphEd {
 		// Collapse
 		collapse = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				graph.getGraphLayoutCache().collapse(graph.getSelectionCells());
+				graph.getGraphLayoutCache().setVisible(graph.getSelectionCells(), false);
 			}
 		};
 		URL url = getClass().getClassLoader().getResource(
@@ -275,8 +281,14 @@ public class GraphEdX extends GraphEd {
 		// ExpandAll
 		expandAll = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				graph.getGraphLayoutCache().expand(
-						graph.getDescendants(graph.getSelectionCells()));
+				Object[] allCells = graph.getDescendants(graph.getRoots());
+				Map nested = new Hashtable();
+				for (int i=0; i < allCells.length; i++) {
+					Map attributeMap = new Hashtable();
+					GraphConstants.setForeground(attributeMap, Color.BLACK);
+					nested.put(allCells[i], attributeMap);
+				}
+				graph.getModel().edit(nested, null, null, null);
 			}
 		};
 		url = getClass().getClassLoader().getResource(

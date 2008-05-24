@@ -187,7 +187,7 @@ public class JGraph
 		// org.jgraph.plaf.basic.TransferHandler.JAdapterComponent
 		implements Scrollable, Accessible, Serializable {
 
-	public static final String VERSION = "JGraph (v5.12.0.4)";
+	public static final String VERSION = "JGraph (v5.12.1.1)";
 
 	public static final int DOT_GRID_MODE = 0;
 
@@ -1321,7 +1321,7 @@ public class JGraph
 	 * Returns true if the graph accepts drops/pastes from external sources.
 	 */
 	public boolean isXorEnabled() {
-		return xorEnabled;
+		return (xorEnabled && isOpaque());
 	}
 
 	/**
@@ -1883,6 +1883,10 @@ public class JGraph
 	public void setGridVisible(boolean flag) {
 		boolean oldValue = gridVisible;
 		gridVisible = flag;
+		// Clear the double buffer if the grid has been enabled
+		if (flag && !oldValue) {
+			clearOffscreen();
+		}
 		firePropertyChange(GRID_VISIBLE_PROPERTY, oldValue, flag);
 	}
 
@@ -2171,13 +2175,18 @@ public class JGraph
 				}
 				setupOffScreen(x, y, width, height, newOffscreenBuffer);
 			} else if (valCode == VolatileImage.IMAGE_RESTORED) {
-				addOffscreenDirty((Rectangle2D)getBounds().clone());
+				addOffscreenDirty(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
 			}
 		}
 		Rectangle2D offscreenDirty = getOffscreenDirty();
 		if (offscreenDirty != null) {
-			offgraphics.setColor(getBackground());
-			offgraphics.setPaintMode();
+			if (isOpaque()) {
+				offgraphics.setColor(getBackground());
+				offgraphics.setPaintMode();
+			} else {
+				((Graphics2D) offgraphics).setComposite(AlphaComposite.getInstance(
+					      AlphaComposite.CLEAR, 0.0f));
+			}
 			toScreen(offscreenDirty);
 			offscreenDirty.setRect(offscreenDirty.getX()
 					- (getHandleSize() + 1), offscreenDirty.getY()
@@ -2187,6 +2196,9 @@ public class JGraph
 			offgraphics.fillRect((int) offscreenDirty.getX(),
 					(int) offscreenDirty.getY(), (int) offscreenDirty
 							.getWidth(), (int) offscreenDirty.getHeight());
+			if (!isOpaque()) {
+				((Graphics2D) offgraphics).setComposite(AlphaComposite.SrcOver);
+			}
 			((BasicGraphUI) getUI()).drawGraph(offgraphics, offscreenDirty);
 			clearOffscreenDirty();
 		}
@@ -2202,16 +2214,16 @@ public class JGraph
 		GraphicsConfiguration graphicsConfig = getGraphicsConfiguration();
 		if (graphicsConfig != null) {
 			try {
-				offscreen = graphicsConfig.createCompatibleImage(width,
-						height, Transparency.OPAQUE);
+				offscreen = graphicsConfig.createCompatibleImage(width, height,
+					      (isOpaque()) ? Transparency.OPAQUE : Transparency.TRANSLUCENT);
 			} catch (OutOfMemoryError e) {
 				offscreen = null;
 				offgraphics = null;
 			}
 		} else {
 			try {
-				offscreen = new BufferedImage(width, height,
-						BufferedImage.TYPE_INT_RGB);
+				offscreen = graphicsConfig.createCompatibleImage(width, height,
+					      (isOpaque()) ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB);
 			} catch (OutOfMemoryError e) {
 				offscreen = null;
 				offgraphics = null;
@@ -2229,9 +2241,17 @@ public class JGraph
 	 */
 	protected void setupOffScreen(int x, int y, int width, int height, Rectangle2D newOffscreenBuffer) {
 		offgraphics = offscreen.getGraphics();
-		offgraphics.setColor(getBackground());
-		offgraphics.setPaintMode();
+		if (isOpaque()) {
+			offgraphics.setColor(getBackground());
+			offgraphics.setPaintMode();
+		} else {
+			((Graphics2D) offgraphics).setComposite(AlphaComposite.getInstance(
+					AlphaComposite.CLEAR, 0.0f));
+		}
 		offgraphics.fillRect(0, 0, width, height);
+		if (!isOpaque()) {
+			 ((Graphics2D) offgraphics).setComposite(AlphaComposite.SrcOver);
+		}
 		((BasicGraphUI)getUI()).drawGraph(offgraphics, null);
 		offscreenBounds = newOffscreenBuffer;
 		offscreenOffset = new Point2D.Double(x, y);
@@ -2404,6 +2424,11 @@ public class JGraph
 	 * @see javax.swing.JComponent#setOpaque(boolean)
 	 */
 	public void setOpaque(boolean opaque) {
+		// Due to problems with XOR painting on transparent backgrounds
+		// switch off XOR for non-opaque components
+		if (!opaque) {
+			setXorEnabled(false);
+		}
 		super.setOpaque(opaque);
 	}
 

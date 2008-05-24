@@ -1086,9 +1086,10 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 	 * Paint the background of this graph. Calls paintGrid.
 	 */
 	protected void paintBackground(Graphics g) {
-		paintBackgroundImage(g);
+		Rectangle clip = g.getClipBounds();
+		paintBackgroundImage(g, clip);
 		if (graph.isGridVisible()) {
-			paintGrid(graph.getGridSize(), g, g.getClipBounds());
+			paintGrid(graph.getGridSize(), g, clip);
 		}
 	}
 
@@ -1097,11 +1098,13 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 	 * 
 	 * @param g
 	 *            The graphics object to paint the image on.
+	 * @param clip
+	 *            The clipping region to draw into
 	 */
-	protected void paintBackgroundImage(Graphics g) {
+	protected void paintBackgroundImage(Graphics g, Rectangle clip) {
 		Component component = graph.getBackgroundComponent();
 		if (component != null) {
-			paintBackgroundComponent(g, component);
+			paintBackgroundComponent(g, component, clip);
 		}
 		ImageIcon icon = graph.getBackgroundImage();
 		if (icon == null) {
@@ -1131,8 +1134,11 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 	 *            The graphics object to paint the image on.
 	 * @param component
 	 *            the component to be painted onto the background image
+	 * @param clip
+	 *            The clipping region to draw into
 	 */
-	protected void paintBackgroundComponent(Graphics g, Component component) {
+	protected void paintBackgroundComponent(Graphics g, Component component,
+			Rectangle clip) {
 		try {
 			g.setPaintMode();
 			Dimension dim = component.getPreferredSize();
@@ -1823,7 +1829,7 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 				if (r != null) {
 					Rectangle2D unscaledDirty = graph.fromScreen((Rectangle2D)r.clone());
 					graph.addOffscreenDirty(unscaledDirty);
-					int hsize = (int) (graph.getHandleSize() * graph.getScale()) + 1;
+					int hsize = (int) graph.getHandleSize() + 1;
 					updateHandle();
 					Rectangle dirtyRegion = new Rectangle((int)(r.getX()
 							- hsize), (int)(r.getY() - hsize),
@@ -2053,10 +2059,11 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 					if (!e.isConsumed() && cell != null) {
 						Object tmp = cell.getCell();
 						boolean wasSelected = graph.isCellSelected(tmp);
-						// if (!wasSelected || e.getModifiers() != 0)
-						selectCellForEvent(tmp, e);
-						focus = cell;
-						postProcessSelection(e, tmp, wasSelected);
+						if (!e.isPopupTrigger() || !wasSelected) {
+							selectCellForEvent(tmp, e);
+							focus = cell;
+							postProcessSelection(e, tmp, wasSelected);
+						}
 					}
 				}
 			} finally {

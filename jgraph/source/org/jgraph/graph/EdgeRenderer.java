@@ -439,9 +439,9 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 		Rectangle2D tmp = getPaintBounds(view);
 		int unit = GraphConstants.PERMILLE;
 		Point2D p0 = view.getPoint(0);
-		if (pos != null && tmp != null) {
+		if (pos != null && tmp != null && p0 != null) {
 			if (!isLabelTransformEnabled()) {
-				return getRelativeLabelPosition(view, pos);
+				return view.getAbsoluteLabelPositionFromRelative(pos);
 			} else {
 				Point2D vector = view.getLabelVector();
 				double dx = vector.getX();
@@ -459,80 +459,6 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 				}
 			}
 		}
-		return null;
-	}
-	
-	protected Point2D getRelativeLabelPosition(EdgeView edge, Point2D geometry) {
-		int pointCount = edge.getPointCount();
-		
-		double length = 0;
-		double[] segments = new double[pointCount];
-		Point2D pt = edge.getPoint(0);
-		
-		if (pt != null)
-		{
-			for (int i = 1; i < pointCount; i++)
-			{
-				Point2D tmp = edge.getPoint(i);
-				
-				if (tmp != null)
-				{
-					double dx = pt.getX() - tmp.getX();
-					double dy = pt.getY() - tmp.getY();
-
-					double segment = Math.sqrt(dx * dx + dy * dy);
-					
-					segments[i - 1] = segment;
-					length += segment;
-					pt = tmp;
-				}
-			}
-
-			double x = geometry.getX()/GraphConstants.PERMILLE;
-			double y = geometry.getY();
-			
-			double dist = x * length;
-			length = 0;
-			
-			int index = 1;
-			double segment = segments[0];
-
-			while (dist > length + segment && index < pointCount - 1)
-			{
-				length += segment;
-				segment = segments[index++];
-			}
-
-			double factor = (dist - length) / segment;
-			
-			Point2D p0 = edge.getPoint(index - 1);
-			Point2D pe = edge.getPoint(index);
-
-			if (p0 != null && pe != null)
-			{
-				double dx = pe.getX() - p0.getX();
-				double dy = pe.getY() - p0.getY();
-				
-				double nx = dy / segment;
-				double ny = dx / segment;
-				
-				double offsetX = 0;
-				double offsetY = 0;
-				
-				Point2D offset = GraphConstants.getOffset(edge.getAllAttributes());
-				
-				if (offset != null)
-				{
-					offsetX = offset.getX();
-					offsetY = offset.getY();
-				}
-				
-				x = p0.getX() + dx * factor + nx * y + offsetX;
-				y = p0.getY() + dy * factor + ny * y + offsetY;
-				return new Point2D.Double(x, y);
-			}
-		}
-		
 		return null;
 	}
 

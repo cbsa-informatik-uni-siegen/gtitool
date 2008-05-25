@@ -357,6 +357,7 @@ public final class StateView extends VertexView
       }
       if ( state.isStartState () )
       {
+        g.setFont ( getFont ().deriveFont ( Font.BOLD ) );
         g.setColor ( this.preferenceTransition );
         // Manipulate the clipping area
         g2.setClip ( -100, 0, 150, 70 );

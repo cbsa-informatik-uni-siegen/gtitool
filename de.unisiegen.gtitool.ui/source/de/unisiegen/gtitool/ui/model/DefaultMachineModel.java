@@ -163,7 +163,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link PDATableModel}.
    */
-  private PDATableModel tableModel;
+  private PDATableModel pdaTableModel;
 
 
   /**
@@ -201,7 +201,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       AlphabetException, TransitionException,
       TransitionSymbolOnlyOneTimeException
   {
-    this.tableModel = new PDATableModel ();
+    this.pdaTableModel = new PDATableModel ();
 
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
@@ -376,7 +376,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public DefaultMachineModel ( Machine machine )
   {
     this.machine = machine;
-    this.tableModel = new PDATableModel ();
+    this.pdaTableModel = new PDATableModel ();
     initializeModifyStatusChangedListener ();
     initializeStatePositionChangedListener ();
     initializeGraph ();
@@ -511,7 +511,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     if ( addToMachine )
     {
       this.machine.addTransition ( transition );
-      this.tableModel.addRow ( transition );
+      this.pdaTableModel.addRow ( transition );
     }
     DefaultTransitionView transitionView = new DefaultTransitionView (
         transition, source, target );
@@ -633,6 +633,18 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
+   * Returns the {@link PDATableModel}.
+   * 
+   * @return The {@link PDATableModel}.
+   * @see #pdaTableModel
+   */
+  public PDATableModel getPDATableModel ()
+  {
+    return this.pdaTableModel;
+  }
+
+
+  /**
    * Get the {@link DefaultStateView} for an id
    * 
    * @param id the id
@@ -678,18 +690,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final ArrayList < DefaultStateView > getStateViewList ()
   {
     return this.stateViewList;
-  }
-
-
-  /**
-   * Returns the tableModel.
-   * 
-   * @return The tableModel.
-   * @see #tableModel
-   */
-  public PDATableModel getTableModel ()
-  {
-    return this.tableModel;
   }
 
 
@@ -999,6 +999,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.graphModel.remove ( new Object []
     { transitionView } );
     this.machine.removeTransition ( transitionView.getTransition () );
+    this.pdaTableModel.removeRow ( transitionView.getTransition () );
     this.transitionViewList.remove ( transitionView );
 
     if ( ( this.redoUndoHandler != null ) && createUndoStep )
@@ -1031,7 +1032,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    */
   public void setPdaTableModel ( PDATableModel tableModel )
   {
-    this.tableModel = tableModel;
+    this.pdaTableModel = tableModel;
   }
 
 

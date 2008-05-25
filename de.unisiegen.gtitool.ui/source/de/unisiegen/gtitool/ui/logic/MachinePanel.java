@@ -1964,11 +1964,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * <<<<<<< .mine Initializes the {@link PDA} table.
+   * Initializes the {@link PDA} table.
    */
   private final void initializePDATable ()
   {
-    this.gui.jGTITableMachinePDA.setModel ( this.model.getTableModel () );
+    this.gui.jGTITableMachinePDA.setModel ( this.model.getPDATableModel () );
     this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
     this.gui.jGTITableMachinePDA.getTableHeader ()
         .setReorderingAllowed ( false );
@@ -1978,8 +1978,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Initialize the Mouse Adapter of the Toolbar ======= Initializes the mouse
-   * adapter of the toolbar. >>>>>>> .r864
+   * Initializes the mouse adapter of the toolbar.
    */
   private final void intitializeMouseAdapter ()
   {

@@ -11,7 +11,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
- * The table model for the warning and error tables.
+ * The table model for the pda table.
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
@@ -45,7 +45,7 @@ public final class PDATableModel extends AbstractTableModel
 
 
   /**
-   * Add a row to this data model
+   * Adds a row to this data model.
    * 
    * @param transition the {@link Transition}.
    */
@@ -57,7 +57,7 @@ public final class PDATableModel extends AbstractTableModel
 
 
   /**
-   * Clear the data of this table model
+   * Clears the data of this table model.
    */
   public final void clearData ()
   {
@@ -122,6 +122,17 @@ public final class PDATableModel extends AbstractTableModel
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see TableModel#getRowCount()
+   */
+  public final int getRowCount ()
+  {
+    return this.data.size ();
+  }
+
+
+  /**
    * Returns the {@link Transition} of the given row index.
    * 
    * @param rowIndex The given row index.
@@ -130,17 +141,6 @@ public final class PDATableModel extends AbstractTableModel
   public final Transition getTransition ( int rowIndex )
   {
     return this.data.get ( rowIndex );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see TableModel#getRowCount()
-   */
-  public final int getRowCount ()
-  {
-    return this.data.size ();
   }
 
 
@@ -162,5 +162,33 @@ public final class PDATableModel extends AbstractTableModel
         return null;
       }
     }
+  }
+
+
+  /**
+   * Removes a row to this data model.
+   * 
+   * @param transition the {@link Transition}.
+   */
+  public final void removeRow ( Transition transition )
+  {
+    int index = -1;
+    for ( int i = 0 ; i < this.data.size () ; i++ )
+    {
+      if ( this.data.get ( i ) == transition )
+      {
+        index = i;
+        break;
+      }
+    }
+    if ( index == -1 )
+    {
+      throw new IllegalArgumentException (
+          "transition is not a member of the data" ); //$NON-NLS-1$
+    }
+
+    this.data.remove ( transition );
+
+    fireTableRowsDeleted ( index, index );
   }
 }

@@ -71,6 +71,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
+import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog.ConvertMachineType;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -381,7 +382,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.mainWindowForm = mainWindowForm;
     this.model = model;
     this.file = file;
-    this.gui = new MachinePanelForm (this);
+    this.gui = new MachinePanelForm ( this );
 
     this.redoUndoHandler = new RedoUndoHandler ( this.mainWindowForm );
     this.model.setRedoUndoHandler ( this.redoUndoHandler );
@@ -839,7 +840,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final Converter getConverter ()
   {
-    return new ConvertMachineDialog ( this.mainWindowForm, this );
+    if ( this.machine.getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+    {
+      return new ConvertMachineDialog ( this.mainWindowForm, this,
+          ConvertMachineType.NFA_TO_DFA );
+    }
+    else if ( this.machine.getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+    {
+      return new ConvertMachineDialog ( this.mainWindowForm, this,
+          ConvertMachineType.ENFA_TO_NFA );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
+    }
   }
 
 

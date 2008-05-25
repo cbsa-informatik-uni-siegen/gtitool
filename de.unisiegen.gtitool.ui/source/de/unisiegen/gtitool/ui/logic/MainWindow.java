@@ -581,7 +581,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
 
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
-      this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
     }

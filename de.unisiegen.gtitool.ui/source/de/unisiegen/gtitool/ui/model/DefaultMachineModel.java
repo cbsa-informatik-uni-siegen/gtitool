@@ -742,6 +742,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     this.jGraph.setEdgeLabelsMovable ( false );
     this.jGraph.setEditable ( false );
     this.jGraph.setHandleSize ( 0 );
+    this.jGraph.setXorEnabled ( false );
 
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()

@@ -25,7 +25,11 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
+import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.convert.Converter;
@@ -77,11 +81,43 @@ public final class ConvertMachineDialog implements
           }
           else
           {
-            performNextStep ( true );
+            if ( ConvertMachineDialog.this.convertMachineType
+                .equals ( ConvertMachineType.NFA_TO_DFA ) )
+            {
+              performNFAToDFANextStep ( true );
+            }
+            else if ( ConvertMachineDialog.this.convertMachineType
+                .equals ( ConvertMachineType.ENFA_TO_NFA ) )
+            {
+              performENFAToNFANextStep ( true );
+            }
+            else
+            {
+              throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+            }
           }
         }
       } );
     }
+  }
+
+
+  /**
+   * The convert {@link Machine} type enum.
+   * 
+   * @author Christian Fehler
+   */
+  public enum ConvertMachineType
+  {
+    /**
+     * The {@link NFA} to {@link DFA} conversion type.
+     */
+    NFA_TO_DFA,
+
+    /**
+     * The {@link ENFA} to {@link NFA} conversion type.
+     */
+    ENFA_TO_NFA;
   }
 
 
@@ -548,6 +584,12 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The {@link ConvertMachineType}.
+   */
+  private ConvertMachineType convertMachineType;
+
+
+  /**
    * The original {@link DefaultMachineModel}.
    */
   private DefaultMachineModel modelOriginal;
@@ -618,14 +660,31 @@ public final class ConvertMachineDialog implements
    * 
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
+   * @param convertMachineType The {@link ConvertMachineType}.
    */
-  public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel )
+  public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel,
+      ConvertMachineType convertMachineType )
   {
     logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
         "allocate a new convert machine dialog" ); //$NON-NLS-1$
 
+    if ( parent == null )
+    {
+      throw new IllegalArgumentException ( "parent is null" );//$NON-NLS-1$
+    }
+    if ( machinePanel == null )
+    {
+      throw new IllegalArgumentException ( "machine panel is null" );//$NON-NLS-1$
+    }
+    if ( convertMachineType == null )
+    {
+      throw new IllegalArgumentException ( "convert machine type is null" );//$NON-NLS-1$
+    }
+
     this.parent = parent;
     this.machinePanel = machinePanel;
+    this.convertMachineType = convertMachineType;
+
     this.gui = new ConvertMachineDialogForm ( this, parent );
     this.gui.jGTISplitPaneGraph.setResizeWeight ( 0.333 );
     this.gui.jGTISplitPaneGraph.setDividerLocation ( 0.5 );
@@ -676,10 +735,25 @@ public final class ConvertMachineDialog implements
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
     this.machineOriginal = this.modelOriginal.getMachine ();
 
-    this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
-        this.machineOriginal.getAlphabet (), this.machineOriginal
-            .getPushDownAlphabet (), this.machineOriginal
-            .isUsePushDownAlphabet () ) );
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    {
+      this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+          this.machineOriginal.getAlphabet (), this.machineOriginal
+              .getPushDownAlphabet (), this.machineOriginal
+              .isUsePushDownAlphabet () ) );
+    }
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+          this.machineOriginal.getAlphabet (), this.machineOriginal
+              .getPushDownAlphabet (), this.machineOriginal
+              .isUsePushDownAlphabet () ) );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
+
     this.modelConverted.setUseStateSetView ( true );
     this.jGraphConverted = this.modelConverted.getJGraph ();
     this.jGraphConverted.setEnabled ( false );
@@ -688,7 +762,18 @@ public final class ConvertMachineDialog implements
 
     this.positionMap = new HashMap < String, Position > ();
 
-    performStart ();
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    {
+      performNFAToDFAStart ();
+    }
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      performENFAToNFAStart ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -896,17 +981,18 @@ public final class ConvertMachineDialog implements
    */
   public final void handleBeginStep ()
   {
-    logger.debug ( "handleBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-    while ( !this.stepItemList.isEmpty () )
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
     {
-      performPreviousStep ( false );
+      performNFAToDFABeginStep ( true );
     }
-
-    setStatus ();
-
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      performENFAToNFABeginStep ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -925,17 +1011,18 @@ public final class ConvertMachineDialog implements
    */
   public final void handleEndStep ()
   {
-    logger.debug ( "handleEndStep", "handle end step" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-    while ( !this.endReached )
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
     {
-      performNextStep ( false );
+      performNFAToDFAEndStep ( true );
     }
-
-    setStatus ();
-
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      performENFAToNFAEndStep ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -944,7 +1031,18 @@ public final class ConvertMachineDialog implements
    */
   public final void handleNextStep ()
   {
-    performNextStep ( true );
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    {
+      performNFAToDFANextStep ( true );
+    }
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      performENFAToNFANextStep ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -956,9 +1054,25 @@ public final class ConvertMachineDialog implements
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
 
-    while ( !this.endReached )
+    if ( this.convertMachineType
+        .equals ( ConvertMachineType.NFA_TO_DFA ) )
     {
-      performNextStep ( false );
+      while ( !this.endReached )
+      {
+        performNFAToDFANextStep ( true );
+      }
+    }
+    else if ( this.convertMachineType
+        .equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      while ( !this.endReached )
+      {
+        performENFAToNFANextStep ( true );
+      }
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
     }
 
     this.machinePanel.getMainWindow ().handleNew (
@@ -973,7 +1087,18 @@ public final class ConvertMachineDialog implements
    */
   public final void handlePreviousStep ()
   {
-    performPreviousStep ( true );
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    {
+      performNFAToDFAPreviousStep ( true );
+    }
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      performENFAToNFAPreviousStep ( true );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -993,12 +1118,131 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the next step.
+   * Performs the {@link ENFA} to {@link NFA} begin step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNextStep ( boolean manualStep )
+  private final void performENFAToNFABeginStep ( boolean manualStep )
+  {
+    while ( !this.stepItemList.isEmpty () )
+    {
+      performENFAToNFAPreviousStep ( false );
+    }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
+  }
+
+
+  /**
+   * Performs the {@link ENFA} to {@link NFA} end step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performENFAToNFAEndStep ( boolean manualStep )
+  {
+    logger.debug ( "performENFAToNFAEndStep", "handle enfa to nfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    while ( !this.endReached )
+    {
+      performENFAToNFANextStep ( false );
+    }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
+  }
+
+
+  /**
+   * Performs the {@link ENFA} to {@link NFA} next step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performENFAToNFANextStep ( boolean manualStep )
+  {
+    // TODOCF
+  }
+
+
+  /**
+   * Performs the {@link ENFA} to {@link NFA} previous step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performENFAToNFAPreviousStep ( boolean manualStep )
+  {
+    // TODOCF
+  }
+
+
+  /**
+   * Performs the {@link ENFA} to {@link NFA} start.
+   */
+  private final void performENFAToNFAStart ()
+  {
+    // TODOCF
+  }
+
+
+  /**
+   * Performs the {@link NFA} to {@link DFA} begin step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performNFAToDFABeginStep ( boolean manualStep )
+  {
+    logger.debug ( "performNFAToDFABeginStep", "handle nfa to dfa begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    while ( !this.stepItemList.isEmpty () )
+    {
+      performNFAToDFAPreviousStep ( false );
+    }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
+  }
+
+
+  /**
+   * Performs the {@link NFA} to {@link DFA} end step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performNFAToDFAEndStep ( boolean manualStep )
+  {
+    logger.debug ( "performNFAToDFAEndStep", "handle nfa to dfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    while ( !this.endReached )
+    {
+      performNFAToDFANextStep ( false );
+    }
+
+    setStatus ();
+
+    this.jGraphOriginal.repaint ();
+    this.jGraphConverted.repaint ();
+  }
+
+
+  /**
+   * Performs the {@link NFA} to {@link DFA} next step.
+   * 
+   * @param manualStep Flag that indicates if the {@link Step} is a manual
+   *          {@link Step}.
+   */
+  private final void performNFAToDFANextStep ( boolean manualStep )
   {
     addStepItem ();
 
@@ -1006,8 +1250,8 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug (
-            "handleNextStep", "handle next step: activate old states" ); //$NON-NLS-1$ //$NON-NLS-2$
+        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
+            "perform nfa to dfa next step: activate old states" );//$NON-NLS-1$
       }
 
       for ( State current : this.machineOriginal.getState () )
@@ -1026,7 +1270,8 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug ( "handleNextStep", "handle next step: activate symbols" ); //$NON-NLS-1$ //$NON-NLS-2$
+        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
+            "perform nfa to dfa next step: activate symbols" );//$NON-NLS-1$
       }
 
       clearSymbolHighlightOriginal ();
@@ -1057,8 +1302,8 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug (
-            "handleNextStep", "handle next step: activate new states" ); //$NON-NLS-1$ //$NON-NLS-2$
+        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
+            "perform nfa to dfa next step: activate new states" );//$NON-NLS-1$
       }
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
@@ -1090,8 +1335,8 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug ( "handleNextStep", //$NON-NLS-1$
-            "handle next step: add state and transition" ); //$NON-NLS-1$
+        logger.debug ( "performNFAToDFANextStep", //$NON-NLS-1$
+            "perform nfa to dfa next step: add state and transition" ); //$NON-NLS-1$
       }
 
       StringBuilder name = new StringBuilder ();
@@ -1207,7 +1452,8 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug ( "handleNextStep", "handle next step: clear" ); //$NON-NLS-1$ //$NON-NLS-2$
+        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
+            "perform nfa to dfa next step: clear" );//$NON-NLS-1$
       }
 
       clearStateHighlightOriginal ();
@@ -1272,16 +1518,17 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the previous step.
+   * Performs the {@link NFA} to {@link DFA} previous step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performPreviousStep ( boolean manualStep )
+  private final void performNFAToDFAPreviousStep ( boolean manualStep )
   {
     if ( manualStep )
     {
-      logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+      logger.debug ( "performNFAToDFAPreviousStep",//$NON-NLS-1$
+          "perform nfa to dfa previous step" ); //$NON-NLS-1$
     }
 
     StepItem stepItem = this.stepItemList
@@ -1345,9 +1592,9 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the start.
+   * Performs the {@link NFA} to {@link DFA} start.
    */
-  private final void performStart ()
+  private final void performNFAToDFAStart ()
   {
     State startState = null;
     for ( State current : this.machineOriginal.getState () )
@@ -1385,7 +1632,7 @@ public final class ConvertMachineDialog implements
 
     while ( !this.endReached )
     {
-      performNextStep ( false );
+      performNFAToDFANextStep ( false );
     }
 
     new LayoutManager ( this.modelConverted, null ).doLayout ();
@@ -1397,7 +1644,7 @@ public final class ConvertMachineDialog implements
 
     while ( !this.stepItemList.isEmpty () )
     {
-      performPreviousStep ( false );
+      performNFAToDFAPreviousStep ( false );
     }
 
     // move the start state

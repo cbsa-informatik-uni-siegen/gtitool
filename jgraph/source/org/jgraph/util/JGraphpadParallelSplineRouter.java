@@ -91,6 +91,15 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 				// inverse of the original slope.
 				double m = (from.getY() - to.getY())
 						/ (from.getX() - to.getX());
+				
+				// modify begin
+				// bug fix
+        if ( m == 0 )
+        {
+          m = -0.0000000001;
+        }
+        // modify end
+				
 				double theta = Math.atan(-1 / m);
 
 				// modify the location of the control point along the axis of

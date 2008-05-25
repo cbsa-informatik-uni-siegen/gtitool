@@ -209,27 +209,42 @@ public final class ConvertMachineDialog implements
     /**
      * The clear step.
      */
-    CLEAR;
+    CLEAR,
 
     /**
-     * Returns the first {@link Step}.
+     * The step.
+     */
+    STEP_1,
+
+    /**
+     * The step.
+     */
+    STEP_2,
+
+    /**
+     * The step.
+     */
+    STEP_3;
+
+    /**
+     * Returns the first {@link ENFA} to {@link NFA} {@link Step}.
      * 
      * @return The first {@link Step}.
      */
-    public static final Step getFirst ()
+    public static final Step getENFAToNFAFirst ()
     {
-      return ACTIVATE_OLD_STATES;
+      return STEP_1;
     }
 
 
     /**
-     * Returns the last {@link Step}.
+     * Returns the first {@link NFA} to {@link DFA} {@link Step}.
      * 
-     * @return The last {@link Step}.
+     * @return The first {@link Step}.
      */
-    public static final Step getLast ()
+    public static final Step getNFAToDFAFirst ()
     {
-      return CLEAR;
+      return ACTIVATE_OLD_STATES;
     }
 
 
@@ -242,6 +257,7 @@ public final class ConvertMachineDialog implements
     {
       switch ( this )
       {
+        // NFA to DFA
         case ACTIVATE_OLD_STATES :
         {
           return ACTIVATE_SYMBOLS;
@@ -261,6 +277,19 @@ public final class ConvertMachineDialog implements
         case CLEAR :
         {
           return ACTIVATE_OLD_STATES;
+        }
+          // ENFA to NFA
+        case STEP_1 :
+        {
+          return STEP_2;
+        }
+        case STEP_2 :
+        {
+          return STEP_3;
+        }
+        case STEP_3 :
+        {
+          return STEP_1;
         }
       }
       throw new IllegalArgumentException ( "unsupported step" ); //$NON-NLS-1$
@@ -626,9 +655,15 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The current {@link Step}.
+   * The current {@link NFA} to {@link DFA} {@link Step}.
    */
-  private Step step = Step.getFirst ();
+  private Step stepNFAToDFA = Step.getNFAToDFAFirst ();
+
+
+  /**
+   * The current {@link ENFA} to {@link NFA} {@link Step}.
+   */
+  private Step stepENFAToNFA = Step.getENFAToNFAFirst ();
 
 
   /**
@@ -838,10 +873,26 @@ public final class ConvertMachineDialog implements
       }
     }
 
-    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
-        this.currentActiveState, activeStatesOriginal, activeStatesConverted,
-        activeTransitionsOriginal, activeTransitionsConverted,
-        activeSymbolsOriginal, activeSymbolsConverted ) );
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    {
+      this.stepItemList.add ( new StepItem ( this.stepNFAToDFA,
+          this.currentActiveSymbol, this.currentActiveState,
+          activeStatesOriginal, activeStatesConverted,
+          activeTransitionsOriginal, activeTransitionsConverted,
+          activeSymbolsOriginal, activeSymbolsConverted ) );
+    }
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    {
+      this.stepItemList.add ( new StepItem ( this.stepENFAToNFA,
+          this.currentActiveSymbol, this.currentActiveState,
+          activeStatesOriginal, activeStatesConverted,
+          activeTransitionsOriginal, activeTransitionsConverted,
+          activeSymbolsOriginal, activeSymbolsConverted ) );
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -932,6 +983,55 @@ public final class ConvertMachineDialog implements
   MachineType machineType )
   {
     show ();
+  }
+
+
+  /**
+   * Returns the epsilon closure of the given {@link State}.
+   * 
+   * @param state The {@link State}.
+   * @return The epsilon closure of the given {@link State}.
+   */
+  private final ArrayList < State > getClosure ( State state )
+  {
+    return getClosure ( state, new ArrayList < State > () );
+  }
+
+
+  /**
+   * Returns the epsilon closure of the given {@link State}.
+   * 
+   * @param state The {@link State}.
+   * @param finishedStates The {@link State}s which are finished.
+   * @return The epsilon closure of the given {@link State}.
+   */
+  private final ArrayList < State > getClosure ( State state,
+      ArrayList < State > finishedStates )
+  {
+    ArrayList < State > result = new ArrayList < State > ();
+    if ( finishedStates.contains ( state ) )
+    {
+      return result;
+    }
+
+    result.add ( state );
+    finishedStates.add ( state );
+    for ( Transition current : state.getTransitionBegin () )
+    {
+      if ( current.isEpsilonTransition ()
+          && !result.contains ( current.getStateEnd () ) )
+      {
+        for ( State currentState : getClosure ( current.getStateEnd (),
+            finishedStates ) )
+        {
+          if ( !result.contains ( currentState ) )
+          {
+            result.add ( currentState );
+          }
+        }
+      }
+    }
+    return result;
   }
 
 
@@ -1054,16 +1154,14 @@ public final class ConvertMachineDialog implements
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.setVisible ( false );
 
-    if ( this.convertMachineType
-        .equals ( ConvertMachineType.NFA_TO_DFA ) )
+    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
     {
       while ( !this.endReached )
       {
         performNFAToDFANextStep ( true );
       }
     }
-    else if ( this.convertMachineType
-        .equals ( ConvertMachineType.ENFA_TO_NFA ) )
+    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
     {
       while ( !this.endReached )
       {
@@ -1168,6 +1266,79 @@ public final class ConvertMachineDialog implements
   private final void performENFAToNFANextStep ( boolean manualStep )
   {
     // TODOCF
+    addStepItem ();
+
+    if ( this.stepENFAToNFA.equals ( Step.STEP_1 ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
+            "perform enfa to nfa next step: step 1" );//$NON-NLS-1$
+      }
+
+      this.currentActiveState.setActive ( true );
+
+      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
+    }
+    else if ( this.stepENFAToNFA.equals ( Step.STEP_2 ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
+            "perform enfa to nfa next step: step 2" );//$NON-NLS-1$
+      }
+
+      for ( State current : getClosure ( this.currentActiveState ) )
+      {
+        current.setActive ( true );
+      }
+
+      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
+    }
+    else if ( this.stepENFAToNFA.equals ( Step.STEP_3 ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
+            "perform enfa to nfa next step: step 3" );//$NON-NLS-1$
+      }
+
+      clearSymbolHighlightOriginal ();
+
+      for ( State currentState : this.machineOriginal.getState () )
+      {
+        if ( currentState.isActive () )
+        {
+          for ( Transition currentTransition : currentState
+              .getTransitionBegin () )
+          {
+            loopSymbol : for ( Symbol currentSymbol : currentTransition
+                .getSymbol () )
+            {
+              if ( currentSymbol.equals ( this.currentActiveSymbol ) )
+              {
+                currentSymbol.setActive ( true );
+                break loopSymbol;
+              }
+            }
+          }
+        }
+      }
+
+      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
+    }
+
+    if ( manualStep )
+    {
+      setStatus ();
+
+      this.jGraphOriginal.repaint ();
+      this.jGraphConverted.repaint ();
+    }
   }
 
 
@@ -1179,7 +1350,69 @@ public final class ConvertMachineDialog implements
    */
   private final void performENFAToNFAPreviousStep ( boolean manualStep )
   {
-    // TODOCF
+    if ( manualStep )
+    {
+      logger.debug ( "performENFAToNFAPreviousStep",//$NON-NLS-1$
+          "perform enfa to nfa previous step" ); //$NON-NLS-1$
+    }
+
+    StepItem stepItem = this.stepItemList
+        .remove ( this.stepItemList.size () - 1 );
+    clearStateHighlightOriginal ();
+    clearStateHighlightConverted ();
+    clearTransitionHighlightOriginal ();
+    clearTransitionHighlightConverted ();
+    clearSymbolHighlightOriginal ();
+    clearSymbolHighlightConverted ();
+
+    for ( State current : stepItem.getActiveStatesOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( State current : stepItem.getActiveStatesConverted () )
+    {
+      current.setActive ( true );
+    }
+    for ( Transition current : stepItem.getActiveTransitionsOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( Transition current : stepItem.getActiveTransitionsConverted () )
+    {
+      current.setActive ( true );
+    }
+    for ( Symbol current : stepItem.getActiveSymbolsOriginal () )
+    {
+      current.setActive ( true );
+    }
+    for ( Symbol current : stepItem.getActiveSymbolsConverted () )
+    {
+      current.setActive ( true );
+    }
+    this.stepENFAToNFA = stepItem.getActiveStep ();
+    this.currentActiveState = stepItem.getActiveState ();
+    this.currentActiveSymbol = stepItem.getActiveSymbol ();
+
+    if ( stepItem.getAddedDefaultStateView () != null )
+    {
+      this.modelConverted.removeState ( stepItem.getAddedDefaultStateView (),
+          false );
+    }
+    if ( stepItem.getAddedDefaultTransitionView () != null )
+    {
+      this.modelConverted.removeTransition ( stepItem
+          .getAddedDefaultTransitionView (), false );
+    }
+
+    this.endReached = false;
+
+    if ( manualStep )
+    {
+      setStatus ();
+
+      this.jGraphOriginal.repaint ();
+      this.jGraphConverted.repaint ();
+    }
   }
 
 
@@ -1188,7 +1421,25 @@ public final class ConvertMachineDialog implements
    */
   private final void performENFAToNFAStart ()
   {
-    // TODOCF
+    State startState = null;
+    for ( State current : this.machineOriginal.getState () )
+    {
+      if ( current.isStartState () )
+      {
+        startState = current;
+        break;
+      }
+    }
+    if ( startState == null )
+    {
+      throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
+    }
+
+    // store the first values
+    this.currentActiveState = startState;
+    this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
+
+    setStatus ();
   }
 
 
@@ -1246,7 +1497,7 @@ public final class ConvertMachineDialog implements
   {
     addStepItem ();
 
-    if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
+    if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
       if ( manualStep )
       {
@@ -1264,9 +1515,9 @@ public final class ConvertMachineDialog implements
 
       this.currentActiveState.setActive ( true );
 
-      this.step = this.step.nextStep ();
+      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
     }
-    else if ( this.step.equals ( Step.ACTIVATE_SYMBOLS ) )
+    else if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_SYMBOLS ) )
     {
       if ( manualStep )
       {
@@ -1296,9 +1547,9 @@ public final class ConvertMachineDialog implements
         }
       }
 
-      this.step = this.step.nextStep ();
+      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
     }
-    else if ( this.step.equals ( Step.ACTIVATE_NEW_STATES ) )
+    else if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_NEW_STATES ) )
     {
       if ( manualStep )
       {
@@ -1329,9 +1580,9 @@ public final class ConvertMachineDialog implements
         currentTransition.getStateEnd ().setActive ( true );
       }
 
-      this.step = this.step.nextStep ();
+      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
     }
-    else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
+    else if ( this.stepNFAToDFA.equals ( Step.ADD_STATE_AND_TRANSITION ) )
     {
       if ( manualStep )
       {
@@ -1446,9 +1697,9 @@ public final class ConvertMachineDialog implements
       this.stepItemList.get ( this.stepItemList.size () - 1 )
           .setAddedDefaultTransitionView ( newTransitionView );
 
-      this.step = this.step.nextStep ();
+      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
     }
-    else if ( this.step.equals ( Step.CLEAR ) )
+    else if ( this.stepNFAToDFA.equals ( Step.CLEAR ) )
     {
       if ( manualStep )
       {
@@ -1500,7 +1751,7 @@ public final class ConvertMachineDialog implements
             index + 1 );
       }
 
-      this.step = this.step.nextStep ();
+      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
     }
     else
     {
@@ -1564,7 +1815,7 @@ public final class ConvertMachineDialog implements
     {
       current.setActive ( true );
     }
-    this.step = stepItem.getActiveStep ();
+    this.stepNFAToDFA = stepItem.getActiveStep ();
     this.currentActiveState = stepItem.getActiveState ();
     this.currentActiveSymbol = stepItem.getActiveSymbol ();
 

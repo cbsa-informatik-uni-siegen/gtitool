@@ -181,14 +181,10 @@ public final class PDATableModel extends AbstractTableModel
         break;
       }
     }
-    if ( index == -1 )
+    if ( index != -1 )
     {
-      throw new IllegalArgumentException (
-          "transition is not a member of the data" ); //$NON-NLS-1$
+      this.data.remove ( transition );
+      fireTableRowsDeleted ( index, index );
     }
-
-    this.data.remove ( transition );
-
-    fireTableRowsDeleted ( index, index );
   }
 }

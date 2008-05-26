@@ -24,6 +24,12 @@ public class Minimizer
 {
 
   /**
+   * Flag indicates if minimization operation finished.
+   */
+  private boolean finished = false;
+
+
+  /**
    * The {@link DefaultStateView} groups.
    */
   private ArrayList < ArrayList < DefaultStateView > > groups = new ArrayList < ArrayList < DefaultStateView > > ();
@@ -84,9 +90,37 @@ public class Minimizer
 
 
   /**
+   * Minimize the given {@link Machine}.
+   */
+  public void initialize ()
+  {
+    removeNotReachableStates ();
+
+    createInitialGroups ();
+
+
+ 
+
+//    this.model.getGraphModel ().cellsChanged (
+//        this.model.getStateViewList ().toArray () );
+  }
+
+
+  /**
+   * Returns true if minimization operation finished.
+   *
+   * @return true if minimization operation finished.
+   */
+  public boolean isFinished ()
+  {
+    return this.finished;
+  }
+
+
+  /**
    * The internal minimize operation.
    */
-  private void minimizeInternal ()
+  public void minimize ()
   {
 
     for ( ArrayList < DefaultStateView > group : this.groups )
@@ -105,22 +139,11 @@ public class Minimizer
     {
       this.groups.add ( this.newGroupStates );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
-      minimizeInternal ();
     }
-  }
-
-
-  /**
-   * Minimize the given {@link Machine}.
-   */
-  public void minimze ()
-  {
-    removeNotReachableStates ();
-
-    createInitialGroups ();
-
-    minimizeInternal ();
-
+    else {
+      this.finished = true;
+    }
+    
     // TODO just for testing
 
     for ( ArrayList < DefaultStateView > group : this.groups )
@@ -134,11 +157,7 @@ public class Minimizer
     }
 
     // TODO end
-
-    this.model.getGraphModel ().cellsChanged (
-        this.model.getStateViewList ().toArray () );
   }
-
 
   /**
    * Remove the not reachable states.
@@ -163,7 +182,6 @@ public class Minimizer
       }
     }
   }
-
 
   /**
    * Try to split the actual group.
@@ -196,5 +214,18 @@ public class Minimizer
       }
       group.removeAll ( this.newGroupStates );
     }
+  }
+
+
+  
+  /**
+   * Returns the groups.
+   *
+   * @return The groups.
+   * @see #groups
+   */
+  public ArrayList < ArrayList < DefaultStateView >> getGroups ()
+  {
+    return this.groups;
   }
 }

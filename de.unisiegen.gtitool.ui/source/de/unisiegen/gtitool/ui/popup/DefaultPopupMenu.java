@@ -13,7 +13,6 @@ import javax.swing.JPopupMenu;
 import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
-import de.unisiegen.gtitool.ui.utils.Minimizer;
 
 
 /**
@@ -53,12 +52,6 @@ public final class DefaultPopupMenu extends JPopupMenu
    * The layout item.
    */
   private JMenuItem layout;
-  
-
-  /**
-   * The minimize item.
-   */
-  private JMenuItem minimize;
 
 
   /**
@@ -249,26 +242,10 @@ public final class DefaultPopupMenu extends JPopupMenu
       ActionEvent event )
       {
         new LayoutManager ( DefaultPopupMenu.this.panel.getModel (),
-            DefaultPopupMenu.this.panel.getRedoUndoHandler () )
-            .doLayout ();
+            DefaultPopupMenu.this.panel.getRedoUndoHandler () ).doLayout ();
       }
     } );
     add ( this.layout );
-    
-    this.minimize = new JMenuItem ( "Do it");//Messages
-//        .getString ( "MachinePanel.AutoLayout" ) ); //$NON-NLS-1$
-    this.minimize.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
-      {
-        new Minimizer ( DefaultPopupMenu.this.panel.getModel () )
-            .minimze ();
-      }
-    } );
-    //add ( this.minimize );
 
     switch ( this.factor )
     {

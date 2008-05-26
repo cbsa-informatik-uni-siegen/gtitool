@@ -836,6 +836,17 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jSeparatorNavigation;
     }
+    
+    /**
+     * Returns the jMenuItemMinimize.
+     *
+     * @return The jMenuItemMinimize.
+     * @see #jMenuItemMinimize
+     */
+    public final JMenuItem getJMenuItemMinimize ()
+    {
+      return this.jMenuItemMinimize;
+    }
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -911,6 +922,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemEditMachine = new javax.swing.JMenuItem();
         jMenuItemAutoLayout = new javax.swing.JMenuItem();
+        jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuConvertTo = new javax.swing.JMenu();
         jMenuItemConvertToDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToNFA = new javax.swing.JMenuItem();
@@ -1484,6 +1496,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemAutoLayout);
 
+        jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
+        jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMinimizeActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemMinimize);
+
         jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
         jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
         jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
@@ -1559,6 +1580,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMinimizeActionPerformed
+// TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemMinimizeActionPerformed
 
     private void jMenuItemAutoLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAutoLayoutActionPerformed
         this.logic.doAutoLayout();
@@ -1819,6 +1844,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private javax.swing.JMenuItem jMenuItemEnterWord;
     private javax.swing.JMenuItem jMenuItemExchange;
     private javax.swing.JMenuItem jMenuItemHistory;
+    private javax.swing.JMenuItem jMenuItemMinimize;
     private javax.swing.JMenuItem jMenuItemNFA;
     private javax.swing.JMenuItem jMenuItemNew;
     private javax.swing.JMenuItem jMenuItemOpen;

@@ -1582,7 +1582,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMinimizeActionPerformed
-// TODO add your handling code here:
+        this.logic.minimize();
     }//GEN-LAST:event_jMenuItemMinimizeActionPerformed
 
     private void jMenuItemAutoLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAutoLayoutActionPerformed

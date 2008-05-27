@@ -254,6 +254,7 @@ public final class MinimizeMachineDialog
         }
 
         DefaultState state = new DefaultState ( name );
+        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () ) ;
         DefaultStateView stateView = this.model.createStateView ( 100, 100,
             state, false );
 

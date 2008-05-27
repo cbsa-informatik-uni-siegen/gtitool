@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -193,7 +194,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The convert to source cfg enabled button state.
      */
     ENABLED_CONVERT_TO_SOURCE_CFG,
-    
+
     /**
      * The minimize enabled button state.
      */
@@ -1331,8 +1332,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    handleNew (model);
+    handleNew ( model );
   }
+
 
   /**
    * Handle the new event with a given {@link DefaultModel}
@@ -1658,9 +1660,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
-        
+
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
-        
+
         if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
@@ -1766,7 +1768,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-        
+
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       }
       else
@@ -2956,5 +2958,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     }
+  }
+
+
+  /**
+   * Minimize the active {@link Machine}.
+   */
+  public void minimize ()
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) panel;
+      MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
+          machinePanel );
+      dialog.show ();
+    }
+
   }
 }

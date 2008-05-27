@@ -897,6 +897,19 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Cancels the auto step timer.
+   */
+  private final void cancelAutoStepTimer ()
+  {
+    if ( this.autoStepTimer != null )
+    {
+      this.autoStepTimer.cancel ();
+      this.autoStepTimer = null;
+    }
+  }
+
+
+  /**
    * Clears the {@link State} highlighting of the converted {@link JGraph}.
    */
   private final void clearStateHighlightConverted ()
@@ -1069,10 +1082,7 @@ public final class ConvertMachineDialog implements
 
     setStatus ();
 
-    this.autoStepTimer = new Timer ();
-    int time = PreferenceManager.getInstance ().getAutoStepItem ()
-        .getAutoStepInterval ();
-    this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
+    startAutoStepTimer ();
   }
 
 
@@ -1102,6 +1112,9 @@ public final class ConvertMachineDialog implements
   public final void handleCancel ()
   {
     logger.debug ( "handleCancel", "handle cancel" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    cancelAutoStepTimer ();
+
     this.gui.dispose ();
   }
 
@@ -1152,20 +1165,23 @@ public final class ConvertMachineDialog implements
   public final void handleOk ()
   {
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    cancelAutoStepTimer ();
+
     this.gui.setVisible ( false );
 
     if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
     {
       while ( !this.endReached )
       {
-        performNFAToDFANextStep ( true );
+        performNFAToDFANextStep ( false );
       }
     }
     else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
     {
       while ( !this.endReached )
       {
-        performENFAToNFANextStep ( true );
+        performENFAToNFANextStep ( false );
       }
     }
     else
@@ -1207,8 +1223,7 @@ public final class ConvertMachineDialog implements
   {
     logger.debug ( "handleStop", "handle stop" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    this.autoStepTimer.cancel ();
-    this.autoStepTimer = null;
+    cancelAutoStepTimer ();
 
     this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
     setStatus ();
@@ -1945,5 +1960,19 @@ public final class ConvertMachineDialog implements
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * Starts the auto step timer.
+   */
+  private final void startAutoStepTimer ()
+  {
+    cancelAutoStepTimer ();
+
+    this.autoStepTimer = new Timer ();
+    int time = PreferenceManager.getInstance ().getAutoStepItem ()
+        .getAutoStepInterval ();
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), time, time );
   }
 }

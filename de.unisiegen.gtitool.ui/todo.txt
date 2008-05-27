@@ -9,8 +9,6 @@ CF		- Im Info Dialog besteht manchmal das Problem, dass die Größe falsch
 CF		- Die Methode StateSetView.getPerimeterPoint muss angepasst werden, da keine
 		  Ellipse gezeichnet wird.
 CF		- Split View
-CF		- Wenn man das Konvertieren während dem Autostep abbricht oder mit OK bestätigt
-		  wird der Timer nicht gestoppt. 
 
 
 BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,

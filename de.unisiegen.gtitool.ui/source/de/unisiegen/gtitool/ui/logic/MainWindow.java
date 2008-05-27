@@ -300,6 +300,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_REDO );
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
+    removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
 
@@ -639,6 +640,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
     }
+    // TODO
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_MINIMIZE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_MINIMIZE );
+      this.gui.getJMenuItemMinimize ().setEnabled ( true );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
       if ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE ) )
@@ -727,10 +735,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( true );
       this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( true );
       this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( true );
-    }
-    else if ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
-    {
-      this.gui.getJMenuItemMinimize ().setEnabled ( true );
     }
   }
 
@@ -867,6 +871,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.VISIBLE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
     }
+
+    handleTabbedPaneStateChanged ();
+
     return true;
   }
 
@@ -1635,6 +1642,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleTabbedPaneStateChanged ()
   {
+    logger.debug ( "handleTabbedPaneStateChanged", //$NON-NLS-1$
+        "handle tabbed pane state changed" ); //$NON-NLS-1$
+
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
@@ -1645,6 +1655,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+      removeButtonState ( ButtonState.ENABLED_MINIMIZE );
 
       // Save status
       removeButtonState ( ButtonState.ENABLED_SAVE );
@@ -1661,8 +1672,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
-        removeButtonState ( ButtonState.ENABLED_MINIMIZE );
-
         if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
@@ -1671,14 +1680,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         else if ( machinePanel.getMachine ().getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+          removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+          removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals ( "PDA" ) ) //$NON-NLS-1$
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+          removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else
         {
@@ -1768,7 +1780,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       }
       else
@@ -2853,6 +2864,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
       this.gui.getJMenuConvertTo ().setEnabled ( false );
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_MINIMIZE );
+
+      this.gui.getJMenuItemMinimize ().setEnabled ( false );
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_SAVE );
@@ -2920,10 +2937,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
       this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( false );
       this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( false );
-    }
-    else if ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
-    {
-      this.gui.getJMenuItemMinimize ().setEnabled ( false );
     }
     else
     {

@@ -13,6 +13,11 @@ CF		- Wenn man das Konvertieren während dem Autostep abbricht oder mit OK best�
 		  wird der Timer nicht gestoppt. 
 
 
+BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,
+		  Mnemonic und ToolTip haben
+BM		- Alle Logik und GUI Klassen implementieren das entsprechende Interface
+BM		- Überprüfen, ob die Minimize GUI Klasse noch mit Netbeans zu öffnen ist und,
+		  ob alle Events gefunden werden
 BM		- Wäre es möglich beim AutoLayout die Größe der DefaultStateView zu beachten?
 		  Ich bräuchte das bei dem Potenzautomaten, da sind die Zustände zu nah
 		  zusammen. Auf der DefaultStateView gibt es jetzt eine getWidth und eine

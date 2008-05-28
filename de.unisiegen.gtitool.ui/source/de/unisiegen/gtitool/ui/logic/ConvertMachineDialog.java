@@ -81,20 +81,7 @@ public final class ConvertMachineDialog implements
           }
           else
           {
-            if ( ConvertMachineDialog.this.convertMachineType
-                .equals ( ConvertMachineType.NFA_TO_DFA ) )
-            {
-              performNFAToDFANextStep ( true );
-            }
-            else if ( ConvertMachineDialog.this.convertMachineType
-                .equals ( ConvertMachineType.ENFA_TO_NFA ) )
-            {
-              performENFAToNFANextStep ( true );
-            }
-            else
-            {
-              throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-            }
+            performNextStep ( true );
           }
         }
       } );
@@ -192,6 +179,11 @@ public final class ConvertMachineDialog implements
     ACTIVATE_OLD_STATES,
 
     /**
+     * The activate old closure {@link State}s step.
+     */
+    ACTIVATE_OLD_CLOSURE_STATES,
+
+    /**
      * The activate {@link Symbol}s step.
      */
     ACTIVATE_SYMBOLS,
@@ -202,6 +194,11 @@ public final class ConvertMachineDialog implements
     ACTIVATE_NEW_STATES,
 
     /**
+     * The activate new closure {@link State}s step.
+     */
+    ACTIVATE_NEW_CLOSURE_STATES,
+
+    /**
      * The add {@link State} and {@link Transition} step.
      */
     ADD_STATE_AND_TRANSITION,
@@ -209,91 +206,7 @@ public final class ConvertMachineDialog implements
     /**
      * The clear step.
      */
-    CLEAR,
-
-    /**
-     * The step.
-     */
-    STEP_1,
-
-    /**
-     * The step.
-     */
-    STEP_2,
-
-    /**
-     * The step.
-     */
-    STEP_3;
-
-    /**
-     * Returns the first {@link ENFA} to {@link NFA} {@link Step}.
-     * 
-     * @return The first {@link Step}.
-     */
-    public static final Step getENFAToNFAFirst ()
-    {
-      return STEP_1;
-    }
-
-
-    /**
-     * Returns the first {@link NFA} to {@link DFA} {@link Step}.
-     * 
-     * @return The first {@link Step}.
-     */
-    public static final Step getNFAToDFAFirst ()
-    {
-      return ACTIVATE_OLD_STATES;
-    }
-
-
-    /**
-     * Returns the next {@link Step}.
-     * 
-     * @return The next {@link Step}.
-     */
-    public final Step nextStep ()
-    {
-      switch ( this )
-      {
-        // NFA to DFA
-        case ACTIVATE_OLD_STATES :
-        {
-          return ACTIVATE_SYMBOLS;
-        }
-        case ACTIVATE_SYMBOLS :
-        {
-          return ACTIVATE_NEW_STATES;
-        }
-        case ACTIVATE_NEW_STATES :
-        {
-          return ADD_STATE_AND_TRANSITION;
-        }
-        case ADD_STATE_AND_TRANSITION :
-        {
-          return CLEAR;
-        }
-        case CLEAR :
-        {
-          return ACTIVATE_OLD_STATES;
-        }
-          // ENFA to NFA
-        case STEP_1 :
-        {
-          return STEP_2;
-        }
-        case STEP_2 :
-        {
-          return STEP_3;
-        }
-        case STEP_3 :
-        {
-          return STEP_1;
-        }
-      }
-      throw new IllegalArgumentException ( "unsupported step" ); //$NON-NLS-1$
-    }
+    CLEAR;
   }
 
 
@@ -655,15 +568,9 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The current {@link NFA} to {@link DFA} {@link Step}.
+   * The current {@link Step}.
    */
-  private Step stepNFAToDFA = Step.getNFAToDFAFirst ();
-
-
-  /**
-   * The current {@link ENFA} to {@link NFA} {@link Step}.
-   */
-  private Step stepENFAToNFA = Step.getENFAToNFAFirst ();
+  private Step step = null;
 
 
   /**
@@ -721,7 +628,7 @@ public final class ConvertMachineDialog implements
     this.convertMachineType = convertMachineType;
 
     this.gui = new ConvertMachineDialogForm ( this, parent );
-    this.gui.jGTISplitPaneGraph.setResizeWeight ( 0.333 );
+    this.gui.jGTISplitPaneGraph.setResizeWeight ( 0.25 );
     this.gui.jGTISplitPaneGraph.setDividerLocation ( 0.5 );
 
     try
@@ -770,23 +677,24 @@ public final class ConvertMachineDialog implements
     this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
     this.machineOriginal = this.modelOriginal.getMachine ();
 
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    switch ( this.convertMachineType )
     {
-      this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
-          this.machineOriginal.getAlphabet (), this.machineOriginal
-              .getPushDownAlphabet (), this.machineOriginal
-              .isUsePushDownAlphabet () ) );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
-          this.machineOriginal.getAlphabet (), this.machineOriginal
-              .getPushDownAlphabet (), this.machineOriginal
-              .isUsePushDownAlphabet () ) );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+      case NFA_TO_DFA :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+        break;
+      }
+      case ENFA_TO_NFA :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+        break;
+      }
     }
 
     this.modelConverted.setUseStateSetView ( true );
@@ -797,18 +705,7 @@ public final class ConvertMachineDialog implements
 
     this.positionMap = new HashMap < String, Position > ();
 
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      performNFAToDFAStart ();
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      performENFAToNFAStart ();
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    performStart ();
   }
 
 
@@ -873,26 +770,10 @@ public final class ConvertMachineDialog implements
       }
     }
 
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      this.stepItemList.add ( new StepItem ( this.stepNFAToDFA,
-          this.currentActiveSymbol, this.currentActiveState,
-          activeStatesOriginal, activeStatesConverted,
-          activeTransitionsOriginal, activeTransitionsConverted,
-          activeSymbolsOriginal, activeSymbolsConverted ) );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      this.stepItemList.add ( new StepItem ( this.stepENFAToNFA,
-          this.currentActiveSymbol, this.currentActiveState,
-          activeStatesOriginal, activeStatesConverted,
-          activeTransitionsOriginal, activeTransitionsConverted,
-          activeSymbolsOriginal, activeSymbolsConverted ) );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
+        this.currentActiveState, activeStatesOriginal, activeStatesConverted,
+        activeTransitionsOriginal, activeTransitionsConverted,
+        activeSymbolsOriginal, activeSymbolsConverted ) );
   }
 
 
@@ -1000,6 +881,29 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns the epsilon closure of the given {@link State}s.
+   * 
+   * @param stateList The {@link State}s.
+   * @return The epsilon closure of the given {@link State}s.
+   */
+  private final ArrayList < State > getClosure ( ArrayList < State > stateList )
+  {
+    ArrayList < State > result = new ArrayList < State > ();
+    for ( State current : stateList )
+    {
+      for ( State currentResult : getClosure ( current ) )
+      {
+        if ( !result.contains ( currentResult ) )
+        {
+          result.add ( currentResult );
+        }
+      }
+    }
+    return result;
+  }
+
+
+  /**
    * Returns the epsilon closure of the given {@link State}.
    * 
    * @param state The {@link State}.
@@ -1091,18 +995,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleBeginStep ()
   {
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      performNFAToDFABeginStep ( true );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      performENFAToNFABeginStep ( true );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    performBeginStep ( true );
   }
 
 
@@ -1124,18 +1017,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleEndStep ()
   {
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      performNFAToDFAEndStep ( true );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      performENFAToNFAEndStep ( true );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    performEndStep ( true );
   }
 
 
@@ -1144,18 +1026,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleNextStep ()
   {
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      performNFAToDFANextStep ( true );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      performENFAToNFANextStep ( true );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    performNextStep ( true );
   }
 
 
@@ -1170,23 +1041,9 @@ public final class ConvertMachineDialog implements
 
     this.gui.setVisible ( false );
 
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
+    while ( !this.endReached )
     {
-      while ( !this.endReached )
-      {
-        performNFAToDFANextStep ( false );
-      }
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      while ( !this.endReached )
-      {
-        performENFAToNFANextStep ( false );
-      }
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
+      performNextStep ( false );
     }
 
     this.machinePanel.getMainWindow ().handleNew (
@@ -1201,18 +1058,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handlePreviousStep ()
   {
-    if ( this.convertMachineType.equals ( ConvertMachineType.NFA_TO_DFA ) )
-    {
-      performNFAToDFAPreviousStep ( true );
-    }
-    else if ( this.convertMachineType.equals ( ConvertMachineType.ENFA_TO_NFA ) )
-    {
-      performENFAToNFAPreviousStep ( true );
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported convert machine type" ); //$NON-NLS-1$
-    }
+    performPreviousStep ( true );
   }
 
 
@@ -1231,246 +1077,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the {@link ENFA} to {@link NFA} begin step.
+   * Performs the begin step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performENFAToNFABeginStep ( boolean manualStep )
+  private final void performBeginStep ( boolean manualStep )
   {
-    while ( !this.stepItemList.isEmpty () )
-    {
-      performENFAToNFAPreviousStep ( false );
-    }
-
-    setStatus ();
-
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
-  }
-
-
-  /**
-   * Performs the {@link ENFA} to {@link NFA} end step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
-   */
-  private final void performENFAToNFAEndStep ( boolean manualStep )
-  {
-    logger.debug ( "performENFAToNFAEndStep", "handle enfa to nfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-    while ( !this.endReached )
-    {
-      performENFAToNFANextStep ( false );
-    }
-
-    setStatus ();
-
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
-  }
-
-
-  /**
-   * Performs the {@link ENFA} to {@link NFA} next step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
-   */
-  private final void performENFAToNFANextStep ( boolean manualStep )
-  {
-    // TODOCF
-    addStepItem ();
-
-    if ( this.stepENFAToNFA.equals ( Step.STEP_1 ) )
-    {
-      if ( manualStep )
-      {
-        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
-            "perform enfa to nfa next step: step 1" );//$NON-NLS-1$
-      }
-
-      this.currentActiveState.setActive ( true );
-
-      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
-    }
-    else if ( this.stepENFAToNFA.equals ( Step.STEP_2 ) )
-    {
-      if ( manualStep )
-      {
-        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
-            "perform enfa to nfa next step: step 2" );//$NON-NLS-1$
-      }
-
-      for ( State current : getClosure ( this.currentActiveState ) )
-      {
-        current.setActive ( true );
-      }
-
-      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
-    }
-    else if ( this.stepENFAToNFA.equals ( Step.STEP_3 ) )
-    {
-      if ( manualStep )
-      {
-        logger.debug ( "performENFAToNFANextStep",//$NON-NLS-1$
-            "perform enfa to nfa next step: step 3" );//$NON-NLS-1$
-      }
-
-      clearSymbolHighlightOriginal ();
-
-      for ( State currentState : this.machineOriginal.getState () )
-      {
-        if ( currentState.isActive () )
-        {
-          for ( Transition currentTransition : currentState
-              .getTransitionBegin () )
-          {
-            loopSymbol : for ( Symbol currentSymbol : currentTransition
-                .getSymbol () )
-            {
-              if ( currentSymbol.equals ( this.currentActiveSymbol ) )
-              {
-                currentSymbol.setActive ( true );
-                break loopSymbol;
-              }
-            }
-          }
-        }
-      }
-
-      this.stepENFAToNFA = this.stepENFAToNFA.nextStep ();
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
-    }
-
-    if ( manualStep )
-    {
-      setStatus ();
-
-      this.jGraphOriginal.repaint ();
-      this.jGraphConverted.repaint ();
-    }
-  }
-
-
-  /**
-   * Performs the {@link ENFA} to {@link NFA} previous step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
-   */
-  private final void performENFAToNFAPreviousStep ( boolean manualStep )
-  {
-    if ( manualStep )
-    {
-      logger.debug ( "performENFAToNFAPreviousStep",//$NON-NLS-1$
-          "perform enfa to nfa previous step" ); //$NON-NLS-1$
-    }
-
-    StepItem stepItem = this.stepItemList
-        .remove ( this.stepItemList.size () - 1 );
-    clearStateHighlightOriginal ();
-    clearStateHighlightConverted ();
-    clearTransitionHighlightOriginal ();
-    clearTransitionHighlightConverted ();
-    clearSymbolHighlightOriginal ();
-    clearSymbolHighlightConverted ();
-
-    for ( State current : stepItem.getActiveStatesOriginal () )
-    {
-      current.setActive ( true );
-    }
-    for ( State current : stepItem.getActiveStatesConverted () )
-    {
-      current.setActive ( true );
-    }
-    for ( Transition current : stepItem.getActiveTransitionsOriginal () )
-    {
-      current.setActive ( true );
-    }
-    for ( Transition current : stepItem.getActiveTransitionsConverted () )
-    {
-      current.setActive ( true );
-    }
-    for ( Symbol current : stepItem.getActiveSymbolsOriginal () )
-    {
-      current.setActive ( true );
-    }
-    for ( Symbol current : stepItem.getActiveSymbolsConverted () )
-    {
-      current.setActive ( true );
-    }
-    this.stepENFAToNFA = stepItem.getActiveStep ();
-    this.currentActiveState = stepItem.getActiveState ();
-    this.currentActiveSymbol = stepItem.getActiveSymbol ();
-
-    if ( stepItem.getAddedDefaultStateView () != null )
-    {
-      this.modelConverted.removeState ( stepItem.getAddedDefaultStateView (),
-          false );
-    }
-    if ( stepItem.getAddedDefaultTransitionView () != null )
-    {
-      this.modelConverted.removeTransition ( stepItem
-          .getAddedDefaultTransitionView (), false );
-    }
-
-    this.endReached = false;
-
-    if ( manualStep )
-    {
-      setStatus ();
-
-      this.jGraphOriginal.repaint ();
-      this.jGraphConverted.repaint ();
-    }
-  }
-
-
-  /**
-   * Performs the {@link ENFA} to {@link NFA} start.
-   */
-  private final void performENFAToNFAStart ()
-  {
-    State startState = null;
-    for ( State current : this.machineOriginal.getState () )
-    {
-      if ( current.isStartState () )
-      {
-        startState = current;
-        break;
-      }
-    }
-    if ( startState == null )
-    {
-      throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
-    }
-
-    // store the first values
-    this.currentActiveState = startState;
-    this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
-
-    setStatus ();
-  }
-
-
-  /**
-   * Performs the {@link NFA} to {@link DFA} begin step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
-   */
-  private final void performNFAToDFABeginStep ( boolean manualStep )
-  {
-    logger.debug ( "performNFAToDFABeginStep", "handle nfa to dfa begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "performBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     while ( !this.stepItemList.isEmpty () )
     {
-      performNFAToDFAPreviousStep ( false );
+      performPreviousStep ( false );
     }
 
     setStatus ();
@@ -1481,18 +1099,18 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the {@link NFA} to {@link DFA} end step.
+   * Performs the end step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNFAToDFAEndStep ( boolean manualStep )
+  private final void performEndStep ( boolean manualStep )
   {
-    logger.debug ( "performNFAToDFAEndStep", "handle nfa to dfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "performEndStep", "handle nfa to dfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     while ( !this.endReached )
     {
-      performNFAToDFANextStep ( false );
+      performNextStep ( false );
     }
 
     setStatus ();
@@ -1503,21 +1121,21 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the {@link NFA} to {@link DFA} next step.
+   * Performs the next step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNFAToDFANextStep ( boolean manualStep )
+  private final void performNextStep ( boolean manualStep )
   {
     addStepItem ();
 
-    if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_OLD_STATES ) )
+    if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
     {
       if ( manualStep )
       {
-        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
-            "perform nfa to dfa next step: activate old states" );//$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: activate old states" );//$NON-NLS-1$
       }
 
       for ( State current : this.machineOriginal.getState () )
@@ -1530,14 +1148,50 @@ public final class ConvertMachineDialog implements
 
       this.currentActiveState.setActive ( true );
 
-      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
+      switch ( this.convertMachineType )
+      {
+        case NFA_TO_DFA :
+        {
+          this.step = Step.ACTIVATE_SYMBOLS;
+          break;
+        }
+        case ENFA_TO_NFA :
+        {
+          this.step = Step.ACTIVATE_OLD_CLOSURE_STATES;
+          break;
+        }
+      }
     }
-    else if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_SYMBOLS ) )
+    else if ( this.step.equals ( Step.ACTIVATE_OLD_CLOSURE_STATES ) )
     {
       if ( manualStep )
       {
-        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
-            "perform nfa to dfa next step: activate symbols" );//$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: activate old closure states" );//$NON-NLS-1$
+      }
+
+      ArrayList < State > activeStateList = new ArrayList < State > ();
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( current.isActive () )
+        {
+          activeStateList.add ( current );
+        }
+      }
+
+      for ( State current : getClosure ( activeStateList ) )
+      {
+        current.setActive ( true );
+      }
+
+      this.step = Step.ACTIVATE_SYMBOLS;
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_SYMBOLS ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: activate symbols" );//$NON-NLS-1$
       }
 
       clearSymbolHighlightOriginal ();
@@ -1562,14 +1216,14 @@ public final class ConvertMachineDialog implements
         }
       }
 
-      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
+      this.step = Step.ACTIVATE_NEW_STATES;
     }
-    else if ( this.stepNFAToDFA.equals ( Step.ACTIVATE_NEW_STATES ) )
+    else if ( this.step.equals ( Step.ACTIVATE_NEW_STATES ) )
     {
       if ( manualStep )
       {
-        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
-            "perform nfa to dfa next step: activate new states" );//$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: activate new states" );//$NON-NLS-1$
       }
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
@@ -1595,14 +1249,50 @@ public final class ConvertMachineDialog implements
         currentTransition.getStateEnd ().setActive ( true );
       }
 
-      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
+      switch ( this.convertMachineType )
+      {
+        case NFA_TO_DFA :
+        {
+          this.step = Step.ADD_STATE_AND_TRANSITION;
+          break;
+        }
+        case ENFA_TO_NFA :
+        {
+          this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
+          break;
+        }
+      }
     }
-    else if ( this.stepNFAToDFA.equals ( Step.ADD_STATE_AND_TRANSITION ) )
+    else if ( this.step.equals ( Step.ACTIVATE_NEW_CLOSURE_STATES ) )
     {
       if ( manualStep )
       {
-        logger.debug ( "performNFAToDFANextStep", //$NON-NLS-1$
-            "perform nfa to dfa next step: add state and transition" ); //$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: activate new closure states" );//$NON-NLS-1$
+      }
+
+      ArrayList < State > activeStateList = new ArrayList < State > ();
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( current.isActive () )
+        {
+          activeStateList.add ( current );
+        }
+      }
+
+      for ( State current : getClosure ( activeStateList ) )
+      {
+        current.setActive ( true );
+      }
+
+      this.step = Step.ADD_STATE_AND_TRANSITION;
+    }
+    else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", //$NON-NLS-1$
+            "perform next step: add state and transition" ); //$NON-NLS-1$
       }
 
       StringBuilder name = new StringBuilder ();
@@ -1712,14 +1402,14 @@ public final class ConvertMachineDialog implements
       this.stepItemList.get ( this.stepItemList.size () - 1 )
           .setAddedDefaultTransitionView ( newTransitionView );
 
-      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
+      this.step = Step.CLEAR;
     }
-    else if ( this.stepNFAToDFA.equals ( Step.CLEAR ) )
+    else if ( this.step.equals ( Step.CLEAR ) )
     {
       if ( manualStep )
       {
-        logger.debug ( "performNFAToDFANextStep",//$NON-NLS-1$
-            "perform nfa to dfa next step: clear" );//$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: clear" );//$NON-NLS-1$
       }
 
       clearStateHighlightOriginal ();
@@ -1766,7 +1456,7 @@ public final class ConvertMachineDialog implements
             index + 1 );
       }
 
-      this.stepNFAToDFA = this.stepNFAToDFA.nextStep ();
+      this.step = Step.ACTIVATE_OLD_STATES;
     }
     else
     {
@@ -1784,17 +1474,17 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the {@link NFA} to {@link DFA} previous step.
+   * Performs the previous step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
    *          {@link Step}.
    */
-  private final void performNFAToDFAPreviousStep ( boolean manualStep )
+  private final void performPreviousStep ( boolean manualStep )
   {
     if ( manualStep )
     {
-      logger.debug ( "performNFAToDFAPreviousStep",//$NON-NLS-1$
-          "perform nfa to dfa previous step" ); //$NON-NLS-1$
+      logger.debug ( "performPreviousStep",//$NON-NLS-1$
+          "perform previous step" ); //$NON-NLS-1$
     }
 
     StepItem stepItem = this.stepItemList
@@ -1830,7 +1520,7 @@ public final class ConvertMachineDialog implements
     {
       current.setActive ( true );
     }
-    this.stepNFAToDFA = stepItem.getActiveStep ();
+    this.step = stepItem.getActiveStep ();
     this.currentActiveState = stepItem.getActiveState ();
     this.currentActiveSymbol = stepItem.getActiveSymbol ();
 
@@ -1858,10 +1548,12 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Performs the {@link NFA} to {@link DFA} start.
+   * Performs the start.
    */
-  private final void performNFAToDFAStart ()
+  private final void performStart ()
   {
+    this.step = Step.ACTIVATE_OLD_STATES;
+
     State startState = null;
     for ( State current : this.machineOriginal.getState () )
     {
@@ -1898,7 +1590,7 @@ public final class ConvertMachineDialog implements
 
     while ( !this.endReached )
     {
-      performNFAToDFANextStep ( false );
+      performNextStep ( false );
     }
 
     new LayoutManager ( this.modelConverted, null ).doLayout ();
@@ -1910,7 +1602,7 @@ public final class ConvertMachineDialog implements
 
     while ( !this.stepItemList.isEmpty () )
     {
-      performNFAToDFAPreviousStep ( false );
+      performPreviousStep ( false );
     }
 
     // move the start state

@@ -144,19 +144,19 @@ public class Minimizer
       this.finished = true;
     }
     
-    // TODO just for testing
-
-    for ( ArrayList < DefaultStateView > group : this.groups )
-    {
-      System.err.println ( "group+++++++++++" );
-      for ( DefaultStateView current : group )
-      {
-        System.err.println ( current );
-      }
-      System.err.println ();
-    }
-
-    // TODO end
+//    // TODO just for testing
+//
+//    for ( ArrayList < DefaultStateView > group : this.groups )
+//    {
+//      System.err.println ( "group+++++++++++" );
+//      for ( DefaultStateView current : group )
+//      {
+//        System.err.println ( current );
+//      }
+//      System.err.println ();
+//    }
+//
+//    // TODO end
   }
 
   /**

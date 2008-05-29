@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -42,7 +43,8 @@ import de.unisiegen.gtitool.ui.utils.Minimizer;
  * @author Christian Fehler
  * @version $Id: ConvertMachineDialog.java 919 2008-05-19 23:49:26Z fehler $
  */
-public final class MinimizeMachineDialog
+public final class MinimizeMachineDialog implements
+    LogicClass < MinimizeMachineDialogForm >
 {
 
   /**
@@ -254,7 +256,7 @@ public final class MinimizeMachineDialog
         }
 
         DefaultState state = new DefaultState ( name );
-        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () ) ;
+        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
         DefaultStateView stateView = this.model.createStateView ( 100, 100,
             state, false );
 
@@ -390,12 +392,13 @@ public final class MinimizeMachineDialog
   public final void handleOk ()
   {
     logger.debug ( "handleOk", "handle ok" ); //$NON-NLS-1$ //$NON-NLS-2$
-    
-    if (this.timer != null){
+
+    if ( this.timer != null )
+    {
       this.timer.cancel ();
       this.timer = null;
     }
-    
+
     this.gui.setVisible ( false );
 
     while ( !this.endReached )
@@ -420,7 +423,7 @@ public final class MinimizeMachineDialog
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
-    //TODO implement me
+    // TODO implement me
   }
 
 
@@ -483,5 +486,16 @@ public final class MinimizeMachineDialog
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
+   */
+  public MinimizeMachineDialogForm getGUI ()
+  {
+    return this.gui;
   }
 }

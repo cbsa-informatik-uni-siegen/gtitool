@@ -13,17 +13,11 @@ CF		- Split View
 
 BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,
 		  Mnemonic und ToolTip haben
-BM		- Alle Logik und GUI Klassen implementieren das entsprechende Interface
-BM		- Überprüfen, ob die Minimize GUI Klasse noch mit Netbeans zu öffnen ist und,
-		  ob alle Events gefunden werden
-BM		- Wäre es möglich beim AutoLayout die Größe der DefaultStateView zu beachten?
-		  Ich bräuchte das bei dem Potenzautomaten, da sind die Zustände zu nah
-		  zusammen. Auf der DefaultStateView gibt es jetzt eine getWidth und eine
-		  getHeight. Bei den normalen Zuständen ist alles sehr gut!
-BM		- AutoLayout: Der erste Zustand, wenn er ein Start-Zustand ist, ist zu weit
-		  am linken Rand, bitte etwas mehr (5-10 Pixel) einrücken
-BM		- Warnungen entfernen
+BM		- Minimize GUI Klasse neu machen
 BM		- Minimaler Automat
 
 
 		- Parallel Loop Routing
+		
+		
+

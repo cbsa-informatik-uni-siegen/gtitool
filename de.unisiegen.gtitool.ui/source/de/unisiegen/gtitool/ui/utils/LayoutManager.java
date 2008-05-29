@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.ui.utils;
 
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+
+import org.jgraph.graph.GraphConstants;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -142,8 +145,18 @@ public final class LayoutManager
    */
   private final void createGrid ( ArrayList < DefaultStateView > states )
   {
-    int x = -50;
-    int y = 100;
+    int xPosition = 100;
+    int yPosition = 100;
+
+    int xStartPosition = 50;
+    int xSpace = 100;
+
+    if ( states.size () > 0 )
+    {
+      Rectangle2D rect = GraphConstants.getBounds ( states.get ( 0 )
+          .getAttributes () );
+      xSpace = ( int ) rect.getWidth () + 50;
+    }
 
     ArrayList < DefaultStateView > group = new ArrayList < DefaultStateView > ();
 
@@ -156,39 +169,44 @@ public final class LayoutManager
     int pos = 0;
     for ( DefaultStateView current : states )
     {
-      if ( ( count != 0 ) && ( ( count % rowSize ) == 0 ) )
+      if ( count != 0 )
       {
-        this.groups.add ( group );
-        pos = 0;
-        group = new ArrayList < DefaultStateView > ();
-        x = 50;
-        y += 200;
-      }
-      else
-      {
-        x += 100;
+        if ( ( count % rowSize ) == 0 )
+        {
+          this.groups.add ( group );
+          pos = 0;
+          group = new ArrayList < DefaultStateView > ();
+          xPosition = xStartPosition;
+          yPosition += 200;
+        }
+        else
+        {
+          xPosition += xSpace;
+        }
       }
       group.add ( current );
       if ( this.item != null )
       {
         if ( ( pos % 2 ) != 0 )
         {
-          if ( ( current.getPositionX () != x )
-              || ( current.getPositionY () != y + 50 ) )
+          if ( ( current.getPositionX () != xPosition )
+              || ( current.getPositionY () != yPosition + 50 ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
-                current.getPositionX (), current.getPositionY (), x, y + 50 ) );
-            current.move ( x, y + 50 );
+                current.getPositionX (), current.getPositionY (), xPosition,
+                yPosition + 50 ) );
+            current.move ( xPosition, yPosition + 50 );
           }
         }
         else
         {
-          if ( ( current.getPositionX () != x )
-              || ( current.getPositionY () != y - 50 ) )
+          if ( ( current.getPositionX () != xPosition )
+              || ( current.getPositionY () != yPosition - 50 ) )
           {
             this.item.addItem ( new StateMovedItem ( this.model, current,
-                current.getPositionX (), current.getPositionY (), x, y - 50 ) );
-            current.move ( x, y - 50 );
+                current.getPositionX (), current.getPositionY (), xPosition,
+                yPosition - 50 ) );
+            current.move ( xPosition, yPosition - 50 );
           }
         }
       }

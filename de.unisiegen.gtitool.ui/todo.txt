@@ -8,11 +8,5 @@ CF		- Split View
 
 
 		- Parallel Loop Routing
-		
-		
-**********done
-
-BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,
-		  Mnemonic und ToolTip haben
-BM		- Minimize GUI Klasse neu machen
-BM		- Minimaler Automat
+		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
+		- Zustandsnamen dynamisch anhand der Länge anpassen (Tooltip setzen wenn zu lang)

@@ -47,6 +47,23 @@ public final class Logger
    */
   public final void debug ( String method, String message )
   {
+    if ( method == null )
+    {
+      throw new IllegalArgumentException ( "method name is null" );//$NON-NLS-1$
+    }
+    if ( method.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "method name is empty" );//$NON-NLS-1$
+    }
+    if ( message == null )
+    {
+      throw new IllegalArgumentException ( "message name is null" );//$NON-NLS-1$
+    }
+    if ( message.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "message name is empty" );//$NON-NLS-1$
+    }
+
     System.out.println ( "[" + Thread.currentThread ().getName () + ": " //$NON-NLS-1$ //$NON-NLS-2$
         + this.clazz.getSimpleName () + "." + method + "]" ); //$NON-NLS-1$//$NON-NLS-2$
     System.out.println ( message );
@@ -61,6 +78,23 @@ public final class Logger
    */
   public final void error ( String method, String message )
   {
+    if ( method == null )
+    {
+      throw new IllegalArgumentException ( "method name is null" );//$NON-NLS-1$
+    }
+    if ( method.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "method name is empty" );//$NON-NLS-1$
+    }
+    if ( message == null )
+    {
+      throw new IllegalArgumentException ( "message name is null" );//$NON-NLS-1$
+    }
+    if ( message.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "message name is empty" );//$NON-NLS-1$
+    }
+
     System.out.println ( "[" + Thread.currentThread ().getName () + ": " //$NON-NLS-1$ //$NON-NLS-2$
         + this.clazz.getSimpleName () + "." + method + "]" ); //$NON-NLS-1$//$NON-NLS-2$
     System.err.println ( message );
@@ -72,13 +106,34 @@ public final class Logger
    * 
    * @param method The method name.
    * @param message The message.
-   * @param exc The {@link Exception}.
+   * @param exception The {@link Exception}.
    */
-  public final void error ( String method, String message, Exception exc )
+  public final void error ( String method, String message, Exception exception )
   {
+    if ( method == null )
+    {
+      throw new IllegalArgumentException ( "method name is null" );//$NON-NLS-1$
+    }
+    if ( method.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "method name is empty" );//$NON-NLS-1$
+    }
+    if ( message == null )
+    {
+      throw new IllegalArgumentException ( "message name is null" );//$NON-NLS-1$
+    }
+    if ( message.equals ( "" ) )//$NON-NLS-1$
+    {
+      throw new IllegalArgumentException ( "message name is empty" );//$NON-NLS-1$
+    }
+    if ( exception == null )
+    {
+      throw new IllegalArgumentException ( "exception name is null" );//$NON-NLS-1$
+    }
+
     System.out.println ( "[" + Thread.currentThread ().getName () + ": " //$NON-NLS-1$ //$NON-NLS-2$
         + this.clazz.getSimpleName () + "." + method + "]" ); //$NON-NLS-1$//$NON-NLS-2$
     System.err.println ( message );
-    exc.printStackTrace ();
+    exception.printStackTrace ();
   }
 }

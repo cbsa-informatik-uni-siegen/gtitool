@@ -297,8 +297,8 @@ public final class ExchangeDialog implements LogicClass < ExchangeDialogForm >
                 appendMessage ( Messages.QUOTE + exchange.getDescription ()
                     + Messages.QUOTE, false );
               }
-              ExchangeDialog.this.mainWindow
-                  .handleNew ( exchange.getElement () );
+              ExchangeDialog.this.mainWindow.handleNew (
+                  exchange.getElement (), false );
 
               // Close the network
               ExchangeDialog.this.networkServer = null;

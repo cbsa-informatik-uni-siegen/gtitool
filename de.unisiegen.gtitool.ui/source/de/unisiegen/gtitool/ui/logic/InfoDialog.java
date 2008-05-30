@@ -1,6 +1,9 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+
 import javax.swing.JFrame;
 
 import de.unisiegen.gtitool.logger.Logger;
@@ -47,6 +50,18 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
 
 
   /**
+   * The rows.
+   */
+  private int rows = 4;
+
+
+  /**
+   * The columns.
+   */
+  private int columns = 18;
+
+
+  /**
    * Allocates a new {@link InfoDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -82,34 +97,48 @@ public final class InfoDialog implements LogicClass < InfoDialogForm >
   {
     logger.debug ( "show", "show the info dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    int rows = 3;
-    int columns = 16;
-    this.gui.jGTITextAreaInfo.setRows ( rows );
-    this.gui.jGTITextAreaInfo.setColumns ( columns );
+    this.gui.jGTITextAreaInfo.setRows ( this.rows );
+    this.gui.jGTITextAreaInfo.setColumns ( this.columns );
     this.gui.pack ();
 
-    int heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ()
-        .getBounds ().height;
-    int heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
-        .getBounds ().height;
+    this.gui.jGTIScrollPaneInfo.getVerticalScrollBar ().addAdjustmentListener (
+        new AdjustmentListener ()
+        {
 
-    while ( ( rows < 10 ) && ( heightView > heightViewport ) )
-    {
-      rows++ ;
-      columns = columns + 2;
-      this.gui.jGTITextAreaInfo.setRows ( rows );
-      this.gui.jGTITextAreaInfo.setColumns ( columns );
-      this.gui.pack ();
-      heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ().getBounds ().height;
-      heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
-          .getBounds ().height;
-    }
+          @SuppressWarnings ( "synthetic-access" )
+          public void adjustmentValueChanged ( @SuppressWarnings ( "unused" )
+          AdjustmentEvent event )
+          {
+            while ( ( InfoDialog.this.rows < 10 )
+                && ( InfoDialog.this.gui.jGTIScrollPaneInfo
+                    .getVerticalScrollBar ().isVisible () ) )
+            {
+              InfoDialog.this.rows++ ;
+              InfoDialog.this.columns = InfoDialog.this.columns + 2;
+              InfoDialog.this.gui.jGTITextAreaInfo
+                  .setRows ( InfoDialog.this.rows );
+              InfoDialog.this.gui.jGTITextAreaInfo
+                  .setColumns ( InfoDialog.this.columns );
+              InfoDialog.this.gui.pack ();
+              centerDialog ();
+            }
+          }
+        } );
 
+    centerDialog ();
+    this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * Centers the dialog.
+   */
+  private final void centerDialog ()
+  {
     int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
         - ( this.gui.getWidth () / 2 );
     int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
-    this.gui.setVisible ( true );
   }
 }

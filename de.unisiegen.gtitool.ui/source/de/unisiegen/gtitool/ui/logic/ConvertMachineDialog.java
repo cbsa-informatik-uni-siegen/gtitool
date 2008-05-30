@@ -1,15 +1,19 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import org.jgraph.JGraph;
+import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
@@ -31,7 +35,9 @@ import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.nfa.DefaultNFA;
 import de.unisiegen.gtitool.core.machines.nfa.NFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
@@ -58,7 +64,7 @@ public final class ConvertMachineDialog implements
    * 
    * @author Christian Fehler
    */
-  protected final class AutoStepTimerTask extends TimerTask
+  private final class AutoStepTimerTask extends TimerTask
   {
 
     /**
@@ -104,7 +110,12 @@ public final class ConvertMachineDialog implements
     /**
      * The {@link ENFA} to {@link NFA} conversion type.
      */
-    ENFA_TO_NFA;
+    ENFA_TO_NFA,
+
+    /**
+     * The {@link ENFA} to {@link DFA} conversion type.
+     */
+    ENFA_TO_DFA;
   }
 
 
@@ -163,6 +174,18 @@ public final class ConvertMachineDialog implements
     {
       return this.y;
     }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Object#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      return "x: " + this.x + ", y: " + this.y; //$NON-NLS-1$//$NON-NLS-2$
+    }
   }
 
 
@@ -173,6 +196,21 @@ public final class ConvertMachineDialog implements
    */
   private enum Step
   {
+    /**
+     * The activate first {@link State} step.
+     */
+    ACTIVATE_FIRST_STATE,
+
+    /**
+     * The activate first closure {@link State} step.
+     */
+    ACTIVATE_FIRST_CLOSURE_STATE,
+
+    /**
+     * The add first {@link State} step.
+     */
+    ADD_FIRST_STATE,
+
     /**
      * The activate old {@link State}s step.
      */
@@ -207,6 +245,60 @@ public final class ConvertMachineDialog implements
      * The clear step.
      */
     CLEAR;
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Enum#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      switch ( this )
+      {
+        case ACTIVATE_FIRST_STATE :
+        {
+          return "activate first state"; //$NON-NLS-1$
+        }
+        case ACTIVATE_FIRST_CLOSURE_STATE :
+        {
+          return "activate first closure state"; //$NON-NLS-1$
+        }
+        case ADD_FIRST_STATE :
+        {
+          return "add first state"; //$NON-NLS-1$
+        }
+        case ACTIVATE_OLD_STATES :
+        {
+          return "activate old states"; //$NON-NLS-1$
+        }
+        case ACTIVATE_OLD_CLOSURE_STATES :
+        {
+          return "activate old closure states"; //$NON-NLS-1$
+        }
+        case ACTIVATE_SYMBOLS :
+        {
+          return "activate symbols"; //$NON-NLS-1$
+        }
+        case ACTIVATE_NEW_STATES :
+        {
+          return "activate new states"; //$NON-NLS-1$
+        }
+        case ACTIVATE_NEW_CLOSURE_STATES :
+        {
+          return "activate new closure states"; //$NON-NLS-1$
+        }
+        case ADD_STATE_AND_TRANSITION :
+        {
+          return "add state and transition"; //$NON-NLS-1$
+        }
+        case CLEAR :
+        {
+          return "clear"; //$NON-NLS-1$
+        }
+      }
+      throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
+    }
   }
 
 
@@ -282,6 +374,12 @@ public final class ConvertMachineDialog implements
      * The added {@link DefaultTransitionView}.
      */
     private DefaultTransitionView addedDefaultTransitionView = null;
+
+
+    /**
+     * The added {@link Symbol}.
+     */
+    private ObjectPair < Transition, Symbol > addedSymbol = null;
 
 
     /**
@@ -456,6 +554,18 @@ public final class ConvertMachineDialog implements
 
 
     /**
+     * Returns the addedSymbol.
+     * 
+     * @return The addedSymbol.
+     * @see #addedSymbol
+     */
+    public final ObjectPair < Transition, Symbol > getAddedSymbol ()
+    {
+      return this.addedSymbol;
+    }
+
+
+    /**
      * Sets the addedDefaultStateView.
      * 
      * @param addedDefaultStateView The addedDefaultStateView to set.
@@ -478,6 +588,19 @@ public final class ConvertMachineDialog implements
         DefaultTransitionView addedDefaultTransitionView )
     {
       this.addedDefaultTransitionView = addedDefaultTransitionView;
+    }
+
+
+    /**
+     * Sets the addedSymbol.
+     * 
+     * @param addedSymbol The addedSymbol to set.
+     * @see #addedSymbol
+     */
+    public final void setAddedSymbol (
+        ObjectPair < Transition, Symbol > addedSymbol )
+    {
+      this.addedSymbol = addedSymbol;
     }
   }
 
@@ -598,6 +721,12 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The junk {@link State}.
+   */
+  private State junkState = null;
+
+
+  /**
    * Allocates a new {@link ConvertMachineDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -626,86 +755,6 @@ public final class ConvertMachineDialog implements
     this.parent = parent;
     this.machinePanel = machinePanel;
     this.convertMachineType = convertMachineType;
-
-    this.gui = new ConvertMachineDialogForm ( this, parent );
-    this.gui.jGTISplitPaneGraph.setResizeWeight ( 0.25 );
-    this.gui.jGTISplitPaneGraph.setDividerLocation ( 0.5 );
-
-    try
-    {
-      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
-          .getModel ().getElement (), null );
-    }
-    catch ( TransitionSymbolOnlyOneTimeException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( StoreException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    this.jGraphOriginal = this.modelOriginal.getJGraph ();
-    this.jGraphOriginal.setEnabled ( false );
-    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
-    this.machineOriginal = this.modelOriginal.getMachine ();
-
-    switch ( this.convertMachineType )
-    {
-      case NFA_TO_DFA :
-      {
-        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
-            this.machineOriginal.getAlphabet (), this.machineOriginal
-                .getPushDownAlphabet (), this.machineOriginal
-                .isUsePushDownAlphabet () ) );
-        break;
-      }
-      case ENFA_TO_NFA :
-      {
-        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
-            this.machineOriginal.getAlphabet (), this.machineOriginal
-                .getPushDownAlphabet (), this.machineOriginal
-                .isUsePushDownAlphabet () ) );
-        break;
-      }
-    }
-
-    this.modelConverted.setUseStateSetView ( true );
-    this.jGraphConverted = this.modelConverted.getJGraph ();
-    this.jGraphConverted.setEnabled ( false );
-    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
-    this.machineConverted = this.modelConverted.getMachine ();
-
-    this.positionMap = new HashMap < String, Position > ();
-
-    performStart ();
   }
 
 
@@ -873,10 +922,150 @@ public final class ConvertMachineDialog implements
    * 
    * @see Converter#convert(MachineType)
    */
-  public final void convert ( @SuppressWarnings ( "unused" )
-  MachineType machineType )
+  public final void convert ( MachineType machineType )
   {
+    switch ( this.convertMachineType )
+    {
+      case NFA_TO_DFA :
+      {
+        if ( !machineType.equals ( MachineType.DFA ) )
+        {
+          throw new RuntimeException ( "wrong conversion" ); //$NON-NLS-1$
+        }
+        break;
+      }
+      case ENFA_TO_NFA :
+      {
+        if ( machineType.equals ( MachineType.DFA ) )
+        {
+          // change the machine type
+          this.convertMachineType = ConvertMachineType.ENFA_TO_DFA;
+        }
+        break;
+      }
+      case ENFA_TO_DFA :
+      {
+        if ( !machineType.equals ( MachineType.DFA ) )
+        {
+          throw new RuntimeException ( "wrong conversion" ); //$NON-NLS-1$
+        }
+        break;
+      }
+    }
+
+    this.gui = new ConvertMachineDialogForm ( this, this.parent );
+    this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationConvertMachine () );
+    this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( PropertyChangeEvent event )
+          {
+            PreferenceManager.getInstance ().setDividerLocationConvertMachine (
+                ( ( Integer ) event.getNewValue () ).intValue () );
+          }
+        } );
+
+    try
+    {
+      this.modelOriginal = new DefaultMachineModel ( this.machinePanel
+          .getModel ().getElement (), null );
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( StateException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( SymbolException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( AlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( StoreException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    this.jGraphOriginal = this.modelOriginal.getJGraph ();
+    this.jGraphOriginal.setEnabled ( false );
+    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
+    this.machineOriginal = this.modelOriginal.getMachine ();
+
+    switch ( this.convertMachineType )
+    {
+      case NFA_TO_DFA :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( this.gui.getTitle () + ": " //$NON-NLS-1$
+            + Messages.getString ( "ConvertMachineDialog.NFA" ) + " \u2192 " //$NON-NLS-1$ //$NON-NLS-2$
+            + Messages.getString ( "ConvertMachineDialog.DFA" ) );//$NON-NLS-1$
+        break;
+      }
+      case ENFA_TO_NFA :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultNFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( this.gui.getTitle () + ": "//$NON-NLS-1$
+            + Messages.getString ( "ConvertMachineDialog.ENFA" ) + " \u2192 "//$NON-NLS-1$ //$NON-NLS-2$
+            + Messages.getString ( "ConvertMachineDialog.NFA" ) );//$NON-NLS-1$
+        break;
+      }
+      case ENFA_TO_DFA :
+      {
+        this.modelConverted = new DefaultMachineModel ( new DefaultDFA (
+            this.machineOriginal.getAlphabet (), this.machineOriginal
+                .getPushDownAlphabet (), this.machineOriginal
+                .isUsePushDownAlphabet () ) );
+
+        this.gui.setTitle ( this.gui.getTitle () + ": "//$NON-NLS-1$
+            + Messages.getString ( "ConvertMachineDialog.ENFA" ) + " \u2192 "//$NON-NLS-1$ //$NON-NLS-2$
+            + Messages.getString ( "ConvertMachineDialog.DFA" ) );//$NON-NLS-1$
+        break;
+      }
+    }
+
+    this.modelConverted.setUseStateSetView ( true );
+    this.jGraphConverted = this.modelConverted.getJGraph ();
+    this.jGraphConverted.setEnabled ( false );
+    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
+    this.machineConverted = this.modelConverted.getMachine ();
+
+    this.positionMap = new HashMap < String, Position > ();
+
+    performStart ();
+
     show ();
+    System.err.println ( this.gui.jGTISplitPaneGraph.getDividerLocation () );
   }
 
 
@@ -1047,7 +1236,7 @@ public final class ConvertMachineDialog implements
     }
 
     this.machinePanel.getMainWindow ().handleNew (
-        this.modelConverted.getElement () );
+        this.modelConverted.getElement (), true );
 
     this.gui.dispose ();
   }
@@ -1077,6 +1266,70 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns true if the normal {@link State} is a member of the {@link State}
+   * set,otherwise false.
+   * 
+   * @param stateSet The {@link State} set.
+   * @param normalState The normal {@link State}.
+   * @return True if the normal {@link State} is a member of the {@link State}
+   *         set,otherwise false.
+   */
+  private final boolean isStateMemberOfStateSet ( State stateSet,
+      State normalState )
+  {
+    String name = stateSet.getName ();
+
+    if ( name.charAt ( 0 ) != '{' )
+    {
+      throw new RuntimeException ( "not a state set name: " + name ); //$NON-NLS-1$
+    }
+    if ( name.charAt ( name.length () - 1 ) != '}' )
+    {
+      throw new RuntimeException ( "not a state set name: " + name ); //$NON-NLS-1$
+    }
+
+    String [] splitStateSet = name.substring ( 1, name.length () - 1 ).split (
+        "," ); //$NON-NLS-1$
+
+    for ( String current : splitStateSet )
+    {
+      String newName = current;
+
+      if ( newName.length () == 0 )
+      {
+        throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
+      }
+
+      // remove spaces
+      while ( newName.charAt ( 0 ) == ' ' )
+      {
+        newName = newName.substring ( 1 );
+
+        if ( newName.length () == 0 )
+        {
+          throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
+        }
+      }
+      while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+      {
+        newName = newName.substring ( 0, newName.length () - 1 );
+
+        if ( newName.length () == 0 )
+        {
+          throw new RuntimeException ( "name is empty" ); //$NON-NLS-1$
+        }
+      }
+
+      if ( normalState.getName ().equals ( newName ) )
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  /**
    * Performs the begin step.
    * 
    * @param manualStep Flag that indicates if the {@link Step} is a manual
@@ -1093,8 +1346,10 @@ public final class ConvertMachineDialog implements
 
     setStatus ();
 
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
+    this.modelOriginal.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+    this.modelConverted.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
   }
 
 
@@ -1115,8 +1370,10 @@ public final class ConvertMachineDialog implements
 
     setStatus ();
 
-    this.jGraphOriginal.repaint ();
-    this.jGraphConverted.repaint ();
+    this.modelOriginal.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+    this.modelConverted.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
   }
 
 
@@ -1130,17 +1387,148 @@ public final class ConvertMachineDialog implements
   {
     addStepItem ();
 
-    if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
+    if ( this.step.equals ( Step.ACTIVATE_FIRST_STATE ) )
+    {
+      State startState = null;
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( current.isStartState () )
+        {
+          startState = current;
+          break;
+        }
+      }
+      if ( startState == null )
+      {
+        throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
+      }
+
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", "perform next step: " + this.step //$NON-NLS-1$ //$NON-NLS-2$
+            + ": " + startState.getName () ); //$NON-NLS-1$
+      }
+
+      startState.setActive ( true );
+
+      switch ( this.convertMachineType )
+      {
+        case NFA_TO_DFA :
+        {
+          this.step = Step.ADD_FIRST_STATE;
+          break;
+        }
+        case ENFA_TO_NFA :
+        {
+          this.step = Step.ACTIVATE_FIRST_CLOSURE_STATE;
+          break;
+        }
+        case ENFA_TO_DFA :
+        {
+          this.step = Step.ACTIVATE_FIRST_CLOSURE_STATE;
+          break;
+        }
+      }
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_FIRST_CLOSURE_STATE ) )
     {
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: activate old states" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
+      }
+
+      ArrayList < State > activeStateList = new ArrayList < State > ();
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( current.isActive () )
+        {
+          activeStateList.add ( current );
+        }
+      }
+
+      for ( State current : getClosure ( activeStateList ) )
+      {
+        current.setActive ( true );
+      }
+
+      this.step = Step.ADD_FIRST_STATE;
+    }
+    else if ( this.step.equals ( Step.ADD_FIRST_STATE ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
+      }
+
+      StringBuilder name = new StringBuilder ();
+      name.append ( "{" ); //$NON-NLS-1$
+      boolean first = true;
+      boolean finalState = false;
+      for ( State currentState : this.machineOriginal.getState () )
+      {
+        if ( currentState.isActive () )
+        {
+          if ( currentState.isFinalState () )
+          {
+            finalState = true;
+          }
+          if ( !first )
+          {
+            name.append ( ", " );//$NON-NLS-1$
+          }
+          first = false;
+          name.append ( currentState.getName () );
+        }
+      }
+      name.append ( "}" );//$NON-NLS-1$
+
+      State newState;
+      DefaultStateView newStateView;
+      try
+      {
+        newState = new DefaultState ( this.machineConverted.getAlphabet (),
+            this.machineConverted.getPushDownAlphabet (), name.toString (),
+            true, finalState );
+        newState.setActive ( true );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+        return;
+      }
+
+      newStateView = this.modelConverted.createStateView ( INITIAL_POSITION,
+          INITIAL_POSITION, newState, false );
+
+      Position position = getPosition ( newState );
+      if ( position != null )
+      {
+        newStateView.move ( position.getX (), position.getY () );
+      }
+
+      this.currentActiveState = newState;
+      this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
+
+      // add to step item
+      this.stepItemList.get ( this.stepItemList.size () - 1 )
+          .setAddedDefaultStateView ( newStateView );
+
+      this.step = Step.ACTIVATE_SYMBOLS;
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
+    {
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       for ( State current : this.machineOriginal.getState () )
       {
-        if ( this.currentActiveState.getName ().contains ( current.getName () ) )
+        if ( isStateMemberOfStateSet ( this.currentActiveState, current ) )
         {
           current.setActive ( true );
         }
@@ -1160,6 +1548,11 @@ public final class ConvertMachineDialog implements
           this.step = Step.ACTIVATE_OLD_CLOSURE_STATES;
           break;
         }
+        case ENFA_TO_DFA :
+        {
+          this.step = Step.ACTIVATE_OLD_CLOSURE_STATES;
+          break;
+        }
       }
     }
     else if ( this.step.equals ( Step.ACTIVATE_OLD_CLOSURE_STATES ) )
@@ -1167,7 +1560,7 @@ public final class ConvertMachineDialog implements
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: activate old closure states" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
@@ -1191,7 +1584,7 @@ public final class ConvertMachineDialog implements
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: activate symbols" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       clearSymbolHighlightOriginal ();
@@ -1223,7 +1616,7 @@ public final class ConvertMachineDialog implements
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: activate new states" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
@@ -1261,6 +1654,11 @@ public final class ConvertMachineDialog implements
           this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
           break;
         }
+        case ENFA_TO_DFA :
+        {
+          this.step = Step.ACTIVATE_NEW_CLOSURE_STATES;
+          break;
+        }
       }
     }
     else if ( this.step.equals ( Step.ACTIVATE_NEW_CLOSURE_STATES ) )
@@ -1268,7 +1666,7 @@ public final class ConvertMachineDialog implements
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: activate new closure states" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       ArrayList < State > activeStateList = new ArrayList < State > ();
@@ -1291,22 +1689,22 @@ public final class ConvertMachineDialog implements
     {
       if ( manualStep )
       {
-        logger.debug ( "performNextStep", //$NON-NLS-1$
-            "perform next step: add state and transition" ); //$NON-NLS-1$
+        logger.debug ( "performNextStep",//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       StringBuilder name = new StringBuilder ();
       name.append ( "{" ); //$NON-NLS-1$
       boolean first = true;
       boolean finalState = false;
+      boolean junkStateFound = true;
       for ( State currentState : this.machineOriginal.getState () )
       {
         if ( currentState.isActive () )
         {
-          if ( currentState.isFinalState () )
-          {
-            finalState = true;
-          }
+          junkStateFound = false;
+
+          finalState = finalState || currentState.isFinalState ();
           if ( !first )
           {
             name.append ( ", " );//$NON-NLS-1$
@@ -1316,6 +1714,102 @@ public final class ConvertMachineDialog implements
         }
       }
       name.append ( "}" );//$NON-NLS-1$
+
+      if ( junkStateFound )
+      {
+        if ( manualStep )
+        {
+          logger.debug ( "performNextStep",//$NON-NLS-1$
+              "junk state found" );//$NON-NLS-1$
+        }
+
+        switch ( this.convertMachineType )
+        {
+          case NFA_TO_DFA :
+          {
+            name.delete ( 0, name.length () );
+
+            String stateName = "z";//$NON-NLS-1$
+
+            boolean found = false;
+            for ( State current : this.machineOriginal.getState () )
+            {
+              if ( stateName.equals ( current.getName () ) )
+              {
+                found = true;
+              }
+            }
+
+            int i = 0;
+            while ( found )
+            {
+              stateName = "z" + i;//$NON-NLS-1$
+              i++ ;
+              found = false;
+              for ( State current : this.machineOriginal.getState () )
+              {
+                if ( stateName.equals ( current.getName () ) )
+                {
+                  found = true;
+                }
+              }
+            }
+
+            name.append ( stateName );
+            break;
+          }
+          case ENFA_TO_NFA :
+          {
+            this.step = Step.CLEAR;
+
+            if ( manualStep )
+            {
+              setStatus ();
+
+              this.modelOriginal.getGraphModel ().cellsChanged (
+                  DefaultGraphModel.getAll ( this.modelOriginal
+                      .getGraphModel () ) );
+              this.modelConverted.getGraphModel ().cellsChanged (
+                  DefaultGraphModel.getAll ( this.modelConverted
+                      .getGraphModel () ) );
+            }
+            return;
+          }
+          case ENFA_TO_DFA :
+          {
+            name.delete ( 0, name.length () );
+
+            String stateName = "z";//$NON-NLS-1$
+
+            boolean found = false;
+            for ( State current : this.machineOriginal.getState () )
+            {
+              if ( stateName.equals ( current.getName () ) )
+              {
+                found = true;
+              }
+            }
+
+            int i = 0;
+            while ( found )
+            {
+              stateName = "z" + i;//$NON-NLS-1$
+              i++ ;
+              found = false;
+              for ( State current : this.machineOriginal.getState () )
+              {
+                if ( stateName.equals ( current.getName () ) )
+                {
+                  found = true;
+                }
+              }
+            }
+
+            name.append ( stateName );
+            break;
+          }
+        }
+      }
 
       State stateFound = null;
       for ( State current : this.machineConverted.getState () )
@@ -1365,42 +1859,135 @@ public final class ConvertMachineDialog implements
         newStateView = this.modelConverted.getStateViewForState ( newState );
       }
 
-      Transition transition;
-      try
+      // set the junk state
+      if ( junkStateFound )
       {
-        transition = new DefaultTransition ( this.machineConverted
-            .getAlphabet (), this.machineConverted.getPushDownAlphabet (),
-            new DefaultWord (), new DefaultWord (), this.currentActiveState,
-            newState, new DefaultSymbol ( this.currentActiveSymbol.getName () ) );
-        transition.setActive ( true );
-      }
-      catch ( TransitionSymbolNotInAlphabetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return;
-      }
-      catch ( TransitionSymbolOnlyOneTimeException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return;
-      }
-      catch ( SymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return;
+        this.junkState = newState;
+
+        // check if the junk state transition is already added
+        if ( this.junkState.getTransitionBegin ().size () == 0 )
+        {
+          // add transition
+          Transition transition;
+          try
+          {
+            ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+            for ( Symbol current : this.machineConverted.getAlphabet () )
+            {
+              symbolList.add ( new DefaultSymbol ( current.getName () ) );
+            }
+
+            transition = new DefaultTransition ( this.machineConverted
+                .getAlphabet (), this.machineConverted.getPushDownAlphabet (),
+                new DefaultWord (), new DefaultWord (), this.junkState,
+                this.junkState, symbolList );
+          }
+          catch ( TransitionSymbolNotInAlphabetException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
+          catch ( TransitionSymbolOnlyOneTimeException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
+          catch ( SymbolException exc )
+          {
+            exc.printStackTrace ();
+            System.exit ( 1 );
+            return;
+          }
+
+          this.modelConverted.createTransitionView ( transition, newStateView,
+              newStateView, false, false, true );
+        }
       }
 
-      DefaultTransitionView newTransitionView = this.modelConverted
-          .createTransitionView ( transition, this.modelConverted
-              .getStateViewForState ( this.currentActiveState ), newStateView,
-              false, false, true );
+      Transition foundTransition = null;
 
-      // add to step item
-      this.stepItemList.get ( this.stepItemList.size () - 1 )
-          .setAddedDefaultTransitionView ( newTransitionView );
+      for ( Transition current : this.currentActiveState.getTransitionBegin () )
+      {
+        if ( current.getStateEnd () == newState )
+        {
+          foundTransition = current;
+          break;
+        }
+      }
+
+      if ( foundTransition == null )
+      {
+        Transition transition;
+        try
+        {
+          transition = new DefaultTransition ( this.machineConverted
+              .getAlphabet (), this.machineConverted.getPushDownAlphabet (),
+              new DefaultWord (), new DefaultWord (), this.currentActiveState,
+              newState,
+              new DefaultSymbol ( this.currentActiveSymbol.getName () ) );
+          transition.setActive ( true );
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+        catch ( SymbolException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+
+        DefaultTransitionView newTransitionView = this.modelConverted
+            .createTransitionView ( transition, this.modelConverted
+                .getStateViewForState ( this.currentActiveState ),
+                newStateView, false, false, true );
+
+        // add to step item
+        this.stepItemList.get ( this.stepItemList.size () - 1 )
+            .setAddedDefaultTransitionView ( newTransitionView );
+      }
+      else
+      {
+        Symbol symbol;
+        try
+        {
+          symbol = new DefaultSymbol ( this.currentActiveSymbol.getName () );
+          foundTransition.add ( symbol );
+        }
+        catch ( TransitionSymbolNotInAlphabetException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+        catch ( TransitionSymbolOnlyOneTimeException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+        catch ( SymbolException exc )
+        {
+          exc.printStackTrace ();
+          System.exit ( 1 );
+          return;
+        }
+
+        // add to step item
+        this.stepItemList.get ( this.stepItemList.size () - 1 ).setAddedSymbol (
+            new ObjectPair < Transition, Symbol > ( foundTransition, symbol ) );
+      }
 
       this.step = Step.CLEAR;
     }
@@ -1409,7 +1996,7 @@ public final class ConvertMachineDialog implements
       if ( manualStep )
       {
         logger.debug ( "performNextStep",//$NON-NLS-1$
-            "perform next step: clear" );//$NON-NLS-1$
+            "perform next step: " + this.step );//$NON-NLS-1$
       }
 
       clearStateHighlightOriginal ();
@@ -1438,14 +2025,39 @@ public final class ConvertMachineDialog implements
 
       if ( useNextState )
       {
-        State nextState = this.machineConverted
-            .getState ( this.machineConverted.getState ().size () - 1 );
-
-        if ( nextState == this.currentActiveState )
+        for ( int i = 0 ; i < this.machineConverted.getState ().size () ; i++ )
         {
-          this.endReached = true;
+          if ( this.currentActiveState == this.machineConverted.getState ( i ) )
+          {
+            if ( i == this.machineConverted.getState ().size () - 1 )
+            {
+              this.endReached = true;
+            }
+            else if ( this.junkState == this.machineConverted.getState ( i + 1 ) )
+            {
+              if ( i < this.machineConverted.getState ().size () - 1 )
+              {
+                logger.debug ( "performNextStep",//$NON-NLS-1$
+                    "skipt junk state" );//$NON-NLS-1$
+
+                this.currentActiveState = this.machineConverted
+                    .getState ( i + 2 );
+              }
+              else
+              {
+                logger.debug ( "performNextStep",//$NON-NLS-1$
+                    "skipt junk state -> end reached" );//$NON-NLS-1$
+
+                this.endReached = true;
+              }
+            }
+            else
+            {
+              this.currentActiveState = this.machineConverted.getState ( i + 1 );
+            }
+            break;
+          }
         }
-        this.currentActiveState = nextState;
 
         this.currentActiveSymbol = this.machineConverted.getAlphabet ()
             .get ( 0 );
@@ -1467,8 +2079,10 @@ public final class ConvertMachineDialog implements
     {
       setStatus ();
 
-      this.jGraphOriginal.repaint ();
-      this.jGraphConverted.repaint ();
+      this.modelOriginal.getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+      this.modelConverted.getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
     }
   }
 
@@ -1534,6 +2148,12 @@ public final class ConvertMachineDialog implements
       this.modelConverted.removeTransition ( stepItem
           .getAddedDefaultTransitionView (), false );
     }
+    if ( stepItem.getAddedSymbol () != null )
+    {
+      Transition transition = stepItem.getAddedSymbol ().getFirst ();
+      Symbol symbol = stepItem.getAddedSymbol ().getSecond ();
+      transition.remove ( symbol );
+    }
 
     this.endReached = false;
 
@@ -1541,8 +2161,10 @@ public final class ConvertMachineDialog implements
     {
       setStatus ();
 
-      this.jGraphOriginal.repaint ();
-      this.jGraphConverted.repaint ();
+      this.modelOriginal.getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+      this.modelConverted.getGraphModel ().cellsChanged (
+          DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
     }
   }
 
@@ -1552,41 +2174,7 @@ public final class ConvertMachineDialog implements
    */
   private final void performStart ()
   {
-    this.step = Step.ACTIVATE_OLD_STATES;
-
-    State startState = null;
-    for ( State current : this.machineOriginal.getState () )
-    {
-      if ( current.isStartState () )
-      {
-        startState = current;
-        break;
-      }
-    }
-    if ( startState == null )
-    {
-      throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
-    }
-
-    State newState;
-    try
-    {
-      newState = new DefaultState ( this.machineConverted.getAlphabet (),
-          this.machineConverted.getPushDownAlphabet (), "{"//$NON-NLS-1$
-              + startState.getName () + "}", true, startState.isFinalState () );//$NON-NLS-1$
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    DefaultStateView newStateView = this.modelConverted.createStateView (
-        INITIAL_POSITION, INITIAL_POSITION, newState, false );
-
-    // store the first values
-    this.currentActiveState = newState;
-    this.currentActiveSymbol = this.machineConverted.getAlphabet ().get ( 0 );
+    this.step = Step.ACTIVATE_FIRST_STATE;
 
     while ( !this.endReached )
     {
@@ -1604,10 +2192,6 @@ public final class ConvertMachineDialog implements
     {
       performPreviousStep ( false );
     }
-
-    // move the start state
-    Position position = getPosition ( newState );
-    newStateView.move ( position.getX (), position.getY () );
 
     setStatus ();
   }
@@ -1658,6 +2242,7 @@ public final class ConvertMachineDialog implements
   /**
    * Starts the auto step timer.
    */
+  @SuppressWarnings ( "synthetic-access" )
   private final void startAutoStepTimer ()
   {
     cancelAutoStepTimer ();

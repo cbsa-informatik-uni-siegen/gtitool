@@ -2254,7 +2254,7 @@ public class PreferenceManager
     logger.debug ( "setNonterminalSymbolSetItem", //$NON-NLS-1$
         "set the nonterminal symbol set to " + Messages.QUOTE //$NON-NLS-1$
             + nonterminalSymbolSetItem.getNonterminalSymbolSet ()
-            + "" + Messages.QUOTE ); //$NON-NLS-1$
+            + Messages.QUOTE );
 
     // Delete old data
     String end = "no item found"; //$NON-NLS-1$
@@ -2335,8 +2335,9 @@ public class PreferenceManager
       NonterminalSymbolItem nonterminalSymbolItem )
   {
     logger.debug ( "setStartSymbolItem", "set the start symbol to " //$NON-NLS-1$//$NON-NLS-2$
-        + Messages.QUOTE + nonterminalSymbolItem.getNonterminalSymbol ()
-        + "" + Messages.QUOTE ); //$NON-NLS-1$
+        + Messages.QUOTE
+        + nonterminalSymbolItem.getNonterminalSymbol ()
+        + Messages.QUOTE );
     this.preferences.put ( "DefaultStartSymbol", nonterminalSymbolItem //$NON-NLS-1$
         .getNonterminalSymbol ().getName () );
   }

@@ -3,11 +3,6 @@ CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  Dabei ist darauf zu achten, das auch die Navigation angepasst werden
 		  soll.
 CF		- Umwandeln von Maschinen
-			- ENDEA -> NDEA
-CF		- Im Info Dialog besteht manchmal das Problem, dass die Größe falsch
-		  berechnet wird
-CF		- Die Methode StateSetView.getPerimeterPoint muss angepasst werden, da keine
-		  Ellipse gezeichnet wird.
 CF		- Split View
 
 

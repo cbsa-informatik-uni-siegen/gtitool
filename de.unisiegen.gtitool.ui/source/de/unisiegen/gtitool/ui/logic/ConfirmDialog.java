@@ -3,6 +3,8 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -56,6 +58,18 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
    * The dialog is canceled.
    */
   private boolean canceled = false;
+
+
+  /**
+   * The rows.
+   */
+  private int rows = 4;
+
+
+  /**
+   * The columns.
+   */
+  private int columns = 18;
 
 
   /**
@@ -153,6 +167,19 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
 
 
   /**
+   * Centers the dialog.
+   */
+  private final void centerDialog ()
+  {
+    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+        - ( this.gui.getWidth () / 2 );
+    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+        - ( this.gui.getHeight () / 2 );
+    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -239,34 +266,35 @@ public final class ConfirmDialog implements LogicClass < ConfirmDialogForm >
   {
     logger.debug ( "show", "show the confirm dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    int rows = 4;
-    int columns = 18;
-    this.gui.jGTITextAreaInfo.setRows ( rows );
-    this.gui.jGTITextAreaInfo.setColumns ( columns );
+    this.gui.jGTITextAreaInfo.setRows ( this.rows );
+    this.gui.jGTITextAreaInfo.setColumns ( this.columns );
     this.gui.pack ();
 
-    int heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ()
-        .getBounds ().height;
-    int heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
-        .getBounds ().height;
+    this.gui.jGTIScrollPaneInfo.getVerticalScrollBar ().addAdjustmentListener (
+        new AdjustmentListener ()
+        {
 
-    while ( ( rows < 10 ) && ( heightView > heightViewport ) )
-    {
-      rows++ ;
-      columns = columns + 2;
-      this.gui.jGTITextAreaInfo.setRows ( rows );
-      this.gui.jGTITextAreaInfo.setColumns ( columns );
-      this.gui.pack ();
-      heightViewport = this.gui.jGTIScrollPaneInfo.getViewport ().getBounds ().height;
-      heightView = this.gui.jGTIScrollPaneInfo.getViewport ().getView ()
-          .getBounds ().height;
-    }
+          @SuppressWarnings ( "synthetic-access" )
+          public void adjustmentValueChanged ( @SuppressWarnings ( "unused" )
+          AdjustmentEvent event )
+          {
+            while ( ( ConfirmDialog.this.rows < 10 )
+                && ( ConfirmDialog.this.gui.jGTIScrollPaneInfo
+                    .getVerticalScrollBar ().isVisible () ) )
+            {
+              ConfirmDialog.this.rows++ ;
+              ConfirmDialog.this.columns = ConfirmDialog.this.columns + 2;
+              ConfirmDialog.this.gui.jGTITextAreaInfo
+                  .setRows ( ConfirmDialog.this.rows );
+              ConfirmDialog.this.gui.jGTITextAreaInfo
+                  .setColumns ( ConfirmDialog.this.columns );
+              ConfirmDialog.this.gui.pack ();
+              centerDialog ();
+            }
+          }
+        } );
 
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.gui.getHeight () / 2 );
-    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+    centerDialog ();
     this.gui.setVisible ( true );
   }
 }

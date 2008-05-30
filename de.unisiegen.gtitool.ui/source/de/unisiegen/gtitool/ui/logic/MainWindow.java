@@ -587,7 +587,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
 
-      this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( false );
@@ -640,7 +640,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
     }
-    // TODO
     else if ( ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_MINIMIZE ) ) )
     {
@@ -1267,11 +1266,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the new event with a given {@link Element}.
+   * Handles the new event with a given {@link Element}.
    * 
    * @param element The {@link Element}.
+   * @param autoLayout The auto layout flag, if true the new file is auto
+   *          layouted.
    */
-  public final void handleNew ( Element element )
+  public final void handleNew ( Element element, boolean autoLayout )
   {
     DefaultModel model = null;
     try
@@ -1279,6 +1280,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
         model = new DefaultMachineModel ( element, null );
+
+        if ( autoLayout )
+        {
+          new LayoutManager ( ( DefaultMachineModel ) model, null ).doLayout ();
+        }
       }
       else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {

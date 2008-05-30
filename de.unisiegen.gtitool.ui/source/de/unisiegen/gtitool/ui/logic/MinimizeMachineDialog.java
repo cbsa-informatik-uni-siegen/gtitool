@@ -73,7 +73,7 @@ public final class MinimizeMachineDialog implements
           {
             handleStop ();
           }
-            
+
         }
       } );
     }
@@ -247,18 +247,26 @@ public final class MinimizeMachineDialog implements
       for ( ArrayList < DefaultStateView > current : this.minimizer
           .getGroups () )
       {
-        String name = ""; //$NON-NLS-1$
+        boolean startState = false;
+        String name = "{"; //$NON-NLS-1$
         int count = 0;
         for ( DefaultStateView defaultStateView : current )
         {
+          if ( defaultStateView.getState ().isStartState () )
+          {
+            startState = true;
+          }
           if ( count > 0 )
           {
-            name += "_"; //$NON-NLS-1$
+            name += ", "; //$NON-NLS-1$
           }
           name += defaultStateView.toString ();
+          count++;
         }
+        name += "}"; //$NON-NLS-1$
 
         DefaultState state = new DefaultState ( name );
+        state.setStartState ( startState );
         state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
         DefaultStateView stateView = this.model.createStateView ( 100, 100,
             state, false );
@@ -320,7 +328,8 @@ public final class MinimizeMachineDialog implements
       }
     }
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
@@ -364,7 +373,7 @@ public final class MinimizeMachineDialog implements
     logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     this.autoStep = true;
-    
+
     setStatus ();
 
     this.timer = new Timer ();
@@ -389,9 +398,9 @@ public final class MinimizeMachineDialog implements
 
     while ( !this.beginReached )
     {
-      handlePreviousStep () ;
+      handlePreviousStep ();
     }
-//    this.beginReached = true;
+    // this.beginReached = true;
     this.endReached = false;
     setStatus ();
   }
@@ -534,11 +543,16 @@ public final class MinimizeMachineDialog implements
    */
   private final void setStatus ()
   {
-    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached && !this.autoStep );
-    this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !this.beginReached && !this.autoStep );
-    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached && !this.autoStep );
-    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached && !this.autoStep );
-    this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached && !this.autoStep );
+    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached
+        && !this.autoStep );
+    this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !this.beginReached
+        && !this.autoStep );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached
+        && !this.autoStep );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached
+        && !this.autoStep );
+    this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached
+        && !this.autoStep );
     this.gui.jGTIToolBarButtonStop.setEnabled ( this.autoStep );
   }
 

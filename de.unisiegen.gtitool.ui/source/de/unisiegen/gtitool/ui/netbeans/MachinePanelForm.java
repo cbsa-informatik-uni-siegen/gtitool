@@ -166,7 +166,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
 
         jGTIScrollPaneErrors.setViewportView(jGTITableErrors);
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTITabbedPaneConsole.addTab(bundle.getString("MachinePanel.Error"), new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/error.gif")), jGTIScrollPaneErrors); // NOI18N
 
         jGTIScrollPaneWarnings.setBorder(null);

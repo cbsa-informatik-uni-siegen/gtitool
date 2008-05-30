@@ -1,10 +1,10 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolIllegalNameException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;

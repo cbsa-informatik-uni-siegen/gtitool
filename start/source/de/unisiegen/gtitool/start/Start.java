@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import de.unisiegen.gtitool.start.i18n.Messages;
 import de.unisiegen.gtitool.ui.GTITool;
 
 

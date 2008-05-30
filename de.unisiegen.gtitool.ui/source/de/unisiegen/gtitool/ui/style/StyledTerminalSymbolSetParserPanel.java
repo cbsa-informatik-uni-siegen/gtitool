@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.terminalsymbolset.TerminalSymbolSetParseable;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 

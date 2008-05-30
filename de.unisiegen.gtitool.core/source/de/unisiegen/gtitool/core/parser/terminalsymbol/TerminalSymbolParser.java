@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.core.parser.terminalsymbol;
 
 
 import java_cup.runtime.Symbol;
-import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 

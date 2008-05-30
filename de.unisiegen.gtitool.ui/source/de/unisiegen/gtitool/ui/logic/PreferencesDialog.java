@@ -46,7 +46,7 @@ import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.PreferencesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;

@@ -12,16 +12,16 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
  * The {@link MinimizeMachineDialogForm}.
  * 
  * @author Benjamin Mies
- * @version $Id: ConvertMachineDialogForm.java 930 2008-05-24 17:57:58Z fehler $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class MinimizeMachineDialogForm extends JDialog implements GUIClass <MinimizeMachineDialog>
 {
     
-  /**
-   * The serial version uid.
-   */
-  private static final long serialVersionUID = -5715593804870633115L;
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = -5715593804870633115L;
 
     
     /**
@@ -74,7 +74,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("MinimizeMachineDialog.Title")); // NOI18N
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -160,7 +160,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIScrollPaneOriginal, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MinimizeMachineDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MinimizeMachineDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("MinimizeMachineDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("MinimizeMachineDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +176,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MinimizeMachineDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MinimizeMachineDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("MinimizeMachineDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("MinimizeMachineDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {

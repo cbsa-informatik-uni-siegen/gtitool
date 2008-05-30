@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;

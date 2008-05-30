@@ -76,7 +76,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("ConvertMachineDialog.Title")); // NOI18N
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -170,7 +170,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTISplitPaneGraph, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -186,7 +186,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {

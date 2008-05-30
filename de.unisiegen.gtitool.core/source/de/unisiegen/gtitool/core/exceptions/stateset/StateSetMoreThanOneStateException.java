@@ -3,10 +3,10 @@ package de.unisiegen.gtitool.core.exceptions.stateset;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

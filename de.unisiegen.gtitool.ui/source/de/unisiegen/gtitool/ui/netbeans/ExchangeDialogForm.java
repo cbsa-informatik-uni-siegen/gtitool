@@ -84,7 +84,7 @@ public class ExchangeDialogForm extends JDialog implements GUIClass <ExchangeDia
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("ExchangeDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -226,7 +226,7 @@ public class ExchangeDialogForm extends JDialog implements GUIClass <ExchangeDia
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelPreferences, gridBagConstraints);
 
-        jGTIButtonExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.ExecuteMnemonic").charAt(0));
+        jGTIButtonExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ExchangeDialog.ExecuteMnemonic").charAt(0));
         jGTIButtonExecute.setText(bundle.getString("ExchangeDialog.Execute")); // NOI18N
         jGTIButtonExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,7 +242,7 @@ public class ExchangeDialogForm extends JDialog implements GUIClass <ExchangeDia
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         jGTIPanelButtons.add(jGTIButtonExecute, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ExchangeDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ExchangeDialog.Cancel")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -257,7 +257,7 @@ public class ExchangeDialogForm extends JDialog implements GUIClass <ExchangeDia
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ExchangeDialog.Close").charAt(0));
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ExchangeDialog.Close").charAt(0));
         jGTIButtonClose.setText(bundle.getString("ExchangeDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -2,7 +2,7 @@
 
 <Form version="1.0" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
-    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="de/unisiegen/gtitool/ui/messages"/>
+    <AuxValue name="FormSettings_formBundle" type="java.lang.String" value="de/unisiegen/gtitool/ui/i18n/messages"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
@@ -17,7 +17,7 @@
     <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelInputAlphabet">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.InputAlphabet" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PreferencesDialog.InputAlphabet" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Constraints>
@@ -40,10 +40,10 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.PushDownAlphabet" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PreferencesDialog.PushDownAlphabet" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/unisiegen/gtitool/ui/messages.properties" key="PreferencesDialog.PushDownAlphabetToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PreferencesDialog.PushDownAlphabetToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>

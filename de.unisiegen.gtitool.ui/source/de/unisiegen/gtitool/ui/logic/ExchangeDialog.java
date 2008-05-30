@@ -13,13 +13,13 @@ import javax.swing.text.StyledEditorKit;
 
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.exchange.ExchangeException;
 import de.unisiegen.gtitool.ui.exchange.Network;
 import de.unisiegen.gtitool.ui.exchange.listener.ExchangeFinishedListener;
 import de.unisiegen.gtitool.ui.exchange.listener.ExchangeReceivedListener;
 import de.unisiegen.gtitool.ui.exchange.listener.NetworkConnectedListener;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.ExchangeDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;

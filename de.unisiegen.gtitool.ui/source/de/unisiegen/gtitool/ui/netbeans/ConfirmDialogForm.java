@@ -96,8 +96,8 @@ public class ConfirmDialogForm extends JDialog implements GUIClass <ConfirmDialo
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIScrollPaneInfo, gridBagConstraints);
 
-        jGTIButtonYes.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConfirmDialog.YesMnemonic").charAt(0));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jGTIButtonYes.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConfirmDialog.YesMnemonic").charAt(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIButtonYes.setText(bundle.getString("ConfirmDialog.Yes")); // NOI18N
         jGTIButtonYes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,7 +113,7 @@ public class ConfirmDialogForm extends JDialog implements GUIClass <ConfirmDialo
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonYes, gridBagConstraints);
 
-        jGTIButtonNo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConfirmDialog.NoMnemonic").charAt(0));
+        jGTIButtonNo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConfirmDialog.NoMnemonic").charAt(0));
         jGTIButtonNo.setText(bundle.getString("ConfirmDialog.No")); // NOI18N
         jGTIButtonNo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +127,7 @@ public class ConfirmDialogForm extends JDialog implements GUIClass <ConfirmDialo
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 5);
         getContentPane().add(jGTIButtonNo, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ConfirmDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConfirmDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ConfirmDialog.Cancel")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

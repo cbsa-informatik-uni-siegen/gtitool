@@ -4,7 +4,8 @@ CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  soll.
 CF		- Umwandeln von Maschinen
 CF		- Split View
-
+CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im Graph
+		  hervorgehoben werden
 
 
 		- Parallel Loop Routing

@@ -66,7 +66,7 @@ public class AlphabetDialogForm extends JDialog implements GUIClass <AlphabetDia
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("AlphabetDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -94,7 +94,7 @@ public class AlphabetDialogForm extends JDialog implements GUIClass <AlphabetDia
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 16);
         getContentPane().add(alphabetPanelForm, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AlphabetDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("AlphabetDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("AlphabetDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("AlphabetDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +111,7 @@ public class AlphabetDialogForm extends JDialog implements GUIClass <AlphabetDia
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AlphabetDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("AlphabetDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("AlphabetDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("AlphabetDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

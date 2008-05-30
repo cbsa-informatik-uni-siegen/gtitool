@@ -1,8 +1,8 @@
 package de.unisiegen.gtitool.core.exceptions.machine;
 
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

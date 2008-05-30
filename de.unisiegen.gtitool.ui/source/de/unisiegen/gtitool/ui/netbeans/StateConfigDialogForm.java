@@ -69,7 +69,7 @@ public class StateConfigDialogForm extends JDialog implements GUIClass<StateConf
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("NewStateNameDialog.RenameTitle")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -122,7 +122,7 @@ public class StateConfigDialogForm extends JDialog implements GUIClass<StateConf
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelState, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("NewStateNameDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("NewStateNameDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("NewStateNameDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +139,7 @@ public class StateConfigDialogForm extends JDialog implements GUIClass<StateConf
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewStateNameDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("NewStateNameDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("NewStateNameDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("NewStateNameDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

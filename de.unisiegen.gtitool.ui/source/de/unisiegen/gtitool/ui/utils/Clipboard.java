@@ -9,7 +9,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.logger.Logger;
 
 

@@ -3,12 +3,12 @@ package de.unisiegen.gtitool.core.exceptions.grammar;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
 import de.unisiegen.gtitool.core.exceptions.ProductionWordMembersInvolvedException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

@@ -1,18 +1,29 @@
-package de.unisiegen.gtitool.start;
+package de.unisiegen.gtitool.ui.i18n;
 
 
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
+import de.unisiegen.gtitool.logger.Logger;
+
 
 /**
- * The class to get the messages.
+ * The class to get the messages and the available languages.
  * 
  * @author Christian Fehler
- * @version $Id:MessagesStart.java 761 2008-04-10 22:22:51Z fehler $
+ * @version $Id$
  */
 public final class Messages
 {
+
+  /**
+   * The {@link Logger} for this class.
+   */
+  private static final Logger logger = Logger.getLogger ( Messages.class );
+
 
   /**
    * The quotation mark.
@@ -21,8 +32,21 @@ public final class Messages
 
 
   /**
-   * Gets a string for the given key from the resource bundle of the start
-   * project.
+   * Returns the available {@link LanguageItem}s.
+   * 
+   * @return The available {@link LanguageItem}s.
+   */
+  public final static ArrayList < LanguageItem > getLanguageItems ()
+  {
+    ArrayList < LanguageItem > list = new ArrayList < LanguageItem > ();
+    list.add ( new LanguageItem ( "Deutsch", new Locale ( "de" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
+    list.add ( new LanguageItem ( "English", new Locale ( "en" ) ) );//$NON-NLS-1$ //$NON-NLS-2$
+    return list;
+  }
+
+
+  /**
+   * Gets a string for the given key from the resource bundle of the ui project.
    * 
    * @param key The key for the desired string.
    * @param useQuote Flag that indicates if the quotation marks should be used.
@@ -30,12 +54,12 @@ public final class Messages
    * @return The string for the given key.
    */
   public final static String getString ( String key, boolean useQuote,
-      Object [] arguments )
+      Object ... arguments )
   {
     try
     {
       ResourceBundle resourceBundle = ResourceBundle
-          .getBundle ( "de.unisiegen.gtitool.start.messages" ); //$NON-NLS-1$
+          .getBundle ( "de.unisiegen.gtitool.ui.i18n.messages" ); //$NON-NLS-1$
       String message = resourceBundle.getString ( key );
       for ( int i = 0 ; i < arguments.length ; i++ )
       {
@@ -58,26 +82,24 @@ public final class Messages
     }
     catch ( MissingResourceException exc )
     {
-      exc.printStackTrace ();
-      return key;
+      return de.unisiegen.gtitool.core.i18n.Messages.getString ( key, arguments );
     }
     catch ( IllegalArgumentException exc )
     {
-      exc.printStackTrace ();
+      logger.error ( "getString", "illegal argument exception", exc ); //$NON-NLS-1$ //$NON-NLS-2$
       return key;
     }
   }
 
 
   /**
-   * Gets a string for the given key from the resource bundle of the start
-   * project.
+   * Gets a string for the given key from the resource bundle of the ui project.
    * 
    * @param key The key for the desired string.
    * @param arguments The optional arguments.
    * @return The string for the given key.
    */
-  public final static String getString ( String key, Object [] arguments )
+  public final static String getString ( String key, Object ... arguments )
   {
     return getString ( key, true, arguments );
   }

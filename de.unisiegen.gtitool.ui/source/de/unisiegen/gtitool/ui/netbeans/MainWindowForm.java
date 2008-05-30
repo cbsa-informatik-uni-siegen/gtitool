@@ -950,7 +950,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jToolBarFile.setBorderPainted(false);
         jToolBarFile.setOpaque(false);
         jGTIToolBarButtonNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new24.png")));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIToolBarButtonNew.setToolTipText(bundle.getString("MainWindow.NewToolTip")); // NOI18N
         jGTIToolBarButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1208,11 +1208,11 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(editorPanelTabbedPane, gridBagConstraints);
 
-        jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.FileMnemonic").charAt(0));
+        jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FileMnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
         jMenuItemNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemNew.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/new16.gif")));
-        jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.NewMnemonic").charAt(0));
+        jMenuItemNew.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.NewMnemonic").charAt(0));
         jMenuItemNew.setText(bundle.getString("MainWindow.New")); // NOI18N
         jMenuItemNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1224,7 +1224,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/open16.png")));
-        jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.OpenMnemonic").charAt(0));
+        jMenuItemOpen.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.OpenMnemonic").charAt(0));
         jMenuItemOpen.setText(bundle.getString("MainWindow.Open")); // NOI18N
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1236,7 +1236,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseMnemonic").charAt(0));
+        jMenuItemClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseMnemonic").charAt(0));
         jMenuItemClose.setText(bundle.getString("MainWindow.Close")); // NOI18N
         jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1248,7 +1248,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemCloseAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemCloseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
+        jMenuItemCloseAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.CloseAllMnemonic").charAt(0));
         jMenuItemCloseAll.setText(bundle.getString("MainWindow.CloseAll")); // NOI18N
         jMenuItemCloseAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1262,7 +1262,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/save16.png")));
-        jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveMnemonic").charAt(0));
+        jMenuItemSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveMnemonic").charAt(0));
         jMenuItemSave.setText(bundle.getString("MainWindow.Save")); // NOI18N
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1273,7 +1273,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemSave);
 
         jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveas16.png")));
-        jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
+        jMenuItemSaveAs.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAsMnemonic").charAt(0));
         jMenuItemSaveAs.setText(bundle.getString("MainWindow.SaveAs")); // NOI18N
         jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1285,7 +1285,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemSaveAll.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSaveAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/saveAll16.gif")));
-        jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
+        jMenuItemSaveAll.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SaveAllMnemonic").charAt(0));
         jMenuItemSaveAll.setText(bundle.getString("MainWindow.SaveAll")); // NOI18N
         jMenuItemSaveAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1296,7 +1296,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jMenuItemSaveAll);
 
         jMenuDraft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
+        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
         jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
         jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
         jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
@@ -1357,7 +1357,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuFile.add(jSeparatorFile2);
 
         jMenuRecentlyUsed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
+        jMenuRecentlyUsed.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RecentlyUsedMnemonic").charAt(0));
         jMenuRecentlyUsed.setText(bundle.getString("MainWindow.RecentlyUsed")); // NOI18N
         jMenuFile.add(jMenuRecentlyUsed);
 
@@ -1365,7 +1365,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.QuitMnemonic").charAt(0));
+        jMenuItemQuit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.QuitMnemonic").charAt(0));
         jMenuItemQuit.setText(bundle.getString("MainWindow.Quit")); // NOI18N
         jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1377,11 +1377,11 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuBarMain.add(jMenuFile);
 
-        jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMnemonic").charAt(0));
+        jMenuEdit.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMnemonic").charAt(0));
         jMenuEdit.setText(bundle.getString("MainWindow.Edit")); // NOI18N
         jMenuItemUndo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemUndo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-undo.png")));
-        jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.UndoMnemonic").charAt(0));
+        jMenuItemUndo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.UndoMnemonic").charAt(0));
         jMenuItemUndo.setText(bundle.getString("MainWindow.Undo")); // NOI18N
         jMenuItemUndo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1393,7 +1393,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/edit-redo.png")));
-        jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.RedoMnemonic").charAt(0));
+        jMenuItemRedo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.RedoMnemonic").charAt(0));
         jMenuItemRedo.setText(bundle.getString("MainWindow.Redo")); // NOI18N
         jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1406,7 +1406,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuEdit.add(jSeparatorEdit);
 
         jMenuItemPreferences.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/preferences16.png")));
-        jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
+        jMenuItemPreferences.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.PreferencesMnemonic").charAt(0));
         jMenuItemPreferences.setText(bundle.getString("MainWindow.Preferences")); // NOI18N
         jMenuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1418,9 +1418,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuBarMain.add(jMenuEdit);
 
-        jMenuView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ViewMnemonic").charAt(0));
+        jMenuView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ViewMnemonic").charAt(0));
         jMenuView.setText(bundle.getString("MainWindow.View")); // NOI18N
-        jCheckBoxMenuItemConsole.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ConsoleMnemonic").charAt(0));
+        jCheckBoxMenuItemConsole.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConsoleMnemonic").charAt(0));
         jCheckBoxMenuItemConsole.setSelected(true);
         jCheckBoxMenuItemConsole.setText(bundle.getString("MainWindow.Console")); // NOI18N
         jCheckBoxMenuItemConsole.addItemListener(new java.awt.event.ItemListener() {
@@ -1431,7 +1431,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuView.add(jCheckBoxMenuItemConsole);
 
-        jCheckBoxMenuItemTable.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.TableMnemonic").charAt(0));
+        jCheckBoxMenuItemTable.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.TableMnemonic").charAt(0));
         jCheckBoxMenuItemTable.setSelected(true);
         jCheckBoxMenuItemTable.setText(bundle.getString("MainWindow.Table")); // NOI18N
         jCheckBoxMenuItemTable.addItemListener(new java.awt.event.ItemListener() {
@@ -1444,9 +1444,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuBarMain.add(jMenuView);
 
-        jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
+        jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
         jMenuExecute.setText(bundle.getString("MainWindow.Execute")); // NOI18N
-        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
+        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
         jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
         jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1456,7 +1456,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemValidate);
 
-        jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
+        jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
         jMenuItemEnterWord.setText(bundle.getString("MainWindow.EnterWord")); // NOI18N
         jMenuItemEnterWord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1466,7 +1466,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemEnterWord);
 
-        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
+        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
         jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
         jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1476,7 +1476,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemHistory);
 
-        jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
+        jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
         jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
         jMenuItemEditMachine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1486,7 +1486,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemEditMachine);
 
-        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
+        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
         jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
         jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1505,7 +1505,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemMinimize);
 
-        jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
+        jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
         jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
         jMenuItemConvertToDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
         jMenuItemConvertToDFA.addActionListener(new java.awt.event.ActionListener() {
@@ -1547,9 +1547,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuBarMain.add(jMenuExecute);
 
-        jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
+        jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
         jMenuExtras.setText(bundle.getString("MainWindow.Extras")); // NOI18N
-        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.ExchangeMnemonic").charAt(0));
+        jMenuItemExchange.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExchangeMnemonic").charAt(0));
         jMenuItemExchange.setText(bundle.getString("MainWindow.Exchange")); // NOI18N
         jMenuItemExchange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1561,10 +1561,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuBarMain.add(jMenuExtras);
 
-        jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.HelpMnemonic").charAt(0));
+        jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
         jMenuHelp.setText(bundle.getString("MainWindow.Help")); // NOI18N
         jMenuItemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("MainWindow.AboutMnemonic").charAt(0));
+        jMenuItemAbout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AboutMnemonic").charAt(0));
         jMenuItemAbout.setText(bundle.getString("MainWindow.About")); // NOI18N
         jMenuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

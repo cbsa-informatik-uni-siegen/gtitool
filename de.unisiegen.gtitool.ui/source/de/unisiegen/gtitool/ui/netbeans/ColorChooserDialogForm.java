@@ -98,7 +98,7 @@ public class ColorChooserDialogForm extends JDialog implements GUIClass <ColorCh
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("ColorChooserDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -169,7 +169,7 @@ public class ColorChooserDialogForm extends JDialog implements GUIClass <ColorCh
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 5, 16);
         getContentPane().add(jGTIPanelPreview, gridBagConstraints);
 
-        jGTIButtonReset.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ColorChooserDialog.ResetMnemonic").charAt(0));
+        jGTIButtonReset.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ColorChooserDialog.ResetMnemonic").charAt(0));
         jGTIButtonReset.setText(bundle.getString("ColorChooserDialog.Reset")); // NOI18N
         jGTIButtonReset.setToolTipText(bundle.getString("ColorChooserDialog.ResetToolTip")); // NOI18N
         jGTIButtonReset.addActionListener(new java.awt.event.ActionListener() {
@@ -186,7 +186,7 @@ public class ColorChooserDialogForm extends JDialog implements GUIClass <ColorCh
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 5);
         getContentPane().add(jGTIButtonReset, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ColorChooserDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ColorChooserDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("ColorChooserDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("ColorChooserDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -202,7 +202,7 @@ public class ColorChooserDialogForm extends JDialog implements GUIClass <ColorCh
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("ColorChooserDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ColorChooserDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ColorChooserDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("ColorChooserDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

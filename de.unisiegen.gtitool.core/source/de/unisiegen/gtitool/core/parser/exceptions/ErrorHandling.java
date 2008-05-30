@@ -4,8 +4,8 @@ package de.unisiegen.gtitool.core.parser.exceptions;
 import java.awt.Color;
 import java.util.prefs.Preferences;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Symbol;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.preferences.PreferenceManager;
 
 

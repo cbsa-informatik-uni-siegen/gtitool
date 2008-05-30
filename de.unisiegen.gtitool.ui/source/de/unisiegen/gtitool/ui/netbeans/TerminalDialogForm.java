@@ -66,7 +66,7 @@ public class TerminalDialogForm extends JDialog implements GUIClass <TerminalDia
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("TerminalDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -93,7 +93,7 @@ public class TerminalDialogForm extends JDialog implements GUIClass <TerminalDia
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 5, 16);
         getContentPane().add(terminalPanelForm, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TerminalDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("TerminalDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("TerminalDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("TerminalDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +110,7 @@ public class TerminalDialogForm extends JDialog implements GUIClass <TerminalDia
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("TerminalDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("TerminalDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("TerminalDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("TerminalDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

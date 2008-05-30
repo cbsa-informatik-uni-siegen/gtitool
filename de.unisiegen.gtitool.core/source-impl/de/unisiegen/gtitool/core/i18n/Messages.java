@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.core;
+package de.unisiegen.gtitool.core.i18n;
 
 
 import java.util.MissingResourceException;
@@ -68,7 +68,7 @@ public final class Messages
     try
     {
       ResourceBundle resourceBundle = ResourceBundle
-          .getBundle ( "de.unisiegen.gtitool.core.messages" ); //$NON-NLS-1$
+          .getBundle ( "de.unisiegen.gtitool.core.i18n.messages" ); //$NON-NLS-1$
       PrettyString message = new PrettyString ( new PrettyToken (
           resourceBundle.getString ( key ), Style.NONE ) );
       for ( int i = 0 ; i < arguments.length ; i++ )
@@ -138,7 +138,7 @@ public final class Messages
     try
     {
       ResourceBundle resourceBundle = ResourceBundle
-          .getBundle ( "de.unisiegen.gtitool.core.messages" ); //$NON-NLS-1$
+          .getBundle ( "de.unisiegen.gtitool.core.i18n.messages" ); //$NON-NLS-1$
       String message = resourceBundle.getString ( key );
       for ( int i = 0 ; i < arguments.length ; i++ )
       {

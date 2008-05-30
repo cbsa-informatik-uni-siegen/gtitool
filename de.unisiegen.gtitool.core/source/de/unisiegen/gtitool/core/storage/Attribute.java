@@ -3,7 +3,7 @@ package de.unisiegen.gtitool.core.storage;
 
 import java.io.Serializable;
 
-import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 
 

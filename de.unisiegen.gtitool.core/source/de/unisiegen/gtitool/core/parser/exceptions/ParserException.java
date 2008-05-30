@@ -1,10 +1,10 @@
 package de.unisiegen.gtitool.core.parser.exceptions;
 
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

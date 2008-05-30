@@ -65,7 +65,7 @@ public class HistoryDialogForm extends JDialog implements GUIClass <HistoryDialo
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("HistoryDialog.Title")); // NOI18N
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -86,7 +86,7 @@ public class HistoryDialogForm extends JDialog implements GUIClass <HistoryDialo
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIScrollPaneHistory, gridBagConstraints);
 
-        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("HistoryDialog.CloseMnemonic").charAt(0));
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("HistoryDialog.CloseMnemonic").charAt(0));
         jGTIButtonClose.setText(bundle.getString("HistoryDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

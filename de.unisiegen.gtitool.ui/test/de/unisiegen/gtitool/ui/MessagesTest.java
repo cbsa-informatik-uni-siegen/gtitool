@@ -73,18 +73,18 @@ public class MessagesTest
     // core
     System.out.println ( "*** core ***" ); //$NON-NLS-1$
     String fileNameEnCore = MessagesTest.class.getResource (
-        "/de/unisiegen/gtitool/core/messages.properties" ).getFile (); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/core/i18n/messages.properties" ).getFile (); //$NON-NLS-1$
     String fileNameDeCore = MessagesTest.class.getResource (
-        "/de/unisiegen/gtitool/core/messages_de.properties" ).getFile (); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/core/i18n/messages_de.properties" ).getFile (); //$NON-NLS-1$
     testFiles ( fileNameEnCore, fileNameDeCore );
 
     // ui
     System.out.println ();
     System.out.println ( "*** ui ***" ); //$NON-NLS-1$
     String fileNameEnUi = MessagesTest.class.getResource (
-        "/de/unisiegen/gtitool/ui/messages.properties" ).getFile (); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/i18n/messages.properties" ).getFile (); //$NON-NLS-1$
     String fileNameDeUi = MessagesTest.class.getResource (
-        "/de/unisiegen/gtitool/ui/messages_de.properties" ).getFile (); //$NON-NLS-1$
+        "/de/unisiegen/gtitool/ui/i18n/messages_de.properties" ).getFile (); //$NON-NLS-1$
     testFiles ( fileNameEnUi, fileNameDeUi );
   }
 

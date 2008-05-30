@@ -2,7 +2,7 @@ package de.unisiegen.gtitool.ui.preferences.item;
 
 
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 

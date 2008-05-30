@@ -93,8 +93,8 @@ public class InfoDialogForm extends JDialog implements GUIClass <InfoDialog>
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIScrollPaneInfo, gridBagConstraints);
 
-        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("InfoDialog.CloseMnemonic").charAt(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIButtonClose.setText(bundle.getString("InfoDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

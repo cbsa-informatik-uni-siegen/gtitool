@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 /**
@@ -132,7 +132,7 @@ public class WordPanelForm extends JPanel implements LanguageChangedListener
         setLayout(new java.awt.GridBagLayout());
 
         jGTILabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTILabelWord.setText(bundle.getString("StyledWordParserPanel.Word")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

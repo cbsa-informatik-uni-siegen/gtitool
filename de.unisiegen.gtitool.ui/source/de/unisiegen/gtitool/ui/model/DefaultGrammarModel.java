@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.DefaultProduction;
@@ -22,6 +21,7 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetE
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
 import de.unisiegen.gtitool.core.grammars.rg.DefaultRG;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.storage.Attribute;
 import de.unisiegen.gtitool.core.storage.Element;

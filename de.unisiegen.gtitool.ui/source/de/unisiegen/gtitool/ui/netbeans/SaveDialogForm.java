@@ -69,7 +69,7 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("SaveDialog.Title")); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -89,7 +89,7 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTIFileChooser, gridBagConstraints);
 
-        jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
+        jGTIButtonSave.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.SaveMnemonic").charAt(0));
         jGTIButtonSave.setText(bundle.getString("SaveDialog.Save")); // NOI18N
         jGTIButtonSave.setToolTipText(bundle.getString("SaveDialog.SaveToolTip")); // NOI18N
         jGTIButtonSave.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +106,7 @@ public class SaveDialogForm extends JDialog implements GUIClass <SaveDialog>
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonSave, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("SaveDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("SaveDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("SaveDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

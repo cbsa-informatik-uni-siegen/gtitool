@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.parser.exceptions;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
@@ -13,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

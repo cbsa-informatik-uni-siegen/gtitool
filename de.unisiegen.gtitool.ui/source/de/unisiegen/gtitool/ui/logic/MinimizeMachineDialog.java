@@ -40,7 +40,7 @@ import de.unisiegen.gtitool.ui.utils.Minimizer;
  * The {@link MinimizeMachineDialog}.
  * 
  * @author Christian Fehler
- * @version $Id: ConvertMachineDialog.java 919 2008-05-19 23:49:26Z fehler $
+ * @version $Id$
  */
 public final class MinimizeMachineDialog implements
     LogicClass < MinimizeMachineDialogForm >

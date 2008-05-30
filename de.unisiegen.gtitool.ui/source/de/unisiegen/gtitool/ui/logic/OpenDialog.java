@@ -11,7 +11,7 @@ import javax.swing.plaf.basic.BasicFileChooserUI;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.OpenDialogForm;
 

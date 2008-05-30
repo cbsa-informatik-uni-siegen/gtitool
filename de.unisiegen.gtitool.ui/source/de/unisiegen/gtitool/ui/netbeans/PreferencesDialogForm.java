@@ -93,7 +93,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("PreferencesDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -103,7 +103,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
             }
         });
 
-        jGTILabelLanguage.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.LanguageMnemonic").charAt(0));
+        jGTILabelLanguage.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.LanguageMnemonic").charAt(0));
         jGTILabelLanguage.setLabelFor(jGTIComboBoxLanguage);
         jGTILabelLanguage.setText(bundle.getString("PreferencesDialog.Language")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -122,7 +122,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(16, 5, 5, 16);
         jGTIPanelGeneral.add(jGTIComboBoxLanguage, gridBagConstraints);
 
-        jGTILabelLookAndFeel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.LookAndFeelMnemonic").charAt(0));
+        jGTILabelLookAndFeel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.LookAndFeelMnemonic").charAt(0));
         jGTILabelLookAndFeel.setLabelFor(jGTIComboBoxLookAndFeel);
         jGTILabelLookAndFeel.setText(bundle.getString("PreferencesDialog.LookAndFeel")); // NOI18N
         jGTILabelLookAndFeel.setToolTipText(bundle.getString("PreferencesDialog.LookAndFeel")); // NOI18N
@@ -142,7 +142,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jGTIPanelGeneral.add(jGTIComboBoxLookAndFeel, gridBagConstraints);
 
-        jGTILabelZoom.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.ZoomMnemonic").charAt(0));
+        jGTILabelZoom.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.ZoomMnemonic").charAt(0));
         jGTILabelZoom.setLabelFor(jGTISliderAutoStep);
         jGTILabelZoom.setText(bundle.getString("PreferencesDialog.Zoom")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -185,7 +185,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
 
         jGTITabbedPane.addTab(bundle.getString("PreferencesDialog.TabGeneral"), null, jGTIPanelGeneral, bundle.getString("PreferencesDialog.TabGeneralToolTip")); // NOI18N
 
-        jGTILabelTransition.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.TransitionMnemonic").charAt(0));
+        jGTILabelTransition.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.TransitionMnemonic").charAt(0));
         jGTILabelTransition.setLabelFor(jGTIComboBoxTransition);
         jGTILabelTransition.setText(bundle.getString("PreferencesDialog.Transition")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -204,7 +204,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(16, 5, 5, 16);
         jGTIPanelView.add(jGTIComboBoxTransition, gridBagConstraints);
 
-        jGTILabelMouseSelection.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.MouseSelectionMnemonic").charAt(0));
+        jGTILabelMouseSelection.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.MouseSelectionMnemonic").charAt(0));
         jGTILabelMouseSelection.setLabelFor(jGTIComboBoxMouseSelection);
         jGTILabelMouseSelection.setText(bundle.getString("PreferencesDialog.MouseSelection")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -223,7 +223,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 16);
         jGTIPanelView.add(jGTIComboBoxMouseSelection, gridBagConstraints);
 
-        jGTILabelAutoStep.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AutoStepMnemonic").charAt(0));
+        jGTILabelAutoStep.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.AutoStepMnemonic").charAt(0));
         jGTILabelAutoStep.setLabelFor(jGTISliderAutoStep);
         jGTILabelAutoStep.setText(bundle.getString("PreferencesDialog.AutoStep")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -316,7 +316,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jGTITabbedPane, gridBagConstraints);
 
-        jGTIButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
+        jGTIButtonRestore.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.RestoreMnemonic").charAt(0));
         jGTIButtonRestore.setText(bundle.getString("PreferencesDialog.Restore")); // NOI18N
         jGTIButtonRestore.setToolTipText(bundle.getString("PreferencesDialog.RestoreToolTip")); // NOI18N
         jGTIButtonRestore.addActionListener(new java.awt.event.ActionListener() {
@@ -332,7 +332,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(10, 16, 16, 5);
         getContentPane().add(jGTIButtonRestore, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.OkMnemonic").charAt(0));
         jGTIButtonOk.setText(bundle.getString("PreferencesDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("PreferencesDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
@@ -349,7 +349,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 5);
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
-        jGTIButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
+        jGTIButtonAccept.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.AcceptMnemonic").charAt(0));
         jGTIButtonAccept.setText(bundle.getString("PreferencesDialog.Accept")); // NOI18N
         jGTIButtonAccept.setToolTipText(bundle.getString("PreferencesDialog.AcceptToolTip")); // NOI18N
         jGTIButtonAccept.addActionListener(new java.awt.event.ActionListener() {
@@ -365,7 +365,7 @@ public class PreferencesDialogForm extends JDialog implements GUIClass <Preferen
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 16, 5);
         getContentPane().add(jGTIButtonAccept, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("PreferencesDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("PreferencesDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("PreferencesDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {

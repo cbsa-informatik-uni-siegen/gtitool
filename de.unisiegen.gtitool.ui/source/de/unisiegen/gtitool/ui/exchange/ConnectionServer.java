@@ -4,7 +4,7 @@ package de.unisiegen.gtitool.ui.exchange;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**

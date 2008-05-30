@@ -13,7 +13,7 @@ import javax.swing.SwingUtilities;
 
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;

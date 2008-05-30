@@ -3,11 +3,11 @@ package de.unisiegen.gtitool.core.exceptions.transition;
 
 import java.util.ArrayList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

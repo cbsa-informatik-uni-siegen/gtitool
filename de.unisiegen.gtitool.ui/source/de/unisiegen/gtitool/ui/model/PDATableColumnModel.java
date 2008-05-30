@@ -6,7 +6,7 @@ import javax.swing.table.TableColumn;
 
 import de.unisiegen.gtitool.core.parser.style.renderer.StackOperationTableCellRenderer;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 

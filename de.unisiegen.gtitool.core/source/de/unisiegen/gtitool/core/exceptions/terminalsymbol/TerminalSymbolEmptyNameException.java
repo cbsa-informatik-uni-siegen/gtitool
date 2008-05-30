@@ -1,9 +1,9 @@
 package de.unisiegen.gtitool.core.exceptions.terminalsymbol;
 
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.exceptions.CoreException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 
 
 /**

@@ -77,7 +77,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         setTitle(bundle.getString("AboutDialog.Title")); // NOI18N
         setModal(true);
         setResizable(false);
@@ -206,7 +206,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
         jGTIPanelMain.add(jGTIPanelSouth, gridBagConstraints);
 
-        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
+        jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
         jGTIButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
         jGTIButtonClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

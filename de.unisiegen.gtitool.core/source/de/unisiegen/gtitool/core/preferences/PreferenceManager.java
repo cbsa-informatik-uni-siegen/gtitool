@@ -9,7 +9,6 @@ import java.util.prefs.Preferences;
 import javax.swing.JComponent;
 import javax.swing.event.EventListenerList;
 
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
@@ -31,6 +30,7 @@ import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymb
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;

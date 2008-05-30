@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;

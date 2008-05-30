@@ -14,7 +14,7 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 
 import de.unisiegen.gtitool.core.entities.State;
-import de.unisiegen.gtitool.ui.Messages;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.StateConfigDialog;

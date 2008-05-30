@@ -14,11 +14,11 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
-import de.unisiegen.gtitool.ui.Messages;
 import de.unisiegen.gtitool.ui.history.HistoryPath;
 import de.unisiegen.gtitool.ui.history.HistoryPathPart;
 import de.unisiegen.gtitool.ui.history.HistoryPathTableCellRenderer;
 import de.unisiegen.gtitool.ui.history.TransitionSymbolPair;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.HistoryDialogForm;
 

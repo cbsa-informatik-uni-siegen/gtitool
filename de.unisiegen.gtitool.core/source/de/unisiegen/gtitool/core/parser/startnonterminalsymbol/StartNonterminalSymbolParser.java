@@ -2,8 +2,8 @@ package de.unisiegen.gtitool.core.parser.startnonterminalsymbol;
 
 
 import java_cup.runtime.Symbol;
-import de.unisiegen.gtitool.core.Messages;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 

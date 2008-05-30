@@ -68,8 +68,8 @@ public class NewDialogTerminalForm extends JPanel implements GUIClass <NewDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 16);
         add(terminalPanelForm, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.CancelMnemonic").charAt(0));
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages"); // NOI18N
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("NewDialog.CancelMnemonic").charAt(0));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTIButtonCancel.setText(bundle.getString("NewDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("NewDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -85,7 +85,7 @@ public class NewDialogTerminalForm extends JPanel implements GUIClass <NewDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jGTIPanelButtons.add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
+        jGTIButtonPrevious.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("NewDialog.PreviousMnemonic").charAt(0));
         jGTIButtonPrevious.setText(bundle.getString("NewDialog.Previous")); // NOI18N
         jGTIButtonPrevious.setToolTipText(bundle.getString("NewDialog.PreviousToolTip")); // NOI18N
         jGTIButtonPrevious.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +102,7 @@ public class NewDialogTerminalForm extends JPanel implements GUIClass <NewDialog
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
         jGTIPanelButtons.add(jGTIButtonPrevious, gridBagConstraints);
 
-        jGTIButtonFinished.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
+        jGTIButtonFinished.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("NewDialog.FinishedMnemonic").charAt(0));
         jGTIButtonFinished.setText(bundle.getString("NewDialog.Finished")); // NOI18N
         jGTIButtonFinished.setToolTipText(bundle.getString("NewDialog.FinishedToolTip")); // NOI18N
         jGTIButtonFinished.addActionListener(new java.awt.event.ActionListener() {

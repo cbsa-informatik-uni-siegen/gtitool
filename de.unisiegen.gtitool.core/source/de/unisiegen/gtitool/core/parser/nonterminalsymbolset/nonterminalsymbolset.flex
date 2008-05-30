@@ -8,7 +8,7 @@ package de.unisiegen.gtitool.core.parser.nonterminalsymbolset;
 
 import java.io.StringReader;
 import java_cup.runtime.Symbol;
-import de.unisiegen.gtitool.core.Messages;
+import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.scanner.AbstractScanner;
 import de.unisiegen.gtitool.core.parser.style.Style;

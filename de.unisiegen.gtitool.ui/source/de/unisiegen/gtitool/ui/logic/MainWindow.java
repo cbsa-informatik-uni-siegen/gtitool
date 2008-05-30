@@ -2983,16 +2983,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   /**
    * Minimize the active {@link Machine}.
    */
-  public void minimize ()
+  public void handleMinimize ()
   {
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof MachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) panel;
-      MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
-          machinePanel );
-      dialog.show ();
+      // if there are no validation errors perform the action
+      if ( handleValidate ( false ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+        MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
+            machinePanel );
+        dialog.show ();
+      }
     }
 
   }

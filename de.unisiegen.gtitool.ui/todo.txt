@@ -6,13 +6,13 @@ CF		- Umwandeln von Maschinen
 CF		- Split View
 
 
-BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,
-		  Mnemonic und ToolTip haben
-BM		- Minimize GUI Klasse neu machen
-BM		- Minimaler Automat
-
 
 		- Parallel Loop Routing
 		
 		
+**********done
 
+BM		- Alle Buttons des Minimize Dialoges und der Title müssen einen eigenen Text,
+		  Mnemonic und ToolTip haben
+BM		- Minimize GUI Klasse neu machen
+BM		- Minimaler Automat

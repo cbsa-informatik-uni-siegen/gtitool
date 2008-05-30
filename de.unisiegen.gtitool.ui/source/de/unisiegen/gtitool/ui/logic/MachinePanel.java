@@ -2775,7 +2775,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * <<<<<<< .mine ======= Performs the cells changed on the
+   * Performs the cells changed on the
    * {@link GraphModel}.
    */
   public final void performCellsChanged ()

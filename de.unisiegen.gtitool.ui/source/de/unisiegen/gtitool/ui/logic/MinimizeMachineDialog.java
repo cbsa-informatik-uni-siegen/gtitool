@@ -28,7 +28,6 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -69,14 +68,12 @@ public final class MinimizeMachineDialog implements
         @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
+          handleNextStep ();
           if ( MinimizeMachineDialog.this.endReached )
           {
             handleStop ();
           }
-          else
-          {
-            handleNextStep ();
-          }
+            
         }
       } );
     }
@@ -88,6 +85,12 @@ public final class MinimizeMachineDialog implements
    */
   private static final Logger logger = Logger
       .getLogger ( MinimizeMachineDialog.class );
+
+
+  /**
+   * Flag indicates if autostep is in progress.
+   */
+  private boolean autoStep = false;
 
 
   /**
@@ -171,8 +174,8 @@ public final class MinimizeMachineDialog implements
   public MinimizeMachineDialog ( MainWindowForm mainWindowForm,
       MachinePanel machinePanel )
   {
-    logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
-        "allocate a new convert machine dialog" ); //$NON-NLS-1$
+    logger.debug ( "MinimizeMachineDialog", //$NON-NLS-1$
+        "allocate a new minimize machine dialog" ); //$NON-NLS-1$
 
     this.mainWindowForm = mainWindowForm;
     this.machinePanel = machinePanel;
@@ -317,6 +320,16 @@ public final class MinimizeMachineDialog implements
       }
     }
   }
+  
+  /**
+   * {@inheritDoc}
+   * 
+   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
+   */
+  public MinimizeMachineDialogForm getGUI ()
+  {
+    return this.gui;
+  }
 
 
   /**
@@ -350,12 +363,37 @@ public final class MinimizeMachineDialog implements
   {
     logger.debug ( "handleAutoStep", "handle auto step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
+    this.autoStep = true;
+    
     setStatus ();
 
     this.timer = new Timer ();
     int time = PreferenceManager.getInstance ().getAutoStepItem ()
         .getAutoStepInterval ();
     this.timer.schedule ( new AutoStepTimerTask (), time, time );
+  }
+
+
+  /**
+   * Handles the action on the begin step button.
+   */
+  public void handleBeginStep ()
+  {
+    logger.debug ( "handleBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    if ( this.timer != null )
+    {
+      this.timer.cancel ();
+      this.timer = null;
+    }
+
+    while ( !this.beginReached )
+    {
+      handlePreviousStep () ;
+    }
+//    this.beginReached = true;
+    this.endReached = false;
+    setStatus ();
   }
 
 
@@ -376,12 +414,38 @@ public final class MinimizeMachineDialog implements
 
 
   /**
+   * Handles the action on the end step button.
+   */
+  public void handleEndStep ()
+  {
+    logger.debug ( "handleEndStep", "handle end step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    if ( this.timer != null )
+    {
+      this.timer.cancel ();
+      this.timer = null;
+    }
+
+    while ( !this.endReached )
+    {
+      handleNextStep ();
+    }
+    this.beginReached = false;
+    this.endReached = true;
+    setStatus ();
+  }
+
+
+  /**
    * Handles the action on the next step button.
    */
   public final void handleNextStep ()
   {
-    this.minimizer.minimize ();
+    logger.debug ( "handleNextStep", "handle next step" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    this.minimizer.nextStep ();
     this.endReached = this.minimizer.isFinished ();
+    this.beginReached = false;
     setStatus ();
   }
 
@@ -423,7 +487,10 @@ public final class MinimizeMachineDialog implements
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
-    // TODO implement me
+    this.minimizer.previousStep ();
+    this.beginReached = this.minimizer.isBegin ();
+    this.endReached = false;
+    setStatus ();
   }
 
 
@@ -447,7 +514,8 @@ public final class MinimizeMachineDialog implements
     this.timer.cancel ();
     this.timer = null;
 
-    this.gui.jGTIToolBarButtonAutoStep.setSelected ( false );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setSelected ( false );
+    this.autoStep = false;
     setStatus ();
   }
 
@@ -466,19 +534,21 @@ public final class MinimizeMachineDialog implements
    */
   private final void setStatus ()
   {
-    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached );
-    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached );
-    this.gui.jGTIToolBarButtonAutoStep.setEnabled ( !this.endReached );
-    this.gui.jGTIToolBarButtonStop.setEnabled ( false );
+    this.gui.jGTIToolBarButtonPreviousStep.setEnabled ( !this.beginReached && !this.autoStep );
+    this.gui.jGTIToolBarButtonBeginStep.setEnabled ( !this.beginReached && !this.autoStep );
+    this.gui.jGTIToolBarButtonNextStep.setEnabled ( !this.endReached && !this.autoStep );
+    this.gui.jGTIToolBarToggleButtonAutoStep.setEnabled ( !this.endReached && !this.autoStep );
+    this.gui.jGTIToolBarButtonEndStep.setEnabled ( !this.endReached && !this.autoStep );
+    this.gui.jGTIToolBarButtonStop.setEnabled ( this.autoStep );
   }
 
 
   /**
-   * Shows the {@link ConvertMachineDialogForm}.
+   * Shows the {@link MinimizeMachineDialogForm}.
    */
   public final void show ()
   {
-    logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "show", "show the minimize machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     int x = this.mainWindowForm.getBounds ().x
         + ( this.mainWindowForm.getWidth () / 2 ) - ( this.gui.getWidth () / 2 );
     int y = this.mainWindowForm.getBounds ().y
@@ -486,16 +556,5 @@ public final class MinimizeMachineDialog implements
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.ui.logic.interfaces.LogicClass#getGUI()
-   */
-  public MinimizeMachineDialogForm getGUI ()
-  {
-    return this.gui;
   }
 }

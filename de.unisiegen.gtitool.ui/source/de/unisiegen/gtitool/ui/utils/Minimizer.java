@@ -1,7 +1,11 @@
 package de.unisiegen.gtitool.ui.utils;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Stack;
+
+import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
@@ -30,9 +34,21 @@ public class Minimizer
 
 
   /**
+   * The old groups needed for previous step.
+   */
+  private Stack < ArrayList < ArrayList < DefaultStateView > > > previousSteps = new Stack < ArrayList < ArrayList < DefaultStateView > > > ();
+
+
+  /**
+   * The old groups needed for previous step.
+   */
+  private Stack < ArrayList < ArrayList < DefaultStateView > > > nextStep = new Stack < ArrayList < ArrayList < DefaultStateView > > > ();
+
+
+  /**
    * The {@link DefaultStateView} groups.
    */
-  private ArrayList < ArrayList < DefaultStateView > > groups = new ArrayList < ArrayList < DefaultStateView > > ();
+  private ArrayList < ArrayList < DefaultStateView > > activeGroups = new ArrayList < ArrayList < DefaultStateView > > ();
 
 
   /**
@@ -80,12 +96,13 @@ public class Minimizer
 
     if ( notFinalStates.size () > 0 )
     {
-      this.groups.add ( notFinalStates );
+      this.activeGroups.add ( notFinalStates );
     }
     if ( finalStates.size () > 0 )
     {
-      this.groups.add ( finalStates );
+      this.activeGroups.add ( finalStates );
     }
+
   }
 
 
@@ -95,20 +112,35 @@ public class Minimizer
   public void initialize ()
   {
     removeNotReachableStates ();
-
     createInitialGroups ();
 
+    ArrayList < ArrayList < DefaultStateView > > oldGroups = new ArrayList < ArrayList < DefaultStateView > > ();
+    for ( ArrayList < DefaultStateView > current : this.activeGroups )
+    {
+      ArrayList < DefaultStateView > tmpGroup = new ArrayList < DefaultStateView > ();
 
- 
+      tmpGroup.addAll ( current );
+      oldGroups.add ( tmpGroup );
+    }
+    this.previousSteps.push ( oldGroups );
 
-//    this.model.getGraphModel ().cellsChanged (
-//        this.model.getStateViewList ().toArray () );
+    minimize ();
+
+    while ( this.previousSteps.size () > 1 )
+    {
+      this.nextStep.push ( this.previousSteps.pop () );
+    }
+
+    this.activeGroups = this.previousSteps.pop ();
+
+    highlightGroups ();
+
   }
 
 
   /**
    * Returns true if minimization operation finished.
-   *
+   * 
    * @return true if minimization operation finished.
    */
   public boolean isFinished ()
@@ -118,12 +150,54 @@ public class Minimizer
 
 
   /**
+   * The predefined {@link Color}s of the groups.
+   */
+  Color [] colors = new Color []
+  { Color.blue, Color.cyan, Color.lightGray, Color.green, Color.magenta,
+      Color.yellow, Color.pink };
+
+  /**
+   * Handle previous step of the minimization.
+   */
+  public void previousStep ()
+  {
+    this.nextStep.push ( this.activeGroups );
+    this.activeGroups = this.previousSteps.pop ();
+
+    highlightGroups ();
+
+    this.begin = this.previousSteps.isEmpty ();
+    this.finished = false;
+  }
+  
+  /**
+   * Handle next step of the minimization.
+   */
+  public void nextStep ()
+  {
+    this.previousSteps.push ( this.activeGroups );
+    this.activeGroups = this.nextStep.pop ();
+
+    highlightGroups ();
+
+    this.begin = false;
+    this.finished = this.nextStep.isEmpty ();
+  }
+
+
+  /**
+   * Flag indicates if begin reached.
+   */
+  private boolean begin = true;
+
+
+  /**
    * The internal minimize operation.
    */
-  public void minimize ()
+  private void minimize ()
   {
 
-    for ( ArrayList < DefaultStateView > group : this.groups )
+    for ( ArrayList < DefaultStateView > group : this.activeGroups )
     {
       if ( group.size () > 1 )
       {
@@ -137,27 +211,44 @@ public class Minimizer
 
     if ( this.newGroupStates.size () > 0 )
     {
-      this.groups.add ( this.newGroupStates );
+      this.activeGroups.add ( this.newGroupStates );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
+      
+      ArrayList < ArrayList < DefaultStateView > > oldGroup = new ArrayList < ArrayList < DefaultStateView > > ();
+      for ( ArrayList < DefaultStateView > group : this.activeGroups )
+      {
+        ArrayList < DefaultStateView > tmpGroup = new ArrayList < DefaultStateView > ();
+
+        tmpGroup.addAll ( group );
+        oldGroup.add ( tmpGroup );
+      }
+
+      this.previousSteps.push ( oldGroup );
+
+      this.minimize ();
     }
-    else {
-      this.finished = true;
-    }
-    
-//    // TODO just for testing
-//
-//    for ( ArrayList < DefaultStateView > group : this.groups )
-//    {
-//      System.err.println ( "group+++++++++++" );
-//      for ( DefaultStateView current : group )
-//      {
-//        System.err.println ( current );
-//      }
-//      System.err.println ();
-//    }
-//
-//    // TODO end
+
+
+
   }
+
+  /**
+   * Highlight the groups
+   */
+  private void highlightGroups ()
+  {
+    for ( ArrayList < DefaultStateView > group : this.activeGroups )
+    {
+      for ( DefaultStateView current : group )
+      {
+        current.setGroupColor ( this.colors [ this.activeGroups.indexOf ( group ) ] );
+      }
+    }
+
+    this.model.getGraphModel ().cellsChanged (
+        DefaultGraphModel.getAll ( this.model.getGraphModel () ) );
+  }
+
 
   /**
    * Remove the not reachable states.
@@ -182,6 +273,7 @@ public class Minimizer
       }
     }
   }
+
 
   /**
    * Try to split the actual group.
@@ -217,15 +309,26 @@ public class Minimizer
   }
 
 
-  
   /**
    * Returns the groups.
-   *
+   * 
    * @return The groups.
-   * @see #groups
+   * @see #activeGroups
    */
   public ArrayList < ArrayList < DefaultStateView >> getGroups ()
   {
-    return this.groups;
+    return this.activeGroups;
+  }
+
+
+  /**
+   * Returns the begin.
+   * 
+   * @return The begin.
+   * @see #begin
+   */
+  public boolean isBegin ()
+  {
+    return this.begin;
   }
 }

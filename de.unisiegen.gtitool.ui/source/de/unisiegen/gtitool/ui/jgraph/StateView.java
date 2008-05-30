@@ -99,7 +99,7 @@ public final class StateView extends VertexView
      * The normal {@link Transition} color.
      */
     private Color preferenceTransition;
-
+    
 
     /**
      * The {@link StateView}.
@@ -228,9 +228,11 @@ public final class StateView extends VertexView
     public final void paint ( Graphics g )
     {
       State state = null;
+      DefaultStateView defaultStateView = null;
       if ( this.stateView.getCell () instanceof DefaultStateView )
       {
-        state = ( ( DefaultStateView ) this.stateView.getCell () ).getState ();
+        defaultStateView = ( DefaultStateView ) this.stateView.getCell ();
+        state = defaultStateView.getState ();
       }
       else
       {
@@ -243,8 +245,12 @@ public final class StateView extends VertexView
       if ( super.isOpaque () )
       {
         Color background = null;
+        // Group
+        if (defaultStateView.getGroupColor () != null){
+          background = defaultStateView.getGroupColor ();
+        }
         // Error
-        if ( state.isError () )
+        else if ( state.isError () )
         {
           background = this.preferenceStateError;
         }

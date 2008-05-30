@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.event.EventListenerList;
@@ -33,9 +34,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
 {
 
   /**
-   * The serial version uid.
+   * The height is not defined value.
    */
-  private static final long serialVersionUID = -2780335257122860579L;
+  public static final double HEIGHT_NOT_DEFINED = Double.MIN_VALUE;
 
 
   /**
@@ -45,21 +46,27 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -2780335257122860579L;
+
+
+  /**
    * The width is not defined value.
    */
   public static final double WIDTH_NOT_DEFINED = Double.MIN_VALUE;
 
 
   /**
-   * The height is not defined value.
+   * The {@link DefaultGraphModel} for this model.
    */
-  public static final double HEIGHT_NOT_DEFINED = Double.MIN_VALUE;
+  private DefaultGraphModel graphModel;
 
 
   /**
-   * The {@link State} represented by this view.
+   * The {@link Color} of the group of this {@link StateView}.
    */
-  private State state;
+  private Color groupColor;
 
 
   /**
@@ -75,9 +82,33 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * The initial y position.
+   */
+  private double initialYPosition = POSITION_NOT_DEFINED;
+
+
+  /**
+   * The {@link EventListenerList}.
+   */
+  private EventListenerList listenerList = new EventListenerList ();
+
+
+  /**
    * The puplished x position.
    */
   private double puplishedXPosition = POSITION_NOT_DEFINED;
+
+
+  /**
+   * The puplished y position.
+   */
+  private double puplishedYPosition = POSITION_NOT_DEFINED;
+
+
+  /**
+   * The {@link State} represented by this view.
+   */
+  private State state;
 
 
   /**
@@ -90,30 +121,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
    * The actual y value.
    */
   private double yValue = POSITION_NOT_DEFINED;
-
-
-  /**
-   * The initial y position.
-   */
-  private double initialYPosition = POSITION_NOT_DEFINED;
-
-
-  /**
-   * The puplished y position.
-   */
-  private double puplishedYPosition = POSITION_NOT_DEFINED;
-
-
-  /**
-   * The {@link EventListenerList}.
-   */
-  private EventListenerList listenerList = new EventListenerList ();
-
-
-  /**
-   * The {@link DefaultGraphModel} for this model.
-   */
-  private DefaultGraphModel graphModel;
 
 
   /**
@@ -270,6 +277,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the groupColor.
+   *
+   * @return The groupColor.
+   * @see #groupColor
+   */
+  public Color getGroupColor ()
+  {
+    return this.groupColor;
+  }
+
+
+  /**
    * Returns the height.
    * 
    * @return The height.
@@ -382,8 +401,7 @@ public final class DefaultStateView extends DefaultGraphCell implements
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
   }
-
-
+  
   /**
    * {@inheritDoc}
    * 
@@ -394,8 +412,10 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
+  
 
 
+  
   /**
    * {@inheritDoc}
    * 
@@ -405,5 +425,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     this.initialXPosition = getPositionX ();
     this.initialYPosition = getPositionY ();
+  }
+
+
+  
+  /**
+   * Sets the groupColor.
+   *
+   * @param groupColor The groupColor to set.
+   * @see #groupColor
+   */
+  public void setGroupColor ( Color groupColor )
+  {
+    this.groupColor = groupColor;
   }
 }

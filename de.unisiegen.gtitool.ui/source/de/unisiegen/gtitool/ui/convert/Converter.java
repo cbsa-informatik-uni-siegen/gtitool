@@ -1,22 +1,24 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
 
 
 /**
  * This interface represents the converter classes.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public interface Converter
 {
 
   /**
-   * Perform convert action.
+   * Performs the convert action.
    * 
-   * @param machineType The {@link MachineType} to convert to. 
+   * @param fromEntityType The from {@link EntityType}.
+   * @param toEntityType The to {@link EntityType}.
    */
-  public void convert ( MachineType machineType );
+  public void convert ( EntityType fromEntityType, EntityType toEntityType );
 }

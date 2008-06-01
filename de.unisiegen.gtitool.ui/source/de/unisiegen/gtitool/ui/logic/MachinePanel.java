@@ -72,7 +72,6 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
-import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog.ConvertMachineType;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -843,13 +842,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( this.machine.getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
     {
-      return new ConvertMachineDialog ( this.mainWindowForm, this,
-          ConvertMachineType.NFA_TO_DFA );
+      return new ConvertMachineDialog ( this.mainWindowForm, this );
     }
     else if ( this.machine.getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
     {
-      return new ConvertMachineDialog ( this.mainWindowForm, this,
-          ConvertMachineType.ENFA_TO_NFA );
+      return new ConvertMachineDialog ( this.mainWindowForm, this );
     }
     else
     {

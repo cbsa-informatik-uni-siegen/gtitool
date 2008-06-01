@@ -28,7 +28,8 @@ import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
@@ -96,8 +97,7 @@ public abstract class AbstractConvertGrammar implements Converter
    * @param mainWindowForm The {@link MainWindowForm}.
    * @param grammar The {@link Grammar}.
    */
-  public AbstractConvertGrammar ( MainWindowForm mainWindowForm,
-      Grammar grammar )
+  public AbstractConvertGrammar ( MainWindowForm mainWindowForm, Grammar grammar )
   {
     this.mainWindowForm = mainWindowForm;
     this.grammar = grammar;
@@ -131,7 +131,7 @@ public abstract class AbstractConvertGrammar implements Converter
   /**
    * Add the new {@link MachinePanel} to the {@link MainWindowForm}.
    */
-  protected void addPanelToView ()
+  protected final void addPanelToView ()
   {
     TreeSet < String > nameList = new TreeSet < String > ();
     int count = 0;
@@ -164,6 +164,30 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
+   * {@inheritDoc}
+   * 
+   * @see Converter#convert(EntityType,EntityType)
+   */
+  public final void convert ( @SuppressWarnings ( "unused" )
+  EntityType fromEntityType, EntityType toEntityType )
+  {
+    if ( ! ( toEntityType instanceof MachineType ) )
+    {
+      throw new IllegalArgumentException ( "unsopported to entity type: " //$NON-NLS-1$
+          + toEntityType );
+    }
+
+    this.machineType = ( MachineType ) toEntityType;
+    createMachine ();
+    performProductions ();
+    addPanelToView ();
+
+    new LayoutManager ( this.model, this.newPanel.getRedoUndoHandler () )
+        .doLayout ();
+  }
+
+
+  /**
    * Create a new {@link Machine}.
    */
   protected abstract void createMachine ();
@@ -174,7 +198,7 @@ public abstract class AbstractConvertGrammar implements Converter
    * 
    * @param machine The {@link Machine}.
    */
-  protected void createMachinePanel ( Machine machine )
+  protected final void createMachinePanel ( Machine machine )
   {
     this.model = new DefaultMachineModel ( machine );
     this.newPanel = new MachinePanel ( this.mainWindowForm, this.model, null );
@@ -187,7 +211,7 @@ public abstract class AbstractConvertGrammar implements Converter
    * @param name The name of the {@link DefaultStateView}.
    * @return A new {@link DefaultStateView}.
    */
-  protected DefaultStateView createStateView ( String name )
+  protected final DefaultStateView createStateView ( String name )
   {
     try
     {
@@ -218,88 +242,6 @@ public abstract class AbstractConvertGrammar implements Converter
 
 
   /**
-   * Returns the {@link Alphabet}.
-   * 
-   * @return The {@link Alphabet}.
-   * @see #alphabet
-   */
-  public Alphabet getAlphabet ()
-  {
-    return this.alphabet;
-  }
-
-
-  /**
-   * Returns the {@link Grammar}.
-   * 
-   * @return The {@link Grammar}.
-   * @see #grammar
-   */
-  public Grammar getGrammar ()
-  {
-    return this.grammar;
-  }
-
-
-  /**
-   * Returns the {@link DefaultGrammarModel}.
-   * 
-   * @return The {@link DefaultGrammarModel}.
-   * @see #model
-   */
-  public DefaultMachineModel getModel ()
-  {
-    return this.model;
-  }
-
-
-  /**
-   * Perform the {@link Production}s of the {@link Grammar}.
-   */
-  protected abstract void performProductions ();
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Converter#convert(MachineType)
-   */
-  public void convert (MachineType type)
-  {
-    this.machineType = type;
-    createMachine ();
-    performProductions ();
-    addPanelToView ();
-    
-    new LayoutManager(this.model, this.newPanel.getRedoUndoHandler ()).doLayout ();
-  }
-
-
-  /**
-   * Returns the pushDownAlphabet.
-   * 
-   * @return The pushDownAlphabet.
-   * @see #pushDownAlphabet
-   */
-  public Alphabet getPushDownAlphabet ()
-  {
-    return this.pushDownAlphabet;
-  }
-
-
-  /**
-   * Sets the pushDownAlphabet.
-   * 
-   * @param pushDownAlphabet The pushDownAlphabet to set.
-   * @see #pushDownAlphabet
-   */
-  public void setPushDownAlphabet ( Alphabet pushDownAlphabet )
-  {
-    this.pushDownAlphabet = pushDownAlphabet;
-  }
-
-
-  /**
    * Create a new {@link Transition}.
    * 
    * @param read The word to read from stack.
@@ -308,7 +250,7 @@ public abstract class AbstractConvertGrammar implements Converter
    * @param target The target {@link DefaultStateView}.
    * @param symbols The {@link Symbol}s.
    */
-  public void createTransition ( Word read, Word write,
+  public final void createTransition ( Word read, Word write,
       DefaultStateView source, DefaultStateView target,
       ArrayList < Symbol > symbols )
   {
@@ -324,12 +266,49 @@ public abstract class AbstractConvertGrammar implements Converter
     catch ( TransitionSymbolNotInAlphabetException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
     catch ( TransitionSymbolOnlyOneTimeException exc )
     {
       exc.printStackTrace ();
+      System.exit ( 1 );
     }
+  }
 
+
+  /**
+   * Returns the {@link Alphabet}.
+   * 
+   * @return The {@link Alphabet}.
+   * @see #alphabet
+   */
+  public final Alphabet getAlphabet ()
+  {
+    return this.alphabet;
+  }
+
+
+  /**
+   * Returns the {@link Grammar}.
+   * 
+   * @return The {@link Grammar}.
+   * @see #grammar
+   */
+  public final Grammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
+  /**
+   * Returns the {@link DefaultGrammarModel}.
+   * 
+   * @return The {@link DefaultGrammarModel}.
+   * @see #model
+   */
+  public final DefaultMachineModel getModel ()
+  {
+    return this.model;
   }
 
 
@@ -339,8 +318,38 @@ public abstract class AbstractConvertGrammar implements Converter
    * @return The newPanel.
    * @see #newPanel
    */
-  public MachinePanel getNewPanel ()
+  public final MachinePanel getNewPanel ()
   {
     return this.newPanel;
+  }
+
+
+  /**
+   * Returns the pushDownAlphabet.
+   * 
+   * @return The pushDownAlphabet.
+   * @see #pushDownAlphabet
+   */
+  public final Alphabet getPushDownAlphabet ()
+  {
+    return this.pushDownAlphabet;
+  }
+
+
+  /**
+   * Perform the {@link Production}s of the {@link Grammar}.
+   */
+  protected abstract void performProductions ();
+
+
+  /**
+   * Sets the pushDownAlphabet.
+   * 
+   * @param pushDownAlphabet The pushDownAlphabet to set.
+   * @see #pushDownAlphabet
+   */
+  public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
+  {
+    this.pushDownAlphabet = pushDownAlphabet;
   }
 }

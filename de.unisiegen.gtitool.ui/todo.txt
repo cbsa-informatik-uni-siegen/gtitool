@@ -10,3 +10,5 @@ CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im Graph
 
 		- Parallel Loop Routing
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
+		- ToolTip des Zustandsnamens nur wenn dieser auch zu lang ist, und nur über
+		  dem Namen oder dem Zustand und nicht über der kompleten Component (Rechteck)

@@ -42,8 +42,11 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
+import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
+import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
@@ -731,10 +734,8 @@ public final class ConvertMachineDialog implements
    * 
    * @param parent The parent {@link JFrame}.
    * @param machinePanel The {@link MachinePanel}.
-   * @param convertMachineType The {@link ConvertMachineType}.
    */
-  public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel,
-      ConvertMachineType convertMachineType )
+  public ConvertMachineDialog ( JFrame parent, MachinePanel machinePanel )
   {
     logger.debug ( "ConvertMachineDialog", //$NON-NLS-1$
         "allocate a new convert machine dialog" ); //$NON-NLS-1$
@@ -747,14 +748,9 @@ public final class ConvertMachineDialog implements
     {
       throw new IllegalArgumentException ( "machine panel is null" );//$NON-NLS-1$
     }
-    if ( convertMachineType == null )
-    {
-      throw new IllegalArgumentException ( "convert machine type is null" );//$NON-NLS-1$
-    }
 
     this.parent = parent;
     this.machinePanel = machinePanel;
-    this.convertMachineType = convertMachineType;
   }
 
 
@@ -920,40 +916,48 @@ public final class ConvertMachineDialog implements
   /**
    * {@inheritDoc}
    * 
-   * @see Converter#convert(MachineType)
+   * @see Converter#convert(EntityType, EntityType)
    */
-  public final void convert ( MachineType machineType )
+  public final void convert ( EntityType fromEntityType, EntityType toEntityType )
   {
-    switch ( this.convertMachineType )
+    if ( fromEntityType == null )
     {
-      case NFA_TO_DFA :
-      {
-        if ( !machineType.equals ( MachineType.DFA ) )
-        {
-          throw new RuntimeException ( "wrong conversion" ); //$NON-NLS-1$
-        }
-        break;
-      }
-      case ENFA_TO_NFA :
-      {
-        if ( machineType.equals ( MachineType.DFA ) )
-        {
-          // change the machine type
-          this.convertMachineType = ConvertMachineType.ENFA_TO_DFA;
-        }
-        break;
-      }
-      case ENFA_TO_DFA :
-      {
-        if ( !machineType.equals ( MachineType.DFA ) )
-        {
-          throw new RuntimeException ( "wrong conversion" ); //$NON-NLS-1$
-        }
-        break;
-      }
+      throw new IllegalArgumentException ( "from entity type is null" );//$NON-NLS-1$
+    }
+    if ( toEntityType == null )
+    {
+      throw new IllegalArgumentException ( "to entity type is null" );//$NON-NLS-1$
+    }
+
+    if ( fromEntityType.equals ( MachineType.NFA )
+        && toEntityType.equals ( MachineType.DFA ) )
+    {
+      this.convertMachineType = ConvertMachineType.NFA_TO_DFA;
+    }
+    else if ( fromEntityType.equals ( MachineType.ENFA )
+        && toEntityType.equals ( MachineType.NFA ) )
+    {
+      this.convertMachineType = ConvertMachineType.ENFA_TO_NFA;
+    }
+    else if ( fromEntityType.equals ( MachineType.ENFA )
+        && toEntityType.equals ( MachineType.DFA ) )
+    {
+      this.convertMachineType = ConvertMachineType.ENFA_TO_DFA;
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "unsupported conversion from : " //$NON-NLS-1$
+          + fromEntityType + " to " + toEntityType ); //$NON-NLS-1$
     }
 
     this.gui = new ConvertMachineDialogForm ( this, this.parent );
+
+    // outline
+    this.gui.jGTITableOutline.setModel ( new ConvertMachineTableModel () );
+    this.gui.jGTITableOutline
+        .setColumnModel ( new ConvertMachineTableColumnModel () );
+    this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
+
     this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationConvertMachine () );
     this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
@@ -965,6 +969,20 @@ public final class ConvertMachineDialog implements
           {
             PreferenceManager.getInstance ().setDividerLocationConvertMachine (
                 ( ( Integer ) event.getNewValue () ).intValue () );
+          }
+        } );
+    this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationConvertMachineOutline () );
+    this.gui.jGTISplitPaneOutline.addPropertyChangeListener (
+        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void propertyChange ( PropertyChangeEvent event )
+          {
+            PreferenceManager.getInstance ()
+                .setDividerLocationConvertMachineOutline (
+                    ( ( Integer ) event.getNewValue () ).intValue () );
           }
         } );
 

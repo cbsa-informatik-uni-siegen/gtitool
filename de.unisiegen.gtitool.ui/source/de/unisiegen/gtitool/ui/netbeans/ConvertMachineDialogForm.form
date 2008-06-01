@@ -119,11 +119,15 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneGraph">
+    <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneOutline">
       <Properties>
-        <Property name="dividerLocation" type="int" value="250"/>
-        <Property name="orientation" type="int" value="0"/>
-        <Property name="resizeWeight" type="double" value="0.5"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder/>
+          </Border>
+        </Property>
+        <Property name="dividerLocation" type="int" value="600"/>
+        <Property name="resizeWeight" type="double" value="1.0"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -133,23 +137,67 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
-        <Container class="de.unisiegen.gtitool.ui.swing.JGTIScrollPane" name="jGTIScrollPaneOriginal">
+        <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneGraph">
+          <Properties>
+            <Property name="dividerLocation" type="int" value="250"/>
+            <Property name="orientation" type="int" value="0"/>
+            <Property name="resizeWeight" type="double" value="0.5"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-              <JSplitPaneConstraints position="top"/>
+              <JSplitPaneConstraints position="left"/>
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
+          <SubComponents>
+            <Container class="de.unisiegen.gtitool.ui.swing.JGTIScrollPane" name="jGTIScrollPaneOriginal">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="top"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+            </Container>
+            <Container class="de.unisiegen.gtitool.ui.swing.JGTIScrollPane" name="jGTIScrollPaneConverted">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                  <JSplitPaneConstraints position="bottom"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+            </Container>
+          </SubComponents>
         </Container>
-        <Container class="de.unisiegen.gtitool.ui.swing.JGTIScrollPane" name="jGTIScrollPaneConverted">
+        <Container class="de.unisiegen.gtitool.ui.swing.JGTIScrollPane" name="jGTIScrollPaneOutline">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-              <JSplitPaneConstraints position="bottom"/>
+              <JSplitPaneConstraints position="right"/>
             </Constraint>
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableOutline">
+            </Component>
+          </SubComponents>
         </Container>
       </SubComponents>
     </Container>

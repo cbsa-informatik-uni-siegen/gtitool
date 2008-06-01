@@ -4,6 +4,7 @@ package de.unisiegen.gtitool.ui.model;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.parser.style.renderer.StackOperationTableCellRenderer;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -11,7 +12,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
 
 /**
- * The {@link PDATableColumnModel} for the error and warning tables
+ * The {@link PDATableColumnModel}.
  * 
  * @author Benjamin Mies
  * @version $Id:ConsoleColumnModel.java 305 2007-12-06 19:55:14Z mies $
@@ -27,7 +28,7 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
 
 
   /**
-   * The message column.
+   * The {@link Transition} column.
    */
   private TableColumn transitionColumn;
 
@@ -37,7 +38,7 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
    */
   public PDATableColumnModel ()
   {
-    // Production
+    // transition
     this.transitionColumn = new TableColumn (
         MachineConsoleTableModel.MESSAGE_COLUMN );
     this.transitionColumn.setPreferredWidth ( 200 );
@@ -48,7 +49,7 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
         .setCellRenderer ( new StackOperationTableCellRenderer () );
     this.addColumn ( this.transitionColumn );
 
-    // Language changed listener
+    // language changed listener
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
   }
 
@@ -58,7 +59,7 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
    * 
    * @see LanguageChangedListener#languageChanged()
    */
-  public void languageChanged ()
+  public final void languageChanged ()
   {
     this.removeColumn ( this.transitionColumn );
     this.transitionColumn.setHeaderValue ( Messages

@@ -39,8 +39,9 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
-import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.GrammarType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -912,11 +913,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle convert to action performed.
+   * Handles the convert to action performed.
    * 
-   * @param type The {@link MachineType} to convert to.
+   * @param entityType The {@link EntityType} to convert to.
    */
-  public final void handleConvertTo ( MachineType type )
+  public final void handleConvertTo ( EntityType entityType )
   {
     EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
@@ -924,7 +925,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
     {
-      panel.getConverter ().convert ( type );
+      // MachinePanel
+      if ( panel instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+        if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( MachineType.DFA, entityType );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( MachineType.NFA, entityType );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( MachineType.ENFA, entityType );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals ( "PDA" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( MachineType.PDA, entityType );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
+        }
+      }
+      // GrammarPanel
+      else if ( panel instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) panel;
+        if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "RG" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( GrammarType.RG, entityType );
+        }
+        else if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "CFG" ) ) //$NON-NLS-1$
+        {
+          panel.getConverter ().convert ( GrammarType.CFG, entityType );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+      }
     }
   }
 

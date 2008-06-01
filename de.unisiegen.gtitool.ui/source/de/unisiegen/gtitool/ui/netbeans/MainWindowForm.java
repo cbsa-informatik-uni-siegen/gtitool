@@ -12,8 +12,8 @@ import javax.swing.JToolBar;
 
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.DefaultGrammarModel.GrammarType;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel.MachineType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.GrammarType;
+import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;

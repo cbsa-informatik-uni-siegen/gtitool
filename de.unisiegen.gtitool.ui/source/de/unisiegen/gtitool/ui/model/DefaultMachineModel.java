@@ -69,33 +69,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 {
 
   /**
-   * Signals the machine type.
-   */
-  public enum MachineType
-  {
-    /**
-     * The machine type is DFA
-     */
-    DFA,
-
-    /**
-     * The machine type is ENFA
-     */
-    ENFA,
-
-    /**
-     * The machine type is NFA
-     */
-    NFA,
-
-    /**
-     * The machine type is PDA
-     */
-    PDA;
-  }
-
-
-  /**
    * The {@link Machine} version.
    */
   private static final int MACHINE_VERSION = 513;
@@ -414,8 +387,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       State state, boolean createUndoStep )
   {
     this.machine.addState ( state );
-    
-    
+
     DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
     String viewClass;

@@ -67,9 +67,12 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
         jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonOk = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
@@ -153,12 +156,24 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jGTIToolBarMain, gridBagConstraints);
 
+        jGTISplitPaneOutline.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jGTISplitPaneOutline.setDividerLocation(600);
+        jGTISplitPaneOutline.setResizeWeight(1.0);
         jGTISplitPaneGraph.setDividerLocation(250);
         jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jGTISplitPaneGraph.setResizeWeight(0.5);
+        jGTIScrollPaneOriginal.setBorder(null);
         jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
 
+        jGTIScrollPaneConverted.setBorder(null);
         jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);
+
+        jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
+
+        jGTIScrollPaneOutline.setBorder(null);
+        jGTIScrollPaneOutline.setViewportView(jGTITableOutline);
+
+        jGTISplitPaneOutline.setRightComponent(jGTIScrollPaneOutline);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -168,7 +183,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
-        getContentPane().add(jGTISplitPaneGraph, gridBagConstraints);
+        getContentPane().add(jGTISplitPaneOutline, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
         jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
@@ -247,7 +262,10 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
+    public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonBeginStep;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEndStep;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;

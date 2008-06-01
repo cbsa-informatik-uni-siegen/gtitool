@@ -109,6 +109,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default convert outline machine divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE = 700;
+
+
+  /**
    * The default table divider location.
    */
   public static final int DEFAULT_DIVIDER_LOCATION_STACK_TABLE = DEFAULT_HEIGHT / 4;
@@ -272,6 +278,18 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "ConvertMachineDialog.Divider", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_CONVERT_MACHINE );
+  }
+
+
+  /**
+   * Returns the convert machine outline divider location.
+   * 
+   * @return The convert machine outline divider location.
+   */
+  public final int getDividerLocationConvertMachineOutline ()
+  {
+    return this.preferences.getInt ( "ConvertMachineDialog.DividerOutline", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE );
   }
 
 
@@ -577,6 +595,20 @@ public final class PreferenceManager extends
         "set convert machine divider " + "location to " + Messages.QUOTE//$NON-NLS-1$ //$NON-NLS-2$
             + location + Messages.QUOTE );
     this.preferences.putInt ( "ConvertMachineDialog.Divider", location );//$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the convert machine outline divider location.
+   * 
+   * @param location The convert machine outline divider location.
+   */
+  public final void setDividerLocationConvertMachineOutline ( int location )
+  {
+    logger.debug ( "setDividerLocationConvertMachineOutline", //$NON-NLS-1$
+        "set convert machine outline divider " + "location to " //$NON-NLS-1$ //$NON-NLS-2$
+            + Messages.QUOTE + location + Messages.QUOTE );
+    this.preferences.putInt ( "ConvertMachineDialog.DividerOutline", location );//$NON-NLS-1$
   }
 
 

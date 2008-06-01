@@ -11,25 +11,24 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
 /**
- * The table model for the pda table.
+ * The table model for the convert machine outline.
  * 
  * @author Benjamin Mies
- * @author Christian Fehler
  * @version $Id:DefaultTableModel.java 305 2007-12-06 19:55:14Z mies $
  */
-public final class PDATableModel extends AbstractTableModel
+public final class ConvertMachineTableModel extends AbstractTableModel
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -8148566233530100878L;
+  private static final long serialVersionUID = -3657714478012341397L;
 
 
   /**
-   * The transition column.
+   * The outline column.
    */
-  public final static int TRANSITION_COLUMN = 0;
+  public final static int OUTLINE_COLUMN = 0;
 
 
   /**
@@ -41,26 +40,26 @@ public final class PDATableModel extends AbstractTableModel
   /**
    * The data of this table model
    */
-  private ArrayList < Transition > data;
+  private ArrayList < PrettyString > data;
 
 
   /**
    * Allocates a new {@link PDATableModel}.
    */
-  public PDATableModel ()
+  public ConvertMachineTableModel ()
   {
-    this.data = new ArrayList < Transition > ();
+    this.data = new ArrayList < PrettyString > ();
   }
 
 
   /**
    * Adds a row to this data model.
    * 
-   * @param transition The {@link Transition}.
+   * @param prettyString The {@link PrettyString}.
    */
-  public final void addRow ( Transition transition )
+  public final void addRow ( PrettyString prettyString )
   {
-    this.data.add ( transition );
+    this.data.add ( prettyString );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 
@@ -85,7 +84,7 @@ public final class PDATableModel extends AbstractTableModel
   {
     switch ( columnIndex )
     {
-      case TRANSITION_COLUMN :
+      case OUTLINE_COLUMN :
       {
         return PrettyString.class;
       }
@@ -118,9 +117,9 @@ public final class PDATableModel extends AbstractTableModel
   {
     switch ( columnIndex )
     {
-      case TRANSITION_COLUMN :
+      case OUTLINE_COLUMN :
       {
-        return "Stack Operation"; //$NON-NLS-1$
+        return "Outline"; //$NON-NLS-1$
       }
       default :
       {
@@ -142,18 +141,6 @@ public final class PDATableModel extends AbstractTableModel
 
 
   /**
-   * Returns the {@link Transition} of the given row index.
-   * 
-   * @param rowIndex The given row index.
-   * @return The {@link Transition} list of the given row index.
-   */
-  public final Transition getTransition ( int rowIndex )
-  {
-    return this.data.get ( rowIndex );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see TableModel#getValueAt(int, int)
@@ -162,7 +149,7 @@ public final class PDATableModel extends AbstractTableModel
   {
     switch ( columnIndex )
     {
-      case TRANSITION_COLUMN :
+      case OUTLINE_COLUMN :
       {
         return this.data.get ( rowIndex );
       }
@@ -177,14 +164,14 @@ public final class PDATableModel extends AbstractTableModel
   /**
    * Removes a row from this data model.
    * 
-   * @param transition the {@link Transition}.
+   * @param prettyString The {@link Transition}.
    */
-  public final void removeRow ( Transition transition )
+  public final void removeRow ( PrettyString prettyString )
   {
     int index = -1;
     for ( int i = 0 ; i < this.data.size () ; i++ )
     {
-      if ( this.data.get ( i ) == transition )
+      if ( this.data.get ( i ) == prettyString )
       {
         index = i;
         break;
@@ -192,7 +179,7 @@ public final class PDATableModel extends AbstractTableModel
     }
     if ( index != -1 )
     {
-      this.data.remove ( transition );
+      this.data.remove ( prettyString );
       fireTableRowsDeleted ( index, index );
     }
   }

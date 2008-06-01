@@ -44,23 +44,6 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 {
 
   /**
-   * Signals the grammar type.
-   */
-  public enum GrammarType
-  {
-    /**
-     * The grammar type is rg
-     */
-    RG,
-
-    /**
-     * The grammar type is cfg
-     */
-    CFG;
-  }
-
-
-  /**
    * The {@link RedoUndoHandler}
    */
   private RedoUndoHandler redoUndoHandler;

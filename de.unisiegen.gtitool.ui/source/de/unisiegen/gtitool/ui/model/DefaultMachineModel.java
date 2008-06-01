@@ -41,6 +41,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.GTIJgraph;
 import de.unisiegen.gtitool.ui.jgraph.StateSetView;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
@@ -107,9 +108,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link JGraph} containing the diagramm
+   * The {@link GTIJgraph} containing the diagramm
    */
-  private JGraph jGraph;
+  private GTIJgraph jGraph;
 
 
   /**
@@ -413,6 +414,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       State state, boolean createUndoStep )
   {
     this.machine.addState ( state );
+    
+    
     DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
     String viewClass;
@@ -731,7 +734,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     this.graphModel = new DefaultGraphModel ();
 
-    this.jGraph = new JGraph ( this.graphModel );
+    this.jGraph = new GTIJgraph ( this.graphModel );
     this.jGraph.setDoubleBuffered ( false );
     this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
     this.jGraph.setInvokesStopCellEditing ( true );

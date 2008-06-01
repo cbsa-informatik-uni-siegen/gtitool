@@ -28,6 +28,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
@@ -1808,6 +1809,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.jGraph.getSelectionModel ().setSelectionMode (
         GraphSelectionModel.SINGLE_GRAPH_SELECTION );
     this.graphModel = this.model.getGraphModel ();
+    ToolTipManager.sharedInstance().registerComponent(this.jGraph);
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
 

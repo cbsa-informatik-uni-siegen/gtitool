@@ -41,11 +41,9 @@ import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
-import org.jgraph.event.GraphModelEvent.GraphModelChange;
 import org.jgraph.graph.AbstractCellView;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;

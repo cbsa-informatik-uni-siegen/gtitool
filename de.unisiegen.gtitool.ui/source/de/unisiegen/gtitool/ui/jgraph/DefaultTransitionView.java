@@ -132,4 +132,14 @@ public final class DefaultTransitionView extends DefaultEdge implements
   {
     return this.transition.hashCode ();
   }
+  
+  
+  /**
+   * Returns the tooltip text for this cell.
+   *
+   * @return the tooltip text for this cell.
+   */
+  public String getToolTipString() {
+    return null;
+ }
 }

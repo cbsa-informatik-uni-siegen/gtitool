@@ -439,4 +439,13 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     this.groupColor = groupColor;
   }
+  
+  /**
+   * Returns the tooltip text for this cell.
+   *
+   * @return the tooltip text for this cell.
+   */
+  public String getToolTipString() {
+    return this.state.getName ();
+ }
 }

@@ -99,7 +99,7 @@ public final class StateView extends VertexView
      * The normal {@link Transition} color.
      */
     private Color preferenceTransition;
-    
+
 
     /**
      * The {@link StateView}.
@@ -301,14 +301,34 @@ public final class StateView extends VertexView
         g.setColor ( this.preferenceState );
         g.setFont ( getFont () );
         FontMetrics metrics = g.getFontMetrics ();
+        
 
         int dx = ( d.width / 2 )
             - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
         int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
-
+        
+        boolean shortVersion = false;
+        String stateName = ""; //$NON-NLS-1$
+        String dots = "..."; //$NON-NLS-1$
+        int dotsWidth = metrics.stringWidth ( dots );
+        if (metrics.stringWidth ( state.toString () ) > d.width){
+          shortVersion = true;
+          dx = 1;
+          
+          for (char current : state.getName ().toCharArray ()) {
+            String tmpName = stateName + current;
+            if ((metrics.stringWidth ( tmpName )+dotsWidth) > d.width){
+              stateName+=dots;
+              break;
+            }
+            stateName += current;
+          }
+        }
+        
         for ( PrettyToken currentToken : state.toPrettyString ()
             .getPrettyToken () )
         {
+          
           Font font = null;
 
           if ( !currentToken.isBold () && !currentToken.isItalic () )
@@ -330,7 +350,14 @@ public final class StateView extends VertexView
 
           g.setFont ( font );
           g.setColor ( currentToken.getColor () );
+          
+       
           char [] chars = currentToken.getChar ();
+          
+          if (shortVersion)
+          {
+            chars = stateName.toCharArray ();
+          }
           for ( int i = 0 ; i < chars.length ; i++ )
           {
             g.drawChars ( chars, i, 1, dx, dy );

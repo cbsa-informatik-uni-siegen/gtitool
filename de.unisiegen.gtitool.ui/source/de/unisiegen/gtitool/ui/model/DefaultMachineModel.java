@@ -552,7 +552,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   {
     Element newElement = new Element ( "MachineModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "machineType", this.machine //$NON-NLS-1$
-        .getMachineType () ) );
+        .getMachineType ().toString () ) );
     newElement.addAttribute ( new Attribute ( "machineVersion", //$NON-NLS-1$
         MACHINE_VERSION ) );
     newElement.addAttribute ( new Attribute ( "usePushDownAlphabet", //$NON-NLS-1$

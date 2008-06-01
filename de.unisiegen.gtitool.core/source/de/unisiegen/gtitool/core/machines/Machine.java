@@ -9,6 +9,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
+import de.unisiegen.gtitool.core.entities.InputEntity;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -18,7 +19,11 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
+import de.unisiegen.gtitool.core.machines.dfa.DFA;
+import de.unisiegen.gtitool.core.machines.enfa.ENFA;
 import de.unisiegen.gtitool.core.machines.listener.MachineChangedListener;
+import de.unisiegen.gtitool.core.machines.nfa.NFA;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -28,8 +33,79 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Machine extends Serializable, TableModel, Modifyable
+public interface Machine extends InputEntity, Serializable, TableModel,
+    Modifyable
 {
+
+  /**
+   * Signals the machine type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum MachineType implements EntityType
+  {
+    /**
+     * The {@link DFA} machine type.
+     */
+    DFA,
+
+    /**
+     * The {@link ENFA} machine type.
+     */
+    ENFA,
+
+    /**
+     * The {@link NFA} machine type.
+     */
+    NFA,
+
+    /**
+     * The {@link PDA} machine type.
+     */
+    PDA;
+
+    /**
+     * The file ending.
+     * 
+     * @return The file ending.
+     */
+    public final String getFileEnding ()
+    {
+      return toString ().toLowerCase ();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Enum#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      switch ( this )
+      {
+        case DFA :
+        {
+          return "DFA"; //$NON-NLS-1$
+        }
+        case ENFA :
+        {
+          return "ENFA"; //$NON-NLS-1$
+        }
+        case NFA :
+        {
+          return "NFA"; //$NON-NLS-1$
+        }
+        case PDA :
+        {
+          return "PDA"; //$NON-NLS-1$
+        }
+      }
+      throw new IllegalArgumentException ( "unsupported machine type" ); //$NON-NLS-1$
+    }
+  }
+
 
   /**
    * This enum is used to indicate which validation elements should be checked
@@ -211,11 +287,11 @@ public interface Machine extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns the {@link Machine} type.
+   * Returns the {@link MachineType}.
    * 
-   * @return The {@link Machine} type.
+   * @return The {@link MachineType}.
    */
-  public String getMachineType ();
+  public MachineType getMachineType ();
 
 
   /**

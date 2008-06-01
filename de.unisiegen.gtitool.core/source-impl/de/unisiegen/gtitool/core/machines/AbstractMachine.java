@@ -1294,11 +1294,11 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * Returns the {@link Machine} type.
+   * Returns the {@link Machine.MachineType}.
    * 
-   * @return The {@link Machine} type.
+   * @return The {@link Machine.MachineType}.
    */
-  public abstract String getMachineType ();
+  public abstract MachineType getMachineType ();
 
 
   /**

@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.machines.enfa;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
-import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
@@ -41,13 +40,13 @@ public final class DefaultENFA extends AbstractMachine implements ENFA
 
 
   /**
-   * Returns the {@link Machine} type.
+   * {@inheritDoc}
    * 
-   * @return The {@link Machine} type.
+   * @see AbstractMachine#getMachineType()
    */
   @Override
-  public final String getMachineType ()
+  public final MachineType getMachineType ()
   {
-    return "ENFA"; //$NON-NLS-1$
+    return MachineType.ENFA;
   }
 }

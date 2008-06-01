@@ -7,12 +7,15 @@ import java.util.TreeSet;
 
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.InputEntity;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
+import de.unisiegen.gtitool.core.grammars.cfg.CFG;
+import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 
 
@@ -22,8 +25,61 @@ import de.unisiegen.gtitool.core.storage.Modifyable;
  * @author Christian Fehler
  * @version $Id$
  */
-public interface Grammar extends Serializable, TableModel, Modifyable
+public interface Grammar extends InputEntity, Serializable, TableModel,
+    Modifyable
 {
+
+  /**
+   * Signals the grammar type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum GrammarType implements EntityType
+  {
+    /**
+     * The {@link RG} grammar type.
+     */
+    RG,
+
+    /**
+     * The {@link CFG} grammar type.
+     */
+    CFG;
+
+    /**
+     * The file ending.
+     * 
+     * @return The file ending.
+     */
+    public final String getFileEnding ()
+    {
+      return toString ().toLowerCase ();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Enum#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      switch ( this )
+      {
+        case RG :
+        {
+          return "RG"; //$NON-NLS-1$
+        }
+        case CFG :
+        {
+          return "CFG"; //$NON-NLS-1$
+        }
+      }
+      throw new IllegalArgumentException ( "unsupported grammar type" ); //$NON-NLS-1$
+    }
+  }
+
 
   /**
    * This enum is used to indicate which validation elements should be checked
@@ -66,11 +122,11 @@ public interface Grammar extends Serializable, TableModel, Modifyable
 
 
   /**
-   * Returns the {@link Grammar} type.
+   * Returns the {@link GrammarType}.
    * 
-   * @return The {@link Grammar} type.
+   * @return The {@link GrammarType}.
    */
-  public String getGrammarType ();
+  public GrammarType getGrammarType ();
 
 
   /**

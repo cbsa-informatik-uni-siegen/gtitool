@@ -61,6 +61,7 @@ import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
@@ -840,11 +841,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final Converter getConverter ()
   {
-    if ( this.machine.getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+    if ( this.machine.getMachineType ().equals ( MachineType.NFA ) )
     {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
     }
-    else if ( this.machine.getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+    else if ( this.machine.getMachineType ().equals ( MachineType.ENFA ) )
     {
       return new ConvertMachineDialog ( this.mainWindowForm, this );
     }
@@ -873,7 +874,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final String getFileEnding ()
   {
-    return "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
+    return "." + this.machine.getMachineType ().getFileEnding (); //$NON-NLS-1$
   }
 
 
@@ -1295,7 +1296,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
             return true;
           }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
-              + MachinePanel.this.machine.getMachineType ().toLowerCase () ) )
+              + MachinePanel.this.machine.getMachineType ().getFileEnding () ) )
           {
             return true;
           }
@@ -1308,9 +1309,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         public String getDescription ()
         {
           return Messages.getString ( "NewDialog." //$NON-NLS-1$
-              + MachinePanel.this.machine.getMachineType () )
+              + MachinePanel.this.machine.getMachineType ().toString () )
               + " (*." //$NON-NLS-1$
-              + MachinePanel.this.machine.getMachineType ().toLowerCase ()
+              + MachinePanel.this.machine.getMachineType ().getFileEnding ()
               + ")"; //$NON-NLS-1$
         }
       };
@@ -1341,10 +1342,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
 
       String filename = saveDialog.getSelectedFile ().toString ().matches (
-          ".+\\." + this.machine.getMachineType ().toLowerCase () ) ? saveDialog //$NON-NLS-1$
+          ".+\\." + this.machine.getMachineType ().getFileEnding () ) ? saveDialog //$NON-NLS-1$
           .getSelectedFile ().toString ()
           : saveDialog.getSelectedFile ().toString ()
-              + "." + this.machine.getMachineType ().toLowerCase (); //$NON-NLS-1$
+              + "." + this.machine.getMachineType ().getFileEnding (); //$NON-NLS-1$
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 
@@ -1806,7 +1807,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.jGraph.getSelectionModel ().setSelectionMode (
         GraphSelectionModel.SINGLE_GRAPH_SELECTION );
     this.graphModel = this.model.getGraphModel ();
-    ToolTipManager.sharedInstance().registerComponent(this.jGraph);
+    ToolTipManager.sharedInstance ().registerComponent ( this.jGraph );
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
 
@@ -2774,8 +2775,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Performs the cells changed on the
-   * {@link GraphModel}.
+   * Performs the cells changed on the {@link GraphModel}.
    */
   public final void performCellsChanged ()
   {

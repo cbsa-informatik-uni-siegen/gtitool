@@ -40,13 +40,13 @@ public final class DefaultCFG extends AbstractGrammar implements CFG
 
 
   /**
-   * Returns the {@link Grammar} type.
+   * Returns the {@link Grammar.GrammarType}.
    * 
-   * @return The {@link Grammar} type.
+   * @return The {@link Grammar.GrammarType}.
    */
   @Override
-  public final String getGrammarType ()
+  public final GrammarType getGrammarType ()
   {
-    return "CFG"; //$NON-NLS-1$
+    return GrammarType.CFG;
   }
 }

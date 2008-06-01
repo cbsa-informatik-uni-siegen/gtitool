@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.machines.nfa;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.machines.AbstractMachine;
-import de.unisiegen.gtitool.core.machines.Machine;
 
 
 /**
@@ -42,13 +41,13 @@ public final class DefaultNFA extends AbstractMachine implements NFA
 
 
   /**
-   * Returns the {@link Machine} type.
+   * {@inheritDoc}
    * 
-   * @return The {@link Machine} type.
+   * @see AbstractMachine#getMachineType()
    */
   @Override
-  public final String getMachineType ()
+  public final MachineType getMachineType ()
   {
-    return "NFA"; //$NON-NLS-1$
+    return MachineType.NFA;
   }
 }

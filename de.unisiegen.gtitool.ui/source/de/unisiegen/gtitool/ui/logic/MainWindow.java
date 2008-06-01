@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
@@ -26,7 +27,9 @@ import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolExcepti
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
+import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Element;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -39,9 +42,6 @@ import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.DefaultModel;
-import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
-import de.unisiegen.gtitool.ui.model.DefaultModel.GrammarType;
-import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu;
 import de.unisiegen.gtitool.ui.popup.TabPopupMenu.TabPopupMenuType;
@@ -929,19 +929,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
-        if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
+        if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.DFA ) )
         {
           panel.getConverter ().convert ( MachineType.DFA, entityType );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.NFA ) )
         {
           panel.getConverter ().convert ( MachineType.NFA, entityType );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.ENFA ) )
         {
           panel.getConverter ().convert ( MachineType.ENFA, entityType );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "PDA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.PDA ) )
         {
           panel.getConverter ().convert ( MachineType.PDA, entityType );
         }
@@ -954,11 +958,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       else if ( panel instanceof GrammarPanel )
       {
         GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-        if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "RG" ) ) //$NON-NLS-1$
+        if ( grammarPanel.getGrammar ().getGrammarType ().equals (
+            GrammarType.RG ) )
         {
           panel.getConverter ().convert ( GrammarType.RG, entityType );
         }
-        else if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "CFG" ) ) //$NON-NLS-1$
+        else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
+            GrammarType.CFG ) )
         {
           panel.getConverter ().convert ( GrammarType.CFG, entityType );
         }
@@ -1724,22 +1730,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
-        if ( machinePanel.getMachine ().getMachineType ().equals ( "DFA" ) ) //$NON-NLS-1$
+        if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.DFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
           addButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "NFA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.NFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "ENFA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.ENFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
-        else if ( machinePanel.getMachine ().getMachineType ().equals ( "PDA" ) ) //$NON-NLS-1$
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.PDA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
@@ -1807,11 +1817,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         GrammarPanel grammarPanel = ( GrammarPanel ) panel;
 
-        if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "RG" ) ) //$NON-NLS-1$
+        if ( grammarPanel.getGrammar ().getGrammarType ().equals (
+            GrammarType.RG ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
         }
-        else if ( grammarPanel.getGrammar ().getGrammarType ().equals ( "CFG" ) ) //$NON-NLS-1$
+        else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
+            GrammarType.CFG ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
         }

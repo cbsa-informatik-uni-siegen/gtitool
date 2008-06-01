@@ -41,13 +41,13 @@ public final class DefaultRG extends AbstractGrammar implements RG
 
 
   /**
-   * Returns the {@link Grammar} type.
+   * Returns the {@link Grammar.GrammarType}.
    * 
-   * @return The {@link Grammar} type.
+   * @return The {@link Grammar.GrammarType}.
    */
   @Override
-  public final String getGrammarType ()
+  public final GrammarType getGrammarType ()
   {
-    return "RG"; //$NON-NLS-1$
+    return GrammarType.RG;
   }
 }

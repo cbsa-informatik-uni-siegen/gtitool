@@ -1,7 +1,7 @@
 package de.unisiegen.gtitool.ui.convert;
 
 
-import de.unisiegen.gtitool.ui.model.DefaultModel.EntityType;
+import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 
 
 /**

@@ -246,7 +246,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
   {
     Element newElement = new Element ( "GrammarModel" ); //$NON-NLS-1$
     newElement.addAttribute ( new Attribute ( "grammarType", this.grammar //$NON-NLS-1$
-        .getGrammarType () ) );
+        .getGrammarType ().toString () ) );
     newElement.addAttribute ( new Attribute ( "grammarVersion", //$NON-NLS-1$
         GRAMMAR_VERSION ) );
     newElement.addElement ( this.grammar.getStartSymbol ().getElement () );

@@ -366,7 +366,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    */
   public final String getFileEnding ()
   {
-    return "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
+    return "." + this.grammar.getGrammarType ().getFileEnding (); //$NON-NLS-1$
   }
 
 
@@ -712,7 +712,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
             return true;
           }
           if ( acceptedFile.getName ().toLowerCase ().matches ( ".+\\." //$NON-NLS-1$
-              + GrammarPanel.this.grammar.getGrammarType ().toLowerCase () ) )
+              + GrammarPanel.this.grammar.getGrammarType ().getFileEnding () ) )
           {
             return true;
           }
@@ -725,9 +725,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
         public String getDescription ()
         {
           return Messages.getString ( "NewDialog." //$NON-NLS-1$
-              + GrammarPanel.this.grammar.getGrammarType () )
+              + GrammarPanel.this.grammar.getGrammarType ().toString () )
               + " (*." //$NON-NLS-1$
-              + GrammarPanel.this.grammar.getGrammarType ().toLowerCase ()
+              + GrammarPanel.this.grammar.getGrammarType ().getFileEnding ()
               + ")"; //$NON-NLS-1$
         }
       };
@@ -758,10 +758,10 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       }
 
       String filename = saveDialog.getSelectedFile ().toString ().matches (
-          ".+\\." + this.grammar.getGrammarType ().toLowerCase () ) ? saveDialog //$NON-NLS-1$
+          ".+\\." + this.grammar.getGrammarType ().getFileEnding () ) ? saveDialog //$NON-NLS-1$
           .getSelectedFile ().toString ()
           : saveDialog.getSelectedFile ().toString ()
-              + "." + this.grammar.getGrammarType ().toLowerCase (); //$NON-NLS-1$
+              + "." + this.grammar.getGrammarType ().getFileEnding (); //$NON-NLS-1$
 
       Storage.getInstance ().store ( this.model, new File ( filename ) );
 

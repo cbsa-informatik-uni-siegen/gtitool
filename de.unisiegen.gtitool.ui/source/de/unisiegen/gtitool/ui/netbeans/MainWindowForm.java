@@ -10,10 +10,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 
+import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
-import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.model.DefaultModel.GrammarType;
-import de.unisiegen.gtitool.ui.model.DefaultModel.MachineType;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
 import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;
@@ -1710,19 +1709,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemExchangeActionPerformed
 
     private void jMenuItemDFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDFAhandleDraftFor
-        this.logic.handleDraftFor(DefaultMachineModel.MachineType.DFA);
+        this.logic.handleDraftFor(MachineType.DFA);
     }//GEN-LAST:event_jMenuItemDFAhandleDraftFor
 
     private void jMenuItemNFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNFAhandleDraftFor
-        this.logic.handleDraftFor(DefaultMachineModel.MachineType.NFA);
+        this.logic.handleDraftFor(MachineType.NFA);
     }//GEN-LAST:event_jMenuItemNFAhandleDraftFor
 
     private void jMenuItemPDAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPDAhandleDraftFor
-        this.logic.handleDraftFor(DefaultMachineModel.MachineType.PDA);
+        this.logic.handleDraftFor(MachineType.PDA);
     }//GEN-LAST:event_jMenuItemPDAhandleDraftFor
 
     private void jMenuItemENFAhandleDraftFor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemENFAhandleDraftFor
-        this.logic.handleDraftFor(DefaultMachineModel.MachineType.ENFA);
+        this.logic.handleDraftFor(MachineType.ENFA);
     }//GEN-LAST:event_jMenuItemENFAhandleDraftFor
 
     private void handleCloseAll(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleCloseAll

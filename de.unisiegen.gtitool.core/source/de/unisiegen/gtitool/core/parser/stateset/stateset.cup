@@ -21,6 +21,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
  ************/
  
 terminal String						STATE;
+terminal String						EMPTYSET;
 terminal							COMMA;
 terminal							LCBRACE;
 terminal							RCBRACE;
@@ -32,6 +33,9 @@ terminal							RCBRACE;
  
 non terminal StateSet				state_set;
 non terminal State					state;
+non terminal StateSet				power_state;
+non terminal State[]				power_state_list_comma;
+non terminal State					state_name;
 non terminal State[]				state_list_comma;
 
 
@@ -42,17 +46,19 @@ non terminal State[]				state_list_comma;
 non terminal 						epsilon;
 non terminal						state_set_error;
 non terminal						state_list_comma_error;
+non terminal						power_state_error;
+non terminal						power_state_list_comma_error;
 
 
 /*************
  * State Set *
  *************/
 
-state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
+state_set						::= LCBRACE:l power_state_list_comma:pslc RCBRACE:r
 									{:
 									   try
 									   {
-									     RESULT = new DefaultStateSet(slc);
+									     RESULT = new DefaultStateSet(pslc);
 									   }
 									   catch (StateSetException ecx)
 									   {
@@ -60,17 +66,17 @@ state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 									   }
 									   RESULT.setParserOffset(new ParserOffset(lleft, rright));
 									:}
-								|	state_list_comma:slc
+								|	power_state_list_comma:pslc
 									{:
 									   try
 									   {
-									     RESULT = new DefaultStateSet(slc);
+									     RESULT = new DefaultStateSet(pslc);
 									   }
 									   catch (StateSetException ecx)
 									   {
 									     ParserMultiException.throwStateSetException(ecx.getState());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(slcleft, slcright));
+									   RESULT.setParserOffset(new ParserOffset(pslcleft, pslcright));
 									:}
 								|	epsilon:e
 									{:
@@ -82,6 +88,120 @@ state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 								;
 
 state_set_error					::= LCBRACE:l epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								|	LCBRACE:l power_state_list_comma:pslc epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", "}", lleft, pslcright, "}" );
+									:}
+								|	LCBRACE:l power_state_list_comma:pslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", " s}", lleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
+									:}
+								/* one missing token - comma */
+								|	LCBRACE:l power_state_list_comma:pslc STATE:s
+									{:
+									   ErrorHandling.expect ( "State Set", ", ", lleft, pslcright, "," );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l COMMA:c
+									{:
+									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
+									:}
+								/* one missing token - symbol */
+								|	LCBRACE:l RCBRACE:r
+									{:
+									   ErrorHandling.expect ( "State Set", "s", lleft, lright, "s" );
+									:}
+								;
+
+power_state_list_comma			::= power_state_list_comma:pslc COMMA:c state:s
+								    {:
+								       RESULT = new State[pslc.length + 1];
+									   System.arraycopy(pslc, 0, RESULT, 0, pslc.length);
+									   RESULT[pslc.length] = s;
+								    :}
+								|	state:s
+									{:
+									   RESULT = new State[] { s };
+									:}
+								|	power_state_list_comma_error
+									{: :}
+								;
+
+power_state_list_comma_error	::= power_state_list_comma:pslc COMMA:c epsilon
+									{:
+									   ErrorHandling.expect ( "State Set", " s", pslcleft, cright, "s_i" , "," , " " , "..." , " " , "," , " " , "s_n" );
+									:}
+								/* one missing token */
+								|	power_state_list_comma:pslc STATE:s
+									{:
+									   ErrorHandling.expect ( "State Set", ", ", pslcleft, pslcright, "," );
+									:}
+								;
+
+state							::= power_state:ps
+									{:
+									   StringBuilder name = new StringBuilder();
+									   name.append("{");
+									   boolean first = true ;
+									   for (State current : ps.get())
+									   {
+									     if (!first)
+									     {
+									       name.append(", ");
+									     }
+									     first = false;
+									     name.append(current.getName());
+									   }
+									   name.append("}");
+									   
+									   try
+									   {
+									     RESULT = new DefaultState(name.toString());
+									   }
+									   catch (StateException exc)
+									   {
+									     ParserException.throwStateException(psleft, psright, name.toString());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(psleft, psright));
+									:}
+								|	state_name:sn
+									{:
+									   RESULT = sn;
+									:}
+								|	EMPTYSET:e
+									{:
+									   try
+									   {
+									     RESULT = new DefaultState(e);
+									   }
+									   catch (StateException exc)
+									   {
+									     ParserException.throwStateException(eleft, eright, e);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(eleft, eright));
+									:}	
+								;
+
+power_state						::= LCBRACE:l state_list_comma:slc RCBRACE:r
+									{:
+									   try
+									   {
+									     RESULT = new DefaultStateSet(slc);
+									   }
+									   catch (StateSetException ecx)
+									   {
+									     ParserMultiException.throwStateSetException(ecx.getState());
+									   }
+									   RESULT.setParserOffset(new ParserOffset(lleft, rright));
+									:}
+								|	power_state_error
+									{: :}
+								;
+
+power_state_error				::= LCBRACE:l epsilon
 									{:
 									   ErrorHandling.expect ( "State Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}
@@ -110,29 +230,29 @@ state_set_error					::= LCBRACE:l epsilon
 									:}
 								;
 
-state							::= STATE:s
+state_name						::= STATE:sn
 									{:
 									   try
 									   {
-									     RESULT = new DefaultState(s);
+									     RESULT = new DefaultState(sn);
 									   }
 									   catch (StateException exc)
 									   {
-									     ParserException.throwStateException(sleft, sright, s);
+									     ParserException.throwStateException(snleft, snright, sn);
 									   }
-									   RESULT.setParserOffset(new ParserOffset(sleft, sright));
+									   RESULT.setParserOffset(new ParserOffset(snleft, snright));
 									:}
 								;
 
-state_list_comma				::= state_list_comma:slc COMMA:c state:s
+state_list_comma				::= state_list_comma:slc COMMA:c state_name:sn
 								    {:
 								       RESULT = new State[slc.length + 1];
 									   System.arraycopy(slc, 0, RESULT, 0, slc.length);
-									   RESULT[slc.length] = s;
+									   RESULT[slc.length] = sn;
 								    :}
-								|	state:s
+								|	state_name:sn
 									{:
-									   RESULT = new State[] { s };
+									   RESULT = new State[] { sn };
 									:}
 								|	state_list_comma_error
 									{: :}

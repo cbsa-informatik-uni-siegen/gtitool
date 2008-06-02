@@ -20,6 +20,7 @@ import de.unisiegen.gtitool.core.parser.exceptions.ParserMultiException;
  ************/
  
 terminal String						STATE;
+terminal String						EMPTYSET;
 terminal							COMMA;
 terminal							LCBRACE;
 terminal							RCBRACE;
@@ -30,7 +31,7 @@ terminal							RCBRACE;
  ****************/
 
 non terminal State					state;
-non terminal StateSet				state_set;
+non terminal StateSet				power_state;
 non terminal State					state_name;
 non terminal State[]				state_list_comma;
 
@@ -40,7 +41,7 @@ non terminal State[]				state_list_comma;
  *********/
 
 non terminal 						epsilon;
-non terminal						state_set_error;
+non terminal						power_state_error;
 non terminal						state_list_comma_error;
 
 
@@ -48,12 +49,12 @@ non terminal						state_list_comma_error;
  * State *
  *********/
 
-state							::= state_set:ss
+state							::= power_state:ps
 									{:
 									   StringBuilder name = new StringBuilder();
 									   name.append("{");
 									   boolean first = true ;
-									   for (State current : ss.get())
+									   for (State current : ps.get())
 									   {
 									     if (!first)
 									     {
@@ -70,17 +71,29 @@ state							::= state_set:ss
 									   }
 									   catch (StateException exc)
 									   {
-									     ParserException.throwStateException(ssleft, ssright, name.toString());
+									     ParserException.throwStateException(psleft, psright, name.toString());
 									   }
-									   RESULT.setParserOffset(new ParserOffset(ssleft, ssright));
+									   RESULT.setParserOffset(new ParserOffset(psleft, psright));
 									:}
 								|	state_name:sn
 									{:
 									   RESULT = sn;
 									:}
+								|	EMPTYSET:e
+									{:
+									   try
+									   {
+									     RESULT = new DefaultState(e);
+									   }
+									   catch (StateException exc)
+									   {
+									     ParserException.throwStateException(eleft, eright, e);
+									   }
+									   RESULT.setParserOffset(new ParserOffset(eleft, eright));
+									:}	
 								;
 
-state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
+power_state						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 									{:
 									   try
 									   {
@@ -92,11 +105,11 @@ state_set						::= LCBRACE:l state_list_comma:slc RCBRACE:r
 									   }
 									   RESULT.setParserOffset(new ParserOffset(lleft, rright));
 									:}
-								|	state_set_error
+								|	power_state_error
 									{: :}
 								;
 
-state_set_error					::= LCBRACE:l epsilon
+power_state_error				::= LCBRACE:l epsilon
 									{:
 									   ErrorHandling.expect ( "State Set", "s}", lleft, lright, "s_1" , "," , " " , "..." , " " , "," , " " , "s_n" , "}" );
 									:}

@@ -76,6 +76,7 @@ State				= [:jletter:][:jletterdigit:]*
 	","					{ return symbol(COMMA); }
 	"{"					{ return symbol(LCBRACE); }
 	"}"					{ return symbol(RCBRACE); }
+	"\u2205"			{ return symbol(EMPTYSET, yytext()); }
 	{State}				{ return symbol(STATE, yytext()); }
 	{WhiteSpace}		{ }
 }

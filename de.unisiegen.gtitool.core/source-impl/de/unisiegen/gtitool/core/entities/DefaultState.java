@@ -1045,6 +1045,11 @@ public final class DefaultState implements State
         }
       }
     }
+    // empty set name
+    else if ( name.equals ( "\u2205" ) ) //$NON-NLS-1$
+    {
+      // the name is correct
+    }
     // normal name
     else
     {
@@ -1162,6 +1167,12 @@ public final class DefaultState implements State
               .addPrettyToken ( new PrettyToken ( newName, Style.STATE ) );
         }
         prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      }
+      // empty set name
+      else if ( this.name.equals ( "\u2205" ) ) //$NON-NLS-1$
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( this.name, Style.NONE ) );
       }
       // normal name
       else

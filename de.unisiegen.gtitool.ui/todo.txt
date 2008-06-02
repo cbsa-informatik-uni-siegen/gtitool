@@ -2,11 +2,10 @@ CF		- Die Wort Navigation verbessern (Info Dialoge entfernen)
 CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  Dabei ist darauf zu achten, das auch die Navigation angepasst werden
 		  soll.
-CF		- Umwandeln von Maschinen: Outline übersetzen, Add transition verbessern
 CF		- Split View
 CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im Graph
 		  hervorgehoben werden
-CF		- Die Zustandsname wird nur auf der StateView angekürzt, nicht aber auf der
+CF		- Die Zustandsname wird nur auf der StateView abgekürzt, nicht aber auf der
 		  StateSetView. Es muessen immer beide Dateien bearbeitet werden. Beide
 		  Klassen sollten zu einer vereinigt werden.
 

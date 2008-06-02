@@ -2062,34 +2062,7 @@ public final class ConvertMachineDialog implements
           case NFA_TO_DFA :
           {
             name.delete ( 0, name.length () );
-
-            String stateName = "z";//$NON-NLS-1$
-
-            boolean found = false;
-            for ( State current : this.machineOriginal.getState () )
-            {
-              if ( stateName.equals ( current.getName () ) )
-              {
-                found = true;
-              }
-            }
-
-            int i = 0;
-            while ( found )
-            {
-              stateName = "z" + i;//$NON-NLS-1$
-              i++ ;
-              found = false;
-              for ( State current : this.machineOriginal.getState () )
-              {
-                if ( stateName.equals ( current.getName () ) )
-                {
-                  found = true;
-                }
-              }
-            }
-
-            name.append ( stateName );
+            name.append ( "\u2205" );//$NON-NLS-1$
             break;
           }
           case ENFA_TO_NFA :
@@ -2112,34 +2085,7 @@ public final class ConvertMachineDialog implements
           case ENFA_TO_DFA :
           {
             name.delete ( 0, name.length () );
-
-            String stateName = "z";//$NON-NLS-1$
-
-            boolean found = false;
-            for ( State current : this.machineOriginal.getState () )
-            {
-              if ( stateName.equals ( current.getName () ) )
-              {
-                found = true;
-              }
-            }
-
-            int i = 0;
-            while ( found )
-            {
-              stateName = "z" + i;//$NON-NLS-1$
-              i++ ;
-              found = false;
-              for ( State current : this.machineOriginal.getState () )
-              {
-                if ( stateName.equals ( current.getName () ) )
-                {
-                  found = true;
-                }
-              }
-            }
-
-            name.append ( stateName );
+            name.append ( "\u2205" );//$NON-NLS-1$
             break;
           }
         }

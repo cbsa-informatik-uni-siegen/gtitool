@@ -1495,6 +1495,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemAutoLayout);
 
+        jMenuItemMinimize.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.MinimizeMnemonic").charAt(0));
         jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
         jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

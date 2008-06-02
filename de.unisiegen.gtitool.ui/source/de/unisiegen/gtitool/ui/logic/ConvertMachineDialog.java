@@ -205,29 +205,29 @@ public final class ConvertMachineDialog implements
   private enum Step
   {
     /**
-     * The activate first {@link State} step.
+     * The activate start {@link State} step.
      */
-    ACTIVATE_FIRST_STATE,
+    ACTIVATE_START_STATE,
 
     /**
-     * The activate first closure {@link State} step.
+     * The activate start closure {@link State} step.
      */
-    ACTIVATE_FIRST_CLOSURE_STATE,
+    ACTIVATE_START_CLOSURE_STATE,
 
     /**
-     * The add first {@link State} step.
+     * The add start {@link State} step.
      */
-    ADD_FIRST_STATE,
+    ADD_START_STATE,
 
     /**
-     * The activate old {@link State}s step.
+     * The activate old {@link State} step.
      */
-    ACTIVATE_OLD_STATES,
+    ACTIVATE_OLD_STATE,
 
     /**
-     * The activate old closure {@link State}s step.
+     * The activate old closure {@link State} step.
      */
-    ACTIVATE_OLD_CLOSURE_STATES,
+    ACTIVATE_OLD_CLOSURE_STATE,
 
     /**
      * The activate {@link Symbol}s step.
@@ -250,9 +250,9 @@ public final class ConvertMachineDialog implements
     ADD_STATE_AND_TRANSITION,
 
     /**
-     * The clear step.
+     * The finish step.
      */
-    CLEAR;
+    FINISH;
 
     /**
      * {@inheritDoc}
@@ -264,25 +264,25 @@ public final class ConvertMachineDialog implements
     {
       switch ( this )
       {
-        case ACTIVATE_FIRST_STATE :
+        case ACTIVATE_START_STATE :
         {
-          return "activate first state"; //$NON-NLS-1$
+          return "activate start state"; //$NON-NLS-1$
         }
-        case ACTIVATE_FIRST_CLOSURE_STATE :
+        case ACTIVATE_START_CLOSURE_STATE :
         {
-          return "activate first closure state"; //$NON-NLS-1$
+          return "activate start closure state"; //$NON-NLS-1$
         }
-        case ADD_FIRST_STATE :
+        case ADD_START_STATE :
         {
-          return "add first state"; //$NON-NLS-1$
+          return "add start state"; //$NON-NLS-1$
         }
-        case ACTIVATE_OLD_STATES :
+        case ACTIVATE_OLD_STATE :
         {
-          return "activate old states"; //$NON-NLS-1$
+          return "activate old state"; //$NON-NLS-1$
         }
-        case ACTIVATE_OLD_CLOSURE_STATES :
+        case ACTIVATE_OLD_CLOSURE_STATE :
         {
-          return "activate old closure states"; //$NON-NLS-1$
+          return "activate old closure state"; //$NON-NLS-1$
         }
         case ACTIVATE_SYMBOLS :
         {
@@ -300,9 +300,9 @@ public final class ConvertMachineDialog implements
         {
           return "add state and transition"; //$NON-NLS-1$
         }
-        case CLEAR :
+        case FINISH :
         {
-          return "clear"; //$NON-NLS-1$
+          return "finish"; //$NON-NLS-1$
         }
       }
       throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
@@ -1111,7 +1111,6 @@ public final class ConvertMachineDialog implements
     performStart ();
 
     show ();
-    System.err.println ( this.gui.jGTISplitPaneGraph.getDividerLocation () );
   }
 
 
@@ -1431,11 +1430,9 @@ public final class ConvertMachineDialog implements
    */
   private final void performNextStep ( boolean manualStep )
   {
-    // TODOCF translate
-    // TODOCF optimize the add state step
     addStepItem ();
 
-    if ( this.step.equals ( Step.ACTIVATE_FIRST_STATE ) )
+    if ( this.step.equals ( Step.ACTIVATE_START_STATE ) )
     {
       State startState = null;
       for ( State current : this.machineOriginal.getState () )
@@ -1461,31 +1458,30 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( "Activate start state: ", //$NON-NLS-1$
-          Style.NONE ) );
-      prettyString.addPrettyPrintable ( startState );
+      prettyString.addPrettyString ( Messages.getPrettyString (
+          "ConvertMachineDialog.ActivateStartState", false, startState ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       switch ( this.convertMachineType )
       {
         case NFA_TO_DFA :
         {
-          this.step = Step.ADD_FIRST_STATE;
+          this.step = Step.ADD_START_STATE;
           break;
         }
         case ENFA_TO_NFA :
         {
-          this.step = Step.ACTIVATE_FIRST_CLOSURE_STATE;
+          this.step = Step.ACTIVATE_START_CLOSURE_STATE;
           break;
         }
         case ENFA_TO_DFA :
         {
-          this.step = Step.ACTIVATE_FIRST_CLOSURE_STATE;
+          this.step = Step.ACTIVATE_START_CLOSURE_STATE;
           break;
         }
       }
     }
-    else if ( this.step.equals ( Step.ACTIVATE_FIRST_CLOSURE_STATE ) )
+    else if ( this.step.equals ( Step.ACTIVATE_START_CLOSURE_STATE ) )
     {
       if ( manualStep )
       {
@@ -1513,8 +1509,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Calculating \u03B5-closure (", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateStartClosureState" ) //$NON-NLS-1$
+          + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
       {
@@ -1559,9 +1556,9 @@ public final class ConvertMachineDialog implements
       }
       addOutlineComment ( prettyString );
 
-      this.step = Step.ADD_FIRST_STATE;
+      this.step = Step.ADD_START_STATE;
     }
-    else if ( this.step.equals ( Step.ADD_FIRST_STATE ) )
+    else if ( this.step.equals ( Step.ADD_START_STATE ) )
     {
       if ( manualStep )
       {
@@ -1625,14 +1622,13 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( "Add start state: ", //$NON-NLS-1$
-          Style.NONE ) );
-      prettyString.addPrettyPrintable ( newState );
+      prettyString.addPrettyString ( Messages.getPrettyString (
+          "ConvertMachineDialog.AddStartState", false, newState ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_SYMBOLS;
     }
-    else if ( this.step.equals ( Step.ACTIVATE_OLD_STATES ) )
+    else if ( this.step.equals ( Step.ACTIVATE_OLD_STATE ) )
     {
       if ( manualStep )
       {
@@ -1655,8 +1651,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Activate old states: ", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateOldState" ) //$NON-NLS-1$
+          + " ", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
         prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
@@ -1687,17 +1684,17 @@ public final class ConvertMachineDialog implements
         }
         case ENFA_TO_NFA :
         {
-          this.step = Step.ACTIVATE_OLD_CLOSURE_STATES;
+          this.step = Step.ACTIVATE_OLD_CLOSURE_STATE;
           break;
         }
         case ENFA_TO_DFA :
         {
-          this.step = Step.ACTIVATE_OLD_CLOSURE_STATES;
+          this.step = Step.ACTIVATE_OLD_CLOSURE_STATE;
           break;
         }
       }
     }
-    else if ( this.step.equals ( Step.ACTIVATE_OLD_CLOSURE_STATES ) )
+    else if ( this.step.equals ( Step.ACTIVATE_OLD_CLOSURE_STATE ) )
     {
       if ( manualStep )
       {
@@ -1725,8 +1722,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Calculating \u03B5-closure (", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateOldClosureState" ) //$NON-NLS-1$
+          + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
         prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
@@ -1806,8 +1804,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Calculating move (", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateSymbols" ) //$NON-NLS-1$
+          + " (", Style.NONE ) ); //$NON-NLS-1$
       if ( activeStateList.size () == 0 )
       {
         prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
@@ -1879,8 +1878,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Activate new states: move (", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateNewStates" )//$NON-NLS-1$
+          + " (", Style.NONE ) );//$NON-NLS-1$
       if ( oldActiveStateList.size () == 0 )
       {
         prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
@@ -1970,8 +1970,9 @@ public final class ConvertMachineDialog implements
 
       // outline
       PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken (
-          "Calculating \u03B5-closure (", Style.NONE ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ConvertMachineDialog.ActivateNewClosureStates" ) //$NON-NLS-1$
+          + " (", Style.NONE ) ); //$NON-NLS-1$
 
       if ( activeStateList.size () == 0 )
       {
@@ -2018,7 +2019,6 @@ public final class ConvertMachineDialog implements
 
       this.step = Step.ADD_STATE_AND_TRANSITION;
     }
-    // TODOCF
     else if ( this.step.equals ( Step.ADD_STATE_AND_TRANSITION ) )
     {
       if ( manualStep )
@@ -2094,7 +2094,7 @@ public final class ConvertMachineDialog implements
           }
           case ENFA_TO_NFA :
           {
-            this.step = Step.CLEAR;
+            this.step = Step.FINISH;
 
             if ( manualStep )
             {
@@ -2293,9 +2293,10 @@ public final class ConvertMachineDialog implements
 
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyToken ( new PrettyToken ( "Add transition: ", //$NON-NLS-1$
-            Style.NONE ) );
-        prettyString.addPrettyPrintable ( transition );
+        prettyString.addPrettyString ( Messages.getPrettyString (
+            "ConvertMachineDialog.AddStateAndTransitionAdd", false, //$NON-NLS-1$
+            transition.getStateBegin (), transition.getStateEnd (), transition
+                .getSymbol ( 0 ) ) );
         addOutlineComment ( prettyString );
       }
       else
@@ -2331,15 +2332,16 @@ public final class ConvertMachineDialog implements
 
         // outline
         PrettyString prettyString = new PrettyString ();
-        prettyString.addPrettyToken ( new PrettyToken ( "Modify transition: ", //$NON-NLS-1$
-            Style.NONE ) );
-        prettyString.addPrettyPrintable ( foundTransition );
+        prettyString.addPrettyString ( Messages.getPrettyString (
+            "ConvertMachineDialog.AddStateAndTransitionModify", false, //$NON-NLS-1$
+            symbol, foundTransition.getStateBegin (), foundTransition
+                .getStateEnd () ) );
         addOutlineComment ( prettyString );
       }
 
-      this.step = Step.CLEAR;
+      this.step = Step.FINISH;
     }
-    else if ( this.step.equals ( Step.CLEAR ) )
+    else if ( this.step.equals ( Step.FINISH ) )
     {
       if ( manualStep )
       {
@@ -2373,6 +2375,13 @@ public final class ConvertMachineDialog implements
 
       if ( useNextState )
       {
+        // outline
+        PrettyString prettyString = new PrettyString ();
+        prettyString.addPrettyString ( Messages.getPrettyString (
+            "ConvertMachineDialog.FinishNextState", false,//$NON-NLS-1$
+            this.currentActiveSymbol, this.currentActiveState ) );
+        addOutlineComment ( prettyString );
+
         for ( int i = 0 ; i < this.machineConverted.getState ().size () ; i++ )
         {
           if ( this.currentActiveState == this.machineConverted.getState ( i ) )
@@ -2412,17 +2421,18 @@ public final class ConvertMachineDialog implements
       }
       else
       {
+        // outline
+        PrettyString prettyString = new PrettyString ();
+        prettyString.addPrettyString ( Messages.getPrettyString (
+            "ConvertMachineDialog.FinishNextSymbol", false, //$NON-NLS-1$
+            this.currentActiveSymbol ) );
+        addOutlineComment ( prettyString );
+
         this.currentActiveSymbol = this.machineConverted.getAlphabet ().get (
             index + 1 );
       }
 
-      // outline
-      PrettyString prettyString = new PrettyString ();
-      prettyString.addPrettyToken ( new PrettyToken ( "Clear highlights", //$NON-NLS-1$
-          Style.NONE ) );
-      addOutlineComment ( prettyString );
-
-      this.step = Step.ACTIVATE_OLD_STATES;
+      this.step = Step.ACTIVATE_OLD_STATE;
     }
     else
     {
@@ -2534,7 +2544,7 @@ public final class ConvertMachineDialog implements
    */
   private final void performStart ()
   {
-    this.step = Step.ACTIVATE_FIRST_STATE;
+    this.step = Step.ACTIVATE_START_STATE;
 
     while ( !this.endReached )
     {

@@ -2572,9 +2572,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MainWindow.this.gui.getJMenuItemAutoLayout ().setMnemonic (
         Messages.getString ( "MainWindow.AutoLayoutMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Minimize
-    MainWindow.this.gui.getJMenuItemAutoLayout ().setText (
+    MainWindow.this.gui.getJMenuItemMinimize ().setText (
         Messages.getString ( "MainWindow.Minimize" ) ); //$NON-NLS-1$
-    MainWindow.this.gui.getJMenuItemAutoLayout ().setMnemonic (
+    MainWindow.this.gui.getJMenuItemMinimize ().setMnemonic (
         Messages.getString ( "MainWindow.MinimizeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // ConvertTo
     MainWindow.this.gui.getJMenuConvertTo ().setText (

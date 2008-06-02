@@ -6,6 +6,10 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
 import de.unisiegen.gtitool.logger.Logger;
 
@@ -46,6 +50,97 @@ public final class Messages
 
 
   /**
+   * Gets a {@link PrettyString} for the given key from the resource bundle of
+   * the core project.
+   * 
+   * @param key The key for the desired string.
+   * @param useQuote Flag that indicates if the quotation marks should be used.
+   * @param arguments The optional arguments.
+   * @return The string for the given key.
+   */
+  public final static PrettyString getPrettyString ( String key,
+      boolean useQuote, PrettyPrintable ... arguments )
+  {
+    PrettyString [] prettyStrings = new PrettyString [ arguments.length ];
+    for ( int i = 0 ; i < arguments.length ; i++ )
+    {
+      prettyStrings [ i ] = arguments [ i ].toPrettyString ();
+    }
+    return getPrettyString ( key, useQuote, prettyStrings );
+  }
+
+
+  /**
+   * Gets a {@link PrettyString} for the given key from the resource bundle of
+   * the core project.
+   * 
+   * @param key The key for the desired string.
+   * @param useQuote Flag that indicates if the quotation marks should be used.
+   * @param arguments The optional arguments.
+   * @return The string for the given key.
+   */
+  public final static PrettyString getPrettyString ( String key,
+      boolean useQuote, PrettyString ... arguments )
+  {
+    try
+    {
+      ResourceBundle resourceBundle = ResourceBundle
+          .getBundle ( "de.unisiegen.gtitool.ui.i18n.messages" ); //$NON-NLS-1$
+      PrettyString message = new PrettyString ( new PrettyToken (
+          resourceBundle.getString ( key ), Style.NONE ) );
+      for ( int i = 0 ; i < arguments.length ; i++ )
+      {
+        if ( arguments [ i ] == null )
+        {
+          continue;
+        }
+        if ( useQuote )
+        {
+          PrettyString newPrettyString = new PrettyString ();
+          newPrettyString
+              .addPrettyToken ( new PrettyToken ( QUOTE, Style.NONE ) );
+          newPrettyString.addPrettyString ( arguments [ i ] );
+          newPrettyString
+              .addPrettyToken ( new PrettyToken ( QUOTE, Style.NONE ) );
+
+          message.replace ( "{" + i + "}", newPrettyString ); //$NON-NLS-1$//$NON-NLS-2$
+        }
+        else
+        {
+          message.replace ( "{" + i + "}", arguments [ i ] ); //$NON-NLS-1$//$NON-NLS-2$
+        }
+      }
+      return message;
+    }
+    catch ( MissingResourceException e )
+    {
+      logger.error ( "getPrettyString", "key not found", e ); //$NON-NLS-1$ //$NON-NLS-2$
+      return new PrettyString ( new PrettyToken ( key, Style.NONE ) );
+    }
+    catch ( IllegalArgumentException e )
+    {
+      logger.error ( "getPrettyString", "illegal argument exception", e ); //$NON-NLS-1$ //$NON-NLS-2$
+      return new PrettyString ( new PrettyToken ( key, Style.NONE ) );
+    }
+  }
+
+
+  /**
+   * Gets a {@link PrettyString} for the given key from the resource bundle of
+   * the core project.
+   * 
+   * @param key The key for the desired string.
+   * @param arguments The optional arguments.
+   * @return The string for the given key.
+   */
+  public final static PrettyString getPrettyString ( String key,
+      PrettyPrintable ... arguments )
+  {
+    return getPrettyString ( key, true, arguments );
+  }
+
+
+  /**
    * Gets a string for the given key from the resource bundle of the ui project.
    * 
    * @param key The key for the desired string.
@@ -82,7 +177,8 @@ public final class Messages
     }
     catch ( MissingResourceException exc )
     {
-      return de.unisiegen.gtitool.core.i18n.Messages.getString ( key, arguments );
+      return de.unisiegen.gtitool.core.i18n.Messages
+          .getString ( key, arguments );
     }
     catch ( IllegalArgumentException exc )
     {

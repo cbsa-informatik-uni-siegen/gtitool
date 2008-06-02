@@ -6,9 +6,12 @@ CF		- Umwandeln von Maschinen: Outline übersetzen, Add transition verbessern
 CF		- Split View
 CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im Graph
 		  hervorgehoben werden
+CF		- Die Zustandsname wird nur auf der StateView angekürzt, nicht aber auf der
+		  StateSetView. Es muessen immer beide Dateien bearbeitet werden. Beide
+		  Klassen sollten zu einer vereinigt werden.
 
 
 		- Parallel Loop Routing
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 		- ToolTip des Zustandsnamens nur wenn dieser auch zu lang ist, und nur über
-		  dem Namen oder dem Zustand und nicht über der kompleten Component (Rechteck)
+		  dem Namen oder dem Zustand und nicht über der kompletten Component (Rechteck)

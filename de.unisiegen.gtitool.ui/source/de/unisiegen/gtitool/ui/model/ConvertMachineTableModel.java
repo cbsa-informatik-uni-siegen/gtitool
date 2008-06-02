@@ -162,6 +162,17 @@ public final class ConvertMachineTableModel extends AbstractTableModel
 
 
   /**
+   * Removes the last row.
+   */
+  public final void removeLastRow ()
+  {
+    int index = this.data.size () - 1;
+    this.data.remove ( index );
+    fireTableRowsDeleted ( index, index );
+  }
+
+
+  /**
    * Removes a row from this data model.
    * 
    * @param prettyString The {@link Transition}.

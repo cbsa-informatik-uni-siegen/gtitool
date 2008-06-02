@@ -41,8 +41,6 @@ public final class PDATableColumnModel extends DefaultTableColumnModel
     // transition
     this.transitionColumn = new TableColumn (
         MachineConsoleTableModel.MESSAGE_COLUMN );
-    this.transitionColumn.setPreferredWidth ( 200 );
-    this.transitionColumn.setMinWidth ( 200 );
     this.transitionColumn.setHeaderValue ( Messages
         .getString ( "MachinePanel.StackOperation" ) ); //$NON-NLS-1$
     this.transitionColumn

@@ -38,8 +38,6 @@ public final class ConvertMachineTableColumnModel extends
     // outline
     this.outlineColumn = new TableColumn (
         ConvertMachineTableModel.OUTLINE_COLUMN );
-    this.outlineColumn.setPreferredWidth ( 200 );
-    this.outlineColumn.setMinWidth ( 200 );
     this.outlineColumn.setResizable ( false );
     this.outlineColumn.setHeaderValue ( Messages
         .getString ( "ConvertMachineDialog.Outline" ) ); //$NON-NLS-1$

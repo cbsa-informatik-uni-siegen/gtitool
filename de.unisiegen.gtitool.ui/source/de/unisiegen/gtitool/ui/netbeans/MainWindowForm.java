@@ -14,9 +14,9 @@ import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
-import de.unisiegen.gtitool.ui.swing.JGTIToolBarButton;
-import de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton;
-import de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton;
 
 /**
  * The {@link MainWindowForm}.
@@ -230,14 +230,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }
     
     /**
-     * Returns the editorPanelTabbedPane.
+     * Returns the {@link JGTIEditorPanelTabbedPane}.
      *
-     * @return The editorPanelTabbedPane.
+     * @return The {@link JGTIEditorPanelTabbedPane}.
      * @see #editorPanelTabbedPane
      */
-    public final EditorPanelTabbedPane getEditorPanelTabbedPane ()
+    public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPane ()
     {
-      return this.editorPanelTabbedPane;
+      return this.jGTIEditorPanelTabbedPane;
     }
 
     
@@ -860,32 +860,32 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         toolbarButton = new javax.swing.ButtonGroup();
         jToolBarMain = new javax.swing.JToolBar();
         jToolBarFile = new javax.swing.JToolBar();
-        jGTIToolBarButtonNew = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonOpen = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonSave = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonSaveAs = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonNew = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonOpen = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonSave = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonSaveAs = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jSeparatorFileEdit = new javax.swing.JSeparator();
         jToolBarEdit = new javax.swing.JToolBar();
-        jGTIToolBarButtonUndo = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonRedo = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonUndo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonRedo = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jSeparatorEditNavigation = new javax.swing.JSeparator();
         jToolBarNavigation = new javax.swing.JToolBar();
-        jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarToggleButtonMouse = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonAddState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonEditDocument = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarToggleButtonMouse = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarToggleButtonAddState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jSeparatorNavigation = new javax.swing.JSeparator();
-        jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        editorPanelTabbedPane = new de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane();
+        jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIEditorPanelTabbedPane = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
         jMenuBarMain = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemNew = new javax.swing.JMenuItem();
@@ -1188,14 +1188,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jToolBarMain, gridBagConstraints);
 
-        editorPanelTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTIEditorPanelTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                editorPanelTabbedPaneMouseReleased(evt);
+                jGTIEditorPanelTabbedPaneMouseReleased(evt);
             }
         });
-        editorPanelTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+        jGTIEditorPanelTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                editorPanelTabbedPaneStateChanged(evt);
+                jGTIEditorPanelTabbedPaneStateChanged(evt);
             }
         });
 
@@ -1205,7 +1205,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(editorPanelTabbedPane, gridBagConstraints);
+        getContentPane().add(jGTIEditorPanelTabbedPane, gridBagConstraints);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FileMnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
@@ -1605,9 +1605,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
          this.logic.handleConvertTo(MachineType.DFA);
     }//GEN-LAST:event_jMenuItemConvertToDFAActionPerformed
 
-    private void editorPanelTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneMouseReleased
+    private void jGTIEditorPanelTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneMouseReleased
         this.logic.handleTabbedPaneMouseReleased(evt);
-    }//GEN-LAST:event_editorPanelTabbedPaneMouseReleased
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneMouseReleased
 
     private void jMenuItemHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistoryActionPerformed
         this.logic.handleHistory();
@@ -1633,9 +1633,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         this.logic.handleDeleteProduction();
     }//GEN-LAST:event_jGTIToolBarButtonDeleteProductionActionPerformed
 
-    private void editorPanelTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_editorPanelTabbedPaneStateChanged
+    private void jGTIEditorPanelTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneStateChanged
         this.logic.handleTabbedPaneStateChanged();
-    }//GEN-LAST:event_editorPanelTabbedPaneStateChanged
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneStateChanged
 
     private void jGTIToolBarToggleButtonFinalStateItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonFinalStateItemStateChanged
         this.logic.handleToolbarEnd(this.jGTIToolBarToggleButtonFinalState.isSelected());
@@ -1690,7 +1690,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jGTIToolBarButtonUndoActionPerformed
 
     private void jGTIToolBarButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveActionPerformed
-        this.logic.handleSave(this.editorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleSave(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_jGTIToolBarButtonSaveActionPerformed
 
     private void jGTIToolBarButtonSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveAsActionPerformed
@@ -1746,7 +1746,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose
-        this.logic.handleClose(this.editorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleClose(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleClose
 
     private void jCheckBoxMenuItemTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemTableItemStateChanged
@@ -1762,7 +1762,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_handleSaveAs
 
     private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
-        this.logic.handleSave(this.editorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleSave(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
     }//GEN-LAST:event_handleSave
 
     private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
@@ -1798,29 +1798,29 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_handleOpen
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane editorPanelTabbedPane;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonAddProduction;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditDocument;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEditProduction;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNew;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonOpen;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPrevious;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonRedo;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSave;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonSaveAs;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStart;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStop;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonUndo;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddState;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddTransition;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonFinalState;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
-    private de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPane;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonAddProduction;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEditDocument;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEditProduction;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNew;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonOpen;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPrevious;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonRedo;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonSave;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonSaveAs;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStart;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonUndo;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddState;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddTransition;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonFinalState;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
     private javax.swing.JMenuBar jMenuBarMain;
     private javax.swing.JMenu jMenuConvertTo;
     private javax.swing.JMenu jMenuDraft;

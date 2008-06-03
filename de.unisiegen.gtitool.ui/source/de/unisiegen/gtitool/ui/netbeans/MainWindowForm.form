@@ -652,7 +652,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonNew">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNew">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/new24.png"/>
@@ -665,7 +665,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonNewActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonOpen">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonOpen">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/open24.png"/>
@@ -678,7 +678,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonOpenActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonSave">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonSave">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/save24.png"/>
@@ -691,7 +691,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonSaveActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonSaveAs">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonSaveAs">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/saveas24.png"/>
@@ -726,7 +726,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonUndo">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonUndo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-undo.png"/>
@@ -739,7 +739,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonUndoActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonRedo">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonRedo">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-redo.png"/>
@@ -774,7 +774,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
           <SubComponents>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonEditDocument">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEditDocument">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/edit-document.png"/>
@@ -787,7 +787,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonEditDocumentActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonMouse">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonMouse">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="toolbarButton"/>
@@ -804,7 +804,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonMouseItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAddState">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAddState">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="toolbarButton"/>
@@ -820,7 +820,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonAddStateItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAddTransition">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAddTransition">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="toolbarButton"/>
@@ -836,7 +836,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonAddTransitionItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonStartState">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonStartState">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="toolbarButton"/>
@@ -852,7 +852,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonStartStateItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonFinalState">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonFinalState">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="toolbarButton"/>
@@ -868,7 +868,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonFinalStateItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonAddProduction">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonAddProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/add-production.png"/>
@@ -881,7 +881,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonAddProductionActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonEditProduction">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEditProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/edit-production.png"/>
@@ -894,7 +894,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonEditProductionActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonDeleteProduction">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonDeleteProduction">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/delete-production.png"/>
@@ -915,7 +915,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonStart">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonStart">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-start.png"/>
@@ -928,7 +928,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonStartActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonPrevious">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonPrevious">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png"/>
@@ -941,7 +941,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonPreviousActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonNextStep">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonNextStep">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png"/>
@@ -954,7 +954,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonNextStepActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAutoStep">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton" name="jGTIToolBarToggleButtonAutoStep">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png"/>
@@ -967,7 +967,7 @@
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jGTIToolBarToggleButtonAutoStepItemStateChanged"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTIToolBarButton" name="jGTIToolBarButtonStop">
+            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonStop">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png"/>
@@ -984,10 +984,10 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="de.unisiegen.gtitool.ui.swing.specialized.EditorPanelTabbedPane" name="editorPanelTabbedPane">
+    <Container class="de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane" name="jGTIEditorPanelTabbedPane">
       <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editorPanelTabbedPaneMouseReleased"/>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="editorPanelTabbedPaneStateChanged"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTIEditorPanelTabbedPaneMouseReleased"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jGTIEditorPanelTabbedPaneStateChanged"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

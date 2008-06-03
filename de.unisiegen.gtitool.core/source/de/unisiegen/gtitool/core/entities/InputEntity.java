@@ -10,7 +10,7 @@ import de.unisiegen.gtitool.core.machines.Machine;
  * The interface for the input entities {@link Machine} and {@link Grammar}.
  * 
  * @author Christian Fehler
- * @version $Id: Entity.java 846 2008-04-25 11:00:33Z fehler $
+ * @version $Id$
  */
 public interface InputEntity
 {

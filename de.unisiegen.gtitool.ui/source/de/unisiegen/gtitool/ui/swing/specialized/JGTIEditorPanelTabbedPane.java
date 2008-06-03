@@ -18,7 +18,7 @@ import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class EditorPanelTabbedPane extends JGTITabbedPane implements
+public final class JGTIEditorPanelTabbedPane extends JGTITabbedPane implements
     Iterable < EditorPanel >
 {
 
@@ -29,9 +29,9 @@ public final class EditorPanelTabbedPane extends JGTITabbedPane implements
 
 
   /**
-   * Allocates a new {@link EditorPanelTabbedPane}.
+   * Allocates a new {@link JGTIEditorPanelTabbedPane}.
    */
-  public EditorPanelTabbedPane ()
+  public JGTIEditorPanelTabbedPane ()
   {
     super ();
   }

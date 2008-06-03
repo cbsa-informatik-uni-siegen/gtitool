@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui.swing;
+package de.unisiegen.gtitool.ui.swing.specialized;
 
 
 import java.awt.Dimension;

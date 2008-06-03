@@ -61,12 +61,12 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         java.awt.GridBagConstraints gridBagConstraints;
 
         jGTIToolBarMain = new de.unisiegen.gtitool.ui.swing.JGTIToolBar();
-        jGTIToolBarButtonBeginStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton();
-        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
-        jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.JGTIToolBarButton();
+        jGTIToolBarButtonBeginStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonPreviousStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
+        jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
@@ -266,13 +266,13 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonBeginStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonEndStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonNextStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarButton jGTIToolBarButtonStop;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEndStep;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonPreviousStep;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonStop;
     public de.unisiegen.gtitool.ui.swing.JGTIToolBar jGTIToolBarMain;
-    public de.unisiegen.gtitool.ui.swing.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -135,7 +135,7 @@ public abstract class AbstractConvertGrammar implements Converter
   {
     TreeSet < String > nameList = new TreeSet < String > ();
     int count = 0;
-    for ( EditorPanel current : this.mainWindowForm.getEditorPanelTabbedPane () )
+    for ( EditorPanel current : this.mainWindowForm.getJGTIEditorPanelTabbedPane () )
     {
       if ( current.getFile () == null )
       {
@@ -154,11 +154,11 @@ public abstract class AbstractConvertGrammar implements Converter
     }
 
     this.newPanel.setName ( name );
-    this.mainWindowForm.getEditorPanelTabbedPane ().addEditorPanel (
+    this.mainWindowForm.getJGTIEditorPanelTabbedPane ().addEditorPanel (
         this.newPanel );
     this.newPanel.addModifyStatusChangedListener ( this.mainWindowForm
         .getLogic ().getModifyStatusChangedListener () );
-    this.mainWindowForm.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+    this.mainWindowForm.getJGTIEditorPanelTabbedPane ().setSelectedEditorPanel (
         this.newPanel );
   }
 

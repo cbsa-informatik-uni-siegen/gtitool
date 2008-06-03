@@ -153,7 +153,7 @@ public final class StatePopupMenu extends JPopupMenu
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
         StateChangedItem item = new StateChangedItem (
-            StatePopupMenu.this.model.getJGraph (), StatePopupMenu.this.state
+            StatePopupMenu.this.model.getJGTIGraph (), StatePopupMenu.this.state
                 .getState (), StatePopupMenu.this.state.getState ().getName (),
             !StatePopupMenu.this.state.getState ().isStartState (),
             StatePopupMenu.this.state.getState ().isFinalState () );
@@ -177,7 +177,7 @@ public final class StatePopupMenu extends JPopupMenu
         StatePopupMenu.this.model.getGraphModel ().cellsChanged ( new Object []
         { StatePopupMenu.this.state } );
         StateChangedItem item = new StateChangedItem (
-            StatePopupMenu.this.model.getJGraph (), StatePopupMenu.this.state
+            StatePopupMenu.this.model.getJGTIGraph (), StatePopupMenu.this.state
                 .getState (), StatePopupMenu.this.state.getState ().getName (),
             StatePopupMenu.this.state.getState ().isStartState (),
             !StatePopupMenu.this.state.getState ().isFinalState () );

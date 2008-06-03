@@ -194,6 +194,17 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
+   * Returns the size.
+   * 
+   * @return The size.
+   */
+  public final int size ()
+  {
+    return this.prettyTokenList.size ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#toString()

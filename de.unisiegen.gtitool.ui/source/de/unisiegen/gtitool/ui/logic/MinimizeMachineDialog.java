@@ -9,8 +9,6 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.jgraph.JGraph;
-
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
@@ -26,6 +24,7 @@ import de.unisiegen.gtitool.core.machines.dfa.DefaultDFA;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
@@ -112,9 +111,9 @@ public final class MinimizeMachineDialog implements
 
 
   /**
-   * The original {@link JGraph} containing the diagramm.
+   * The original {@link JGTIGraph} containing the diagramm.
    */
-  private JGraph jGraphOriginal;
+  private JGTIGraph jGTIGraphOriginal;
 
 
   /**
@@ -223,9 +222,9 @@ public final class MinimizeMachineDialog implements
       System.exit ( 1 );
       return;
     }
-    this.jGraphOriginal = this.modelOriginal.getJGraph ();
-    this.jGraphOriginal.setEnabled ( false );
-    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
+    this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
+    this.jGTIGraphOriginal.setEnabled ( false );
+    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
     this.machine = this.modelOriginal.getMachine ();
 
     handleStart ();
@@ -261,7 +260,7 @@ public final class MinimizeMachineDialog implements
             name += ", "; //$NON-NLS-1$
           }
           name += defaultStateView.toString ();
-          count++;
+          count++ ;
         }
         name += "}"; //$NON-NLS-1$
 

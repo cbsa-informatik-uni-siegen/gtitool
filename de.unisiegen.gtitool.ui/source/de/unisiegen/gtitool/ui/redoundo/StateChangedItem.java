@@ -1,10 +1,9 @@
 package de.unisiegen.gtitool.ui.redoundo;
 
 
-import org.jgraph.JGraph;
-
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 
 
 /**
@@ -23,9 +22,9 @@ public final class StateChangedItem extends RedoUndoItem
 
 
   /**
-   * The {@link JGraph}.
+   * The {@link JGTIGraph}.
    */
-  private JGraph graph;
+  private JGTIGraph jGTIGraph;
 
 
   /**
@@ -67,17 +66,17 @@ public final class StateChangedItem extends RedoUndoItem
   /**
    * Allocates a new {@link StateChangedItem}.
    * 
-   * @param graph The {@link JGraph}.
+   * @param jGTIGraph The {@link JGTIGraph}.
    * @param state The {@link State}.
    * @param oldName The old state name.
    * @param oldStartState The old start state flag.
    * @param oldFinalState The old final state flag.
    */
-  public StateChangedItem ( JGraph graph, State state, String oldName,
+  public StateChangedItem ( JGTIGraph jGTIGraph, State state, String oldName,
       boolean oldStartState, boolean oldFinalState )
   {
     super ();
-    this.graph = graph;
+    this.jGTIGraph = jGTIGraph;
     this.state = state;
     this.oldName = oldName;
     this.oldStartState = oldStartState;
@@ -99,7 +98,7 @@ public final class StateChangedItem extends RedoUndoItem
     try
     {
       this.state.setName ( this.newName );
-      this.graph.getGraphLayoutCache ().valueForCellChanged ( this.state,
+      this.jGTIGraph.getGraphLayoutCache ().valueForCellChanged ( this.state,
           this.newName );
       this.state.setStartState ( this.newStartState );
       this.state.setFinalState ( this.newFinalState );
@@ -123,7 +122,7 @@ public final class StateChangedItem extends RedoUndoItem
     try
     {
       this.state.setName ( this.oldName );
-      this.graph.getGraphLayoutCache ().valueForCellChanged ( this.state,
+      this.jGTIGraph.getGraphLayoutCache ().valueForCellChanged ( this.state,
           this.oldName );
       this.state.setStartState ( this.oldStartState );
       this.state.setFinalState ( this.oldFinalState );

@@ -224,6 +224,16 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
+   * Returns true if the short name is used for this {@link State}, otherwise
+   * false.
+   * 
+   * @return True if the short name is used for this {@link State}, otherwise
+   *         false.
+   */
+  public boolean isShortNameUsed ();
+
+
+  /**
    * Returns the startState.
    * 
    * @return The startState.
@@ -326,6 +336,14 @@ public interface State extends Entity < State >, Storable, Modifyable
    * @param selected The selected value to set.
    */
   public void setSelected ( boolean selected );
+
+
+  /**
+   * Sets the short name used value.
+   * 
+   * @param shortNameUsed The short name used value.
+   */
+  public void setShortNameUsed ( boolean shortNameUsed );
 
 
   /**

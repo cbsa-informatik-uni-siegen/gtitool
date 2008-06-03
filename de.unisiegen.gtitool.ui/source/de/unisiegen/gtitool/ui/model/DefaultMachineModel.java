@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import javax.swing.event.EventListenerList;
 
-import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
@@ -41,7 +40,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
-import de.unisiegen.gtitool.ui.jgraph.GTIJgraph;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
@@ -80,9 +79,9 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * The {@link GTIJgraph} containing the diagramm
+   * The {@link JGTIGraph} containing the diagramm.
    */
-  private GTIJgraph jGraph;
+  private JGTIGraph jGTIGraph;
 
 
   /**
@@ -416,7 +415,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     // Add a floating port
     stateView.addPort ();
 
-    this.jGraph.getGraphLayoutCache ().insert ( stateView );
+    this.jGTIGraph.getGraphLayoutCache ().insert ( stateView );
     this.stateViewList.add ( stateView );
 
     // Reset modify
@@ -474,7 +473,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     GraphConstants.setRouting ( transitionView.getAttributes (),
         JGraphpadParallelSplineRouter.getSharedInstance () );
 
-    this.jGraph.getGraphLayoutCache ().insertEdge ( transitionView,
+    this.jGTIGraph.getGraphLayoutCache ().insertEdge ( transitionView,
         source.getChildAt ( 0 ), target.getChildAt ( 0 ) );
 
     this.transitionViewList.add ( transitionView );
@@ -573,13 +572,13 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Getter for the {@link JGraph}
+   * Getter for the {@link JGTIGraph}
    * 
-   * @return the {@link JGraph}
+   * @return the {@link JGTIGraph}
    */
-  public final JGraph getJGraph ()
+  public final JGTIGraph getJGTIGraph ()
   {
-    return this.jGraph;
+    return this.jGTIGraph;
   }
 
 
@@ -687,24 +686,25 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Initialize the {@link JGraph}.
+   * Initialize the {@link JGTIGraph}.
    */
   private final void initializeGraph ()
   {
     this.graphModel = new DefaultGraphModel ();
 
-    this.jGraph = new GTIJgraph ( this.graphModel );
-    this.jGraph.setDoubleBuffered ( false );
-    this.jGraph.getGraphLayoutCache ().setFactory ( new GPCellViewFactory () );
-    this.jGraph.setInvokesStopCellEditing ( true );
-    this.jGraph.setJumpToDefaultPort ( true );
-    this.jGraph.setSizeable ( false );
-    this.jGraph.setConnectable ( false );
-    this.jGraph.setDisconnectable ( false );
-    this.jGraph.setEdgeLabelsMovable ( false );
-    this.jGraph.setEditable ( false );
-    this.jGraph.setHandleSize ( 0 );
-    this.jGraph.setXorEnabled ( false );
+    this.jGTIGraph = new JGTIGraph ( this.graphModel );
+    this.jGTIGraph.setDoubleBuffered ( false );
+    this.jGTIGraph.getGraphLayoutCache ()
+        .setFactory ( new GPCellViewFactory () );
+    this.jGTIGraph.setInvokesStopCellEditing ( true );
+    this.jGTIGraph.setJumpToDefaultPort ( true );
+    this.jGTIGraph.setSizeable ( false );
+    this.jGTIGraph.setConnectable ( false );
+    this.jGTIGraph.setDisconnectable ( false );
+    this.jGTIGraph.setEdgeLabelsMovable ( false );
+    this.jGTIGraph.setEditable ( false );
+    this.jGTIGraph.setHandleSize ( 0 );
+    this.jGTIGraph.setXorEnabled ( false );
 
     PreferenceManager.getInstance ().addColorChangedListener (
         new ColorChangedAdapter ()
@@ -714,7 +714,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
           @Override
           public void colorChanged ()
           {
-            DefaultMachineModel.this.jGraph.repaint ();
+            DefaultMachineModel.this.jGTIGraph.repaint ();
           }
         } );
 
@@ -722,7 +722,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
         .getZoomFactorItem ().getFactor () ) / 100;
 
     // Set the zoom factor of this graph
-    this.jGraph.setScale ( this.jGraph.getScale () * zoomFactor );
+    this.jGTIGraph.setScale ( this.jGTIGraph.getScale () * zoomFactor );
 
     EdgeView.renderer = new EdgeRenderer ();
     EdgeView.renderer.setForeground ( Color.MAGENTA );

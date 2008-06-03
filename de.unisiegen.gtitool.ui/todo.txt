@@ -4,10 +4,7 @@ CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  muss
 CF		- Split View
 CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im JGraph
-		  hervorgehoben werden, so wie das bei der Machine Tabelle der Fall
-		  ist
-CF		- ToolTip des Zustandsnamens nur wenn dieser auch zu lang ist, und nur über
-		  dem Namen oder dem Zustand und nicht über der kompletten Component
+		  hervorgehoben werden
 
 
 		- Parallel Loop Routing

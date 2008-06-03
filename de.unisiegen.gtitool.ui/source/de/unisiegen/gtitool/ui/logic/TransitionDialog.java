@@ -696,7 +696,7 @@ public final class TransitionDialog implements
       handleUpdateTransition ();
     }
     this.gui.dispose ();
-    this.machinePanel.getJGraph ().repaint ();
+    this.machinePanel.getJGTIGraph ().repaint ();
   }
 
 

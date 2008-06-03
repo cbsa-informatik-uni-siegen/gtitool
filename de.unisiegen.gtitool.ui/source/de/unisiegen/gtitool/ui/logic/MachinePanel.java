@@ -28,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
@@ -37,7 +36,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumn;
 
-import org.jgraph.JGraph;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultEdge;
@@ -72,6 +70,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
@@ -245,9 +244,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * The {@link JGraph} containing the diagramm.
+   * The {@link JGTIGraph} containing the diagramm.
    */
-  private JGraph jGraph;
+  private JGTIGraph jGTIGraph;
 
 
   /**
@@ -474,11 +473,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Add all needed listener to the JGraph
+   * Add all needed listener to the {@link JGTIGraph}.
    */
   private final void addGraphListener ()
   {
-    this.jGraph.addKeyListener ( new KeyAdapter ()
+    this.jGTIGraph.addKeyListener ( new KeyAdapter ()
     {
 
       @Override
@@ -497,7 +496,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         else if ( !MachinePanel.this.mouseDown
             && ( event.getKeyCode () == KeyEvent.VK_DELETE ) )
         {
-          Object object = MachinePanel.this.jGraph.getSelectionCell ();
+          Object object = MachinePanel.this.jGTIGraph.getSelectionCell ();
 
           if ( object instanceof DefaultStateView )
           {
@@ -511,7 +510,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     } );
 
-    this.jGraph.addGraphSelectionListener ( new GraphSelectionListener ()
+    this.jGTIGraph.addGraphSelectionListener ( new GraphSelectionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -522,7 +521,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     } );
 
-    this.jGraph.addMouseListener ( new MouseAdapter ()
+    this.jGTIGraph.addMouseListener ( new MouseAdapter ()
     {
 
       /**
@@ -744,7 +743,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     cell.addPort ();
 
     return cell;
-
   }
 
 
@@ -890,14 +888,14 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Returns the {@link JGraph}.
+   * Returns the {@link JGTIGraph}.
    * 
-   * @return The {@link JGraph}.
-   * @see #jGraph
+   * @return The {@link JGTIGraph}.
+   * @see #jGTIGraph
    */
-  public final JGraph getJGraph ()
+  public final JGTIGraph getJGTIGraph ()
   {
-    return this.jGraph;
+    return this.jGTIGraph;
   }
 
 
@@ -1003,7 +1001,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     // Clear highlight
     clearHighlight ();
-    this.jGraph.clearSelection ();
+    this.jGTIGraph.clearSelection ();
     for ( DefaultTransitionView current : this.model.getTransitionViewList () )
     {
       Transition transition = current.getTransition ();
@@ -1107,7 +1105,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       throw new IllegalArgumentException ( "wrong event source" ); //$NON-NLS-1$
     }
 
-    this.model.getJGraph ().clearSelection ();
+    this.model.getJGTIGraph ().clearSelection ();
     clearHighlight ();
 
     int index = table.getSelectedRow ();
@@ -1129,9 +1127,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleEditMachine ()
   {
     this.enterWordMode = false;
-    this.jGraph.removeMouseListener ( this.enterWordModeMouse );
+    this.jGTIGraph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
-    this.model.getJGraph ().setEnabled ( true );
+    this.model.getJGTIGraph ().setEnabled ( true );
 
     clearHighlight ();
 
@@ -1145,10 +1143,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleEnterWord ()
   {
     this.enterWordMode = true;
-    this.jGraph.clearSelection ();
+    this.jGTIGraph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
-    this.jGraph.setEnabled ( false );
-    this.jGraph.addMouseListener ( this.enterWordModeMouse );
+    this.jGTIGraph.setEnabled ( false );
+    this.jGTIGraph.addMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.requestFocus ();
   }
 
@@ -1375,12 +1373,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGraph.addMouseListener ( this.addState );
+      this.jGTIGraph.addMouseListener ( this.addState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_STATE;
     }
     else
     {
-      this.jGraph.removeMouseListener ( this.addState );
+      this.jGTIGraph.removeMouseListener ( this.addState );
     }
   }
 
@@ -1406,12 +1404,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGraph.addMouseListener ( this.addEndState );
+      this.jGTIGraph.addMouseListener ( this.addEndState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_FINAL_STATE;
     }
     else
     {
-      this.jGraph.removeMouseListener ( this.addEndState );
+      this.jGTIGraph.removeMouseListener ( this.addEndState );
     }
   }
 
@@ -1425,12 +1423,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGraph.addMouseListener ( this.normalMouse );
+      this.jGTIGraph.addMouseListener ( this.normalMouse );
       activeMouseAdapter = ActiveMouseAdapter.MOUSE;
     }
     else
     {
-      this.jGraph.removeMouseListener ( this.normalMouse );
+      this.jGTIGraph.removeMouseListener ( this.normalMouse );
     }
   }
 
@@ -1444,12 +1442,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGraph.addMouseListener ( this.addStartState );
+      this.jGTIGraph.addMouseListener ( this.addStartState );
       activeMouseAdapter = ActiveMouseAdapter.ADD_START_STATE;
     }
     else
     {
-      this.jGraph.removeMouseListener ( this.addStartState );
+      this.jGTIGraph.removeMouseListener ( this.addStartState );
     }
   }
 
@@ -1463,14 +1461,14 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( state )
     {
-      this.jGraph.addMouseListener ( this.addTransition );
-      this.jGraph.addMouseMotionListener ( this.transitionMove );
+      this.jGTIGraph.addMouseListener ( this.addTransition );
+      this.jGTIGraph.addMouseMotionListener ( this.transitionMove );
       activeMouseAdapter = ActiveMouseAdapter.ADD_TRANSITION;
     }
     else
     {
-      this.jGraph.removeMouseListener ( this.addTransition );
-      this.jGraph.removeMouseMotionListener ( this.transitionMove );
+      this.jGTIGraph.removeMouseListener ( this.addTransition );
+      this.jGTIGraph.removeMouseMotionListener ( this.transitionMove );
     }
   }
 
@@ -1803,11 +1801,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void initialize ()
   {
     this.machine = this.model.getMachine ();
-    this.jGraph = this.model.getJGraph ();
-    this.jGraph.getSelectionModel ().setSelectionMode (
+    this.jGTIGraph = this.model.getJGTIGraph ();
+    this.jGTIGraph.getSelectionModel ().setSelectionMode (
         GraphSelectionModel.SINGLE_GRAPH_SELECTION );
     this.graphModel = this.model.getGraphModel ();
-    ToolTipManager.sharedInstance ().registerComponent ( this.jGraph );
     this.zoomFactor = ( ( double ) PreferenceManager.getInstance ()
         .getZoomFactorItem ().getFactor () ) / 100;
 
@@ -1845,7 +1842,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     }
 
-    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.jGraph );
+    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.jGTIGraph );
 
     this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
@@ -1919,7 +1916,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
-          MachinePanel.this.jGraph.clearSelection ();
+          MachinePanel.this.jGTIGraph.clearSelection ();
         }
 
 
@@ -1929,7 +1926,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
-          MachinePanel.this.jGraph.clearSelection ();
+          MachinePanel.this.jGTIGraph.clearSelection ();
         }
       } );
 
@@ -2004,7 +2001,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
           if ( event.getClickCount () >= 2 )
           {
-            DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGraph
+            DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
                 .getFirstCellForLocation ( event.getPoint ().getX (), event
                     .getPoint ().getY () );
             if ( cell == null )
@@ -2050,7 +2047,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
         // Open a new popup menu
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
         if ( object == null )
@@ -2107,7 +2104,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2206,7 +2203,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         if ( ( event.getButton () == MouseEvent.BUTTON3 )
             && ( MachinePanel.this.firstState == null ) )
         {
-          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
+          DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
               .getFirstCellForLocation ( event.getPoint ().getX (), event
                   .getPoint ().getY () );
           if ( object == null )
@@ -2242,7 +2239,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         if ( MachinePanel.this.firstState == null )
         {
-          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.jGraph
+          MachinePanel.this.firstState = ( DefaultStateView ) MachinePanel.this.jGTIGraph
               .getSelectionCellAt ( event.getPoint () );
           if ( MachinePanel.this.firstState == null )
           {
@@ -2255,7 +2252,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           try
           {
 
-            target = ( DefaultStateView ) MachinePanel.this.jGraph
+            target = ( DefaultStateView ) MachinePanel.this.jGTIGraph
                 .getNextCellForLocation ( MachinePanel.this.tmpState, event
                     .getPoint ().getX (), event.getPoint ().getY () );
 
@@ -2323,7 +2320,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
         try
         {
-          target = ( DefaultStateView ) MachinePanel.this.jGraph
+          target = ( DefaultStateView ) MachinePanel.this.jGTIGraph
               .getNextCellForLocation ( MachinePanel.this.tmpState, event
                   .getPoint ().getX (), event.getPoint ().getY () );
 
@@ -2392,7 +2389,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         double x, y;
         if ( MachinePanel.this.firstState == null )
         {
-          Object cell = MachinePanel.this.jGraph.getFirstCellForLocation (
+          Object cell = MachinePanel.this.jGTIGraph.getFirstCellForLocation (
               event.getPoint ().getX (), event.getPoint ().getY () );
           if ( cell instanceof DefaultStateView )
           {
@@ -2409,7 +2406,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           x = event.getX () / MachinePanel.this.zoomFactor;
           y = event.getY () / MachinePanel.this.zoomFactor;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
-          MachinePanel.this.jGraph.getGraphLayoutCache ().insert (
+          MachinePanel.this.jGTIGraph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
           MachinePanel.this.tmpTransition = new DefaultEdge ( "" ); //$NON-NLS-1$
@@ -2418,7 +2415,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           GraphConstants.setEndFill ( MachinePanel.this.tmpTransition
               .getAttributes (), true );
 
-          MachinePanel.this.jGraph.getGraphLayoutCache ().insertEdge (
+          MachinePanel.this.jGTIGraph.getGraphLayoutCache ().insertEdge (
               MachinePanel.this.tmpTransition,
               MachinePanel.this.firstState.getChildAt ( 0 ),
               MachinePanel.this.tmpState.getChildAt ( 0 ) );
@@ -2445,7 +2442,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           x = event.getX () / MachinePanel.this.zoomFactor;
           y = event.getY () / MachinePanel.this.zoomFactor;
           MachinePanel.this.tmpState = createTmpObject ( x, y );
-          MachinePanel.this.jGraph.getGraphLayoutCache ().insert (
+          MachinePanel.this.jGTIGraph.getGraphLayoutCache ().insert (
               MachinePanel.this.tmpState );
 
           MachinePanel.this.tmpTransition = new DefaultEdge ( "" ); //$NON-NLS-1$
@@ -2454,7 +2451,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           GraphConstants.setEndFill ( MachinePanel.this.tmpTransition
               .getAttributes (), true );
 
-          MachinePanel.this.jGraph.getGraphLayoutCache ().insertEdge (
+          MachinePanel.this.jGTIGraph.getGraphLayoutCache ().insertEdge (
               MachinePanel.this.tmpTransition,
               MachinePanel.this.firstState.getChildAt ( 0 ),
               MachinePanel.this.tmpState.getChildAt ( 0 ) );
@@ -2495,7 +2492,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2595,7 +2592,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         }
 
         // check if there is another stateview under this point
-        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGraph
+        DefaultGraphCell object = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getFirstCellForLocation ( event.getPoint ().getX (), event
                 .getPoint ().getY () );
 
@@ -2889,7 +2886,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void setZoomFactor ( double factor )
   {
     this.zoomFactor = factor;
-    this.jGraph.setScale ( factor );
+    this.jGTIGraph.setScale ( factor );
   }
 
 
@@ -2931,7 +2928,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void updateSelected ()
   {
-    Object cell = this.jGraph.getSelectionCell ();
+    Object cell = this.jGTIGraph.getSelectionCell ();
 
     if ( cell == null )
     {
@@ -2964,7 +2961,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void updateSelected ( MouseEvent event )
   {
-    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGraph
+    DefaultGraphCell cell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
         .getFirstCellForLocation ( event.getPoint ().getX (), event.getPoint ()
             .getY () );
 
@@ -2982,7 +2979,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
       transitionList.add ( transitionView.getTransition () );
 
-      DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.jGraph
+      DefaultGraphCell nextCell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
           .getNextCellForLocation ( cell, event.getPoint ().getX (), event
               .getPoint ().getY () );
 
@@ -2993,7 +2990,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           transitionList.add ( ( ( DefaultTransitionView ) nextCell )
               .getTransition () );
         }
-        nextCell = ( DefaultGraphCell ) MachinePanel.this.jGraph
+        nextCell = ( DefaultGraphCell ) MachinePanel.this.jGTIGraph
             .getNextCellForLocation ( nextCell, event.getPoint ().getX (),
                 event.getPoint ().getY () );
       }

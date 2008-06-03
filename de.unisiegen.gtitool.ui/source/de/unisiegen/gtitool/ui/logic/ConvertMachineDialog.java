@@ -14,7 +14,6 @@ import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultState;
@@ -48,6 +47,7 @@ import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableModel;
@@ -337,37 +337,37 @@ public final class ConvertMachineDialog implements
 
 
     /**
-     * The active {@link State}s of the original {@link JGraph}.
+     * The active {@link State}s of the original {@link JGTIGraph}.
      */
     private ArrayList < State > activeStatesOriginal;
 
 
     /**
-     * The active {@link State}s of the converted {@link JGraph}.
+     * The active {@link State}s of the converted {@link JGTIGraph}.
      */
     private ArrayList < State > activeStatesConverted;
 
 
     /**
-     * The active {@link Transition}s of the original {@link JGraph}.
+     * The active {@link Transition}s of the original {@link JGTIGraph}.
      */
     private ArrayList < Transition > activeTransitionsOriginal;
 
 
     /**
-     * The active {@link Transition}s of the converted {@link JGraph}.
+     * The active {@link Transition}s of the converted {@link JGTIGraph}.
      */
     private ArrayList < Transition > activeTransitionsConverted;
 
 
     /**
-     * The active {@link Symbol}s of the original {@link JGraph}.
+     * The active {@link Symbol}s of the original {@link JGTIGraph}.
      */
     private ArrayList < Symbol > activeSymbolsOriginal;
 
 
     /**
-     * The active {@link Symbol}s of the converted {@link JGraph}.
+     * The active {@link Symbol}s of the converted {@link JGTIGraph}.
      */
     private ArrayList < Symbol > activeSymbolsConverted;
 
@@ -397,17 +397,17 @@ public final class ConvertMachineDialog implements
      * @param currentActiveSymbol The current active {@link Symbol}.
      * @param currentActiveState The current active {@link State}.
      * @param activeStatesOriginal The active {@link State}s of the original
-     *          {@link JGraph}.
+     *          {@link JGTIGraph}.
      * @param activeStatesConverted The active {@link State}s of the converted
-     *          {@link JGraph}.
+     *          {@link JGTIGraph}.
      * @param activeTransitionsOriginal The active {@link Transition}s of the
-     *          original {@link JGraph}.
+     *          original {@link JGTIGraph}.
      * @param activeTransitionsConverted The active {@link Transition}s of the
-     *          converted {@link JGraph}.
+     *          converted {@link JGTIGraph}.
      * @param activeSymbolsOriginal The active {@link Symbol}s of the original
-     *          {@link JGraph}.
+     *          {@link JGTIGraph}.
      * @param activeSymbolsConverted The active {@link Symbol}s of the
-     *          converted {@link JGraph}.
+     *          converted {@link JGTIGraph}.
      */
     public StepItem ( Step activeStep, Symbol currentActiveSymbol,
         State currentActiveState, ArrayList < State > activeStatesOriginal,
@@ -639,15 +639,15 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The original {@link JGraph} containing the diagramm.
+   * The original {@link JGTIGraph} containing the diagramm.
    */
-  private JGraph jGraphOriginal;
+  private JGTIGraph jGTIGraphOriginal;
 
 
   /**
-   * The converted {@link JGraph} containing the diagramm.
+   * The converted {@link JGTIGraph} containing the diagramm.
    */
-  private JGraph jGraphConverted;
+  private JGTIGraph jGTIGraphConverted;
 
 
   /**
@@ -861,7 +861,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link State} highlighting of the converted {@link JGraph}.
+   * Clears the {@link State} highlighting of the converted {@link JGTIGraph}.
    */
   private final void clearStateHighlightConverted ()
   {
@@ -873,7 +873,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link State} highlighting of the original {@link JGraph}.
+   * Clears the {@link State} highlighting of the original {@link JGTIGraph}.
    */
   private final void clearStateHighlightOriginal ()
   {
@@ -885,7 +885,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link Symbol} highlighting of the converted {@link JGraph}.
+   * Clears the {@link Symbol} highlighting of the converted {@link JGTIGraph}.
    */
   private final void clearSymbolHighlightConverted ()
   {
@@ -900,7 +900,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link Symbol} highlighting of the original {@link JGraph}.
+   * Clears the {@link Symbol} highlighting of the original {@link JGTIGraph}.
    */
   private final void clearSymbolHighlightOriginal ()
   {
@@ -915,7 +915,8 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link Transition} highlighting of the converted {@link JGraph}.
+   * Clears the {@link Transition} highlighting of the converted
+   * {@link JGTIGraph}.
    */
   private final void clearTransitionHighlightConverted ()
   {
@@ -927,7 +928,8 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * Clears the {@link Transition} highlighting of the original {@link JGraph}.
+   * Clears the {@link Transition} highlighting of the original
+   * {@link JGTIGraph}.
    */
   private final void clearTransitionHighlightOriginal ()
   {
@@ -1055,9 +1057,9 @@ public final class ConvertMachineDialog implements
       System.exit ( 1 );
       return;
     }
-    this.jGraphOriginal = this.modelOriginal.getJGraph ();
-    this.jGraphOriginal.setEnabled ( false );
-    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGraphOriginal );
+    this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
+    this.jGTIGraphOriginal.setEnabled ( false );
+    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
     this.machineOriginal = this.modelOriginal.getMachine ();
 
     switch ( this.convertMachineType )
@@ -1100,9 +1102,9 @@ public final class ConvertMachineDialog implements
       }
     }
 
-    this.jGraphConverted = this.modelConverted.getJGraph ();
-    this.jGraphConverted.setEnabled ( false );
-    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );
+    this.jGTIGraphConverted = this.modelConverted.getJGTIGraph ();
+    this.jGTIGraphConverted.setEnabled ( false );
+    this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGTIGraphConverted );
     this.machineConverted = this.modelConverted.getMachine ();
 
     this.positionMap = new HashMap < String, Position > ();

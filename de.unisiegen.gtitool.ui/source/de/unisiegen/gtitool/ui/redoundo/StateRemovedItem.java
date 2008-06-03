@@ -77,7 +77,7 @@ public final class StateRemovedItem extends RedoUndoItem
     // add state
     this.stateView.addPort ();
     this.model.getMachine ().addState ( this.stateView.getState () );
-    this.model.getJGraph ().getGraphLayoutCache ().insert ( this.stateView );
+    this.model.getJGTIGraph ().getGraphLayoutCache ().insert ( this.stateView );
     this.model.getStateViewList ().add ( this.stateView );
 
     // add transitions

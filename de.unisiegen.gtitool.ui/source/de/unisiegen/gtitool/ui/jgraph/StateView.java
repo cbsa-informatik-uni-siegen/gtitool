@@ -15,7 +15,6 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JComponent;
 
-import org.jgraph.JGraph;
 import org.jgraph.graph.CellViewRenderer;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.VertexRenderer;
@@ -41,7 +40,7 @@ public final class StateView extends VertexView
 {
 
   /**
-   * The {@link JGraph} ellipse renderer.
+   * The {@link JGTIGraph} ellipse renderer.
    * 
    * @author Benjamin Mies
    * @author Christian Fehler
@@ -226,6 +225,7 @@ public final class StateView extends VertexView
      * 
      * @see VertexRenderer#paint(Graphics)
      */
+    @SuppressWarnings ( "synthetic-access" )
     @Override
     public final void paint ( Graphics g )
     {
@@ -332,6 +332,8 @@ public final class StateView extends VertexView
         // short version
         if ( metrics.stringWidth ( state.toString () ) > d.width )
         {
+          state.setShortNameUsed ( true );
+
           dx = 5;
           String dots = " ..."; //$NON-NLS-1$
 
@@ -341,7 +343,19 @@ public final class StateView extends VertexView
             prettyString.removeLastPrettyToken ();
           }
 
+          // center the dots if there are no pretty tokens
+          if ( prettyString.isEmpty () )
+          {
+            dots = "..."; //$NON-NLS-1$
+            dx = ( d.width / 2 ) - ( metrics.stringWidth ( dots ) / 2 ) - 1;
+          }
+
           prettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
+        }
+        // normal version
+        else
+        {
+          state.setShortNameUsed ( false );
         }
 
         for ( PrettyToken currentToken : prettyString )

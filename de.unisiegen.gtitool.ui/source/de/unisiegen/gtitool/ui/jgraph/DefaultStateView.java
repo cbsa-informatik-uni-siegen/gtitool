@@ -278,11 +278,11 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
   /**
    * Returns the groupColor.
-   *
+   * 
    * @return The groupColor.
    * @see #groupColor
    */
-  public Color getGroupColor ()
+  public final Color getGroupColor ()
   {
     return this.groupColor;
   }
@@ -348,6 +348,17 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
+   * Returns the tooltip text for this cell.
+   * 
+   * @return the tooltip text for this cell.
+   */
+  public final String getToolTipString ()
+  {
+    return this.state.getName ();
+  }
+
+
+  /**
    * Returns the width.
    * 
    * @return The width.
@@ -388,12 +399,12 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Move this {@link DefaultStateView}.
+   * Moves this {@link DefaultStateView}.
    * 
    * @param x The new x value.
    * @param y The new y value.
    */
-  public void move ( double x, double y )
+  public final void move ( double x, double y )
   {
     this.ignoreStateMove = true;
 
@@ -401,7 +412,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
     bounds.setRect ( x, y, bounds.getWidth (), bounds.getHeight () );
     GraphConstants.setBounds ( getAttributes (), bounds );
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
@@ -412,10 +424,8 @@ public final class DefaultStateView extends DefaultGraphCell implements
   {
     this.listenerList.remove ( ModifyStatusChangedListener.class, listener );
   }
-  
 
 
-  
   /**
    * {@inheritDoc}
    * 
@@ -428,24 +438,14 @@ public final class DefaultStateView extends DefaultGraphCell implements
   }
 
 
-  
   /**
    * Sets the groupColor.
-   *
+   * 
    * @param groupColor The groupColor to set.
    * @see #groupColor
    */
-  public void setGroupColor ( Color groupColor )
+  public final void setGroupColor ( Color groupColor )
   {
     this.groupColor = groupColor;
   }
-  
-  /**
-   * Returns the tooltip text for this cell.
-   *
-   * @return the tooltip text for this cell.
-   */
-  public String getToolTipString() {
-    return this.state.getName ();
- }
 }

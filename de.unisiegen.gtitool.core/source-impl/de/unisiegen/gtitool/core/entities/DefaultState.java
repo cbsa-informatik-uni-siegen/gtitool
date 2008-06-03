@@ -9,7 +9,6 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.StateChangedListener;
 import de.unisiegen.gtitool.core.exceptions.state.StateEmptyNameException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.state.StateIllegalNameException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -54,6 +53,12 @@ public final class DefaultState implements State
    * The push down {@link Alphabet} of this {@link DefaultState}.
    */
   private Alphabet pushDownAlphabet = null;
+
+
+  /**
+   * Flag that indicates if the short name is used for this {@link State}
+   */
+  private boolean shortNameUsed;
 
 
   /**
@@ -779,82 +784,6 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if the state name is correct, otherwise false.
-   * 
-   * @param checkName The name to check.
-   * @return True if the state name is correct, otherwise false.
-   */
-  private final boolean isNameCorrect ( String checkName )
-  {
-    // name after a conversion
-    if ( checkName.charAt ( 0 ) == '{' )
-    {
-      if ( checkName.charAt ( checkName.length () - 1 ) != '}' )
-      {
-        return false;
-      }
-      String stateSet = checkName.substring ( 1, checkName.length () - 1 );
-
-      String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
-
-      for ( String current : splitStateSet )
-      {
-        String newName = current;
-
-        if ( newName.length () == 0 )
-        {
-          return false;
-        }
-
-        // remove spaces
-        while ( newName.charAt ( 0 ) == ' ' )
-        {
-          newName = newName.substring ( 1 );
-
-          if ( newName.length () == 0 )
-          {
-            return false;
-          }
-        }
-        while ( newName.charAt ( newName.length () - 1 ) == ' ' )
-        {
-          newName = newName.substring ( 0, newName.length () - 1 );
-
-          if ( newName.length () == 0 )
-          {
-            return false;
-          }
-        }
-
-        return isNameCorrect ( newName );
-      }
-    }
-    // empty set name
-    else if ( checkName.equals ( "\u2205" ) ) //$NON-NLS-1$
-    {
-      // the name is correct
-      return true;
-    }
-    // normal name
-    else
-    {
-      if ( !Character.isJavaIdentifierStart ( checkName.charAt ( 0 ) ) )
-      {
-        return false;
-      }
-      for ( int i = 1 ; i < checkName.length () ; i++ )
-      {
-        if ( !Character.isJavaIdentifierPart ( checkName.charAt ( i ) ) )
-        {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see State#isPowerState()
@@ -875,6 +804,19 @@ public final class DefaultState implements State
   public final boolean isSelected ()
   {
     return this.selected;
+  }
+
+
+  /**
+   * Returns true if the short name is used for this {@link State}, otherwise
+   * false.
+   * 
+   * @return True if the short name is used for this {@link State}, otherwise
+   *         false.
+   */
+  public final boolean isShortNameUsed ()
+  {
+    return this.shortNameUsed;
   }
 
 
@@ -1079,11 +1021,6 @@ public final class DefaultState implements State
       throw new StateEmptyNameException ();
     }
 
-    if ( !isNameCorrect ( name ) )
-    {
-      throw new StateIllegalNameException ( name );
-    }
-
     this.name = name;
     fireStateChanged ();
     fireModifyStatusChanged ();
@@ -1122,6 +1059,17 @@ public final class DefaultState implements State
   public final void setSelected ( boolean selected )
   {
     this.selected = selected;
+  }
+
+
+  /**
+   * Sets the short name used value.
+   * 
+   * @param shortNameUsed The short name used value.
+   */
+  public final void setShortNameUsed ( boolean shortNameUsed )
+  {
+    this.shortNameUsed = shortNameUsed;
   }
 
 

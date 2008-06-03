@@ -174,7 +174,7 @@ public final class StateConfigDialog implements
       try
       {
         this.state.setName ( this.stateName );
-        this.model.getJGraph ().getGraphLayoutCache ().valueForCellChanged (
+        this.model.getJGTIGraph ().getGraphLayoutCache ().valueForCellChanged (
             this.state, this.stateName );
       }
       catch ( StateException exc )
@@ -190,7 +190,7 @@ public final class StateConfigDialog implements
         || this.oldStartState != this.state.isStartState ()
         || this.oldFinalState != this.state.isFinalState () )
     {
-      StateChangedItem item = new StateChangedItem ( this.model.getJGraph (),
+      StateChangedItem item = new StateChangedItem ( this.model.getJGTIGraph (),
           this.state, this.oldName, this.oldStartState, this.oldFinalState );
       this.machinePanel.getRedoUndoHandler ().addItem ( item );
     }

@@ -204,6 +204,16 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
+   * Returns true if this {@link State} is a power {@link State}, otherwise
+   * false.
+   * 
+   * @return True if this {@link State} is a power {@link State}, otherwise
+   *         false.
+   */
+  public boolean isPowerState ();
+
+
+  /**
    * Returns true if this {@link State} is a selected {@link State}, otherwise
    * false.
    * 

@@ -779,6 +779,93 @@ public final class DefaultState implements State
 
 
   /**
+   * Returns true if the state name is correct, otherwise false.
+   * 
+   * @param checkName The name to check.
+   * @return True if the state name is correct, otherwise false.
+   */
+  private final boolean isNameCorrect ( String checkName )
+  {
+    // name after a conversion
+    if ( checkName.charAt ( 0 ) == '{' )
+    {
+      if ( checkName.charAt ( checkName.length () - 1 ) != '}' )
+      {
+        return false;
+      }
+      String stateSet = checkName.substring ( 1, checkName.length () - 1 );
+
+      String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
+
+      for ( String current : splitStateSet )
+      {
+        String newName = current;
+
+        if ( newName.length () == 0 )
+        {
+          return false;
+        }
+
+        // remove spaces
+        while ( newName.charAt ( 0 ) == ' ' )
+        {
+          newName = newName.substring ( 1 );
+
+          if ( newName.length () == 0 )
+          {
+            return false;
+          }
+        }
+        while ( newName.charAt ( newName.length () - 1 ) == ' ' )
+        {
+          newName = newName.substring ( 0, newName.length () - 1 );
+
+          if ( newName.length () == 0 )
+          {
+            return false;
+          }
+        }
+
+        return isNameCorrect ( newName );
+      }
+    }
+    // empty set name
+    else if ( checkName.equals ( "\u2205" ) ) //$NON-NLS-1$
+    {
+      // the name is correct
+      return true;
+    }
+    // normal name
+    else
+    {
+      if ( !Character.isJavaIdentifierStart ( checkName.charAt ( 0 ) ) )
+      {
+        return false;
+      }
+      for ( int i = 1 ; i < checkName.length () ; i++ )
+      {
+        if ( !Character.isJavaIdentifierPart ( checkName.charAt ( i ) ) )
+        {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see State#isPowerState()
+   */
+  public boolean isPowerState ()
+  {
+    return this.name.startsWith ( "{" ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Returns true if this {@link DefaultState} is a selected
    * {@link DefaultState}, otherwise false.
    * 
@@ -992,78 +1079,9 @@ public final class DefaultState implements State
       throw new StateEmptyNameException ();
     }
 
-    // name after a conversion
-    if ( name.charAt ( 0 ) == '{' )
+    if ( !isNameCorrect ( name ) )
     {
-      if ( name.charAt ( name.length () - 1 ) != '}' )
-      {
-        throw new StateIllegalNameException ( name );
-      }
-      String stateSet = name.substring ( 1, name.length () - 1 );
-
-      String [] splitStateSet = stateSet.split ( "," ); //$NON-NLS-1$
-
-      for ( String current : splitStateSet )
-      {
-        String newName = current;
-
-        if ( newName.length () == 0 )
-        {
-          throw new StateIllegalNameException ( name );
-        }
-
-        // remove spaces
-        while ( newName.charAt ( 0 ) == ' ' )
-        {
-          newName = newName.substring ( 1 );
-
-          if ( newName.length () == 0 )
-          {
-            throw new StateIllegalNameException ( name );
-          }
-        }
-        while ( newName.charAt ( newName.length () - 1 ) == ' ' )
-        {
-          newName = newName.substring ( 0, newName.length () - 1 );
-
-          if ( newName.length () == 0 )
-          {
-            throw new StateIllegalNameException ( name );
-          }
-        }
-
-        if ( !Character.isJavaIdentifierStart ( newName.charAt ( 0 ) ) )
-        {
-          throw new StateIllegalNameException ( name );
-        }
-        for ( int i = 1 ; i < newName.length () ; i++ )
-        {
-          if ( !Character.isJavaIdentifierPart ( newName.charAt ( i ) ) )
-          {
-            throw new StateIllegalNameException ( name );
-          }
-        }
-      }
-    }
-    // empty set name
-    else if ( name.equals ( "\u2205" ) ) //$NON-NLS-1$
-    {
-      // the name is correct
-    }
-    // normal name
-    else
-    {
-      if ( !Character.isJavaIdentifierStart ( name.charAt ( 0 ) ) )
-      {
-        throw new StateIllegalNameException ( name );
-      }
-      for ( int i = 1 ; i < name.length () ; i++ )
-      {
-        if ( !Character.isJavaIdentifierPart ( name.charAt ( i ) ) )
-        {
-          throw new StateIllegalNameException ( name );
-        }
-      }
+      throw new StateIllegalNameException ( name );
     }
 
     this.name = name;

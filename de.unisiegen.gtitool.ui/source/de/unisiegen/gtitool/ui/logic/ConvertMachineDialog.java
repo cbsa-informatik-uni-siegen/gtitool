@@ -1100,7 +1100,6 @@ public final class ConvertMachineDialog implements
       }
     }
 
-    this.modelConverted.setUseStateSetView ( true );
     this.jGraphConverted = this.modelConverted.getJGraph ();
     this.jGraphConverted.setEnabled ( false );
     this.gui.jGTIScrollPaneConverted.setViewportView ( this.jGraphConverted );

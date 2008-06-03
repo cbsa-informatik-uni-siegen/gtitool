@@ -42,7 +42,6 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.GTIJgraph;
-import de.unisiegen.gtitool.ui.jgraph.StateSetView;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
@@ -144,12 +143,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * A list of all {@link DefaultTransitionView}s
    */
   private ArrayList < DefaultTransitionView > transitionViewList = new ArrayList < DefaultTransitionView > ();
-
-
-  /**
-   * Flag that indicates if the {@link StateSetView} should be used.
-   */
-  private boolean useStateSetView = false;
 
 
   /**
@@ -390,39 +383,21 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
     DefaultStateView stateView = new DefaultStateView ( this.graphModel, state );
 
-    String viewClass;
-    if ( this.useStateSetView )
-    {
-      viewClass = StateSetView.class.getName ();
+    String viewClass = StateView.class.getName ();
 
-      // check position of the new state
-      double xPosition = x < ( StateSetView.WIDTH / 2 ) ? ( StateSetView.WIDTH / 2 )
-          : x;
-      double yPostition = y < ( StateSetView.HEIGHT / 2 ) ? ( StateSetView.HEIGHT / 2 )
-          : y;
+    // check position of the new state
+    double xPosition = x < ( StateView.getWidth ( state ) / 2 ) ? ( StateView
+        .getWidth ( state ) / 2 ) : x;
+    double yPostition = y < ( StateView.getHeight ( state ) / 2 ) ? ( StateView
+        .getHeight ( state ) / 2 ) : y;
 
-      // Set bounds
-      GraphConstants.setBounds ( stateView.getAttributes (),
-          new Rectangle2D.Double ( xPosition - ( StateSetView.WIDTH / 2 ),
-              yPostition - ( StateSetView.HEIGHT / 2 ), StateSetView.WIDTH,
-              StateSetView.HEIGHT ) );
-    }
-    else
-    {
-      viewClass = StateView.class.getName ();
-
-      // check position of the new state
-      double xPosition = x < ( StateView.WIDTH / 2 ) ? ( StateView.WIDTH / 2 )
-          : x;
-      double yPostition = y < ( StateView.HEIGHT / 2 ) ? ( StateView.HEIGHT / 2 )
-          : y;
-
-      // Set bounds
-      GraphConstants.setBounds ( stateView.getAttributes (),
-          new Rectangle2D.Double ( xPosition - ( StateView.WIDTH / 2 ),
-              yPostition - ( StateView.HEIGHT / 2 ), StateView.WIDTH,
-              StateView.HEIGHT ) );
-    }
+    // TODO
+    // Set bounds
+    GraphConstants.setBounds ( stateView.getAttributes (),
+        new Rectangle2D.Double ( xPosition
+            - ( StateView.getWidth ( state ) / 2 ), yPostition
+            - ( StateView.getHeight ( state ) / 2 ), StateView
+            .getWidth ( state ), StateView.getHeight ( state ) ) );
 
     // set the view class (indirection for the renderer and the editor)
     GPCellViewFactory.setViewClass ( stateView.getAttributes (), viewClass );
@@ -523,6 +498,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    */
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
+    // TODO
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )
@@ -538,6 +514,19 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       for ( ModifyStatusChangedListener current : listeners )
       {
         current.modifyStatusChanged ( newModifyStatus );
+      }
+    }
+
+    // change from normal state name to power state name
+    for ( DefaultStateView current : this.stateViewList )
+    {
+      double newWidth = StateView.getWidth ( current.getState () );
+      double newHeight = StateView.getHeight ( current.getState () );
+      if ( current.getWidth () != newWidth || current.getHeight () != newHeight )
+      {
+        GraphConstants.setBounds ( current.getAttributes (),
+            new Rectangle2D.Double ( current.getPositionX (), current
+                .getPositionY (), newWidth, newHeight ) );
       }
     }
   }
@@ -897,18 +886,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
 
 
   /**
-   * Returns the useStateSetView.
-   * 
-   * @return The useStateSetView.
-   * @see #useStateSetView
-   */
-  public final boolean isUseStateSetView ()
-  {
-    return this.useStateSetView;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Modifyable#removeModifyStatusChangedListener(ModifyStatusChangedListener)
@@ -1019,17 +996,5 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   public final void setRedoUndoHandler ( RedoUndoHandler redoUndoHandler )
   {
     this.redoUndoHandler = redoUndoHandler;
-  }
-
-
-  /**
-   * Sets the useStateSetView.
-   * 
-   * @param useStateSetView The useStateSetView to set.
-   * @see #useStateSetView
-   */
-  public final void setUseStateSetView ( boolean useStateSetView )
-  {
-    this.useStateSetView = useStateSetView;
   }
 }

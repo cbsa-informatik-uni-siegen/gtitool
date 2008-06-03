@@ -246,7 +246,8 @@ public final class StateView extends VertexView
       {
         Color background = null;
         // Group
-        if (defaultStateView.getGroupColor () != null){
+        if ( defaultStateView.getGroupColor () != null )
+        {
           background = defaultStateView.getGroupColor ();
         }
         // Error
@@ -283,13 +284,30 @@ public final class StateView extends VertexView
           g2.setPaint ( new GradientPaint ( 0, 0, background, getWidth (),
               getHeight (), this.gradientColor, true ) );
         }
-        if ( state.isFinalState () )
+
+        // final state
+        if ( state.isPowerState () )
         {
-          g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          if ( state.isFinalState () )
+          {
+            g.fillRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+                50, 50 );
+          }
+          else
+          {
+            g.fillRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+          }
         }
         else
         {
-          g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+          if ( state.isFinalState () )
+          {
+            g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          }
+          else
+          {
+            g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+          }
         }
       }
       try
@@ -301,34 +319,35 @@ public final class StateView extends VertexView
         g.setColor ( this.preferenceState );
         g.setFont ( getFont () );
         FontMetrics metrics = g.getFontMetrics ();
-        
 
         int dx = ( d.width / 2 )
             - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
         int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
-        
+
         boolean shortVersion = false;
-        String stateName = ""; //$NON-NLS-1$
-        String dots = "..."; //$NON-NLS-1$
+        StringBuilder stateName = new StringBuilder ();
+        String dots = " ..."; //$NON-NLS-1$
         int dotsWidth = metrics.stringWidth ( dots );
-        if (metrics.stringWidth ( state.toString () ) > d.width){
+        if ( metrics.stringWidth ( state.toString () ) > d.width )
+        {
           shortVersion = true;
-          dx = 1;
-          
-          for (char current : state.getName ().toCharArray ()) {
-            String tmpName = stateName + current;
-            if ((metrics.stringWidth ( tmpName )+dotsWidth) > d.width){
-              stateName+=dots;
+          dx = 10;
+
+          for ( char current : state.getName ().toCharArray () )
+          {
+            if ( ( dx + metrics.stringWidth ( stateName.toString () )
+                + metrics.charWidth ( current ) + dotsWidth ) > d.width )
+            {
+              stateName.append ( dots );
               break;
             }
-            stateName += current;
+            stateName.append ( current );
           }
         }
-        
+
         for ( PrettyToken currentToken : state.toPrettyString ()
             .getPrettyToken () )
         {
-          
           Font font = null;
 
           if ( !currentToken.isBold () && !currentToken.isItalic () )
@@ -350,14 +369,14 @@ public final class StateView extends VertexView
 
           g.setFont ( font );
           g.setColor ( currentToken.getColor () );
-          
-       
+
           char [] chars = currentToken.getChar ();
-          
-          if (shortVersion)
+
+          if ( shortVersion )
           {
-            chars = stateName.toCharArray ();
+            chars = stateName.toString ().toCharArray ();
           }
+
           for ( int i = 0 ; i < chars.length ; i++ )
           {
             g.drawChars ( chars, i, 1, dx, dy );
@@ -373,19 +392,45 @@ public final class StateView extends VertexView
       {
         g.setColor ( this.bordercolor );
         g2.setStroke ( new BasicStroke ( b ) );
-        g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
-        if ( state.isFinalState () )
+
+        if ( state.isPowerState () )
         {
-          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+          if ( state.isFinalState () )
+          {
+            g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+                50, 50 );
+          }
+        }
+        else
+        {
+          g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+          if ( state.isFinalState () )
+          {
+            g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          }
         }
       }
       if ( this.selected )
       {
         g.setColor ( this.preferenceStateSelected );
-        g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
-        if ( state.isFinalState () )
+
+        if ( state.isPowerState () )
         {
-          g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+          if ( state.isFinalState () )
+          {
+            g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
+                50, 50 );
+          }
+        }
+        else
+        {
+          g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+          if ( state.isFinalState () )
+          {
+            g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+          }
         }
       }
       if ( state.isStartState () )
@@ -407,21 +452,41 @@ public final class StateView extends VertexView
 
 
   /**
-   * The {@link StateView} width.
-   */
-  public static final int WIDTH = 70;
-
-
-  /**
-   * The {@link StateView} height.
-   */
-  public static final int HEIGHT = 70;
-
-
-  /**
    * The serial version uid.
    */
   private static final long serialVersionUID = -8873631550630271091L;
+
+
+  /**
+   * Returns the height.
+   * 
+   * @param state The {@link State}.
+   * @return The height.
+   */
+  public static final int getHeight ( State state )
+  {
+    if ( state.isPowerState () )
+    {
+      return 70;
+    }
+    return 70;
+  }
+
+
+  /**
+   * Returns the width.
+   * 
+   * @param state The {@link State}.
+   * @return The width.
+   */
+  public static final int getWidth ( State state )
+  {
+    if ( state.isPowerState () )
+    {
+      return 120;
+    }
+    return 70;
+  }
 
 
   /**

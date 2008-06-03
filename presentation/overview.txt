@@ -1,0 +1,17 @@
+- Einstellungen (Sprache, Look and Feel, Zoom Faktor, Farben, Alphabete)
+- Dateien anlegen (DEA, NDEA, ENDEA, Kellerautomat, RG, CFG)
+
+- Automaten anlegen und modifizieren
+- Wort eingeben
+- Zustands Pfad
+- Auto Layout
+- Automat minimieren
+- Automat konvertieren
+- Automaten Tabelle bearbeiten
+
+- Grammatik anlegen und modifizieren
+- Grammatik konvertieren
+
+- Vorlage für ...
+- Austausch von Dateien
+- Validieren

@@ -8,8 +8,6 @@ CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im JGraph
 		  ist
 CF		- ToolTip des Zustandsnamens nur wenn dieser auch zu lang ist, und nur über
 		  dem Namen oder dem Zustand und nicht über der kompletten Component
-CF		- Der abgekürzte Zustandsnamen benutzt kein PrettyPrinter mehr, muss neu
-		  geschrieben werden
 
 
 		- Parallel Loop Routing

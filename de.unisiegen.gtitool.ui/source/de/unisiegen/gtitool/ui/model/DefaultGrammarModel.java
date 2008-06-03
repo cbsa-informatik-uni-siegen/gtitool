@@ -185,16 +185,22 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
             .getString ( "StoreException.AdditionalElement" ) ); //$NON-NLS-1$
       }
     }
+
     if ( grammarType.equalsIgnoreCase ( "CFG" ) ) //$NON-NLS-1$
     {
       this.grammar = new DefaultCFG ( nonterminalSymbolSet, terminalSymbolSet,
           startSymbol );
     }
-    if ( grammarType.equalsIgnoreCase ( "RG" ) ) //$NON-NLS-1$
+    else if ( grammarType.equalsIgnoreCase ( "RG" ) ) //$NON-NLS-1$
     {
       this.grammar = new DefaultRG ( nonterminalSymbolSet, terminalSymbolSet,
           startSymbol );
     }
+    else
+    {
+      throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
+    }
+
     for ( Production current : productions )
     {
       this.grammar.addProduction ( current );
@@ -217,12 +223,13 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * Add a new production to list.
+   * Adds a new {@link Production} to list.
    * 
    * @param production The production to add.
    * @param createUndoStep Flag signals if an undo step should be created.
    */
-  public void addProduction ( Production production, boolean createUndoStep )
+  public final void addProduction ( Production production,
+      boolean createUndoStep )
   {
     ArrayList < Production > productions = new ArrayList < Production > ();
     productions.addAll ( this.grammar.getProduction () );
@@ -267,7 +274,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * 
    * @return the {@link Grammar}.
    */
-  public Grammar getGrammar ()
+  public final Grammar getGrammar ()
   {
     return this.grammar;
   }
@@ -278,7 +285,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * 
    * @see Modifyable#isModified()
    */
-  public boolean isModified ()
+  public final boolean isModified ()
   {
     return this.grammar.isModified ();
   }
@@ -289,7 +296,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * 
    * @param index The index of the {@link Production}.
    */
-  public void removeProduction ( int index )
+  public final void removeProduction ( int index )
   {
     this.grammar.removeProduction ( index );
   }
@@ -300,7 +307,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    * 
    * @see Modifyable#resetModify()
    */
-  public void resetModify ()
+  public final void resetModify ()
   {
     this.grammar.resetModify ();
   }
@@ -319,7 +326,7 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
 
 
   /**
-   * Initialize the {@link ModifyStatusChangedListener}.
+   * Initializes the {@link ModifyStatusChangedListener}.
    */
   private final void initializeModifyStatusChangedListener ()
   {

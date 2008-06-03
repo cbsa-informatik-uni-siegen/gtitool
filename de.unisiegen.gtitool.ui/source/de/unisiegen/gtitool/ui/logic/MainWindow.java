@@ -870,6 +870,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.VISIBLE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
     }
 
     handleTabbedPaneStateChanged ();
@@ -1185,6 +1186,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
     addButtonState ( ButtonState.ENABLED_VALIDATE );
     addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+    addButtonState ( ButtonState.ENABLED_CONVERT_TO );
   }
 
 
@@ -1230,6 +1232,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
     }
   }
 
@@ -1272,6 +1275,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Minimize the active {@link Machine}.
+   */
+  public void handleMinimize ()
+  {
+    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( panel instanceof MachinePanel )
+    {
+      // if there are no validation errors perform the action
+      if ( handleValidate ( false ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+        MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
+            machinePanel );
+        dialog.show ();
+      }
+    }
+
+  }
+
+
+  /**
    * Handles the new event.
    */
   public final void handleNew ()
@@ -1299,6 +1324,67 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         count++ ;
         name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
             + newDialog.getEditorPanel ().getFileEnding ();
+      }
+
+      newEditorPanel.setName ( name );
+      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
+      newEditorPanel
+          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
+      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
+          newEditorPanel );
+
+      addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+      addButtonState ( ButtonState.ENABLED_VALIDATE );
+
+      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+    }
+  }
+
+
+  /**
+   * Handle the new event with a given {@link DefaultModel}
+   * 
+   * @param model The {@link DefaultModel}.
+   */
+  public void handleNew ( DefaultModel model )
+  {
+    if ( model != null )
+    {
+      EditorPanel newEditorPanel;
+      if ( model instanceof DefaultMachineModel )
+      {
+        newEditorPanel = new MachinePanel ( this.gui,
+            ( DefaultMachineModel ) model, null );
+      }
+      else if ( model instanceof DefaultGrammarModel )
+      {
+        newEditorPanel = new GrammarPanel ( this.gui,
+            ( DefaultGrammarModel ) model, null );
+      }
+      else
+      {
+        throw new RuntimeException ( "incorrect model" ); //$NON-NLS-1$
+      }
+
+      TreeSet < String > nameList = new TreeSet < String > ();
+      int count = 0;
+      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
+      {
+        if ( current.getFile () == null )
+        {
+          nameList.add ( current.getName () );
+          count++ ;
+        }
+      }
+
+      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+          + newEditorPanel.getFileEnding ();
+      while ( nameList.contains ( name ) )
+      {
+        count++ ;
+        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
+            + newEditorPanel.getFileEnding ();
       }
 
       newEditorPanel.setName ( name );
@@ -1398,67 +1484,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       System.exit ( 1 );
     }
     handleNew ( model );
-  }
-
-
-  /**
-   * Handle the new event with a given {@link DefaultModel}
-   * 
-   * @param model The {@link DefaultModel}.
-   */
-  public void handleNew ( DefaultModel model )
-  {
-    if ( model != null )
-    {
-      EditorPanel newEditorPanel;
-      if ( model instanceof DefaultMachineModel )
-      {
-        newEditorPanel = new MachinePanel ( this.gui,
-            ( DefaultMachineModel ) model, null );
-      }
-      else if ( model instanceof DefaultGrammarModel )
-      {
-        newEditorPanel = new GrammarPanel ( this.gui,
-            ( DefaultGrammarModel ) model, null );
-      }
-      else
-      {
-        throw new RuntimeException ( "incorrect model" ); //$NON-NLS-1$
-      }
-
-      TreeSet < String > nameList = new TreeSet < String > ();
-      int count = 0;
-      for ( EditorPanel current : this.gui.getEditorPanelTabbedPane () )
-      {
-        if ( current.getFile () == null )
-        {
-          nameList.add ( current.getName () );
-          count++ ;
-        }
-      }
-
-      String name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-          + newEditorPanel.getFileEnding ();
-      while ( nameList.contains ( name ) )
-      {
-        count++ ;
-        name = Messages.getString ( "MainWindow.NewFile" ) + count //$NON-NLS-1$
-            + newEditorPanel.getFileEnding ();
-      }
-
-      newEditorPanel.setName ( name );
-      this.gui.getEditorPanelTabbedPane ().addEditorPanel ( newEditorPanel );
-      newEditorPanel
-          .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.getEditorPanelTabbedPane ().setSelectedEditorPanel (
-          newEditorPanel );
-
-      addButtonState ( ButtonState.ENABLED_GENERAL );
-      addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-      addButtonState ( ButtonState.ENABLED_VALIDATE );
-
-      addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-    }
   }
 
 
@@ -1728,7 +1753,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
-        addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
@@ -1778,6 +1802,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_VALIDATE );
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
@@ -1793,6 +1818,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_VALIDATE );
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
@@ -1808,6 +1834,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_VALIDATE );
           addButtonState ( ButtonState.ENABLED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
@@ -3035,27 +3062,5 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     }
-  }
-
-
-  /**
-   * Minimize the active {@link Machine}.
-   */
-  public void handleMinimize ()
-  {
-    EditorPanel panel = this.gui.getEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
-    if ( panel instanceof MachinePanel )
-    {
-      // if there are no validation errors perform the action
-      if ( handleValidate ( false ) )
-      {
-        MachinePanel machinePanel = ( MachinePanel ) panel;
-        MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
-            machinePanel );
-        dialog.show ();
-      }
-    }
-
   }
 }

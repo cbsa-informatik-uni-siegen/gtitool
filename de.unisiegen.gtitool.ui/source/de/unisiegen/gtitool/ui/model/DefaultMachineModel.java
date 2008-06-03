@@ -391,7 +391,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
     double yPostition = y < ( StateView.getHeight ( state ) / 2 ) ? ( StateView
         .getHeight ( state ) / 2 ) : y;
 
-    // TODO
     // Set bounds
     GraphConstants.setBounds ( stateView.getAttributes (),
         new Rectangle2D.Double ( xPosition
@@ -498,7 +497,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    */
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
-    // TODO
     ModifyStatusChangedListener [] listeners = this.listenerList
         .getListeners ( ModifyStatusChangedListener.class );
     if ( forceModify )

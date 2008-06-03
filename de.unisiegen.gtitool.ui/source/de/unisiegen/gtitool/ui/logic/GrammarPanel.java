@@ -31,6 +31,7 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
+import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.core.preferences.listener.LanguageChangedListener;
 import de.unisiegen.gtitool.core.storage.Modifyable;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
@@ -206,6 +207,18 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
           {
             moveRows ( jGTITable, rows, targetIndex );
             return true;
+          }
+        } );
+
+    PreferenceManager.getInstance ().addColorChangedListener (
+        new ColorChangedAdapter ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          public void colorChanged ()
+          {
+            GrammarPanel.this.gui.jGTITableGrammar.repaint ();
           }
         } );
   }

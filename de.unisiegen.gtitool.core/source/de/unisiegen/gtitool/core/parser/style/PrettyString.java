@@ -105,6 +105,17 @@ public final class PrettyString implements Iterable < PrettyToken >
 
 
   /**
+   * Returns true if the {@link PrettyToken} list is empty, otherwise false.
+   * 
+   * @return True if the {@link PrettyToken} list is empty, otherwise false.
+   */
+  public final boolean isEmpty ()
+  {
+    return this.prettyTokenList.isEmpty ();
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Iterable#iterator()
@@ -127,6 +138,22 @@ public final class PrettyString implements Iterable < PrettyToken >
     {
       current.overwrite ( newStyle.getColor () );
     }
+  }
+
+
+  /**
+   * Removes the last {@link PrettyToken}.
+   * 
+   * @return The last {@link PrettyToken}.
+   */
+  public final PrettyToken removeLastPrettyToken ()
+  {
+    if ( this.prettyTokenList.size () == 0 )
+    {
+      throw new RuntimeException ( "list is empty" ); //$NON-NLS-1$
+    }
+
+    return this.prettyTokenList.remove ( this.prettyTokenList.size () - 1 );
   }
 
 

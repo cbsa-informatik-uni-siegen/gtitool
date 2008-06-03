@@ -23,7 +23,9 @@ import org.jgraph.graph.VertexView;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 
@@ -324,29 +326,25 @@ public final class StateView extends VertexView
             - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
         int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
 
-        boolean shortVersion = false;
-        StringBuilder stateName = new StringBuilder ();
-        String dots = " ..."; //$NON-NLS-1$
-        int dotsWidth = metrics.stringWidth ( dots );
+        PrettyString prettyString = new PrettyString ();
+        prettyString.addPrettyString ( state.toPrettyString () );
+
+        // short version
         if ( metrics.stringWidth ( state.toString () ) > d.width )
         {
-          shortVersion = true;
-          dx = 10;
+          dx = 5;
+          String dots = " ..."; //$NON-NLS-1$
 
-          for ( char current : state.getName ().toCharArray () )
+          while ( ( !prettyString.isEmpty () )
+              && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > d.width ) )
           {
-            if ( ( dx + metrics.stringWidth ( stateName.toString () )
-                + metrics.charWidth ( current ) + dotsWidth ) > d.width )
-            {
-              stateName.append ( dots );
-              break;
-            }
-            stateName.append ( current );
+            prettyString.removeLastPrettyToken ();
           }
+
+          prettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
         }
 
-        for ( PrettyToken currentToken : state.toPrettyString ()
-            .getPrettyToken () )
+        for ( PrettyToken currentToken : prettyString )
         {
           Font font = null;
 
@@ -371,12 +369,6 @@ public final class StateView extends VertexView
           g.setColor ( currentToken.getColor () );
 
           char [] chars = currentToken.getChar ();
-
-          if ( shortVersion )
-          {
-            chars = stateName.toString ().toCharArray ();
-          }
-
           for ( int i = 0 ; i < chars.length ; i++ )
           {
             g.drawChars ( chars, i, 1, dx, dy );

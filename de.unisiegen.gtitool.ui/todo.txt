@@ -3,8 +3,6 @@ CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  Dabei ist darauf zu achten, das auch die Navigation angepasst werden
 		  muss
 CF		- Split View
-CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im JGraph
-		  hervorgehoben werden
 
 
 BM		- Parallel Loop Routing

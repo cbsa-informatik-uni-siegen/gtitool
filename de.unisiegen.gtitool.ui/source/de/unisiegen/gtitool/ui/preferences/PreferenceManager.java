@@ -115,9 +115,9 @@ public final class PreferenceManager extends
 
 
   /**
-   * The default table divider location.
+   * The default pda table divider location.
    */
-  public static final int DEFAULT_DIVIDER_LOCATION_STACK_TABLE = DEFAULT_HEIGHT / 4;
+  public static final int DEFAULT_DIVIDER_LOCATION_PDA_TABLE = DEFAULT_HEIGHT / 4;
 
 
   /**
@@ -294,14 +294,14 @@ public final class PreferenceManager extends
 
 
   /**
-   * Returns the stack table divider location.
+   * Returns the pda table divider location.
    * 
-   * @return The stack table divider location.
+   * @return The pda table divider location.
    */
-  public final int getDividerLocationStackTable ()
+  public final int getDividerLocationPDATable ()
   {
-    return this.preferences.getInt ( "MachinePanel.DividerStackTable", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_STACK_TABLE );
+    return this.preferences.getInt ( "MachinePanel.DividerPDATable", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_PDA_TABLE );
   }
 
 
@@ -613,16 +613,16 @@ public final class PreferenceManager extends
 
 
   /**
-   * Sets the stack table divider location.
+   * Sets the pda table divider location.
    * 
-   * @param location The stack table divider location.
+   * @param location The pda table divider location.
    */
-  public final void setDividerLocationStackTable ( int location )
+  public final void setDividerLocationPDATable ( int location )
   {
     logger.debug (
-        "setDividerLocationStackTable", "set stack table divider location to "//$NON-NLS-1$//$NON-NLS-2$
+        "setDividerLocationPDATable", "set pda table divider location to "//$NON-NLS-1$//$NON-NLS-2$
             + Messages.QUOTE + location + Messages.QUOTE );
-    this.preferences.putInt ( "MachinePanel.DividerStackTable", location ); //$NON-NLS-1$
+    this.preferences.putInt ( "MachinePanel.DividerPDATable", location ); //$NON-NLS-1$
   }
 
 

@@ -88,7 +88,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
                   <SubComponents>
-                    <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPaneStackTable">
+                    <Container class="de.unisiegen.gtitool.ui.swing.JGTISplitPane" name="jGTISplitPanePDATable">
                       <Properties>
                         <Property name="dividerLocation" type="int" value="100"/>
                         <Property name="orientation" type="int" value="0"/>
@@ -158,6 +158,10 @@
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
                                 <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableMachinePDA">
+                                  <Events>
+                                    <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTITableMachinePDAMouseExited"/>
+                                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jGTITableMachinePDAFocusLost"/>
+                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>

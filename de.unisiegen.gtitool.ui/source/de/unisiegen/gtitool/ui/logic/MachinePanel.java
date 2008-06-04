@@ -432,16 +432,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           }
         } );
 
-    this.gui.jGTISplitPaneStackTable.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationStackTable () );
-    this.gui.jGTISplitPaneStackTable.addPropertyChangeListener (
+    this.gui.jGTISplitPanePDATable.setDividerLocation ( PreferenceManager
+        .getInstance ().getDividerLocationPDATable () );
+    this.gui.jGTISplitPanePDATable.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
           @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
-            PreferenceManager.getInstance ().setDividerLocationStackTable (
+            PreferenceManager.getInstance ().setDividerLocationPDATable (
                 ( ( Integer ) event.getNewValue () ).intValue () );
           }
         } );
@@ -576,7 +576,16 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           {
             handleMachineTableValueChanged ( event );
           }
+        } );
 
+    this.gui.jGTITableMachinePDA.getSelectionModel ().addListSelectionListener (
+        new ListSelectionListener ()
+        {
+
+          public void valueChanged ( ListSelectionEvent event )
+          {
+            handleMachinePDATableValueChanged ( event );
+          }
         } );
 
     PreferenceManager.getInstance ().addLanguageChangedListener ( this );
@@ -1179,6 +1188,62 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Handles the focus lost event on the machine pda table.
+   * 
+   * @param event The {@link FocusEvent}.
+   */
+  public final void handleMachinePDATableFocusLost (
+      @SuppressWarnings ( "unused" )
+      FocusEvent event )
+  {
+    this.gui.jGTITableMachinePDA.clearSelection ();
+    clearHighlight ();
+  }
+
+
+  /**
+   * Handles the mouse exited event on the machine pda table.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleMachinePDATableMouseExited (
+      @SuppressWarnings ( "unused" )
+      MouseEvent event )
+  {
+    this.gui.jGTITableMachinePDA.clearSelection ();
+    clearHighlight ();
+  }
+
+
+  /**
+   * Handles {@link ListSelectionEvent}s on the machine pda table.
+   * 
+   * @param event The {@link ListSelectionEvent}.
+   */
+  public final void handleMachinePDATableValueChanged (
+      @SuppressWarnings ( "unused" )
+      ListSelectionEvent event )
+  {
+    clearHighlight ();
+
+    int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
+    if ( index != -1 )
+    {
+      ArrayList < Transition > transitionList = new ArrayList < Transition > (
+          1 );
+      Transition transition = this.model.getPDATableModel ()
+      .getTransition ( index );
+      transitionList.add ( transition );
+      highlightTransitionActive ( transitionList );
+      
+      ArrayList <Symbol> symbolList = new ArrayList <Symbol>(transition.size ());
+      symbolList.addAll ( transition.getSymbol () );
+      highlightSymbolActive ( symbolList );
+    }
+  }
+
+
+  /**
    * Handles the focus lost event on the machine table.
    * 
    * @param event The {@link FocusEvent}.
@@ -1727,7 +1792,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Highlight the affected active {@link State}s.
+   * Highlight the affected active {@link State}s with the active highlight.
    * 
    * @param states list with all {@link State}s that are affected.
    */
@@ -1737,12 +1802,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       current.setActive ( true );
     }
+
     performCellsChanged ();
   }
 
 
   /**
-   * Highlight the affected error {@link State}s.
+   * Highlight the affected error {@link State}s with the error highlight.
    * 
    * @param states List with all {@link State}s that are affected.
    */
@@ -1752,12 +1818,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       current.setError ( true );
     }
+
     performCellsChanged ();
   }
 
 
   /**
-   * Highlight the affected {@link Symbol}s.
+   * Highlight the affected {@link Symbol}s with the error highlight.
    * 
    * @param symbols List with all {@link Symbol}s that are affected.
    */
@@ -1767,12 +1834,53 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       current.setError ( true );
     }
+
     performCellsChanged ();
   }
 
 
   /**
-   * Highlight the affected {@link Transition}s.
+   * Highlight the affected {@link Symbol}s with the active highlight.
+   * 
+   * @param symbols List with all {@link Symbol}s that are affected.
+   */
+  private final void highlightSymbolActive ( ArrayList < Symbol > symbols )
+  {
+    for ( Symbol current : symbols )
+    {
+      current.setActive ( true );
+    }
+
+    performCellsChanged ();
+  }
+
+
+  /**
+   * Highlight the affected {@link Transition}s with the active highlight.
+   * 
+   * @param transitions List with all {@link Transition}s that are affected.
+   */
+  private final void highlightTransitionActive (
+      ArrayList < Transition > transitions )
+  {
+    for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+    {
+      Transition transition = current.getTransition ();
+      transition.setError ( false );
+      transition.setActive ( false );
+    }
+
+    for ( Transition current : transitions )
+    {
+      current.setActive ( true );
+    }
+
+    performCellsChanged ();
+  }
+
+
+  /**
+   * Highlight the affected {@link Transition}s with the error highlight.
    * 
    * @param transitions List with all {@link Transition}s that are affected.
    */
@@ -2835,18 +2943,24 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( visible )
     {
-      this.setDividerLocationConsole = false;
-      this.gui.jGTISplitPaneConsole
-          .setRightComponent ( this.gui.jGTITabbedPaneConsole );
-      this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
-      this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
-          .getInstance ().getDividerLocationConsole () );
+      if ( this.gui.jGTISplitPaneConsole.getRightComponent () == null )
+      {
+        this.setDividerLocationConsole = false;
+        this.gui.jGTISplitPaneConsole
+            .setRightComponent ( this.gui.jGTITabbedPaneConsole );
+        this.gui.jGTISplitPaneConsole.setDividerSize ( 3 );
+        this.gui.jGTISplitPaneConsole.setDividerLocation ( PreferenceManager
+            .getInstance ().getDividerLocationConsole () );
+      }
     }
     else
     {
-      this.setDividerLocationConsole = false;
-      this.gui.jGTISplitPaneConsole.setRightComponent ( null );
-      this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+      if ( this.gui.jGTISplitPaneConsole.getRightComponent () != null )
+      {
+        this.setDividerLocationConsole = false;
+        this.gui.jGTISplitPaneConsole.setRightComponent ( null );
+        this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+      }
     }
   }
 
@@ -2860,20 +2974,24 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     if ( visible )
     {
-      this.setDividerLocationTable = false;
-
-      this.gui.jGTISplitPaneTable
-          .setRightComponent ( this.gui.jGTISplitPaneStackTable );
-
-      this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
-      this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
-          .getInstance ().getDividerLocationTable () );
+      if ( this.gui.jGTISplitPaneTable.getRightComponent () == null )
+      {
+        this.setDividerLocationTable = false;
+        this.gui.jGTISplitPaneTable
+            .setRightComponent ( this.gui.jGTISplitPanePDATable );
+        this.gui.jGTISplitPaneTable.setDividerSize ( 3 );
+        this.gui.jGTISplitPaneTable.setDividerLocation ( PreferenceManager
+            .getInstance ().getDividerLocationTable () );
+      }
     }
     else
     {
-      this.setDividerLocationTable = false;
-      this.gui.jGTISplitPaneTable.setRightComponent ( null );
-      this.gui.jGTISplitPaneTable.setDividerSize ( 0 );
+      if ( this.gui.jGTISplitPaneTable.getRightComponent () != null )
+      {
+        this.setDividerLocationTable = false;
+        this.gui.jGTISplitPaneTable.setRightComponent ( null );
+        this.gui.jGTISplitPaneTable.setDividerSize ( 0 );
+      }
     }
   }
 

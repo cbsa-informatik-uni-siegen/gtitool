@@ -8,6 +8,8 @@ import javax.swing.ToolTipManager;
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultGraphModel;
 
+import de.unisiegen.gtitool.core.entities.State;
+
 
 /**
  * Special {@link JGraph}.
@@ -50,9 +52,10 @@ public final class JGTIGraph extends JGraph
     if ( cell instanceof DefaultStateView )
     {
       DefaultStateView stateView = ( DefaultStateView ) cell;
+      State state = stateView.getState ();
 
       // only if the short name is used
-      if ( !stateView.getState ().isShortNameUsed () )
+      if ( !state.isShortNameUsed () )
       {
         return null;
       }
@@ -75,7 +78,7 @@ public final class JGTIGraph extends JGraph
           && ( y > ( ( height / 2 ) - inset ) )
           && ( y < ( ( height / 2 ) + inset ) ) )
       {
-        return stateView.getToolTipString ();
+        return state.toPrettyString ().toHTMLString ();
       }
     }
     return null;

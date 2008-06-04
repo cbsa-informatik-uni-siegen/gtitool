@@ -348,17 +348,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Returns the tooltip text for this cell.
-   * 
-   * @return the tooltip text for this cell.
-   */
-  public final String getToolTipString ()
-  {
-    return this.state.getName ();
-  }
-
-
-  /**
    * Returns the width.
    * 
    * @return The width.

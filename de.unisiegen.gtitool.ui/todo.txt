@@ -7,5 +7,7 @@ CF		- Beim Markieren der PDA Tabelle müssen die Komponenten im JGraph
 		  hervorgehoben werden
 
 
-		- Parallel Loop Routing
+BM		- Parallel Loop Routing
+
+
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)

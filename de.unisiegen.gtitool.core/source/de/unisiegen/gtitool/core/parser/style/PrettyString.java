@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.core.parser.style;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,6 +15,78 @@ import java.util.Iterator;
  */
 public final class PrettyString implements Iterable < PrettyToken >
 {
+
+  /**
+   * The beginning of the html.
+   */
+  private static final String HTML_BEGIN = "<html>"; //$NON-NLS-1$
+
+
+  /**
+   * The end of the html.
+   */
+  private static final String HTML_END = "</html>"; //$NON-NLS-1$
+
+
+  /**
+   * The beginning of the font.
+   */
+  private static final String FONT_BEGIN = "<font color=\"#"; //$NON-NLS-1$
+
+
+  /**
+   * After the color of the font.
+   */
+  private static final String FONT_AFTER_COLOR = "\">"; //$NON-NLS-1$
+
+
+  /**
+   * The end of the font.
+   */
+  private static final String FONT_END = "</font>"; //$NON-NLS-1$
+
+
+  /**
+   * String for the beginning of bold {@link PrettyToken}s.
+   */
+  private static final String BOLD_BEGIN = "<b>"; //$NON-NLS-1$
+
+
+  /**
+   * String for the end of bold {@link PrettyToken}s.
+   */
+  private static final String BOLD_END = "</b>"; //$NON-NLS-1$
+
+
+  /**
+   * String for the beginning of italic {@link PrettyToken}s.
+   */
+  private static final String ITALIC_BEGIN = "<i>"; //$NON-NLS-1$
+
+
+  /**
+   * String for the end of italic {@link PrettyToken}s.
+   */
+  private static final String ITALIC_END = "</i>"; //$NON-NLS-1$
+
+
+  /**
+   * Returns the {@link Color} in hexadecimal formatting.
+   * 
+   * @param color The {@link Color} which should be returned.
+   * @return The {@link Color} in hexadecimal formatting.
+   */
+  private static final String getHexadecimalColor ( Color color )
+  {
+    String red = Integer.toHexString ( color.getRed () );
+    red = red.length () == 1 ? red = "0" + red : red; //$NON-NLS-1$
+    String green = Integer.toHexString ( color.getGreen () );
+    green = green.length () == 1 ? green = "0" + green : green; //$NON-NLS-1$
+    String blue = Integer.toHexString ( color.getBlue () );
+    blue = blue.length () == 1 ? blue = "0" + blue : blue; //$NON-NLS-1$
+    return red + green + blue;
+  }
+
 
   /**
    * The {@link PrettyToken} list.
@@ -201,6 +274,52 @@ public final class PrettyString implements Iterable < PrettyToken >
   public final int size ()
   {
     return this.prettyTokenList.size ();
+  }
+
+
+  /**
+   * Returns the html string.
+   * 
+   * @return The html string.
+   */
+  public final String toHTMLString ()
+  {
+    StringBuilder result = new StringBuilder ();
+
+    result.append ( HTML_BEGIN );
+    for ( PrettyToken current : this.prettyTokenList )
+    {
+      String text = current.getText ();
+      Style style = current.getStyle ();
+      Color color = style.getColor ();
+      boolean bold = style.isBold ();
+      boolean italic = style.isItalic ();
+
+      if ( bold )
+      {
+        result.append ( BOLD_BEGIN );
+      }
+      if ( italic )
+      {
+        result.append ( ITALIC_BEGIN );
+      }
+      result.append ( FONT_BEGIN );
+      result.append ( getHexadecimalColor ( color ) );
+      result.append ( FONT_AFTER_COLOR );
+      result.append ( text );
+      result.append ( FONT_END );
+      if ( italic )
+      {
+        result.append ( ITALIC_END );
+      }
+      if ( bold )
+      {
+        result.append ( BOLD_END );
+      }
+    }
+    result.append ( HTML_END );
+
+    return result.toString ();
   }
 
 

@@ -1,4 +1,4 @@
-- Einstellungen (Sprache, Look and Feel, Zoom Faktor, Farben, Alphabete)
+- Einstellungen (Sprache, Look and Feel, Zoom Faktor, Farben, Alphabete, Maus Einstellungen)
 - Dateien anlegen (DEA, NDEA, ENDEA, Kellerautomat, RG, CFG)
 
 - Automaten anlegen und modifizieren
@@ -9,9 +9,12 @@
 - Automat konvertieren
 - Automaten Tabelle bearbeiten
 
+
 - Grammatik anlegen und modifizieren
 - Grammatik konvertieren
 
 - Vorlage für ...
 - Austausch von Dateien
-- Validieren
+- Validieren Konsole
+- Tabelle PDA
+- Redo, Undo

@@ -14,7 +14,9 @@ import de.unisiegen.gtitool.core.grammars.Grammar.GrammarType;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
+import de.unisiegen.gtitool.ui.swing.JGTIPanel;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton;
 
@@ -230,17 +232,82 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }
     
     /**
-     * Returns the {@link JGTIEditorPanelTabbedPane}.
+     * Returns the left {@link JGTIEditorPanelTabbedPane}.
      *
-     * @return The {@link JGTIEditorPanelTabbedPane}.
-     * @see #editorPanelTabbedPane
+     * @return The left {@link JGTIEditorPanelTabbedPane}.
+     * @see #jGTIEditorPanelTabbedPaneLeft
      */
-    public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPane ()
+    public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPaneLeft ()
     {
-      return this.jGTIEditorPanelTabbedPane;
+      return this.jGTIEditorPanelTabbedPaneLeft;
     }
 
-    
+    /**
+     * Returns the right {@link JGTIEditorPanelTabbedPane}.
+     *
+     * @return The right {@link JGTIEditorPanelTabbedPane}.
+     * @see #jGTIEditorPanelTabbedPaneRight
+     */
+    public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPaneRight ()
+    {
+      return this.jGTIEditorPanelTabbedPaneRight;
+    }
+
+    /**
+     * Returns the outer left {@link JGTIPanel}.
+     *
+     * @return The outer left  {@link JGTIPanel}.
+     * @see #jGTIPanelLeftOuter
+     */
+    public final JGTIPanel getJGTIPanelLeftOuter ()
+    {
+      return this.jGTIPanelLeftOuter;
+    }
+
+    /**
+     * Returns the outer right {@link JGTIPanel}.
+     *
+     * @return The outer right  {@link JGTIPanel}.
+     * @see #jGTIPanelRightOuter
+     */
+    public final JGTIPanel getJGTIPanelRightOuter ()
+    {
+      return this.jGTIPanelRightOuter;
+    }
+
+    /**
+     * Returns the inner left {@link JGTIPanel}.
+     *
+     * @return The inner left  {@link JGTIPanel}.
+     * @see #jGTIPanelLeftInner
+     */
+    public final JGTIPanel getJGTIPanelLeftInner ()
+    {
+      return this.jGTIPanelLeftInner;
+    }
+
+    /**
+     * Returns the inner right {@link JGTIPanel}.
+     *
+     * @return The inner right  {@link JGTIPanel}.
+     * @see #jGTIPanelRightInner
+     */
+    public final JGTIPanel getJGTIPanelRightInner ()
+    {
+      return this.jGTIPanelRightInner;
+    }
+
+    /**
+     * Returns the {@link JGTIMainSplitPane}.
+     *
+     * @return The {@link JGTIMainSplitPane}.
+     * @see #jGTIMainSplitPane
+     */
+    public final JGTIMainSplitPane getJGTIMainSplitPane ()
+    {
+      return this.jGTIMainSplitPane;
+    }
+
     /**
      * Returns the jCheckBoxMenuItemConsole.
      *
@@ -264,6 +331,17 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jCheckBoxMenuItemTable;
     }
 
+
+    /**
+     * Returns the jCheckBoxMenuItemSecondView.
+     *
+     * @return The jCheckBoxMenuItemSecondView.
+     * @see #jCheckBoxMenuItemSecondView
+     */
+    public final JCheckBoxMenuItem getJCheckBoxMenuItemSecondView ()
+    {
+      return this.jCheckBoxMenuItemSecondView;
+    }
     
     /**
      * Returns the jGTIToolBarButtonAddProduction.
@@ -885,7 +963,13 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jGTIToolBarButtonNextStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarToggleButtonAutoStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIEditorPanelTabbedPane = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
+        jGTIMainSplitPane = new de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane();
+        jGTIPanelLeftOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelLeftInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIEditorPanelTabbedPaneLeft = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
+        jGTIPanelRightOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIPanelRightInner = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIEditorPanelTabbedPaneRight = new de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane();
         jMenuBarMain = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemNew = new javax.swing.JMenuItem();
@@ -896,13 +980,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
         jMenuItemSaveAll = new javax.swing.JMenuItem();
-        jMenuDraft = new javax.swing.JMenu();
-        jMenuItemDFA = new javax.swing.JMenuItem();
-        jMenuItemNFA = new javax.swing.JMenuItem();
-        jMenuItemENFA = new javax.swing.JMenuItem();
-        jMenuItemPDA = new javax.swing.JMenuItem();
-        jMenuItemRG = new javax.swing.JMenuItem();
-        jMenuItemCFG = new javax.swing.JMenuItem();
         jSeparatorFile2 = new javax.swing.JSeparator();
         jMenuRecentlyUsed = new javax.swing.JMenu();
         jSeparatorFile3 = new javax.swing.JSeparator();
@@ -915,20 +992,32 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemConsole = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItemTable = new javax.swing.JCheckBoxMenuItem();
+        jSeparatorView = new javax.swing.JSeparator();
+        jCheckBoxMenuItemSecondView = new javax.swing.JCheckBoxMenuItem();
         jMenuExecute = new javax.swing.JMenu();
-        jMenuItemValidate = new javax.swing.JMenuItem();
         jMenuItemEnterWord = new javax.swing.JMenuItem();
-        jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemEditMachine = new javax.swing.JMenuItem();
-        jMenuItemAutoLayout = new javax.swing.JMenuItem();
-        jMenuItemMinimize = new javax.swing.JMenuItem();
+        jSeparatorExecute0 = new javax.swing.JSeparator();
+        jMenuItemValidate = new javax.swing.JMenuItem();
         jMenuConvertTo = new javax.swing.JMenu();
         jMenuItemConvertToDFA = new javax.swing.JMenuItem();
         jMenuItemConvertToNFA = new javax.swing.JMenuItem();
         jMenuItemConvertToENFA = new javax.swing.JMenuItem();
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
+        jMenuDraft = new javax.swing.JMenu();
+        jMenuItemDFA = new javax.swing.JMenuItem();
+        jMenuItemNFA = new javax.swing.JMenuItem();
+        jMenuItemENFA = new javax.swing.JMenuItem();
+        jMenuItemPDA = new javax.swing.JMenuItem();
+        jMenuItemRG = new javax.swing.JMenuItem();
+        jMenuItemCFG = new javax.swing.JMenuItem();
+        jSeparatorExecute1 = new javax.swing.JSeparator();
+        jMenuItemAutoLayout = new javax.swing.JMenuItem();
+        jMenuItemMinimize = new javax.swing.JMenuItem();
         jMenuExtras = new javax.swing.JMenu();
         jMenuItemExchange = new javax.swing.JMenuItem();
+        jSeparatorExtras = new javax.swing.JSeparator();
+        jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -1188,16 +1277,60 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jToolBarMain, gridBagConstraints);
 
-        jGTIEditorPanelTabbedPane.addMouseListener(new java.awt.event.MouseAdapter() {
+        jGTIMainSplitPane.setDividerLocation(380);
+        jGTIMainSplitPane.setResizeWeight(0.5);
+        jGTIPanelLeftInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(50, 150, 250), 3, true));
+        jGTIEditorPanelTabbedPaneLeft.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jGTIEditorPanelTabbedPaneMouseReleased(evt);
+                jGTIEditorPanelTabbedPaneLeftMouseReleased(evt);
             }
         });
-        jGTIEditorPanelTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+        jGTIEditorPanelTabbedPaneLeft.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jGTIEditorPanelTabbedPaneStateChanged(evt);
+                jGTIEditorPanelTabbedPaneLeftStateChanged(evt);
             }
         });
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        jGTIPanelLeftInner.add(jGTIEditorPanelTabbedPaneLeft, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        jGTIPanelLeftOuter.add(jGTIPanelLeftInner, gridBagConstraints);
+
+        jGTIMainSplitPane.setLeftComponent(jGTIPanelLeftOuter);
+
+        jGTIPanelRightInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(100, 200, 250), 3, true));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        jGTIPanelRightInner.add(jGTIEditorPanelTabbedPaneRight, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        jGTIPanelRightOuter.add(jGTIPanelRightInner, gridBagConstraints);
+
+        jGTIMainSplitPane.setRightComponent(jGTIPanelRightOuter);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1205,7 +1338,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTIEditorPanelTabbedPane, gridBagConstraints);
+        getContentPane().add(jGTIMainSplitPane, gridBagConstraints);
 
         jMenuFile.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.FileMnemonic").charAt(0));
         jMenuFile.setText(bundle.getString("MainWindow.File")); // NOI18N
@@ -1293,65 +1426,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
 
         jMenuFile.add(jMenuItemSaveAll);
-
-        jMenuDraft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/empty16.gif")));
-        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
-        jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
-        jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
-        jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemDFAhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemDFA);
-
-        jMenuItemNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
-        jMenuItemNFA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNFAhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemNFA);
-
-        jMenuItemENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
-        jMenuItemENFA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemENFAhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemENFA);
-
-        jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
-        jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemPDAhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemPDA);
-
-        jMenuItemRG.setText(bundle.getString("MainWindow.RG")); // NOI18N
-        jMenuItemRG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemRGhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemRG);
-
-        jMenuItemCFG.setText(bundle.getString("MainWindow.CFG")); // NOI18N
-        jMenuItemCFG.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCFGhandleDraftFor(evt);
-            }
-        });
-
-        jMenuDraft.add(jMenuItemCFG);
-
-        jMenuFile.add(jMenuDraft);
 
         jMenuFile.add(jSeparatorFile2);
 
@@ -1441,20 +1515,22 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuView.add(jCheckBoxMenuItemTable);
 
+        jMenuView.add(jSeparatorView);
+
+        jCheckBoxMenuItemSecondView.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.SecondViewMnemonic").charAt(0));
+        jCheckBoxMenuItemSecondView.setText(bundle.getString("MainWindow.SecondView")); // NOI18N
+        jCheckBoxMenuItemSecondView.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCheckBoxMenuItemSecondViewItemStateChanged(evt);
+            }
+        });
+
+        jMenuView.add(jCheckBoxMenuItemSecondView);
+
         jMenuBarMain.add(jMenuView);
 
         jMenuExecute.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExecuteMnemonic").charAt(0));
         jMenuExecute.setText(bundle.getString("MainWindow.Execute")); // NOI18N
-        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
-        jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
-        jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemValidateActionPerformed(evt);
-            }
-        });
-
-        jMenuExecute.add(jMenuItemValidate);
-
         jMenuItemEnterWord.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EnterWordMnemonic").charAt(0));
         jMenuItemEnterWord.setText(bundle.getString("MainWindow.EnterWord")); // NOI18N
         jMenuItemEnterWord.addActionListener(new java.awt.event.ActionListener() {
@@ -1464,16 +1540,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
 
         jMenuExecute.add(jMenuItemEnterWord);
-
-        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
-        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
-        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemHistoryActionPerformed(evt);
-            }
-        });
-
-        jMenuExecute.add(jMenuItemHistory);
 
         jMenuItemEditMachine.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.EditMachineMnemonic").charAt(0));
         jMenuItemEditMachine.setText(bundle.getString("MainWindow.EditMachine")); // NOI18N
@@ -1485,25 +1551,17 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuItemEditMachine);
 
-        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
-        jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
-        jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
+        jMenuExecute.add(jSeparatorExecute0);
+
+        jMenuItemValidate.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ValidateMnemonic").charAt(0));
+        jMenuItemValidate.setText(bundle.getString("MainWindow.Validate")); // NOI18N
+        jMenuItemValidate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAutoLayoutActionPerformed(evt);
+                jMenuItemValidateActionPerformed(evt);
             }
         });
 
-        jMenuExecute.add(jMenuItemAutoLayout);
-
-        jMenuItemMinimize.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.MinimizeMnemonic").charAt(0));
-        jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
-        jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemMinimizeActionPerformed(evt);
-            }
-        });
-
-        jMenuExecute.add(jMenuItemMinimize);
+        jMenuExecute.add(jMenuItemValidate);
 
         jMenuConvertTo.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToMnemonic").charAt(0));
         jMenuConvertTo.setText(bundle.getString("MainWindow.ConvertTo")); // NOI18N
@@ -1545,6 +1603,86 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuConvertTo);
 
+        jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
+        jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
+        jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        jMenuItemDFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemDFA);
+
+        jMenuItemNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        jMenuItemNFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemNFA);
+
+        jMenuItemENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        jMenuItemENFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemENFAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemENFA);
+
+        jMenuItemPDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        jMenuItemPDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPDAhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemPDA);
+
+        jMenuItemRG.setText(bundle.getString("MainWindow.RG")); // NOI18N
+        jMenuItemRG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRGhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemRG);
+
+        jMenuItemCFG.setText(bundle.getString("MainWindow.CFG")); // NOI18N
+        jMenuItemCFG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCFGhandleDraftFor(evt);
+            }
+        });
+
+        jMenuDraft.add(jMenuItemCFG);
+
+        jMenuExecute.add(jMenuDraft);
+
+        jMenuExecute.add(jSeparatorExecute1);
+
+        jMenuItemAutoLayout.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.AutoLayoutMnemonic").charAt(0));
+        jMenuItemAutoLayout.setText(bundle.getString("MainWindow.AutoLayout")); // NOI18N
+        jMenuItemAutoLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAutoLayoutActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemAutoLayout);
+
+        jMenuItemMinimize.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.MinimizeMnemonic").charAt(0));
+        jMenuItemMinimize.setText(bundle.getString("MainWindow.Minimize")); // NOI18N
+        jMenuItemMinimize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMinimizeActionPerformed(evt);
+            }
+        });
+
+        jMenuExecute.add(jMenuItemMinimize);
+
         jMenuBarMain.add(jMenuExecute);
 
         jMenuExtras.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ExtrasMnemonic").charAt(0));
@@ -1558,6 +1696,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
 
         jMenuExtras.add(jMenuItemExchange);
+
+        jMenuExtras.add(jSeparatorExtras);
+
+        jMenuItemHistory.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HistoryMnemonic").charAt(0));
+        jMenuItemHistory.setText(bundle.getString("MainWindow.History")); // NOI18N
+        jMenuItemHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemHistoryActionPerformed(evt);
+            }
+        });
+
+        jMenuExtras.add(jMenuItemHistory);
 
         jMenuBarMain.add(jMenuExtras);
 
@@ -1580,6 +1730,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jCheckBoxMenuItemSecondViewItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemSecondViewItemStateChanged
+        this.logic.handleSecondViewStateChanged();
+    }//GEN-LAST:event_jCheckBoxMenuItemSecondViewItemStateChanged
 
     private void jMenuItemMinimizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMinimizeActionPerformed
         this.logic.handleMinimize();
@@ -1605,9 +1759,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
          this.logic.handleConvertTo(MachineType.DFA);
     }//GEN-LAST:event_jMenuItemConvertToDFAActionPerformed
 
-    private void jGTIEditorPanelTabbedPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneMouseReleased
+    private void jGTIEditorPanelTabbedPaneLeftMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftMouseReleased
         this.logic.handleTabbedPaneMouseReleased(evt);
-    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneMouseReleased
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneLeftMouseReleased
 
     private void jMenuItemHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistoryActionPerformed
         this.logic.handleHistory();
@@ -1633,9 +1787,9 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         this.logic.handleDeleteProduction();
     }//GEN-LAST:event_jGTIToolBarButtonDeleteProductionActionPerformed
 
-    private void jGTIEditorPanelTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneStateChanged
+    private void jGTIEditorPanelTabbedPaneLeftStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
         this.logic.handleTabbedPaneStateChanged();
-    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneStateChanged
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
 
     private void jGTIToolBarToggleButtonFinalStateItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonFinalStateItemStateChanged
         this.logic.handleToolbarEnd(this.jGTIToolBarToggleButtonFinalState.isSelected());
@@ -1690,7 +1844,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jGTIToolBarButtonUndoActionPerformed
 
     private void jGTIToolBarButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveActionPerformed
-        this.logic.handleSave(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleSave();
     }//GEN-LAST:event_jGTIToolBarButtonSaveActionPerformed
 
     private void jGTIToolBarButtonSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonSaveAsActionPerformed
@@ -1746,7 +1900,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemEditMachineActionPerformed
 
     private void handleClose(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleClose
-        this.logic.handleClose(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleClose();
     }//GEN-LAST:event_handleClose
 
     private void jCheckBoxMenuItemTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemTableItemStateChanged
@@ -1762,7 +1916,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_handleSaveAs
 
     private void handleSave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handleSave
-        this.logic.handleSave(this.jGTIEditorPanelTabbedPane.getSelectedEditorPanel ());
+        this.logic.handleSave();
     }//GEN-LAST:event_handleSave
 
     private void jMenuItemValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemValidateActionPerformed
@@ -1799,8 +1953,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemConsole;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemSecondView;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemTable;
-    private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPane;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPaneLeft;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPaneRight;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane jGTIMainSplitPane;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelLeftInner;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelLeftOuter;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRightInner;
+    private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRightOuter;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonAddProduction;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEditDocument;
@@ -1862,11 +2023,15 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private javax.swing.JMenu jMenuView;
     private javax.swing.JSeparator jSeparatorEdit;
     private javax.swing.JSeparator jSeparatorEditNavigation;
+    private javax.swing.JSeparator jSeparatorExecute0;
+    private javax.swing.JSeparator jSeparatorExecute1;
+    private javax.swing.JSeparator jSeparatorExtras;
     private javax.swing.JSeparator jSeparatorFile1;
     private javax.swing.JSeparator jSeparatorFile2;
     private javax.swing.JSeparator jSeparatorFile3;
     private javax.swing.JSeparator jSeparatorFileEdit;
     private javax.swing.JSeparator jSeparatorNavigation;
+    private javax.swing.JSeparator jSeparatorView;
     private javax.swing.JToolBar jToolBarEdit;
     private javax.swing.JToolBar jToolBarFile;
     private javax.swing.JToolBar jToolBarMain;

@@ -50,7 +50,6 @@ public final class JGTIScrollPane extends JScrollPane
     {
       JTable jTable = ( JTable ) view;
       JTableHeader jTableHeader = new JTableHeader ();
-      jTableHeader.setColumnModel ( jTable.getColumnModel () );
       jTableHeader.setTable ( jTable );
       jTableHeader.setResizingAllowed ( false );
       jTableHeader.setReorderingAllowed ( false );

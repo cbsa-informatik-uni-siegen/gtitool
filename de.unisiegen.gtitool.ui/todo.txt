@@ -1,11 +1,40 @@
+*** TODO ***
+
 CF		- Die Wort Navigation verbessern
 CF		- Der PDA ist im Moment noch deterministisch, das muss angepasst werden.
 		  Dabei ist darauf zu achten, das auch die Navigation angepasst werden
 		  muss
 CF		- Split View
-
+CF		- Alle Pretty String Components müssen abgekürzt werden
+CF		- Zustands Pfad: Exception bei großem ENFA
+CF		- Preferences: Modus zum Ausblenden der PDA Sachen
+CF		- Ereichbare Zustände berechnen
+CF		- Convert: Vollständiger Automat
 
 BM		- Parallel Loop Routing
+BM		- Minimieren: Highlighten, Outline, Fehler in der Logik?
 
 
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
+		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)
+		- Edit Machine - Enter Word Toggle Button in die ToolBar
+
+
+*** Feature ***
+
+CF		- PDA Machine Tabelle editierbar
+CF		- Prüfen wie kompliziert ein RegEx Parser ist
+CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
+CF		- Namen der Zustände neu vergeben (z.B. sinnvoll nach einem Convert)
+CF		- Popupmenü auf der Machine Table
+CF		- Tabs umsortieren
+
+BM		- ToolTip auf den Redo/Undo Item (Zustand 'z0' widerherstellen)
+BM		- Neues AutoLayout
+
+
+		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum bestätigen...)
+		- Links Rekursion
+		- Wörter ausgeben, die von einer Grammatik oder einem Automaten erkannt
+		  werden
+		- LaTeX Export

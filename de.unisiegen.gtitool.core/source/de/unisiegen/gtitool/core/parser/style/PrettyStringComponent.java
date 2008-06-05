@@ -59,6 +59,9 @@ public final class PrettyStringComponent extends JLabel
     super ();
     this.prettyString = prettyString;
     setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
+
+    // Used to calculate the preferered size.
+    setText ( "Component" ); //$NON-NLS-1$
   }
 
 

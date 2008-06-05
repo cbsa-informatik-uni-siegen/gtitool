@@ -96,6 +96,7 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 				// bug fix
         if ( m == 0 )
         {
+          //System.err.println ("bugfix");
           m = -0.0000000001;
         }
         // modify end
@@ -116,6 +117,14 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 				double ex = r * Math.cos(theta) + midX;
 				double ey = r * Math.sin(theta) + midY;
 				Point2D controlPoint = new Point2D.Double(ex, ey);
+				
+				//System.err.println ("m: "+m);
+				//System.err.println ("theta: "+theta);
+				//System.err.println ("midX: "+midX);
+				//System.err.println ("midY: "+midY);
+				//System.err.println ("r: "+r);
+				//System.err.println ("ex: "+ex);
+				//System.err.println ("ey: "+ey);
 
 				// add the control point to the points list
 				newPoints.add(controlPoint);

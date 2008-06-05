@@ -1699,15 +1699,51 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isModified ()
   {
-    // FIXME CF
-    if ( !this.stateList.equals ( this.initialStateList ) )
+    if ( this.stateList.size () != this.initialStateList.size () )
     {
       return true;
     }
-    if ( !this.transitionList.equals ( this.initialTransitionList ) )
+    if ( this.transitionList.size () != this.initialTransitionList.size () )
     {
       return true;
     }
+
+    boolean found;
+    for ( int i = 0 ; i < this.stateList.size () ; i++ )
+    {
+      found = false;
+      for ( int j = 0 ; j < this.initialStateList.size () ; j++ )
+      {
+        if ( this.stateList.get ( i ) == this.initialStateList.get ( j ) )
+        {
+          found = true;
+          break;
+        }
+      }
+      if ( !found )
+      {
+        return true;
+      }
+    }
+
+    for ( int i = 0 ; i < this.transitionList.size () ; i++ )
+    {
+      found = false;
+      for ( int j = 0 ; j < this.initialTransitionList.size () ; j++ )
+      {
+        if ( this.transitionList.get ( i ) == this.initialTransitionList
+            .get ( j ) )
+        {
+          found = true;
+          break;
+        }
+      }
+      if ( !found )
+      {
+        return true;
+      }
+    }
+
     if ( this.alphabet.isModified () )
     {
       return true;

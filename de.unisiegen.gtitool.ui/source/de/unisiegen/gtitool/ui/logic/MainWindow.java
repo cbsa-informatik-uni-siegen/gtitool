@@ -49,6 +49,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.RecentlyUsedMenuItem;
@@ -281,6 +282,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public MainWindow ()
   {
     this.gui = new MainWindowForm ( this );
+
+    // second view
+    this.jGTIMainSplitPane = this.gui.getJGTIMainSplitPane ();
+    this.jGTIMainSplitPane.setMainWindowForm ( this.gui );
+    this.jGTIMainSplitPane.setSecondViewActive ( false );
+
     try
     {
       this.gui.setIconImage ( ImageIO.read ( getClass ().getResource (
@@ -356,12 +363,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     };
-
-    // TODOCF
-    // second view
-    this.jGTIMainSplitPane = this.gui.getJGTIMainSplitPane ();
-    this.jGTIMainSplitPane.setMainWindowForm ( this.gui );
-    this.jGTIMainSplitPane.setSecondViewActive ( false );
   }
 
 
@@ -670,12 +671,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + true + Messages.QUOTE );
 
-      EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel ();
+      EditorPanel panel = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
       {
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle (
-            panel, "*" //$NON-NLS-1$
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setEditorPanelTitle ( panel, "*" //$NON-NLS-1$
                 + panel.getName () );
       }
       else
@@ -758,7 +759,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void doAutoLayout ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof MachinePanel )
     {
@@ -806,7 +807,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleAddProduction ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -832,11 +833,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final boolean handleClose ()
   {
-    if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel () == null )
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () == null )
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
-    return handleClose ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    return handleClose ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
   }
 
@@ -867,10 +869,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
 
-    this.gui.getJGTIEditorPanelTabbedPaneLeft ().removeSelectedEditorPanel ();
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .removeSelectedEditorPanel ();
 
     // check if all editor panels are closed
-    if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel () == null )
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () == null )
     {
       removeButtonState ( ButtonState.ENABLED_GENERAL );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -898,7 +902,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleCloseAll ()
   {
-    for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel current : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       // Check if the close was canceled
       if ( !handleClose ( current ) )
@@ -914,7 +919,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleConsoleStateChanged ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     boolean state = this.gui.getJCheckBoxMenuItemConsole ().getState ();
@@ -942,7 +947,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleConvertTo ( EntityType entityType )
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     // if there are no validation errors perform the action
@@ -1009,7 +1014,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleDeleteProduction ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -1028,14 +1033,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     try
     {
-      DefaultGrammarModel model = new DefaultGrammarModel ( this.gui
-          .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ()
-          .getModel ().getElement (), grammarType.toString () );
+      DefaultGrammarModel model = new DefaultGrammarModel (
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+              .getSelectedEditorPanel ().getModel ().getElement (), grammarType
+              .toString () );
       EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, null );
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -1054,12 +1061,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
 
       newEditorPanel.setName ( name );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
           newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-          newEditorPanel );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setSelectedEditorPanel ( newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -1103,14 +1110,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     try
     {
-      DefaultMachineModel model = new DefaultMachineModel ( this.gui
-          .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ()
-          .getModel ().getElement (), machineType.toString () );
+      DefaultMachineModel model = new DefaultMachineModel (
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+              .getSelectedEditorPanel ().getModel ().getElement (), machineType
+              .toString () );
       EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, null );
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -1129,12 +1138,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
 
       newEditorPanel.setName ( name );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
           newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-          newEditorPanel );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setSelectedEditorPanel ( newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -1179,7 +1188,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEditDocument ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     panel.handleToolbarEditDocument ();
   }
@@ -1190,7 +1199,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEditMachine ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1219,7 +1228,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEditProduction ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof GrammarPanel )
     {
@@ -1234,7 +1243,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEnterWord ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -1266,7 +1275,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleExchange ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel == null )
     {
@@ -1285,10 +1294,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleHistory ()
   {
-    if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel () instanceof MachinePanel )
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof MachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.gui
-          .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       machinePanel.handleHistory ();
     }
     else
@@ -1303,7 +1313,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public void handleMinimize ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel instanceof MachinePanel )
     {
@@ -1332,7 +1342,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -1351,12 +1362,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
 
       newEditorPanel.setName ( name );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
           newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-          newEditorPanel );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setSelectedEditorPanel ( newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -1394,7 +1405,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
       TreeSet < String > nameList = new TreeSet < String > ();
       int count = 0;
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
         if ( current.getFile () == null )
         {
@@ -1413,12 +1425,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
 
       newEditorPanel.setName ( name );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
           newEditorPanel );
       newEditorPanel
           .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-          newEditorPanel );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setSelectedEditorPanel ( newEditorPanel );
 
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -1552,14 +1564,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void handleQuit ()
   {
     // Active file
-    File activeFile = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-        .getSelectedEditorPanel () == null ? null : this.gui
-        .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ()
-        .getFile ();
+    File activeFile = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () == null ? null : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ().getFile ();
 
     // Opened file
     ArrayList < File > openedFiles = new ArrayList < File > ();
-    for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel current : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( current.getFile () != null )
       {
@@ -1567,15 +1579,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
     // Close the tabs
-    for ( int i = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getComponentCount () - 1 ; i >= 0 ; i-- )
     {
-      EditorPanel current = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getEditorPanel ( i );
+      EditorPanel current = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getEditorPanel ( i );
       if ( current.isModified () )
       {
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-            current );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setSelectedEditorPanel ( current );
 
         ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
             Messages.getString (
@@ -1588,8 +1600,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           File file = current.handleSave ();
           if ( file != null )
           {
-            this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle (
-                current, file.getName () );
+            this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+                .setEditorPanelTitle ( current, file.getName () );
           }
         }
         else if ( confirmDialog.isCanceled () )
@@ -1597,7 +1609,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().removeEditorPanel ( current );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().removeEditorPanel (
+          current );
     }
     PreferenceManager.getInstance ().setMainWindowPreferences ( this.gui );
     PreferenceManager.getInstance ().setOpenedFilesItem (
@@ -1621,7 +1634,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleRedo ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
@@ -1635,11 +1648,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleSave ()
   {
-    if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel () == null )
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () == null )
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
-    handleSave ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    handleSave ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
   }
 
@@ -1659,17 +1673,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
 
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
-        if ( ( !current.equals ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-            .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
+        if ( ( !current.equals ( this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel () ) && file
+            .equals ( current.getFile () ) ) )
         {
-          this.gui.getJGTIEditorPanelTabbedPaneLeft ().removeEditorPanel (
-              current );
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+              .removeEditorPanel ( current );
         }
       }
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle ( panel,
-          file.getName () );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setEditorPanelTitle ( panel, file.getName () );
     }
   }
 
@@ -1679,16 +1695,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleSaveAll ()
   {
-    EditorPanel active = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel active = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel current : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-          current );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setSelectedEditorPanel ( current );
       handleSave ( current );
     }
-    this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-        active );
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .setSelectedEditorPanel ( active );
   }
 
 
@@ -1697,7 +1714,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleSaveAs ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     File file = panel.handleSaveAs ();
     if ( file != null )
@@ -1706,17 +1723,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.recentlyUsedFiles.remove ( item );
       this.recentlyUsedFiles.add ( 0, item );
       organizeRecentlyUsedFilesMenu ();
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
-        if ( ( !current.equals ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-            .getSelectedEditorPanel () ) && file.equals ( current.getFile () ) ) )
+        if ( ( !current.equals ( this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel () ) && file
+            .equals ( current.getFile () ) ) )
         {
-          this.gui.getJGTIEditorPanelTabbedPaneLeft ().removeEditorPanel (
-              current );
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+              .removeEditorPanel ( current );
         }
       }
-      this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle ( panel,
-          file.getName () );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+          .setEditorPanelTitle ( panel, file.getName () );
     }
   }
 
@@ -1726,7 +1745,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleSecondViewStateChanged ()
   {
-    // TODOCF
     boolean state = this.gui.getJCheckBoxMenuItemSecondView ().getState ();
     logger.debug ( "handleSecondViewStateChanged", //$NON-NLS-1$
         "handle second view state change to " + Messages.QUOTE + state //$NON-NLS-1$
@@ -1742,8 +1760,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleTabbedPaneMouseReleased ( MouseEvent event )
   {
-    int tabIndex = this.gui.getJGTIEditorPanelTabbedPaneLeft ().getUI ()
-        .tabForCoordinate ( this.gui.getJGTIEditorPanelTabbedPaneLeft (),
+    if ( ! ( event.getSource () instanceof JGTIEditorPanelTabbedPane ) )
+    {
+      throw new IllegalArgumentException ( "unsupported source" ); //$NON-NLS-1$
+    }
+    this.jGTIMainSplitPane
+        .setActiveEditor ( ( JGTIEditorPanelTabbedPane ) event.getSource () );
+
+    int tabIndex = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getUI ().tabForCoordinate (
+            this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane (),
             event.getX (), event.getY () );
 
     if ( ( event.getButton () == MouseEvent.BUTTON1 )
@@ -1776,7 +1802,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     logger.debug ( "handleTabbedPaneStateChanged", //$NON-NLS-1$
         "handle tabbed pane state changed" ); //$NON-NLS-1$
 
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     if ( panel == null )
@@ -1962,7 +1988,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleTableStateChanged ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     if ( panel instanceof MachinePanel )
@@ -1994,7 +2020,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToolbarAddState ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel panel : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -2013,7 +2040,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToolbarEnd ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel panel : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -2032,7 +2060,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToolbarMouse ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel panel : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -2051,7 +2080,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToolbarStart ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel panel : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -2070,7 +2100,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleToolbarTransition ( boolean state )
   {
-    for ( EditorPanel panel : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel panel : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( ( panel instanceof MachinePanel ) )
       {
@@ -2087,7 +2118,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleUndo ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( panel != null )
     {
@@ -2114,7 +2145,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final boolean handleValidate ( boolean showDialogIfWarning )
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
     int errorCount = 0;
@@ -2359,7 +2390,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleWordAutoStep ( ItemEvent event )
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -2376,7 +2407,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleWordNextStep ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -2393,7 +2424,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleWordPreviousStep ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -2410,7 +2441,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleWordStart ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -2432,7 +2463,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleWordStop ()
   {
-    EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
@@ -2773,12 +2804,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void openFile ( File file, boolean addToRecentlyUsed )
   {
     // check if we already have an editor panel for the file
-    for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+    for ( EditorPanel current : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane () )
     {
       if ( file.equals ( current.getFile () ) )
       {
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-            current );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setSelectedEditorPanel ( current );
 
         // reorganize recently used files
         if ( addToRecentlyUsed )
@@ -2806,14 +2838,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         DefaultMachineModel model = ( DefaultMachineModel ) element;
         EditorPanel newEditorPanel = new MachinePanel ( this.gui, model, file );
 
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
             newEditorPanel );
         newEditorPanel
             .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-            newEditorPanel );
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle (
-            newEditorPanel, file.getName () );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setSelectedEditorPanel ( newEditorPanel );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setEditorPanelTitle ( newEditorPanel, file.getName () );
 
         addButtonState ( ButtonState.ENABLED_GENERAL );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -2825,14 +2857,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         DefaultGrammarModel model = ( DefaultGrammarModel ) element;
         EditorPanel newEditorPanel = new GrammarPanel ( this.gui, model, file );
 
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().addEditorPanel (
             newEditorPanel );
         newEditorPanel
             .addModifyStatusChangedListener ( this.modifyStatusChangedListener );
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-            newEditorPanel );
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle (
-            newEditorPanel, file.getName () );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setSelectedEditorPanel ( newEditorPanel );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setEditorPanelTitle ( newEditorPanel, file.getName () );
 
         addButtonState ( ButtonState.ENABLED_GENERAL );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -3047,12 +3079,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + false + Messages.QUOTE );
 
-      EditorPanel panel = this.gui.getJGTIEditorPanelTabbedPaneLeft ()
-          .getSelectedEditorPanel ();
+      EditorPanel panel = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
       {
-        this.gui.getJGTIEditorPanelTabbedPaneLeft ().setEditorPanelTitle (
-            panel, panel.getName () );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+            .setEditorPanelTitle ( panel, panel.getName () );
       }
 
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( false );
@@ -3130,13 +3162,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getActiveFile ();
     if ( activeFile != null )
     {
-      for ( EditorPanel current : this.gui.getJGTIEditorPanelTabbedPaneLeft () )
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane () )
       {
         if ( current.getFile ().getAbsolutePath ().equals (
             activeFile.getAbsolutePath () ) )
         {
-          this.gui.getJGTIEditorPanelTabbedPaneLeft ().setSelectedEditorPanel (
-              current );
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+              .setSelectedEditorPanel ( current );
           break;
         }
       }

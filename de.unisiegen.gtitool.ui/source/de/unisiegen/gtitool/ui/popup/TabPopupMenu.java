@@ -11,6 +11,7 @@ import javax.swing.JSeparator;
 
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 
 
 /**
@@ -81,6 +82,18 @@ public final class TabPopupMenu extends JPopupMenu
    * The save as item.
    */
   private JMenuItem jMenuItemSaveAs;
+
+
+  /**
+   * The left editor item.
+   */
+  private JMenuItem jMenuItemLeftEditor;
+
+
+  /**
+   * The right editor item.
+   */
+  private JMenuItem jMenuItemRightEditor;
 
 
   /**
@@ -246,5 +259,49 @@ public final class TabPopupMenu extends JPopupMenu
         .equals ( TabPopupMenuType.TAB_ACTIVE )
         && this.mainWindow.isEnabledSaveAs () );
     add ( this.jMenuItemSaveAs );
+
+    add ( new JSeparator () );
+    
+    // LeftEditor
+    this.jMenuItemLeftEditor = new JMenuItem ( Messages
+        .getString ( "MainWindow.LeftEditor" ) ); //$NON-NLS-1$
+    this.jMenuItemLeftEditor.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemLeftEditor.setMnemonic ( Messages.getString (
+        "MainWindow.LeftEditorMnemonic" ) //$NON-NLS-1$
+        .charAt ( 0 ) );
+    this.jMenuItemLeftEditor.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        TabPopupMenu.this.mainWindow.getGUI ().getJGTIMainSplitPane ()
+            .setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+      }
+    } );
+    add ( this.jMenuItemLeftEditor );
+
+    // RightEditor
+    this.jMenuItemRightEditor = new JMenuItem ( Messages
+        .getString ( "MainWindow.RightEditor" ) ); //$NON-NLS-1$
+    this.jMenuItemRightEditor.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemRightEditor.setMnemonic ( Messages.getString (
+        "MainWindow.RightEditorMnemonic" ) //$NON-NLS-1$
+        .charAt ( 0 ) );
+    this.jMenuItemRightEditor.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        TabPopupMenu.this.mainWindow.getGUI ().getJGTIMainSplitPane ()
+            .setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+      }
+    } );
+    add ( this.jMenuItemRightEditor );
   }
 }

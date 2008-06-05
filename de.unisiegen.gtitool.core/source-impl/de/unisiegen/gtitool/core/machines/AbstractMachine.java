@@ -1699,6 +1699,7 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isModified ()
   {
+    // FIXME CF
     if ( !this.stateList.equals ( this.initialStateList ) )
     {
       return true;

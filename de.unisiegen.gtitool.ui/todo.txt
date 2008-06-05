@@ -10,17 +10,17 @@ CF		- Zustands Pfad: Exception bei großem ENFA
 CF		- Preferences: Modus zum Ausblenden der PDA Sachen
 CF		- Ereichbare Zustände berechnen
 CF		- Convert: Vollständiger Automat
+CF		- Größe der Fenster speichern
 
 BM		- Parallel Loop Routing
 BM		- Minimieren: Highlighten, Outline, Fehler in der Logik?
-
 
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)
 		- Edit Machine - Enter Word Toggle Button in die ToolBar
 
 
-*** Feature ***
+*** FEATURE ***
 
 CF		- PDA Machine Tabelle editierbar
 CF		- Prüfen wie kompliziert ein RegEx Parser ist
@@ -31,7 +31,6 @@ CF		- Tabs umsortieren
 
 BM		- ToolTip auf den Redo/Undo Item (Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
-
 
 		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum bestätigen...)
 		- Links Rekursion

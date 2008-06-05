@@ -1312,6 +1312,17 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jGTIMainSplitPane.setLeftComponent(jGTIPanelLeftOuter);
 
         jGTIPanelRightInner.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(100, 200, 250), 3, true));
+        jGTIEditorPanelTabbedPaneRight.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jGTIEditorPanelTabbedPaneRightMouseReleased(evt);
+            }
+        });
+        jGTIEditorPanelTabbedPaneRight.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jGTIEditorPanelTabbedPaneRightStateChanged(evt);
+            }
+        });
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -1730,6 +1741,14 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jGTIEditorPanelTabbedPaneRightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneRightStateChanged
+        this.logic.handleTabbedPaneStateChanged();
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneRightStateChanged
+
+    private void jGTIEditorPanelTabbedPaneRightMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneRightMouseReleased
+        this.logic.handleTabbedPaneMouseReleased(evt);
+    }//GEN-LAST:event_jGTIEditorPanelTabbedPaneRightMouseReleased
 
     private void jCheckBoxMenuItemSecondViewItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemSecondViewItemStateChanged
         this.logic.handleSecondViewStateChanged();

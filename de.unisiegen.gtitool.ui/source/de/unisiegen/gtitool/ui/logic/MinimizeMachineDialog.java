@@ -30,8 +30,6 @@ import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
-import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.Minimizer;
 
 
@@ -269,7 +267,7 @@ public final class MinimizeMachineDialog implements
         state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
         DefaultStateView stateView = this.model.createStateView ( current.get ( 0 ).getPositionX (), current.get ( 0 ).getPositionY (),
             state, false );
-
+        stateView.setGroupColor ( current.get ( 0 ).getGroupColor ());
         this.states.put ( current.get ( 0 ).getState (), stateView );
       }
     }
@@ -481,11 +479,10 @@ public final class MinimizeMachineDialog implements
     buildMinimalMachine ();
 
     this.machinePanel.getMainWindow ().handleNew ( this.model );
-//
-//    new LayoutManager ( this.model, new RedoUndoHandler ( this.mainWindowForm ) )
-//        .doLayout ();
 
     this.gui.dispose ();
+    
+
   }
 
 

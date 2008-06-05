@@ -3,33 +3,19 @@ package de.unisiegen.gtitool.ui.utils;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Stack;
 
 import org.jgraph.graph.DefaultGraphModel;
 
-import de.unisiegen.gtitool.core.entities.DefaultState;
-import de.unisiegen.gtitool.core.entities.DefaultTransition;
-import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.StatesInvolvedException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
-import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
-import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
-import de.unisiegen.gtitool.ui.redoundo.MultiItem;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
-import de.unisiegen.gtitool.ui.redoundo.StateAddedItem;
-import de.unisiegen.gtitool.ui.redoundo.StateRemovedItem;
-import de.unisiegen.gtitool.ui.redoundo.TransitionAddedItem;
 
 
 /**
@@ -359,182 +345,184 @@ public class Minimizer
   
   
 
-  /**
-   * The new created states.
-   */
-  private HashMap < State, DefaultStateView > states = new HashMap < State, DefaultStateView > ();
-  
-  
-  MultiItem lastStep = new MultiItem();
 
-  /**
-   * build the minimal {@link Machine}.
-   */
-  private void viewMachine ()
-  {
-    int stateCount = 0;
-    removeOldStates();
-    this.states.clear ();
-
-    try
-    {
-      for ( ArrayList < DefaultStateView > current : getGroups () )
-      {
-        boolean startState = false;
-        String name = "{"; //$NON-NLS-1$
-        int count = 0;
-        for ( DefaultStateView defaultStateView : current )
-        {
-          if ( defaultStateView.getState ().isStartState () )
-          {
-            startState = true;
-          }
-          if ( count > 0 )
-          {
-            name += ", "; //$NON-NLS-1$
-          }
-          name += defaultStateView.toString ();
-          count++ ;
-        }
-        name += "}"; //$NON-NLS-1$
-
-        DefaultState state = new DefaultState ( name );
-        state.setStartState ( startState );
-        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
-        DefaultStateView stateView = this.model.createStateView ( 100, 100,
-            state, false );
-        
-        stateView.setGroupColor ( this.colors[stateCount] );
-        stateCount++;
-        
-        RedoUndoItem item = new StateAddedItem(this.model, stateView, null);
-        this.lastStep.addItem ( item );
-//        this.model.removeState ( stateView, false );
-
-//        item.undo ();
-        
-        this.states.put ( current.get ( 0 ).getState (), stateView );
-        
-        
-      }
-    }
-    catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-    }
-
-    createTransitions ();
-  }
-
-
-  /**
-   * TODO
-   *
-   */
-  private void removeOldStates ()
-  {
-    ArrayList < DefaultStateView > removeStates = new ArrayList < DefaultStateView >();
-    for (DefaultStateView current : this.model.getStateViewList ()){
-      
-      ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
-      for ( DefaultTransitionView transition : this.model.getTransitionViewList () )
-      {
-        if ( ( transition.getTransition ().getStateBegin ().equals ( current
-            .getState () ) )
-            || ( transition.getTransition ().getStateEnd ().equals ( current
-                .getState () ) ) )
-        {
-          removeList.add ( transition );
-        }
-      }
-
-      for ( DefaultTransitionView transition : removeList )
-      {
-        this.model.removeTransition ( transition, false );
-      }
-      
-      RedoUndoItem item = new StateRemovedItem(this.model, current, removeList);
-      this.lastStep.addItem ( item );
-      removeStates.add(current);
-      
-    }
-    
-    for (DefaultStateView current : removeStates){
-      this.model.removeState ( current, false );
-    }
-  }
-
-
-  /**
-   * Create the transitions of the {@link Machine}.
-   */
-  private void createTransitions ()
-  {
-    System.err.println (this.states.size ());
-    for ( State current : this.states.keySet () )
-    {
-      HashMap < State, Transition > transitions = new HashMap < State, Transition > ();
-      for ( Transition transition : current.getTransitionBegin () )
-      {
-
-        try
-        {
-          DefaultStateView target = getTargetStateView ( transition
-              .getStateEnd () );
-          Transition newTransition;
-//          if ( transitions.containsKey ( target.getState () ) )
+  // /**
+  // * The new created states.
+  // */
+  // private HashMap < State, DefaultStateView > states = new HashMap < State,
+  // DefaultStateView > ();
+  //  
+  //  
+//  MultiItem lastStep = new MultiItem();
+//
+//  /**
+//   * build the minimal {@link Machine}.
+//   */
+//  private void viewMachine ()
+//  {
+//    int stateCount = 0;
+//    removeOldStates();
+//    this.states.clear ();
+//
+//    try
+//    {
+//      for ( ArrayList < DefaultStateView > current : getGroups () )
+//      {
+//        boolean startState = false;
+//        String name = "{"; //$NON-NLS-1$
+//        int count = 0;
+//        for ( DefaultStateView defaultStateView : current )
+//        {
+//          if ( defaultStateView.getState ().isStartState () )
 //          {
-//            transitions.get ( target.getState () ).add (
-//                transition.getSymbol () );
+//            startState = true;
 //          }
-//          else
+//          if ( count > 0 )
 //          {
-            newTransition = new DefaultTransition ( transition.getAlphabet (),
-                transition.getPushDownAlphabet (), transition
-                    .getPushDownWordRead (),
-                transition.getPushDownWordWrite (), this.states.get ( current )
-                    .getState (), target.getState (), transition.getSymbol () );
-           DefaultTransitionView transitionView =  this.model.createTransitionView ( newTransition, this.states
-                .get ( current ), target, false, false, true );
-            
-           RedoUndoItem item = new TransitionAddedItem(this.model, transitionView, null );
-            this.lastStep.addItem ( item );
+//            name += ", "; //$NON-NLS-1$
 //          }
-
-        }
-        catch ( TransitionSymbolNotInAlphabetException exc )
-        {
-          exc.printStackTrace ();
-        }
-        catch ( TransitionSymbolOnlyOneTimeException exc )
-        {
-          exc.printStackTrace ();
-        }
-
-      }
-    }
-  }
-  
-  /**
-   * Get the target state view representing the group.
-   * 
-   * @param state The {@link State}.
-   * @return The {@link DefaultStateView} representing the group.
-   */
-  private DefaultStateView getTargetStateView ( State state )
-  {
-    DefaultStateView target = null;
-    for ( ArrayList < DefaultStateView > current : getGroups () )
-    {
-      target = this.states.get ( current.get ( 0 ).getState () );
-      for ( DefaultStateView defaultStateView : current )
-      {
-        if ( state.equals ( defaultStateView.getState () ) )
-        {
-          return target;
-        }
-      }
-    }
-    return target;
-  }
+//          name += defaultStateView.toString ();
+//          count++ ;
+//        }
+//        name += "}"; //$NON-NLS-1$
+//
+//        DefaultState state = new DefaultState ( name );
+//        state.setStartState ( startState );
+//        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
+//        DefaultStateView stateView = this.model.createStateView ( 100, 100,
+//            state, false );
+//        
+//        stateView.setGroupColor ( this.colors[stateCount] );
+//        stateCount++;
+//        
+//        RedoUndoItem item = new StateAddedItem(this.model, stateView, null);
+//        this.lastStep.addItem ( item );
+////        this.model.removeState ( stateView, false );
+//
+////        item.undo ();
+//        
+//        this.states.put ( current.get ( 0 ).getState (), stateView );
+//        
+//        
+//      }
+//    }
+//    catch ( StateException exc )
+//    {
+//      exc.printStackTrace ();
+//    }
+//
+//    createTransitions ();
+//  }
+//
+//
+//  /**
+//   * TODO
+//   *
+//   */
+//  private void removeOldStates ()
+//  {
+//    ArrayList < DefaultStateView > removeStates = new ArrayList < DefaultStateView >();
+//    for (DefaultStateView current : this.model.getStateViewList ()){
+//      
+//      ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
+//      for ( DefaultTransitionView transition : this.model.getTransitionViewList () )
+//      {
+//        if ( ( transition.getTransition ().getStateBegin ().equals ( current
+//            .getState () ) )
+//            || ( transition.getTransition ().getStateEnd ().equals ( current
+//                .getState () ) ) )
+//        {
+//          removeList.add ( transition );
+//        }
+//      }
+//
+//      for ( DefaultTransitionView transition : removeList )
+//      {
+//        this.model.removeTransition ( transition, false );
+//      }
+//      
+//      RedoUndoItem item = new StateRemovedItem(this.model, current, removeList);
+//      this.lastStep.addItem ( item );
+//      removeStates.add(current);
+//      
+//    }
+//    
+//    for (DefaultStateView current : removeStates){
+//      this.model.removeState ( current, false );
+//    }
+//  }
+//
+//
+//  /**
+//   * Create the transitions of the {@link Machine}.
+//   */
+//  private void createTransitions ()
+//  {
+//    System.err.println (this.states.size ());
+//    for ( State current : this.states.keySet () )
+//    {
+//      HashMap < State, Transition > transitions = new HashMap < State, Transition > ();
+//      for ( Transition transition : current.getTransitionBegin () )
+//      {
+//
+//        try
+//        {
+//          DefaultStateView target = getTargetStateView ( transition
+//              .getStateEnd () );
+//          Transition newTransition;
+////          if ( transitions.containsKey ( target.getState () ) )
+////          {
+////            transitions.get ( target.getState () ).add (
+////                transition.getSymbol () );
+////          }
+////          else
+////          {
+//            newTransition = new DefaultTransition ( transition.getAlphabet (),
+//                transition.getPushDownAlphabet (), transition
+//                    .getPushDownWordRead (),
+//                transition.getPushDownWordWrite (), this.states.get ( current )
+//                    .getState (), target.getState (), transition.getSymbol () );
+//           DefaultTransitionView transitionView =  this.model.createTransitionView ( newTransition, this.states
+//                .get ( current ), target, false, false, true );
+//            
+//           RedoUndoItem item = new TransitionAddedItem(this.model, transitionView, null );
+//            this.lastStep.addItem ( item );
+////          }
+//
+//        }
+//        catch ( TransitionSymbolNotInAlphabetException exc )
+//        {
+//          exc.printStackTrace ();
+//        }
+//        catch ( TransitionSymbolOnlyOneTimeException exc )
+//        {
+//          exc.printStackTrace ();
+//        }
+//
+//      }
+//    }
+//  }
+//  
+//  /**
+//   * Get the target state view representing the group.
+//   * 
+//   * @param state The {@link State}.
+//   * @return The {@link DefaultStateView} representing the group.
+//   */
+//  private DefaultStateView getTargetStateView ( State state )
+//  {
+//    DefaultStateView target = null;
+//    for ( ArrayList < DefaultStateView > current : getGroups () )
+//    {
+//      target = this.states.get ( current.get ( 0 ).getState () );
+//      for ( DefaultStateView defaultStateView : current )
+//      {
+//        if ( state.equals ( defaultStateView.getState () ) )
+//        {
+//          return target;
+//        }
+//      }
+//    }
+//    return target;
+//  }
 }

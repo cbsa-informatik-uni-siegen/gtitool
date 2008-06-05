@@ -662,6 +662,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       State state = current.getState ();
       state.setError ( false );
       state.setActive ( false );
+      current.setGroupColor ( null );
     }
 
     performCellsChanged ();
@@ -817,6 +818,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void fireModifyStatusChanged ( boolean forceModify )
   {
     clearValidationMessages ();
+    clearHighlight ();
 
     // is needed if a cell is deleted
     updateSelected ();
@@ -1151,6 +1153,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleEnterWord ()
   {
+    clearHighlight ();
     this.enterWordMode = true;
     this.jGTIGraph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );

@@ -267,7 +267,7 @@ public final class MinimizeMachineDialog implements
         DefaultState state = new DefaultState ( name );
         state.setStartState ( startState );
         state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
-        DefaultStateView stateView = this.model.createStateView ( 100, 100,
+        DefaultStateView stateView = this.model.createStateView ( current.get ( 0 ).getPositionX (), current.get ( 0 ).getPositionY (),
             state, false );
 
         this.states.put ( current.get ( 0 ).getState (), stateView );
@@ -481,9 +481,9 @@ public final class MinimizeMachineDialog implements
     buildMinimalMachine ();
 
     this.machinePanel.getMainWindow ().handleNew ( this.model );
-
-    new LayoutManager ( this.model, new RedoUndoHandler ( this.mainWindowForm ) )
-        .doLayout ();
+//
+//    new LayoutManager ( this.model, new RedoUndoHandler ( this.mainWindowForm ) )
+//        .doLayout ();
 
     this.gui.dispose ();
   }

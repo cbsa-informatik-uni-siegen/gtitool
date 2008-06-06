@@ -18,6 +18,7 @@ BM		- Minimieren: Highlighten, Outline, Fehler in der Logik?
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)
 		- Edit Machine - Enter Word Toggle Button in die ToolBar
+		- Keller von links nach rechts darstellen (Drachen Buch)
 
 
 *** FEATURE ***

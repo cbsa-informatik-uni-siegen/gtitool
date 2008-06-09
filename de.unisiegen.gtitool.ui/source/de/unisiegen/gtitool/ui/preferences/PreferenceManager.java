@@ -139,6 +139,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The second view used value.
+   */
+  public static final boolean DEFAULT_SECOND_VIEW_USED = false;
+
+
+  /**
    * The default working path.
    */
   public static final String DEFAULT_WORKING_PATH = "."; //$NON-NLS-1$
@@ -478,6 +484,18 @@ public final class PreferenceManager extends
       count++ ;
     }
     return new RecentlyUsedFilesItem ( files );
+  }
+
+
+  /**
+   * Returns the second view used value.
+   * 
+   * @return The second view used value.
+   */
+  public final boolean getSeconsViewUsed ()
+  {
+    return this.preferences.getBoolean ( "MachinePanel.SecondViewUsed", //$NON-NLS-1$
+        DEFAULT_SECOND_VIEW_USED );
   }
 
 
@@ -850,6 +868,20 @@ public final class PreferenceManager extends
           "MainWindow.RecentlyUsedFiles" + i, recentlyUsedFilesItem //$NON-NLS-1$
               .getFiles ().get ( i ).getAbsolutePath () );
     }
+  }
+
+
+  /**
+   * Sets the second view used value.
+   * 
+   * @param used The used value.
+   */
+  public final void setSecondViewUsed ( boolean used )
+  {
+    logger.debug ( "setSecondViewUsed", "set the second view used to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + used + Messages.QUOTE );
+    this.preferences.putBoolean ( "MachinePanel.SecondViewUsed", //$NON-NLS-1$
+        used );
   }
 
 

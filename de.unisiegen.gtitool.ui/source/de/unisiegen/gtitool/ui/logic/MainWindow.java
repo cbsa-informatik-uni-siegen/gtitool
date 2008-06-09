@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
+import javax.swing.JScrollBar;
+import javax.swing.table.JTableHeader;
 
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
@@ -37,6 +39,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -49,8 +52,11 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
+import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
+import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.RecentlyUsedMenuItem;
 
@@ -286,7 +292,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // second view
     this.jGTIMainSplitPane = this.gui.getJGTIMainSplitPane ();
     this.jGTIMainSplitPane.setMainWindowForm ( this.gui );
-    this.jGTIMainSplitPane.setSecondViewActive ( false );
 
     try
     {
@@ -363,6 +368,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
     };
+
+    // second view
+    boolean secondViewUsed = PreferenceManager.getInstance ()
+        .getSeconsViewUsed ();
+    if ( this.gui.getJCheckBoxMenuItemSecondView ().isSelected () == secondViewUsed )
+    {
+      this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( secondViewUsed );
+      handleSecondViewStateChanged ();
+    }
+    else
+    {
+      this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( secondViewUsed );
+    }
   }
 
 
@@ -767,6 +785,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       new LayoutManager ( machinePanel.getModel (), machinePanel
           .getRedoUndoHandler () ).doLayout ();
     }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -873,24 +895,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .removeSelectedEditorPanel ();
 
     // check if all editor panels are closed
-    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel () == null )
-    {
-      removeButtonState ( ButtonState.ENABLED_GENERAL );
-      removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-      removeButtonState ( ButtonState.ENABLED_VALIDATE );
-      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-      removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
-      removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
-      removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
-      removeButtonState ( ButtonState.ENABLED_UNDO );
-      removeButtonState ( ButtonState.ENABLED_REDO );
-      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
-      removeButtonState ( ButtonState.VISIBLE_MACHINE );
-      removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
-      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
-    }
-
     handleTabbedPaneStateChanged ();
 
     return true;
@@ -1326,7 +1330,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         dialog.show ();
       }
     }
-
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -1624,7 +1631,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     PreferenceManager.getInstance ().setRecentlyUsedFilesItem (
         new RecentlyUsedFilesItem ( files ) );
 
-    // System exit
+    // second view
+    PreferenceManager.getInstance ().setSecondViewUsed (
+        this.gui.getJCheckBoxMenuItemSecondView ().isSelected () );
+
+    // system exit
     System.exit ( 0 );
   }
 
@@ -1741,6 +1752,219 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handles the mouse released event on a second view component.
+   * 
+   * @param event The {@link MouseEvent}.
+   */
+  public final void handleSecondViewMouseReleased ( MouseEvent event )
+  {
+    logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+        "handle second view mouse released" );//$NON-NLS-1$
+
+    if ( event.getSource () instanceof JGTITabbedPane )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft () == event.getSource () )
+      {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+        handleTabbedPaneStateChanged ();
+        return;
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight () == event.getSource () )
+      {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+        handleTabbedPaneStateChanged ();
+        return;
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JGTIGraph )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getJGTIGraph () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getJGTIGraph () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JGTITable )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTITableMachine == event.getSource ()
+            || machinePanel.getGUI ().jGTITableMachinePDA == event.getSource ()
+            || machinePanel.getGUI ().jGTITableErrors == event.getSource ()
+            || machinePanel.getGUI ().jGTITableWarnings == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTITableMachine == event.getSource ()
+            || machinePanel.getGUI ().jGTITableMachinePDA == event.getSource ()
+            || machinePanel.getGUI ().jGTITableErrors == event.getSource ()
+            || machinePanel.getGUI ().jGTITableWarnings == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JScrollBar )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneMachine
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneMachinePDA
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTIScrollPaneErrors
+            .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneGraph
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneMachine
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneMachinePDA
+                .getHorizontalScrollBar () == event.getSource ()
+            || machinePanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+    }
+    else if ( event.getSource () instanceof JTableHeader )
+    {
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTITableMachine.getTableHeader () == event
+            .getSource ()
+            || machinePanel.getGUI ().jGTITableMachinePDA.getTableHeader () == event
+                .getSource ()
+            || machinePanel.getGUI ().jGTITableErrors.getTableHeader () == event
+                .getSource ()
+            || machinePanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( machinePanel.getGUI ().jGTITableMachine.getTableHeader () == event
+            .getSource ()
+            || machinePanel.getGUI ().jGTITableMachinePDA.getTableHeader () == event
+                .getSource ()
+            || machinePanel.getGUI ().jGTITableErrors.getTableHeader () == event
+                .getSource ()
+            || machinePanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+    }
+    else
+    {
+      throw new IllegalArgumentException ( "unsupported source: " //$NON-NLS-1$
+          + event.getSource () );
+    }
+  }
+
+
+  /**
    * Handles second view state changes.
    */
   public final void handleSecondViewStateChanged ()
@@ -1764,8 +1988,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new IllegalArgumentException ( "unsupported source" ); //$NON-NLS-1$
     }
-    this.jGTIMainSplitPane
-        .setActiveEditor ( ( JGTIEditorPanelTabbedPane ) event.getSource () );
+
+    // second view
+    handleSecondViewMouseReleased ( event );
 
     int tabIndex = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getUI ().tabForCoordinate (
@@ -1805,21 +2030,29 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
+    // no panel
     if ( panel == null )
     {
-      removeButtonState ( ButtonState.ENABLED_HISTORY );
-      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
-      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+      removeButtonState ( ButtonState.ENABLED_GENERAL );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
+      removeButtonState ( ButtonState.ENABLED_VALIDATE );
+      removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+      removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
+      removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
+      removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+      removeButtonState ( ButtonState.ENABLED_UNDO );
+      removeButtonState ( ButtonState.ENABLED_REDO );
+      removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
+      removeButtonState ( ButtonState.VISIBLE_MACHINE );
+      removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
-
-      // Save status
       removeButtonState ( ButtonState.ENABLED_SAVE );
     }
+    // MachinePanel
     else
     {
-      // MachinePanel
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -2023,10 +2256,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     for ( EditorPanel panel : this.jGTIMainSplitPane
         .getJGTIEditorPanelTabbedPane () )
     {
-      if ( ( panel instanceof MachinePanel ) )
+      if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
-
         machinePanel.handleToolbarAddState ( state );
       }
     }
@@ -2046,7 +2278,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
-
         machinePanel.handleToolbarEnd ( state );
       }
     }
@@ -2066,7 +2297,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
-
         machinePanel.handleToolbarMouse ( state );
       }
     }
@@ -2086,7 +2316,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( ( panel instanceof MachinePanel ) )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
-
         machinePanel.handleToolbarStart ( state );
       }
     }
@@ -2414,7 +2643,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
-
     machinePanel.handleWordNextStep ();
   }
 

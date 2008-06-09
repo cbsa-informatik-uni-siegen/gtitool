@@ -59,15 +59,15 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         jGTISplitPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIPanelMachine = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTISplitPaneTable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTIPanelDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIScrollPaneDiagramm = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIPanelGraph = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIPanelTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTISplitPanePDATable = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIPanelTransitionTable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIScrollPaneTable = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneMachine = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableMachine = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIPanelPDATable = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
-        jGTIScrollPaneTablePDA = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableMachinePDA = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIPanelConsole = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTITabbedPaneConsole = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
@@ -84,20 +84,20 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         jGTISplitPaneConsole.setResizeWeight(1.0);
         jGTISplitPaneTable.setDividerLocation(400);
         jGTISplitPaneTable.setResizeWeight(1.0);
-        jGTIScrollPaneDiagramm.setBorder(null);
+        jGTIScrollPaneGraph.setBorder(null);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanelDiagramm.add(jGTIScrollPaneDiagramm, gridBagConstraints);
+        jGTIPanelGraph.add(jGTIScrollPaneGraph, gridBagConstraints);
 
-        jGTISplitPaneTable.setLeftComponent(jGTIPanelDiagramm);
+        jGTISplitPaneTable.setLeftComponent(jGTIPanelGraph);
 
         jGTISplitPanePDATable.setDividerLocation(100);
         jGTISplitPanePDATable.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jGTIScrollPaneTable.setBorder(null);
+        jGTIScrollPaneMachine.setBorder(null);
         jGTITableMachine.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableMachineMouseExited(evt);
@@ -109,7 +109,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
             }
         });
 
-        jGTIScrollPaneTable.setViewportView(jGTITableMachine);
+        jGTIScrollPaneMachine.setViewportView(jGTITableMachine);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -117,11 +117,11 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanelTransitionTable.add(jGTIScrollPaneTable, gridBagConstraints);
+        jGTIPanelTransitionTable.add(jGTIScrollPaneMachine, gridBagConstraints);
 
         jGTISplitPanePDATable.setLeftComponent(jGTIPanelTransitionTable);
 
-        jGTIScrollPaneTablePDA.setBorder(null);
+        jGTIScrollPaneMachinePDA.setBorder(null);
         jGTITableMachinePDA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jGTITableMachinePDAMouseExited(evt);
@@ -133,7 +133,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
             }
         });
 
-        jGTIScrollPaneTablePDA.setViewportView(jGTITableMachinePDA);
+        jGTIScrollPaneMachinePDA.setViewportView(jGTITableMachinePDA);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -141,7 +141,7 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jGTIPanelPDATable.add(jGTIScrollPaneTablePDA, gridBagConstraints);
+        jGTIPanelPDATable.add(jGTIScrollPaneMachinePDA, gridBagConstraints);
 
         jGTISplitPanePDATable.setRightComponent(jGTIPanelPDATable);
 
@@ -258,15 +258,15 @@ public class MachinePanelForm extends JPanel implements GUIClass <MachinePanel>
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConsole;
-    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelDiagramm;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachine;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPDATable;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTable;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelTransitionTable;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneDiagramm;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneErrors;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneTable;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneTablePDA;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneMachinePDA;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneWarnings;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneConsole;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPanePDATable;

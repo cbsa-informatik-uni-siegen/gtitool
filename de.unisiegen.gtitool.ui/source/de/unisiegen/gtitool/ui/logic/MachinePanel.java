@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
@@ -445,9 +446,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
                 ( ( Integer ) event.getNewValue () ).intValue () );
           }
         } );
+
     initialize ();
     initializeMachineTable ();
     initializePDATable ();
+    initializeSecondView ();
+
     addListener ();
     addGraphListener ();
 
@@ -1234,12 +1238,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       ArrayList < Transition > transitionList = new ArrayList < Transition > (
           1 );
-      Transition transition = this.model.getPDATableModel ()
-      .getTransition ( index );
+      Transition transition = this.model.getPDATableModel ().getTransition (
+          index );
       transitionList.add ( transition );
       highlightTransitionActive ( transitionList );
-      
-      ArrayList <Symbol> symbolList = new ArrayList <Symbol>(transition.size ());
+
+      ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
+          .size () );
       symbolList.addAll ( transition.getSymbol () );
       highlightSymbolActive ( symbolList );
     }
@@ -1827,22 +1832,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Highlight the affected {@link Symbol}s with the error highlight.
-   * 
-   * @param symbols List with all {@link Symbol}s that are affected.
-   */
-  private final void highlightSymbolError ( ArrayList < Symbol > symbols )
-  {
-    for ( Symbol current : symbols )
-    {
-      current.setError ( true );
-    }
-
-    performCellsChanged ();
-  }
-
-
-  /**
    * Highlight the affected {@link Symbol}s with the active highlight.
    * 
    * @param symbols List with all {@link Symbol}s that are affected.
@@ -1852,6 +1841,22 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     for ( Symbol current : symbols )
     {
       current.setActive ( true );
+    }
+
+    performCellsChanged ();
+  }
+
+
+  /**
+   * Highlight the affected {@link Symbol}s with the error highlight.
+   * 
+   * @param symbols List with all {@link Symbol}s that are affected.
+   */
+  private final void highlightSymbolError ( ArrayList < Symbol > symbols )
+  {
+    for ( Symbol current : symbols )
+    {
+      current.setError ( true );
     }
 
     performCellsChanged ();
@@ -1907,7 +1912,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Initialize the {@link MachinePanel}.
+   * Initializes the {@link MachinePanel}.
    */
   private final void initialize ()
   {
@@ -1953,7 +1958,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     }
 
-    this.gui.jGTIScrollPaneDiagramm.setViewportView ( this.jGTIGraph );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraph );
 
     this.errorTableModel = new MachineConsoleTableModel ();
     this.gui.jGTITableErrors.setModel ( this.errorTableModel );
@@ -2082,6 +2087,61 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         .setReorderingAllowed ( false );
     this.gui.jGTITableMachinePDA
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+  }
+
+
+  /**
+   * Initializes the second view .
+   */
+  private final void initializeSecondView ()
+  {
+    MouseListener listener = new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        MachinePanel.this.mainWindowForm.getLogic ()
+            .handleSecondViewMouseReleased ( event );
+      }
+    };
+
+    this.jGTIGraph.addMouseListener ( listener );
+    this.gui.jGTIScrollPaneGraph.getHorizontalScrollBar ().addMouseListener (
+        listener );
+    this.gui.jGTIScrollPaneGraph.getVerticalScrollBar ().addMouseListener (
+        listener );
+
+    this.gui.jGTITableMachine.addMouseListener ( listener );
+    this.gui.jGTITableMachine.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTIScrollPaneMachine.getHorizontalScrollBar ().addMouseListener (
+        listener );
+    this.gui.jGTIScrollPaneMachine.getVerticalScrollBar ().addMouseListener (
+        listener );
+
+    this.gui.jGTITableMachinePDA.addMouseListener ( listener );
+    this.gui.jGTITableMachinePDA.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTIScrollPaneMachinePDA.getHorizontalScrollBar ()
+        .addMouseListener ( listener );
+    this.gui.jGTIScrollPaneMachinePDA.getVerticalScrollBar ().addMouseListener (
+        listener );
+
+    this.gui.jGTITabbedPaneConsole.addMouseListener ( listener );
+
+    this.gui.jGTITableErrors.addMouseListener ( listener );
+    this.gui.jGTITableErrors.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTIScrollPaneErrors.getHorizontalScrollBar ().addMouseListener (
+        listener );
+    this.gui.jGTIScrollPaneErrors.getVerticalScrollBar ().addMouseListener (
+        listener );
+
+    this.gui.jGTITableWarnings.addMouseListener ( listener );
+    this.gui.jGTITableWarnings.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTIScrollPaneWarnings.getHorizontalScrollBar ().addMouseListener (
+        listener );
+    this.gui.jGTIScrollPaneWarnings.getVerticalScrollBar ().addMouseListener (
+        listener );
   }
 
 

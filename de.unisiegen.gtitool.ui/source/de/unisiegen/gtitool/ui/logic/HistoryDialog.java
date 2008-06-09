@@ -39,6 +39,12 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
+   * The max calculating step.
+   */
+  private static final int MAX_CALCULATING_STEP = 10000;
+
+
+  /**
    * The {@link HistoryDialogForm}.
    */
   private HistoryDialogForm gui;
@@ -66,6 +72,12 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
    * The {@link HistoryPath} list.
    */
   private ArrayList < HistoryPath > historyPathList;
+
+
+  /**
+   * The current calculating step.
+   */
+  private int calculatingStep = -1;
 
 
   /**
@@ -152,12 +164,19 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
    */
   private final void calculate ()
   {
+    this.calculatingStep++ ;
     if ( this.remainingHistoryPathList.size () == 0 )
     {
       return;
     }
 
     HistoryPathPart path = this.remainingHistoryPathList.remove ( 0 );
+
+    if ( this.calculatingStep >= MAX_CALCULATING_STEP )
+    {
+      logger.error ( "calculate", "max calculating step reached" ); //$NON-NLS-1$ //$NON-NLS-2$
+      return;
+    }
 
     ArrayList < TransitionSymbolPair > transitionList = path
         .getTransitionList ();
@@ -196,7 +215,14 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
         HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
             newReadedSymbolList );
-        this.remainingHistoryPathList.add ( newPath );
+        if ( newPath.isCycleDetected () )
+        {
+          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else
+        {
+          this.remainingHistoryPathList.add ( newPath );
+        }
       }
       else if ( ( readedSymbolList.size () > 0 )
           && currentTransition.contains ( readedSymbolList
@@ -216,7 +242,14 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
         HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
             newReadedSymbolList );
-        this.remainingHistoryPathList.add ( newPath );
+        if ( newPath.isCycleDetected () )
+        {
+          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else
+        {
+          this.remainingHistoryPathList.add ( newPath );
+        }
       }
     }
 

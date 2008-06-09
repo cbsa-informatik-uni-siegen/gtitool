@@ -99,4 +99,59 @@ public final class HistoryPathPart
   {
     return this.transitionSymbolList;
   }
+
+
+  /**
+   * Returns true if there is a cycle detected, otherwise false.
+   * 
+   * @return True if there is a cycle detected, otherwise false.
+   */
+  public final boolean isCycleDetected ()
+  {
+    ArrayList < State > stateList = new ArrayList < State > ();
+    if ( this.state != null )
+    {
+      stateList.add ( this.state );
+    }
+
+    for ( TransitionSymbolPair current : this.transitionSymbolList )
+    {
+      if ( stateList.contains ( current.getFirst ().getStateBegin () ) )
+      {
+        return true;
+      }
+      stateList.add ( current.getFirst ().getStateBegin () );
+    }
+
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Object#toString()
+   */
+  @Override
+  public final String toString ()
+  {
+    StringBuilder result = new StringBuilder ();
+
+    if ( this.state != null )
+    {
+      result.append ( this.state.toString () );
+    }
+
+    for ( int i = this.transitionSymbolList.size () - 1 ; i >= 0 ; i-- )
+    {
+      result.append ( this.transitionSymbolList.get ( i ).getFirst ()
+          .getStateBegin ().toString () );
+      if ( i > 0 )
+      {
+        result.append ( " -> " ); //$NON-NLS-1$
+      }
+    }
+
+    return result.toString ();
+  }
 }

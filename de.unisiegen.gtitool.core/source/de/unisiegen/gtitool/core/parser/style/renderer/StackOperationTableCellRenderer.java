@@ -29,7 +29,10 @@ public final class StackOperationTableCellRenderer extends
   private static final long serialVersionUID = -6137416394201747847L;
 
 
-
+  /**
+   * The {@link PrettyStringComponent}.
+   */
+  private PrettyStringComponent prettyStringComponent;
 
 
   /**
@@ -38,6 +41,7 @@ public final class StackOperationTableCellRenderer extends
   public StackOperationTableCellRenderer ()
   {
     super ();
+    this.prettyStringComponent = new PrettyStringComponent ();
   }
 
 
@@ -68,22 +72,24 @@ public final class StackOperationTableCellRenderer extends
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
     }
 
-    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
+    this.prettyStringComponent.setPrettyString ( prettyString );
 
     if ( isSelected )
     {
-      component.setBackground ( table.getSelectionBackground () );
-      component.setForeground ( table.getSelectionForeground () );
+      this.prettyStringComponent.setBackground ( table
+          .getSelectionBackground () );
+      this.prettyStringComponent.setForeground ( table
+          .getSelectionForeground () );
     }
     else
     {
-      component.setBackground ( table.getBackground () );
-      component.setForeground ( table.getForeground () );
+      this.prettyStringComponent.setBackground ( table.getBackground () );
+      this.prettyStringComponent.setForeground ( table.getForeground () );
     }
 
-    component.setEnabled ( table.isEnabled () );
-    component.setFont ( table.getFont () );
+    this.prettyStringComponent.setEnabled ( table.isEnabled () );
+    this.prettyStringComponent.setFont ( table.getFont () );
 
-    return component;
+    return this.prettyStringComponent;
   }
 }

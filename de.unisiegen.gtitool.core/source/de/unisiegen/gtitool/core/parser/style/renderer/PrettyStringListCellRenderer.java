@@ -16,7 +16,8 @@ import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
  * The {@link PrettyPrintable} {@link ListCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: PrettyStringListCellRenderer.java 811 2008-04-18 13:52:03Z
+ *          fehler $
  */
 public class PrettyStringListCellRenderer extends DefaultListCellRenderer
 {
@@ -28,11 +29,18 @@ public class PrettyStringListCellRenderer extends DefaultListCellRenderer
 
 
   /**
+   * The {@link PrettyStringComponent}.
+   */
+  private PrettyStringComponent prettyStringComponent;
+
+
+  /**
    * Allocates a new {@link PrettyStringListCellRenderer}.
    */
   public PrettyStringListCellRenderer ()
   {
     super ();
+    this.prettyStringComponent = new PrettyStringComponent ();
   }
 
 
@@ -62,23 +70,26 @@ public class PrettyStringListCellRenderer extends DefaultListCellRenderer
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
     }
 
-    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
+    this.prettyStringComponent.setPrettyString ( prettyString );
 
-    component.setComponentOrientation ( list.getComponentOrientation () );
+    this.prettyStringComponent.setComponentOrientation ( list
+        .getComponentOrientation () );
     if ( isSelected )
     {
-      component.setBackground ( list.getSelectionBackground () );
-      component.setForeground ( list.getSelectionForeground () );
+      this.prettyStringComponent
+          .setBackground ( list.getSelectionBackground () );
+      this.prettyStringComponent
+          .setForeground ( list.getSelectionForeground () );
     }
     else
     {
-      component.setBackground ( list.getBackground () );
-      component.setForeground ( list.getForeground () );
+      this.prettyStringComponent.setBackground ( list.getBackground () );
+      this.prettyStringComponent.setForeground ( list.getForeground () );
     }
 
-    component.setEnabled ( list.isEnabled () );
-    component.setFont ( list.getFont () );
+    this.prettyStringComponent.setEnabled ( list.isEnabled () );
+    this.prettyStringComponent.setFont ( list.getFont () );
 
-    return component;
+    return this.prettyStringComponent;
   }
 }

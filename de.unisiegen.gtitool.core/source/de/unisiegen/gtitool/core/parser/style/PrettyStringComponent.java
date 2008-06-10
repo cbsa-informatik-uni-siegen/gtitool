@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -26,6 +27,12 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * The used font.
+   */
+  private static final Font FONT = new Font ( "Dialog", Font.PLAIN, 12 ); //$NON-NLS-1$
+
+
+  /**
    * The {@link PrettyString} of this component.
    */
   private PrettyString prettyString;
@@ -44,9 +51,12 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
-   * The used font.
+   * Initializes the {@link PrettyStringComponent}.
    */
-  private static final Font FONT = new Font ( "Dialog", Font.PLAIN, 12 ); //$NON-NLS-1$
+  public PrettyStringComponent ()
+  {
+    this ( null );
+  }
 
 
   /**
@@ -60,8 +70,21 @@ public final class PrettyStringComponent extends JLabel
     this.prettyString = prettyString;
     setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
 
-    // Used to calculate the preferered size.
-    setText ( "Component" ); //$NON-NLS-1$
+    // used to calculate the preferered size
+    setText ( "PrettyString" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see JComponent#getToolTipText(MouseEvent)
+   */
+  @Override
+  public final String getToolTipText ( @SuppressWarnings ( "unused" )
+  MouseEvent event )
+  {
+    return this.prettyString.toHTMLString ();
   }
 
 
@@ -102,10 +125,33 @@ public final class PrettyStringComponent extends JLabel
     g.setFont ( FONT );
     FontMetrics metrics = g.getFontMetrics ();
 
+    PrettyString usedPrettyString = new PrettyString ();
+    usedPrettyString.addPrettyString ( this.prettyString );
+
+    // short version
+    if ( metrics.stringWidth ( this.prettyString.toString () ) > getWidth () )
+    {
+      String dots = " ..."; //$NON-NLS-1$
+
+      while ( ( !usedPrettyString.isEmpty () )
+          && ( ( metrics.stringWidth ( usedPrettyString.toString () + dots ) ) > getWidth () ) )
+      {
+        usedPrettyString.removeLastPrettyToken ();
+      }
+
+      // if empty do not use the first space
+      if ( usedPrettyString.isEmpty () )
+      {
+        dots = "..."; //$NON-NLS-1$
+      }
+
+      usedPrettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
+    }
+
     int dx = 0;
     if ( this.centerHorizontal )
     {
-      dx = ( getWidth () - metrics.stringWidth ( this.prettyString.toString () ) ) / 2;
+      dx = ( getWidth () - metrics.stringWidth ( usedPrettyString.toString () ) ) / 2;
     }
 
     int y = getHeight () - 3;
@@ -114,7 +160,7 @@ public final class PrettyStringComponent extends JLabel
       y = y - ( ( getHeight () - metrics.getHeight () ) / 2 );
     }
 
-    for ( PrettyToken currentToken : this.prettyString.getPrettyToken () )
+    for ( PrettyToken currentToken : usedPrettyString.getPrettyToken () )
     {
       Font font = null;
 
@@ -169,4 +215,29 @@ public final class PrettyStringComponent extends JLabel
   {
     this.centerVertical = centerVertical;
   }
+
+
+  /**
+   * Returns the prettyString.
+   * 
+   * @return The prettyString.
+   * @see #prettyString
+   */
+  public final PrettyString getPrettyString ()
+  {
+    return this.prettyString;
+  }
+
+
+  /**
+   * Sets the prettyString.
+   * 
+   * @param prettyString The prettyString to set.
+   * @see #prettyString
+   */
+  public final void setPrettyString ( PrettyString prettyString )
+  {
+    this.prettyString = prettyString;
+  }
+
 }

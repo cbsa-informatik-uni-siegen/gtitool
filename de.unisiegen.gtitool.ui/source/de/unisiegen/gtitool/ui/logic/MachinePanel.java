@@ -3092,13 +3092,10 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     if ( this.machine.isEveryStateUnique () )
     {
       this.gui.jGTITableMachine.setEnabled ( true );
-      this.gui.jGTITableMachine.setToolTipText ( null );
     }
     else
     {
       this.gui.jGTITableMachine.setEnabled ( false );
-      this.gui.jGTITableMachine.setToolTipText ( Messages
-          .getString ( "MachinePanel.TableDisabled" ) ); //$NON-NLS-1$
     }
   }
 

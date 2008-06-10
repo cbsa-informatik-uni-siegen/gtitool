@@ -18,7 +18,8 @@ import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
  * The {@link PrettyString} {@link JTableHeader} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: PrettyStringTableHeaderCellRenderer.java 811 2008-04-18
+ *          13:52:03Z fehler $
  */
 public final class PrettyStringTableHeaderCellRenderer extends
     DefaultTableCellRenderer
@@ -31,11 +32,18 @@ public final class PrettyStringTableHeaderCellRenderer extends
 
 
   /**
+   * The {@link PrettyStringComponent}.
+   */
+  private PrettyStringComponent prettyStringComponent;
+
+
+  /**
    * Allocates a new {@link PrettyStringTableHeaderCellRenderer}.
    */
   public PrettyStringTableHeaderCellRenderer ()
   {
     super ();
+    this.prettyStringComponent = new PrettyStringComponent ();
   }
 
 
@@ -67,17 +75,19 @@ public final class PrettyStringTableHeaderCellRenderer extends
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
     }
 
-    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
-    component.setCenterHorizontal ( true );
-    component.setCenterVertical ( true );
+    this.prettyStringComponent.setPrettyString ( prettyString );
+
+    this.prettyStringComponent.setCenterHorizontal ( true );
+    this.prettyStringComponent.setCenterVertical ( true );
 
     JTableHeader header = table.getTableHeader ();
-    component.setForeground ( header.getForeground () );
-    component.setBackground ( header.getBackground () );
-    component.setFont ( header.getFont () );
-    component.setEnabled ( table.isEnabled () );
-    component.setBorder ( UIManager.getBorder ( "TableHeader.cellBorder" ) ); //$NON-NLS-1$
+    this.prettyStringComponent.setForeground ( header.getForeground () );
+    this.prettyStringComponent.setBackground ( header.getBackground () );
+    this.prettyStringComponent.setFont ( header.getFont () );
+    this.prettyStringComponent.setEnabled ( table.isEnabled () );
+    this.prettyStringComponent.setBorder ( UIManager
+        .getBorder ( "TableHeader.cellBorder" ) ); //$NON-NLS-1$
 
-    return component;
+    return this.prettyStringComponent;
   }
 }

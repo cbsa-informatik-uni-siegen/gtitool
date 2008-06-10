@@ -30,11 +30,18 @@ public final class PrettyStringTableCellRenderer extends
 
 
   /**
+   * The {@link PrettyStringComponent}.
+   */
+  private PrettyStringComponent prettyStringComponent;
+
+
+  /**
    * Allocates a new {@link PrettyStringTableCellRenderer}.
    */
   public PrettyStringTableCellRenderer ()
   {
     super ();
+    this.prettyStringComponent = new PrettyStringComponent ();
   }
 
 
@@ -65,22 +72,24 @@ public final class PrettyStringTableCellRenderer extends
       throw new IllegalArgumentException ( "the value can not be renderer" ); //$NON-NLS-1$
     }
 
-    PrettyStringComponent component = new PrettyStringComponent ( prettyString );
+    this.prettyStringComponent.setPrettyString ( prettyString );
 
     if ( isSelected )
     {
-      component.setBackground ( table.getSelectionBackground () );
-      component.setForeground ( table.getSelectionForeground () );
+      this.prettyStringComponent.setBackground ( table
+          .getSelectionBackground () );
+      this.prettyStringComponent.setForeground ( table
+          .getSelectionForeground () );
     }
     else
     {
-      component.setBackground ( table.getBackground () );
-      component.setForeground ( table.getForeground () );
+      this.prettyStringComponent.setBackground ( table.getBackground () );
+      this.prettyStringComponent.setForeground ( table.getForeground () );
     }
 
-    component.setEnabled ( table.isEnabled () );
-    component.setFont ( table.getFont () );
+    this.prettyStringComponent.setEnabled ( table.isEnabled () );
+    this.prettyStringComponent.setFont ( table.getFont () );
 
-    return component;
+    return this.prettyStringComponent;
   }
 }

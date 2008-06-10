@@ -58,7 +58,7 @@ public final class DefaultState implements State
   /**
    * Flag that indicates if the short name is used for this {@link State}
    */
-  private boolean shortNameUsed;
+  private boolean shortNameUsed = false;
 
 
   /**

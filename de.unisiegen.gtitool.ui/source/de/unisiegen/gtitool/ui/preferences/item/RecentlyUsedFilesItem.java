@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public class RecentlyUsedFilesItem
+public final class RecentlyUsedFilesItem
 {
 
   /**

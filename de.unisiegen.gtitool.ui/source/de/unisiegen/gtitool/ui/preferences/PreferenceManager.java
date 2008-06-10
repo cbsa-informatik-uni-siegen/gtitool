@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
@@ -22,6 +23,7 @@ import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 
 
 /**
@@ -400,24 +402,42 @@ public final class PreferenceManager extends
    */
   public final OpenedFilesItem getOpenedFilesItem ()
   {
-    ArrayList < File > files = new ArrayList < File > ();
+    ArrayList < ObjectPair < File, ActiveEditor > > files = new ArrayList < ObjectPair < File, ActiveEditor > > ();
+
     String end = "no item found"; //$NON-NLS-1$
     int count = 0;
     while ( true )
     {
       String file = this.preferences.get ( "MainWindow.OpenedFiles" + count, //$NON-NLS-1$
           end );
-      if ( file.equals ( end ) )
+      String editor = this.preferences.get (
+          "MainWindow.OpenedFilesEditor" + count, //$NON-NLS-1$
+          end );
+
+      if ( file.equals ( end ) || editor.equals ( end ) )
       {
         break;
       }
-      files.add ( new File ( file ) );
+
+      if ( editor.equals ( "right" ) ) //$NON-NLS-1$
+      {
+        files.add ( new ObjectPair < File, ActiveEditor > ( new File ( file ),
+            ActiveEditor.RIGHT_EDITOR ) );
+      }
+      else
+      {
+        files.add ( new ObjectPair < File, ActiveEditor > ( new File ( file ),
+            ActiveEditor.LEFT_EDITOR ) );
+      }
+
       count++ ;
     }
+
     String activeFileName = this.preferences.get (
         "MainWindow.OpenedActiveFile", "" ); //$NON-NLS-1$ //$NON-NLS-2$
     File activeFile = activeFileName.equals ( "" ) ? null //$NON-NLS-1$
         : new File ( activeFileName );
+
     return new OpenedFilesItem ( files, activeFile );
   }
 
@@ -764,12 +784,22 @@ public final class PreferenceManager extends
     // Set the new data
     for ( int i = 0 ; i < openedFilesItem.getFiles ().size () ; i++ )
     {
-      logger.debug ( "setOpenedFilesItem", "set opened file " + Messages.QUOTE//$NON-NLS-1$//$NON-NLS-2$
-          + i + Messages.QUOTE + " to " + Messages.QUOTE//$NON-NLS-1$
-          + openedFilesItem.getFiles ().get ( i ).getAbsolutePath ()
-          + Messages.QUOTE );
+      logger.debug ( "setOpenedFilesItem", "set opened file "//$NON-NLS-1$ //$NON-NLS-2$
+          + Messages.QUOTE
+          + i
+          + Messages.QUOTE
+          + " to "//$NON-NLS-1$
+          + Messages.QUOTE
+          + openedFilesItem.getFiles ().get ( i ).getFirst ()
+              .getAbsolutePath () + Messages.QUOTE + " on the "//$NON-NLS-1$
+          + openedFilesItem.getFiles ().get ( i ).getSecond () );
+
       this.preferences.put ( "MainWindow.OpenedFiles" + i, openedFilesItem //$NON-NLS-1$
-          .getFiles ().get ( i ).getAbsolutePath () );
+          .getFiles ().get ( i ).getFirst ().getAbsolutePath () );
+
+      this.preferences.put ( "MainWindow.OpenedFilesEditor" + i,//$NON-NLS-1$
+          openedFilesItem.getFiles ().get ( i ).getSecond ().equals (
+              ActiveEditor.RIGHT_EDITOR ) ? "right" : "left" );//$NON-NLS-1$ //$NON-NLS-2$
     }
 
     if ( openedFilesItem.getActiveFile () == null )

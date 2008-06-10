@@ -4,11 +4,14 @@ package de.unisiegen.gtitool.ui.swing.specialized;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JSplitPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
 
@@ -19,8 +22,36 @@ import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class JGTIMainSplitPane extends JSplitPane
+public final class JGTIMainSplitPane extends JSplitPane implements
+    Iterable < EditorPanel >
 {
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Iterable#iterator()
+   */
+  @SuppressWarnings ( "unchecked" )
+  public final Iterator < EditorPanel > iterator ()
+  {
+    ArrayList < EditorPanel > editorPanelList = new ArrayList < EditorPanel > (
+        getComponentCount () );
+
+    for ( EditorPanel current : this.mainWindowForm
+        .getJGTIEditorPanelTabbedPaneLeft () )
+    {
+      editorPanelList.add ( current );
+    }
+
+    for ( EditorPanel current : this.mainWindowForm
+        .getJGTIEditorPanelTabbedPaneRight () )
+    {
+      editorPanelList.add ( current );
+    }
+
+    return editorPanelList.iterator ();
+  }
+
 
   /**
    * The {@link ActiveEditor} {@link Enum}.
@@ -39,6 +70,28 @@ public final class JGTIMainSplitPane extends JSplitPane
      * The right {@link JGTIEditorPanelTabbedPane} is active.
      */
     RIGHT_EDITOR;
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see Enum#toString()
+     */
+    @Override
+    public final String toString ()
+    {
+      switch ( this )
+      {
+        case LEFT_EDITOR :
+        {
+          return "left editor"; //$NON-NLS-1$
+        }
+        case RIGHT_EDITOR :
+        {
+          return "right editor";//$NON-NLS-1$
+        }
+      }
+      throw new RuntimeException ( "unsupported editor" );//$NON-NLS-1$
+    }
   }
 
 
@@ -114,6 +167,28 @@ public final class JGTIMainSplitPane extends JSplitPane
       return this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ();
     }
     throw new RuntimeException ( "unsupported editor" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Returns the left {@link JGTIEditorPanelTabbedPane}.
+   * 
+   * @return The left {@link JGTIEditorPanelTabbedPane}.
+   */
+  public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPaneLeft ()
+  {
+    return this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft ();
+  }
+
+
+  /**
+   * Returns the right {@link JGTIEditorPanelTabbedPane}.
+   * 
+   * @return The right {@link JGTIEditorPanelTabbedPane}.
+   */
+  public final JGTIEditorPanelTabbedPane getJGTIEditorPanelTabbedPaneRight ()
+  {
+    return this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ();
   }
 
 

@@ -54,14 +54,12 @@ public final class RecentlyUsedMenuItem extends JMenuItem
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent arg0 )
+      ActionEvent event )
       {
         RecentlyUsedMenuItem.this.mainWindow.openFile (
             RecentlyUsedMenuItem.this.file, true );
       }
-
     } );
-
   }
 
 

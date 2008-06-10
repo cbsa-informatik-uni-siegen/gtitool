@@ -4,6 +4,9 @@ package de.unisiegen.gtitool.ui.preferences.item;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.unisiegen.gtitool.core.util.ObjectPair;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
+
 
 /**
  * The class which handles the opened files and the index of the last active
@@ -12,7 +15,7 @@ import java.util.ArrayList;
  * @author Christian Fehler
  * @version $Id$
  */
-public final class OpenedFilesItem extends RecentlyUsedFilesItem
+public final class OpenedFilesItem
 {
 
   /**
@@ -22,16 +25,41 @@ public final class OpenedFilesItem extends RecentlyUsedFilesItem
 
 
   /**
+   * The recently used files.
+   */
+  private ArrayList < ObjectPair < File, ActiveEditor > > files;
+
+
+  /**
    * Allocates a new {@link OpenedFilesItem}.
    * 
    * @param files The opened files.
    * @param activeFile The last active {@link File}.
    */
-  public OpenedFilesItem ( ArrayList < File > files, File activeFile )
+  public OpenedFilesItem (
+      ArrayList < ObjectPair < File, ActiveEditor > > files, File activeFile )
   {
-    super ( files );
-    // ActiveFile
+    // files
+    if ( files == null )
+    {
+      throw new NullPointerException ( "files is null" ); //$NON-NLS-1$
+    }
+    this.files = files;
+
+    // active file
     this.activeFile = activeFile;
+  }
+
+
+  /**
+   * Returns the opened used files.
+   * 
+   * @return The opened used files.
+   * @see #files
+   */
+  public final ArrayList < ObjectPair < File, ActiveEditor > > getFiles ()
+  {
+    return this.files;
   }
 
 

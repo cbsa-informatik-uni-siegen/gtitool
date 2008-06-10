@@ -837,6 +837,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
       grammarPanel.handleAddProduction ();
     }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
   }
 
 
@@ -1849,6 +1853,32 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( grammarPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( grammarPanel.getJTabbedPaneConsole () == event.getSource () )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
     }
     else if ( event.getSource () instanceof JGTIGraph )
     {
@@ -1915,6 +1945,36 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           return;
         }
       }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTITableGrammar == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTITableGrammar == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTITableErrors == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
     }
     else if ( event.getSource () instanceof JScrollBar )
     {
@@ -1926,14 +1986,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( ( machinePanel.getGUI ().jGTIScrollPaneErrors
             .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneGraph
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneMachine
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneMachine
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneMachinePDA
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneMachinePDA
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
-                .getHorizontalScrollBar () == event.getSource () ) )
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () ) )
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
           handleTabbedPaneStateChanged ();
@@ -1948,14 +2018,72 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( ( machinePanel.getGUI ().jGTIScrollPaneErrors
             .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneGraph
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneGraph
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneMachine
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneMachine
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneMachinePDA
                 .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneMachinePDA
+                .getVerticalScrollBar () == event.getSource () )
             || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
-                .getHorizontalScrollBar () == event.getSource () ) )
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTIScrollPaneGrammar
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneGrammar
+                .getVerticalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneErrors
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTIScrollPaneGrammar
+            .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneGrammar
+                .getVerticalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneErrors
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneErrors
+                .getVerticalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
+                .getHorizontalScrollBar () == event.getSource () )
+            || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
+                .getVerticalScrollBar () == event.getSource () ) )
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
           handleTabbedPaneStateChanged ();
@@ -1998,6 +2126,42 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTITableErrors.getTableHeader () == event
                 .getSource () )
             || ( machinePanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTITableGrammar.getTableHeader () == event
+            .getSource () )
+            || ( grammarPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+                .getSource () )
+            || ( grammarPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
+                .getSource () ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+          return;
+        }
+      }
+      if ( this.gui.getJGTIEditorPanelTabbedPaneRight ()
+          .getSelectedEditorPanel () instanceof GrammarPanel )
+      {
+        GrammarPanel grammarPanel = ( GrammarPanel ) this.gui
+            .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+        if ( ( grammarPanel.getGUI ().jGTITableGrammar.getTableHeader () == event
+            .getSource () )
+            || ( grammarPanel.getGUI ().jGTITableErrors.getTableHeader () == event
+                .getSource () )
+            || ( grammarPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
                 .getSource () ) )
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );

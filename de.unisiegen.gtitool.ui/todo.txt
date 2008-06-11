@@ -6,10 +6,13 @@ CF		- Split View
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
 CF		- Erreichbare Zustände berechnen
 CF		- Convert: Vollständiger Automat
-CF		- Größe der Fenster speichern
 
 BM		- Parallel Loop Routing
 BM		- Minimieren: Highlighten, Outline, Fehler in der Logik
+BM		- Die Position und Größe des Miminieren Dialoges verwenden, ebenso die beiden
+		  DividerLocations, in den Preferencen ist alles vorbereitet. Vorsicht beim
+		  ersten Öffnen, da muss eine Fallunterscheidung gemacht werden, damit das Fenster
+		  zentriert wird, siehe ConvertMachineDialog.
 
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)

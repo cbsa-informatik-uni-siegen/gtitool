@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -1243,6 +1244,8 @@ public final class ConvertMachineDialog implements
 
     cancelAutoStepTimer ();
 
+    PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
+        this.gui );
     this.gui.dispose ();
   }
 
@@ -1284,6 +1287,8 @@ public final class ConvertMachineDialog implements
     this.machinePanel.getMainWindow ().handleNew (
         this.modelConverted.getElement (), true );
 
+    PreferenceManager.getInstance ().setConvertMachineDialogPreferences (
+        this.gui );
     this.gui.dispose ();
   }
 
@@ -2547,11 +2552,18 @@ public final class ConvertMachineDialog implements
   public final void show ()
   {
     logger.debug ( "show", "show the convert machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
-    int x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
-        - ( this.gui.getWidth () / 2 );
-    int y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
-        - ( this.gui.getHeight () / 2 );
-    this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
+
+    Rectangle rect = PreferenceManager.getInstance ()
+        .getConvertMachineDialogBounds ();
+    if ( rect.x == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X
+        || rect.y == PreferenceManager.DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y )
+    {
+      rect.x = this.parent.getBounds ().x + ( this.parent.getWidth () / 2 )
+          - ( this.gui.getWidth () / 2 );
+      rect.y = this.parent.getBounds ().y + ( this.parent.getHeight () / 2 )
+          - ( this.gui.getHeight () / 2 );
+    }
+    this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
   }
 

@@ -7,14 +7,20 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
+import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
@@ -93,6 +99,54 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default width of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_MACHINE_DIALOG_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_MACHINE_DIALOG_HEIGHT = 600;
+
+
+  /**
+   * The default x position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ConvertMachineDialog}.
+   */
+  public static final int DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+
+  /**
+   * The default width of the {@link MinimizeMachineDialog}.
+   */
+  public static final int DEFAULT_MINIMIZE_MACHINE_DIALOG_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link MinimizeMachineDialog}.
+   */
+  public static final int DEFAULT_MINIMIZE_MACHINE_DIALOG_HEIGHT = 600;
+
+
+  /**
+   * The default x position of the {@link MinimizeMachineDialog}.
+   */
+  public static final int DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link MinimizeMachineDialog}.
+   */
+  public static final int DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+
+  /**
    * The default console divider location.
    */
   public static final int DEFAULT_DIVIDER_LOCATION_CONSOLE = DEFAULT_HEIGHT / 2;
@@ -114,6 +168,18 @@ public final class PreferenceManager extends
    * The default convert outline machine divider location.
    */
   public static final int DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE = 700;
+
+
+  /**
+   * The default minimize machine divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_MINIMIZE_MACHINE = 250;
+
+
+  /**
+   * The default minimize outline machine divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_MINIMIZE_OUTLINE_MACHINE = 700;
 
 
   /**
@@ -266,6 +332,25 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the {@link ConvertMachineDialog} bounds.
+   * 
+   * @return The {@link ConvertMachineDialog} bounds.
+   */
+  public final Rectangle getConvertMachineDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "ConvertMachineDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "ConvertMachineDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_CONVERT_MACHINE_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "ConvertMachineDialog.Width",//$NON-NLS-1$
+        DEFAULT_CONVERT_MACHINE_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "ConvertMachineDialog.Height",//$NON-NLS-1$
+        DEFAULT_CONVERT_MACHINE_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
+  }
+
+
+  /**
    * Returns the console divider location.
    * 
    * @return The console divider location.
@@ -298,6 +383,30 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "ConvertMachineDialog.DividerOutline", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE );
+  }
+
+
+  /**
+   * Returns the minimize machine divider location.
+   * 
+   * @return The minimize machine divider location.
+   */
+  public final int getDividerLocationMinimizeMachine ()
+  {
+    return this.preferences.getInt ( "MinimizeMachineDialog.Divider", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_MINIMIZE_MACHINE );
+  }
+
+
+  /**
+   * Returns the minimize machine outline divider location.
+   * 
+   * @return The minimize machine outline divider location.
+   */
+  public final int getDividerLocationMinimizeMachineOutline ()
+  {
+    return this.preferences.getInt ( "MinimizeMachineDialog.DividerOutline", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_MINIMIZE_OUTLINE_MACHINE );
   }
 
 
@@ -378,6 +487,25 @@ public final class PreferenceManager extends
   {
     return this.preferences.getBoolean ( "MainWindow.Maximized", //$NON-NLS-1$
         DEFAULT_MAXIMIZED );
+  }
+
+
+  /**
+   * Returns the {@link MinimizeMachineDialog} bounds.
+   * 
+   * @return The {@link MinimizeMachineDialog} bounds.
+   */
+  public final Rectangle getMinimizeMachineDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "MinimizeMachineDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "MinimizeMachineDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "MinimizeMachineDialog.Width",//$NON-NLS-1$
+        DEFAULT_MINIMIZE_MACHINE_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "MinimizeMachineDialog.Height",//$NON-NLS-1$
+        DEFAULT_MINIMIZE_MACHINE_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
   }
 
 
@@ -609,6 +737,26 @@ public final class PreferenceManager extends
 
 
   /**
+   * Sets the {@link ConvertMachineDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link ConvertMachineDialog}.
+   */
+  public final void setConvertMachineDialogPreferences (
+      ConvertMachineDialogForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setConvertMachineDialogPreferences",//$NON-NLS-1$
+        "set convert machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt ( "ConvertMachineDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertMachineDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "ConvertMachineDialog.Height", bounds.height ); //$NON-NLS-1$
+  }
+
+
+  /**
    * Sets the console divider location.
    * 
    * @param location The console divider location.
@@ -630,7 +778,7 @@ public final class PreferenceManager extends
   public final void setDividerLocationConvertMachine ( int location )
   {
     logger.debug ( "setDividerLocationConvertMachine", //$NON-NLS-1$
-        "set convert machine divider " + "location to " + Messages.QUOTE//$NON-NLS-1$ //$NON-NLS-2$
+        "set convert machine divider location to " + Messages.QUOTE//$NON-NLS-1$ 
             + location + Messages.QUOTE );
     this.preferences.putInt ( "ConvertMachineDialog.Divider", location );//$NON-NLS-1$
   }
@@ -644,9 +792,37 @@ public final class PreferenceManager extends
   public final void setDividerLocationConvertMachineOutline ( int location )
   {
     logger.debug ( "setDividerLocationConvertMachineOutline", //$NON-NLS-1$
-        "set convert machine outline divider " + "location to " //$NON-NLS-1$ //$NON-NLS-2$
+        "set convert machine outline divider location to " //$NON-NLS-1$
             + Messages.QUOTE + location + Messages.QUOTE );
     this.preferences.putInt ( "ConvertMachineDialog.DividerOutline", location );//$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the minimize machine divider location.
+   * 
+   * @param location The minimize machine divider location.
+   */
+  public final void setDividerLocationMinimizeMachine ( int location )
+  {
+    logger.debug ( "setDividerLocationMinimizeMachine", //$NON-NLS-1$
+        "set minimize machine divider location to " + Messages.QUOTE//$NON-NLS-1$ 
+            + location + Messages.QUOTE );
+    this.preferences.putInt ( "MinimizeMachineDialog.Divider", location );//$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the minimize machine outline divider location.
+   * 
+   * @param location The minimize machine outline divider location.
+   */
+  public final void setDividerLocationMinimizeMachineOutline ( int location )
+  {
+    logger.debug ( "setDividerLocationMinimizeMachineOutline", //$NON-NLS-1$
+        "set minimize machine outline divider location to " //$NON-NLS-1$ 
+            + Messages.QUOTE + location + Messages.QUOTE );
+    this.preferences.putInt ( "MinimizeMachineDialog.DividerOutline", location );//$NON-NLS-1$
   }
 
 
@@ -709,23 +885,21 @@ public final class PreferenceManager extends
   /**
    * Sets the {@link MainWindow} preferences.
    * 
-   * @param jFrame The {@link JFrame} of the {@link MainWindow}.
+   * @param frame The {@link JFrame} of the {@link MainWindow}.
    */
-  public final void setMainWindowPreferences ( JFrame jFrame )
+  public final void setMainWindowPreferences ( MainWindowForm frame )
   {
-    if ( ( jFrame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
+    if ( ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == 0 )
     {
       logger.debug ( "setMainWindowPreferences",//$NON-NLS-1$
           "set main window maximized to " + Messages.QUOTE + "false"//$NON-NLS-1$//$NON-NLS-2$
               + Messages.QUOTE );
       this.preferences.putBoolean ( "MainWindow.Maximized", false ); //$NON-NLS-1$
-      Rectangle bounds = jFrame.getBounds ();
-      logger
-          .debug (
-              "setMainWindowPreferences", "set main window bounds to " + Messages.QUOTE + "x=" //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                  + bounds.x
-                  + ", " + "y=" + bounds.y + ", " + "width=" + bounds.width //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                  + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
+      Rectangle bounds = frame.getBounds ();
+      logger.debug ( "setMainWindowPreferences", "set main window bounds to "//$NON-NLS-1$ //$NON-NLS-2$
+          + Messages.QUOTE + "x=" + bounds.x + ", " + "y=" + bounds.y + ", "//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+          + "width=" + bounds.width + ", " + "height=" + bounds.height//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+          + Messages.QUOTE );
       this.preferences.putInt ( "MainWindow.XPosition", bounds.x ); //$NON-NLS-1$
       this.preferences.putInt ( "MainWindow.YPosition", bounds.y ); //$NON-NLS-1$
       this.preferences.putInt ( "MainWindow.Width", bounds.width ); //$NON-NLS-1$
@@ -738,6 +912,26 @@ public final class PreferenceManager extends
               + Messages.QUOTE );
       this.preferences.putBoolean ( "MainWindow.Maximized", true ); //$NON-NLS-1$
     }
+  }
+
+
+  /**
+   * Sets the {@link MinimizeMachineDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link MinimizeMachineDialog}.
+   */
+  public final void setMinimizeMachineDialogPreferences (
+      MinimizeMachineDialogForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setMinimizeMachineDialogPreferences",//$NON-NLS-1$
+        "set minimize machine dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", " + "y=" + bounds.y + ", " + "width="//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            + bounds.width + ", " + "height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.preferences.putInt ( "MinimizeMachineDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "MinimizeMachineDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "MinimizeMachineDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "MinimizeMachineDialog.Height", bounds.height ); //$NON-NLS-1$
   }
 
 

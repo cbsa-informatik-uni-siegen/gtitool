@@ -9,19 +9,19 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 
 
 /**
- * The {@link ConvertMachineTableColumnModel}.
+ * The {@link ReachableStatesTableColumnModel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id:ConsoleColumnModel.java 305 2007-12-06 19:55:14Z mies $
  */
-public final class ConvertMachineTableColumnModel extends
+public final class ReachableStatesTableColumnModel extends
     DefaultTableColumnModel
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = 4127761312520124149L;
+  private static final long serialVersionUID = -7840743082957665584L;
 
 
   /**
@@ -31,16 +31,16 @@ public final class ConvertMachineTableColumnModel extends
 
 
   /**
-   * Allocates a new {@link ConvertMachineTableColumnModel}.
+   * Allocates a new {@link ReachableStatesTableColumnModel}.
    */
-  public ConvertMachineTableColumnModel ()
+  public ReachableStatesTableColumnModel ()
   {
     // outline
     this.outlineColumn = new TableColumn (
         ConvertMachineTableModel.OUTLINE_COLUMN );
     this.outlineColumn.setResizable ( false );
     this.outlineColumn.setHeaderValue ( Messages
-        .getString ( "ConvertMachineDialog.Outline" ) ); //$NON-NLS-1$
+        .getString ( "ReachableStatesDialog.Outline" ) ); //$NON-NLS-1$
     this.outlineColumn.setCellRenderer ( new PrettyStringTableCellRenderer () );
     this.addColumn ( this.outlineColumn );
   }

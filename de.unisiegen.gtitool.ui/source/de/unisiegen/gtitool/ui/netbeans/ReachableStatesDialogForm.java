@@ -3,37 +3,37 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
+import de.unisiegen.gtitool.ui.logic.ReachableStatesDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
 
 /**
- * The {@link ConvertMachineDialogForm}.
+ * The {@link ReachableStatesDialogForm}.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
-public class ConvertMachineDialogForm extends JDialog implements GUIClass <ConvertMachineDialog>
+public class ReachableStatesDialogForm extends JDialog implements GUIClass <ReachableStatesDialog>
 {
     
     /**
      * The serial version uid.
      */
-    private static final long serialVersionUID = 8264731535784921404L;
-    
+    private static final long serialVersionUID = 6425640266595497120L;
+
     /**
-     * The {@link ConvertMachineDialog}.
+     * The {@link ReachableStatesDialog}.
      */
-    private ConvertMachineDialog logic ;
+    private ReachableStatesDialog logic ;
     
     /**
-     * Allocates a new {@link ConvertMachineDialogForm}.
+     * Allocates a new {@link ReachableStatesDialogForm}.
      * 
-     * @param logic The {@link ConvertMachineDialog}.
+     * @param logic The {@link ReachableStatesDialog}.
      * @param parent The parent {@link JFrame}.
      */
-    public ConvertMachineDialogForm(ConvertMachineDialog logic, JFrame parent) {
+    public ReachableStatesDialogForm(ReachableStatesDialog logic, JFrame parent) {
         super(parent, true);
         this.logic = logic ;
         initComponents();
@@ -44,7 +44,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
      * 
      * @see GUIClass#getLogic()
      */
-    public final ConvertMachineDialog getLogic ()
+    public final ReachableStatesDialog getLogic ()
     {
       return this.logic;
     }
@@ -68,7 +68,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
         jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTIScrollPaneConverted = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneResult = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -78,7 +78,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        setTitle(bundle.getString("ConvertMachineDialog.Title")); // NOI18N
+        setTitle(bundle.getString("ReachableStatesDialog.Title")); // NOI18N
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -87,7 +87,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         });
 
         jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-begin.png")));
-        jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ConvertMachineDialog.BeginStep")); // NOI18N
+        jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ReachableStatesDialog.BeginStep")); // NOI18N
         jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonBeginStepActionPerformed(evt);
@@ -97,7 +97,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarMain.add(jGTIToolBarButtonBeginStep);
 
         jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
-        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
+        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ReachableStatesDialog.PreviousStep")); // NOI18N
         jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonPreviousStepActionPerformed(evt);
@@ -107,7 +107,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarMain.add(jGTIToolBarButtonPreviousStep);
 
         jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png")));
-        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
+        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ReachableStatesDialog.NextStep")); // NOI18N
         jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNextStepActionPerformed(evt);
@@ -117,7 +117,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarMain.add(jGTIToolBarButtonNextStep);
 
         jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png")));
-        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ConvertMachineDialog.AutoStep")); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ReachableStatesDialog.AutoStep")); // NOI18N
         jGTIToolBarToggleButtonAutoStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarToggleButtonAutoStepActionPerformed(evt);
@@ -127,7 +127,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarMain.add(jGTIToolBarToggleButtonAutoStep);
 
         jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png")));
-        jGTIToolBarButtonStop.setToolTipText(bundle.getString("ConvertMachineDialog.Stop")); // NOI18N
+        jGTIToolBarButtonStop.setToolTipText(bundle.getString("ReachableStatesDialog.Stop")); // NOI18N
         jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStopActionPerformed(evt);
@@ -137,7 +137,7 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIToolBarMain.add(jGTIToolBarButtonStop);
 
         jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-end.png")));
-        jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ConvertMachineDialog.EndStep")); // NOI18N
+        jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ReachableStatesDialog.EndStep")); // NOI18N
         jGTIToolBarButtonEndStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonEndStepActionPerformed(evt);
@@ -163,8 +163,8 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         jGTIScrollPaneOriginal.setBorder(null);
         jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
 
-        jGTIScrollPaneConverted.setBorder(null);
-        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneConverted);
+        jGTIScrollPaneResult.setBorder(null);
+        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneResult);
 
         jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
@@ -183,9 +183,9 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 5, 16);
         getContentPane().add(jGTISplitPaneOutline, gridBagConstraints);
 
-        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
-        jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
+        jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ReachableStatesDialog.CancelMnemonic").charAt(0));
+        jGTIButtonCancel.setText(bundle.getString("ReachableStatesDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setToolTipText(bundle.getString("ReachableStatesDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonCancelActionPerformed(evt);
@@ -199,9 +199,9 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 16, 16);
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
-        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
-        jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
-        jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
+        jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ReachableStatesDialog.OkMnemonic").charAt(0));
+        jGTIButtonOk.setText(bundle.getString("ReachableStatesDialog.Ok")); // NOI18N
+        jGTIButtonOk.setToolTipText(bundle.getString("ReachableStatesDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonOkActionPerformed(evt);
@@ -258,9 +258,9 @@ public class ConvertMachineDialogForm extends JDialog implements GUIClass <Conve
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneConverted;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneResult;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;

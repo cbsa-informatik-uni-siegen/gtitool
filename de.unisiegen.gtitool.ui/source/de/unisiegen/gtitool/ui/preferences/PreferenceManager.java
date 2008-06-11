@@ -18,9 +18,11 @@ import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.logic.PreferencesDialog;
+import de.unisiegen.gtitool.ui.logic.ReachableStatesDialog;
 import de.unisiegen.gtitool.ui.netbeans.ConvertMachineDialogForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.netbeans.MinimizeMachineDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.ReachableStatesDialogForm;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
@@ -147,6 +149,30 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default x position of the {@link ReachableStatesDialog}.
+   */
+  public static final int DEFAULT_REACHABLE_STATES_DIALOG_POSITION_X = Integer.MAX_VALUE;
+
+
+  /**
+   * The default y position of the {@link ReachableStatesDialog}.
+   */
+  public static final int DEFAULT_REACHABLE_STATES_DIALOG_POSITION_Y = Integer.MAX_VALUE;
+
+
+  /**
+   * The default width of the {@link ReachableStatesDialog}.
+   */
+  public static final int DEFAULT_REACHABLE_STATES_DIALOG_WIDTH = 960;
+
+
+  /**
+   * The default hight of the {@link ReachableStatesDialog}.
+   */
+  public static final int DEFAULT_REACHABLE_STATES_DIALOG_HEIGHT = 600;
+
+
+  /**
    * The default console divider location.
    */
   public static final int DEFAULT_DIVIDER_LOCATION_CONSOLE = DEFAULT_HEIGHT / 2;
@@ -165,9 +191,21 @@ public final class PreferenceManager extends
 
 
   /**
-   * The default convert outline machine divider location.
+   * The default convert machine outline divider location.
    */
-  public static final int DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE = 700;
+  public static final int DEFAULT_DIVIDER_LOCATION_CONVERT_MACHINE_OUTLINE = 700;
+
+
+  /**
+   * The default reachable states divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES = 250;
+
+
+  /**
+   * The default reachable states outline divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES_OUTLINE = 700;
 
 
   /**
@@ -177,9 +215,9 @@ public final class PreferenceManager extends
 
 
   /**
-   * The default minimize outline machine divider location.
+   * The default minimize machine outline divider location.
    */
-  public static final int DEFAULT_DIVIDER_LOCATION_MINIMIZE_OUTLINE_MACHINE = 700;
+  public static final int DEFAULT_DIVIDER_LOCATION_MINIMIZE_MACHINE_OUTLINE = 700;
 
 
   /**
@@ -382,7 +420,7 @@ public final class PreferenceManager extends
   public final int getDividerLocationConvertMachineOutline ()
   {
     return this.preferences.getInt ( "ConvertMachineDialog.DividerOutline", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_CONVERT_OUTLINE_MACHINE );
+        DEFAULT_DIVIDER_LOCATION_CONVERT_MACHINE_OUTLINE );
   }
 
 
@@ -406,7 +444,7 @@ public final class PreferenceManager extends
   public final int getDividerLocationMinimizeMachineOutline ()
   {
     return this.preferences.getInt ( "MinimizeMachineDialog.DividerOutline", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_MINIMIZE_OUTLINE_MACHINE );
+        DEFAULT_DIVIDER_LOCATION_MINIMIZE_MACHINE_OUTLINE );
   }
 
 
@@ -419,6 +457,30 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "MachinePanel.DividerPDATable", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_PDA_TABLE );
+  }
+
+
+  /**
+   * Returns the reachable states divider location.
+   * 
+   * @return The reachable states divider location.
+   */
+  public final int getDividerLocationReachableStates ()
+  {
+    return this.preferences.getInt ( "ReachableStatesDialog.Divider", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES );
+  }
+
+
+  /**
+   * Returns the reachable states outline divider location.
+   * 
+   * @return The reachable states outline divider location.
+   */
+  public final int getDividerLocationReachableStatesOutline ()
+  {
+    return this.preferences.getInt ( "ReachableStatesDialog.DividerOutline", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES_OUTLINE );
   }
 
 
@@ -595,6 +657,25 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "PreferencesDialog.LastActiveTab", //$NON-NLS-1$
         DEFAULT_PREFERENCES_DIALOG_LAST_ACTIVE_TAB );
+  }
+
+
+  /**
+   * Returns the {@link ReachableStatesDialog} bounds.
+   * 
+   * @return The {@link ReachableStatesDialog} bounds.
+   */
+  public final Rectangle getReachableStatesDialogBounds ()
+  {
+    int x = this.preferences.getInt ( "ReachableStatesDialog.XPosition", //$NON-NLS-1$
+        DEFAULT_REACHABLE_STATES_DIALOG_POSITION_X );
+    int y = this.preferences.getInt ( "ReachableStatesDialog.YPosition", //$NON-NLS-1$
+        DEFAULT_REACHABLE_STATES_DIALOG_POSITION_Y );
+    int width = this.preferences.getInt ( "ReachableStatesDialog.Width",//$NON-NLS-1$
+        DEFAULT_REACHABLE_STATES_DIALOG_WIDTH );
+    int height = this.preferences.getInt ( "ReachableStatesDialog.Height",//$NON-NLS-1$
+        DEFAULT_REACHABLE_STATES_DIALOG_HEIGHT );
+    return new Rectangle ( x, y, width, height );
   }
 
 
@@ -841,6 +922,34 @@ public final class PreferenceManager extends
 
 
   /**
+   * Sets the reachable states divider location.
+   * 
+   * @param location The reachable states divider location.
+   */
+  public final void setDividerLocationReachableStates ( int location )
+  {
+    logger.debug ( "setDividerLocationReachableStates", //$NON-NLS-1$
+        "set reachable states divider location to " + Messages.QUOTE//$NON-NLS-1$ 
+            + location + Messages.QUOTE );
+    this.preferences.putInt ( "ReachableStatesDialog.Divider", location );//$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the reachable states outline divider location.
+   * 
+   * @param location The reachable states outline divider location.
+   */
+  public final void setDividerLocationReachableStatesOutline ( int location )
+  {
+    logger.debug ( "setDividerLocationReachableStatesOutline", //$NON-NLS-1$
+        "set reachable states outline divider location to " //$NON-NLS-1$
+            + Messages.QUOTE + location + Messages.QUOTE );
+    this.preferences.putInt ( "ReachableStatesDialog.DividerOutline", location );//$NON-NLS-1$
+  }
+
+
+  /**
    * Sets the table divider location.
    * 
    * @param location The table divider location.
@@ -1038,6 +1147,26 @@ public final class PreferenceManager extends
         "set last active tab to " + Messages.QUOTE + index //$NON-NLS-1$
             + Messages.QUOTE );
     this.preferences.putInt ( "PreferencesDialog.LastActiveTab", index ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the {@link ReachableStatesDialog} preferences.
+   * 
+   * @param dialog The {@link JDialog} of the {@link ReachableStatesDialog}.
+   */
+  public final void setReachableStatesDialogPreferences (
+      ReachableStatesDialogForm dialog )
+  {
+    Rectangle bounds = dialog.getBounds ();
+    logger.debug ( "setReachableStatesDialogPreferences",//$NON-NLS-1$
+        "set reachable states dialog bounds to " + Messages.QUOTE + "x="//$NON-NLS-1$ //$NON-NLS-2$
+            + bounds.x + ", y=" + bounds.y + ", width="//$NON-NLS-1$ //$NON-NLS-2$ 
+            + bounds.width + ", height=" + bounds.height + Messages.QUOTE ); //$NON-NLS-1$ 
+    this.preferences.putInt ( "ReachableStatesDialog.XPosition", bounds.x ); //$NON-NLS-1$
+    this.preferences.putInt ( "ReachableStatesDialog.YPosition", bounds.y ); //$NON-NLS-1$
+    this.preferences.putInt ( "ReachableStatesDialog.Width", bounds.width ); //$NON-NLS-1$
+    this.preferences.putInt ( "ReachableStatesDialog.Height", bounds.height ); //$NON-NLS-1$
   }
 
 

@@ -13,15 +13,15 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * The table model for the convert machine outline.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $ReachableStatesTableModel.java 305 2007-12-06 19:55:14Z mies $
  */
-public final class ConvertMachineTableModel extends AbstractTableModel
+public final class ReachableStatesTableModel extends AbstractTableModel
 {
 
   /**
    * The serial version uid.
    */
-  private static final long serialVersionUID = -3657714478012341397L;
+  private static final long serialVersionUID = 8007270014037218008L;
 
 
   /**
@@ -45,7 +45,7 @@ public final class ConvertMachineTableModel extends AbstractTableModel
   /**
    * Allocates a new {@link PDATableModel}.
    */
-  public ConvertMachineTableModel ()
+  public ReachableStatesTableModel ()
   {
     this.data = new ArrayList < PrettyString > ();
   }

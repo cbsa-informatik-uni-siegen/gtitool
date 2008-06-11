@@ -1673,6 +1673,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handles the reachable states event.
+   */
+  public final void handleReachableStates ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      machinePanel.handleReachableStates ();
+    }
+    else
+    {
+      throw new RuntimeException ( "the selected panel is not a machine panel" ); //$NON-NLS-1$
+    }
+  }
+
+
+  /**
    * Handle redo button pressed
    */
   public final void handleRedo ()
@@ -3242,6 +3261,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemHistory ().setMnemonic (
         Messages.getString ( "MainWindow.HistoryMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // ReachableStates
+    MainWindow.this.gui.getJMenuItemReachableStates ().setText (
+        Messages.getString ( "MainWindow.ReachableStates" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemReachableStates ().setMnemonic (
+        Messages.getString ( "MainWindow.ReachableStatesMnemonic" ).charAt ( //$NON-NLS-1$
+            0 ) );
 
     /*
      * Help

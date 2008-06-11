@@ -1318,6 +1318,17 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Handles the reachable states event.
+   */
+  public final void handleReachableStates ()
+  {
+    ReachableStatesDialog reachableStatesDialog = new ReachableStatesDialog (
+        this.mainWindowForm, this );
+    reachableStatesDialog.show ();
+  }
+
+
+  /**
    * Handle redo button pressed
    */
   public final void handleRedo ()

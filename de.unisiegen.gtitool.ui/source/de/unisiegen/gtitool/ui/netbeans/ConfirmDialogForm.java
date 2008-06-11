@@ -4,8 +4,6 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.ui.logic.AboutDialog;
-import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 

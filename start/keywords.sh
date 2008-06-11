@@ -28,6 +28,7 @@ svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.logger/source/ -n
 
 # start
 svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.start/source/ -name '*.java'`
+svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.start/test/ -name '*.java'`
 
 # tinylaf
 svn propset svn:keywords 'Author Date Id Rev' `find ../gtitool.tinylaf/source/ -name '*.java'`

@@ -1,4 +1,4 @@
-package de.unisiegen.gtitool.ui;
+package de.unisiegen.gtitool.ui.i18n;
 
 
 import java.io.BufferedReader;
@@ -20,35 +20,31 @@ public class MessagesTest
   /**
    * The readed line list en.
    */
-  private static ArrayList < String > readedLineListEn = new ArrayList < String > (
-      1000 );
+  private static ArrayList readedLineListEn = new ArrayList ( 1000 );
 
 
   /**
    * The readed split line list en.
    */
-  private static ArrayList < String [] > readedLineSplitListEn = new ArrayList < String [] > (
-      1000 );
+  private static ArrayList readedLineSplitListEn = new ArrayList ( 1000 );
 
 
   /**
    * The readed line list de.
    */
-  private static ArrayList < String > readedLineListDe = new ArrayList < String > (
-      1000 );
+  private static ArrayList readedLineListDe = new ArrayList ( 1000 );
 
 
   /**
    * The readed split line list de.
    */
-  private static ArrayList < String [] > readedLineSplitListDe = new ArrayList < String [] > (
-      1000 );
+  private static ArrayList readedLineSplitListDe = new ArrayList ( 1000 );
 
 
   /**
    * The error list.
    */
-  private static ArrayList < String > errorList = new ArrayList < String > ();
+  private static ArrayList errorList = new ArrayList ();
 
 
   /**
@@ -61,6 +57,27 @@ public class MessagesTest
       'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4',
       '5', '6', '7', '8', '9', ' ', ',', '{', '}', '-', '\\', '>', '(', ')',
       '.', ':', '[', ']' };
+
+
+  /**
+   * Returns the formatted string.
+   * 
+   * @param number The input number.
+   * @return The formatted string.
+   */
+  private static String formatString ( int number )
+  {
+    String result = String.valueOf ( number );
+    int max = readedLineListEn.size () > readedLineListDe.size () ? readedLineListEn
+        .size ()
+        : readedLineListDe.size ();
+    for ( int i = String.valueOf ( number ).length () ; i < String.valueOf (
+        max ).length () ; i++ )
+    {
+      result = " " + result; //$NON-NLS-1$
+    }
+    return result;
+  }
 
 
   /**
@@ -86,6 +103,15 @@ public class MessagesTest
     String fileNameDeUi = MessagesTest.class.getResource (
         "/de/unisiegen/gtitool/ui/i18n/messages_de.properties" ).getFile (); //$NON-NLS-1$
     testFiles ( fileNameEnUi, fileNameDeUi );
+
+    // start
+    System.out.println ();
+    System.out.println ( "*** start ***" ); //$NON-NLS-1$
+    String fileNameEnStart = MessagesTest.class.getResource (
+        "/de/unisiegen/gtitool/start/i18n/messages.properties" ).getFile (); //$NON-NLS-1$
+    String fileNameDeStart = MessagesTest.class.getResource (
+        "/de/unisiegen/gtitool/start/i18n/messages_de.properties" ).getFile (); //$NON-NLS-1$
+    testFiles ( fileNameEnStart, fileNameDeStart );
   }
 
 
@@ -123,7 +149,7 @@ public class MessagesTest
       // Check for different keys
       for ( int i = 0 ; i < readedLineListEn.size () ; i++ )
       {
-        String [] splitLineEn = readedLineSplitListEn.get ( i );
+        String [] splitLineEn = ( String [] ) readedLineSplitListEn.get ( i );
 
         // Key found
         if ( splitLineEn.length >= 2 )
@@ -132,7 +158,7 @@ public class MessagesTest
           {
             break;
           }
-          String [] splitLineDe = readedLineSplitListDe.get ( i );
+          String [] splitLineDe = ( String [] ) readedLineSplitListDe.get ( i );
           if ( splitLineDe.length >= 2 )
           {
             if ( !splitLineEn [ 0 ].equals ( splitLineDe [ 0 ] ) )
@@ -154,10 +180,10 @@ public class MessagesTest
       {
         for ( int j = i + 1 ; j < readedLineListEn.size () ; j++ )
         {
-          String [] splitLine0 = readedLineSplitListEn.get ( i );
-          String [] splitLine1 = readedLineSplitListEn.get ( j );
+          String [] splitLine0 = ( String [] ) readedLineSplitListEn.get ( i );
+          String [] splitLine1 = ( String [] ) readedLineSplitListEn.get ( j );
 
-          if ( splitLine0.length >= 2 && splitLine1.length >= 2 )
+          if ( ( splitLine0.length >= 2 ) && ( splitLine1.length >= 2 ) )
           {
             if ( splitLine0 [ 0 ].equals ( splitLine1 [ 0 ] ) )
             {
@@ -174,10 +200,10 @@ public class MessagesTest
       {
         for ( int j = i + 1 ; j < readedLineListDe.size () ; j++ )
         {
-          String [] splitLine0 = readedLineSplitListDe.get ( i );
-          String [] splitLine1 = readedLineSplitListDe.get ( j );
+          String [] splitLine0 = ( String [] ) readedLineSplitListDe.get ( i );
+          String [] splitLine1 = ( String [] ) readedLineSplitListDe.get ( j );
 
-          if ( splitLine0.length >= 2 && splitLine1.length >= 2 )
+          if ( ( splitLine0.length >= 2 ) && ( splitLine1.length >= 2 ) )
           {
             if ( splitLine0 [ 0 ].equals ( splitLine1 [ 0 ] ) )
             {
@@ -192,7 +218,7 @@ public class MessagesTest
       // Not allowed keys En
       for ( int i = 0 ; i < readedLineListEn.size () ; i++ )
       {
-        String [] splitLineEn = readedLineSplitListEn.get ( i );
+        String [] splitLineEn = ( String [] ) readedLineSplitListEn.get ( i );
         // Key found
         if ( splitLineEn.length >= 2 )
         {
@@ -220,7 +246,7 @@ public class MessagesTest
       // Not allowed keys De
       for ( int i = 0 ; i < readedLineListDe.size () ; i++ )
       {
-        String [] splitLineDe = readedLineSplitListDe.get ( i );
+        String [] splitLineDe = ( String [] ) readedLineSplitListDe.get ( i );
         // Key found
         if ( splitLineDe.length >= 2 )
         {
@@ -258,9 +284,9 @@ public class MessagesTest
       {
         System.err.println ();
         System.err.println ( "=> Errors found:" ); //$NON-NLS-1$
-        for ( String current : errorList )
+        for ( int i = 0 ; i < errorList.size () ; i++ )
         {
-          System.err.println ( current );
+          System.err.println ( errorList.get ( i ) );
         }
       }
       else
@@ -280,26 +306,5 @@ public class MessagesTest
     readedLineSplitListEn.clear ();
     readedLineListDe.clear ();
     readedLineSplitListDe.clear ();
-  }
-
-
-  /**
-   * Returns the formatted string.
-   * 
-   * @param number The input number.
-   * @return The formatted string.
-   */
-  private static String formatString ( int number )
-  {
-    String result = String.valueOf ( number );
-    int max = readedLineListEn.size () > readedLineListDe.size () ? readedLineListEn
-        .size ()
-        : readedLineListDe.size ();
-    for ( int i = String.valueOf ( number ).length () ; i < String.valueOf (
-        max ).length () ; i++ )
-    {
-      result = " " + result; //$NON-NLS-1$
-    }
-    return result;
   }
 }

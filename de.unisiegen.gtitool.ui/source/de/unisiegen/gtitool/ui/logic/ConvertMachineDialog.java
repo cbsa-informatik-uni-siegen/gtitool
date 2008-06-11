@@ -670,7 +670,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The original {@link DefaultMachineModel}.
+   * The converted {@link DefaultMachineModel}.
    */
   private DefaultMachineModel modelConverted;
 
@@ -682,7 +682,7 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The original {@link Machine}.
+   * The converted {@link Machine}.
    */
   private Machine machineConverted;
 

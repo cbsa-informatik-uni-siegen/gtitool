@@ -2,7 +2,6 @@ package de.unisiegen.gtitool.ui.netbeans;
 
 import javax.swing.JPanel;
 
-import de.unisiegen.gtitool.ui.logic.AlphabetDialog;
 import de.unisiegen.gtitool.ui.logic.NewDialogAlphabet;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 

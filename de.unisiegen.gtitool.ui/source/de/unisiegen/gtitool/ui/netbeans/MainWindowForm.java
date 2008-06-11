@@ -783,7 +783,19 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jMenuItemHistory;
     }
 
-    
+
+    /**
+     * Returns the jMenuItemReachableStates.
+     *
+     * @return The jMenuItemReachableStates.
+     * @see #jMenuItemReachableStates
+     */
+    public final JMenuItem getJMenuItemReachableStates ()
+    {
+      return this.jMenuItemReachableStates;
+    }
+
+
     /**
      * Returns the jMenuItemNFA.
      *
@@ -1018,6 +1030,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemExchange = new javax.swing.JMenuItem();
         jSeparatorExtras = new javax.swing.JSeparator();
         jMenuItemHistory = new javax.swing.JMenuItem();
+        jMenuItemReachableStates = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -1720,6 +1733,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExtras.add(jMenuItemHistory);
 
+        jMenuItemReachableStates.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReachableStatesMnemonic").charAt(0));
+        jMenuItemReachableStates.setText(bundle.getString("MainWindow.ReachableStates")); // NOI18N
+        jMenuItemReachableStates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemReachableStatesActionPerformed(evt);
+            }
+        });
+
+        jMenuExtras.add(jMenuItemReachableStates);
+
         jMenuBarMain.add(jMenuExtras);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
@@ -1741,6 +1764,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemReachableStatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReachableStatesActionPerformed
+        this.logic.handleReachableStates();
+    }//GEN-LAST:event_jMenuItemReachableStatesActionPerformed
 
     private void jGTIEditorPanelTabbedPaneRightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneRightStateChanged
         this.logic.handleTabbedPaneStateChanged();
@@ -2032,6 +2059,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private javax.swing.JMenuItem jMenuItemPreferences;
     private javax.swing.JMenuItem jMenuItemQuit;
     private javax.swing.JMenuItem jMenuItemRG;
+    private javax.swing.JMenuItem jMenuItemReachableStates;
     private javax.swing.JMenuItem jMenuItemRedo;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAll;

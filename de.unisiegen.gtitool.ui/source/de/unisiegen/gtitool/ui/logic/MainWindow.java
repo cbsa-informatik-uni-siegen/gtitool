@@ -116,6 +116,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_VALIDATE,
 
     /**
+     * The draft for enabled button state.
+     */
+    ENABLED_DRAFT_FOR,
+
+    /**
      * The draft for machine enabled button state.
      */
     ENABLED_DRAFT_FOR_MACHINE,
@@ -322,6 +327,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
 
@@ -397,19 +403,16 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_GENERAL ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_GENERAL );
-
       this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( true );
       this.gui.getJMenuItemSaveAs ().setEnabled ( true );
       this.gui.getJMenuItemSaveAll ().setEnabled ( true );
       this.gui.getJMenuItemClose ().setEnabled ( true );
       this.gui.getJMenuItemCloseAll ().setEnabled ( true );
-      this.gui.getJMenuDraft ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_UNDO ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_UNDO );
-
       this.gui.getJMenuItemUndo ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonUndo ().setEnabled ( true );
     }
@@ -417,7 +420,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_REDO ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_REDO );
-
       this.gui.getJMenuItemRedo ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonRedo ().setEnabled ( true );
     }
@@ -425,7 +427,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_HISTORY ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_HISTORY );
-
       this.gui.getJMenuItemHistory ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_MACHINE_TABLE ) )
@@ -433,7 +434,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_MACHINE_TABLE ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_MACHINE_TABLE );
-
       this.gui.getJCheckBoxMenuItemTable ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CONSOLE_TABLE ) )
@@ -441,15 +441,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_CONSOLE_TABLE ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_CONSOLE_TABLE );
-
       this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_VALIDATE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_VALIDATE ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_VALIDATE );
-
       this.gui.getJMenuItemValidate ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_DRAFT_FOR ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_DRAFT_FOR ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_DRAFT_FOR );
+      this.gui.getJMenuDraft ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_DRAFT_FOR_MACHINE ) )
         && ( !this.buttonStateList
@@ -457,7 +461,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
       this.buttonStateList.remove ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
-
       this.gui.getJMenuItemDFA ().setEnabled ( true );
       this.gui.getJMenuItemNFA ().setEnabled ( true );
       this.gui.getJMenuItemENFA ().setEnabled ( true );
@@ -471,7 +474,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
       this.buttonStateList.remove ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
-
       this.gui.getJMenuItemDFA ().setEnabled ( false );
       this.gui.getJMenuItemNFA ().setEnabled ( false );
       this.gui.getJMenuItemENFA ().setEnabled ( false );
@@ -484,28 +486,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_EDIT_DOCUMENT ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_EDIT_DOCUMENT );
-
       this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_EDIT_MACHINE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_EDIT_MACHINE ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_EDIT_MACHINE );
-
       this.gui.getJMenuItemEditMachine ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_ENTER_WORD ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_ENTER_WORD ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_ENTER_WORD );
-
       this.gui.getJMenuItemEnterWord ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_AUTO_LAYOUT ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_AUTO_LAYOUT ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_AUTO_LAYOUT );
-
       this.gui.getJMenuItemAutoLayout ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_RECENTLY_USED ) )
@@ -513,7 +511,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_RECENTLY_USED ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_RECENTLY_USED );
-
       this.gui.getJMenuRecentlyUsed ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
@@ -521,7 +518,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-
       this.gui.getJGTIToolBarToggleButtonAddState ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setEnabled ( true );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setEnabled ( true );
@@ -535,7 +531,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
-
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
@@ -549,7 +544,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
-
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
@@ -563,7 +557,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS );
-
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
@@ -574,7 +567,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CONVERT_TO ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO );
-
       this.gui.getJMenuConvertTo ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA ) )
@@ -587,7 +579,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -603,7 +594,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -620,7 +610,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -636,7 +625,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -652,7 +640,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( true );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -668,7 +655,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
       this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
-
       this.gui.getJMenuItemConvertToDFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToNFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
@@ -686,10 +672,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         this.buttonStateList.add ( ButtonState.ENABLED_SAVE );
       }
-
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + true + Messages.QUOTE );
-
       EditorPanel panel = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
@@ -703,7 +687,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         throw new IllegalArgumentException (
             "the save status should be false if no panel is selected" ); //$NON-NLS-1$
       }
-
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( true );
       this.gui.getJMenuItemSave ().setEnabled ( true );
     }
@@ -713,7 +696,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.SELECTED_MACHINE_TABLE ) ) )
     {
       this.buttonStateList.add ( ButtonState.SELECTED_MACHINE_TABLE );
-
       this.gui.getJCheckBoxMenuItemTable ().setSelected ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.SELECTED_CONSOLE_TABLE ) )
@@ -721,7 +703,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.SELECTED_CONSOLE_TABLE ) ) )
     {
       this.buttonStateList.add ( ButtonState.SELECTED_CONSOLE_TABLE );
-
       this.gui.getJCheckBoxMenuItemConsole ().setSelected ( true );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_MOUSE ) )
@@ -730,7 +711,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         this.buttonStateList.add ( ButtonState.SELECTED_MOUSE );
       }
-
       this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( true );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_AUTO_STEP ) )
@@ -739,7 +719,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         this.buttonStateList.add ( ButtonState.SELECTED_AUTO_STEP );
       }
-
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( true );
     }
     // visible
@@ -747,14 +726,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_MACHINE ) ) )
     {
       this.buttonStateList.add ( ButtonState.VISIBLE_MACHINE );
-
       this.gui.getJSeparatorNavigation ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( true );
-
       this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
       this.gui.getJGTIToolBarButtonPrevious ().setVisible ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setVisible ( true );
@@ -765,7 +742,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_GRAMMAR ) ) )
     {
       this.buttonStateList.add ( ButtonState.VISIBLE_GRAMMAR );
-
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( true );
       this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( true );
       this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( true );
@@ -1080,6 +1056,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
+      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     }
     catch ( StoreException exc )
     {
@@ -1157,6 +1134,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
+      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     }
     catch ( StoreException exc )
     {
@@ -1215,20 +1193,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
 
-    addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-    addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
-
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
     machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
         .getState () );
 
+    addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+    addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
     addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     addButtonState ( ButtonState.ENABLED_ENTER_WORD );
-    removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
     addButtonState ( ButtonState.ENABLED_VALIDATE );
     addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+    addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+
+    removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
   }
 
 
@@ -1275,6 +1254,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     }
   }
 
@@ -1384,7 +1364,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-
+      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     }
   }
@@ -1447,7 +1427,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_GENERAL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
-
+      addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     }
   }
@@ -1817,14 +1797,22 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft () == event.getSource () )
       {
-        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-        handleTabbedPaneStateChanged ();
+        if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+            ActiveEditor.LEFT_EDITOR ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          handleTabbedPaneStateChanged ();
+        }
         return;
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneRight () == event.getSource () )
       {
-        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-        handleTabbedPaneStateChanged ();
+        if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+            ActiveEditor.RIGHT_EDITOR ) )
+        {
+          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          handleTabbedPaneStateChanged ();
+        }
         return;
       }
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft ()
@@ -1835,8 +1823,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1848,8 +1840,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getJTabbedPaneConsole () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1861,8 +1857,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( grammarPanel.getJTabbedPaneConsole () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1874,8 +1874,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( grammarPanel.getJTabbedPaneConsole () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1890,8 +1894,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getJGTIGraph () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1903,8 +1911,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         if ( machinePanel.getJGTIGraph () == event.getSource () )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1923,8 +1935,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTITableErrors == event.getSource () )
             || ( machinePanel.getGUI ().jGTITableWarnings == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1940,8 +1956,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTITableErrors == event.getSource () )
             || ( machinePanel.getGUI ().jGTITableWarnings == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1955,8 +1975,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTITableErrors == event.getSource () )
             || ( grammarPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -1970,8 +1994,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTITableErrors == event.getSource () )
             || ( grammarPanel.getGUI ().jGTITableWarnings == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2005,8 +2033,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
                 .getVerticalScrollBar () == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2037,8 +2069,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTIScrollPaneWarnings
                 .getVerticalScrollBar () == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2061,8 +2097,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
                 .getVerticalScrollBar () == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2085,8 +2125,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTIScrollPaneWarnings
                 .getVerticalScrollBar () == event.getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2108,8 +2152,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTITableWarnings.getTableHeader () == event
                 .getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2128,8 +2176,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( machinePanel.getGUI ().jGTITableWarnings.getTableHeader () == event
                 .getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2146,8 +2198,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
                 .getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.LEFT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2164,8 +2220,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             || ( grammarPanel.getGUI ().jGTITableWarnings.getTableHeader () == event
                 .getSource () ) )
         {
-          this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
-          handleTabbedPaneStateChanged ();
+          if ( !this.jGTIMainSplitPane.getActiveEditor ().equals (
+              ActiveEditor.RIGHT_EDITOR ) )
+          {
+            this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            handleTabbedPaneStateChanged ();
+          }
           return;
         }
       }
@@ -2260,6 +2320,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.VISIBLE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       removeButtonState ( ButtonState.ENABLED_SAVE );
@@ -2324,6 +2385,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
@@ -2340,6 +2402,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
@@ -2356,6 +2419,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
@@ -2383,6 +2447,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -3353,6 +3418,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else if ( element instanceof DefaultGrammarModel )
       {
@@ -3369,6 +3435,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_GENERAL );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       }
       else
       {
@@ -3443,56 +3510,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( buttonState.equals ( ButtonState.ENABLED_GENERAL ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_GENERAL );
-
       this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( false );
       this.gui.getJMenuItemSaveAs ().setEnabled ( false );
       this.gui.getJMenuItemSaveAll ().setEnabled ( false );
       this.gui.getJMenuItemClose ().setEnabled ( false );
       this.gui.getJMenuItemCloseAll ().setEnabled ( false );
-      this.gui.getJMenuDraft ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_UNDO );
-
       this.gui.getJMenuItemUndo ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonUndo ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_REDO ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_REDO );
-
       this.gui.getJMenuItemRedo ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonRedo ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_HISTORY ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_HISTORY );
-
       this.gui.getJMenuItemHistory ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_TABLE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_TABLE );
-
       this.gui.getJCheckBoxMenuItemTable ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_CONSOLE_TABLE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CONSOLE_TABLE );
-
       this.gui.getJCheckBoxMenuItemConsole ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_VALIDATE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_VALIDATE );
-
       this.gui.getJMenuItemValidate ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_DRAFT_FOR ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_DRAFT_FOR );
+      this.gui.getJMenuDraft ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_DRAFT_FOR_MACHINE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
-
       this.gui.getJMenuItemDFA ().setEnabled ( false );
       this.gui.getJMenuItemNFA ().setEnabled ( false );
       this.gui.getJMenuItemENFA ().setEnabled ( false );
@@ -3501,44 +3564,37 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
-
       this.gui.getJMenuItemRG ().setEnabled ( false );
       this.gui.getJMenuItemCFG ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_EDIT_DOCUMENT ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_EDIT_DOCUMENT );
-
       this.gui.getJGTIToolBarButtonEditDocument ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_EDIT_MACHINE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_EDIT_MACHINE );
-
       this.gui.getJMenuItemEditMachine ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_ENTER_WORD ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_ENTER_WORD );
-
       this.gui.getJMenuItemEnterWord ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_AUTO_LAYOUT ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_AUTO_LAYOUT );
-
       this.gui.getJMenuItemAutoLayout ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_RECENTLY_USED ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_RECENTLY_USED );
-
       this.gui.getJMenuRecentlyUsed ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-
       this.gui.getJGTIToolBarToggleButtonAddState ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setEnabled ( false );
@@ -3563,22 +3619,18 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO );
-
       this.gui.getJMenuConvertTo ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MINIMIZE );
-
       this.gui.getJMenuItemMinimize ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_SAVE );
-
       logger.debug ( "setSaveState", "set save status to " + Messages.QUOTE //$NON-NLS-1$//$NON-NLS-2$
           + false + Messages.QUOTE );
-
       EditorPanel panel = this.jGTIMainSplitPane
           .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
       if ( panel != null )
@@ -3586,7 +3638,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
             .setEditorPanelTitle ( panel, panel.getName () );
       }
-
       this.gui.getJGTIToolBarButtonSave ().setEnabled ( false );
       this.gui.getJMenuItemSave ().setEnabled ( false );
     }
@@ -3594,32 +3645,27 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.SELECTED_MACHINE_TABLE ) )
     {
       this.buttonStateList.remove ( ButtonState.SELECTED_MACHINE_TABLE );
-
       this.gui.getJCheckBoxMenuItemTable ().setSelected ( false );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_CONSOLE_TABLE ) )
     {
       this.buttonStateList.remove ( ButtonState.SELECTED_CONSOLE_TABLE );
-
       this.gui.getJCheckBoxMenuItemConsole ().setSelected ( false );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_MOUSE ) )
     {
       this.buttonStateList.remove ( ButtonState.SELECTED_MOUSE );
-
       this.gui.getJGTIToolBarToggleButtonMouse ().setSelected ( false );
     }
     else if ( buttonState.equals ( ButtonState.SELECTED_AUTO_STEP ) )
     {
       this.buttonStateList.remove ( ButtonState.SELECTED_AUTO_STEP );
-
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( false );
     }
     // visible
     else if ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_MACHINE );
-
       this.gui.getJSeparatorNavigation ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonMouse ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( false );
@@ -3635,7 +3681,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else if ( buttonState.equals ( ButtonState.VISIBLE_GRAMMAR ) )
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_GRAMMAR );
-
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
       this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( false );
       this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( false );

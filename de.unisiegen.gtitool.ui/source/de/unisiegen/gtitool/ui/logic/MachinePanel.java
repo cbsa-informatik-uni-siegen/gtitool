@@ -1203,8 +1203,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @SuppressWarnings ( "unused" )
       FocusEvent event )
   {
-    this.gui.jGTITableMachinePDA.clearSelection ();
-    clearHighlight ();
+    if ( !this.enterWordMode && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachinePDA.clearSelection ();
+      clearHighlight ();
+    }
   }
 
 
@@ -1217,8 +1220,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @SuppressWarnings ( "unused" )
       MouseEvent event )
   {
-    this.gui.jGTITableMachinePDA.clearSelection ();
-    clearHighlight ();
+    if ( !this.enterWordMode && !this.cellEditingMode )
+    {
+      this.gui.jGTITableMachinePDA.clearSelection ();
+      clearHighlight ();
+    }
   }
 
 
@@ -1231,22 +1237,25 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @SuppressWarnings ( "unused" )
       ListSelectionEvent event )
   {
-    clearHighlight ();
-
-    int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
-    if ( index != -1 )
+    if ( !this.enterWordMode && !this.cellEditingMode )
     {
-      ArrayList < Transition > transitionList = new ArrayList < Transition > (
-          1 );
-      Transition transition = this.model.getPDATableModel ().getTransition (
-          index );
-      transitionList.add ( transition );
-      highlightTransitionActive ( transitionList );
+      clearHighlight ();
 
-      ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
-          .size () );
-      symbolList.addAll ( transition.getSymbol () );
-      highlightSymbolActive ( symbolList );
+      int index = this.gui.jGTITableMachinePDA.getSelectedRow ();
+      if ( index != -1 )
+      {
+        ArrayList < Transition > transitionList = new ArrayList < Transition > (
+            1 );
+        Transition transition = this.model.getPDATableModel ().getTransition (
+            index );
+        transitionList.add ( transition );
+        highlightTransitionActive ( transitionList );
+
+        ArrayList < Symbol > symbolList = new ArrayList < Symbol > ( transition
+            .size () );
+        symbolList.addAll ( transition.getSymbol () );
+        highlightSymbolActive ( symbolList );
+      }
     }
   }
 

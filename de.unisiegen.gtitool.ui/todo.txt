@@ -7,7 +7,6 @@ CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
 CF		- Erreichbare Zustände berechnen
 CF		- Convert: Vollständiger Automat
 CF		- Größe der Fenster speichern
-CF		- Stati während der Navigation anpassen
 
 BM		- Parallel Loop Routing
 BM		- Minimieren: Highlighten, Outline, Fehler in der Logik

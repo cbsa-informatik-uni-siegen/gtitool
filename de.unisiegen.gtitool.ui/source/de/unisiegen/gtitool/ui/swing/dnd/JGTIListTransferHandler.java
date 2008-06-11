@@ -79,8 +79,8 @@ public abstract class JGTIListTransferHandler extends TransferHandler
     int [] selectedRows = list.getSelectedIndices ();
     if ( selectedRows.length > 0 )
     {
-      return new JGTIListModelRowsTransferable ( new JGTIListModelRows ( list
-          .getModel (), selectedRows ) );
+      return new JGTIListModelRowsTransferable ( new JGTIListModelRows ( list,
+          selectedRows ) );
     }
     return null;
   }

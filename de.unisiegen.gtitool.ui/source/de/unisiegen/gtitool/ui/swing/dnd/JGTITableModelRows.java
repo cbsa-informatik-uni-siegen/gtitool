@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.ui.swing.JGTITable;
+
 
 /**
  * This class stores the row indices and the {@link TableModel} which are used
@@ -17,11 +19,11 @@ public final class JGTITableModelRows
 {
 
   /**
-   * The underlying table model.
+   * The source {@link JGTITable}.
    * 
-   * @see #getModel()
+   * @see #getSource()
    */
-  private final TableModel model;
+  private final JGTITable source;
 
 
   /**
@@ -35,20 +37,28 @@ public final class JGTITableModelRows
   /**
    * Allocates a new {@link JGTITableModelRows}.
    * 
-   * @param model The {@link TableModel}.
+   * @param source The source {@link JGTITable}.
    * @param rowIndices The row indices.
    */
-  public JGTITableModelRows ( TableModel model, int [] rowIndices )
+  public JGTITableModelRows ( JGTITable source, int [] rowIndices )
   {
-    int rowCount = model.getRowCount ();
+    if ( source == null )
+    {
+      throw new IllegalArgumentException ( "source is null" ); //$NON-NLS-1$
+    }
+    if ( source.getModel () == null )
+    {
+      throw new IllegalArgumentException ( "model is null" );//$NON-NLS-1$
+    }
+    int rowCount = source.getModel ().getRowCount ();
     for ( int rowIndex : rowIndices )
     {
-      if ( rowIndex < 0 || rowIndex >= rowCount )
+      if ( ( rowIndex < 0 ) || ( rowIndex >= rowCount ) )
       {
         throw new IllegalArgumentException ( "invalid row index " + rowIndex ); //$NON-NLS-1$
       }
     }
-    this.model = model;
+    this.source = source;
     this.rowIndices = rowIndices;
   }
 
@@ -64,21 +74,10 @@ public final class JGTITableModelRows
     if ( other instanceof JGTITableModelRows )
     {
       JGTITableModelRows tableModelRows = ( JGTITableModelRows ) other;
-      return ( this.model == tableModelRows.model && Arrays.equals (
+      return ( ( this.source == tableModelRows.source ) && Arrays.equals (
           this.rowIndices, tableModelRows.rowIndices ) );
     }
     return false;
-  }
-
-
-  /**
-   * Returns the {@link TableModel} from which to transfer the row data.
-   * 
-   * @return The source model.
-   */
-  public final TableModel getModel ()
-  {
-    return this.model;
   }
 
 
@@ -94,6 +93,18 @@ public final class JGTITableModelRows
 
 
   /**
+   * Returns the source {@link JGTITable}.
+   * 
+   * @return The source {@link JGTITable}.
+   * @see #source
+   */
+  public final JGTITable getSource ()
+  {
+    return this.source;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -101,6 +112,6 @@ public final class JGTITableModelRows
   @Override
   public final int hashCode ()
   {
-    return this.model.hashCode () + Arrays.hashCode ( this.rowIndices );
+    return this.source.hashCode () + Arrays.hashCode ( this.rowIndices );
   }
 }

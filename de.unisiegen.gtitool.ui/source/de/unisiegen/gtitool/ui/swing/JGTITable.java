@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -17,6 +18,8 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -25,6 +28,8 @@ import javax.swing.JViewport;
 import javax.swing.TransferHandler;
 
 import de.unisiegen.gtitool.core.util.Theme;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITableModelRows;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITableModelRowsTransferable;
 
 
 /**
@@ -77,21 +82,33 @@ public final class JGTITable extends JTable implements DropTargetListener
 
 
   /**
+   * The allowed drag and drop sources.
+   */
+  private ArrayList < JComponent > allowedDndSources;
+
+
+  /**
    * Allocates a new {@link JGTITable}.
    */
   public JGTITable ()
   {
     super ();
+    this.allowedDndSources = new ArrayList < JComponent > ();
 
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
+      /**
+       * {@inheritDoc}
+       * 
+       * @see MouseMotionAdapter#mouseDragged(MouseEvent)
+       */
       @Override
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
-            && ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTITable.this, event, transferHandler
@@ -101,6 +118,29 @@ public final class JGTITable extends JTable implements DropTargetListener
       }
     } );
     setDropTarget ( new DropTarget ( this, this ) );
+  }
+
+
+  /**
+   * Adds the given {@link JComponent} to the allowed drag and drop sources.
+   * 
+   * @param jComponent The {@link JComponent} to add.
+   */
+  public final void addAllowedDndSource ( JComponent jComponent )
+  {
+    if ( !this.allowedDndSources.contains ( jComponent ) )
+    {
+      this.allowedDndSources.add ( jComponent );
+    }
+  }
+
+
+  /**
+   * Clears the allowed drag and drop sources.
+   */
+  public final void clearAllowedDndSources ()
+  {
+    this.allowedDndSources.clear ();
   }
 
 
@@ -133,11 +173,38 @@ public final class JGTITable extends JTable implements DropTargetListener
    * 
    * @see DropTargetListener#dragOver(DropTargetDragEvent)
    */
-  public final void dragOver ( DropTargetDragEvent dtde )
+  public final void dragOver ( DropTargetDragEvent event )
   {
-    Point point = dtde.getLocation ();
-    dtde.acceptDrag ( dtde.getDropAction () );
-    this.dropPoint = point;
+    try
+    {
+      JGTITableModelRows rows = ( JGTITableModelRows ) event.getTransferable ()
+          .getTransferData (
+              JGTITableModelRowsTransferable.tableModelRowsFlavor );
+      if ( !this.allowedDndSources.contains ( rows.getSource () ) )
+      {
+        event.rejectDrag ();
+        this.dropPoint = null;
+        repaint ();
+        return;
+      }
+    }
+    catch ( UnsupportedFlavorException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+    catch ( IOException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
     repaint ();
   }
 
@@ -147,21 +214,21 @@ public final class JGTITable extends JTable implements DropTargetListener
    * 
    * @see DropTargetListener#drop(DropTargetDropEvent)
    */
-  public final void drop ( DropTargetDropEvent dtde )
+  public final void drop ( DropTargetDropEvent event )
   {
-    Point point = dtde.getLocation ();
+    Point point = event.getLocation ();
     this.dropPoint = point;
 
-    dtde.acceptDrop ( dtde.getDropAction () );
+    event.acceptDrop ( event.getDropAction () );
     try
     {
-      Transferable transferable = dtde.getTransferable ();
-      dtde.dropComplete ( getTransferHandler ()
-          .importData ( this, transferable ) );
+      Transferable transferable = event.getTransferable ();
+      event.dropComplete ( getTransferHandler ().importData ( this,
+          transferable ) );
     }
     catch ( RuntimeException re )
     {
-      dtde.dropComplete ( false );
+      event.dropComplete ( false );
     }
     this.dropPoint = null;
     repaint ();
@@ -173,9 +240,9 @@ public final class JGTITable extends JTable implements DropTargetListener
    * 
    * @see DropTargetListener#dropActionChanged(DropTargetDragEvent)
    */
-  public final void dropActionChanged ( DropTargetDragEvent dtde )
+  public final void dropActionChanged ( DropTargetDragEvent event )
   {
-    dragOver ( dtde );
+    dragOver ( event );
   }
 
 
@@ -301,6 +368,18 @@ public final class JGTITable extends JTable implements DropTargetListener
         throw new RuntimeException ( "dnd mode is invalid" ); //$NON-NLS-1$
       }
     }
+  }
+
+
+  /**
+   * Removes the given {@link JComponent} from the allowed drag and drop
+   * sources.
+   * 
+   * @param jComponent The {@link JComponent} to remove.
+   */
+  public final void removeAllowedDndSource ( JComponent jComponent )
+  {
+    this.allowedDndSources.remove ( jComponent );
   }
 
 

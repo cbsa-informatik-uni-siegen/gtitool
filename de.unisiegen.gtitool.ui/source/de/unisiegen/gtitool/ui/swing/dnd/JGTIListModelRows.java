@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import javax.swing.ListModel;
 
+import de.unisiegen.gtitool.ui.swing.JGTIList;
+
 
 /**
  * This class stores the row indices and the {@link ListModel} which are used
@@ -17,11 +19,11 @@ public final class JGTIListModelRows
 {
 
   /**
-   * The underlying {@link ListModel}.
+   * The source {@link JGTIList}.
    * 
-   * @see #getModel()
+   * @see #getSource()
    */
-  private final ListModel model;
+  private final JGTIList source;
 
 
   /**
@@ -35,20 +37,29 @@ public final class JGTIListModelRows
   /**
    * Allocates a new {@link JGTIListModelRows}.
    * 
-   * @param model The {@link ListModel}.
+   * @param source The {@link JGTIList}.
    * @param rowIndices The row indices.
    */
-  public JGTIListModelRows ( ListModel model, int [] rowIndices )
+  public JGTIListModelRows ( JGTIList source, int [] rowIndices )
   {
-    int rowCount = model.getSize ();
+    if ( source == null )
+    {
+      throw new IllegalArgumentException ( "source is null" ); //$NON-NLS-1$
+    }
+    if ( source.getModel () == null )
+    {
+      throw new IllegalArgumentException ( "model is null" );//$NON-NLS-1$
+    }
+    int rowCount = source.getModel ().getSize ();
     for ( int rowIndex : rowIndices )
     {
-      if ( rowIndex < 0 || rowIndex >= rowCount )
+      if ( ( rowIndex < 0 ) || ( rowIndex >= rowCount ) )
       {
         throw new IllegalArgumentException ( "invalid row index " + rowIndex ); //$NON-NLS-1$
       }
     }
-    this.model = model;
+
+    this.source = source;
     this.rowIndices = rowIndices;
   }
 
@@ -64,21 +75,10 @@ public final class JGTIListModelRows
     if ( other instanceof JGTIListModelRows )
     {
       JGTIListModelRows listModelRows = ( JGTIListModelRows ) other;
-      return ( this.model == listModelRows.model && Arrays.equals (
+      return ( ( this.source == listModelRows.source ) && Arrays.equals (
           this.rowIndices, listModelRows.rowIndices ) );
     }
     return false;
-  }
-
-
-  /**
-   * Returns the {@link ListModel} from which to transfer the row data.
-   * 
-   * @return The source model.
-   */
-  public final ListModel getModel ()
-  {
-    return this.model;
   }
 
 
@@ -94,6 +94,18 @@ public final class JGTIListModelRows
 
 
   /**
+   * Returns the source {@link JGTIList}.
+   * 
+   * @return The source {@link JGTIList}.
+   * @see #source
+   */
+  public final JGTIList getSource ()
+  {
+    return this.source;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see Object#hashCode()
@@ -101,6 +113,6 @@ public final class JGTIListModelRows
   @Override
   public final int hashCode ()
   {
-    return this.model.hashCode () + Arrays.hashCode ( this.rowIndices );
+    return this.source.hashCode () + +Arrays.hashCode ( this.rowIndices );
   }
 }

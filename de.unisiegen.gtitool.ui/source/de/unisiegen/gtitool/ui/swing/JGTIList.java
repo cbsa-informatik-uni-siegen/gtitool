@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -14,11 +15,16 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
+
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRows;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTIListModelRowsTransferable;
 
 
 /**
@@ -70,12 +76,19 @@ public final class JGTIList extends JList implements DropTargetListener
 
 
   /**
+   * The allowed drag and drop sources.
+   */
+  private ArrayList < JComponent > allowedDndSources;
+
+
+  /**
    * Allocates a new {@link JGTIList}.
    */
   public JGTIList ()
   {
     super ();
     setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+    this.allowedDndSources = new ArrayList < JComponent > ();
 
     // swing bugfix
     addMouseMotionListener ( new MouseMotionAdapter ()
@@ -90,7 +103,7 @@ public final class JGTIList extends JList implements DropTargetListener
       public void mouseDragged ( MouseEvent event )
       {
         if ( getDragEnabled ()
-            && ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 )
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
         {
           TransferHandler transferHandler = getTransferHandler ();
           transferHandler.exportAsDrag ( JGTIList.this, event, transferHandler
@@ -100,6 +113,29 @@ public final class JGTIList extends JList implements DropTargetListener
       }
     } );
     setDropTarget ( new DropTarget ( this, this ) );
+  }
+
+
+  /**
+   * Adds the given {@link JComponent} to the allowed drag and drop sources.
+   * 
+   * @param jComponent The {@link JComponent} to add.
+   */
+  public final void addAllowedDndSource ( JComponent jComponent )
+  {
+    if ( !this.allowedDndSources.contains ( jComponent ) )
+    {
+      this.allowedDndSources.add ( jComponent );
+    }
+  }
+
+
+  /**
+   * Clears the allowed drag and drop sources.
+   */
+  public final void clearAllowedDndSources ()
+  {
+    this.allowedDndSources.clear ();
   }
 
 
@@ -136,6 +172,33 @@ public final class JGTIList extends JList implements DropTargetListener
    */
   public final void dragOver ( DropTargetDragEvent event )
   {
+    try
+    {
+      JGTIListModelRows rows = ( JGTIListModelRows ) event.getTransferable ()
+          .getTransferData ( JGTIListModelRowsTransferable.listModelRowsFlavor );
+      if ( !this.allowedDndSources.contains ( rows.getSource () ) )
+      {
+        event.rejectDrag ();
+        this.dropPoint = null;
+        repaint ();
+        return;
+      }
+    }
+    catch ( UnsupportedFlavorException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+    catch ( IOException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+
     event.acceptDrag ( event.getDropAction () );
     this.dropPoint = event.getLocation ();
     repaint ();
@@ -257,6 +320,18 @@ public final class JGTIList extends JList implements DropTargetListener
         graphics.drawLine ( width - size, y + 1, width, y + size + 1 );
       }
     }
+  }
+
+
+  /**
+   * Removes the given {@link JComponent} from the allowed drag and drop
+   * sources.
+   * 
+   * @param jComponent The {@link JComponent} to remove.
+   */
+  public final void removeAllowedDndSource ( JComponent jComponent )
+  {
+    this.allowedDndSources.remove ( jComponent );
   }
 
 

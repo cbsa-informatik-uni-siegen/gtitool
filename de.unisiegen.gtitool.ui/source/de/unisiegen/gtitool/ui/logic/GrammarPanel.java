@@ -975,6 +975,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   {
     this.gui.jGTITableGrammar.setModel ( this.grammar );
     this.gui.jGTITableGrammar.setColumnModel ( new GrammarColumnModel () );
+    this.gui.jGTITableGrammar.addAllowedDndSource ( this.gui.jGTITableGrammar );
     this.gui.jGTITableGrammar.getTableHeader ().setReorderingAllowed ( false );
     if ( this.grammar.getColumnCount () > 0 )
     {

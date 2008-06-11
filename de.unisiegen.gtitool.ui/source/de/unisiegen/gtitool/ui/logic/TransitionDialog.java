@@ -323,6 +323,7 @@ public final class TransitionDialog implements
         .getName ();
     this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
         "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
+
     this.gui.jGTIListChangeOverSet
         .setTransferHandler ( new JGTIListTransferHandler (
             TransferHandler.MOVE )
@@ -344,6 +345,9 @@ public final class TransitionDialog implements
           }
         } );
     this.gui.jGTIListChangeOverSet.setDragEnabled ( true );
+    this.gui.jGTIListChangeOverSet
+        .addAllowedDndSource ( this.gui.jGTIListAlphabet );
+
     this.gui.jGTIListAlphabet.setTransferHandler ( new JGTIListTransferHandler (
         TransferHandler.MOVE )
     {
@@ -364,6 +368,9 @@ public final class TransitionDialog implements
       }
     } );
     this.gui.jGTIListAlphabet.setDragEnabled ( true );
+    this.gui.jGTIListAlphabet
+        .addAllowedDndSource ( this.gui.jGTIListChangeOverSet );
+
     this.modelAlphabet = new SymbolListModel ();
     for ( Symbol symbol : this.alphabet )
     {
@@ -768,7 +775,8 @@ public final class TransitionDialog implements
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )
     {
-      Symbol symbol = ( Symbol ) rows.getModel ().getElementAt ( index );
+      Symbol symbol = ( Symbol ) rows.getSource ().getModel ().getElementAt (
+          index );
       if ( !this.modelAlphabet.contains ( symbol ) )
       {
         symbolList.add ( symbol );
@@ -792,7 +800,8 @@ public final class TransitionDialog implements
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )
     {
-      Symbol symbol = ( Symbol ) rows.getModel ().getElementAt ( index );
+      Symbol symbol = ( Symbol ) rows.getSource ().getModel ().getElementAt (
+          index );
       if ( !this.modelChangeOverSet.contains ( symbol ) )
       {
         symbolList.add ( symbol );

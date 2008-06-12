@@ -87,6 +87,24 @@ public final class Element implements Serializable
 
 
   /**
+   * Escapes the input {@link String}.
+   * 
+   * @param input The input {@link String}.
+   * @return The escaped input {@link String}.
+   */
+  private final String escape ( String input )
+  {
+    String result = input;
+    result = result.replaceAll ( "&", "&amp;" ); //$NON-NLS-1$ //$NON-NLS-2$
+    result = result.replaceAll ( "<", "&lt;" ); //$NON-NLS-1$ //$NON-NLS-2$
+    result = result.replaceAll ( ">", "&gt;" ); //$NON-NLS-1$ //$NON-NLS-2$
+    result = result.replaceAll ( "\"", "&quot;" ); //$NON-NLS-1$ //$NON-NLS-2$
+    result = result.replaceAll ( "\'", "&apos;" ); //$NON-NLS-1$ //$NON-NLS-2$
+    return result;
+  }
+
+
+  /**
    * Returns the attribute list.
    * 
    * @return The attribute list.
@@ -189,7 +207,7 @@ public final class Element implements Serializable
       result.append ( current.getName () );
       result.append ( "=" ); //$NON-NLS-1$
       result.append ( "\"" ); //$NON-NLS-1$
-      result.append ( current.getValue () );
+      result.append ( escape ( current.getValue () ) );
       result.append ( "\"" ); //$NON-NLS-1$
     }
     if ( this.elementList.size () == 0 )

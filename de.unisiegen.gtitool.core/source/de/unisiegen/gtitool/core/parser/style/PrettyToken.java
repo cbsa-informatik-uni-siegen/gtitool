@@ -37,6 +37,18 @@ public final class PrettyToken
    * @param text The text.
    * @param style The {@link Style}.
    */
+  public PrettyToken ( char text, Style style )
+  {
+    this ( String.valueOf ( text ), style );
+  }
+
+
+  /**
+   * Allocates a new {@link PrettyToken}.
+   * 
+   * @param text The text.
+   * @param style The {@link Style}.
+   */
   public PrettyToken ( String text, Style style )
   {
     this.text = text;

@@ -148,11 +148,27 @@ public final class PrettyStringComponent extends JLabel
     if ( metrics.stringWidth ( this.prettyString.toString () ) > getWidth () )
     {
       String dots = " ..."; //$NON-NLS-1$
-
+      PrettyToken lastPrettyToken = null;
       while ( ( !usedPrettyString.isEmpty () )
           && ( ( metrics.stringWidth ( usedPrettyString.toString () + dots ) ) > getWidth () ) )
       {
-        usedPrettyString.removeLastPrettyToken ();
+        lastPrettyToken = usedPrettyString.removeLastPrettyToken ();
+      }
+
+      if ( lastPrettyToken != null )
+      {
+        char [] chars = lastPrettyToken.getChar ();
+        int i = 0;
+        String addText = ""; //$NON-NLS-1$
+        while ( i < chars.length
+            && ( ( metrics.stringWidth ( usedPrettyString.toString () + addText
+                + dots ) ) <= getWidth () ) )
+        {
+          addText += chars [ i ];
+          i++ ;
+        }
+        usedPrettyString.addPrettyToken ( new PrettyToken ( addText.substring (
+            0, addText.length () - 1 ), lastPrettyToken.getStyle () ) );
       }
 
       // if empty do not use the first space

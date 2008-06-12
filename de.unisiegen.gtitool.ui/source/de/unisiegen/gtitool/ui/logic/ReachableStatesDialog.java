@@ -28,6 +28,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
@@ -98,49 +99,9 @@ public final class ReachableStatesDialog implements
     ACTIVATE_START_STATE,
 
     /**
-     * The activate start closure {@link State} step.
+     * The activate reachable {@link State}s step.
      */
-    ACTIVATE_START_CLOSURE_STATE,
-
-    /**
-     * The add start {@link State} step.
-     */
-    ADD_START_STATE,
-
-    /**
-     * The activate old {@link State} step.
-     */
-    ACTIVATE_OLD_STATE,
-
-    /**
-     * The activate old closure {@link State} step.
-     */
-    ACTIVATE_OLD_CLOSURE_STATE,
-
-    /**
-     * The activate {@link Symbol}s step.
-     */
-    ACTIVATE_SYMBOLS,
-
-    /**
-     * The activate new {@link State}s step.
-     */
-    ACTIVATE_NEW_STATES,
-
-    /**
-     * The activate new closure {@link State}s step.
-     */
-    ACTIVATE_NEW_CLOSURE_STATES,
-
-    /**
-     * The add {@link State} and {@link Transition} step.
-     */
-    ADD_STATE_AND_TRANSITION,
-
-    /**
-     * The finish step.
-     */
-    FINISH;
+    ACTIVATE_REACHABLE_STATES;
 
     /**
      * {@inheritDoc}
@@ -156,41 +117,9 @@ public final class ReachableStatesDialog implements
         {
           return "activate start state"; //$NON-NLS-1$
         }
-        case ACTIVATE_START_CLOSURE_STATE :
+        case ACTIVATE_REACHABLE_STATES :
         {
-          return "activate start closure state"; //$NON-NLS-1$
-        }
-        case ADD_START_STATE :
-        {
-          return "add start state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_OLD_STATE :
-        {
-          return "activate old state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_OLD_CLOSURE_STATE :
-        {
-          return "activate old closure state"; //$NON-NLS-1$
-        }
-        case ACTIVATE_SYMBOLS :
-        {
-          return "activate symbols"; //$NON-NLS-1$
-        }
-        case ACTIVATE_NEW_STATES :
-        {
-          return "activate new states"; //$NON-NLS-1$
-        }
-        case ACTIVATE_NEW_CLOSURE_STATES :
-        {
-          return "activate new closure states"; //$NON-NLS-1$
-        }
-        case ADD_STATE_AND_TRANSITION :
-        {
-          return "add state and transition"; //$NON-NLS-1$
-        }
-        case FINISH :
-        {
-          return "finish"; //$NON-NLS-1$
+          return "activate reachable states"; //$NON-NLS-1$
         }
       }
       throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
@@ -634,8 +563,6 @@ public final class ReachableStatesDialog implements
    * 
    * @param prettyString The {@link PrettyString} to add.
    */
-  // TODOCF
-  @SuppressWarnings ( "unused" )
   private final void addOutlineComment ( PrettyString prettyString )
   {
     this.reachableStatesTableModel.addRow ( prettyString );
@@ -648,8 +575,6 @@ public final class ReachableStatesDialog implements
   /**
    * Adds a {@link StepItem}.
    */
-  // TODOCF
-  @SuppressWarnings ( "unused" )
   private final void addStepItem ()
   {
     ArrayList < State > activeStatesOriginal = new ArrayList < State > ();
@@ -977,6 +902,77 @@ public final class ReachableStatesDialog implements
    */
   private final void performNextStep ( boolean manualStep )
   {
+    addStepItem ();
+
+    if ( this.step.equals ( Step.ACTIVATE_START_STATE ) )
+    {
+      State startState = null;
+      for ( State current : this.machineOriginal.getState () )
+      {
+        if ( current.isStartState () )
+        {
+          startState = current;
+          break;
+        }
+      }
+      if ( startState == null )
+      {
+        throw new NullPointerException ( "no start state" ); //$NON-NLS-1$
+      }
+
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", "perform next step: " + this.step //$NON-NLS-1$ //$NON-NLS-2$
+            + ": " + startState.getName () ); //$NON-NLS-1$
+      }
+
+      startState.setActive ( true );
+
+      // outline
+      PrettyString prettyString = new PrettyString ();
+      prettyString.addPrettyString ( Messages.getPrettyString (
+          "ReachableStatesDialog.ActivateStartState", false, startState ) ); //$NON-NLS-1$
+      addOutlineComment ( prettyString );
+
+      this.step = Step.ACTIVATE_REACHABLE_STATES;
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_REACHABLE_STATES ) )
+    {
+      ArrayList < State > reachableStates = new ArrayList < State > ();
+      for ( State currentState : this.machineOriginal.getState () )
+      {
+        if ( currentState.isActive () )
+        {
+          for ( Transition currentTransition : currentState
+              .getTransitionBegin () )
+          {
+            reachableStates.add ( currentTransition.getStateEnd () );
+          }
+        }
+      }
+
+      clearStateHighlightOriginal ();
+
+      for ( State current : reachableStates )
+      {
+        current.setActive ( true );
+      }
+
+      // TODO
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", "perform next step: " + this.step ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
+
+      // TODO outline
+
+      // TODO
+      this.step = Step.ACTIVATE_REACHABLE_STATES;
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported step" ); //$NON-NLS-1$
+    }
 
     if ( manualStep )
     {
@@ -1075,17 +1071,6 @@ public final class ReachableStatesDialog implements
       this.modelResult.getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( this.modelResult.getGraphModel () ) );
     }
-  }
-
-
-  /**
-   * Performs the start.
-   */
-  private final void performStart ()
-  {
-    this.step = Step.ACTIVATE_START_STATE;
-
-    setStatus ();
   }
 
 
@@ -1215,7 +1200,9 @@ public final class ReachableStatesDialog implements
     this.gui.jGTIScrollPaneResult.setViewportView ( this.jGTIGraphResult );
     this.machineResult = this.modelResult.getMachine ();
 
-    performStart ();
+    this.step = Step.ACTIVATE_START_STATE;
+
+    setStatus ();
 
     Rectangle rect = PreferenceManager.getInstance ()
         .getReachableStatesDialogBounds ();

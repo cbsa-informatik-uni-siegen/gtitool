@@ -1110,7 +1110,28 @@ public final class ConvertMachineDialog implements
 
     this.positionMap = new HashMap < String, Position > ();
 
-    performStart ();
+    this.step = Step.ACTIVATE_START_STATE;
+
+    while ( !this.endReached )
+    {
+      performNextStep ( false );
+    }
+
+    // auto layout
+    new LayoutManager ( this.modelConverted, null ).doLayout ();
+
+    for ( DefaultStateView current : this.modelConverted.getStateViewList () )
+    {
+      this.positionMap.put ( current.getState ().getName (), new Position (
+          current.getPositionX (), current.getPositionY () ) );
+    }
+
+    while ( !this.stepItemList.isEmpty () )
+    {
+      performPreviousStep ( false );
+    }
+
+    setStatus ();
 
     show ();
   }
@@ -2488,34 +2509,6 @@ public final class ConvertMachineDialog implements
       this.modelConverted.getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( this.modelConverted.getGraphModel () ) );
     }
-  }
-
-
-  /**
-   * Performs the start.
-   */
-  private final void performStart ()
-  {
-    this.step = Step.ACTIVATE_START_STATE;
-
-    while ( !this.endReached )
-    {
-      performNextStep ( false );
-    }
-
-    new LayoutManager ( this.modelConverted, null ).doLayout ();
-    for ( DefaultStateView current : this.modelConverted.getStateViewList () )
-    {
-      this.positionMap.put ( current.getState ().getName (), new Position (
-          current.getPositionX (), current.getPositionY () ) );
-    }
-
-    while ( !this.stepItemList.isEmpty () )
-    {
-      performPreviousStep ( false );
-    }
-
-    setStatus ();
   }
 
 

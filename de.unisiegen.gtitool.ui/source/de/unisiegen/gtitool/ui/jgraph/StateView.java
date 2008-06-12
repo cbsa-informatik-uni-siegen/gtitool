@@ -329,18 +329,35 @@ public final class StateView extends VertexView
         PrettyString prettyString = new PrettyString ();
         prettyString.addPrettyString ( state.toPrettyString () );
 
+        int insets = state.isFinalState () ? 20 : 10;
         // short version
-        if ( metrics.stringWidth ( state.toString () ) > d.width )
+        if ( ( metrics.stringWidth ( state.toString () ) + insets ) > d.width )
         {
           state.setShortNameUsed ( true );
 
-          dx = 5;
+          dx = insets / 2;
           String dots = " ..."; //$NON-NLS-1$
-
+          PrettyToken lastPrettyToken = null;
           while ( ( !prettyString.isEmpty () )
               && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > d.width ) )
           {
-            prettyString.removeLastPrettyToken ();
+            lastPrettyToken = prettyString.removeLastPrettyToken ();
+          }
+
+          if ( lastPrettyToken != null )
+          {
+            char [] chars = lastPrettyToken.getChar ();
+            int i = 0;
+            String addText = ""; //$NON-NLS-1$
+            while ( i < chars.length
+                && ( ( metrics.stringWidth ( prettyString.toString () + addText
+                    + dots ) + 2 * dx ) <= d.width ) )
+            {
+              addText += chars [ i ];
+              i++ ;
+            }
+            prettyString.addPrettyToken ( new PrettyToken ( addText.substring (
+                0, addText.length () - 1 ), lastPrettyToken.getStyle () ) );
           }
 
           // center the dots if there are no pretty tokens

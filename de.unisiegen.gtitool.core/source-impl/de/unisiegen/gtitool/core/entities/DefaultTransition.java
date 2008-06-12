@@ -1314,6 +1314,7 @@ public final class DefaultTransition implements Transition
    */
   public final PrettyString toStackOperationPrettyString ()
   {
+    // does not use the active style of symbols
     PrettyString prettyString = new PrettyString ();
     prettyString.addPrettyToken ( new PrettyToken ( "(", Style.NONE ) ); //$NON-NLS-1$
     prettyString.addPrettyPrintable ( this.stateBegin );
@@ -1326,7 +1327,8 @@ public final class DefaultTransition implements Transition
     {
       for ( Symbol current : getSymbol () )
       {
-        prettyString.addPrettyPrintable ( current );
+        prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
+            Style.SYMBOL ) );
       }
     }
     prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$

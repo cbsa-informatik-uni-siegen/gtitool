@@ -216,6 +216,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_MINIMIZE,
 
     /**
+     * The reachable states enabled button state.
+     */
+    ENABLED_REACHABLE_STATES,
+
+    /**
      * The save enabled button state.
      */
     ENABLED_SAVE,
@@ -327,6 +332,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
@@ -665,6 +671,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_REACHABLE_STATES ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_REACHABLE_STATES );
+      this.gui.getJMenuItemReachableStates ().setEnabled ( true );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
@@ -1206,6 +1219,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     addButtonState ( ButtonState.ENABLED_CONVERT_TO );
     addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+    addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
+    {
+      addButtonState ( ButtonState.ENABLED_MINIMIZE );
+    }
 
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
   }
@@ -1242,19 +1260,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // if there are no validation errors perform the action
     if ( handleValidate ( false ) )
     {
+      machinePanel.handleEnterWord ();
+      machinePanel.setVisibleConsole ( false );
+
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+      addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
       removeButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
-      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
-      machinePanel.handleEnterWord ();
       removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
-      machinePanel.setVisibleConsole ( false );
       removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
-      addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+      removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+      removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     }
   }
 
@@ -2342,6 +2364,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+      removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
     }
     // MachinePanel
@@ -2353,13 +2376,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         addButtonState ( ButtonState.VISIBLE_MACHINE );
         removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
-        addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
 
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
-          addButtonState ( ButtonState.ENABLED_MINIMIZE );
+          if ( machinePanel.isWordNavigation ()
+              || machinePanel.isWordEnterMode () )
+          {
+            removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+          }
+          else
+          {
+            addButtonState ( ButtonState.ENABLED_MINIMIZE );
+          }
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
@@ -2389,6 +2419,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             && !machinePanel.isWordEnterMode () );
         machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .getState () );
+
+        addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
 
         // word navigation mode
@@ -2405,6 +2437,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+          removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
@@ -2422,6 +2455,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+          removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
@@ -2439,6 +2473,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO );
           addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+          addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
@@ -2463,20 +2498,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
         }
 
+        panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
+            .getState () );
+
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
+
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
-        removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
-        addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
-        panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
-            .getState () );
-        removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
+        addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
+
+        removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+        removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+        removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
       }
       else
       {
@@ -3650,6 +3689,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_MINIMIZE );
       this.gui.getJMenuItemMinimize ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_REACHABLE_STATES ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_REACHABLE_STATES );
+      this.gui.getJMenuItemReachableStates ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {

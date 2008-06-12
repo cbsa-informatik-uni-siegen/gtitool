@@ -76,6 +76,18 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
+   * Returns the prettyString.
+   * 
+   * @return The prettyString.
+   * @see #prettyString
+   */
+  public final PrettyString getPrettyString ()
+  {
+    return this.prettyString;
+  }
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see JComponent#getToolTipText(MouseEvent)
@@ -84,6 +96,10 @@ public final class PrettyStringComponent extends JLabel
   public final String getToolTipText ( @SuppressWarnings ( "unused" )
   MouseEvent event )
   {
+    if ( this.prettyString.toString ().equals ( "" ) ) //$NON-NLS-1$
+    {
+      return null;
+    }
     return this.prettyString.toHTMLString ();
   }
 
@@ -218,18 +234,6 @@ public final class PrettyStringComponent extends JLabel
 
 
   /**
-   * Returns the prettyString.
-   * 
-   * @return The prettyString.
-   * @see #prettyString
-   */
-  public final PrettyString getPrettyString ()
-  {
-    return this.prettyString;
-  }
-
-
-  /**
    * Sets the prettyString.
    * 
    * @param prettyString The prettyString to set.
@@ -239,5 +243,4 @@ public final class PrettyStringComponent extends JLabel
   {
     this.prettyString = prettyString;
   }
-
 }

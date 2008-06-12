@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,12 +26,12 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
-import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
-import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
@@ -99,9 +100,19 @@ public final class ReachableStatesDialog implements
     ACTIVATE_START_STATE,
 
     /**
+     * The activate next {@link State} step.
+     */
+    ACTIVATE_NEXT_STATE,
+
+    /**
      * The activate reachable {@link State}s step.
      */
-    ACTIVATE_REACHABLE_STATES;
+    ACTIVATE_REACHABLE_STATES,
+
+    /**
+     * The finish step.
+     */
+    FINISH;
 
     /**
      * {@inheritDoc}
@@ -117,9 +128,17 @@ public final class ReachableStatesDialog implements
         {
           return "activate start state"; //$NON-NLS-1$
         }
+        case ACTIVATE_NEXT_STATE :
+        {
+          return "activate next state"; //$NON-NLS-1$
+        }
         case ACTIVATE_REACHABLE_STATES :
         {
           return "activate reachable states"; //$NON-NLS-1$
+        }
+        case FINISH :
+        {
+          return "finish"; //$NON-NLS-1$
         }
       }
       throw new RuntimeException ( "unsupported step" );//$NON-NLS-1$
@@ -142,15 +161,15 @@ public final class ReachableStatesDialog implements
 
 
     /**
-     * The current active {@link Symbol}.
+     * The {@link State} which must be calculated.
      */
-    private Symbol activeSymbol;
+    private ArrayList < State > activeToCalculateStates;
 
 
     /**
-     * The current active {@link State}.
+     * The {@link State}s which are calculated.
      */
-    private State activeState;
+    private ArrayList < State > activeCalculatedStates;
 
 
     /**
@@ -190,29 +209,12 @@ public final class ReachableStatesDialog implements
 
 
     /**
-     * The added {@link DefaultStateView}.
-     */
-    private DefaultStateView addedDefaultStateView = null;
-
-
-    /**
-     * The added {@link DefaultTransitionView}.
-     */
-    private DefaultTransitionView addedDefaultTransitionView = null;
-
-
-    /**
-     * The added {@link Symbol}.
-     */
-    private ObjectPair < Transition, Symbol > addedSymbol = null;
-
-
-    /**
      * Allocates a new {@link StepItem}.
      * 
      * @param activeStep The active {@link Step}.
-     * @param currentActiveSymbol The current active {@link Symbol}.
-     * @param currentActiveState The current active {@link State}.
+     * @param activeToCalculateStates The {@link State} which must be
+     *          calculated.
+     * @param activeCalculatedStates The {@link State}s which are calculated.
      * @param activeStatesOriginal The active {@link State}s of the original
      *          {@link JGTIGraph}.
      * @param activeStatesResult The active {@link State}s of the result
@@ -226,8 +228,10 @@ public final class ReachableStatesDialog implements
      * @param activeSymbolsResult The active {@link Symbol}s of the result
      *          {@link JGTIGraph}.
      */
-    public StepItem ( Step activeStep, Symbol currentActiveSymbol,
-        State currentActiveState, ArrayList < State > activeStatesOriginal,
+    public StepItem ( Step activeStep,
+        ArrayList < State > activeToCalculateStates,
+        ArrayList < State > activeCalculatedStates,
+        ArrayList < State > activeStatesOriginal,
         ArrayList < State > activeStatesResult,
         ArrayList < Transition > activeTransitionsOriginal,
         ArrayList < Transition > activeTransitionsResult,
@@ -235,8 +239,8 @@ public final class ReachableStatesDialog implements
         ArrayList < Symbol > activeSymbolsResult )
     {
       this.activeStep = activeStep;
-      this.activeSymbol = currentActiveSymbol;
-      this.activeState = currentActiveState;
+      this.activeToCalculateStates = activeToCalculateStates;
+      this.activeCalculatedStates = activeCalculatedStates;
       this.activeStatesOriginal = activeStatesOriginal;
       this.activeStatesResult = activeStatesResult;
       this.activeTransitionsOriginal = activeTransitionsOriginal;
@@ -247,14 +251,14 @@ public final class ReachableStatesDialog implements
 
 
     /**
-     * Returns the activeState.
+     * Returns the activeCalculatedStates.
      * 
-     * @return The activeState.
-     * @see #activeState
+     * @return The activeCalculatedStates.
+     * @see #activeCalculatedStates
      */
-    public final State getActiveState ()
+    public final ArrayList < State > getActiveCalculatedStates ()
     {
-      return this.activeState;
+      return this.activeCalculatedStates;
     }
 
 
@@ -295,18 +299,6 @@ public final class ReachableStatesDialog implements
 
 
     /**
-     * Returns the activeSymbol.
-     * 
-     * @return The activeSymbol.
-     * @see #activeSymbol
-     */
-    public final Symbol getActiveSymbol ()
-    {
-      return this.activeSymbol;
-    }
-
-
-    /**
      * Returns the activeSymbolsOriginal.
      * 
      * @return The activeSymbolsOriginal.
@@ -331,6 +323,18 @@ public final class ReachableStatesDialog implements
 
 
     /**
+     * Returns the activeToCalculateStates.
+     * 
+     * @return The activeToCalculateStates.
+     * @see #activeToCalculateStates
+     */
+    public final ArrayList < State > getActiveToCalculateStates ()
+    {
+      return this.activeToCalculateStates;
+    }
+
+
+    /**
      * Returns the activeTransitionsOriginal.
      * 
      * @return The activeTransitionsOriginal.
@@ -351,81 +355,6 @@ public final class ReachableStatesDialog implements
     public final ArrayList < Transition > getActiveTransitionsResult ()
     {
       return this.activeTransitionsResult;
-    }
-
-
-    /**
-     * Returns the addedDefaultStateView.
-     * 
-     * @return The addedDefaultStateView.
-     * @see #addedDefaultStateView
-     */
-    public final DefaultStateView getAddedDefaultStateView ()
-    {
-      return this.addedDefaultStateView;
-    }
-
-
-    /**
-     * Returns the addedDefaultTransitionView.
-     * 
-     * @return The addedDefaultTransitionView.
-     * @see #addedDefaultTransitionView
-     */
-    public final DefaultTransitionView getAddedDefaultTransitionView ()
-    {
-      return this.addedDefaultTransitionView;
-    }
-
-
-    /**
-     * Returns the addedSymbol.
-     * 
-     * @return The addedSymbol.
-     * @see #addedSymbol
-     */
-    public final ObjectPair < Transition, Symbol > getAddedSymbol ()
-    {
-      return this.addedSymbol;
-    }
-
-
-    /**
-     * Sets the addedDefaultStateView.
-     * 
-     * @param addedDefaultStateView The addedDefaultStateView to set.
-     * @see #addedDefaultStateView
-     */
-    public final void setAddedDefaultStateView (
-        DefaultStateView addedDefaultStateView )
-    {
-      this.addedDefaultStateView = addedDefaultStateView;
-    }
-
-
-    /**
-     * Sets the addedDefaultTransitionView.
-     * 
-     * @param addedDefaultTransitionView The addedDefaultTransitionView to set.
-     * @see #addedDefaultTransitionView
-     */
-    public final void setAddedDefaultTransitionView (
-        DefaultTransitionView addedDefaultTransitionView )
-    {
-      this.addedDefaultTransitionView = addedDefaultTransitionView;
-    }
-
-
-    /**
-     * Sets the addedSymbol.
-     * 
-     * @param addedSymbol The addedSymbol to set.
-     * @see #addedSymbol
-     */
-    public final void setAddedSymbol (
-        ObjectPair < Transition, Symbol > addedSymbol )
-    {
-      this.addedSymbol = addedSymbol;
     }
   }
 
@@ -492,18 +421,6 @@ public final class ReachableStatesDialog implements
 
 
   /**
-   * The current {@link Symbol}.
-   */
-  private Symbol currentActiveSymbol;
-
-
-  /**
-   * The current {@link State}.
-   */
-  private State currentActiveState;
-
-
-  /**
    * The current {@link Step}.
    */
   private Step step = null;
@@ -531,6 +448,18 @@ public final class ReachableStatesDialog implements
    * The {@link ReachableStatesTableModel}.
    */
   private ReachableStatesTableModel reachableStatesTableModel;
+
+
+  /**
+   * The {@link State} which must be calculated.
+   */
+  private ArrayList < State > toCalculateStates = new ArrayList < State > ();
+
+
+  /**
+   * The {@link State}s which are calculated.
+   */
+  private ArrayList < State > calculatedStates = new ArrayList < State > ();
 
 
   /**
@@ -577,6 +506,8 @@ public final class ReachableStatesDialog implements
    */
   private final void addStepItem ()
   {
+    ArrayList < State > activeToCalculateStates = new ArrayList < State > ();
+    ArrayList < State > activeCalculatedStates = new ArrayList < State > ();
     ArrayList < State > activeStatesOriginal = new ArrayList < State > ();
     ArrayList < State > activeStatesResult = new ArrayList < State > ();
     ArrayList < Transition > activeTransitionsOriginal = new ArrayList < Transition > ();
@@ -584,6 +515,14 @@ public final class ReachableStatesDialog implements
     ArrayList < Symbol > activeSymbolsOriginal = new ArrayList < Symbol > ();
     ArrayList < Symbol > activeSymbolsResult = new ArrayList < Symbol > ();
 
+    for ( State current : this.toCalculateStates )
+    {
+      activeToCalculateStates.add ( current );
+    }
+    for ( State current : this.calculatedStates )
+    {
+      activeCalculatedStates.add ( current );
+    }
     for ( State current : this.machineOriginal.getState () )
     {
       if ( current.isActive () )
@@ -633,8 +572,8 @@ public final class ReachableStatesDialog implements
       }
     }
 
-    this.stepItemList.add ( new StepItem ( this.step, this.currentActiveSymbol,
-        this.currentActiveState, activeStatesOriginal, activeStatesResult,
+    this.stepItemList.add ( new StepItem ( this.step, activeToCalculateStates,
+        activeCalculatedStates, activeStatesOriginal, activeStatesResult,
         activeTransitionsOriginal, activeTransitionsResult,
         activeSymbolsOriginal, activeSymbolsResult ) );
   }
@@ -814,8 +753,22 @@ public final class ReachableStatesDialog implements
       performNextStep ( false );
     }
 
+    // remove the not reachable states
+    ArrayList < DefaultStateView > statesToRemove = new ArrayList < DefaultStateView > ();
+    for ( DefaultStateView current : this.modelResult.getStateViewList () )
+    {
+      if ( !current.getState ().isActive () )
+      {
+        statesToRemove.add ( current );
+      }
+    }
+    for ( DefaultStateView current : statesToRemove )
+    {
+      this.modelResult.removeState ( current, false );
+    }
+
     this.machinePanel.getMainWindow ().handleNew (
-        this.modelResult.getElement (), true );
+        this.modelResult.getElement (), false );
 
     PreferenceManager.getInstance ().setReachableStatesDialogPreferences (
         this.gui );
@@ -928,10 +881,40 @@ public final class ReachableStatesDialog implements
 
       startState.setActive ( true );
 
+      // result
+      for ( State current : this.machineResult.getState () )
+      {
+        if ( startState.equals ( current ) )
+        {
+          current.setActive ( true );
+          break;
+        }
+      }
+
       // outline
       PrettyString prettyString = new PrettyString ();
       prettyString.addPrettyString ( Messages.getPrettyString (
           "ReachableStatesDialog.ActivateStartState", false, startState ) ); //$NON-NLS-1$
+      addOutlineComment ( prettyString );
+
+      this.step = Step.ACTIVATE_REACHABLE_STATES;
+    }
+    else if ( this.step.equals ( Step.ACTIVATE_NEXT_STATE ) )
+    {
+      State nextState = this.toCalculateStates.remove ( 0 );
+
+      nextState.setActive ( true );
+
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", "perform next step: " + this.step //$NON-NLS-1$ //$NON-NLS-2$
+            + ": " + nextState.getName () ); //$NON-NLS-1$
+      }
+
+      // outline
+      PrettyString prettyString = new PrettyString ();
+      prettyString.addPrettyString ( Messages.getPrettyString (
+          "ReachableStatesDialog.ActivateNextState", false, nextState ) ); //$NON-NLS-1$
       addOutlineComment ( prettyString );
 
       this.step = Step.ACTIVATE_REACHABLE_STATES;
@@ -943,31 +926,133 @@ public final class ReachableStatesDialog implements
       {
         if ( currentState.isActive () )
         {
+          this.calculatedStates.add ( currentState );
           for ( Transition currentTransition : currentState
               .getTransitionBegin () )
           {
+            currentTransition.setActive ( true );
+
+            // result
+            for ( Transition current : this.machineResult.getTransition () )
+            {
+              if ( currentTransition.equals ( current ) )
+              {
+                current.setActive ( true );
+                break;
+              }
+            }
+
             reachableStates.add ( currentTransition.getStateEnd () );
           }
+          break;
         }
       }
+      Collections.sort ( reachableStates );
 
       clearStateHighlightOriginal ();
 
       for ( State current : reachableStates )
       {
+        if ( !this.calculatedStates.contains ( current )
+            && !this.toCalculateStates.contains ( current ) )
+        {
+          this.toCalculateStates.add ( current );
+        }
         current.setActive ( true );
+
+        // result
+        for ( State currentResult : this.machineResult.getState () )
+        {
+          if ( current.equals ( currentResult ) )
+          {
+            currentResult.setActive ( true );
+            break;
+          }
+        }
+      }
+      Collections.sort ( this.toCalculateStates );
+
+      if ( manualStep )
+      {
+        logger.debug ( "performNextStep", "perform next step: " + this.step //$NON-NLS-1$ //$NON-NLS-2$
+            + ": " + reachableStates ); //$NON-NLS-1$
       }
 
-      // TODO
+      // outline
+      PrettyString prettyString = new PrettyString ();
+      prettyString.addPrettyToken ( new PrettyToken ( Messages
+          .getString ( "ReachableStatesDialog.ActivateReachableStates" ) //$NON-NLS-1$
+          + " ", Style.NONE ) ); //$NON-NLS-1$
+
+      if ( reachableStates.size () == 0 )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( "\u2205", Style.NONE ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State current : reachableStates )
+        {
+          if ( !first )
+          {
+            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          }
+          first = false;
+          prettyString.addPrettyPrintable ( current );
+        }
+        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      }
+      addOutlineComment ( prettyString );
+
+      this.step = Step.FINISH;
+    }
+    else if ( this.step.equals ( Step.FINISH ) )
+    {
+      clearStateHighlightOriginal ();
+      clearTransitionHighlightOriginal ();
+      clearTransitionHighlightResult ();
+
       if ( manualStep )
       {
         logger.debug ( "performNextStep", "perform next step: " + this.step ); //$NON-NLS-1$ //$NON-NLS-2$
       }
 
-      // TODO outline
+      if ( this.toCalculateStates.size () == 0 )
+      {
+        this.endReached = true;
+      }
 
-      // TODO
-      this.step = Step.ACTIVATE_REACHABLE_STATES;
+      // outline
+
+      PrettyString prettyString = new PrettyString ();
+      if ( this.toCalculateStates.size () == 0 )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( Messages.getString (
+            "ReachableStatesDialog.FinishAll", false ), Style.NONE ) ); //$NON-NLS-1$
+      }
+      else
+      {
+        prettyString.addPrettyString ( Messages.getPrettyString (
+            "ReachableStatesDialog.Finish", false, this.calculatedStates //$NON-NLS-1$
+                .get ( this.calculatedStates.size () - 1 ) ) );
+        prettyString.addPrettyToken ( new PrettyToken ( " ", Style.NONE ) ); //$NON-NLS-1$
+        prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+        boolean first = true;
+        for ( State current : this.toCalculateStates )
+        {
+          if ( !first )
+          {
+            prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+          }
+          first = false;
+          prettyString.addPrettyPrintable ( current );
+        }
+        prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      }
+      addOutlineComment ( prettyString );
+
+      this.step = Step.ACTIVATE_NEXT_STATE;
     }
     else
     {
@@ -1002,6 +1087,19 @@ public final class ReachableStatesDialog implements
 
     StepItem stepItem = this.stepItemList
         .remove ( this.stepItemList.size () - 1 );
+
+    this.toCalculateStates.clear ();
+    for ( State current : stepItem.getActiveToCalculateStates () )
+    {
+      this.toCalculateStates.add ( current );
+    }
+
+    this.calculatedStates.clear ();
+    for ( State current : stepItem.getActiveCalculatedStates () )
+    {
+      this.calculatedStates.add ( current );
+    }
+
     clearStateHighlightOriginal ();
     clearStateHighlightResult ();
     clearTransitionHighlightOriginal ();
@@ -1034,25 +1132,6 @@ public final class ReachableStatesDialog implements
       current.setActive ( true );
     }
     this.step = stepItem.getActiveStep ();
-    this.currentActiveState = stepItem.getActiveState ();
-    this.currentActiveSymbol = stepItem.getActiveSymbol ();
-
-    if ( stepItem.getAddedDefaultStateView () != null )
-    {
-      this.modelResult.removeState ( stepItem.getAddedDefaultStateView (),
-          false );
-    }
-    if ( stepItem.getAddedDefaultTransitionView () != null )
-    {
-      this.modelResult.removeTransition ( stepItem
-          .getAddedDefaultTransitionView (), false );
-    }
-    if ( stepItem.getAddedSymbol () != null )
-    {
-      Transition transition = stepItem.getAddedSymbol ().getFirst ();
-      Symbol symbol = stepItem.getAddedSymbol ().getSecond ();
-      transition.remove ( symbol );
-    }
 
     // outline
     this.reachableStatesTableModel.removeLastRow ();

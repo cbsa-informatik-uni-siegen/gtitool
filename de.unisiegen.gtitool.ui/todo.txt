@@ -4,7 +4,6 @@ CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Split View
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
-CF		- Erreichbare Zustände berechnen
 CF		- Convert: Vollständiger Automat
 
 BM		- Parallel Loop Routing

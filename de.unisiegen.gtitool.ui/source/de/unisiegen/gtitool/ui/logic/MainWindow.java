@@ -1702,9 +1702,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () instanceof MachinePanel )
     {
-      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
-      machinePanel.handleReachableStates ();
+      // if there are no validation errors perform the action
+      if ( handleValidate ( false ) )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+        machinePanel.handleReachableStates ();
+      }
     }
     else
     {

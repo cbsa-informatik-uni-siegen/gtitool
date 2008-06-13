@@ -167,8 +167,14 @@ public final class PrettyStringComponent extends JLabel
           addText += chars [ i ];
           i++ ;
         }
-        usedPrettyString.addPrettyToken ( new PrettyToken ( addText.substring (
-            0, addText.length () - 1 ), lastPrettyToken.getStyle () ) );
+
+        if ( addText.length () > 0 )
+        {
+          addText = addText.substring ( 0, addText.length () - 1 );
+        }
+
+        usedPrettyString.addPrettyToken ( new PrettyToken ( addText,
+            lastPrettyToken.getStyle () ) );
       }
 
       // if empty do not use the first space

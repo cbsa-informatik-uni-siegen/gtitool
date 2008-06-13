@@ -356,8 +356,14 @@ public final class StateView extends VertexView
               addText += chars [ i ];
               i++ ;
             }
-            prettyString.addPrettyToken ( new PrettyToken ( addText.substring (
-                0, addText.length () - 1 ), lastPrettyToken.getStyle () ) );
+
+            if ( addText.length () > 0 )
+            {
+              addText = addText.substring ( 0, addText.length () - 1 );
+            }
+
+            prettyString.addPrettyToken ( new PrettyToken ( addText,
+                lastPrettyToken.getStyle () ) );
           }
 
           // center the dots if there are no pretty tokens

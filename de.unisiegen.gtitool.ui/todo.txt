@@ -15,7 +15,6 @@ BM		- Die Position und Größe des Miminieren Dialoges verwenden, ebenso die bei
 
 		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)
-		- Edit Machine - Enter Word Toggle Button in die ToolBar
 		- Keller von links nach rechts darstellen (dragon book)
 
 

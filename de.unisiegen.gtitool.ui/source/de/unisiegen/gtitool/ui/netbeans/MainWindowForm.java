@@ -558,7 +558,17 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jGTIToolBarToggleButtonFinalState;
     }
 
-    
+    /**
+     * Returns the jGTIToolBarToggleButtonEnterWord.
+     *
+     * @return The jGTIToolBarToggleButtonEnterWord.
+     * @see #jGTIToolBarToggleButtonEnterWord
+     */
+    public final JGTIToolBarToggleButton getJGTIToolBarToggleButtonEnterWord ()
+    {
+      return this.jGTIToolBarToggleButtonEnterWord;
+    }
+
     /**
      * Returns the jGTIToolBarToggleButtonMouse.
      *
@@ -966,6 +976,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jGTIToolBarToggleButtonAddTransition = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonStartState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
+        jGTIToolBarToggleButtonEnterWord = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
@@ -1196,6 +1207,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         });
 
         jToolBarNavigation.add(jGTIToolBarToggleButtonFinalState);
+
+        jGTIToolBarToggleButtonEnterWord.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enter-word.png")));
+        jGTIToolBarToggleButtonEnterWord.setToolTipText(bundle.getString("MainWindow.EnterWord")); // NOI18N
+        jGTIToolBarToggleButtonEnterWord.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jGTIToolBarToggleButtonEnterWordItemStateChanged(evt);
+            }
+        });
+
+        jToolBarNavigation.add(jGTIToolBarToggleButtonEnterWord);
 
         jGTIToolBarButtonAddProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/add-production.png")));
         jGTIToolBarButtonAddProduction.setToolTipText(bundle.getString("GrammarPanel.AddProduction")); // NOI18N
@@ -1765,6 +1786,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jGTIToolBarToggleButtonEnterWordItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonEnterWordItemStateChanged
+        this.logic.handleEnterWordToggleButton();
+    }//GEN-LAST:event_jGTIToolBarToggleButtonEnterWordItemStateChanged
+
     private void jMenuItemReachableStatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReachableStatesActionPerformed
         this.logic.handleReachableStates();
     }//GEN-LAST:event_jMenuItemReachableStatesActionPerformed
@@ -2025,6 +2050,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddState;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAddTransition;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonAutoStep;
+    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonEnterWord;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonFinalState;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonMouse;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;

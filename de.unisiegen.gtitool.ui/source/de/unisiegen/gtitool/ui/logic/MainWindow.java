@@ -57,6 +57,7 @@ import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIEditorPanelTabbedPane;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane;
+import de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 import de.unisiegen.gtitool.ui.utils.RecentlyUsedMenuItem;
@@ -246,6 +247,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     SELECTED_AUTO_STEP,
 
     /**
+     * The enter word selected button state.
+     */
+    SELECTED_ENTER_WORD,
+
+    /**
      * The machine visible button state.
      */
     VISIBLE_MACHINE,
@@ -334,6 +340,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
+    removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
     removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
 
@@ -734,6 +741,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.SELECTED_ENTER_WORD ) )
+        && ( !this.buttonStateList.contains ( ButtonState.SELECTED_ENTER_WORD ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.SELECTED_ENTER_WORD );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setSelected ( true );
+    }
     // visible
     else if ( ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
         && ( !this.buttonStateList.contains ( ButtonState.VISIBLE_MACHINE ) ) )
@@ -744,6 +757,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( true );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( true );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( true );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( true );
       this.gui.getJGTIToolBarButtonPrevious ().setVisible ( true );
@@ -1199,6 +1213,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEditMachine ()
   {
+    logger.debug ( "handleEnterWord", //$NON-NLS-1$
+        "handle enter word" ); //$NON-NLS-1$
+
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
@@ -1225,6 +1242,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_MINIMIZE );
     }
 
+    removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
   }
 
@@ -1249,6 +1267,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleEnterWord ()
   {
+    logger.debug ( "handleEnterWord", //$NON-NLS-1$
+        "handle enter word" ); //$NON-NLS-1$
+
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
@@ -1265,6 +1286,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
       addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
       addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+      addButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -1277,6 +1299,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+    }
+  }
+
+
+  /**
+   * Handle the action event of the enter word {@link JGTIToolBarToggleButton}.
+   */
+  public final void handleEnterWordToggleButton ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( ! ( panel instanceof MachinePanel ) )
+    {
+      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
+    }
+    MachinePanel machinePanel = ( MachinePanel ) panel;
+
+    boolean selected = this.gui.getJGTIToolBarToggleButtonEnterWord ()
+        .isSelected ();
+
+    if ( selected )
+    {
+      // happens if the enter word menu item state changed
+      if ( machinePanel.isWordEnterMode () || machinePanel.isWordNavigation () )
+      {
+        return;
+      }
+
+      logger.debug ( "handleEnterWordToggleButton", //$NON-NLS-1$
+          "handle enter word toggle button selected: " + selected ); //$NON-NLS-1$
+
+      handleEnterWord ();
+    }
+    else
+    {
+      // happens if the enter word menu item state changed
+      if ( !machinePanel.isWordEnterMode ()
+          && !machinePanel.isWordNavigation () )
+      {
+        return;
+      }
+
+      logger.debug ( "handleEnterWordToggleButton", //$NON-NLS-1$
+          "handle enter word toggle button selected: " + selected ); //$NON-NLS-1$
+
+      handleEditMachine ();
     }
   }
 
@@ -2443,6 +2511,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
+          addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
         // word enter mode
@@ -2461,6 +2530,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
+          addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
         // normal mode
@@ -2468,6 +2538,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           removeButtonState ( ButtonState.ENABLED_HISTORY );
           removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
+          removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
           addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
           addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -3735,6 +3806,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.SELECTED_AUTO_STEP );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setSelected ( false );
     }
+    else if ( buttonState.equals ( ButtonState.SELECTED_ENTER_WORD ) )
+    {
+      this.buttonStateList.remove ( ButtonState.SELECTED_ENTER_WORD );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setSelected ( false );
+    }
     // visible
     else if ( buttonState.equals ( ButtonState.VISIBLE_MACHINE ) )
     {
@@ -3744,6 +3820,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonAddState ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonStartState ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonFinalState ().setVisible ( false );
+      this.gui.getJGTIToolBarToggleButtonEnterWord ().setVisible ( false );
       this.gui.getJGTIToolBarToggleButtonAddTransition ().setVisible ( false );
       this.gui.getJGTIToolBarButtonStart ().setVisible ( false );
       this.gui.getJGTIToolBarButtonPrevious ().setVisible ( false );

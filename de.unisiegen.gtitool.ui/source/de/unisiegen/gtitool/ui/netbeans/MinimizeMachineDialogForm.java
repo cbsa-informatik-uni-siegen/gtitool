@@ -170,6 +170,12 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
 
         jGTIScrollPaneOutline.setBorder(null);
+        jGTITableOutline.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                handleMouseClickedEvent(evt);
+            }
+        });
+
         jGTIScrollPaneOutline.setViewportView(jGTITableOutline);
 
         jGTISplitPaneOutline.setRightComponent(jGTIScrollPaneOutline);
@@ -219,6 +225,10 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
 
         setSize(new java.awt.Dimension(960, 600));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void handleMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_handleMouseClickedEvent
+        this.logic.highlightTransitions(this.jGTITableOutline.getSelectedRow ());
+    }//GEN-LAST:event_handleMouseClickedEvent
 
     private void jGTIToolBarToggleButtonAutoStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonAutoStepActionPerformed
         this.logic.handleAutoStep();

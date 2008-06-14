@@ -196,6 +196,9 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
             <Component class="de.unisiegen.gtitool.ui.swing.JGTITable" name="jGTITableOutline">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="handleMouseClickedEvent"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

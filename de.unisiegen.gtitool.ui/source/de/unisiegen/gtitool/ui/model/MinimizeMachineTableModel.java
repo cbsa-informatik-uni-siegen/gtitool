@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 
 
@@ -40,6 +41,11 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
    * The data of this table model
    */
   private ArrayList < PrettyString > data;
+  
+  /**
+   * List of the {@link Transition}s.
+   */
+  private ArrayList < ArrayList<Transition>> transitionsList = new ArrayList < ArrayList<Transition> >();
 
 
   /**
@@ -55,10 +61,12 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
    * Adds a row to this data model.
    * 
    * @param prettyString The {@link PrettyString}s of the row.
+   * @param transitions The {@link Transition}s.
    */
-  public final void addRow ( PrettyString prettyString )
+  public final void addRow ( PrettyString prettyString, ArrayList<Transition> transitions )
   {
     this.data.add ( prettyString );
+    this.transitionsList.add ( transitions );
     fireTableRowsInserted ( this.data.size () - 1, this.data.size () - 1 );
   }
 
@@ -167,6 +175,7 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
   {
     int index = this.data.size () - 1;
     this.data.remove ( index );
+    this.transitionsList.remove ( index );
     fireTableRowsDeleted ( index, index );
   }
 
@@ -190,7 +199,20 @@ public final class MinimizeMachineTableModel extends AbstractTableModel
     if ( index != -1 )
     {
       this.data.remove ( prettyString );
+      this.transitionsList.remove ( index );
       fireTableRowsDeleted ( index, index );
     }
+  }
+
+
+  /**
+   * Return the {@link Transition}s for the given row.
+   *
+   * @param row The row of interest.
+   * @return The {@link Transition}s of the given row.
+   */
+  public ArrayList < Transition > getTransitionsAt ( int row )
+  {
+    return this.transitionsList.get ( row );
   }
 }

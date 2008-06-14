@@ -14,6 +14,8 @@ import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import org.jgraph.graph.DefaultGraphModel;
+
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.State;
@@ -30,6 +32,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.ConvertMachineTableColumnModel;
@@ -474,6 +477,7 @@ public final class MinimizeMachineDialog implements
       this.gui.jGTIScrollPaneConverted.setViewportView ( graph );
 
     }
+    highlightTransitions(this.gui.jGTITableOutline.getSelectedRow ());
   }
 
 
@@ -524,7 +528,7 @@ public final class MinimizeMachineDialog implements
   public final void addOutlineComment ( PrettyString prettyString,
       ArrayList < Transition > transitions )
   {
-    this.minimizeMachineTableModel.addRow ( prettyString );
+    this.minimizeMachineTableModel.addRow ( prettyString, transitions );
     this.gui.jGTITableOutline.changeSelection ( this.minimizeMachineTableModel
         .getRowCount () - 1, MinimizeMachineTableModel.OUTLINE_COLUMN, false,
         false );
@@ -542,6 +546,11 @@ public final class MinimizeMachineDialog implements
     this.endReached = false;
     setStatus ();
     this.gui.jGTIScrollPaneConverted.setViewportView ( null );
+    
+    this.minimizeMachineTableModel.removeLastRow ();
+    int index = this.minimizeMachineTableModel.getRowCount () - 1;
+    this.gui.jGTITableOutline.getSelectionModel ().setSelectionInterval ( index, index );
+    highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
   }
 
 
@@ -655,5 +664,26 @@ public final class MinimizeMachineDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
+  }
+
+
+  /**
+   * Highlight the {@link Transition}s.
+   *
+   * @param selectedRow The actual selected table row.
+   */
+  public void highlightTransitions ( int selectedRow )
+  {
+    for (DefaultTransitionView current : this.modelOriginal.getTransitionViewList ()){
+      current.getTransition ().setActive ( false );
+    }
+    if (selectedRow > -1  ){
+      ArrayList < Transition > transitionList = this.minimizeMachineTableModel.getTransitionsAt(selectedRow);
+      for (Transition current : transitionList){
+        current.setActive ( true );
+        this.modelOriginal.getGraphModel ().cellsChanged (
+            DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+      }
+    }
   }
 }

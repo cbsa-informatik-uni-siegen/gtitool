@@ -14,7 +14,13 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineStateNotReachableException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
+import de.unisiegen.gtitool.core.parser.style.PrettyString;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
+import de.unisiegen.gtitool.core.parser.style.Style;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
+import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 
 
@@ -28,6 +34,47 @@ public class Minimizer
 {
 
   /**
+   * This class represents a minimize item. The is on item per minimize step.
+   */
+  public class MinimizeItem
+  {
+
+    /**
+     * The {@link DefaultStateView} groups.
+     */
+    public ArrayList < ArrayList < DefaultStateView > > groups;
+
+
+    /**
+     * The {@link PrettyString}.
+     */
+    public PrettyString prettyString;
+
+
+    /**
+     * List of the {@link Transition}s.
+     */
+    public ArrayList < Transition > transitionList;
+
+
+    /**
+     * Allocate a new {@link MinimizeItem}.
+     * 
+     * @param groups The actual groups for this step.
+     * @param prettyString The {@link PrettyString} for this row.
+     * @param transitionList List of the {@link Transition}s.
+     */
+    public MinimizeItem ( ArrayList < ArrayList < DefaultStateView > > groups,
+        PrettyString prettyString, ArrayList < Transition > transitionList )
+    {
+      this.groups = groups;
+      this.prettyString = prettyString;
+      this.transitionList = transitionList;
+    }
+  }
+
+
+  /**
    * Flag indicates if minimization operation finished.
    */
   private boolean finished = false;
@@ -36,13 +83,13 @@ public class Minimizer
   /**
    * The old groups needed for previous step.
    */
-  private Stack < ArrayList < ArrayList < DefaultStateView > > > previousSteps = new Stack < ArrayList < ArrayList < DefaultStateView > > > ();
+  private Stack < MinimizeItem > previousSteps = new Stack < MinimizeItem > ();
 
 
   /**
    * The old groups needed for previous step.
    */
-  private Stack < ArrayList < ArrayList < DefaultStateView > > > nextStep = new Stack < ArrayList < ArrayList < DefaultStateView > > > ();
+  private Stack < MinimizeItem > nextStep = new Stack < MinimizeItem > ();
 
 
   /**
@@ -58,19 +105,33 @@ public class Minimizer
 
 
   /**
+   * The active {@link MinimizeItem}.
+   */
+  private MinimizeItem activeMinimizeItem;
+
+
+  /**
    * The states for a new group.
    */
   private ArrayList < DefaultStateView > newGroupStates = new ArrayList < DefaultStateView > ();
 
 
   /**
+   * The {@link MinimizeMachineDialog}.
+   */
+  private MinimizeMachineDialog dialog;
+
+
+  /**
    * Allocate a new {@link Minimizer}.
    * 
    * @param model The {@link DefaultMachineModel}.
+   * @param dialog The {@link MinimizeMachineDialog}.
    */
-  public Minimizer ( DefaultMachineModel model )
+  public Minimizer ( DefaultMachineModel model, MinimizeMachineDialog dialog )
   {
     this.model = model;
+    this.dialog = dialog;
   }
 
 
@@ -122,7 +183,10 @@ public class Minimizer
       tmpGroup.addAll ( current );
       oldGroups.add ( tmpGroup );
     }
-    this.previousSteps.push ( oldGroups );
+
+    this.activeMinimizeItem = new MinimizeItem ( oldGroups, null,
+        new ArrayList < Transition > () );
+    this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
 
@@ -130,8 +194,8 @@ public class Minimizer
     {
       this.nextStep.push ( this.previousSteps.pop () );
     }
-
-    this.activeGroups = this.previousSteps.pop ();
+    this.activeMinimizeItem = this.previousSteps.pop ();
+    this.activeGroups = this.activeMinimizeItem.groups;
 
     highlightGroups ();
 
@@ -154,43 +218,41 @@ public class Minimizer
    */
   Color [] colors = new Color []
   { Color.blue, Color.cyan, Color.lightGray, Color.green, Color.magenta,
-      Color.yellow, Color.pink };
+      Color.yellow, Color.orange, Color.pink, Color.white, Color.darkGray };
+
 
   /**
    * Handle previous step of the minimization.
    */
   public void previousStep ()
   {
-    this.nextStep.push ( this.activeGroups );
-    this.activeGroups = this.previousSteps.pop ();
+    this.nextStep.push ( this.activeMinimizeItem );
+    this.activeMinimizeItem = this.previousSteps.pop ();
+    this.activeGroups = this.activeMinimizeItem.groups;
 
     highlightGroups ();
 
     this.begin = this.previousSteps.isEmpty ();
     this.finished = false;
   }
-  
+
+
   /**
    * Handle next step of the minimization.
    */
   public void nextStep ()
   {
-//    if(this.nextStep.isEmpty ()){
-//      this.lastStep.redo ();
-//      createTransitions ();
-//      new LayoutManager(this.model, null).doLayout ();
-//      this.finished = true;
-//    }
-//    else {
-      this.previousSteps.push ( this.activeGroups );
-      this.activeGroups = this.nextStep.pop ();
+    this.previousSteps.push ( this.activeMinimizeItem );
+    this.activeMinimizeItem = this.nextStep.pop ();
+    this.activeGroups = this.activeMinimizeItem.groups;
 
-      highlightGroups ();
-//    }
-
+    highlightGroups ();
 
     this.begin = false;
     this.finished = this.nextStep.isEmpty ();
+
+    this.dialog.addOutlineComment ( this.activeMinimizeItem.prettyString,
+        this.activeMinimizeItem.transitionList );
   }
 
 
@@ -198,6 +260,11 @@ public class Minimizer
    * Flag indicates if begin reached.
    */
   private boolean begin = true;
+
+  /**
+   * List of the {@link Transition}s.
+   */
+  private ArrayList < Transition > transitions = new ArrayList < Transition > ();
 
 
   /**
@@ -221,8 +288,8 @@ public class Minimizer
     if ( this.newGroupStates.size () > 0 )
     {
       this.activeGroups.add ( this.newGroupStates );
-      this.newGroupStates = new ArrayList < DefaultStateView > ();
       
+
       ArrayList < ArrayList < DefaultStateView > > oldGroup = new ArrayList < ArrayList < DefaultStateView > > ();
       for ( ArrayList < DefaultStateView > group : this.activeGroups )
       {
@@ -232,16 +299,43 @@ public class Minimizer
         oldGroup.add ( tmpGroup );
       }
 
-      this.previousSteps.push ( oldGroup );
-
+      ArrayList < Transition > transitionList = new ArrayList < Transition > ();
+      transitionList.addAll ( this.transitions );
+      this.previousSteps.push ( new MinimizeItem ( oldGroup,
+         createPrettyString(this.newGroupStates), transitionList ) );
+      this.newGroupStates = new ArrayList < DefaultStateView > ();
       this.minimize ();
       return;
     }
 
-//    viewMachine();
-//    this.lastStep.undo ();
-
   }
+
+
+  /**
+   * Create a new {@link PrettyString}.
+   *
+   * @param states the list of the {@link DefaultStateView}s.
+   * 
+   * @return The created {@link PrettyString}.
+   */
+  private PrettyString createPrettyString (
+      ArrayList < DefaultStateView > states )
+  {
+    PrettyString prettyString = new PrettyString();
+    
+    prettyString.addPrettyToken ( new PrettyToken ( Messages
+        .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
+        + " ", Style.NONE ) ); //$NON-NLS-1$
+    
+    for ( int i = 0 ; i < states.size (); i++){
+      if (i != 0){
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
+      }
+      prettyString.addPrettyPrintable( states.get(i).getState () );
+    }
+    return prettyString;
+  }
+
 
   /**
    * Highlight the groups
@@ -252,7 +346,8 @@ public class Minimizer
     {
       for ( DefaultStateView current : group )
       {
-        current.setGroupColor ( this.colors [ this.activeGroups.indexOf ( group ) ] );
+        current.setGroupColor ( this.colors [ this.activeGroups
+            .indexOf ( group ) ] );
       }
     }
 
@@ -293,6 +388,7 @@ public class Minimizer
    */
   private void tryToSplitGroup ( ArrayList < DefaultStateView > group )
   {
+    this.transitions.clear ();
     for ( Symbol symbol : this.model.getMachine ().getAlphabet () )
     {
       for ( DefaultStateView defaultStateView : group )
@@ -306,7 +402,7 @@ public class Minimizer
                 .getStateEnd () ) ) )
             {
               this.newGroupStates.add ( defaultStateView );
-
+              this.transitions.add ( transition );
             }
           }
         }
@@ -342,187 +438,5 @@ public class Minimizer
   {
     return this.begin;
   }
-  
-  
 
-
-  // /**
-  // * The new created states.
-  // */
-  // private HashMap < State, DefaultStateView > states = new HashMap < State,
-  // DefaultStateView > ();
-  //  
-  //  
-//  MultiItem lastStep = new MultiItem();
-//
-//  /**
-//   * build the minimal {@link Machine}.
-//   */
-//  private void viewMachine ()
-//  {
-//    int stateCount = 0;
-//    removeOldStates();
-//    this.states.clear ();
-//
-//    try
-//    {
-//      for ( ArrayList < DefaultStateView > current : getGroups () )
-//      {
-//        boolean startState = false;
-//        String name = "{"; //$NON-NLS-1$
-//        int count = 0;
-//        for ( DefaultStateView defaultStateView : current )
-//        {
-//          if ( defaultStateView.getState ().isStartState () )
-//          {
-//            startState = true;
-//          }
-//          if ( count > 0 )
-//          {
-//            name += ", "; //$NON-NLS-1$
-//          }
-//          name += defaultStateView.toString ();
-//          count++ ;
-//        }
-//        name += "}"; //$NON-NLS-1$
-//
-//        DefaultState state = new DefaultState ( name );
-//        state.setStartState ( startState );
-//        state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
-//        DefaultStateView stateView = this.model.createStateView ( 100, 100,
-//            state, false );
-//        
-//        stateView.setGroupColor ( this.colors[stateCount] );
-//        stateCount++;
-//        
-//        RedoUndoItem item = new StateAddedItem(this.model, stateView, null);
-//        this.lastStep.addItem ( item );
-////        this.model.removeState ( stateView, false );
-//
-////        item.undo ();
-//        
-//        this.states.put ( current.get ( 0 ).getState (), stateView );
-//        
-//        
-//      }
-//    }
-//    catch ( StateException exc )
-//    {
-//      exc.printStackTrace ();
-//    }
-//
-//    createTransitions ();
-//  }
-//
-//
-//  /**
-//   * TODO
-//   *
-//   */
-//  private void removeOldStates ()
-//  {
-//    ArrayList < DefaultStateView > removeStates = new ArrayList < DefaultStateView >();
-//    for (DefaultStateView current : this.model.getStateViewList ()){
-//      
-//      ArrayList < DefaultTransitionView > removeList = new ArrayList < DefaultTransitionView > ();
-//      for ( DefaultTransitionView transition : this.model.getTransitionViewList () )
-//      {
-//        if ( ( transition.getTransition ().getStateBegin ().equals ( current
-//            .getState () ) )
-//            || ( transition.getTransition ().getStateEnd ().equals ( current
-//                .getState () ) ) )
-//        {
-//          removeList.add ( transition );
-//        }
-//      }
-//
-//      for ( DefaultTransitionView transition : removeList )
-//      {
-//        this.model.removeTransition ( transition, false );
-//      }
-//      
-//      RedoUndoItem item = new StateRemovedItem(this.model, current, removeList);
-//      this.lastStep.addItem ( item );
-//      removeStates.add(current);
-//      
-//    }
-//    
-//    for (DefaultStateView current : removeStates){
-//      this.model.removeState ( current, false );
-//    }
-//  }
-//
-//
-//  /**
-//   * Create the transitions of the {@link Machine}.
-//   */
-//  private void createTransitions ()
-//  {
-//    System.err.println (this.states.size ());
-//    for ( State current : this.states.keySet () )
-//    {
-//      HashMap < State, Transition > transitions = new HashMap < State, Transition > ();
-//      for ( Transition transition : current.getTransitionBegin () )
-//      {
-//
-//        try
-//        {
-//          DefaultStateView target = getTargetStateView ( transition
-//              .getStateEnd () );
-//          Transition newTransition;
-////          if ( transitions.containsKey ( target.getState () ) )
-////          {
-////            transitions.get ( target.getState () ).add (
-////                transition.getSymbol () );
-////          }
-////          else
-////          {
-//            newTransition = new DefaultTransition ( transition.getAlphabet (),
-//                transition.getPushDownAlphabet (), transition
-//                    .getPushDownWordRead (),
-//                transition.getPushDownWordWrite (), this.states.get ( current )
-//                    .getState (), target.getState (), transition.getSymbol () );
-//           DefaultTransitionView transitionView =  this.model.createTransitionView ( newTransition, this.states
-//                .get ( current ), target, false, false, true );
-//            
-//           RedoUndoItem item = new TransitionAddedItem(this.model, transitionView, null );
-//            this.lastStep.addItem ( item );
-////          }
-//
-//        }
-//        catch ( TransitionSymbolNotInAlphabetException exc )
-//        {
-//          exc.printStackTrace ();
-//        }
-//        catch ( TransitionSymbolOnlyOneTimeException exc )
-//        {
-//          exc.printStackTrace ();
-//        }
-//
-//      }
-//    }
-//  }
-//  
-//  /**
-//   * Get the target state view representing the group.
-//   * 
-//   * @param state The {@link State}.
-//   * @return The {@link DefaultStateView} representing the group.
-//   */
-//  private DefaultStateView getTargetStateView ( State state )
-//  {
-//    DefaultStateView target = null;
-//    for ( ArrayList < DefaultStateView > current : getGroups () )
-//    {
-//      target = this.states.get ( current.get ( 0 ).getState () );
-//      for ( DefaultStateView defaultStateView : current )
-//      {
-//        if ( state.equals ( defaultStateView.getState () ) )
-//        {
-//          return target;
-//        }
-//      }
-//    }
-//    return target;
-//  }
 }

@@ -1402,7 +1402,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         MachinePanel machinePanel = ( MachinePanel ) panel;
         MinimizeMachineDialog dialog = new MinimizeMachineDialog ( this.gui,
             machinePanel );
-        dialog.show ();
+        dialog.minimize ();
       }
     }
     else

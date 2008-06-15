@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JScrollBar;
 import javax.swing.table.JTableHeader;
 
+import de.unisiegen.gtitool.core.entities.Production;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.CoreException.ErrorType;
@@ -1029,7 +1031,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the action event of the about item.
+   * Handles the about event.
    */
   public final void handleAbout ()
   {
@@ -1039,7 +1041,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle add production button pressed.
+   * Handles the add {@link Production} event.
    */
   public final void handleAddProduction ()
   {
@@ -1087,22 +1089,23 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   /**
    * Closes the {@link EditorPanel}.
    * 
-   * @param panel The {@link EditorPanel} to close.
+   * @param editorPanel The {@link EditorPanel} to close.
    * @return True if the panel is closed, false if the close was canceled.
    */
-  public final boolean handleClose ( EditorPanel panel )
+  public final boolean handleClose ( EditorPanel editorPanel )
   {
-    if ( panel.isModified () )
+    if ( editorPanel.isModified () )
     {
-      ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
+      ConfirmDialog confirmDialog = new ConfirmDialog (
+          this.gui,
           Messages.getString (
-              "MainWindow.CloseModifyMessage", panel.getName () ), Messages //$NON-NLS-1$
+              "MainWindow.CloseModifyMessage", editorPanel.getName () ), Messages //$NON-NLS-1$
               .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
       confirmDialog.show ();
 
       if ( confirmDialog.isConfirmed () )
       {
-        handleSave ( panel );
+        handleSave ( editorPanel );
       }
       else if ( confirmDialog.isCanceled () )
       {
@@ -1111,9 +1114,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
 
     this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().removeEditorPanel (
-        panel );
+        editorPanel );
 
-    // check if all editor panels are closed
+    // check if all editor panels are closed now
     handleTabbedPaneStateChanged ();
 
     return true;
@@ -1125,8 +1128,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleCloseAll ()
   {
+    ActiveEditor activeEditor = this.jGTIMainSplitPane.getActiveEditor ();
+
     // close all right editor panels
     this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+    handleTabbedPaneStateChanged ();
     for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
         .getComponentCount () - 1 ; i >= 0 ; i-- )
     {
@@ -1144,6 +1150,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     // close all left editor panels
     this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+    handleTabbedPaneStateChanged ();
     for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
         .getComponentCount () - 1 ; i >= 0 ; i-- )
     {
@@ -1158,6 +1165,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         return;
       }
     }
+
+    this.jGTIMainSplitPane.setActiveEditor ( activeEditor );
   }
 
 
@@ -1166,8 +1175,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleConsoleStateChanged ()
   {
-    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
+    EditorPanel editorPanel = this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
 
     boolean selected = this.gui.getJCheckBoxMenuItemConsole ().isSelected ();
     if ( PreferenceManager.getInstance ().getVisibleConsole () != selected )
@@ -1181,7 +1190,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       }
 
-      panel.setVisibleConsole ( selected );
+      editorPanel.setVisibleConsole ( selected );
       PreferenceManager.getInstance ().setVisibleConsole ( selected );
     }
   }
@@ -1309,7 +1318,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle delete production button pressed.
+   * Handles the delete {@link Production} event.
    */
   public final void handleDeleteProduction ()
   {
@@ -1319,6 +1328,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
       grammarPanel.handleDeleteProduction ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -1385,21 +1398,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( NonterminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TerminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
   }
 
@@ -1466,32 +1483,37 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( StateException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( SymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
   }
 
 
   /**
-   * Handle edit document action in the toolbar.
+   * Handles the edit document action in the toolbar.
    */
   public final void handleEditDocument ()
   {
@@ -1502,7 +1524,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the edit machine event.
+   * Handles the edit {@link Machine} event.
    */
   public final void handleEditMachine ()
   {
@@ -1513,7 +1535,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         .getSelectedEditorPanel ();
     if ( ! ( panel instanceof MachinePanel ) )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
     }
 
     MachinePanel machinePanel = ( MachinePanel ) panel;
@@ -1542,7 +1564,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle edit production button pressed.
+   * Handles the edit {@link Production} event.
    */
   public final void handleEditProduction ()
   {
@@ -1553,11 +1575,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       GrammarPanel grammarPanel = ( GrammarPanel ) panel;
       grammarPanel.handleEditProduction ();
     }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
   }
 
 
   /**
-   * Handle the action event of the enter word item.
+   * Handles the enter {@link Word} event.
    */
   public final void handleEnterWord ()
   {
@@ -1566,10 +1592,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
+
     if ( ! ( panel instanceof MachinePanel ) )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
+      throw new IllegalArgumentException ( "unsupported panel" ); //$NON-NLS-1$
     }
+
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     // if there are no validation errors perform the action
@@ -1599,7 +1627,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the action event of the enter word {@link JGTIToolBarToggleButton}.
+   * Handles the action event of the enter {@link Word}
+   * {@link JGTIToolBarToggleButton}.
    */
   public final void handleEnterWordToggleButton ()
   {
@@ -1677,13 +1706,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else
     {
-      throw new RuntimeException ( "the selected panel is not a machine panel" ); //$NON-NLS-1$
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
 
   /**
-   * Minimize the active {@link Machine}.
+   * Handles the minimize {@link Machine} event.
    */
   public void handleMinimize ()
   {
@@ -1759,28 +1788,28 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the new event with a given {@link DefaultModel}
+   * Handles the new event with a given {@link DefaultModel}.
    * 
-   * @param model The {@link DefaultModel}.
+   * @param defaultModel The {@link DefaultModel}.
    */
-  public void handleNew ( DefaultModel model )
+  public void handleNew ( DefaultModel defaultModel )
   {
-    if ( model != null )
+    if ( defaultModel != null )
     {
       EditorPanel newEditorPanel;
-      if ( model instanceof DefaultMachineModel )
+      if ( defaultModel instanceof DefaultMachineModel )
       {
         newEditorPanel = new MachinePanel ( this.gui,
-            ( DefaultMachineModel ) model, null );
+            ( DefaultMachineModel ) defaultModel, null );
       }
-      else if ( model instanceof DefaultGrammarModel )
+      else if ( defaultModel instanceof DefaultGrammarModel )
       {
         newEditorPanel = new GrammarPanel ( this.gui,
-            ( DefaultGrammarModel ) model, null );
+            ( DefaultGrammarModel ) defaultModel, null );
       }
       else
       {
-        throw new RuntimeException ( "incorrect model" ); //$NON-NLS-1$
+        throw new RuntimeException ( "unsupported model" ); //$NON-NLS-1$
       }
 
       TreeSet < String > nameList = new TreeSet < String > ();
@@ -1833,21 +1862,22 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleNew ( Element element, boolean autoLayout )
   {
-    DefaultModel model = null;
+    DefaultModel defaultModel = null;
     try
     {
       if ( element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
       {
-        model = new DefaultMachineModel ( element, null );
+        defaultModel = new DefaultMachineModel ( element, null );
 
         if ( autoLayout )
         {
-          new LayoutManager ( ( DefaultMachineModel ) model, null ).doLayout ();
+          new LayoutManager ( ( DefaultMachineModel ) defaultModel, null )
+              .doLayout ();
         }
       }
       else if ( element.getName ().equals ( "GrammarModel" ) ) //$NON-NLS-1$
       {
-        model = new DefaultGrammarModel ( element, null );
+        defaultModel = new DefaultGrammarModel ( element, null );
       }
       else
       {
@@ -1858,53 +1888,64 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( StateException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( SymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TransitionException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( StoreException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( NonterminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TerminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
     catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
+      return;
     }
-    handleNew ( model );
+
+    handleNew ( defaultModel );
   }
 
 
@@ -1932,7 +1973,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the action event of the preferences item.
+   * Handles the preferences event.
    */
   public final void handlePreferences ()
   {
@@ -1972,42 +2013,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
 
-    // close the left tabs
-    for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-        .getComponentCount () - 1 ; i >= 0 ; i-- )
-    {
-      EditorPanel current = this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
-      if ( current.isModified () )
-      {
-        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-            .setSelectedEditorPanel ( current );
-
-        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
-            Messages.getString (
-                "MainWindow.CloseModifyMessage", current.getName () ), Messages //$NON-NLS-1$
-                .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
-        confirmDialog.show ();
-
-        if ( confirmDialog.isConfirmed () )
-        {
-          File file = current.handleSave ();
-          if ( file != null )
-          {
-            this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-                .setEditorPanelTitle ( current, file.getName () );
-          }
-        }
-        else if ( confirmDialog.isCanceled () )
-        {
-          return;
-        }
-      }
-      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
-          .removeEditorPanel ( current );
-    }
-
     // close the right tabs
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+    handleTabbedPaneStateChanged ();
     for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
         .getComponentCount () - 1 ; i >= 0 ; i-- )
     {
@@ -2039,6 +2047,43 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
       }
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+          .removeEditorPanel ( current );
+    }
+
+    // close the left tabs
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+    handleTabbedPaneStateChanged ();
+    for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+        .getComponentCount () - 1 ; i >= 0 ; i-- )
+    {
+      EditorPanel current = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
+      if ( current.isModified () )
+      {
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+            .setSelectedEditorPanel ( current );
+
+        ConfirmDialog confirmDialog = new ConfirmDialog ( this.gui,
+            Messages.getString (
+                "MainWindow.CloseModifyMessage", current.getName () ), Messages //$NON-NLS-1$
+                .getString ( "MainWindow.CloseModifyTitle" ), true, true, true ); //$NON-NLS-1$
+        confirmDialog.show ();
+
+        if ( confirmDialog.isConfirmed () )
+        {
+          File file = current.handleSave ();
+          if ( file != null )
+          {
+            this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+                .setEditorPanelTitle ( current, file.getName () );
+          }
+        }
+        else if ( confirmDialog.isCanceled () )
+        {
+          return;
+        }
+      }
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
           .removeEditorPanel ( current );
     }
 
@@ -2086,13 +2131,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     }
     else
     {
-      throw new RuntimeException ( "the selected panel is not a machine panel" ); //$NON-NLS-1$
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
 
   /**
-   * Handle redo button pressed
+   * Handles the redo event.
    */
   public final void handleRedo ()
   {
@@ -2106,7 +2151,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handles the save file event on the selected editor panel.
+   * Handles the save event.
    */
   public final void handleSave ()
   {
@@ -2115,19 +2160,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
+
     handleSave ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
   }
 
 
   /**
-   * Handles the save file event.
+   * Handles the save event.
    * 
-   * @param panel The {@link EditorPanel} to be saved
+   * @param editorPanel The {@link EditorPanel} to be saved.
    */
-  public final void handleSave ( EditorPanel panel )
+  public final void handleSave ( EditorPanel editorPanel )
   {
-    File file = panel.handleSave ();
+    File file = editorPanel.handleSave ();
     if ( file != null )
     {
       RecentlyUsedMenuItem item = new RecentlyUsedMenuItem ( this, file );
@@ -2136,43 +2182,52 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       organizeRecentlyUsedFilesMenu ();
 
       for ( EditorPanel current : this.jGTIMainSplitPane
-          .getJGTIEditorPanelTabbedPane () )
+          .getJGTIEditorPanelTabbedPaneLeft () )
       {
-        if ( ( !current.equals ( this.jGTIMainSplitPane
-            .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel () ) && file
-            .equals ( current.getFile () ) ) )
+        if ( current == editorPanel )
         {
-          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-              .removeEditorPanel ( current );
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+              .setEditorPanelTitle ( editorPanel, file.getName () );
+          return;
         }
       }
-      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-          .setEditorPanelTitle ( panel, file.getName () );
+      for ( EditorPanel current : this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneRight () )
+      {
+        if ( current == editorPanel )
+        {
+          this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+              .setEditorPanelTitle ( editorPanel, file.getName () );
+          return;
+        }
+      }
     }
   }
 
 
   /**
-   * Handle the save all files event
+   * Handles the save all event.
    */
   public final void handleSaveAll ()
   {
-    EditorPanel active = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
+    // save the left editor panels
     for ( EditorPanel current : this.jGTIMainSplitPane
-        .getJGTIEditorPanelTabbedPane () )
+        .getJGTIEditorPanelTabbedPaneLeft () )
     {
-      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-          .setSelectedEditorPanel ( current );
       handleSave ( current );
     }
-    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .setSelectedEditorPanel ( active );
+
+    // save the right editor panels
+    for ( EditorPanel current : this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPaneRight () )
+    {
+      handleSave ( current );
+    }
   }
 
 
   /**
-   * Handle the save as event.
+   * Handles the save as event.
    */
   public final void handleSaveAs ()
   {
@@ -2209,9 +2264,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleSecondViewMouseReleased ( MouseEvent event )
   {
-    logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
-        "handle second view mouse released" );//$NON-NLS-1$
-
     if ( event.getSource () instanceof JGTITabbedPane )
     {
       if ( this.gui.getJGTIEditorPanelTabbedPaneLeft () == event.getSource () )
@@ -2220,6 +2272,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             ActiveEditor.LEFT_EDITOR ) )
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+          logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+              "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
         }
         return;
@@ -2230,6 +2284,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             ActiveEditor.RIGHT_EDITOR ) )
         {
           this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+          logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+              "handle second view mouse released" );//$NON-NLS-1$
           handleTabbedPaneStateChanged ();
         }
         return;
@@ -2246,6 +2302,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2263,6 +2321,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2280,6 +2340,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2297,6 +2359,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2317,6 +2381,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2334,6 +2400,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2358,6 +2426,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2379,6 +2449,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2398,6 +2470,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2417,6 +2491,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2456,6 +2532,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2492,6 +2570,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2520,6 +2600,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2548,6 +2630,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2575,6 +2659,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2599,6 +2685,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2621,6 +2709,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.LEFT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2643,6 +2733,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
               ActiveEditor.RIGHT_EDITOR ) )
           {
             this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+            logger.debug ( "handleSecondViewMouseReleased", //$NON-NLS-1$
+                "handle second view mouse released" );//$NON-NLS-1$
             handleTabbedPaneStateChanged ();
           }
           return;
@@ -2799,10 +2891,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( this.jGTIMainSplitPane.getEditorPanelCount () == 0 )
       {
         removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
       }
 
       removeButtonState ( ButtonState.ENABLED_SAVE_AS );
-      removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
       removeButtonState ( ButtonState.ENABLED_CLOSE );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
@@ -3876,13 +3968,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    * @param file The file to open
    * @param addToRecentlyUsed Flag signals if file should be added to recently
    *          used files
-   * @param activeEditor The {@link ActiveEditor} which should be used.
+   * @param usedEditor The {@link ActiveEditor} which should be used.
    */
   public final void openFile ( File file, boolean addToRecentlyUsed,
-      ActiveEditor activeEditor )
+      ActiveEditor usedEditor )
   {
     JGTIEditorPanelTabbedPane jGTIEditorPanelTabbedPane;
-    switch ( activeEditor )
+    switch ( usedEditor )
     {
       case LEFT_EDITOR :
       {
@@ -3908,6 +4000,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       if ( file.equals ( current.getFile () ) )
       {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
             .setSelectedEditorPanel ( current );
 
@@ -3933,6 +4026,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       if ( file.equals ( current.getFile () ) )
       {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
         this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
             .setSelectedEditorPanel ( current );
 

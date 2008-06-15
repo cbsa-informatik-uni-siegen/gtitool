@@ -230,6 +230,7 @@ public final class JGTIMainSplitPane extends JSplitPane implements
     {
       return;
     }
+
     this.activeEditor = activeEditor;
 
     if ( this.activeEditor.equals ( ActiveEditor.LEFT_EDITOR ) )

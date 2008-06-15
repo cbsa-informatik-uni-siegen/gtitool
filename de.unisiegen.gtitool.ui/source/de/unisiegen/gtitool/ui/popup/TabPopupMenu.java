@@ -67,12 +67,6 @@ public final class TabPopupMenu extends JPopupMenu
 
 
   /**
-   * The close all item.
-   */
-  private JMenuItem jMenuItemCloseAll;
-
-
-  /**
    * The save item.
    */
   private JMenuItem jMenuItemSave;
@@ -199,27 +193,6 @@ public final class TabPopupMenu extends JPopupMenu
         .equals ( TabPopupMenuType.TAB_ACTIVE )
         && this.mainWindow.isEnabledClose () );
     add ( this.jMenuItemClose );
-
-    // CloseAll
-    this.jMenuItemCloseAll = new JMenuItem ( Messages
-        .getString ( "MainWindow.CloseAll" ) ); //$NON-NLS-1$
-    this.jMenuItemCloseAll.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
-    this.jMenuItemCloseAll.setMnemonic ( Messages.getString (
-        "MainWindow.CloseAllMnemonic" ) //$NON-NLS-1$
-        .charAt ( 0 ) );
-    this.jMenuItemCloseAll.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
-      {
-        TabPopupMenu.this.mainWindow.handleCloseAll ();
-      }
-    } );
-    this.jMenuItemCloseAll.setEnabled ( this.mainWindow.isEnabledCloseAll () );
-    add ( this.jMenuItemCloseAll );
 
     add ( new JSeparator () );
 

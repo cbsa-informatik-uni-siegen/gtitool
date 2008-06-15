@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -2115,7 +2116,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   private final void initializeSecondView ()
   {
-    MouseListener listener = new MouseAdapter ()
+    MouseListener mouseListener = new MouseAdapter ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
@@ -2127,41 +2128,58 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       }
     };
 
-    this.jGTIGraph.addMouseListener ( listener );
+    MouseMotionListener mouseMotionListener = new MouseMotionAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        MachinePanel.this.mainWindowForm.getLogic ()
+            .handleSecondViewMouseReleased ( event );
+      }
+    };
+
+    this.jGTIGraph.addMouseListener ( mouseListener );
+    this.jGTIGraph.addMouseMotionListener ( mouseMotionListener );
     this.gui.jGTIScrollPaneGraph.getHorizontalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
     this.gui.jGTIScrollPaneGraph.getVerticalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
 
-    this.gui.jGTITableMachine.addMouseListener ( listener );
-    this.gui.jGTITableMachine.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTITableMachine.addMouseListener ( mouseListener );
+    this.gui.jGTITableMachine.getTableHeader ().addMouseListener (
+        mouseListener );
     this.gui.jGTIScrollPaneMachine.getHorizontalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
     this.gui.jGTIScrollPaneMachine.getVerticalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
 
-    this.gui.jGTITableMachinePDA.addMouseListener ( listener );
-    this.gui.jGTITableMachinePDA.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTITableMachinePDA.addMouseListener ( mouseListener );
+    this.gui.jGTITableMachinePDA.getTableHeader ().addMouseListener (
+        mouseListener );
     this.gui.jGTIScrollPaneMachinePDA.getHorizontalScrollBar ()
-        .addMouseListener ( listener );
+        .addMouseListener ( mouseListener );
     this.gui.jGTIScrollPaneMachinePDA.getVerticalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
 
-    this.gui.jGTITabbedPaneConsole.addMouseListener ( listener );
+    this.gui.jGTITabbedPaneConsole.addMouseListener ( mouseListener );
 
-    this.gui.jGTITableErrors.addMouseListener ( listener );
-    this.gui.jGTITableErrors.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTITableErrors.addMouseListener ( mouseListener );
+    this.gui.jGTITableErrors.getTableHeader ()
+        .addMouseListener ( mouseListener );
     this.gui.jGTIScrollPaneErrors.getHorizontalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
     this.gui.jGTIScrollPaneErrors.getVerticalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
 
-    this.gui.jGTITableWarnings.addMouseListener ( listener );
-    this.gui.jGTITableWarnings.getTableHeader ().addMouseListener ( listener );
+    this.gui.jGTITableWarnings.addMouseListener ( mouseListener );
+    this.gui.jGTITableWarnings.getTableHeader ().addMouseListener (
+        mouseListener );
     this.gui.jGTIScrollPaneWarnings.getHorizontalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
     this.gui.jGTIScrollPaneWarnings.getVerticalScrollBar ().addMouseListener (
-        listener );
+        mouseListener );
   }
 
 

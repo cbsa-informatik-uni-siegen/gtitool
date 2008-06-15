@@ -168,7 +168,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       TransitionSymbolOnlyOneTimeException
   {
     this.pdaTableModel = new PDATableModel ();
-
+    
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {

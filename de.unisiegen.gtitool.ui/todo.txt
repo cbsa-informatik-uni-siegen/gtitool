@@ -11,7 +11,6 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 BM		- Parallel Loop Routing
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 BM		- Keller von links nach rechts darstellen (dragon book)
-BM		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF)
 
 
 *** FEATURE ***

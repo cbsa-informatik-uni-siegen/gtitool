@@ -58,6 +58,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jGTITabbedPaneMain = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
         jGTIPanelMain = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelNorth = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelIcon = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -73,6 +74,7 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTILabelDeveloper0 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
+        jGTITabbedPaneLicenses = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -222,13 +224,16 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
         jGTIPanelMain.add(jGTIButtonClose, gridBagConstraints);
 
+        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.General"), jGTIPanelMain); // NOI18N
+
+        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.Licenses"), jGTITabbedPaneLicenses); // NOI18N
+
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTIPanelMain, gridBagConstraints);
+        getContentPane().add(jGTITabbedPaneMain, gridBagConstraints);
+        jGTITabbedPaneMain.getAccessibleContext().setAccessibleName("");
 
         setSize(new java.awt.Dimension(448, 280));
     }// </editor-fold>//GEN-END:initComponents
@@ -261,6 +266,8 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelNorth;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelSouth;
     public de.unisiegen.gtitool.ui.swing.JGTISeparator jGTISeparator;
+    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneLicenses;
+    public de.unisiegen.gtitool.ui.swing.JGTITabbedPane jGTITabbedPaneMain;
     // End of variables declaration//GEN-END:variables
     
 }

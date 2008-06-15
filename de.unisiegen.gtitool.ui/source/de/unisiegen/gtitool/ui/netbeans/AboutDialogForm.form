@@ -31,195 +31,226 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
   <SubComponents>
-    <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelMain">
+    <Container class="de.unisiegen.gtitool.ui.swing.JGTITabbedPane" name="jGTITabbedPaneMain">
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+      </AccessibilityProperties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-          <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+          <GridBagConstraints gridX="-1" gridY="-1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
         </Constraint>
       </Constraints>
 
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelNorth">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-          </Properties>
+        <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelMain">
           <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="General">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.General" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                </Property>
+              </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
           <SubComponents>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelIcon">
+            <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelNorth">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/uni_logo.gif"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="2" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                  <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                 </Constraint>
               </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelName">
-              <Properties>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="GTI Tool ?.?.?.?"/>
-                <Property name="verticalAlignment" type="int" value="3"/>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
-                  <FontInfo relative="false">
-                    <Font name="Dialog" size="24" style="1"/>
-                  </FontInfo>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelCopyright">
-              <Properties>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Copyright" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-                <Property name="verticalAlignment" type="int" value="1"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="de.unisiegen.gtitool.ui.swing.JGTISeparator" name="jGTISeparator">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="1" gridWidth="2" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
-            </Constraint>
-          </Constraints>
-        </Component>
-        <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelSouth">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="0" insetsBottom="5" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
-            </Constraint>
-          </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
-          <SubComponents>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelWebpage">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Webpage" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-              </Properties>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+              <SubComponents>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelIcon">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/uni_logo.gif"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="2" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelName">
+                  <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" value="GTI Tool ?.?.?.?"/>
+                    <Property name="verticalAlignment" type="int" value="3"/>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
+                      <FontInfo relative="false">
+                        <Font name="Dialog" size="24" style="1"/>
+                      </FontInfo>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelCopyright">
+                  <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Copyright" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    </Property>
+                    <Property name="verticalAlignment" type="int" value="1"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="1.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="de.unisiegen.gtitool.ui.swing.JGTISeparator" name="jGTISeparator">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                  <GridBagConstraints gridX="0" gridY="1" gridWidth="2" gridHeight="1" fill="1" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
                 </Constraint>
               </Constraints>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelWebpageEntry">
+            <Container class="de.unisiegen.gtitool.ui.swing.JGTIPanel" name="jGTIPanelSouth">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                  <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="10" insetsLeft="0" insetsBottom="5" insetsRight="0" anchor="10" weightX="1.0" weightY="0.0"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+              <SubComponents>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelWebpage">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Webpage" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelWebpageEntry">
+                  <Properties>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="0" id="blue" palette="1" red="0" type="palette"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="http://theoinf.math.uni-siegen.de/gtitool"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.WebpageEntryToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTILabelWebpageEntryMouseClicked"/>
+                  </Events>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelVersion">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Version" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelVersionEntry">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="?.?.?.?_????"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                      <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Developer" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper0">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Christian Fehler"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="2" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+                <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Benjamin Mies"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
+                      <GridBagConstraints gridX="1" gridY="3" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="de.unisiegen.gtitool.ui.swing.JGTIButton" name="jGTIButtonClose">
               <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="0" id="blue" palette="1" red="0" type="palette"/>
+                <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
+                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.CloseMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="http://theoinf.math.uni-siegen.de/gtitool"/>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.WebpageEntryToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Close" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jGTILabelWebpageEntryMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIButtonCloseActionPerformed"/>
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelVersion">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Version" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelVersionEntry">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="?.?.?.?_????"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Developer" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="0" gridY="2" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper0">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Christian Fehler"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="2" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="5" insetsRight="10" anchor="17" weightX="0.0" weightY="0.0"/>
-                </Constraint>
-              </Constraints>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.JGTILabel" name="jGTILabelDeveloper1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Benjamin Mies"/>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-                  <GridBagConstraints gridX="1" gridY="3" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="10" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
+                  <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="16" insetsRight="16" anchor="15" weightX="0.0" weightY="1.0"/>
                 </Constraint>
               </Constraints>
             </Component>
           </SubComponents>
         </Container>
-        <Component class="de.unisiegen.gtitool.ui.swing.JGTIButton" name="jGTIButtonClose">
-          <Properties>
-            <Property name="mnemonic" type="int" editor="org.netbeans.modules.i18n.form.FormI18nMnemonicEditor">
-              <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.CloseMnemonic" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-            </Property>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Close" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIButtonCloseActionPerformed"/>
-          </Events>
+        <Container class="de.unisiegen.gtitool.ui.swing.JGTITabbedPane" name="jGTITabbedPaneLicenses">
           <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
-              <GridBagConstraints gridX="0" gridY="4" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="5" insetsLeft="16" insetsBottom="16" insetsRight="16" anchor="15" weightX="0.0" weightY="1.0"/>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Licenses">
+                <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="AboutDialog.Licenses" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                </Property>
+              </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
-        </Component>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

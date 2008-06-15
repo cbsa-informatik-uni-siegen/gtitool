@@ -3,6 +3,10 @@ package de.unisiegen.gtitool.ui.logic;
 
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JFrame;
 
@@ -10,6 +14,7 @@ import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
+import de.unisiegen.gtitool.ui.netbeans.LicensePanel;
 import de.unisiegen.gtitool.ui.utils.Clipboard;
 
 
@@ -54,6 +59,64 @@ public final class AboutDialog implements LogicClass < AboutDialogForm >
     this.gui.jGTILabelVersionEntry.setText ( Version.FULL_VERSION );
     this.gui.jGTILabelWebpageEntry
         .setCursor ( new Cursor ( Cursor.HAND_CURSOR ) );
+
+    createLicenseTabs ();
+  }
+
+
+  /**
+   * Create the license tabs.
+   */
+  private void createLicenseTabs ()
+  {
+    File file = new File ( "source/licenses" ); //$NON-NLS-1$
+
+    if ( file.list ().length == 0 )
+    {
+      this.gui.jGTITabbedPaneMain.remove ( 1 );
+      return;
+    }
+    for ( String current : file.list () )
+    {
+      String license = ""; //$NON-NLS-1$
+      try
+      {
+        if (!current.endsWith ( ".txt" )){ //$NON-NLS-1$
+          continue;
+        }
+        // Read the license from txt file
+        BufferedReader reader = new BufferedReader ( new InputStreamReader (
+            getClass ().getResourceAsStream ( "/licenses/" + current ), "UTF8" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        String input = ""; //$NON-NLS-1$
+
+        while ( ( input = reader.readLine () ) != null )
+        {
+          license += input + "\n"; //$NON-NLS-1$
+        }
+        
+        LicensePanel panel = new LicensePanel();
+        
+        panel.jGTITextAreaLicense.setText ( license );
+        
+        // Goto the begin of the text area
+        panel.jGTITextAreaLicense.setEditable ( true );
+        panel.jGTITextAreaLicense.setCaretPosition ( 0 );
+        panel.jGTITextAreaLicense.setEditable ( false );
+        
+        // Get the tab name from the file
+        String name = current;
+        name = name.replace ( ".txt", "" ); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        // Add a new tab for the read license
+        this.gui.jGTITabbedPaneLicenses.addTab ( name, panel );
+      }
+      catch ( IOException e )
+      {
+        e.printStackTrace ();
+      }
+      
+    }
   }
 
 

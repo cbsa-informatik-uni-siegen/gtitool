@@ -13,12 +13,6 @@ BM		- Minimieren: Fehler in der Logik
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 BM		- Linzensen zum About Dialog hinzufügen (JFlex, JGraph, JavaCup, TinyLaF, eigene)
 BM		- Keller von links nach rechts darstellen (dragon book)
-BM		- Die Position und Größe des Miminieren Dialoges verwenden, ebenso die beiden
-		  DividerLocations, in den Preferencen ist alles vorbereitet. Vorsicht beim
-		  ersten Öffnen, da muss eine Fallunterscheidung gemacht werden, damit das Fenster
-		  zentriert wird, siehe ConvertMachineDialog.
-BM		- Der Minimieren Dialog benutzt immer noch (oder ich glaube eher wieder?) die Strings 
-		  des Convert Machine Dialoges, obwohl die richtigen Strings vorhanden sind.
 
 
 *** FEATURE ***

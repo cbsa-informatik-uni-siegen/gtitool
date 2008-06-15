@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.ui.netbeans;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import de.unisiegen.gtitool.ui.logic.ConvertMachineDialog;
 import de.unisiegen.gtitool.ui.logic.MinimizeMachineDialog;
 import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 
@@ -11,20 +10,21 @@ import de.unisiegen.gtitool.ui.netbeans.interfaces.GUIClass;
 /**
  * The {@link ConvertMachineDialogForm}.
  * 
- * @author Christian Fehler
+ * @author Benjamin Mies
  * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class MinimizeMachineDialogForm extends JDialog implements GUIClass <MinimizeMachineDialog>
 {
     
-    /**
-     * The serial version uid.
-     */
-    private static final long serialVersionUID = 8264731535784921404L;
+  /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 2492103700111396933L;
+   
     
     /**
-     * The {@link ConvertMachineDialog}.
+     * The {@link MinimizeMachineDialog}.
      */
     private MinimizeMachineDialog logic ;
     
@@ -79,7 +79,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
-        setTitle(bundle.getString("ConvertMachineDialog.Title")); // NOI18N
+        setTitle(bundle.getString("MinimizeMachineDialog.Title")); // NOI18N
         setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -88,7 +88,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         });
 
         jGTIToolBarButtonBeginStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-begin.png")));
-        jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("ConvertMachineDialog.BeginStep")); // NOI18N
+        jGTIToolBarButtonBeginStep.setToolTipText(bundle.getString("MinimizeMachineDialog.BeginStep")); // NOI18N
         jGTIToolBarButtonBeginStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonBeginStepActionPerformed(evt);
@@ -98,7 +98,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTIToolBarMain.add(jGTIToolBarButtonBeginStep);
 
         jGTIToolBarButtonPreviousStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-backward.png")));
-        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("ConvertMachineDialog.PreviousStep")); // NOI18N
+        jGTIToolBarButtonPreviousStep.setToolTipText(bundle.getString("MinimizeMachineDialog.PreviousStep")); // NOI18N
         jGTIToolBarButtonPreviousStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonPreviousStepActionPerformed(evt);
@@ -108,7 +108,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTIToolBarMain.add(jGTIToolBarButtonPreviousStep);
 
         jGTIToolBarButtonNextStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-forward.png")));
-        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("ConvertMachineDialog.NextStep")); // NOI18N
+        jGTIToolBarButtonNextStep.setToolTipText(bundle.getString("MinimizeMachineDialog.NextStep")); // NOI18N
         jGTIToolBarButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonNextStepActionPerformed(evt);
@@ -118,7 +118,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTIToolBarMain.add(jGTIToolBarButtonNextStep);
 
         jGTIToolBarToggleButtonAutoStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-autostep.png")));
-        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("ConvertMachineDialog.AutoStep")); // NOI18N
+        jGTIToolBarToggleButtonAutoStep.setToolTipText(bundle.getString("MinimizeMachineDialog.AutoStep")); // NOI18N
         jGTIToolBarToggleButtonAutoStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarToggleButtonAutoStepActionPerformed(evt);
@@ -128,7 +128,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTIToolBarMain.add(jGTIToolBarToggleButtonAutoStep);
 
         jGTIToolBarButtonStop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-stop.png")));
-        jGTIToolBarButtonStop.setToolTipText(bundle.getString("ConvertMachineDialog.Stop")); // NOI18N
+        jGTIToolBarButtonStop.setToolTipText(bundle.getString("MinimizeMachineDialog.Stop")); // NOI18N
         jGTIToolBarButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonStopActionPerformed(evt);
@@ -138,7 +138,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         jGTIToolBarMain.add(jGTIToolBarButtonStop);
 
         jGTIToolBarButtonEndStep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/toolbar/enterword/word-end.png")));
-        jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("ConvertMachineDialog.EndStep")); // NOI18N
+        jGTIToolBarButtonEndStep.setToolTipText(bundle.getString("MinimizeMachineDialog.EndStep")); // NOI18N
         jGTIToolBarButtonEndStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIToolBarButtonEndStepActionPerformed(evt);
@@ -191,7 +191,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         getContentPane().add(jGTISplitPaneOutline, gridBagConstraints);
 
         jGTIButtonCancel.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.CancelMnemonic").charAt(0));
-        jGTIButtonCancel.setText(bundle.getString("ConvertMachineDialog.Cancel")); // NOI18N
+        jGTIButtonCancel.setText(bundle.getString("MinimizeMachineDialog.Cancel")); // NOI18N
         jGTIButtonCancel.setToolTipText(bundle.getString("ConvertMachineDialog.CancelToolTip")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,7 +207,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         getContentPane().add(jGTIButtonCancel, gridBagConstraints);
 
         jGTIButtonOk.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("ConvertMachineDialog.OkMnemonic").charAt(0));
-        jGTIButtonOk.setText(bundle.getString("ConvertMachineDialog.Ok")); // NOI18N
+        jGTIButtonOk.setText(bundle.getString("MinimizeMachineDialog.Ok")); // NOI18N
         jGTIButtonOk.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
         jGTIButtonOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

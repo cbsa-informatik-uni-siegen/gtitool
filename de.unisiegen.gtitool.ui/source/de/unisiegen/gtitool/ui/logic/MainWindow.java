@@ -82,9 +82,24 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public enum ButtonState
   {
     /**
-     * The general enabled button state.
+     * The save as enabled button state.
      */
-    ENABLED_GENERAL,
+    ENABLED_SAVE_AS,
+
+    /**
+     * The save all enabled button state.
+     */
+    ENABLED_SAVE_ALL,
+
+    /**
+     * The close enabled button state.
+     */
+    ENABLED_CLOSE,
+
+    /**
+     * The close all enabled button state.
+     */
+    ENABLED_CLOSE_ALL,
 
     /**
      * The undo enabled button state.
@@ -358,7 +373,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     this.gui.setBounds ( PreferenceManager.getInstance ()
         .getMainWindowBounds () );
 
-    removeButtonState ( ButtonState.ENABLED_GENERAL );
+    removeButtonState ( ButtonState.ENABLED_SAVE_AS );
+    removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
+    removeButtonState ( ButtonState.ENABLED_CLOSE );
+    removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
     removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
     removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
@@ -448,14 +466,29 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   public final void addButtonState ( ButtonState buttonState )
   {
     // enabled
-    if ( ( buttonState.equals ( ButtonState.ENABLED_GENERAL ) )
-        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_GENERAL ) ) )
+    if ( ( buttonState.equals ( ButtonState.ENABLED_SAVE_AS ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE_AS ) ) )
     {
-      this.buttonStateList.add ( ButtonState.ENABLED_GENERAL );
+      this.buttonStateList.add ( ButtonState.ENABLED_SAVE_AS );
       this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( true );
       this.gui.getJMenuItemSaveAs ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_SAVE_ALL ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_SAVE_ALL ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_SAVE_ALL );
       this.gui.getJMenuItemSaveAll ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CLOSE ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CLOSE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CLOSE );
       this.gui.getJMenuItemClose ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CLOSE_ALL ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_CLOSE_ALL ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CLOSE_ALL );
       this.gui.getJMenuItemCloseAll ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
@@ -1307,7 +1340,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
           .setSelectedEditorPanel ( newEditorPanel );
 
-      addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_SAVE_AS );
+      addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+      addButtonState ( ButtonState.ENABLED_CLOSE );
+      addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1385,7 +1421,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
           .setSelectedEditorPanel ( newEditorPanel );
 
-      addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_SAVE_AS );
+      addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+      addButtonState ( ButtonState.ENABLED_CLOSE );
+      addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1680,7 +1719,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
           .setSelectedEditorPanel ( newEditorPanel );
 
-      addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_SAVE_AS );
+      addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+      addButtonState ( ButtonState.ENABLED_CLOSE );
+      addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1743,7 +1785,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
           .setSelectedEditorPanel ( newEditorPanel );
 
-      addButtonState ( ButtonState.ENABLED_GENERAL );
+      addButtonState ( ButtonState.ENABLED_SAVE_AS );
+      addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+      addButtonState ( ButtonState.ENABLED_CLOSE );
+      addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -2649,7 +2694,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // no panel
     if ( panel == null )
     {
-      removeButtonState ( ButtonState.ENABLED_GENERAL );
+      removeButtonState ( ButtonState.ENABLED_SAVE_AS );
+      removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
+      removeButtonState ( ButtonState.ENABLED_CLOSE );
+      removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -3807,7 +3855,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         jGTIEditorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel, file
             .getName () );
 
-        addButtonState ( ButtonState.ENABLED_GENERAL );
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -3825,7 +3876,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         jGTIEditorPanelTabbedPane.setEditorPanelTitle ( newEditorPanel, file
             .getName () );
 
-        addButtonState ( ButtonState.ENABLED_GENERAL );
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -3900,13 +3954,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void removeButtonState ( ButtonState buttonState )
   {
-    if ( buttonState.equals ( ButtonState.ENABLED_GENERAL ) )
+    if ( buttonState.equals ( ButtonState.ENABLED_SAVE_AS ) )
     {
-      this.buttonStateList.remove ( ButtonState.ENABLED_GENERAL );
+      this.buttonStateList.remove ( ButtonState.ENABLED_SAVE_AS );
       this.gui.getJGTIToolBarButtonSaveAs ().setEnabled ( false );
       this.gui.getJMenuItemSaveAs ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_SAVE_ALL ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_SAVE_ALL );
       this.gui.getJMenuItemSaveAll ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CLOSE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CLOSE );
       this.gui.getJMenuItemClose ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CLOSE_ALL ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CLOSE_ALL );
       this.gui.getJMenuItemCloseAll ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )

@@ -406,12 +406,12 @@ public class Minimizer
           }
         }
       }
-      if ( this.newGroupStates.size () == group.size () )
-      {
-        this.newGroupStates.clear ();
-      }
-      group.removeAll ( this.newGroupStates );
     }
+    if ( this.newGroupStates.size () == group.size () )
+    {
+      this.newGroupStates.clear ();
+    }
+    group.removeAll ( this.newGroupStates );
   }
 
 

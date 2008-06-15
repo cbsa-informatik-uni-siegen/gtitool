@@ -212,6 +212,41 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CONVERT_TO_SOURCE_CFG,
 
     /**
+     * The convert to complete enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE,
+
+    /**
+     * The convert to complete source dfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA,
+
+    /**
+     * The convert to complete source nfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA,
+
+    /**
+     * The convert to complete source enfa enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA,
+
+    /**
+     * The convert to complete source pda enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA,
+
+    /**
+     * The convert to complete source rg enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG,
+
+    /**
+     * The convert to complete source cfg enabled button state.
+     */
+    ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG,
+
+    /**
      * The minimize enabled button state.
      */
     ENABLED_MINIMIZE,
@@ -330,6 +365,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_SAVE );
     removeButtonState ( ButtonState.ENABLED_HISTORY );
     removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+    removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
     removeButtonState ( ButtonState.ENABLED_VALIDATE );
     removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
     removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -673,6 +709,145 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJMenuItemConvertToENFA ().setEnabled ( false );
       this.gui.getJMenuItemConvertToPDA ().setEnabled ( true );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
+      this.gui.getJMenuConvertToComplete ().setEnabled ( true );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA ) ) )
+    {
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( true );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG ) ) )
+    {
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
+      this.gui.getJMenuItemConvertToCompleteDFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteNFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompleteENFA ().setEnabled ( false );
+      this.gui.getJMenuItemConvertToCompletePDA ().setEnabled ( false );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_MINIMIZE ) ) )
     {
@@ -969,25 +1144,26 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       if ( panel instanceof MachinePanel )
       {
         MachinePanel machinePanel = ( MachinePanel ) panel;
+
         if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.DFA ) )
         {
-          panel.getConverter ().convert ( MachineType.DFA, entityType );
+          panel.getConverter ().convert ( MachineType.DFA, entityType, false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.NFA ) )
         {
-          panel.getConverter ().convert ( MachineType.NFA, entityType );
+          panel.getConverter ().convert ( MachineType.NFA, entityType, false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
-          panel.getConverter ().convert ( MachineType.ENFA, entityType );
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, false );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
-          panel.getConverter ().convert ( MachineType.PDA, entityType );
+          panel.getConverter ().convert ( MachineType.PDA, entityType, false );
         }
         else
         {
@@ -1001,16 +1177,67 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.RG ) )
         {
-          panel.getConverter ().convert ( GrammarType.RG, entityType );
+          panel.getConverter ().convert ( GrammarType.RG, entityType, false );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
-          panel.getConverter ().convert ( GrammarType.CFG, entityType );
+          panel.getConverter ().convert ( GrammarType.CFG, entityType, false );
         }
         else
         {
           throw new RuntimeException ( "unsupported grammar type" ); //$NON-NLS-1$
+        }
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+      }
+    }
+  }
+
+
+  /**
+   * Handles the convert to complete action performed.
+   * 
+   * @param entityType The {@link EntityType} to convert to.
+   */
+  public final void handleConvertToComplete ( EntityType entityType )
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+
+    // if there are no validation errors perform the action
+    if ( handleValidate ( false ) )
+    {
+      // MachinePanel
+      if ( panel instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) panel;
+
+        if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.DFA ) )
+        {
+          panel.getConverter ().convert ( MachineType.DFA, entityType, true );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.NFA ) )
+        {
+          panel.getConverter ().convert ( MachineType.NFA, entityType, true );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.ENFA ) )
+        {
+          panel.getConverter ().convert ( MachineType.ENFA, entityType, true );
+        }
+        else if ( machinePanel.getMachine ().getMachineType ().equals (
+            MachineType.PDA ) )
+        {
+          panel.getConverter ().convert ( MachineType.PDA, entityType, true );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported machine type" ); //$NON-NLS-1$
         }
       }
       else
@@ -1235,6 +1462,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     addButtonState ( ButtonState.ENABLED_VALIDATE );
     addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
     addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+    addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
     addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
@@ -1296,6 +1524,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
@@ -2433,6 +2662,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.VISIBLE_MACHINE );
       removeButtonState ( ButtonState.VISIBLE_GRAMMAR );
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+      removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
@@ -2453,6 +2683,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             MachineType.DFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
           if ( machinePanel.isWordNavigation ()
               || machinePanel.isWordEnterMode () )
           {
@@ -2467,18 +2698,21 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             MachineType.NFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_NFA );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_NFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.ENFA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_ENFA );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_ENFA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
             MachineType.PDA ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_PDA );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_PDA );
           removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         }
         else
@@ -2508,6 +2742,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
@@ -2527,6 +2762,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
           removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
@@ -2547,6 +2783,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
 
@@ -2562,11 +2799,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             GrammarType.RG ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_RG );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_RG );
         }
         else if ( grammarPanel.getGrammar ().getGrammarType ().equals (
             GrammarType.CFG ) )
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_CFG );
+          addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_CFG );
         }
         else
         {
@@ -2585,6 +2824,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_GRAMMAR );
         addButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
 
+        removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
         removeButtonState ( ButtonState.ENABLED_ENTER_WORD );
         removeButtonState ( ButtonState.ENABLED_HISTORY );
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
@@ -3334,6 +3574,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemConvertToPDA ().setText (
         Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
+    // ConvertToComplete
+    MainWindow.this.gui.getJMenuConvertToComplete ().setText (
+        Messages.getString ( "MainWindow.ConvertToComplete" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuConvertToComplete ().setMnemonic (
+        Messages
+            .getString ( "MainWindow.ConvertToCompleteMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToCompleteDFA ().setText (
+        Messages.getString ( "MainWindow.DFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToCompleteNFA ().setText (
+        Messages.getString ( "MainWindow.NFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToCompleteENFA ().setText (
+        Messages.getString ( "MainWindow.ENFA" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemConvertToCompletePDA ().setText (
+        Messages.getString ( "MainWindow.PDA" ) ); //$NON-NLS-1$
     // Draft for
     MainWindow.this.gui.getJMenuDraft ().setText (
         Messages.getString ( "MainWindow.DraftFor" ) ); //$NON-NLS-1$
@@ -3759,6 +4013,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO );
       this.gui.getJMenuConvertTo ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_CONVERT_TO_COMPLETE ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
+      this.gui.getJMenuConvertToComplete ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_MINIMIZE ) )
     {

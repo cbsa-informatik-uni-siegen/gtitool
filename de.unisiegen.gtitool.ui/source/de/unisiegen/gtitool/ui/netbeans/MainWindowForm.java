@@ -142,7 +142,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jMenuItemConvertToNFA;
     }
 
-    
     /**
      * Returns the jMenuItemConvertToPDA.
      *
@@ -153,7 +152,53 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jMenuItemConvertToPDA;
     }
+
+    /**
+     * Returns the jMenuItemConvertToCompleteDFA.
+     *
+     * @return The jMenuItemConvertToCompleteDFA.
+     * @see #jMenuItemConvertToCompleteDFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToCompleteDFA ()
+    {
+      return this.jMenuItemConvertToCompleteDFA;
+    }
+
     
+    /**
+     * Returns the jMenuItemConvertToCompleteENFA.
+     *
+     * @return The jMenuItemConvertToCompleteENFA.
+     * @see #jMenuItemConvertToCompleteENFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToCompleteENFA ()
+    {
+      return this.jMenuItemConvertToCompleteENFA;
+    }
+
+    
+    /**
+     * Returns the jMenuItemConvertToCompleteNFA.
+     *
+     * @return The jMenuItemConvertToCompleteNFA.
+     * @see #jMenuItemConvertToCompleteNFA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToCompleteNFA ()
+    {
+      return this.jMenuItemConvertToCompleteNFA;
+    }
+
+    /**
+     * Returns the jMenuItemConvertToCompletePDA.
+     *
+     * @return The jMenuItemConvertToCompletePDA.
+     * @see #jMenuItemConvertToCompletePDA
+     */
+    public final javax.swing.JMenuItem getJMenuItemConvertToCompletePDA ()
+    {
+      return this.jMenuItemConvertToCompletePDA;
+    }
+
     /**
      * Returns the jMenuItemSave.
      *
@@ -614,7 +659,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     {
       return this.jMenuConvertTo;
     }
-    
+
+    /**
+     * Returns the jMenuConvertToComplete.
+     *
+     * @return The jMenuConvertToComplete.
+     * @see #jMenuConvertToComplete
+     */
+    public final JMenuItem getJMenuConvertToComplete ()
+    {
+      return this.jMenuConvertToComplete;
+    }
+
     /**
      * Returns the jMenuDraft.
      *
@@ -1027,6 +1083,11 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jMenuItemConvertToNFA = new javax.swing.JMenuItem();
         jMenuItemConvertToENFA = new javax.swing.JMenuItem();
         jMenuItemConvertToPDA = new javax.swing.JMenuItem();
+        jMenuConvertToComplete = new javax.swing.JMenu();
+        jMenuItemConvertToCompleteDFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToCompleteNFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToCompleteENFA = new javax.swing.JMenuItem();
+        jMenuItemConvertToCompletePDA = new javax.swing.JMenuItem();
         jMenuDraft = new javax.swing.JMenu();
         jMenuItemDFA = new javax.swing.JMenuItem();
         jMenuItemNFA = new javax.swing.JMenuItem();
@@ -1648,6 +1709,45 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuConvertTo);
 
+        jMenuConvertToComplete.setText(bundle.getString("MainWindow.ConvertToComplete")); // NOI18N
+        jMenuItemConvertToCompleteDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
+        jMenuItemConvertToCompleteDFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToCompleteDFAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertToComplete.add(jMenuItemConvertToCompleteDFA);
+
+        jMenuItemConvertToCompleteNFA.setText(bundle.getString("MainWindow.NFA")); // NOI18N
+        jMenuItemConvertToCompleteNFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToCompleteNFActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertToComplete.add(jMenuItemConvertToCompleteNFA);
+
+        jMenuItemConvertToCompleteENFA.setText(bundle.getString("MainWindow.ENFA")); // NOI18N
+        jMenuItemConvertToCompleteENFA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToCompleteENFAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertToComplete.add(jMenuItemConvertToCompleteENFA);
+
+        jMenuItemConvertToCompletePDA.setText(bundle.getString("MainWindow.PDA")); // NOI18N
+        jMenuItemConvertToCompletePDA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemConvertToCompletePDAActionPerformed(evt);
+            }
+        });
+
+        jMenuConvertToComplete.add(jMenuItemConvertToCompletePDA);
+
+        jMenuExecute.add(jMenuConvertToComplete);
+
         jMenuDraft.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.DraftForMnemonic").charAt(0));
         jMenuDraft.setText(bundle.getString("MainWindow.DraftFor")); // NOI18N
         jMenuItemDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
@@ -1785,6 +1885,22 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemConvertToCompletePDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompletePDAActionPerformed
+         this.logic.handleConvertToComplete(MachineType.PDA);
+    }//GEN-LAST:event_jMenuItemConvertToCompletePDAActionPerformed
+
+    private void jMenuItemConvertToCompleteENFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteENFAActionPerformed
+         this.logic.handleConvertToComplete(MachineType.ENFA);
+    }//GEN-LAST:event_jMenuItemConvertToCompleteENFAActionPerformed
+
+    private void jMenuItemConvertToCompleteNFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteNFActionPerformed
+         this.logic.handleConvertToComplete(MachineType.NFA);
+    }//GEN-LAST:event_jMenuItemConvertToCompleteNFActionPerformed
+
+    private void jMenuItemConvertToCompleteDFAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompleteDFAActionPerformed
+         this.logic.handleConvertToComplete(MachineType.DFA);
+    }//GEN-LAST:event_jMenuItemConvertToCompleteDFAActionPerformed
 
     private void jGTIToolBarToggleButtonEnterWordItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonEnterWordItemStateChanged
         this.logic.handleEnterWordToggleButton();
@@ -2056,6 +2172,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton jGTIToolBarToggleButtonStartState;
     private javax.swing.JMenuBar jMenuBarMain;
     private javax.swing.JMenu jMenuConvertTo;
+    private javax.swing.JMenu jMenuConvertToComplete;
     private javax.swing.JMenu jMenuDraft;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuExecute;
@@ -2067,6 +2184,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private javax.swing.JMenuItem jMenuItemCFG;
     private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCloseAll;
+    private javax.swing.JMenuItem jMenuItemConvertToCompleteDFA;
+    private javax.swing.JMenuItem jMenuItemConvertToCompleteENFA;
+    private javax.swing.JMenuItem jMenuItemConvertToCompleteNFA;
+    private javax.swing.JMenuItem jMenuItemConvertToCompletePDA;
     private javax.swing.JMenuItem jMenuItemConvertToDFA;
     private javax.swing.JMenuItem jMenuItemConvertToENFA;
     private javax.swing.JMenuItem jMenuItemConvertToNFA;

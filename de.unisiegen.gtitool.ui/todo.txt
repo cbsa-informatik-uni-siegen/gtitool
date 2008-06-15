@@ -4,7 +4,9 @@ CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Split View
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
-CF		- Convert: Vollständiger Automat
+CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
+		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
+		  Potenzautomaten sehr leicht lahmlegen
 
 BM		- Parallel Loop Routing
 BM		- Minimieren: Fehler in der Logik
@@ -15,6 +17,8 @@ BM		- Die Position und Größe des Miminieren Dialoges verwenden, ebenso die bei
 		  DividerLocations, in den Preferencen ist alles vorbereitet. Vorsicht beim
 		  ersten Öffnen, da muss eine Fallunterscheidung gemacht werden, damit das Fenster
 		  zentriert wird, siehe ConvertMachineDialog.
+BM		- Der Minimieren Dialog benutzt immer noch (oder ich glaube eher wieder?) die Strings 
+		  des Convert Machine Dialoges, obwohl die richtigen Strings vorhanden sind.
 
 
 *** FEATURE ***

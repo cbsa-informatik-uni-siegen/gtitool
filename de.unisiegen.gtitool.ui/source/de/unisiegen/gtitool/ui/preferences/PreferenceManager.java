@@ -185,6 +185,12 @@ public final class PreferenceManager extends
 
 
   /**
+   * The default second view divider location.
+   */
+  public static final int DEFAULT_DIVIDER_LOCATION_SECOND_VIEW = DEFAULT_WIDTH / 2;
+
+
+  /**
    * The default convert machine divider location.
    */
   public static final int DEFAULT_DIVIDER_LOCATION_CONVERT_MACHINE = 250;
@@ -481,6 +487,18 @@ public final class PreferenceManager extends
   {
     return this.preferences.getInt ( "ReachableStatesDialog.DividerOutline", //$NON-NLS-1$
         DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES_OUTLINE );
+  }
+
+
+  /**
+   * Returns the second view divider location.
+   * 
+   * @return The second view divider location.
+   */
+  public final int getDividerLocationSecondView ()
+  {
+    return this.preferences.getInt ( "MachinePanel.DividerSecondView", //$NON-NLS-1$
+        DEFAULT_DIVIDER_LOCATION_SECOND_VIEW );
   }
 
 
@@ -946,6 +964,20 @@ public final class PreferenceManager extends
         "set reachable states outline divider location to " //$NON-NLS-1$
             + Messages.QUOTE + location + Messages.QUOTE );
     this.preferences.putInt ( "ReachableStatesDialog.DividerOutline", location );//$NON-NLS-1$
+  }
+
+
+  /**
+   * Sets the second view divider location.
+   * 
+   * @param location The second view divider location.
+   */
+  public final void setDividerLocationSecondView ( int location )
+  {
+    logger.debug ( "setDividerLocationSecondView", //$NON-NLS-1$
+        "set second view divider location to " + Messages.QUOTE + location //$NON-NLS-1$
+            + Messages.QUOTE );
+    this.preferences.putInt ( "MachinePanel.DividerSecondView", location ); //$NON-NLS-1$
   }
 
 

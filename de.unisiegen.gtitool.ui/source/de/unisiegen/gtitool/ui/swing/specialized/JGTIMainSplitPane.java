@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
 
 
@@ -25,33 +26,6 @@ import de.unisiegen.gtitool.ui.swing.JGTISplitPane;
 public final class JGTIMainSplitPane extends JSplitPane implements
     Iterable < EditorPanel >
 {
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Iterable#iterator()
-   */
-  @SuppressWarnings ( "unchecked" )
-  public final Iterator < EditorPanel > iterator ()
-  {
-    ArrayList < EditorPanel > editorPanelList = new ArrayList < EditorPanel > (
-        getComponentCount () );
-
-    for ( EditorPanel current : this.mainWindowForm
-        .getJGTIEditorPanelTabbedPaneLeft () )
-    {
-      editorPanelList.add ( current );
-    }
-
-    for ( EditorPanel current : this.mainWindowForm
-        .getJGTIEditorPanelTabbedPaneRight () )
-    {
-      editorPanelList.add ( current );
-    }
-
-    return editorPanelList.iterator ();
-  }
-
 
   /**
    * The {@link ActiveEditor} {@link Enum}.
@@ -152,6 +126,20 @@ public final class JGTIMainSplitPane extends JSplitPane implements
 
 
   /**
+   * Returns the {@link EditorPanel} count.
+   * 
+   * @return The {@link EditorPanel} count.
+   */
+  public final int getEditorPanelCount ()
+  {
+    return this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft ()
+        .getComponentCount ()
+        + this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ()
+            .getComponentCount ();
+  }
+
+
+  /**
    * Returns the active {@link JGTIEditorPanelTabbedPane}.
    * 
    * @return The active {@link JGTIEditorPanelTabbedPane}.
@@ -201,6 +189,33 @@ public final class JGTIMainSplitPane extends JSplitPane implements
   public final MainWindowForm getMainWindowForm ()
   {
     return this.mainWindowForm;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Iterable#iterator()
+   */
+  @SuppressWarnings ( "unchecked" )
+  public final Iterator < EditorPanel > iterator ()
+  {
+    ArrayList < EditorPanel > editorPanelList = new ArrayList < EditorPanel > (
+        getComponentCount () );
+
+    for ( EditorPanel current : this.mainWindowForm
+        .getJGTIEditorPanelTabbedPaneLeft () )
+    {
+      editorPanelList.add ( current );
+    }
+
+    for ( EditorPanel current : this.mainWindowForm
+        .getJGTIEditorPanelTabbedPaneRight () )
+    {
+      editorPanelList.add ( current );
+    }
+
+    return editorPanelList.iterator ();
   }
 
 
@@ -311,11 +326,17 @@ public final class JGTIMainSplitPane extends JSplitPane implements
             this.mainWindowForm.getJGTIPanelRightOuter () );
         this.mainWindowForm.getJGTIMainSplitPane ().setDividerSize ( 3 );
       }
+
+      this.mainWindowForm.getJGTIMainSplitPane ().setDividerLocation (
+          PreferenceManager.getInstance ().getDividerLocationSecondView () );
     }
     else
     {
       if ( this.mainWindowForm.getJGTIMainSplitPane ().getRightComponent () != null )
       {
+        PreferenceManager.getInstance ().setDividerLocationSecondView (
+            this.mainWindowForm.getJGTIMainSplitPane ().getDividerLocation () );
+
         this.mainWindowForm.getJGTIMainSplitPane ().setLeftComponent (
             this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft () );
         this.mainWindowForm.getJGTIMainSplitPane ().setRightComponent ( null );

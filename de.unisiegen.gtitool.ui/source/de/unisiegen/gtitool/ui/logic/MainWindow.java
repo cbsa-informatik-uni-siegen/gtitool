@@ -446,6 +446,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // second view
     boolean secondViewUsed = PreferenceManager.getInstance ()
         .getSeconsViewUsed ();
+    this.gui.getJGTIMainSplitPane ().setDividerLocation (
+        PreferenceManager.getInstance ().getDividerLocationSecondView () );
     if ( this.gui.getJCheckBoxMenuItemSecondView ().isSelected () == secondViewUsed )
     {
       this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( secondViewUsed );
@@ -1076,6 +1078,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new RuntimeException ( "no selected editor panel" ); //$NON-NLS-1$
     }
+
     return handleClose ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel () );
   }
@@ -1107,8 +1110,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
 
-    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .removeSelectedEditorPanel ();
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ().removeEditorPanel (
+        panel );
 
     // check if all editor panels are closed
     handleTabbedPaneStateChanged ();
@@ -1118,17 +1121,41 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
-   * Handle the close all files event
+   * Handles the close all event.
    */
   public final void handleCloseAll ()
   {
-    for ( EditorPanel current : this.jGTIMainSplitPane
-        .getJGTIEditorPanelTabbedPane () )
+    // close all right editor panels
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+    for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+        .getComponentCount () - 1 ; i >= 0 ; i-- )
     {
-      // Check if the close was canceled
+      EditorPanel current = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( i );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+          .setSelectedEditorPanel ( current );
+
+      // check if the close was canceled
       if ( !handleClose ( current ) )
       {
-        break;
+        return;
+      }
+    }
+
+    // close all left editor panels
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+    for ( int i = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+        .getComponentCount () - 1 ; i >= 0 ; i-- )
+    {
+      EditorPanel current = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneLeft ().getEditorPanel ( i );
+      this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+          .setSelectedEditorPanel ( current );
+
+      // check if the close was canceled
+      if ( !handleClose ( current ) )
+      {
+        return;
       }
     }
   }
@@ -1142,10 +1169,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
-    boolean state = this.gui.getJCheckBoxMenuItemConsole ().getState ();
-    if ( PreferenceManager.getInstance ().getVisibleConsole () != state )
+    boolean selected = this.gui.getJCheckBoxMenuItemConsole ().isSelected ();
+    if ( PreferenceManager.getInstance ().getVisibleConsole () != selected )
     {
-      if ( state )
+      if ( selected )
       {
         addButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       }
@@ -1154,8 +1181,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.SELECTED_CONSOLE_TABLE );
       }
 
-      panel.setVisibleConsole ( state );
-      PreferenceManager.getInstance ().setVisibleConsole ( state );
+      panel.setVisibleConsole ( selected );
+      PreferenceManager.getInstance ().setVisibleConsole ( selected );
     }
   }
 
@@ -1492,7 +1519,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleEditMachine ();
     machinePanel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
-        .getState () );
+        .isSelected () );
 
     addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
     addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
@@ -2028,8 +2055,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         new RecentlyUsedFilesItem ( files ) );
 
     // second view
-    PreferenceManager.getInstance ().setSecondViewUsed (
-        this.gui.getJCheckBoxMenuItemSecondView ().isSelected () );
+    boolean selected = this.gui.getJCheckBoxMenuItemSecondView ().isSelected ();
+    PreferenceManager.getInstance ().setSecondViewUsed ( selected );
+    if ( selected )
+    {
+      PreferenceManager.getInstance ().setDividerLocationSecondView (
+          this.gui.getJGTIMainSplitPane ().getDividerLocation () );
+    }
 
     // system exit
     System.exit ( 0 );
@@ -2626,15 +2658,82 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
 
   /**
+   * Handles the second view move to left event.
+   */
+  public final void handleSecondViewMoveToLeft ()
+  {
+    EditorPanel editorPanel = this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+        .removeEditorPanel ( editorPanel );
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ().addEditorPanel (
+        editorPanel );
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+        .setSelectedEditorPanel ( editorPanel );
+  }
+
+
+  /**
+   * Handles the second view move to right event.
+   */
+  public final void handleSecondViewMoveToRight ()
+  {
+    if ( !this.gui.getJCheckBoxMenuItemSecondView ().isSelected () )
+    {
+      this.gui.getJCheckBoxMenuItemSecondView ().setSelected ( true );
+    }
+
+    EditorPanel editorPanel = this.jGTIMainSplitPane
+        .getJGTIEditorPanelTabbedPaneLeft ().getSelectedEditorPanel ();
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+        .removeEditorPanel ( editorPanel );
+    this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ().addEditorPanel (
+        editorPanel );
+    this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+        .setSelectedEditorPanel ( editorPanel );
+  }
+
+
+  /**
    * Handles second view state changes.
    */
   public final void handleSecondViewStateChanged ()
   {
-    boolean state = this.gui.getJCheckBoxMenuItemSecondView ().getState ();
+    boolean selected = this.gui.getJCheckBoxMenuItemSecondView ().isSelected ();
     logger.debug ( "handleSecondViewStateChanged", //$NON-NLS-1$
-        "handle second view state change to " + Messages.QUOTE + state //$NON-NLS-1$
+        "handle second view state change to " + Messages.QUOTE + selected //$NON-NLS-1$
             + Messages.QUOTE );
-    this.jGTIMainSplitPane.setSecondViewActive ( state );
+
+    if ( !selected )
+    {
+      EditorPanel selectedEditorPanel = this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneRight ().getSelectedEditorPanel ();
+
+      int count = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+          .getComponentCount ();
+      for ( int i = 0 ; i < count ; i++ )
+      {
+        EditorPanel editorPanel = this.jGTIMainSplitPane
+            .getJGTIEditorPanelTabbedPaneRight ().getEditorPanel ( 0 );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneRight ()
+            .removeEditorPanel ( editorPanel );
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+            .addEditorPanel ( editorPanel );
+
+      }
+
+      // set the selected editor panel
+      if ( this.jGTIMainSplitPane.getActiveEditor ().equals (
+          ActiveEditor.RIGHT_EDITOR ) )
+      {
+        this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPaneLeft ()
+            .setSelectedEditorPanel ( selectedEditorPanel );
+      }
+    }
+
+    this.jGTIMainSplitPane.setSecondViewActive ( selected );
   }
 
 
@@ -2668,11 +2767,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       TabPopupMenu popupMenu;
       if ( tabIndex == -1 )
       {
-        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_DEACTIVE );
+        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_DEACTIVE,
+            this.jGTIMainSplitPane.getActiveEditor () );
       }
       else
       {
-        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_ACTIVE );
+        popupMenu = new TabPopupMenu ( this, TabPopupMenuType.TAB_ACTIVE,
+            this.jGTIMainSplitPane.getActiveEditor () );
       }
       popupMenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );
@@ -2694,10 +2795,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // no panel
     if ( panel == null )
     {
+      // no open editor panel
+      if ( this.jGTIMainSplitPane.getEditorPanelCount () == 0 )
+      {
+        removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+      }
+
       removeButtonState ( ButtonState.ENABLED_SAVE_AS );
       removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
       removeButtonState ( ButtonState.ENABLED_CLOSE );
-      removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -2769,11 +2875,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
 
         machinePanel.setVisibleConsole ( this.gui
-            .getJCheckBoxMenuItemConsole ().getState ()
+            .getJCheckBoxMenuItemConsole ().isSelected ()
             && !machinePanel.isWordEnterMode () );
         machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
-            .getState () );
+            .isSelected () );
 
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
 
@@ -2861,11 +2971,15 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         }
 
         panel.setVisibleConsole ( this.gui.getJCheckBoxMenuItemConsole ()
-            .getState () );
+            .isSelected () );
 
         removeButtonState ( ButtonState.VISIBLE_MACHINE );
         addButtonState ( ButtonState.VISIBLE_GRAMMAR );
 
+        addButtonState ( ButtonState.ENABLED_SAVE_AS );
+        addButtonState ( ButtonState.ENABLED_SAVE_ALL );
+        addButtonState ( ButtonState.ENABLED_CLOSE );
+        addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -2927,7 +3041,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( panel instanceof MachinePanel )
     {
       MachinePanel machinePanel = ( MachinePanel ) panel;
-      boolean state = this.gui.getJCheckBoxMenuItemTable ().getState ();
+      boolean state = this.gui.getJCheckBoxMenuItemTable ().isSelected ();
       if ( PreferenceManager.getInstance ().getVisibleTable () != state )
       {
         if ( state )

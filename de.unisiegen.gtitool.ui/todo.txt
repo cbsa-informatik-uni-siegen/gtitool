@@ -12,6 +12,8 @@ BM		- Parallel Loop Routing
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 BM		- Keller von links nach rechts darstellen (dragon book)
 
+		- AboutDialog: Mehrere Probleme mit den Lizenzen in Bezug auf den Build
+
 
 *** FEATURE ***
 

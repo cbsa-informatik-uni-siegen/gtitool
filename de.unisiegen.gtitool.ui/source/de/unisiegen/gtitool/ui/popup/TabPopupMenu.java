@@ -85,15 +85,15 @@ public final class TabPopupMenu extends JPopupMenu
 
 
   /**
-   * The left editor item.
+   * The move to left editor item.
    */
-  private JMenuItem jMenuItemLeftEditor;
+  private JMenuItem jMenuItemMoveToLeftEditor;
 
 
   /**
-   * The right editor item.
+   * The move to right editor item.
    */
-  private JMenuItem jMenuItemRightEditor;
+  private JMenuItem jMenuItemMoveToRightEditor;
 
 
   /**
@@ -109,15 +109,24 @@ public final class TabPopupMenu extends JPopupMenu
 
 
   /**
+   * The {@link ActiveEditor}.
+   */
+  private ActiveEditor activeEditor;
+
+
+  /**
    * Allocates a new {@link TabPopupMenu}
    * 
    * @param mainWindow The {@link MainWindow}.
    * @param tabPopupMenuType The {@link TabPopupMenuType}.
+   * @param activeEditor The {@link ActiveEditor}.
    */
-  public TabPopupMenu ( MainWindow mainWindow, TabPopupMenuType tabPopupMenuType )
+  public TabPopupMenu ( MainWindow mainWindow,
+      TabPopupMenuType tabPopupMenuType, ActiveEditor activeEditor )
   {
     this.mainWindow = mainWindow;
     this.tabPopupMenuType = tabPopupMenuType;
+    this.activeEditor = activeEditor;
     populateMenues ();
   }
 
@@ -261,47 +270,51 @@ public final class TabPopupMenu extends JPopupMenu
     add ( this.jMenuItemSaveAs );
 
     add ( new JSeparator () );
-    
-    // LeftEditor
-    this.jMenuItemLeftEditor = new JMenuItem ( Messages
-        .getString ( "MainWindow.LeftEditor" ) ); //$NON-NLS-1$
-    this.jMenuItemLeftEditor.setIcon ( new ImageIcon ( getClass ().getResource (
-        "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
-    this.jMenuItemLeftEditor.setMnemonic ( Messages.getString (
-        "MainWindow.LeftEditorMnemonic" ) //$NON-NLS-1$
-        .charAt ( 0 ) );
-    this.jMenuItemLeftEditor.addActionListener ( new ActionListener ()
-    {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
-      {
-        TabPopupMenu.this.mainWindow.getGUI ().getJGTIMainSplitPane ()
-            .setActiveEditor ( ActiveEditor.LEFT_EDITOR );
-      }
-    } );
-    add ( this.jMenuItemLeftEditor );
-
-    // RightEditor
-    this.jMenuItemRightEditor = new JMenuItem ( Messages
-        .getString ( "MainWindow.RightEditor" ) ); //$NON-NLS-1$
-    this.jMenuItemRightEditor.setIcon ( new ImageIcon ( getClass ()
+    // MoveToLeftEditor
+    this.jMenuItemMoveToLeftEditor = new JMenuItem ( Messages
+        .getString ( "MainWindow.MoveToLeftEditor" ) ); //$NON-NLS-1$
+    this.jMenuItemMoveToLeftEditor.setIcon ( new ImageIcon ( getClass ()
         .getResource ( "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
-    this.jMenuItemRightEditor.setMnemonic ( Messages.getString (
-        "MainWindow.RightEditorMnemonic" ) //$NON-NLS-1$
+    this.jMenuItemMoveToLeftEditor.setMnemonic ( Messages.getString (
+        "MainWindow.MoveToLeftEditorMnemonic" ) //$NON-NLS-1$
         .charAt ( 0 ) );
-    this.jMenuItemRightEditor.addActionListener ( new ActionListener ()
+    this.jMenuItemMoveToLeftEditor.setEnabled ( !this.activeEditor
+        .equals ( ActiveEditor.LEFT_EDITOR )
+        && this.tabPopupMenuType.equals ( TabPopupMenuType.TAB_ACTIVE ) );
+    this.jMenuItemMoveToLeftEditor.addActionListener ( new ActionListener ()
     {
 
       @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed ( @SuppressWarnings ( "unused" )
       ActionEvent event )
       {
-        TabPopupMenu.this.mainWindow.getGUI ().getJGTIMainSplitPane ()
-            .setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+        TabPopupMenu.this.mainWindow.handleSecondViewMoveToLeft ();
       }
     } );
-    add ( this.jMenuItemRightEditor );
+    add ( this.jMenuItemMoveToLeftEditor );
+
+    // MoveToRightEditor
+    this.jMenuItemMoveToRightEditor = new JMenuItem ( Messages
+        .getString ( "MainWindow.MoveToRightEditor" ) ); //$NON-NLS-1$
+    this.jMenuItemMoveToRightEditor.setIcon ( new ImageIcon ( getClass ()
+        .getResource ( "/de/unisiegen/gtitool/ui/icon/empty16.gif" ) ) ); //$NON-NLS-1$
+    this.jMenuItemMoveToRightEditor.setMnemonic ( Messages.getString (
+        "MainWindow.MoveToRightEditorMnemonic" ) //$NON-NLS-1$
+        .charAt ( 0 ) );
+    this.jMenuItemMoveToRightEditor.setEnabled ( !this.activeEditor
+        .equals ( ActiveEditor.RIGHT_EDITOR )
+        && this.tabPopupMenuType.equals ( TabPopupMenuType.TAB_ACTIVE ) );
+    this.jMenuItemMoveToRightEditor.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        TabPopupMenu.this.mainWindow.handleSecondViewMoveToRight ();
+      }
+    } );
+    add ( this.jMenuItemMoveToRightEditor );
   }
 }

@@ -14,7 +14,7 @@ import de.unisiegen.gtitool.core.parser.style.PrettyString;
  * The table model for the convert machine outline.
  * 
  * @author Benjamin Mies
- * @version $Id: ConvertMachineTableModel.java 980 2008-06-11 23:38:13Z fehler $
+ * @version $Id$
  */
 public final class MinimizeMachineTableModel extends AbstractTableModel
 {

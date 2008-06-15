@@ -12,7 +12,7 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
  * The {@link MinimizeMachineTableColumnModel}.
  * 
  * @author Christian Fehler
- * @version $Id: ConvertMachineTableColumnModel.java 980 2008-06-11 23:38:13Z fehler $
+ * @version $Id$
  */
 public final class MinimizeMachineTableColumnModel extends
     DefaultTableColumnModel

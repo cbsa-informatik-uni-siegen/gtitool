@@ -26,7 +26,6 @@ CF		- Regular Expression Parser
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Namen der Zustände neu vergeben
 CF		- Popupmenü auf der Machine Tabelle
-CF		- Tabs umsortieren
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

@@ -41,7 +41,6 @@ public final class JGTIToolBarToggleButton extends JToggleButton
   {
     super ();
     setFocusPainted ( false );
-    setFocusable ( false );
     setBorderPainted ( false );
     setOpaque ( false );
   }

@@ -41,7 +41,6 @@ public final class JGTIToolBarButton extends JButton
   {
     super ();
     setFocusPainted ( false );
-    setFocusable ( false );
     setBorderPainted ( false );
     setOpaque ( false );
   }

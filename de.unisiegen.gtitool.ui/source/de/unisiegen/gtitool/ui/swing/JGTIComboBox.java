@@ -30,6 +30,5 @@ public final class JGTIComboBox extends JComboBox
     super ();
     setFont ( new Font ( "Dialog", Font.PLAIN, 12 ) ); //$NON-NLS-1$
     setModel ( new DefaultComboBoxModel () );
-    setFocusable ( false );
   }
 }

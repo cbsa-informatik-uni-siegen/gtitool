@@ -3,13 +3,27 @@ package de.unisiegen.gtitool.ui.swing;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.dnd.DragSource;
+import java.awt.Point;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
+import javax.swing.TransferHandler;
+
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITabbedPaneComponent;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITabbedPaneTransferHandler;
+import de.unisiegen.gtitool.ui.swing.dnd.JGTITabbedPaneTransferable;
 
 
 /**
@@ -18,99 +32,8 @@ import javax.swing.event.MouseInputListener;
  * @author Christian Fehler
  * @version $Id$
  */
-public class JGTITabbedPane extends JTabbedPane
+public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 {
-
-  /**
-   * The {@link TabMouseHandler}.
-   * 
-   * @author Christian Fehler
-   */
-  protected final class TabMouseHandler extends MouseInputAdapter
-  {
-
-    /**
-     * The source tab index.
-     */
-    private int sourceTabIndex = -1;
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see MouseInputAdapter#mouseDragged(MouseEvent)
-     */
-    @SuppressWarnings ( "synthetic-access" )
-    @Override
-    public final void mouseDragged ( MouseEvent event )
-    {
-      if ( this.sourceTabIndex != -1 )
-      {
-        int targetTabIndex = getTabIndex ( event.getX (), event.getY () );
-        if ( ( targetTabIndex == -1 )
-            || ( this.sourceTabIndex == targetTabIndex ) )
-        {
-          setCursor ( DragSource.DefaultMoveNoDrop );
-          clearHighlightTab ();
-        }
-        else
-        {
-          setCursor ( DragSource.DefaultMoveDrop );
-          highlightTab ( targetTabIndex );
-        }
-      }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see MouseInputAdapter#mousePressed(MouseEvent)
-     */
-    @SuppressWarnings ( "synthetic-access" )
-    @Override
-    public final void mousePressed ( MouseEvent event )
-    {
-      if ( !event.isPopupTrigger ()
-          && ( event.getButton () == MouseEvent.BUTTON1 ) )
-      {
-        int tabIndex = getTabIndex ( event.getX (), event.getY () );
-        if ( tabIndex != -1 )
-        {
-          this.sourceTabIndex = tabIndex;
-        }
-      }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @see MouseInputAdapter#mouseReleased(MouseEvent)
-     */
-    @SuppressWarnings ( "synthetic-access" )
-    @Override
-    public final void mouseReleased ( MouseEvent event )
-    {
-      if ( !event.isPopupTrigger ()
-          && ( event.getButton () == MouseEvent.BUTTON1 ) )
-      {
-        if ( this.sourceTabIndex != -1 )
-        {
-          int tabIndex = getTabIndex ( event.getX (), event.getY () );
-          if ( ( tabIndex != -1 ) && ( tabIndex != this.sourceTabIndex ) )
-          {
-            moveTab ( this.sourceTabIndex, tabIndex );
-            setSelectedIndex ( tabIndex );
-          }
-          this.sourceTabIndex = -1;
-          setCursor ( Cursor.getDefaultCursor () );
-          clearHighlightTab ();
-        }
-      }
-    }
-  }
-
 
   /**
    * The highlight {@link Color}.
@@ -125,9 +48,27 @@ public class JGTITabbedPane extends JTabbedPane
 
 
   /**
-   * The {@link MouseInputListener}.
+   * The source tab index.
    */
-  private MouseInputListener mouseInputListener;
+  private int sourceTabIndex = -1;
+
+
+  /**
+   * The drag enabled value.
+   */
+  private boolean dragEnabled = false;
+
+
+  /**
+   * The drop point.
+   */
+  private Point dropPoint = null;
+
+
+  /**
+   * The allowed drag and drop sources.
+   */
+  private ArrayList < JComponent > allowedDndSources;
 
 
   /**
@@ -160,9 +101,245 @@ public class JGTITabbedPane extends JTabbedPane
   {
     super ( tabPlacement, tabLayoutPolicy );
 
-    this.mouseInputListener = new TabMouseHandler ();
-    addMouseListener ( this.mouseInputListener );
-    addMouseMotionListener ( this.mouseInputListener );
+    this.allowedDndSources = new ArrayList < JComponent > ();
+
+    setTransferHandler ( new JGTITabbedPaneTransferHandler (
+        TransferHandler.MOVE )
+    {
+
+      /**
+       * The serial version uid.
+       */
+      private static final long serialVersionUID = -7483915272887199973L;
+
+
+      @Override
+      protected boolean importComponent ( @SuppressWarnings ( "unused" )
+      JGTITabbedPane tabbedPane, @SuppressWarnings ( "unused" )
+      Component component )
+      {
+        // TODOCF implement the second view drag and drop
+        return false;
+      }
+    } );
+
+    // swing bugfix
+    addMouseMotionListener ( new MouseMotionAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseDragged ( MouseEvent event )
+      {
+        if ( getDragEnabled ()
+            && ( ( event.getModifiers () & InputEvent.BUTTON1_MASK ) != 0 ) )
+        {
+          TransferHandler transferHandler = getTransferHandler ();
+          transferHandler.exportAsDrag ( JGTITabbedPane.this, event,
+              transferHandler.getSourceActions ( JGTITabbedPane.this ) );
+          event.consume ();
+
+          int tabIndex = getTabIndex ( event.getX (), event.getY () );
+          if ( tabIndex != -1 )
+          {
+            JGTITabbedPane.this.sourceTabIndex = tabIndex;
+          }
+        }
+      }
+    } );
+    setDropTarget ( new DropTarget ( this, this ) );
+  }
+
+
+  /**
+   * Adds the given {@link JComponent} to the allowed drag and drop sources.
+   * 
+   * @param jComponent The {@link JComponent} to add.
+   */
+  public final void addAllowedDndSource ( JComponent jComponent )
+  {
+    if ( !this.allowedDndSources.contains ( jComponent ) )
+    {
+      this.allowedDndSources.add ( jComponent );
+    }
+  }
+
+
+  /**
+   * Clears the allowed drag and drop sources.
+   */
+  public final void clearAllowedDndSources ()
+  {
+    this.allowedDndSources.clear ();
+  }
+
+
+  /**
+   * Clears the highlight of the tabs.
+   */
+  private final void clearHighlightTab ()
+  {
+    for ( int i = 0 ; i < getComponentCount () ; i++ )
+    {
+      setBackgroundAt ( i, null );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragEnter(DropTargetDragEvent)
+   */
+  public final void dragEnter ( DropTargetDragEvent event )
+  {
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragExit(DropTargetEvent)
+   */
+  public final void dragExit ( @SuppressWarnings ( "unused" )
+  DropTargetEvent event )
+  {
+    clearHighlightTab ();
+
+    this.dropPoint = null;
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dragOver(DropTargetDragEvent)
+   */
+  public final void dragOver ( DropTargetDragEvent event )
+  {
+    try
+    {
+      JGTITabbedPaneComponent rows = ( JGTITabbedPaneComponent ) event
+          .getTransferable ().getTransferData (
+              JGTITabbedPaneTransferable.dataFlavor );
+      if ( !this.allowedDndSources.contains ( rows.getSource () ) )
+      {
+        event.rejectDrag ();
+        this.dropPoint = null;
+        repaint ();
+        return;
+      }
+    }
+    catch ( UnsupportedFlavorException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+    catch ( IOException exc )
+    {
+      event.rejectDrag ();
+      this.dropPoint = null;
+      repaint ();
+      return;
+    }
+
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+
+    if ( JGTITabbedPane.this.sourceTabIndex != -1 )
+    {
+      int targetTabIndex = getTabIndex ( this.dropPoint.x, this.dropPoint.y );
+      if ( ( targetTabIndex == -1 )
+          || ( JGTITabbedPane.this.sourceTabIndex == targetTabIndex ) )
+      {
+        clearHighlightTab ();
+      }
+      else
+      {
+        highlightTab ( targetTabIndex );
+      }
+    }
+
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#drop(DropTargetDropEvent)
+   */
+  public final void drop ( DropTargetDropEvent event )
+  {
+    event.acceptDrop ( event.getDropAction () );
+    try
+    {
+      Transferable transferable = event.getTransferable ();
+      event.dropComplete ( getTransferHandler ().importData ( this,
+          transferable ) );
+
+      if ( JGTITabbedPane.this.sourceTabIndex != -1 )
+      {
+        int tabIndex = getTabIndex ( event.getLocation ().x, event
+            .getLocation ().y );
+        if ( ( tabIndex != -1 )
+            && ( tabIndex != JGTITabbedPane.this.sourceTabIndex ) )
+        {
+          moveTab ( JGTITabbedPane.this.sourceTabIndex, tabIndex );
+          setSelectedIndex ( tabIndex );
+        }
+        JGTITabbedPane.this.sourceTabIndex = -1;
+        clearHighlightTab ();
+      }
+    }
+    catch ( RuntimeException exc )
+    {
+      event.dropComplete ( false );
+    }
+    this.dropPoint = null;
+    repaint ();
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see DropTargetListener#dropActionChanged(DropTargetDragEvent)
+   */
+  public final void dropActionChanged ( DropTargetDragEvent event )
+  {
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
+    repaint ();
+  }
+
+
+  /**
+   * Returns the drag enabled value.
+   * 
+   * @return The drag enabled value.
+   */
+  public final boolean getDragEnabled ()
+  {
+    return this.dragEnabled;
+  }
+
+
+  /**
+   * Returns the source tab index.
+   * 
+   * @return The source tab index.
+   * @see #sourceTabIndex
+   */
+  public final int getSourceTabIndex ()
+  {
+    return this.sourceTabIndex;
   }
 
 
@@ -176,18 +353,6 @@ public class JGTITabbedPane extends JTabbedPane
   private final int getTabIndex ( int x, int y )
   {
     return getUI ().tabForCoordinate ( this, x, y );
-  }
-
-
-  /**
-   * Clears the highlight of the tabs.
-   */
-  private final void clearHighlightTab ()
-  {
-    for ( int i = 0 ; i < getComponentCount () ; i++ )
-    {
-      setBackgroundAt ( i, null );
-    }
   }
 
 
@@ -223,5 +388,28 @@ public class JGTITabbedPane extends JTabbedPane
     Component component = getComponentAt ( oldIndex );
     remove ( component );
     add ( component, newIndex );
+  }
+
+
+  /**
+   * Removes the given {@link JComponent} from the allowed drag and drop
+   * sources.
+   * 
+   * @param jComponent The {@link JComponent} to remove.
+   */
+  public final void removeAllowedDndSource ( JComponent jComponent )
+  {
+    this.allowedDndSources.remove ( jComponent );
+  }
+
+
+  /**
+   * Sets the drag enabled value.
+   * 
+   * @param dragEnabled The value.
+   */
+  public final void setDragEnabled ( boolean dragEnabled )
+  {
+    this.dragEnabled = dragEnabled;
   }
 }

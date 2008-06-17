@@ -179,7 +179,7 @@ public final class JGTITable extends JTable implements DropTargetListener
     {
       JGTITableModelRows rows = ( JGTITableModelRows ) event.getTransferable ()
           .getTransferData (
-              JGTITableModelRowsTransferable.tableModelRowsFlavor );
+              JGTITableModelRowsTransferable.dataFlavor );
       if ( !this.allowedDndSources.contains ( rows.getSource () ) )
       {
         event.rejectDrag ();

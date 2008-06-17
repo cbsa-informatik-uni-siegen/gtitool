@@ -57,7 +57,7 @@ public abstract class JGTITableTransferHandler extends TransferHandler
       for ( DataFlavor transferFlavor : dataFlavor )
       {
         if ( transferFlavor
-            .equals ( JGTITableModelRowsTransferable.tableModelRowsFlavor ) )
+            .equals ( JGTITableModelRowsTransferable.dataFlavor ) )
         {
           return true;
         }
@@ -112,7 +112,7 @@ public abstract class JGTITableTransferHandler extends TransferHandler
     try
     {
       JGTITableModelRows rows = ( JGTITableModelRows ) transferable
-          .getTransferData ( JGTITableModelRowsTransferable.tableModelRowsFlavor );
+          .getTransferData ( JGTITableModelRowsTransferable.dataFlavor );
 
       int sourceIndex = rows.getRowIndices () [ 0 ];
       int targetIndex = table.rowAtPoint ( table.getDropPoint () );

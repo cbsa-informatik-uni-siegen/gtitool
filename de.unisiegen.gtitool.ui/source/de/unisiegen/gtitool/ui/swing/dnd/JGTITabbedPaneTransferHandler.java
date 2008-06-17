@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.swing.dnd;
 
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -9,21 +10,21 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import de.unisiegen.gtitool.ui.swing.JGTIList;
+import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
 
 
 /**
- * Drag and drop transfer handler class for {@link JGTIList}s.
+ * Drag and drop transfer handler class for {@link JGTITabbedPaneComponent}s.
  * 
  * @author Christian Fehler
  * @version $Id$
  */
-public abstract class JGTIListTransferHandler extends TransferHandler
+public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
 {
 
   /**
    * The source actions supported for dragging using this
-   * {@link JGTIListTransferHandler}.
+   * {@link JGTITabbedPaneTransferHandler}.
    * 
    * @see #getSourceActions(JComponent)
    */
@@ -31,12 +32,12 @@ public abstract class JGTIListTransferHandler extends TransferHandler
 
 
   /**
-   * Allocates a new {@link JGTIListTransferHandler}.
+   * Allocates a new {@link JGTITabbedPaneTransferHandler}.
    * 
    * @param sourceActions The actions to support for dragging using this
-   *          {@link JGTIListTransferHandler}.
+   *          {@link JGTITabbedPaneTransferHandler}.
    */
-  public JGTIListTransferHandler ( int sourceActions )
+  public JGTITabbedPaneTransferHandler ( int sourceActions )
   {
     super ();
     this.sourceActions = sourceActions;
@@ -52,12 +53,11 @@ public abstract class JGTIListTransferHandler extends TransferHandler
   public final boolean canImport ( JComponent jComponent,
       DataFlavor [] dataFlavor )
   {
-    if ( jComponent instanceof JGTIList )
+    if ( jComponent instanceof JGTITabbedPane )
     {
       for ( DataFlavor transferFlavor : dataFlavor )
       {
-        if ( transferFlavor
-            .equals ( JGTIListModelRowsTransferable.dataFlavor ) )
+        if ( transferFlavor.equals ( JGTITabbedPaneTransferable.dataFlavor ) )
         {
           return true;
         }
@@ -75,12 +75,12 @@ public abstract class JGTIListTransferHandler extends TransferHandler
   @Override
   protected final Transferable createTransferable ( JComponent jComponent )
   {
-    JGTIList list = ( JGTIList ) jComponent;
-    int [] selectedRows = list.getSelectedIndices ();
-    if ( selectedRows.length > 0 )
+    JGTITabbedPane jGTITabbedPane = ( JGTITabbedPane ) jComponent;
+    Component component = jGTITabbedPane.getSelectedComponent ();
+    if ( component != null )
     {
-      return new JGTIListModelRowsTransferable ( new JGTIListModelRows ( list,
-          selectedRows ) );
+      return new JGTITabbedPaneTransferable ( new JGTITabbedPaneComponent (
+          jGTITabbedPane, component ) );
     }
     return null;
   }
@@ -108,24 +108,13 @@ public abstract class JGTIListTransferHandler extends TransferHandler
   public final boolean importData ( JComponent jComponent,
       Transferable transferable )
   {
-    JGTIList list = ( JGTIList ) jComponent;
+    JGTITabbedPane list = ( JGTITabbedPane ) jComponent;
     try
     {
-      JGTIListModelRows rows = ( JGTIListModelRows ) transferable
-          .getTransferData ( JGTIListModelRowsTransferable.dataFlavor );
+      JGTITabbedPaneComponent component = ( JGTITabbedPaneComponent ) transferable
+          .getTransferData ( JGTITabbedPaneTransferable.dataFlavor );
 
-      int sourceIndex = rows.getRowIndices () [ 0 ];
-      int targetIndex = list.locationToIndex ( list.getDropPoint () );
-      if ( targetIndex == -1 )
-      {
-        targetIndex = list.getModel ().getSize () - 1;
-      }
-      else if ( sourceIndex < targetIndex )
-      {
-        targetIndex-- ;
-      }
-
-      if ( importListModelRows ( list, rows, targetIndex ) )
+      if ( importComponent ( list, component.getComponent () ) )
       {
         return true;
       }
@@ -143,14 +132,12 @@ public abstract class JGTIListTransferHandler extends TransferHandler
 
 
   /**
-   * Imports the rows from the drag source into the specified list.
+   * Imports the {@link Component}.
    * 
-   * @param list The {@link JGTIList} into which to import the rows.
-   * @param rows The rows to import from the drag source.
-   * @param targetIndex The target index.
+   * @param jGTITabbedPane The {@link JGTITabbedPane}.
+   * @param component The {@link Component}
    * @return True if the import was successfull.
-   * @see #importData(JComponent, Transferable)
    */
-  protected abstract boolean importListModelRows ( JGTIList list,
-      JGTIListModelRows rows, int targetIndex );
+  protected abstract boolean importComponent ( JGTITabbedPane jGTITabbedPane,
+      Component component );
 }

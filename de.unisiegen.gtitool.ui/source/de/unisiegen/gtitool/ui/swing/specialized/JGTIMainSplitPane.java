@@ -110,7 +110,6 @@ public final class JGTIMainSplitPane extends JSplitPane implements
     setDividerSize ( 3 );
     setContinuousLayout ( false );
     setBorder ( null );
-
   }
 
 
@@ -286,6 +285,25 @@ public final class JGTIMainSplitPane extends JSplitPane implements
   {
     this.mainWindowForm = mainWindowForm;
     this.mainWindowForm.getJGTIPanelLeftInner ().setBorder ( activeBorder );
+
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft ().setDragEnabled (
+        true );
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ().setDragEnabled (
+        true );
+
+    // add allowed dnd sources
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft ()
+        .addAllowedDndSource (
+            this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft () );
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft ()
+        .addAllowedDndSource (
+            this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight () );
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ()
+        .addAllowedDndSource (
+            this.mainWindowForm.getJGTIEditorPanelTabbedPaneLeft () );
+    this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight ()
+        .addAllowedDndSource (
+            this.mainWindowForm.getJGTIEditorPanelTabbedPaneRight () );
   }
 
 

@@ -113,6 +113,6 @@ public final class JGTIListModelRows
   @Override
   public final int hashCode ()
   {
-    return this.source.hashCode () + +Arrays.hashCode ( this.rowIndices );
+    return this.source.hashCode () + Arrays.hashCode ( this.rowIndices );
   }
 }

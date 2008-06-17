@@ -6,22 +6,19 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import javax.swing.ListModel;
-
 
 /**
- * Transferable for {@link JGTIListModelRows}.
+ * Transferable for {@link JGTITabbedPaneComponent}.
  * 
  * @author Christian Fehler
  * @version $Id: JGTIListModelRowsTransferable.java 728 2008-04-04 12:28:48Z
  *          fehler $
  */
-public final class JGTIListModelRowsTransferable implements Transferable
+public final class JGTITabbedPaneTransferable implements Transferable
 {
 
   /**
-   * The {@link DataFlavor} used to identify data transfers of rows from a
-   * {@link ListModel}.
+   * The {@link DataFlavor}.
    */
   public static final DataFlavor dataFlavor;
 
@@ -29,9 +26,9 @@ public final class JGTIListModelRowsTransferable implements Transferable
   {
     try
     {
-      dataFlavor = new DataFlavor (
-          DataFlavor.javaJVMLocalObjectMimeType + ";class=" //$NON-NLS-1$
-              + JGTIListModelRows.class.getCanonicalName () );
+      dataFlavor = new DataFlavor ( DataFlavor.javaJVMLocalObjectMimeType
+          + ";class=" //$NON-NLS-1$
+          + JGTITabbedPaneComponent.class.getCanonicalName () );
     }
     catch ( ClassNotFoundException e )
     {
@@ -41,38 +38,39 @@ public final class JGTIListModelRowsTransferable implements Transferable
 
 
   /**
-   * The {@link JGTIListModelRows}.
+   * The {@link JGTITabbedPaneComponent}.
    * 
-   * @see #getRows()
+   * @see #getJGTITabbedPaneComponent()
    */
-  private final JGTIListModelRows listModelRows;
+  private final JGTITabbedPaneComponent jGTITabbedPaneComponent;
 
 
   /**
-   * Allocates a new {@link JGTIListModelRowsTransferable} for the specified
-   * rows.
+   * Allocates a new {@link JGTITabbedPaneTransferable} for the specified rows.
    * 
-   * @param listModelRows The {@link JGTIListModelRows} to transfer.
+   * @param jGTITabbedPaneComponent The {@link JGTITabbedPaneComponent} to
+   *          transfer.
    * @throws NullPointerException if <code>rows</code> is <code>null</code>.
    */
-  public JGTIListModelRowsTransferable ( JGTIListModelRows listModelRows )
+  public JGTITabbedPaneTransferable (
+      JGTITabbedPaneComponent jGTITabbedPaneComponent )
   {
-    if ( listModelRows == null )
+    if ( jGTITabbedPaneComponent == null )
     {
-      throw new NullPointerException ( "rows can not be null" ); //$NON-NLS-1$
+      throw new NullPointerException ( "tabbed pane component can not be null" ); //$NON-NLS-1$
     }
-    this.listModelRows = listModelRows;
+    this.jGTITabbedPaneComponent = jGTITabbedPaneComponent;
   }
 
 
   /**
-   * Returns the {@link JGTIListModelRows}.
+   * Returns the {@link JGTITabbedPaneComponent}.
    * 
-   * @return The {@link JGTIListModelRows}.
+   * @return The {@link JGTITabbedPaneComponent}.
    */
-  public final JGTIListModelRows getRows ()
+  public final JGTITabbedPaneComponent getJGTITabbedPaneComponent ()
   {
-    return this.listModelRows;
+    return this.jGTITabbedPaneComponent;
   }
 
 
@@ -87,7 +85,7 @@ public final class JGTIListModelRowsTransferable implements Transferable
   {
     if ( isDataFlavorSupported ( flavor ) )
     {
-      return this.listModelRows;
+      return this.jGTITabbedPaneComponent;
     }
     throw new UnsupportedFlavorException ( flavor );
   }

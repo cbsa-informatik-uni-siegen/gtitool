@@ -175,7 +175,7 @@ public final class JGTIList extends JList implements DropTargetListener
     try
     {
       JGTIListModelRows rows = ( JGTIListModelRows ) event.getTransferable ()
-          .getTransferData ( JGTIListModelRowsTransferable.listModelRowsFlavor );
+          .getTransferData ( JGTIListModelRowsTransferable.dataFlavor );
       if ( !this.allowedDndSources.contains ( rows.getSource () ) )
       {
         event.rejectDrag ();

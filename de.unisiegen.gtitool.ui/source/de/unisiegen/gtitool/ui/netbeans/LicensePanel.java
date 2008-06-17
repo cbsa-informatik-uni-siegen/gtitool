@@ -7,7 +7,7 @@ import javax.swing.JPanel;
  * 
  * @author Benjamin Mies
  * @author Christian Fehler
- * @version $Id: AboutDialogForm.java 1002 2008-06-15 15:48:22Z mies $
+ * @version $Id$
  */
 @SuppressWarnings({ "all" })
 public class LicensePanel extends JPanel

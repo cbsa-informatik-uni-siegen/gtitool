@@ -23,13 +23,13 @@ public final class JGTITableModelRowsTransferable implements Transferable
    * The {@link DataFlavor} used to identify data transfers of rows from a
    * {@link TableModel}.
    */
-  public static final DataFlavor tableModelRowsFlavor;
+  public static final DataFlavor dataFlavor;
 
   static
   {
     try
     {
-      tableModelRowsFlavor = new DataFlavor (
+      dataFlavor = new DataFlavor (
           DataFlavor.javaJVMLocalObjectMimeType + ";class=" //$NON-NLS-1$
               + JGTITableModelRows.class.getCanonicalName () );
     }
@@ -101,7 +101,7 @@ public final class JGTITableModelRowsTransferable implements Transferable
   public final DataFlavor [] getTransferDataFlavors ()
   {
     return new DataFlavor []
-    { tableModelRowsFlavor };
+    { dataFlavor };
   }
 
 
@@ -110,11 +110,11 @@ public final class JGTITableModelRowsTransferable implements Transferable
    * 
    * @see Transferable#isDataFlavorSupported(DataFlavor)
    */
-  public final boolean isDataFlavorSupported ( DataFlavor dataFlavor )
+  public final boolean isDataFlavorSupported ( DataFlavor checkDataFlavor )
   {
     for ( DataFlavor supportedFlavor : getTransferDataFlavors () )
     {
-      if ( supportedFlavor.equals ( dataFlavor ) )
+      if ( supportedFlavor.equals ( checkDataFlavor ) )
       {
         return true;
       }

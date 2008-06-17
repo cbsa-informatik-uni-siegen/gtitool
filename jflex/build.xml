@@ -21,7 +21,6 @@
 	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="jflexfile" value="gtitool.jflex-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
 	<taskdef classname="JFlex.anttask.JFlexTask" name="jflex.jflex" classpath="${libdir}/jflex.jar" />
@@ -70,8 +69,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${jflexfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

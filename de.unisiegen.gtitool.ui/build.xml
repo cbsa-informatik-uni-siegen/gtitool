@@ -33,7 +33,6 @@
 	<property name="tinylaffile" value="gtitool.tinylaf-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 	<property name="distdir" value="${basedir}/dist" />
 	<property name="classesdir" value="${distdir}/classes" />
 	<property name="docdir" value="${basedir}/doc" />
@@ -51,7 +50,6 @@
 			<fileset dir="${jgraph.distdir}" includes="*.jar" />
 			<fileset dir="${tinylaf.distdir}" includes="*.jar" />
 			<fileset dir="${distdir}" includes="*.jar" />
-			<fileset file="${licensefile}" />
 		</copy>
 		<!-- move files -->
 		<move todir="${distdir}">
@@ -113,8 +111,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${uifile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

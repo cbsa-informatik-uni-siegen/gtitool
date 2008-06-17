@@ -21,7 +21,6 @@
 	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- task -->
 	<taskdef name="javacup.cup" classname="java_cup.anttask.CUPTask" classpath="${libdir}/java-cup.jar" />
@@ -77,8 +76,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${javacupfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

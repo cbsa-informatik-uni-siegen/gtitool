@@ -24,7 +24,6 @@
 	<property name="startfile" value="gtitool.start-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="uifile" value="gtitool.ui-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 	<property name="keystorefile" value="${buildfilesdir}/keystore" />
 	<property name="storepass" value="ao93iw2l" />
 
@@ -111,8 +110,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${startfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

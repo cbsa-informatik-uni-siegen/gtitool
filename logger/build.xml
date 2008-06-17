@@ -18,7 +18,6 @@
 	<property name="core.docdir" value="${core.basedir}/doc" />
 	<property name="gtitool.version" value="${gtitool.version.major}.${gtitool.version.minor}.${gtitool.version.micro}.${gtitool.version.bugfix}" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- dist -->
 	<target name="dist" depends="dist-preclean,dist-compile,dist-jar,dist-clean" description="Clean up and produce all distributions">
@@ -50,8 +49,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${loggerfile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

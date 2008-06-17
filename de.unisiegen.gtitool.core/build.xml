@@ -28,7 +28,6 @@
 	<property name="javacupfile" value="gtitool.javacup-${gtitool.version}.jar" />
 	<property name="corefile" value="gtitool.core-${gtitool.version}.jar" />
 	<property name="loggerfile" value="gtitool.logger-${gtitool.version}.jar" />
-	<property name="licensefile" value="${buildfilesdir}/license.txt" />
 
 	<!-- declare -->
 	<target name="declare">
@@ -89,8 +88,6 @@
 		</manifest>
 		<!-- make dir meta-inf -->
 		<mkdir dir="${classesdir}/META-INF" />
-		<!-- copy license -->
-		<copy todir="${classesdir}/META-INF" file="${licensefile}" />
 		<!-- jar file -->
 		<jar jarfile="${distdir}/${corefile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />

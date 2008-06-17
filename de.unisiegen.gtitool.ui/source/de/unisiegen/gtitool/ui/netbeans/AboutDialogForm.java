@@ -73,8 +73,8 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         jGTILabelDeveloper = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper0 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTILabelDeveloper1 = new de.unisiegen.gtitool.ui.swing.JGTILabel();
-        jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTITabbedPaneLicenses = new de.unisiegen.gtitool.ui.swing.JGTITabbedPane();
+        jGTIButtonClose = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -203,10 +203,25 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 5, 0);
         jGTIPanelMain.add(jGTIPanelSouth, gridBagConstraints);
+
+        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.General"), jGTIPanelMain); // NOI18N
+
+        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.Licenses"), jGTITabbedPaneLicenses); // NOI18N
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
+        getContentPane().add(jGTITabbedPaneMain, gridBagConstraints);
+        jGTITabbedPaneMain.getAccessibleContext().setAccessibleName("");
 
         jGTIButtonClose.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("AboutDialog.CloseMnemonic").charAt(0));
         jGTIButtonClose.setText(bundle.getString("AboutDialog.Close")); // NOI18N
@@ -218,24 +233,11 @@ public class AboutDialogForm extends JDialog implements GUIClass <AboutDialog>
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 16, 16, 16);
-        jGTIPanelMain.add(jGTIButtonClose, gridBagConstraints);
+        getContentPane().add(jGTIButtonClose, gridBagConstraints);
 
-        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.General"), jGTIPanelMain); // NOI18N
-
-        jGTITabbedPaneMain.addTab(bundle.getString("AboutDialog.Licenses"), jGTITabbedPaneLicenses); // NOI18N
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jGTITabbedPaneMain, gridBagConstraints);
-        jGTITabbedPaneMain.getAccessibleContext().setAccessibleName("");
-
-        setSize(new java.awt.Dimension(448, 280));
+        setSize(new java.awt.Dimension(560, 350));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jGTILabelWebpageEntryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTILabelWebpageEntryMouseClicked

@@ -119,6 +119,7 @@
 		<jar jarfile="${distdir}/${uifile}" manifest="${distdir}/MANIFEST.MF">
 			<fileset dir="${classesdir}" />
 			<fileset dir="${sourcedir}">
+				<include name="**/*.txt" />
 				<include name="**/*.gif" />
 				<include name="**/*.png" />
 				<include name="**/*.properties" />

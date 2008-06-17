@@ -1,9 +1,7 @@
-License
-
 The source code of the TinyLaF look and feel is released under the LGPL (GNU Lesser General Public License), 
 which you can view on http://www.gnu.org/copyleft/lesser.html.
 
--------------------------------------------------------------------------------------------------
+----------------------------------------
 
 GNU LESSER GENERAL PUBLIC LICENSE
 Version 2.1, February 1999

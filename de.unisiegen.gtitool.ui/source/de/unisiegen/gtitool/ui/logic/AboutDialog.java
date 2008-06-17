@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.ui.logic;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -65,58 +64,15 @@ public final class AboutDialog implements LogicClass < AboutDialogForm >
 
 
   /**
-   * Create the license tabs.
+   * Creates the license tabs.
    */
-  private void createLicenseTabs ()
+  private final void createLicenseTabs ()
   {
-    File file = new File ( "source/licenses" ); //$NON-NLS-1$
-
-    if ( file.list ().length == 0 )
-    {
-      this.gui.jGTITabbedPaneMain.remove ( 1 );
-      return;
-    }
-    for ( String current : file.list () )
-    {
-      String license = ""; //$NON-NLS-1$
-      try
-      {
-        if (!current.endsWith ( ".txt" )){ //$NON-NLS-1$
-          continue;
-        }
-        // Read the license from txt file
-        BufferedReader reader = new BufferedReader ( new InputStreamReader (
-            getClass ().getResourceAsStream ( "/licenses/" + current ), "UTF8" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        String input = ""; //$NON-NLS-1$
-
-        while ( ( input = reader.readLine () ) != null )
-        {
-          license += input + "\n"; //$NON-NLS-1$
-        }
-        
-        LicensePanel panel = new LicensePanel();
-        
-        panel.jGTITextAreaLicense.setText ( license );
-        
-        // Goto the begin of the text area
-        panel.jGTITextAreaLicense.setEditable ( true );
-        panel.jGTITextAreaLicense.setCaretPosition ( 0 );
-        panel.jGTITextAreaLicense.setEditable ( false );
-        
-        // Get the tab name from the file
-        String name = current;
-        name = name.replace ( ".txt", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-        
-        // Add a new tab for the read license
-        this.gui.jGTITabbedPaneLicenses.addTab ( name, panel );
-      }
-      catch ( IOException e )
-      {
-        e.printStackTrace ();
-      }
-      
-    }
+    loadLicense ( "GTI Tool", "GTITool.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
+    loadLicense ( "JFlex", "JFlex.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
+    loadLicense ( "JavaCUP", "JavaCUP.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
+    loadLicense ( "JGraph", "JGraph.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
+    loadLicense ( "TinyLaF", "TinyLaF.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
 
@@ -148,6 +104,48 @@ public final class AboutDialog implements LogicClass < AboutDialogForm >
   {
     logger.debug ( "handleWebpageEntry", "handle web page entry" ); //$NON-NLS-1$ //$NON-NLS-2$
     Clipboard.getInstance ().copy ( this.gui.jGTILabelWebpageEntry.getText () );
+  }
+
+
+  /**
+   * Loads the license.
+   * 
+   * @param title The title.
+   * @param fileName The file name.
+   */
+  private final void loadLicense ( String title, String fileName )
+  {
+    String lineBreak = System.getProperty ( "line.separator" ); //$NON-NLS-1$
+    StringBuilder license = new StringBuilder ();
+    try
+    {
+      BufferedReader reader = new BufferedReader ( new InputStreamReader (
+          getClass ().getResourceAsStream (
+              "/de/unisiegen/gtitool/ui/licenses/" + fileName ), "UTF8" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+      String input;
+      boolean first = true;
+      while ( ( input = reader.readLine () ) != null )
+      {
+        if ( !first )
+        {
+          license.append ( lineBreak );
+        }
+        first = false;
+        license.append ( input );
+      }
+
+      LicensePanel panel = new LicensePanel ();
+      panel.jGTITextAreaLicense.setText ( license.toString () );
+      panel.jGTITextAreaLicense.setCaretPosition ( 0 );
+      this.gui.jGTITabbedPaneLicenses.addTab ( title, panel );
+    }
+    catch ( IOException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
   }
 
 

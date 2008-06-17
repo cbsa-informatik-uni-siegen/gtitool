@@ -48,12 +48,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
 
   /**
-   * The source tab index.
-   */
-  private int sourceTabIndex = -1;
-
-
-  /**
    * The drag enabled value.
    */
   private boolean dragEnabled = false;
@@ -113,12 +107,34 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       private static final long serialVersionUID = -7483915272887199973L;
 
 
+      @SuppressWarnings ( "synthetic-access" )
       @Override
-      protected boolean importComponent ( @SuppressWarnings ( "unused" )
-      JGTITabbedPane tabbedPane, @SuppressWarnings ( "unused" )
-      Component component )
+      protected boolean importComponent ( JGTITabbedPane source,
+          @SuppressWarnings ( "unused" )
+          JGTITabbedPane target, Component component )
       {
-        // TODOCF implement the second view drag and drop
+        int sourceIndex = source.getSelectedIndex ();
+        String title = source.getTitleAt ( sourceIndex );
+
+        int targetIndex = getTabIndex ( JGTITabbedPane.this.dropPoint.x,
+            JGTITabbedPane.this.dropPoint.y );
+
+        if ( targetIndex == -1 )
+        {
+          source.remove ( component );
+          add ( title, component );
+        }
+        else
+        {
+          source.remove ( component );
+          add ( component, targetIndex );
+          setTitleAt ( targetIndex, title );
+        }
+
+        setSelectedComponent ( component );
+
+        clearHighlightTab ();
+
         return false;
       }
     } );
@@ -138,12 +154,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
           transferHandler.exportAsDrag ( JGTITabbedPane.this, event,
               transferHandler.getSourceActions ( JGTITabbedPane.this ) );
           event.consume ();
-
-          int tabIndex = getTabIndex ( event.getX (), event.getY () );
-          if ( tabIndex != -1 )
-          {
-            JGTITabbedPane.this.sourceTabIndex = tabIndex;
-          }
         }
       }
     } );
@@ -221,12 +231,12 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
    */
   public final void dragOver ( DropTargetDragEvent event )
   {
+    JGTITabbedPaneComponent draggedComponent;
     try
     {
-      JGTITabbedPaneComponent rows = ( JGTITabbedPaneComponent ) event
-          .getTransferable ().getTransferData (
-              JGTITabbedPaneTransferable.dataFlavor );
-      if ( !this.allowedDndSources.contains ( rows.getSource () ) )
+      draggedComponent = ( JGTITabbedPaneComponent ) event.getTransferable ()
+          .getTransferData ( JGTITabbedPaneTransferable.dataFlavor );
+      if ( !this.allowedDndSources.contains ( draggedComponent.getSource () ) )
       {
         event.rejectDrag ();
         this.dropPoint = null;
@@ -249,23 +259,20 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       return;
     }
 
-    event.acceptDrag ( event.getDropAction () );
-    this.dropPoint = event.getLocation ();
+    int targetTabIndex = getTabIndex ( event.getLocation ().x, event
+        .getLocation ().y );
 
-    if ( JGTITabbedPane.this.sourceTabIndex != -1 )
+    if ( targetTabIndex == -1 )
     {
-      int targetTabIndex = getTabIndex ( this.dropPoint.x, this.dropPoint.y );
-      if ( ( targetTabIndex == -1 )
-          || ( JGTITabbedPane.this.sourceTabIndex == targetTabIndex ) )
-      {
-        clearHighlightTab ();
-      }
-      else
-      {
-        highlightTab ( targetTabIndex );
-      }
+      clearHighlightTab ();
+    }
+    else
+    {
+      highlightTab ( targetTabIndex );
     }
 
+    event.acceptDrag ( event.getDropAction () );
+    this.dropPoint = event.getLocation ();
     repaint ();
   }
 
@@ -283,20 +290,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       Transferable transferable = event.getTransferable ();
       event.dropComplete ( getTransferHandler ().importData ( this,
           transferable ) );
-
-      if ( JGTITabbedPane.this.sourceTabIndex != -1 )
-      {
-        int tabIndex = getTabIndex ( event.getLocation ().x, event
-            .getLocation ().y );
-        if ( ( tabIndex != -1 )
-            && ( tabIndex != JGTITabbedPane.this.sourceTabIndex ) )
-        {
-          moveTab ( JGTITabbedPane.this.sourceTabIndex, tabIndex );
-          setSelectedIndex ( tabIndex );
-        }
-        JGTITabbedPane.this.sourceTabIndex = -1;
-        clearHighlightTab ();
-      }
     }
     catch ( RuntimeException exc )
     {
@@ -332,18 +325,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
 
   /**
-   * Returns the source tab index.
-   * 
-   * @return The source tab index.
-   * @see #sourceTabIndex
-   */
-  public final int getSourceTabIndex ()
-  {
-    return this.sourceTabIndex;
-  }
-
-
-  /**
    * Returns the tab index.
    * 
    * @param x The x position.
@@ -374,20 +355,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
     clearHighlightTab ();
     setBackgroundAt ( tabIndex, HIGHLIGHT_COLOR );
-  }
-
-
-  /**
-   * Moves the tab.
-   * 
-   * @param oldIndex The old index.
-   * @param newIndex The new index.
-   */
-  private final void moveTab ( int oldIndex, int newIndex )
-  {
-    Component component = getComponentAt ( oldIndex );
-    remove ( component );
-    add ( component, newIndex );
   }
 
 

@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 import javax.swing.JScrollBar;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.JTableHeader;
 
 import de.unisiegen.gtitool.core.entities.Production;
@@ -2878,8 +2879,38 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
    */
   public final void handleTabbedPaneStateChanged ()
   {
+    handleTabbedPaneStateChanged ( null );
+  }
+
+
+  /**
+   * Handles the tabbed pane state changed event.
+   * 
+   * @param event The {@link ChangeEvent}.
+   */
+  public final void handleTabbedPaneStateChanged ( ChangeEvent event )
+  {
     logger.debug ( "handleTabbedPaneStateChanged", //$NON-NLS-1$
         "handle tabbed pane state changed" ); //$NON-NLS-1$
+
+    // needed because of the drag and drop of editor tabs
+    if ( event != null )
+    {
+      if ( event.getSource () == this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneLeft () )
+      {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.LEFT_EDITOR );
+      }
+      else if ( event.getSource () == this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPaneRight () )
+      {
+        this.jGTIMainSplitPane.setActiveEditor ( ActiveEditor.RIGHT_EDITOR );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported source" ); //$NON-NLS-1$
+      }
+    }
 
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();

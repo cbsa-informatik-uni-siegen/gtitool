@@ -1911,7 +1911,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jMenuItemReachableStatesActionPerformed
 
     private void jGTIEditorPanelTabbedPaneRightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneRightStateChanged
-        this.logic.handleTabbedPaneStateChanged();
+        this.logic.handleTabbedPaneStateChanged(evt);
     }//GEN-LAST:event_jGTIEditorPanelTabbedPaneRightStateChanged
 
     private void jGTIEditorPanelTabbedPaneRightMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneRightMouseReleased
@@ -1975,7 +1975,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     }//GEN-LAST:event_jGTIToolBarButtonDeleteProductionActionPerformed
 
     private void jGTIEditorPanelTabbedPaneLeftStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
-        this.logic.handleTabbedPaneStateChanged();
+        this.logic.handleTabbedPaneStateChanged(evt);
     }//GEN-LAST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
 
     private void jGTIToolBarToggleButtonFinalStateItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jGTIToolBarToggleButtonFinalStateItemStateChanged

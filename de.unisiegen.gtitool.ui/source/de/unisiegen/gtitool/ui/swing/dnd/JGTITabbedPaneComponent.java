@@ -34,7 +34,7 @@ public final class JGTITabbedPaneComponent
   /**
    * Allocates a new {@link JGTITabbedPaneComponent}.
    * 
-   * @param source The {@link JGTITabbedPane}.
+   * @param source The source {@link JGTITabbedPane}.
    * @param component The {@link Component}.
    */
   public JGTITabbedPaneComponent ( JGTITabbedPane source, Component component )
@@ -45,7 +45,7 @@ public final class JGTITabbedPaneComponent
     }
     if ( source.getModel () == null )
     {
-      throw new IllegalArgumentException ( "model is null" );//$NON-NLS-1$
+      throw new IllegalArgumentException ( "source model is null" );//$NON-NLS-1$
     }
     if ( component == null )
     {
@@ -68,7 +68,7 @@ public final class JGTITabbedPaneComponent
     if ( other instanceof JGTITabbedPaneComponent )
     {
       JGTITabbedPaneComponent otherComponent = ( JGTITabbedPaneComponent ) other;
-      return ( ( this.source == otherComponent.source ) && this.component == otherComponent.component );
+      return ( ( this.source == otherComponent.source ) && ( this.component == otherComponent.component ) );
     }
     return false;
   }

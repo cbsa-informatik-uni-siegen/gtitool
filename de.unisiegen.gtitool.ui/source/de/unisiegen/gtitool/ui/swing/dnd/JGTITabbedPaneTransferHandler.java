@@ -17,7 +17,8 @@ import de.unisiegen.gtitool.ui.swing.JGTITabbedPane;
  * Drag and drop transfer handler class for {@link JGTITabbedPaneComponent}s.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: JGTITabbedPaneTransferHandler.java 1008 2008-06-17 20:39:54Z
+ *          fehler $
  */
 public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
 {
@@ -100,6 +101,18 @@ public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
 
 
   /**
+   * Imports the {@link Component}.
+   * 
+   * @param source The source {@link JGTITabbedPane}.
+   * @param target The target {@link JGTITabbedPane}.
+   * @param component The {@link Component}
+   * @return True if the import was successfull.
+   */
+  protected abstract boolean importComponent ( JGTITabbedPane source,
+      JGTITabbedPane target, Component component );
+
+
+  /**
    * {@inheritDoc}
    * 
    * @see TransferHandler#importData(JComponent, Transferable)
@@ -108,13 +121,14 @@ public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
   public final boolean importData ( JComponent jComponent,
       Transferable transferable )
   {
-    JGTITabbedPane list = ( JGTITabbedPane ) jComponent;
+    JGTITabbedPane jGTITabbedPane = ( JGTITabbedPane ) jComponent;
     try
     {
       JGTITabbedPaneComponent component = ( JGTITabbedPaneComponent ) transferable
           .getTransferData ( JGTITabbedPaneTransferable.dataFlavor );
 
-      if ( importComponent ( list, component.getComponent () ) )
+      if ( importComponent ( component.getSource (), jGTITabbedPane, component
+          .getComponent () ) )
       {
         return true;
       }
@@ -129,15 +143,4 @@ public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
       throw new RuntimeException ( e );
     }
   }
-
-
-  /**
-   * Imports the {@link Component}.
-   * 
-   * @param jGTITabbedPane The {@link JGTITabbedPane}.
-   * @param component The {@link Component}
-   * @return True if the import was successfull.
-   */
-  protected abstract boolean importComponent ( JGTITabbedPane jGTITabbedPane,
-      Component component );
 }

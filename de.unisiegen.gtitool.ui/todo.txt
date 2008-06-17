@@ -2,21 +2,18 @@
 
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
-CF		- Split View
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
 CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
 		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
 		  Potenzautomaten sehr leicht lahmlegen
+CF		- Keller von links nach rechts darstellen (Drachen Buch)
 
 BM		- Parallel Loop Routing
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
-BM		- Keller von links nach rechts darstellen (dragon book)
 BM		- Nur zur Info: Bei jedem Projekt wurde die Datei "done.txt" auf die
 		  svn:ignore Liste gesetzt. Ich benutze die Datei, um mir bis zum nächsten
 		  Commit zu merken, was ich gemacht habe. Falls du sowas brauchst, kannst
 		  du es benutzen, sonst ignorieren.
-
-		- AboutDialog: Mehrere Probleme mit den Lizenzen in Bezug auf den Build
 
 
 *** FEATURE ***
@@ -26,11 +23,11 @@ CF		- Regular Expression Parser
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Namen der Zustände neu vergeben
 CF		- Popupmenü auf der Machine Tabelle
+CF		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 
-		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
 		- Links Rekursion auflösen
 		- Wörter ausgeben, die erkannt werden
 		- LaTeX Export

@@ -1709,6 +1709,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExecute.add(jMenuConvertTo);
 
+        jMenuConvertToComplete.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ConvertToCompleteMnemonic").charAt(0));
         jMenuConvertToComplete.setText(bundle.getString("MainWindow.ConvertToComplete")); // NOI18N
         jMenuItemConvertToCompleteDFA.setText(bundle.getString("MainWindow.DFA")); // NOI18N
         jMenuItemConvertToCompleteDFA.addActionListener(new java.awt.event.ActionListener() {

@@ -3,7 +3,9 @@ package de.unisiegen.gtitool.ui.swing;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
+import javax.swing.border.EmptyBorder;
 
 import de.unisiegen.gtitool.ui.swing.dnd.JGTITabbedPaneComponent;
 import de.unisiegen.gtitool.ui.swing.dnd.JGTITabbedPaneTransferHandler;
@@ -38,7 +41,19 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
   /**
    * The highlight {@link Color}.
    */
-  private static final Color HIGHLIGHT_COLOR = new Color ( 150, 200, 250 );
+  private static final Color HIGHLIGHT_COLOR = new Color ( 50, 150, 250 );
+
+
+  /**
+   * The default tab width.
+   */
+  private static final int DEFAULT_TAB_WIDTH = 100;
+
+
+  /**
+   * The default tab height.
+   */
+  private static final int DEFAULT_TAB_HEIGHT = 28;
 
 
   /**
@@ -97,6 +112,8 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
     this.allowedDndSources = new ArrayList < JComponent > ();
 
+    setBorder ( new EmptyBorder ( 1, 1, 1, 1 ) );
+
     setTransferHandler ( new JGTITabbedPaneTransferHandler (
         TransferHandler.MOVE )
     {
@@ -119,23 +136,20 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
         int targetIndex = getTabIndex ( JGTITabbedPane.this.dropPoint.x,
             JGTITabbedPane.this.dropPoint.y );
 
+        source.remove ( component );
         if ( targetIndex == -1 )
         {
-          source.remove ( component );
           add ( title, component );
         }
         else
         {
-          source.remove ( component );
           add ( component, targetIndex );
           setTitleAt ( targetIndex, title );
         }
 
         setSelectedComponent ( component );
 
-        clearHighlightTab ();
-
-        return false;
+        return true;
       }
     } );
 
@@ -185,18 +199,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
 
   /**
-   * Clears the highlight of the tabs.
-   */
-  private final void clearHighlightTab ()
-  {
-    for ( int i = 0 ; i < getComponentCount () ; i++ )
-    {
-      setBackgroundAt ( i, null );
-    }
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see DropTargetListener#dragEnter(DropTargetDragEvent)
@@ -217,8 +219,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
   public final void dragExit ( @SuppressWarnings ( "unused" )
   DropTargetEvent event )
   {
-    clearHighlightTab ();
-
     this.dropPoint = null;
     repaint ();
   }
@@ -257,18 +257,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       this.dropPoint = null;
       repaint ();
       return;
-    }
-
-    int targetTabIndex = getTabIndex ( event.getLocation ().x, event
-        .getLocation ().y );
-
-    if ( targetTabIndex == -1 )
-    {
-      clearHighlightTab ();
-    }
-    else
-    {
-      highlightTab ( targetTabIndex );
     }
 
     event.acceptDrag ( event.getDropAction () );
@@ -338,23 +326,91 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
 
 
   /**
-   * Highlights the tab with the given index.
+   * {@inheritDoc}
    * 
-   * @param tabIndex The tab index.
+   * @see JComponent#paintComponent(Graphics)
    */
-  private final void highlightTab ( int tabIndex )
+  @Override
+  protected final void paintComponent ( Graphics graphics )
   {
-    if ( tabIndex < 0 )
-    {
-      throw new IllegalArgumentException ( "tab index to small" ); //$NON-NLS-1$
-    }
-    if ( tabIndex >= getComponentCount () )
-    {
-      throw new IllegalArgumentException ( "tab index to large" ); //$NON-NLS-1$
-    }
+    super.paintComponent ( graphics );
 
-    clearHighlightTab ();
-    setBackgroundAt ( tabIndex, HIGHLIGHT_COLOR );
+    if ( this.dropPoint != null )
+    {
+      Rectangle visibleRect = getVisibleRect ();
+      int vw = visibleRect.width;
+      int vh = visibleRect.height;
+
+      int x;
+      int y;
+      int w;
+      int h;
+
+      int index = getTabIndex ( this.dropPoint.x, this.dropPoint.y );
+      if ( index == -1 )
+      {
+        if ( getComponentCount () == 0 )
+        {
+          x = 2;
+          y = 3;
+          w = DEFAULT_TAB_WIDTH;
+          h = DEFAULT_TAB_HEIGHT;
+        }
+        else
+        {
+          Rectangle tabRect = getUI ().getTabBounds ( this,
+              getComponentCount () - 1 );
+
+          x = tabRect.x + tabRect.width - 2;
+          y = tabRect.y;
+          w = DEFAULT_TAB_WIDTH;
+          h = tabRect.height;
+        }
+      }
+      else
+      {
+        Rectangle tabRect = getUI ().getTabBounds ( this, index );
+
+        x = tabRect.x;
+        y = tabRect.y;
+        w = tabRect.width;
+        h = tabRect.height;
+      }
+
+      graphics.setColor ( HIGHLIGHT_COLOR );
+
+      // top horizontal
+      graphics.drawLine ( x + 1, y, x + w - 2, y );
+      graphics.drawLine ( x, y + 1, x + w - 1, y + 1 );
+
+      // left vertical
+      graphics.drawLine ( x, y + 1, x, y + h - 1 );
+      graphics.drawLine ( x + 1, y, x + 1, y + h - 2 );
+
+      // right vertical
+      graphics.drawLine ( x + w - 1, y + 1, x + w - 1, y + h - 1 );
+      graphics.drawLine ( x + w - 2, y, x + w - 2, y + h - 2 );
+
+      // left to tab horizontal
+      graphics.drawLine ( 1, y + h - 2, x - 1, y + h - 2 );
+      graphics.drawLine ( 0, y + h - 1, x, y + h - 1 );
+
+      // tab to right horizontal
+      graphics.drawLine ( x + w - 1, y + h - 2, vw - 2, y + h - 2 );
+      graphics.drawLine ( x + w, y + h - 1, vw - 1, y + h - 1 );
+
+      // left vertical
+      graphics.drawLine ( 0, y + h - 1, 0, vh - 2 );
+      graphics.drawLine ( 1, y + h, 1, vh - 1 );
+
+      // right vertical
+      graphics.drawLine ( vw - 1, y + h, vw - 1, vh - 2 );
+      graphics.drawLine ( vw - 2, y + h - 1, vw - 2, vh - 1 );
+
+      // bottom horizontal
+      graphics.drawLine ( 0, vh - 2, vw - 1, vh - 2 );
+      graphics.drawLine ( 1, vh - 1, vw - 2, vh - 1 );
+    }
   }
 
 

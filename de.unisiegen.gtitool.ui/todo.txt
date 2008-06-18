@@ -10,10 +10,6 @@ CF		- Keller von links nach rechts darstellen (Drachen Buch)
 
 BM		- Parallel Loop Routing
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
-BM		- Nur zur Info: Bei jedem Projekt wurde die Datei "done.txt" auf die
-		  svn:ignore Liste gesetzt. Ich benutze die Datei, um mir bis zum nächsten
-		  Commit zu merken, was ich gemacht habe. Falls du sowas brauchst, kannst
-		  du es benutzen, sonst ignorieren.
 
 
 *** FEATURE ***

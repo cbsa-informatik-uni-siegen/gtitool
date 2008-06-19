@@ -146,9 +146,9 @@ public final class LayoutManager
   private final void createGrid ( ArrayList < DefaultStateView > states )
   {
     int xPosition = 100;
-    int yPosition = 100;
+    int yPosition = 150;
 
-    int xStartPosition = 50;
+    int xStartPosition = 100;
     int xSpace = 100;
 
     if ( states.size () > 0 )
@@ -163,7 +163,6 @@ public final class LayoutManager
     int rowSize = ( int ) Math.ceil ( Math.sqrt ( this.model
         .getStateViewList ().size () ) );
 
-    rowSize *= 2;
 
     int count = 0;
     int pos = 0;
@@ -225,7 +224,7 @@ public final class LayoutManager
     prelayout ();
 
     doLayoutInternal ();
-
+    
     finishLayout ();
 
     this.model.getGraphModel ().cellsChanged (

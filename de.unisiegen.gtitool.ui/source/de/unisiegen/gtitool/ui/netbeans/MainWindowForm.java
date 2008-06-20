@@ -863,6 +863,18 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
 
     /**
+     * Returns the jMenuItemReorderStateNames.
+     *
+     * @return The jMenuItemReorderStateNames.
+     * @see #jMenuItemReorderStateNames
+     */
+    public final JMenuItem getJMenuItemReorderStateNames ()
+    {
+      return this.jMenuItemReorderStateNames;
+    }
+
+
+    /**
      * Returns the jMenuItemNFA.
      *
      * @return The jMenuItemNFA.
@@ -1103,6 +1115,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jSeparatorExtras = new javax.swing.JSeparator();
         jMenuItemHistory = new javax.swing.JMenuItem();
         jMenuItemReachableStates = new javax.swing.JMenuItem();
+        jMenuItemReorderStateNames = new javax.swing.JMenuItem();
         jMenuHelp = new javax.swing.JMenu();
         jMenuItemAbout = new javax.swing.JMenuItem();
 
@@ -1865,6 +1878,16 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         jMenuExtras.add(jMenuItemReachableStates);
 
+        jMenuItemReorderStateNames.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.ReorderStateNamesMnemonic").charAt(0));
+        jMenuItemReorderStateNames.setText(bundle.getString("MainWindow.ReorderStateNames")); // NOI18N
+        jMenuItemReorderStateNames.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemReorderStateNamesActionPerformed(evt);
+            }
+        });
+
+        jMenuExtras.add(jMenuItemReorderStateNames);
+
         jMenuBarMain.add(jMenuExtras);
 
         jMenuHelp.setMnemonic(java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages").getString("MainWindow.HelpMnemonic").charAt(0));
@@ -1886,6 +1909,10 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
         setBounds(0, 0, 762, 462);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemReorderStateNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemReorderStateNamesActionPerformed
+        this.logic.handleReorderStateNames();
+    }//GEN-LAST:event_jMenuItemReorderStateNamesActionPerformed
 
     private void jMenuItemConvertToCompletePDAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemConvertToCompletePDAActionPerformed
          this.logic.handleConvertToComplete(MachineType.PDA);
@@ -2209,6 +2236,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
     private javax.swing.JMenuItem jMenuItemRG;
     private javax.swing.JMenuItem jMenuItemReachableStates;
     private javax.swing.JMenuItem jMenuItemRedo;
+    private javax.swing.JMenuItem jMenuItemReorderStateNames;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAll;
     private javax.swing.JMenuItem jMenuItemSaveAs;

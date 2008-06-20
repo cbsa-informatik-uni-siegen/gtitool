@@ -1,11 +1,3 @@
-*** install needed update ***
-
-- Tools
-- Update Center
-- NetBeans Update Center Beta
-- Add GUI Builder Update Pack for NetBeans 5.5
-
-
 *** de.unisiegen.gtitool.core ***
 - source folder:
   - source

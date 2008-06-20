@@ -273,6 +273,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The reachable states enabled button state.
      */
     ENABLED_REACHABLE_STATES,
+    
+    /**
+     * The reorder state names enabled button state.
+     */
+    ENABLED_REORDER_STATE_NAMES,
 
     /**
      * The save enabled button state.
@@ -396,6 +401,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_RECENTLY_USED );
     removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
     removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     removeButtonState ( ButtonState.SELECTED_ENTER_WORD );
     removeButtonState ( ButtonState.VISIBLE_MACHINE );
@@ -898,6 +904,13 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_REACHABLE_STATES );
       this.gui.getJMenuItemReachableStates ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_REORDER_STATE_NAMES ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_REORDER_STATE_NAMES ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+      this.gui.getJMenuItemReorderStateNames ().setEnabled ( true );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {
@@ -1554,6 +1567,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
     addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+    addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
     if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
     {
       addButtonState ( ButtonState.ENABLED_MINIMIZE );
@@ -1622,6 +1636,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
       removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+      removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
     }
   }
@@ -2147,6 +2162,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( panel != null )
     {
       panel.handleRedo ();
+    }
+  }
+
+
+  /**
+   * Handles the reorder state names event.
+   */
+  public final void handleReorderStateNames ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      machinePanel.handleReorderStateNames ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -2944,6 +2978,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       removeButtonState ( ButtonState.ENABLED_HISTORY );
       removeButtonState ( ButtonState.ENABLED_MINIMIZE );
       removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+      removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
       removeButtonState ( ButtonState.ENABLED_SAVE );
     }
     // MachinePanel
@@ -3026,6 +3061,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+          removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
@@ -3046,7 +3082,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
-
+          removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+          
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
@@ -3067,7 +3104,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE );
           addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
-
+          addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+          
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
       }
@@ -3115,6 +3153,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         removeButtonState ( ButtonState.ENABLED_AUTO_LAYOUT );
         removeButtonState ( ButtonState.ENABLED_MINIMIZE );
         removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
+        removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
         removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
       }
       else
@@ -3920,6 +3959,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MainWindow.this.gui.getJMenuItemReachableStates ().setMnemonic (
         Messages.getString ( "MainWindow.ReachableStatesMnemonic" ).charAt ( //$NON-NLS-1$
             0 ) );
+    // ReorderStateNames
+    MainWindow.this.gui.getJMenuItemReorderStateNames ().setText (
+        Messages.getString ( "MainWindow.ReorderStateNames" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemReorderStateNames ().setMnemonic (
+        Messages.getString ( "MainWindow.ReorderStateNamesMnemonic" ).charAt ( //$NON-NLS-1$
+            0 ) );
 
     /*
      * Help
@@ -4333,6 +4378,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_REACHABLE_STATES );
       this.gui.getJMenuItemReachableStates ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_REORDER_STATE_NAMES ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+      this.gui.getJMenuItemReorderStateNames ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_SAVE ) )
     {

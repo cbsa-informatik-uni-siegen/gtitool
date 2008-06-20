@@ -1341,6 +1341,33 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Handles the reorder state names event.
+   */
+  public final void handleReorderStateNames ()
+  {
+    // TODOBM create one redo/undo step
+    String stateName = "z"; //$NON-NLS-1$
+    int count = 0;
+    for ( State current : this.machine.getState () )
+    {
+      try
+      {
+        current.setName ( stateName + count );
+      }
+      catch ( StateException exc )
+      {
+        exc.printStackTrace ();
+        System.exit ( 1 );
+        return;
+      }
+      count++ ;
+    }
+
+    performCellsChanged ();
+  }
+
+
+  /**
    * Handle save as operation
    * 
    * @return filename

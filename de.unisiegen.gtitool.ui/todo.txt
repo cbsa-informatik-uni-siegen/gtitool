@@ -8,8 +8,15 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 		  Potenzautomaten sehr leicht lahmlegen
 CF		- Keller von links nach rechts darstellen (Drachen Buch)
 
+BM		- Im Machine Panel gibt es ein TODO, es werden alle Zuständ umbenannt, daraus
+		  soll ein Undo/Redo Step erzeugt werden.
 BM		- Parallel Loop Routing
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
+BM		- Änderungen an der DefaultEdge und der DefaultTransitionView wieder rückgängig
+		  machen, da das anders implementiert werden muss?! Dann haben wir beim Merge
+		  einer neuen JGraph Version weniger Probleme. Änderungen im JGraph Projekt müssen
+		  immer genau dokumentiert werden. Im Moment geschieht dies mit den Kommentaren
+		  modify begin und modify end. Ich werde mir aber da was besseres einfallen lassen.
 
 
 *** FEATURE ***
@@ -17,7 +24,6 @@ BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathT
 CF		- PDA Machine editierbar
 CF		- Regular Expression Parser
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
-CF		- Namen der Zustände neu vergeben
 CF		- Popupmenü auf der Machine Tabelle
 CF		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
 

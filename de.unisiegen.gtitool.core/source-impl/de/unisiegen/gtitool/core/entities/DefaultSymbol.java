@@ -34,7 +34,7 @@ public final class DefaultSymbol implements Symbol
   /**
    * The name of this state.
    */
-  private String name;
+  private String name = null;
 
 
   /**
@@ -59,6 +59,21 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
+   * Flag that indicates if this {@link Symbol} is a epsilon {@link Symbol}.
+   */
+  private boolean epsilon;
+
+
+  /**
+   * Allocates a new {@link DefaultSymbol}.
+   */
+  public DefaultSymbol ()
+  {
+    this.epsilon = true;
+  }
+
+
+  /**
    * Allocates a new {@link DefaultSymbol}.
    * 
    * @param element The {@link Element}.
@@ -79,12 +94,21 @@ public final class DefaultSymbol implements Symbol
 
     // Attribute
     boolean foundName = false;
+    boolean foundEpsilon = false;
     for ( Attribute current : element.getAttribute () )
     {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
-        setName ( current.getValue () );
+        if (! this.epsilon)
+        {
+          setName ( current.getValue () );
+        }
         foundName = true;
+      }
+      else if ( current.getName ().equals ( "epsilon" ) ) //$NON-NLS-1$
+      {
+        this.epsilon = current.getValueBoolean ();
+        foundEpsilon = true;
       }
       else
       {
@@ -94,7 +118,7 @@ public final class DefaultSymbol implements Symbol
     }
 
     // Not all attribute values found
-    if ( !foundName )
+    if ( !foundName || !foundEpsilon )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -130,7 +154,19 @@ public final class DefaultSymbol implements Symbol
    */
   public final int compareTo ( Symbol other )
   {
-    return this.name.compareTo ( other.getName () );
+    if ( !this.epsilon && !other.isEpsilon () )
+    {
+      return this.name.compareTo ( other.getName () );
+    }
+    if ( !this.epsilon && other.isEpsilon () )
+    {
+      return 1;
+    }
+    if ( this.epsilon && !other.isEpsilon () )
+    {
+      return -1;
+    }
+    return 0;
   }
 
 
@@ -144,8 +180,19 @@ public final class DefaultSymbol implements Symbol
   {
     if ( other instanceof DefaultSymbol )
     {
-      DefaultSymbol defaultSymbol = ( DefaultSymbol ) other;
-      return this.name.equals ( defaultSymbol.name );
+      DefaultSymbol symbol = ( DefaultSymbol ) other;
+
+      if ( this.epsilon != symbol.epsilon )
+      {
+        return false;
+      }
+
+      if ( this.epsilon && symbol.epsilon )
+      {
+        return true;
+      }
+
+      return this.name.equals ( symbol.name );
     }
     return false;
   }
@@ -159,7 +206,18 @@ public final class DefaultSymbol implements Symbol
   public final Element getElement ()
   {
     Element newElement = new Element ( "Symbol" ); //$NON-NLS-1$
-    newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
+
+    if ( this.epsilon )
+    {
+      newElement.addAttribute ( new Attribute ( "name", "\"epsilon\"" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      newElement.addAttribute ( new Attribute ( "epsilon", true ) ); //$NON-NLS-1$
+    }
+    else
+    {
+      newElement.addAttribute ( new Attribute ( "name", this.name ) ); //$NON-NLS-1$
+      newElement.addAttribute ( new Attribute ( "epsilon", false ) ); //$NON-NLS-1$
+    }
+
     return newElement;
   }
 
@@ -193,6 +251,10 @@ public final class DefaultSymbol implements Symbol
   @Override
   public final int hashCode ()
   {
+    if ( this.epsilon )
+    {
+      return "epsilon".hashCode (); //$NON-NLS-1$
+    }
     return this.name.hashCode ();
   }
 
@@ -207,6 +269,17 @@ public final class DefaultSymbol implements Symbol
   public final boolean isActive ()
   {
     return this.active;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Symbol#isEpsilon()
+   */
+  public final boolean isEpsilon ()
+  {
+    return this.epsilon;
   }
 
 
@@ -256,6 +329,12 @@ public final class DefaultSymbol implements Symbol
    */
   private final void setName ( String name ) throws SymbolException
   {
+    if ( this.epsilon )
+    {
+      throw new RuntimeException (
+          "this symbol is a epsilon symbol without a name" ); //$NON-NLS-1$
+    }
+
     // Name
     if ( name == null )
     {
@@ -320,21 +399,44 @@ public final class DefaultSymbol implements Symbol
   public final PrettyString toPrettyString ()
   {
     PrettyString prettyString = new PrettyString ();
-    if ( this.error )
+
+    if ( this.epsilon )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.SYMBOL_ERROR ) );
-    }
-    else if ( this.active )
-    {
-      prettyString.addPrettyToken ( new PrettyToken ( this.name,
-          Style.SYMBOL_ACTIVE ) );
+      if ( this.error )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+            Style.SYMBOL_ERROR ) );
+      }
+      else if ( this.active )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+            Style.SYMBOL_ACTIVE ) );
+      }
+      else
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      }
     }
     else
     {
-      prettyString
-          .addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
+      if ( this.error )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.SYMBOL_ERROR ) );
+      }
+      else if ( this.active )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( this.name,
+            Style.SYMBOL_ACTIVE ) );
+      }
+      else
+      {
+        prettyString
+            .addPrettyToken ( new PrettyToken ( this.name, Style.SYMBOL ) );
+      }
     }
+
     return prettyString;
   }
 
@@ -347,6 +449,10 @@ public final class DefaultSymbol implements Symbol
   @Override
   public final String toString ()
   {
+    if ( this.epsilon )
+    {
+      return "\u03B5"; //$NON-NLS-1$
+    }
     return this.name;
   }
 
@@ -358,6 +464,10 @@ public final class DefaultSymbol implements Symbol
    */
   public final String toStringDebug ()
   {
+    if ( this.epsilon )
+    {
+      return "\u03B5"; //$NON-NLS-1$
+    }
     return this.name;
   }
 }

@@ -151,6 +151,11 @@ symbol							::= SYMBOL:s
 									   }
 									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
+								|	EPSILON:e
+									{:
+									   RESULT = new DefaultSymbol();
+									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
+									:}
 								;
 
 symbol							::= SYMBOL:s

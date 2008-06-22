@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTransition;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.Stack;
@@ -372,15 +373,43 @@ public final class TransitionDialog implements
         .addAllowedDndSource ( this.gui.jGTIListChangeOverSet );
 
     this.modelAlphabet = new SymbolListModel ();
+    this.modelChangeOverSet = new SymbolListModel ();
+
     for ( Symbol symbol : this.alphabet )
     {
       this.modelAlphabet.add ( symbol );
     }
+
+    if ( symbols.size () == 0 )
+    {
+      this.modelChangeOverSet.add ( this.epsilonSymbol );
+      symbols.add ( this.epsilonSymbol );
+    }
+    else
+    {
+      this.modelAlphabet.add ( this.epsilonSymbol );
+      for ( Symbol symbol : symbols )
+      {
+        this.modelAlphabet.remove ( symbol );
+        this.modelChangeOverSet.add ( symbol );
+      }
+    }
+
+    try
+    {
+      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
+          this.pushDownWordRead, this.pushDownWordWrite, symbols ) );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+
     this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
-    this.modelChangeOverSet = new SymbolListModel ();
     this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
     this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
-    setOverChangeSet ( symbols );
 
     // Set the push down alphabet
     this.gui.styledAlphabetParserPanelPushDownAlphabet
@@ -452,6 +481,12 @@ public final class TransitionDialog implements
 
 
   /**
+   * The epsilon {@link Symbol}.
+   */
+  private Symbol epsilonSymbol = new DefaultSymbol ();
+
+
+  /**
    * Creates a new {@link TransitionDialog}.
    * 
    * @param parent The parent frame.
@@ -519,6 +554,7 @@ public final class TransitionDialog implements
     }
     this.gui.jGTIListAlphabet.clearSelection ();
     this.gui.jGTIButtonMoveRight.setEnabled ( false );
+    setButtonStatus ();
     updateResultingTransition ();
   }
 
@@ -825,6 +861,7 @@ public final class TransitionDialog implements
     }
     this.gui.jGTIListChangeOverSet.clearSelection ();
     this.gui.jGTIButtonMoveLeft.setEnabled ( false );
+    setButtonStatus ();
     updateResultingTransition ();
   }
 
@@ -835,42 +872,14 @@ public final class TransitionDialog implements
   private final void setButtonStatus ()
   {
     if ( ( this.gui.styledWordParserPanelRead.getParsedObject () == null )
-        || ( this.gui.styledWordParserPanelWrite.getParsedObject () == null ) )
+        || ( this.gui.styledWordParserPanelWrite.getParsedObject () == null )
+        || ( this.modelChangeOverSet.getSize () == 0 ) )
     {
       this.gui.jGTIButtonOk.setEnabled ( false );
     }
     else
     {
       this.gui.jGTIButtonOk.setEnabled ( true );
-    }
-  }
-
-
-  /**
-   * Sets the {@link Symbol}s of the over change set.
-   * 
-   * @param overChangeSymbolSet The {@link Symbol}s of the over change set.
-   */
-  private final void setOverChangeSet ( TreeSet < Symbol > overChangeSymbolSet )
-  {
-    if ( overChangeSymbolSet.size () > 0 )
-    {
-      this.modelChangeOverSet.clear ();
-    }
-    for ( Symbol symbol : overChangeSymbolSet )
-    {
-      this.modelAlphabet.remove ( symbol );
-      this.modelChangeOverSet.add ( symbol );
-    }
-    try
-    {
-      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
-          this.pushDownWordRead, this.pushDownWordWrite, overChangeSymbolSet ) );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
     }
   }
 

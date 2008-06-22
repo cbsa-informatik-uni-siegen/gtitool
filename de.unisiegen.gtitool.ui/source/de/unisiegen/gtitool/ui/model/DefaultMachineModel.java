@@ -69,7 +69,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
   /**
    * The {@link Machine} version.
    */
-  private static final int MACHINE_VERSION = 513;
+  private static final int MACHINE_VERSION = 1018;
 
 
   /**
@@ -168,7 +168,7 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
       TransitionSymbolOnlyOneTimeException
   {
     this.pdaTableModel = new PDATableModel ();
-    
+
     // Check if the element is correct
     if ( !element.getName ().equals ( "MachineModel" ) ) //$NON-NLS-1$
     {

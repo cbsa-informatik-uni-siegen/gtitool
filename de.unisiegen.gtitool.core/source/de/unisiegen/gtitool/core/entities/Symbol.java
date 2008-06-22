@@ -32,6 +32,16 @@ public interface Symbol extends Entity < Symbol >, Storable
 
 
   /**
+   * Returns true if this {@link Symbol} is a epsilon {@link Symbol}, otherwise
+   * false.
+   * 
+   * @return True if this {@link Symbol} is a epsilon {@link Symbol}, otherwise
+   *         false.
+   */
+  public boolean isEpsilon ();
+
+
+  /**
    * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
    * false.
    * 

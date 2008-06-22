@@ -64,6 +64,10 @@ public final class HistoryPath implements Comparable < HistoryPath >
     }
 
     Transition newTransition = new DefaultTransition ();
+    
+    // remove the epsilon
+    newTransition.clear ();
+    
     newTransition.setStateBegin ( transition.getStateBegin () );
     newTransition.setStateEnd ( transition.getStateEnd () );
     for ( Symbol current : transition.getSymbol () )
@@ -84,19 +88,12 @@ public final class HistoryPath implements Comparable < HistoryPath >
       }
     }
 
-    if ( newTransition.isEpsilonTransition () )
+    for ( Symbol current : newTransition )
     {
-      newTransition.setActive ( true );
-    }
-    else
-    {
-      for ( Symbol current : newTransition )
+      if ( current.equals ( symbol ) )
       {
-        if ( current.equals ( symbol ) )
-        {
-          current.setActive ( true );
-          break;
-        }
+        current.setActive ( true );
+        break;
       }
     }
 

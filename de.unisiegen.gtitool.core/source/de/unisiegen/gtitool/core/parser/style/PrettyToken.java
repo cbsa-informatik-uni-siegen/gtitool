@@ -37,20 +37,17 @@ public final class PrettyToken
    * @param text The text.
    * @param style The {@link Style}.
    */
-  public PrettyToken ( char text, Style style )
-  {
-    this ( String.valueOf ( text ), style );
-  }
-
-
-  /**
-   * Allocates a new {@link PrettyToken}.
-   * 
-   * @param text The text.
-   * @param style The {@link Style}.
-   */
   public PrettyToken ( String text, Style style )
   {
+    if ( text == null )
+    {
+      throw new IllegalArgumentException ( "text is null" ); //$NON-NLS-1$
+    }
+    if ( style == null )
+    {
+      throw new IllegalArgumentException ( "style is null" ); //$NON-NLS-1$
+    }
+
     this.text = text;
     this.style = style;
   }

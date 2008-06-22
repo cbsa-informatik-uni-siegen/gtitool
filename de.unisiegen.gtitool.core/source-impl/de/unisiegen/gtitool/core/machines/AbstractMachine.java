@@ -678,7 +678,7 @@ public abstract class AbstractMachine implements Machine
     ArrayList < MachineException > machineExceptionList = new ArrayList < MachineException > ();
     for ( Transition currentTransition : this.getTransition () )
     {
-      if ( currentTransition.getSymbol ().size () == 0 )
+      if ( currentTransition.isEpsilonTransition () )
       {
         machineExceptionList.add ( new MachineEpsilonTransitionException (
             currentTransition ) );
@@ -1977,6 +1977,14 @@ public abstract class AbstractMachine implements Machine
         {
           if ( current.isEpsilonTransition () )
           {
+            for ( Symbol currentSymbol : current )
+            {
+              if ( currentSymbol.isEpsilon () )
+              {
+                newActiveSymbolList.add ( currentSymbol );
+                break;
+              }
+            }
             newActiveStateSet.add ( activeState );
             newActiveStateSet.add ( current.getStateEnd () );
             newActiveTransitionSet.add ( current );
@@ -2558,10 +2566,35 @@ public abstract class AbstractMachine implements Machine
         if ( columnIndex == 1 )
         {
           logger.debug ( "setValueAt", "add transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
-          Transition newTransition = new DefaultTransition ( this.alphabet,
-              this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
-              stateBegin, currentState );
-          transitionAdd.add ( newTransition );
+
+          // TODOCF check this
+          Transition foundTransition = null;
+          loopTransition : for ( Transition currentTransition : this.transitionList )
+          {
+            if ( ( !currentTransition.isEpsilonTransition () )
+                && currentTransition.getStateBegin ().getName ().equals (
+                    stateBegin.getName () )
+                && currentTransition.getStateEnd ().getName ().equals (
+                    currentState.getName () ) )
+            {
+              foundTransition = currentTransition;
+              break loopTransition;
+            }
+          }
+
+          if ( foundTransition == null )
+          {
+            Transition newTransition = new DefaultTransition ( this.alphabet,
+                this.pushDownAlphabet, new DefaultWord (), new DefaultWord (),
+                stateBegin, currentState );
+            newTransition.add ( new DefaultSymbol () );
+            transitionAdd.add ( newTransition );
+          }
+          else
+          {
+            symbolsAdd.add ( new ObjectPair < Transition, Symbol > (
+                foundTransition, new DefaultSymbol () ) );
+          }
         }
         // No epsilon transition
         else
@@ -2622,11 +2655,29 @@ public abstract class AbstractMachine implements Machine
                 currentState.getName () ) )
         {
           // Epsilon transition
+          // TODOCF check this
           if ( ( columnIndex == EPSILON_COLUMN )
-              && currentTransition.isEpsilonTransition () )
+              && currentTransition.isEpsilonTransition ()
+              && currentTransition.getSymbol ().size () == 1 )
           {
             logger.debug ( "setValueAt", "remove transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
             transitionRemove.add ( currentTransition );
+          }
+          else if ( ( columnIndex == EPSILON_COLUMN )
+              && currentTransition.isEpsilonTransition ()
+              && currentTransition.getSymbol ().size () > 1 )
+          {
+            logger.debug (
+                "setValueAt", "remove transition: only epsilon symbol" ); //$NON-NLS-1$ //$NON-NLS-2$
+            for ( Symbol epsilonSymbol : currentTransition )
+            {
+              if ( epsilonSymbol.isEpsilon () )
+              {
+                symbolsRemove.add ( new ObjectPair < Transition, Symbol > (
+                    currentTransition, epsilonSymbol ) );
+                break;
+              }
+            }
           }
           // No epsilon transition
           else if ( columnIndex > EPSILON_COLUMN )

@@ -158,7 +158,10 @@ public final class DefaultTransition implements Transition
   {
     // SymbolSet
     this.symbolSet = new TreeSet < Symbol > ();
+    this.symbolSet.add ( new DefaultSymbol () );
+
     this.initialSymbolSet = new TreeSet < Symbol > ();
+    this.initialSymbolSet.add ( new DefaultSymbol () );
 
     // Reset modify
     resetModify ();
@@ -486,7 +489,8 @@ public final class DefaultTransition implements Transition
       throws TransitionSymbolNotInAlphabetException,
       TransitionSymbolOnlyOneTimeException
   {
-    if ( ( this.alphabet != null ) && ( !this.alphabet.contains ( symbol ) ) )
+    if ( ( this.alphabet != null ) && ( !symbol.isEpsilon () )
+        && ( !this.alphabet.contains ( symbol ) ) )
     {
       ArrayList < Symbol > tmpList = new ArrayList < Symbol > ();
       tmpList.add ( symbol );
@@ -511,7 +515,14 @@ public final class DefaultTransition implements Transition
     // The symbol must be cloned because of the different possible styles
     try
     {
-      this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
+      if ( symbol.isEpsilon () )
+      {
+        this.symbolSet.add ( new DefaultSymbol () );
+      }
+      else
+      {
+        this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
+      }
     }
     catch ( SymbolException exc )
     {
@@ -871,7 +882,14 @@ public final class DefaultTransition implements Transition
    */
   public final boolean isEpsilonTransition ()
   {
-    return this.symbolSet.size () == 0;
+    for ( Symbol current : this.symbolSet )
+    {
+      if ( current.isEpsilon () )
+      {
+        return true;
+      }
+    }
+    return false;
   }
 
 
@@ -1244,21 +1262,7 @@ public final class DefaultTransition implements Transition
     PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
     {
-      if ( this.error )
-      {
-        prettyString.addPrettyToken ( new PrettyToken (
-            "\u03B5", Style.SYMBOL_ERROR ) ); //$NON-NLS-1$
-      }
-      else if ( this.active )
-      {
-        prettyString.addPrettyToken ( new PrettyToken (
-            "\u03B5", Style.SYMBOL_ACTIVE ) ); //$NON-NLS-1$
-      }
-      else
-      {
-        prettyString
-            .addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
-      }
+      prettyString.addPrettyToken ( new PrettyToken ( "", Style.NONE ) ); //$NON-NLS-1$
     }
     else
     {
@@ -1275,6 +1279,7 @@ public final class DefaultTransition implements Transition
       }
       prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
     }
+
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )
     {
@@ -1321,16 +1326,25 @@ public final class DefaultTransition implements Transition
     prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
     if ( getSymbol ().size () == 0 )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", Style.SYMBOL ) ); //$NON-NLS-1$
+      prettyString.addPrettyToken ( new PrettyToken ( "", Style.NONE ) ); //$NON-NLS-1$
     }
     else
     {
-      for ( Symbol current : getSymbol () )
+      for ( Symbol current : this.symbolSet )
       {
-        prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
-            Style.SYMBOL ) );
+        if ( current.isEpsilon () )
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+              Style.SYMBOL ) );
+        }
+        else
+        {
+          prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
+              Style.SYMBOL ) );
+        }
       }
     }
+
     prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
     if ( getPushDownWordRead ().size () == 0 )
     {
@@ -1374,7 +1388,7 @@ public final class DefaultTransition implements Transition
     StringBuilder result = new StringBuilder ();
     if ( this.symbolSet.size () == 0 )
     {
-      result.append ( "\u03B5" ); //$NON-NLS-1$
+      // do nothing
     }
     else
     {
@@ -1391,6 +1405,7 @@ public final class DefaultTransition implements Transition
       }
       result.append ( "}" ); //$NON-NLS-1$
     }
+
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )
     {

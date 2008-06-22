@@ -146,18 +146,22 @@ public final class Storage
     }
     catch ( ParserConfigurationException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( SAXException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( IOException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       Throwable exception;
       if ( exc instanceof InvocationTargetException )
       {
@@ -217,18 +221,22 @@ public final class Storage
     }
     catch ( ParserConfigurationException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( SAXException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( IOException exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       Throwable exception;
       if ( exc instanceof InvocationTargetException )
       {
@@ -287,6 +295,7 @@ public final class Storage
     }
     catch ( Exception exc )
     {
+      exc.printStackTrace ();
       throw new StoreException ( Messages.getString ( "StoreException.Store" ) ); //$NON-NLS-1$
     }
   }

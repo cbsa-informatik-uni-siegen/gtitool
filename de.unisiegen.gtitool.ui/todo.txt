@@ -3,11 +3,16 @@
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
-CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
-		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
-		  Potenzautomaten sehr leicht lahmlegen
 CF		- Keller von links nach rechts darstellen (Drachen Buch)
+CF		- Epsilon Symbol - Gefundene Fehler: History bei Transition mit Epsilon und
+		  einem anderen Symbol
 
+BM		- Wegen dem Umbau des Epsilon Symbols treten noch sehr viele Exceptions auf,
+		  bzw. es kommt zu einem falschen Ergebnis. Bitte alle Fehler zu meinem TODO
+		  hinzufügen.
+BM		- Minimize: Einen DFA erstellen: Zwei Zustände, Übergang mit allen Symbolen vom
+		  Start Zustand zum zweiten Zustand, von diesem in sich selber mit allen Symbolen.
+		  Minimieren öffnen, ein paar Schritte machen -> Exception.
 BM		- Im Machine Panel gibt es ein TODO, es werden alle Zuständ umbenannt, daraus
 		  soll ein Undo/Redo Step erzeugt werden.
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
@@ -25,6 +30,11 @@ CF		- Regular Expression Parser
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle
 CF		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
+CF		- Die Entwicklungsversion braucht ein extra Flag, damit sie unterschieden
+		  werden kann von der normalen Version
+CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
+		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
+		  Potenzautomaten sehr leicht lahmlegen
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

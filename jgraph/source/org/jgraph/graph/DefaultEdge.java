@@ -22,8 +22,6 @@ public class DefaultEdge extends DefaultGraphCell implements Edge {
 
 	/** Source and target of the edge. */
 	protected Object source, target;
-	
-	private boolean epsilonTransition;
 
 	/**
 	 * Constructs an empty edge.
@@ -121,29 +119,15 @@ public class DefaultEdge extends DefaultGraphCell implements Edge {
 				double loopWidth = Math.min(20, Math.max(10, width / 8));
 				double loopHeight = Math.min(30, Math.max(12, Math.max(
 						loopWidth + 4, height2 / 2)));
-				
-				DefaultEdge defaultEdge = (DefaultEdge) edge.getCell ();
-				if (defaultEdge.isEpsilonTransition ()){
-	      newPoints.add(edge.getAttributes().createPoint(
-            from.getX() - loopWidth +5,
-            from.getY() - height2 - loopHeight * 1.2));
-        newPoints.add(edge.getAttributes().createPoint(from.getX(),
-            (from.getY() - height2 - 1.5 * loopHeight)+3));
-        newPoints.add(edge.getAttributes().createPoint(
-            from.getX() + loopWidth -5,
-            (from.getY() - height2 - loopHeight * 1.2)));
-				}
-				else {
-				  newPoints.add(edge.getAttributes().createPoint(
-	            from.getX() - loopWidth -7,
-	            from.getY() - height2 - loopHeight * 1.2));
-	        newPoints.add(edge.getAttributes().createPoint(from.getX(),
-	            (from.getY() - height2 - 1.5 * loopHeight)-15));
-	        newPoints.add(edge.getAttributes().createPoint(
-	            from.getX() + loopWidth +7,
-	            (from.getY() - height2 - loopHeight * 1.2)));
-				}
-        newPoints.add(edge.getTarget());
+				newPoints.add(edge.getAttributes().createPoint(
+						from.getX() - loopWidth,
+						from.getY() - height2 - loopHeight * 1.2));
+				newPoints.add(edge.getAttributes().createPoint(from.getX(),
+						from.getY() - height2 - 1.5 * loopHeight));
+				newPoints.add(edge.getAttributes().createPoint(
+						from.getX() + loopWidth,
+						from.getY() - height2 - loopHeight * 1.2));
+				newPoints.add(edge.getTarget());
 				return newPoints;
 			}
 			return null;
@@ -259,29 +243,5 @@ public class DefaultEdge extends DefaultGraphCell implements Edge {
 			return null;
 		}
 	}
-
-  
-  /**
-   * Returns the epsilonTransition.
-   *
-   * @return The epsilonTransition.
-   * @see #epsilonTransition
-   */
-  public boolean isEpsilonTransition ()
-  {
-    return this.epsilonTransition;
-  }
-
-  
-  /**
-   * Sets the epsilonTransition.
-   *
-   * @param epsilonTransition The epsilonTransition to set.
-   * @see #epsilonTransition
-   */
-  public void setEpsilonTransition ( boolean epsilonTransition )
-  {
-    this.epsilonTransition = epsilonTransition;
-  }
 
 }

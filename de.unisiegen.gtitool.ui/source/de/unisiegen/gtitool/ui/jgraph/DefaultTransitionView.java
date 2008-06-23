@@ -56,9 +56,6 @@ public final class DefaultTransitionView extends DefaultEdge implements
     this.transition = transition;
     this.sourceView = sourceView;
     this.targetView = targetView;
-    if (this.transition.getSymbol ().size () == 0){
-      setEpsilonTransition ( true );
-    }
   }
 
 

@@ -241,38 +241,41 @@ public final class StateView extends VertexView
         return;
       }
       int b = this.borderWidth;
+
+      int offset = state.isStartState () ? START_OFFSET : 0;
+
       Graphics2D g2 = ( Graphics2D ) g;
       Dimension d = getSize ();
       boolean tmp = this.selected;
       if ( super.isOpaque () )
       {
         Color background = null;
-        // Group
+        // group
         if ( defaultStateView.getGroupColor () != null )
         {
           background = defaultStateView.getGroupColor ();
         }
-        // Error
+        // error
         else if ( state.isError () )
         {
           background = this.preferenceStateError;
         }
-        // Active
+        // active
         else if ( state.isActive () )
         {
           background = this.preferenceStateActive;
         }
-        // Start
+        // start
         else if ( state.isStartState () )
         {
           background = this.preferenceStateStart;
         }
-        // Final
+        // final
         else if ( state.isFinalState () )
         {
           background = this.preferenceStateFinal;
         }
-        // Normal
+        // normal
         else
         {
           background = this.preferenceStateBackground;
@@ -292,23 +295,26 @@ public final class StateView extends VertexView
         {
           if ( state.isFinalState () )
           {
-            g.fillRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
-                50, 50 );
+            g.fillRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8, 50, 50 );
           }
           else
           {
-            g.fillRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+            g.fillRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
+                d.height - b, 50, 50 );
           }
         }
         else
         {
           if ( state.isFinalState () )
           {
-            g.fillOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+            g.fillOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8 );
           }
           else
           {
-            g.fillOval ( b - 1, b - 1, d.width - b, d.height - b );
+            g.fillOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
+                - b );
           }
         }
       }
@@ -322,7 +328,7 @@ public final class StateView extends VertexView
         g.setFont ( getFont () );
         FontMetrics metrics = g.getFontMetrics ();
 
-        int dx = ( d.width / 2 )
+        int dx = offset + ( ( d.width - offset ) / 2 )
             - ( metrics.stringWidth ( state.toString () ) / 2 ) - 1;
         int dy = ( d.height / 2 ) + ( metrics.getHeight () / 2 ) - 3;
 
@@ -331,7 +337,7 @@ public final class StateView extends VertexView
 
         int insets = state.isFinalState () ? 20 : 10;
         // short version
-        if ( ( metrics.stringWidth ( state.toString () ) + insets ) > d.width )
+        if ( ( metrics.stringWidth ( state.toString () ) + insets ) > ( d.width - offset ) )
         {
           state.setShortNameUsed ( true );
 
@@ -339,7 +345,7 @@ public final class StateView extends VertexView
           String dots = " ..."; //$NON-NLS-1$
           PrettyToken lastPrettyToken = null;
           while ( ( !prettyString.isEmpty () )
-              && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > d.width ) )
+              && ( ( metrics.stringWidth ( prettyString.toString () + dots ) + 2 * dx ) > ( d.width - offset ) ) )
           {
             lastPrettyToken = prettyString.removeLastPrettyToken ();
           }
@@ -349,9 +355,9 @@ public final class StateView extends VertexView
             char [] chars = lastPrettyToken.getChar ();
             int i = 0;
             String addText = ""; //$NON-NLS-1$
-            while ( i < chars.length
+            while ( ( i < chars.length )
                 && ( ( metrics.stringWidth ( prettyString.toString () + addText
-                    + dots ) + 2 * dx ) <= d.width ) )
+                    + dots ) + 2 * dx ) <= ( d.width - offset ) ) )
             {
               addText += chars [ i ];
               i++ ;
@@ -366,11 +372,14 @@ public final class StateView extends VertexView
                 lastPrettyToken.getStyle () ) );
           }
 
+          dx += offset;
+
           // center the dots if there are no pretty tokens
           if ( prettyString.isEmpty () )
           {
             dots = "..."; //$NON-NLS-1$
-            dx = ( d.width / 2 ) - ( metrics.stringWidth ( dots ) / 2 ) - 1;
+            dx = offset + ( ( d.width - offset ) / 2 )
+                - ( metrics.stringWidth ( dots ) / 2 ) - 1;
           }
 
           prettyString.addPrettyToken ( new PrettyToken ( dots, Style.NONE ) );
@@ -424,19 +433,22 @@ public final class StateView extends VertexView
 
         if ( state.isPowerState () )
         {
-          g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+          g.drawRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
+              d.height - b, 50, 50 );
           if ( state.isFinalState () )
           {
-            g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
-                50, 50 );
+            g.drawRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8, 50, 50 );
           }
         }
         else
         {
-          g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+          g.drawOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
+              - b );
           if ( state.isFinalState () )
           {
-            g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+            g.drawOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8 );
           }
         }
       }
@@ -446,19 +458,22 @@ public final class StateView extends VertexView
 
         if ( state.isPowerState () )
         {
-          g.drawRoundRect ( b - 1, b - 1, d.width - b, d.height - b, 50, 50 );
+          g.drawRoundRect ( offset + b - 1, b - 1, d.width - b - offset,
+              d.height - b, 50, 50 );
           if ( state.isFinalState () )
           {
-            g.drawRoundRect ( b + 3, b + 3, d.width - b - 8, d.height - b - 8,
-                50, 50 );
+            g.drawRoundRect ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8, 50, 50 );
           }
         }
         else
         {
-          g.drawOval ( b - 1, b - 1, d.width - b, d.height - b );
+          g.drawOval ( offset + b - 1, b - 1, d.width - b - offset, d.height
+              - b );
           if ( state.isFinalState () )
           {
-            g.drawOval ( b + 3, b + 3, d.width - b - 8, d.height - b - 8 );
+            g.drawOval ( offset + b + 3, b + 3, d.width - b - 8 - offset,
+                d.height - b - 8 );
           }
         }
       }
@@ -466,15 +481,16 @@ public final class StateView extends VertexView
       {
         g.setFont ( getFont ().deriveFont ( Font.BOLD ) );
         g.setColor ( this.preferenceTransition );
-        // Manipulate the clipping area
-        g2.setClip ( -100, 0, 150, 70 );
 
-        // Paint an arrow and a string start if state is start state
-        g.drawLine ( -50, 35, 0, 35 );
-        g.fillPolygon ( new int []
-        { -6, -6, 0 }, new int []
-        { 30, 40, 35 }, 3 );
-        g.drawString ( "Start", -40, 30 ); //$NON-NLS-1$
+        g.drawLine ( 0, 35, START_OFFSET, 35 );
+
+        g.drawLine ( START_OFFSET - 2, 34, START_OFFSET - 2, 36 );
+        g.drawLine ( START_OFFSET - 3, 33, START_OFFSET - 3, 37 );
+        g.drawLine ( START_OFFSET - 4, 32, START_OFFSET - 4, 38 );
+        g.drawLine ( START_OFFSET - 5, 31, START_OFFSET - 5, 39 );
+        g.drawLine ( START_OFFSET - 6, 30, START_OFFSET - 6, 40 );
+
+        g.drawString ( "Start", 10, 30 ); //$NON-NLS-1$
       }
     }
   }
@@ -484,6 +500,12 @@ public final class StateView extends VertexView
    * The serial version uid.
    */
   private static final long serialVersionUID = -8873631550630271091L;
+
+
+  /**
+   * The start offset.
+   */
+  private final static int START_OFFSET = 50;
 
 
   /**
@@ -510,11 +532,18 @@ public final class StateView extends VertexView
    */
   public static final int getWidth ( State state )
   {
+    int width = 70;
     if ( state.isPowerState () )
     {
-      return 120;
+      width = 120;
     }
-    return 70;
+
+    if ( state.isStartState () )
+    {
+      width += START_OFFSET;
+    }
+
+    return width;
   }
 
 
@@ -563,7 +592,17 @@ public final class StateView extends VertexView
     double a = ( r.getWidth () + 1 ) / 2;
     double b = ( r.getHeight () + 1 ) / 2;
 
-    // x0,y0 - center of ellipse
+    if ( getCell () instanceof DefaultStateView )
+    {
+      State state = ( ( DefaultStateView ) getCell () ).getState ();
+      if ( state.isStartState () )
+      {
+        x = r.getX () + START_OFFSET;
+        a = ( r.getWidth () - START_OFFSET + 1 ) / 2;
+      }
+    }
+
+    // x0, y0 - center of ellipse
     double x0 = x + a;
     double y0 = y + b;
 
@@ -572,7 +611,6 @@ public final class StateView extends VertexView
     double y1 = p.getY ();
 
     // calculate straight line equation through point and ellipse center
-    // y = d * x + h
     double dx = x1 - x0;
     double dy = y1 - y0;
 

@@ -188,13 +188,11 @@ public class Minimizer
     this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
-    
-    //TODO BM add pretty string
-    
-    // Add a final step to show the new machine.
-    this.previousSteps.push ( new MinimizeItem (getGroups (), null,
-        new ArrayList < Transition > () ) );
 
+    // Add a final step to show the new machine.
+    this.previousSteps.push ( new MinimizeItem ( getGroups (), Messages
+        .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ),  //$NON-NLS-1$
+        new ArrayList < Transition > () ) );
 
     while ( this.previousSteps.size () > 1 )
     {
@@ -267,6 +265,7 @@ public class Minimizer
    */
   private boolean begin = true;
 
+
   /**
    * List of the {@link Transition}s.
    */
@@ -294,7 +293,6 @@ public class Minimizer
     if ( this.newGroupStates.size () > 0 )
     {
       this.activeGroups.add ( this.newGroupStates );
-      
 
       ArrayList < ArrayList < DefaultStateView > > oldGroup = new ArrayList < ArrayList < DefaultStateView > > ();
       for ( ArrayList < DefaultStateView > group : this.activeGroups )
@@ -308,7 +306,7 @@ public class Minimizer
       ArrayList < Transition > transitionList = new ArrayList < Transition > ();
       transitionList.addAll ( this.transitions );
       this.previousSteps.push ( new MinimizeItem ( oldGroup,
-         createPrettyString(this.newGroupStates), transitionList ) );
+          createPrettyString ( this.newGroupStates ), transitionList ) );
       this.newGroupStates = new ArrayList < DefaultStateView > ();
       this.minimize ();
       return;
@@ -319,25 +317,26 @@ public class Minimizer
 
   /**
    * Create a new {@link PrettyString}.
-   *
-   * @param states the list of the {@link DefaultStateView}s.
    * 
+   * @param states the list of the {@link DefaultStateView}s.
    * @return The created {@link PrettyString}.
    */
   private PrettyString createPrettyString (
       ArrayList < DefaultStateView > states )
   {
-    PrettyString prettyString = new PrettyString();
-    
+    PrettyString prettyString = new PrettyString ();
+
     prettyString.addPrettyToken ( new PrettyToken ( Messages
         .getString ( "MinimizeMachineDialog.PrettyString" ) //$NON-NLS-1$
         + " ", Style.NONE ) ); //$NON-NLS-1$
-    
-    for ( int i = 0 ; i < states.size (); i++){
-      if (i != 0){
+
+    for ( int i = 0 ; i < states.size () ; i++ )
+    {
+      if ( i != 0 )
+      {
         prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$>
       }
-      prettyString.addPrettyPrintable( states.get(i).getState () );
+      prettyString.addPrettyPrintable ( states.get ( i ).getState () );
     }
     return prettyString;
   }

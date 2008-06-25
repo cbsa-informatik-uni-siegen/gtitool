@@ -15,6 +15,12 @@ public abstract class WordException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -6629160292930504905L;
+
+
+  /**
    * The {@link Word}.
    */
   private Word word;

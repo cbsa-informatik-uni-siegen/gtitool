@@ -172,6 +172,12 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
 
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -1954392510970145068L;
+
+
+  /**
    * The error {@link Color}.
    */
   private static final Color ERROR_COLOR = Color.RED;
@@ -320,8 +326,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         handleUndo ();
       }
@@ -341,8 +347,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         handleRedo ();
       }
@@ -364,8 +370,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         try
         {
@@ -399,8 +405,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         Clipboard.getInstance ().copy (
             StyledParserPanel.this.editor.getSelectedText () );
@@ -421,8 +427,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         StyledParserPanel.this.editor.replaceSelection ( Clipboard
             .getInstance ().paste () );
@@ -585,8 +591,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         handleUndo ();
       }
@@ -598,8 +604,8 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         handleRedo ();
       }
@@ -1200,8 +1206,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( @SuppressWarnings ( "unused" )
-      E newObject )
+      public void parseableChanged ( @SuppressWarnings ( "unused" ) E newObject )
       {
         removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerThis );
         StyledParserPanel.this.editor
@@ -1214,8 +1219,7 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void parseableChanged ( @SuppressWarnings ( "unused" )
-      E newObject )
+      public void parseableChanged ( @SuppressWarnings ( "unused" ) E newObject )
       {
         StyledParserPanel.this.synchronizedStyledParserPanel
             .removeParseableChangedListener ( StyledParserPanel.this.parseableChangedListenerOther );

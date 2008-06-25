@@ -443,7 +443,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ().setDividerLocationPDATable (
@@ -522,8 +521,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void valueChanged ( @SuppressWarnings ( "unused" )
-      GraphSelectionEvent event )
+      public void valueChanged (
+          @SuppressWarnings ( "unused" ) GraphSelectionEvent event )
       {
         updateSelected ();
       }
@@ -537,8 +536,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        */
       @SuppressWarnings ( "synthetic-access" )
       @Override
-      public void mousePressed ( @SuppressWarnings ( "unused" )
-      MouseEvent e )
+      public void mousePressed ( @SuppressWarnings ( "unused" ) MouseEvent e )
       {
         MachinePanel.this.mouseDown = true;
       }
@@ -549,8 +547,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
        */
       @Override
       @SuppressWarnings ( "synthetic-access" )
-      public void mouseReleased ( @SuppressWarnings ( "unused" )
-      MouseEvent e )
+      public void mouseReleased ( @SuppressWarnings ( "unused" ) MouseEvent e )
       {
         MachinePanel.this.mouseDown = false;
       }
@@ -1069,8 +1066,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent event )
+  public final void handleConsoleTableFocusLost ( FocusEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -1083,9 +1079,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleConsoleTableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+  public final void handleConsoleTableMouseExited ( MouseEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -1194,9 +1188,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleMachinePDATableFocusLost (
-      @SuppressWarnings ( "unused" )
-      FocusEvent event )
+  public final void handleMachinePDATableFocusLost ( FocusEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1211,9 +1203,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleMachinePDATableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+  public final void handleMachinePDATableMouseExited ( MouseEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1228,9 +1218,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleMachinePDATableValueChanged (
-      @SuppressWarnings ( "unused" )
-      ListSelectionEvent event )
+  public final void handleMachinePDATableValueChanged ( ListSelectionEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1260,8 +1248,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleMachineTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent event )
+  public final void handleMachineTableFocusLost ( FocusEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1276,9 +1263,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleMachineTableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+  public final void handleMachineTableMouseExited ( MouseEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1293,9 +1278,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleMachineTableValueChanged (
-      @SuppressWarnings ( "unused" )
-      ListSelectionEvent event )
+  public final void handleMachineTableValueChanged ( ListSelectionEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -2076,8 +2059,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       {
 
         @SuppressWarnings ( "synthetic-access" )
-        public void editingCanceled ( @SuppressWarnings ( "unused" )
-        ChangeEvent event )
+        public void editingCanceled (
+            @SuppressWarnings ( "unused" ) ChangeEvent event )
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
@@ -2086,8 +2069,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
         @SuppressWarnings ( "synthetic-access" )
-        public void editingStopped ( @SuppressWarnings ( "unused" )
-        ChangeEvent event )
+        public void editingStopped (
+            @SuppressWarnings ( "unused" ) ChangeEvent event )
         {
           MachinePanel.this.cellEditingMode = false;
           clearHighlight ();
@@ -2101,8 +2084,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       {
 
         @Override
-        public void focusLost ( @SuppressWarnings ( "unused" )
-        FocusEvent event )
+        public void focusLost ( @SuppressWarnings ( "unused" ) FocusEvent event )
         {
           cellEditor.cancelCellEditing ();
         }

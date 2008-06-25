@@ -14,6 +14,12 @@ public abstract class AbstractKeyImpl implements Key
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 2125585173762329248L;
+
+
+  /**
    * The encoded value.
    */
   private byte [] encoded = null;

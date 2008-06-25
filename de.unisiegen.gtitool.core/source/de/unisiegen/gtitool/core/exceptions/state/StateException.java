@@ -15,6 +15,12 @@ public abstract class StateException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -1337383732135123383L;
+
+
+  /**
    * Allocates a new {@link StateException}.
    */
   public StateException ()

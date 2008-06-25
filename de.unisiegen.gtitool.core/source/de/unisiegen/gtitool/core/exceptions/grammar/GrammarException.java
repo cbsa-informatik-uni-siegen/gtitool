@@ -16,6 +16,12 @@ public abstract class GrammarException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -4580002477138412539L;
+
+
+  /**
    * Allocates a new {@link GrammarException}.
    */
   public GrammarException ()

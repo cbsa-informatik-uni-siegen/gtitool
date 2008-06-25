@@ -507,8 +507,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleConsoleTableFocusLost ( @SuppressWarnings ( "unused" )
-  FocusEvent event )
+  public final void handleConsoleTableFocusLost ( FocusEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -521,9 +520,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleConsoleTableMouseExited (
-      @SuppressWarnings ( "unused" )
-      MouseEvent event )
+  public final void handleConsoleTableMouseExited ( MouseEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -989,7 +986,6 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         fireModifyStatusChanged ( modified );

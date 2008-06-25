@@ -100,8 +100,7 @@ public final class PreferencesDialog implements
     @Override
     public final Component getTreeCellRendererComponent ( JTree tree,
         Object value, boolean sel, boolean expanded, boolean leaf, int row,
-        @SuppressWarnings ( "unused" )
-        boolean focus )
+        @SuppressWarnings ( "unused" ) boolean focus )
     {
       super.getTreeCellRendererComponent ( tree, value, sel, expanded, leaf,
           row, sel );
@@ -152,8 +151,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -215,8 +213,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -279,8 +276,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -331,8 +327,7 @@ public final class PreferencesDialog implements
      * @see DefaultComboBoxModel#addElement(Object)
      */
     @Override
-    public final void addElement ( @SuppressWarnings ( "unused" )
-    Object object )
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
     {
       throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
     }
@@ -592,7 +587,8 @@ public final class PreferencesDialog implements
 
 
   /**
-   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol}.
+   * The initial {@link ColorItem} of the parser start {@link NonterminalSymbol}
+   * .
    */
   private ColorItem initialColorItemStartNonterminalSymbol;
 
@@ -1203,8 +1199,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.alphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelInput
@@ -1215,7 +1211,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreAlphabet.setText ( Messages
@@ -1268,8 +1263,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderAutoStep
             .setValue ( PreferenceManager.DEFAULT_AUTO_STEP_INTERVAL_ITEM
@@ -1280,7 +1275,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreAutoStep.setText ( Messages
@@ -1445,8 +1439,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         TreePath selectedPath = PreferencesDialog.this.gui.jGTITreeColors
             .getSelectionModel ().getSelectionPath ();
@@ -1515,7 +1509,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreColorList.setText ( Messages
@@ -1659,8 +1652,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLanguage
             .setSelectedItem ( new LanguageItem (
@@ -1701,7 +1694,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreLanguage.setText ( Messages
@@ -1765,8 +1757,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxLookAndFeel
             .setSelectedItem ( new LookAndFeelItem (
@@ -1806,7 +1798,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreLookAndFeel.setText ( Messages
@@ -1847,8 +1838,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxMouseSelection
             .setSelectedIndex ( PreferenceManager.DEFAULT_MOUSE_SELECTION_ITEM
@@ -1886,7 +1877,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreMouseSelection.setText ( Messages
@@ -1926,8 +1916,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed ( @SuppressWarnings ( "unused" )
-          ActionEvent event )
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent event )
           {
             PreferencesDialog.this.nonterminalSymbolSetItem.restore ();
             PreferencesDialog.this.gui.terminalPanelForm
@@ -1939,7 +1929,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreNonterminalSymbolSet.setText ( Messages
@@ -2002,8 +1991,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.pushDownAlphabetItem.restore ();
         PreferencesDialog.this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
@@ -2015,7 +2004,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestorePushDownAlphabet.setText ( Messages
@@ -2059,8 +2047,8 @@ public final class PreferencesDialog implements
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void actionPerformed ( @SuppressWarnings ( "unused" )
-          ActionEvent event )
+          public void actionPerformed (
+              @SuppressWarnings ( "unused" ) ActionEvent event )
           {
             PreferencesDialog.this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
                 .setSelected ( de.unisiegen.gtitool.core.preferences.PreferenceManager.DEFAULT_USE_PUSH_DOWN_ALPHABET );
@@ -2123,8 +2111,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.startSymbolItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm.styledStartNonterminalSymbolParserPanel
@@ -2136,7 +2124,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreTerminalSymbolSet.setText ( Messages
@@ -2194,8 +2181,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.terminalSymbolSetItem.restore ();
         PreferencesDialog.this.gui.terminalPanelForm
@@ -2207,7 +2194,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreTerminalSymbolSet.setText ( Messages
@@ -2265,8 +2251,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTIComboBoxTransition
             .setSelectedIndex ( PreferenceManager.DEFAULT_TRANSITION_ITEM
@@ -2304,7 +2290,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreTranstion.setText ( Messages
@@ -2337,8 +2322,8 @@ public final class PreferencesDialog implements
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         PreferencesDialog.this.gui.jGTISliderZoom
             .setValue ( PreferenceManager.DEFAULT_ZOOM_FACTOR_ITEM.getFactor () );
@@ -2375,7 +2360,6 @@ public final class PreferencesDialog implements
         new LanguageChangedListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void languageChanged ()
           {
             jMenuItemRestoreZoomFactor.setText ( Messages

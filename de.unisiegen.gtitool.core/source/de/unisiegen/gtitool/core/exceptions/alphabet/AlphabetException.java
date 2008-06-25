@@ -18,6 +18,12 @@ public abstract class AlphabetException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -1506538633279948561L;
+
+
+  /**
    * The {@link Alphabet}.
    */
   private Alphabet alphabet;

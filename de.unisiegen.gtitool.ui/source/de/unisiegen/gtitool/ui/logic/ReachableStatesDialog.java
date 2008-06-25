@@ -1204,7 +1204,6 @@ public final class ReachableStatesDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ().setDividerLocationReachableStates (
@@ -1217,7 +1216,6 @@ public final class ReachableStatesDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ()

@@ -273,7 +273,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
      * The reachable states enabled button state.
      */
     ENABLED_REACHABLE_STATES,
-    
+
     /**
      * The reorder state names enabled button state.
      */
@@ -438,7 +438,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     this.modifyStatusChangedListener = new ModifyStatusChangedListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       public void modifyStatusChanged ( boolean modified )
       {
         if ( modified )
@@ -3083,7 +3082,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           removeButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
           removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
-          
+
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
@@ -3105,7 +3104,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
           addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
           addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
-          
+
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
         }
       }

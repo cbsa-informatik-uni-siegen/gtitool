@@ -127,8 +127,8 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
       @SuppressWarnings ( "synthetic-access" )
       @Override
       protected boolean importComponent ( JGTITabbedPane source,
-          @SuppressWarnings ( "unused" )
-          JGTITabbedPane target, Component component )
+          @SuppressWarnings ( "unused" ) JGTITabbedPane target,
+          Component component )
       {
         int sourceIndex = source.getSelectedIndex ();
         String title = source.getTitleAt ( sourceIndex );
@@ -157,7 +157,6 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
     addMouseMotionListener ( new MouseMotionAdapter ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
       @Override
       public void mouseDragged ( MouseEvent event )
       {
@@ -216,8 +215,8 @@ public class JGTITabbedPane extends JTabbedPane implements DropTargetListener
    * 
    * @see DropTargetListener#dragExit(DropTargetEvent)
    */
-  public final void dragExit ( @SuppressWarnings ( "unused" )
-  DropTargetEvent event )
+  public final void dragExit (
+      @SuppressWarnings ( "unused" ) DropTargetEvent event )
   {
     this.dropPoint = null;
     repaint ();

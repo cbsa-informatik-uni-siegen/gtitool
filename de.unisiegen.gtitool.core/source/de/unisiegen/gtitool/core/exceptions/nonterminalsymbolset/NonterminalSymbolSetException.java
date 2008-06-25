@@ -19,6 +19,12 @@ public abstract class NonterminalSymbolSetException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 4736623122416917799L;
+
+
+  /**
    * The {@link NonterminalSymbolSet}.
    */
   private NonterminalSymbolSet nonterminalSymbolSet;

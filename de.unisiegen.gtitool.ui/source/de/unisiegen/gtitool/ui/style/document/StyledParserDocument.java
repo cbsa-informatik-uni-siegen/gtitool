@@ -138,7 +138,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
           /**
            * {@inheritDoc}
            */
-          @SuppressWarnings ( "synthetic-access" )
           @Override
           public void colorChanged ()
           {
@@ -453,8 +452,7 @@ public final class StyledParserDocument < E extends Entity < E > > extends
           }
 
 
-          public void restart ( @SuppressWarnings ( "unused" )
-          String text )
+          public void restart ( @SuppressWarnings ( "unused" ) String text )
           {
             throw new UnsupportedOperationException ();
           }

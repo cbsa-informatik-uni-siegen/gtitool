@@ -39,6 +39,12 @@ public abstract class CoreException extends Exception
 
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 6682352657854266693L;
+
+
+  /**
    * The detail message
    */
   private PrettyString message;

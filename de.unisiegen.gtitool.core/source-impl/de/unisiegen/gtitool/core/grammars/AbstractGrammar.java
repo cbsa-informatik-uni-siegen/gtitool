@@ -35,6 +35,12 @@ public abstract class AbstractGrammar implements Grammar
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -445079972963576721L;
+
+
+  /**
    * List of listeners
    */
   private EventListenerList listenerList = new EventListenerList ();
@@ -338,8 +344,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnClass(int)
    */
-  public Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public Class < ? > getColumnClass (
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return Production.class;
   }
@@ -361,8 +367,7 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getColumnName(int)
    */
-  public String getColumnName ( @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public String getColumnName ( @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return ""; //$NON-NLS-1$
   }
@@ -497,8 +502,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#getValueAt(int, int)
    */
-  public Object getValueAt ( int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public Object getValueAt ( int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return this.productions.get ( rowIndex );
   }
@@ -509,9 +514,8 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see javax.swing.table.TableModel#isCellEditable(int, int)
    */
-  public boolean isCellEditable ( @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public boolean isCellEditable ( @SuppressWarnings ( "unused" ) int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return false;
   }
@@ -640,10 +644,9 @@ public abstract class AbstractGrammar implements Grammar
    * 
    * @see TableModel#setValueAt(Object, int, int)
    */
-  public final void setValueAt ( @SuppressWarnings ( "unused" )
-  Object value, @SuppressWarnings ( "unused" )
-  int rowIndex, @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public final void setValueAt ( @SuppressWarnings ( "unused" ) Object value,
+      @SuppressWarnings ( "unused" ) int rowIndex,
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     // Do nothing
   }

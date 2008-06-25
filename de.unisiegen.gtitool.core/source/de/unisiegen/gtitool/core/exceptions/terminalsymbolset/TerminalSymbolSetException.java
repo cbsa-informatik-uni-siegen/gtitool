@@ -19,6 +19,12 @@ public abstract class TerminalSymbolSetException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 6723215045771309535L;
+
+
+  /**
    * The {@link TerminalSymbolSet}.
    */
   private TerminalSymbolSet terminalSymbolSet;

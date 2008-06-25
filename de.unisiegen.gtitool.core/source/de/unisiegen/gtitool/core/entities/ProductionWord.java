@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.storage.Storable;
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings ( "unchecked" )
 public interface ProductionWord extends Entity < ProductionWord >, Storable,
     Modifyable, Iterable < ProductionWordMember >
 {
@@ -63,11 +62,12 @@ public interface ProductionWord extends Entity < ProductionWord >, Storable,
    * @return The {@link ProductionWordMember} with the given index.
    */
   public ProductionWordMember get ( int index );
-  
+
+
   /**
    * Returns the size of the {@link ProductionWord}.
-   *
+   * 
    * @return the size of the {@link ProductionWord}.
    */
-  public int size();
+  public int size ();
 }

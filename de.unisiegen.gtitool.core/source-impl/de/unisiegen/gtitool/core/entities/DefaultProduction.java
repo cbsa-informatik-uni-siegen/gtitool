@@ -210,8 +210,7 @@ public final class DefaultProduction implements Production
    * @see Object#equals(Object)
    */
   @Override
-  public final boolean equals ( @SuppressWarnings ( "unused" )
-  Object other )
+  public final boolean equals ( Object other )
   {
     if ( other instanceof DefaultProduction )
     {
@@ -231,7 +230,6 @@ public final class DefaultProduction implements Production
   /**
    * Let the listeners know that the modify status has changed.
    */
-  @SuppressWarnings ( "unused" )
   private final void fireModifyStatusChanged ()
   {
     ModifyStatusChangedListener [] listeners = this.listenerList

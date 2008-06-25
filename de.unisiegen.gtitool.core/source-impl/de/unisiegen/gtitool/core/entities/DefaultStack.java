@@ -95,10 +95,9 @@ public final class DefaultStack implements Stack
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo( Object)
+   * @see Comparable#compareTo(Object)
    */
-  public final int compareTo ( @SuppressWarnings ( "unused" )
-  Stack other )
+  public final int compareTo ( Stack other )
   {
     ArrayList < Symbol > firstList = new ArrayList < Symbol > ();
     ArrayList < Symbol > secondList = new ArrayList < Symbol > ();

@@ -64,8 +64,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * 
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public final void actionPerformed ( @SuppressWarnings ( "unused" )
-    ActionEvent event )
+    public final void actionPerformed (
+        @SuppressWarnings ( "unused" ) ActionEvent event )
     {
       ParserTableCellEditor.this.stopCellEditing ();
     }
@@ -113,8 +113,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * 
      * @see ItemListener#itemStateChanged(ItemEvent)
      */
-    public final void itemStateChanged ( @SuppressWarnings ( "unused" )
-    ItemEvent event )
+    public final void itemStateChanged (
+        @SuppressWarnings ( "unused" ) ItemEvent event )
     {
       ParserTableCellEditor.this.stopCellEditing ();
     }
@@ -263,11 +263,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
    *      int, int)
    */
   public final Component getTableCellEditorComponent (
-      @SuppressWarnings ( "unused" )
-      JTable table, Object value, @SuppressWarnings ( "unused" )
-      boolean isSelected, @SuppressWarnings ( "unused" )
-      int row, @SuppressWarnings ( "unused" )
-      int column )
+      @SuppressWarnings ( "unused" ) JTable table, Object value,
+      @SuppressWarnings ( "unused" ) boolean isSelected, int row, int column )
   {
     this.delegate.setValue ( value );
 

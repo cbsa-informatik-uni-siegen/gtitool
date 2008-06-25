@@ -425,8 +425,8 @@ public final class ConvertMachineDialog implements
      *          converted {@link JGTIGraph}.
      * @param activeSymbolsOriginal The active {@link Symbol}s of the original
      *          {@link JGTIGraph}.
-     * @param activeSymbolsConverted The active {@link Symbol}s of the
-     *          converted {@link JGTIGraph}.
+     * @param activeSymbolsConverted The active {@link Symbol}s of the converted
+     *          {@link JGTIGraph}.
      */
     public StepItem ( Step activeStep, Symbol currentActiveSymbol,
         State currentActiveState, ArrayList < State > activeStatesOriginal,
@@ -1143,7 +1143,6 @@ public final class ConvertMachineDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ().setDividerLocationConvertMachine (
@@ -1156,7 +1155,6 @@ public final class ConvertMachineDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ()

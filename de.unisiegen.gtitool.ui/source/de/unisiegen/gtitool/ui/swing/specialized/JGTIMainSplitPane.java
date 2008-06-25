@@ -196,7 +196,6 @@ public final class JGTIMainSplitPane extends JSplitPane implements
    * 
    * @see Iterable#iterator()
    */
-  @SuppressWarnings ( "unchecked" )
   public final Iterator < EditorPanel > iterator ()
   {
     ArrayList < EditorPanel > editorPanelList = new ArrayList < EditorPanel > (

@@ -225,7 +225,6 @@ public final class StateView extends VertexView
      * 
      * @see VertexRenderer#paint(Graphics)
      */
-    @SuppressWarnings ( "synthetic-access" )
     @Override
     public final void paint ( Graphics g )
     {
@@ -581,9 +580,9 @@ public final class StateView extends VertexView
    * @see VertexView#getPerimeterPoint(EdgeView, Point2D, Point2D)
    */
   @Override
-  public final Point2D getPerimeterPoint ( @SuppressWarnings ( "unused" )
-  EdgeView edge, @SuppressWarnings ( "unused" )
-  Point2D source, Point2D p )
+  public final Point2D getPerimeterPoint (
+      @SuppressWarnings ( "unused" ) EdgeView edge,
+      @SuppressWarnings ( "unused" ) Point2D source, Point2D p )
   {
     Rectangle2D r = getBounds ();
 

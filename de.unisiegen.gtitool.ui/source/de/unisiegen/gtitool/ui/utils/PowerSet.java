@@ -52,7 +52,7 @@ public final class PowerSet < E > implements Iterable < Set < E >>
 
 
     /**
-     * Allocates a new {@link PowerSetIterator}
+     * Allocates a new {@link PowerSet.PowerSetIterator}
      * 
      * @param powerSet The {@link PowerSet}.
      */

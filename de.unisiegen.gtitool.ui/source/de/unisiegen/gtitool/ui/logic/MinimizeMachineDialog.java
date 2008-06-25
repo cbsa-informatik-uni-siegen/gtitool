@@ -174,6 +174,12 @@ public final class MinimizeMachineDialog implements
 
 
   /**
+   * The {@link MinimizeMachineTableModel}.
+   */
+  private MinimizeMachineTableModel minimizeMachineTableModel;
+
+
+  /**
    * Allocates a new {@link MinimizeMachineDialog}.
    * 
    * @param mainWindowForm The parent {@link MainWindowForm}.
@@ -238,6 +244,22 @@ public final class MinimizeMachineDialog implements
     this.machine = this.modelOriginal.getMachine ();
 
     handleStart ();
+  }
+
+
+  /**
+   * Adds a outline comment.
+   * 
+   * @param prettyString The {@link PrettyString}.
+   * @param transitions List with the {@link Transition}s.
+   */
+  public final void addOutlineComment ( PrettyString prettyString,
+      ArrayList < Transition > transitions )
+  {
+    this.minimizeMachineTableModel.addRow ( prettyString, transitions );
+    this.gui.jGTITableOutline.changeSelection ( this.minimizeMachineTableModel
+        .getRowCount () - 1, MinimizeMachineTableModel.OUTLINE_COLUMN, false,
+        false );
   }
 
 
@@ -427,7 +449,7 @@ public final class MinimizeMachineDialog implements
       this.timer.cancel ();
       this.timer = null;
     }
-    
+
     PreferenceManager.getInstance ().setMinimizeMachineDialogPreferences (
         this.gui );
     this.gui.dispose ();
@@ -477,7 +499,7 @@ public final class MinimizeMachineDialog implements
       this.gui.jGTIScrollPaneConverted.setViewportView ( graph );
 
     }
-    highlightTransitions(this.gui.jGTITableOutline.getSelectedRow ());
+    highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
   }
 
 
@@ -504,34 +526,12 @@ public final class MinimizeMachineDialog implements
     buildMinimalMachine ();
 
     this.machinePanel.getMainWindow ().handleNew ( this.model );
-    
+
     PreferenceManager.getInstance ().setMinimizeMachineDialogPreferences (
         this.gui );
 
     this.gui.dispose ();
 
-  }
-
-
-  /**
-   * The {@link MinimizeMachineTableModel}.
-   */
-  private MinimizeMachineTableModel minimizeMachineTableModel;
-
-
-  /**
-   * Adds a outline comment.
-   * 
-   * @param prettyString The {@link PrettyString}.
-   * @param transitions List with the {@link Transition}s.
-   */
-  public final void addOutlineComment ( PrettyString prettyString,
-      ArrayList < Transition > transitions )
-  {
-    this.minimizeMachineTableModel.addRow ( prettyString, transitions );
-    this.gui.jGTITableOutline.changeSelection ( this.minimizeMachineTableModel
-        .getRowCount () - 1, MinimizeMachineTableModel.OUTLINE_COLUMN, false,
-        false );
   }
 
 
@@ -546,10 +546,11 @@ public final class MinimizeMachineDialog implements
     this.endReached = false;
     setStatus ();
     this.gui.jGTIScrollPaneConverted.setViewportView ( null );
-    
+
     this.minimizeMachineTableModel.removeLastRow ();
     int index = this.minimizeMachineTableModel.getRowCount () - 1;
-    this.gui.jGTITableOutline.getSelectionModel ().setSelectionInterval ( index, index );
+    this.gui.jGTITableOutline.getSelectionModel ().setSelectionInterval (
+        index, index );
     highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
   }
 
@@ -581,6 +582,32 @@ public final class MinimizeMachineDialog implements
 
 
   /**
+   * Highlight the {@link Transition}s.
+   * 
+   * @param selectedRow The actual selected table row.
+   */
+  public void highlightTransitions ( int selectedRow )
+  {
+    for ( DefaultTransitionView current : this.modelOriginal
+        .getTransitionViewList () )
+    {
+      current.getTransition ().setActive ( false );
+    }
+    if ( selectedRow > -1 )
+    {
+      ArrayList < Transition > transitionList = this.minimizeMachineTableModel
+          .getTransitionsAt ( selectedRow );
+      for ( Transition current : transitionList )
+      {
+        current.setActive ( true );
+        this.modelOriginal.getGraphModel ().cellsChanged (
+            DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
+      }
+    }
+  }
+
+
+  /**
    * Minimize the given {@link Machine}.
    */
   public final void minimize ()
@@ -591,14 +618,13 @@ public final class MinimizeMachineDialog implements
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
-    
+
     this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationMinimizeMachine () );
     this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ().setDividerLocationMinimizeMachine (
@@ -611,7 +637,6 @@ public final class MinimizeMachineDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
             PreferenceManager.getInstance ()
@@ -619,8 +644,7 @@ public final class MinimizeMachineDialog implements
                     ( ( Integer ) event.getNewValue () ).intValue () );
           }
         } );
-    
-    
+
     show ();
   }
 
@@ -652,8 +676,8 @@ public final class MinimizeMachineDialog implements
     logger.debug ( "show", "show the minimize machine dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     Rectangle rect = PreferenceManager.getInstance ()
         .getMinimizeMachineDialogBounds ();
-    if ( rect.x == PreferenceManager.DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_X
-        || rect.y == PreferenceManager.DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_Y )
+    if ( ( rect.x == PreferenceManager.DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_X )
+        || ( rect.y == PreferenceManager.DEFAULT_MINIMIZE_MACHINE_DIALOG_POSITION_Y ) )
     {
       rect.x = this.mainWindowForm.getBounds ().x
           + ( this.mainWindowForm.getWidth () / 2 )
@@ -664,26 +688,5 @@ public final class MinimizeMachineDialog implements
     }
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Highlight the {@link Transition}s.
-   *
-   * @param selectedRow The actual selected table row.
-   */
-  public void highlightTransitions ( int selectedRow )
-  {
-    for (DefaultTransitionView current : this.modelOriginal.getTransitionViewList ()){
-      current.getTransition ().setActive ( false );
-    }
-    if (selectedRow > -1  ){
-      ArrayList < Transition > transitionList = this.minimizeMachineTableModel.getTransitionsAt(selectedRow);
-      for (Transition current : transitionList){
-        current.setActive ( true );
-        this.modelOriginal.getGraphModel ().cellsChanged (
-            DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
-      }
-    }
   }
 }

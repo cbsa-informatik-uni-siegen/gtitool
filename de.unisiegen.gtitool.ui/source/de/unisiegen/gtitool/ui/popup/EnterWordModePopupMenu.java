@@ -96,8 +96,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
@@ -119,9 +119,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         EnterWordModePopupMenu.this.machinePanel.handleWordPreviousStep ();
       }
@@ -140,9 +139,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         EnterWordModePopupMenu.this.machinePanel.handleWordNextStep ();
       }
@@ -158,8 +156,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         EnterWordModePopupMenu.this.mainWindowForm.getLogic ().addButtonState (
             ButtonState.ENABLED_NAVIGATION_START );

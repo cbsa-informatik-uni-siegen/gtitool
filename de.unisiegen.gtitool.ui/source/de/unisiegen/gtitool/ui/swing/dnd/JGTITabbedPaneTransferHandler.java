@@ -24,6 +24,12 @@ public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -8174848415474590619L;
+
+
+  /**
    * The source actions supported for dragging using this
    * {@link JGTITabbedPaneTransferHandler}.
    * 
@@ -93,8 +99,8 @@ public abstract class JGTITabbedPaneTransferHandler extends TransferHandler
    * @see TransferHandler#getSourceActions(JComponent)
    */
   @Override
-  public final int getSourceActions ( @SuppressWarnings ( "unused" )
-  JComponent jComponent )
+  public final int getSourceActions (
+      @SuppressWarnings ( "unused" ) JComponent jComponent )
   {
     return this.sourceActions;
   }

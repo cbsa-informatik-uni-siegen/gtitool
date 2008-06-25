@@ -18,6 +18,12 @@ public abstract class StateSetException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 5805197047703666253L;
+
+
+  /**
    * The {@link StateSet}.
    */
   private StateSet stateSet;

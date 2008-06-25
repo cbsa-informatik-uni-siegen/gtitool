@@ -16,6 +16,12 @@ public abstract class MachineException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -7104191444360119894L;
+
+
+  /**
    * Allocates a new {@link MachineException}.
    */
   public MachineException ()

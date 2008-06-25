@@ -8,13 +8,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 
-
 /**
  * The {@link HistoryPath} {@link TableCellRenderer}.
  * 
  * @author Christian Fehler
- * @version $Id: PrettyStringHistoryTableCellRenderer.java 811 2008-04-18
- *          13:52:03Z fehler $
+ * @version $Id$
  */
 public final class HistoryPathTableCellRenderer extends
     DefaultTableCellRenderer
@@ -41,13 +39,10 @@ public final class HistoryPathTableCellRenderer extends
    * @see TableCellRenderer#getTableCellRendererComponent(JTable, Object,
    *      boolean, boolean, int, int)
    */
-  @SuppressWarnings ( "unchecked" )
   @Override
   public Component getTableCellRendererComponent ( JTable table, Object value,
-      boolean isSelected, @SuppressWarnings ( "unused" )
-      boolean hasFocus, @SuppressWarnings ( "unused" )
-      int row, @SuppressWarnings ( "unused" )
-      int column )
+      boolean isSelected, @SuppressWarnings ( "unused" ) boolean hasFocus,
+      int row, @SuppressWarnings ( "unused" ) int column )
   {
     HistoryPath historyPath = null;
     if ( value instanceof HistoryPath )

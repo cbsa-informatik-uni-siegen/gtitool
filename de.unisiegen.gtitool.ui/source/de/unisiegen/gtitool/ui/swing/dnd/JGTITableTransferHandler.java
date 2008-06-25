@@ -22,6 +22,12 @@ public abstract class JGTITableTransferHandler extends TransferHandler
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 4410258775710237188L;
+
+
+  /**
    * The source actions supported for dragging using this
    * {@link JGTITableTransferHandler}.
    * 
@@ -56,8 +62,7 @@ public abstract class JGTITableTransferHandler extends TransferHandler
     {
       for ( DataFlavor transferFlavor : dataFlavor )
       {
-        if ( transferFlavor
-            .equals ( JGTITableModelRowsTransferable.dataFlavor ) )
+        if ( transferFlavor.equals ( JGTITableModelRowsTransferable.dataFlavor ) )
         {
           return true;
         }
@@ -92,8 +97,8 @@ public abstract class JGTITableTransferHandler extends TransferHandler
    * @see TransferHandler#getSourceActions(JComponent)
    */
   @Override
-  public final int getSourceActions ( @SuppressWarnings ( "unused" )
-  JComponent jComponent )
+  public final int getSourceActions (
+      @SuppressWarnings ( "unused" ) JComponent jComponent )
   {
     return this.sourceActions;
   }

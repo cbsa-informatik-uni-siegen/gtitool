@@ -19,6 +19,12 @@ public abstract class TransitionException extends CoreException
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = 1613128194519194065L;
+
+
+  /**
    * The {@link Transition}.
    */
   private Transition transition;

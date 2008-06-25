@@ -78,6 +78,12 @@ public abstract class AbstractMachine implements Machine
 {
 
   /**
+   * The serial version uid.
+   */
+  private static final long serialVersionUID = -7657607466102471211L;
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger
@@ -316,8 +322,8 @@ public abstract class AbstractMachine implements Machine
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void alphabetChanged ( @SuppressWarnings ( "unused" )
-      Alphabet newAlphabet )
+      public void alphabetChanged (
+          @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
       {
         fireTableStructureChanged ();
       }
@@ -329,8 +335,8 @@ public abstract class AbstractMachine implements Machine
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void transitionChanged ( @SuppressWarnings ( "unused" )
-      Transition newTransition )
+      public void transitionChanged (
+          @SuppressWarnings ( "unused" ) Transition newTransition )
       {
         fireTableDataChanged ();
       }
@@ -341,8 +347,7 @@ public abstract class AbstractMachine implements Machine
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void stateChanged ( @SuppressWarnings ( "unused" )
-      State newState )
+      public void stateChanged ( @SuppressWarnings ( "unused" ) State newState )
       {
         fireTableDataChanged ();
       }
@@ -1214,8 +1219,8 @@ public abstract class AbstractMachine implements Machine
    * 
    * @see TableModel#getColumnClass(int)
    */
-  public final Class < ? > getColumnClass ( @SuppressWarnings ( "unused" )
-  int columnIndex )
+  public final Class < ? > getColumnClass (
+      @SuppressWarnings ( "unused" ) int columnIndex )
   {
     return PrettyPrintable.class;
   }
@@ -1638,8 +1643,8 @@ public abstract class AbstractMachine implements Machine
    * 
    * @see TableModel#isCellEditable(int, int)
    */
-  public final boolean isCellEditable ( @SuppressWarnings ( "unused" )
-  int rowIndex, int columnIndex )
+  public final boolean isCellEditable (
+      @SuppressWarnings ( "unused" ) int rowIndex, int columnIndex )
   {
     return columnIndex > 0;
   }

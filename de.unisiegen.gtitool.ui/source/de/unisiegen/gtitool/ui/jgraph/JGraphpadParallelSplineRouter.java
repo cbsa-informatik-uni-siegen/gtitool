@@ -40,8 +40,6 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 	 * @param edge
 	 */
 	public Object[] getParallelEdges(EdgeView edge) {
-		// FIXME: The model is stored in the cells only in the default
-		// implementations. Otherwise we must use the real model here.
 		return DefaultGraphModel.getEdgesBetween(emptyModel, edge.getSource()
 				.getParentView().getCell(), edge.getTarget().getParentView()
 				.getCell(), false);

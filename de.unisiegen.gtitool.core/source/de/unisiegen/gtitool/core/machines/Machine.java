@@ -165,6 +165,24 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * The index of the {@link State} column.
+   */
+  public static final int STATE_COLUMN = 0;
+
+
+  /**
+   * The index of the epsilon {@link Transition} column.
+   */
+  public static final int EPSILON_COLUMN = 1;
+
+
+  /**
+   * The count of special columns.
+   */
+  public static final int SPECIAL_COLUMN_COUNT = 2;
+
+
+  /**
    * The available machines.
    */
   public static final String [] AVAILABLE_MACHINES =

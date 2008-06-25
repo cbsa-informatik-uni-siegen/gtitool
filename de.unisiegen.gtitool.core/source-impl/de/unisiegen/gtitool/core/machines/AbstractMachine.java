@@ -85,24 +85,6 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * The index of the {@link State} column.
-   */
-  private static final int STATE_COLUMN = 0;
-
-
-  /**
-   * The index of the epsilon {@link Transition} column.
-   */
-  private static final int EPSILON_COLUMN = 1;
-
-
-  /**
-   * The count of special columns.
-   */
-  private static final int SPECIAL_COLUMN_COUNT = 2;
-
-
-  /**
    * Returns the {@link Machine} with the given {@link Machine} type.
    * 
    * @param machineType The {@link Machine} type.

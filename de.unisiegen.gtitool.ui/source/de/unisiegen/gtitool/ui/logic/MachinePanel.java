@@ -48,12 +48,12 @@ import org.jgraph.graph.GraphSelectionModel;
 
 import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
+import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
-import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -1035,39 +1035,27 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     stateList.add ( beginState );
     highlightStateActive ( stateList );
 
-    // epsilon column
-    if ( column == 1 )
+    Symbol symbol;
+    if ( column == Machine.EPSILON_COLUMN )
     {
-      // transitions
-      for ( Transition currentTransition : this.machine.getTransition () )
-      {
-        // TODOCF check this
-        if ( ( currentTransition.getTransitionType ().equals (
-            TransitionType.EPSILON_ONLY ) || currentTransition
-            .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
-            && currentTransition.getStateBegin ().equals ( beginState ) )
-        {
-          currentTransition.setActive ( true );
-        }
-      }
+      symbol = new DefaultSymbol ();
     }
-    // no epsilon column
     else
     {
-      // transitions
-      Symbol symbol = this.machine.getAlphabet ().get ( column - 2 );
-      for ( Transition currentTransition : this.machine.getTransition () )
+      symbol = this.machine.getAlphabet ().get ( column - 2 );
+    }
+
+    for ( Transition currentTransition : this.machine.getTransition () )
+    {
+      if ( currentTransition.contains ( symbol )
+          && currentTransition.getStateBegin ().equals ( beginState ) )
       {
-        if ( currentTransition.contains ( symbol )
-            && currentTransition.getStateBegin ().equals ( beginState ) )
+        for ( Symbol currentSymbol : currentTransition.getSymbol () )
         {
-          for ( Symbol currentSymbol : currentTransition.getSymbol () )
-          {
-            currentSymbol.setError ( false );
-            currentSymbol.setActive ( currentSymbol.equals ( symbol ) );
-          }
-          currentTransition.setActive ( true );
+          currentSymbol.setError ( false );
+          currentSymbol.setActive ( currentSymbol.equals ( symbol ) );
         }
+        currentTransition.setActive ( true );
       }
     }
 

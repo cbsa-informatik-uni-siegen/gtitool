@@ -1385,7 +1385,6 @@ public final class ConvertMachineDialog implements
     finishedStates.add ( state );
     for ( Transition current : state.getTransitionBegin () )
     {
-      // TODOCF check this
       if ( ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY ) || current
           .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
           && !result.contains ( current.getStateEnd () ) )

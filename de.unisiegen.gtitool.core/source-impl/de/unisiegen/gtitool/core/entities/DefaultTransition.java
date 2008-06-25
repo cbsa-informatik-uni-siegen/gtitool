@@ -1304,26 +1304,24 @@ public final class DefaultTransition implements Transition
    */
   public final PrettyString toPrettyString ()
   {
-    PrettyString prettyString = new PrettyString ();
     if ( this.symbolSet.size () == 0 )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "", Style.NONE ) ); //$NON-NLS-1$
+      throw new RuntimeException ( "symbol set is empty" ); //$NON-NLS-1$
     }
-    else
+
+    PrettyString prettyString = new PrettyString ();
+    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    boolean first = true;
+    for ( Symbol current : this.symbolSet )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
-      boolean first = true;
-      for ( Symbol current : this.symbolSet )
+      if ( !first )
       {
-        if ( !first )
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-        }
-        first = false;
-        prettyString.addPrettyPrintable ( current );
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
       }
-      prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
+      first = false;
+      prettyString.addPrettyPrintable ( current );
     }
+    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )
@@ -1364,31 +1362,38 @@ public final class DefaultTransition implements Transition
    */
   public final PrettyString toStackOperationPrettyString ()
   {
+    if ( this.symbolSet.size () == 0 )
+    {
+      throw new RuntimeException ( "symbol set is empty" ); //$NON-NLS-1$
+    }
+
     // does not use the active style of symbols
     PrettyString prettyString = new PrettyString ();
     prettyString.addPrettyToken ( new PrettyToken ( "(", Style.NONE ) ); //$NON-NLS-1$
     prettyString.addPrettyPrintable ( this.stateBegin );
     prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
-    if ( getSymbol ().size () == 0 )
+
+    prettyString.addPrettyToken ( new PrettyToken ( "{", Style.NONE ) ); //$NON-NLS-1$
+    boolean first = true;
+    for ( Symbol current : this.symbolSet )
     {
-      prettyString.addPrettyToken ( new PrettyToken ( "", Style.NONE ) ); //$NON-NLS-1$
-    }
-    else
-    {
-      for ( Symbol current : this.symbolSet )
+      if ( !first )
       {
-        if ( current.isEpsilon () )
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
-              Style.SYMBOL ) );
-        }
-        else
-        {
-          prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
-              Style.SYMBOL ) );
-        }
+        prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
+      }
+      first = false;
+      if ( current.isEpsilon () )
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( "\u03B5", //$NON-NLS-1$
+            Style.SYMBOL ) );
+      }
+      else
+      {
+        prettyString.addPrettyToken ( new PrettyToken ( current.getName (),
+            Style.SYMBOL ) );
       }
     }
+    prettyString.addPrettyToken ( new PrettyToken ( "}", Style.NONE ) ); //$NON-NLS-1$
 
     prettyString.addPrettyToken ( new PrettyToken ( ", ", Style.NONE ) ); //$NON-NLS-1$
     if ( getPushDownWordRead ().size () == 0 )
@@ -1430,26 +1435,25 @@ public final class DefaultTransition implements Transition
   @Override
   public final String toString ()
   {
-    StringBuilder result = new StringBuilder ();
     if ( this.symbolSet.size () == 0 )
     {
-      // do nothing
+      // used from the parser
+      return "";//$NON-NLS-1$
     }
-    else
+
+    StringBuilder result = new StringBuilder ();
+    result.append ( "{" ); //$NON-NLS-1$
+    boolean first = true;
+    for ( Symbol current : this.symbolSet )
     {
-      result.append ( "{" ); //$NON-NLS-1$
-      boolean first = true;
-      for ( Symbol current : this.symbolSet )
+      if ( !first )
       {
-        if ( !first )
-        {
-          result.append ( ", " ); //$NON-NLS-1$
-        }
-        first = false;
-        result.append ( current );
+        result.append ( ", " ); //$NON-NLS-1$
       }
-      result.append ( "}" ); //$NON-NLS-1$
+      first = false;
+      result.append ( current );
     }
+    result.append ( "}" ); //$NON-NLS-1$
 
     if ( ( this.pushDownWordRead.size () > 0 )
         || ( this.pushDownWordWrite.size () > 0 ) )

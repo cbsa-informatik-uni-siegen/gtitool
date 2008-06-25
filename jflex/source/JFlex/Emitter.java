@@ -413,9 +413,9 @@ final public class Emitter {
       println(" * on "+date+" from the specification file");    
       println(" * <tt>"+path+"</tt>");      
       println(" */");
-      // modify begin
+      // MODIFYBEGIN
       println("@SuppressWarnings ( \"all\" )");
-      // modify end
+      // MODIFYEND
     }   
 
     if ( scanner.isPublic ) print("public ");

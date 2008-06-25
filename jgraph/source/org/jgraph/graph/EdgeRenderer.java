@@ -554,13 +554,13 @@ public class EdgeRenderer extends JComponent implements CellViewRenderer,
 	 * Paint the renderer.
 	 */
 	public void paint(Graphics g) {
-	  // modify begin
+	  // MODIFYBEGIN
 	  if (true)
 	  {
 	    super.paint (g);
 	    return ;
 	  }
-	  // modify end
+	  // MODIFYEND
 	  
 		if (view.isLeaf()) {
 			Shape edgeShape = view.getShape();

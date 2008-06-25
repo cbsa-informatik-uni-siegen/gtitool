@@ -4,6 +4,7 @@
  * Copyright (c) 2001-2004 Gaudenz Alder
  *  
  */
+// MODIFYBEGIN
 package de.unisiegen.gtitool.ui.jgraph;
 
 import java.awt.geom.Point2D;
@@ -22,7 +23,7 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.PortView;
 
 import de.unisiegen.gtitool.core.entities.State;
-//modify end
+// MODIFYEND
 
 /**
  * A simple implementation for an edge.

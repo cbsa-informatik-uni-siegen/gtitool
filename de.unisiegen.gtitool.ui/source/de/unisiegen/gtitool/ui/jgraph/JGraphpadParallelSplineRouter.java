@@ -89,14 +89,14 @@ public class JGraphpadParallelSplineRouter extends DefaultEdge.LoopRouting {
 				double m = (from.getY() - to.getY())
 						/ (from.getX() - to.getX());
 				
-				// modify begin
+				// MODIFYBEGIN
 				// bug fix
         if ( m == 0 )
         {
           //System.err.println ("bugfix");
           m = -0.0000000001;
         }
-        // modify end
+        // MODIFYEND
 				
 				double theta = Math.atan(-1 / m);
 

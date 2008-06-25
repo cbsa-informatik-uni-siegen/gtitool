@@ -4,7 +4,7 @@
  *  
  * See LICENSE file in distribution for licensing details of this source file
  */
-// modify begin
+// MODIFYBEGIN
 package de.unisiegen.gtitool.ui.jgraph;
 
 import java.awt.BasicStroke;
@@ -56,7 +56,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 @SuppressWarnings ( "all" )
 public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellViewRenderer,
 		Serializable {
-  //modify end
+  // MODIFYEND
 
 	/** Static Graphics used for Font Metrics */
 	protected static transient Graphics fontGraphics;
@@ -141,7 +141,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 	/** Cached spline curve */
 	protected transient Spline2D spline;
 	
-	// modify begin
+	// MODIFYBEGIN
   /**
    * The error {@link Transition} color.
    */
@@ -164,7 +164,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
    * The normal {@link Transition} color.
    */
   private Color preferenceTransition;
-  // modify end
+  // MODIFYEND
   
   
 	/**
@@ -174,7 +174,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 		defaultForeground = UIManager.getColor("Tree.textForeground");
 		defaultBackground = UIManager.getColor("Tree.textBackground");
 		
-	// modify begin
+	// MODIFYBEGIN
     this.preferenceTransition = PreferenceManager.getInstance ()
         .getColorItemTransition ().getColor ();
     this.preferenceTransitionError = PreferenceManager.getInstance ()
@@ -215,7 +215,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
             EdgeRenderer.this.preferenceTransitionSelected = newColor;
           }
         } );
-    //modify end
+    // MODIFYEND
 	}
 
 	/**
@@ -523,11 +523,11 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 		Point2D p0 = view.getPoint(0);
 		if (pos != null && tmp != null && p0 != null) {
 			if (!isLabelTransformEnabled()) {
-			  // modify begin
+			  // MODIFYBEGIN
 			  Point2D result = view.getAbsoluteLabelPositionFromRelative(pos);
 			  result.setLocation ( result.getX (), result.getY()-8 );
 				return result;
-			  // modify end
+			  // MODIFYEND
 			} else {
 				Point2D vector = view.getLabelVector();
 				double dx = vector.getX();
@@ -654,7 +654,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 				translateGraphics(g);
 				g.setColor(getForeground());
 				
-				// modify begin
+				// MODIFYBEGIN
         // Error
         if ( ( this.view.getCell () instanceof DefaultTransitionView )
             && ( ( ( DefaultTransitionView ) this.view.getCell () )
@@ -679,7 +679,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
         {
           g2.setColor ( this.preferenceTransition );
         }
-        // modify end
+        // MODIFYEND
         
 				if (lineWidth > 0) {
 					g2.setStroke(new BasicStroke(lineWidth, c, j));
@@ -704,7 +704,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 						g2.draw(view.lineShape);
 				}
 
-				// modify begin
+				// MODIFYBEGIN
         // if (selected) { // Paint Selected
         // g2.setStroke(GraphConstants.SELECTION_STROKE);
         // g2.setColor(highlightColor);
@@ -715,7 +715,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
         // if (view.endShape != null)
         // g2.draw(view.endShape);
         // }
-        // modify end
+        // MODIFYEND
 				
 				g2.setStroke(new BasicStroke(1));
 				g
@@ -725,7 +725,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
 						.getAllAttributes());
 				JGraph graph = (JGraph)this.graph.get();
 				if (labels != null) {
-				  // modify begin
+				  // MODIFYBEGIN
           for ( int i = 0 ; i < labels.length ; i++ )
           {
             if ( this.view.getCell () instanceof DefaultTransitionView )
@@ -736,13 +736,13 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
                   this.view, i ), false || !this.simpleExtraLabels );
             }
           }
-          // modify end
+          // MODIFYEND
 				}
 				if (graph.getEditingCell() != view.getCell()) {
 					g.setFont(getFont());
 					Object label = graph.convertValueToString(view);
 					if (label != null) {
-					  // modify begin
+					  // MODIFYBEGIN
             if ( this.view.getCell () instanceof DefaultTransitionView )
             {
               Transition transition = ( ( DefaultTransitionView ) this.view
@@ -750,7 +750,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
               paintTransition ( g, transition, getLabelPosition ( this.view ),
                   true );
             }
-            // modify end
+            // MODIFYEND
 					}
 				}
 			}
@@ -801,7 +801,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
         dy = -metrics.getDescent();
       }
       
-      // modify begin
+      // MODIFYBEGIN
       for ( PrettyToken currentToken : prettyString )
       {
         Font font = null;
@@ -834,7 +834,7 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
           dx += this.metrics.charWidth ( chars [ i ] );
         }
       }
-      // modify end
+      // MODIFYEND
       
       if (applyTransform) {
         // Undo the transform

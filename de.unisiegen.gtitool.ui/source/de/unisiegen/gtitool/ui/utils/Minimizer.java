@@ -188,6 +188,13 @@ public class Minimizer
     this.previousSteps.push ( this.activeMinimizeItem );
 
     minimize ();
+    
+    //TODO BM add pretty string
+    
+    // Add a final step to show the new machine.
+    this.previousSteps.push ( new MinimizeItem (getGroups (), null,
+        new ArrayList < Transition > () ) );
+
 
     while ( this.previousSteps.size () > 1 )
     {

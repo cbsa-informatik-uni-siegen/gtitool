@@ -1,7 +1,6 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
-import org.jgraph.graph.DefaultEdge;
 
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.storage.Element;

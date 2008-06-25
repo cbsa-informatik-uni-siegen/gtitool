@@ -505,7 +505,7 @@ public final class StateView extends VertexView
   /**
    * The start offset.
    */
-  private final static int START_OFFSET = 50;
+  public final static int START_OFFSET = 50;
 
 
   /**

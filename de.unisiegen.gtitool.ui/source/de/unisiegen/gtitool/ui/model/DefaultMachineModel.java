@@ -11,7 +11,6 @@ import javax.swing.event.EventListenerList;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;
-import org.jgraph.util.JGraphpadParallelSplineRouter;
 
 import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
@@ -41,6 +40,7 @@ import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.EdgeRenderer;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
+import de.unisiegen.gtitool.ui.jgraph.JGraphpadParallelSplineRouter;
 import de.unisiegen.gtitool.ui.jgraph.StateView;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;

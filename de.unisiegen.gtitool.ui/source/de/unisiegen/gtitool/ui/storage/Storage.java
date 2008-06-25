@@ -53,6 +53,12 @@ public final class Storage
 
 
   /**
+   * The debug flag.
+   */
+  private static final boolean DEBUG = false;
+
+
+  /**
    * Returns the single instance of the {@link Storage}.
    * 
    * @return The single instance of the {@link Storage}.
@@ -146,22 +152,34 @@ public final class Storage
     }
     catch ( ParserConfigurationException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( SAXException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( IOException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       Throwable exception;
       if ( exc instanceof InvocationTargetException )
       {
@@ -221,22 +239,34 @@ public final class Storage
     }
     catch ( ParserConfigurationException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( SAXException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Parse" ) ); //$NON-NLS-1$
     }
     catch ( IOException exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Readed" ) ); //$NON-NLS-1$
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       Throwable exception;
       if ( exc instanceof InvocationTargetException )
       {
@@ -295,7 +325,10 @@ public final class Storage
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace ();
+      if ( DEBUG )
+      {
+        exc.printStackTrace ();
+      }
       throw new StoreException ( Messages.getString ( "StoreException.Store" ) ); //$NON-NLS-1$
     }
   }

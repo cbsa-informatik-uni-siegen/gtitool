@@ -4,13 +4,12 @@
  * 
  * See LICENSE file in distribution for license details
  */
-package org.jgraph.util;
+package de.unisiegen.gtitool.ui.jgraph;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.EdgeView;
 import org.jgraph.graph.GraphConstants;

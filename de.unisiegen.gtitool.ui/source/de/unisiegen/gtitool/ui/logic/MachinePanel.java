@@ -40,7 +40,6 @@ import javax.swing.table.TableColumn;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
-import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultGraphModel;
 import org.jgraph.graph.GraphConstants;
@@ -70,6 +69,7 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
 import de.unisiegen.gtitool.ui.convert.Converter;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
+import de.unisiegen.gtitool.ui.jgraph.DefaultEdge;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.jgraph.DefaultTransitionView;
 import de.unisiegen.gtitool.ui.jgraph.GPCellViewFactory;
@@ -1351,19 +1351,20 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleReorderStateNames ()
   {
-    MultiItem item = new MultiItem();
+    MultiItem item = new MultiItem ();
     String stateName = "z"; //$NON-NLS-1$
     int count = 0;
     for ( State current : this.machine.getState () )
     {
       try
       {
-        
+
         String oldName = current.getName ();
-        
+
         current.setName ( stateName + count );
-        
-        item.addItem ( new StateChangedItem(this.jGTIGraph, current, oldName , current.isStartState (), current.isFinalState ()) );
+
+        item.addItem ( new StateChangedItem ( this.jGTIGraph, current, oldName,
+            current.isStartState (), current.isFinalState () ) );
       }
       catch ( StateException exc )
       {

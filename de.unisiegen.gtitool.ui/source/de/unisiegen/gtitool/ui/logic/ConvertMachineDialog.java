@@ -1444,7 +1444,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleBeginStep ()
   {
-    performBeginStep ( true );
+    performBeginStep ();
   }
 
 
@@ -1468,7 +1468,7 @@ public final class ConvertMachineDialog implements
    */
   public final void handleEndStep ()
   {
-    performEndStep ( true );
+    performEndStep ();
   }
 
 
@@ -1633,11 +1633,8 @@ public final class ConvertMachineDialog implements
 
   /**
    * Performs the begin step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
    */
-  private final void performBeginStep ( boolean manualStep )
+  private final void performBeginStep ()
   {
     logger.debug ( "performBeginStep", "handle begin step" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -1657,11 +1654,8 @@ public final class ConvertMachineDialog implements
 
   /**
    * Performs the end step.
-   * 
-   * @param manualStep Flag that indicates if the {@link Step} is a manual
-   *          {@link Step}.
    */
-  private final void performEndStep ( boolean manualStep )
+  private final void performEndStep ()
   {
     logger.debug ( "performEndStep", "handle nfa to dfa end step" ); //$NON-NLS-1$ //$NON-NLS-2$
 

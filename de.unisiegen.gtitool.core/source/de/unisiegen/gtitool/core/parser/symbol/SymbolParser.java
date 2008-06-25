@@ -54,7 +54,6 @@ public final class SymbolParser extends SymbolAbstractParser
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }

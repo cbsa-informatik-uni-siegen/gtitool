@@ -16,7 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @version $Id$
  */
 public final class ColorItem extends DefaultMutableTreeNode implements
-    Cloneable, Comparable < ColorItem >
+    Comparable < ColorItem >
 {
 
   /**

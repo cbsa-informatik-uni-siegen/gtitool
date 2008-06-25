@@ -137,7 +137,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * @param event The {@link EventObject}.
      * @return True
      */
-    public final boolean shouldSelectCell ( EventObject event )
+    public final boolean shouldSelectCell (
+        @SuppressWarnings ( "unused" ) EventObject event )
     {
       return true;
     }
@@ -149,7 +150,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
      * @param event The {@link EventObject}.
      * @return True.
      */
-    public final boolean startCellEditing ( EventObject event )
+    public final boolean startCellEditing (
+        @SuppressWarnings ( "unused" ) EventObject event )
     {
       return true;
     }

@@ -1066,7 +1066,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleConsoleTableFocusLost ( FocusEvent event )
+  public final void handleConsoleTableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -1079,7 +1080,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleConsoleTableMouseExited ( MouseEvent event )
+  public final void handleConsoleTableMouseExited (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -1188,7 +1190,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleMachinePDATableFocusLost ( FocusEvent event )
+  public final void handleMachinePDATableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1203,7 +1206,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleMachinePDATableMouseExited ( MouseEvent event )
+  public final void handleMachinePDATableMouseExited (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1218,7 +1222,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleMachinePDATableValueChanged ( ListSelectionEvent event )
+  public final void handleMachinePDATableValueChanged (
+      @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1248,7 +1253,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleMachineTableFocusLost ( FocusEvent event )
+  public final void handleMachineTableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1263,7 +1269,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleMachineTableMouseExited ( MouseEvent event )
+  public final void handleMachineTableMouseExited (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {
@@ -1278,7 +1285,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    * 
    * @param event The {@link ListSelectionEvent}.
    */
-  public final void handleMachineTableValueChanged ( ListSelectionEvent event )
+  public final void handleMachineTableValueChanged (
+      @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
     if ( !this.enterWordMode && !this.cellEditingMode )
     {

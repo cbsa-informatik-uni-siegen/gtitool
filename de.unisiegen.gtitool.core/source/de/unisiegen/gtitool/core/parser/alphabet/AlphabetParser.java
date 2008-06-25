@@ -54,14 +54,13 @@ public final class AlphabetParser extends AlphabetAbstractParser
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */

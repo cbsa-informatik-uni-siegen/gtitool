@@ -507,7 +507,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @param event The {@link FocusEvent}.
    */
-  public final void handleConsoleTableFocusLost ( FocusEvent event )
+  public final void handleConsoleTableFocusLost (
+      @SuppressWarnings ( "unused" ) FocusEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -520,7 +521,8 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * 
    * @param event The {@link MouseEvent}.
    */
-  public final void handleConsoleTableMouseExited ( MouseEvent event )
+  public final void handleConsoleTableMouseExited (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     this.gui.jGTITableErrors.clearSelection ();
     this.gui.jGTITableWarnings.clearSelection ();
@@ -1139,8 +1141,9 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * @param rows The {@link JGTITableModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRows ( JGTITable jGTITable, JGTITableModelRows rows,
-      int targetIndex )
+  private final void moveRows (
+      @SuppressWarnings ( "unused" ) JGTITable jGTITable,
+      JGTITableModelRows rows, int targetIndex )
   {
     ArrayList < Production > oldProductions = new ArrayList < Production > ();
     oldProductions.addAll ( this.grammar.getProduction () );

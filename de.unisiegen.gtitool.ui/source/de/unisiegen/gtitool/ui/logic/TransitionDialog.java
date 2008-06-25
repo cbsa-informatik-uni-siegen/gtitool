@@ -798,8 +798,9 @@ public final class TransitionDialog implements
    * @param rows The {@link JGTIListModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRowsToAlphabet ( JGTIList jGTIList,
-      JGTIListModelRows rows, int targetIndex )
+  private final void moveRowsToAlphabet (
+      @SuppressWarnings ( "unused" ) JGTIList jGTIList, JGTIListModelRows rows,
+      @SuppressWarnings ( "unused" ) int targetIndex )
   {
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )
@@ -823,8 +824,9 @@ public final class TransitionDialog implements
    * @param rows The {@link JGTIListModelRows}.
    * @param targetIndex The target index.
    */
-  private final void moveRowsToChangeOverSet ( JGTIList jGTIList,
-      JGTIListModelRows rows, int targetIndex )
+  private final void moveRowsToChangeOverSet (
+      @SuppressWarnings ( "unused" ) JGTIList jGTIList, JGTIListModelRows rows,
+      @SuppressWarnings ( "unused" ) int targetIndex )
   {
     ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
     for ( int index : rows.getRowIndices () )

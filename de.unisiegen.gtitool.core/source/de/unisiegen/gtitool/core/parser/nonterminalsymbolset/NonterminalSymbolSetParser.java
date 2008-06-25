@@ -8,12 +8,15 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
 
 
 /**
- * The {@link de.unisiegen.gtitool.core.entities.NonterminalSymbol} set parser class.
+ * The {@link de.unisiegen.gtitool.core.entities.NonterminalSymbol} set parser
+ * class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NonterminalSymbolSetParser.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
-public final class NonterminalSymbolSetParser extends NonterminalSymbolSetAbstractParser
+public final class NonterminalSymbolSetParser extends
+    NonterminalSymbolSetAbstractParser
 {
 
   /**
@@ -54,14 +57,13 @@ public final class NonterminalSymbolSetParser extends NonterminalSymbolSetAbstra
    */
   @Override
   public void report_fatal_error ( String message, Object info )
-      throws Exception
   {
     report_error ( message, info );
   }
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */

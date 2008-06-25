@@ -7,8 +7,6 @@ CF		- Keller von links nach rechts darstellen (Drachen Buch)
 CF		- Epsilon Symbol - Gefundene Fehler: History bei Transition mit Epsilon und
 		  einem anderen Symbol
 
-BM		- Im Machine Panel gibt es ein TODO, es werden alle Zuständ umbenannt, daraus
-		  soll ein Undo/Redo Step erzeugt werden.
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 
 

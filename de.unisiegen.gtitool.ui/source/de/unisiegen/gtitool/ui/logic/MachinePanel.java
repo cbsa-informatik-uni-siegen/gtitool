@@ -90,7 +90,9 @@ import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
+import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
 import de.unisiegen.gtitool.ui.storage.Storage;
 import de.unisiegen.gtitool.ui.style.StyledStateSetParserPanel;
 import de.unisiegen.gtitool.ui.style.editor.ParserTableCellEditor;
@@ -1349,14 +1351,19 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleReorderStateNames ()
   {
-    // TODOBM create one redo/undo step
+    MultiItem item = new MultiItem();
     String stateName = "z"; //$NON-NLS-1$
     int count = 0;
     for ( State current : this.machine.getState () )
     {
       try
       {
+        
+        String oldName = current.getName ();
+        
         current.setName ( stateName + count );
+        
+        item.addItem ( new StateChangedItem(this.jGTIGraph, current, oldName , current.isStartState (), current.isFinalState ()) );
       }
       catch ( StateException exc )
       {
@@ -1367,6 +1374,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       count++ ;
     }
 
+    this.redoUndoHandler.addItem ( item );
     performCellsChanged ();
   }
 

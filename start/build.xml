@@ -80,6 +80,59 @@
 		<ant dir="${ui.basedir}" target="dist" inheritall="false" />
 	</target>
 
+	<!-- dist dev -->
+	<target name="dist-dev" depends="dist-preclean,dist-dev-gtitool,dist-compile,dist-jar,dist-exe,dist-clean" description="Clean up and produce all distributions">
+		<mkdir dir="${gtitooldir}" />
+		<!-- copy files -->
+		<copy todir="${gtitooldir}">
+			<fileset dir="${ui.distdir}" includes="*" />
+			<fileset dir="${distdir}" includes="*.jar" />
+		</copy>
+		<!-- sign jar files -->
+		<signjar alias="gtitool" keystore="${keystorefile}" storepass="${storepass}">
+			<fileset dir="${gtitooldir}" includes="*.jar" />
+		</signjar>
+		<!-- copy sh file -->
+		<copy todir="${gtitooldir}" file="${executerdir}/linux/gtitool.sh">
+			<filterset>
+				<filter token="gtitool.version" value="${gtitool.version}" />
+			</filterset>
+		</copy>
+		<!-- copy exe file -->
+		<copy todir="${gtitooldir}" file="${distdir}/gtitool.exe" />
+		<!-- tar file -->
+		<tar destfile="${distdir}/gtitool-${gtitool.version}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${distdir}">
+				<exclude name="gtitool-${gtitool.version}/gtitool.sh" />
+				<include name="gtitool-${gtitool.version}/*" />
+			</tarfileset>
+			<tarfileset dir="${distdir}" mode="755">
+				<include name="gtitool-${gtitool.version}/gtitool.sh" />
+			</tarfileset>
+		</tar>
+		<!-- zip file -->
+		<zip destfile="${distdir}/gtitool-${gtitool.version}.zip" update="yes">
+			<fileset dir="${distdir}">
+				<include name="gtitool-${gtitool.version}/*" />
+			</fileset>
+		</zip>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${gtitooldir}" includes="*" />
+		</move>
+		<!-- chmod -->
+		<chmod file="${distdir}/gtitool.sh" perm="755" />
+		<!-- delete dir -->
+		<delete dir="${gtitooldir}" includeemptydirs="true" />
+		<!-- message -->
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
+
+	<!-- dist dev gtitool -->
+	<target name="dist-dev-gtitool">
+		<ant dir="${ui.basedir}" target="dist-dev" inheritall="false" />
+	</target>
+
 	<!-- dist preclean -->
 	<target name="dist-preclean">
 		<delete includeemptydirs="true" failonerror="false">

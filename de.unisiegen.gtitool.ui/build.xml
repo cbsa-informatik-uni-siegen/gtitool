@@ -60,6 +60,26 @@
 		<!-- message -->
 		<echo message="Distribution ready in ${distdir}" />
 	</target>
+	
+	<!-- dist dev -->
+	<target name="dist-dev" depends="dist-core,dist-jgraph,dist-tinylaf,version-dev,dist-preclean,dist-compile,dist-jar,dist-clean" description="Build distribution">
+		<mkdir dir="${gtitooldir}" />
+		<!-- copy files -->
+		<copy todir="${gtitooldir}">
+			<fileset dir="${core.distdir}" includes="*.jar" />
+			<fileset dir="${jgraph.distdir}" includes="*.jar" />
+			<fileset dir="${tinylaf.distdir}" includes="*.jar" />
+			<fileset dir="${distdir}" includes="*.jar" />
+		</copy>
+		<!-- move files -->
+		<move todir="${distdir}">
+			<fileset dir="${gtitooldir}" includes="*" />
+		</move>
+		<!-- delete dir -->
+		<delete dir="${gtitooldir}" includeemptydirs="true" />
+		<!-- message -->
+		<echo message="Distribution ready in ${distdir}" />
+	</target>
 
 	<!-- dist core -->
 	<target name="dist-core">
@@ -186,25 +206,25 @@
 public interface Version
 {
 
-  /** 
+  /**
    * The major version of the project.
    */
   public static final int MAJOR = ${gtitool.version.major};
 
 
-  /** 
+  /**
    * The minor version of the project.
    */
   public static final int MINOR = ${gtitool.version.minor};
 
 
-  /** 
+  /**
    * The micro version of the project.
    */
   public static final int MICRO = ${gtitool.version.micro};
 
 
-  /** 
+  /**
    * The bugfix version of the project.
    */
   public static final int BUGFIX = ${gtitool.version.bugfix};
@@ -228,6 +248,69 @@ public interface Version
    */
   public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
       + "." + BUGFIX + "_" + BUILD; //$NON-NLS-1$//$NON-NLS-2$
+}
+</echo>
+	</target>
+
+	<!-- version dev -->
+	<target name="version-dev" depends="svn-version" description="Generate the version dev interface">
+		<delete includeemptydirs="true">
+			<fileset dir="${sourcegenerateddir}" includes="**/*" />
+		</delete>
+		<mkdir dir="${sourcegenerateddir}/de/unisiegen/gtitool/ui" />
+		<echo file="${sourcegenerateddir}/de/unisiegen/gtitool/ui/Version.java" append="false">package de.unisiegen.gtitool.ui;
+
+
+/**
+ * Automatically generated interface for the project versions.
+ * 
+ * @author Christian Fehler
+ */
+public interface Version
+{
+
+  /**
+   * The major version of the project.
+   */
+  public static final int MAJOR = ${gtitool.version.major};
+
+
+  /**
+   * The minor version of the project.
+   */
+  public static final int MINOR = ${gtitool.version.minor};
+
+
+  /**
+   * The micro version of the project.
+   */
+  public static final int MICRO = ${gtitool.version.micro} + 1;
+
+
+  /**
+   * The bugfix version of the project.
+   */
+  public static final int BUGFIX = ${gtitool.version.bugfix};
+
+
+  /**
+   * The build version of the project.
+   */
+  public static final int BUILD = ${gtitool.version.build};
+
+
+  /**
+   * The version of the project.
+   */
+  public static final String VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX + " Beta"; //$NON-NLS-1$//$NON-NLS-2$
+
+
+  /**
+   * The full version of the project.
+   */
+  public static final String FULL_VERSION = MAJOR + "." + MINOR + "." + MICRO //$NON-NLS-1$//$NON-NLS-2$
+      + "." + BUGFIX + "_" + BUILD + " Beta"; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 }
 </echo>
 	</target>

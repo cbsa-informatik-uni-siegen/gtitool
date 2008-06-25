@@ -351,8 +351,9 @@ public class Minimizer
     {
       for ( DefaultStateView current : group )
       {
-        current.setGroupColor ( this.colors [ this.activeGroups
-            .indexOf ( group ) ] );
+        int index = ( this.activeGroups
+            .indexOf ( group )) % 10;
+        current.setGroupColor ( this.colors [ index ] );
       }
     }
 

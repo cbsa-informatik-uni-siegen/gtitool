@@ -289,6 +289,12 @@ public final class TransitionDialog implements
 
 
   /**
+   * The epsilon {@link Symbol}.
+   */
+  private Symbol epsilonSymbol = new DefaultSymbol ();
+
+
+  /**
    * Creates a new {@link TransitionDialog}.
    * 
    * @param parent The parent frame.
@@ -375,24 +381,16 @@ public final class TransitionDialog implements
     this.modelAlphabet = new SymbolListModel ();
     this.modelChangeOverSet = new SymbolListModel ();
 
+    this.modelAlphabet.add ( this.epsilonSymbol );
     for ( Symbol symbol : this.alphabet )
     {
       this.modelAlphabet.add ( symbol );
     }
 
-    if ( symbols.size () == 0 )
+    for ( Symbol symbol : symbols )
     {
-      this.modelChangeOverSet.add ( this.epsilonSymbol );
-      symbols.add ( this.epsilonSymbol );
-    }
-    else
-    {
-      this.modelAlphabet.add ( this.epsilonSymbol );
-      for ( Symbol symbol : symbols )
-      {
-        this.modelAlphabet.remove ( symbol );
-        this.modelChangeOverSet.add ( symbol );
-      }
+      this.modelAlphabet.remove ( symbol );
+      this.modelChangeOverSet.add ( symbol );
     }
 
     try
@@ -477,13 +475,9 @@ public final class TransitionDialog implements
         .setCellRenderer ( new PrettyStringListCellRenderer () );
     this.gui.jGTIListChangeOverSet
         .setCellRenderer ( new PrettyStringListCellRenderer () );
+
+    setButtonStatus ();
   }
-
-
-  /**
-   * The epsilon {@link Symbol}.
-   */
-  private Symbol epsilonSymbol = new DefaultSymbol ();
 
 
   /**
@@ -746,7 +740,7 @@ public final class TransitionDialog implements
   /**
    * Update the {@link Transition}.
    */
-  private void handleUpdateTransition ()
+  private final void handleUpdateTransition ()
   {
     TreeSet < Symbol > oldSymbols = new TreeSet < Symbol > ();
     oldSymbols.addAll ( this.transition.getSymbol () );
@@ -763,8 +757,7 @@ public final class TransitionDialog implements
     {
       this.transition.setPushDownWordRead ( this.pushDownWordRead );
       this.transition.setPushDownWordWrite ( this.pushDownWordWrite );
-      this.transition.clear ();
-      this.transition.add ( symbols );
+      this.transition.replace ( symbols );
 
       if ( !this.transition.getPushDownWordRead ()
           .equals ( oldPushDownWordRead )

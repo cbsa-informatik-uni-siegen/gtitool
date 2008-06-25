@@ -586,17 +586,6 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Removes all {@link Symbol}s.
-   */
-  public final void clear ()
-  {
-    this.symbolSet.clear ();
-    fireTransitionChanged ();
-    fireModifyStatusChanged ();
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Comparable#compareTo(Object)
@@ -847,6 +836,40 @@ public final class DefaultTransition implements Transition
   /**
    * {@inheritDoc}
    * 
+   * @see Transition#getTransitionType()
+   */
+  public final TransitionType getTransitionType ()
+  {
+    if ( ( this.symbolSet.size () == 1 )
+        && this.symbolSet.first ().isEpsilon () )
+    {
+      return TransitionType.EPSILON_ONLY;
+    }
+    if ( this.symbolSet.size () >= 1 )
+    {
+      boolean epsilonFound = false;
+      for ( Symbol current : this.symbolSet )
+      {
+        if ( current.isEpsilon () )
+        {
+          epsilonFound = true;
+          break;
+        }
+      }
+      if ( epsilonFound )
+      {
+        return TransitionType.EPSILON_SYMBOL;
+      }
+      return TransitionType.SYMBOL;
+    }
+
+    throw new IllegalArgumentException ( "unknown transition type" ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Object#hashCode()
    */
   @Override
@@ -870,26 +893,6 @@ public final class DefaultTransition implements Transition
   public final boolean isActive ()
   {
     return this.active;
-  }
-
-
-  /**
-   * Returns true, if this {@link DefaultTransition} is a epsilon
-   * {@link DefaultTransition}, otherwise false.
-   * 
-   * @return True, if this {@link DefaultTransition} is a epsilon
-   *         {@link DefaultTransition}, otherwise false.
-   */
-  public final boolean isEpsilonTransition ()
-  {
-    for ( Symbol current : this.symbolSet )
-    {
-      if ( current.isEpsilon () )
-      {
-        return true;
-      }
-    }
-    return false;
   }
 
 
@@ -1033,6 +1036,48 @@ public final class DefaultTransition implements Transition
       TransitionChangedListener listener )
   {
     this.listenerList.remove ( TransitionChangedListener.class, listener );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Transition#replace(Iterable)
+   */
+  public void replace ( Iterable < Symbol > symbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    this.symbolSet.clear ();
+    add ( symbols );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Transition#replace(Symbol)
+   */
+  public void replace ( Symbol symbol )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    this.symbolSet.clear ();
+    add ( symbol );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Transition#replace(Symbol[])
+   */
+  public void replace ( Symbol ... symbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException
+  {
+    this.symbolSet.clear ();
+    add ( symbols );
   }
 
 

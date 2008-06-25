@@ -26,6 +26,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
+import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
@@ -1384,7 +1385,9 @@ public final class ConvertMachineDialog implements
     finishedStates.add ( state );
     for ( Transition current : state.getTransitionBegin () )
     {
-      if ( current.isEpsilonTransition ()
+      // TODOCF check this
+      if ( ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY ) || current
+          .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
           && !result.contains ( current.getStateEnd () ) )
       {
         for ( State currentState : getClosure ( current.getStateEnd (),

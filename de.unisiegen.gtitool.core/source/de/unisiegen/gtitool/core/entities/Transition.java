@@ -22,6 +22,32 @@ public interface Transition extends Entity < Transition >, Storable,
 {
 
   /**
+   * The {@link Transition} type.
+   * 
+   * @author Christian Fehler
+   */
+  public enum TransitionType
+  {
+
+    /**
+     * The {@link Transition} contains only normal {@link Symbol}s.
+     */
+    SYMBOL,
+
+    /**
+     * The {@link Transition} contains only the epsilon {@link Symbol}.
+     */
+    EPSILON_ONLY,
+
+    /**
+     * The {@link Transition} contains the epsilon {@link Symbol} and other
+     * {@link Symbol}s.
+     */
+    EPSILON_SYMBOL;
+  }
+
+
+  /**
    * The value of the id of it was not defined so far.
    */
   public static final int ID_NOT_DEFINED = -1;
@@ -79,12 +105,6 @@ public interface Transition extends Entity < Transition >, Storable,
    * @param listener The {@link TransitionChangedListener}.
    */
   public void addTransitionChangedListener ( TransitionChangedListener listener );
-
-
-  /**
-   * Removes all {@link Symbol}s.
-   */
-  public void clear ();
 
 
   /**
@@ -188,6 +208,14 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
+   * Returns the {@link TransitionType}.
+   * 
+   * @return The {@link TransitionType}.
+   */
+  public TransitionType getTransitionType ();
+
+
+  /**
    * Returns true if this {@link Transition} is a active {@link Transition},
    * otherwise false.
    * 
@@ -195,16 +223,6 @@ public interface Transition extends Entity < Transition >, Storable,
    *         otherwise false.
    */
   public boolean isActive ();
-
-
-  /**
-   * Returns true, if this {@link Transition} is a epsilon {@link Transition},
-   * otherwise false.
-   * 
-   * @return True, if this {@link Transition} is a epsilon {@link Transition},
-   *         otherwise false.
-   */
-  public boolean isEpsilonTransition ();
 
 
   /**
@@ -268,6 +286,53 @@ public interface Transition extends Entity < Transition >, Storable,
    */
   public void removeTransitionChangedListener (
       TransitionChangedListener listener );
+
+
+  /**
+   * Clears the {@link Symbol}s and appends the specified {@link Symbol}s to
+   * the end of this {@link Transition}.
+   * 
+   * @param symbols The {@link Symbol}s to be appended to this
+   *          {@link Transition}.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           {@link Transition} is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           {@link Transition} is not correct.
+   */
+  public void replace ( Iterable < Symbol > symbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException;
+
+
+  /**
+   * Clears the {@link Symbol}s and add the specified {@link Symbol} to the end
+   * of this {@link Transition}.
+   * 
+   * @param symbol The {@link Symbol} to be appended to this {@link Transition}.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           {@link Transition} is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           {@link Transition} is not correct.
+   */
+  public void replace ( Symbol symbol )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException;
+
+
+  /**
+   * Clears the {@link Symbol}s and append the specified {@link Symbol}s to
+   * the end of this {@link Transition}.
+   * 
+   * @param symbols The {@link Symbol}s to be appended to this
+   *          {@link Transition}.
+   * @throws TransitionSymbolNotInAlphabetException If something with the
+   *           {@link Transition} is not correct.
+   * @throws TransitionSymbolOnlyOneTimeException If something with the
+   *           {@link Transition} is not correct.
+   */
+  public void replace ( Symbol ... symbols )
+      throws TransitionSymbolNotInAlphabetException,
+      TransitionSymbolOnlyOneTimeException;
 
 
   /**

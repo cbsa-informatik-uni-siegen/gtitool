@@ -12,6 +12,7 @@ import javax.swing.table.TableColumn;
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.history.HistoryPath;
@@ -203,7 +204,11 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
     for ( Transition currentTransition : state.getTransitionEnd () )
     {
-      if ( currentTransition.isEpsilonTransition () )
+      // TODOCF check this
+      if ( currentTransition.getTransitionType ().equals (
+          TransitionType.EPSILON_ONLY )
+          || currentTransition.getTransitionType ().equals (
+              TransitionType.EPSILON_SYMBOL ) )
       {
         ArrayList < TransitionSymbolPair > newTransitionList = new ArrayList < TransitionSymbolPair > ();
         newTransitionList.addAll ( transitionList );

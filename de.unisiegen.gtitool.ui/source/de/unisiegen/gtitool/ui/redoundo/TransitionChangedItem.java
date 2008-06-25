@@ -103,10 +103,9 @@ public final class TransitionChangedItem extends RedoUndoItem
   {
     this.transition.setPushDownWordRead ( this.newPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.newPushDownWordWrite );
-    this.transition.clear ();
     try
     {
-      this.transition.add ( this.newSymbols );
+      this.transition.replace ( this.newSymbols );
     }
     catch ( TransitionException exc )
     {
@@ -126,10 +125,9 @@ public final class TransitionChangedItem extends RedoUndoItem
   {
     this.transition.setPushDownWordRead ( this.oldPushDownWordRead );
     this.transition.setPushDownWordWrite ( this.oldPushDownWordWrite );
-    this.transition.clear ();
     try
     {
-      this.transition.add ( this.oldSymbols );
+      this.transition.replace ( this.oldSymbols );
     }
     catch ( TransitionException exc )
     {

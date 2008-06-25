@@ -57,35 +57,32 @@ public final class HistoryPath implements Comparable < HistoryPath >
    */
   public final void add ( Transition transition, Symbol symbol )
   {
-    if ( symbol != null && !transition.contains ( symbol ) )
+    if ( ( symbol != null ) && !transition.contains ( symbol ) )
     {
       throw new IllegalArgumentException (
           "the symbol is not a member of the transition" ); //$NON-NLS-1$
     }
 
     Transition newTransition = new DefaultTransition ();
-    
-    // remove the epsilon
-    newTransition.clear ();
-    
+
     newTransition.setStateBegin ( transition.getStateBegin () );
     newTransition.setStateEnd ( transition.getStateEnd () );
-    for ( Symbol current : transition.getSymbol () )
+
+    try
     {
-      try
-      {
-        newTransition.add ( current );
-      }
-      catch ( TransitionSymbolNotInAlphabetException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-      catch ( TransitionSymbolOnlyOneTimeException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      newTransition.replace ( transition.getSymbol () );
+    }
+    catch ( TransitionSymbolNotInAlphabetException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+    catch ( TransitionSymbolOnlyOneTimeException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
     }
 
     for ( Symbol current : newTransition )
@@ -109,7 +106,7 @@ public final class HistoryPath implements Comparable < HistoryPath >
    */
   public final int compareTo ( HistoryPath other )
   {
-    if ( this.startState != null && other.startState != null )
+    if ( ( this.startState != null ) && ( other.startState != null ) )
     {
       return 0;
     }

@@ -54,6 +54,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -1027,7 +1028,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     State beginState = this.machine.getState ( row );
 
-    // States
+    // states
     ArrayList < State > stateList = new ArrayList < State > ();
     stateList.add ( beginState );
     highlightStateActive ( stateList );
@@ -1035,10 +1036,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     // epsilon column
     if ( column == 1 )
     {
-      // Transitions
+      // transitions
       for ( Transition currentTransition : this.machine.getTransition () )
       {
-        if ( currentTransition.isEpsilonTransition ()
+        // TODOCF check this
+        if ( ( currentTransition.getTransitionType ().equals (
+            TransitionType.EPSILON_ONLY ) || currentTransition
+            .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) )
             && currentTransition.getStateBegin ().equals ( beginState ) )
         {
           currentTransition.setActive ( true );
@@ -1048,7 +1052,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     // no epsilon column
     else
     {
-      // Transitions
+      // transitions
       Symbol symbol = this.machine.getAlphabet ().get ( column - 2 );
       for ( Transition currentTransition : this.machine.getTransition () )
       {

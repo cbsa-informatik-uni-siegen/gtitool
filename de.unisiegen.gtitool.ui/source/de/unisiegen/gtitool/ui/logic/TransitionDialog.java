@@ -295,193 +295,8 @@ public final class TransitionDialog implements
 
 
   /**
-   * Creates a new {@link TransitionDialog}.
-   * 
-   * @param parent The parent frame.
-   * @param machinePanel The {@link MachinePanel}.
-   * @param alphabet The {@link Alphabet} available for the {@link Transition}.
-   * @param pushDownAlphabet The push down {@link Alphabet} available for the
-   *          {@link Transition}.
-   * @param stateBegin The {@link State} where the {@link Transition} begins.
-   * @param stateEnd The {@link State} where the {@link Transition} ends.
-   * @param pushDownWordRead The push down word to read.
-   * @param pushDownWordWrite The push down word to write.
-   * @param symbols The Symbols of the {@link Transition}.
-   */
-  public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
-      Alphabet alphabet, Alphabet pushDownAlphabet, State stateBegin,
-      State stateEnd, Word pushDownWordRead, Word pushDownWordWrite,
-      TreeSet < Symbol > symbols )
-  {
-    this.parent = parent;
-    this.machinePanel = machinePanel;
-    this.alphabet = alphabet;
-    this.pushDownAlphabet = pushDownAlphabet;
-
-    // PushDownWordRead
-    setPushDownWordRead ( pushDownWordRead );
-    // PushDownWordWrite
-    setPushDownWordWrite ( pushDownWordWrite );
-    this.stateBegin = stateBegin;
-    this.stateEnd = stateEnd;
-    this.gui = new TransitionDialogForm ( this, parent );
-    String targetName = this.stateEnd == null ? Messages
-        .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
-        .getName ();
-    this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
-        "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
-
-    this.gui.jGTIListChangeOverSet
-        .setTransferHandler ( new JGTIListTransferHandler (
-            TransferHandler.MOVE )
-        {
-
-          /**
-           * The serial version uid.
-           */
-          private static final long serialVersionUID = 0L;
-
-
-          @SuppressWarnings ( "synthetic-access" )
-          @Override
-          protected boolean importListModelRows ( JGTIList jGTIList,
-              JGTIListModelRows rows, int targetIndex )
-          {
-            moveRowsToChangeOverSet ( jGTIList, rows, targetIndex );
-            return true;
-          }
-        } );
-    this.gui.jGTIListChangeOverSet.setDragEnabled ( true );
-    this.gui.jGTIListChangeOverSet
-        .addAllowedDndSource ( this.gui.jGTIListAlphabet );
-
-    this.gui.jGTIListAlphabet.setTransferHandler ( new JGTIListTransferHandler (
-        TransferHandler.MOVE )
-    {
-
-      /**
-       * The serial version uid.
-       */
-      private static final long serialVersionUID = 0L;
-
-
-      @SuppressWarnings ( "synthetic-access" )
-      @Override
-      protected boolean importListModelRows ( JGTIList jGTIList,
-          JGTIListModelRows rows, int targetIndex )
-      {
-        moveRowsToAlphabet ( jGTIList, rows, targetIndex );
-        return true;
-      }
-    } );
-    this.gui.jGTIListAlphabet.setDragEnabled ( true );
-    this.gui.jGTIListAlphabet
-        .addAllowedDndSource ( this.gui.jGTIListChangeOverSet );
-
-    this.modelAlphabet = new SymbolListModel ();
-    this.modelChangeOverSet = new SymbolListModel ();
-
-    this.modelAlphabet.add ( this.epsilonSymbol );
-    for ( Symbol symbol : this.alphabet )
-    {
-      this.modelAlphabet.add ( symbol );
-    }
-
-    for ( Symbol symbol : symbols )
-    {
-      this.modelAlphabet.remove ( symbol );
-      this.modelChangeOverSet.add ( symbol );
-    }
-
-    try
-    {
-      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
-          this.pushDownWordRead, this.pushDownWordWrite, symbols ) );
-    }
-    catch ( TransitionException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-
-    this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
-    this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
-    this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
-
-    // Set the push down alphabet
-    this.gui.styledAlphabetParserPanelPushDownAlphabet
-        .setText ( this.pushDownAlphabet );
-    this.gui.styledWordParserPanelRead.setAlphabet ( this.pushDownAlphabet );
-    this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
-
-    // Set the push down read and write word
-    if ( this.pushDownWordRead != null )
-    {
-      this.gui.styledWordParserPanelRead.setText ( this.pushDownWordRead );
-    }
-    this.gui.styledWordParserPanelRead.parse ();
-    if ( this.pushDownWordWrite != null )
-    {
-      this.gui.styledWordParserPanelWrite.setText ( this.pushDownWordWrite );
-    }
-    this.gui.styledWordParserPanelWrite.parse ();
-
-    /*
-     * Word changed listener
-     */
-    this.gui.styledWordParserPanelRead
-        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( Word newWord )
-          {
-            if ( newWord != null )
-            {
-              setPushDownWordRead ( newWord );
-              updateResultingTransition ();
-            }
-            else
-            {
-              TransitionDialog.this.gui.styledTransitionParserPanel
-                  .setText ( null );
-            }
-            setButtonStatus ();
-          }
-        } );
-    this.gui.styledWordParserPanelWrite
-        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
-        {
-
-          @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( Word newWord )
-          {
-            if ( newWord != null )
-            {
-              setPushDownWordWrite ( newWord );
-              updateResultingTransition ();
-            }
-            else
-            {
-              TransitionDialog.this.gui.styledTransitionParserPanel
-                  .setText ( null );
-            }
-            setButtonStatus ();
-          }
-        } );
-
-    this.gui.jGTIListAlphabet
-        .setCellRenderer ( new PrettyStringListCellRenderer () );
-    this.gui.jGTIListChangeOverSet
-        .setCellRenderer ( new PrettyStringListCellRenderer () );
-
-    setButtonStatus ();
-  }
-
-
-  /**
-   * Creates a new {@link TransitionDialog}.
+   * Creates a new {@link TransitionDialog}. This constructor is used for the
+   * config case.
    * 
    * @param parent The parent frame.
    * @param machinePanel The {@link MachinePanel}.
@@ -493,16 +308,18 @@ public final class TransitionDialog implements
   public TransitionDialog ( JFrame parent, MachinePanel machinePanel,
       Alphabet alphabet, Alphabet pushDownAlphabet, Transition transition )
   {
-    this ( parent, machinePanel, alphabet, pushDownAlphabet, transition
+    init ( parent, machinePanel, alphabet, pushDownAlphabet, transition
         .getStateBegin (), transition.getStateEnd (), transition
         .getPushDownWordRead (), transition.getPushDownWordWrite (), transition
         .getSymbol () );
+
     this.transition = transition;
   }
 
 
   /**
-   * Creates a new {@link TransitionDialog}.
+   * Creates a new {@link TransitionDialog}. This constructor is used for the
+   * add case.
    * 
    * @param parent The parent frame.
    * @param machinePanel The {@link MachinePanel}.
@@ -525,12 +342,36 @@ public final class TransitionDialog implements
       Word pushDownWordWrite, TreeSet < Symbol > symbols, double x, double y,
       double zoomFactor )
   {
-    this ( parent, machinePanel, alphabet, pushDownAlphabet, stateBegin,
-        stateEnd, pushDownWordRead, pushDownWordWrite, symbols );
-    this.model = model;
-    this.xPosition = x;
-    this.yPosition = y;
-    this.zoomFactor = zoomFactor;
+    // find a transition
+    Transition foundTransition = null;
+    for ( Transition current : stateBegin.getTransitionBegin () )
+    {
+      if ( current.getStateEnd () == stateEnd )
+      {
+        foundTransition = current;
+        break;
+      }
+    }
+
+    // the transition will be added
+    if ( foundTransition == null )
+    {
+      init ( parent, machinePanel, alphabet, pushDownAlphabet, stateBegin,
+          stateEnd, pushDownWordRead, pushDownWordWrite, symbols );
+      this.model = model;
+      this.xPosition = x;
+      this.yPosition = y;
+      this.zoomFactor = zoomFactor;
+    }
+    // there is already a transition which is configured
+    else
+    {
+      init ( parent, machinePanel, alphabet, pushDownAlphabet, foundTransition
+          .getStateBegin (), foundTransition.getStateEnd (), foundTransition
+          .getPushDownWordRead (), foundTransition.getPushDownWordWrite (),
+          foundTransition.getSymbol () );
+      this.transition = foundTransition;
+    }
   }
 
 
@@ -776,6 +617,194 @@ public final class TransitionDialog implements
       exc.printStackTrace ();
       System.exit ( 1 );
     }
+  }
+
+
+  /**
+   * Initializes the {@link TransitionDialog}.
+   * 
+   * @param initParent The parent frame.
+   * @param initMachinePanel The {@link MachinePanel}.
+   * @param initAlphabet The {@link Alphabet} available for the
+   *          {@link Transition}.
+   * @param initPushDownAlphabet The push down {@link Alphabet} available for
+   *          the {@link Transition}.
+   * @param initStateBegin The {@link State} where the {@link Transition}
+   *          begins.
+   * @param initStateEnd The {@link State} where the {@link Transition} ends.
+   * @param initPushDownWordRead The push down word to read.
+   * @param initPushDownWordWrite The push down word to write.
+   * @param symbols The Symbols of the {@link Transition}.
+   */
+  private final void init ( JFrame initParent, MachinePanel initMachinePanel,
+      Alphabet initAlphabet, Alphabet initPushDownAlphabet,
+      State initStateBegin, State initStateEnd, Word initPushDownWordRead,
+      Word initPushDownWordWrite, TreeSet < Symbol > symbols )
+  {
+    this.parent = initParent;
+    this.machinePanel = initMachinePanel;
+    this.alphabet = initAlphabet;
+    this.pushDownAlphabet = initPushDownAlphabet;
+
+    // PushDownWordRead
+    setPushDownWordRead ( initPushDownWordRead );
+    // PushDownWordWrite
+    setPushDownWordWrite ( initPushDownWordWrite );
+    this.stateBegin = initStateBegin;
+    this.stateEnd = initStateEnd;
+    this.gui = new TransitionDialogForm ( this, initParent );
+    String targetName = this.stateEnd == null ? Messages
+        .getString ( "TransitionDialog.NewState" ) : this.stateEnd //$NON-NLS-1$
+        .getName ();
+    this.gui.jGTILabelNonterminalSymbol.setText ( Messages.getString (
+        "TransitionDialog.Header", this.stateBegin, targetName ) ); //$NON-NLS-1$
+
+    this.gui.jGTIListChangeOverSet
+        .setTransferHandler ( new JGTIListTransferHandler (
+            TransferHandler.MOVE )
+        {
+
+          /**
+           * The serial version uid.
+           */
+          private static final long serialVersionUID = 0L;
+
+
+          @SuppressWarnings ( "synthetic-access" )
+          @Override
+          protected boolean importListModelRows ( JGTIList jGTIList,
+              JGTIListModelRows rows, int targetIndex )
+          {
+            moveRowsToChangeOverSet ( jGTIList, rows, targetIndex );
+            return true;
+          }
+        } );
+    this.gui.jGTIListChangeOverSet.setDragEnabled ( true );
+    this.gui.jGTIListChangeOverSet
+        .addAllowedDndSource ( this.gui.jGTIListAlphabet );
+
+    this.gui.jGTIListAlphabet.setTransferHandler ( new JGTIListTransferHandler (
+        TransferHandler.MOVE )
+    {
+
+      /**
+       * The serial version uid.
+       */
+      private static final long serialVersionUID = 0L;
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      protected boolean importListModelRows ( JGTIList jGTIList,
+          JGTIListModelRows rows, int targetIndex )
+      {
+        moveRowsToAlphabet ( jGTIList, rows, targetIndex );
+        return true;
+      }
+    } );
+    this.gui.jGTIListAlphabet.setDragEnabled ( true );
+    this.gui.jGTIListAlphabet
+        .addAllowedDndSource ( this.gui.jGTIListChangeOverSet );
+
+    this.modelAlphabet = new SymbolListModel ();
+    this.modelChangeOverSet = new SymbolListModel ();
+
+    this.modelAlphabet.add ( this.epsilonSymbol );
+    for ( Symbol symbol : this.alphabet )
+    {
+      this.modelAlphabet.add ( symbol );
+    }
+
+    for ( Symbol symbol : symbols )
+    {
+      this.modelAlphabet.remove ( symbol );
+      this.modelChangeOverSet.add ( symbol );
+    }
+
+    try
+    {
+      this.gui.styledTransitionParserPanel.setText ( new DefaultTransition (
+          this.pushDownWordRead, this.pushDownWordWrite, symbols ) );
+    }
+    catch ( TransitionException exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
+    }
+
+    this.gui.jGTIListAlphabet.setModel ( this.modelAlphabet );
+    this.gui.jGTIListChangeOverSet.setModel ( this.modelChangeOverSet );
+    this.gui.styledTransitionParserPanel.setText ( new DefaultTransition () );
+
+    // Set the push down alphabet
+    this.gui.styledAlphabetParserPanelPushDownAlphabet
+        .setText ( this.pushDownAlphabet );
+    this.gui.styledWordParserPanelRead.setAlphabet ( this.pushDownAlphabet );
+    this.gui.styledWordParserPanelWrite.setAlphabet ( this.pushDownAlphabet );
+
+    // Set the push down read and write word
+    if ( this.pushDownWordRead != null )
+    {
+      this.gui.styledWordParserPanelRead.setText ( this.pushDownWordRead );
+    }
+    this.gui.styledWordParserPanelRead.parse ();
+    if ( this.pushDownWordWrite != null )
+    {
+      this.gui.styledWordParserPanelWrite.setText ( this.pushDownWordWrite );
+    }
+    this.gui.styledWordParserPanelWrite.parse ();
+
+    /*
+     * Word changed listener
+     */
+    this.gui.styledWordParserPanelRead
+        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Word newWord )
+          {
+            if ( newWord != null )
+            {
+              setPushDownWordRead ( newWord );
+              updateResultingTransition ();
+            }
+            else
+            {
+              TransitionDialog.this.gui.styledTransitionParserPanel
+                  .setText ( null );
+            }
+            setButtonStatus ();
+          }
+        } );
+    this.gui.styledWordParserPanelWrite
+        .addParseableChangedListener ( new ParseableChangedListener < Word > ()
+        {
+
+          @SuppressWarnings ( "synthetic-access" )
+          public void parseableChanged ( Word newWord )
+          {
+            if ( newWord != null )
+            {
+              setPushDownWordWrite ( newWord );
+              updateResultingTransition ();
+            }
+            else
+            {
+              TransitionDialog.this.gui.styledTransitionParserPanel
+                  .setText ( null );
+            }
+            setButtonStatus ();
+          }
+        } );
+
+    this.gui.jGTIListAlphabet
+        .setCellRenderer ( new PrettyStringListCellRenderer () );
+    this.gui.jGTIListChangeOverSet
+        .setCellRenderer ( new PrettyStringListCellRenderer () );
+
+    setButtonStatus ();
   }
 
 

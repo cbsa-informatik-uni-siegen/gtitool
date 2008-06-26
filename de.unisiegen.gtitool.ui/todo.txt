@@ -3,9 +3,7 @@
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
-CF		- Keller von links nach rechts darstellen (Drachen Buch)
-CF		- Epsilon Symbol - Gefundene Fehler: History bei Transition mit Epsilon und
-		  einem anderen Symbol
+CF		- Epsilon Symbol
 
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 

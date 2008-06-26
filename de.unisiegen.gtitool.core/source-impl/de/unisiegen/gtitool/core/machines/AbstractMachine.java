@@ -101,8 +101,8 @@ public abstract class AbstractMachine implements Machine
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
    */
-  public static final Machine createMachine ( String machineType, Alphabet alphabet,
-      Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
+  public static final Machine createMachine ( String machineType,
+      Alphabet alphabet, Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
       throws StoreException
   {
     if ( machineType.equals ( ( "DFA" ) ) ) //$NON-NLS-1$
@@ -1946,7 +1946,6 @@ public abstract class AbstractMachine implements Machine
     {
       for ( Transition current : activeState.getTransitionBegin () )
       {
-        // TODOCF check this
         if ( ( current.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY ) || current.getTransitionType ()
             .equals ( TransitionType.EPSILON_SYMBOL ) )
@@ -1972,7 +1971,6 @@ public abstract class AbstractMachine implements Machine
       {
         for ( Transition current : activeState.getTransitionBegin () )
         {
-          // TODOCF check this
           if ( current.getTransitionType ().equals (
               TransitionType.EPSILON_ONLY )
               || current.getTransitionType ().equals (
@@ -2044,6 +2042,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
     }
+
     // Set sctive sets
     TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
     oldActiveStateSet.addAll ( this.activeStateSet );
@@ -2113,17 +2112,29 @@ public abstract class AbstractMachine implements Machine
 
     // Check for epsilon transitions
     boolean epsilonTransitionFound = false;
-    for ( Transition current : newActiveTransitionSet )
+    transitionLoop : for ( Transition current : newActiveTransitionSet )
     {
-      // TODOCF check this
       if ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY )
           || current.getTransitionType ().equals (
               TransitionType.EPSILON_SYMBOL ) )
       {
-        epsilonTransitionFound = true;
-        break;
+        for ( Symbol currentActive : newActiveSymbolList )
+        {
+          if ( currentActive.isEpsilon () )
+          {
+            for ( Symbol currentSymbol : current )
+            {
+              if ( currentActive == currentSymbol )
+              {
+                epsilonTransitionFound = true;
+                break transitionLoop;
+              }
+            }
+          }
+        }
       }
     }
+
     // No epsilon transition found
     if ( !epsilonTransitionFound )
     {
@@ -2420,10 +2431,7 @@ public abstract class AbstractMachine implements Machine
         }
       }
 
-      // TODOCF check this
-      if ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY )
-          || current.getTransitionType ().equals (
-              TransitionType.EPSILON_SYMBOL ) )
+      if ( current.getTransitionType ().equals ( TransitionType.EPSILON_ONLY ) )
       {
         StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
 
@@ -2435,7 +2443,41 @@ public abstract class AbstractMachine implements Machine
           }
         }
       }
-      else
+      else if ( current.getTransitionType ().equals (
+          TransitionType.EPSILON_SYMBOL ) )
+      {
+        StateSet stateSet = ( StateSet ) getValueAt ( row, EPSILON_COLUMN );
+
+        for ( State currentState : stateSet )
+        {
+          if ( currentState.equals ( current.getStateEnd () ) )
+          {
+            currentState.setSelected ( true );
+          }
+        }
+
+        // find the columns
+        for ( int i = 0 ; i < this.alphabet.size () ; i++ )
+        {
+          for ( int j = 0 ; j < current.size () ; j++ )
+          {
+            if ( this.alphabet.get ( i ).equals ( current.getSymbol ( j ) ) )
+            {
+              int column = i + SPECIAL_COLUMN_COUNT;
+              stateSet = ( StateSet ) getValueAt ( row, column );
+
+              for ( State currentState : stateSet )
+              {
+                if ( currentState.equals ( current.getStateEnd () ) )
+                {
+                  currentState.setSelected ( true );
+                }
+              }
+            }
+          }
+        }
+      }
+      else if ( current.getTransitionType ().equals ( TransitionType.SYMBOL ) )
       {
         // find the columns
         for ( int i = 0 ; i < this.alphabet.size () ; i++ )
@@ -2457,6 +2499,10 @@ public abstract class AbstractMachine implements Machine
             }
           }
         }
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported transition type" ); //$NON-NLS-1$
       }
     }
   }
@@ -2519,7 +2565,6 @@ public abstract class AbstractMachine implements Machine
       }
       if ( !found )
       {
-        // Add the state which is already in the machine
         for ( State stateMember : this.stateList )
         {
           if ( stateMember.getName ().equals ( currentNew.getName () ) )
@@ -2544,7 +2589,6 @@ public abstract class AbstractMachine implements Machine
       }
       if ( !found )
       {
-        // Add the state which is already in the machine
         for ( State stateMember : this.stateList )
         {
           if ( stateMember.getName ().equals ( currentOld.getName () ) )
@@ -2570,15 +2614,13 @@ public abstract class AbstractMachine implements Machine
       try
       {
         // Epsilon transition
-        if ( columnIndex == 1 )
+        if ( columnIndex == EPSILON_COLUMN )
         {
           logger.debug ( "setValueAt", "add transition: epsilon" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-          // TODOCF check this
           Transition foundTransition = null;
           loopTransition : for ( Transition currentTransition : this.transitionList )
           {
-            // TODOCF check this
             if ( ( ! ( currentTransition.getTransitionType ().equals (
                 TransitionType.EPSILON_ONLY ) || currentTransition
                 .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) ) )
@@ -2612,12 +2654,8 @@ public abstract class AbstractMachine implements Machine
           Transition foundTransition = null;
           loopTransition : for ( Transition currentTransition : this.transitionList )
           {
-            // TODOCF check this
-            if ( ( ! ( currentTransition.getTransitionType ().equals (
-                TransitionType.EPSILON_ONLY ) || currentTransition
-                .getTransitionType ().equals ( TransitionType.EPSILON_SYMBOL ) ) )
-                && currentTransition.getStateBegin ().getName ().equals (
-                    stateBegin.getName () )
+            if ( currentTransition.getStateBegin ().getName ().equals (
+                stateBegin.getName () )
                 && currentTransition.getStateEnd ().getName ().equals (
                     currentState.getName () ) )
             {
@@ -2668,7 +2706,6 @@ public abstract class AbstractMachine implements Machine
                 currentState.getName () ) )
         {
           // Epsilon transition
-          // TODOCF check this
           if ( ( columnIndex == EPSILON_COLUMN )
               && currentTransition.getTransitionType ().equals (
                   TransitionType.EPSILON_ONLY ) )

@@ -1567,6 +1567,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
     addButtonState ( ButtonState.ENABLED_REACHABLE_STATES );
     addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
+    addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
     if ( machinePanel.getMachine ().getMachineType ().equals ( MachineType.DFA ) )
     {
       addButtonState ( ButtonState.ENABLED_MINIMIZE );

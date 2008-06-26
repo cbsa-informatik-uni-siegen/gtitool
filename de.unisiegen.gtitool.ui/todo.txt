@@ -3,7 +3,8 @@
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
-CF		- Epsilon Symbol
+CF		- Bug: Wenn der Navigations Modus an ist, und der Enter Word Modus verlassen
+		  wird, bleibt der Navigations Modus an, was zum Blocken der Mouse Events führt
 
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 

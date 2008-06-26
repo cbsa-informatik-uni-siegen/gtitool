@@ -12,6 +12,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
+import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
@@ -106,7 +107,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         }
       }
     } );
-    this.jMenuItemStart.setEnabled ( !this.machinePanel.isWordNavigation () );
+    this.jMenuItemStart.setEnabled ( !this.machinePanel.getMachineMode ()
+        .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemStart );
 
     this.jMenuItemPreviousStep = new JMenuItem ( Messages
@@ -125,8 +127,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         EnterWordModePopupMenu.this.machinePanel.handleWordPreviousStep ();
       }
     } );
-    this.jMenuItemPreviousStep.setEnabled ( this.machinePanel
-        .isWordNavigation () );
+    this.jMenuItemPreviousStep.setEnabled ( this.machinePanel.getMachineMode ()
+        .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemPreviousStep );
 
     this.jMenuItemNextStep = new JMenuItem ( Messages
@@ -145,7 +147,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         EnterWordModePopupMenu.this.machinePanel.handleWordNextStep ();
       }
     } );
-    this.jMenuItemNextStep.setEnabled ( this.machinePanel.isWordNavigation () );
+    this.jMenuItemNextStep.setEnabled ( this.machinePanel.getMachineMode ()
+        .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemNextStep );
 
     this.jMenuItemStop = new JMenuItem ( Messages
@@ -164,7 +167,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
         EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
       }
     } );
-    this.jMenuItemStop.setEnabled ( this.machinePanel.isWordNavigation () );
+    this.jMenuItemStop.setEnabled ( this.machinePanel.getMachineMode ().equals (
+        MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemStop );
   }
 }

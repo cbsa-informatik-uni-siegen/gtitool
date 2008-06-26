@@ -17,6 +17,7 @@ import javax.swing.table.TableCellEditor;
 
 import de.unisiegen.gtitool.core.entities.Entity;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
 
 
@@ -287,7 +288,8 @@ public class ParserTableCellEditor < E extends Entity < E >> extends
   public final boolean isCellEditable ( EventObject event )
   {
     return this.delegate.isCellEditable ( event )
-        && !this.machinePanel.isWordEnterMode ();
+        && this.machinePanel.getMachineMode ().equals (
+            MachineMode.EDIT_MACHINE );
   }
 
 

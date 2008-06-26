@@ -44,6 +44,7 @@ import de.unisiegen.gtitool.ui.Version;
 import de.unisiegen.gtitool.ui.exchange.Exchange;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
+import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
 import de.unisiegen.gtitool.ui.logic.interfaces.EditorPanel;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
@@ -1662,7 +1663,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     if ( selected )
     {
       // happens if the enter word menu item state changed
-      if ( machinePanel.isWordEnterMode () || machinePanel.isWordNavigation () )
+      if ( !machinePanel.getMachineMode ().equals ( MachineMode.EDIT_MACHINE ) )
       {
         return;
       }
@@ -1675,8 +1676,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     else
     {
       // happens if the enter word menu item state changed
-      if ( !machinePanel.isWordEnterMode ()
-          && !machinePanel.isWordNavigation () )
+      if ( machinePanel.getMachineMode ().equals ( MachineMode.EDIT_MACHINE ) )
       {
         return;
       }
@@ -2996,14 +2996,14 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         {
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_SOURCE_DFA );
           addButtonState ( ButtonState.ENABLED_CONVERT_TO_COMPLETE_SOURCE_DFA );
-          if ( machinePanel.isWordNavigation ()
-              || machinePanel.isWordEnterMode () )
+          if ( machinePanel.getMachineMode ()
+              .equals ( MachineMode.EDIT_MACHINE ) )
           {
-            removeButtonState ( ButtonState.ENABLED_MINIMIZE );
+            addButtonState ( ButtonState.ENABLED_MINIMIZE );
           }
           else
           {
-            addButtonState ( ButtonState.ENABLED_MINIMIZE );
+            removeButtonState ( ButtonState.ENABLED_MINIMIZE );
           }
         }
         else if ( machinePanel.getMachine ().getMachineType ().equals (
@@ -3034,7 +3034,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
         machinePanel.setVisibleConsole ( this.gui
             .getJCheckBoxMenuItemConsole ().isSelected ()
-            && !machinePanel.isWordEnterMode () );
+            && machinePanel.getMachineMode ()
+                .equals ( MachineMode.EDIT_MACHINE ) );
         machinePanel.setVisibleTable ( this.gui.getJCheckBoxMenuItemTable ()
             .isSelected () );
 
@@ -3046,7 +3047,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
 
         // word navigation mode
-        if ( machinePanel.isWordNavigation () )
+        if ( machinePanel.getMachineMode ().equals (
+            MachineMode.WORD_NAVIGATION ) )
         {
           addButtonState ( ButtonState.ENABLED_HISTORY );
           addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -3067,7 +3069,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
         }
         // word enter mode
-        else if ( machinePanel.isWordEnterMode () )
+        else if ( machinePanel.getMachineMode ().equals (
+            MachineMode.ENTER_WORD ) )
         {
           addButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
 
@@ -3087,8 +3090,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
           addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
         }
-        // normal mode
-        else
+        // edit machine mode
+        else if ( machinePanel.getMachineMode ().equals (
+            MachineMode.EDIT_MACHINE ) )
         {
           removeButtonState ( ButtonState.ENABLED_HISTORY );
           removeButtonState ( ButtonState.ENABLED_EDIT_MACHINE );
@@ -3107,6 +3111,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           addButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
 
           addButtonState ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+        }
+        else
+        {
+          throw new RuntimeException ( "unsupported machine mode" ); //$NON-NLS-1$
         }
       }
       // GrammarPanel

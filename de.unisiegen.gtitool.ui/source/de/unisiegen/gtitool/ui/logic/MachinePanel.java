@@ -54,6 +54,7 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.StateSet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
@@ -172,6 +173,30 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * The {@link Machine} mode.
+   * 
+   * @author Christian Fehler
+   */
+  public enum MachineMode
+  {
+    /**
+     * The edit machine mode.
+     */
+    EDIT_MACHINE,
+
+    /**
+     * The enter word mode.
+     */
+    ENTER_WORD,
+
+    /**
+     * The word navigation mode.
+     */
+    WORD_NAVIGATION;
+  }
+
+
+  /**
    * The actual active MouseAdapter
    */
   private static ActiveMouseAdapter activeMouseAdapter;
@@ -220,9 +245,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Flag signals if we are in the enter word mode
+   * The {@link MachineMode}.
    */
-  private boolean enterWordMode = false;
+  private MachineMode machineMode = MachineMode.EDIT_MACHINE;
 
 
   /**
@@ -364,15 +389,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Flag signals if word navigation is in progress
-   */
-  private boolean wordNavigation = false;
-
-
-  /**
    * The zoom factor for this graph .
    */
   private double zoomFactor;
+
+
+  /**
+   * The {@link PDATableColumnModel}.
+   */
+  private PDATableColumnModel pdaTableColumnModel = new PDATableColumnModel ();
 
 
   /**
@@ -939,6 +964,17 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Returns the {@link MachineMode}.
+   * 
+   * @return The {@link MachineMode}.
+   */
+  public final MachineMode getMachineMode ()
+  {
+    return this.machineMode;
+  }
+
+
+  /**
    * Returns the {@link MainWindow}.
    * 
    * @return The {@link MainWindow}.
@@ -993,6 +1029,29 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final JPanel getPanel ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the pdaTableColumnModel.
+   * 
+   * @return The pdaTableColumnModel.
+   * @see #pdaTableColumnModel
+   */
+  public final PDATableColumnModel getPdaTableColumnModel ()
+  {
+    return this.pdaTableColumnModel;
+  }
+
+
+  /**
+   * Returns the {@link PDATableModel}.
+   * 
+   * @return The {@link PDATableModel}.
+   */
+  public final PDATableModel getPDATableModel ()
+  {
+    return this.model.getPDATableModel ();
   }
 
 
@@ -1129,11 +1188,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Handle Edit Machine button pressed
+   * Handles the edit {@link Machine} event.
    */
   public final void handleEditMachine ()
   {
-    this.enterWordMode = false;
+    this.machineMode = MachineMode.EDIT_MACHINE;
     this.jGTIGraph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
     this.model.getJGTIGraph ().setEnabled ( true );
@@ -1145,12 +1204,12 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
-   * Handle Enter Word button pressed
+   * Handles the enter {@link Word} event.
    */
   public final void handleEnterWord ()
   {
     clearHighlight ();
-    this.enterWordMode = true;
+    this.machineMode = MachineMode.ENTER_WORD;
     this.jGTIGraph.clearSelection ();
     this.gui.wordPanel.setVisible ( true );
     this.jGTIGraph.setEnabled ( false );
@@ -1175,7 +1234,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleHistory ()
   {
-    if ( !this.wordNavigation )
+    if ( !this.machineMode.equals ( MachineMode.WORD_NAVIGATION ) )
     {
       throw new RuntimeException ( "the word navigation is not in progress" ); //$NON-NLS-1$
     }
@@ -1194,7 +1253,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachinePDATableFocusLost (
       @SuppressWarnings ( "unused" ) FocusEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       this.gui.jGTITableMachinePDA.clearSelection ();
       clearHighlight ();
@@ -1210,7 +1270,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachinePDATableMouseExited (
       @SuppressWarnings ( "unused" ) MouseEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       this.gui.jGTITableMachinePDA.clearSelection ();
       clearHighlight ();
@@ -1226,7 +1287,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachinePDATableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       clearHighlight ();
 
@@ -1257,7 +1319,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachineTableFocusLost (
       @SuppressWarnings ( "unused" ) FocusEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       this.gui.jGTITableMachine.clearSelection ();
       clearHighlight ();
@@ -1273,7 +1336,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachineTableMouseExited (
       @SuppressWarnings ( "unused" ) MouseEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       this.gui.jGTITableMachine.clearSelection ();
       clearHighlight ();
@@ -1289,7 +1353,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final void handleMachineTableValueChanged (
       @SuppressWarnings ( "unused" ) ListSelectionEvent event )
   {
-    if ( !this.enterWordMode && !this.cellEditingMode )
+    if ( this.machineMode.equals ( MachineMode.EDIT_MACHINE )
+        && !this.cellEditingMode )
     {
       clearHighlight ();
 
@@ -1790,8 +1855,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       infoDialog.show ();
       return false;
     }
-    this.wordNavigation = true;
-
+    this.machineMode = MachineMode.WORD_NAVIGATION;
     clearHighlight ();
 
     this.gui.wordPanel.styledWordParserPanel.setEditable ( false );
@@ -1812,7 +1876,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     performCellsChanged ();
 
-    this.wordNavigation = true;
     return true;
   }
 
@@ -1824,7 +1887,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     cancelAutoStepTimer ();
 
-    this.wordNavigation = false;
     clearHighlight ();
 
     // Stack
@@ -1836,7 +1898,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.wordPanel.styledWordParserPanel.setEditable ( true );
     this.gui.wordPanel.styledAlphabetParserPanelInput.setCopyable ( true );
     this.gui.wordPanel.styledAlphabetParserPanelPushDown.setCopyable ( true );
-    this.wordNavigation = false;
   }
 
 
@@ -2128,34 +2189,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.jGTITableMachinePDA
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
   }
-  
-  /**
-   * The {@link PDATableColumnModel}.
-   */
-  private PDATableColumnModel pdaTableColumnModel = new PDATableColumnModel();
-  
-  
-  /**
-   * Returns the pdaTableColumnModel.
-   *
-   * @return The pdaTableColumnModel.
-   * @see #pdaTableColumnModel
-   */
-  public PDATableColumnModel getPdaTableColumnModel ()
-  {
-    return this.pdaTableColumnModel;
-  }
-
-
-  /**
-   * Returns the {@link PDATableModel}.
-   * 
-   * @return The {@link PDATableModel}.
-   */
-  public PDATableModel getPDATableModel ()
-  {
-    return  this.model.getPDATableModel ();
-  }
 
 
   /**
@@ -2245,11 +2278,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // return if we are in enter word mode
-        if ( isWordEnterMode () || isWordNavigation () )
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
+
         // open configuration
         if ( event.getButton () == MouseEvent.BUTTON1 )
         {
@@ -2338,10 +2371,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if middle mouse button was pressed, or we are in word enter mode,
-        // return
-        if ( ( event.getButton () == MouseEvent.BUTTON2 )
-            || MachinePanel.this.enterWordMode )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
+        {
+          return;
+        }
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2434,10 +2468,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if middle mouse button was pressed, or we are in word enter mode,
-        // return
-        if ( ( event.getButton () == MouseEvent.BUTTON2 )
-            || MachinePanel.this.enterWordMode )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
+        {
+          return;
+        }
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2507,16 +2542,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
           DefaultStateView target = null;
           try
           {
-
             target = ( DefaultStateView ) MachinePanel.this.jGTIGraph
                 .getNextCellForLocation ( MachinePanel.this.tmpState, event
                     .getPoint ().getX (), event.getPoint ().getY () );
 
             MachinePanel.this.graphModel.remove ( new Object []
             { MachinePanel.this.tmpState, MachinePanel.this.tmpTransition } );
-
           }
-
           catch ( ClassCastException exc )
           {
             MachinePanel.this.graphModel.remove ( new Object []
@@ -2632,8 +2664,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseDragged ( MouseEvent event )
       {
-        // Return if we are in word enter mode
-        if ( MachinePanel.this.enterWordMode )
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2642,6 +2673,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         {
           return;
         }
+
         double x, y;
         if ( MachinePanel.this.firstState == null )
         {
@@ -2726,10 +2758,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if middle mouse button was pressed, or we are in word enter mode,
-        // return
-        if ( ( event.getButton () == MouseEvent.BUTTON2 )
-            || MachinePanel.this.enterWordMode )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
+        {
+          return;
+        }
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2826,10 +2859,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if middle mouse button was pressed, or we are in word enter mode,
-        // return
-        if ( ( event.getButton () == MouseEvent.BUTTON2 )
-            || MachinePanel.this.enterWordMode )
+        if ( event.getButton () == MouseEvent.BUTTON2 )
+        {
+          return;
+        }
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2925,10 +2959,11 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       @Override
       public void mouseClicked ( MouseEvent event )
       {
-        // if middle mouse button was pressed, or we are in word enter mode,
-        // return
-        if ( ( event.getButton () != MouseEvent.BUTTON3 )
-            || !MachinePanel.this.enterWordMode )
+        if ( event.getButton () != MouseEvent.BUTTON3 )
+        {
+          return;
+        }
+        if ( !MachinePanel.this.machineMode.equals ( MachineMode.EDIT_MACHINE ) )
         {
           return;
         }
@@ -2988,28 +3023,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public boolean isUndoAble ()
   {
     return this.redoUndoHandler.isUndoAble ();
-  }
-
-
-  /**
-   * Getter for the flag if we are in word enter mode
-   * 
-   * @return true if we are in word enter mode, else false
-   */
-  public final boolean isWordEnterMode ()
-  {
-    return this.enterWordMode;
-  }
-
-
-  /**
-   * Getter for this word navigation flag
-   * 
-   * @return true if word navigation is in progress, else false
-   */
-  public final boolean isWordNavigation ()
-  {
-    return this.wordNavigation;
   }
 
 

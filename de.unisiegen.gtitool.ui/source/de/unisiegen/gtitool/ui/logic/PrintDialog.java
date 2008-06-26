@@ -16,15 +16,14 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
@@ -127,17 +126,30 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
    * Allocates a new {@link PrintDialog}.
    * 
    * @param parent The parent {@link JFrame}.
-   * @param printable The {@link Printable}.
+   * @param machinePanel The {@link MachinePanel}.
    */
-  public PrintDialog ( JFrame parent, Printable printable )
+  public PrintDialog ( JFrame parent, MachinePanel machinePanel )
   {
     logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new PrintDialogForm ( this, parent );
-    this.printable = printable;
+    this.machinePanel = machinePanel;
+    this.printable = this.machinePanel.getJGTIGraph ();
+
+    this.tableModel = machinePanel.getPDATableModel ();
+    this.tableColumnModel = machinePanel.getPdaTableColumnModel ();
+    this.table = new JGTITable ();
+    this.table.setModel ( this.tableModel );
+    this.table.setColumnModel ( this.tableColumnModel );
 
     initialize ();
   }
@@ -223,6 +235,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       printJGraph ();
     }
   }
+
 
   /**
    * Print the {@link JGTIGraph}.
@@ -391,8 +404,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * 
    * @see Printable#print(Graphics, PageFormat, int)
    */
-  public int print ( Graphics g, @SuppressWarnings ( "unused" )
-  PageFormat pageFormat, int pageIndex ) throws PrinterException
+  public int print ( Graphics g,
+      @SuppressWarnings ( "unused" ) PageFormat pageFormat, int pageIndex )
+      throws PrinterException
   {
     if ( ( pageIndex < 0 ) || ( pageIndex >= this.pageCount ) )
     {
@@ -402,7 +416,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       int [] columnWidth = calculateColumnWidth ();
 
-      drawHeader ( g, pageIndex, columnWidth );
+      drawHeader ( g, columnWidth );
 
       int y = this.marginTop + HEADER_HEIGHT;
 
@@ -418,7 +432,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       {
         if ( isPageBreakNeeded ( y ) )
         {
-          drawBorder ( g, pageIndex, y );
+          drawBorder ( g, y );
 
           // Save the printed rows
           this.printedRows
@@ -436,7 +450,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
         y += ROW_HEIGHT;
       }
-      drawBorder ( g, pageIndex, y );
+      drawBorder ( g, y );
     }
     catch ( Exception exc )
     {
@@ -544,10 +558,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * Draws the border.
    * 
    * @param g The {@link Graphics}.
-   * @param pageIndex The page index.
    * @param endY The y position of the table end.
    */
-  private final void drawBorder ( Graphics g, int pageIndex, int endY )
+  private final void drawBorder ( Graphics g, int endY )
   {
     int x1 = this.marginLeft - BORDER_OFFSET;
     int x2 = g.getClipBounds ().width - this.marginRight + BORDER_OFFSET;
@@ -567,10 +580,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * Draws the border.
    * 
    * @param g The {@link Graphics}.
-   * @param pageIndex The page index.
    * @param columnWidth The column widths.
    */
-  private final void drawHeader ( Graphics g, int pageIndex, int [] columnWidth )
+  private final void drawHeader ( Graphics g, int [] columnWidth )
   {
     g.setFont ( this.headerFont );
 
@@ -651,7 +663,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     g.setFont ( this.normalFont );
 
     int internOffset = 2;
-    int iconTextOffset = 2;
     int x = this.marginLeft;
     for ( int column = 0 ; column < this.tableColumnModel.getColumnCount () ; column++ )
     {
@@ -668,24 +679,13 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         Component component = tableColumn.getCellRenderer ()
             .getTableCellRendererComponent ( this.table, value, false, false,
                 row, modelColumn );
-        if ( component instanceof JLabel )
+        if ( component instanceof PrettyStringComponent )
         {
-          JLabel label = ( JLabel ) component;
+          PrettyStringComponent prettyStringComponent = ( PrettyStringComponent ) component;
 
-          if ( label.getIcon () != null )
-          {
-            ImageIcon image = ( ImageIcon ) label.getIcon ();
-            g.drawImage ( image.getImage (), x, y, ROW_HEIGHT, ROW_HEIGHT,
-                BACKGROUND, null );
-            g.drawString ( label.getText (), x + ROW_HEIGHT + iconTextOffset, y
-                + ROW_HEIGHT - internOffset );
-            performNormal = false;
-          }
-          else
-          {
-            g.drawString ( label.getText (), x, y + ROW_HEIGHT - internOffset );
-            performNormal = false;
-          }
+          g.drawString ( prettyStringComponent.getPrettyString ().toString (),
+              x, y + ROW_HEIGHT - internOffset );
+          performNormal = false;
         }
       }
 
@@ -746,7 +746,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   // * The maximum page offset.
   // */
   // private static final int MAX_PAGE_OFFSET = 30;
-
 
   /**
    * Draws a line.

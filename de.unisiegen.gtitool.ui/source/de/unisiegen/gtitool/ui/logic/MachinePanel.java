@@ -82,6 +82,7 @@ import de.unisiegen.gtitool.ui.model.ConsoleColumnModel;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.model.MachineConsoleTableModel;
 import de.unisiegen.gtitool.ui.model.PDATableColumnModel;
+import de.unisiegen.gtitool.ui.model.PDATableModel;
 import de.unisiegen.gtitool.ui.netbeans.MachinePanelForm;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 import de.unisiegen.gtitool.ui.popup.DefaultPopupMenu;
@@ -2121,11 +2122,39 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   private final void initializePDATable ()
   {
     this.gui.jGTITableMachinePDA.setModel ( this.model.getPDATableModel () );
-    this.gui.jGTITableMachinePDA.setColumnModel ( new PDATableColumnModel () );
+    this.gui.jGTITableMachinePDA.setColumnModel ( this.pdaTableColumnModel );
     this.gui.jGTITableMachinePDA.getTableHeader ()
         .setReorderingAllowed ( false );
     this.gui.jGTITableMachinePDA
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+  }
+  
+  /**
+   * The {@link PDATableColumnModel}.
+   */
+  private PDATableColumnModel pdaTableColumnModel = new PDATableColumnModel();
+  
+  
+  /**
+   * Returns the pdaTableColumnModel.
+   *
+   * @return The pdaTableColumnModel.
+   * @see #pdaTableColumnModel
+   */
+  public PDATableColumnModel getPdaTableColumnModel ()
+  {
+    return this.pdaTableColumnModel;
+  }
+
+
+  /**
+   * Returns the {@link PDATableModel}.
+   * 
+   * @return The {@link PDATableModel}.
+   */
+  public PDATableModel getPDATableModel ()
+  {
+    return  this.model.getPDATableModel ();
   }
 
 

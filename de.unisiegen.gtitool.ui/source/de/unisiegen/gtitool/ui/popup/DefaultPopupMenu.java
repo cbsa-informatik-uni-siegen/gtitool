@@ -255,8 +255,7 @@ public final class DefaultPopupMenu extends JPopupMenu
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-         new PrintDialog(getPanel ().getMainWindowForm (), getPanel ().getJGTIGraph
-         ()).show ();
+         new PrintDialog(getPanel ().getMainWindowForm (), getPanel ()).show ();
 
       }
     } );

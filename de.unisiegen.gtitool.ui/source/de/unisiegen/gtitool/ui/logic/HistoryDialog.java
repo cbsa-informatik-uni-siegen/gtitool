@@ -93,6 +93,7 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
     this.parent = parent;
     this.machine = machine;
+
     this.historyPathList = new ArrayList < HistoryPath > ();
 
     this.gui = new HistoryDialogForm ( this, parent );
@@ -108,9 +109,8 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
       @Override
-      public boolean isCellEditable ( @SuppressWarnings ( "unused" )
-      int row, @SuppressWarnings ( "unused" )
-      int column )
+      public boolean isCellEditable ( @SuppressWarnings ( "unused" ) int row,
+          @SuppressWarnings ( "unused" ) int column )
       {
         return false;
       }
@@ -204,16 +204,22 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
     for ( Transition currentTransition : state.getTransitionEnd () )
     {
-      // TODOCF check this
       if ( currentTransition.getTransitionType ().equals (
-          TransitionType.EPSILON_ONLY )
-          || currentTransition.getTransitionType ().equals (
-              TransitionType.EPSILON_SYMBOL ) )
+          TransitionType.EPSILON_ONLY ) )
       {
         ArrayList < TransitionSymbolPair > newTransitionList = new ArrayList < TransitionSymbolPair > ();
         newTransitionList.addAll ( transitionList );
+        Symbol epsilonSymbol = null;
+        for ( Symbol current : currentTransition )
+        {
+          if ( current.isEpsilon () )
+          {
+            epsilonSymbol = current;
+            break;
+          }
+        }
         newTransitionList.add ( new TransitionSymbolPair ( currentTransition,
-            null ) );
+            epsilonSymbol ) );
 
         ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
         newReadedSymbolList.addAll ( readedSymbolList );
@@ -227,6 +233,68 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         else
         {
           this.remainingHistoryPathList.add ( newPath );
+        }
+      }
+      else if ( currentTransition.getTransitionType ().equals (
+          TransitionType.EPSILON_SYMBOL ) )
+      {
+        // epsilon transition handling
+        ArrayList < TransitionSymbolPair > newTransitionList = new ArrayList < TransitionSymbolPair > ();
+        newTransitionList.addAll ( transitionList );
+
+        Symbol epsilonSymbol = null;
+        for ( Symbol current : currentTransition )
+        {
+          if ( current.isEpsilon () )
+          {
+            epsilonSymbol = current;
+            break;
+          }
+        }
+        newTransitionList.add ( new TransitionSymbolPair ( currentTransition,
+            epsilonSymbol ) );
+
+        ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
+        newReadedSymbolList.addAll ( readedSymbolList );
+
+        HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
+            newReadedSymbolList );
+        if ( newPath.isCycleDetected () )
+        {
+          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        else
+        {
+          this.remainingHistoryPathList.add ( newPath );
+        }
+
+        // symbol transition handling
+        if ( ( readedSymbolList.size () > 0 )
+            && currentTransition.contains ( readedSymbolList
+                .get ( readedSymbolList.size () - 1 ) ) )
+        {
+          Symbol currentSymbol = readedSymbolList.get ( readedSymbolList
+              .size () - 1 );
+
+          newTransitionList = new ArrayList < TransitionSymbolPair > ();
+          newTransitionList.addAll ( transitionList );
+          newTransitionList.add ( new TransitionSymbolPair ( currentTransition,
+              currentSymbol ) );
+
+          newReadedSymbolList = new ArrayList < Symbol > ();
+          newReadedSymbolList.addAll ( readedSymbolList );
+          newReadedSymbolList.remove ( newReadedSymbolList.size () - 1 );
+
+          newPath = new HistoryPathPart ( newTransitionList,
+              newReadedSymbolList );
+          if ( newPath.isCycleDetected () )
+          {
+            logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
+          }
+          else
+          {
+            this.remainingHistoryPathList.add ( newPath );
+          }
         }
       }
       else if ( ( readedSymbolList.size () > 0 )

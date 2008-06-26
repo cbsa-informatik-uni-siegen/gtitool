@@ -101,7 +101,7 @@ public abstract class AbstractMachine implements Machine
    * @return The {@link Machine} with the given {@link Machine} type.
    * @throws StoreException If the {@link Machine} type is unknown.
    */
-  public static Machine createMachine ( String machineType, Alphabet alphabet,
+  public static final Machine createMachine ( String machineType, Alphabet alphabet,
       Alphabet pushDownAlphabet, boolean usePushDownAlphabet )
       throws StoreException
   {

@@ -16,7 +16,7 @@ public final class Logger
    * @param clazz The class.
    * @return The single {@link Logger}.
    */
-  public final static Logger getLogger ( Class clazz )
+  public final static Logger getLogger ( Class < ? extends Object > clazz )
   {
     return new Logger ( clazz );
   }
@@ -25,7 +25,7 @@ public final class Logger
   /**
    * The class.
    */
-  private Class clazz;
+  private Class < ? extends Object > clazz;
 
 
   /**
@@ -33,7 +33,7 @@ public final class Logger
    * 
    * @param clazz The class.
    */
-  private Logger ( Class clazz )
+  private Logger ( Class < ? extends Object > clazz )
   {
     this.clazz = clazz;
   }

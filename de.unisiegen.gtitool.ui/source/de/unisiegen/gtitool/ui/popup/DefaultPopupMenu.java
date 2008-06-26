@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
+import de.unisiegen.gtitool.ui.logic.PrintDialog;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
@@ -130,8 +131,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 0.5 );
       }
@@ -143,8 +144,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 0.75 );
       }
@@ -156,8 +157,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1 );
       }
@@ -169,8 +170,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.25 );
       }
@@ -182,8 +183,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.5 );
       }
@@ -195,8 +196,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 1.75 );
       }
@@ -208,8 +209,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.setZoomFactor ( 2 );
       }
@@ -224,8 +225,8 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         DefaultPopupMenu.this.panel.getMainWindow ().handleValidate ();
       }
@@ -238,14 +239,28 @@ public final class DefaultPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         new LayoutManager ( DefaultPopupMenu.this.panel.getModel (),
             DefaultPopupMenu.this.panel.getRedoUndoHandler () ).doLayout ();
       }
     } );
     add ( this.layout );
+
+    JMenuItem print = new JMenuItem ( Messages.getString ( "PrintDialog.Print" ) ); //$NON-NLS-1$
+    print.addActionListener ( new ActionListener ()
+    {
+
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
+      {
+         new PrintDialog(getPanel ().getMainWindowForm (), getPanel ().getJGTIGraph
+         ()).show ();
+
+      }
+    } );
+    add ( print );
 
     switch ( this.factor )
     {
@@ -271,5 +286,18 @@ public final class DefaultPopupMenu extends JPopupMenu
         this.zoom200.setSelected ( true );
         break;
     }
+  }
+
+
+  
+  /**
+   * Returns the panel.
+   *
+   * @return The panel.
+   * @see #panel
+   */
+  public MachinePanel getPanel ()
+  {
+    return this.panel;
   }
 }

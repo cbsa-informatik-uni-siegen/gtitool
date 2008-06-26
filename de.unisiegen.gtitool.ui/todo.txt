@@ -23,6 +23,8 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
+BM		- Farben beim Minimieren dynamisch berechnen
 
 		- Wörter ausgeben, die erkannt werden
 		- LaTeX Export
+		

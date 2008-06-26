@@ -1,7 +1,10 @@
 package de.unisiegen.gtitool.ui.jgraph;
 
 
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
 
 import javax.swing.ToolTipManager;
 
@@ -18,7 +21,7 @@ import de.unisiegen.gtitool.core.entities.State;
  * @author Christian Fehler
  * @version $Id:GPCellViewFactory.java 910 2008-05-16 00:31:21Z fehler $
  */
-public final class JGTIGraph extends JGraph
+public final class JGTIGraph extends JGraph implements Printable
 {
 
   /**
@@ -82,5 +85,28 @@ public final class JGTIGraph extends JGraph
       }
     }
     return null;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see java.awt.print.Printable#print(java.awt.Graphics,
+   *      java.awt.print.PageFormat, int)
+   */
+  public int print ( Graphics graphics, PageFormat pageFormat, int pageIndex )
+  {
+    boolean print = false;
+    int pageWidth = ( int ) pageFormat.getWidth ();
+
+    if ( ( pageIndex * pageWidth ) < getWidth () )
+    {
+      graphics.translate ( - ( pageIndex * pageWidth ), 0 );
+      print = true;
+    }
+    printAll ( graphics );
+    if ( print )
+      return Printable.PAGE_EXISTS;
+    return Printable.NO_SUCH_PAGE;
   }
 }

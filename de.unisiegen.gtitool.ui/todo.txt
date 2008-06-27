@@ -20,6 +20,7 @@ CF		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
 CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
 		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
 		  Potenzautomaten sehr leicht lahmlegen
+CF		- SplitView: Horizontale/Vertikale Teilung
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout

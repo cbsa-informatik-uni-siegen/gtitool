@@ -25,6 +25,7 @@ import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 import de.unisiegen.gtitool.logger.Logger;
+import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AboutDialogForm;
@@ -206,7 +207,17 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     logger.debug ( "show", "show the about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.pack ();
     this.gui.setLocationRelativeTo ( this.parent );
-    this.gui.setVisible ( true );
+    if ( this.gui.jGTIComboBoxPrinter.getModel ().getSize () > 0 )
+    {
+      this.gui.setVisible ( true );
+    }
+    else
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
   }
 
 
@@ -355,9 +366,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.headerFont = this.normalFont.deriveFont ( Font.BOLD );
 
     // Printer
-    // Printer
-    PrintService [] printServices = PrintServiceLookup.lookupPrintServices (
-        null, null );
+     PrintService [] printServices = PrintServiceLookup.lookupPrintServices (
+     null, null );
 
     this.gui.jGTIComboBoxPrinter.setModel ( new DefaultComboBoxModel (
         printServices ) );

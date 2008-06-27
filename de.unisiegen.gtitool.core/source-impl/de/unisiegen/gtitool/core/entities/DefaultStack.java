@@ -84,7 +84,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Removes all {@link Symbol}s.
+   * {@inheritDoc}
+   * 
+   * @see Stack#clear()
    */
   public final void clear ()
   {
@@ -127,12 +129,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns true if this {@link DefaultStack} contains the specified
-   * {@link Symbol}.
+   * {@inheritDoc}
    * 
-   * @param symbol {@link Symbol} whose presence in this {@link DefaultStack} is
-   *          to be tested.
-   * @return true if the specified {@link Symbol} is present; false otherwise.
+   * @see Stack#contains(Symbol)
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -158,9 +157,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns the {@link Symbol}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol}s.
+   * @see Stack#get()
    */
   public final ArrayList < Symbol > get ()
   {
@@ -169,11 +168,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns the {@link Symbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolList
+   * @see Stack#get(int)
    */
   public final Symbol get ( int index )
   {
@@ -188,6 +185,8 @@ public final class DefaultStack implements Stack
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -208,9 +207,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this {@link DefaultStack}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link Symbol}s in this {@link DefaultStack}.
+   * @see Stack#iterator()
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -219,10 +218,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Looks at the {@link Symbol} at the top of this {@link DefaultStack} without
-   * removing it.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
+   * @see Stack#peak()
    */
   public final Symbol peak ()
   {
@@ -231,11 +229,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Looks at the {@link Symbol}s at the top of this {@link DefaultStack}
-   * without removing them.
+   * {@inheritDoc}
    * 
-   * @param size The number of returned symbols.
-   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
+   * @see Stack#peak(int)
    */
   public ArrayList < Symbol > peak ( int size )
   {
@@ -255,10 +251,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Removes the {@link Symbol} at the top of this {@link DefaultStack} and
-   * returns that {@link Symbol}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol} at the top of this {@link DefaultStack}.
+   * @see Stack#pop()
    */
   public final Symbol pop ()
   {
@@ -267,11 +262,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Removes the {@link Symbol}s at the top of this {@link DefaultStack} and
-   * returns the {@link Symbol}s.
+   * {@inheritDoc}
    * 
-   * @param size The number of returned symbols.
-   * @return The {@link Symbol}s at the top of this {@link DefaultStack}.
+   * @see Stack#pop(int)
    */
   public final ArrayList < Symbol > pop ( int size )
   {
@@ -293,10 +286,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this {@link DefaultStack}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be pushed onto this
-   *          {@link DefaultStack}.
+   * @see Stack#push(Iterable)
    */
   public final void push ( Iterable < Symbol > symbols )
   {
@@ -312,10 +304,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol} onto the top of this {@link DefaultStack}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to be pushed onto this
-   *          {@link DefaultStack}.
+   * @see Stack#push(Symbol)
    */
   public final void push ( Symbol symbol )
   {
@@ -329,10 +320,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Pushes the {@link Symbol}s onto the top of this {@link DefaultStack}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be pushed onto this
-   *          {@link DefaultStack}.
+   * @see Stack#push(Symbol[])
    */
   public final void push ( Symbol ... symbols )
   {
@@ -349,6 +339,8 @@ public final class DefaultStack implements Stack
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -357,9 +349,9 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Returns the number of {@link Symbol}s in this {@link DefaultStack}.
+   *{@inheritDoc}
    * 
-   * @return The number of {@link Symbol}s in this {@link DefaultStack}.
+   * @see Stack#size()
    */
   public final int size ()
   {

@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The start {@link NonterminalSymbol} parser class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StartNonterminalSymbolParser.java 1032 2008-06-25 18:53:30Z
+ *          fehler $
  */
 public final class StartNonterminalSymbolParser extends
     StartNonterminalSymbolAbstractParser
@@ -62,7 +63,7 @@ public final class StartNonterminalSymbolParser extends
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */

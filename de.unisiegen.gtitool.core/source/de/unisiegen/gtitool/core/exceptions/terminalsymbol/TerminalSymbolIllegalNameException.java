@@ -50,8 +50,9 @@ public final class TerminalSymbolIllegalNameException extends
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "TerminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
-        "TerminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages
+        .getString (
+            "TerminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
         Style.NONE ) ) );
   }
 

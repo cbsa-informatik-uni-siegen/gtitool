@@ -165,11 +165,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Appends the specified {@link ProductionWordMember}s to the end of this
-   * {@link DefaultProductionWord}.
+   * {@inheritDoc}
    * 
-   * @param productionWordMembers The {@link ProductionWordMember}s to be
-   *          appended to this {@link DefaultProductionWord}.
+   * @see ProductionWord#add(Iterable)
    */
   public final void add (
       Iterable < ProductionWordMember > productionWordMembers )
@@ -186,11 +184,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Appends the specified {@link ProductionWordMember} to the end of this
-   * {@link DefaultProductionWord}.
+   * {@inheritDoc}
    * 
-   * @param productionWordMember The {@link ProductionWordMember} to be appended
-   *          to this {@link DefaultProductionWord}.
+   * @see ProductionWord#add(ProductionWordMember)
    */
   public final void add ( ProductionWordMember productionWordMember )
   {
@@ -204,11 +200,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Appends the specified {@link ProductionWordMember}s to the end of this
-   * {@link DefaultProductionWord}.
+   * {@inheritDoc}
    * 
-   * @param productionWordMembers The {@link ProductionWordMember}s to be
-   *          appended to this {@link DefaultProductionWord}.
+   * @see ProductionWord#add(ProductionWordMember[])
    */
   public final void add ( ProductionWordMember ... productionWordMembers )
   {
@@ -289,18 +283,24 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Let the listeners know that the modify status has changed.
+   * {@inheritDoc}
+   * 
+   * @see ProductionWord#get()
    */
-  @SuppressWarnings ( "unused" )
-  private final void fireModifyStatusChanged ()
+  public final ArrayList < ProductionWordMember > get ()
   {
-    ModifyStatusChangedListener [] listeners = this.listenerList
-        .getListeners ( ModifyStatusChangedListener.class );
-    boolean newModifyStatus = isModified ();
-    for ( ModifyStatusChangedListener current : listeners )
-    {
-      current.modifyStatusChanged ( newModifyStatus );
-    }
+    return this.productionWordMemberList;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ProductionWord#get(int)
+   */
+  public final ProductionWordMember get ( int index )
+  {
+    return this.productionWordMemberList.get ( index );
   }
 
 
@@ -321,31 +321,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Returns the {@link ProductionWordMember}s.
-   * 
-   * @return The {@link ProductionWordMember}s.
-   */
-  public final ArrayList < ProductionWordMember > get ()
-  {
-    return this.productionWordMemberList;
-  }
-
-
-  /**
-   * Returns the {@link ProductionWordMember} with the given index.
-   * 
-   * @param index The index.
-   * @return The {@link ProductionWordMember} with the given index.
-   * @see #productionWordMemberList
-   */
-  public final ProductionWordMember get ( int index )
-  {
-    return this.productionWordMemberList.get ( index );
-  }
-
-
-  /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -382,11 +360,9 @@ public final class DefaultProductionWord implements ProductionWord
 
 
   /**
-   * Returns an iterator over the {@link ProductionWordMember}s in this
-   * {@link DefaultProductionWord}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link ProductionWordMember}s in this
-   *         {@link DefaultProductionWord}.
+   * @see Iterable#iterator()
    */
   public final Iterator < ProductionWordMember > iterator ()
   {
@@ -421,10 +397,23 @@ public final class DefaultProductionWord implements ProductionWord
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
     this.parserOffset = parserOffset;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ProductionWord#size()
+   */
+  public final int size ()
+  {
+    return this.productionWordMemberList.size ();
   }
 
 
@@ -508,16 +497,5 @@ public final class DefaultProductionWord implements ProductionWord
       }
     }
     return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see de.unisiegen.gtitool.core.entities.ProductionWord#size()
-   */
-  public int size ()
-  {
-    return this.productionWordMemberList.size ();
   }
 }

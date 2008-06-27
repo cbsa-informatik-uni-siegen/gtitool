@@ -449,15 +449,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultTransition}.
+   *{@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultTransition}.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           {@link DefaultTransition} is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           {@link DefaultTransition} is not correct.
+   * @see Transition#add(Iterable)
    */
   public final void add ( Iterable < Symbol > symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -475,15 +469,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
-   * {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          {@link DefaultTransition}.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           {@link DefaultTransition} is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           {@link DefaultTransition} is not correct.
+   * @see Transition#add(Symbol)
    */
   public final void add ( Symbol symbol )
       throws TransitionSymbolNotInAlphabetException,
@@ -536,15 +524,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultTransition}.
+   *{@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultTransition}.
-   * @throws TransitionSymbolNotInAlphabetException If something with the
-   *           {@link DefaultTransition} is not correct.
-   * @throws TransitionSymbolOnlyOneTimeException If something with the
-   *           {@link DefaultTransition} is not correct.
+   * @see Transition#add(Symbol[])
    */
   public final void add ( Symbol ... symbols )
       throws TransitionSymbolNotInAlphabetException,
@@ -574,9 +556,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Adds the given {@link TransitionChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link TransitionChangedListener}.
+   * @see Transition#addTransitionChangedListener(TransitionChangedListener)
    */
   public final void addTransitionChangedListener (
       TransitionChangedListener listener )
@@ -597,12 +579,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if this {@link DefaultTransition} contains the given
-   * {@link Symbol}. Otherwise false.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol}.
-   * @return True if this {@link DefaultTransition} contains the given
-   *         {@link Symbol}. Otherwise false.
+   * @see Transition#contains(Symbol)
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -662,10 +641,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link Alphabet}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Alphabet}.
-   * @see #alphabet
+   * @see Transition#getAlphabet()
    */
   public final Alphabet getAlphabet ()
   {
@@ -700,10 +678,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the id.
+   * {@inheritDoc}
    * 
-   * @return The id.
-   * @see #id
+   * @see Transition#getId()
    */
   public final int getId ()
   {
@@ -713,6 +690,8 @@ public final class DefaultTransition implements Transition
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -721,10 +700,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the push down {@link Alphabet}.
+   * {@inheritDoc}
    * 
-   * @return The push down {@link Alphabet}.
-   * @see #pushDownAlphabet
+   * @see Transition#getPushDownAlphabet()
    */
   public final Alphabet getPushDownAlphabet ()
   {
@@ -733,9 +711,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link Word} which is read from the {@link Stack}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Word} which is read from the {@link Stack}.
+   * @see Transition#getPushDownWordRead()
    */
   public final Word getPushDownWordRead ()
   {
@@ -744,9 +722,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link Word} which should be written on the {@link Stack}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Word} which should be written on the {@link Stack}.
+   * @see Transition#getPushDownWordWrite()
    */
   public final Word getPushDownWordWrite ()
   {
@@ -755,10 +733,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} where the {@link DefaultTransition} begins.
+   * {@inheritDoc}
    * 
-   * @return The {@link State} where the {@link DefaultTransition} begins.
-   * @see #stateBegin
+   * @see Transition#getStateBegin()
    */
   public final State getStateBegin ()
   {
@@ -767,10 +744,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} id where the {@link DefaultTransition} begins.
+   * {@inheritDoc}
    * 
-   * @return The {@link State} id where the {@link DefaultTransition} begins.
-   * @see #stateBeginId
+   * @see Transition#getStateBeginId()
    */
   public final int getStateBeginId ()
   {
@@ -780,10 +756,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} where the {@link DefaultTransition} ends.
+   * {@inheritDoc}
    * 
-   * @return The {@link State} where the {@link DefaultTransition} ends.
-   * @see #stateEnd
+   * @see Transition#getStateEnd()
    */
   public final State getStateEnd ()
   {
@@ -792,10 +767,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link State} id where the {@link DefaultTransition} ends.
+   * {@inheritDoc}
    * 
-   * @return The {@link State} id where the {@link DefaultTransition} ends.
-   * @see #stateEndId
+   * @see Transition#getStateEndId()
    */
   public final int getStateEndId ()
   {
@@ -804,10 +778,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the symbolSet.
+   * {@inheritDoc}
    * 
-   * @return The symbolSet.
-   * @see #symbolSet
+   * @see Transition#getSymbol()
    */
   public final TreeSet < Symbol > getSymbol ()
   {
@@ -816,11 +789,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the {@link Symbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolSet
+   * @see Transition#getSymbol(int)
    */
   public final Symbol getSymbol ( int index )
   {
@@ -884,11 +855,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if this {@link Transition} is a active {@link Transition},
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link Transition} is a active {@link Transition},
-   *         otherwise false.
+   * @see Transition#isActive()
    */
   public final boolean isActive ()
   {
@@ -897,12 +866,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if this {@link Transition} is a error {@link Transition},
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link Transition} is a error {@link Transition},
-   *         otherwise false.
-   * @see #error
+   * @see Transition#isError()
    */
   public final boolean isError ()
   {
@@ -911,11 +877,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if the id of this {@link DefaultTransition} is defined,
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if the id of this {@link DefaultTransition} is defined,
-   *         otherwise false.
+   * @see Transition#isIdDefined()
    */
   public final boolean isIdDefined ()
   {
@@ -937,11 +901,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns true if this {@link DefaultTransition} is a selected
-   * {@link DefaultTransition}, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultTransition} is a selected
-   *         {@link DefaultTransition}, otherwise false.
+   * @see Transition#isSelected()
    */
   public final boolean isSelected ()
   {
@@ -950,11 +912,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this
-   * {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link Symbol}s in this
-   *         {@link DefaultTransition}.
+   * @see Iterable#iterator()
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -963,9 +923,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Remove the given {@link Symbol}s from this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to remove.
+   * @see Transition#remove(Iterable)
    */
   public final void remove ( Iterable < Symbol > symbols )
   {
@@ -981,9 +941,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Removes the given {@link Symbol} from this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to remove.
+   * @see Transition#remove(Symbol)
    */
   public final void remove ( Symbol symbol )
   {
@@ -998,9 +958,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Remove the given {@link Symbol}s from this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to remove.
+   * @see Transition#remove(Symbol[])
    */
   public final void remove ( Symbol ... symbols )
   {
@@ -1028,9 +988,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Removes the given {@link TransitionChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link TransitionChangedListener}.
+   * @see Transition#removeTransitionChangedListener(TransitionChangedListener)
    */
   public final void removeTransitionChangedListener (
       TransitionChangedListener listener )
@@ -1100,9 +1060,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the active value.
+   * {@inheritDoc}
    * 
-   * @param active The active value to set.
+   * @see Transition#setActive(boolean)
    */
   public final void setActive ( boolean active )
   {
@@ -1111,9 +1071,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link Alphabet} of this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param alphabet The {@link Alphabet} to set.
+   * @see Transition#setAlphabet(Alphabet)
    */
   public final void setAlphabet ( Alphabet alphabet )
   {
@@ -1130,10 +1090,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the error value.
+   * {@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see Transition#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -1142,10 +1101,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the id.
+   * {@inheritDoc}
    * 
-   * @param id The id to set.
-   * @see #id
+   * @see Transition#setId(int)
    */
   public final void setId ( int id )
   {
@@ -1159,6 +1117,8 @@ public final class DefaultTransition implements Transition
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -1167,9 +1127,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the push down {@link Alphabet} of this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @param pushDownAlphabet The push down {@link Alphabet} to set.
+   * @see Transition#setPushDownAlphabet(Alphabet)
    */
   public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
   {
@@ -1182,9 +1142,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link Word} which is read from the {@link Stack}.
+   * {@inheritDoc}
    * 
-   * @param pushDownWordRead The {@link Word} to set.
+   * @see Transition#setPushDownWordRead(Word)
    */
   public final void setPushDownWordRead ( Word pushDownWordRead )
   {
@@ -1198,9 +1158,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * The {@link Word} which should be written on the {@link Stack}.
+   * {@inheritDoc}
    * 
-   * @param pushDownWordWrite The {@link Word} to set.
+   * @see Transition#setPushDownWordWrite(Word)
    */
   public final void setPushDownWordWrite ( Word pushDownWordWrite )
   {
@@ -1214,9 +1174,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the selected value.
+   * {@inheritDoc}
    * 
-   * @param selected The selected value to set.
+   * @see Transition#setSelected(boolean)
    */
   public final void setSelected ( boolean selected )
   {
@@ -1225,9 +1185,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} where the {@link DefaultTransition} begins.
+   * {@inheritDoc}
    * 
-   * @param stateBegin The {@link State} to set.
+   * @see Transition#setStateBegin(State)
    */
   public final void setStateBegin ( State stateBegin )
   {
@@ -1256,9 +1216,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Sets the {@link State} where the {@link DefaultTransition} ends.
+   * {@inheritDoc}
    * 
-   * @param stateEnd The {@link State} to set.
+   * @see Transition#setStateEnd(State)
    */
   public final void setStateEnd ( State stateEnd )
   {
@@ -1287,9 +1247,9 @@ public final class DefaultTransition implements Transition
 
 
   /**
-   * Returns the number of {@link Symbol}s in this {@link DefaultTransition}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link Symbol}s in this {@link DefaultTransition}.
+   * @see Transition#size()
    */
   public final int size ()
   {

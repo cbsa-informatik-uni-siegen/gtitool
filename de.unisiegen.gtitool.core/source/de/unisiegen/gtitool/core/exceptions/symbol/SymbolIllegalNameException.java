@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: SymbolIllegalNameException.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class SymbolIllegalNameException extends SymbolException
 {
@@ -48,8 +49,9 @@ public final class SymbolIllegalNameException extends SymbolException
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "SymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
-        "SymbolException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString (
+        new PrettyToken ( Messages.getString (
+            "SymbolException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
   }
 
 

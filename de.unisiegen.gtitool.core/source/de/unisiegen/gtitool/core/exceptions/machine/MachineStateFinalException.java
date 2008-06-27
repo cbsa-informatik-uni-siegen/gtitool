@@ -9,7 +9,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * The {@link MachineStateFinalException} is used, if no final state is defined.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineStateFinalException.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class MachineStateFinalException extends MachineException
 {

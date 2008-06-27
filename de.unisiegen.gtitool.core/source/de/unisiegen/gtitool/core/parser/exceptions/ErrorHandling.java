@@ -66,9 +66,8 @@ public abstract class ErrorHandling
     normalColor = getHexadecimalColor ( Color.BLACK );
     StringBuilder result = new StringBuilder ();
     result.append ( Messages.QUOTE );
-    for ( int i = 0 ; i < tokenSequence.length ; i++ )
+    for ( String token : tokenSequence )
     {
-      String token = tokenSequence [ i ];
       token = token.replaceAll ( "&", "&amp" ); //$NON-NLS-1$ //$NON-NLS-2$
       token = token.replaceAll ( "<", "&lt" ); //$NON-NLS-1$//$NON-NLS-2$
       token = token.replaceAll ( ">", "&gt" ); //$NON-NLS-1$ //$NON-NLS-2$

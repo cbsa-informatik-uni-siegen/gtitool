@@ -12,7 +12,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * machine fails.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineValidationException.java 532 2008-02-04 23:54:55Z fehler
+ *          $
  */
 public final class MachineValidationException extends CoreException implements
     Iterable < MachineException >

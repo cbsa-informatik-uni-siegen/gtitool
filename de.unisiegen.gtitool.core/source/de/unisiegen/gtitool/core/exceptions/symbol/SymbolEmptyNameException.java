@@ -29,7 +29,8 @@ public final class SymbolEmptyNameException extends SymbolException
   {
     super ();
     // Message and description
-    setPrettyMessage ( Messages.getPrettyString ( "SymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setPrettyMessage ( Messages
+        .getPrettyString ( "SymbolException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages
         .getPrettyString ( "SymbolException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }

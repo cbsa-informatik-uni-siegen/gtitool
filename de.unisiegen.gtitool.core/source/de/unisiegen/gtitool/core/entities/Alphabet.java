@@ -64,7 +64,8 @@ public interface Alphabet extends Entity < Alphabet >, Storable, Modifyable,
 
 
   /**
-   * Returns true if this {@link Alphabet} contains the specified {@link Symbol}.
+   * Returns true if this {@link Alphabet} contains the specified {@link Symbol}
+   * .
    * 
    * @param symbol {@link Symbol} whose presence in this {@link Alphabet} is to
    *          be tested.

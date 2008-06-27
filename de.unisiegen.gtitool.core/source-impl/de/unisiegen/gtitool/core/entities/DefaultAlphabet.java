@@ -173,13 +173,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultAlphabet}.
-   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
-   *           not correct.
+   * @see Alphabet#add(Iterable)
    */
   public final void add ( Iterable < Symbol > symbols )
       throws AlphabetException
@@ -202,13 +198,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this
-   * {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to be appended to this
-   *          {@link DefaultAlphabet}.
-   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
-   *           not correct.
+   * @see Alphabet#add(Symbol)
    */
   public final void add ( Symbol symbol ) throws AlphabetException
   {
@@ -241,13 +233,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultAlphabet}.
-   * @throws AlphabetException If something with the {@link DefaultAlphabet} is
-   *           not correct.
+   * @see Alphabet#add(Symbol[])
    */
   public final void add ( Symbol ... symbols ) throws AlphabetException
   {
@@ -269,9 +257,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Adds the given {@link AlphabetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link AlphabetChangedListener}.
+   * @see Alphabet#addAlphabetChangedListener(AlphabetChangedListener)
    */
   public final void addAlphabetChangedListener (
       AlphabetChangedListener listener )
@@ -329,7 +317,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Removes all {@link Symbol}s.
+   * {@inheritDoc}
+   * 
+   * @see Alphabet#clear()
    */
   public final void clear ()
   {
@@ -374,12 +364,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns true if this {@link DefaultAlphabet} contains the specified
-   * {@link Symbol}.
+   * {@inheritDoc}
    * 
-   * @param symbol {@link Symbol} whose presence in this {@link DefaultAlphabet}
-   *          is to be tested.
-   * @return true if the specified {@link Symbol} is present; false otherwise.
+   * @see Alphabet#contains(Symbol)
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -434,9 +421,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns the {@link Symbol}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol}s.
+   * @see Alphabet#get()
    */
   public final TreeSet < Symbol > get ()
   {
@@ -445,11 +432,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns the {@link Symbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolSet
+   * @see Alphabet#get(int)
    */
   public final Symbol get ( int index )
   {
@@ -480,6 +465,8 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -511,11 +498,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this
-   * {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link Symbol}s in this
-   *         {@link DefaultAlphabet}.
+   * @see Iterable#iterator()
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -524,9 +509,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Remove the given {@link Symbol}s from this {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to remove.
+   * @see Alphabet#remove(Iterable)
    */
   public final void remove ( Iterable < Symbol > symbols )
   {
@@ -542,9 +527,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Removes the given {@link Symbol} from this {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to remove.
+   * @see Alphabet#remove(Symbol)
    */
   public final void remove ( Symbol symbol )
   {
@@ -563,9 +548,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Remove the given {@link Symbol}s from this {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to remove.
+   * @see Alphabet#remove(Symbol[])
    */
   public final void remove ( Symbol ... symbols )
   {
@@ -581,9 +566,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Removes the given {@link AlphabetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link AlphabetChangedListener}.
+   * @see Alphabet#removeAlphabetChangedListener(AlphabetChangedListener)
    */
   public final void removeAlphabetChangedListener (
       AlphabetChangedListener listener )
@@ -618,6 +603,8 @@ public final class DefaultAlphabet implements Alphabet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -626,9 +613,9 @@ public final class DefaultAlphabet implements Alphabet
 
 
   /**
-   * Returns the number of {@link Symbol}s in this {@link DefaultAlphabet}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link Symbol}s in this {@link DefaultAlphabet}.
+   * @see Alphabet#size()
    */
   public final int size ()
   {

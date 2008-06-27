@@ -10,7 +10,8 @@ import de.unisiegen.gtitool.core.exceptions.CoreException;
  * {@link NonterminalSymbol} is not correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NonterminalSymbolException.java 1031 2008-06-25 16:57:06Z
+ *          fehler $
  */
 public abstract class NonterminalSymbolException extends CoreException
 {

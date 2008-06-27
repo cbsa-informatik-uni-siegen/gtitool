@@ -52,9 +52,8 @@ public class PrettyStringListCellRenderer extends DefaultListCellRenderer
    */
   @Override
   public Component getListCellRendererComponent ( JList list, Object value,
-      @SuppressWarnings ( "unused" )
-      int index, boolean isSelected, @SuppressWarnings ( "unused" )
-      boolean cellHasFocus )
+      @SuppressWarnings ( "unused" ) int index, boolean isSelected,
+      @SuppressWarnings ( "unused" ) boolean cellHasFocus )
   {
     PrettyString prettyString = null;
     if ( value instanceof PrettyPrintable )

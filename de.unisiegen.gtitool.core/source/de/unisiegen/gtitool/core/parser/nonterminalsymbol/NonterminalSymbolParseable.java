@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link NonterminalSymbol} {@link Parseable} class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: NonterminalSymbolParseable.java 547 2008-02-10 22:24:57Z fehler
+ *          $
  */
 public final class NonterminalSymbolParseable implements Parseable
 {

@@ -93,8 +93,8 @@ public final class PrettyStringComponent extends JLabel
    * @see JComponent#getToolTipText(MouseEvent)
    */
   @Override
-  public final String getToolTipText ( @SuppressWarnings ( "unused" )
-  MouseEvent event )
+  public final String getToolTipText (
+      @SuppressWarnings ( "unused" ) MouseEvent event )
   {
     if ( this.prettyString.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
@@ -160,7 +160,7 @@ public final class PrettyStringComponent extends JLabel
         char [] chars = lastPrettyToken.getChar ();
         int i = 0;
         String addText = ""; //$NON-NLS-1$
-        while ( i < chars.length
+        while ( ( i < chars.length )
             && ( ( metrics.stringWidth ( usedPrettyString.toString () + addText
                 + dots ) ) <= getWidth () ) )
         {

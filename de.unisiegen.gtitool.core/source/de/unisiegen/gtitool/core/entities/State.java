@@ -34,8 +34,8 @@ public interface State extends Entity < State >, Storable, Modifyable
 
 
   /**
-   * Adds the {@link Transition} to the list of {@link Transition}s, which
-   * begin in this {@link State}.
+   * Adds the {@link Transition} to the list of {@link Transition}s, which begin
+   * in this {@link State}.
    * 
    * @param transition The {@link Transition} to add.
    */

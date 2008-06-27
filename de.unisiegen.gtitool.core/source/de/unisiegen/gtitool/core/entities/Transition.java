@@ -54,8 +54,8 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link Transition}.
+   * Appends the specified {@link Symbol}s to the end of this {@link Transition}
+   * .
    * 
    * @param symbols The {@link Symbol}s to be appended to this
    *          {@link Transition}.
@@ -84,8 +84,8 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link Transition}.
+   * Appends the specified {@link Symbol}s to the end of this {@link Transition}
+   * .
    * 
    * @param symbols The {@link Symbol}s to be appended to this
    *          {@link Transition}.
@@ -289,8 +289,8 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
-   * Clears the {@link Symbol}s and appends the specified {@link Symbol}s to
-   * the end of this {@link Transition}.
+   * Clears the {@link Symbol}s and appends the specified {@link Symbol}s to the
+   * end of this {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
    *          {@link Transition}.
@@ -320,8 +320,8 @@ public interface Transition extends Entity < Transition >, Storable,
 
 
   /**
-   * Clears the {@link Symbol}s and append the specified {@link Symbol}s to
-   * the end of this {@link Transition}.
+   * Clears the {@link Symbol}s and append the specified {@link Symbol}s to the
+   * end of this {@link Transition}.
    * 
    * @param symbols The {@link Symbol}s to be appended to this
    *          {@link Transition}.

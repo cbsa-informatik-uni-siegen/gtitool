@@ -99,7 +99,7 @@ public final class DefaultSymbol implements Symbol
     {
       if ( current.getName ().equals ( "name" ) ) //$NON-NLS-1$
       {
-        if (! this.epsilon)
+        if ( !this.epsilon )
         {
           setName ( current.getValue () );
         }
@@ -223,10 +223,9 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Returns the name of this symbol.
+   * {@inheritDoc}
    * 
-   * @return The name of this symbol.
-   * @see #name
+   * @see Symbol#getName()
    */
   public final String getName ()
   {
@@ -236,6 +235,8 @@ public final class DefaultSymbol implements Symbol
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -260,11 +261,9 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a active {@link Symbol}, otherwise
-   * false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link Symbol} is a active {@link Symbol}, otherwise
-   *         false.
+   * @see Symbol#isActive()
    */
   public final boolean isActive ()
   {
@@ -284,12 +283,9 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Returns true if this {@link Symbol} is a error {@link Symbol}, otherwise
-   * false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link Symbol} is a error {@link Symbol}, otherwise
-   *         false.
-   * @see #error
+   * @see Symbol#isError()
    */
   public final boolean isError ()
   {
@@ -298,9 +294,9 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Sets the active value.
+   * {@inheritDoc}
    * 
-   * @param active The active value to set.
+   * @see Symbol#setActive(boolean)
    */
   public final void setActive ( boolean active )
   {
@@ -309,10 +305,9 @@ public final class DefaultSymbol implements Symbol
 
 
   /**
-   * Sets the error value.
+   * {@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see Symbol#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -384,6 +379,8 @@ public final class DefaultSymbol implements Symbol
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {

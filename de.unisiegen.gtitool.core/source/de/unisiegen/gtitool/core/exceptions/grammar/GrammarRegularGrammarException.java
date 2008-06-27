@@ -72,6 +72,17 @@ public final class GrammarRegularGrammarException extends GrammarException
   /**
    * {@inheritDoc}
    * 
+   * @see ProductionWordMembersInvolvedException#getProductionWordMember()
+   */
+  public ArrayList < ProductionWordMember > getProductionWordMember ()
+  {
+    return this.symbols;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see CoreException#getType()
    */
   @Override
@@ -95,16 +106,5 @@ public final class GrammarRegularGrammarException extends GrammarException
     result.append ( "Production: " ); //$NON-NLS-1$
     result.append ( this.production.toString () );
     return result.toString ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ProductionWordMembersInvolvedException#getProductionWordMember()
-   */
-  public ArrayList < ProductionWordMember > getProductionWordMember ()
-  {
-    return this.symbols;
   }
 }

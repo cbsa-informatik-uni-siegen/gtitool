@@ -29,7 +29,8 @@ public final class StateEmptyNameException extends StateException
   {
     super ();
     // Message and description
-    setPrettyMessage ( Messages.getPrettyString ( "StateException.EmptyNameMessage" ) ); //$NON-NLS-1$
+    setPrettyMessage ( Messages
+        .getPrettyString ( "StateException.EmptyNameMessage" ) ); //$NON-NLS-1$
     setPrettyDescription ( Messages
         .getPrettyString ( "StateException.EmptyNameDescription" ) ); //$NON-NLS-1$
   }

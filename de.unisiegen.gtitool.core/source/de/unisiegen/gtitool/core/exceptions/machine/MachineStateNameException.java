@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * with the same name.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineStateNameException.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class MachineStateNameException extends MachineException implements
     StatesInvolvedException

@@ -23,19 +23,6 @@ public final class StateSetParseable implements Parseable
   /**
    * Returns a new {@link GTIParser}.
    * 
-   * @param text The input {@link String}.
-   * @return A new {@link GTIParser}.
-   * @see Parseable#newParser(String)
-   */
-  public final GTIParser newParser ( String text )
-  {
-    return newParser ( newScanner ( text ) );
-  }
-
-
-  /**
-   * Returns a new {@link GTIParser}.
-   * 
    * @param gtiScanner The input {@link GTIScanner}.
    * @return A new {@link GTIParser}.
    * @see Parseable#newParser(GTIScanner)
@@ -55,6 +42,19 @@ public final class StateSetParseable implements Parseable
         return ( StateSet ) parser.parse ().value;
       }
     };
+  }
+
+
+  /**
+   * Returns a new {@link GTIParser}.
+   * 
+   * @param text The input {@link String}.
+   * @return A new {@link GTIParser}.
+   * @see Parseable#newParser(String)
+   */
+  public final GTIParser newParser ( String text )
+  {
+    return newParser ( newScanner ( text ) );
   }
 
 

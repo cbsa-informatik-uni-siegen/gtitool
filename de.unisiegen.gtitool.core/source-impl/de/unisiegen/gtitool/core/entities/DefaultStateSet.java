@@ -170,13 +170,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Appends the specified {@link State}s to the end of this
-   * {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @param states The {@link State}s to be appended to this
-   *          {@link DefaultStateSet}.
-   * @throws StateSetException If something with the {@link DefaultStateSet} is
-   *           not correct.
+   * @see StateSet#add(Iterable)
    */
   public final void add ( Iterable < State > states ) throws StateSetException
   {
@@ -198,11 +194,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Appends the specified {@link State} to the end of this
-   * {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @param state The {@link State} to be appended to this
-   *          {@link DefaultStateSet}.
+   * @see StateSet#add(State)
    */
   public final void add ( State state )
   {
@@ -218,13 +212,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Appends the specified {@link State}s to the end of this
-   * {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @param states The {@link State}s to be appended to this
-   *          {@link DefaultStateSet}.
-   * @throws StateSetException If something with the {@link DefaultStateSet} is
-   *           not correct.
+   * @see StateSet#add(State[])
    */
   public final void add ( State ... states ) throws StateSetException
   {
@@ -258,9 +248,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Adds the given {@link StateSetChangedListener}.
+   *{@inheritDoc}
    * 
-   * @param listener The {@link StateSetChangedListener}.
+   * @see StateSet#addStateSetChangedListener(StateSetChangedListener)
    */
   public final void addStateSetChangedListener (
       StateSetChangedListener listener )
@@ -306,7 +296,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Removes all {@link State}s.
+   * {@inheritDoc}
+   * 
+   * @see StateSet#clear()
    */
   public final void clear ()
   {
@@ -319,7 +311,7 @@ public final class DefaultStateSet implements StateSet
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo( Object)
+   * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( StateSet other )
   {
@@ -351,12 +343,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Returns true if this {@link DefaultStateSet} contains the specified
-   * {@link State}.
+   * {@inheritDoc}
    * 
-   * @param state {@link State} whose presence in this {@link DefaultStateSet}
-   *          is to be tested.
-   * @return true if the specified {@link State} is present; false otherwise.
+   * @see StateSet#contains(State)
    */
   public final boolean contains ( State state )
   {
@@ -411,9 +400,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Returns the {@link State}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link State}s.
+   * @see StateSet#get()
    */
   public final ArrayList < State > get ()
   {
@@ -422,11 +411,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Returns the {@link State} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link State} with the given index.
-   * @see #stateSet
+   * @see StateSet#get(int)
    */
   public final State get ( int index )
   {
@@ -457,6 +444,8 @@ public final class DefaultStateSet implements StateSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -488,11 +477,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Returns an iterator over the {@link State}s in this
-   * {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link State}s in this
-   *         {@link DefaultStateSet}.
+   * @see Iterable#iterator()
    */
   public final Iterator < State > iterator ()
   {
@@ -501,9 +488,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Remove the given {@link State}s from this {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @param states The {@link State}s to remove.
+   * @see StateSet#remove(Iterable)
    */
   public final void remove ( Iterable < State > states )
   {
@@ -519,9 +506,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Removes the given {@link State} from this {@link StateSet}.
+   * {@inheritDoc}
    * 
-   * @param state The {@link State} to remove.
+   * @see StateSet#remove(State)
    */
   public final void remove ( State state )
   {
@@ -540,9 +527,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Remove the given {@link State}s from this {@link StateSet}.
+   * {@inheritDoc}
    * 
-   * @param states The {@link State}s to remove.
+   * @see StateSet#remove(State[])
    */
   public final void remove ( State ... states )
   {
@@ -570,9 +557,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Removes the given {@link StateSetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link StateSetChangedListener}.
+   * @see StateSet#removeStateSetChangedListener(StateSetChangedListener)
    */
   public final void removeStateSetChangedListener (
       StateSetChangedListener listener )
@@ -595,6 +582,8 @@ public final class DefaultStateSet implements StateSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -603,9 +592,9 @@ public final class DefaultStateSet implements StateSet
 
 
   /**
-   * Returns the number of {@link State}s in this {@link DefaultStateSet}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link State}s in this {@link DefaultStateSet}.
+   * @see StateSet#size()
    */
   public final int size ()
   {
@@ -681,5 +670,4 @@ public final class DefaultStateSet implements StateSet
     }
     return result.toString ();
   }
-
 }

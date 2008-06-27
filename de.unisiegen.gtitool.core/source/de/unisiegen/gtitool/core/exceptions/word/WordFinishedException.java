@@ -30,7 +30,8 @@ public final class WordFinishedException extends WordException
   {
     super ( word );
     // Message and description
-    setPrettyMessage ( Messages.getPrettyString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
+    setPrettyMessage ( Messages
+        .getPrettyString ( "WordException.FinishedMessage" ) ); //$NON-NLS-1$
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
       setPrettyDescription ( Messages

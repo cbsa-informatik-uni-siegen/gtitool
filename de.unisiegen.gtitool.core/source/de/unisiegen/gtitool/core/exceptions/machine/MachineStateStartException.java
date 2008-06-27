@@ -17,7 +17,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * or more than one start state is defined.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: MachineStateStartException.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class MachineStateStartException extends MachineException
     implements StatesInvolvedException

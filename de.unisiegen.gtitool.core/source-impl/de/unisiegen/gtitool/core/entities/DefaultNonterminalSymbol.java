@@ -166,10 +166,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns the name of this {@link DefaultNonterminalSymbol}.
+   * {@inheritDoc}
    * 
-   * @return The name of this {@link DefaultNonterminalSymbol}.
-   * @see #name
+   * @see NonterminalSymbol#getName()
    */
   public final String getName ()
   {
@@ -199,12 +198,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns true if this {@link NonterminalSymbol} is a error
-   * {@link NonterminalSymbol}, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link NonterminalSymbol} is a error
-   *         {@link NonterminalSymbol}, otherwise false.
-   * @see #error
+   * @see NonterminalSymbol#isError()
    */
   public final boolean isError ()
   {
@@ -213,11 +209,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Returns true if this {@link NonterminalSymbol} is a start
-   * {@link NonterminalSymbol}, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link NonterminalSymbol} is a start
-   *         {@link NonterminalSymbol}, otherwise false.
+   * @see NonterminalSymbol#isStart()
    */
   public final boolean isStart ()
   {
@@ -226,10 +220,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Sets the error value.
+   *{@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see NonterminalSymbol#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -295,6 +288,8 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -303,9 +298,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
 
 
   /**
-   * Sets the start value.
+   * {@inheritDoc}
    * 
-   * @param start The start value to set.
+   * @see NonterminalSymbol#setStart(boolean)
    */
   public final void setStart ( boolean start )
   {

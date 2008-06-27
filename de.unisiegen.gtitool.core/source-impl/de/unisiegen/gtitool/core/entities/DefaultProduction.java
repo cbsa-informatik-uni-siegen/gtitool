@@ -110,7 +110,7 @@ public final class DefaultProduction implements Production
       }
     }
 
-    if ( this.nonterminalSymbol == null || this.productionWord == null )
+    if ( ( this.nonterminalSymbol == null ) || ( this.productionWord == null ) )
     {
       throw new StoreException ( Messages
           .getString ( "StoreException.MissingAttribute" ) ); //$NON-NLS-1$
@@ -171,7 +171,7 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   * @see Production#contains(NonterminalSymbol)
    */
   public boolean contains ( NonterminalSymbol symbol )
   {
@@ -189,7 +189,7 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
-   * @see de.unisiegen.gtitool.core.entities.Production#contains(de.unisiegen.gtitool.core.entities.TerminalSymbol)
+   * @see Production#contains(TerminalSymbol)
    */
   public boolean contains ( TerminalSymbol symbol )
   {
@@ -258,6 +258,8 @@ public final class DefaultProduction implements Production
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Production#getNonterminalSymbol()
    */
   public NonterminalSymbol getNonterminalSymbol ()
   {
@@ -267,6 +269,8 @@ public final class DefaultProduction implements Production
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -276,6 +280,8 @@ public final class DefaultProduction implements Production
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Production#getProductionWord()
    */
   public final ProductionWord getProductionWord ()
   {
@@ -296,12 +302,9 @@ public final class DefaultProduction implements Production
 
 
   /**
-   * Returns true if this {@link Production} is a error {@link Production},
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link Production} is a error {@link Production},
-   *         otherwise false.
-   * @see #error
+   * @see Production#isError()
    */
   public final boolean isError ()
   {
@@ -364,10 +367,9 @@ public final class DefaultProduction implements Production
 
 
   /**
-   * Sets the error value.
+   * {@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see Production#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -378,8 +380,7 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
-   * @param nonterminalSymbol
-   * @see de.unisiegen.gtitool.core.entities.Production#setNonterminalSymbol(de.unisiegen.gtitool.core.entities.NonterminalSymbol)
+   * @see Production#setNonterminalSymbol(NonterminalSymbol)
    */
   public void setNonterminalSymbol ( NonterminalSymbol nonterminalSymbol )
   {
@@ -390,6 +391,8 @@ public final class DefaultProduction implements Production
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -400,8 +403,7 @@ public final class DefaultProduction implements Production
   /**
    * {@inheritDoc}
    * 
-   * @param productionWord
-   * @see de.unisiegen.gtitool.core.entities.Production#setProductionWord(de.unisiegen.gtitool.core.entities.ProductionWord)
+   * @see Production#setProductionWord(ProductionWord)
    */
   public void setProductionWord ( ProductionWord productionWord )
   {

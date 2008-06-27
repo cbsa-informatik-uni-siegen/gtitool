@@ -145,11 +145,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultWord}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultWord}.
+   * @see Word#add(Iterable)
    */
   public final void add ( Iterable < Symbol > symbols )
   {
@@ -165,9 +163,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Appends the specified {@link Symbol} to the end of this {@link DefaultWord}.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol} to be appended to this {@link DefaultWord}.
+   * @see Word#add(Symbol)
    */
   public final void add ( Symbol symbol )
   {
@@ -181,11 +179,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Appends the specified {@link Symbol}s to the end of this
-   * {@link DefaultWord}.
+   * {@inheritDoc}
    * 
-   * @param symbols The {@link Symbol}s to be appended to this
-   *          {@link DefaultWord}.
+   * @see Word#add(Symbol[])
    */
   public final void add ( Symbol ... symbols )
   {
@@ -203,7 +199,7 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo( Object)
+   * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( Word other )
   {
@@ -235,12 +231,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns true if this {@link DefaultWord} contains the given {@link Symbol}.
-   * Otherwise false.
+   * {@inheritDoc}
    * 
-   * @param symbol The {@link Symbol}.
-   * @return True if this {@link DefaultWord} contains the given {@link Symbol}.
-   *         Otherwise false.
+   * @see Word#contains(Symbol)
    */
   public final boolean contains ( Symbol symbol )
   {
@@ -266,9 +259,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the {@link Symbol}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link Symbol}s.
+   * @see Word#get()
    */
   public final ArrayList < Symbol > get ()
   {
@@ -277,11 +270,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the {@link Symbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link Symbol} with the given index.
-   * @see #symbolList
+   * @see Word#get(int)
    */
   public final Symbol get ( int index )
   {
@@ -290,10 +281,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the current position.
+   * {@inheritDoc}
    * 
-   * @return The current position.
-   * @see #currentPosition
+   * @see Word#getCurrentPosition()
    */
   public final int getCurrentPosition ()
   {
@@ -302,13 +292,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the current {@link Symbol}.
+   * {@inheritDoc}
    * 
-   * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link DefaultWord} is
-   *           not correct.
-   * @throws WordResetedException If something with the {@link DefaultWord} is
-   *           not correct.
+   * @see Word#getCurrentSymbol()
    */
   public final Symbol getCurrentSymbol () throws WordFinishedException,
       WordResetedException
@@ -343,6 +329,8 @@ public final class DefaultWord implements Word
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -351,13 +339,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the readed {@link Symbol}s.
+   * {@inheritDoc}
    * 
-   * @return The readed {@link Symbol}s.
-   * @throws WordFinishedException If something with the {@link DefaultWord} is
-   *           not correct.
-   * @throws WordResetedException If something with the {@link DefaultWord} is
-   *           not correct.
+   * @see Word#getReadedSymbols()
    */
   public final ArrayList < Symbol > getReadedSymbols ()
       throws WordFinishedException, WordResetedException
@@ -392,9 +376,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns true if this word is finished, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this word is finished, otherwise false.
+   * @see Word#isFinished()
    */
   public final boolean isFinished ()
   {
@@ -403,9 +387,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns true if this word is reseted, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this word is reseted, otherwise false.
+   * @see Word#isReseted()
    */
   public final boolean isReseted ()
   {
@@ -414,9 +398,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns an iterator over the {@link Symbol}s in this {@link DefaultWord}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link Symbol}s in this {@link DefaultWord}.
+   * @see Iterable#iterator()
    */
   public final Iterator < Symbol > iterator ()
   {
@@ -425,13 +409,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the next {@link Symbol} and increments the current position.
+   * {@inheritDoc}
    * 
-   * @return The next {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link DefaultWord} is
-   *           not correct.
-   * @throws WordResetedException If something with the {@link DefaultWord} is
-   *           not correct.
+   * @see Word#nextSymbol()
    */
   public final Symbol nextSymbol () throws WordFinishedException,
       WordResetedException
@@ -446,13 +426,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the previous {@link Symbol} and decrements the current position.
+   * {@inheritDoc}
    * 
-   * @return The previous {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link DefaultWord} is
-   *           not correct.
-   * @throws WordResetedException If something with the {@link DefaultWord} is
-   *           not correct.
+   * @see Word#previousSymbol()
    */
   public final Symbol previousSymbol () throws WordFinishedException,
       WordResetedException
@@ -468,29 +444,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Sets the current position.
-   * 
-   * @param currentPosition The current position.
-   */
-  public final void setCurrentPosition ( int currentPosition )
-  {
-    if ( this.currentPosition < START_INDEX )
-    {
-      this.currentPosition = START_INDEX;
-    }
-    else if ( this.currentPosition >= this.symbolList.size () )
-    {
-      this.currentPosition = this.symbolList.size () - 1;
-    }
-    else
-    {
-      this.currentPosition = currentPosition;
-    }
-  }
-
-
-  /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -499,9 +455,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Returns the number of {@link Symbol}s in this {@link DefaultWord}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link Symbol}s in this {@link DefaultWord}.
+   * @see Word#size()
    */
   public final int size ()
   {
@@ -510,7 +466,9 @@ public final class DefaultWord implements Word
 
 
   /**
-   * Resets the current position of this {@link DefaultWord}.
+   * {@inheritDoc}
+   * 
+   * @see Word#start()
    */
   public final void start ()
   {

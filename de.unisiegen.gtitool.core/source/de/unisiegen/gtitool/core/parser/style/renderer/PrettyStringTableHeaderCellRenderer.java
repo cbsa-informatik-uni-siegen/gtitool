@@ -55,11 +55,10 @@ public final class PrettyStringTableHeaderCellRenderer extends
    */
   @Override
   public Component getTableCellRendererComponent ( JTable table, Object value,
-      @SuppressWarnings ( "unused" )
-      boolean isSelected, @SuppressWarnings ( "unused" )
-      boolean hasFocus, @SuppressWarnings ( "unused" )
-      int row, @SuppressWarnings ( "unused" )
-      int column )
+      @SuppressWarnings ( "unused" ) boolean isSelected,
+      @SuppressWarnings ( "unused" ) boolean hasFocus,
+      @SuppressWarnings ( "unused" ) int row,
+      @SuppressWarnings ( "unused" ) int column )
   {
     PrettyString prettyString = null;
     if ( value instanceof PrettyPrintable )

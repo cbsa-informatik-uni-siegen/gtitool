@@ -50,8 +50,9 @@ public final class NonterminalSymbolIllegalNameException extends
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "NonterminalSymbolException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
-        "NonterminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages
+        .getString (
+            "NonterminalSymbolException.IllegalNameDescription", illegalName ), //$NON-NLS-1$
         Style.NONE ) ) );
   }
 

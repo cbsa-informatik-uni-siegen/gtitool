@@ -60,7 +60,7 @@ public final class TransitionParser extends TransitionAbstractParser
 
 
   /**
-   * {@inheritDoc}}
+   * {@inheritDoc}
    * 
    * @see java_cup.runtime.lr_parser#syntax_error(java_cup.runtime.Symbol)
    */

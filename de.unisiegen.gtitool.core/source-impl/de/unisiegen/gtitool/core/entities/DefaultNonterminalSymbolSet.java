@@ -178,13 +178,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Appends the specified {@link NonterminalSymbol}s to the end of this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s to be appended to
-   *          this {@link DefaultNonterminalSymbolSet}.
-   * @throws NonterminalSymbolSetException If something with the
-   *           {@link DefaultNonterminalSymbolSet} is not correct.
+   * @see NonterminalSymbolSet#add(Iterable)
    */
   public final void add ( Iterable < NonterminalSymbol > nonterminalSymbols )
       throws NonterminalSymbolSetException
@@ -207,13 +203,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Appends the specified {@link NonterminalSymbol} to the end of this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbol The {@link NonterminalSymbol} to be appended to
-   *          this {@link DefaultNonterminalSymbolSet}.
-   * @throws NonterminalSymbolSetException If something with the
-   *           {@link DefaultNonterminalSymbolSet} is not correct.
+   * @see NonterminalSymbolSet#add(NonterminalSymbol)
    */
   public final void add ( NonterminalSymbol nonterminalSymbol )
       throws NonterminalSymbolSetException
@@ -248,13 +240,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Appends the specified {@link NonterminalSymbol}s to the end of this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s to be appended to
-   *          this {@link DefaultNonterminalSymbolSet}.
-   * @throws NonterminalSymbolSetException If something with the
-   *           {@link DefaultNonterminalSymbolSet} is not correct.
+   * @see NonterminalSymbolSet#add(NonterminalSymbol[])
    */
   public final void add ( NonterminalSymbol ... nonterminalSymbols )
       throws NonterminalSymbolSetException
@@ -289,9 +277,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Adds the given {@link NonterminalSymbolSetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link NonterminalSymbolSetChangedListener}.
+   * @see NonterminalSymbolSet#addNonterminalSymbolSetChangedListener(NonterminalSymbolSetChangedListener)
    */
   public final void addNonterminalSymbolSetChangedListener (
       NonterminalSymbolSetChangedListener listener )
@@ -343,7 +331,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Removes all {@link NonterminalSymbol}s.
+   * {@inheritDoc}
+   * 
+   * @see NonterminalSymbolSet#clear()
    */
   public final void clear ()
   {
@@ -388,13 +378,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Returns true if this {@link DefaultNonterminalSymbolSet} contains the
-   * specified {@link NonterminalSymbol}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbol {@link NonterminalSymbol} whose presence in this
-   *          {@link DefaultNonterminalSymbolSet} is to be tested.
-   * @return true if the specified {@link NonterminalSymbol} is present; false
-   *         otherwise.
+   * @see NonterminalSymbolSet#contains(NonterminalSymbol)
    */
   public final boolean contains ( NonterminalSymbol nonterminalSymbol )
   {
@@ -450,9 +436,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Returns the {@link NonterminalSymbol}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link NonterminalSymbol}s.
+   * @see NonterminalSymbolSet#get()
    */
   public final TreeSet < NonterminalSymbol > get ()
   {
@@ -461,11 +447,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Returns the {@link NonterminalSymbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link NonterminalSymbol} with the given index.
-   * @see #nonterminalSymbolSet
+   * @see NonterminalSymbolSet#get(int)
    */
   public final NonterminalSymbol get ( int index )
   {
@@ -497,6 +481,8 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -528,11 +514,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Returns an iterator over the {@link NonterminalSymbol}s in this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link NonterminalSymbol}s in this
-   *         {@link DefaultNonterminalSymbolSet}.
+   * @see Iterable#iterator()
    */
   public final Iterator < NonterminalSymbol > iterator ()
   {
@@ -541,10 +525,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Remove the given {@link NonterminalSymbol}s from this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s to remove.
+   * @see NonterminalSymbolSet#remove(Iterable)
    */
   public final void remove ( Iterable < NonterminalSymbol > nonterminalSymbols )
   {
@@ -560,10 +543,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Removes the given {@link NonterminalSymbol} from this
-   * {@link NonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbol The {@link NonterminalSymbol} to remove.
+   * @see NonterminalSymbolSet#remove(NonterminalSymbol)
    */
   public final void remove ( NonterminalSymbol nonterminalSymbol )
   {
@@ -583,10 +565,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Remove the given {@link NonterminalSymbol}s from this
-   * {@link NonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param nonterminalSymbols The {@link NonterminalSymbol}s to remove.
+   * @see NonterminalSymbolSet#remove(NonterminalSymbol[])
    */
   public final void remove ( NonterminalSymbol ... nonterminalSymbols )
   {
@@ -614,9 +595,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Removes the given {@link NonterminalSymbolSetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link NonterminalSymbolSetChangedListener}.
+   * @see NonterminalSymbolSet#removeNonterminalSymbolSetChangedListener(NonterminalSymbolSetChangedListener)
    */
   public final void removeNonterminalSymbolSetChangedListener (
       NonterminalSymbolSetChangedListener listener )
@@ -640,6 +621,8 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -648,11 +631,9 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
 
 
   /**
-   * Returns the number of {@link NonterminalSymbol}s in this
-   * {@link DefaultNonterminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link NonterminalSymbol}s in this
-   *         {@link DefaultNonterminalSymbolSet}.
+   * @see NonterminalSymbolSet#size()
    */
   public final int size ()
   {
@@ -737,5 +718,4 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
     result.append ( "}" ); //$NON-NLS-1$
     return result.toString ();
   }
-
 }

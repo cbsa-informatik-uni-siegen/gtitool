@@ -24,7 +24,8 @@ public final class DefaultENFA extends AbstractMachine implements ENFA
    * Allocates a new {@link ENFA}.
    * 
    * @param alphabet The {@link Alphabet} of this {@link ENFA}.
-   * @param pushDownAlphabet The push down {@link Alphabet} of this {@link ENFA}.
+   * @param pushDownAlphabet The push down {@link Alphabet} of this {@link ENFA}
+   *          .
    * @param usePushDownAlphabet The use push down {@link Alphabet}.
    */
   public DefaultENFA ( Alphabet alphabet, Alphabet pushDownAlphabet,

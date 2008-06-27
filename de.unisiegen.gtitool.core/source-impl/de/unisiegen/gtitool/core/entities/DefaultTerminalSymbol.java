@@ -38,7 +38,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * This {@link DefaultTerminalSymbol} is a error {@link DefaultTerminalSymbol}.
+   * This {@link DefaultTerminalSymbol} is a error {@link DefaultTerminalSymbol}
+   * .
    */
   private boolean error = false;
 
@@ -159,10 +160,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns the name of this {@link DefaultTerminalSymbol}.
+   * {@inheritDoc}
    * 
-   * @return The name of this {@link DefaultTerminalSymbol}.
-   * @see #name
+   * @see TerminalSymbol#getName()
    */
   public final String getName ()
   {
@@ -172,6 +172,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -192,12 +194,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Returns true if this {@link TerminalSymbol} is a error
-   * {@link TerminalSymbol}, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link TerminalSymbol} is a error
-   *         {@link TerminalSymbol}, otherwise false.
-   * @see #error
+   * @see TerminalSymbol#isError()
    */
   public final boolean isError ()
   {
@@ -206,10 +205,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
 
   /**
-   * Sets the error value.
+   * {@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see TerminalSymbol#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -275,6 +273,8 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {

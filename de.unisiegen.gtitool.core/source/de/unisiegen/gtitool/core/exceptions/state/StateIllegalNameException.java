@@ -14,7 +14,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
  * correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StateIllegalNameException.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class StateIllegalNameException extends StateException
 {
@@ -48,8 +49,9 @@ public final class StateIllegalNameException extends StateException
     // Message and description
     setPrettyMessage ( Messages
         .getPrettyString ( "StateException.IllegalNameMessage" ) ); //$NON-NLS-1$
-    setPrettyDescription ( new PrettyString ( new PrettyToken ( Messages.getString (
-        "StateException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
+    setPrettyDescription ( new PrettyString ( new PrettyToken (
+        Messages.getString (
+            "StateException.IllegalNameDescription", illegalName ), Style.NONE ) ) ); //$NON-NLS-1$
   }
 
 

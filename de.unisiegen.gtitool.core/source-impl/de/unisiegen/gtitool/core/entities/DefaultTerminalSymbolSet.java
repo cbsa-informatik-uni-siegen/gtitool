@@ -176,13 +176,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Appends the specified {@link TerminalSymbol}s to the end of this
-   * {@link DefaultTerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
-   *          {@link DefaultTerminalSymbolSet}.
-   * @throws TerminalSymbolSetException If something with the
-   *           {@link DefaultTerminalSymbolSet} is not correct.
+   * @see TerminalSymbolSet#add(java.lang.Iterable)
    */
   public final void add ( Iterable < TerminalSymbol > terminalSymbols )
       throws TerminalSymbolSetException
@@ -205,13 +201,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Appends the specified {@link TerminalSymbol} to the end of this
-   * {@link DefaultTerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbol The {@link TerminalSymbol} to be appended to this
-   *          {@link DefaultTerminalSymbolSet}.
-   * @throws TerminalSymbolSetException If something with the
-   *           {@link DefaultTerminalSymbolSet} is not correct.
+   * @see TerminalSymbolSet#add(TerminalSymbol)
    */
   public final void add ( TerminalSymbol terminalSymbol )
       throws TerminalSymbolSetException
@@ -246,13 +238,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Appends the specified {@link TerminalSymbol}s to the end of this
-   * {@link DefaultTerminalSymbolSet}.
+   *{@inheritDoc}
    * 
-   * @param terminalSymbols The {@link TerminalSymbol}s to be appended to this
-   *          {@link DefaultTerminalSymbolSet}.
-   * @throws TerminalSymbolSetException If something with the
-   *           {@link DefaultTerminalSymbolSet} is not correct.
+   * @see TerminalSymbolSet#add(TerminalSymbol[])
    */
   public final void add ( TerminalSymbol ... terminalSymbols )
       throws TerminalSymbolSetException
@@ -287,9 +275,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Adds the given {@link TerminalSymbolSetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
+   * @see TerminalSymbolSet#addTerminalSymbolSetChangedListener(TerminalSymbolSetChangedListener)
    */
   public final void addTerminalSymbolSetChangedListener (
       TerminalSymbolSetChangedListener listener )
@@ -299,8 +287,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with
-   * the same name.
+   * Checks the {@link TerminalSymbol} list for {@link TerminalSymbol}s with the
+   * same name.
    * 
    * @param terminalSymbols The {@link TerminalSymbol} list.
    * @throws TerminalSymbolSetException If a {@link TerminalSymbol} is
@@ -339,7 +327,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Removes all {@link TerminalSymbol}s.
+   * {@inheritDoc}
+   * 
+   * @see TerminalSymbolSet#clear()
    */
   public final void clear ()
   {
@@ -352,7 +342,7 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
   /**
    * {@inheritDoc}
    * 
-   * @see Comparable#compareTo( Object)
+   * @see Comparable#compareTo(Object)
    */
   public final int compareTo ( TerminalSymbolSet other )
   {
@@ -384,13 +374,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Returns true if this {@link DefaultTerminalSymbolSet} contains the
-   * specified {@link TerminalSymbol}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbol {@link TerminalSymbol} whose presence in this
-   *          {@link DefaultTerminalSymbolSet} is to be tested.
-   * @return true if the specified {@link TerminalSymbol} is present; false
-   *         otherwise.
+   * @see TerminalSymbolSet#contains(TerminalSymbol)
    */
   public final boolean contains ( TerminalSymbol terminalSymbol )
   {
@@ -446,9 +432,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Returns the {@link TerminalSymbol}s.
+   * {@inheritDoc}
    * 
-   * @return The {@link TerminalSymbol}s.
+   * @see TerminalSymbolSet#get()
    */
   public final TreeSet < TerminalSymbol > get ()
   {
@@ -457,11 +443,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Returns the {@link TerminalSymbol} with the given index.
+   * {@inheritDoc}
    * 
-   * @param index The index.
-   * @return The {@link TerminalSymbol} with the given index.
-   * @see #terminalSymbolSet
+   * @see TerminalSymbolSet#get(int)
    */
   public final TerminalSymbol get ( int index )
   {
@@ -492,6 +476,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -523,11 +509,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Returns an iterator over the {@link TerminalSymbol}s in this
-   * {@link DefaultTerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @return An iterator over the {@link TerminalSymbol}s in this
-   *         {@link DefaultTerminalSymbolSet}.
+   * @see Iterable#iterator()
    */
   public final Iterator < TerminalSymbol > iterator ()
   {
@@ -536,10 +520,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Remove the given {@link TerminalSymbol}s from this
-   * {@link DefaultTerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbols The {@link TerminalSymbol}s to remove.
+   * @see TerminalSymbolSet#remove(Iterable)
    */
   public final void remove ( Iterable < TerminalSymbol > terminalSymbols )
   {
@@ -555,10 +538,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Removes the given {@link TerminalSymbol} from this
-   * {@link TerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbol The {@link TerminalSymbol} to remove.
+   * @see TerminalSymbolSet#remove(TerminalSymbol)
    */
   public final void remove ( TerminalSymbol terminalSymbol )
   {
@@ -578,10 +560,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Remove the given {@link TerminalSymbol}s from this
-   * {@link TerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @param terminalSymbols The {@link TerminalSymbol}s to remove.
+   * @see TerminalSymbolSet#remove(TerminalSymbol[])
    */
   public final void remove ( TerminalSymbol ... terminalSymbols )
   {
@@ -609,9 +590,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Removes the given {@link TerminalSymbolSetChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link TerminalSymbolSetChangedListener}.
+   * @see TerminalSymbolSet#removeTerminalSymbolSetChangedListener(TerminalSymbolSetChangedListener)
    */
   public final void removeTerminalSymbolSetChangedListener (
       TerminalSymbolSetChangedListener listener )
@@ -635,6 +616,8 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(de.unisiegen.gtitool.core.parser.ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -643,11 +626,9 @@ public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 
 
   /**
-   * Returns the number of {@link TerminalSymbol}s in this
-   * {@link DefaultTerminalSymbolSet}.
+   * {@inheritDoc}
    * 
-   * @return The number of {@link TerminalSymbol}s in this
-   *         {@link DefaultTerminalSymbolSet}.
+   * @see TerminalSymbolSet#size()
    */
   public final int size ()
   {

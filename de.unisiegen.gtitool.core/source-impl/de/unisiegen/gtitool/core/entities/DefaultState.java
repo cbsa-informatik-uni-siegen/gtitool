@@ -167,8 +167,10 @@ public final class DefaultState implements State
    * @param alphabet The {@link Alphabet} of this {@link DefaultState}.
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          {@link DefaultState}.
-   * @param startState This {@link DefaultState} is a start {@link DefaultState}.
-   * @param finalState This {@link DefaultState} is a final {@link DefaultState}.
+   * @param startState This {@link DefaultState} is a start {@link DefaultState}
+   *          .
+   * @param finalState This {@link DefaultState} is a final {@link DefaultState}
+   *          .
    * @throws StateException If something with the {@link DefaultState} is not
    *           correct.
    */
@@ -190,8 +192,10 @@ public final class DefaultState implements State
    * @param pushDownAlphabet The push down {@link Alphabet} of this
    *          {@link DefaultState}.
    * @param name The name of this {@link DefaultState}.
-   * @param startState This {@link DefaultState} is a start {@link DefaultState}.
-   * @param finalState This {@link DefaultState} is a final {@link DefaultState}.
+   * @param startState This {@link DefaultState} is a start {@link DefaultState}
+   *          .
+   * @param finalState This {@link DefaultState} is a final {@link DefaultState}
+   *          .
    * @throws StateException If something with the {@link DefaultState} is not
    *           correct.
    */
@@ -390,9 +394,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Adds the given {@link StateChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link StateChangedListener}.
+   * @see State#addStateChangedListener(StateChangedListener)
    */
   public final void addStateChangedListener ( StateChangedListener listener )
   {
@@ -401,10 +405,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Adds the {@link Transition} to the list of {@link Transition}s, which
-   * begin in this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param transition The {@link Transition} to add.
+   * @see State#addTransitionBegin(Transition)
    */
   public final void addTransitionBegin ( Transition transition )
   {
@@ -427,10 +430,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Adds the {@link Transition} to the list of {@link Transition}s, which end
-   * in this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param transition The {@link Transition} to add.
+   * @see State#addTransitionEnd(Transition)
    */
   public final void addTransitionEnd ( Transition transition )
   {
@@ -514,10 +516,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Alphabet}.
+   * {@inheritDoc}
    * 
-   * @return The {@link Alphabet}.
-   * @see #alphabet
+   * @see State#getAlphabet()
    */
   public final Alphabet getAlphabet ()
   {
@@ -554,10 +555,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the id.
+   * {@inheritDoc}
    * 
-   * @return The id.
-   * @see #id
+   * @see State#getId()
    */
   public final int getId ()
   {
@@ -566,10 +566,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the name.
+   * {@inheritDoc}
    * 
-   * @return The name.
-   * @see #name
+   * @see State#getName()
    */
   public final String getName ()
   {
@@ -579,6 +578,8 @@ public final class DefaultState implements State
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#getParserOffset()
    */
   public final ParserOffset getParserOffset ()
   {
@@ -587,10 +588,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the push down {@link Alphabet}.
+   * {@inheritDoc}
    * 
-   * @return The push down {@link Alphabet}.
-   * @see #pushDownAlphabet
+   * @see State#getPushDownAlphabet()
    */
   public final Alphabet getPushDownAlphabet ()
   {
@@ -599,9 +599,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} begin list.
+   * {@inheritDoc}
    * 
-   * @return The {@link Transition} begin list.
+   * @see State#getTransitionBegin()
    */
   public final ArrayList < Transition > getTransitionBegin ()
   {
@@ -610,12 +610,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} at the specified position in the
-   * {@link Transition} begin list.
+   * {@inheritDoc}
    * 
-   * @param index The index of the {@link Transition} to return.
-   * @return The {@link Transition} at the specified position in the
-   *         {@link Transition} begin list.
+   * @see State#getTransitionBegin(int)
    */
   public final Transition getTransitionBegin ( int index )
   {
@@ -624,9 +621,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} id begin list.
+   * {@inheritDoc}
    * 
-   * @return The {@link Transition} id begin list.
+   * @see State#getTransitionBeginId()
    */
   public final ArrayList < Integer > getTransitionBeginId ()
   {
@@ -635,12 +632,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} id at the specified position in the
-   * {@link Transition} begin list.
+   * {@inheritDoc}
    * 
-   * @param index The index of the {@link Transition} id to return.
-   * @return The {@link Transition} at the specified position in the
-   *         {@link Transition} id begin list.
+   * @see State#getTransitionBeginId(int)
    */
   public final int getTransitionBeginId ( int index )
   {
@@ -649,9 +643,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} end list.
+   * {@inheritDoc}
    * 
-   * @return The {@link Transition} end list.
+   * @see State#getTransitionEnd()
    */
   public final ArrayList < Transition > getTransitionEnd ()
   {
@@ -660,12 +654,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} at the specified position in the
-   * {@link Transition} end list.
+   * {@inheritDoc}
    * 
-   * @param index The index of the {@link Transition} to return.
-   * @return The {@link Transition} at the specified position in the
-   *         {@link Transition} end list.
+   * @see State#getTransitionEnd(int)
    */
   public final Transition getTransitionEnd ( int index )
   {
@@ -674,9 +665,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} id end list.
+   * {@inheritDoc}
    * 
-   * @return The {@link Transition} id end list.
+   * @see State#getTransitionEndId()
    */
   public final ArrayList < Integer > getTransitionEndId ()
   {
@@ -685,12 +676,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the {@link Transition} id at the specified position in the
-   * {@link Transition} end list.
+   * {@inheritDoc}
    * 
-   * @param index The index of the {@link Transition} id to return.
-   * @return The {@link Transition} at the specified position in the
-   *         {@link Transition} id end list.
+   * @see State#getTransitionEndId(int)
    */
   public final int getTransitionEndId ( int index )
   {
@@ -715,11 +703,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if this {@link DefaultState} is a active {@link DefaultState},
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultState} is a active {@link DefaultState},
-   *         otherwise false.
+   * @see State#isActive()
    */
   public final boolean isActive ()
   {
@@ -728,12 +714,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if this {@link DefaultState} is a error {@link DefaultState},
-   * otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultState} is a error {@link DefaultState},
-   *         otherwise false.
-   * @see #error
+   * @see State#isError()
    */
   public final boolean isError ()
   {
@@ -742,10 +725,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the finalState.
+   * {@inheritDoc}
    * 
-   * @return The finalState.
-   * @see #finalState
+   * @see State#isFinalState()
    */
   public final boolean isFinalState ()
   {
@@ -754,11 +736,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if the id of this {@link DefaultState} is defined, otherwise
-   * false.
+   * {@inheritDoc}
    * 
-   * @return True if the id of this {@link DefaultState} is defined, otherwise
-   *         false.
+   * @see State#isIdDefined()
    */
   public final boolean isIdDefined ()
   {
@@ -795,11 +775,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if this {@link DefaultState} is a selected
-   * {@link DefaultState}, otherwise false.
+   * {@inheritDoc}
    * 
-   * @return True if this {@link DefaultState} is a selected
-   *         {@link DefaultState}, otherwise false.
+   * @see State#isSelected()
    */
   public final boolean isSelected ()
   {
@@ -808,11 +786,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns true if the short name is used for this {@link State}, otherwise
-   * false.
+   * {@inheritDoc}
    * 
-   * @return True if the short name is used for this {@link State}, otherwise
-   *         false.
+   * @see State#isShortNameUsed()
    */
   public final boolean isShortNameUsed ()
   {
@@ -821,10 +797,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the startState.
+   * {@inheritDoc}
    * 
-   * @return The startState.
-   * @see #startState
+   * @see State#isStartState()
    */
   public final boolean isStartState ()
   {
@@ -845,9 +820,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Removes the given {@link StateChangedListener}.
+   * {@inheritDoc}
    * 
-   * @param listener The {@link StateChangedListener}.
+   * @see State#removeStateChangedListener(StateChangedListener)
    */
   public final void removeStateChangedListener ( StateChangedListener listener )
   {
@@ -856,10 +831,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * begin in this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param transition The {@link Transition} to remove.
+   * @see State#removeTransitionBegin(Transition)
    */
   public final void removeTransitionBegin ( Transition transition )
   {
@@ -877,10 +851,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Removes the {@link Transition} from the list of {@link Transition}s, which
-   * end in this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param transition The {@link Transition} to remove.
+   * @see State#removeTransitionEnd(Transition)
    */
   public final void removeTransitionEnd ( Transition transition )
   {
@@ -910,9 +883,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the active value.
+   * {@inheritDoc}
    * 
-   * @param active The active value to set.
+   * @see State#setActive(boolean)
    */
   public final void setActive ( boolean active )
   {
@@ -921,9 +894,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the {@link Alphabet} of this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param alphabet The {@link Alphabet} to set.
+   * @see State#setAlphabet(Alphabet)
    */
   public final void setAlphabet ( Alphabet alphabet )
   {
@@ -940,7 +913,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the default name of this {@link DefaultState}.
+   * {@inheritDoc}
+   * 
+   * @see State#setDefaultName()
    */
   public final void setDefaultName ()
   {
@@ -964,10 +939,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the error value.
+   * {@inheritDoc}
    * 
-   * @param error The error value to set.
-   * @see #error
+   * @see State#setError(boolean)
    */
   public final void setError ( boolean error )
   {
@@ -976,9 +950,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the finalState value.
+   * {@inheritDoc}
    * 
-   * @param finalState The finalState to set.
+   * @see State#setFinalState(boolean)
    */
   public final void setFinalState ( boolean finalState )
   {
@@ -988,10 +962,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the id.
+   * {@inheritDoc}
    * 
-   * @param id The id to set.
-   * @see #id
+   * @see State#setId(int)
    */
   public final void setId ( int id )
   {
@@ -1004,11 +977,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the name of this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param name The name to set.
-   * @throws StateException If something with the {@link DefaultState} is not
-   *           correct.
+   * @see State#setName(String)
    */
   public final void setName ( String name ) throws StateException
   {
@@ -1029,6 +1000,8 @@ public final class DefaultState implements State
 
   /**
    * {@inheritDoc}
+   * 
+   * @see Entity#setParserOffset(ParserOffset)
    */
   public final void setParserOffset ( ParserOffset parserOffset )
   {
@@ -1037,9 +1010,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the push down {@link Alphabet} of this {@link DefaultState}.
+   * {@inheritDoc}
    * 
-   * @param pushDownAlphabet The push down {@link Alphabet} to set.
+   * @see State#setPushDownAlphabet(Alphabet)
    */
   public final void setPushDownAlphabet ( Alphabet pushDownAlphabet )
   {
@@ -1052,9 +1025,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the selected value.
+   * {@inheritDoc}
    * 
-   * @param selected The selected value to set.
+   * @see State#setSelected(boolean)
    */
   public final void setSelected ( boolean selected )
   {
@@ -1063,9 +1036,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the short name used value.
+   * {@inheritDoc}
    * 
-   * @param shortNameUsed The short name used value.
+   * @see State#setShortNameUsed(boolean)
    */
   public final void setShortNameUsed ( boolean shortNameUsed )
   {
@@ -1074,9 +1047,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Sets the startState value.
+   * {@inheritDoc}
    * 
-   * @param startState The startState to set.
+   * @see State#setStartState(boolean)
    */
   public final void setStartState ( boolean startState )
   {
@@ -1164,9 +1137,9 @@ public final class DefaultState implements State
 
 
   /**
-   * Returns the debug string.
+   * {@inheritDoc}
    * 
-   * @return The debug string.
+   * @see State#toStringDebug()
    */
   public final String toStringDebug ()
   {

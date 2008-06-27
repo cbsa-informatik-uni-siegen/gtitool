@@ -44,9 +44,9 @@ public abstract class MachineChangedAdapter implements MachineChangedListener
    * 
    * @see MachineChangedListener#symbolAdded(Transition,ArrayList)
    */
-  public void symbolAdded ( @SuppressWarnings ( "unused" )
-  Transition transition, @SuppressWarnings ( "unused" )
-  ArrayList < Symbol > addedSymbols )
+  public void symbolAdded (
+      @SuppressWarnings ( "unused" ) Transition transition,
+      @SuppressWarnings ( "unused" ) ArrayList < Symbol > addedSymbols )
   {
     // Override this method if needed.
   }
@@ -57,9 +57,9 @@ public abstract class MachineChangedAdapter implements MachineChangedListener
    * 
    * @see MachineChangedListener#symbolRemoved(Transition,ArrayList)
    */
-  public void symbolRemoved ( @SuppressWarnings ( "unused" )
-  Transition transition, @SuppressWarnings ( "unused" )
-  ArrayList < Symbol > removedSymbols )
+  public void symbolRemoved (
+      @SuppressWarnings ( "unused" ) Transition transition,
+      @SuppressWarnings ( "unused" ) ArrayList < Symbol > removedSymbols )
   {
     // Override this method if needed.
   }
@@ -70,8 +70,8 @@ public abstract class MachineChangedAdapter implements MachineChangedListener
    * 
    * @see MachineChangedListener#transitionAdded(Transition)
    */
-  public void transitionAdded ( @SuppressWarnings ( "unused" )
-  Transition newTransition )
+  public void transitionAdded (
+      @SuppressWarnings ( "unused" ) Transition newTransition )
   {
     // Override this method if needed.
   }
@@ -82,8 +82,8 @@ public abstract class MachineChangedAdapter implements MachineChangedListener
    * 
    * @see MachineChangedListener#transitionRemoved(Transition)
    */
-  public void transitionRemoved ( @SuppressWarnings ( "unused" )
-  Transition transition )
+  public void transitionRemoved (
+      @SuppressWarnings ( "unused" ) Transition transition )
   {
     // Override this method if needed.
   }

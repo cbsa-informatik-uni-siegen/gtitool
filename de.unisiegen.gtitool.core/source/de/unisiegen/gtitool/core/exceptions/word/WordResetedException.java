@@ -30,7 +30,8 @@ public final class WordResetedException extends WordException
   {
     super ( word );
     // Message and description
-    setPrettyMessage ( Messages.getPrettyString ( "WordException.ResetedMessage" ) ); //$NON-NLS-1$
+    setPrettyMessage ( Messages
+        .getPrettyString ( "WordException.ResetedMessage" ) ); //$NON-NLS-1$
     if ( word.toString ().equals ( "" ) ) //$NON-NLS-1$
     {
       setPrettyDescription ( Messages.getPrettyString (

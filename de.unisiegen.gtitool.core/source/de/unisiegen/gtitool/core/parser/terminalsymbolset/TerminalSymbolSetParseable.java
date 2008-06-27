@@ -15,23 +15,11 @@ import de.unisiegen.gtitool.core.parser.scanner.GTIScanner;
  * The {@link TerminalSymbol} set {@link Parseable} class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: TerminalSymbolSetParseable.java 553 2008-02-11 23:13:37Z fehler
+ *          $
  */
 public final class TerminalSymbolSetParseable implements Parseable
 {
-
-  /**
-   * Returns a new {@link GTIParser}.
-   * 
-   * @param text The input {@link String}.
-   * @return A new {@link GTIParser}.
-   * @see Parseable#newParser(String)
-   */
-  public final GTIParser newParser ( String text )
-  {
-    return newParser ( newScanner ( text ) );
-  }
-
 
   /**
    * Returns a new {@link GTIParser}.
@@ -55,6 +43,19 @@ public final class TerminalSymbolSetParseable implements Parseable
         return ( TerminalSymbolSet ) parser.parse ().value;
       }
     };
+  }
+
+
+  /**
+   * Returns a new {@link GTIParser}.
+   * 
+   * @param text The input {@link String}.
+   * @return A new {@link GTIParser}.
+   * @see Parseable#newParser(String)
+   */
+  public final GTIParser newParser ( String text )
+  {
+    return newParser ( newScanner ( text ) );
   }
 
 

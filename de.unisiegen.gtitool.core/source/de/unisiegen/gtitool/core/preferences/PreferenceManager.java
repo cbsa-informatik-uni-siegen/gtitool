@@ -2097,7 +2097,8 @@ public class PreferenceManager
   /**
    * Sets the {@link ColorItem} of the parser {@link TerminalSymbol}.
    * 
-   * @param colorItem The {@link ColorItem} of the parser {@link TerminalSymbol}.
+   * @param colorItem The {@link ColorItem} of the parser {@link TerminalSymbol}
+   *          .
    */
   public final void setColorItemTerminalSymbol ( ColorItem colorItem )
   {

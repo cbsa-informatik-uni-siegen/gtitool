@@ -194,6 +194,9 @@ public final class MinimizeMachineDialog implements
     this.mainWindowForm = mainWindowForm;
     this.machinePanel = machinePanel;
     this.gui = new MinimizeMachineDialogForm ( this, mainWindowForm );
+    
+    this.setDeviderLocation = false;
+    this.gui.jGTISplitPaneGraph.setRightComponent ( null );
 
     try
     {
@@ -500,6 +503,11 @@ public final class MinimizeMachineDialog implements
 
     }
     highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
+    
+    if (this.endReached){
+      this.setDeviderLocation = false;
+      this.gui.jGTISplitPaneGraph.setRightComponent ( this.gui.jGTIScrollPaneConverted );
+    }
   }
 
 
@@ -541,6 +549,11 @@ public final class MinimizeMachineDialog implements
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
+    
+    if (this.endReached){
+      this.setDeviderLocation = false;
+      this.gui.jGTISplitPaneGraph.setRightComponent ( null );
+    }
     this.minimizer.previousStep ();
     this.beginReached = this.minimizer.isBegin ();
     this.endReached = false;
@@ -605,6 +618,11 @@ public final class MinimizeMachineDialog implements
       }
     }
   }
+  
+  /**
+   * Flag indicates if we want to handle the devider location event.
+   */
+  public boolean setDeviderLocation = true;
 
 
   /**
@@ -627,8 +645,13 @@ public final class MinimizeMachineDialog implements
 
           public void propertyChange ( PropertyChangeEvent event )
           {
+            if (MinimizeMachineDialog.this.setDeviderLocation){
             PreferenceManager.getInstance ().setDividerLocationMinimizeMachine (
                 ( ( Integer ) event.getNewValue () ).intValue () );
+            }
+            else {
+              MinimizeMachineDialog.this.setDeviderLocation = true;
+            }
           }
         } );
     this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager

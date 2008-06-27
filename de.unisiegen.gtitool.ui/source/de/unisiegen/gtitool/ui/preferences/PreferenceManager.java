@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.EventListenerList;
 
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.util.ObjectPair;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
@@ -27,9 +28,11 @@ import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
 import de.unisiegen.gtitool.ui.preferences.item.OpenedFilesItem;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.RecentlyUsedFilesItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
+import de.unisiegen.gtitool.ui.preferences.listener.PDAModeChangedListener;
 import de.unisiegen.gtitool.ui.preferences.listener.ZoomFactorChangedListener;
 import de.unisiegen.gtitool.ui.swing.specialized.JGTIMainSplitPane.ActiveEditor;
 
@@ -48,6 +51,12 @@ public final class PreferenceManager extends
    * The default {@link MouseSelectionItem}.
    */
   public static final MouseSelectionItem DEFAULT_MOUSE_SELECTION_ITEM = MouseSelectionItem.WITHOUT_RETURN_TO_MOUSE;
+
+
+  /**
+   * The default {@link PDAModeItem}.
+   */
+  public static final PDAModeItem DEFAULT_PDA_MODE_ITEM = PDAModeItem.SHOW;
 
 
   /**
@@ -336,6 +345,17 @@ public final class PreferenceManager extends
 
 
   /**
+   * Adds the given {@link PDAModeChangedListener}.
+   * 
+   * @param listener The {@link PDAModeChangedListener}.
+   */
+  public final void addPDAModeChangedListener ( PDAModeChangedListener listener )
+  {
+    this.listenerList.add ( PDAModeChangedListener.class, listener );
+  }
+
+
+  /**
    * Adds the given {@link ZoomFactorChangedListener}.
    * 
    * @param listener The {@link ZoomFactorChangedListener}.
@@ -348,17 +368,33 @@ public final class PreferenceManager extends
 
 
   /**
+   * Let the listeners know that the {@link PDA} mode has changed.
+   * 
+   * @param pdaModeItem The new {@link PDAModeItem}.
+   */
+  public final void firePDAModeChanged ( PDAModeItem pdaModeItem )
+  {
+    PDAModeChangedListener [] listeners = this.listenerList
+        .getListeners ( PDAModeChangedListener.class );
+    for ( PDAModeChangedListener current : listeners )
+    {
+      current.pdaModeChanged ( pdaModeItem );
+    }
+  }
+
+
+  /**
    * Let the listeners know that the zoom factor has changed.
    * 
-   * @param zoomFactor The new {@link ZoomFactorItem}.
+   * @param zoomFactorItem The new {@link ZoomFactorItem}.
    */
-  public final void fireZoomFactorChanged ( ZoomFactorItem zoomFactor )
+  public final void fireZoomFactorChanged ( ZoomFactorItem zoomFactorItem )
   {
     ZoomFactorChangedListener [] listeners = this.listenerList
         .getListeners ( ZoomFactorChangedListener.class );
     for ( ZoomFactorChangedListener current : listeners )
     {
-      current.zoomFactorChanged ( zoomFactor );
+      current.zoomFactorChanged ( zoomFactorItem );
     }
   }
 
@@ -651,6 +687,20 @@ public final class PreferenceManager extends
 
 
   /**
+   * Returns the {@link PDAModeItem}.
+   * 
+   * @return The {@link PDAModeItem}.
+   */
+  public final PDAModeItem getPDAModeItem ()
+  {
+    int index = this.preferences.getInt (
+        "PreferencesDialog.PDAModeItem.Index", //$NON-NLS-1$
+        DEFAULT_PDA_MODE_ITEM.getIndex () );
+    return PDAModeItem.create ( index );
+  }
+
+
+  /**
    * Returns the port.
    * 
    * @return The port.
@@ -804,6 +854,18 @@ public final class PreferenceManager extends
   {
     return ZoomFactorItem.create ( this.preferences.getInt (
         "ZoomFactor", DEFAULT_ZOOM_FACTOR_ITEM.getFactor () ) ); //$NON-NLS-1$
+  }
+
+
+  /**
+   * Removes the given {@link PDAModeChangedListener}.
+   * 
+   * @param listener The {@link PDAModeChangedListener}.
+   */
+  public final void removePDAModeChangedListener (
+      PDAModeChangedListener listener )
+  {
+    this.listenerList.remove ( PDAModeChangedListener.class, listener );
   }
 
 
@@ -1152,6 +1214,20 @@ public final class PreferenceManager extends
       this.preferences.put ( "MainWindow.OpenedActiveFile", //$NON-NLS-1$
           openedFilesItem.getActiveFile ().getAbsolutePath () );
     }
+  }
+
+
+  /**
+   * Sets the {@link PDAModeItem}.
+   * 
+   * @param pdaModeItem The {@link PDAModeItem}.
+   */
+  public final void setPDAModeItem ( PDAModeItem pdaModeItem )
+  {
+    logger.debug ( "setPDAModeItem", "set pda mode item to "//$NON-NLS-1$//$NON-NLS-2$
+        + Messages.QUOTE + pdaModeItem.getIndex () + Messages.QUOTE );
+    this.preferences.putInt ( "PreferencesDialog.PDAModeItem.Index", //$NON-NLS-1$
+        pdaModeItem.getIndex () );
   }
 
 

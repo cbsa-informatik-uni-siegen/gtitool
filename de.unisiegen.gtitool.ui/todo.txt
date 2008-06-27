@@ -2,7 +2,6 @@
 
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
-CF		- Preferences: Modus zum Ausblenden der PDA Einstellungen
 
 BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
 BM		- Die untere Ansicht im Minimieren Dialog erst im letzten Schritt einblenden und
@@ -21,6 +20,7 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
 		  Potenzautomaten sehr leicht lahmlegen
 CF		- SplitView: Horizontale/Vertikale Teilung
+CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
@@ -28,4 +28,3 @@ BM		- Farben beim Minimieren dynamisch berechnen
 
 		- Wörter ausgeben, die erkannt werden
 		- LaTeX Export
-		

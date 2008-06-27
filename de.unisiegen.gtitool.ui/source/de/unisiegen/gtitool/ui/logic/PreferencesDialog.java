@@ -38,6 +38,7 @@ import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.machines.pda.PDA;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
 import de.unisiegen.gtitool.core.preferences.item.ColorItem;
 import de.unisiegen.gtitool.core.preferences.item.LanguageItem;
@@ -53,6 +54,7 @@ import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
 import de.unisiegen.gtitool.ui.preferences.item.AutoStepItem;
 import de.unisiegen.gtitool.ui.preferences.item.LookAndFeelItem;
 import de.unisiegen.gtitool.ui.preferences.item.MouseSelectionItem;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
 import de.unisiegen.gtitool.ui.preferences.item.ZoomFactorItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
@@ -303,6 +305,68 @@ public final class PreferencesDialog implements
     public final MouseSelectionItem getSelectedItem ()
     {
       return ( MouseSelectionItem ) super.getSelectedItem ();
+    }
+  }
+
+
+  /**
+   * The {@link PDA} mode {@link ComboBoxModel}.
+   * 
+   * @author Christian Fehler
+   */
+  protected final class PDAModeComboBoxModel extends DefaultComboBoxModel
+  {
+
+    /**
+     * The serial version uid.
+     */
+    private static final long serialVersionUID = 3629792679640859661L;
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#addElement(Object)
+     */
+    @Override
+    public final void addElement ( @SuppressWarnings ( "unused" ) Object object )
+    {
+      throw new IllegalArgumentException ( "do not use this method" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Adds the given item.
+     * 
+     * @param pdaModeItem The {@link PDAModeItem} to add.
+     */
+    public final void addElement ( PDAModeItem pdaModeItem )
+    {
+      super.addElement ( pdaModeItem );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getElementAt(int)
+     */
+    @Override
+    public final PDAModeItem getElementAt ( int index )
+    {
+      return ( PDAModeItem ) super.getElementAt ( index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @see DefaultComboBoxModel#getSelectedItem()
+     */
+    @Override
+    public final PDAModeItem getSelectedItem ()
+    {
+      return ( PDAModeItem ) super.getSelectedItem ();
     }
   }
 
@@ -744,6 +808,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The initial {@link PDAModeItem}.
+   */
+  private PDAModeItem initialPDAModeItem;
+
+
+  /**
    * The initial {@link NonterminalSymbolSetItem}.
    */
   private NonterminalSymbolSetItem initialNonterminalSymbolSetItem;
@@ -816,6 +886,12 @@ public final class PreferencesDialog implements
 
 
   /**
+   * The {@link PDA} mode {@link JPopupMenu}.
+   */
+  private JPopupMenu jPopupMenuPDAMode;
+
+
+  /**
    * The {@link Transition} {@link JPopupMenu}.
    */
   private JPopupMenu jPopupMenuTransition;
@@ -849,6 +925,12 @@ public final class PreferencesDialog implements
    * The {@link MouseSelectionComboBoxModel}.
    */
   private MouseSelectionComboBoxModel mouseSelectionComboBoxModel;
+
+
+  /**
+   * The {@link PDAModeComboBoxModel}.
+   */
+  private PDAModeComboBoxModel pdaModeComboBoxModel;
 
 
   /**
@@ -1152,6 +1234,7 @@ public final class PreferencesDialog implements
      */
     initTransition ();
     initMouseSelection ();
+    initPDAMode ();
     initAutoStep ();
     /*
      * Color
@@ -1963,6 +2046,82 @@ public final class PreferencesDialog implements
 
 
   /**
+   * Initializes the {@link PDA} mode.
+   */
+  private final void initPDAMode ()
+  {
+    this.pdaModeComboBoxModel = new PDAModeComboBoxModel ();
+    this.pdaModeComboBoxModel.addElement ( PDAModeItem.create ( 0 ) );
+    this.pdaModeComboBoxModel.addElement ( PDAModeItem.create ( 1 ) );
+    this.gui.jGTIComboBoxPDAMode.setModel ( this.pdaModeComboBoxModel );
+
+    this.initialPDAModeItem = PreferenceManager.getInstance ()
+        .getPDAModeItem ();
+    this.gui.jGTIComboBoxPDAMode.setSelectedItem ( this.initialPDAModeItem );
+
+    // PopupMenu
+    this.jPopupMenuPDAMode = new JPopupMenu ();
+    final JMenuItem jMenuItemRestorePDAMode = new JMenuItem ( Messages
+        .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+    jMenuItemRestorePDAMode.setMnemonic ( Messages.getString (
+        "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    jMenuItemRestorePDAMode.setIcon ( new ImageIcon ( getClass ().getResource (
+        "/de/unisiegen/gtitool/ui/icon/refresh16.png" ) ) ); //$NON-NLS-1$
+    jMenuItemRestorePDAMode.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
+      {
+        PreferencesDialog.this.gui.jGTIComboBoxPDAMode
+            .setSelectedIndex ( PreferenceManager.DEFAULT_PDA_MODE_ITEM
+                .getIndex () );
+      }
+    } );
+    this.jPopupMenuPDAMode.add ( jMenuItemRestorePDAMode );
+    this.gui.jGTIComboBoxPDAMode.addMouseListener ( new MouseAdapter ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mousePressed ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuPDAMode.show (
+              event.getComponent (), event.getX (), event.getY () );
+        }
+      }
+
+
+      @SuppressWarnings ( "synthetic-access" )
+      @Override
+      public void mouseReleased ( MouseEvent event )
+      {
+        if ( event.isPopupTrigger () )
+        {
+          PreferencesDialog.this.jPopupMenuPDAMode.show (
+              event.getComponent (), event.getX (), event.getY () );
+        }
+      }
+    } );
+    PreferenceManager.getInstance ().addLanguageChangedListener (
+        new LanguageChangedListener ()
+        {
+
+          public void languageChanged ()
+          {
+            jMenuItemRestorePDAMode.setText ( Messages
+                .getString ( "PreferencesDialog.RestoreShort" ) ); //$NON-NLS-1$
+            jMenuItemRestorePDAMode.setMnemonic ( Messages.getString (
+                "PreferencesDialog.RestoreShortMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+          }
+        } );
+  }
+
+
+  /**
    * Initializes the push down alphabet.
    */
   private final void initPushDownAlphabet ()
@@ -2471,6 +2630,13 @@ public final class PreferencesDialog implements
         "PreferencesDialog.MouseSelectionMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
     this.gui.jGTIComboBoxMouseSelection.setToolTipText ( Messages
         .getString ( "PreferencesDialog.MouseSelectionToolTip" ) ); //$NON-NLS-1$
+    // PDA mode
+    this.gui.jGTILabelPDAMode.setText ( Messages
+        .getString ( "PreferencesDialog.PDAMode" ) ); //$NON-NLS-1$    
+    this.gui.jGTILabelPDAMode.setDisplayedMnemonic ( Messages.getString (
+        "PreferencesDialog.PDAModeMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$           
+    this.gui.jGTIComboBoxPDAMode.setToolTipText ( Messages
+        .getString ( "PreferencesDialog.PDAModeToolTip" ) ); //$NON-NLS-1$
     // Restore
     this.gui.jGTIButtonRestore.setText ( Messages
         .getString ( "PreferencesDialog.Restore" ) ); //$NON-NLS-1$
@@ -2662,36 +2828,31 @@ public final class PreferencesDialog implements
   private final void save ()
   {
     logger.debug ( "save", "save" ); //$NON-NLS-1$//$NON-NLS-2$
-    /*
-     * General
-     */
+
+    // General
     saveLanguage ();
     saveLookAndFeel ();
     saveZoomFactor ();
-    /*
-     * View
-     */
+
+    // View
     saveTransition ();
     saveMouseSelection ();
+    savePDAMode ();
     saveAutoStep ();
-    /*
-     * Color
-     */
+
+    // Color
     saveColor ();
-    /*
-     * Alphabet
-     */
+
+    // Alphabet
     saveAlphabet ();
     savePushDownAlphabet ();
-    /*
-     * Grammar
-     */
+
+    // Grammar
     saveNonterminalSymbolSet ();
     saveStartSymbol ();
     saveTerminalSymbolSet ();
-    /*
-     * Tab
-     */
+
+    // Tab
     saveLastActiveTab ();
   }
 
@@ -3168,6 +3329,24 @@ public final class PreferencesDialog implements
           .clone ();
       PreferenceManager.getInstance ().setNonterminalSymbolSetItem (
           this.nonterminalSymbolSetItem );
+    }
+  }
+
+
+  /**
+   * Saves the data of the pda mode.
+   */
+  private final void savePDAMode ()
+  {
+    if ( this.initialPDAModeItem.getIndex () != this.gui.jGTIComboBoxPDAMode
+        .getSelectedIndex () )
+    {
+      this.initialPDAModeItem = PDAModeItem
+          .create ( this.gui.jGTIComboBoxPDAMode.getSelectedIndex () );
+      PreferenceManager.getInstance ()
+          .setPDAModeItem ( this.initialPDAModeItem );
+      PreferenceManager.getInstance ().firePDAModeChanged (
+          this.initialPDAModeItem );
     }
   }
 

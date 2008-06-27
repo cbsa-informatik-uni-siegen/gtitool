@@ -24,12 +24,15 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.parser.style.renderer.PrettyStringListCellRenderer;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.DefaultStateView;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.model.DefaultMachineModel;
 import de.unisiegen.gtitool.ui.netbeans.TransitionDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.redoundo.TransitionChangedItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 import de.unisiegen.gtitool.ui.swing.JGTIList;
@@ -803,6 +806,30 @@ public final class TransitionDialog implements
         .setCellRenderer ( new PrettyStringListCellRenderer () );
     this.gui.jGTIListChangeOverSet
         .setCellRenderer ( new PrettyStringListCellRenderer () );
+
+    if ( !this.machinePanel.getMachine ().getMachineType ().equals (
+        MachineType.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.jGTILabelPushDownRead.setEnabled ( false );
+        this.gui.jGTILabelPushDownWrite.setEnabled ( false );
+        this.gui.jGTILabelPushDownAlphabet.setEnabled ( false );
+        this.gui.styledWordParserPanelRead.setEnabled ( false );
+        this.gui.styledWordParserPanelWrite.setEnabled ( false );
+        this.gui.styledAlphabetParserPanelPushDownAlphabet.setEnabled ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+    }
 
     setButtonStatus ();
   }

@@ -9,8 +9,11 @@ import de.unisiegen.gtitool.core.entities.Alphabet;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.machines.Machine;
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.AlphabetDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -62,8 +65,8 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -79,8 +82,8 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
         {
 
           @SuppressWarnings ( "synthetic-access" )
-          public void parseableChanged ( @SuppressWarnings ( "unused" )
-          Alphabet newAlphabet )
+          public void parseableChanged (
+              @SuppressWarnings ( "unused" ) Alphabet newAlphabet )
           {
             setButtonStatus ();
           }
@@ -88,6 +91,27 @@ public final class AlphabetDialog implements LogicClass < AlphabetDialogForm >
 
     this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
         .setSelected ( this.machine.isUsePushDownAlphabet () );
+
+    if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.alphabetPanelForm.jGTICheckBoxPushDownAlphabet
+            .setEnabled ( false );
+        this.gui.alphabetPanelForm.styledAlphabetParserPanelPushDown
+            .setEnabled ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+    }
   }
 
 

@@ -52,18 +52,6 @@ public final class OpenedFilesItem
 
 
   /**
-   * Returns the opened used files.
-   * 
-   * @return The opened used files.
-   * @see #files
-   */
-  public final ArrayList < ObjectPair < File, ActiveEditor > > getFiles ()
-  {
-    return this.files;
-  }
-
-
-  /**
    * Returns the last active {@link File}.
    * 
    * @return The last active {@link File}.
@@ -72,5 +60,17 @@ public final class OpenedFilesItem
   public final File getActiveFile ()
   {
     return this.activeFile;
+  }
+
+
+  /**
+   * Returns the opened used files.
+   * 
+   * @return The opened used files.
+   * @see #files
+   */
+  public final ArrayList < ObjectPair < File, ActiveEditor > > getFiles ()
+  {
+    return this.files;
   }
 }

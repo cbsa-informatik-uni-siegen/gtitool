@@ -91,7 +91,9 @@ import de.unisiegen.gtitool.ui.popup.EnterWordModePopupMenu;
 import de.unisiegen.gtitool.ui.popup.StatePopupMenu;
 import de.unisiegen.gtitool.ui.popup.TransitionPopupMenu;
 import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.preferences.item.TransitionItem;
+import de.unisiegen.gtitool.ui.preferences.listener.PDAModeChangedListener;
 import de.unisiegen.gtitool.ui.redoundo.MultiItem;
 import de.unisiegen.gtitool.ui.redoundo.RedoUndoHandler;
 import de.unisiegen.gtitool.ui.redoundo.StateChangedItem;
@@ -365,6 +367,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
 
   /**
+   * Flag that indicates if the {@link PDA} table divider location should be
+   * stored.
+   */
+  private boolean setDividerLocationPDATable = true;
+
+
+  /**
    * The tmp state for a new Transition.
    */
   private DefaultGraphCell tmpState;
@@ -469,10 +478,15 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
+          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
-            PreferenceManager.getInstance ().setDividerLocationPDATable (
-                ( ( Integer ) event.getNewValue () ).intValue () );
+            if ( MachinePanel.this.setDividerLocationPDATable )
+            {
+              PreferenceManager.getInstance ().setDividerLocationPDATable (
+                  ( ( Integer ) event.getNewValue () ).intValue () );
+            }
+            MachinePanel.this.setDividerLocationPDATable = true;
           }
         } );
 
@@ -2188,6 +2202,45 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         .setReorderingAllowed ( false );
     this.gui.jGTITableMachinePDA
         .setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
+
+    if ( !this.machine.getMachineType ().equals ( MachineType.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        setVisiblePDATable ( true );
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        setVisiblePDATable ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+
+      PreferenceManager.getInstance ().addPDAModeChangedListener (
+          new PDAModeChangedListener ()
+          {
+
+            public void pdaModeChanged ( PDAModeItem newValue )
+            {
+              if ( newValue.equals ( PDAModeItem.SHOW ) )
+              {
+                setVisiblePDATable ( true );
+              }
+              else if ( newValue.equals ( PDAModeItem.HIDE ) )
+              {
+                setVisiblePDATable ( false );
+              }
+              else
+              {
+                throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+              }
+            }
+          } );
+    }
   }
 
 
@@ -3121,6 +3174,37 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
         this.setDividerLocationConsole = false;
         this.gui.jGTISplitPaneConsole.setRightComponent ( null );
         this.gui.jGTISplitPaneConsole.setDividerSize ( 0 );
+      }
+    }
+  }
+
+
+  /**
+   * Sets the visibility of the {@link PDA} table.
+   * 
+   * @param visible Visible or not visible.
+   */
+  public final void setVisiblePDATable ( boolean visible )
+  {
+    if ( visible )
+    {
+      if ( this.gui.jGTISplitPanePDATable.getRightComponent () == null )
+      {
+        this.setDividerLocationPDATable = false;
+        this.gui.jGTISplitPanePDATable
+            .setRightComponent ( this.gui.jGTIScrollPaneMachinePDA );
+        this.gui.jGTISplitPanePDATable.setDividerSize ( 3 );
+        this.gui.jGTISplitPanePDATable.setDividerLocation ( PreferenceManager
+            .getInstance ().getDividerLocationPDATable () );
+      }
+    }
+    else
+    {
+      if ( this.gui.jGTISplitPanePDATable.getRightComponent () != null )
+      {
+        this.setDividerLocationPDATable = false;
+        this.gui.jGTISplitPanePDATable.setRightComponent ( null );
+        this.gui.jGTISplitPanePDATable.setDividerSize ( 0 );
       }
     }
   }

@@ -66,10 +66,14 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        buttonGroupMachinePanel = new javax.swing.ButtonGroup();
         jGTIPanelOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelPrinter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelPrinter = new de.unisiegen.gtitool.ui.swing.JGTILabel();
         jGTIComboBoxPrinter = new de.unisiegen.gtitool.ui.swing.JGTIComboBox();
+        jGTIRadioButtonMachineGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonMachinePDATable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIPanelPageSetup = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelButton = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -86,6 +90,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTILabelPrinter.setText(bundle.getString("PrintDialog.Printer")); // NOI18N
         jGTILabelPrinter.setPreferredSize(new java.awt.Dimension(100, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTILabelPrinter, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -93,6 +98,34 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIComboBoxPrinter, gridBagConstraints);
+
+        buttonGroupMachinePanel.add(jGTIRadioButtonMachineGraph);
+        jGTIRadioButtonMachineGraph.setSelected(true);
+        jGTIRadioButtonMachineGraph.setText(bundle.getString("PrintDialog.PrintMachine")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMachineGraph, gridBagConstraints);
+
+        buttonGroupMachinePanel.add(jGTIRadioButtonMachineTable);
+        jGTIRadioButtonMachineTable.setText(bundle.getString("PrintDialog.PrintTable")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMachineTable, gridBagConstraints);
+
+        buttonGroupMachinePanel.add(jGTIRadioButtonMachinePDATable);
+        jGTIRadioButtonMachinePDATable.setText(bundle.getString("PrintDialog.PrintPrintPDATable")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMachinePDATable, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
@@ -167,6 +200,7 @@ this.logic.handlePrint();
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.ButtonGroup buttonGroupMachinePanel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonYes;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxPrinter;
@@ -175,6 +209,9 @@ this.logic.handlePrint();
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelOuter;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPageSetup;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrinter;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachinePDATable;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineTable;
     // End of variables declaration//GEN-END:variables
 
 

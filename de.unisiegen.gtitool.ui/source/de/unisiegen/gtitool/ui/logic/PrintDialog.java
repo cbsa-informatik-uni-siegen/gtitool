@@ -36,7 +36,7 @@ import de.unisiegen.gtitool.ui.swing.JGTITable;
 /**
  * The {@link PrintDialog}.
  * 
- * @author Christian Fehler
+ * @author Benjamin Mies
  * @version $Id$
  */
 public final class PrintDialog implements LogicClass < PrintDialogForm >,
@@ -85,9 +85,58 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The background {@link Color}.
+   */
+  private static final Color BACKGROUND = new Color ( 227, 227, 227 );
+
+
+  /**
+   * The border offset.
+   */
+  private static final int BORDER_OFFSET = 2;
+
+
+  /**
+   * The border width.
+   */
+  private static final int BORDER_WIDTH = 2;
+
+
+  /**
+   * The {@link Font} size.
+   */
+  private static final int FONT_SIZE = 7;
+
+
+  /**
+   * The header centered flag.
+   */
+  private static final boolean HEADER_CENTERED = false;
+
+  /**
+   * The row height.
+   */
+  private static final int ROW_HEIGHT = 10;
+
+  /**
+   * The header height.
+   */
+  private static final int HEADER_HEIGHT = ( int ) ( ROW_HEIGHT * 1.5 );
+
+
+  /**
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( PrintDialog.class );
+
+
+
+
+
+  /**
+   * The {@link GrammarPanel}.
+   */
+  private GrammarPanel grammarPanel;
 
 
   /**
@@ -97,15 +146,75 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The header {@link Font}.
+   */
+  private Font headerFont;
+
+
+  /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
+   * The bottom margin.
+   */
+  private int marginBottom;
+
+
+  /**
+   * The left margin.
+   */
+  private int marginLeft;
+
+
+  /**
+   * The right margin.
+   */
+  private int marginRight;
+
+
+  /**
+   * The top margin.
+   */
+  private int marginTop;
+
+
+  /**
+   * The normal {@link Font}.
+   */
+  private Font normalFont;
+
+
+  /**
+   * The page count.
+   */
+  private int pageCount;
+
+
+  /**
+   * The page height.
+   */
+  private int pageHeight;
+
+
+  /**
+   * The page width.
+   */
+  private int pageWidth;
+
+
+  /**
    * The parent {@link JFrame}.
    */
   private JFrame parent;
 
 
   /**
-   * The {@link Printable} to print.
+   * The {@link HashMap} which contains the printed rows.
    */
-  private Printable printable;
+  private HashMap < Integer, Integer > printedRows = new HashMap < Integer, Integer > ();
 
 
   /**
@@ -127,9 +236,24 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
-   * The {@link MachinePanel}.
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param grammarPanel The {@link GrammarPanel}.
    */
-  private MachinePanel machinePanel;
+  public PrintDialog ( JFrame parent, GrammarPanel grammarPanel )
+  {
+    logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.grammarPanel = grammarPanel;
+
+    this.gui.jGTIRadioButtonMachineGraph.setVisible ( false );
+    this.gui.jGTIRadioButtonMachineTable.setVisible ( false );
+    this.gui.jGTIRadioButtonMachinePDATable.setVisible ( false );
+
+    initialize ();
+  }
 
 
   /**
@@ -144,349 +268,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     this.parent = parent;
     this.gui = new PrintDialogForm ( this, parent );
     this.machinePanel = machinePanel;
-    this.printable = this.machinePanel.getJGTIGraph ();
-
-    this.tableModel = machinePanel.getPDATableModel ();
-    this.tableColumnModel = machinePanel.getPdaTableColumnModel ();
-    this.table = new JGTITable ();
-    this.table.setModel ( this.tableModel );
-    this.table.setColumnModel ( this.tableColumnModel );
 
     initialize ();
   }
-
-
-  /**
-   * Allocates a new {@link PrintDialog}.
-   * 
-   * @param parent The parent {@link JFrame}.
-   * @param tableModel The {@link TableModel} to print.
-   * @param tableColumnModel The {@link TableColumnModel}.
-   */
-  public PrintDialog ( JFrame parent, TableModel tableModel,
-      TableColumnModel tableColumnModel )
-  {
-    this.parent = parent;
-
-    this.tableModel = tableModel;
-    this.tableColumnModel = tableColumnModel;
-    this.table = new JGTITable ();
-    this.table.setModel ( this.tableModel );
-    this.table.setColumnModel ( this.tableColumnModel );
-
-    initialize ();
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see LogicClass#getGUI()
-   */
-  public final PrintDialogForm getGUI ()
-  {
-    return this.gui;
-  }
-
-
-  /**
-   * Closes the {@link AboutDialogForm}.
-   */
-  public final void handleClose ()
-  {
-    logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.gui.dispose ();
-  }
-
-
-  /**
-   * Shows the {@link AboutDialogForm}.
-   */
-  public final void show ()
-  {
-    logger.debug ( "show", "show the about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
-    this.gui.pack ();
-    this.gui.setLocationRelativeTo ( this.parent );
-    if ( this.gui.jGTIComboBoxPrinter.getModel ().getSize () > 0 )
-    {
-      this.gui.setVisible ( true );
-    }
-    else
-    {
-      InfoDialog dialog = new InfoDialog ( this.parent, Messages
-          .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
-          .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
-      dialog.show ();
-    }
-  }
-
-
-  /**
-   * Handle print action performed.
-   */
-  public void handlePrint ()
-  {
-    this.gui.setVisible ( false );
-
-    if ( this.table != null && this.tableColumnModel != null
-        && this.tableModel != null )
-    {
-      try
-      {
-        printTableModel ();
-      }
-      catch ( Exception exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-    }
-    else
-    {
-      printJGraph ();
-    }
-  }
-
-
-  /**
-   * Print the {@link JGTIGraph}.
-   */
-  private void printJGraph ()
-  {
-    PrinterJob job = PrinterJob.getPrinterJob ();
-    try
-    {
-
-      PageFormat pageFormat = new PageFormat ();
-      Paper paper = new Paper ();
-      paper.setSize ( 8.27 * 72, 11.69 * 72 );
-      paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
-      pageFormat.setPaper ( paper );
-      pageFormat.setOrientation ( PageFormat.PORTRAIT );
-
-      job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
-          .getSelectedItem () );
-      job.setPrintable ( this.printable, pageFormat );
-      logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
-      job.print ();
-      logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-    catch ( Exception exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-  }
-
-
-  /**
-   * Handle cancel action performed.
-   */
-  public void handleCancel ()
-  {
-    this.gui.dispose ();
-  }
-
-
-  /**
-   * Prints the {@link TableModel}.
-   * 
-   * @throws Exception If the something with the print dialog fails.
-   */
-  private final void printTableModel () throws Exception
-  {
-    PrinterJob job = PrinterJob.getPrinterJob ();
-
-    PageFormat pageFormat = new PageFormat ();
-    Paper paper = new Paper ();
-    paper.setSize ( 8.27 * 72, 11.69 * 72 );
-    paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
-    pageFormat.setPaper ( paper );
-    // pageFormat.setOrientation(this.printDialog.getPageFormat());
-    pageFormat.setOrientation ( PageFormat.PORTRAIT );
-    this.pageWidth = ( int ) pageFormat.getWidth ();
-    this.pageHeight = ( int ) pageFormat.getHeight ();
-
-    // // Copies
-    // job.setCopies(((Number)
-    // this.printDialog.jSpinnerCopies.getValue()).intValue());
-    //
-    // // Margin
-    // this.marginLeft = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginLeft.getValue()).intValue());
-    // this.marginRight = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginRight.getValue()).intValue());
-    // this.marginTop = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginTop.getValue()).intValue());
-    // this.marginBottom = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginBottom.getValue()).intValue());
-
-    // Calculate the page count
-    this.pageCount = getPageCount ();
-
-    job.setPrintable ( this, pageFormat );
-    job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
-        .getSelectedItem () );
-
-    logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
-    job.print ();
-    logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$ 
-  }
-
-
-  /**
-   * Returns the page count.
-   * 
-   * @return The page count.
-   */
-  private final int getPageCount ()
-  {
-    int result = 1;
-    int y = this.marginTop + HEADER_HEIGHT;
-
-    for ( int i = 0 ; i < this.tableModel.getRowCount () ; i++ )
-    {
-      if ( isPageBreakNeeded ( y ) )
-      {
-        y = this.marginTop + HEADER_HEIGHT;
-        result++ ;
-      }
-      y += ROW_HEIGHT;
-    }
-    return result;
-  }
-
-
-  /**
-   * Initializes this {@link PrintDialog}.
-   */
-  private final void initialize ()
-  {
-    this.normalFont = new Font ( "Dialog", Font.PLAIN, FONT_SIZE ); //$NON-NLS-1$
-    this.headerFont = this.normalFont.deriveFont ( Font.BOLD );
-
-    // Printer
-     PrintService [] printServices = PrintServiceLookup.lookupPrintServices (
-     null, null );
-
-    this.gui.jGTIComboBoxPrinter.setModel ( new DefaultComboBoxModel (
-        printServices ) );
-    this.gui.jGTIComboBoxPrinter
-        .setRenderer ( new PrintServiceListCellRenderer () );
-
-    // // Copies
-    // this.printDialog.jSpinnerCopies.setModel(new SpinnerNumberModel(1, 1,
-    // MAX_COPIES, 1));
-    //
-    // // Margin
-    // this.printDialog.jSpinnerMarginLeft.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginRight.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginTop.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginBottom.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-
-  }
-
-
-  /**
-   * Returns true if a page break is needed.
-   * 
-   * @param y The y position.
-   * @return True if a page break is needed.
-   */
-  private final boolean isPageBreakNeeded ( int y )
-  {
-    return ( y + ROW_HEIGHT + this.marginBottom ) > this.pageHeight;
-  }
-
-
-  /**
-   * The page count.
-   */
-  private int pageCount;
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Printable#print(Graphics, PageFormat, int)
-   */
-  public int print ( Graphics g,
-      @SuppressWarnings ( "unused" ) PageFormat pageFormat, int pageIndex )
-      throws PrinterException
-  {
-    if ( ( pageIndex < 0 ) || ( pageIndex >= this.pageCount ) )
-    {
-      return NO_SUCH_PAGE;
-    }
-    try
-    {
-      int [] columnWidth = calculateColumnWidth ();
-
-      drawHeader ( g, columnWidth );
-
-      int y = this.marginTop + HEADER_HEIGHT;
-
-      int start = 0;
-      int end = this.tableModel.getRowCount ();
-
-      // Get the printed rows
-      Integer lastPage = new Integer ( pageIndex - 1 );
-      start = this.printedRows.get ( lastPage ) == null ? 0 : this.printedRows
-          .get ( lastPage ).intValue ();
-
-      for ( int row = start ; row < end ; row++ )
-      {
-        if ( isPageBreakNeeded ( y ) )
-        {
-          drawBorder ( g, y );
-
-          // Save the printed rows
-          this.printedRows
-              .put ( new Integer ( pageIndex ), new Integer ( row ) );
-
-          return PAGE_EXISTS;
-        }
-
-        if ( ( row % 2 ) == 0 )
-        {
-          drawBackground ( g, y );
-        }
-
-        drawIconAndText ( g, y, row, columnWidth );
-
-        y += ROW_HEIGHT;
-      }
-      drawBorder ( g, y );
-    }
-    catch ( Exception exc )
-    {
-      exc.printStackTrace ();
-      throw new PrinterException ( exc.getMessage () );
-    }
-    return PAGE_EXISTS;
-  }
-
-
-  /**
-   * The {@link HashMap} which contains the printed rows.
-   */
-  private HashMap < Integer, Integer > printedRows = new HashMap < Integer, Integer > ();
-
-
-  /**
-   * The page height.
-   */
-  private int pageHeight;
-
-
-  /**
-   * The page width.
-   */
-  private int pageWidth;
 
 
   /**
@@ -624,42 +408,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
-   * The left margin.
-   */
-  private int marginLeft;
-
-
-  /**
-   * The right margin.
-   */
-  private int marginRight;
-
-
-  /**
-   * The top margin.
-   */
-  private int marginTop;
-
-
-  /**
-   * The bottom margin.
-   */
-  private int marginBottom;
-
-
-  /**
-   * The normal {@link Font}.
-   */
-  private Font normalFont;
-
-
-  /**
-   * The header {@link Font}.
-   */
-  private Font headerFont;
-
-
-  /**
    * Draws the border.
    * 
    * @param g The {@link Graphics}.
@@ -711,53 +459,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
-   * The background {@link Color}.
-   */
-  private static final Color BACKGROUND = new Color ( 227, 227, 227 );
-
-
-  /**
-   * The border offset.
-   */
-  private static final int BORDER_OFFSET = 2;
-
-
-  /**
-   * The border width.
-   */
-  private static final int BORDER_WIDTH = 2;
-
-
-  /**
-   * The {@link Font} size.
-   */
-  private static final int FONT_SIZE = 7;
-
-
-  /**
-   * The header centered flag.
-   */
-  private static final boolean HEADER_CENTERED = false;
-
-
-  /**
-   * The row height.
-   */
-  private static final int ROW_HEIGHT = 10;
-
-
-  /**
-   * The header height.
-   */
-  private static final int HEADER_HEIGHT = ( int ) ( ROW_HEIGHT * 1.5 );
-
-
-  // /**
-  // * The maximum page offset.
-  // */
-  // private static final int MAX_PAGE_OFFSET = 30;
-
-  /**
    * Draws a line.
    * 
    * @param g The {@link Graphics}.
@@ -783,5 +484,353 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     yPoints [ 3 ] = y2 + lineWidth - 1;
 
     g.fillPolygon ( xPoints, yPoints, 4 );
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see LogicClass#getGUI()
+   */
+  public final PrintDialogForm getGUI ()
+  {
+    return this.gui;
+  }
+
+
+  /**
+   * Returns the page count.
+   * 
+   * @return The page count.
+   */
+  private final int getPageCount ()
+  {
+    int result = 1;
+    int y = this.marginTop + HEADER_HEIGHT;
+
+    for ( int i = 0 ; i < this.tableModel.getRowCount () ; i++ )
+    {
+      if ( isPageBreakNeeded ( y ) )
+      {
+        y = this.marginTop + HEADER_HEIGHT;
+        result++ ;
+      }
+      y += ROW_HEIGHT;
+    }
+    return result;
+  }
+
+
+  /**
+   * Handle cancel action performed.
+   */
+  public void handleCancel ()
+  {
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Closes the {@link AboutDialogForm}.
+   */
+  public final void handleClose ()
+  {
+    logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.dispose ();
+  }
+
+
+  /**
+   * Handle print action performed.
+   */
+  public void handlePrint ()
+  {
+    this.gui.setVisible ( false );
+
+    logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
+    if ( this.machinePanel != null )
+    {
+      printMachinePanel ();
+    }
+    else if ( this.grammarPanel != null )
+    {
+      printGrammarPanel ();
+    }
+
+    logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
+  }
+
+
+  /**
+   * Initializes this {@link PrintDialog}.
+   */
+  private final void initialize ()
+  {
+    this.normalFont = new Font ( "Dialog", Font.PLAIN, FONT_SIZE ); //$NON-NLS-1$
+    this.headerFont = this.normalFont.deriveFont ( Font.BOLD );
+
+    // Printer
+    PrintService [] printServices = PrintServiceLookup.lookupPrintServices (
+        null, null );
+
+    this.gui.jGTIComboBoxPrinter.setModel ( new DefaultComboBoxModel (
+        printServices ) );
+    this.gui.jGTIComboBoxPrinter
+        .setRenderer ( new PrintServiceListCellRenderer () );
+
+    // // Copies
+    // this.printDialog.jSpinnerCopies.setModel(new SpinnerNumberModel(1, 1,
+    // MAX_COPIES, 1));
+    //
+    // // Margin
+    // this.printDialog.jSpinnerMarginLeft.setModel(new SpinnerNumberModel(20,
+    // 10, 50, 1));
+    // this.printDialog.jSpinnerMarginRight.setModel(new SpinnerNumberModel(20,
+    // 10, 50, 1));
+    // this.printDialog.jSpinnerMarginTop.setModel(new SpinnerNumberModel(20,
+    // 10, 50, 1));
+    // this.printDialog.jSpinnerMarginBottom.setModel(new SpinnerNumberModel(20,
+    // 10, 50, 1));
+
+  }
+
+
+  /**
+   * Returns true if a page break is needed.
+   * 
+   * @param y The y position.
+   * @return True if a page break is needed.
+   */
+  private final boolean isPageBreakNeeded ( int y )
+  {
+    return ( y + ROW_HEIGHT + this.marginBottom ) > this.pageHeight;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Printable#print(Graphics, PageFormat, int)
+   */
+  public int print ( Graphics g,
+      @SuppressWarnings ( "unused" ) PageFormat pageFormat, int pageIndex )
+      throws PrinterException
+  {
+    if ( ( pageIndex < 0 ) || ( pageIndex >= this.pageCount ) )
+    {
+      return NO_SUCH_PAGE;
+    }
+    try
+    {
+      int [] columnWidth = calculateColumnWidth ();
+
+      drawHeader ( g, columnWidth );
+
+      int y = this.marginTop + HEADER_HEIGHT;
+
+      int start = 0;
+      int end = this.tableModel.getRowCount ();
+
+      // Get the printed rows
+      Integer lastPage = new Integer ( pageIndex - 1 );
+      start = this.printedRows.get ( lastPage ) == null ? 0 : this.printedRows
+          .get ( lastPage ).intValue ();
+
+      for ( int row = start ; row < end ; row++ )
+      {
+        if ( isPageBreakNeeded ( y ) )
+        {
+          drawBorder ( g, y );
+
+          // Save the printed rows
+          this.printedRows
+              .put ( new Integer ( pageIndex ), new Integer ( row ) );
+
+          return PAGE_EXISTS;
+        }
+
+        if ( ( row % 2 ) == 0 )
+        {
+          drawBackground ( g, y );
+        }
+
+        drawIconAndText ( g, y, row, columnWidth );
+
+        y += ROW_HEIGHT;
+      }
+      drawBorder ( g, y );
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      throw new PrinterException ( exc.getMessage () );
+    }
+    return PAGE_EXISTS;
+  }
+
+  /**
+   * Handle print {@link GrammarPanel}.
+   */
+  private void printGrammarPanel ()
+  {
+    try
+    {
+      this.tableModel = this.grammarPanel.getGrammarTableModel ();
+      this.tableColumnModel = this.grammarPanel.getGrammarTableColumnModel ();
+      this.table = new JGTITable ();
+      this.table.setModel ( this.tableModel );
+      this.table.setColumnModel ( this.tableColumnModel );
+
+      printTableModel ();
+    }
+    catch ( PrinterException exc )
+    {
+      // TODOBM handle me
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * Print the {@link JGTIGraph}.
+   */
+  private void printJGraph ()
+  {
+    PrinterJob job = PrinterJob.getPrinterJob ();
+    try
+    {
+
+      PageFormat pageFormat = new PageFormat ();
+      Paper paper = new Paper ();
+      paper.setSize ( 8.27 * 72, 11.69 * 72 );
+      paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
+      pageFormat.setPaper ( paper );
+      pageFormat.setOrientation ( PageFormat.PORTRAIT );
+
+      job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
+          .getSelectedItem () );
+      job.setPrintable ( this.machinePanel.getJGTIGraph (), pageFormat );
+      job.print ();
+    }
+    catch ( Exception exc )
+    {
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * Handle print {@link MachinePanel}.
+   */
+  private void printMachinePanel ()
+  {
+    try
+    {
+      if ( this.gui.jGTIRadioButtonMachineGraph.isSelected () )
+      {
+        printJGraph ();
+      }
+      else if ( this.gui.jGTIRadioButtonMachinePDATable.isSelected () )
+      {
+        this.tableModel = this.machinePanel.getPDATableModel ();
+        this.tableColumnModel = this.machinePanel.getPdaTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ();
+      }
+      else
+      {
+        this.tableModel = this.machinePanel.getMachineTableModel ();
+        this.tableColumnModel = this.machinePanel.getMachineTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ();
+      }
+    }
+    catch ( PrinterException exc )
+    {
+      // TODOBM handle me
+      exc.printStackTrace ();
+      System.exit ( 1 );
+    }
+  }
+
+
+  /**
+   * Prints the {@link TableModel}.
+   * 
+   * @throws PrinterException If the something with the print dialog fails.
+   */
+  private final void printTableModel () throws PrinterException
+  {
+    PrinterJob job = PrinterJob.getPrinterJob ();
+
+    PageFormat pageFormat = new PageFormat ();
+    Paper paper = new Paper ();
+    paper.setSize ( 8.27 * 72, 11.69 * 72 );
+    paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
+    pageFormat.setPaper ( paper );
+    // pageFormat.setOrientation(this.printDialog.getPageFormat());
+    pageFormat.setOrientation ( PageFormat.PORTRAIT );
+    this.pageWidth = ( int ) pageFormat.getWidth ();
+    this.pageHeight = ( int ) pageFormat.getHeight ();
+
+    // // Copies
+    // job.setCopies(((Number)
+    // this.printDialog.jSpinnerCopies.getValue()).intValue());
+    //
+    // // Margin
+    // this.marginLeft = (int) (2.8346456693 * ((Number)
+    // this.printDialog.jSpinnerMarginLeft.getValue()).intValue());
+    // this.marginRight = (int) (2.8346456693 * ((Number)
+    // this.printDialog.jSpinnerMarginRight.getValue()).intValue());
+    // this.marginTop = (int) (2.8346456693 * ((Number)
+    // this.printDialog.jSpinnerMarginTop.getValue()).intValue());
+    // this.marginBottom = (int) (2.8346456693 * ((Number)
+    // this.printDialog.jSpinnerMarginBottom.getValue()).intValue());
+
+    // Calculate the page count
+    this.pageCount = getPageCount ();
+
+    job.setPrintable ( this, pageFormat );
+    job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
+        .getSelectedItem () );
+
+    logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
+    job.print ();
+    logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$ 
+  }
+
+
+  // /**
+  // * The maximum page offset.
+  // */
+  // private static final int MAX_PAGE_OFFSET = 30;
+
+  /**
+   * Shows the {@link AboutDialogForm}.
+   */
+  public final void show ()
+  {
+    logger.debug ( "show", "show the about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.gui.pack ();
+    this.gui.setLocationRelativeTo ( this.parent );
+    if ( this.gui.jGTIComboBoxPrinter.getModel ().getSize () > 0 )
+    {
+      this.gui.setVisible ( true );
+    }
+    else
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrinterMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrinter" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
   }
 }

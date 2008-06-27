@@ -16,6 +16,7 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
+import de.unisiegen.gtitool.ui.logic.PrintDialog;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
@@ -229,6 +230,22 @@ public final class ProductionPopupMenu extends JPopupMenu
       }
     } );
     add ( this.validate );
+    
+    
+    JMenuItem print = new JMenuItem ( Messages
+        .getString ( "PrintDialog.Print" ) ); //$NON-NLS-1$
+    print.addActionListener ( new ActionListener ()
+    {
+
+      @SuppressWarnings ( "synthetic-access" )
+      public void actionPerformed ( @SuppressWarnings ( "unused" )
+      ActionEvent event )
+      {
+        PrintDialog dialog = new PrintDialog(ProductionPopupMenu.this.grammarPanel.getParent (), ProductionPopupMenu.this.grammarPanel );
+        dialog.show ();
+      }
+    } );
+    add ( print );
 
   }
 }

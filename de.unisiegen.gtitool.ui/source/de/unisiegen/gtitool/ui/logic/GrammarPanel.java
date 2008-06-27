@@ -26,6 +26,8 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.Production;
@@ -145,6 +147,12 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * The {@link GrammarConsoleTableModel} for the error table.
    */
   private GrammarConsoleTableModel errorTableModel;
+
+
+  /**
+   * The {@link GrammarColumnModel}.
+   */
+  private GrammarColumnModel grammarColumnModel = new GrammarColumnModel ();
 
 
   /**
@@ -395,6 +403,28 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
    * @see #grammar
    */
   public final Grammar getGrammar ()
+  {
+    return this.grammar;
+  }
+
+
+  /**
+   * Returns the {@link TableColumnModel} of the grammar.
+   * 
+   * @return The {@link TableColumnModel} of the grammar.
+   */
+  public TableColumnModel getGrammarTableColumnModel ()
+  {
+    return this.grammarColumnModel;
+  }
+
+
+  /**
+   * Returns the {@link TableModel} of the grammar.
+   * 
+   * @return The {@link TableModel} of the grammar.
+   */
+  public TableModel getGrammarTableModel ()
   {
     return this.grammar;
   }
@@ -975,7 +1005,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
   private final void initialize ()
   {
     this.gui.jGTITableGrammar.setModel ( this.grammar );
-    this.gui.jGTITableGrammar.setColumnModel ( new GrammarColumnModel () );
+    this.gui.jGTITableGrammar.setColumnModel ( this.grammarColumnModel );
     this.gui.jGTITableGrammar.addAllowedDndSource ( this.gui.jGTITableGrammar );
     this.gui.jGTITableGrammar.getTableHeader ().setReorderingAllowed ( false );
     if ( this.grammar.getColumnCount () > 0 )

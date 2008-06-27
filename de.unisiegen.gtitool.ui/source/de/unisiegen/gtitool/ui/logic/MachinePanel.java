@@ -37,6 +37,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
@@ -985,6 +987,28 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   public final MachineMode getMachineMode ()
   {
     return this.machineMode;
+  }
+
+
+  /**
+   * Returns the {@link TableColumnModel} of the machine.
+   * 
+   * @return The {@link TableColumnModel} of the machine.
+   */
+  public TableColumnModel getMachineTableColumnModel ()
+  {
+    return this.machine.getTableColumnModel ();
+  }
+
+
+  /**
+   * Returns the {@link TableModel} of the machine.
+   * 
+   * @return The {@link TableModel} of the machine.
+   */
+  public TableModel getMachineTableModel ()
+  {
+    return this.machine;
   }
 
 

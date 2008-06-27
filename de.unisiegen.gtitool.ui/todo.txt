@@ -3,10 +3,7 @@
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 
-BM		- Drucken (JGraph, MachineTable, MachinePDATable, GrammarTable, HistoryPathTable)
-BM		- Die untere Ansicht im Minimieren Dialog erst im letzten Schritt einblenden und
-		  beim zurück navigieren wieder ausblende, dabei darf die Position nicht gesetzt
-		  werden, siehe Console.
+BM		- Drucken (HistoryPathTable)
 
 
 *** FEATURE ***

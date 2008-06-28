@@ -16,7 +16,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
-import de.unisiegen.gtitool.ui.logic.PrintDialog;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
 import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
@@ -118,8 +117,8 @@ public final class ProductionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         ProductionDialog dialog = new ProductionDialog (
             ProductionPopupMenu.this.grammarPanel.getParent (),
@@ -141,8 +140,8 @@ public final class ProductionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
 
         JFrame window = ( JFrame ) SwingUtilities
@@ -169,8 +168,8 @@ public final class ProductionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         String message = null;
         if ( ProductionPopupMenu.this.productions.size () == 1 )
@@ -222,30 +221,13 @@ public final class ProductionPopupMenu extends JPopupMenu
     {
 
       @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
+      public void actionPerformed (
+          @SuppressWarnings ( "unused" ) ActionEvent event )
       {
         ProductionPopupMenu.this.grammarPanel.getMainWindow ()
             .handleValidate ();
       }
     } );
     add ( this.validate );
-    
-    
-    JMenuItem print = new JMenuItem ( Messages
-        .getString ( "PrintDialog.Print" ) ); //$NON-NLS-1$
-    print.addActionListener ( new ActionListener ()
-    {
-
-      @SuppressWarnings ( "synthetic-access" )
-      public void actionPerformed ( @SuppressWarnings ( "unused" )
-      ActionEvent event )
-      {
-        PrintDialog dialog = new PrintDialog(ProductionPopupMenu.this.grammarPanel.getParent (), ProductionPopupMenu.this.grammarPanel );
-        dialog.show ();
-      }
-    } );
-    add ( print );
-
   }
 }

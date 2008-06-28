@@ -2,9 +2,9 @@
 
 CF		- Wort Navigation verbessern
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
-CF		- Drucken in MainWindow ziehen. (Aus ProductionPopupMenu und DefaultPopupMenu)
 
-BM		- Drucken (HistoryPathTable)
+BM		- Drucken: HistoryPathTable, Minimieren, ConvertTo, Name des PrintJobs setzen,
+		  da er vom PDF-Printer benutzt wird z.B. "Test.dfa - Tabelle" oder so.
 
 
 *** FEATURE ***

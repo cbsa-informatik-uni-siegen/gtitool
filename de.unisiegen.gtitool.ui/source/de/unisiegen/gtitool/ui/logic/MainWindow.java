@@ -106,6 +106,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_CLOSE_ALL,
 
     /**
+     * The print enabled button state.
+     */
+    ENABLED_PRINT,
+
+    /**
      * The undo enabled button state.
      */
     ENABLED_UNDO,
@@ -386,6 +391,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     removeButtonState ( ButtonState.ENABLED_SAVE_ALL );
     removeButtonState ( ButtonState.ENABLED_CLOSE );
     removeButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+    removeButtonState ( ButtonState.ENABLED_PRINT );
     removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
     removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
     removeButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
@@ -501,6 +507,12 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_CLOSE_ALL );
       this.gui.getJMenuItemCloseAll ().setEnabled ( true );
+    }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_PRINT ) )
+        && ( !this.buttonStateList.contains ( ButtonState.ENABLED_PRINT ) ) )
+    {
+      this.buttonStateList.add ( ButtonState.ENABLED_PRINT );
+      this.gui.getJMenuItemPrint ().setEnabled ( true );
     }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
         && ( !this.buttonStateList.contains ( ButtonState.ENABLED_UNDO ) ) )
@@ -1398,6 +1410,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_SAVE_ALL );
       addButtonState ( ButtonState.ENABLED_CLOSE );
       addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+      addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1483,6 +1496,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_SAVE_ALL );
       addButtonState ( ButtonState.ENABLED_CLOSE );
       addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+      addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1795,6 +1809,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_SAVE_ALL );
       addButtonState ( ButtonState.ENABLED_CLOSE );
       addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+      addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1861,6 +1876,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       addButtonState ( ButtonState.ENABLED_SAVE_ALL );
       addButtonState ( ButtonState.ENABLED_CLOSE );
       addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+      addButtonState ( ButtonState.ENABLED_PRINT );
       addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       addButtonState ( ButtonState.ENABLED_VALIDATE );
       addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -1995,6 +2011,35 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     PreferencesDialog preferencesDialog = new PreferencesDialog ( this.gui );
     preferencesDialog.show ();
+  }
+
+
+  /**
+   * Handles the print event.
+   */
+  public final void handlePrint ()
+  {
+    if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof MachinePanel )
+    {
+      MachinePanel machinePanel = ( MachinePanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      PrintDialog printDialog = new PrintDialog ( this.gui, machinePanel );
+      printDialog.show ();
+    }
+    else if ( this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel () instanceof GrammarPanel )
+    {
+      GrammarPanel grammarPanel = ( GrammarPanel ) this.jGTIMainSplitPane
+          .getJGTIEditorPanelTabbedPane ().getSelectedEditorPanel ();
+      PrintDialog printDialog = new PrintDialog ( this.gui, grammarPanel );
+      printDialog.show ();
+    }
+    else
+    {
+      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
+    }
+
   }
 
 
@@ -2961,6 +3006,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
       removeButtonState ( ButtonState.ENABLED_SAVE_AS );
       removeButtonState ( ButtonState.ENABLED_CLOSE );
+      removeButtonState ( ButtonState.ENABLED_PRINT );
       removeButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
       removeButtonState ( ButtonState.ENABLED_VALIDATE );
       removeButtonState ( ButtonState.ENABLED_CONSOLE_TABLE );
@@ -3043,6 +3089,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
         addButtonState ( ButtonState.ENABLED_CLOSE );
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR_MACHINE );
         addButtonState ( ButtonState.ENABLED_MACHINE_TABLE );
 
@@ -3149,6 +3196,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
         addButtonState ( ButtonState.ENABLED_CLOSE );
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_CONVERT_TO );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
@@ -3795,6 +3843,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         Messages.getString ( "MainWindow.CloseAll" ) ); //$NON-NLS-1$
     MainWindow.this.gui.getJMenuItemCloseAll ().setMnemonic (
         Messages.getString ( "MainWindow.CloseAllMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
+    // Print
+    MainWindow.this.gui.getJMenuItemPrint ().setText (
+        Messages.getString ( "MainWindow.Print" ) ); //$NON-NLS-1$
+    MainWindow.this.gui.getJMenuItemPrint ().setMnemonic (
+        Messages.getString ( "MainWindow.PrintMnemonic" ).charAt ( 0 ) ); //$NON-NLS-1$
     // Save
     MainWindow.this.gui.getJMenuItemSave ().setText (
         Messages.getString ( "MainWindow.Save" ) ); //$NON-NLS-1$
@@ -4151,6 +4204,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
         addButtonState ( ButtonState.ENABLED_CLOSE );
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_MACHINE_EDIT_ITEMS );
@@ -4172,6 +4226,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
         addButtonState ( ButtonState.ENABLED_SAVE_ALL );
         addButtonState ( ButtonState.ENABLED_CLOSE );
         addButtonState ( ButtonState.ENABLED_CLOSE_ALL );
+        addButtonState ( ButtonState.ENABLED_PRINT );
         addButtonState ( ButtonState.ENABLED_EDIT_DOCUMENT );
         addButtonState ( ButtonState.ENABLED_VALIDATE );
         addButtonState ( ButtonState.ENABLED_DRAFT_FOR );
@@ -4266,6 +4321,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_CLOSE_ALL );
       this.gui.getJMenuItemCloseAll ().setEnabled ( false );
+    }
+    else if ( buttonState.equals ( ButtonState.ENABLED_PRINT ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_PRINT );
+      this.gui.getJMenuItemPrint ().setEnabled ( false );
     }
     else if ( buttonState.equals ( ButtonState.ENABLED_UNDO ) )
     {

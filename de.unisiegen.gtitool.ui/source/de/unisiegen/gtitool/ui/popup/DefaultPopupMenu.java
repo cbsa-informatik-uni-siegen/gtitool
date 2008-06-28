@@ -12,7 +12,6 @@ import javax.swing.JPopupMenu;
 
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
-import de.unisiegen.gtitool.ui.logic.PrintDialog;
 import de.unisiegen.gtitool.ui.utils.LayoutManager;
 
 
@@ -118,6 +117,18 @@ public final class DefaultPopupMenu extends JPopupMenu
 
 
   /**
+   * Returns the panel.
+   * 
+   * @return The panel.
+   * @see #panel
+   */
+  public MachinePanel getPanel ()
+  {
+    return this.panel;
+  }
+
+
+  /**
    * Populates the menues of this popup menu.
    */
   private final void populateMenues ()
@@ -217,6 +228,31 @@ public final class DefaultPopupMenu extends JPopupMenu
     } );
     this.zoom.add ( this.zoom200 );
 
+    switch ( this.factor )
+    {
+      case 50 :
+        this.zoom50.setSelected ( true );
+        break;
+      case 75 :
+        this.zoom75.setSelected ( true );
+        break;
+      case 100 :
+        this.zoom100.setSelected ( true );
+        break;
+      case 125 :
+        this.zoom125.setSelected ( true );
+        break;
+      case 150 :
+        this.zoom150.setSelected ( true );
+        break;
+      case 175 :
+        this.zoom175.setSelected ( true );
+        break;
+      case 200 :
+        this.zoom200.setSelected ( true );
+        break;
+    }
+
     add ( this.zoom );
 
     this.validate = new JMenuItem ( Messages
@@ -247,56 +283,5 @@ public final class DefaultPopupMenu extends JPopupMenu
       }
     } );
     add ( this.layout );
-
-    JMenuItem print = new JMenuItem ( Messages.getString ( "PrintDialog.Print" ) ); //$NON-NLS-1$
-    print.addActionListener ( new ActionListener ()
-    {
-
-      public void actionPerformed (
-          @SuppressWarnings ( "unused" ) ActionEvent event )
-      {
-         new PrintDialog(getPanel ().getMainWindowForm (), getPanel ()).show ();
-
-      }
-    } );
-    add ( print );
-
-    switch ( this.factor )
-    {
-      case 50 :
-        this.zoom50.setSelected ( true );
-        break;
-      case 75 :
-        this.zoom75.setSelected ( true );
-        break;
-      case 100 :
-        this.zoom100.setSelected ( true );
-        break;
-      case 125 :
-        this.zoom125.setSelected ( true );
-        break;
-      case 150 :
-        this.zoom150.setSelected ( true );
-        break;
-      case 175 :
-        this.zoom175.setSelected ( true );
-        break;
-      case 200 :
-        this.zoom200.setSelected ( true );
-        break;
-    }
-  }
-
-
-  
-  /**
-   * Returns the panel.
-   *
-   * @return The panel.
-   * @see #panel
-   */
-  public MachinePanel getPanel ()
-  {
-    return this.panel;
   }
 }

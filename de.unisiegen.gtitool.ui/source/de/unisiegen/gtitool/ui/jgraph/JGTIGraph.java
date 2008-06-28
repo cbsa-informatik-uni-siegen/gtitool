@@ -86,7 +86,37 @@ public final class JGTIGraph extends JGraph implements Printable
     }
     return null;
   }
+  
+  /**
+   * The width of the graph.
+   */
+  double graphWidth = 0;
+  
+  /**
+   * The height of the graph.
+   */
+  double graphHeight = 0;
 
+  /**
+   * Calculate the width and heigth of the graph.
+   */
+  private void calculateGraphSize(){
+    for (  Object object : DefaultGraphModel.getAll ( getModel ()))
+    {
+      if (object instanceof DefaultStateView){
+        DefaultStateView current = (DefaultStateView) object;
+        
+        this.graphWidth = Math.max ( current.getPositionX () + current.getWidth (), this.graphWidth );
+        this.graphHeight = Math.max ( current.getPositionY () + current.getHeight (), this.graphHeight );
+      }
+    }
+  }
+  
+  /**
+   * The page count of a row.
+   */
+  int pagesPerRow = 0;
+  
 
   /**
    * {@inheritDoc}
@@ -98,11 +128,37 @@ public final class JGTIGraph extends JGraph implements Printable
   {
     boolean print = false;
     int pageWidth = ( int ) pageFormat.getWidth ();
-
-    if ( ( pageIndex * pageWidth ) < getWidth () )
+    int pageHeight = ( int ) pageFormat.getHeight ();
+    
+    this.graphWidth = 0;
+    
+    calculateGraphSize ();
+    
+    int x = 0;
+    
+    int y = 0;
+    
+    
+    if ( ( pageIndex * pageWidth ) < this.graphWidth )
     {
-      graphics.translate ( - ( pageIndex * pageWidth ), 0 );
+      x =  - ( pageIndex * pageWidth );
+      graphics.translate (x, 0 );
       print = true;
+      this.pagesPerRow = pageIndex + 1;
+    }
+    else {
+      int row = pageIndex / this.pagesPerRow;
+      
+      if ( ( row * pageHeight ) < this.graphHeight )
+      {
+        
+        
+        x =  - (((pageIndex - row * this.pagesPerRow) ) * pageWidth );
+        y = - (row * pageHeight);
+        graphics.translate (x,  y );
+        print = true;
+      }
+      
     }
     printAll ( graphics );
     if ( print )

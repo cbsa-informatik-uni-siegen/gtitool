@@ -69,8 +69,6 @@ public abstract class WordException extends CoreException
     result.append ( "Word:        " ); //$NON-NLS-1$
     result.append ( this.word );
     result.append ( lineBreak );
-    result.append ( "Position     " ); //$NON-NLS-1$
-    result.append ( this.word.getCurrentPosition () );
     return result.toString ();
   }
 }

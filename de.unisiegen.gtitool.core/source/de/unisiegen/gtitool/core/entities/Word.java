@@ -70,27 +70,6 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
 
 
   /**
-   * Returns the current position.
-   * 
-   * @return The current position.
-   */
-  public int getCurrentPosition ();
-
-
-  /**
-   * Returns the current {@link Symbol}.
-   * 
-   * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link Word} is not
-   *           correct.
-   * @throws WordResetedException If something with the {@link Word} is not
-   *           correct.
-   */
-  public Symbol getCurrentSymbol () throws WordFinishedException,
-      WordResetedException;
-
-
-  /**
    * Returns the readed {@link Symbol}s.
    * 
    * @return The readed {@link Symbol}s.
@@ -125,24 +104,18 @@ public interface Word extends Entity < Word >, Storable, Iterable < Symbol >
    * @return The next {@link Symbol}.
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
-   * @throws WordResetedException If something with the {@link Word} is not
-   *           correct.
    */
-  public Symbol nextSymbol () throws WordFinishedException,
-      WordResetedException;
+  public Symbol nextSymbol () throws WordFinishedException;
 
 
   /**
    * Returns the previous {@link Symbol} and decrements the current position.
    * 
    * @return The previous {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link Word} is not
-   *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public Symbol previousSymbol () throws WordFinishedException,
-      WordResetedException;
+  public Symbol previousSymbol () throws WordResetedException;
 
 
   /**

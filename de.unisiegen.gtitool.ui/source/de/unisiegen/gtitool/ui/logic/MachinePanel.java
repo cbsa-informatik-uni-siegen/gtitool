@@ -1727,78 +1727,72 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     try
     {
-      // Clear highlight
-      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+      if ( this.machine.isNextSymbolAvailable () )
       {
-        Transition transition = current.getTransition ();
-        transition.setError ( false );
-        transition.setActive ( false );
+        // clear highlight
+        for ( DefaultTransitionView current : this.model
+            .getTransitionViewList () )
+        {
+          Transition transition = current.getTransition ();
+          transition.setError ( false );
+          transition.setActive ( false );
+        }
+
+        this.machine.nextSymbol ();
+
+        this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+            .getStack () );
+
+        // clear highlight
+        for ( DefaultStateView current : this.model.getStateViewList () )
+        {
+          State state = current.getState ();
+          state.setError ( false );
+          state.setActive ( false );
+        }
+
+        // highlight
+        for ( Transition current : this.machine.getActiveTransition () )
+        {
+          current.setActive ( true );
+        }
+
+        for ( State current : this.machine.getActiveState () )
+        {
+          current.setActive ( true );
+        }
+
+        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+        performCellsChanged ();
+
+        try
+        {
+          this.gui.wordPanel.styledWordParserPanel
+              .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
+        }
+        catch ( WordResetedException exc )
+        {
+          this.gui.wordPanel.styledWordParserPanel
+              .setHighlightedParseableEntity ();
+        }
       }
-
-      this.machine.nextSymbol ();
-
-      // Stack
-      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
-          .getStack () );
-
-      // Clear highlight
-      for ( DefaultStateView current : this.model.getStateViewList () )
+      else
       {
-        State state = current.getState ();
-        state.setError ( false );
-        state.setActive ( false );
-      }
-
-      // Highlight
-      for ( Transition current : this.machine.getActiveTransition () )
-      {
-        current.setActive ( true );
-      }
-
-      for ( State current : this.machine.getActiveState () )
-      {
-        current.setActive ( true );
-      }
-
-      performCellsChanged ();
-
-      try
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
-      }
-      catch ( WordResetedException exc )
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedParseableEntity ();
+        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+        this.mainWindowForm.getLogic ().handleAutoStepStopped ();
       }
     }
     catch ( WordFinishedException exc )
     {
-      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      performCellsChanged ();
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
-          .toString () );
-      infoDialog.show ();
-    }
-    catch ( WordResetedException exc )
-    {
-      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      performCellsChanged ();
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
-          .toString () );
-      infoDialog.show ();
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
     }
     catch ( WordNotAcceptedException exc )
     {
-      this.mainWindowForm.getLogic ().handleAutoStepStopped ();
-      performCellsChanged ();
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
-          .toString () );
-      infoDialog.show ();
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
     }
   }
 
@@ -1810,70 +1804,88 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     try
     {
-      // Clear highlight
-      for ( DefaultTransitionView current : this.model.getTransitionViewList () )
+      if ( !this.machine.isReseted () )
       {
-        Transition transition = current.getTransition ();
-        transition.setError ( false );
-        transition.setActive ( false );
+        // clear highlight
+        for ( DefaultTransitionView current : this.model
+            .getTransitionViewList () )
+        {
+          Transition transition = current.getTransition ();
+          transition.setError ( false );
+          transition.setActive ( false );
+        }
+
+        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+
+        this.machine.previousSymbol ();
+
+        this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+            .getStack () );
+
+        // clear highlight
+        for ( DefaultStateView current : this.model.getStateViewList () )
+        {
+          State state = current.getState ();
+          state.setError ( false );
+          state.setActive ( false );
+        }
+
+        // highlight
+        for ( Transition current : this.machine.getActiveTransition () )
+        {
+          current.setActive ( true );
+        }
+
+        for ( State current : this.machine.getActiveState () )
+        {
+          current.setActive ( true );
+        }
+
+        performCellsChanged ();
+
+        // after the last previous step the current symbol is not defined
+        try
+        {
+          this.gui.wordPanel.styledWordParserPanel
+              .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
+        }
+        catch ( WordResetedException exc )
+        {
+          this.gui.wordPanel.styledWordParserPanel
+              .setHighlightedParseableEntity ();
+        }
+        catch ( WordFinishedException exc )
+        {
+          this.gui.wordPanel.styledWordParserPanel
+              .setHighlightedParseableEntity ();
+        }
       }
-
-      this.machine.previousSymbol ();
-
-      // Stack
-      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
-          .getStack () );
-
-      // Clear highlight
-      for ( DefaultStateView current : this.model.getStateViewList () )
+      else
       {
-        State state = current.getState ();
-        state.setError ( false );
-        state.setActive ( false );
-      }
+        // clear highlight
+        for ( DefaultTransitionView currentTransitionView : this.model
+            .getTransitionViewList () )
+        {
+          Transition transition = currentTransitionView.getTransition ();
+          transition.setError ( false );
+          transition.setActive ( false );
 
-      // Highlight
-      for ( Transition current : this.machine.getActiveTransition () )
-      {
-        current.setActive ( true );
-      }
+          for ( Symbol currentSymbol : transition )
+          {
+            currentSymbol.setError ( false );
+            currentSymbol.setActive ( false );
+          }
+        }
 
-      for ( State current : this.machine.getActiveState () )
-      {
-        current.setActive ( true );
+        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+        performCellsChanged ();
       }
-
-      performCellsChanged ();
-
-      /*
-       * After the last previous step the current symbol is not defined.
-       */
-      try
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
-      }
-      catch ( WordResetedException exc )
-      {
-        this.gui.wordPanel.styledWordParserPanel
-            .setHighlightedParseableEntity ();
-      }
-    }
-    catch ( WordFinishedException exc )
-    {
-      performCellsChanged ();
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
-          .toString () );
-      infoDialog.show ();
     }
     catch ( WordResetedException exc )
     {
-      performCellsChanged ();
-      InfoDialog infoDialog = new InfoDialog ( this.mainWindowForm, exc
-          .getPrettyDescription ().toString (), exc.getPrettyMessage ()
-          .toString () );
-      infoDialog.show ();
+      exc.printStackTrace ();
+      System.exit ( 1 );
+      return;
     }
   }
 
@@ -1893,6 +1905,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       infoDialog.show ();
       return false;
     }
+
     this.machineMode = MachineMode.WORD_NAVIGATION;
     clearHighlight ();
 
@@ -1903,7 +1916,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.machine.start ( this.gui.wordPanel.styledWordParserPanel
         .getParsedObject () );
 
-    // Stack
     this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
@@ -1912,6 +1924,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       current.setActive ( true );
     }
 
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 
     return true;
@@ -1927,9 +1940,9 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     clearHighlight ();
 
-    // Stack
     this.gui.wordPanel.styledStackParserPanel.setText ( new DefaultStack () );
 
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();

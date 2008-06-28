@@ -196,9 +196,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_NAVIGATION_START,
 
     /**
-     * The navigation steps enabled button state.
+     * The navigation steps next enabled button state.
      */
-    ENABLED_NAVIGATION_STEPS,
+    ENABLED_NAVIGATION_STEPS_NEXT,
+
+    /**
+     * The navigation steps next enabled button state.
+     */
+    ENABLED_NAVIGATION_STEPS_PREVIOUS,
+
+    /**
+     * The navigation steps next enabled button state.
+     */
+    ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS,
 
     /**
      * The convert to enabled button state.
@@ -635,7 +645,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
-      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
@@ -648,20 +662,63 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_START );
-      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
     }
-    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS ) )
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) )
         && ( !this.buttonStateList
-            .contains ( ButtonState.ENABLED_NAVIGATION_STEPS ) ) )
+            .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
-      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
+    }
+    else if ( ( buttonState
+        .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .add ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
       this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( true );
       this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( true );
@@ -3113,7 +3170,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           removeButtonState ( ButtonState.ENABLED_REORDER_STATE_NAMES );
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
-          addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
+
+          // TODOCF check this
+
+          updateWordNavigationStates ();
         }
         // word enter mode
         else if ( machinePanel.getMachineMode ().equals (
@@ -3674,6 +3734,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
+
     MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordNextStep ();
   }
@@ -3690,8 +3751,8 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
 
+    MachinePanel machinePanel = ( MachinePanel ) panel;
     machinePanel.handleWordPreviousStep ();
   }
 
@@ -3711,10 +3772,10 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     if ( machinePanel.handleWordStart () )
     {
-      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
+      // TODOCF check this
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      addButtonState ( ButtonState.ENABLED_HISTORY );
     }
-
-    addButtonState ( ButtonState.ENABLED_HISTORY );
   }
 
 
@@ -3732,10 +3793,9 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     MachinePanel machinePanel = ( MachinePanel ) panel;
 
     addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+    removeButtonState ( ButtonState.ENABLED_HISTORY );
 
     machinePanel.handleWordStop ();
-
-    removeButtonState ( ButtonState.ENABLED_HISTORY );
   }
 
 
@@ -4422,7 +4482,19 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
     }
-    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS ) )
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
+    }
+    else if ( buttonState
+        .equals ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS ) )
     {
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" ); //$NON-NLS-1$
@@ -4567,6 +4639,41 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
           break;
         }
       }
+    }
+  }
+
+
+  /**
+   * Updates the word navigation states.
+   */
+  public final void updateWordNavigationStates ()
+  {
+    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
+        .getSelectedEditorPanel ();
+    if ( ! ( panel instanceof MachinePanel ) )
+    {
+      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
+    }
+
+    MachinePanel machinePanel = ( MachinePanel ) panel;
+    boolean nextAvailable = machinePanel.getMachine ().isNextSymbolAvailable ();
+    boolean previousAvailable = !machinePanel.getMachine ().isReseted ();
+
+    if ( !nextAvailable && !previousAvailable )
+    {
+      throw new RuntimeException ( "unsupported state" ); //$NON-NLS-1$
+    }
+    else if ( !nextAvailable && previousAvailable )
+    {
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+    }
+    else if ( nextAvailable && !previousAvailable )
+    {
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+    }
+    else if ( nextAvailable && previousAvailable )
+    {
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
     }
   }
 }

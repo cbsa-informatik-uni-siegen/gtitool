@@ -283,37 +283,6 @@ public final class DefaultWord implements Word
   /**
    * {@inheritDoc}
    * 
-   * @see Word#getCurrentPosition()
-   */
-  public final int getCurrentPosition ()
-  {
-    return this.currentPosition;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Word#getCurrentSymbol()
-   */
-  public final Symbol getCurrentSymbol () throws WordFinishedException,
-      WordResetedException
-  {
-    if ( this.currentPosition == START_INDEX )
-    {
-      throw new WordResetedException ( this );
-    }
-    if ( this.currentPosition >= this.symbolList.size () )
-    {
-      throw new WordFinishedException ( this );
-    }
-    return this.symbolList.get ( this.currentPosition );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see Storable#getElement()
    */
   public final Element getElement ()
@@ -354,6 +323,7 @@ public final class DefaultWord implements Word
     {
       throw new WordFinishedException ( this );
     }
+
     ArrayList < Symbol > readedSymbols = new ArrayList < Symbol > ();
     for ( int i = 0 ; i <= this.currentPosition ; i++ )
     {
@@ -413,15 +383,18 @@ public final class DefaultWord implements Word
    * 
    * @see Word#nextSymbol()
    */
-  public final Symbol nextSymbol () throws WordFinishedException,
-      WordResetedException
+  public final Symbol nextSymbol () throws WordFinishedException
   {
     if ( this.currentPosition == this.symbolList.size () - 1 )
     {
       throw new WordFinishedException ( this );
     }
     this.currentPosition++ ;
-    return getCurrentSymbol ();
+    if ( this.currentPosition >= this.symbolList.size () )
+    {
+      throw new WordFinishedException ( this );
+    }
+    return this.symbolList.get ( this.currentPosition );
   }
 
 
@@ -430,14 +403,18 @@ public final class DefaultWord implements Word
    * 
    * @see Word#previousSymbol()
    */
-  public final Symbol previousSymbol () throws WordFinishedException,
-      WordResetedException
+  public final Symbol previousSymbol () throws WordResetedException
   {
     if ( this.currentPosition == START_INDEX )
     {
       throw new WordResetedException ( this );
     }
-    Symbol symbol = getCurrentSymbol ();
+    if ( this.currentPosition == START_INDEX )
+    {
+      throw new WordResetedException ( this );
+    }
+
+    Symbol symbol = this.symbolList.get ( this.currentPosition );
     this.currentPosition-- ;
     return symbol;
   }

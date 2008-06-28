@@ -284,19 +284,6 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Returns the current {@link Symbol}.
-   * 
-   * @return The current {@link Symbol}.
-   * @throws WordFinishedException If something with the {@link Word} is not
-   *           correct.
-   * @throws WordResetedException If something with the {@link Word} is not
-   *           correct.
-   */
-  public Symbol getCurrentSymbol () throws WordFinishedException,
-      WordResetedException;
-
-
-  /**
    * Returns the {@link HistoryItem}.
    * 
    * @return The {@link HistoryItem}.
@@ -422,6 +409,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns true if the next {@link Symbol} is available, otherwise false.
+   * 
+   * @return True if the next {@link Symbol} is available, otherwise false.
+   */
+  public boolean isNextSymbolAvailable ();
+
+
+  /**
    * Returns true if this {@link Word} is reseted, otherwise false.
    * 
    * @return True if this {@link Word} is reseted, otherwise false.
@@ -453,12 +448,10 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * 
    * @throws WordFinishedException If something with the {@link Word} is not
    *           correct.
-   * @throws WordResetedException If something with the {@link Word} is not
-   *           correct.
    * @throws WordNotAcceptedException If something with the {@link Word} is not
    *           correct.
    */
-  public void nextSymbol () throws WordFinishedException, WordResetedException,
+  public void nextSymbol () throws WordFinishedException,
       WordNotAcceptedException;
 
 
@@ -466,13 +459,10 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * Removes the last step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
    * 
-   * @throws WordFinishedException If something with the {@link Word} is not
-   *           correct.
    * @throws WordResetedException If something with the {@link Word} is not
    *           correct.
    */
-  public void previousSymbol () throws WordFinishedException,
-      WordResetedException;
+  public void previousSymbol () throws WordResetedException;
 
 
   /**

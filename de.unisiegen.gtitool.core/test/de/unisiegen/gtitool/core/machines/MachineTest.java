@@ -7,8 +7,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.word.WordException;
-import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
-import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 
 
 /**
@@ -76,18 +74,6 @@ public abstract class MachineTest
           print ( current );
         }
         println ();
-        try
-        {
-          println ( "Symbol:      " + machine.getCurrentSymbol () );
-        }
-        catch ( WordResetedException exc )
-        {
-          println ( "Symbol:      RESETED" );
-        }
-        catch ( WordFinishedException exc )
-        {
-          println ( "Symbol:      FINISHED" );
-        }
         print ( "States:      " );
         for ( State current : machine.getActiveState () )
         {
@@ -127,18 +113,6 @@ public abstract class MachineTest
           print ( current );
         }
         println ();
-        try
-        {
-          println ( "Symbol:      " + machine.getCurrentSymbol () );
-        }
-        catch ( WordResetedException exc )
-        {
-          println ( "Symbol:      RESETED" );
-        }
-        catch ( WordFinishedException exc )
-        {
-          println ( "Symbol:      FINISHED" );
-        }
         print ( "Transitions: " );
         machine.previousSymbol ();
         TreeSet < Transition > transitions = machine.getActiveTransition ();

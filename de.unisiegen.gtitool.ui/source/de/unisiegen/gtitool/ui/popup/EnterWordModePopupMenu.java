@@ -102,8 +102,9 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       {
         if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
         {
+          // TODOCF check this
           EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-              .addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS );
+              .addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
         }
       }
     } );

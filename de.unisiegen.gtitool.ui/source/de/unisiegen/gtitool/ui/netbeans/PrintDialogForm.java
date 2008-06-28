@@ -67,6 +67,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroupMachinePanel = new javax.swing.ButtonGroup();
+        buttonGroupPageFormat = new javax.swing.ButtonGroup();
         jGTIPanelOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelPrinter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelPrinter = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -75,6 +76,20 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIRadioButtonMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMachinePDATable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIPanelPageSetup = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
+        jPanelFormat = new javax.swing.JPanel();
+        jGTILabelPortraitIcon = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jGTIRadioButtonPortrait = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioLandscape = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTILabelLandscapeIcon = new de.unisiegen.gtitool.ui.swing.JGTILabel();
+        jPanelMargins = new javax.swing.JPanel();
+        jLabelMarginLeft = new javax.swing.JLabel();
+        jSpinnerMarginLeft = new javax.swing.JSpinner();
+        jLabelMarginRight = new javax.swing.JLabel();
+        jSpinnerMarginRight = new javax.swing.JSpinner();
+        jLabelMarginTop = new javax.swing.JLabel();
+        jSpinnerMarginTop = new javax.swing.JSpinner();
+        jLabelMarginBottom = new javax.swing.JLabel();
+        jSpinnerMarginBottom = new javax.swing.JSpinner();
         jGTIPanelButton = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
         jGTIButtonYes = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -136,6 +151,120 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIPanelOuter.add(jGTIPanelPrinter, gridBagConstraints);
 
         jGTIPanelPageSetup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jPanelFormat.setLayout(new java.awt.GridBagLayout());
+
+        jGTILabelPortraitIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/portrait.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 20, 3, 5);
+        jPanelFormat.add(jGTILabelPortraitIcon, gridBagConstraints);
+
+        buttonGroupPageFormat.add(jGTIRadioButtonPortrait);
+        jGTIRadioButtonPortrait.setSelected(true);
+        jGTIRadioButtonPortrait.setText(bundle.getString("PrintDialog.Portrait")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
+        jPanelFormat.add(jGTIRadioButtonPortrait, gridBagConstraints);
+
+        buttonGroupPageFormat.add(jGTIRadioLandscape);
+        jGTIRadioLandscape.setText(bundle.getString("PrintDialog.Landscape")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
+        jPanelFormat.add(jGTIRadioLandscape, gridBagConstraints);
+
+        jGTILabelLandscapeIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/landscape.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(3, 20, 3, 5);
+        jPanelFormat.add(jGTILabelLandscapeIcon, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPageSetup.add(jPanelFormat, gridBagConstraints);
+
+        jPanelMargins.setLayout(new java.awt.GridBagLayout());
+
+        jLabelMarginLeft.setText(bundle.getString("PrintDialog.MarginLeft")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 5);
+        jPanelMargins.add(jLabelMarginLeft, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
+        jPanelMargins.add(jSpinnerMarginLeft, gridBagConstraints);
+
+        jLabelMarginRight.setText(bundle.getString("PrintDialog.MarginRight")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
+        jPanelMargins.add(jLabelMarginRight, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
+        jPanelMargins.add(jSpinnerMarginRight, gridBagConstraints);
+
+        jLabelMarginTop.setText(bundle.getString("PrintDialog.MarginTop")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 5);
+        jPanelMargins.add(jLabelMarginTop, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
+        jPanelMargins.add(jSpinnerMarginTop, gridBagConstraints);
+
+        jLabelMarginBottom.setText(bundle.getString("PrintDialog.MarginBottom")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 5);
+        jPanelMargins.add(jLabelMarginBottom, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(3, 5, 3, 0);
+        jPanelMargins.add(jSpinnerMarginBottom, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPageSetup.add(jPanelMargins, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -201,9 +330,12 @@ this.logic.handlePrint();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.ButtonGroup buttonGroupMachinePanel;
+    public javax.swing.ButtonGroup buttonGroupPageFormat;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonYes;
     public de.unisiegen.gtitool.ui.swing.JGTIComboBox jGTIComboBoxPrinter;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelLandscapeIcon;
+    public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelPortraitIcon;
     public de.unisiegen.gtitool.ui.swing.JGTILabel jGTILabelPrinter;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelButton;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelOuter;
@@ -212,6 +344,18 @@ this.logic.handlePrint();
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachinePDATable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonPortrait;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioLandscape;
+    public javax.swing.JLabel jLabelMarginBottom;
+    public javax.swing.JLabel jLabelMarginLeft;
+    public javax.swing.JLabel jLabelMarginRight;
+    public javax.swing.JLabel jLabelMarginTop;
+    public javax.swing.JPanel jPanelFormat;
+    public javax.swing.JPanel jPanelMargins;
+    public javax.swing.JSpinner jSpinnerMarginBottom;
+    public javax.swing.JSpinner jSpinnerMarginLeft;
+    public javax.swing.JSpinner jSpinnerMarginRight;
+    public javax.swing.JSpinner jSpinnerMarginTop;
     // End of variables declaration//GEN-END:variables
 
 

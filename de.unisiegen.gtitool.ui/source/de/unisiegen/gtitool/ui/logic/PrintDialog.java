@@ -18,6 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -113,10 +114,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    */
   private static final boolean HEADER_CENTERED = false;
 
+
   /**
    * The row height.
    */
   private static final int ROW_HEIGHT = 10;
+
 
   /**
    * The header height.
@@ -128,9 +131,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * The {@link Logger} for this class.
    */
   private static final Logger logger = Logger.getLogger ( PrintDialog.class );
-
-
-
 
 
   /**
@@ -582,15 +582,15 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     // this.printDialog.jSpinnerCopies.setModel(new SpinnerNumberModel(1, 1,
     // MAX_COPIES, 1));
     //
-    // // Margin
-    // this.printDialog.jSpinnerMarginLeft.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginRight.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginTop.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
-    // this.printDialog.jSpinnerMarginBottom.setModel(new SpinnerNumberModel(20,
-    // 10, 50, 1));
+    // Margin
+    this.gui.jSpinnerMarginLeft.setModel ( new SpinnerNumberModel ( 20, 10, 50,
+        1 ) );
+    this.gui.jSpinnerMarginRight.setModel ( new SpinnerNumberModel ( 20, 10,
+        50, 1 ) );
+    this.gui.jSpinnerMarginTop.setModel ( new SpinnerNumberModel ( 20, 10, 50,
+        1 ) );
+    this.gui.jSpinnerMarginBottom.setModel ( new SpinnerNumberModel ( 20, 10,
+        50, 1 ) );
 
   }
 
@@ -668,6 +668,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     return PAGE_EXISTS;
   }
 
+
   /**
    * Handle print {@link GrammarPanel}.
    */
@@ -681,7 +682,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       this.table.setModel ( this.tableModel );
       this.table.setColumnModel ( this.tableColumnModel );
 
-      printTableModel ();
+      printTableModel (this.grammarPanel.getFile ().getName ());
     }
     catch ( PrinterException exc )
     {
@@ -706,11 +707,19 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       paper.setSize ( 8.27 * 72, 11.69 * 72 );
       paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
       pageFormat.setPaper ( paper );
-      pageFormat.setOrientation ( PageFormat.PORTRAIT );
+      if ( this.gui.jGTIRadioButtonPortrait.isSelected () )
+      {
+        pageFormat.setOrientation ( PageFormat.PORTRAIT );
+      }
+      else
+      {
+        pageFormat.setOrientation ( PageFormat.LANDSCAPE );
+      }
 
       job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
           .getSelectedItem () );
       job.setPrintable ( this.machinePanel.getJGTIGraph (), pageFormat );
+      job.setJobName ( this.machinePanel.getFile ().getName () );
       job.print ();
     }
     catch ( Exception exc )
@@ -740,7 +749,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ();
+        // TODOBM i18n
+        printTableModel (this.machinePanel.getFile ().getName () + " - MachineTable"); //$NON-NLS-1$
       }
       else
       {
@@ -750,7 +760,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        printTableModel ();
+     // TODOBM i18n
+        printTableModel (this.machinePanel.getFile ().getName () + " - PDATable"); //$NON-NLS-1$
       }
     }
     catch ( PrinterException exc )
@@ -765,9 +776,11 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   /**
    * Prints the {@link TableModel}.
    * 
+   * @param jobName The print job name.
+   * 
    * @throws PrinterException If the something with the print dialog fails.
    */
-  private final void printTableModel () throws PrinterException
+  private final void printTableModel (String jobName) throws PrinterException
   {
     PrinterJob job = PrinterJob.getPrinterJob ();
 
@@ -776,8 +789,14 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     paper.setSize ( 8.27 * 72, 11.69 * 72 );
     paper.setImageableArea ( 0, 0, paper.getWidth (), paper.getHeight () );
     pageFormat.setPaper ( paper );
-    // pageFormat.setOrientation(this.printDialog.getPageFormat());
-    pageFormat.setOrientation ( PageFormat.PORTRAIT );
+    if ( this.gui.jGTIRadioButtonPortrait.isSelected () )
+    {
+      pageFormat.setOrientation ( PageFormat.PORTRAIT );
+    }
+    else
+    {
+      pageFormat.setOrientation ( PageFormat.LANDSCAPE );
+    }
     this.pageWidth = ( int ) pageFormat.getWidth ();
     this.pageHeight = ( int ) pageFormat.getHeight ();
 
@@ -785,15 +804,15 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     // job.setCopies(((Number)
     // this.printDialog.jSpinnerCopies.getValue()).intValue());
     //
-    // // Margin
-    // this.marginLeft = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginLeft.getValue()).intValue());
-    // this.marginRight = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginRight.getValue()).intValue());
-    // this.marginTop = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginTop.getValue()).intValue());
-    // this.marginBottom = (int) (2.8346456693 * ((Number)
-    // this.printDialog.jSpinnerMarginBottom.getValue()).intValue());
+    // Margin
+    this.marginLeft = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginLeft
+        .getValue () ).intValue () );
+    this.marginRight = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginRight
+        .getValue () ).intValue () );
+    this.marginTop = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginTop
+        .getValue () ).intValue () );
+    this.marginBottom = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginBottom
+        .getValue () ).intValue () );
 
     // Calculate the page count
     this.pageCount = getPageCount ();
@@ -801,6 +820,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     job.setPrintable ( this, pageFormat );
     job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
         .getSelectedItem () );
+    
+    job.setJobName ( jobName );
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
     job.print ();

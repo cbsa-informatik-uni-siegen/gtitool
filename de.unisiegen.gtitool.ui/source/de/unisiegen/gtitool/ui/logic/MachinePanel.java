@@ -48,7 +48,6 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphSelectionModel;
 
-import de.unisiegen.gtitool.core.entities.DefaultStack;
 import de.unisiegen.gtitool.core.entities.DefaultState;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultWord;
@@ -61,7 +60,6 @@ import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
-import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.Machine;
 import de.unisiegen.gtitool.core.machines.Machine.MachineType;
@@ -167,9 +165,21 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       SwingUtilities.invokeLater ( new Runnable ()
       {
 
+        @SuppressWarnings ( "synthetic-access" )
         public void run ()
         {
-          handleWordNextStep ();
+          if ( MachinePanel.this.machine.isNextSymbolAvailable () )
+          {
+            handleWordNextStep ();
+          }
+          else
+          {
+            MachinePanel.this.mainWindowForm.getLogic ().removeButtonState (
+                ButtonState.SELECTED_AUTO_STEP );
+            MachinePanel.this.mainWindowForm.getLogic ()
+                .updateWordNavigationStates ();
+            cancelAutoStepTimer ();
+          }
         }
       } );
     }
@@ -1717,6 +1727,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       cancelAutoStepTimer ();
     }
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
   }
 
 
@@ -1727,68 +1739,30 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     try
     {
-      if ( this.machine.isNextSymbolAvailable () )
+      this.machine.nextSymbol ();
+
+      // update stack
+      this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+          .getStack () );
+
+      // update button states
+      this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+
+      // update graph
+      performCellsChanged ();
+
+      try
       {
-        // clear highlight
-        for ( DefaultTransitionView current : this.model
-            .getTransitionViewList () )
-        {
-          Transition transition = current.getTransition ();
-          transition.setError ( false );
-          transition.setActive ( false );
-        }
-
-        this.machine.nextSymbol ();
-
-        this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
-            .getStack () );
-
-        // clear highlight
-        for ( DefaultStateView current : this.model.getStateViewList () )
-        {
-          State state = current.getState ();
-          state.setError ( false );
-          state.setActive ( false );
-        }
-
-        // highlight
-        for ( Transition current : this.machine.getActiveTransition () )
-        {
-          current.setActive ( true );
-        }
-
-        for ( State current : this.machine.getActiveState () )
-        {
-          current.setActive ( true );
-        }
-
-        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
-        performCellsChanged ();
-
-        try
-        {
-          this.gui.wordPanel.styledWordParserPanel
-              .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
-        }
-        catch ( WordResetedException exc )
-        {
-          this.gui.wordPanel.styledWordParserPanel
-              .setHighlightedParseableEntity ();
-        }
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
       }
-      else
+      catch ( WordResetedException exc )
       {
-        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
-        this.mainWindowForm.getLogic ().handleAutoStepStopped ();
+        this.gui.wordPanel.styledWordParserPanel
+            .setHighlightedParseableEntity ();
       }
     }
     catch ( WordFinishedException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( WordNotAcceptedException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -1802,90 +1776,27 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleWordPreviousStep ()
   {
+    this.machine.previousSymbol ();
+
+    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+        .getStack () );
+
+    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+    performCellsChanged ();
+
+    // after the last previous step the current symbol is not defined
     try
     {
-      if ( !this.machine.isReseted () )
-      {
-        // clear highlight
-        for ( DefaultTransitionView current : this.model
-            .getTransitionViewList () )
-        {
-          Transition transition = current.getTransition ();
-          transition.setError ( false );
-          transition.setActive ( false );
-        }
-
-        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
-
-        this.machine.previousSymbol ();
-
-        this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
-            .getStack () );
-
-        // clear highlight
-        for ( DefaultStateView current : this.model.getStateViewList () )
-        {
-          State state = current.getState ();
-          state.setError ( false );
-          state.setActive ( false );
-        }
-
-        // highlight
-        for ( Transition current : this.machine.getActiveTransition () )
-        {
-          current.setActive ( true );
-        }
-
-        for ( State current : this.machine.getActiveState () )
-        {
-          current.setActive ( true );
-        }
-
-        performCellsChanged ();
-
-        // after the last previous step the current symbol is not defined
-        try
-        {
-          this.gui.wordPanel.styledWordParserPanel
-              .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
-        }
-        catch ( WordResetedException exc )
-        {
-          this.gui.wordPanel.styledWordParserPanel
-              .setHighlightedParseableEntity ();
-        }
-        catch ( WordFinishedException exc )
-        {
-          this.gui.wordPanel.styledWordParserPanel
-              .setHighlightedParseableEntity ();
-        }
-      }
-      else
-      {
-        // clear highlight
-        for ( DefaultTransitionView currentTransitionView : this.model
-            .getTransitionViewList () )
-        {
-          Transition transition = currentTransitionView.getTransition ();
-          transition.setError ( false );
-          transition.setActive ( false );
-
-          for ( Symbol currentSymbol : transition )
-          {
-            currentSymbol.setError ( false );
-            currentSymbol.setActive ( false );
-          }
-        }
-
-        this.mainWindowForm.getLogic ().updateWordNavigationStates ();
-        performCellsChanged ();
-      }
+      this.gui.wordPanel.styledWordParserPanel
+          .setHighlightedParseableEntity ( this.machine.getReadedSymbols () );
     }
     catch ( WordResetedException exc )
     {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
+      this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
+    }
+    catch ( WordFinishedException exc )
+    {
+      this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();
     }
   }
 
@@ -1940,8 +1851,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     clearHighlight ();
 
-    this.gui.wordPanel.styledStackParserPanel.setText ( new DefaultStack () );
+    this.machine.stop ();
 
+    this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
+        .getStack () );
+
+    this.mainWindowForm.getLogic ().removeButtonState (
+        ButtonState.SELECTED_AUTO_STEP );
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 

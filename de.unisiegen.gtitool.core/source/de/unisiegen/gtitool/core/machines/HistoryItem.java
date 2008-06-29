@@ -44,21 +44,29 @@ public final class HistoryItem
 
 
   /**
+   * Flag that indicates if a word next step was performed.
+   */
+  private boolean nextWordStep = false;
+
+
+  /**
    * Allocates a new {@link HistoryItem}.
    * 
    * @param stateSet The {@link State} set.
    * @param transitionSet The {@link Transition} set.
    * @param symbolList The {@link Symbol} list.
    * @param oldStack The {@link Stack}.
+   * @param nextWordStep Flag that indicates if a word next step was performed.
    */
   public HistoryItem ( TreeSet < State > stateSet,
       TreeSet < Transition > transitionSet, ArrayList < Symbol > symbolList,
-      Stack oldStack )
+      Stack oldStack, boolean nextWordStep )
   {
     this.transitionSet = transitionSet;
     this.stateSet = stateSet;
     this.symbolList = symbolList;
     this.oldStack = oldStack;
+    this.nextWordStep = nextWordStep;
   }
 
 
@@ -107,6 +115,30 @@ public final class HistoryItem
   public final TreeSet < Transition > getTransitionSet ()
   {
     return this.transitionSet;
+  }
+
+
+  /**
+   * Returns the nextWordStep.
+   * 
+   * @return The nextWordStep.
+   * @see #nextWordStep
+   */
+  public final boolean isNextWordStep ()
+  {
+    return this.nextWordStep;
+  }
+
+
+  /**
+   * Sets the nextWordStep.
+   * 
+   * @param nextWordStep The nextWordStep to set.
+   * @see #nextWordStep
+   */
+  public final void setNextWordStep ( boolean nextWordStep )
+  {
+    this.nextWordStep = nextWordStep;
   }
 
 

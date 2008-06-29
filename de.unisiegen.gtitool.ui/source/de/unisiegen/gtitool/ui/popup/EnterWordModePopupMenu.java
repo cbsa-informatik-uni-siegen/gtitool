@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.logic.MachinePanel;
 import de.unisiegen.gtitool.ui.logic.MainWindow;
 import de.unisiegen.gtitool.ui.logic.MachinePanel.MachineMode;
-import de.unisiegen.gtitool.ui.logic.MainWindow.ButtonState;
 import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
 
 
@@ -88,7 +87,7 @@ public final class EnterWordModePopupMenu extends JPopupMenu
    */
   private final void populateMenues ()
   {
-
+    // start
     this.jMenuItemStart = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStart" ) ); //$NON-NLS-1$
     this.jMenuItemStart.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -100,18 +99,15 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        if ( EnterWordModePopupMenu.this.machinePanel.handleWordStart () )
-        {
-          // TODOCF check this
-          EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
-              .addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
-        }
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+            .handleWordStart ();
       }
     } );
     this.jMenuItemStart.setEnabled ( !this.machinePanel.getMachineMode ()
         .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemStart );
 
+    // previous step
     this.jMenuItemPreviousStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModePreviousStep" ) ); //$NON-NLS-1$
     this.jMenuItemPreviousStep
@@ -122,16 +118,19 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemPreviousStep.addActionListener ( new ActionListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        EnterWordModePopupMenu.this.machinePanel.handleWordPreviousStep ();
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+            .handleWordPreviousStep ();
       }
     } );
     this.jMenuItemPreviousStep.setEnabled ( this.machinePanel.getMachineMode ()
         .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemPreviousStep );
 
+    // next step
     this.jMenuItemNextStep = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeNextStep" ) ); //$NON-NLS-1$
     this.jMenuItemNextStep
@@ -142,16 +141,19 @@ public final class EnterWordModePopupMenu extends JPopupMenu
     this.jMenuItemNextStep.addActionListener ( new ActionListener ()
     {
 
+      @SuppressWarnings ( "synthetic-access" )
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        EnterWordModePopupMenu.this.machinePanel.handleWordNextStep ();
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+            .handleWordNextStep ();
       }
     } );
     this.jMenuItemNextStep.setEnabled ( this.machinePanel.getMachineMode ()
         .equals ( MachineMode.WORD_NAVIGATION ) );
     add ( this.jMenuItemNextStep );
 
+    // stop
     this.jMenuItemStop = new JMenuItem ( Messages
         .getString ( "MachinePanel.WordModeStop" ) ); //$NON-NLS-1$
     this.jMenuItemStop.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -163,9 +165,8 @@ public final class EnterWordModePopupMenu extends JPopupMenu
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        EnterWordModePopupMenu.this.mainWindowForm.getLogic ().addButtonState (
-            ButtonState.ENABLED_NAVIGATION_START );
-        EnterWordModePopupMenu.this.machinePanel.handleWordStop ();
+        EnterWordModePopupMenu.this.mainWindowForm.getLogic ()
+            .handleWordStop ();
       }
     } );
     this.jMenuItemStop.setEnabled ( this.machinePanel.getMachineMode ().equals (

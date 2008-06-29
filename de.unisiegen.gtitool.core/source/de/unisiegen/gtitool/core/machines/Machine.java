@@ -17,7 +17,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
-import de.unisiegen.gtitool.core.exceptions.word.WordNotAcceptedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.machines.dfa.DFA;
 import de.unisiegen.gtitool.core.machines.enfa.ENFA;
@@ -284,14 +283,6 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Returns the {@link HistoryItem}.
-   * 
-   * @return The {@link HistoryItem}.
-   */
-  public ArrayList < HistoryItem > getHistory ();
-
-
-  /**
    * Returns the {@link MachineType}.
    * 
    * @return The {@link MachineType}.
@@ -401,14 +392,6 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Returns true if the {@link Word} is finished, otherwise false.
-   * 
-   * @return True if this {@link Word} is finished, otherwise false.
-   */
-  public boolean isFinished ();
-
-
-  /**
    * Returns true if the next {@link Symbol} is available, otherwise false.
    * 
    * @return True if the next {@link Symbol} is available, otherwise false.
@@ -417,11 +400,11 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Returns true if this {@link Word} is reseted, otherwise false.
+   * Returns true if the previous {@link Symbol} is available, otherwise false.
    * 
-   * @return True if this {@link Word} is reseted, otherwise false.
+   * @return True if the previous {@link Symbol} is available, otherwise false.
    */
-  public boolean isReseted ();
+  public boolean isPreviousSymbolAvailable ();
 
 
   /**
@@ -445,24 +428,15 @@ public interface Machine extends InputEntity, Serializable, TableModel,
   /**
    * Performs the next step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
-   * 
-   * @throws WordFinishedException If something with the {@link Word} is not
-   *           correct.
-   * @throws WordNotAcceptedException If something with the {@link Word} is not
-   *           correct.
    */
-  public void nextSymbol () throws WordFinishedException,
-      WordNotAcceptedException;
+  public void nextSymbol ();
 
 
   /**
    * Removes the last step and returns the list of {@link Transition}s, which
    * contains the {@link Symbol}.
-   * 
-   * @throws WordResetedException If something with the {@link Word} is not
-   *           correct.
    */
-  public void previousSymbol () throws WordResetedException;
+  public void previousSymbol ();
 
 
   /**
@@ -559,6 +533,12 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * @param word The {@link Word} to start with.
    */
   public void start ( Word word );
+
+
+  /**
+   * Stops the {@link Machine}.
+   */
+  public void stop ();
 
 
   /**

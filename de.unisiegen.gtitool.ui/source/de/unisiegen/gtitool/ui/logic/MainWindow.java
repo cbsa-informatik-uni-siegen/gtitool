@@ -196,6 +196,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_NAVIGATION_START,
 
     /**
+     * The navigation auto step enabled button state.
+     */
+    ENABLED_NAVIGATION_AUTO_STEP,
+
+    /**
      * The navigation steps next enabled button state.
      */
     ENABLED_NAVIGATION_STEPS_NEXT,
@@ -644,6 +649,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_NAVIGATION_DEACTIVE ) ) )
     {
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
@@ -656,11 +662,30 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( true );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_START ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_NAVIGATION_START ) ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
@@ -678,6 +703,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
@@ -696,6 +722,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS ) ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -713,6 +740,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
             .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS ) ) )
     {
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
@@ -1139,15 +1167,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
-  }
-
-
-  /**
-   * Handles the auto step stopped by exception event.
-   */
-  public final void handleAutoStepStopped ()
-  {
-    removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
   }
 
 
@@ -3171,8 +3190,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
           addButtonState ( ButtonState.SELECTED_ENTER_WORD );
 
-          // TODOCF check this
-
           updateWordNavigationStates ();
         }
         // word enter mode
@@ -3718,7 +3735,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
     MachinePanel machinePanel = ( MachinePanel ) panel;
-
     machinePanel.handleWordAutoStep ( event );
   }
 
@@ -3772,8 +3788,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     if ( machinePanel.handleWordStart () )
     {
-      // TODOCF check this
-      addButtonState ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       addButtonState ( ButtonState.ENABLED_HISTORY );
     }
   }
@@ -4477,6 +4491,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" );//$NON-NLS-1$
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_START ) )
     {
       throw new IllegalArgumentException (
@@ -4655,13 +4674,20 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
     }
 
+    if ( this.gui.getJGTIToolBarToggleButtonAutoStep ().isSelected () )
+    {
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
+      return;
+    }
+
     MachinePanel machinePanel = ( MachinePanel ) panel;
     boolean nextAvailable = machinePanel.getMachine ().isNextSymbolAvailable ();
-    boolean previousAvailable = !machinePanel.getMachine ().isReseted ();
+    boolean previousAvailable = machinePanel.getMachine ()
+        .isPreviousSymbolAvailable ();
 
     if ( !nextAvailable && !previousAvailable )
     {
-      throw new RuntimeException ( "unsupported state" ); //$NON-NLS-1$
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     }
     else if ( !nextAvailable && previousAvailable )
     {

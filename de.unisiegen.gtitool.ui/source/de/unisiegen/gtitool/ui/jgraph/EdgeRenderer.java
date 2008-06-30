@@ -42,6 +42,7 @@ import org.jgraph.util.Bezier;
 import org.jgraph.util.Spline2D;
 
 import de.unisiegen.gtitool.core.entities.Transition;
+import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.parser.style.PrettyString;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.core.preferences.listener.ColorChangedAdapter;
@@ -766,6 +767,25 @@ public class EdgeRenderer extends org.jgraph.graph.EdgeRenderer implements CellV
       boolean mainLabel) {
     PrettyString prettyString = transition.toPrettyString ();
     String string = prettyString.toString ();
+    
+    // do not print the labels if more than one transition
+    if ( transition.getStateBegin () == transition.getStateEnd () )
+    {
+      int count = 0;
+      for ( Transition current : transition.getStateBegin ()
+          .getTransitionBegin () )
+      {
+        if ( current.getStateEnd () == transition.getStateEnd () )
+        {
+          count++ ;
+        }
+      }
+      if ( count > 1 )
+      {
+        prettyString = new PrettyString ();
+        string = "";
+      }
+    }
     
     if (p != null && transition != null && string.length() > 0 && metrics != null) {
       int sw = metrics.stringWidth(string);

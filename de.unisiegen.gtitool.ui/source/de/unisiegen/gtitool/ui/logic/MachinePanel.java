@@ -1853,7 +1853,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     this.mainWindowForm.getLogic ().removeButtonState (
         ButtonState.SELECTED_AUTO_STEP );
-    this.mainWindowForm.getLogic ().updateWordNavigationStates ();
+    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
     performCellsChanged ();
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();

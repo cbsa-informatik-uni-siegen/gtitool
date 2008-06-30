@@ -196,6 +196,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     ENABLED_NAVIGATION_START,
 
     /**
+     * The navigation stop enabled button state.
+     */
+    ENABLED_NAVIGATION_STOP,
+
+    /**
      * The navigation auto step enabled button state.
      */
     ENABLED_NAVIGATION_AUTO_STEP,
@@ -651,6 +656,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -669,6 +675,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -687,6 +694,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -698,6 +706,25 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
       this.gui.getJGTIToolBarButtonStop ().setEnabled ( false );
     }
+    else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STOP ) )
+        && ( !this.buttonStateList
+            .contains ( ButtonState.ENABLED_NAVIGATION_STOP ) ) )
+    {
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STOP );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
+      this.buttonStateList
+          .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT_PREVIOUS );
+      this.gui.getJGTIToolBarButtonStart ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonPrevious ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonNextStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarToggleButtonAutoStep ().setEnabled ( false );
+      this.gui.getJGTIToolBarButtonStop ().setEnabled ( true );
+    }
     else if ( ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) )
         && ( !this.buttonStateList
             .contains ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) ) )
@@ -705,6 +732,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -724,6 +752,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList.add ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
       this.buttonStateList
@@ -742,6 +771,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_DEACTIVE );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_AUTO_STEP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_START );
+      this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STOP );
       this.buttonStateList.remove ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT );
       this.buttonStateList
           .remove ( ButtonState.ENABLED_NAVIGATION_STEPS_PREVIOUS );
@@ -4511,6 +4541,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       throw new IllegalArgumentException (
           "remove navigation state not supported, use add instead" );//$NON-NLS-1$
     }
+    else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STOP ) )
+    {
+      throw new IllegalArgumentException (
+          "remove navigation state not supported, use add instead" );//$NON-NLS-1$
+    }
     else if ( buttonState.equals ( ButtonState.ENABLED_NAVIGATION_STEPS_NEXT ) )
     {
       throw new IllegalArgumentException (
@@ -4697,7 +4732,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
 
     if ( !nextAvailable && !previousAvailable )
     {
-      addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+      addButtonState ( ButtonState.ENABLED_NAVIGATION_STOP );
     }
     else if ( !nextAvailable && previousAvailable )
     {

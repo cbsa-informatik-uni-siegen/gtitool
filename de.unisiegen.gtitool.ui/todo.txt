@@ -1,10 +1,6 @@
 *** TODO ***
 
-CF		- Sonderfall betrachten, wenn kein vorheriger und kein nächster Schritt
-		  möglich ist
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
-CF		- Orderstruktur der icons überarbeiten (alleiniger Zugriff auf alle GUI
-		  Komponenten nötig)
 
 
 
@@ -20,10 +16,11 @@ CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 		  Potenzautomaten sehr leicht lahmlegen
 CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
+CF		- Orderstruktur der icons überarbeiten (alleiniger Zugriff auf alle GUI
+		  Komponenten nötig)
+CF		- Wörter ausgeben, die erkannt werden
+CF		- LaTeX Export
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
-
-		- Wörter ausgeben, die erkannt werden
-		- LaTeX Export

@@ -169,10 +169,9 @@ public abstract class AbstractConvertGrammar implements Converter
    * 
    * @see Converter#convert(EntityType,EntityType,boolean)
    */
-  public final void convert ( @SuppressWarnings ( "unused" )
-  EntityType fromEntityType, EntityType toEntityType,
-      @SuppressWarnings ( "unused" )
-      boolean complete )
+  public final void convert (
+      @SuppressWarnings ( "unused" ) EntityType fromEntityType,
+      EntityType toEntityType, @SuppressWarnings ( "unused" ) boolean complete )
   {
     if ( ! ( toEntityType instanceof MachineType ) )
     {
@@ -259,10 +258,16 @@ public abstract class AbstractConvertGrammar implements Converter
   {
     try
     {
-      Transition transition;
-      transition = new DefaultTransition ( this.alphabet,
+      ArrayList < Symbol > symbolList = new ArrayList < Symbol > ();
+      symbolList.addAll ( symbols );
+      if ( symbolList.size () == 0 )
+      {
+        symbolList.add ( new DefaultSymbol () );
+      }
+
+      Transition transition = new DefaultTransition ( this.alphabet,
           this.pushDownAlphabet, read, write, source.getState (), target
-              .getState (), symbols );
+              .getState (), symbolList );
       getModel ().createTransitionView ( transition, source, target, false,
           false, true );
     }

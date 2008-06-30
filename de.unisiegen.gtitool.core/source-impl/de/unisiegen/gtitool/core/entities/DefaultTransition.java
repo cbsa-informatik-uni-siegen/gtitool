@@ -834,7 +834,8 @@ public final class DefaultTransition implements Transition
       return TransitionType.SYMBOL;
     }
 
-    throw new IllegalArgumentException ( "unknown transition type" ); //$NON-NLS-1$
+    throw new IllegalArgumentException ( "unknown transition type: " //$NON-NLS-1$
+        + this.symbolSet );
   }
 
 

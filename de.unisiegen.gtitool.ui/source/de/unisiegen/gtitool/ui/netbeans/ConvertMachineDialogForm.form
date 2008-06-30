@@ -253,7 +253,7 @@
           <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PrintDialog.Print" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="ConvertMachineDialog.OkToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+          <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="PrintDialog.PrintToolTip" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
         </Property>
       </Properties>
       <Events>

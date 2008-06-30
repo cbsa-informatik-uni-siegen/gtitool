@@ -47,6 +47,29 @@ public final class JGTIGraph extends JGraph implements Printable
   int pagesPerRow = 0;
   
   /**
+   * The bottom margin.
+   */
+  private int marginBottom;
+
+
+  /**
+   * The left margin.
+   */
+  private int marginLeft  =50;
+
+
+  /**
+   * The right margin.
+   */
+  private int marginRight;
+
+
+  /**
+   * The top margin.
+   */
+  private int marginTop = 50;
+  
+  /**
    * Allocates a new {@link JGTIGraph}.
    * 
    * @param graphModel The {@link DefaultGraphModel}.
@@ -156,7 +179,8 @@ public final class JGTIGraph extends JGraph implements Printable
         
         x =  - (((pageIndex - row * this.pagesPerRow) ) * pageWidth );
         y = - (row * pageHeight);
-        graphics.translate (x,  y );
+        System.err.println ("translate: x:" + (x-this.marginLeft) + ", y: " +( y-this.marginTop));
+        graphics.translate (x + this.marginLeft,  y + this.marginTop );
         print = true;
       }
       

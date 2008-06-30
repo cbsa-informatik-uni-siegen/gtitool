@@ -112,13 +112,14 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIButtonYes = new de.unisiegen.gtitool.ui.swing.JGTIButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
+        setTitle(bundle.getString("PrintDialog.Print")); // NOI18N
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jGTIPanelOuter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jGTIPanelPrinter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/unisiegen/gtitool/ui/i18n/messages"); // NOI18N
         jGTILabelPrinter.setText(bundle.getString("PrintDialog.Printer")); // NOI18N
         jGTILabelPrinter.setPreferredSize(new java.awt.Dimension(100, 15));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -187,7 +188,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIRadioButtonConvertedMachineTable, gridBagConstraints);
 
-        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineTable);
+        buttonGroupMininizeMachine.add(jGTIRadioButtonMinimizeMachineTable);
         jGTIRadioButtonMinimizeMachineTable.setText(bundle.getString("PrintDialog.MinimizeMachineTable")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
@@ -196,7 +197,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIRadioButtonMinimizeMachineTable, gridBagConstraints);
 
-        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineMinimizedGraph);
+        buttonGroupMininizeMachine.add(jGTIRadioButtonMinimizeMachineMinimizedGraph);
         jGTIRadioButtonMinimizeMachineMinimizedGraph.setText(bundle.getString("PrintDialog.MinimizeMachineMinimizedGraph")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 2;
@@ -205,7 +206,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIRadioButtonMinimizeMachineMinimizedGraph, gridBagConstraints);
 
-        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineOriginalGraph);
+        buttonGroupMininizeMachine.add(jGTIRadioButtonMinimizeMachineOriginalGraph);
         jGTIRadioButtonMinimizeMachineOriginalGraph.setSelected(true);
         jGTIRadioButtonMinimizeMachineOriginalGraph.setText(bundle.getString("PrintDialog.MinimizeMachineOriginalGraph")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();

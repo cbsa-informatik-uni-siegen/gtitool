@@ -219,7 +219,7 @@ public class MinimizeMachineDialogForm extends JDialog implements GUIClass <Mini
         getContentPane().add(jGTIButtonOk, gridBagConstraints);
 
         jGTIButtonPrint.setText(bundle.getString("PrintDialog.Print")); // NOI18N
-        jGTIButtonPrint.setToolTipText(bundle.getString("ConvertMachineDialog.OkToolTip")); // NOI18N
+        jGTIButtonPrint.setToolTipText(bundle.getString("PrintDialog.PrintToolTip")); // NOI18N
         jGTIButtonPrint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jGTIButtonPrintActionPerformed(evt);

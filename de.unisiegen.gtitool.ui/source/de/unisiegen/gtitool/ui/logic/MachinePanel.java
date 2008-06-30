@@ -1288,7 +1288,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     }
 
     HistoryDialog historyDialog = new HistoryDialog ( this.mainWindowForm,
-        this.machine );
+        this.machine, this );
     historyDialog.show ();
   }
 

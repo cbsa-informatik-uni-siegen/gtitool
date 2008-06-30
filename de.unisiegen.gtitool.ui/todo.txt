@@ -2,6 +2,15 @@
 
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 
+BM		- Drucken: PrettyString verwenden (Header/Tabelle)
+BM		- Drucken: Dialog hat keinen Titel
+BM		- Drucken: Optik des Dialoges passt nicht zu den anderen Dialogen
+BM		- Drucken: Beim Drucken des Graphen wird der Job-Name nicht gesetzt
+BM		- Drucken: State History - ToolTip des Print Dialoges stimmt nicht
+BM		- Drucken: Convert - ToolTip des Print Dialoges stimmt nicht
+BM		- Drucken: Minimieren - ToolTip des Print Dialoges stimmt nicht
+BM		- Drucken: Convert - Kein Radio Button ausgewählt
+BM		- Drucken: State History - Job-Name enthält nicht den Namen der Datei
 
 
 *** FEATURE ***

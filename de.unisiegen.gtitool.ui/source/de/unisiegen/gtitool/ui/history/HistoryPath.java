@@ -201,7 +201,7 @@ public final class HistoryPath implements Comparable < HistoryPath >
         result.append ( this.transitionList.get ( i ).getStateBegin ()
             .getName () );
       }
-      result.append ( " -> " ); //$NON-NLS-1$
+      result.append ( " \u2192 " ); //$NON-NLS-1$
       result.append ( this.transitionList.get ( i ).getStateEnd ().getName () );
     }
 

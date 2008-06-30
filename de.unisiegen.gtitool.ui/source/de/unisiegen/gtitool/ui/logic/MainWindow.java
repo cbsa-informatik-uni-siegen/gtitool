@@ -3067,6 +3067,17 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       }
     }
 
+    // stop the auto step
+    removeButtonState ( ButtonState.SELECTED_AUTO_STEP );
+    for ( EditorPanel current : this.jGTIMainSplitPane )
+    {
+      if ( current instanceof MachinePanel )
+      {
+        MachinePanel machinePanel = ( MachinePanel ) current;
+        machinePanel.cancelAutoStepTimer ();
+      }
+    }
+
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
 
@@ -3730,12 +3741,11 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
   {
     EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
         .getSelectedEditorPanel ();
-    if ( ! ( panel instanceof MachinePanel ) )
+    if ( panel instanceof MachinePanel )
     {
-      throw new IllegalArgumentException ( "not a machine panel" ); //$NON-NLS-1$
+      MachinePanel machinePanel = ( MachinePanel ) panel;
+      machinePanel.handleWordAutoStep ( event );
     }
-    MachinePanel machinePanel = ( MachinePanel ) panel;
-    machinePanel.handleWordAutoStep ( event );
   }
 
 

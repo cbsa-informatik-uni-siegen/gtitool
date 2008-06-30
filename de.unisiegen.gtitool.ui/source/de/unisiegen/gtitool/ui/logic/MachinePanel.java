@@ -675,7 +675,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   /**
    * Cancels the auto step {@link Timer}.
    */
-  private final void cancelAutoStepTimer ()
+  public final void cancelAutoStepTimer ()
   {
     if ( this.autoStepTimer != null )
     {

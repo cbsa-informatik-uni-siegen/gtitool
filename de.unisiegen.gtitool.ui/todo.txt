@@ -1,7 +1,5 @@
 *** TODO ***
 
-CF		- Status Button Problem, wenn während der Auto Navigation der Tab gewechselt
-		  wird, beim nächsten ausführen werden die Button AutoStep und Stop aktiv.
 CF		- Sonderfall betrachten, wenn kein vorheriger und kein nächster Schritt
 		  möglich ist
 CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch

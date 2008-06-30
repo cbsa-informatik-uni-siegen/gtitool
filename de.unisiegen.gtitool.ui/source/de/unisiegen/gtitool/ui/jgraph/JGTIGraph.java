@@ -60,6 +60,58 @@ public final class JGTIGraph extends JGraph implements Printable
   private int marginRight = 50;
 
 
+  
+  /**
+   * Sets the marginBottom.
+   *
+   * @param marginBottom The marginBottom to set.
+   * @see #marginBottom
+   */
+  public void setMarginBottom ( int marginBottom )
+  {
+    this.marginBottom = marginBottom;
+  }
+
+
+  
+  /**
+   * Sets the marginRight.
+   *
+   * @param marginRight The marginRight to set.
+   * @see #marginRight
+   */
+  public void setMarginRight ( int marginRight )
+  {
+    this.marginRight = marginRight;
+  }
+
+
+  
+  /**
+   * Sets the marginLeft.
+   *
+   * @param marginLeft The marginLeft to set.
+   * @see #marginLeft
+   */
+  public void setMarginLeft ( int marginLeft )
+  {
+    this.marginLeft = marginLeft;
+  }
+
+
+  
+  /**
+   * Sets the marginTop.
+   *
+   * @param marginTop The marginTop to set.
+   * @see #marginTop
+   */
+  public void setMarginTop ( int marginTop )
+  {
+    this.marginTop = marginTop;
+  }
+
+
   /**
    * The left margin.
    */
@@ -161,6 +213,11 @@ public final class JGTIGraph extends JGraph implements Printable
     boolean print = false;
     int pageWidth = ( int ) pageFormat.getWidth ();
     int pageHeight = ( int ) pageFormat.getHeight ();
+    
+    int width = pageWidth - this.marginRight;
+    int height = pageHeight - this.marginBottom ;
+    
+//    graphics.setClip ( 0, 0, width, height );
 
     this.graphWidth = 0;
     this.graphHeight = 0;
@@ -202,6 +259,7 @@ public final class JGTIGraph extends JGraph implements Printable
       }
 
     }
+    
     printAll ( graphics );
     if ( print )
       return Printable.PAGE_EXISTS;

@@ -625,6 +625,17 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   public void handlePrint ()
   {
     this.gui.setVisible ( false );
+    
+    // Margin
+    this.marginLeft = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginLeft
+        .getValue () ).intValue () );
+    this.marginRight = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginRight
+        .getValue () ).intValue () );
+    this.marginTop = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginTop
+        .getValue () ).intValue () );
+    this.marginBottom = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginBottom
+        .getValue () ).intValue () );
+
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
     if ( this.machinePanel != null )
@@ -872,6 +883,11 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   private void printJGraph ( JGTIGraph graph, String jobName )
   {
     PrinterJob job = PrinterJob.getPrinterJob ();
+    
+    graph.setMarginTop ( this.marginTop );
+    graph.setMarginBottom ( this.marginBottom );
+    graph.setMarginLeft ( this.marginLeft );
+    graph.setMarginRight ( this.marginRight );
     try
     {
 
@@ -1032,15 +1048,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     // job.setCopies(((Number)
     // this.printDialog.jSpinnerCopies.getValue()).intValue());
     //
-    // Margin
-    this.marginLeft = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginLeft
-        .getValue () ).intValue () );
-    this.marginRight = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginRight
-        .getValue () ).intValue () );
-    this.marginTop = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginTop
-        .getValue () ).intValue () );
-    this.marginBottom = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginBottom
-        .getValue () ).intValue () );
 
     // Calculate the page count
     this.pageCount = getPageCount ();

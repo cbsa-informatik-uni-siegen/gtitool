@@ -2044,8 +2044,26 @@ public abstract class AbstractMachine implements Machine
 
       for ( State currentState : oldActiveStateSet )
       {
-        for ( Transition currentTransition : currentState.getTransitionBegin () )
+        transitionLoop : for ( Transition currentTransition : currentState
+            .getTransitionBegin () )
         {
+          Word readWord = currentTransition.getPushDownWordRead ();
+          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+              .size () );
+
+          // the read word must match
+          if ( readWord.size () != stackSymbols.size () )
+          {
+            continue transitionLoop;
+          }
+          for ( int i = 0 ; i < readWord.size () ; i++ )
+          {
+            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+            {
+              continue transitionLoop;
+            }
+          }
+
           if ( currentTransition.contains ( symbol ) )
           {
             currentTransition.setActive ( true );
@@ -2061,6 +2079,10 @@ public abstract class AbstractMachine implements Machine
                 break;
               }
             }
+
+            // stack
+            this.stack.pop ( readWord.size () );
+            this.stack.push ( currentTransition.getPushDownWordWrite () );
           }
         }
       }

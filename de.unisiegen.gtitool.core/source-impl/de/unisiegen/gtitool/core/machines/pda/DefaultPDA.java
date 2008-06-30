@@ -31,7 +31,6 @@ public final class DefaultPDA extends AbstractMachine implements PDA
       boolean usePushDownAlphabet )
   {
     super ( alphabet, pushDownAlphabet, usePushDownAlphabet,
-        ValidationElement.ALL_SYMBOLS, ValidationElement.EPSILON_TRANSITION,
         ValidationElement.FINAL_STATE,
         ValidationElement.MORE_THAN_ONE_START_STATE,
         ValidationElement.NO_START_STATE, ValidationElement.STATE_NAME,

@@ -6,7 +6,6 @@ CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
 CF		- Orderstruktur der icons überarbeiten (alleiniger Zugriff auf alle GUI
 		  Komponenten nötig)
 
-BM		- Drucken: HistoryPathTable, Minimieren, ConvertTo
 
 
 *** FEATURE ***

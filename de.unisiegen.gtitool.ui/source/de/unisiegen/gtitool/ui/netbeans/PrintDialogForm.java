@@ -44,6 +44,15 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
       super ( parent, true );
       this.logic = logic;
       initComponents ();
+      this.jGTIRadioButtonMachineGraph.setVisible(false);
+      this.jGTIRadioButtonMachinePDATable.setVisible(false);
+      this.jGTIRadioButtonMachineTable.setVisible(false);
+      this.jGTIRadioButtonConvertMachineConvertedGraph.setVisible(false);
+      this.jGTIRadioButtonConvertMachineOriginalGraph.setVisible(false);
+      this.jGTIRadioButtonConvertedMachineTable.setVisible(false); 
+      this.jGTIRadioButtonMinimizeMachineMinimizedGraph.setVisible(false);
+      this.jGTIRadioButtonMinimizeMachineOriginalGraph.setVisible(false);
+      this.jGTIRadioButtonMinimizeMachineTable.setVisible(false);
     }
     
     /**
@@ -68,6 +77,8 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
 
         buttonGroupMachinePanel = new javax.swing.ButtonGroup();
         buttonGroupPageFormat = new javax.swing.ButtonGroup();
+        buttonGroupConvertMachine = new javax.swing.ButtonGroup();
+        buttonGroupMininizeMachine = new javax.swing.ButtonGroup();
         jGTIPanelOuter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelPrinter = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTILabelPrinter = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -75,6 +86,12 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIRadioButtonMachineGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMachinePDATable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonConvertMachineOriginalGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonConvertMachineConvertedGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonConvertedMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonMinimizeMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonMinimizeMachineMinimizedGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIRadioButtonMinimizeMachineOriginalGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIPanelPageSetup = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jPanelFormat = new javax.swing.JPanel();
         jGTILabelPortraitIcon = new de.unisiegen.gtitool.ui.swing.JGTILabel();
@@ -141,6 +158,62 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIRadioButtonMachinePDATable, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonConvertMachineOriginalGraph);
+        jGTIRadioButtonConvertMachineOriginalGraph.setSelected(true);
+        jGTIRadioButtonConvertMachineOriginalGraph.setText(bundle.getString("PrintDialog.ConvertMachineOriginalGraph")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonConvertMachineOriginalGraph, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonConvertMachineConvertedGraph);
+        jGTIRadioButtonConvertMachineConvertedGraph.setText(bundle.getString("PrintDialog.ConvertMachineConvertedGraph")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonConvertMachineConvertedGraph, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonConvertedMachineTable);
+        jGTIRadioButtonConvertedMachineTable.setText(bundle.getString("PrintDialog.ConvertMachineTable")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonConvertedMachineTable, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineTable);
+        jGTIRadioButtonMinimizeMachineTable.setText(bundle.getString("PrintDialog.MinimizeMachineTable")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMinimizeMachineTable, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineMinimizedGraph);
+        jGTIRadioButtonMinimizeMachineMinimizedGraph.setText(bundle.getString("PrintDialog.MinimizeMachineMinimizedGraph")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMinimizeMachineMinimizedGraph, gridBagConstraints);
+
+        buttonGroupConvertMachine.add(jGTIRadioButtonMinimizeMachineOriginalGraph);
+        jGTIRadioButtonMinimizeMachineOriginalGraph.setSelected(true);
+        jGTIRadioButtonMinimizeMachineOriginalGraph.setText(bundle.getString("PrintDialog.MinimizeMachineOriginalGraph")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jGTIPanelPrinter.add(jGTIRadioButtonMinimizeMachineOriginalGraph, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
@@ -329,7 +402,9 @@ this.logic.handlePrint();
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.ButtonGroup buttonGroupConvertMachine;
     public javax.swing.ButtonGroup buttonGroupMachinePanel;
+    public javax.swing.ButtonGroup buttonGroupMininizeMachine;
     public javax.swing.ButtonGroup buttonGroupPageFormat;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonYes;
@@ -341,9 +416,15 @@ this.logic.handlePrint();
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelOuter;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPageSetup;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrinter;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineConvertedGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineOriginalGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertedMachineTable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachinePDATable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMachineTable;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMinimizeMachineMinimizedGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMinimizeMachineOriginalGraph;
+    public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonMinimizeMachineTable;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonPortrait;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioLandscape;
     public javax.swing.JLabel jLabelMarginBottom;

@@ -115,14 +115,14 @@ public final class ConvertMachineDialog implements
   public enum ConvertMachineType
   {
     /**
-     * The {@link NFA} to {@link DFA} conversion type.
+     * The {@link ENFA} to {@link DFA} conversion type.
      */
-    NFA_TO_DFA,
+    ENFA_TO_DFA,
 
     /**
-     * The {@link NFA} to {@link DFA} complete conversion type.
+     * The {@link ENFA} to {@link DFA} complete conversion type.
      */
-    NFA_TO_DFA_COMPLETE,
+    ENFA_TO_DFA_COMPLETE,
 
     /**
      * The {@link ENFA} to {@link NFA} conversion type.
@@ -135,14 +135,14 @@ public final class ConvertMachineDialog implements
     ENFA_TO_NFA_COMPLETE,
 
     /**
-     * The {@link ENFA} to {@link DFA} conversion type.
+     * The {@link NFA} to {@link DFA} conversion type.
      */
-    ENFA_TO_DFA,
+    NFA_TO_DFA,
 
     /**
-     * The {@link ENFA} to {@link DFA} complete conversion type.
+     * The {@link NFA} to {@link DFA} complete conversion type.
      */
-    ENFA_TO_DFA_COMPLETE;
+    NFA_TO_DFA_COMPLETE;
   }
 
 
@@ -224,34 +224,9 @@ public final class ConvertMachineDialog implements
   private enum Step
   {
     /**
-     * The activate start {@link State} step.
+     * The activate new closure {@link State}s step.
      */
-    ACTIVATE_START_STATE,
-
-    /**
-     * The activate start closure {@link State} step.
-     */
-    ACTIVATE_START_CLOSURE_STATE,
-
-    /**
-     * The add start {@link State} step.
-     */
-    ADD_START_STATE,
-
-    /**
-     * The activate old {@link State} step.
-     */
-    ACTIVATE_OLD_STATE,
-
-    /**
-     * The activate old closure {@link State} step.
-     */
-    ACTIVATE_OLD_CLOSURE_STATE,
-
-    /**
-     * The activate {@link Symbol}s step.
-     */
-    ACTIVATE_SYMBOLS,
+    ACTIVATE_NEW_CLOSURE_STATES,
 
     /**
      * The activate new {@link State}s step.
@@ -259,9 +234,34 @@ public final class ConvertMachineDialog implements
     ACTIVATE_NEW_STATES,
 
     /**
-     * The activate new closure {@link State}s step.
+     * The activate old closure {@link State} step.
      */
-    ACTIVATE_NEW_CLOSURE_STATES,
+    ACTIVATE_OLD_CLOSURE_STATE,
+
+    /**
+     * The activate old {@link State} step.
+     */
+    ACTIVATE_OLD_STATE,
+
+    /**
+     * The activate start closure {@link State} step.
+     */
+    ACTIVATE_START_CLOSURE_STATE,
+
+    /**
+     * The activate start {@link State} step.
+     */
+    ACTIVATE_START_STATE,
+
+    /**
+     * The activate {@link Symbol}s step.
+     */
+    ACTIVATE_SYMBOLS,
+
+    /**
+     * The add start {@link State} step.
+     */
+    ADD_START_STATE,
 
     /**
      * The add {@link State} and {@link Transition} step.
@@ -338,6 +338,24 @@ public final class ConvertMachineDialog implements
   {
 
     /**
+     * The current active {@link State}.
+     */
+    private State activeState;
+
+
+    /**
+     * The active {@link State}s of the converted {@link JGTIGraph}.
+     */
+    private ArrayList < State > activeStatesConverted;
+
+
+    /**
+     * The active {@link State}s of the original {@link JGTIGraph}.
+     */
+    private ArrayList < State > activeStatesOriginal;
+
+
+    /**
      * The active {@link Step}.
      */
     private Step activeStep;
@@ -350,33 +368,9 @@ public final class ConvertMachineDialog implements
 
 
     /**
-     * The current active {@link State}.
+     * The active {@link Symbol}s of the converted {@link JGTIGraph}.
      */
-    private State activeState;
-
-
-    /**
-     * The active {@link State}s of the original {@link JGTIGraph}.
-     */
-    private ArrayList < State > activeStatesOriginal;
-
-
-    /**
-     * The active {@link State}s of the converted {@link JGTIGraph}.
-     */
-    private ArrayList < State > activeStatesConverted;
-
-
-    /**
-     * The active {@link Transition}s of the original {@link JGTIGraph}.
-     */
-    private ArrayList < Transition > activeTransitionsOriginal;
-
-
-    /**
-     * The active {@link Transition}s of the converted {@link JGTIGraph}.
-     */
-    private ArrayList < Transition > activeTransitionsConverted;
+    private ArrayList < Symbol > activeSymbolsConverted;
 
 
     /**
@@ -386,9 +380,15 @@ public final class ConvertMachineDialog implements
 
 
     /**
-     * The active {@link Symbol}s of the converted {@link JGTIGraph}.
+     * The active {@link Transition}s of the converted {@link JGTIGraph}.
      */
-    private ArrayList < Symbol > activeSymbolsConverted;
+    private ArrayList < Transition > activeTransitionsConverted;
+
+
+    /**
+     * The active {@link Transition}s of the original {@link JGTIGraph}.
+     */
+    private ArrayList < Transition > activeTransitionsOriginal;
 
 
     /**
@@ -642,112 +642,16 @@ public final class ConvertMachineDialog implements
 
 
   /**
-   * The {@link Logger} for this class.
-   */
-  private static final Logger logger = Logger
-      .getLogger ( ConvertMachineDialog.class );
-
-
-  /**
    * The initial position.
    */
   private static final int INITIAL_POSITION = 200;
 
 
   /**
-   * The {@link ConvertMachineDialogForm}.
+   * The {@link Logger} for this class.
    */
-  private ConvertMachineDialogForm gui;
-
-
-  /**
-   * The parent {@link JFrame}.
-   */
-  private JFrame parent;
-
-
-  /**
-   * The original {@link JGTIGraph} containing the diagramm.
-   */
-  private JGTIGraph jGTIGraphOriginal;
-
-
-  /**
-   * The converted {@link JGTIGraph} containing the diagramm.
-   */
-  private JGTIGraph jGTIGraphConverted;
-
-
-  /**
-   * The {@link MachinePanel}.
-   */
-  private MachinePanel machinePanel;
-
-
-  /**
-   * The {@link ConvertMachineType}.
-   */
-  private ConvertMachineType convertMachineType;
-
-
-  /**
-   * The original {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel modelOriginal;
-
-
-  /**
-   * The converted {@link DefaultMachineModel}.
-   */
-  private DefaultMachineModel modelConverted;
-
-
-  /**
-   * The original {@link Machine}.
-   */
-  private Machine machineOriginal;
-
-
-  /**
-   * The converted {@link Machine}.
-   */
-  private Machine machineConverted;
-
-
-  /**
-   * The current {@link Symbol}.
-   */
-  private Symbol currentActiveSymbol;
-
-
-  /**
-   * The current {@link State}.
-   */
-  private State currentActiveState;
-
-
-  /**
-   * The current {@link Step}.
-   */
-  private Step step = null;
-
-
-  /**
-   * Flag that indicates if the end is reached.
-   */
-  private boolean endReached = false;
-
-
-  /**
-   * The {@link StepItem} list.
-   */
-  private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
-
-
-  /**
-   * The {@link Position} map.
-   */
-  private HashMap < String, Position > positionMap;
+  private static final Logger logger = Logger
+      .getLogger ( ConvertMachineDialog.class );
 
 
   /**
@@ -757,15 +661,117 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * The {@link ConvertMachineTableModel}.
+   */
+  private ConvertMachineTableModel convertMachineTableModel;
+
+
+  /**
+   * The {@link ConvertMachineType}.
+   */
+  private ConvertMachineType convertMachineType;
+
+
+  /**
+   * The current {@link State}.
+   */
+  private State currentActiveState;
+
+
+  /**
+   * The current {@link Symbol}.
+   */
+  private Symbol currentActiveSymbol;
+
+
+  /**
    * The empty set {@link State}.
    */
   private State emptySetState = null;
 
 
   /**
-   * The {@link ConvertMachineTableModel}.
+   * Flag that indicates if the end is reached.
    */
-  private ConvertMachineTableModel convertMachineTableModel;
+  private boolean endReached = false;
+
+
+  /**
+   * The {@link ConvertMachineDialogForm}.
+   */
+  private ConvertMachineDialogForm gui;
+
+
+  /**
+   * The converted {@link JGTIGraph} containing the diagramm.
+   */
+  private JGTIGraph jGTIGraphConverted;
+
+
+  /**
+   * The original {@link JGTIGraph} containing the diagramm.
+   */
+  private JGTIGraph jGTIGraphOriginal;
+
+
+  /**
+   * The converted {@link Machine}.
+   */
+  private Machine machineConverted;
+
+
+  /**
+   * The original {@link Machine}.
+   */
+  private Machine machineOriginal;
+
+
+  /**
+   * The {@link MachinePanel}.
+   */
+  private MachinePanel machinePanel;
+
+
+  /**
+   * The converted {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelConverted;
+
+
+  /**
+   * The original {@link DefaultMachineModel}.
+   */
+  private DefaultMachineModel modelOriginal;
+
+
+  /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+
+
+  /**
+   * The {@link Position} map.
+   */
+  private HashMap < String, Position > positionMap;
+
+
+  /**
+   * The current {@link Step}.
+   */
+  private Step step = null;
+
+
+  /**
+   * The {@link StepItem} list.
+   */
+  private ArrayList < StepItem > stepItemList = new ArrayList < StepItem > ();
+
+
+  /**
+   * The {@link ConvertMachineTableColumnModel}.
+   */
+  private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
 
 
   /**
@@ -1131,8 +1137,7 @@ public final class ConvertMachineDialog implements
     // outline
     this.convertMachineTableModel = new ConvertMachineTableModel ();
     this.gui.jGTITableOutline.setModel ( this.convertMachineTableModel );
-    this.gui.jGTITableOutline
-        .setColumnModel ( new ConvertMachineTableColumnModel () );
+    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel);
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
@@ -1402,6 +1407,19 @@ public final class ConvertMachineDialog implements
 
 
   /**
+   * Returns the convertMachineTableModel.
+   * 
+   * @return The convertMachineTableModel.
+   * @see #convertMachineTableModel
+   */
+  public ConvertMachineTableModel getConvertMachineTableModel ()
+  {
+    return this.convertMachineTableModel;
+  }
+
+
+  
+  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()
@@ -1409,6 +1427,42 @@ public final class ConvertMachineDialog implements
   public final ConvertMachineDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the machinePanel.
+   * 
+   * @return The machinePanel.
+   * @see #machinePanel
+   */
+  public MachinePanel getMachinePanel ()
+  {
+    return this.machinePanel;
+  }
+
+
+  /**
+   * Returns the modelConverted.
+   * 
+   * @return The modelConverted.
+   * @see #modelConverted
+   */
+  public DefaultMachineModel getModelConverted ()
+  {
+    return this.modelConverted;
+  }
+
+
+  /**
+   * Returns the modelOriginal.
+   * 
+   * @return The modelOriginal.
+   * @see #modelOriginal
+   */
+  public DefaultMachineModel getModelOriginal ()
+  {
+    return this.modelOriginal;
   }
 
 
@@ -1423,6 +1477,18 @@ public final class ConvertMachineDialog implements
   private final Position getPosition ( State state )
   {
     return this.positionMap.get ( state.getName () );
+  }
+
+
+  /**
+   * Returns the tableColumnModel.
+   *
+   * @return The tableColumnModel.
+   * @see #tableColumnModel
+   */
+  public ConvertMachineTableColumnModel getTableColumnModel ()
+  {
+    return this.tableColumnModel;
   }
 
 
@@ -1512,6 +1578,17 @@ public final class ConvertMachineDialog implements
   public final void handlePreviousStep ()
   {
     performPreviousStep ( true );
+  }
+
+
+  /**
+   * Handle print action.
+   *
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog(this.parent, this);
+    dialog.show ();
   }
 
 

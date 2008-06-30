@@ -31,6 +31,22 @@ public final class JGTIGraph extends JGraph implements Printable
 
 
   /**
+   * The height of the graph.
+   */
+  double graphHeight = 0;
+
+
+  /**
+   * The width of the graph.
+   */
+  double graphWidth = 0;
+  
+  /**
+   * The page count of a row.
+   */
+  int pagesPerRow = 0;
+  
+  /**
    * Allocates a new {@link JGTIGraph}.
    * 
    * @param graphModel The {@link DefaultGraphModel}.
@@ -41,7 +57,21 @@ public final class JGTIGraph extends JGraph implements Printable
     ToolTipManager.sharedInstance ().registerComponent ( this );
   }
 
-
+  /**
+   * Calculate the width and heigth of the graph.
+   */
+  private void calculateGraphSize(){
+    for (  Object object : DefaultGraphModel.getAll ( getModel ()))
+    {
+      if (object instanceof DefaultStateView){
+        DefaultStateView current = (DefaultStateView) object;
+        
+        this.graphWidth = Math.max ( current.getPositionX () + current.getWidth (), this.graphWidth );
+        this.graphHeight = Math.max ( current.getPositionY () + current.getHeight (), this.graphHeight );
+      }
+    }
+  }
+  
   /**
    * {@inheritDoc}
    * 
@@ -87,36 +117,6 @@ public final class JGTIGraph extends JGraph implements Printable
     return null;
   }
   
-  /**
-   * The width of the graph.
-   */
-  double graphWidth = 0;
-  
-  /**
-   * The height of the graph.
-   */
-  double graphHeight = 0;
-
-  /**
-   * Calculate the width and heigth of the graph.
-   */
-  private void calculateGraphSize(){
-    for (  Object object : DefaultGraphModel.getAll ( getModel ()))
-    {
-      if (object instanceof DefaultStateView){
-        DefaultStateView current = (DefaultStateView) object;
-        
-        this.graphWidth = Math.max ( current.getPositionX () + current.getWidth (), this.graphWidth );
-        this.graphHeight = Math.max ( current.getPositionY () + current.getHeight (), this.graphHeight );
-      }
-    }
-  }
-  
-  /**
-   * The page count of a row.
-   */
-  int pagesPerRow = 0;
-  
 
   /**
    * {@inheritDoc}
@@ -131,6 +131,7 @@ public final class JGTIGraph extends JGraph implements Printable
     int pageHeight = ( int ) pageFormat.getHeight ();
     
     this.graphWidth = 0;
+    this.graphHeight = 0;
     
     calculateGraphSize ();
     

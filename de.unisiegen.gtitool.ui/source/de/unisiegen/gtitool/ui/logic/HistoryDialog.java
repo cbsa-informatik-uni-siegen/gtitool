@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Symbol;
@@ -46,27 +48,27 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
+   * The current calculating step.
+   */
+  private int calculatingStep = -1;
+
+
+  /**
+   * The {@link TableColumnModel}.
+   */
+  private DefaultTableColumnModel columnModel;
+
+
+  /**
    * The {@link HistoryDialogForm}.
    */
   private HistoryDialogForm gui;
 
 
   /**
-   * The parent {@link JFrame}.
+   * The {@link TableModel}.
    */
-  private JFrame parent;
-
-
-  /**
-   * The {@link Machine}.
-   */
-  private Machine machine;
-
-
-  /**
-   * The remaining {@link HistoryPathPart} list.
-   */
-  private ArrayList < HistoryPathPart > remainingHistoryPathList = new ArrayList < HistoryPathPart > ();
+  private DefaultTableModel historyModel;
 
 
   /**
@@ -76,11 +78,22 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
-   * The current calculating step.
+   * The {@link Machine}.
    */
-  private int calculatingStep = -1;
+  private Machine machine;
+  
+  /**
+   * The parent {@link JFrame}.
+   */
+  private JFrame parent;
+  
+  /**
+   * The remaining {@link HistoryPathPart} list.
+   */
+  private ArrayList < HistoryPathPart > remainingHistoryPathList = new ArrayList < HistoryPathPart > ();
 
 
+  
   /**
    * Allocates a new {@link HistoryDialog}.
    * 
@@ -99,7 +112,7 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
     this.gui = new HistoryDialogForm ( this, parent );
 
     // Model
-    DefaultTableModel historyModel = new DefaultTableModel ()
+    this.historyModel = new DefaultTableModel ()
     {
 
       /**
@@ -116,7 +129,7 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
       }
     };
 
-    historyModel.addColumn ( "history" ); //$NON-NLS-1$
+    this.historyModel.addColumn ( "history" ); //$NON-NLS-1$
 
     ArrayList < Symbol > inputList = new ArrayList < Symbol > ();
     try
@@ -144,20 +157,20 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
     for ( HistoryPath current : this.historyPathList )
     {
-      historyModel.addRow ( new Object []
+      this.historyModel.addRow ( new Object []
       { current } );
     }
 
     // ColumnModel
-    DefaultTableColumnModel columnModel = new DefaultTableColumnModel ();
+    this.columnModel = new DefaultTableColumnModel ();
     TableColumn historyColumn = new TableColumn ( 0 );
     historyColumn.setHeaderValue ( Messages
         .getString ( "HistoryDialog.HistoryColumn" ) ); //$NON-NLS-1$
     historyColumn.setCellRenderer ( new HistoryPathTableCellRenderer () );
-    columnModel.addColumn ( historyColumn );
+    this.columnModel.addColumn ( historyColumn );
 
-    this.gui.jGTITableHistory.setModel ( historyModel );
-    this.gui.jGTITableHistory.setColumnModel ( columnModel );
+    this.gui.jGTITableHistory.setModel (  this.historyModel );
+    this.gui.jGTITableHistory.setColumnModel ( this.columnModel );
     this.gui.jGTITableHistory.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableHistory.getTableHeader ().setResizingAllowed ( false );
   }
@@ -333,6 +346,19 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
   }
 
 
+  
+  /**
+   * Returns the columnModel.
+   *
+   * @return The columnModel.
+   * @see #columnModel
+   */
+  public DefaultTableColumnModel getColumnModel ()
+  {
+    return this.columnModel;
+  }
+
+
   /**
    * {@inheritDoc}
    * 
@@ -341,6 +367,18 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
   public final HistoryDialogForm getGUI ()
   {
     return this.gui;
+  }
+
+
+  /**
+   * Returns the historyModel.
+   *
+   * @return The historyModel.
+   * @see #historyModel
+   */
+  public DefaultTableModel getHistoryModel ()
+  {
+    return this.historyModel;
   }
 
 
@@ -405,5 +443,15 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
+  }
+  
+  /**
+   * Handle print action.
+   *
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog(this.parent, this);
+    dialog.show ();
   }
 }

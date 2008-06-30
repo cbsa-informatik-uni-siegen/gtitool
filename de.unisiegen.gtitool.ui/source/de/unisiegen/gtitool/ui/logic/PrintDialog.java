@@ -134,6 +134,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * The {@link ConvertMachineDialog}.
+   */
+  private ConvertMachineDialog convertMachineDialog;
+
+
+  /**
    * The {@link GrammarPanel}.
    */
   private GrammarPanel grammarPanel;
@@ -149,6 +155,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * The header {@link Font}.
    */
   private Font headerFont;
+
+
+  /**
+   * The {@link HistoryDialog}.
+   */
+  private HistoryDialog historyDialog;
 
 
   /**
@@ -179,6 +191,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * The top margin.
    */
   private int marginTop;
+
+
+  /**
+   * The {@link MinimizeMachineDialog}.
+   */
+  private MinimizeMachineDialog minimizeMachineDialog;
 
 
   /**
@@ -239,18 +257,52 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * Allocates a new {@link PrintDialog}.
    * 
    * @param parent The parent {@link JFrame}.
+   * @param convertMachineDialog The {@link ConvertMachineDialog}.
+   */
+  public PrintDialog ( JFrame parent, ConvertMachineDialog convertMachineDialog )
+  {
+    logger.debug ( "AboutDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.convertMachineDialog = convertMachineDialog;
+
+    this.gui.jGTIRadioButtonConvertMachineConvertedGraph.setVisible ( true );
+    this.gui.jGTIRadioButtonConvertMachineOriginalGraph.setVisible ( true );
+    this.gui.jGTIRadioButtonConvertedMachineTable.setVisible ( true );
+
+    initialize ();
+  }
+
+
+  /**
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
    * @param grammarPanel The {@link GrammarPanel}.
    */
   public PrintDialog ( JFrame parent, GrammarPanel grammarPanel )
   {
-    logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "AboutDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new PrintDialogForm ( this, parent );
     this.grammarPanel = grammarPanel;
 
-    this.gui.jGTIRadioButtonMachineGraph.setVisible ( false );
-    this.gui.jGTIRadioButtonMachineTable.setVisible ( false );
-    this.gui.jGTIRadioButtonMachinePDATable.setVisible ( false );
+    initialize ();
+  }
+
+
+  /**
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param historyDialog The {@link HistoryDialog}.
+   */
+  public PrintDialog ( JFrame parent, HistoryDialog historyDialog )
+  {
+    logger.debug ( "AboutDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.historyDialog = historyDialog;
 
     initialize ();
   }
@@ -264,10 +316,37 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    */
   public PrintDialog ( JFrame parent, MachinePanel machinePanel )
   {
-    logger.debug ( "AboutDialog", "allocate a new about dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    logger.debug ( "AboutDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.parent = parent;
     this.gui = new PrintDialogForm ( this, parent );
     this.machinePanel = machinePanel;
+
+    this.gui.jGTIRadioButtonMachineGraph.setVisible ( true );
+    this.gui.jGTIRadioButtonMachineTable.setVisible ( true );
+    this.gui.jGTIRadioButtonMachinePDATable.setVisible ( true );
+
+    initialize ();
+  }
+
+
+  /**
+   * Allocates a new {@link PrintDialog}.
+   * 
+   * @param parent The parent {@link JFrame}.
+   * @param minimizeMachineDialog The {@link MinimizeMachineDialog}.
+   */
+  public PrintDialog ( JFrame parent,
+      MinimizeMachineDialog minimizeMachineDialog )
+  {
+    logger.debug ( "AboutDialog", "allocate a new print dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
+    this.parent = parent;
+    this.gui = new PrintDialogForm ( this, parent );
+    this.minimizeMachineDialog = minimizeMachineDialog;
+
+    this.gui.jGTIRadioButtonMinimizeMachineMinimizedGraph
+        .setVisible ( this.minimizeMachineDialog.isEndReached () );
+    this.gui.jGTIRadioButtonMinimizeMachineOriginalGraph.setVisible ( true );
+    this.gui.jGTIRadioButtonMinimizeMachineTable.setVisible ( true );
 
     initialize ();
   }
@@ -556,6 +635,18 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       printGrammarPanel ();
     }
+    else if ( this.minimizeMachineDialog != null )
+    {
+      printMinimizeMachineDialog ();
+    }
+    else if ( this.convertMachineDialog != null )
+    {
+      printConvertMachineDialog ();
+    }
+    else if ( this.historyDialog != null )
+    {
+      printHistoryDialog ();
+    }
 
     logger.debug ( "handlePrint", "printed" ); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -670,6 +761,52 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
 
   /**
+   * Handle print {@link ConvertMachineDialog}.
+   */
+  private void printConvertMachineDialog ()
+  {
+
+    try
+    {
+      if ( this.gui.jGTIRadioButtonConvertMachineOriginalGraph.isSelected () )
+      {
+        printJGraph ( this.convertMachineDialog.getModelOriginal ()
+            .getJGTIGraph () );
+      }
+      else if ( this.gui.jGTIRadioButtonConvertMachineConvertedGraph
+          .isSelected () )
+      {
+        printJGraph ( this.convertMachineDialog.getModelConverted ()
+            .getJGTIGraph () );
+      }
+
+      else if ( this.gui.jGTIRadioButtonConvertedMachineTable.isSelected () )
+      {
+        this.tableModel = this.convertMachineDialog
+            .getConvertMachineTableModel ();
+        this.tableColumnModel = this.convertMachineDialog
+            .getTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        printTableModel ( this.convertMachineDialog.getMachinePanel ()
+            .getFile ().getName ()
+            + Messages.getString ( "PrintDialog.ConvertMachine" ) ); //$NON-NLS-1$
+      }
+
+    }
+    catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
    * Handle print {@link GrammarPanel}.
    */
   private void printGrammarPanel ()
@@ -682,21 +819,50 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
       this.table.setModel ( this.tableModel );
       this.table.setColumnModel ( this.tableColumnModel );
 
-      printTableModel (this.grammarPanel.getFile ().getName ());
+      printTableModel ( this.grammarPanel.getFile ().getName () );
     }
     catch ( PrinterException exc )
     {
-      // TODOBM handle me
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * Handle print {@link HistoryDialog}.
+   */
+  private void printHistoryDialog ()
+  {
+    try
+    {
+      this.tableModel = this.historyDialog.getHistoryModel ();
+      this.tableColumnModel = this.historyDialog.getColumnModel ();
+      this.table = new JGTITable ();
+      this.table.setModel ( this.tableModel );
+      this.table.setColumnModel ( this.tableColumnModel );
+
+      printTableModel ( Messages.getString ( "MainWindow.History" ) ); //$NON-NLS-1$
+    }
+
+    catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
     }
   }
 
 
   /**
    * Print the {@link JGTIGraph}.
+   * 
+   * @param graph The {@link JGTIGraph} to print.
    */
-  private void printJGraph ()
+  private void printJGraph ( JGTIGraph graph )
   {
     PrinterJob job = PrinterJob.getPrinterJob ();
     try
@@ -718,14 +884,16 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
       job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
           .getSelectedItem () );
-      job.setPrintable ( this.machinePanel.getJGTIGraph (), pageFormat );
-      job.setJobName ( this.machinePanel.getFile ().getName () );
+      job.setPrintable ( graph, pageFormat );
+      // job.setJobName ( this.machinePanel.getFile ().getName () );
       job.print ();
     }
     catch ( Exception exc )
     {
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
     }
   }
 
@@ -739,7 +907,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     {
       if ( this.gui.jGTIRadioButtonMachineGraph.isSelected () )
       {
-        printJGraph ();
+        printJGraph ( this.machinePanel.getJGTIGraph () );
       }
       else if ( this.gui.jGTIRadioButtonMachinePDATable.isSelected () )
       {
@@ -749,8 +917,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-        // TODOBM i18n
-        printTableModel (this.machinePanel.getFile ().getName () + " - MachineTable"); //$NON-NLS-1$
+        printTableModel ( this.machinePanel.getFile ().getName ()
+            + " - " + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
       {
@@ -760,15 +928,65 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
 
-     // TODOBM i18n
-        printTableModel (this.machinePanel.getFile ().getName () + " - PDATable"); //$NON-NLS-1$
+        printTableModel ( this.machinePanel.getFile ().getName ()
+            + " - " + Messages.getString ( "PrintDialog.PDATable" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
     }
     catch ( PrinterException exc )
     {
-      // TODOBM handle me
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
+    }
+  }
+
+
+  /**
+   * Handle print {@link MinimizeMachineDialog}.
+   */
+  private void printMinimizeMachineDialog ()
+  {
+
+    try
+    {
+      if ( this.gui.jGTIRadioButtonMinimizeMachineOriginalGraph.isSelected () )
+      {
+        printJGraph ( this.minimizeMachineDialog.getModelOriginal ()
+            .getJGTIGraph () );
+      }
+      else if ( this.gui.jGTIRadioButtonMinimizeMachineMinimizedGraph
+          .isSelected () )
+      {
+        printJGraph ( this.minimizeMachineDialog.getModelMinimized ()
+            .getJGTIGraph () );
+      }
+
+      else if ( this.gui.jGTIRadioButtonMinimizeMachineTable.isSelected () )
+      {
+        this.tableModel = this.minimizeMachineDialog
+            .getMinimizeMachineTableModel ();
+        this.tableColumnModel = this.minimizeMachineDialog
+            .getTableColumnModel ();
+        this.table = new JGTITable ();
+        this.table.setModel ( this.tableModel );
+        this.table.setColumnModel ( this.tableColumnModel );
+
+        String name = this.minimizeMachineDialog.getMachinePanel ().getFile () == null ? this.minimizeMachineDialog
+            .getMachinePanel ().getName ()
+            : this.minimizeMachineDialog.getMachinePanel ().getFile ()
+                .getName ();
+        printTableModel ( name
+            + " - " + Messages.getString ( "PrintDialog.MinimizeMachine" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+      }
+
+    }
+    catch ( PrinterException exc )
+    {
+      InfoDialog dialog = new InfoDialog ( this.parent, Messages
+          .getString ( "PrintDialog.ErrorPrintMessage" ), Messages //$NON-NLS-1$
+          .getString ( "PrintDialog.ErrorPrint" ) ); //$NON-NLS-1$
+      dialog.show ();
     }
   }
 
@@ -777,10 +995,9 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
    * Prints the {@link TableModel}.
    * 
    * @param jobName The print job name.
-   * 
    * @throws PrinterException If the something with the print dialog fails.
    */
-  private final void printTableModel (String jobName) throws PrinterException
+  private final void printTableModel ( String jobName ) throws PrinterException
   {
     PrinterJob job = PrinterJob.getPrinterJob ();
 
@@ -820,7 +1037,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
     job.setPrintable ( this, pageFormat );
     job.setPrintService ( ( PrintService ) this.gui.jGTIComboBoxPrinter
         .getSelectedItem () );
-    
+
     job.setJobName ( jobName );
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$

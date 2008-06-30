@@ -1830,11 +1830,6 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
         .getStack () );
 
-    for ( State current : this.machine.getActiveState () )
-    {
-      current.setActive ( true );
-    }
-
     this.mainWindowForm.getLogic ().updateWordNavigationStates ();
     performCellsChanged ();
 

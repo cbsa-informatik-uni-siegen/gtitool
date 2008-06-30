@@ -251,30 +251,6 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Returns the active {@link State}s.
-   * 
-   * @return The active {@link State}s.
-   */
-  public TreeSet < State > getActiveState ();
-
-
-  /**
-   * Returns the active {@link Symbol}s.
-   * 
-   * @return The active {@link Symbol}s.
-   */
-  public ArrayList < Symbol > getActiveSymbol ();
-
-
-  /**
-   * Returns the active {@link Transition}s.
-   * 
-   * @return The active {@link Transition}s.
-   */
-  public TreeSet < Transition > getActiveTransition ();
-
-
-  /**
    * Returns the {@link Alphabet}.
    * 
    * @return The {@link Alphabet}.

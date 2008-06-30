@@ -128,11 +128,14 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
       // Do nothing
     }
 
-    for ( State current : this.machine.getActiveState () )
+    for ( State current : this.machine.getState () )
     {
-      HistoryPathPart path = new HistoryPathPart (
-          new ArrayList < TransitionSymbolPair > (), inputList, current );
-      this.remainingHistoryPathList.add ( path );
+      if ( current.isActive () )
+      {
+        HistoryPathPart path = new HistoryPathPart (
+            new ArrayList < TransitionSymbolPair > (), inputList, current );
+        this.remainingHistoryPathList.add ( path );
+      }
     }
 
     calculate ();

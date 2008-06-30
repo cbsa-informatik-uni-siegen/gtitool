@@ -126,24 +126,6 @@ public abstract class AbstractMachine implements Machine
 
 
   /**
-   * The active {@link State}s.
-   */
-  private TreeSet < State > activeStateSet;
-
-
-  /**
-   * The active {@link Transition}s.
-   */
-  private TreeSet < Transition > activeTransitionSet;
-
-
-  /**
-   * The active {@link Symbol}s.
-   */
-  private ArrayList < Symbol > activeSymbolList;
-
-
-  /**
    * The {@link Alphabet} of this {@link AbstractMachine}.
    */
   private Alphabet alphabet;
@@ -301,18 +283,18 @@ public abstract class AbstractMachine implements Machine
     {
       this.validationElementList.add ( current );
     }
+
     // StateList
     this.stateList = new ArrayList < State > ();
     this.initialStateList = new ArrayList < State > ();
+
     // TransitionList
     this.transitionList = new ArrayList < Transition > ();
     this.initialTransitionList = new ArrayList < Transition > ();
-    // Active
-    this.activeStateSet = new TreeSet < State > ();
-    this.activeTransitionSet = new TreeSet < Transition > ();
-    this.activeSymbolList = new ArrayList < Symbol > ();
+
     // History
     this.history = new ArrayList < HistoryItem > ();
+
     // CachedValueList
     this.cachedValueList = new ArrayList < ObjectTriple < Integer, Integer, Object >> ();
 
@@ -898,7 +880,6 @@ public abstract class AbstractMachine implements Machine
    */
   private final void clearActiveState ()
   {
-    this.activeStateSet.clear ();
     for ( State current : this.stateList )
     {
       current.setActive ( false );
@@ -911,7 +892,6 @@ public abstract class AbstractMachine implements Machine
    */
   private final void clearActiveSymbol ()
   {
-    this.activeSymbolList.clear ();
     for ( Transition currentTransition : this.transitionList )
     {
       for ( Symbol currentSymbol : currentTransition )
@@ -927,7 +907,6 @@ public abstract class AbstractMachine implements Machine
    */
   private final void clearActiveTransition ()
   {
-    this.activeTransitionSet.clear ();
     for ( Transition current : this.transitionList )
     {
       current.setActive ( false );
@@ -1167,39 +1146,6 @@ public abstract class AbstractMachine implements Machine
   private final void fireTableStructureChanged ()
   {
     fireTableChanged ( new TableModelEvent ( this, TableModelEvent.HEADER_ROW ) );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#getActiveState()
-   */
-  public final TreeSet < State > getActiveState ()
-  {
-    return this.activeStateSet;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#getActiveSymbol()
-   */
-  public final ArrayList < Symbol > getActiveSymbol ()
-  {
-    return this.activeSymbolList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Machine#getActiveTransition()
-   */
-  public final TreeSet < Transition > getActiveTransition ()
-  {
-    return this.activeTransitionSet;
   }
 
 
@@ -1728,21 +1674,30 @@ public abstract class AbstractMachine implements Machine
       return false;
     }
 
-    if ( this.activeStateSet.size () == 0 )
+    ArrayList < State > activeStateList = new ArrayList < State > ();
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        activeStateList.add ( current );
+      }
+    }
+
+    if ( activeStateList.size () == 0 )
     {
       throw new RuntimeException ( "active state list is empty" ); //$NON-NLS-1$
     }
 
     // check for epsilon transitions
     boolean epsilonTransitionFound = false;
-    stateLoop : for ( State activeState : this.activeStateSet )
+    stateLoop : for ( State activeState : activeStateList )
     {
       for ( Transition current : activeState.getTransitionBegin () )
       {
         if ( ( current.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY ) || current.getTransitionType ()
             .equals ( TransitionType.EPSILON_SYMBOL ) )
-            && ( !this.activeStateSet.contains ( current.getStateEnd () ) ) )
+            && ( !activeStateList.contains ( current.getStateEnd () ) ) )
         {
           epsilonTransitionFound = true;
           break stateLoop;
@@ -1754,7 +1709,7 @@ public abstract class AbstractMachine implements Machine
     // epsilon transition found
     if ( epsilonTransitionFound )
     {
-      for ( State activeState : this.activeStateSet )
+      for ( State activeState : activeStateList )
       {
         for ( Transition current : activeState.getTransitionBegin () )
         {
@@ -1781,7 +1736,7 @@ public abstract class AbstractMachine implements Machine
       {
         return false;
       }
-      for ( State activeState : this.activeStateSet )
+      for ( State activeState : activeStateList )
       {
         transitionLoop : for ( Transition currentTransition : activeState
             .getTransitionBegin () )
@@ -1871,9 +1826,9 @@ public abstract class AbstractMachine implements Machine
    */
   public final boolean isWordAccepted ()
   {
-    for ( State current : this.activeStateSet )
+    for ( State current : this.stateList )
     {
-      if ( current.isFinalState () )
+      if ( current.isActive () && current.isFinalState () )
       {
         return true;
       }
@@ -1968,7 +1923,16 @@ public abstract class AbstractMachine implements Machine
    */
   public final void nextSymbol ()
   {
-    if ( this.activeStateSet.size () == 0 )
+    ArrayList < State > activeStateList = new ArrayList < State > ();
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        activeStateList.add ( current );
+      }
+    }
+
+    if ( activeStateList.size () == 0 )
     {
       throw new RuntimeException ( "active state set is empty" ); //$NON-NLS-1$
     }
@@ -2035,7 +1999,6 @@ public abstract class AbstractMachine implements Machine
       {
         // add the old state
         currentState.setActive ( true );
-        this.activeStateSet.add ( currentState );
 
         for ( Transition currentTransition : currentState.getTransitionBegin () )
         {
@@ -2046,20 +2009,16 @@ public abstract class AbstractMachine implements Machine
                   .getStateEnd () ) ) )
           {
             currentTransition.getStateBegin ().setActive ( true );
-            this.activeStateSet.add ( currentTransition.getStateBegin () );
 
             currentTransition.setActive ( true );
-            this.activeTransitionSet.add ( currentTransition );
 
             currentTransition.getStateEnd ().setActive ( true );
-            this.activeStateSet.add ( currentTransition.getStateEnd () );
 
             for ( Symbol currentSymbol : currentTransition )
             {
               if ( currentSymbol.isEpsilon () )
               {
                 currentSymbol.setActive ( true );
-                this.activeSymbolList.add ( currentSymbol );
                 break;
               }
             }
@@ -2090,10 +2049,8 @@ public abstract class AbstractMachine implements Machine
           if ( currentTransition.contains ( symbol ) )
           {
             currentTransition.setActive ( true );
-            this.activeTransitionSet.add ( currentTransition );
 
             currentTransition.getStateEnd ().setActive ( true );
-            this.activeStateSet.add ( currentTransition.getStateEnd () );
 
             for ( Symbol currentSymbol : currentTransition )
             {
@@ -2101,7 +2058,6 @@ public abstract class AbstractMachine implements Machine
                   && currentSymbol.getName ().equals ( symbol.getName () ) )
               {
                 currentSymbol.setActive ( true );
-                this.activeSymbolList.add ( currentSymbol );
                 break;
               }
             }
@@ -2131,24 +2087,21 @@ public abstract class AbstractMachine implements Machine
 
     HistoryItem historyItem = this.history.remove ( this.history.size () - 1 );
 
-    this.activeStateSet.addAll ( historyItem.getStateSet () );
-    this.activeTransitionSet.addAll ( historyItem.getTransitionSet () );
-    this.activeSymbolList.addAll ( historyItem.getSymbolSet () );
     this.stack.push ( historyItem.getStack () );
 
-    for ( State current : this.activeStateSet)
+    for ( State current : historyItem.getStateSet () )
     {
       current.setActive ( true );
     }
-    for ( Transition current : this.activeTransitionSet)
+    for ( Transition current : historyItem.getTransitionSet () )
     {
       current.setActive ( true );
     }
-    for ( Symbol current : this.activeSymbolList)
+    for ( Symbol current : historyItem.getSymbolSet () )
     {
       current.setActive ( true );
     }
-    
+
     if ( historyItem.isNextWordStep () )
     {
       try
@@ -2840,13 +2793,12 @@ public abstract class AbstractMachine implements Machine
     this.stack = new DefaultStack ();
 
     clearHistory ();
-    // Set active states
-    this.activeStateSet.clear ();
+
     for ( State current : this.stateList )
     {
       if ( current.isStartState () )
       {
-        this.activeStateSet.add ( current );
+        current.setActive ( true );
       }
     }
   }

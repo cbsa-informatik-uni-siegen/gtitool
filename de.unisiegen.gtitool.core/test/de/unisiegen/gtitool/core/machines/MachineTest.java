@@ -1,8 +1,6 @@
 package de.unisiegen.gtitool.core.machines;
 
 
-import java.util.TreeSet;
-
 import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
@@ -47,8 +45,13 @@ public abstract class MachineTest
     {
       print ( "States:      " );
       boolean first = true;
-      for ( State current : machine.getActiveState () )
+
+      for ( State current : machine.getState () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );
@@ -59,10 +62,13 @@ public abstract class MachineTest
       println ();
       print ( "Transitions: " );
       machine.nextSymbol ();
-      TreeSet < Transition > transitions = machine.getActiveTransition ();
       first = false;
-      for ( Transition current : transitions )
+      for ( Transition current : machine.getTransition () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );
@@ -72,8 +78,12 @@ public abstract class MachineTest
       }
       println ();
       print ( "States:      " );
-      for ( State current : machine.getActiveState () )
+      for ( State current : machine.getState () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );
@@ -92,8 +102,12 @@ public abstract class MachineTest
     {
       print ( "States:      " );
       boolean first = true;
-      for ( State current : machine.getActiveState () )
+      for ( State current : machine.getState () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );
@@ -104,10 +118,13 @@ public abstract class MachineTest
       println ();
       print ( "Transitions: " );
       machine.previousSymbol ();
-      TreeSet < Transition > transitions = machine.getActiveTransition ();
       first = false;
-      for ( Transition current : transitions )
+      for ( Transition current : machine.getTransition () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );
@@ -117,8 +134,12 @@ public abstract class MachineTest
       }
       println ();
       print ( "States:      " );
-      for ( State current : machine.getActiveState () )
+      for ( State current : machine.getState () )
       {
+        if ( !current.isActive () )
+        {
+          continue;
+        }
         if ( !first )
         {
           print ( ", " );

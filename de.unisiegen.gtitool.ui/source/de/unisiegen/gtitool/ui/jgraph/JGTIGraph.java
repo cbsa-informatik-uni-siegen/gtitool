@@ -40,35 +40,38 @@ public final class JGTIGraph extends JGraph implements Printable
    * The width of the graph.
    */
   double graphWidth = 0;
-  
+
+
   /**
    * The page count of a row.
    */
   int pagesPerRow = 0;
-  
+
+
   /**
    * The bottom margin.
    */
-  private int marginBottom;
-
-
-  /**
-   * The left margin.
-   */
-  private int marginLeft  =50;
+  private int marginBottom = 50;
 
 
   /**
    * The right margin.
    */
-  private int marginRight;
+  private int marginRight = 50;
+
+
+  /**
+   * The left margin.
+   */
+  private int marginLeft = 50;
 
 
   /**
    * The top margin.
    */
   private int marginTop = 50;
-  
+
+
   /**
    * Allocates a new {@link JGTIGraph}.
    * 
@@ -80,21 +83,27 @@ public final class JGTIGraph extends JGraph implements Printable
     ToolTipManager.sharedInstance ().registerComponent ( this );
   }
 
+
   /**
    * Calculate the width and heigth of the graph.
    */
-  private void calculateGraphSize(){
-    for (  Object object : DefaultGraphModel.getAll ( getModel ()))
+  private void calculateGraphSize ()
+  {
+    for ( Object object : DefaultGraphModel.getAll ( getModel () ) )
     {
-      if (object instanceof DefaultStateView){
-        DefaultStateView current = (DefaultStateView) object;
-        
-        this.graphWidth = Math.max ( current.getPositionX () + current.getWidth (), this.graphWidth );
-        this.graphHeight = Math.max ( current.getPositionY () + current.getHeight (), this.graphHeight );
+      if ( object instanceof DefaultStateView )
+      {
+        DefaultStateView current = ( DefaultStateView ) object;
+
+        this.graphWidth = Math.max ( current.getPositionX ()
+            + current.getWidth (), this.graphWidth );
+        this.graphHeight = Math.max ( current.getPositionY ()
+            + current.getHeight (), this.graphHeight );
       }
     }
   }
-  
+
+
   /**
    * {@inheritDoc}
    * 
@@ -139,7 +148,7 @@ public final class JGTIGraph extends JGraph implements Printable
     }
     return null;
   }
-  
+
 
   /**
    * {@inheritDoc}
@@ -152,38 +161,46 @@ public final class JGTIGraph extends JGraph implements Printable
     boolean print = false;
     int pageWidth = ( int ) pageFormat.getWidth ();
     int pageHeight = ( int ) pageFormat.getHeight ();
-    
+
     this.graphWidth = 0;
     this.graphHeight = 0;
-    
+
     calculateGraphSize ();
-    
+
     int x = 0;
-    
+
     int y = 0;
-    
-    
+
     if ( ( pageIndex * pageWidth ) < this.graphWidth )
     {
-      x =  - ( pageIndex * pageWidth );
-      graphics.translate (x, 0 );
+      x = - ( pageIndex * pageWidth );
+      x = x
+          + ( pageIndex * this.marginLeft + this.marginRight * ( pageIndex + 1 ) );
+      graphics.translate ( x, 0 + this.marginTop );
       print = true;
       this.pagesPerRow = pageIndex + 1;
     }
-    else {
+    else
+    {
       int row = pageIndex / this.pagesPerRow;
-      
+
       if ( ( row * pageHeight ) < this.graphHeight )
       {
-        
-        
-        x =  - (((pageIndex - row * this.pagesPerRow) ) * pageWidth );
-        y = - (row * pageHeight);
-        System.err.println ("translate: x:" + (x-this.marginLeft) + ", y: " +( y-this.marginTop));
-        graphics.translate (x + this.marginLeft,  y + this.marginTop );
+
+        x = - ( ( ( pageIndex - row * this.pagesPerRow ) ) * pageWidth );
+        y = - ( row * pageHeight );
+
+        x = x
+            + ( (pageIndex - row * this.pagesPerRow ) * this.marginLeft + this.marginRight
+                * ( pageIndex - row * this.pagesPerRow + 1 ) );
+        y = y
+            + ( row * this.marginTop + this.marginBottom
+                * ( row + 1 ) );
+
+        graphics.translate ( x, y );
         print = true;
       }
-      
+
     }
     printAll ( graphics );
     if ( print )

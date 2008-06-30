@@ -1674,120 +1674,18 @@ public abstract class AbstractMachine implements Machine
       return false;
     }
 
-    ArrayList < State > activeStateList = new ArrayList < State > ();
-    for ( State current : this.stateList )
+    // the exception is thrown if the word is finished
+    try
     {
-      if ( current.isActive () )
-      {
-        activeStateList.add ( current );
-      }
+      nextSymbol ();
     }
-
-    if ( activeStateList.size () == 0 )
+    catch ( Exception exc )
     {
-      throw new RuntimeException ( "active state list is empty" ); //$NON-NLS-1$
-    }
-
-    // check for epsilon transitions
-    boolean epsilonTransitionFound = false;
-    stateLoop : for ( State activeState : activeStateList )
-    {
-      for ( Transition current : activeState.getTransitionBegin () )
-      {
-        if ( ( current.getTransitionType ().equals (
-            TransitionType.EPSILON_ONLY ) || current.getTransitionType ()
-            .equals ( TransitionType.EPSILON_SYMBOL ) )
-            && ( !activeStateList.contains ( current.getStateEnd () ) ) )
-        {
-          epsilonTransitionFound = true;
-          break stateLoop;
-        }
-      }
-    }
-    TreeSet < State > newActiveStateSet = new TreeSet < State > ();
-
-    // epsilon transition found
-    if ( epsilonTransitionFound )
-    {
-      for ( State activeState : activeStateList )
-      {
-        for ( Transition current : activeState.getTransitionBegin () )
-        {
-          if ( current.getTransitionType ().equals (
-              TransitionType.EPSILON_ONLY )
-              || current.getTransitionType ().equals (
-                  TransitionType.EPSILON_SYMBOL ) )
-          {
-            newActiveStateSet.add ( activeState );
-            newActiveStateSet.add ( current.getStateEnd () );
-          }
-        }
-      }
-    }
-    // No epsilon transition found
-    else
-    {
-      Symbol symbol;
-      try
-      {
-        symbol = this.word.nextSymbol ();
-      }
-      catch ( WordFinishedException exc )
-      {
-        return false;
-      }
-      for ( State activeState : activeStateList )
-      {
-        transitionLoop : for ( Transition currentTransition : activeState
-            .getTransitionBegin () )
-        {
-          // Stack
-          Word readWord = currentTransition.getPushDownWordRead ();
-          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
-              .size () );
-          if ( readWord.size () != stackSymbols.size () )
-          {
-            continue transitionLoop;
-          }
-          for ( int i = 0 ; i < readWord.size () ; i++ )
-          {
-            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
-            {
-              continue transitionLoop;
-            }
-          }
-
-          for ( Symbol currentSymbol : currentTransition )
-          {
-            if ( currentSymbol.equals ( symbol ) )
-            {
-              newActiveStateSet.add ( currentTransition.getStateEnd () );
-            }
-          }
-        }
-      }
-    }
-
-    if ( !epsilonTransitionFound )
-    {
-      try
-      {
-        this.word.previousSymbol ();
-      }
-      catch ( WordResetedException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return false;
-      }
-    }
-
-    // no transition is found
-    if ( newActiveStateSet.size () == 0 )
-    {
+      previousSymbol ();
       return false;
     }
 
+    previousSymbol ();
     return true;
   }
 
@@ -2037,9 +1935,7 @@ public abstract class AbstractMachine implements Machine
       }
       catch ( WordFinishedException exc )
       {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-        return;
+        throw new RuntimeException ( exc.getMessage () );
       }
 
       for ( State currentState : oldActiveStateSet )

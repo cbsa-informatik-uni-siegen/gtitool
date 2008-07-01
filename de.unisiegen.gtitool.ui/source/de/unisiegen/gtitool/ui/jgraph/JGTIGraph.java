@@ -221,10 +221,6 @@ public final class JGTIGraph extends JGraph implements Printable
     graphics.setClip ( 0, 0, width, height );}
     else {
       int width = pageWidth - this.marginRight - this.marginLeft;
-      System.err.println (this.marginTop);
-      System.err.println (this.marginBottom);
-      System.err.println (this.marginLeft);
-      System.err.println (this.marginRight);
       int height = pageHeight - this.marginBottom - this.marginTop;
       graphics.setClip ( this.marginLeft, this.marginTop, width, height );
     }

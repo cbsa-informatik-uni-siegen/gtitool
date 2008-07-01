@@ -1817,6 +1817,214 @@ public abstract class AbstractMachine implements Machine
   /**
    * {@inheritDoc}
    * 
+   * @see Machine#isUserInputNeeded()
+   */
+  public final boolean isUserInputNeeded ()
+  {
+    if ( this.getMachineType ().equals ( MachineType.PDA ) )
+    {
+      return getPossibleTransitions ().size () >= 2;
+    }
+    return false;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#getPossibleTransitions()
+   */
+  public final ArrayList < Transition > getPossibleTransitions ()
+  {
+    ArrayList < Transition > result = new ArrayList < Transition > ();
+
+    ArrayList < State > activeStateList = new ArrayList < State > ();
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        activeStateList.add ( current );
+      }
+    }
+
+    for ( State currentState : activeStateList )
+    {
+      transitionLoop : for ( Transition currentTransition : currentState
+          .getTransitionBegin () )
+      {
+        // epsilon
+        if ( currentTransition.getTransitionType ().equals (
+            TransitionType.EPSILON_ONLY )
+            || currentTransition.getTransitionType ().equals (
+                TransitionType.EPSILON_SYMBOL ) )
+        {
+          Word readWord = currentTransition.getPushDownWordRead ();
+          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+              .size () );
+
+          // the read word must match
+          if ( readWord.size () != stackSymbols.size () )
+          {
+            continue transitionLoop;
+          }
+          for ( int i = 0 ; i < readWord.size () ; i++ )
+          {
+            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+            {
+              continue transitionLoop;
+            }
+          }
+          result.add ( currentTransition );
+        }
+        // no epsilon
+        else
+        {
+          Symbol symbol;
+          try
+          {
+            symbol = this.word.nextSymbol ();
+            this.word.previousSymbol ();
+          }
+          catch ( WordFinishedException exc )
+          {
+            continue transitionLoop;
+          }
+          catch ( WordResetedException exc )
+          {
+            continue transitionLoop;
+          }
+
+          Word readWord = currentTransition.getPushDownWordRead ();
+          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+              .size () );
+
+          // the read word must match
+          if ( readWord.size () != stackSymbols.size () )
+          {
+            continue transitionLoop;
+          }
+          for ( int i = 0 ; i < readWord.size () ; i++ )
+          {
+            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+            {
+              continue transitionLoop;
+            }
+          }
+
+          if ( currentTransition.contains ( symbol ) )
+          {
+            result.add ( currentTransition );
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see Machine#nextSymbol(Transition)
+   */
+  public void nextSymbol ( Transition transition )
+  {
+    ArrayList < State > activeStateList = new ArrayList < State > ();
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        activeStateList.add ( current );
+      }
+    }
+
+    if ( activeStateList.size () == 0 )
+    {
+      throw new RuntimeException ( "active state set is empty" ); //$NON-NLS-1$
+    }
+
+    TreeSet < State > oldActiveStateSet = new TreeSet < State > ();
+    TreeSet < Transition > oldActiveTransitionSet = new TreeSet < Transition > ();
+    ArrayList < Symbol > oldActiveSymbolList = new ArrayList < Symbol > ();
+    Stack oldStack = new DefaultStack ();
+
+    for ( State current : this.stateList )
+    {
+      if ( current.isActive () )
+      {
+        oldActiveStateSet.add ( current );
+      }
+    }
+
+    for ( Transition current : this.transitionList )
+    {
+      if ( current.isActive () )
+      {
+        oldActiveTransitionSet.add ( current );
+        for ( Symbol currentSymbol : current )
+        {
+          if ( currentSymbol.isActive () )
+          {
+            oldActiveSymbolList.add ( currentSymbol );
+          }
+        }
+      }
+    }
+
+    oldStack.push ( this.stack.get () );
+
+    HistoryItem historyItem = new HistoryItem ( oldActiveStateSet,
+        oldActiveTransitionSet, oldActiveSymbolList, oldStack, false );
+    this.history.add ( historyItem );
+
+    clearActiveState ();
+    clearActiveTransition ();
+    clearActiveSymbol ();
+
+    // epsilon
+    if ( transition.getTransitionType ().equals ( TransitionType.EPSILON_ONLY )
+        || transition.getTransitionType ().equals (
+            TransitionType.EPSILON_SYMBOL ) )
+    {
+      Word readWord = transition.getPushDownWordRead ();
+
+      transition.getStateBegin ().setActive ( true );
+
+      transition.setActive ( true );
+
+      transition.getStateEnd ().setActive ( true );
+
+      for ( Symbol currentSymbol : transition )
+      {
+        if ( currentSymbol.isEpsilon () )
+        {
+          currentSymbol.setActive ( true );
+          break;
+        }
+      }
+
+      this.stack.pop ( readWord.size () );
+      this.stack.push ( transition.getPushDownWordWrite () );
+    }
+    // no epsilon
+    else
+    {
+      Word readWord = transition.getPushDownWordRead ();
+
+      transition.setActive ( true );
+
+      transition.getStateEnd ().setActive ( true );
+
+      this.stack.pop ( readWord.size () );
+      this.stack.push ( transition.getPushDownWordWrite () );
+    }
+  }
+
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see Machine#nextSymbol()
    */
   public final void nextSymbol ()
@@ -1877,13 +2085,33 @@ public abstract class AbstractMachine implements Machine
     boolean epsilonTransitionFound = false;
     stateLoop : for ( State activeState : oldActiveStateSet )
     {
-      for ( Transition current : activeState.getTransitionBegin () )
+      transitionLoop : for ( Transition current : activeState
+          .getTransitionBegin () )
       {
         if ( ( current.getTransitionType ().equals (
             TransitionType.EPSILON_ONLY ) || current.getTransitionType ()
             .equals ( TransitionType.EPSILON_SYMBOL ) )
-            && ( !oldActiveStateSet.contains ( current.getStateEnd () ) ) )
+            // special case for the pda
+            && ( ( !oldActiveStateSet.contains ( current.getStateEnd () ) ) || getMachineType ()
+                .equals ( MachineType.PDA ) ) )
         {
+          Word readWord = current.getPushDownWordRead ();
+          ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+              .size () );
+
+          // the read word must match
+          if ( readWord.size () != stackSymbols.size () )
+          {
+            continue transitionLoop;
+          }
+          for ( int i = 0 ; i < readWord.size () ; i++ )
+          {
+            if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+            {
+              continue transitionLoop;
+            }
+          }
+
           epsilonTransitionFound = true;
           break stateLoop;
         }
@@ -1895,10 +2123,14 @@ public abstract class AbstractMachine implements Machine
     {
       for ( State currentState : oldActiveStateSet )
       {
-        // add the old state
-        currentState.setActive ( true );
+        // add the old state if not a pda
+        if ( !getMachineType ().equals ( MachineType.PDA ) )
+        {
+          currentState.setActive ( true );
+        }
 
-        for ( Transition currentTransition : currentState.getTransitionBegin () )
+        transitionLoop : for ( Transition currentTransition : currentState
+            .getTransitionBegin () )
         {
           if ( ( currentTransition.getTransitionType ().equals (
               TransitionType.EPSILON_ONLY ) || currentTransition
@@ -1906,7 +2138,28 @@ public abstract class AbstractMachine implements Machine
               && ( !oldActiveStateSet.contains ( currentTransition
                   .getStateEnd () ) ) )
           {
-            currentTransition.getStateBegin ().setActive ( true );
+            Word readWord = currentTransition.getPushDownWordRead ();
+            ArrayList < Symbol > stackSymbols = this.stack.peak ( readWord
+                .size () );
+
+            // the read word must match
+            if ( readWord.size () != stackSymbols.size () )
+            {
+              continue transitionLoop;
+            }
+            for ( int i = 0 ; i < readWord.size () ; i++ )
+            {
+              if ( !readWord.get ( i ).equals ( stackSymbols.get ( i ) ) )
+              {
+                continue transitionLoop;
+              }
+            }
+
+            // add the state begin if not a pda
+            if ( !getMachineType ().equals ( MachineType.PDA ) )
+            {
+              currentTransition.getStateBegin ().setActive ( true );
+            }
 
             currentTransition.setActive ( true );
 
@@ -1920,6 +2173,9 @@ public abstract class AbstractMachine implements Machine
                 break;
               }
             }
+
+            this.stack.pop ( readWord.size () );
+            this.stack.push ( currentTransition.getPushDownWordWrite () );
           }
         }
       }
@@ -1976,7 +2232,6 @@ public abstract class AbstractMachine implements Machine
               }
             }
 
-            // stack
             this.stack.pop ( readWord.size () );
             this.stack.push ( currentTransition.getPushDownWordWrite () );
           }

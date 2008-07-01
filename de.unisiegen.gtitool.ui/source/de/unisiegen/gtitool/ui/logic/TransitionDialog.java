@@ -398,27 +398,6 @@ public final class TransitionDialog implements
 
 
   /**
-   * Disposes the dialog.
-   */
-  public final void dispose ()
-  {
-    this.gui.dispose ();
-  }
-
-
-  /**
-   * Returns the gui.
-   * 
-   * @return The gui.
-   * @see #gui
-   */
-  public final TransitionDialogForm getGui ()
-  {
-    return this.gui;
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see LogicClass#getGUI()

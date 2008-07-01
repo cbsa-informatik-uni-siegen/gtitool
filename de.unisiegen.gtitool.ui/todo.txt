@@ -1,6 +1,6 @@
 *** TODO ***
 
-CF		- PDA Navigation benutzergesteuert, falls nicht deterministisch
+CF		- Stack muss von rechts aufgebaut werden
 
 BM		- Drucken: PrettyString verwenden (Header/Tabelle)
 BM		- Drucken: Optik des Dialoges passt nicht zu den anderen Dialogen

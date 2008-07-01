@@ -296,9 +296,15 @@ public final class DefaultStack implements Stack
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
+    ArrayList < Symbol > tmpSymbolList = new ArrayList < Symbol > ();
     for ( Symbol current : symbols )
     {
-      push ( current );
+      tmpSymbolList.add ( current );
+    }
+    // TODOCF check this
+    for ( int i = tmpSymbolList.size () - 1 ; i >= 0 ; i-- )
+    {
+      push ( tmpSymbolList.get ( i ) );
     }
   }
 
@@ -330,9 +336,10 @@ public final class DefaultStack implements Stack
     {
       throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
     }
-    for ( Symbol current : symbols )
+    // TODOCF check this
+    for ( int i = symbols.length - 1 ; i >= 0 ; i-- )
     {
-      push ( current );
+      push ( symbols [ i ] );
     }
   }
 

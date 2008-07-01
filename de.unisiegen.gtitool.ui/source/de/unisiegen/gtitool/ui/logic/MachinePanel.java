@@ -1739,7 +1739,19 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
   {
     try
     {
-      this.machine.nextSymbol ();
+      if ( this.machine.isUserInputNeeded () )
+      {
+        // TODOCF cancel and start the auto step timer
+        ChooseTransitionDialog dialog = new ChooseTransitionDialog (
+            this.mainWindowForm, this.machine.getPossibleTransitions () );
+        dialog.show ();
+
+        this.machine.nextSymbol ( dialog.getChoosenTransition () );
+      }
+      else
+      {
+        this.machine.nextSymbol ();
+      }
 
       // update stack
       this.gui.wordPanel.styledStackParserPanel.setText ( this.machine
@@ -1853,7 +1865,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
     this.mainWindowForm.getLogic ().removeButtonState (
         ButtonState.SELECTED_AUTO_STEP );
-    this.mainWindowForm.getLogic ().addButtonState ( ButtonState.ENABLED_NAVIGATION_START );
+    this.mainWindowForm.getLogic ().addButtonState (
+        ButtonState.ENABLED_NAVIGATION_START );
     performCellsChanged ();
 
     this.gui.wordPanel.styledWordParserPanel.setHighlightedParseableEntity ();

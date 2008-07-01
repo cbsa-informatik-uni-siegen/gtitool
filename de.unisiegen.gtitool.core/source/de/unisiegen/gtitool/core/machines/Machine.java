@@ -392,6 +392,22 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns true if a user input is needed, otherwise false.
+   * 
+   * @return True if a user input is needed, otherwise false.
+   */
+  public boolean isUserInputNeeded ();
+
+
+  /**
+   * Returns the possible {@link Transition}s.
+   * 
+   * @return The possible {@link Transition}s.
+   */
+  public ArrayList < Transition > getPossibleTransitions ();
+
+
+  /**
    * Returns true if one of the active {@link State}s is a final {@link State},
    * otherwise false.
    * 
@@ -402,15 +418,21 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
-   * Performs the next step and returns the list of {@link Transition}s, which
-   * contains the {@link Symbol}.
+   * Performs the next step.
    */
   public void nextSymbol ();
 
 
   /**
-   * Removes the last step and returns the list of {@link Transition}s, which
-   * contains the {@link Symbol}.
+   * Performs the next step using the given {@link Transition}.
+   * 
+   * @param transition The {@link Transition}.
+   */
+  public void nextSymbol ( Transition transition );
+
+
+  /**
+   * Removes the last step.
    */
   public void previousSymbol ();
 

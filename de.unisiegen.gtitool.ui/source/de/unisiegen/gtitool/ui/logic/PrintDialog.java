@@ -25,6 +25,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
+import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.logger.Logger;
 import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
@@ -501,10 +502,12 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     int internOffset = 2;
     int x = this.marginLeft;
+
     for ( int column = 0 ; column < this.tableColumnModel.getColumnCount () ; column++ )
     {
       TableColumn tableColumn = this.tableColumnModel.getColumn ( column );
 
+      int dx = x;
       int modelColumn = tableColumn.getModelIndex ();
       Object value = this.tableModel.getValueAt ( row, modelColumn );
 
@@ -520,8 +523,41 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         {
           PrettyStringComponent prettyStringComponent = ( PrettyStringComponent ) component;
 
-          g.drawString ( prettyStringComponent.getPrettyString ().toString (),
-              x, y + ROW_HEIGHT - internOffset );
+          for ( PrettyToken currentToken : prettyStringComponent
+              .getPrettyString () )
+          {
+            Font font = null;
+
+            if ( !currentToken.isBold () && !currentToken.isItalic () )
+            {
+              font = g.getFont ().deriveFont ( Font.PLAIN );
+            }
+            else if ( currentToken.isBold () && currentToken.isItalic () )
+            {
+              font = g.getFont ().deriveFont ( Font.BOLD | Font.ITALIC );
+            }
+            else if ( currentToken.isBold () )
+            {
+              font = g.getFont ().deriveFont ( Font.BOLD );
+            }
+            else if ( currentToken.isItalic () )
+            {
+              font = g.getFont ().deriveFont ( Font.ITALIC );
+            }
+
+            g.setFont ( font );
+            g.setColor ( currentToken.getColor () );
+            char [] chars = currentToken.getChar ();
+            for ( int i = 0 ; i < chars.length ; i++ )
+            {
+              g.drawChars ( chars, i, 1, dx, y + ROW_HEIGHT - internOffset );
+              dx += g.getFontMetrics ().charWidth ( chars [ i ] );
+            }
+          }
+
+          // g.drawString ( prettyStringComponent.getPrettyString ().toString
+          // (),
+          // x, y + ROW_HEIGHT - internOffset );
           performNormal = false;
         }
       }
@@ -625,7 +661,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   public void handlePrint ()
   {
     this.gui.setVisible ( false );
-    
+
     // Margin
     this.marginLeft = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginLeft
         .getValue () ).intValue () );
@@ -635,7 +671,6 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         .getValue () ).intValue () );
     this.marginBottom = ( int ) ( 2.8346456693 * ( ( Number ) this.gui.jSpinnerMarginBottom
         .getValue () ).intValue () );
-
 
     logger.debug ( "handlePrint", "printing" ); //$NON-NLS-1$ //$NON-NLS-2$
     if ( this.machinePanel != null )
@@ -883,7 +918,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
   private void printJGraph ( JGTIGraph graph, String jobName )
   {
     PrinterJob job = PrinterJob.getPrinterJob ();
-    
+
     graph.setMarginTop ( this.marginTop );
     graph.setMarginBottom ( this.marginBottom );
     graph.setMarginLeft ( this.marginLeft );
@@ -945,7 +980,7 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table.setColumnModel ( this.tableColumnModel );
 
         printTableModel ( name
-            + " - " + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            + " - " + Messages.getString ( "PrintDialog.PDATable" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
       else
       {
@@ -954,9 +989,8 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
         this.table = new JGTITable ();
         this.table.setModel ( this.tableModel );
         this.table.setColumnModel ( this.tableColumnModel );
-
         printTableModel ( name
-            + " - " + Messages.getString ( "PrintDialog.PDATable" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            + " - " + Messages.getString ( "PrintDialog.Table" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       }
     }
     catch ( PrinterException exc )

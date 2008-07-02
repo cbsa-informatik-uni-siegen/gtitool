@@ -128,7 +128,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIPanelPrinter.add(jGTILabelPrinter, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jGTIPanelPrinter.add(jGTIComboBoxPrinter, gridBagConstraints);
 
@@ -347,8 +347,6 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.insets = new java.awt.Insets(16, 16, 16, 16);
         jGTIPanelOuter.add(jGTIPanelPageSetup, gridBagConstraints);
 
-        jGTIPanelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
         jGTIButtonCancel.setText(bundle.getString("ConfirmDialog.Cancel")); // NOI18N
         jGTIButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -358,9 +356,8 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jGTIPanelButton.add(jGTIButtonCancel, gridBagConstraints);
 
         jGTIButtonYes.setText(bundle.getString("PrintDialog.Print")); // NOI18N
@@ -374,7 +371,7 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
         jGTIPanelButton.add(jGTIButtonYes, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

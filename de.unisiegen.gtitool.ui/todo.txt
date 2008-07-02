@@ -2,8 +2,6 @@
 
 CF		- Fehler im HistoryPath wegen falscher Zykluserkennung
 
-BM		- Drucken: PrettyString verwenden (Header/Tabelle)
-BM		- Drucken: Optik des Dialoges passt nicht zu den anderen Dialogen
 BM		- Drucken: Job-Name anpassen
 
 

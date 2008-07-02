@@ -311,7 +311,7 @@ public final class OpenDialog implements LogicClass < OpenDialogForm >
     {
       throw new RuntimeException ( "ui is not a BasicFileChooserUI" ); //$NON-NLS-1$
     }
-    if ( !getSelectedFile ().isDirectory () )
+    if ( getSelectedFile () != null && !getSelectedFile ().isDirectory () )
     {
       this.confirmed = true;
       this.gui.dispose ();

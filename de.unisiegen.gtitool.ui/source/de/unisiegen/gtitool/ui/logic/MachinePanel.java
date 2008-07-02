@@ -1240,6 +1240,8 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
    */
   public final void handleEditMachine ()
   {
+    handleWordStop ();
+
     this.machineMode = MachineMode.EDIT_MACHINE;
     this.jGTIGraph.removeMouseListener ( this.enterWordModeMouse );
     this.gui.wordPanel.setVisible ( false );
@@ -1721,7 +1723,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     if ( event.getStateChange () == ItemEvent.SELECTED )
     {
       cancelAutoStepTimer ();
-      startAutoStepTimer ();
+      startAutoStepTimer ( false );
     }
     else
     {
@@ -1741,10 +1743,13 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
     {
       if ( this.machine.isUserInputNeeded () )
       {
-        // TODOCF cancel and start the auto step timer
+        cancelAutoStepTimer ();
+
         ChooseTransitionDialog dialog = new ChooseTransitionDialog (
             this.mainWindowForm, this.machine.getPossibleTransitions () );
         dialog.show ();
+
+        startAutoStepTimer ( true );
 
         this.machine.nextSymbol ( dialog.getChoosenTransition () );
       }
@@ -3216,14 +3221,18 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
 
   /**
    * Starts the auto step {@link Timer}.
+   * 
+   * @param delayed Flag that indicates that the timer should start after a
+   *          delay.
    */
   @SuppressWarnings ( "synthetic-access" )
-  private final void startAutoStepTimer ()
+  private final void startAutoStepTimer ( boolean delayed )
   {
     this.autoStepTimer = new Timer ();
     int time = PreferenceManager.getInstance ().getAutoStepItem ()
         .getAutoStepInterval ();
-    this.autoStepTimer.schedule ( new AutoStepTimerTask (), 0, time );
+    this.autoStepTimer.schedule ( new AutoStepTimerTask (), delayed ? time : 0,
+        time );
   }
 
 

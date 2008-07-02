@@ -14,11 +14,14 @@ import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTi
  * @author Christian Fehler
  * @version $Id$
  */
-@SuppressWarnings (
-{ "all" } )
 public class EntitiesTest
 {
 
+  /**
+   * The main method.
+   * 
+   * @param arguments The arguments.
+   */
   public static void main ( String [] arguments )
   {
     Symbol a = null;
@@ -26,9 +29,9 @@ public class EntitiesTest
     Symbol c = null;
     try
     {
-      a = new DefaultSymbol ( "a" );
-      b = new DefaultSymbol ( "b" );
-      c = new DefaultSymbol ( "c" );
+      a = new DefaultSymbol ( "a" ); //$NON-NLS-1$
+      b = new DefaultSymbol ( "b" );//$NON-NLS-1$
+      c = new DefaultSymbol ( "c" );//$NON-NLS-1$
     }
     catch ( SymbolException e )
     {
@@ -38,14 +41,15 @@ public class EntitiesTest
 
     Stack stack = new DefaultStack ();
 
-    stack.push ( a );
-    stack.push ( b );
+    // stack abc
     stack.push ( c );
+    stack.push ( b );
+    stack.push ( a );
 
     System.out.println ( stack.peak ( 2 ) );
     System.out.println ( stack );
 
-    System.out.println ( stack.pop ( 2 ) );
+    System.out.println ( stack.pop () );
     System.out.println ( stack );
 
     Alphabet alphabet = null;
@@ -75,9 +79,9 @@ public class EntitiesTest
     State z2 = null;
     try
     {
-      z0 = new DefaultState ( alphabet, pushDownAlphabet, "z0", true, false );
-      z1 = new DefaultState ( alphabet, pushDownAlphabet, "z1", false, false );
-      z2 = new DefaultState ( alphabet, pushDownAlphabet, "z2", false, true );
+      z0 = new DefaultState ( alphabet, pushDownAlphabet, "z0", true, false );//$NON-NLS-1$
+      z1 = new DefaultState ( alphabet, pushDownAlphabet, "z1", false, false );//$NON-NLS-1$
+      z2 = new DefaultState ( alphabet, pushDownAlphabet, "z2", false, true );//$NON-NLS-1$
     }
     catch ( StateException e )
     {
@@ -102,6 +106,12 @@ public class EntitiesTest
           new DefaultWord (), new DefaultWord (), z1, z2, c );
       t4 = new DefaultTransition ( alphabet, pushDownAlphabet,
           new DefaultWord (), new DefaultWord (), z2, z2, a, b, c );
+
+      System.out.println ( t0 );
+      System.out.println ( t1 );
+      System.out.println ( t2 );
+      System.out.println ( t3 );
+      System.out.println ( t4 );
     }
     catch ( TransitionSymbolNotInAlphabetException e )
     {

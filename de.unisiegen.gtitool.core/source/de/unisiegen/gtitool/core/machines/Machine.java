@@ -287,6 +287,14 @@ public interface Machine extends InputEntity, Serializable, TableModel,
 
 
   /**
+   * Returns the possible {@link Transition}s.
+   * 
+   * @return The possible {@link Transition}s.
+   */
+  public ArrayList < Transition > getPossibleTransitions ();
+
+
+  /**
    * Returns the push down {@link Alphabet}.
    * 
    * @return The push down {@link Alphabet}.
@@ -397,14 +405,6 @@ public interface Machine extends InputEntity, Serializable, TableModel,
    * @return True if a user input is needed, otherwise false.
    */
   public boolean isUserInputNeeded ();
-
-
-  /**
-   * Returns the possible {@link Transition}s.
-   * 
-   * @return The possible {@link Transition}s.
-   */
-  public ArrayList < Transition > getPossibleTransitions ();
 
 
   /**

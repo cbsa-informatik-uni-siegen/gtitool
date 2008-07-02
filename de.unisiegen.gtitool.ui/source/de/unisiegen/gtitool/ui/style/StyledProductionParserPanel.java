@@ -182,8 +182,8 @@ public final class StyledProductionParserPanel extends
 
 
   /**
-   * Sets the {@link NonterminalSymbolSet}. Every parsed symbol in this set is
-   * a {@link NonterminalSymbol}.
+   * Sets the {@link NonterminalSymbolSet}. Every parsed symbol in this set is a
+   * {@link NonterminalSymbol}.
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
    */

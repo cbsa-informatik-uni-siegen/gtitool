@@ -1,6 +1,6 @@
 *** TODO ***
 
-CF		- Stack muss von rechts aufgebaut werden
+CF		- Fehler im HistoryPath wegen falscher Zykluserkennung
 
 BM		- Drucken: PrettyString verwenden (Header/Tabelle)
 BM		- Drucken: Optik des Dialoges passt nicht zu den anderen Dialogen
@@ -9,21 +9,21 @@ BM		- Drucken: Job-Name anpassen
 
 *** FEATURE ***
 
-CF		- PDA Machine editierbar
-CF		- Regular Expression Parser
+CF		- PDA Machinen Tabelle editierbar machen
+CF		- Reguläre Ausdrücke eingeben und umwandeln können
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle
-CF		- Tastaturbefehle einbauen (ESC zum Schließen, Enter zum Bestätigen ...)
+CF		- Tastaturbefehle einbauen
 CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
 		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
 		  Potenzautomaten sehr leicht lahmlegen
 CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
-CF		- Orderstruktur der icons überarbeiten (alleiniger Zugriff auf alle GUI
-		  Komponenten nötig)
+CF		- Orderstruktur der Icons überarbeiten
 CF		- Wörter ausgeben, die erkannt werden
-CF		- LaTeX Export
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
+
+		- LaTeX Export

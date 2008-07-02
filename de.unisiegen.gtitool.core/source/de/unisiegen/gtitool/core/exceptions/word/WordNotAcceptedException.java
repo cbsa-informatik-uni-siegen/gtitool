@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * accepted.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: WordNotAcceptedException.java 1043 2008-06-27 00:09:58Z fehler
+ *          $
  */
 public final class WordNotAcceptedException extends WordException
 {

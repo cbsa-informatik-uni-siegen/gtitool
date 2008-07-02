@@ -50,40 +50,6 @@ public final class DefaultStack implements Stack
 
 
   /**
-   * Allocates a new {@link DefaultStack}.
-   * 
-   * @param symbols The array of {@link Symbol}s.
-   */
-  public DefaultStack ( Iterable < Symbol > symbols )
-  {
-    this ();
-    // Symbols
-    if ( symbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    push ( symbols );
-  }
-
-
-  /**
-   * Allocates a new {@link DefaultStack}.
-   * 
-   * @param symbols The array of {@link Symbol}s.
-   */
-  public DefaultStack ( Symbol ... symbols )
-  {
-    this ();
-    // Symbols
-    if ( symbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    push ( symbols );
-  }
-
-
-  /**
    * {@inheritDoc}
    * 
    * @see Stack#clear()
@@ -101,41 +67,7 @@ public final class DefaultStack implements Stack
    */
   public final int compareTo ( Stack other )
   {
-    ArrayList < Symbol > firstList = new ArrayList < Symbol > ();
-    ArrayList < Symbol > secondList = new ArrayList < Symbol > ();
-
-    firstList.addAll ( this.symbolList );
-    secondList.addAll ( other.get () );
-
-    int minSize = firstList.size () < secondList.size () ? firstList.size ()
-        : secondList.size ();
-
-    for ( int i = 0 ; i < minSize ; i++ )
-    {
-      int compare = firstList.get ( i ).compareTo ( secondList.get ( i ) );
-      if ( compare != 0 )
-      {
-        return compare;
-      }
-    }
-
-    if ( firstList.size () == secondList.size () )
-    {
-      return 0;
-    }
-
-    return firstList.size () < secondList.size () ? -1 : 1;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#contains(Symbol)
-   */
-  public final boolean contains ( Symbol symbol )
-  {
-    return this.symbolList.contains ( symbol );
+    return toString ().compareTo ( other.toString () );
   }
 
 
@@ -149,37 +81,10 @@ public final class DefaultStack implements Stack
   {
     if ( other instanceof DefaultStack )
     {
-      DefaultStack defaultStack = ( DefaultStack ) other;
-      return this.symbolList.equals ( defaultStack.symbolList );
+      DefaultStack stack = ( DefaultStack ) other;
+      return this.symbolList.equals ( stack.symbolList );
     }
     return false;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#get()
-   */
-  public final ArrayList < Symbol > get ()
-  {
-    return this.symbolList;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#get(int)
-   */
-  public final Symbol get ( int index )
-  {
-    Iterator < Symbol > iterator = this.symbolList.iterator ();
-    for ( int i = 0 ; i < index ; i++ )
-    {
-      iterator.next ();
-    }
-    return iterator.next ();
   }
 
 
@@ -224,7 +129,7 @@ public final class DefaultStack implements Stack
    */
   public final Symbol peak ()
   {
-    return this.symbolList.get ( this.symbolList.size () - 1 );
+    return this.symbolList.get ( 0 );
   }
 
 
@@ -244,7 +149,7 @@ public final class DefaultStack implements Stack
 
     for ( int i = 0 ; i < size ; i++ )
     {
-      result.add ( this.symbolList.get ( this.symbolList.size () - size + i ) );
+      result.add ( this.symbolList.get ( i ) );
     }
     return result;
   }
@@ -257,55 +162,7 @@ public final class DefaultStack implements Stack
    */
   public final Symbol pop ()
   {
-    return this.symbolList.remove ( this.symbolList.size () - 1 );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#pop(int)
-   */
-  public final ArrayList < Symbol > pop ( int size )
-  {
-    ArrayList < Symbol > result = new ArrayList < Symbol > ();
-    if ( size > this.symbolList.size () )
-    {
-      result.addAll ( this.symbolList );
-      this.symbolList.clear ();
-      return result;
-    }
-
-    int oldSize = this.symbolList.size ();
-    for ( int i = 0 ; i < size ; i++ )
-    {
-      result.add ( this.symbolList.remove ( oldSize - size ) );
-    }
-    return result;
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#push(Iterable)
-   */
-  public final void push ( Iterable < Symbol > symbols )
-  {
-    if ( symbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    ArrayList < Symbol > tmpSymbolList = new ArrayList < Symbol > ();
-    for ( Symbol current : symbols )
-    {
-      tmpSymbolList.add ( current );
-    }
-    // TODOCF check this
-    for ( int i = tmpSymbolList.size () - 1 ; i >= 0 ; i-- )
-    {
-      push ( tmpSymbolList.get ( i ) );
-    }
+    return this.symbolList.remove ( 0 );
   }
 
 
@@ -321,26 +178,7 @@ public final class DefaultStack implements Stack
     {
       throw new NullPointerException ( "symbol is null" ); //$NON-NLS-1$
     }
-    this.symbolList.add ( symbol );
-  }
-
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see Stack#push(Symbol[])
-   */
-  public final void push ( Symbol ... symbols )
-  {
-    if ( symbols == null )
-    {
-      throw new NullPointerException ( "symbols is null" ); //$NON-NLS-1$
-    }
-    // TODOCF check this
-    for ( int i = symbols.length - 1 ; i >= 0 ; i-- )
-    {
-      push ( symbols [ i ] );
-    }
+    this.symbolList.add ( 0, symbol );
   }
 
 

@@ -80,8 +80,8 @@ public final class StyledNonterminalSymbolParserPanel extends
 
 
   /**
-   * Sets the {@link NonterminalSymbolSet}. The parsed
-   * {@link NonterminalSymbol} must be in this {@link NonterminalSymbolSet}.
+   * Sets the {@link NonterminalSymbolSet}. The parsed {@link NonterminalSymbol}
+   * must be in this {@link NonterminalSymbolSet}.
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
    */

@@ -11,7 +11,8 @@ import de.unisiegen.gtitool.core.i18n.Messages;
  * correct.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: SymbolEmptyNameException.java 1043 2008-06-27 00:09:58Z fehler
+ *          $
  */
 public final class SymbolEmptyNameException extends SymbolException
 {

@@ -111,7 +111,8 @@ public final class StyledTerminalSymbolSetParserPanel extends
 
   /**
    * Sets the {@link NonterminalSymbolSet}. Every {@link TerminalSymbol} in the
-   * {@link TerminalSymbolSet} can not be be in the {@link NonterminalSymbolSet}.
+   * {@link TerminalSymbolSet} can not be be in the {@link NonterminalSymbolSet}
+   * .
    * 
    * @param nonterminalSymbolSet The {@link NonterminalSymbolSet} to set.
    */

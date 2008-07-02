@@ -42,7 +42,11 @@ non terminal 				epsilon;
 
 stack							::= symbol_list:sl
 									{:
-									   RESULT = new DefaultStack(sl);
+									   RESULT = new DefaultStack();
+									   for (int i = sl.length - 1; i >= 0; i--)
+									   {
+									     RESULT.push(sl[0]);
+									   }
 									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
 									:}
 								|	epsilon:e

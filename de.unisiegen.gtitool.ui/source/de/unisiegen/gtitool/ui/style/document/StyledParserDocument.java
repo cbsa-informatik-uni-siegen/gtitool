@@ -93,15 +93,15 @@ public final class StyledParserDocument < E extends Entity < E > > extends
 
 
   /**
-   * The attributes default style.
-   */
-  private SimpleAttributeSet normalSet = new SimpleAttributeSet ();
-
-
-  /**
    * The overwritten {@link Style}.
    */
   private HashMap < String, Style > overwrittenStyle = new HashMap < String, Style > ();
+
+
+  /**
+   * Flag that indicates if the right alignment is active.
+   */
+  private boolean rightAlignment = false;
 
 
   /**
@@ -124,9 +124,6 @@ public final class StyledParserDocument < E extends Entity < E > > extends
 
     this.exceptionList = new ArrayList < ScannerException > ();
     this.externExceptionList = new ArrayList < ScannerException > ();
-
-    StyleConstants.setForeground ( this.normalSet, Color.BLACK );
-    StyleConstants.setBold ( this.normalSet, false );
 
     /*
      * ColorChangedListener
@@ -239,12 +236,17 @@ public final class StyledParserDocument < E extends Entity < E > > extends
    */
   private final SimpleAttributeSet getAttributeSetError ()
   {
-    SimpleAttributeSet errorSet = new SimpleAttributeSet ();
-    StyleConstants.setForeground ( errorSet, PreferenceManager.getInstance ()
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    StyleConstants.setForeground ( set, PreferenceManager.getInstance ()
         .getColorItemParserError ().getColor () );
-    StyleConstants.setBold ( errorSet, true );
-    StyleConstants.setUnderline ( errorSet, true );
-    return errorSet;
+    StyleConstants.setBold ( set, true );
+    StyleConstants.setUnderline ( set, true );
+    if ( this.rightAlignment )
+    {
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+      setParagraphAttributes ( 0, getLength () - 1, set, false );
+    }
+    return set;
   }
 
 
@@ -255,11 +257,34 @@ public final class StyledParserDocument < E extends Entity < E > > extends
    */
   private final SimpleAttributeSet getAttributeSetHighlightedParseableEntity ()
   {
-    SimpleAttributeSet highlightedParseableEntitySet = new SimpleAttributeSet ();
-    StyleConstants.setBackground ( highlightedParseableEntitySet,
-        PreferenceManager.getInstance ().getColorItemParserHighlighting ()
-            .getColor () );
-    return highlightedParseableEntitySet;
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    StyleConstants.setBackground ( set, PreferenceManager.getInstance ()
+        .getColorItemParserHighlighting ().getColor () );
+    if ( this.rightAlignment )
+    {
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+      setParagraphAttributes ( 0, getLength () - 1, set, false );
+    }
+    return set;
+  }
+
+
+  /**
+   * Returns the normal set.
+   * 
+   * @return The normal set.
+   */
+  private final SimpleAttributeSet getAttributeSetNormal ()
+  {
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    StyleConstants.setForeground ( set, Color.BLACK );
+    StyleConstants.setBold ( set, false );
+    if ( this.rightAlignment )
+    {
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+      setParagraphAttributes ( 0, getLength () - 1, set, false );
+    }
+    return set;
   }
 
 
@@ -270,10 +295,15 @@ public final class StyledParserDocument < E extends Entity < E > > extends
    */
   private final SimpleAttributeSet getAttributeSetWarning ()
   {
-    SimpleAttributeSet warningSet = new SimpleAttributeSet ();
-    StyleConstants.setBackground ( warningSet, PreferenceManager.getInstance ()
+    SimpleAttributeSet set = new SimpleAttributeSet ();
+    StyleConstants.setBackground ( set, PreferenceManager.getInstance ()
         .getColorItemParserWarning ().getColor () );
-    return warningSet;
+    if ( this.rightAlignment )
+    {
+      StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+      setParagraphAttributes ( 0, getLength () - 1, set, false );
+    }
+    return set;
   }
 
 
@@ -358,6 +388,18 @@ public final class StyledParserDocument < E extends Entity < E > > extends
 
 
   /**
+   * Returns the right alignment value.
+   * 
+   * @return The right alignment value.
+   * @see #rightAlignment
+   */
+  public final boolean isRightAlignment ()
+  {
+    return this.rightAlignment;
+  }
+
+
+  /**
    * Parses the document and returns the parsed object or null, if the text
    * could not be parsed.
    * 
@@ -370,7 +412,7 @@ public final class StyledParserDocument < E extends Entity < E > > extends
     this.externExceptionList.clear ();
 
     this.parsedObject = null;
-    setCharacterAttributes ( 0, getLength (), this.normalSet, true );
+    setCharacterAttributes ( 0, getLength (), getAttributeSetNormal (), true );
     try
     {
       /*
@@ -401,6 +443,11 @@ public final class StyledParserDocument < E extends Entity < E > > extends
             StyleConstants.setForeground ( set, newStyle.getColor () );
             StyleConstants.setBold ( set, newStyle.isBold () );
             StyleConstants.setItalic ( set, newStyle.isItalic () );
+            if ( this.rightAlignment )
+            {
+              StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+              setParagraphAttributes ( 0, getLength () - 1, set, false );
+            }
           }
           // Use the normal scanner style
           else
@@ -408,6 +455,11 @@ public final class StyledParserDocument < E extends Entity < E > > extends
             StyleConstants.setForeground ( set, style.getColor () );
             StyleConstants.setBold ( set, style.isBold () );
             StyleConstants.setItalic ( set, style.isItalic () );
+            if ( this.rightAlignment )
+            {
+              StyleConstants.setAlignment ( set, StyleConstants.ALIGN_RIGHT );
+              setParagraphAttributes ( 0, getLength () - 1, set, false );
+            }
           }
           setCharacterAttributes ( offset + symbol.left, symbol.right
               - symbol.left, set, true );
@@ -662,5 +714,17 @@ public final class StyledParserDocument < E extends Entity < E > > extends
       this.highlightedParseableEntityList.add ( current );
     }
     highlightedParseableEntities ();
+  }
+
+
+  /**
+   * Sets the right alignment.
+   * 
+   * @param rightAlignment The right alignment to set.
+   * @see #rightAlignment
+   */
+  public final void setRightAlignment ( boolean rightAlignment )
+  {
+    this.rightAlignment = rightAlignment;
   }
 }

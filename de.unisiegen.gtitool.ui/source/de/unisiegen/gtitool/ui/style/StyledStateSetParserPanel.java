@@ -17,7 +17,8 @@ import de.unisiegen.gtitool.ui.style.parser.StyledParserPanel;
  * The styled {@link StateSet} panel class.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledStateSetParserPanel.java 946 2008-05-30 14:27:24Z fehler
+ *          $
  */
 public final class StyledStateSetParserPanel extends
     StyledParserPanel < StateSet >

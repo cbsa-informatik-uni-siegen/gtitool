@@ -28,7 +28,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * The {@link DefaultTerminalSymbolSet} entity.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultTerminalSymbolSet.java 1043 2008-06-27 00:09:58Z fehler
+ *          $
  */
 public final class DefaultTerminalSymbolSet implements TerminalSymbolSet
 {

@@ -817,6 +817,17 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
 
 
   /**
+   * Returns the right alignment value.
+   * 
+   * @return The right alignment value.
+   */
+  public final boolean isRightAlignment ()
+  {
+    return this.document.isRightAlignment ();
+  }
+
+
+  /**
    * Return the sideBarVisible value.
    * 
    * @return The sideBarVisible value.
@@ -1067,6 +1078,17 @@ public abstract class StyledParserPanel < E extends Entity < E >> extends
       Iterable < ? extends Entity < ? > > entities )
   {
     this.document.setHighlightedParseableEntity ( entities );
+  }
+
+
+  /**
+   * Sets the right alignment.
+   * 
+   * @param rightAlignment The right alignment to set.
+   */
+  public final void setRightAlignment ( boolean rightAlignment )
+  {
+    this.document.setRightAlignment ( rightAlignment );
   }
 
 

@@ -30,7 +30,8 @@ public final class StyledWordParserPanel extends StyledParserPanel < Word >
 
 
   /**
-   * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet}.
+   * Every {@link Symbol} in the {@link Word} has to be in this {@link Alphabet}
+   * .
    */
   private Alphabet alphabet = null;
 

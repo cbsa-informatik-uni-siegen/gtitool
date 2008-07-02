@@ -120,8 +120,8 @@ public final class StyledNonterminalSymbolSetParserPanel extends
   /**
    * Sets the {@link NonterminalSymbol}s which should not be removeable.
    * 
-   * @param notRemoveableNonterminalSymbols The {@link NonterminalSymbol}s
-   *          which should not be removeable.
+   * @param notRemoveableNonterminalSymbols The {@link NonterminalSymbol}s which
+   *          should not be removeable.
    * @see #notRemoveableNonterminalSymbols
    */
   public final void setNotRemoveableNonterminalSymbols (
@@ -153,7 +153,8 @@ public final class StyledNonterminalSymbolSetParserPanel extends
 
   /**
    * Sets the {@link TerminalSymbolSet}. Every {@link NonterminalSymbol} in the
-   * {@link NonterminalSymbolSet} can not be be in the {@link TerminalSymbolSet}.
+   * {@link NonterminalSymbolSet} can not be be in the {@link TerminalSymbolSet}
+   * .
    * 
    * @param terminalSymbolSet The {@link TerminalSymbolSet} to set.
    */

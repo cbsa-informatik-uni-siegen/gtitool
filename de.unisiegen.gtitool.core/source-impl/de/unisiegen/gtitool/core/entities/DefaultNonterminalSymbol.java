@@ -20,7 +20,8 @@ import de.unisiegen.gtitool.core.storage.exceptions.StoreException;
  * The {@link DefaultNonterminalSymbol} entity.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: DefaultNonterminalSymbol.java 1043 2008-06-27 00:09:58Z fehler
+ *          $
  */
 public final class DefaultNonterminalSymbol implements NonterminalSymbol
 {

@@ -1,12 +1,11 @@
 *** TODO ***
 
-CF		- Fehler im HistoryPath wegen falscher Zykluserkennung
-
 BM		- Drucken: Job-Name anpassen
 
 
 *** FEATURE ***
 
+CF		- Bei Label die einen PrettyString enthalten den HTML Code verwenden
 CF		- PDA Machinen Tabelle editierbar machen
 CF		- Reguläre Ausdrücke eingeben und umwandeln können
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden

@@ -29,6 +29,12 @@ public final class HistoryPathPart
 
 
   /**
+   * The complete readed {@link Symbol} list.
+   */
+  private ArrayList < Symbol > completeReadedSymbolList;
+
+
+  /**
    * The {@link State}.
    */
   private State state;
@@ -38,30 +44,19 @@ public final class HistoryPathPart
    * Allocates a new {@link HistoryPathPart}.
    * 
    * @param transitionSymbolList The {@link TransitionSymbolPair} list.
-   * @param readedSymbolList The readed {@link Symbol} list
-   */
-  public HistoryPathPart (
-      ArrayList < TransitionSymbolPair > transitionSymbolList,
-      ArrayList < Symbol > readedSymbolList )
-  {
-    this ( transitionSymbolList, readedSymbolList, null );
-  }
-
-
-  /**
-   * Allocates a new {@link HistoryPathPart}.
-   * 
-   * @param transitionSymbolList The {@link TransitionSymbolPair} list.
-   * @param readedSymbolList The readed {@link Symbol} list
+   * @param readedSymbolList The readed {@link Symbol} list.
    * @param state The {@link State}.
+   * @param completeReadedSymbolList The complete readed {@link Symbol} list.
    */
   public HistoryPathPart (
       ArrayList < TransitionSymbolPair > transitionSymbolList,
-      ArrayList < Symbol > readedSymbolList, State state )
+      ArrayList < Symbol > readedSymbolList, State state,
+      ArrayList < Symbol > completeReadedSymbolList )
   {
     this.transitionSymbolList = transitionSymbolList;
     this.readedSymbolList = readedSymbolList;
     this.state = state;
+    this.completeReadedSymbolList = completeReadedSymbolList;
   }
 
 
@@ -116,7 +111,8 @@ public final class HistoryPathPart
 
     for ( TransitionSymbolPair current : this.transitionSymbolList )
     {
-      if ( stateList.contains ( current.getFirst ().getStateBegin () ) )
+      if ( this.readedSymbolList.equals ( this.completeReadedSymbolList )
+          && stateList.contains ( current.getFirst ().getStateBegin () ) )
       {
         return true;
       }

@@ -102,15 +102,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
-   * Returns the machinePanel.
-   * 
-   * @return The machinePanel.
-   * @see #machinePanel
+   * The complete readed {@link Symbol} list.
    */
-  public MachinePanel getMachinePanel ()
-  {
-    return this.machinePanel;
-  }
+  private ArrayList < Symbol > completeReadedSymbolList;
 
 
   /**
@@ -153,23 +147,26 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
     this.historyModel.addColumn ( "history" ); //$NON-NLS-1$
 
+    this.completeReadedSymbolList = new ArrayList < Symbol > ();
     ArrayList < Symbol > inputList = new ArrayList < Symbol > ();
     try
     {
-      inputList.addAll ( this.machine.getReadedSymbols () );
+      this.completeReadedSymbolList.addAll ( this.machine.getReadedSymbols () );
     }
     catch ( Exception exc )
     {
       // Do nothing
     }
+    inputList.addAll ( this.completeReadedSymbolList );
 
     for ( State current : this.machine.getState () )
     {
       if ( current.isActive () )
       {
-        HistoryPathPart path = new HistoryPathPart (
-            new ArrayList < TransitionSymbolPair > (), inputList, current );
-        this.remainingHistoryPathList.add ( path );
+        HistoryPathPart pathPart = new HistoryPathPart (
+            new ArrayList < TransitionSymbolPair > (), inputList, current,
+            this.completeReadedSymbolList );
+        this.remainingHistoryPathList.add ( pathPart );
       }
     }
 
@@ -262,16 +259,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
         newReadedSymbolList.addAll ( readedSymbolList );
 
-        HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
-            newReadedSymbolList );
-        if ( newPath.isCycleDetected () )
-        {
-          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        else
-        {
-          this.remainingHistoryPathList.add ( newPath );
-        }
+        HistoryPathPart newPathPart = new HistoryPathPart ( newTransitionList,
+            newReadedSymbolList, null, this.completeReadedSymbolList );
+        cycleDetection ( newPathPart );
       }
       else if ( currentTransition.getTransitionType ().equals (
           TransitionType.EPSILON_SYMBOL ) )
@@ -295,16 +285,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         ArrayList < Symbol > newReadedSymbolList = new ArrayList < Symbol > ();
         newReadedSymbolList.addAll ( readedSymbolList );
 
-        HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
-            newReadedSymbolList );
-        if ( newPath.isCycleDetected () )
-        {
-          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        else
-        {
-          this.remainingHistoryPathList.add ( newPath );
-        }
+        HistoryPathPart newPathPart = new HistoryPathPart ( newTransitionList,
+            newReadedSymbolList, null, this.completeReadedSymbolList );
+        cycleDetection ( newPathPart );
 
         // symbol transition handling
         if ( ( readedSymbolList.size () > 0 )
@@ -323,16 +306,9 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
           newReadedSymbolList.addAll ( readedSymbolList );
           newReadedSymbolList.remove ( newReadedSymbolList.size () - 1 );
 
-          newPath = new HistoryPathPart ( newTransitionList,
-              newReadedSymbolList );
-          if ( newPath.isCycleDetected () )
-          {
-            logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
-          }
-          else
-          {
-            this.remainingHistoryPathList.add ( newPath );
-          }
+          newPathPart = new HistoryPathPart ( newTransitionList,
+              newReadedSymbolList, null, this.completeReadedSymbolList );
+          cycleDetection ( newPathPart );
         }
       }
       else if ( ( readedSymbolList.size () > 0 )
@@ -351,20 +327,31 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         newReadedSymbolList.addAll ( readedSymbolList );
         newReadedSymbolList.remove ( newReadedSymbolList.size () - 1 );
 
-        HistoryPathPart newPath = new HistoryPathPart ( newTransitionList,
-            newReadedSymbolList );
-        if ( newPath.isCycleDetected () )
-        {
-          logger.debug ( "calculate", "cycle detected: " + newPath ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        else
-        {
-          this.remainingHistoryPathList.add ( newPath );
-        }
+        HistoryPathPart newPathPart = new HistoryPathPart ( newTransitionList,
+            newReadedSymbolList, null, this.completeReadedSymbolList );
+        cycleDetection ( newPathPart );
       }
     }
 
     calculate ();
+  }
+
+
+  /**
+   * Detects cycles in the given {@link HistoryPathPart}.
+   * 
+   * @param historyPathPart The {@link HistoryPathPart}.
+   */
+  private final void cycleDetection ( HistoryPathPart historyPathPart )
+  {
+    if ( historyPathPart.isCycleDetected () )
+    {
+      logger.debug ( "cycleDetection", "cycle detected: " + historyPathPart ); //$NON-NLS-1$//$NON-NLS-2$
+    }
+    else
+    {
+      this.remainingHistoryPathList.add ( historyPathPart );
+    }
   }
 
 
@@ -443,12 +430,34 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
 
 
   /**
+   * Returns the machinePanel.
+   * 
+   * @return The machinePanel.
+   * @see #machinePanel
+   */
+  public MachinePanel getMachinePanel ()
+  {
+    return this.machinePanel;
+  }
+
+
+  /**
    * Closes the {@link HistoryDialogForm}.
    */
   public final void handleClose ()
   {
     logger.debug ( "handleClose", "handle close" ); //$NON-NLS-1$ //$NON-NLS-2$
     this.gui.dispose ();
+  }
+
+
+  /**
+   * Handle print action.
+   */
+  public void handlePrint ()
+  {
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
+    dialog.show ();
   }
 
 
@@ -464,15 +473,5 @@ public final class HistoryDialog implements LogicClass < HistoryDialogForm >
         - ( this.gui.getHeight () / 2 );
     this.gui.setBounds ( x, y, this.gui.getWidth (), this.gui.getHeight () );
     this.gui.setVisible ( true );
-  }
-
-
-  /**
-   * Handle print action.
-   */
-  public void handlePrint ()
-  {
-    PrintDialog dialog = new PrintDialog ( this.parent, this );
-    dialog.show ();
   }
 }

@@ -1,33 +1,49 @@
 \documentclass{report}
 
+
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
-\pagestyle{headings}
 \usepackage{textcomp}
 \usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{latexsym}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{index}
+\usepackage{graphicx}
+
+
+\pagestyle{headings}
+
+
+\input{command}
+
+
+\title{{\Huge GTI Tool}\\Benutzerhandbuch}
+\author{{\Large Christian Fehler, Benjamin Mies}\\[2mm]
+        Fachbereich 12 - Informatik und Elektrotechnik\\[1mm]
+        Universität Siegen}
+\date{\small\today}
+
+
+\newindex{default}{idx}{ind}{Stichwortverzeichnis}
+
 
 \begin{document}
 
-\begin{titlepage}
-  \vspace*{6cm}
-  \begin{center}
-    \sf
-    {\Huge Titel}
-
-    \vspace{1cm}
-    TODO
-  \end{center}
-\end{titlepage}
+\maketitle
 
 \tableofcontents
 \newpage
 
 \include{chapter1}
-
 \include{chapter2}
-
 \include{chapter3}
-
 \include{chapter4}
+
+\printindex
 
 \end{document}

@@ -5,6 +5,8 @@ BM		- Drucken: Job-Name anpassen
 
 *** FEATURE ***
 
+CF		- Doppeltes Handling aus dem Popupmenüs entfernen
+CF		- Icon für Produktion-Anlegen erstellen
 CF		- Erreichbare Zustände in einem Graphen
 CF		- Bei Label die einen PrettyString enthalten den HTML Code verwenden
 CF		- PDA Machinen Tabelle editierbar machen

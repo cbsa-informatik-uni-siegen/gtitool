@@ -1123,8 +1123,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.add ( ButtonState.VISIBLE_GRAMMAR );
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( true );
-      this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( true );
-      this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( true );
     }
   }
 
@@ -1445,25 +1443,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       {
         throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
       }
-    }
-  }
-
-
-  /**
-   * Handles the delete {@link Production} event.
-   */
-  public final void handleDeleteProduction ()
-  {
-    EditorPanel panel = this.jGTIMainSplitPane.getJGTIEditorPanelTabbedPane ()
-        .getSelectedEditorPanel ();
-    if ( panel instanceof GrammarPanel )
-    {
-      GrammarPanel grammarPanel = ( GrammarPanel ) panel;
-      grammarPanel.handleDeleteProduction ();
-    }
-    else
-    {
-      throw new RuntimeException ( "unsupported panel" ); //$NON-NLS-1$
     }
   }
 
@@ -4190,12 +4169,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     // Add production
     MainWindow.this.gui.getJGTIToolBarButtonAddProduction ().setToolTipText (
         Messages.getString ( "GrammarPanel.AddProduction" ) ); //$NON-NLS-1$
-    // Edit production
-    MainWindow.this.gui.getJGTIToolBarButtonEditProduction ().setToolTipText (
-        Messages.getString ( "GrammarPanel.ProductionProperties" ) ); //$NON-NLS-1$
-    // Delete production
-    MainWindow.this.gui.getJGTIToolBarButtonDeleteProduction ().setToolTipText (
-        Messages.getString ( "GrammarPanel.DeleteProduction" ) ); //$NON-NLS-1$
   }
 
 
@@ -4650,8 +4623,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
     {
       this.buttonStateList.remove ( ButtonState.VISIBLE_GRAMMAR );
       this.gui.getJGTIToolBarButtonAddProduction ().setVisible ( false );
-      this.gui.getJGTIToolBarButtonEditProduction ().setVisible ( false );
-      this.gui.getJGTIToolBarButtonDeleteProduction ().setVisible ( false );
     }
     else
     {

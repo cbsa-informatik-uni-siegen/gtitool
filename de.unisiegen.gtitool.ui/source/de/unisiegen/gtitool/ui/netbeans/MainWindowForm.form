@@ -1018,32 +1018,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonAddProductionActionPerformed"/>
               </Events>
             </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonEditProduction">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/grammar/large/edit.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="GrammarPanel.ProductionProperties" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonEditProductionActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton" name="jGTIToolBarButtonDeleteProduction">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/de/unisiegen/gtitool/ui/icon/grammar/large/delete.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="de/unisiegen/gtitool/ui/i18n/messages.properties" key="GrammarPanel.DeleteProduction" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jGTIToolBarButtonDeleteProductionActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JSeparator" name="jSeparatorNavigation">
               <Properties>
                 <Property name="orientation" type="int" value="1"/>

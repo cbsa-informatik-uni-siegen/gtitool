@@ -884,7 +884,7 @@ public final class GrammarPanel implements LogicClass < GrammarPanelForm >,
       }
 
       ProductionPopupMenu popupmenu = new ProductionPopupMenu ( this,
-          this.model, productions, rows );
+          this.model, productions );
 
       popupmenu.show ( ( Component ) event.getSource (), event.getX (), event
           .getY () );

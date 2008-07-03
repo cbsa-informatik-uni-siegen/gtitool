@@ -412,18 +412,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
 
     
     /**
-     * Returns the jGTIToolBarButtonDeleteProduction.
-     *
-     * @return The jGTIToolBarButtonDeleteProduction.
-     * @see #jGTIToolBarButtonDeleteProduction
-     */
-    public final JGTIToolBarButton getJGTIToolBarButtonDeleteProduction ()
-    {
-      return this.jGTIToolBarButtonDeleteProduction;
-    }
-
-    
-    /**
      * Returns the jGTIToolBarButtonEditDocument.
      *
      * @return The jGTIToolBarButtonEditDocument.
@@ -434,19 +422,7 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
       return this.jGTIToolBarButtonEditDocument;
     }
 
-    
-    /**
-     * Returns the jGTIToolBarButtonEditProduction.
-     *
-     * @return The jGTIToolBarButtonEditProduction.
-     * @see #jGTIToolBarButtonEditProduction
-     */
-    public final JGTIToolBarButton getJGTIToolBarButtonEditProduction ()
-    {
-      return this.jGTIToolBarButtonEditProduction;
-    }
 
-    
     /**
      * Returns the jGTIToolBarButtonNew.
      *
@@ -1057,8 +1033,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         jGTIToolBarToggleButtonFinalState = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarToggleButtonEnterWord = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarToggleButton();
         jGTIToolBarButtonAddProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonEditProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
-        jGTIToolBarButtonDeleteProduction = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jSeparatorNavigation = new javax.swing.JSeparator();
         jGTIToolBarButtonStart = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonPrevious = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
@@ -1303,24 +1277,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
             }
         });
         jToolBarNavigation.add(jGTIToolBarButtonAddProduction);
-
-        jGTIToolBarButtonEditProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/edit.png"))); // NOI18N
-        jGTIToolBarButtonEditProduction.setToolTipText(bundle.getString("GrammarPanel.ProductionProperties")); // NOI18N
-        jGTIToolBarButtonEditProduction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIToolBarButtonEditProductionActionPerformed(evt);
-            }
-        });
-        jToolBarNavigation.add(jGTIToolBarButtonEditProduction);
-
-        jGTIToolBarButtonDeleteProduction.setIcon(new javax.swing.ImageIcon(getClass().getResource("/de/unisiegen/gtitool/ui/icon/grammar/large/delete.png"))); // NOI18N
-        jGTIToolBarButtonDeleteProduction.setToolTipText(bundle.getString("GrammarPanel.DeleteProduction")); // NOI18N
-        jGTIToolBarButtonDeleteProduction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jGTIToolBarButtonDeleteProductionActionPerformed(evt);
-            }
-        });
-        jToolBarNavigation.add(jGTIToolBarButtonDeleteProduction);
 
         jSeparatorNavigation.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparatorNavigation.setMaximumSize(new java.awt.Dimension(5, 32));
@@ -1965,14 +1921,6 @@ public class MainWindowForm extends JFrame implements GUIClass <MainWindow>
         this.logic.handleAddProduction();
     }//GEN-LAST:event_jGTIToolBarButtonAddProductionActionPerformed
 
-    private void jGTIToolBarButtonEditProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonEditProductionActionPerformed
-        this.logic.handleEditProduction();
-    }//GEN-LAST:event_jGTIToolBarButtonEditProductionActionPerformed
-
-    private void jGTIToolBarButtonDeleteProductionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGTIToolBarButtonDeleteProductionActionPerformed
-        this.logic.handleDeleteProduction();
-    }//GEN-LAST:event_jGTIToolBarButtonDeleteProductionActionPerformed
-
     private void jGTIEditorPanelTabbedPaneLeftStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
         this.logic.handleTabbedPaneStateChanged(evt);
     }//GEN-LAST:event_jGTIEditorPanelTabbedPaneLeftStateChanged
@@ -2153,9 +2101,7 @@ private void jMenuItemPrinthandleClose(java.awt.event.ActionEvent evt) {//GEN-FI
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRightInner;
     private de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelRightOuter;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonAddProduction;
-    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonDeleteProduction;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEditDocument;
-    private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonEditProduction;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNew;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonNextStep;
     private de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonOpen;

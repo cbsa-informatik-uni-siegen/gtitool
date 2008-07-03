@@ -14,18 +14,16 @@ import javax.swing.SwingUtilities;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.ui.i18n.Messages;
-import de.unisiegen.gtitool.ui.logic.ConfirmDialog;
 import de.unisiegen.gtitool.ui.logic.GrammarPanel;
 import de.unisiegen.gtitool.ui.logic.ProductionDialog;
 import de.unisiegen.gtitool.ui.model.DefaultGrammarModel;
-import de.unisiegen.gtitool.ui.redoundo.ProductionsListChangedItem;
-import de.unisiegen.gtitool.ui.redoundo.RedoUndoItem;
 
 
 /**
- * A Popup Menu for {@link Transition}s
+ * A popup menu for {@link Transition}s.
  * 
  * @author Benjamin Mies
+ * @author Christian Fehler
  * @version $Id$
  */
 public final class ProductionPopupMenu extends JPopupMenu
@@ -80,26 +78,18 @@ public final class ProductionPopupMenu extends JPopupMenu
 
 
   /**
-   * The indeces of the {@link Production}s.
-   */
-  private int [] indeces;
-
-
-  /**
    * Allocates a new {@link StatePopupMenu}.
    * 
    * @param parent The {@link GrammarPanel}.
    * @param model the model containing the production.
    * @param productions the selected {@link Production}s.
-   * @param indeces The indeces of the {@link Production}s.
    */
   public ProductionPopupMenu ( GrammarPanel parent, DefaultGrammarModel model,
-      ArrayList < Production > productions, int [] indeces )
+      ArrayList < Production > productions )
   {
     this.grammarPanel = parent;
     this.model = model;
     this.productions = productions;
-    this.indeces = indeces;
     populateMenues ();
   }
 
@@ -109,7 +99,7 @@ public final class ProductionPopupMenu extends JPopupMenu
    */
   private final void populateMenues ()
   {
-
+    // add
     this.add = new JMenuItem ( Messages.getString ( "ProductionPopupMenu.Add" ) ); //$NON-NLS-1$
     this.add.setIcon ( new ImageIcon ( getClass ().getResource (
         "/de/unisiegen/gtitool/ui/icon/grammar/small/add.png" ) ) ); //$NON-NLS-1$
@@ -132,6 +122,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     } );
     add ( this.add );
 
+    // config
     this.config = new JMenuItem ( Messages
         .getString ( "ProductionPopupMenu.Properties" ) ); //$NON-NLS-1$
     this.config.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -160,6 +151,7 @@ public final class ProductionPopupMenu extends JPopupMenu
     this.config.setEnabled ( this.productions.size () == 1 );
     add ( this.config );
 
+    // delete
     this.delete = new JMenuItem ( Messages
         .getString ( "ProductionPopupMenu.Delete" ) ); //$NON-NLS-1$
     this.delete.setIcon ( new ImageIcon ( getClass ().getResource (
@@ -171,50 +163,13 @@ public final class ProductionPopupMenu extends JPopupMenu
       public void actionPerformed (
           @SuppressWarnings ( "unused" ) ActionEvent event )
       {
-        String message = null;
-        if ( ProductionPopupMenu.this.productions.size () == 1 )
-        {
-          message = Messages.getString (
-              "ProductionPopupMenu.DeleteProductionQuestion", //$NON-NLS-1$
-              ProductionPopupMenu.this.productions.get ( 0 ) );
-        }
-        else
-        {
-          message = Messages
-              .getString ( "ProductionPopupMenu.DeleteProductionsQuestion" ); //$NON-NLS-1$
-        }
-
-        ConfirmDialog confirmDialog = new ConfirmDialog (
-            ProductionPopupMenu.this.grammarPanel.getParent (),
-            message,
-            Messages.getString ( "ProductionPopupMenu.DeleteProductionTitle" ), true, //$NON-NLS-1$
-            true, false );
-        confirmDialog.show ();
-        if ( confirmDialog.isConfirmed () )
-        {
-          ArrayList < Production > oldProductions = new ArrayList < Production > ();
-          oldProductions.addAll ( ProductionPopupMenu.this.grammarPanel
-              .getGrammar ().getProduction () );
-
-          int number = 0;
-          for ( int index : ProductionPopupMenu.this.indeces )
-          {
-            ProductionPopupMenu.this.model.removeProduction ( index - number );
-            number++ ;
-          }
-          RedoUndoItem item = new ProductionsListChangedItem (
-              ProductionPopupMenu.this.grammarPanel.getGrammar (),
-              oldProductions );
-          ProductionPopupMenu.this.grammarPanel.getRedoUndoHandler ().addItem (
-              item );
-
-          ProductionPopupMenu.this.grammarPanel.getGUI ().repaint ();
-        }
+        ProductionPopupMenu.this.grammarPanel.handleDeleteProduction ();
       }
     } );
     this.delete.setEnabled ( this.productions.size () > 0 );
     add ( this.delete );
 
+    // validate
     this.validate = new JMenuItem ( Messages
         .getString ( "MachinePanel.Validate" ) ); //$NON-NLS-1$
     this.validate.addActionListener ( new ActionListener ()

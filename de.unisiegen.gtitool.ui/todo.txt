@@ -3,6 +3,7 @@
 
 *** FEATURE ***
 
+CF		- Reachable States: Nur noch eine Ansicht
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen
 CF		- Icon für Produktion-Anlegen erstellen
 CF		- Erreichbare Zustände in einem Graphen

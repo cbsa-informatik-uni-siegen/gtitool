@@ -77,14 +77,17 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         jGTIRadioButtonMachineGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMachinePDATable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIPanelMachineSpace = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelConvertMachine = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIRadioButtonConvertMachineOriginalGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonConvertMachineConvertedGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonConvertMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIPanelConvertMachineSpace = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelMinimizeMachine = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIRadioButtonMinimizeMachineOriginalGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMinimizeMachineMinimizedGraph = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
         jGTIRadioButtonMinimizeMachineTable = new de.unisiegen.gtitool.ui.swing.JGTIRadioButton();
+        jGTIPanelMinimizeMachineSpace = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelColumn0 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelColumn1 = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
         jGTIPanelPageSetup = new de.unisiegen.gtitool.ui.swing.JGTIPanel();
@@ -158,9 +161,14 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jGTIPanelMachine.add(jGTIRadioButtonMachinePDATable, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jGTIPanelMachine.add(jGTIPanelMachineSpace, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -195,9 +203,14 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jGTIPanelConvertMachine.add(jGTIRadioButtonConvertMachineTable, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jGTIPanelConvertMachine.add(jGTIPanelConvertMachineSpace, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -232,9 +245,14 @@ public class PrintDialogForm extends javax.swing.JDialog implements GUIClass < P
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         jGTIPanelMinimizeMachine.add(jGTIRadioButtonMinimizeMachineTable, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jGTIPanelMinimizeMachine.add(jGTIPanelMinimizeMachineSpace, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -458,10 +476,13 @@ private void jGTIButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn0;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelColumn1;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConvertMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelConvertMachineSpace;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelFormat;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMachineSpace;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMargins;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMinimizeMachine;
+    public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelMinimizeMachineSpace;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPageSetup;
     public de.unisiegen.gtitool.ui.swing.JGTIPanel jGTIPanelPrinter;
     public de.unisiegen.gtitool.ui.swing.JGTIRadioButton jGTIRadioButtonConvertMachineConvertedGraph;

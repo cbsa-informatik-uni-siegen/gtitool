@@ -24,6 +24,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import de.unisiegen.gtitool.core.machines.Machine.MachineType;
 import de.unisiegen.gtitool.core.parser.style.PrettyStringComponent;
 import de.unisiegen.gtitool.core.parser.style.PrettyToken;
 import de.unisiegen.gtitool.logger.Logger;
@@ -31,6 +32,8 @@ import de.unisiegen.gtitool.ui.i18n.Messages;
 import de.unisiegen.gtitool.ui.jgraph.JGTIGraph;
 import de.unisiegen.gtitool.ui.logic.interfaces.LogicClass;
 import de.unisiegen.gtitool.ui.netbeans.PrintDialogForm;
+import de.unisiegen.gtitool.ui.preferences.PreferenceManager;
+import de.unisiegen.gtitool.ui.preferences.item.PDAModeItem;
 import de.unisiegen.gtitool.ui.swing.JGTITable;
 
 
@@ -326,6 +329,25 @@ public final class PrintDialog implements LogicClass < PrintDialogForm >,
 
     hideChooseComponents ();
     this.gui.jGTIPanelMachine.setVisible ( true );
+
+    if ( !this.machinePanel.getMachine ().getMachineType ().equals (
+        MachineType.PDA ) )
+    {
+      if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.SHOW ) )
+      {
+        // do nothing
+      }
+      else if ( PreferenceManager.getInstance ().getPDAModeItem ().equals (
+          PDAModeItem.HIDE ) )
+      {
+        this.gui.jGTIRadioButtonMachinePDATable.setVisible ( false );
+      }
+      else
+      {
+        throw new RuntimeException ( "unsupported pda mode" ); //$NON-NLS-1$
+      }
+    }
 
     initialize ();
   }

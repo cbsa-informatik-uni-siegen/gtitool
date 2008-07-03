@@ -1,7 +1,5 @@
 *** TODO ***
 
-BM		- Drucken: Job-Name anpassen
-
 
 *** FEATURE ***
 

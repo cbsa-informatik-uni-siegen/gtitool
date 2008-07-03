@@ -33,19 +33,19 @@ public final class JGTIGraph extends JGraph implements Printable
   /**
    * The height of the graph.
    */
-  double graphHeight = 0;
+  private double graphHeight = 0;
 
 
   /**
    * The width of the graph.
    */
-  double graphWidth = 0;
+  private double graphWidth = 0;
 
 
   /**
    * The page count of a row.
    */
-  int pagesPerRow = 0;
+  private int pagesPerRow = 0;
 
 
   /**
@@ -60,10 +60,9 @@ public final class JGTIGraph extends JGraph implements Printable
   private int marginRight = 50;
 
 
-  
   /**
    * Sets the marginBottom.
-   *
+   * 
    * @param marginBottom The marginBottom to set.
    * @see #marginBottom
    */
@@ -73,10 +72,9 @@ public final class JGTIGraph extends JGraph implements Printable
   }
 
 
-  
   /**
    * Sets the marginRight.
-   *
+   * 
    * @param marginRight The marginRight to set.
    * @see #marginRight
    */
@@ -86,10 +84,9 @@ public final class JGTIGraph extends JGraph implements Printable
   }
 
 
-  
   /**
    * Sets the marginLeft.
-   *
+   * 
    * @param marginLeft The marginLeft to set.
    * @see #marginLeft
    */
@@ -99,10 +96,9 @@ public final class JGTIGraph extends JGraph implements Printable
   }
 
 
-  
   /**
    * Sets the marginTop.
-   *
+   * 
    * @param marginTop The marginTop to set.
    * @see #marginTop
    */
@@ -213,13 +209,15 @@ public final class JGTIGraph extends JGraph implements Printable
     boolean print = false;
     int pageWidth = ( int ) pageFormat.getWidth ();
     int pageHeight = ( int ) pageFormat.getHeight ();
-    
-    
-    if (pageIndex == 0){
+
+    if ( pageIndex == 0 )
+    {
       int width = pageWidth - this.marginRight;
-      int height = pageHeight - this.marginBottom ;
-    graphics.setClip ( 0, 0, width, height );}
-    else {
+      int height = pageHeight - this.marginBottom;
+      graphics.setClip ( 0, 0, width, height );
+    }
+    else
+    {
       int width = pageWidth - this.marginRight - this.marginLeft;
       int height = pageHeight - this.marginBottom - this.marginTop;
       graphics.setClip ( this.marginLeft, this.marginTop, width, height );
@@ -253,18 +251,16 @@ public final class JGTIGraph extends JGraph implements Printable
         y = - ( row * pageHeight );
 
         x = x
-            + ( (pageIndex - row * this.pagesPerRow ) * this.marginLeft + this.marginRight
+            + ( ( pageIndex - row * this.pagesPerRow ) * this.marginLeft + this.marginRight
                 * ( pageIndex - row * this.pagesPerRow + 1 ) );
-        y = y
-            + ( row * this.marginTop + this.marginBottom
-                * ( row + 1 ) );
+        y = y + ( row * this.marginTop + this.marginBottom * ( row + 1 ) );
 
         graphics.translate ( x, y );
         print = true;
       }
 
     }
-    
+
     printAll ( graphics );
     if ( print )
       return Printable.PAGE_EXISTS;

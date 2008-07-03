@@ -64,9 +64,9 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * The {@link Color} of the group of this {@link StateView}.
+   * The overwritten {@link Color} of this {@link StateView}.
    */
-  private Color groupColor;
+  private Color overwrittenColor;
 
 
   /**
@@ -277,18 +277,6 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Returns the groupColor.
-   * 
-   * @return The groupColor.
-   * @see #groupColor
-   */
-  public final Color getGroupColor ()
-  {
-    return this.groupColor;
-  }
-
-
-  /**
    * Returns the height.
    * 
    * @return The height.
@@ -301,6 +289,18 @@ public final class DefaultStateView extends DefaultGraphCell implements
       return HEIGHT_NOT_DEFINED;
     }
     return bounds.getHeight ();
+  }
+
+
+  /**
+   * Returns the overwritten {@link Color}.
+   * 
+   * @return The overwritten {@link Color}.
+   * @see #overwrittenColor
+   */
+  public final Color getOverwrittenColor ()
+  {
+    return this.overwrittenColor;
   }
 
 
@@ -428,13 +428,13 @@ public final class DefaultStateView extends DefaultGraphCell implements
 
 
   /**
-   * Sets the groupColor.
+   * Sets the overwritten {@link Color}.
    * 
-   * @param groupColor The groupColor to set.
-   * @see #groupColor
+   * @param overwrittenColor The overwritten {@link Color} to set.
+   * @see #overwrittenColor
    */
-  public final void setGroupColor ( Color groupColor )
+  public final void setOverwrittenColor ( Color overwrittenColor )
   {
-    this.groupColor = groupColor;
+    this.overwrittenColor = overwrittenColor;
   }
 }

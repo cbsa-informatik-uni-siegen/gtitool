@@ -1,6 +1,7 @@
 package de.unisiegen.gtitool.ui.logic;
 
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -208,6 +209,12 @@ public final class ReachableStatesDialog implements
 
 
     /**
+     * The overwritten {@link Color} {@link DefaultStateView}s.
+     */
+    private ArrayList < DefaultStateView > overwrittenColorOriginal;
+
+
+    /**
      * Allocates a new {@link StepItem}.
      * 
      * @param activeStep The active {@link Step}.
@@ -226,6 +233,8 @@ public final class ReachableStatesDialog implements
      *          {@link JGTIGraph}.
      * @param activeSymbolsResult The active {@link Symbol}s of the result
      *          {@link JGTIGraph}.
+     * @param overwrittenColorOriginal The overwritten {@link Color}
+     *          {@link DefaultStateView}s.
      */
     public StepItem ( Step activeStep,
         ArrayList < State > activeToCalculateStates,
@@ -235,7 +244,8 @@ public final class ReachableStatesDialog implements
         ArrayList < Transition > activeTransitionsOriginal,
         ArrayList < Transition > activeTransitionsResult,
         ArrayList < Symbol > activeSymbolsOriginal,
-        ArrayList < Symbol > activeSymbolsResult )
+        ArrayList < Symbol > activeSymbolsResult,
+        ArrayList < DefaultStateView > overwrittenColorOriginal )
     {
       this.activeStep = activeStep;
       this.activeToCalculateStates = activeToCalculateStates;
@@ -246,6 +256,7 @@ public final class ReachableStatesDialog implements
       this.activeTransitionsResult = activeTransitionsResult;
       this.activeSymbolsOriginal = activeSymbolsOriginal;
       this.activeSymbolsResult = activeSymbolsResult;
+      this.overwrittenColorOriginal = overwrittenColorOriginal;
     }
 
 
@@ -355,6 +366,18 @@ public final class ReachableStatesDialog implements
     {
       return this.activeTransitionsResult;
     }
+
+
+    /**
+     * Returns the overwrittenColorOriginal.
+     * 
+     * @return The overwrittenColorOriginal.
+     * @see #overwrittenColorOriginal
+     */
+    public final ArrayList < DefaultStateView > getOverwrittenColorOriginal ()
+    {
+      return this.overwrittenColorOriginal;
+    }
   }
 
 
@@ -381,12 +404,6 @@ public final class ReachableStatesDialog implements
    * The original {@link JGTIGraph} containing the diagramm.
    */
   private JGTIGraph jGTIGraphOriginal;
-
-
-  /**
-   * The result {@link JGTIGraph} containing the diagramm.
-   */
-  private JGTIGraph jGTIGraphResult;
 
 
   /**
@@ -462,6 +479,12 @@ public final class ReachableStatesDialog implements
 
 
   /**
+   * The reachable {@link Color}.
+   */
+  private final static Color REACHABLE_COLOR = Color.YELLOW;
+
+
+  /**
    * Allocates a new {@link ReachableStatesDialog}.
    * 
    * @param parent The parent {@link JFrame}.
@@ -513,6 +536,7 @@ public final class ReachableStatesDialog implements
     ArrayList < Transition > activeTransitionsResult = new ArrayList < Transition > ();
     ArrayList < Symbol > activeSymbolsOriginal = new ArrayList < Symbol > ();
     ArrayList < Symbol > activeSymbolsResult = new ArrayList < Symbol > ();
+    ArrayList < DefaultStateView > activeOverwrittenColorOriginal = new ArrayList < DefaultStateView > ();
 
     for ( State current : this.toCalculateStates )
     {
@@ -571,10 +595,19 @@ public final class ReachableStatesDialog implements
       }
     }
 
+    for ( DefaultStateView current : this.modelOriginal.getStateViewList () )
+    {
+      if ( current.getOverwrittenColor () != null )
+      {
+        activeOverwrittenColorOriginal.add ( current );
+      }
+    }
+
     this.stepItemList.add ( new StepItem ( this.step, activeToCalculateStates,
         activeCalculatedStates, activeStatesOriginal, activeStatesResult,
         activeTransitionsOriginal, activeTransitionsResult,
-        activeSymbolsOriginal, activeSymbolsResult ) );
+        activeSymbolsOriginal, activeSymbolsResult,
+        activeOverwrittenColorOriginal ) );
   }
 
 
@@ -587,6 +620,19 @@ public final class ReachableStatesDialog implements
     {
       this.autoStepTimer.cancel ();
       this.autoStepTimer = null;
+    }
+  }
+
+
+  /**
+   * Clears the overwritten {@link State} highlighting of the original
+   * {@link JGTIGraph}.
+   */
+  private final void clearOverwrittenColorOriginal ()
+  {
+    for ( DefaultStateView current : this.modelOriginal.getStateViewList () )
+    {
+      current.setOverwrittenColor ( null );
     }
   }
 
@@ -850,6 +896,8 @@ public final class ReachableStatesDialog implements
   {
     addStepItem ();
 
+    clearOverwrittenColorOriginal ();
+
     if ( this.step.equals ( Step.ACTIVATE_START_STATE ) )
     {
       State startState = null;
@@ -1056,6 +1104,19 @@ public final class ReachableStatesDialog implements
     {
       setStatus ();
 
+      for ( State current : this.machineResult.getState () )
+      {
+        if ( current.isActive () )
+        {
+          DefaultStateView originalState = this.modelOriginal
+              .getStateViewForState ( current );
+          if ( !originalState.getState ().isActive () )
+          {
+            originalState.setOverwrittenColor ( REACHABLE_COLOR );
+          }
+        }
+      }
+
       this.modelOriginal.getGraphModel ().cellsChanged (
           DefaultGraphModel.getAll ( this.modelOriginal.getGraphModel () ) );
       this.modelResult.getGraphModel ().cellsChanged (
@@ -1099,6 +1160,7 @@ public final class ReachableStatesDialog implements
     clearTransitionHighlightResult ();
     clearSymbolHighlightOriginal ();
     clearSymbolHighlightResult ();
+    clearOverwrittenColorOriginal ();
 
     for ( State current : stepItem.getActiveStatesOriginal () )
     {
@@ -1123,6 +1185,10 @@ public final class ReachableStatesDialog implements
     for ( Symbol current : stepItem.getActiveSymbolsResult () )
     {
       current.setActive ( true );
+    }
+    for ( DefaultStateView current : stepItem.getOverwrittenColorOriginal () )
+    {
+      current.setOverwrittenColor ( REACHABLE_COLOR );
     }
     this.step = stepItem.getActiveStep ();
 
@@ -1191,18 +1257,6 @@ public final class ReachableStatesDialog implements
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
 
-    this.gui.jGTISplitPaneGraph.setDividerLocation ( PreferenceManager
-        .getInstance ().getDividerLocationReachableStates () );
-    this.gui.jGTISplitPaneGraph.addPropertyChangeListener (
-        JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-
-          public void propertyChange ( PropertyChangeEvent event )
-          {
-            PreferenceManager.getInstance ().setDividerLocationReachableStates (
-                ( ( Integer ) event.getNewValue () ).intValue () );
-          }
-        } );
     this.gui.jGTISplitPaneOutline.setDividerLocation ( PreferenceManager
         .getInstance ().getDividerLocationReachableStatesOutline () );
     this.gui.jGTISplitPaneOutline.addPropertyChangeListener (
@@ -1256,12 +1310,9 @@ public final class ReachableStatesDialog implements
     }
     this.jGTIGraphOriginal = this.modelOriginal.getJGTIGraph ();
     this.jGTIGraphOriginal.setEnabled ( false );
-    this.gui.jGTIScrollPaneOriginal.setViewportView ( this.jGTIGraphOriginal );
+    this.gui.jGTIScrollPaneGraph.setViewportView ( this.jGTIGraphOriginal );
     this.machineOriginal = this.modelOriginal.getMachine ();
 
-    this.jGTIGraphResult = this.modelResult.getJGTIGraph ();
-    this.jGTIGraphResult.setEnabled ( false );
-    this.gui.jGTIScrollPaneResult.setViewportView ( this.jGTIGraphResult );
     this.machineResult = this.modelResult.getMachine ();
 
     this.step = Step.ACTIVATE_START_STATE;

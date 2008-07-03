@@ -191,7 +191,7 @@ public class Minimizer
 
     // Add a final step to show the new machine.
     this.previousSteps.push ( new MinimizeItem ( getGroups (), Messages
-        .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ),  //$NON-NLS-1$
+        .getPrettyString ( "MinimizeMachineDialog.FinalPrettyString" ), //$NON-NLS-1$
         new ArrayList < Transition > () ) );
 
     while ( this.previousSteps.size () > 1 )
@@ -351,9 +351,8 @@ public class Minimizer
     {
       for ( DefaultStateView current : group )
       {
-        int index = ( this.activeGroups
-            .indexOf ( group )) % 10;
-        current.setGroupColor ( this.colors [ index ] );
+        int index = ( this.activeGroups.indexOf ( group ) ) % 10;
+        current.setOverwrittenColor ( this.colors [ index ] );
       }
     }
 

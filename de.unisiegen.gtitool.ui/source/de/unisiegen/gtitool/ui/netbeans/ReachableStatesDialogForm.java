@@ -66,9 +66,7 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         jGTIToolBarButtonStop = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTIToolBarButtonEndStep = new de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton();
         jGTISplitPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTISplitPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTISplitPane();
-        jGTIScrollPaneOriginal = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
-        jGTIScrollPaneResult = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
+        jGTIScrollPaneGraph = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTIScrollPaneOutline = new de.unisiegen.gtitool.ui.swing.JGTIScrollPane();
         jGTITableOutline = new de.unisiegen.gtitool.ui.swing.JGTITable();
         jGTIButtonCancel = new de.unisiegen.gtitool.ui.swing.JGTIButton();
@@ -151,17 +149,8 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
         jGTISplitPaneOutline.setDividerLocation(600);
         jGTISplitPaneOutline.setResizeWeight(1.0);
 
-        jGTISplitPaneGraph.setDividerLocation(250);
-        jGTISplitPaneGraph.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jGTISplitPaneGraph.setResizeWeight(0.5);
-
-        jGTIScrollPaneOriginal.setBorder(null);
-        jGTISplitPaneGraph.setTopComponent(jGTIScrollPaneOriginal);
-
-        jGTIScrollPaneResult.setBorder(null);
-        jGTISplitPaneGraph.setBottomComponent(jGTIScrollPaneResult);
-
-        jGTISplitPaneOutline.setLeftComponent(jGTISplitPaneGraph);
+        jGTIScrollPaneGraph.setBorder(null);
+        jGTISplitPaneOutline.setLeftComponent(jGTIScrollPaneGraph);
 
         jGTIScrollPaneOutline.setBorder(null);
         jGTIScrollPaneOutline.setMinimumSize(new java.awt.Dimension(200, 100));
@@ -252,10 +241,8 @@ public class ReachableStatesDialogForm extends JDialog implements GUIClass <Reac
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonCancel;
     public de.unisiegen.gtitool.ui.swing.JGTIButton jGTIButtonOk;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOriginal;
+    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneOutline;
-    public de.unisiegen.gtitool.ui.swing.JGTIScrollPane jGTIScrollPaneResult;
-    public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneGraph;
     public de.unisiegen.gtitool.ui.swing.JGTISplitPane jGTISplitPaneOutline;
     public de.unisiegen.gtitool.ui.swing.JGTITable jGTITableOutline;
     public de.unisiegen.gtitool.ui.swing.specialized.JGTIToolBarButton jGTIToolBarButtonBeginStep;

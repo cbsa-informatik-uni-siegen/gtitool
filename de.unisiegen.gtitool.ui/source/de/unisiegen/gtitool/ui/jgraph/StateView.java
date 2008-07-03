@@ -249,10 +249,10 @@ public final class StateView extends VertexView
       if ( super.isOpaque () )
       {
         Color background = null;
-        // group
-        if ( defaultStateView.getGroupColor () != null )
+        // overwritten color
+        if ( defaultStateView.getOverwrittenColor () != null )
         {
-          background = defaultStateView.getGroupColor ();
+          background = defaultStateView.getOverwrittenColor ();
         }
         // error
         else if ( state.isError () )

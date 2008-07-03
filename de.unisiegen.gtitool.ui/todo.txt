@@ -1,28 +1,27 @@
 *** TODO ***
 
+BM		- Drucken auf dem Reachable States Dialog implementieren
 
 *** FEATURE ***
 
-CF		- Reachable States: Nur noch eine Ansicht
 CF		- Doppeltes Handling aus dem Popupmenüs entfernen
 CF		- Icon für Produktion-Anlegen erstellen
-CF		- Erreichbare Zustände in einem Graphen
 CF		- Bei Label die einen PrettyString enthalten den HTML Code verwenden
 CF		- PDA Machinen Tabelle editierbar machen
 CF		- Reguläre Ausdrücke eingeben und umwandeln können
 CF		- Eingabe von mehreren Wörten, die auf Akzeptanz überprüft werden
 CF		- Popupmenü auf der Machine Tabelle
 CF		- Tastaturbefehle einbauen
-CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen,
-		  der abbrechbar ist, ansonsten kann man das ganze Programm zum Beispiel beim
-		  Potenzautomaten sehr leicht lahmlegen
+CF		- Die Dialoge müssen ihre Berechnungen in einem eigenen Thread durchführen
 CF		- SplitView: Horizontale/Vertikale Teilung
 CF		- Eine Überprüfung einbauen, ob auf dem Server eine neue Version verfügbar ist
 CF		- Wörter ausgeben, die erkannt werden
 CF		- Auswahl der Transition so gestalten, dass auch sehr viele gut aussehen
+CF		- Parser muss Code formatieren können (PrettyPrinter)
 
 BM		- ToolTip auf den Redo/Undo Item (z.B. Zustand 'z0' widerherstellen)
 BM		- Neues AutoLayout
 BM		- Farben beim Minimieren dynamisch berechnen
 
 		- LaTeX Export
+		- Benutzerfreundlichkeit

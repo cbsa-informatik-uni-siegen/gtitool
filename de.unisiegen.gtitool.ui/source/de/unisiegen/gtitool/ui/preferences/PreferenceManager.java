@@ -503,18 +503,6 @@ public final class PreferenceManager extends
 
 
   /**
-   * Returns the reachable states divider location.
-   * 
-   * @return The reachable states divider location.
-   */
-  public final int getDividerLocationReachableStates ()
-  {
-    return this.preferences.getInt ( "ReachableStatesDialog.Divider", //$NON-NLS-1$
-        DEFAULT_DIVIDER_LOCATION_REACHABLE_STATES );
-  }
-
-
-  /**
    * Returns the reachable states outline divider location.
    * 
    * @return The reachable states outline divider location.
@@ -998,20 +986,6 @@ public final class PreferenceManager extends
         "setDividerLocationPDATable", "set pda table divider location to "//$NON-NLS-1$//$NON-NLS-2$
             + Messages.QUOTE + location + Messages.QUOTE );
     this.preferences.putInt ( "MachinePanel.DividerPDATable", location ); //$NON-NLS-1$
-  }
-
-
-  /**
-   * Sets the reachable states divider location.
-   * 
-   * @param location The reachable states divider location.
-   */
-  public final void setDividerLocationReachableStates ( int location )
-  {
-    logger.debug ( "setDividerLocationReachableStates", //$NON-NLS-1$
-        "set reachable states divider location to " + Messages.QUOTE//$NON-NLS-1$ 
-            + location + Messages.QUOTE );
-    this.preferences.putInt ( "ReachableStatesDialog.Divider", location );//$NON-NLS-1$
   }
 
 

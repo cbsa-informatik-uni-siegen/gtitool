@@ -719,7 +719,7 @@ public final class MachinePanel implements LogicClass < MachinePanelForm >,
       State state = current.getState ();
       state.setError ( false );
       state.setActive ( false );
-      current.setGroupColor ( null );
+      current.setOverwrittenColor ( null );
     }
 
     performCellsChanged ();

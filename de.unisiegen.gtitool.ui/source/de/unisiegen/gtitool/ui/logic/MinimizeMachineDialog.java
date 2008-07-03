@@ -322,7 +322,8 @@ public final class MinimizeMachineDialog implements
         DefaultStateView stateView = this.modelMinimized.createStateView (
             current.get ( 0 ).getPositionX (), current.get ( 0 )
                 .getPositionY (), state, false );
-        stateView.setGroupColor ( current.get ( 0 ).getGroupColor () );
+        stateView.setOverwrittenColor ( current.get ( 0 )
+            .getOverwrittenColor () );
         this.states.put ( current.get ( 0 ).getState (), stateView );
       }
     }

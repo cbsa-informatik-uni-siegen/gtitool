@@ -1,3 +1,101 @@
-\chapter{TODO}
+\chapter{Wie erstelle ich eine neue Grammatik?}
 
-TODO
+Wir wollen das jetzt einmal an Hand folgenden Beispiels aus den
+Vorlesungsunterlagen durchgehen:\vspace{10pt}
+
+
+
+\begin{tabular}{lcr}
+G = ($\Sigma, N, S, P ) mit $\\
+	$\Sigma = \{0, 1, x, y, -, +, *, (, )\}$\\
+	$N = {E}$\\
+	$S=E$\\ 
+	$P = \{E \to 0,\ E \to 1,\ E \to x,\ E \to y,\ E \to (-E),$\\
+	$\ \ \ \ \ \ \ \ E \to (E + E),\ E \to (E - E),\ E \to (E $*$ E)\}$\\
+\end{tabular}
+
+\section{Neue Datei anlegen}
+ 
+Am Anfang müssen wir dazu erst einmal den "`Neu\ldots"' Dialog öffnen. Dort
+wählen wir aus, dass wir eine Grammatik erstellen wollen und klicken auf
+"`Weiter"'.\vspace{10pt}
+
+Im nächsten Dialog werden wir gefragt von welchem Typ unsere neue Grammatik
+sein soll. In unserem Beispiel handel es sich um eine "`Kontextfreie Grammatik"',
+welches wir auswählen und wieder mit "`Weiter"' bestätigen.\vspace{10pt}
+
+Als nächstes müssen wir die benötigten Nichtterminalzeichen (N),
+Terminalzeichen ($\Sigma$) und das Startzeichen (S) angeben.  Als Zeichen
+können alle Symbole werwendet werden, die nicht zur Syntax der Eingabe gehören.
+Das bedeutet "`$,$"', "`$\{$"`,"'$\}$"' und "`$"$"' können nicht verwendet
+werden.\\
+
+In dem Dialog sind an allen Stellen schon vordefinierte Werte eingetragen.
+Dabei handelt es sich um die Vorgaben die man als Standardwerte in den Einstellung eingetragen hat.
+
+Wie man diese Standardwerte ändert kann man in Kapitel $4$ nachlesen. Wir tragen
+jetzt als erstes die von uns benötigten Nichtterminalzeichen ein. Dabei handelt
+es sich bei uns lediglich um das Symbol "`E"'. Also schreiben wir in das Feld
+"`\{E\}"'.\\
+
+Als nächstes wollen wir das Startzeichen festlegen. Das ist bei uns das "`E"'
+was wir in dem Feld für das Startzeichen schreiben.\\
+Zum Schluss müssen wir noch die Terminalzeichen festlegen. Dazu tragen
+wir in das entsprechende Feld "`\{0, 1, x, y, -, +, *, (, )\}"' ein.\\
+Damit haben wir alle benötigten Information eingegeben und können die neue
+Grammatik durch klick auf "`Fertig"' erstellen.\\
+
+Alle Einstellungen die wir gerade für die neue Datei getroffen haben lassen
+sich über "`Dokument editieren"'
+
+\section{Anlegen von Produktionen}
+
+Um eine neue Produktion anzulegen können wir den entsprechenden Button in der
+Toolbar verwenden, oder über den Kontextmenüeintrag.\\
+
+Im Dialog für neue Produktionen müssen wir zunächst einmal angeben, für welches
+Nichtterminalzeichen wir eine Produktion anlegen möchten. Dieses können wir aus
+einer Liste der verfügbaren Zeichen auswählen. Da wir in unserem Beispiel nur
+ein Nichtterminalzeichen haben, ist schon das richtige ausgewählt, und wir
+können diesen Schritt überspringen.\\
+
+Jetzt müssen wir noch das Produktions Wort angeben. Als Hilfestellung wird in
+dem Dialog angezeigt welche Nichtterminalzeichen und Terminalzeichen uns zur
+Verfügung stehen. Wir fangen an mit der Produktion "`$E \to 0$"'. Also geben
+wir als Produktions Wort "`0"' ein. Als weitere Hilfestellung wird im unteren
+Dialog die resultierende Produktion im ganzen angezeigt. Wir bestätigen den
+Dialog noch mit "`Ok"' und die neue Produktion erscheint in unserer Liste.\\
+Wir können die Produktion selbstverständlich auch editieren und wieder löschen.
+Beide Funktionen sind über das Kontextmenü für die ausgewählte Produktion
+verfügbar.\\
+
+Diesen Vorgang wiederholen wir jetzt für unsere komplette Menge "`P"'. Wenn wir
+alle Produktionen angelegt haben sind wir auch mit dem anlegen der Grammatik
+fertig. Es besteht jetzt noch die Möglichkeit die Grammatik zu validieren, um
+zu sehen, ob man beim Erstellen irgendwelche Fehler gemacht hat. Diese Funktion
+erreicht man über das Kontextmenü oder über den Menüpunkt "`Ausführen"'.
+
+\section{Was fange ich mit einer fertigen Grammatik an?}
+
+Wir haben jetzt eine Grammatik angelegt und stellen und jetzt vielleicht die
+Frage was wir damit eigentlich anfangen können. Es bestehen zur Zeit zwei
+Verwendungsmöglichkeiten für eine Grammatik.\\
+
+Zunächst einmal kann man die Grammatik als Vorlage für eine neue Grammatik
+nutzen. Das ist zum Beispiel sinnvoll wenn wir eine kontextfreie Grammatik
+haben, und jetzt eine reguläre Grammatik mit den gleichen Produktionen
+erstellen wollen. Dazu öffnet man den Menüpunkt "`Ausführen"' und wählt unter
+"`Vorlage für\ldots"' den gewünschten Typ der neuen Datei aus.\\
+
+Die andere Verwendungsmöglichkeit ist, sich aus der Grammatik einen
+entsprechenden Automaten generieren zu lassen. Man kann sich für eine reguläre
+Grammatik den NDEA, und für eine kontextfreie Grammatik den Kellerautomat
+erzeugen lassen.\\
+
+Es ist zu beachten, dass beim Umwandeln einer Grammatik keine
+Validierungsfehler vorhanden sein dürfen. Bei der Funktion "`Vorlage
+für\ldots"' spielen Fehler allerdings keine Rolle.
+
+
+
+

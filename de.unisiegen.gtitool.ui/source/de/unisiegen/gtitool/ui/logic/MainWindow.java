@@ -24,11 +24,8 @@ import de.unisiegen.gtitool.core.exceptions.grammar.GrammarException;
 import de.unisiegen.gtitool.core.exceptions.grammar.GrammarValidationException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineException;
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
@@ -1512,19 +1509,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       System.exit ( 1 );
       return;
     }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
     catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -1599,12 +1584,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       return;
     }
     catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -2013,12 +1992,6 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       System.exit ( 1 );
       return;
     }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
     catch ( AlphabetException exc )
     {
       exc.printStackTrace ();
@@ -2043,19 +2016,7 @@ public final class MainWindow implements LogicClass < MainWindowForm >,
       System.exit ( 1 );
       return;
     }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
     catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

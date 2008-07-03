@@ -18,7 +18,6 @@ import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
@@ -105,15 +104,7 @@ public abstract class AbstractConvertGrammar implements Converter
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( TerminalSymbol current : grammar.getTerminalSymbolSet () )
     {
-      try
-      {
-        symbols.add ( new DefaultSymbol ( current.getName () ) );
-      }
-      catch ( SymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      symbols.add ( new DefaultSymbol ( current.getName () ) );
     }
 
     try

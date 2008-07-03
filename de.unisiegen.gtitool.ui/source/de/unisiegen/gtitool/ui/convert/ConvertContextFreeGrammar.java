@@ -14,7 +14,6 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.CFG;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -28,7 +27,8 @@ import de.unisiegen.gtitool.ui.netbeans.MainWindowForm;
  * Convert a {@link CFG} to a {@link PDA}.
  * 
  * @author Benjamin Mies
- * @version $Id$
+ * @version $Id: ConvertContextFreeGrammar.java 910 2008-05-16 00:31:21Z fehler
+ *          $
  */
 public class ConvertContextFreeGrammar extends AbstractConvertGrammar
 {
@@ -47,28 +47,12 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     ArrayList < Symbol > symbols = new ArrayList < Symbol > ();
     for ( TerminalSymbol current : grammar.getTerminalSymbolSet () )
     {
-      try
-      {
-        symbols.add ( new DefaultSymbol ( current.getName () ) );
-      }
-      catch ( SymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      symbols.add ( new DefaultSymbol ( current.getName () ) );
     }
 
     for ( NonterminalSymbol current : grammar.getNonterminalSymbolSet () )
     {
-      try
-      {
-        symbols.add ( new DefaultSymbol ( current.getName () ) );
-      }
-      catch ( SymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      symbols.add ( new DefaultSymbol ( current.getName () ) );
     }
 
     try
@@ -131,50 +115,36 @@ public class ConvertContextFreeGrammar extends AbstractConvertGrammar
     DefaultStateView stateView = createStateView ( "f" ); //$NON-NLS-1$
     stateView.getState ().setFinalState ( true );
 
-    try
+    Symbol symbol = new DefaultSymbol ( getGrammar ().getStartSymbol ()
+        .getName () );
+
+    DefaultWord word = new DefaultWord ( symbol );
+
+    createTransition ( new DefaultWord (), word, start, stateView,
+        new ArrayList < Symbol > () );
+
+    for ( TerminalSymbol current : getGrammar ().getTerminalSymbolSet () )
     {
-      Symbol symbol = new DefaultSymbol ( getGrammar ().getStartSymbol ()
-          .getName () );
+      symbol = new DefaultSymbol ( current.getName () );
+      word = new DefaultWord ( symbol );
 
-      DefaultWord word = new DefaultWord ( symbol );
+      createTransition ( word, new DefaultWord (), stateView, stateView, symbol );
+    }
 
-      createTransition ( new DefaultWord (), word, start, stateView,
+    for ( Production currentProduction : getGrammar ().getProduction () )
+    {
+      Word read = new DefaultWord ( new DefaultSymbol ( currentProduction
+          .getNonterminalSymbol ().getName () ) );
+
+      Word write = new DefaultWord ();
+
+      for ( ProductionWordMember currentMember : currentProduction
+          .getProductionWord () )
+      {
+        write.add ( new DefaultSymbol ( currentMember.getName () ) );
+      }
+      createTransition ( read, write, stateView, stateView,
           new ArrayList < Symbol > () );
-
-      for ( TerminalSymbol current : getGrammar ().getTerminalSymbolSet () )
-      {
-        symbol = new DefaultSymbol ( current.getName () );
-        word = new DefaultWord ( symbol );
-
-        createTransition ( word, new DefaultWord (), stateView, stateView,
-            symbol );
-      }
-    }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-    }
-
-    for ( Production current : getGrammar ().getProduction () )
-    {
-      try
-      {
-        Word read = new DefaultWord ( new DefaultSymbol ( current
-            .getNonterminalSymbol ().getName () ) );
-
-        Word write = new DefaultWord ();
-
-        for ( ProductionWordMember symbol : current.getProductionWord () )
-        {
-          write.add ( new DefaultSymbol ( symbol.getName () ) );
-        }
-        createTransition ( read, write, stateView, stateView,
-            new ArrayList < Symbol > () );
-      }
-      catch ( SymbolException exc )
-      {
-        exc.printStackTrace ();
-      }
     }
   }
 }

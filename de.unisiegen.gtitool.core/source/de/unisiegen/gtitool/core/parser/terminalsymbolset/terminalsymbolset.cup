@@ -107,14 +107,7 @@ terminal_symbol_set_error		::= LCBRACE:l epsilon
 
 terminal_symbol					::= TERMINAL_SYMBOL:t
 									{:
-									   try
-									   {
-									     RESULT = new DefaultTerminalSymbol(t);
-									   }
-									   catch (TerminalSymbolException exc)
-									   {
-									     ParserException.throwTerminalSymbolException(tleft, tright, t);
-									   }
+									   RESULT = new DefaultTerminalSymbol(t);
 									   RESULT.setParserOffset(new ParserOffset(tleft,tright));
 									:}
 								;

@@ -15,8 +15,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.parser.exceptions.ParserException;
 import de.unisiegen.gtitool.core.parser.exceptions.ScannerException;
 import de.unisiegen.gtitool.core.parser.production.ProductionParseable;
@@ -107,66 +105,51 @@ public final class StyledProductionParserPanel extends
        * ProductionWord
        */
       ProductionWord newProductionWord = null;
-      try
+      ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
+
+      for ( ProductionWordMember current : production.getProductionWord () )
       {
-        ArrayList < ProductionWordMember > memberList = new ArrayList < ProductionWordMember > ();
-
-        for ( ProductionWordMember current : production.getProductionWord () )
+        // Nonterminal
+        boolean foundNonterminal = false;
+        nonterminalLoop : for ( NonterminalSymbol currentNonterminal : this.nonterminalSymbolSet )
         {
-          // Nonterminal
-          boolean foundNonterminal = false;
-          nonterminalLoop : for ( NonterminalSymbol currentNonterminal : this.nonterminalSymbolSet )
+          if ( current.getName ().equals ( currentNonterminal.getName () ) )
           {
-            if ( current.getName ().equals ( currentNonterminal.getName () ) )
-            {
-              foundNonterminal = true;
-              NonterminalSymbol newNonterminalSymbol = new DefaultNonterminalSymbol (
-                  current.getName () );
-              newNonterminalSymbol
-                  .setParserOffset ( current.getParserOffset () );
-              memberList.add ( newNonterminalSymbol );
-              break nonterminalLoop;
-            }
+            foundNonterminal = true;
+            NonterminalSymbol newNonterminalSymbol = new DefaultNonterminalSymbol (
+                current.getName () );
+            newNonterminalSymbol.setParserOffset ( current.getParserOffset () );
+            memberList.add ( newNonterminalSymbol );
+            break nonterminalLoop;
           }
-          // Terminal
-          boolean foundTerminal = false;
-          terminalLoop : for ( TerminalSymbol currentTerminal : this.terminalSymbolSet )
+        }
+        // Terminal
+        boolean foundTerminal = false;
+        terminalLoop : for ( TerminalSymbol currentTerminal : this.terminalSymbolSet )
+        {
+          if ( current.getName ().equals ( currentTerminal.getName () ) )
           {
-            if ( current.getName ().equals ( currentTerminal.getName () ) )
-            {
-              foundTerminal = true;
-              TerminalSymbol newTerminalSymbol = new DefaultTerminalSymbol (
-                  current.getName () );
-              newTerminalSymbol.setParserOffset ( current.getParserOffset () );
-              memberList.add ( newTerminalSymbol );
-              break terminalLoop;
-            }
-          }
-
-          if ( ( !foundNonterminal ) && ( !foundTerminal ) )
-          {
-            exceptionList.add ( new ParserException ( current
-                .getParserOffset ().getStart (), current.getParserOffset ()
-                .getEnd (), Messages.getString (
-                "ProductionWord.SymbolNotFound", //$NON-NLS-1$
-                current.getName () ) ) );
+            foundTerminal = true;
+            TerminalSymbol newTerminalSymbol = new DefaultTerminalSymbol (
+                current.getName () );
+            newTerminalSymbol.setParserOffset ( current.getParserOffset () );
+            memberList.add ( newTerminalSymbol );
+            break terminalLoop;
           }
         }
 
-        newProductionWord = new DefaultProductionWord ( memberList );
-        newProductionWord.setParserOffset ( production.getProductionWord ()
-            .getParserOffset () );
+        if ( ( !foundNonterminal ) && ( !foundTerminal ) )
+        {
+          exceptionList.add ( new ParserException ( current.getParserOffset ()
+              .getStart (), current.getParserOffset ().getEnd (), Messages
+              .getString ( "ProductionWord.SymbolNotFound", //$NON-NLS-1$
+                  current.getName () ) ) );
+        }
       }
-      catch ( NonterminalSymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
-      catch ( TerminalSymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+
+      newProductionWord = new DefaultProductionWord ( memberList );
+      newProductionWord.setParserOffset ( production.getProductionWord ()
+          .getParserOffset () );
 
       if ( exceptionList.size () > 0 )
       {

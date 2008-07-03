@@ -22,7 +22,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -153,8 +152,6 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    * @throws StoreException If the {@link Element} can not be parsed.
    * @throws AlphabetException If something with the {@link DefaultAlphabet} is
    *           not correct.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
    * @throws StateException If something with the {@link DefaultState} is not
    *           correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
@@ -163,9 +160,8 @@ public final class DefaultMachineModel implements DefaultModel, Storable,
    *           is not correct.
    */
   public DefaultMachineModel ( Element element, String overwrittenMachineType )
-      throws StoreException, StateException, SymbolException,
-      AlphabetException, TransitionException,
-      TransitionSymbolOnlyOneTimeException
+      throws StoreException, StateException, AlphabetException,
+      TransitionException, TransitionSymbolOnlyOneTimeException
   {
     this.pdaTableModel = new PDATableModel ();
 

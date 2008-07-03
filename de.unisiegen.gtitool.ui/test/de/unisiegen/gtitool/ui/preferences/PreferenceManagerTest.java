@@ -11,10 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.preferences.item.NonterminalSymbolSetItem;
 import de.unisiegen.gtitool.core.preferences.item.TerminalSymbolSetItem;
@@ -58,27 +55,12 @@ public class PreferenceManagerTest
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
     catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
     catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );

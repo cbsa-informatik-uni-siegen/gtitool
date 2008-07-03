@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolEmptyNameException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolIllegalNameException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -77,12 +74,9 @@ public final class DefaultSymbol implements Symbol
    * Allocates a new {@link DefaultSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultSymbol ( Element element ) throws SymbolException,
-      StoreException
+  public DefaultSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "Symbol" ) ) //$NON-NLS-1$
@@ -137,12 +131,9 @@ public final class DefaultSymbol implements Symbol
    * Allocates a new {@link DefaultSymbol}.
    * 
    * @param name The name of this {@link DefaultSymbol}.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
    */
-  public DefaultSymbol ( String name ) throws SymbolException
+  public DefaultSymbol ( String name )
   {
-    // Name
     setName ( name );
   }
 
@@ -319,10 +310,8 @@ public final class DefaultSymbol implements Symbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws SymbolException If something with the {@link DefaultSymbol} is not
-   *           correct.
    */
-  private final void setName ( String name ) throws SymbolException
+  private final void setName ( String name )
   {
     if ( this.epsilon )
     {
@@ -330,48 +319,9 @@ public final class DefaultSymbol implements Symbol
           "this symbol is a epsilon symbol without a name" ); //$NON-NLS-1$
     }
 
-    // Name
     if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
-    if ( name.equals ( "" ) ) //$NON-NLS-1$
-    {
-      throw new SymbolEmptyNameException ();
-    }
-    if ( name.startsWith ( "\"" ) ) //$NON-NLS-1$
-    {
-      if ( !name.endsWith ( "\"" ) ) //$NON-NLS-1$
-      {
-        throw new SymbolIllegalNameException ( name );
-      }
-      if ( name.length () <= 2 )
-      {
-        throw new SymbolIllegalNameException ( name );
-      }
-      String tmpName = name.substring ( 1, name.length () - 1 );
-      for ( int i = 0 ; i < tmpName.length () ; i++ )
-      {
-        if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
-        {
-          throw new SymbolIllegalNameException ( name );
-        }
-      }
-    }
-    else if ( name.length () == 1 )
-    {
-      if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
-      {
-        throw new SymbolIllegalNameException ( name );
-      }
-      if ( !Character.isJavaIdentifierPart ( name.charAt ( 0 ) ) )
-      {
-        throw new SymbolIllegalNameException ( name );
-      }
-    }
-    else
-    {
-      throw new SymbolIllegalNameException ( name );
     }
     this.name = name;
   }

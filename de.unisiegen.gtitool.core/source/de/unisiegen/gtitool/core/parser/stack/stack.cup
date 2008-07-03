@@ -45,7 +45,7 @@ stack							::= symbol_list:sl
 									   RESULT = new DefaultStack();
 									   for (int i = sl.length - 1; i >= 0; i--)
 									   {
-									     RESULT.push(sl[0]);
+									     RESULT.push(sl[i]);
 									   }
 									   RESULT.setParserOffset(new ParserOffset(slleft,slright));
 									:}
@@ -58,14 +58,7 @@ stack							::= symbol_list:sl
 
 symbol							::= SYMBOL:s
 									{:
-									   try
-									   {
-									     RESULT = new DefaultSymbol(s);
-									   }
-									   catch (SymbolException exc)
-									   {
-									     ParserException.throwSymbolException(sleft, sright, s);
-									   }
+									   RESULT = new DefaultSymbol(s);
 									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;

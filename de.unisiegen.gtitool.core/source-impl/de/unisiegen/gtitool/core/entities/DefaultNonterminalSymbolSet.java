@@ -9,7 +9,6 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.NonterminalSymbolSetChangedListener;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetMoreThanOneSymbolException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -87,13 +86,10 @@ public final class DefaultNonterminalSymbolSet implements NonterminalSymbolSet
    * @param element The {@link Element}.
    * @throws NonterminalSymbolSetException If something with the
    *           {@link DefaultNonterminalSymbolSet} is not correct.
-   * @throws NonterminalSymbolException If something with the {@link Symbol} is
-   *           not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultNonterminalSymbolSet ( Element element )
-      throws NonterminalSymbolSetException, NonterminalSymbolException,
-      StoreException
+      throws NonterminalSymbolSetException, StoreException
   {
     this ();
     // Check if the element is correct

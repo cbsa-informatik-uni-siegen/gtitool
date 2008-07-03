@@ -65,13 +65,14 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-TerminalSymbol		= [:jletterdigit:] | \"[:jletterdigit:]+\"
+LineTerminator			= \r|\n|\r\n
+WhiteSpace				= {LineTerminator} | [ \t\f]
 
 %%
 
 <YYINITIAL>
 {
-	{TerminalSymbol}	{ return symbol(TERMINAL_SYMBOL, yytext()); }
+	{WhiteSpace}		{ }
+	.					{ return symbol(TERMINAL_SYMBOL, yytext()); }
+	\".+\"				{ return symbol(TERMINAL_SYMBOL, yytext()); }
 }
-
-.|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

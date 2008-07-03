@@ -69,9 +69,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t\f]
-Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
+LineTerminator			= \r|\n|\r\n
+WhiteSpace				= {LineTerminator} | [ \t\f]
 
 %%
 
@@ -83,8 +82,7 @@ Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
 	"\u03B5"			{ return symbol(EPSILON); }
 	"\u2191"			{ return symbol(ARROWUP); }
 	"\u2193"			{ return symbol(ARROWDOWN); }
-	{Symbol}			{ return symbol(SYMBOL, yytext()); }
 	{WhiteSpace}		{ }
+	.					{ return symbol(SYMBOL, yytext()); }
+	\".+\"				{ return symbol(SYMBOL, yytext()); }
 }
-
-.|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

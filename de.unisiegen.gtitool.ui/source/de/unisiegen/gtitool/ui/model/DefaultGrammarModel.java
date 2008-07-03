@@ -14,9 +14,7 @@ import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Production;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.cfg.DefaultCFG;
@@ -93,19 +91,14 @@ public class DefaultGrammarModel implements DefaultModel, Storable, Modifyable
    *          instead of the loaded machine type if it is not null.
    * @throws NonterminalSymbolSetException If something with the
    *           {@link NonterminalSymbolSet} is not correct.
-   * @throws NonterminalSymbolException If something with the
-   *           {@link NonterminalSymbolSet} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    * @throws TerminalSymbolSetException If something with the
    *           {@link TerminalSymbolSet} is not correct.
-   * @throws TerminalSymbolException If something with the
-   *           {@link TerminalSymbolSet} is not correct.
    */
   public DefaultGrammarModel ( Element element, String overwrittenMachineType )
-      throws NonterminalSymbolSetException, NonterminalSymbolException,
-      StoreException, TerminalSymbolSetException, TerminalSymbolException
+      throws NonterminalSymbolSetException, StoreException,
+      TerminalSymbolSetException
   {
-
     // Attribute
     boolean foundGrammarVersion = false;
     String grammarType = null;

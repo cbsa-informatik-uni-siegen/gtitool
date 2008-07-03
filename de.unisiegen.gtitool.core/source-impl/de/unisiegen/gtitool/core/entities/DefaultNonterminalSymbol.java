@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolEmptyNameException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolIllegalNameException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -63,12 +60,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    * Allocates a new {@link DefaultNonterminalSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws NonterminalSymbolException If something with the
-   *           {@link DefaultNonterminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultNonterminalSymbol ( Element element )
-      throws NonterminalSymbolException, StoreException
+  public DefaultNonterminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "NonterminalSymbol" ) ) //$NON-NLS-1$
@@ -114,13 +108,9 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    * Allocates a new {@link DefaultNonterminalSymbol}.
    * 
    * @param name The name of this {@link DefaultNonterminalSymbol}.
-   * @throws NonterminalSymbolException If something with the
-   *           {@link DefaultNonterminalSymbol} is not correct.
    */
   public DefaultNonterminalSymbol ( String name )
-      throws NonterminalSymbolException
   {
-    // Name
     setName ( name );
   }
 
@@ -235,53 +225,12 @@ public final class DefaultNonterminalSymbol implements NonterminalSymbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws NonterminalSymbolException If something with the
-   *           {@link DefaultNonterminalSymbol} is not correct.
    */
-  private final void setName ( String name ) throws NonterminalSymbolException
+  private final void setName ( String name )
   {
-    // Name
     if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
-    if ( name.equals ( "" ) ) //$NON-NLS-1$
-    {
-      throw new NonterminalSymbolEmptyNameException ();
-    }
-    if ( name.startsWith ( "\"" ) ) //$NON-NLS-1$
-    {
-      if ( !name.endsWith ( "\"" ) ) //$NON-NLS-1$
-      {
-        throw new NonterminalSymbolIllegalNameException ( name );
-      }
-      if ( name.length () <= 2 )
-      {
-        throw new NonterminalSymbolIllegalNameException ( name );
-      }
-      String tmpName = name.substring ( 1, name.length () - 1 );
-      for ( int i = 0 ; i < tmpName.length () ; i++ )
-      {
-        if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
-        {
-          throw new NonterminalSymbolIllegalNameException ( name );
-        }
-      }
-    }
-    else if ( name.length () == 1 )
-    {
-      if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
-      {
-        throw new NonterminalSymbolIllegalNameException ( name );
-      }
-      if ( !Character.isJavaIdentifierPart ( name.charAt ( 0 ) ) )
-      {
-        throw new NonterminalSymbolIllegalNameException ( name );
-      }
-    }
-    else
-    {
-      throw new NonterminalSymbolIllegalNameException ( name );
     }
     this.name = name;
   }

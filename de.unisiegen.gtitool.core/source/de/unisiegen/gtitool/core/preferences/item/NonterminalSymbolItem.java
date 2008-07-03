@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.preferences.item;
 
 import de.unisiegen.gtitool.core.entities.DefaultNonterminalSymbol;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbol;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 
 
 /**
@@ -52,18 +51,9 @@ public final class NonterminalSymbolItem implements Cloneable
   @Override
   public final NonterminalSymbolItem clone ()
   {
-    try
-    {
-      return new NonterminalSymbolItem ( new DefaultNonterminalSymbol (
-          this.nonterminalSymbol.getName () ), new DefaultNonterminalSymbol (
-          this.standardNonterminalSymbol.getName () ) );
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    return null;
+    return new NonterminalSymbolItem ( new DefaultNonterminalSymbol (
+        this.nonterminalSymbol.getName () ), new DefaultNonterminalSymbol (
+        this.standardNonterminalSymbol.getName () ) );
   }
 
 

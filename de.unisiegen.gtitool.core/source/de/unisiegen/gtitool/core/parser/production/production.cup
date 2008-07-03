@@ -77,14 +77,7 @@ production_word					::= member_list:ml
 
 member							::= MEMBER:m
 									{:
-									   try
-									   {
-									     RESULT = new DefaultNonterminalSymbol(m);
-									   }
-									   catch (NonterminalSymbolException exc)
-									   {
-									     ParserException.throwSymbolException(mleft, mright, m);
-									   }
+									   RESULT = new DefaultNonterminalSymbol(m);
 									   RESULT.setParserOffset(new ParserOffset(mleft,mright));
 									:}
 								;

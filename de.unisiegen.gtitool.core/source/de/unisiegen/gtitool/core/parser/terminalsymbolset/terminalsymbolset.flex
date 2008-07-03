@@ -65,9 +65,8 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-LineTerminator		= \r|\n|\r\n
-WhiteSpace			= {LineTerminator} | [ \t\f]
-TerminalSymbol		= [:jletterdigit:] | \"[:jletterdigit:]+\"
+LineTerminator			= \r|\n|\r\n
+WhiteSpace				= {LineTerminator} | [ \t\f]
 
 %%
 
@@ -76,8 +75,7 @@ TerminalSymbol		= [:jletterdigit:] | \"[:jletterdigit:]+\"
 	","					{ return symbol(COMMA); }
 	"{"					{ return symbol(LCBRACE); }
 	"}"					{ return symbol(RCBRACE); }
-	{TerminalSymbol}	{ return symbol(TERMINAL_SYMBOL, yytext()); }
 	{WhiteSpace}		{ }
+	.					{ return symbol(TERMINAL_SYMBOL, yytext()); }
+	\".+\"				{ return symbol(TERMINAL_SYMBOL, yytext()); }
 }
-
-.|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

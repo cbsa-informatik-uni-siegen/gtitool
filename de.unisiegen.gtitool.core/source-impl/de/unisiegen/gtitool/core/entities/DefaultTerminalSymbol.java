@@ -1,9 +1,6 @@
 package de.unisiegen.gtitool.core.entities;
 
 
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolEmptyNameException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolIllegalNameException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -57,12 +54,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Allocates a new {@link DefaultTerminalSymbol}.
    * 
    * @param element The {@link Element}.
-   * @throws TerminalSymbolException If something with the
-   *           {@link DefaultTerminalSymbol} is not correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultTerminalSymbol ( Element element )
-      throws TerminalSymbolException, StoreException
+  public DefaultTerminalSymbol ( Element element ) throws StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "TerminalSymbol" ) ) //$NON-NLS-1$
@@ -108,12 +102,9 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Allocates a new {@link DefaultTerminalSymbol}.
    * 
    * @param name The name of this {@link DefaultTerminalSymbol}.
-   * @throws TerminalSymbolException If something with the
-   *           {@link DefaultTerminalSymbol} is not correct.
    */
-  public DefaultTerminalSymbol ( String name ) throws TerminalSymbolException
+  public DefaultTerminalSymbol ( String name )
   {
-    // Name
     setName ( name );
   }
 
@@ -219,53 +210,12 @@ public final class DefaultTerminalSymbol implements TerminalSymbol
    * Sets the name of this symbol.
    * 
    * @param name The name to set.
-   * @throws TerminalSymbolException If something with the
-   *           {@link DefaultTerminalSymbol} is not correct.
    */
-  private final void setName ( String name ) throws TerminalSymbolException
+  private final void setName ( String name )
   {
-    // Name
     if ( name == null )
     {
       throw new NullPointerException ( "name is null" ); //$NON-NLS-1$
-    }
-    if ( name.equals ( "" ) ) //$NON-NLS-1$
-    {
-      throw new TerminalSymbolEmptyNameException ();
-    }
-    if ( name.startsWith ( "\"" ) ) //$NON-NLS-1$
-    {
-      if ( !name.endsWith ( "\"" ) ) //$NON-NLS-1$
-      {
-        throw new TerminalSymbolIllegalNameException ( name );
-      }
-      if ( name.length () <= 2 )
-      {
-        throw new TerminalSymbolIllegalNameException ( name );
-      }
-      String tmpName = name.substring ( 1, name.length () - 1 );
-      for ( int i = 0 ; i < tmpName.length () ; i++ )
-      {
-        if ( !Character.isJavaIdentifierPart ( tmpName.charAt ( i ) ) )
-        {
-          throw new TerminalSymbolIllegalNameException ( name );
-        }
-      }
-    }
-    else if ( name.length () == 1 )
-    {
-      if ( name.equals ( "\u03B5" ) ) //$NON-NLS-1$
-      {
-        throw new TerminalSymbolIllegalNameException ( name );
-      }
-      if ( !Character.isJavaIdentifierPart ( name.charAt ( 0 ) ) )
-      {
-        throw new TerminalSymbolIllegalNameException ( name );
-      }
-    }
-    else
-    {
-      throw new TerminalSymbolIllegalNameException ( name );
     }
     this.name = name;
   }

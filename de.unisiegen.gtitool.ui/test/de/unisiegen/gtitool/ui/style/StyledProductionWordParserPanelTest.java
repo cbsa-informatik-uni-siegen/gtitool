@@ -11,9 +11,7 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -74,14 +72,6 @@ public class StyledProductionWordParserPanelTest
       exc.printStackTrace ();
     }
     catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
     }

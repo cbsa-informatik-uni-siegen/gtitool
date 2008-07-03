@@ -141,34 +141,13 @@ word_write						::= word:w ARROWDOWN
 
 symbol							::= SYMBOL:s
 									{:
-									   try
-									   {
-									     RESULT = new DefaultSymbol(s);
-									   }
-									   catch (SymbolException exc)
-									   {
-									     ParserException.throwSymbolException(sleft, sright, s);
-									   }
+									   RESULT = new DefaultSymbol(s);
 									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								|	EPSILON:e
 									{:
 									   RESULT = new DefaultSymbol();
 									   RESULT.setParserOffset(new ParserOffset(eleft,eright));
-									:}
-								;
-
-symbol							::= SYMBOL:s
-									{:
-									   try
-									   {
-									     RESULT = new DefaultSymbol(s);
-									   }
-									   catch (SymbolException exc)
-									   {
-									     ParserException.throwSymbolException(sleft, sright, s);
-									   }
-									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;
 

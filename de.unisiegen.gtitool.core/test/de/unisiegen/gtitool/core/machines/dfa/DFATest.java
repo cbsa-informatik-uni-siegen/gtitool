@@ -13,7 +13,6 @@ import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.machines.MachineTest;
@@ -80,22 +79,15 @@ public class DFATest extends MachineTest
 
   private static void initEntities ()
   {
-    // Symbols
-    try
-    {
-      a = new DefaultSymbol ( "a" );
-      b = new DefaultSymbol ( "b" );
-      c = new DefaultSymbol ( "c" );
-      d = new DefaultSymbol ( "d" );
-      e = new DefaultSymbol ( "e" );
-      f = new DefaultSymbol ( "f" );
-    }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    // Alphabet
+    // symbols
+    a = new DefaultSymbol ( "a" );
+    b = new DefaultSymbol ( "b" );
+    c = new DefaultSymbol ( "c" );
+    d = new DefaultSymbol ( "d" );
+    e = new DefaultSymbol ( "e" );
+    f = new DefaultSymbol ( "f" );
+
+    // alphabet
     try
     {
       alphabet = new DefaultAlphabet ( a, b, c );

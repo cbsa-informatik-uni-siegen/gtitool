@@ -8,7 +8,6 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -59,10 +58,6 @@ public class WordPanelFormTest
       jFrame.setVisible ( true );
     }
     catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
     }

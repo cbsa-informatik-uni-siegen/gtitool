@@ -25,10 +25,7 @@ import de.unisiegen.gtitool.core.entities.TerminalSymbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.nonterminalsymbolset.NonterminalSymbolSetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.preferences.item.AlphabetItem;
@@ -296,27 +293,12 @@ public class PreferenceManager
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
     catch ( NonterminalSymbolSetException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
     }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
     catch ( TerminalSymbolSetException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
-    catch ( TerminalSymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -856,15 +838,7 @@ public class PreferenceManager
       {
         break;
       }
-      try
-      {
-        symbols.add ( new DefaultSymbol ( symbol ) );
-      }
-      catch ( SymbolException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+      symbols.add ( new DefaultSymbol ( symbol ) );
       count++ ;
     }
     // Return the default alphabet if no alphabet is found.
@@ -1466,16 +1440,8 @@ public class PreferenceManager
       {
         break;
       }
-      try
-      {
-        nonterminalSymbols.add ( new DefaultNonterminalSymbol (
-            nonterminalSymbol ) );
-      }
-      catch ( NonterminalSymbolException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+      nonterminalSymbols
+          .add ( new DefaultNonterminalSymbol ( nonterminalSymbol ) );
       count++ ;
     }
     /*
@@ -1519,15 +1485,7 @@ public class PreferenceManager
       {
         break;
       }
-      try
-      {
-        symbols.add ( new DefaultSymbol ( symbol ) );
-      }
-      catch ( SymbolException e )
-      {
-        e.printStackTrace ();
-        System.exit ( 1 );
-      }
+      symbols.add ( new DefaultSymbol ( symbol ) );
       count++ ;
     }
     // Return the default alphabet if no alphabet is found.
@@ -1559,17 +1517,8 @@ public class PreferenceManager
   {
     String startSymbol = this.preferences.get ( "DefaultStartSymbol", //$NON-NLS-1$
         DEFAULT_START_SYMBOL.getName () );
-    try
-    {
-      return new NonterminalSymbolItem ( new DefaultNonterminalSymbol (
-          startSymbol ), DEFAULT_START_SYMBOL );
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return null;
-    }
+    return new NonterminalSymbolItem ( new DefaultNonterminalSymbol (
+        startSymbol ), DEFAULT_START_SYMBOL );
   }
 
 
@@ -1603,15 +1552,7 @@ public class PreferenceManager
       {
         break;
       }
-      try
-      {
-        terminalSymbols.add ( new DefaultTerminalSymbol ( terminalSymbol ) );
-      }
-      catch ( TerminalSymbolException exc )
-      {
-        exc.printStackTrace ();
-        System.exit ( 1 );
-      }
+      terminalSymbols.add ( new DefaultTerminalSymbol ( terminalSymbol ) );
       count++ ;
     }
     /*

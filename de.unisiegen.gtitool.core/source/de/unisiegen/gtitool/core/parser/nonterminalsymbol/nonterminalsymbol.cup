@@ -31,14 +31,7 @@ non terminal NonterminalSymbol	nonterminal_symbol;
 
 nonterminal_symbol				::= NONTERMINAL_SYMBOL:n
 									{:
-									   try
-									   {
-									     RESULT = new DefaultNonterminalSymbol(n);
-									   }
-									   catch (NonterminalSymbolException exc)
-									   {
-									     ParserException.throwNonterminalSymbolException(nleft, nright, n);
-									   }
+									   RESULT = new DefaultNonterminalSymbol(n);
 									   RESULT.setParserOffset(new ParserOffset(nleft,nright));
 									:}
 								;

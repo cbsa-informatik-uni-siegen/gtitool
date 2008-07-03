@@ -67,14 +67,15 @@ import de.unisiegen.gtitool.core.parser.style.Style;
 	}
 %}
 
-Symbol			= [:jletterdigit:] | \"[:jletterdigit:]+\"
+LineTerminator			= \r|\n|\r\n
+WhiteSpace				= {LineTerminator} | [ \t\f]
 
 %%
 
 <YYINITIAL>
 {
 	"\u03B5"			{ return symbol(EPSILON); }
-	{Symbol}			{ return symbol(MEMBER, yytext()); }
+	{WhiteSpace}		{ }
+	.					{ return symbol(MEMBER, yytext()); }
+	\".+\"				{ return symbol(MEMBER, yytext()); }
 }
-
-.|\n					{ throw new ScannerException(yychar, yychar + yylength(), Messages.getString ( "Parser.1", yytext() ) ); }

@@ -9,7 +9,6 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Word;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -17,7 +16,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The test class of the {@link StyledWordParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledWordParserPanelTest.java 811 2008-04-18 13:52:03Z fehler
+ *          $
  */
 public class StyledWordParserPanelTest
 {
@@ -32,7 +32,7 @@ public class StyledWordParserPanelTest
     try
     {
       Alphabet alphabet = new DefaultAlphabet ( new DefaultSymbol ( "0" ), //$NON-NLS-1$
-          new DefaultSymbol ( "1" ), new DefaultSymbol ( "2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+          new DefaultSymbol ( "\"if\"" ), new DefaultSymbol ( "+" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
       JFrame jFrame = new JFrame ( "WordPanelTest" ); //$NON-NLS-1$
       StyledWordParserPanel styledWordParserPanel = new StyledWordParserPanel ();
@@ -55,10 +55,6 @@ public class StyledWordParserPanelTest
       jFrame.setVisible ( true );
     }
     catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
     }

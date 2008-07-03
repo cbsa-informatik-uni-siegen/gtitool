@@ -9,7 +9,6 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Stack;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
 
@@ -17,7 +16,8 @@ import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
  * The test class of the {@link StyledStackParserPanel}.
  * 
  * @author Christian Fehler
- * @version $Id$
+ * @version $Id: StyledStackParserPanelTest.java 811 2008-04-18 13:52:03Z fehler
+ *          $
  */
 public class StyledStackParserPanelTest
 {
@@ -33,7 +33,7 @@ public class StyledStackParserPanelTest
     {
       Alphabet pushDownalphabet = new DefaultAlphabet (
           new DefaultSymbol ( "0" ), new DefaultSymbol ( "1" ), //$NON-NLS-1$ //$NON-NLS-2$
-          new DefaultSymbol ( "2" ) ); //$NON-NLS-1$
+          new DefaultSymbol ( "\"if\"" ), new DefaultSymbol ( "+" ) ); //$NON-NLS-1$ //$NON-NLS-2$
       JFrame jFrame = new JFrame ( "StackPanelTest" ); //$NON-NLS-1$
       StyledStackParserPanel styledStackParserPanel = new StyledStackParserPanel ();
       styledStackParserPanel.setPushDownAlphabet ( pushDownalphabet );
@@ -55,10 +55,6 @@ public class StyledStackParserPanelTest
       jFrame.setVisible ( true );
     }
     catch ( AlphabetException exc )
-    {
-      exc.printStackTrace ();
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
     }

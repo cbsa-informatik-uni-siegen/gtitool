@@ -8,7 +8,6 @@ import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbol;
 import de.unisiegen.gtitool.core.entities.DefaultTerminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.NonterminalSymbolSet;
 import de.unisiegen.gtitool.core.entities.TerminalSymbolSet;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.exceptions.terminalsymbolset.TerminalSymbolSetException;
 import de.unisiegen.gtitool.ui.style.listener.ParseableChangedListener;
 
@@ -57,10 +56,6 @@ public class StyledNonterminalSymbolSetParserPanelTest
       jFrame.setBounds ( 300, 300, 400, 300 );
       jFrame.setDefaultCloseOperation ( WindowConstants.DISPOSE_ON_CLOSE );
       jFrame.setVisible ( true );
-    }
-    catch ( TerminalSymbolException exc )
-    {
-      exc.printStackTrace ();
     }
     catch ( TerminalSymbolSetException exc )
     {

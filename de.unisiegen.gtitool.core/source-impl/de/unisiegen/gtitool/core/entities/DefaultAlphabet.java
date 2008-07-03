@@ -11,7 +11,6 @@ import de.unisiegen.gtitool.core.entities.listener.AlphabetChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetMoreThanOneSymbolException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -86,12 +85,10 @@ public final class DefaultAlphabet implements Alphabet
    * @param element The {@link Element}.
    * @throws AlphabetException If something with the {@link DefaultAlphabet} is
    *           not correct.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultAlphabet ( Element element ) throws AlphabetException,
-      SymbolException, StoreException
+      StoreException
   {
     this ();
     // Check if the element is correct

@@ -4,7 +4,6 @@ package de.unisiegen.gtitool.core.entities;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
 import de.unisiegen.gtitool.core.exceptions.word.WordResetedException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -72,11 +71,9 @@ public final class DefaultWord implements Word
    * Allocates a new {@link DefaultWord}.
    * 
    * @param element The {@link Element}.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
-  public DefaultWord ( Element element ) throws SymbolException, StoreException
+  public DefaultWord ( Element element ) throws StoreException
   {
     this ();
     // Check if the element is correct

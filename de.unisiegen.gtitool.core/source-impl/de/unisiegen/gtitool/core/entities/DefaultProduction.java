@@ -4,8 +4,6 @@ package de.unisiegen.gtitool.core.entities;
 import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
-import de.unisiegen.gtitool.core.exceptions.nonterminalsymbol.NonterminalSymbolException;
-import de.unisiegen.gtitool.core.exceptions.terminalsymbol.TerminalSymbolException;
 import de.unisiegen.gtitool.core.i18n.Messages;
 import de.unisiegen.gtitool.core.parser.ParserOffset;
 import de.unisiegen.gtitool.core.parser.style.PrettyPrintable;
@@ -83,13 +81,8 @@ public final class DefaultProduction implements Production
    * 
    * @param element The {@link Element}.
    * @throws StoreException If the {@link Element} can not be parsed.
-   * @throws TerminalSymbolException If something with the
-   *           {@link TerminalSymbol} is not correct.
-   * @throws NonterminalSymbolException If something with the
-   *           {@link NonterminalSymbol} is not correct.
    */
-  public DefaultProduction ( Element element ) throws StoreException,
-      TerminalSymbolException, NonterminalSymbolException
+  public DefaultProduction ( Element element ) throws StoreException
   {
 
     for ( Element current : element.getElement () )
@@ -350,19 +343,11 @@ public final class DefaultProduction implements Production
    */
   public final void resetModify ()
   {
-    try
-    {
-      this.initialNonterminalSymbol = new DefaultNonterminalSymbol (
-          this.nonterminalSymbol.getName () );
+    this.initialNonterminalSymbol = new DefaultNonterminalSymbol (
+        this.nonterminalSymbol.getName () );
 
-      this.initialProductionWord = new DefaultProductionWord ();
-      this.initialProductionWord.add ( this.productionWord );
-    }
-    catch ( NonterminalSymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-    }
+    this.initialProductionWord = new DefaultProductionWord ();
+    this.initialProductionWord.add ( this.productionWord );
   }
 
 

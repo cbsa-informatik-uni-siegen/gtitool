@@ -8,7 +8,6 @@ import de.unisiegen.gtitool.core.entities.DefaultAlphabet;
 import de.unisiegen.gtitool.core.entities.DefaultSymbol;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.ui.exchange.encryption.RSAPublicKeyImpl;
 
 
@@ -58,11 +57,6 @@ public final class MainTest
       Alphabet alphabet2 = new DefaultAlphabet ( a, b, d, e );
 
       System.out.println ( alphabet1.compareTo ( alphabet2 ) );
-    }
-    catch ( SymbolException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
     }
     catch ( AlphabetException exc )
     {

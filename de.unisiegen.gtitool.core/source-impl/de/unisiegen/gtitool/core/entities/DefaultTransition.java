@@ -9,7 +9,6 @@ import javax.swing.event.EventListenerList;
 
 import de.unisiegen.gtitool.core.entities.listener.ModifyStatusChangedListener;
 import de.unisiegen.gtitool.core.entities.listener.TransitionChangedListener;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.i18n.Messages;
@@ -280,13 +279,11 @@ public final class DefaultTransition implements Transition
    *           {@link DefaultTransition} is not correct.
    * @throws TransitionSymbolOnlyOneTimeException If something with the
    *           {@link DefaultTransition} is not correct.
-   * @throws SymbolException If something with the {@link Symbol} is not
-   *           correct.
    * @throws StoreException If the {@link Element} can not be parsed.
    */
   public DefaultTransition ( Element element )
       throws TransitionSymbolNotInAlphabetException,
-      TransitionSymbolOnlyOneTimeException, SymbolException, StoreException
+      TransitionSymbolOnlyOneTimeException, StoreException
   {
     // Check if the element is correct
     if ( !element.getName ().equals ( "Transition" ) ) //$NON-NLS-1$
@@ -500,22 +497,14 @@ public final class DefaultTransition implements Transition
       throw new TransitionSymbolOnlyOneTimeException ( this, tmpList );
     }
 
-    // The symbol must be cloned because of the different possible styles
-    try
+    // the symbol must be cloned because of the different possible styles
+    if ( symbol.isEpsilon () )
     {
-      if ( symbol.isEpsilon () )
-      {
-        this.symbolSet.add ( new DefaultSymbol () );
-      }
-      else
-      {
-        this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
-      }
+      this.symbolSet.add ( new DefaultSymbol () );
     }
-    catch ( SymbolException exc )
+    else
     {
-      exc.printStackTrace ();
-      System.exit ( 1 );
+      this.symbolSet.add ( new DefaultSymbol ( symbol.getName () ) );
     }
 
     fireTransitionChanged ();

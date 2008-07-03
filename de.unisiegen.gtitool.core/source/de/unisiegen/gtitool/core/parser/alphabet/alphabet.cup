@@ -107,14 +107,7 @@ alphabet_error					::= LCBRACE:l epsilon
 
 symbol							::= SYMBOL:s
 									{:
-									   try
-									   {
-									     RESULT = new DefaultSymbol(s);
-									   }
-									   catch (SymbolException exc)
-									   {
-									     ParserException.throwSymbolException(sleft, sright, s);
-									   }
+									   RESULT = new DefaultSymbol(s);
 									   RESULT.setParserOffset(new ParserOffset(sleft,sright));
 									:}
 								;

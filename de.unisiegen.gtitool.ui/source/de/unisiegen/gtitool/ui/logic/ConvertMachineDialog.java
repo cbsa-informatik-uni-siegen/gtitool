@@ -29,7 +29,6 @@ import de.unisiegen.gtitool.core.entities.InputEntity.EntityType;
 import de.unisiegen.gtitool.core.entities.Transition.TransitionType;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
@@ -1137,7 +1136,7 @@ public final class ConvertMachineDialog implements
     // outline
     this.convertMachineTableModel = new ConvertMachineTableModel ();
     this.gui.jGTITableOutline.setModel ( this.convertMachineTableModel );
-    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel);
+    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel );
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
@@ -1180,12 +1179,6 @@ public final class ConvertMachineDialog implements
       return;
     }
     catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -1418,7 +1411,6 @@ public final class ConvertMachineDialog implements
   }
 
 
-  
   /**
    * {@inheritDoc}
    * 
@@ -1482,7 +1474,7 @@ public final class ConvertMachineDialog implements
 
   /**
    * Returns the tableColumnModel.
-   *
+   * 
    * @return The tableColumnModel.
    * @see #tableColumnModel
    */
@@ -1583,11 +1575,10 @@ public final class ConvertMachineDialog implements
 
   /**
    * Handle print action.
-   *
    */
   public void handlePrint ()
   {
-    PrintDialog dialog = new PrintDialog(this.parent, this);
+    PrintDialog dialog = new PrintDialog ( this.parent, this );
     dialog.show ();
   }
 
@@ -2566,12 +2557,6 @@ public final class ConvertMachineDialog implements
             System.exit ( 1 );
             return;
           }
-          catch ( SymbolException exc )
-          {
-            exc.printStackTrace ();
-            System.exit ( 1 );
-            return;
-          }
 
           this.modelConverted.createTransitionView ( transition, newStateView,
               newStateView, false, false, true );
@@ -2613,12 +2598,6 @@ public final class ConvertMachineDialog implements
           System.exit ( 1 );
           return;
         }
-        catch ( SymbolException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
 
         DefaultTransitionView newTransitionView = this.modelConverted
             .createTransitionView ( transition, this.modelConverted
@@ -2652,12 +2631,6 @@ public final class ConvertMachineDialog implements
           return;
         }
         catch ( TransitionSymbolOnlyOneTimeException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-          return;
-        }
-        catch ( SymbolException exc )
         {
           exc.printStackTrace ();
           System.exit ( 1 );

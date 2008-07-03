@@ -3,7 +3,6 @@ package de.unisiegen.gtitool.core.entities;
 
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 
@@ -24,20 +23,9 @@ public class EntitiesTest
    */
   public static void main ( String [] arguments )
   {
-    Symbol a = null;
-    Symbol b = null;
-    Symbol c = null;
-    try
-    {
-      a = new DefaultSymbol ( "a" ); //$NON-NLS-1$
-      b = new DefaultSymbol ( "b" );//$NON-NLS-1$
-      c = new DefaultSymbol ( "c" );//$NON-NLS-1$
-    }
-    catch ( SymbolException e )
-    {
-      e.printStackTrace ();
-      System.exit ( 1 );
-    }
+    Symbol a = new DefaultSymbol ( "a" ); //$NON-NLS-1$
+    Symbol b = new DefaultSymbol ( "b" );//$NON-NLS-1$
+    Symbol c = new DefaultSymbol ( "c" );//$NON-NLS-1$
 
     Stack stack = new DefaultStack ();
 

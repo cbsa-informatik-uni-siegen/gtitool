@@ -22,7 +22,6 @@ import de.unisiegen.gtitool.core.entities.State;
 import de.unisiegen.gtitool.core.entities.Transition;
 import de.unisiegen.gtitool.core.exceptions.alphabet.AlphabetException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
@@ -113,10 +112,9 @@ public final class MinimizeMachineDialog implements
   private boolean endReached = false;
 
 
-  
   /**
    * Returns the endReached.
-   *
+   * 
    * @return The endReached.
    * @see #endReached
    */
@@ -124,6 +122,7 @@ public final class MinimizeMachineDialog implements
   {
     return this.endReached;
   }
+
 
   /**
    * The {@link MinimizeMachineDialogForm}.
@@ -149,11 +148,11 @@ public final class MinimizeMachineDialog implements
   private MachinePanel machinePanel;
 
 
-  
   /**
    * The parent {@link JFrame}.
    */
   private MainWindowForm mainWindowForm;
+
 
   /**
    * The {@link MinimizeMachineTableModel}.
@@ -173,18 +172,17 @@ public final class MinimizeMachineDialog implements
   private DefaultMachineModel modelMinimized;
 
 
-  
   /**
    * The original {@link DefaultMachineModel}.
    */
   private DefaultMachineModel modelOriginal;
 
 
-  
   /**
    * Flag indicates if we want to handle the devider location event.
    */
   private boolean setDeviderLocation = true;
+
 
   /**
    * The new created states.
@@ -195,7 +193,7 @@ public final class MinimizeMachineDialog implements
   /**
    * The {@link ConvertMachineTableColumnModel}.
    */
-  private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel();
+  private ConvertMachineTableColumnModel tableColumnModel = new ConvertMachineTableColumnModel ();
 
 
   /**
@@ -219,7 +217,7 @@ public final class MinimizeMachineDialog implements
     this.mainWindowForm = mainWindowForm;
     this.machinePanel = machinePanel;
     this.gui = new MinimizeMachineDialogForm ( this, mainWindowForm );
-    
+
     this.setDeviderLocation = false;
     this.gui.jGTISplitPaneGraph.setRightComponent ( null );
 
@@ -237,12 +235,6 @@ public final class MinimizeMachineDialog implements
       return;
     }
     catch ( StateException exc )
-    {
-      exc.printStackTrace ();
-      System.exit ( 1 );
-      return;
-    }
-    catch ( SymbolException exc )
     {
       exc.printStackTrace ();
       System.exit ( 1 );
@@ -297,9 +289,9 @@ public final class MinimizeMachineDialog implements
   private void buildMinimalMachine ()
   {
     this.states.clear ();
-    this.modelMinimized = new DefaultMachineModel ( new DefaultDFA ( this.machine
-        .getAlphabet (), this.machine.getPushDownAlphabet (), this.machine
-        .isUsePushDownAlphabet () ) );
+    this.modelMinimized = new DefaultMachineModel ( new DefaultDFA (
+        this.machine.getAlphabet (), this.machine.getPushDownAlphabet (),
+        this.machine.isUsePushDownAlphabet () ) );
 
     try
     {
@@ -327,9 +319,9 @@ public final class MinimizeMachineDialog implements
         DefaultState state = new DefaultState ( name );
         state.setStartState ( startState );
         state.setFinalState ( current.get ( 0 ).getState ().isFinalState () );
-        DefaultStateView stateView = this.modelMinimized.createStateView ( current.get (
-            0 ).getPositionX (), current.get ( 0 ).getPositionY (), state,
-            false );
+        DefaultStateView stateView = this.modelMinimized.createStateView (
+            current.get ( 0 ).getPositionX (), current.get ( 0 )
+                .getPositionY (), state, false );
         stateView.setGroupColor ( current.get ( 0 ).getGroupColor () );
         this.states.put ( current.get ( 0 ).getState (), stateView );
       }
@@ -371,8 +363,8 @@ public final class MinimizeMachineDialog implements
                     .getPushDownWordRead (),
                 transition.getPushDownWordWrite (), this.states.get ( current )
                     .getState (), target.getState (), transition.getSymbol () );
-            this.modelMinimized.createTransitionView ( newTransition, this.states
-                .get ( current ), target, false, false, true );
+            this.modelMinimized.createTransitionView ( newTransition,
+                this.states.get ( current ), target, false, false, true );
           }
 
         }
@@ -403,7 +395,7 @@ public final class MinimizeMachineDialog implements
 
   /**
    * Returns the machinePanel.
-   *
+   * 
    * @return The machinePanel.
    * @see #machinePanel
    */
@@ -415,7 +407,7 @@ public final class MinimizeMachineDialog implements
 
   /**
    * Returns the minimizeMachineTableModel.
-   *
+   * 
    * @return The minimizeMachineTableModel.
    * @see #minimizeMachineTableModel
    */
@@ -427,7 +419,7 @@ public final class MinimizeMachineDialog implements
 
   /**
    * Returns the modelMinimized.
-   *
+   * 
    * @return The modelMinimized.
    * @see #modelMinimized
    */
@@ -439,7 +431,7 @@ public final class MinimizeMachineDialog implements
 
   /**
    * Returns the modelOriginal.
-   *
+   * 
    * @return The modelOriginal.
    * @see #modelOriginal
    */
@@ -451,7 +443,7 @@ public final class MinimizeMachineDialog implements
 
   /**
    * Returns the tableColumnModel.
-   *
+   * 
    * @return The tableColumnModel.
    * @see #tableColumnModel
    */
@@ -588,10 +580,12 @@ public final class MinimizeMachineDialog implements
 
     }
     highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
-    
-    if (this.endReached){
+
+    if ( this.endReached )
+    {
       this.setDeviderLocation = false;
-      this.gui.jGTISplitPaneGraph.setRightComponent ( this.gui.jGTIScrollPaneConverted );
+      this.gui.jGTISplitPaneGraph
+          .setRightComponent ( this.gui.jGTIScrollPaneConverted );
     }
   }
 
@@ -626,15 +620,17 @@ public final class MinimizeMachineDialog implements
     this.gui.dispose ();
 
   }
-  
+
+
   /**
    * Handles the action on the previous step button.
    */
   public final void handlePreviousStep ()
   {
     logger.debug ( "handlePreviousStep", "handle previous step" ); //$NON-NLS-1$ //$NON-NLS-2$
-    
-    if (this.endReached){
+
+    if ( this.endReached )
+    {
       this.setDeviderLocation = false;
       this.gui.jGTISplitPaneGraph.setRightComponent ( null );
     }
@@ -650,7 +646,8 @@ public final class MinimizeMachineDialog implements
         index, index );
     highlightTransitions ( this.gui.jGTITableOutline.getSelectedRow () );
   }
-  
+
+
   /**
    * Handles the start action.
    */
@@ -661,7 +658,6 @@ public final class MinimizeMachineDialog implements
   }
 
 
-  
   /**
    * Handles the action on the stop button.
    */
@@ -676,7 +672,6 @@ public final class MinimizeMachineDialog implements
     this.autoStep = false;
     setStatus ();
   }
-
 
 
   /**
@@ -705,15 +700,13 @@ public final class MinimizeMachineDialog implements
   }
 
 
-  
   /**
    * Minimize the given {@link Machine}.
    */
   public final void minimize ()
   {
     this.gui.jGTITableOutline.setModel ( this.minimizeMachineTableModel );
-    this.gui.jGTITableOutline
-        .setColumnModel ( this.tableColumnModel );
+    this.gui.jGTITableOutline.setColumnModel ( this.tableColumnModel );
     this.gui.jGTITableOutline.getTableHeader ().setReorderingAllowed ( false );
     this.gui.jGTITableOutline.getSelectionModel ().setSelectionMode (
         ListSelectionModel.SINGLE_SELECTION );
@@ -724,14 +717,17 @@ public final class MinimizeMachineDialog implements
         JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
 
-          @SuppressWarnings("synthetic-access")
+          @SuppressWarnings ( "synthetic-access" )
           public void propertyChange ( PropertyChangeEvent event )
           {
-            if (MinimizeMachineDialog.this.setDeviderLocation){
-            PreferenceManager.getInstance ().setDividerLocationMinimizeMachine (
-                ( ( Integer ) event.getNewValue () ).intValue () );
+            if ( MinimizeMachineDialog.this.setDeviderLocation )
+            {
+              PreferenceManager.getInstance ()
+                  .setDividerLocationMinimizeMachine (
+                      ( ( Integer ) event.getNewValue () ).intValue () );
             }
-            else {
+            else
+            {
               MinimizeMachineDialog.this.setDeviderLocation = true;
             }
           }
@@ -752,7 +748,6 @@ public final class MinimizeMachineDialog implements
 
     show ();
   }
-
 
 
   /**
@@ -795,14 +790,14 @@ public final class MinimizeMachineDialog implements
     this.gui.setBounds ( rect );
     this.gui.setVisible ( true );
   }
-  
+
+
   /**
    * Handle print action.
-   *
    */
   public void handlePrint ()
   {
-    PrintDialog dialog = new PrintDialog(this.mainWindowForm, this);
+    PrintDialog dialog = new PrintDialog ( this.mainWindowForm, this );
     dialog.show ();
   }
 }

@@ -12,7 +12,6 @@ import de.unisiegen.gtitool.core.entities.ProductionWord;
 import de.unisiegen.gtitool.core.entities.ProductionWordMember;
 import de.unisiegen.gtitool.core.entities.Symbol;
 import de.unisiegen.gtitool.core.entities.TerminalSymbol;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.grammars.Grammar;
 import de.unisiegen.gtitool.core.grammars.rg.RG;
 import de.unisiegen.gtitool.core.machines.Machine;
@@ -113,39 +112,31 @@ public class ConvertRegularGrammar extends AbstractConvertGrammar
     for ( ProductionWordMember current : productionWord )
     {
       DefaultStateView newStateView = null;
-      try
+      if ( current instanceof TerminalSymbol )
       {
-        if ( current instanceof TerminalSymbol )
+        symbols.add ( new DefaultSymbol ( current.getName () ) );
+        if ( productionWord.size () == 1 )
         {
-          symbols.add ( new DefaultSymbol ( current.getName () ) );
-          if ( productionWord.size () == 1 )
-          {
-            newStateView = createStateView ( null );
-
-            createTransition ( new DefaultWord (), new DefaultWord (),
-                stateView, newStateView, symbols );
-
-            newStateView.getState ().setFinalState ( true );
-          }
-        }
-        else
-        {
-          newStateView = this.states.get ( current );
-          if ( newStateView == null )
-          {
-            newStateView = createStateView ( current.getName () );
-            this.states.put ( ( NonterminalSymbol ) current, newStateView );
-          }
+          newStateView = createStateView ( null );
 
           createTransition ( new DefaultWord (), new DefaultWord (), stateView,
               newStateView, symbols );
 
+          newStateView.getState ().setFinalState ( true );
         }
       }
-      catch ( SymbolException exc )
+      else
       {
-        exc.printStackTrace ();
-        System.exit ( 1 );
+        newStateView = this.states.get ( current );
+        if ( newStateView == null )
+        {
+          newStateView = createStateView ( current.getName () );
+          this.states.put ( ( NonterminalSymbol ) current, newStateView );
+        }
+
+        createTransition ( new DefaultWord (), new DefaultWord (), stateView,
+            newStateView, symbols );
+
       }
     }
   }

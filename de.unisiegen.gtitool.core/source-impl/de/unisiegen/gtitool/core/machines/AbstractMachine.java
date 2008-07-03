@@ -43,7 +43,6 @@ import de.unisiegen.gtitool.core.exceptions.machine.MachineTransitionStackOperat
 import de.unisiegen.gtitool.core.exceptions.machine.MachineValidationException;
 import de.unisiegen.gtitool.core.exceptions.state.StateException;
 import de.unisiegen.gtitool.core.exceptions.stateset.StateSetException;
-import de.unisiegen.gtitool.core.exceptions.symbol.SymbolException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolNotInAlphabetException;
 import de.unisiegen.gtitool.core.exceptions.transition.TransitionSymbolOnlyOneTimeException;
 import de.unisiegen.gtitool.core.exceptions.word.WordFinishedException;
@@ -617,17 +616,8 @@ public abstract class AbstractMachine implements Machine
       TreeSet < Symbol > notUsedSymbolSet = new TreeSet < Symbol > ();
       for ( Symbol currentSymbol : this.alphabet )
       {
-        // The symbols must be cloned
-        try
-        {
-          notUsedSymbolSet
-              .add ( new DefaultSymbol ( currentSymbol.getName () ) );
-        }
-        catch ( SymbolException exc )
-        {
-          exc.printStackTrace ();
-          System.exit ( 1 );
-        }
+        // the symbols must be cloned
+        notUsedSymbolSet.add ( new DefaultSymbol ( currentSymbol.getName () ) );
       }
       for ( Symbol currentSymbol : currentSymbolSet )
       {
